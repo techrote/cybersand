@@ -205,7 +205,7 @@
         "systems/material-appearance-and-rendering.md"
       ],
       "facts": [
-        "The fixed pre-Build Main acknowledgement is30 seconds and every fresh graphical process is bounded at180 seconds; cold startup remains separate from steady-state measurement.",
+        "The fixed pre-Build Main acknowledgement is 60 seconds and every fresh graphical process is bounded at180 seconds; cold startup remains separate from steady-state measurement.",
         "Each row isolates actual Godot user shader cache through private XDG cache/config/data on Linux or AppData/LocalAppData on Windows and verifies the engine-reported path; unnamed driver caches remain uncontrolled.",
         "The guarded structured-flair hoist preserves replacement-finish exclusions and appearance math; local Linux palette program linking is source-matched evidence, not Windows attribution by analogy.",
         "Original failures, shared-user-cache historical Auto results and NONQUALIFYING isolated atlas evidence retain their separate scopes; no warm result or passing later row erases a first failure."

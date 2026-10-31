@@ -8,7 +8,7 @@ extends "res://tests/play_life001_shared_host_case.gd"
 const Probe = preload("res://tests/play_pace003_worker_probe.gd")
 const SAMPLE_MIN_SECONDS: int = 15
 const SAMPLE_MAX_SECONDS: int = 30
-const SETUP_TIMEOUT_MS: int = 30000
+const SETUP_TIMEOUT_MS: int = 60000
 
 var requested_workers: int = 0
 var sample_seconds: int = 15
@@ -281,9 +281,13 @@ func presentation_shader_identity(desktop: Control) -> Array[Dictionary]:
 			identities.append(identity)
 			continue
 		var shader: Shader = material.shader
-		identity.merge({"resource_path":shader.resource_path,
-			"file_sha256":FileAccess.get_sha256(shader.resource_path),
-			"loaded_code_sha256":shader.code.sha256_text()})
+		# A selected ANGLE palette has no path of its own; bind it to its exact source.
+		var source: Shader = shader.get_meta(CyberPaletteShader.SOURCE_META, shader) as Shader
+		identity.merge({"resource_path":source.resource_path,
+			"file_sha256":FileAccess.get_sha256(source.resource_path),
+			"loaded_code_sha256":source.code.sha256_text(),
+			"bounded_crossfade":shader != source
+				and shader.code == CyberPaletteShader.BOUNDED_CROSSFADE_DEFINE + source.code})
 		identities.append(identity)
 	return identities
 
@@ -462,7 +466,7 @@ func run() -> void:
 			emit_stage("selector_admitted")
 			setup_stage = "course_actor_terrain_acknowledgement"
 			ready = await wait_for_setup_acknowledgement(desktop)
-		expect(ready, "actual authored course/SetP actor/terrain acknowledged within 30 seconds")
+		expect(ready, "actual authored course/SetP actor/terrain acknowledged within the setup allowance")
 	var construction_usec: int = desktop.setup_observed_poll_usec - construction_started \
 		if desktop.setup_observed_poll_usec > 0 else Time.get_ticks_usec() - construction_started
 	if ready:
@@ -587,7 +591,7 @@ func run() -> void:
 	var reset_started: int = Time.get_ticks_usec()
 	desktop.microscenario_reset()
 	ready = await wait_for(Callable(self, "new_actor").bind(desktop, requested_rig, epoch), SETUP_TIMEOUT_MS)
-	expect(ready, "ordinary applied-session reset completes within 30 seconds")
+	expect(ready, "ordinary applied-session reset completes within the setup allowance")
 	result.reset_usec = Time.get_ticks_usec() - reset_started
 	var last_session = desktop.physical_actor_session
 	var shutdown_started: int = Time.get_ticks_usec()

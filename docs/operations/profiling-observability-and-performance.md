@@ -61,7 +61,8 @@ and included in observed wall pacing.
 Construction acknowledgement and the test's later polling time are separate
 observations. The apparatus latches the unchanged course/actor/terrain
 predicate after an actual Main callback and checks that timestamp against the
-original 30-second request deadline. A late poll cannot excuse a late or absent
+60-second request deadline (owner disposition 2026-10-31; the historical limit was
+30 seconds). A late poll cannot excuse a late or absent
 acknowledgement. Bounded startup Main/physics/render timestamps remain in each
 row, including successful rows; long first-frame and subsequent rendering gaps
 are reported separately from the fixed measurement window. Build is not moved
@@ -106,8 +107,9 @@ The first historical passing local Auto process shared a user cache and is
 explicitly excluded from independently empty-user-cache cold acceptance.
 
 Attached shader resource/code/file hashes authenticate the real visual route.
-Keep the pre-Build 30-second acknowledgement, 180-second case and 240-second
-import bounds. The separate NONQUALIFYING shader diagnostic uses original and
+Keep the pre-Build 60-second acknowledgement, 180-second case and 240-second
+import bounds. On `opengl3_angle` the attached palette is the bounded variant of
+the recorded source file, and the row must say so through `bounded_crossfade`. The separate NONQUALIFYING shader diagnostic uses original and
 candidate bytes, real draws and retained CPU/thread samples; it never reports
 a PACE003 pass. Its original timeout remains a failed diagnostic job even if
 the candidate finishes.

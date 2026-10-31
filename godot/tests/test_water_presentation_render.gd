@@ -34,7 +34,7 @@ func _render(with_water: bool, mode: int, scale: int, oriented: bool) -> Image:
 	rect.stretch_mode=TextureRect.STRETCH_SCALE
 	rect.texture=texture
 	var material:=ShaderMaterial.new()
-	material.shader=load("res://shaders/material_palette.gdshader")
+	material.shader=CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
 	material.set_shader_parameter("world_size_px",Vector2(WORLD_SIDE,WORLD_SIDE))
 	material.set_shader_parameter("view_size_px",Vector2(WORLD_SIDE,WORLD_SIDE))
 	material.set_shader_parameter("view_rect_uv",Vector4(0,0,1,1))

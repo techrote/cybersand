@@ -218,8 +218,9 @@ vec4 apply_neighbour_relief(vec4 colour, int material_id, ivec4 neighbours) {
 		float bevel_shadow = bottom_edge * 0.15 + right_edge * 0.085;
 		colour.rgb *= 1.0 + bevel_light - bevel_shadow;
 		colour.rgb += vec3(0.045, 0.052, 0.060) * (top_edge + left_edge) * 0.5;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (is_liquid_surface(material_id)) {
 		float exposed_surface = boundary_strength(material_id, above_id);
@@ -229,8 +230,8 @@ vec4 apply_neighbour_relief(vec4 colour, int material_id, ivec4 neighbours) {
 		);
 		colour.rgb += vec3(0.16, 0.22, 0.27) * exposed_surface * 0.28;
 		colour.rgb *= 1.0 + side_lip * 0.025;
-		return colour;
-	}
+		colour = colour;
+	} else {
 
 	// A one-cell ambient-contact shadow grounds overhangs without a depth
 	// buffer. It is derived from the same immutable material texture.
@@ -242,6 +243,8 @@ vec4 apply_neighbour_relief(vec4 colour, int material_id, ivec4 neighbours) {
 		float occluders = float(is_relief_solid(below_id)) + float(is_relief_solid(left_id))
 			+ float(is_relief_solid(right_id));
 		colour.rgb *= 1.0 - occluders * 0.09;
+	}
+	colour = colour;
 	}
 	return colour;
 }
@@ -487,6 +490,7 @@ float static_glint(vec2 pixel, float threshold) {
 }
 
 vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, float condition) {
+	bool burn_finish = false;
 	float t = presentation_time();
 	float along = g.along;
 	float across = g.across_world;
@@ -501,8 +505,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb *= 0.90 + cheap_hash(vec2(b.x, 8.0)) * 0.16 - grain * 0.22;
 		colour.rgb = mix(colour.rgb, vec3(0.42, 0.24, 0.10), knot.x * 0.85);
 		colour.rgb *= 1.0 - b.y * 0.40 - b.z * 0.32;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 82) { // birch: papery white bark, black lenticel dashes, peeling curls
 		float lenticel = step(0.78, value_noise(vec2(along * 0.9, across / 3.5)))
 			* step(0.45, value_noise(vec2(along / 5.0, across / 6.0)));
@@ -511,8 +516,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb *= 0.70 + cylinder * 0.36;
 		colour.rgb = mix(colour.rgb, vec3(0.08, 0.07, 0.07), max(lenticel * 0.85, scar * step(0.62, value_noise(pixel / 7.0)) * 0.8));
 		colour.rgb = mix(colour.rgb, vec3(0.84, 0.66, 0.50), curl * 0.45);
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 83) { // rough oak bark: deep furrows along the trunk, broken plates, lichen
 		float furrow_coord = across / 2.2 + (value_noise(vec2(along / 10.0, across / 3.0)) - 0.5) * 1.8;
 		float furrow = 1.0 - smoothstep(0.0, 0.22, abs(fract(furrow_coord) - 0.5) - 0.25);
@@ -522,8 +528,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb += vec3(0.07, 0.06, 0.05) * (1.0 - furrow) * value_noise(pixel / 1.5);
 		float lichen = step(0.84, value_noise(pixel / 3.0 + vec2(41.0))) * (1.0 - furrow);
 		colour.rgb = mix(colour.rgb, vec3(0.50, 0.58, 0.40), lichen * 0.55);
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 84 || id == 85) { // walnut / mahogany panels: figured grain, satin lustre
 		vec3 b = board_layout(g, id == 84 ? 6.0 : 5.0, 23.0, float(id));
 		float seed = cheap_hash(vec2(b.x, float(id)));
@@ -535,8 +542,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		float lustre = smoothstep(0.86, 1.0, 1.0 - triangle_wave((along + across * 0.6) / 37.0 + seed));
 		colour.rgb += vec3(0.10, 0.07, 0.05) * lustre;
 		colour.rgb *= 1.0 - b.y * 0.42 - b.z * 0.40;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 86) { // bamboo: rounded culms with nodes, fibres and tint per culm
 		float culm = floor(across / 3.0);
 		float u = mod(across, 3.0) / 3.0;
@@ -549,8 +557,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb = tint * round_shade * (0.94 + triangle_wave(across * 1.7 + along / 21.0) * 0.08);
 		colour.rgb *= 1.0 - node * 0.45 + bulge * 0.06;
 		colour.rgb *= 1.0 - (1.0 - step(0.5, mod(across, 3.0))) * 0.35;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 87) { // plywood: cathedral face veneer, ply laminations on exposed edges
 		float centre = (floor(along / 17.0) + 0.5) * 17.0;
 		float arch = length(vec2((along - centre) * 0.35, across - floor(across / 13.0) * 13.0 + 3.0));
@@ -562,8 +571,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 			float ply = mod(floor((g.horizontal ? pixel.y : pixel.x) * 1.0), 2.0);
 			colour.rgb = mix(colour.rgb, colour.rgb * (0.70 + ply * 0.35), 0.8);
 		}
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 88) { // driftwood: silvered, deeply weathered grain, worm holes
 		float grain = wood_grain(along, across, 0.3, 2.2, 3.2);
 		float streak = smoothstep(0.55, 0.85, value_noise(vec2(along / 9.0, across * 0.9)));
@@ -571,8 +581,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb = mix(colour.rgb, vec3(0.80, 0.80, 0.78), smoothstep(0.7, 0.95, value_noise(pixel / 5.0)) * 0.3);
 		float hole = step(0.975, cheap_hash(floor(pixel / 2.0) + vec2(31.0)));
 		colour.rgb *= 1.0 - hole * 0.6;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 89) { // cedar shingles: staggered courses, weathered silver to red
 		float course = floor(pixel.y / 4.0);
 		float width = 3.0 + floor(cheap_hash(vec2(floor(pixel.x / 5.0), course)) * 3.0);
@@ -586,8 +597,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb *= 1.0 - (1.0 - step(0.7, in_x)) * 0.55;
 		colour.rgb *= 1.0 - (1.0 - step(0.9, local_y)) * 0.45;
 		colour.rgb *= 0.92 + triangle_wave(pixel.x * 0.9 + h * 4.0) * 0.10;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 90) { // charred timber (shou sugi ban): alligator crackle with silver sheen
 		vec3 crack = cell_field(pixel * vec2(1.0, 1.6), 3.4, 17.0);
 		float fissure = 1.0 - smoothstep(0.15, 0.55, crack.y);
@@ -595,16 +607,18 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb *= 0.80 + sheen * 0.55;
 		colour.rgb += vec3(0.14, 0.14, 0.16) * sheen * step(0.55, crack.z);
 		colour.rgb *= 1.0 - fissure * 0.75;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 91) { // cork: compressed granules and dark pores
 		float granule = value_noise(pixel / 1.6);
 		float pore = step(0.86, value_noise(pixel / 1.1 + vec2(23.0)));
 		colour.rgb *= 0.78 + granule * 0.34;
 		colour.rgb = mix(colour.rgb, vec3(0.86, 0.66, 0.44), step(0.80, granule) * 0.35);
 		colour.rgb *= 1.0 - pore * 0.55;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 92) { // wicker: over/under basket weave of rounded strands
 		vec2 tile = floor(pixel / 4.0);
 		vec2 local = mod(pixel, 4.0);
@@ -614,8 +628,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		float under = (runs_x ? local.x : local.y) / 4.0;
 		colour.rgb *= 0.50 + strand * 0.52 + (1.0 - abs(under * 2.0 - 1.0)) * 0.10;
 		colour.rgb *= 1.0 - (1.0 - step(0.6, runs_x ? local.x : local.y)) * 0.25;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 93) { // cardboard: fibre mottle, fold creases, fluting on exposed edges
 		colour.rgb *= 0.92 + value_noise(pixel / 3.0) * 0.10 + (cheap_hash(pixel) - 0.5) * 0.06;
 		float crease = 1.0 - step(0.6, mod(along, 19.0));
@@ -623,30 +638,34 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		float tape = step(abs(g.across_u - 0.5), 0.12) * step(4.5, g.across_span);
 		colour.rgb = mix(colour.rgb, vec3(0.80, 0.68, 0.46), tape * 0.45);
 		if (g.edge < 1.5) colour.rgb *= 0.70 + (1.0 - triangle_wave(along / 2.0)) * 0.45;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 94) { // shoji paper screen: backlit paper in a kumiko lattice
 		float bar = max(1.0 - step(0.8, mod(pixel.x, 6.0)), 1.0 - step(0.8, mod(pixel.y, 8.0)));
 		float glow = 0.94 + value_noise(pixel / 5.0) * 0.10 + fbm3(pixel / 2.0) * 0.04;
 		colour.rgb *= glow;
 		colour.rgb = mix(colour.rgb, vec3(0.30, 0.20, 0.12), max(bar, step(g.edge, 0.5)));
 		colour.a = mix(colour.a, 1.0, max(bar, step(g.edge, 0.5)));
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 95) { // tar block: wrinkled glossy pitch with a fixed specular band
 		float wrinkle = value_noise(pixel / 2.6) * 0.6 + value_noise(pixel / 1.2) * 0.4;
 		float spec = smoothstep(0.82, 1.0, 1.0 - triangle_wave((pixel.x + pixel.y * 0.4 + wrinkle * 4.0) / 21.0));
 		colour.rgb *= 0.85 + wrinkle * 0.25;
 		colour.rgb += vec3(0.20, 0.21, 0.24) * spec * smoothstep(0.4, 0.7, wrinkle);
 		if (g.top_open) colour.rgb += vec3(0.06);
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 96) { // acrylic sheet: clear with polished bright edges and inner reflection
 		float inner = smoothstep(0.85, 1.0, 1.0 - triangle_wave((pixel.x - pixel.y * 0.8) / 23.0));
 		colour.rgb += vec3(0.22, 0.26, 0.28) * inner;
 		if (g.edge < 0.5) { colour.rgb = colour.rgb * 1.20 + vec3(0.10); colour.a = 0.90; }
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 	if (id == 97) { // moss wall: stone courses smothered in fuzzy moss, bright fruiting tips
 		vec2 block = block_courses(pixel, vec2(7.0, 5.0), 9.0);
 		float moss = smoothstep(0.38, 0.62, fbm3(pixel / 3.5) + (g.top_open ? 0.25 : 0.0));
@@ -654,8 +673,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		vec3 moss_colour = mix(vec3(0.16, 0.30, 0.10), vec3(0.36, 0.56, 0.18), value_noise(pixel / 1.3));
 		colour.rgb = mix(stone, moss_colour, moss);
 		colour.rgb = mix(colour.rgb, vec3(0.78, 0.70, 0.30), step(0.97, cheap_hash(pixel)) * moss);
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 
 	// ---- stone, earth and masonry (98-112) ----
 	if (id == 98) { // marble: warped grey veins, faint gold veins, polished slabs
@@ -668,16 +688,18 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		float slab = max(1.0 - step(0.6, mod(pixel.x, 16.0)), 1.0 - step(0.6, mod(pixel.y, 12.0)));
 		colour.rgb *= 1.0 - slab * 0.18;
 		colour.rgb += vec3(0.07) * smoothstep(0.9, 1.0, 1.0 - triangle_wave((pixel.x + pixel.y) / 29.0));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 99) { // chalk: soft powdery blocks, smudges and loose dust on top
 		vec2 block = block_courses(pixel, vec2(9.0, 6.0), 4.0);
 		colour.rgb *= 0.95 + block.y * 0.05 + (value_noise(pixel / 4.0) - 0.5) * 0.08;
 		colour.rgb *= 1.0 - block.x * 0.12;
 		colour.rgb *= 1.0 - step(0.86, value_noise(pixel / 3.0 + vec2(11.0))) * 0.10;
 		if (g.top_open) colour.rgb = colour.rgb * 1.04 + vec3(0.03);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 100) { // basalt columns: vertical prisms, faceted shading, cross-fractures
 		float column = floor(pixel.x / 4.0);
 		float facet = mod(pixel.x, 4.0);
@@ -688,8 +710,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb *= shade * (0.92 + cheap_hash(vec2(column, 1.0)) * 0.14);
 		colour.rgb *= 1.0 - max(joint * 0.6, fracture * 0.45);
 		colour.rgb += vec3(0.03) * step(0.9, cheap_hash(pixel));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 101) { // obsidian: glassy black with conchoidal ripples and sharp glints
 		vec3 shell = cell_field(pixel, 6.0, 29.0);
 		float ripple = field_contours(shell.x / 2.0, 1.0, 0.18);
@@ -698,8 +721,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb += vec3(0.18, 0.16, 0.24) * ripple;
 		colour.rgb += rainbow * 0.05 * ripple;
 		colour.rgb += vec3(0.85, 0.85, 1.0) * static_glint(pixel, 0.988) * (1.0 - shell.x / 5.0);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 102) { // adobe: large mud bricks with straw flecks and eroded corners
 		vec2 block = block_courses(pixel, vec2(9.0, 5.0), 21.0);
 		float erosion = step(0.65, value_noise(pixel / 2.0)) * block.x;
@@ -708,22 +732,25 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		float straw = step(0.80, value_noise(vec2(pixel.x * 0.8 + pixel.y * 0.4, pixel.y * 1.6)))
 			* step(0.6, cheap_hash(pixel + vec2(9.0)));
 		colour.rgb = mix(colour.rgb, vec3(0.84, 0.70, 0.36), straw * 0.6);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 103) { // raw clay: smooth damp body with finger-smoothed swirls
 		float smear = field_contours(fbm3(pixel / 6.0), 2.5, 0.08);
 		colour.rgb *= 0.90 + value_noise(pixel / 5.0) * 0.12;
 		colour.rgb *= 1.0 - smear * 0.14;
 		colour.rgb += vec3(0.08, 0.06, 0.05) * smoothstep(0.88, 1.0, 1.0 - triangle_wave((pixel.x + pixel.y * 0.5) / 17.0));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 104) { // firebrick: pale buff refractory bricks, iron spots, glazed face
 		vec2 block = block_courses(pixel, vec2(8.0, 4.0), 13.0);
 		colour.rgb *= 0.92 + block.y * 0.14;
 		colour.rgb = mix(colour.rgb, vec3(0.88, 0.84, 0.76), block.x * 0.75);
 		colour.rgb = mix(colour.rgb, vec3(0.30, 0.18, 0.10), step(0.94, cheap_hash(pixel + vec2(7.0))) * (1.0 - block.x));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 105) { // packed snow: compression layers, blue shadow, glitter
 		float layer = triangle_wave(pixel.y / 3.0 + value_noise(vec2(pixel.x / 9.0, 0.0)) * 1.5);
 		colour.rgb *= 0.92 + layer * 0.08;
@@ -731,8 +758,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		if (g.top_open) colour.rgb = vec3(0.98, 0.99, 1.0);
 		float glitter = static_glint(pixel, 0.965) * step(0.75, cheap_hash(pixel + vec2(floor(t * 1.5))));
 		colour.rgb += vec3(0.45, 0.55, 0.65) * glitter;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 106) { // rock salt: translucent pink/white halite crystals with inclusions
 		vec3 crystal = cell_field(pixel, 4.0, 37.0);
 		float face = 0.82 + crystal.z * 0.26;
@@ -740,8 +768,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb = mix(colour.rgb, vec3(0.97, 0.94, 0.92), step(0.7, crystal.z) * 0.35);
 		colour.rgb *= 1.0 - (1.0 - smoothstep(0.2, 0.7, crystal.y)) * 0.25;
 		colour.rgb = mix(colour.rgb, vec3(0.38, 0.34, 0.36), step(0.97, cheap_hash(pixel)) * 0.8);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 107) { // gypsum board: taped joints, screw rows, light paper texture
 		float joint = 1.0 - step(1.6, mod(pixel.x, 24.0));
 		float screw = step(mod(pixel.x, 24.0), 4.5) * (1.0 - step(0.6, abs(mod(pixel.x, 24.0) - 3.5)))
@@ -750,15 +779,17 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb *= 1.0 + joint * 0.04;
 		colour.rgb *= 1.0 - screw * 0.30;
 		if (g.edge < 0.5) colour.rgb *= 0.88;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 108) { // quicklime: chalky grain with crazed surface cracks
 		vec3 craze = cell_field(pixel, 5.0, 43.0);
 		colour.rgb *= 0.94 + cheap_hash(floor(pixel / 1.0)) * 0.06;
 		colour.rgb *= 1.0 - (1.0 - smoothstep(0.0, 0.35, craze.y)) * 0.22;
 		colour.rgb = mix(colour.rgb, vec3(0.94, 0.92, 0.80), smoothstep(0.6, 0.9, value_noise(pixel / 6.0)) * 0.2);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 109) { // rammed earth: wavering strata of ochre, red and umber with pebbles
 		float wave = value_noise(vec2(pixel.x / 13.0, floor(pixel.y / 3.0))) * 1.6;
 		float stratum = floor(pixel.y / 3.0 + wave);
@@ -769,8 +800,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb = mix(colour.rgb, vec3(0.62, 0.60, 0.56), step(0.95, cheap_hash(pixel)) * 0.8);
 		float lift = 1.0 - step(0.7, mod(pixel.y, 12.0));
 		colour.rgb *= 1.0 - lift * 0.18;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 110) { // sandbags: stacked burlap pillows with seams and weave
 		float row = floor(pixel.y / 4.0);
 		float shifted = pixel.x + mod(row, 2.0) * 4.0;
@@ -778,8 +810,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		float pillow = 1.0 - clamp(dot(local, local), 0.0, 1.0);
 		float weave = step(0.5, mod(pixel.x + pixel.y, 2.0)) * 0.06;
 		colour.rgb *= 0.55 + pillow * 0.55 + weave + (cheap_hash(vec2(floor(shifted / 8.0), row)) - 0.5) * 0.12;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 111) { // terrazzo: polished matrix with multicoloured chips
 		vec3 chip = cell_field(pixel, 2.6, 61.0);
 		float is_chip = 1.0 - smoothstep(0.55, 0.95, chip.x);
@@ -787,8 +820,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 			: chip.z < 0.6 ? vec3(0.12, 0.12, 0.13) : chip.z < 0.8 ? vec3(0.95, 0.94, 0.92) : vec3(0.80, 0.66, 0.42);
 		colour.rgb = mix(colour.rgb * (0.96 + value_noise(pixel / 7.0) * 0.06), chip_colour, is_chip * step(0.35, chip.z + 0.2));
 		colour.rgb += vec3(0.05) * smoothstep(0.9, 1.0, 1.0 - triangle_wave((pixel.x + pixel.y) / 31.0));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 112) { // gabion: packed fieldstones behind a bright wire grid
 		vec3 stone = cell_field(pixel, 3.2, 71.0);
 		float body = 0.70 + stone.z * 0.45;
@@ -797,8 +831,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		float wire = max(1.0 - step(0.6, mod(pixel.x, 6.0)), 1.0 - step(0.6, mod(pixel.y, 6.0)));
 		colour.rgb = mix(colour.rgb, vec3(0.70, 0.74, 0.76), wire * 0.85);
 		if (g.edge < 0.5) colour.rgb = vec3(0.62, 0.66, 0.68);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	// ---- metals (113-119) ----
 	if (id == 113) { // galvanised zinc: crystalline spangle flowers
@@ -808,8 +843,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb *= 1.0 - (1.0 - smoothstep(0.0, 0.45, spangle.y)) * 0.12;
 		float seam = 1.0 - step(0.7, mod(along, 20.0));
 		colour.rgb *= 1.0 - seam * 0.35;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 114 || id == 119) { // aluminium / brass: brushed panels, rivets, glints
 		float brushed = value_noise(vec2(along / 9.0, across * 2.3)) * 0.6 + cheap_hash(vec2(floor(along / 3.0), across)) * 0.4;
 		vec2 panel = mod(pixel, vec2(14.0, 10.0));
@@ -819,30 +855,34 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb += vec3(0.20) * rivet;
 		if (id == 119) colour.rgb = mix(colour.rgb, vec3(0.36, 0.40, 0.24), smoothstep(0.65, 0.9, fbm3(pixel / 6.0)) * 0.35);
 		colour.rgb += vec3(manufactured_glint(pixel, 0.26) * (1.0 - seam) * 0.50);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 115) { // magnesium: bright silver sheet with white oxide bloom
 		colour.rgb *= 0.92 + value_noise(vec2(along / 7.0, across * 1.5)) * 0.12;
 		colour.rgb = mix(colour.rgb, vec3(0.90, 0.90, 0.88), smoothstep(0.55, 0.85, fbm3(pixel / 5.0)) * 0.30);
 		float seam = max(1.0 - step(0.6, mod(pixel.x, 18.0)), 1.0 - step(0.6, mod(pixel.y, 12.0)));
 		colour.rgb *= 1.0 - seam * 0.30;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 116) { // thermite brick: red oxide grain with silver aluminium flecks
 		vec2 block = block_courses(pixel, vec2(8.0, 4.0), 31.0);
 		colour.rgb *= 0.84 + value_noise(pixel / 1.5) * 0.24;
 		colour.rgb = mix(colour.rgb, vec3(0.80, 0.82, 0.86), step(0.93, cheap_hash(pixel + vec2(17.0))) * 0.8);
 		colour.rgb *= 1.0 - block.x * 0.45;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 117) { // bare iron: mill-scale mottle, heat tint and early flash rust
 		float mottle = fbm3(pixel / 6.0);
 		colour.rgb *= 0.84 + mottle * 0.26;
 		colour.rgb = mix(colour.rgb, vec3(0.30, 0.30, 0.42), smoothstep(0.65, 0.85, value_noise(pixel / 9.0 + vec2(4.0))) * 0.25);
 		vec2 rust = corrosion_field(pixel, g.top_open ? 0.2 : -0.1);
 		colour.rgb = mix(colour.rgb, vec3(0.55, 0.26, 0.10), rust.x * 0.28 * step(0.55, mottle));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 118) { // gold leaf: overlapping gilded squares, crinkles and bright sparkle
 		vec2 leaf = mod(pixel + vec2(floor(pixel.y / 5.0) * 1.3, 0.0), 5.0);
 		float overlap = max(1.0 - step(0.6, leaf.x), 1.0 - step(0.6, leaf.y));
@@ -850,8 +890,9 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb *= 0.86 + value_noise(pixel / 3.0) * 0.22 - overlap * 0.14 + crinkle * 0.10;
 		colour.rgb += vec3(1.0, 0.86, 0.46) * manufactured_glint(pixel, 0.30) * 0.85;
 		colour.rgb += vec3(0.40, 0.34, 0.16) * static_glint(pixel, 0.985);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	// ---- glass and crystal (120-124) ----
 	if (id == 120) { // glass blocks: rippled lenses in light mortar joints
@@ -861,37 +902,42 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb += vec3(0.18, 0.26, 0.28) * ripple;
 		colour.rgb = mix(colour.rgb, vec3(0.78, 0.78, 0.74), mortar);
 		colour.a = mix(colour.a, 1.0, mortar);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 121) { // frosted glass: diffuse sparkle with clear polished borders
 		colour.rgb *= 0.96 + fbm3(pixel / 1.5) * 0.08;
 		colour.rgb += vec3(0.05) * static_glint(pixel, 0.94);
 		if (g.edge < 1.5) { colour.rgb = colour.rgb * 0.8 + vec3(0.06, 0.10, 0.12); colour.a *= 0.75; }
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 122) { // quartz: prismatic facets with rainbow dispersion edges
 		vec3 facet = cell_field(pixel * vec2(0.6, 1.2), 3.5, 97.0);
 		vec3 rainbow = 0.5 + 0.5 * cos(6.2832 * (facet.z * 2.0 + pixel.y * 0.04 + vec3(0.0, 0.33, 0.67)));
 		float ridge = 1.0 - smoothstep(0.0, 0.45, facet.y);
 		colour.rgb *= 0.88 + facet.z * 0.20;
 		colour.rgb += rainbow * ridge * 0.22 + vec3(0.25) * ridge * step(0.6, facet.z);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 123) { // uranium glass: fluorescent green body with bright edges and seed bubbles
 		colour.rgb *= 0.92 + value_noise(pixel / 4.0) * 0.12;
 		if (g.edge < 0.5) colour.rgb = colour.rgb * 1.25 + vec3(0.10, 0.25, 0.05);
 		vec2 bubble = lattice_particle(pixel, 5.0, 0.25, 101.0);
 		colour.rgb = mix(colour.rgb, vec3(0.80, 1.0, 0.70), bubble.x * 0.5);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 124) { // sugar glass: amber with bubbles and fine stress cracks
 		float crack = 1.0 - smoothstep(0.0, 0.04, abs(value_noise(pixel / 5.0) - 0.5));
 		vec2 bubble = lattice_particle(pixel, 4.0, 0.30, 103.0);
 		colour.rgb *= 0.92 + value_noise(pixel / 3.0) * 0.12;
 		colour.rgb += vec3(0.30, 0.24, 0.12) * crack;
 		colour.rgb = mix(colour.rgb, vec3(1.0, 0.92, 0.70), bubble.x * 0.45);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	// ---- chemical and industrial (125-131) ----
 	if (id == 125) { // wax: soft translucent body, drip runs under open edges
@@ -901,31 +947,35 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 			float drip = step(0.55, cheap_hash(vec2(pixel.x, 7.0)));
 			colour.rgb = mix(colour.rgb, colour.rgb * 1.08 + vec3(0.03), drip * 0.6);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 126) { // sulfur: clustered needle crystals with orange-ochre tint
 		float needle = triangle_wave((pixel.x * 0.8 + pixel.y * 1.7 + value_noise(pixel / 4.0) * 6.0) / 2.5);
 		vec3 cluster = cell_field(pixel, 4.0, 113.0);
 		colour.rgb *= 0.80 + needle * 0.22 + cluster.z * 0.10;
 		colour.rgb = mix(colour.rgb, vec3(0.86, 0.56, 0.12), step(0.78, cluster.z) * 0.35);
 		colour.rgb *= 1.0 - (1.0 - smoothstep(0.0, 0.4, cluster.y)) * 0.25;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 127) { // phosphor: hex-dot luminous tile with a slow breathing afterglow
 		vec2 local = mod(pixel + vec2(mod(floor(pixel.y / 3.0), 2.0) * 1.5, 0.0), vec2(3.0, 3.0)) - vec2(1.0);
 		float lit_dot = 1.0 - step(0.9, length(local));
 		float breathe = 0.80 + 0.20 * sin(t * 0.8 + value_noise(pixel / 13.0) * 6.0);
 		colour.rgb *= mix(0.70, 1.15 * breathe, lit_dot);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 128) { // polymer panel: moulded ribs, sprue marks and a glossy band
 		float rib = 1.0 - step(1.0, mod(along, 7.0));
 		float gloss = smoothstep(0.88, 1.0, 1.0 - triangle_wave((pixel.x - pixel.y * 0.5) / 27.0));
 		colour.rgb *= 0.92 + value_noise(pixel / 8.0) * 0.08 + rib * 0.12;
 		colour.rgb += vec3(0.26, 0.30, 0.34) * gloss;
 		colour.rgb *= 1.0 - (1.0 - step(0.9, length(mod(pixel, 16.0) - vec2(8.0)))) * 0.25;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 129) { // solar panel: blue cells, silver busbars, sky reflection, frame
 		vec2 cell = mod(pixel, 6.0);
 		float gap = max(1.0 - step(0.6, cell.x), 1.0 - step(0.6, cell.y));
@@ -934,24 +984,29 @@ vec4 apply_building_finish(vec4 colour, int id, vec2 pixel, BuildGeometry g, flo
 		colour.rgb = mix(colour.rgb * (0.90 + cheap_hash(floor(pixel / 6.0)) * 0.10), vec3(0.62, 0.66, 0.70), max(gap * 0.9, busbar * 0.35));
 		colour.rgb += vec3(0.25, 0.32, 0.45) * reflection;
 		if (g.edge < 0.5) colour.rgb = vec3(0.62, 0.65, 0.68);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 130) { // carbon fibre: 2x2 twill weave with alternating sheen
 		vec2 tow = floor(pixel / 2.0);
 		bool warp = mod(tow.x + tow.y, 4.0) < 2.0;
 		float sheen = warp ? 1.10 + 0.35 * (1.0 - triangle_wave(pixel.x / 7.0)) : 0.55 + 0.20 * (1.0 - triangle_wave(pixel.y / 7.0));
 		colour.rgb *= sheen;
 		colour.rgb += vec3(0.05, 0.05, 0.06) * smoothstep(0.85, 1.0, 1.0 - triangle_wave((pixel.x + pixel.y) / 19.0));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 	if (id == 131) { // heat-shield tiles: black squares, pale gap filler, scorched edges
 		vec2 tile = mod(pixel, 6.0);
 		float gap = max(1.0 - step(0.6, tile.x), 1.0 - step(0.6, tile.y));
 		colour.rgb *= 0.88 + cheap_hash(floor(pixel / 6.0)) * 0.22;
 		colour.rgb = mix(colour.rgb, vec3(0.78, 0.76, 0.70), gap * 0.75);
 		colour.rgb = mix(colour.rgb, vec3(0.42, 0.38, 0.34), smoothstep(0.6, 0.9, value_noise(pixel / 3.0)) * 0.15 * (1.0 - gap));
-		return colour;
+		colour = colour;
+	} else {
+	colour = colour;
 	}
+	if (burn_finish) colour = apply_burn(colour, pixel, condition);
 	return colour;
 }
 
@@ -962,7 +1017,8 @@ vec4 apply_material_flair(
 	vec2 pixel,
 	float condition
 ) {
-	if (flair == 0) return colour;
+	if (flair == 0) {colour = colour;} else
+
 
 	if (flair == 1) { // dressed masonry and brick
 		float row = floor(pixel.y / 4.0);
@@ -974,8 +1030,9 @@ vec4 apply_material_flair(
 		float chip = step(0.975, cheap_hash(pixel + vec2(71.0, 13.0))) * (1.0 - seam);
 		float grime = value_noise(pixel / 11.0);
 		colour.rgb *= mix(1.0, 0.62, chip) * (0.92 + grime * 0.12);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 2) { // cobble/fieldstone
 		float row = floor(pixel.y / 4.0);
@@ -986,8 +1043,9 @@ vec4 apply_material_flair(
 		float edge = smoothstep(0.36, 0.53, length(local));
 		float stone = 0.91 + cheap_hash(floor(vec2(pixel.x / 5.0, row))) * 0.20;
 		colour.rgb *= mix(stone, 0.45, edge);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 3) { // plaster/daub
 		float broad = cheap_hash(floor(pixel / 7.0));
@@ -995,8 +1053,9 @@ vec4 apply_material_flair(
 		float chip = step(0.965, fine);
 		colour.rgb *= 0.88 + broad * 0.20;
 		colour.rgb = mix(colour.rgb, colour.rgb * 0.48, chip);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 4) { // timber grain and rare knots
 		float lane = floor(pixel.y / 3.0);
@@ -1014,8 +1073,9 @@ vec4 apply_material_flair(
 			colour.rgb = mix(colour.rgb, char_colour, burn * 0.80);
 			colour.rgb = mix(colour.rgb, heat_ramp(0.30 + pulse * 0.55), cracks * burn * pulse);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 5) { // thatch fibres
 		float fibre = triangle_wave((pixel.x + pixel.y * 1.65) / 3.0);
@@ -1031,8 +1091,9 @@ vec4 apply_material_flair(
 			colour.rgb = mix(colour.rgb, char_colour, burn * 0.80);
 			colour.rgb = mix(colour.rgb, heat_ramp(0.30 + pulse * 0.55), cracks * burn * pulse);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 6) { // overlapping terracotta roof tiles
 		float row = floor(pixel.y / 4.0);
@@ -1041,22 +1102,25 @@ vec4 apply_material_flair(
 		float seam = max(1.0 - step(0.65, local_y), 1.0 - step(0.62, local_x));
 		float lip = smoothstep(2.4, 3.8, local_y);
 		colour.rgb *= mix(1.04 - lip * 0.18, 0.46, seam);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 7) { // slate courses
 		float row = floor(pixel.y / 3.0);
 		float local_x = mod(pixel.x + mod(row, 2.0) * 3.5, 7.0);
 		float seam = max(1.0 - step(0.55, local_x), 1.0 - step(0.55, mod(pixel.y, 3.0)));
 		colour.rgb *= mix(0.88 + cheap_hash(vec2(floor(pixel.x / 7.0), row)) * 0.24, 0.48, seam);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 8) { // hammered/aged non-ferrous metal
 		float hammer = cheap_hash(floor(pixel / 2.0));
 		colour.rgb *= 0.84 + hammer * 0.28;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 9) { // stained-glass mosaic with dark leading
 		vec2 tile = floor(pixel / 5.0);
@@ -1069,16 +1133,18 @@ vec4 apply_material_flair(
 		vec3 pane = mix(cyan, magenta, step(0.34, choice));
 		pane = mix(pane, amber, step(0.70, choice));
 		colour.rgb = mix(pane * (0.82 + cheap_hash(tile + vec2(7.0)) * 0.25), vec3(0.035), leading);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 10) { // packed earth
 		float clod = cheap_hash(floor(pixel / 3.0));
 		float grit = step(0.93, cheap_hash(pixel));
 		colour.rgb *= 0.78 + clod * 0.38;
 		colour.rgb = mix(colour.rgb, colour.rgb * 0.55, grit);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 11) { // concrete aggregate
 		float cloud = cheap_hash(floor(pixel / 6.0));
@@ -1087,16 +1153,18 @@ vec4 apply_material_flair(
 		colour.rgb += vec3((step(0.94, aggregate) - step(aggregate, 0.035)) * 0.12);
 		float crack = 1.0 - smoothstep(0.0, 0.035, abs(value_noise(pixel / 9.0) - 0.5));
 		colour.rgb *= 1.0 - crack * 0.30;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 12) { // dry asphalt
 		float grain = cheap_hash(pixel);
 		float pebble = step(0.94, grain);
 		colour.rgb *= 0.78 + grain * 0.30;
 		colour.rgb += vec3(pebble * 0.10);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 13) { // Oil: swirling marbled slick (owner direction 2026-10-18 pass 2)
 		float t = presentation_time();
@@ -1119,8 +1187,9 @@ vec4 apply_material_flair(
 			float burn = smoothstep(0.45, 0.85, lick) * smoothstep(0.02, 0.5, condition);
 			colour.rgb = mix(colour.rgb, heat_ramp(0.45 + lick * 0.5), burn);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 14 || flair == 15) { // plate seams, rivets, scratches, optional paint chips
 		vec2 local = mod(pixel, 12.0);
@@ -1138,8 +1207,9 @@ vec4 apply_material_flair(
 			float chip = step(0.965, cheap_hash(pixel + vec2(19.0, 4.0)));
 			colour.rgb = mix(colour.rgb, vec3(0.31, 0.34, 0.35), chip);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 16) { // corrugated steel
 		float ridge = triangle_wave(pixel.x / 4.0);
@@ -1148,8 +1218,9 @@ vec4 apply_material_flair(
 		colour.rgb *= 0.62 + (1.0 - ridge) * 0.58;
 		colour.rgb *= mix(1.0, 0.58, joint);
 		colour.rgb += vec3(glint * (1.0 - joint) * 0.38);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 17) { // organic rust: blotches, flaking scale, spill runs, clustered pits
 		vec2 rust = corrosion_field(pixel, 0.0);
@@ -1164,23 +1235,26 @@ vec4 apply_material_flair(
 		float pit = step(0.80, value_noise(pixel / 1.4 + vec2(5.0))) * rust.x;
 		colour.rgb *= mix(1.0, 0.45, pit);
 		colour.rgb += vec3(0.08, 0.05, 0.02) * step(0.985, cheap_hash(pixel + vec2(31.0, 11.0))) * tone;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 18) { // industrial grating
 		vec2 local = mod(pixel, 4.0);
 		float rail = max(1.0 - step(0.82, local.x), 1.0 - step(0.82, local.y));
 		colour.rgb *= mix(0.20, 1.18, rail);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 19) { // chainlink diamonds
 		float first = abs(mod(pixel.x + pixel.y, 6.0) - 3.0);
 		float second = abs(mod(pixel.x - pixel.y, 6.0) - 3.0);
 		float wire = 1.0 - step(0.82, min(first, second));
 		colour.rgb *= mix(0.18, 1.22, wire);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 20) { // horizontal pipe highlight and coupling bands
 		float curve = 1.0 - triangle_wave(pixel.y / 8.0);
@@ -1189,8 +1263,9 @@ vec4 apply_material_flair(
 		colour.rgb *= 0.58 + curve * 0.62;
 		colour.rgb = mix(colour.rgb, colour.rgb * 0.58, coupling);
 		colour.rgb += vec3(glint * (1.0 - coupling) * 0.48);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 21) { // glazed ceramic tiles
 		vec2 local = mod(pixel, 6.0);
@@ -1198,8 +1273,9 @@ vec4 apply_material_flair(
 		float shine = (1.0 - step(1.5, local.x)) * (1.0 - step(1.5, local.y));
 		colour.rgb *= mix(1.02, 0.55, grout);
 		colour.rgb += vec3(shine * (1.0 - grout) * 0.18);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 22) { // glass sheen without scene-dependent refraction
 		// World-anchored and time-independent: installed glazing is still
@@ -1207,14 +1283,16 @@ vec4 apply_material_flair(
 		float band = 1.0 - triangle_wave((pixel.x + pixel.y * 0.72) / 13.0);
 		float edge = smoothstep(0.90, 1.0, band);
 		colour.rgb += vec3(0.30, 0.48, 0.55) * edge;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 23) { // stippled rubber
 		float stipple = cheap_hash(pixel);
 		colour.rgb *= 0.76 + stipple * 0.25;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 24) { // colour-coded cable bundle
 		float lane = mod(pixel.y, 5.0);
@@ -1222,22 +1300,25 @@ vec4 apply_material_flair(
 		stripe = mix(stripe, vec3(0.95, 0.64, 0.09), step(3.4, lane));
 		float jacket = 0.72 + (1.0 - triangle_wave(pixel.x / 9.0)) * 0.28;
 		colour.rgb = mix(colour.rgb, stripe * jacket, 0.68);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 25) { // fibrous insulation
 		float fibre = triangle_wave((pixel.x * 1.7 - pixel.y) / 4.0);
 		float voids = step(0.95, cheap_hash(pixel));
 		colour.rgb *= 0.72 + fibre * 0.32;
 		colour.rgb *= mix(1.0, 0.44, voids);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 26) { // diagonal safety stripes
 		float stripe = step(0.5, fract((pixel.x + pixel.y) / 8.0));
 		colour.rgb = mix(vec3(0.045, 0.05, 0.055), colour.rgb * 1.08, stripe);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 27) { // neon tube pulse with rare deterministic ballast fault
 		float seed = cheap_hash(floor(pixel / 8.0));
@@ -1254,8 +1335,9 @@ vec4 apply_material_flair(
 		vec3 hue = colour.rgb / max(max(colour.r, max(colour.g, colour.b)), 0.001);
 		colour.rgb = hue * (0.55 + tube * 0.33 + plasma * 0.14);
 		colour.rgb = mix(colour.rgb, vec3(1.0), smoothstep(0.80, 1.0, tube) * 0.50);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 28) { // LED panel separators and quiet scan
 		vec2 local = mod(pixel, 3.0);
@@ -1267,8 +1349,9 @@ vec4 apply_material_flair(
 		colour.rgb *= mix(0.28, scan + refresh * 0.12, diode);
 		colour.rgb = min(colour.rgb, vec3(1.0)) * mix(0.82, 1.0, diode);
 		colour.rgb += vec3(0.10) * diode * value_noise(pixel / 2.0 + vec2(presentation_time() * 0.8));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 29) { // water micro-highlights
 		float seed = cheap_hash(pixel);
@@ -1288,8 +1371,9 @@ vec4 apply_material_flair(
 		vec2 bubble = lattice_particle(pixel + vec2(sin(presentation_time() * 1.3 + pixel.y * 0.4) * 0.6,
 			presentation_time() * 7.0), 8.0, 0.32, 41.0);
 		colour.rgb = mix(colour.rgb, vec3(0.70, 0.88, 1.0), bubble.x * 0.55);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 30) { // Fire: rising flame tongues, structured hot core, flicking sparks
 		float t = presentation_time();
@@ -1302,8 +1386,9 @@ vec4 apply_material_flair(
 		float flick = 0.5 + 0.5 * sin(t * 17.0 + spark.y * 50.0);
 		colour.rgb = mix(colour.rgb, vec3(1.0, 0.95, 0.70), spark.x * flick);
 		colour.a = max(colour.a, spark.x * flick);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 31) { // Lava/molten glass: drifting crust plates, glowing seams, bubbling pops
 		float t = presentation_time();
@@ -1323,8 +1408,9 @@ vec4 apply_material_flair(
 		vec2 pop = lattice_particle(pixel, 7.0, 0.30, 23.0);
 		float pop_phase = fract(t * 0.6 + pop.y * 7.0);
 		colour.rgb = mix(colour.rgb, vec3(1.0, 0.92, 0.60), pop.x * smoothstep(0.85, 1.0, pop_phase));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 32) { // spark twinkle
 		float seed = cheap_hash(pixel);
@@ -1339,8 +1425,9 @@ vec4 apply_material_flair(
 		float crackle = value_noise(pixel / 1.5 + vec2(presentation_time() * 9.0, -presentation_time() * 7.0));
 		colour.rgb = mix(colour.rgb, vec3(1.0, 0.98, 0.85), smoothstep(0.55, 0.9, crackle) * 0.8);
 		colour.rgb *= 0.75 + crackle * 0.35;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 33) { // powders: clustered grains and occasional facets
 		float coarse = cheap_hash(floor(pixel / 2.0));
@@ -1360,8 +1447,9 @@ vec4 apply_material_flair(
 		}
 		float glint_grain = step(0.994, cheap_hash(pixel + vec2(floor(presentation_time() * 0.7) * 3.0, 9.0)));
 		colour.rgb += vec3(0.30, 0.28, 0.22) * glint_grain * (material_id == 26 || material_id == 27 ? 0.0 : 1.0);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 34) { // Smoke: advected billows, dark cores, lit rims, drifting soot
 		float t = presentation_time();
@@ -1379,8 +1467,9 @@ vec4 apply_material_flair(
 		vec2 soot = lattice_particle(pixel + vec2(sin(t * 0.8 + pixel.y * 0.2) * 1.2, t * 4.0), 6.0, 0.28, 31.0);
 		colour.rgb = mix(colour.rgb, vec3(0.06, 0.06, 0.07), soot.x * 0.7);
 		colour.a = max(colour.a, soot.x * 0.8 * condition);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 35) { // Steam: rising curls, bright plumes, condensation glints
 		float t = presentation_time();
@@ -1395,8 +1484,9 @@ vec4 apply_material_flair(
 		float shine = 0.5 + 0.5 * sin(t * 8.0 + drop.y * 30.0);
 		colour.rgb = mix(colour.rgb, vec3(0.95, 1.0, 1.0), drop.x * shine * 0.8);
 		colour.a = max(colour.a, drop.x * shine * 0.7);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 36) { // Foam: nested bubble rims driven by remaining lifetime
 		vec2 bubble_cell = floor(pixel / 5.0);
@@ -1419,8 +1509,9 @@ vec4 apply_material_flair(
 		float pop = step(0.985, cheap_hash(bubble_cell + vec2(floor(presentation_time() * 3.0))))
 			* (1.0 - collapse);
 		colour.rgb += vec3(0.45, 0.50, 0.48) * pop * rim;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 37) { // plant/fungus/seed organic fibres and nodes
 		float vein_a = triangle_wave((pixel.x * 0.58 + pixel.y) / 5.0);
@@ -1436,8 +1527,9 @@ vec4 apply_material_flair(
 			float glow = 0.5 + 0.5 * sin(presentation_time() * 1.4 + spot.y * 20.0);
 			colour.rgb = mix(colour.rgb, vec3(0.95, 0.55, 1.0), spot.x * (0.35 + glow * 0.5));
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 38) { // Ice: faceted crystal planes and a fixed cold sheen
 		float facet_a = triangle_wave((pixel.x + pixel.y) / 7.0);
@@ -1452,8 +1544,9 @@ vec4 apply_material_flair(
 		colour.rgb += vec3(0.18, 0.24, 0.28) * fracture;
 		vec2 frozen = lattice_particle(pixel, 6.0, 0.25, 67.0);
 		colour.rgb = mix(colour.rgb, vec3(0.88, 0.96, 1.0), frozen.x * 0.5);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 39) { // Acid/sludge: rolling chemical bands and rising bubbles
 		float speed = material_id == 12 ? 0.18 : 0.095;
@@ -1481,8 +1574,9 @@ vec4 apply_material_flair(
 		colour.rgb = mix(colour.rgb, reactive_tint * 2.4 + vec3(0.15), fizz.x * (material_id == 12 ? 0.65 : 0.22));
 		float froth = smoothstep(0.62, 0.80, fbm3(pixel / 3.0 + vec2(presentation_time() * speed * 2.0, 0.0)));
 		colour.rgb += reactive_tint * froth * 0.35;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 40) { // Mercury: swirling liquid-metal reflections and pin highlights
 		float t = presentation_time();
@@ -1495,8 +1589,9 @@ vec4 apply_material_flair(
 		float pin = step(0.982, cheap_hash(pixel)) * smoothstep(0.62, 0.80, detail)
 			* (0.5 + 0.5 * sin(t * 5.0 + cheap_hash(pixel + vec2(2.0)) * 30.0));
 		colour.rgb += vec3(0.55, 0.62, 0.70) * pin;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 41) { // Charged manufactured metal with crawling surface arcs
 		vec2 local = mod(pixel, 12.0);
@@ -1515,8 +1610,9 @@ vec4 apply_material_flair(
 		vec2 arc_spark = lattice_particle(pixel + vec2(presentation_time() * 9.0, 0.0), 6.0, 0.4, 61.0);
 		colour.rgb += vec3(0.55, 0.85, 1.25) * arc_spark.x * condition
 			* step(0.5, sin(presentation_time() * 23.0 + arc_spark.y * 40.0));
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 42) { // Cloner: animated circuitry lattice and scan pulse
 		vec2 local = mod(pixel, 6.0);
@@ -1527,8 +1623,9 @@ vec4 apply_material_flair(
 		));
 		colour.rgb *= mix(0.62, 1.08 + scan * 0.25, max(trace, node));
 		colour.rgb += vec3(0.20, 0.05, 0.34) * node * scan;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 43) { // Paste / wet Cement: heavy matte clumps, gentle decorative swell
 		float lump = cheap_hash(floor(pixel / vec2(3.0, 2.0)));
@@ -1544,8 +1641,9 @@ vec4 apply_material_flair(
 		} else {
 			colour.rgb *= mix(1.0, 0.78, step(0.96, fine));
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 44) { // Slush: icy granules over a gentle decorative meltwater shimmer
 		float grain = cheap_hash(floor(pixel / 2.0));
@@ -1557,8 +1655,9 @@ vec4 apply_material_flair(
 		colour.rgb = mix(colour.rgb, vec3(0.80, 0.93, 0.98), crystal * 0.42);
 		float twinkle = crystal * step(0.92, cheap_hash(pixel + vec2(floor(presentation_time() * 1.5))));
 		colour.rgb += vec3(0.30, 0.38, 0.42) * twinkle;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 45) { // Wet Asphalt/Cobblestone: solid substrate under a still film
 		if (material_id == 61) {
@@ -1576,8 +1675,9 @@ vec4 apply_material_flair(
 		float pool = cheap_hash(floor(pixel / vec2(9.0, 5.0)));
 		float sheen = smoothstep(0.62, 1.0, triangle_wave((pixel.x + pixel.y * 0.24) / 19.0));
 		colour.rgb += vec3(0.060, 0.080, 0.100) * sheen * (0.35 + pool * 0.65);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 47) { // Plant: jittered leaf clusters, midribs, stems and a gentle sway
 		float t = presentation_time();
@@ -1595,8 +1695,9 @@ vec4 apply_material_flair(
 		colour.rgb = mix(dark_leaf, light_leaf, leaf * (1.0 - gap * 0.7)) * vigour;
 		colour.rgb += vec3(0.06, 0.08, 0.02) * midrib * leaf;
 		colour.rgb = mix(colour.rgb, vec3(0.20, 0.34, 0.13), stem * 0.45);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 48) { // Fungus: mycelium web, fruiting knots and bioluminescent pulses
 		float t = presentation_time();
@@ -1611,8 +1712,9 @@ vec4 apply_material_flair(
 			value_noise(pixel / 9.0) * 3.0 - t * 0.18));
 		colour.rgb = mix(colour.rgb, vec3(0.95, 0.55, 1.0), knot.x * (0.35 + 0.5 * (0.5 + 0.5 * sin(t * 1.4 + knot.y * 20.0))));
 		colour.rgb += vec3(0.45, 0.20, 0.60) * web * pulse;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 49) { // Mite: iridescent chitin with glistening highlights
 		float t = presentation_time();
@@ -1622,22 +1724,26 @@ vec4 apply_material_flair(
 		colour.rgb = mix(colour.rgb * 0.85, rainbow * 1.10 + vec3(0.12), 0.70);
 		float glisten = smoothstep(0.92, 1.0, sin(t * 6.0 + seed * 50.0) * 0.5 + 0.5);
 		colour.rgb += vec3(0.85, 0.90, 1.0) * glisten * 0.85;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (flair == 50) { // Rocket: striped casing; an activated firework burns white-gold
 		float t = presentation_time();
 		if (condition > 0.0005) {
 			float flicker = 0.75 + 0.25 * sin(t * 37.0 + cheap_hash(pixel) * 60.0);
 			colour.rgb = mix(heat_ramp(0.92), vec3(1.0, 0.96, 0.86), 0.5) * (1.15 + flicker * 0.45);
-			return colour;
-		}
+			colour = colour;
+		} else {
 		float stripe = step(0.5, fract((pixel.x + pixel.y) / 4.0));
 		colour.rgb = mix(colour.rgb, vec3(0.86, 0.18, 0.22), stripe * 0.65);
 		colour.rgb += vec3(0.10) * step(0.6, sin(t * 2.0 + pixel.x) * 0.5 + 0.5) * 0.3;
-		return colour;
+		colour = colour;
 	}
+	} else {
 
+	colour = colour;
+	}
 	return colour;
 }
 
@@ -2149,6 +2255,7 @@ vec4 apply_structured_fill(
 	vec4 extent,
 	float condition
 ) {
+	bool burn_finish = false;
 	float t = presentation_time();
 	// Run geometry. Horizontal when the run is at least as wide as it is tall.
 	float span_x = extent.z + extent.w + 1.0;
@@ -2189,8 +2296,9 @@ vec4 apply_structured_fill(
 			float patina = smoothstep(0.55, 0.85, value_noise(pixel / 3.0)) * smoothstep(0.5, 1.0, across_u);
 			colour.rgb = mix(colour.rgb, vec3(0.25, 0.55, 0.45), patina * 0.6);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 76) { // hazard stripes anchored to the panel
 		float thickness = min(long_x, long_y);
@@ -2208,8 +2316,9 @@ vec4 apply_structured_fill(
 		float worn = step(0.72, value_noise(pixel / 1.6)) * step(0.6, cheap_hash(pixel));
 		colour.rgb = mix(colour.rgb, vec3(0.38, 0.40, 0.42), worn * 0.45);
 		if (exposed && thickness > 5.0) colour.rgb = black * 1.6;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 75) { // quilted insulation batts with foil facing
 		vec2 quilt = mod(pixel, vec2(7.0, 5.0));
@@ -2224,8 +2333,9 @@ vec4 apply_structured_fill(
 			float crinkle = value_noise(pixel * 0.9);
 			colour.rgb = vec3(0.62, 0.64, 0.66) * (0.65 + crinkle * 0.55);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 74) { // round cables running along the bundle
 		float lane = floor(across_world);
@@ -2241,8 +2351,9 @@ vec4 apply_structured_fill(
 			float pulse = step(0.93, fract(along / 23.0 - t * 0.9 + pick * 5.0));
 			colour.rgb = mix(vec3(0.10, 0.20, 0.24), vec3(0.55, 1.0, 1.0), pulse);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 46) { // planks along the long axis
 		float plank = floor(across_world / 3.0);
@@ -2257,8 +2368,9 @@ vec4 apply_structured_fill(
 		float nail = step(abs(in_plank - 1.5), 0.6) * step(0.5, mod(across_world, 3.0) - 0.9)
 			* step(mod(across_world, 3.0), 1.6);
 		colour.rgb = mix(colour.rgb, vec3(0.30, 0.31, 0.33), nail * 0.9);
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 
 	if (material_id == 64) { // corrugation ridges follow the sheet's long axis
 		float ridge = triangle_wave(across_world / 4.0);
@@ -2269,8 +2381,9 @@ vec4 apply_structured_fill(
 		colour.rgb += vec3(glint * (1.0 - lap) * 0.38);
 		float streak = smoothstep(0.6, 0.9, value_noise(vec2(across_world / 2.0, along / 9.0)));
 		colour.rgb = mix(colour.rgb, vec3(0.42, 0.24, 0.14), streak * 0.30);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 55) { // generative leaded glass (jittered Voronoi panes)
 		vec2 cell = floor(pixel / 7.0);
@@ -2293,8 +2406,9 @@ vec4 apply_structured_fill(
 		float lead = 1.0 - step(0.75, second - nearest);
 		colour.rgb = mix(pane * light, vec3(0.04, 0.04, 0.05), lead);
 		if (exposed) colour.rgb = vec3(0.08, 0.08, 0.09);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id >= 77 && material_id <= 79) { // neon tube core along the run
 		vec3 hue = colour.rgb / max(max(colour.r, max(colour.g, colour.b)), 0.001);
@@ -2302,13 +2416,14 @@ vec4 apply_structured_fill(
 		float plasma = value_noise(vec2(along / 3.0 - t * 5.0, across_world * 0.7));
 		colour.rgb = hue * (0.50 + core * 0.40 + plasma * 0.14);
 		colour.rgb = mix(colour.rgb, vec3(1.0), smoothstep(0.70, 1.0, core) * 0.55);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	// Remaining materials keep their finish and gain edge-aware detail.
 	if (material_id == 43 || material_id == 57 || material_id == 70 || material_id == 58) {
-		return apply_detail_edges(colour, material_id, flair, pixel, extent, edge, exposed, condition);
-	}
+		colour = apply_detail_edges(colour, material_id, flair, pixel, extent, edge, exposed, condition);
+	} else {
 	bool top_open = extent.x < 0.5 && is_open_cell(neighbours.x);
 	bool bottom_open = extent.y < 0.5 && is_open_cell(neighbours.y);
 	bool side_open = (extent.z < 0.5 && is_open_cell(neighbours.z))
@@ -2329,14 +2444,15 @@ vec4 apply_structured_fill(
 			colour.rgb *= 0.78 + max(a, b) * 0.45;
 			colour.rgb += vec3(0.07, 0.07, 0.075) * max(a, b);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 80) { // LED panel: bezel and a generative scrolling display
 		if (edge < 0.5) {
 			colour.rgb = vec3(0.10, 0.11, 0.13);
-			return colour;
-		}
+			colour = colour;
+		} else {
 		vec2 local = mod(pixel, 2.0);
 		float diode = step(0.5, local.x) * step(0.5, local.y);
 		float wave = value_noise(vec2(pixel.x / 7.0 - t * 1.5, pixel.y / 5.0)) + value_noise(vec2(pixel.x / 3.0, pixel.y / 3.0 + t * 0.8)) * 0.5;
@@ -2344,8 +2460,10 @@ vec4 apply_structured_fill(
 		vec3 tint = 0.5 + 0.5 * cos(6.2832 * (wave * 0.45 + t * 0.05 + vec3(0.0, 0.33, 0.67)));
 		vec3 display = mix(tint * (0.35 + wave * 0.45), vec3(1.0), marquee * 0.35);
 		colour.rgb = mix(display * 0.25, display * 1.15, diode);
-		return colour;
+		colour = colour;
 	}
+	} else
+
 
 	if (material_id == 5) { // Cloner: truchet circuit traces with travelling pulses
 		vec2 tile = floor(pixel / 6.0);
@@ -2358,8 +2476,9 @@ vec4 apply_structured_fill(
 		colour.rgb *= 0.55 + trace * 0.45;
 		colour.rgb = mix(colour.rgb, vec3(0.95, 0.65, 1.0), trace * pulse * 0.85);
 		if (edge < 0.5) colour.rgb *= 0.6;
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 7) { // generic wood: planks along the run
 		float plank = floor(across_world / 3.0);
@@ -2370,8 +2489,9 @@ vec4 apply_structured_fill(
 		float grain = triangle_wave((along + cheap_hash(vec2(plank, 19.0)) * 9.0) / 9.0);
 		colour.rgb *= 0.78 + grain * 0.28;
 		colour.rgb *= 1.0 - gap * 0.35 - joint * 0.40;
-		return apply_burn(colour, pixel, condition);
-	}
+		burn_finish = true;
+	} else
+
 
 	if (material_id == 9) { // Ice: frosted top, icicles hanging from open undersides
 		if (top_open) colour.rgb = mix(colour.rgb, vec3(0.92, 0.97, 1.0), 0.55);
@@ -2381,8 +2501,9 @@ vec4 apply_structured_fill(
 			if (extent.y + 0.5 < 3.0 - reach) colour.a = 0.0;
 			colour.rgb = mix(colour.rgb, vec3(0.85, 0.95, 1.0), 0.35);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 35 || material_id == 72) { // windows: frames, mullions, reflections
 		float mullion = (1.0 - step(0.6, mod(pixel.x, 10.0))) + (1.0 - step(0.6, mod(pixel.y, 12.0)));
@@ -2395,8 +2516,9 @@ vec4 apply_structured_fill(
 		}
 		if (edge < 0.5) colour.rgb = frame;
 		else if (mullion > 0.5) colour.rgb = mix(colour.rgb, frame, 0.85);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 71) { // chemical tank: fill line, rising bubbles, frame
 		float fill_top = 2.0 + floor(cheap_hash(floor(pixel / 24.0)) * 3.0);
@@ -2408,8 +2530,9 @@ vec4 apply_structured_fill(
 			colour.rgb = mix(colour.rgb, vec3(0.70, 1.0, 0.80), 0.7);
 		}
 		if (edge < 0.5) colour.rgb = vec3(0.30, 0.34, 0.36);
-		return colour;
-	}
+		colour = colour;
+	} else
+
 
 	if (material_id == 50) { // wrought iron: balusters when thin, riveted plate when wide
 		if (thin) {
@@ -2421,8 +2544,8 @@ vec4 apply_structured_fill(
 			float rivet = step(0.5, 1.0 - step(0.5, edge - 0.5)) * step(0.5, mod(along, 3.0));
 			colour.rgb += vec3(0.16) * rivet * float(edge > 0.5 && edge < 1.5);
 		}
-		return colour;
-	}
+		colour = colour;
+	} else {
 
 	// The remaining static materials keep their finish and gain region detail.
 	if (material_id == 1 || material_id == 31 || material_id == 28) { // blocks, formwork, machined edges
@@ -2525,16 +2648,16 @@ vec4 apply_structured_fill(
 		if (edge < 0.5) colour.rgb = vec3(0.36, 0.40, 0.44) * (0.8 + (material_id == 67 ? 0.2 : 0.0));
 		if (material_id == 67 && mod(along, 16.0) < 1.0) colour.rgb = vec3(0.40, 0.44, 0.48);
 	}
+	colour = colour;
+	}
+	}
+	if (burn_finish) colour = apply_burn(colour, pixel, condition);
 	return colour;
 }
 
 
-vec4 material_colour(
-	int material_id,
-	float condition,
-	vec2 world_pixel,
-	bool previous_snapshot
-) {
+// Catalogue colour and program response, before any procedural finish.
+vec4 material_base_colour(int material_id, float condition, vec2 world_pixel, out int flair) {
 	float variation = stable_pixel_hash(world_pixel, material_id);
 	float variation_index = floor(variation * material_lut_size.x);
 	vec2 lut_uv = vec2(
@@ -2556,7 +2679,18 @@ vec4 material_colour(
 		alpha_emission.w,
 		response
 	);
-	int flair = int(floor(emission_colour.a + 0.5));
+	flair = int(floor(emission_colour.a + 0.5));
+	return colour;
+}
+
+vec4 material_colour(
+	int material_id,
+	float condition,
+	vec2 world_pixel,
+	bool previous_snapshot
+) {
+	int flair;
+	vec4 colour = material_base_colour(material_id, condition, world_pixel, flair);
 	// One gather of the four neighbours (from the snapshot being shaded)
 	// feeds the structured fills, the volume/contact stage and the relief.
 	ivec4 neighbours = ivec4(
@@ -2634,11 +2768,15 @@ void fragment() {
 			|| is_temporally_smoothed_material(previous_material_id)
 		)
 	) {
-		colour = mix(
-			material_colour(previous_material_id, previous_condition, world_pixel, true),
-			colour,
-			snapshot_blend
-		);
+#ifdef CYBER_BOUNDED_CROSSFADE
+		// ANGLE only: fade from the base colour, so the full finish inlines once.
+		int previous_flair;
+		vec4 previous_colour = material_base_colour(
+			previous_material_id, previous_condition, world_pixel, previous_flair);
+#else
+		vec4 previous_colour = material_colour(previous_material_id, previous_condition, world_pixel, true);
+#endif
+		colour = mix(previous_colour, colour, snapshot_blend);
 	}
 	if (material_id == 0 && inside_view) {
 		colour = apply_ambient_particles(colour, world_pixel);

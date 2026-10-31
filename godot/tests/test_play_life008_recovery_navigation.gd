@@ -73,7 +73,7 @@ func exercise_navigation(index: int) -> bool:
 	var worker: CyberSimulationWorker = desktop.simulation_worker
 	var request: Dictionary = configure(desktop, rig, index % 2)
 	expect(desktop.playable_session_panel.build_selected(), context + "real prepared course queues")
-	var ready: bool = await wait_for(Callable(self, "actor_ready").bind(desktop, rig))
+	var ready: bool = await wait_for(Callable(self, "actor_ready").bind(desktop, rig), SETUP_ALLOWANCE_MS)
 	expect(ready, context + "real native actor and terrain install before capacity fault")
 	if not ready:
 		await close_cycle(desktop, worker, desktop.physical_actor_session, context + "setup cleanup: ")

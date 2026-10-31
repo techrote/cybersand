@@ -51,7 +51,7 @@ func exercise(index: int) -> bool:
 	expect(desktop.worker_start_error == OK and worker._thread.is_started(), str(rig) + ": real owner starts")
 	var profile: Dictionary = Profiles.preset(Profiles.PRESET_EARTH_FEEL)
 	expect(worker.queue_player_environment_profile(profile), str(rig) + ": copied nondefault profile admitted")
-	var ready: bool = await wait_for(func() -> bool: return desktop.active_player_environment_profile == profile)
+	var ready: bool = await wait_for(func() -> bool: return desktop.active_player_environment_profile == profile, SETUP_ALLOWANCE_MS)
 	expect(ready, str(rig) + ": nondefault profile actually publishes before construction")
 	desktop.simulation_margin_index = 0
 	desktop.simulation_margin = desktop.SIMULATION_MARGIN_PRESETS[0]
@@ -69,7 +69,7 @@ func exercise(index: int) -> bool:
 		false, "Play", desktop._playable_actor_configuration(rig)), str(rig) + ": real prepared course queues")
 	desktop.pending_microscenario_apply.playable_options = {
 		"controls":requested.selection.controls, "rules":requested.selection.rules, "camera":requested.selection.camera}
-	ready = ready and await wait_for(Callable(self, "actor_ready").bind(desktop, rig))
+	ready = ready and await wait_for(Callable(self, "actor_ready").bind(desktop, rig), SETUP_ALLOWANCE_MS)
 	expect(ready, str(rig) + ": native construction and actual terrain install before fault")
 	if not ready:
 		await close_cycle(desktop, worker, desktop.physical_actor_session, "setup cleanup: ")

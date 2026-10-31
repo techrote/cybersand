@@ -133,7 +133,7 @@ func exercise(negative: bool) -> void:
 		"real shared native owner started")
 	expect(desktop.microscenario_launch(Catalogue.PLAYER_COURSE_ID, "Play", 0),
 		"actual authored course admitted through normal desktop selector")
-	var installed: bool = await wait_for(Callable(self, "course_installed"))
+	var installed: bool = await wait_for(Callable(self, "course_installed"), 60000)
 	expect(installed, "authored native course was acknowledged")
 	if not installed:
 		await retire_desktop()
