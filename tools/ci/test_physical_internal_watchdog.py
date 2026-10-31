@@ -18,6 +18,10 @@ def main() -> int:
         project = Path(folder)
         helpers = project / "tests/helpers"
         helpers.mkdir(parents=True)
+        support = project / "tests/support"
+        support.mkdir(parents=True, exist_ok=True)
+        for name in ("ci_execution_policy.gd", "ci_execution_policy.json"):
+            shutil.copy2(ROOT / "godot/tests/support" / name, support / name)
         for name in ("physical_internal_watchdog.gd", "physical_internal_watchdog_probe.gd", "physical_progress.gd"):
             shutil.copyfile(ROOT / "godot/tests/helpers" / name, helpers / name)
         (project / "project.godot").write_text(

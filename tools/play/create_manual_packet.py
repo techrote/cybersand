@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import csv
+from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import platform
@@ -14,12 +16,16 @@ import re
 import shlex
 import subprocess
 import sys
+import time
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools/ci"))
+from execution_policy import identity as execution_policy_identity, watchdog_seconds
 SCRIPT = "tools/play/create_manual_packet.py"
 GUIDE = "docs/operations/play-desktop-manual-qualification.md"
 SCHEMA = "play-desktop-manual-packet-v1"
+_METADATA_DEADLINE: float | None = None
 RIGS = (
     ("stuntbuggy", "Loose Cannon", "W/S drive/reverse; A/D or Q/E lean; Space hops from support; Shift brakes; hold C for recovery."),
     ("trialsbike", "Trials Rat", "W/S throttle/reverse; A/D or Q/E lean; hold Space on support then release to hop; Shift brakes; hold C for recovery."),
@@ -39,7 +45,7 @@ PER_RIG_CASES = (
     ("reset_exit", "physical input / display", "Use R twice and resume after neutral release; accepted rig/policy persist, lap starts fresh. Open Play session and click Return to launcher (F2 is an optional shortcut); re-enter Play session and build a fresh rig."),
 )
 GLOBAL_CASES = (
-    ("startup", "actual display", "Record launch-to-launcher and launcher-to-Main visibility separately. Time Build selected session to visible applied actor/terrain readiness; retain video/log. The automated30s contract is Build to the first completed Main callback with that identity ready, not launcher reading time or a coroutine poll. Manual display timing does not replace that callback receipt; late/failed startup stays failed."),
+    ("startup", "actual display", "Record launch-to-launcher and launcher-to-Main visibility separately. Time Build selected session to visible applied actor/terrain readiness; retain video/log. The automated startup observation runs from Build to the first completed Main callback with that identity ready. Its execution watchdog comes from the source execution policy; elapsed times remain performance observations. Record launcher reading time separately. Manual display timing does not replace the automatic callback receipt; incomplete or failed startup stays failed."),
     ("selection", "keyboard / display", "Select Keyboard only and Free play; connected gamepad cannot drive it, lap UI is absent. Restore keyboard+gamepad/lap and verify actual applied labels."),
     ("policy", "keyboard / display", "Build Current, then an explicitly supported Water pressure choice using the policy editor. Screenshot requested family/variant and applied text; copy the applied native policy_hash and construction receipt_hash from the tooltip. Select Oil and inspect its disabled/unavailable pressure entry and refusal reason; applied state must remain unchanged. Do not inject an unsupported request."),
     ("secondary_device", "physical gamepads", "With two pads, verify only the selected first pad controls the course. An unrelated second-pad disconnect must not revoke the selected pad; record enumeration/order. Untested if unavailable."),
@@ -53,6 +59,27 @@ def require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
+def budgets() -> dict:
+    operation = watchdog_seconds("operation_seconds")
+    dependency = watchdog_seconds("dependency_prepare_seconds")
+    ordinary = watchdog_seconds("ordinary_case_seconds")
+    result = {"metadata_minutes": math.ceil(operation / 60),
+              "source_checkout_minutes": math.ceil((dependency + operation) / 60),
+              "controls_minutes": math.ceil((2 * ordinary + operation) / 60),
+              "dependency_minutes": math.ceil(dependency / 60),
+              "engine_minutes": math.ceil((dependency + operation + watchdog_seconds("terminate_grace_seconds")) / 60),
+              "packet_minutes": math.ceil(2 * operation / 60),
+              "setup_minutes": 5, "artifact_minutes": 10,
+              "headroom_minutes": math.ceil(watchdog_seconds("aggregate_headroom_seconds") / 60)}
+    result["sequential_minutes"] = (2 * result["setup_minutes"] + result["source_checkout_minutes"]
+        + 2 * result["metadata_minutes"] + result["controls_minutes"] + result["dependency_minutes"]
+        + result["engine_minutes"] + 2 * result["packet_minutes"] + result["artifact_minutes"])
+    result["job_minutes"] = max(math.ceil(execution_policy_identity()["watchdogs"]["hosted_job_minutes"]),
+        math.ceil((result["sequential_minutes"] + result["headroom_minutes"]) / 10) * 10)
+    require(result["job_minutes"] <= 360, "Manual packet stages exceed hosted job capacity; split stages without reducing allowances")
+    return result
+
+
 def digest(path: Path, algorithm: str = "sha256") -> str:
     result = hashlib.new(algorithm)
     with path.open("rb") as stream:
@@ -62,7 +89,29 @@ def digest(path: Path, algorithm: str = "sha256") -> str:
 
 
 def git(root: Path, *arguments: str) -> bytes:
-    return subprocess.check_output(["git", "-C", str(root), *arguments], timeout=60)
+    return subprocess.check_output(["git", "-C", str(root), *arguments], timeout=metadata_remaining())
+
+
+def metadata_remaining() -> float:
+    remaining = (watchdog_seconds("operation_seconds") if _METADATA_DEADLINE is None
+                 else _METADATA_DEADLINE - time.monotonic())
+    if remaining <= 0:
+        raise TimeoutError("Manual packet metadata exhausted its shared operation allowance")
+    return remaining
+
+
+@contextmanager
+def metadata_budget():
+    global _METADATA_DEADLINE
+    previous = _METADATA_DEADLINE
+    deadline = time.monotonic() + watchdog_seconds("operation_seconds")
+    _METADATA_DEADLINE = deadline if previous is None else min(previous, deadline)
+    try:
+        metadata_remaining()
+        yield
+        metadata_remaining()
+    finally:
+        _METADATA_DEADLINE = previous
 
 
 def clean_identity(root: Path, expected: str) -> dict:
@@ -115,6 +164,12 @@ def engine_identity(root: Path, archive: Path, executable: Path, target: str) ->
 
 
 def collect(root: Path, expected: str, archive: Path, executable: Path) -> tuple[dict, dict]:
+    import run_windows_godot_regressions as windows
+    with metadata_budget(), windows.metadata_budget():
+        return _collect(root, expected, archive, executable)
+
+
+def _collect(root: Path, expected: str, archive: Path, executable: Path) -> tuple[dict, dict]:
     target = "windows" if sys.platform == "win32" else "linux" if sys.platform.startswith("linux") else ""
     require(bool(target) and platform.machine().lower() in ("x86_64", "amd64"), "Use the actual x86_64 Windows or Linux target host")
     source = clean_identity(root, expected)
@@ -124,7 +179,7 @@ def collect(root: Path, expected: str, archive: Path, executable: Path) -> tuple
     import check_repository
     import run_windows_godot_regressions as windows
     # Preserve the complete existing gate, including all retained LFS runtimes.
-    preflight = check_repository.check(root, require_materialized=True)
+    preflight = check_repository.check(root, require_materialized=True, operation_deadline=_METADATA_DEADLINE)
     require(preflight.get("status") == "passed" and not preflight.get("errors"),
             "Repository materialized-provenance gate failed: " + "; ".join(preflight.get("errors", [])))
     native_name = "runtime-provenance.json" if target == "windows" else "runtime-provenance.linux.json"
@@ -186,7 +241,8 @@ Finish feasible rig checks within that engine process. A later launch deliberate
 new untracked metadata (including Godot-generated `.gd.uid` files); retain the first log and
 `git status` output, preserve that checkout, and prepare a fresh dedicated checkout and packet
 at the same reviewed SHA. Any required editor import remains a separate recorded operation
-under its 240-second bound; do not discard generated files or ignore source changes to pass.
+under its source-policy {math.ceil(watchdog_seconds("godot_import_seconds"))}-second watchdog;
+do not discard generated files or ignore source changes to pass.
 
 Choose **Play session — shared desktop course, five mechanical players and solver choices**.
 In **Player**, choose a row below; select **Keyboard + standard gamepad**, **Four-checkpoint lap**,
@@ -224,12 +280,16 @@ separately from **Build selected session** to visible applied actor/terrain read
 The automated construction acknowledgement starts at Build and ends at the first completed
 Main callback with the selected actor/native identity and terrain ready; human display
 timing is a separate observation and cannot replace that source-bound callback receipt.
-The existing 30-second Main acknowledgement, 180-second
-graphical case, 240-second import and applicable 15-second operation/150-second fixture limits
-remain unchanged. A late Windows shader-bound startup stays failed; any later manual observations
-must be labelled separately. Do not repeat imports/warmups to relabel that original attempt.
+The source execution policy gives Main acknowledgement {math.ceil(watchdog_seconds("main_ack_seconds"))} seconds,
+graphical cases {math.ceil(watchdog_seconds("graphical_case_seconds"))} seconds,
+import {math.ceil(watchdog_seconds("godot_import_seconds"))} seconds, operations
+{math.ceil(watchdog_seconds("operation_seconds"))} seconds and complex fixtures
+{math.ceil(watchdog_seconds("complex_fixture_seconds"))} seconds. These are execution ceilings;
+record actual cold startup and warmed gameplay responsiveness separately. A watchdog expiry
+or correctness failure remains failed/incomplete; later observations must be labelled separately.
+Do not repeat imports/warmups to relabel the original attempt.
 No import is launched by this packet. If an import is separately required, retain its original
-command, exit/log and 240-second outcome before proceeding.
+command, exit/log, source-policy watchdog and observed outcome before proceeding.
 
 Focus loss cancels input but need not stop momentum/material physics; P is the pause check.
 An open selector must consume gameplay controls. Reset/build/connection changes require neutral
@@ -311,8 +371,14 @@ def main() -> int:
     parser.add_argument("--godot-archive", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--verify-packet", type=Path)
+    parser.add_argument("--plan-json", action="store_true")
     args = parser.parse_args()
     try:
+        if args.plan_json:
+            require(not any((args.expected_sha, args.godot, args.godot_archive, args.output, args.verify_packet)),
+                    "Planning does not create or reverify a packet")
+            print(json.dumps(budgets(), sort_keys=True))
+            return 0
         if args.verify_packet:
             require(not any((args.expected_sha, args.godot, args.godot_archive, args.output)), "Verification does not accept replacement identities")
             verify_packet(args.verify_packet.resolve())

@@ -6,9 +6,15 @@ This is a source/coverage/log-byte reducer, not an alternative runtime test.
 import argparse
 from collections import Counter
 import hashlib
+import io
 import json
+import ntpath
 import re
 from pathlib import Path
+import subprocess
+
+import execution_policy
+from verify_retained_play_readback import same_json
 
 
 def require(condition: bool, message: str) -> None:
@@ -17,6 +23,68 @@ def require(condition: bool, message: str) -> None:
 
 
 def source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
+    import run_windows_godot_regressions as windows
+
+    # Source discovery, attributes and blob reads share one operation allowance;
+    # additional inputs must not create a sequence of per-file watchdogs.
+    with windows.metadata_budget():
+        return _source_contract(root, source_sha, shard_count)
+
+
+def source_input_hashes(root: Path, paths: list[str], required_lfs: set[str]) -> dict:
+    """Allow only committed bytes or their declared Windows checkout form."""
+    import run_windows_godot_regressions as windows
+
+    require(bool(paths) and len(paths) == len(set(paths))
+            and all("\n" not in path and "\r" not in path for path in paths),
+            "invalid source input paths")
+    def git_input(arguments: list[str], payload: bytes) -> bytes:
+        return subprocess.check_output(["git", "-C", str(root), *arguments],
+            input=payload, timeout=windows.metadata_remaining())
+
+    attributes = git_input(["check-attr", "--source=HEAD", "-z", "--stdin", "text", "eol", "filter"],
+        b"\0".join(path.encode("utf-8") for path in paths) + b"\0").split(b"\0")
+    require(attributes.pop() == b"" and len(attributes) == 9 * len(paths),
+            "incomplete committed source attributes")
+    by_path = {path: {} for path in paths}
+    for offset in range(0, len(attributes), 3):
+        path, name, value = (part.decode("utf-8") for part in attributes[offset:offset + 3])
+        require(path in by_path and name not in by_path[path], "duplicate or foreign source attribute")
+        by_path[path][name] = value
+
+    blobs = io.BytesIO(git_input(["cat-file", "--batch"],
+        b"\n".join(("HEAD:" + path).encode("utf-8") for path in paths) + b"\n"))
+    hashes = {}
+    for path in paths:
+        header = re.fullmatch(rb"[0-9a-f]{40,64} blob ([0-9]+)\n", blobs.readline())
+        require(header is not None, "missing committed source blob: " + path)
+        size = int(header[1]); data = blobs.read(size)
+        require(len(data) == size and blobs.read(1) == b"\n", "truncated source blob: " + path)
+        attributes = by_path[path]
+        require(set(attributes) == {"text", "eol", "filter"}, "missing source attributes: " + path)
+        digest = hashlib.sha256(data).hexdigest()
+        permitted = {digest}
+        if attributes["filter"] == "lfs":
+            pointer = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\n"
+                rb"oid sha256:([0-9a-f]{64})\nsize [0-9]+\n", data)
+            require(pointer is not None, "noncanonical source LFS input: " + path)
+            permitted = {pointer[1].decode()} | (set() if path in required_lfs else {digest})
+        elif path in windows.RAPIER_IMPORT_DESCRIPTORS:
+            # The execution collector canonicalizes only these regenerated
+            # descriptors. Original raw logs and all other hashes stay exact.
+            permitted = {hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()}
+        elif attributes["text"] != "unset" and b"\0" not in data:
+            if attributes["eol"] == "crlf":
+                permitted = {hashlib.sha256(data.replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")).hexdigest()}
+            elif attributes["eol"] == "unspecified" and b"\r" not in data:
+                permitted.add(hashlib.sha256(data.replace(b"\n", b"\r\n")).hexdigest())
+        hashes[path] = sorted(permitted)
+    require(not blobs.read(), "extra committed source blob output")
+    windows.metadata_remaining()
+    return hashes
+
+
+def _source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
     """Derive authority from the exact checkout, never from shard reports.
 
     The reducer need not materialize either LFS DLL. Compare committed LFS
@@ -64,7 +132,9 @@ def source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
     require(binaries[windows.RAPIER]["sha256"] == windows.RAPIER_SHA256,
             "source Rapier pointer differs from selected pin")
     tracked = windows.git(root, "ls-files", "-z", "--", *windows.INPUT_SCOPES).decode().split("\0")
+    paths = sorted(p for p in tracked if p and not p.startswith("godot/.godot/"))
     return {
+        "execution_policy": execution_policy.identity(),
         "source_tree": tree,
         "all_discovered_case_count": len(cases),
         "applicable_case_count": len(selected),
@@ -80,7 +150,8 @@ def source_contract(root: Path, source_sha: str, shard_count: int) -> dict:
         "rapier_runtime": binaries[windows.RAPIER],
         "godot_version": windows.GODOT_VERSION,
         "godot_archive_sha512": windows.GODOT_SHA512,
-        "tested_input_paths": sorted(p for p in tracked if p and not p.startswith("godot/.godot/")),
+        "tested_input_paths": paths,
+        "tested_input_sha256": source_input_hashes(root, paths, {windows.NATIVE, windows.RAPIER}),
     }
 
 
@@ -109,24 +180,44 @@ def verify_source_report(report: dict, directory: Path, expected: dict, index: i
             f"missing or wrong pinned Godot identity: {directory}")
     tested = report.get("tested_inputs")
     require(isinstance(tested, dict) and sorted(tested) == expected["tested_input_paths"]
-            and all(isinstance(digest, str) and re.fullmatch(r"[0-9a-f]{64}", digest)
-                    for digest in tested.values()),
+            and set(expected["tested_input_sha256"]) == set(tested)
+            and all(isinstance(digest, str) and digest in expected["tested_input_sha256"][path]
+                    for path, digest in tested.items()),
             f"missing or changed source input inventory: {directory}")
     results = report.get("results")
     require(isinstance(results, list) and all(isinstance(row, dict) for row in results),
             f"invalid execution records: {directory}")
-    tests = [row for row in results if row.get("role") == "case"]
-    require(len(tests) == len(plan), f"source-derived case result count mismatch: {directory}")
-    for result, case in zip(tests, plan):
+    preflight = {"name": "import", "flags": ["--editor", "--quit"],
+        "timeout_seconds": execution_policy.watchdog_seconds("godot_import_seconds"),
+        "requires_display": False}
+    planned = [("preflight", preflight), *(("case", case) for case in plan)]
+    require(len(results) == len(planned), f"source-derived case result count mismatch: {directory}")
+    host_paths = None
+    import run_godot_regressions as runner
+    for result, (role, case) in zip(results, planned):
         command = result.get("command")
-        flags = case["flags"]
-        require(result.get("name") == case["name"]
-                and result.get("timeout_seconds") == case["timeout_seconds"]
+        require(result.get("name") == case["name"] and result.get("role") == role
+                and same_json(result.get("timeout_seconds"), case["timeout_seconds"])
                 and result.get("requires_display") is False
-                and isinstance(command, list) and len(command) >= len(flags) + 2
-                and "--headless" in command and command[-len(flags):] == flags,
+                and isinstance(command, list) and len(command) >= 4
+                and all(isinstance(part, str) and part for part in command),
                 f"source-derived command or watchdog mismatch: {directory}")
+        require(ntpath.isabs(command[0]) and ntpath.basename(command[0]) == "Godot_v4.7-stable_win64_console.exe"
+                and ntpath.isabs(command[3]) and ntpath.basename(command[3]) == "godot"
+                and ".." not in command[0].replace("\\", "/").split("/")
+                and ".." not in command[3].replace("\\", "/").split("/"),
+                f"source-derived command or watchdog mismatch: {directory}")
+        paths = (command[0], command[3])
+        require(host_paths is None or paths == host_paths, f"inconsistent original Windows command roots: {directory}")
+        host_paths = paths
+        source_case = runner.Case(case["name"], tuple(case["flags"]), case["timeout_seconds"], 0)
+        expected_command = runner.case_command(command[0], source_case, "win32")
+        expected_command[3] = command[3]  # The original Windows checkout root is retained, not rewritten to Linux.
+        require(command == expected_command, f"source-derived command or watchdog mismatch: {directory}")
+        require(same_json(result.get("execution_policy"), expected["execution_policy"]),
+                f"source-derived execution policy mismatch: {directory}")
     require(all(type(row.get("returncode")) is int and row["returncode"] == 0
+                and row.get("natural_completion") is True
                 and not row.get("skip_messages") and not row.get("launch_error")
                 and not row.get("diagnostic_error") and not row.get("timeout_kind")
                 for row in results), f"nonpassing execution detail: {directory}")
@@ -135,6 +226,8 @@ def verify_source_report(report: dict, directory: Path, expected: dict, index: i
 def verify(root: Path, source_sha: str, run_id: str, attempt: str,
            shard_count: int, *, expected: dict) -> dict:
     require(shard_count >= 1, "shard count must be positive")
+    require(same_json(expected.get("execution_policy"), execution_policy.identity()),
+            "coverage source execution policy mismatch")
     require(len(expected["plans"]) == shard_count, "source shard count mismatch")
     manifests = sorted(root.rglob("windows-execution.json"))
     require(len(manifests) == shard_count,
@@ -205,6 +298,19 @@ def verify(root: Path, source_sha: str, run_id: str, attempt: str,
                     and log_path.resolve().is_relative_to(path.parent.resolve())
                     and hashlib.sha256(log_path.read_bytes()).hexdigest() == expected_digest,
                     f"modified or missing original raw log: {log_path}")
+            row = next(row for row in records if row["log"] == relative)
+            require(row.get("log_sha256") == expected_digest, f"original Windows row log seal mismatch: {log_path}")
+            log_text = log_path.read_text(encoding="utf-8", errors="replace")
+            require("ERROR:" not in log_text and not re.search(r"\bskipped\b|^\s*SKIP\b", log_text, re.I | re.M),
+                    f"original Windows log contains an error or skipped check: {log_path}")
+        import run_godot_regressions as runner
+        import verify_retained_play_readback
+        for row, planned in zip(tests, expected["plans"][index]):
+            case = runner.Case(planned["name"], tuple(planned["flags"]), planned["timeout_seconds"],
+                               planned["estimated_seconds"], planned["requires_display"])
+            if runner.case_readback_contract(case) is not None:
+                verify_retained_play_readback.verify(case, row, path.parent, source_sha, "Windows",
+                    output_dir=root.parent / "windows-play-readback" / case.name)
         identity = {
             name: report.get(name) for name in (
                 "source_commit", "source_tree", "runtime_source_commit",
@@ -241,6 +347,8 @@ def verify(root: Path, source_sha: str, run_id: str, attempt: str,
         "attempt": str(attempt),
         "source_sha": source_sha,
         "source_tree": baseline["source_tree"],
+        "execution_policy": expected["execution_policy"],
+        "source_inputs_verified": len(expected["tested_input_sha256"]),
         "shard_count": shard_count,
         "applicable_case_count": len(expected_cases),
         "graphical_cases_explicitly_out_of_scope": baseline["out_of_scope_graphical_cases"],

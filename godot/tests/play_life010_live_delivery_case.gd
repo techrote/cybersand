@@ -141,7 +141,7 @@ func expect(value: bool, message: String) -> void:
 
 func bounded(predicate: Callable, label: String) -> bool:
 	var started: int = Time.get_ticks_usec()
-	var deadline: int = mini(started + WAIT_TIMEOUT_MS * 1000, fixture_started_usec + 150000000)
+	var deadline: int = mini(started + WAIT_TIMEOUT_MS * 1000, fixture_started_usec + Watchdogs.microseconds("complex_fixture_seconds"))
 	var passed: bool = false
 	while Time.get_ticks_usec() < deadline:
 		if predicate.call():
@@ -228,7 +228,7 @@ func first_main_acknowledged(origin: int) -> bool:
 	# The origin precedes load/instantiation/add_child, whose synchronous work
 	# can block before any await. Never restart this clock after a late return.
 	# This first-callback guard is separate from PACE's Build-to-actor timer.
-	var deadline: int = origin + 30000000
+	var deadline: int = origin + Watchdogs.microseconds("main_ack_seconds")
 	while Time.get_ticks_usec() < deadline and desktop.first_main_callback_usec == 0:
 		await process_frame
 	var acknowledged: int = desktop.first_main_callback_usec
@@ -236,7 +236,7 @@ func first_main_acknowledged(origin: int) -> bool:
 	result.first_main_acks.append({"origin_usec":origin, "deadline_usec":deadline,
 		"acknowledged_usec":acknowledged, "observed_usec":Time.get_ticks_usec(),
 		"origin":"before-main-scene-load", "event":"first-inherited-Main-process-return", "passed":passed})
-	expect(passed, "first actual Main callback acknowledges within the original 30-second origin")
+	expect(passed, "first actual Main callback acknowledges within the configured Main acknowledgement watchdog")
 	return passed
 
 
@@ -327,7 +327,7 @@ func close_host(label: String) -> void:
 	var held_worker: Probe = worker
 	await close_cycle(desktop, held_worker, final_session, label + ": ")
 	var elapsed: int = Time.get_ticks_usec() - closing
-	expect(elapsed <= 15000000, label + ": complete teardown stays within 15 seconds")
+	expect(elapsed <= Watchdogs.microseconds("operation_seconds"), label + ": complete teardown stays within the operation watchdog")
 	var packet_records: Array = held_worker.save_packets(artifact_directory, str(target_rig()) + "-" + label)
 	for packet: Dictionary in packet_records:
 		expect(packet.artifact_written and packet.sha256 == packet.retired_sha256
@@ -559,8 +559,8 @@ func run() -> void:
 		"engine":Engine.get_version_info().string, "platform":OS.get_name(),
 		"display_server":DisplayServer.get_name(), "graphical_qualification":false,
 		"seams":["synthetic-focus-and-pointer-aim", "authentic-consumer-delivery", "actual-extracted-request-preconsume-gate"],
-		"operation_limit_usec":15000000, "fixture_limit_usec":150000000,
-		"first_main_ack_limit_usec":30000000, "first_main_acks":[],
+		"operation_limit_usec":Watchdogs.microseconds("operation_seconds"), "fixture_limit_usec":Watchdogs.microseconds("complex_fixture_seconds"),
+		"first_main_ack_limit_usec":Watchdogs.microseconds("main_ack_seconds"), "first_main_acks":[],
 		"waits":[], "errors":[], "lifetimes":[], "equipment":[], "progress":[]}
 	artifact_directory = OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
 	expect(target_rig() in Course.MECHANICAL_PRESETS, "wrapper selects an accepted mechanical rig")
@@ -586,7 +586,7 @@ func run() -> void:
 		retained_count += lifetime.packets.size()
 	expect(retained_count <= 8, "fixture retains at most eight authentic immutable packets total")
 	result["elapsed_usec"] = Time.get_ticks_usec() - fixture_started_usec
-	expect(result.elapsed_usec <= 150000000, "complete fixture including both teardowns stays within 150 seconds")
+	expect(result.elapsed_usec <= Watchdogs.microseconds("complex_fixture_seconds"), "complete fixture including both teardowns stays within the fixture watchdog")
 	result["assertions"] = assertions
 	result["failures"] = failures
 	result["negative_control_passed"] = negative_ok

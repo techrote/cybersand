@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # LCB-001 (#200) liquid solver policy through the real threaded desktop owner
 # (CyberSimulationWorker): an explicit request on scenario_reset, the native
 # receipt forwarded unchanged in lab_context, refusal without replacing the
@@ -26,7 +28,9 @@ func expect(value: bool, message: String) -> void:
 		failures += 1
 		push_error("LIQUID_POLICY_WORKER: " + message)
 
-func wait_for(predicate: Callable, timeout: int = 20000) -> bool:
+func wait_for(predicate: Callable, timeout: int = -1) -> bool:
+	if timeout < 0:
+		timeout = Watchdogs.milliseconds("operation_seconds")
 	var deadline: int = Time.get_ticks_msec() + timeout
 	while Time.get_ticks_msec() < deadline:
 		await process_frame

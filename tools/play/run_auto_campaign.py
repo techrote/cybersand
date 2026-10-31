@@ -20,6 +20,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/ci"))
+from execution_policy import case_seconds, identity as policy_identity, watchdog_seconds
+from play_execution_contract import policy_matches, process_policy_matches, verify_source_policy
 import check_repository
 import run_godot_regressions as runner
 import run_windows_godot_regressions as windows
@@ -27,7 +29,7 @@ import run_windows_godot_regressions as windows
 COUNTS = [1, 2, 4, 6, 0]
 SIZES = [480, 960]
 MARKER = "PLAY_AUTO_CAMPAIGN_ROW "
-SCHEMA = "play-auto-campaign-v1"
+SCHEMA = "play-auto-campaign-v2"
 GODOT_VERSION = "4.7.stable.official.5b4e0cb0f"
 RUNTIME_CHANGES = {
     "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
@@ -36,6 +38,8 @@ RUNTIME_CHANGES = {
     "godot/addons/cybersand_native/runtime-provenance.linux.json",
 }
 TESTED = [
+    "godot/tests/support/ci_execution_policy.json", "tools/ci/execution_policy.py",
+    "tools/ci/play_execution_contract.py",
     "godot/scripts/worker_benchmark.gd", "godot/tests/run_play_auto_campaign.gd",
     "tools/play/run_auto_campaign.py", "tools/play/test_run_auto_campaign.py",
     "tools/ci/run_godot_regressions.py", "tools/ci/run_windows_godot_regressions.py",
@@ -70,7 +74,7 @@ def digest(data: bytes) -> str:
 
 
 def git(*args: str) -> str:
-    return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
+    return subprocess.check_output(["git", *args], cwd=ROOT, text=True, timeout=watchdog_seconds("operation_seconds")).strip()
 
 
 def integer(value: object, minimum: int = 0) -> bool:
@@ -120,20 +124,24 @@ def verify_config(config: dict) -> None:
             "Repetitions must be a balanced multiple of five, from five through twenty")
     require(integer(config.get("warmup_ticks"), 60) and config["warmup_ticks"] <= 1000
             and integer(config.get("ticks"), 120) and config["ticks"] <= 1000
-            and config.get("process_timeout_seconds") == 180,
+            and config.get("process_timeout_seconds") == case_seconds("run_play_auto_campaign"),
             "Invalid warmup/sample/process bound")
 
 
-def verify_process(record: dict) -> None:
+def verify_process(record: dict, *, imported: bool = False) -> None:
     require(isinstance(record, dict) and record.get("status") == "passed"
             and type(record.get("returncode")) is int and record["returncode"] == 0
             and record.get("diagnostic_error") is False
             and record.get("launch_error") is None and record.get("capture_error") is None
             and record.get("skip_messages") == []
+            and not record.get("timed_out", False)
             and record.get("timeout_kind") is None
-            and record.get("timeout_diagnostic_error") is None,
+            and record.get("timeout_diagnostic_error") is None
+            and process_policy_matches(record),
             "Non-passing campaign process")
-    require(number(record.get("seconds")) and record.get("timeout_seconds") in (180, 240)
+    limit = watchdog_seconds("godot_import_seconds") if imported else case_seconds("run_play_auto_campaign")
+    require(number(record.get("seconds")) and record.get("seconds") <= limit
+            and record.get("timeout_seconds") == limit
             and isinstance(record.get("command"), list) and bool(record["command"]),
             "Invalid process timing/command")
 
@@ -234,7 +242,7 @@ def verify_row(row: dict, expected: dict, config: dict) -> None:
             and value.get("parallel_dispatch_observed") is
                 (parallel_ticks > 0 and value["maximum_scheduler_jobs"] > 1),
             "Parallel dispatch counters disagree with scheduler work")
-    require(row.get("process", {}).get("timeout_seconds") == 180, "Wrong row process bound")
+    require(row.get("process", {}).get("timeout_seconds") == case_seconds("run_play_auto_campaign"), "Wrong row process bound")
     verify_process(row["process"])
 
 
@@ -282,6 +290,7 @@ def verify_report(report: dict, expected_source_sha: str | None = None) -> dict:
             or (source_mode == "verified-retained-manifest"
                 and re.fullmatch(r"[0-9a-f]{40}", str(report.get("retained_runtime_source", ""))) is not None),
             "Missing native runtime source premise")
+    require(policy_matches(report.get("execution_policy")), "Campaign execution policy changed")
     verify_config(report.get("config", {}))
     require(report.get("godot_version") == GODOT_VERSION, "Wrong pinned Godot version")
     rows = report.get("rows", [])
@@ -313,11 +322,12 @@ def verify_report(report: dict, expected_source_sha: str | None = None) -> dict:
 def verify_directory(directory: Path, expected_source_sha: str | None = None) -> dict:
     """Validate retained evidence only; stage need not have bundle runtime installed."""
     report = verify_report(load_json((directory / "campaign.json").read_text(encoding="utf-8")), expected_source_sha)
+    verify_source_policy(report["source_sha"])
     records = [*report.get("preflight_results", []), *[r["process"] for r in report["rows"]]]
     require(len(report.get("preflight_results", [])) == 1
             and report["preflight_results"][0].get("name") == "import", "Missing fresh import process")
     for record in records:
-        verify_process(record)
+        verify_process(record, imported=record is report["preflight_results"][0])
         relative = record.get("log", "")
         require(isinstance(relative, str) and Path(relative).name == relative and bool(relative), "Unsafe log path")
         log = directory / relative
@@ -397,9 +407,10 @@ def main() -> int:
               "platform": "windows" if sys.platform == "win32" else "linux",
               "started_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
               "command": [sys.executable, *sys.argv], "host_conditions": host_conditions(),
+              "execution_policy": policy_identity(),
               "config": {"requested_counts": COUNTS, "sizes": SIZES, "repetitions": args.repetitions,
                          "warmup_ticks": args.warmup, "ticks": args.ticks,
-                         "process_timeout_seconds": 180, "order": "cyclic-per-repeat"},
+                         "process_timeout_seconds": case_seconds("run_play_auto_campaign"), "order": "cyclic-per-repeat"},
               "preflight_results": [], "rows": [], "log_sha256": {}, "summaries": [],
               "concurrent_execution_measured": False, "rendered_gameplay_fps_measured": False,
               "positive_speedup_required": False, "retries": 0,
@@ -426,11 +437,11 @@ def main() -> int:
             report["retained_runtime_source"] = manifest.get("source_commit")
         rapier_manifest = load_json((rapier.parent.parent / ("runtime-provenance." + report["platform"] + ".json")).read_text(encoding="utf-8"))
         require(not check_repository.verify_runtime(ROOT, rapier_manifest), "Selected Rapier source/bytes do not match retained provenance")
-        report["godot_version"] = subprocess.check_output([args.godot, "--version"], text=True).strip()
+        report["godot_version"] = subprocess.check_output([args.godot, "--version"], text=True, timeout=watchdog_seconds("operation_seconds")).strip()
         require(report["godot_version"] == GODOT_VERSION, "Pinned Godot version differs")
         env = os.environ.copy()
         env["CYBERSAND_SOURCE_REVISION"] = report["source_sha"]
-        record, failed = runner.run_case(args.godot, runner.Case("import", ("--editor", "--import", "--quit"), 240, 0), args.output, "campaign-preflight", env=env)
+        record, failed = runner.run_case(args.godot, runner.Case("import", ("--editor", "--import", "--quit"), watchdog_seconds("godot_import_seconds"), 0), args.output, "campaign-preflight", env=env)
         report["preflight_results"].append(record)
         report["log_sha256"][record["log"]] = runner.sha256(args.output / record["log"])
         require(not failed, "Campaign import failed")
@@ -439,7 +450,7 @@ def main() -> int:
                      f"--workers={identity['requested_workers']}", f"--side={identity['side']}",
                      f"--ticks={args.ticks}", f"--warmup={args.warmup}",
                      f"--repeat={identity['repeat']}", f"--order={identity['order']}")
-            record, failed = runner.run_case(args.godot, runner.Case(identity["id"], flags, 180, 0), args.output, "native-reference-row", env=env)
+            record, failed = runner.run_case(args.godot, runner.Case(identity["id"], flags, case_seconds("run_play_auto_campaign"), 0), args.output, "native-reference-row", env=env)
             report["log_sha256"][record["log"]] = runner.sha256(args.output / record["log"])
             raw = (args.output / record["log"]).read_text(encoding="utf-8")
             lines = [line[len(MARKER):] for line in raw.splitlines() if line.startswith(MARKER)]

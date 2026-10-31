@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "policy_id": "github-hosted-complete-execution-v1",
+  "owner_decision_date": "2026-10-31",
+  "purpose": "Execution watchdogs, independent of performance observations and deterministic simulation inputs.",
+  "watchdogs": {
+    "main_ack_seconds": 600,
+    "graphical_case_seconds": 1200,
+    "godot_import_seconds": 1200,
+    "operation_seconds": 300,
+    "complex_fixture_seconds": 3600,
+    "hosted_job_minutes": 180,
+    "diagnostic_capture_seconds": 30,
+    "terminate_grace_seconds": 10,
+    "native_suite_seconds": 7200,
+    "native_compile_seconds": 3600,
+    "native_case_seconds": 3600,
+    "dependency_prepare_seconds": 1200,
+    "aggregate_headroom_seconds": 600,
+    "ordinary_case_seconds": 1200,
+    "godot_job_minutes": 360,
+    "godot_setup_seconds": 4200,
+    "godot_metadata_seconds": 900
+  },
+  "advisories": {
+    "warning_ratio": 1.5,
+    "prominent_ratio": 2.0,
+    "rolling_window": 10,
+    "minimum_baseline_samples": 3,
+    "drift_window": 5,
+    "drift_ratio": 1.2
+  }
+}

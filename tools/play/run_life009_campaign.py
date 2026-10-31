@@ -15,6 +15,9 @@ import zipfile
 
 from life009_contract import RIGS, extract, number, require, verify_inventory, verify_process, verify_result
 
+from execution_policy import case_seconds, identity, watchdog_seconds
+from play_execution_contract import policy_matches, process_policy_matches, verify_log_policy, verify_source_policy
+
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "0bf28d5760aed989a79386de03ef4fc6171fef42"
 VERSION = "4.7.stable.official.5b4e0cb0f"
@@ -34,7 +37,7 @@ def write(path: Path, value: object) -> None:
 
 
 def git(*args: str) -> bytes:
-    return subprocess.check_output(["git", "-C", str(ROOT), *args], timeout=60)
+    return subprocess.check_output(["git", "-C", str(ROOT), *args], timeout=watchdog_seconds("operation_seconds"))
 
 
 def safe_child(root: Path, name: str) -> Path:
@@ -69,15 +72,16 @@ def verify_parser_controls(output: Path, records: dict) -> None:
     old = records["original"]["process"]
     require(old.get("status") == "failed" and type(old.get("returncode")) is int
             and old["returncode"] == 1 and old.get("diagnostic_error") is True
-            and old.get("timeout_seconds") == 30
-            and number(old.get("seconds"), "parser.seconds") <= 30,
+            and old.get("timeout_seconds") == watchdog_seconds("operation_seconds")
+            and number(old.get("seconds"), "parser.seconds") <= watchdog_seconds("operation_seconds")
+            and process_policy_matches(old),
             "Original parser negative control did not fail as expected")
     expected = (r'SCRIPT ERROR: Parse Error: Expected closing "\)" after call arguments\.\n'
                 r'\s+at: GDScript::reload \([^\r\n]*original-584b-helper\.gd:205\)')
     require(len(re.findall(r"SCRIPT ERROR:", logs["original"])) == 1
             and re.search(expected, logs["original"]) is not None,
             "Original parser failed for a different reason")
-    verify_process(records["current"]["process"], 30)
+    verify_process(records["current"]["process"], watchdog_seconds("operation_seconds"))
     require(not re.search(r"SCRIPT ERROR:|ERROR:|\bskipped\b|^\s*SKIP\b", logs["current"], re.M | re.I),
             "Current parser log contains a failure or skip")
 
@@ -91,7 +95,7 @@ def parser_checks(binary: str, output: Path, runner, environment: dict) -> dict:
     for label, script in (("original", str(old_path)),
                           ("current", "res://tests/play_life009_same_owner_case.gd")):
         record, _ = runner.run_case(binary, runner.Case("parser-" + label,
-            ("--check-only", "--script", script), 30, 0), output,
+            ("--check-only", "--script", script), watchdog_seconds("operation_seconds"), 0), output,
             "parser control only; does not execute gameplay", env=environment)
         write(output / ("parser-" + label + ".process.json"), record)
         records[label] = {"process": record, "log_sha256": sha(output / record["log"])}
@@ -103,7 +107,9 @@ def parser_checks(binary: str, output: Path, runner, environment: dict) -> dict:
 
 def verify_directory(output: Path) -> dict:
     report = json.loads((output / "campaign.json").read_text(encoding="utf-8"))
-    require(report.get("schema") == "play-life009-campaign-v1", "Wrong campaign schema")
+    require(report.get("schema") == "play-life009-campaign-v2", "Wrong campaign schema")
+    require(policy_matches(report.get("execution_policy")), "Campaign execution policy changed")
+    verify_source_policy(report["source_commit"])
     verify_inventory([r.get("rig") for r in report.get("rows", [])])
     require(report.get("completed") is True and report.get("errors") == [], "Incomplete/failed campaign")
     require(report.get("source_unchanged") is True and report.get("runtimes_unchanged") is True,
@@ -113,25 +119,27 @@ def verify_directory(output: Path) -> dict:
     parser_controls = json.loads(safe_child(output, "parser-controls.json").read_text())
     require(parser_controls == report.get("parser_controls"), "Parser controls changed")
     verify_parser_controls(output, parser_controls)
-    verify_process(report["import"], 240)
+    verify_process(report["import"], watchdog_seconds("godot_import_seconds"))
     require(sha(safe_child(output, report["import"]["log"])) == report["import_log_sha256"],
             "Import log changed")
     results = []
     for row in report["rows"]:
         process = row["process"]
-        verify_process(process, 180)
-        require(row["observed_total_seconds"] <= 180, "Late total process observation")
+        verify_process(process, case_seconds("test_play_life009_" + row["rig"]))
+        require(number(row["observed_total_seconds"], "observed_total_seconds") <= case_seconds("test_play_life009_" + row["rig"]), "Late total process observation")
         require(process["name"] == "test_play_life009_" + row["rig"], "Wrong process/rig")
         log = safe_child(output, process["log"])
         require(sha(log) == row["log_sha256"], "Original case log changed")
         raw = json.loads(safe_child(output, row["process_record"]).read_text(encoding="utf-8"))
         require(raw == process, "Process receipt differs from original")
-        result = extract(log.read_text(encoding="utf-8"))
+        text = log.read_text(encoding="utf-8")
+        verify_log_policy(text, report["source_commit"])
+        result = extract(text)
         require(result == row["result"], "Reported result differs from engine log")
         summary = verify_result(result, row["rig"], report["source_commit"])
         require(summary == row["summary"], "Reduction differs from observations")
         results.append(summary)
-    return {"status": "passed", "source_commit": report["source_commit"],
+    return {"status": "passed", "execution_policy": identity(), "source_commit": report["source_commit"],
             "source_tree": report["source_tree"], "platform": report["platform"],
             "rows": results, "qualification": "headless LIFE009 only; no graphical/physical/manual acceptance"}
 
@@ -153,8 +161,9 @@ def main() -> int:
     sys.path.insert(0, str(ROOT / "tools/ci"))
     import run_godot_regressions as runner
     import run_windows_godot_regressions as windows
-    report = {"schema": "play-life009-campaign-v1", "status": "failed", "completed": False,
+    report = {"schema": "play-life009-campaign-v2", "status": "failed", "completed": False,
               "platform": sys.platform, "host": platform.platform(), "python": sys.version,
+              "execution_policy": identity(),
               "run_id": os.getenv("GITHUB_RUN_ID"), "run_attempt": os.getenv("GITHUB_RUN_ATTEMPT"),
               "rows": [], "errors": [], "base_commit": BASE,
               "scope": "actual headless Main/native/Rapier; focus seam; no shader/graphical/human acceptance"}
@@ -208,7 +217,7 @@ def main() -> int:
                 bundle.extractall(directory)
             binary = directory / "Godot_v4.7-stable_linux.x86_64"
             binary.chmod(0o755)
-            version = subprocess.check_output([str(binary), "--version"], text=True, timeout=30).strip()
+            version = subprocess.check_output([str(binary), "--version"], text=True, timeout=watchdog_seconds("operation_seconds")).strip()
             report["godot_identity"] = {"version": version, "binary_sha256": sha(binary),
                                         "archive_sha256": sha(archive)}
         require(report["godot_identity"]["version"] == VERSION, "Wrong engine version")
@@ -216,22 +225,22 @@ def main() -> int:
         # identities separate; never package credentials or generated caches.
         with (output / "executed-source.tar").open("wb") as handle:
             subprocess.run(["git", "archive", "--format=tar", "HEAD"], cwd=ROOT,
-                           stdout=handle, check=True, timeout=60,
+                           stdout=handle, check=True, timeout=watchdog_seconds("operation_seconds"),
                            env=os.environ | {"GIT_LFS_SKIP_SMUDGE": "1"})
         report["executed_source_archive_sha256"] = sha(output / "executed-source.tar")
         environment = os.environ | {"CYBERSAND_SOURCE_REVISION": source, "GODOT_SILENCE_ROOT_WARNING": "1"}
-        report["import"], failed = runner.run_case(str(binary), runner.Case("import", ("--editor", "--quit"), 240, 0),
+        report["import"], failed = runner.run_case(str(binary), runner.Case("import", ("--editor", "--quit"), watchdog_seconds("godot_import_seconds"), 0),
                                                  output, "ordinary headless import", env=environment)
         report["import_log_sha256"] = sha(output / report["import"]["log"])
         write(output / "campaign.json", report)
         if not failed:
-            verify_process(report["import"], 240)
+            verify_process(report["import"], watchdog_seconds("godot_import_seconds"))
             report["parser_controls"] = parser_checks(str(binary), output, runner, environment)
             for rig in RIGS:
                 name = "test_play_life009_" + rig
                 start = time.perf_counter()
                 process, failed = runner.run_case(str(binary), runner.Case(name,
-                    ("--script", "res://tests/" + name + ".gd"), 180, 0), output,
+                    ("--script", "res://tests/" + name + ".gd"), case_seconds(name), 0), output,
                     "original first-attempt automatic-callback behavior", env=environment)
                 observed = time.perf_counter() - start
                 # Retain the real process outcome before parsing or postflight can fail.
@@ -242,8 +251,8 @@ def main() -> int:
                        "errors": []}
                 report["rows"].append(row)
                 try:
-                    verify_process(process, 180)
-                    require(observed <= 180, "Late observed case completion")
+                    verify_process(process, case_seconds(name))
+                    require(observed <= case_seconds(name), "Late observed case completion")
                     row["result"] = extract((output / process["log"]).read_text(encoding="utf-8"))
                     row["summary"] = verify_result(row["result"], rig, source)
                 except Exception as error:

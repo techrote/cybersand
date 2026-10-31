@@ -37,9 +37,10 @@ permissions:
 
 concurrency:
   group: gdextension-${{ github.ref }}-${{ inputs.rapier_bvh_pair == true && github.run_id || (inputs.physical_actor_stress == true && 'physical-stress' || 'suite') }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
+  CYBERSAND_CI_WATCHDOG_SCALE: "1"
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
   GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
   GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
@@ -58,7 +59,7 @@ jobs:
     name: ready validation scope
     if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review'
     runs-on: ubuntu-24.04
-    timeout-minutes: 2
+    timeout-minutes: 10
     outputs:
       required: ${{ steps.scope.outputs.required }}
     steps:
@@ -97,7 +98,7 @@ jobs:
                       "X-GitHub-Api-Version": "2022-11-28",
                   },
               )
-              with urllib.request.urlopen(request) as response:
+              with urllib.request.urlopen(request, timeout=300) as response:
                   batch = json.load(response)
               files.extend(item["filename"] for item in batch)
               if len(batch) < 100:
@@ -117,6 +118,53 @@ jobs:
           print("\n".join(files))
           PY
 
+  execution-plan:
+    name: complete execution budgets
+    needs: [ready_scope]
+    if: >-
+      always() && inputs.physical_actor_stress != true &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.outputs.required == 'true')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    outputs:
+      linux_matrix: ${{ steps.plan.outputs.linux_matrix }}
+      linux_shard_count: ${{ steps.plan.outputs.linux_shard_count }}
+      linux_job_minutes: ${{ steps.plan.outputs.linux_job_minutes }}
+      linux_execution_minutes: ${{ steps.plan.outputs.linux_execution_minutes }}
+      linux_execution_seconds: ${{ steps.plan.outputs.linux_execution_seconds }}
+      windows_matrix: ${{ steps.plan.outputs.windows_matrix }}
+      windows_shard_count: ${{ steps.plan.outputs.windows_shard_count }}
+      windows_job_minutes: ${{ steps.plan.outputs.windows_job_minutes }}
+      windows_execution_minutes: ${{ steps.plan.outputs.windows_execution_minutes }}
+    steps:
+      - name: Check out exact planning source
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Prove slow success, late failure, owned cleanup and complete budgets
+        timeout-minutes: 20
+        run: |
+          python3 tools/ci/test_execution_policy.py
+          python3 tools/ci/test_execution_telemetry.py
+          python3 tools/ci/test_job_performance.py
+          python3 tools/ci/test_godot_job_plan.py
+          python3 tools/ci/test_verify_linux_godot_shards.py
+          python3 tools/ci/test_verify_retained_play_readback.py
+          python3 tools/ci/test_performance_history.py
+      - name: Derive complete platform matrices
+        id: plan
+        run: python3 tools/ci/godot_job_plan.py --output build/execution-plan.json
+      - name: Retain original parent and child budget proof
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godot-execution-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/execution-plan.json
+          if-no-files-found: warn
+          retention-days: 90
+
   linux-build:
     name: linux build x86_64
     needs: [ready_scope]
@@ -127,7 +175,7 @@ jobs:
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 240
     steps:
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -165,7 +213,7 @@ jobs:
           mkdir "$RUNNER_TEMP/godot-cpp"
           git -C "$RUNNER_TEMP/godot-cpp" init
           git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
-          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
           git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
           test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
 
@@ -178,8 +226,8 @@ jobs:
           LINUX_CXX: /usr/bin/g++-13
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
         run: |
-          timeout 35m tools/build_pinned_godot_cpp.sh linux
-          timeout 20m tools/build_native_extension.sh
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label godot-cpp-linux --output-dir build/build-timing/godot-cpp-linux -- tools/build_pinned_godot_cpp.sh linux
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label extension-linux --output-dir build/build-timing/extension-linux -- tools/build_native_extension.sh
           file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/linux-file.txt"
           grep -q 'ELF 64-bit.*x86-64' "$RUNNER_TEMP/linux-file.txt"
 
@@ -188,7 +236,7 @@ jobs:
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
         run: |
           cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
-          timeout 1m tools/check_linux_runtime_floor.sh
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" tools/check_linux_runtime_floor.sh
           mkdir -p build/linux-runtime
           cp "$CYBERSAND_NATIVE_OUTPUT" build/linux-runtime/libcybersand_native.linux.x86_64.so
           cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so build/linux-runtime/
@@ -215,6 +263,15 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Retain compiler process timing and original logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godot-build-timing-linux-${{ github.run_id }}
+          path: build/build-timing/
+          if-no-files-found: warn
+          retention-days: 90
+
   windows-build:
     name: windows x86_64
     # Routine Windows cross-build validation runs on the standard GitHub-hosted
@@ -227,7 +284,7 @@ jobs:
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 240
     steps:
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -252,13 +309,13 @@ jobs:
           mkdir "$RUNNER_TEMP/godot-cpp"
           git -C "$RUNNER_TEMP/godot-cpp" init
           git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
-          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
           git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
           test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
 
       - name: Prepare exact LLVM-MinGW
         run: |
-          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
           echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
           mkdir "$RUNNER_TEMP/llvm-mingw"
           tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
@@ -276,28 +333,37 @@ jobs:
           WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
         run: |
-          timeout 35m tools/build_pinned_godot_cpp.sh windows
-          timeout 20m tools/build_native_extension_windows.sh
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label godot-cpp-windows --output-dir build/build-timing/godot-cpp-windows -- tools/build_pinned_godot_cpp.sh windows
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label extension-windows --output-dir build/build-timing/extension-windows -- tools/build_native_extension_windows.sh
           file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/windows-file.txt"
           grep -q 'PE32+ executable (DLL).*x86-64' "$RUNNER_TEMP/windows-file.txt"
           "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/windows-imports.txt"
           sha256sum "$CYBERSAND_NATIVE_OUTPUT"
 
+      - name: Retain compiler process timing and original logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: godot-build-timing-windows-${{ github.run_id }}
+          path: build/build-timing/
+          if-no-files-found: warn
+          retention-days: 90
+
   windows-regression:
     name: windows headless regression shard ${{ matrix.shard }}
-    needs: [ready_scope]
+    needs: [ready_scope, execution-plan]
     if: >-
       always() && inputs.physical_actor_stress != true &&
+      needs.execution-plan.result == 'success' &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: windows-2022
-    timeout-minutes: 45
+    timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.windows_job_minutes) }}
     strategy:
       fail-fast: false
-      matrix:
-        shard: [0, 1, 2, 3]
+      matrix: ${{ fromJSON(needs.execution-plan.outputs.windows_matrix) }}
     defaults:
       run:
         shell: bash
@@ -307,24 +373,27 @@ jobs:
       PYTHONUTF8: '1'
     steps:
       - name: Check out exact tested source
+        timeout-minutes: 5
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
           lfs: false
 
       - name: Select Python 3.12
+        timeout-minutes: 5
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
 
       - name: Materialize retained Windows CyberSand and pinned Rapier runtimes
-        timeout-minutes: 5
+        timeout-minutes: 20
         run: |
           set -euo pipefail
           git lfs install --local
           git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
 
       - name: Validate Windows execution harness
+        timeout-minutes: 10
         run: |
           set -euo pipefail
           python tools/ci/test_godot_regression_sharding.py
@@ -338,24 +407,25 @@ jobs:
           python tools/ci/test_rapier_same_host.py
 
       - name: Download official Windows Godot archive
-        timeout-minutes: 10
+        timeout-minutes: 20
         run: |
           set -euo pipefail
-          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 1200 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
 
       - name: Verify retained runtime and execute every applicable Windows case
-        timeout-minutes: 40
+        timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.windows_execution_minutes) }}
         run: |
           set -euo pipefail
-          python tools/ci/run_windows_godot_regressions.py --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --output "build/godot-regressions/windows-${{ matrix.shard }}" --shard-count 4 --shard-index ${{ matrix.shard }}
+          python tools/ci/run_windows_godot_regressions.py --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --output "build/godot-regressions/windows-${{ matrix.shard }}" --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} --shard-index ${{ matrix.shard }}
 
       - name: Prove internal watchdog observes a synchronously blocked Windows main thread
-        timeout-minutes: 2
+        timeout-minutes: 5
         run: |
           set -euo pipefail
           python tools/ci/test_physical_internal_watchdog.py --godot "$RUNNER_TEMP/godot-windows/Godot_v4.7-stable_win64_console.exe"
 
       - name: Retain actual Windows execution evidence
+        timeout-minutes: 5
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -366,21 +436,22 @@ jobs:
 
   windows-coverage:
     name: windows sharded execution coverage
-    needs: [ready_scope, windows-regression]
+    needs: [ready_scope, execution-plan, windows-regression]
     if: >-
       always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
-         needs.ready_scope.outputs.required == 'true')))
+         needs.ready_scope.outputs.required == 'true' ||
+         needs.ready_scope.result != 'success')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 180
     steps:
       - name: Check out exact verification source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
-      - name: Download all four original Windows shard artifacts
+      - name: Download every original Windows shard artifact
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           pattern: windows-godot-headless-*-${{ github.run_id }}
@@ -398,7 +469,7 @@ jobs:
             --source-sha "${{ github.sha }}" \
             --run-id "${{ github.run_id }}" \
             --attempt "${{ github.run_attempt }}" \
-            --shard-count 4 \
+            --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} \
             --output build/windows-coverage.json 2>&1 | tee build/windows-coverage-verification.log
           test "$SHARD_RESULT" = "success"
       - name: Retain Windows exact-coverage receipt
@@ -409,45 +480,49 @@ jobs:
           path: |
             build/windows-coverage.json
             build/windows-coverage-verification.log
+            build/windows-play-readback/
           if-no-files-found: warn
           retention-days: 30
 
   linux-regression:
     name: linux regression shard ${{ matrix.shard }}
-    needs: linux-build
+    needs: [linux-build, execution-plan]
     if: >-
       always() && inputs.physical_actor_stress != true &&
-      needs.linux-build.result == 'success' &&
+      needs.linux-build.result == 'success' && needs.execution-plan.result == 'success' &&
       (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     # Every shard has >=2 logical CPUs so weighted planning may move the worker
     # parity case without disabling its parallel arm. All use GitHub-hosted CI.
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.linux_job_minutes) }}
     strategy:
       fail-fast: false
-      matrix:
-        shard: [0, 1, 2, 3]
+      matrix: ${{ fromJSON(needs.execution-plan.outputs.linux_matrix) }}
     steps:
       - name: Check out exact source
+        timeout-minutes: 5
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Restore exact Linux runtime
+        timeout-minutes: 5
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: linux-runtime-${{ github.run_id }}
           path: build/linux-runtime
 
       - name: Verify and install runtime artifact
+        timeout-minutes: 5
         run: |
           test "$(cat build/linux-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
           (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
           cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
           cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
-          timeout 1m tools/check_linux_runtime_floor.sh
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" tools/check_linux_runtime_floor.sh
 
       - name: Prepare exact Godot runtime
+        timeout-minutes: 20
         run: |
-          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
@@ -458,26 +533,29 @@ jobs:
 
       - name: Prove internal watchdog observes a synchronously blocked Linux main thread
         if: matrix.shard == 0
-        timeout-minutes: 2
+        timeout-minutes: 5
         run: python3 tools/ci/test_physical_internal_watchdog.py --godot "$GODOT_BIN"
 
       - name: Install software rendering display
+        timeout-minutes: 15
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils
 
       - name: Run isolated regression shard with actual rendered-pixel tests
+        timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.linux_execution_minutes) }}
         env:
           LIBGL_ALWAYS_SOFTWARE: "1"
           LP_NUM_THREADS: "2"
           GALLIVM_PERF: "nopt"
           CYBERSAND_PRESENTATION_EVIDENCE: ${{ github.workspace }}/build/godot-regressions/shard-${{ matrix.shard }}/presentation
         run: |
-          timeout 30m xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output "build/godot-regressions/shard-${{ matrix.shard }}" --shard-count 4 --shard-index "${{ matrix.shard }}" --keep-going
+          timeout "${{ needs.execution-plan.outputs.linux_execution_seconds }}" xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output "build/godot-regressions/shard-${{ matrix.shard }}" --shard-count ${{ needs.execution-plan.outputs.linux_shard_count }} --shard-index "${{ matrix.shard }}" --keep-going
           python3 tools/ci/readback_4ly003_development.py --regression-output "build/godot-regressions/shard-${{ matrix.shard }}" --expect-source-sha "$(git rev-parse HEAD)"
           git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
 
       - name: Retain shard evidence
+        timeout-minutes: 10
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -491,189 +569,63 @@ jobs:
 
 
 
-  linux-serial-equivalence:
-    name: linux serial equivalence
-    needs: linux-build
-    if: >-
-      always() && inputs.physical_actor_stress != true &&
-      needs.linux-build.result == 'success' &&
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.draft == false &&
-      vars.GDEXT_SERIAL_EQUIVALENCE == '1'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 35
-    steps:
-      - name: Check out exact source
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Restore exact Linux runtime
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: linux-runtime-${{ github.run_id }}
-          path: build/linux-runtime
-
-      - name: Verify and install runtime artifact
-        run: |
-          test "$(cat build/linux-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
-          (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
-          cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
-          cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
-          timeout 1m tools/check_linux_runtime_floor.sh
-
-      - name: Prepare exact Godot runtime
-        run: |
-          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
-          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
-          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
-          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
-          test -n "$GODOT_BIN"
-          chmod +x "$GODOT_BIN"
-          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
-          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
-
-      - name: Install software rendering display
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils
-
-      - name: Run serial suite with actual rendered-pixel tests
-        env:
-          LIBGL_ALWAYS_SOFTWARE: "1"
-          LP_NUM_THREADS: "2"
-          GALLIVM_PERF: "nopt"
-          CYBERSAND_PRESENTATION_EVIDENCE: ${{ github.workspace }}/build/godot-regressions/serial/presentation
-        run: |
-          timeout 30m xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output build/godot-regressions/serial --keep-going
-          python3 tools/ci/readback_4ly003_development.py --regression-output build/godot-regressions/serial --expect-source-sha "$(git rev-parse HEAD)"
-          git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
-
-      - name: Retain serial equivalence evidence
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: linux-godot-serial-${{ github.run_id }}
-          path: |
-            build/godot-regressions/serial/
-            build/linux-runtime/source-sha.txt
-            build/linux-runtime/runtime.sha256
-          if-no-files-found: warn
-          retention-days: 30
-
   linux-regression-gate:
     name: linux x86_64
-    needs: [ready_scope, linux-regression, linux-serial-equivalence]
+    needs: [ready_scope, execution-plan, linux-regression]
     if: >-
       always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
-         needs.ready_scope.outputs.required == 'true')))
+         needs.ready_scope.outputs.required == 'true' ||
+         needs.ready_scope.result != 'success')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 180
     steps:
-      - name: Require all sharded regressions
-        run: |
-          test "${{ needs.linux-regression.result }}" = "success"
-
-      - name: Require serial equivalence lane during PR migration
-        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
-        run: |
-          test "${{ needs.linux-serial-equivalence.result }}" = "success"
-
-      - name: Download sharded evidence
-        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+      - name: Check out exact verification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Download every original Linux shard artifact
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           pattern: linux-godot-shard-*-${{ github.run_id }}
-          path: build/sharded
-
-      - name: Download serial evidence
-        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+          path: build/linux-coverage-input
+      - name: Download source-matched built runtime
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: linux-godot-serial-${{ github.run_id }}
-          path: build/serial
-
-      - name: Prove serial and sharded coverage equivalence
-        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime
+      - name: Independently prove complete source and runtime matched Linux coverage
+        if: always()
+        env:
+          SHARD_RESULT: ${{ needs.linux-regression.result }}
         run: |
-          python3 - <<'PY'
-          from collections import Counter
-          import json
-          from pathlib import Path
-
-          shard_files = sorted(Path("build/sharded").glob("**/timings.json"))
-          serial_files = sorted(Path("build/serial").glob("**/timings.json"))
-          if len(shard_files) != 4:
-              raise SystemExit(f"Expected four shard timing files, found {len(shard_files)}: {shard_files}")
-          if len(serial_files) != 1:
-              raise SystemExit(f"Expected one serial timing file, found {len(serial_files)}: {serial_files}")
-
-          def load(path):
-              return json.loads(path.read_text(encoding="utf-8"))
-
-          serial = load(serial_files[0])
-          serial_cases = [r["name"] for r in serial["results"] if r["role"] == "case"]
-          if any(r["status"] != "passed" for r in serial["results"]):
-              raise SystemExit("Serial equivalence suite contains a non-passing result")
-
-          sharded_cases = []
-          identities = []
-          for path in shard_files:
-              payload = load(path)
-              if any(r["status"] != "passed" for r in payload["results"]):
-                  raise SystemExit(f"Shard contains a non-passing result: {path}")
-              sharded_cases.extend(r["name"] for r in payload["results"] if r["role"] == "case")
-              identities.append(payload["identity"])
-
-          if Counter(sharded_cases) != Counter(serial_cases):
-              raise SystemExit(
-                  "Sharded suite coverage differs from serial suite: "
-                  f"serial={sorted(serial_cases)} sharded={sorted(sharded_cases)}"
-              )
-          duplicates = sorted(name for name, count in Counter(sharded_cases).items() if count != 1)
-          if duplicates:
-              raise SystemExit(f"Sharded cases were not executed exactly once: {duplicates}")
-
-          serial_identity = serial["identity"]
-          for identity in identities:
-              for key in ("source_sha", "godot_version", "cybersand_runtime", "rapier_runtime"):
-                  if identity[key] != serial_identity[key]:
-                      raise SystemExit(f"Identity mismatch for {key}: {identity[key]} != {serial_identity[key]}")
-
-          summary = {
-              "source_sha": serial_identity["source_sha"],
-              "case_count": len(serial_cases),
-              "shard_count": 4,
-              "serial_cases": serial_cases,
-              "sharded_cases": sharded_cases,
-              "result": "equivalent",
-          }
-          Path("build/equivalence.json").write_text(
-              json.dumps(summary, indent=2, sort_keys=True) + "\n",
-              encoding="utf-8",
-          )
-          print(f"Equivalent coverage: {len(serial_cases)} unique suite cases across four shards")
-          PY
-
-      - name: Retain equivalence proof
-        if: github.event_name == 'pull_request' && vars.GDEXT_SERIAL_EQUIVALENCE == '1'
+          python3 tools/ci/verify_linux_godot_shards.py \
+            --root build/linux-coverage-input --runtime build/linux-runtime \
+            --source-sha "${{ github.sha }}" --run-id "${{ github.run_id }}" \
+            --attempt "${{ github.run_attempt }}" \
+            --shard-count "${{ needs.execution-plan.outputs.linux_shard_count }}" \
+            --godot-version "$GODOT_VERSION" --output build/linux-coverage.json
+          test "$SHARD_RESULT" = "success"
+      - name: Retain Linux exact coverage receipt
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: linux-godot-equivalence-${{ github.run_id }}
-          path: build/equivalence.json
-          if-no-files-found: error
-          retention-days: 30
+          name: linux-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/linux-coverage.json
+            build/linux-play-readback/
+          if-no-files-found: warn
+          retention-days: 90
 
   physical-timing:
-    name: physical regression timing distribution
-    needs: [linux-regression, windows-regression]
+    name: retained execution and physical timing history
+    needs: [linux-regression, windows-regression, linux-build, windows-build]
     if: >-
       always() &&
       (needs.linux-regression.result != 'skipped' ||
        needs.windows-regression.result != 'skipped')
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 60
     steps:
       - name: Check out timing reducer
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -689,6 +641,26 @@ jobs:
             --output build/physical-timing-report \
             --run-id "${{ github.run_id }}" \
             --attempt "${{ github.run_attempt }}"
+      - name: Fetch compiler process evidence
+        if: always()
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: godot-build-timing-*-${{ github.run_id }}
+          path: build/compiler-timing-input/
+      - name: Compare complete observations with matching hosted history
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 tools/ci/performance_history.py --current build/physical-timing-input --current build/compiler-timing-input --output build/execution-performance --include-jobs
+      - name: Retain advisory execution performance history
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: execution-performance-godot-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/execution-performance/
+          if-no-files-found: warn
+          retention-days: 90
       - name: Retain physical regression timing history for this run
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

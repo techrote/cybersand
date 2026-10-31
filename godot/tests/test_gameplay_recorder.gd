@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Recorder = preload("res://scripts/gameplay_recorder.gd")
 
 var _failures: int = 0
@@ -416,7 +418,7 @@ func _test_async_finalization() -> void:
 	var requested: Dictionary = recorder.request_stop()
 	_expect(bool(requested.finalizing), "request_stop did not enter finalizing state")
 	_expect(not bool(requested.accepting), "request_stop kept admitting frames")
-	var deadline: int = Time.get_ticks_msec() + 5000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 	while recorder.is_active() and Time.get_ticks_msec() < deadline:
 		OS.delay_msec(1)
 	var final_status: Dictionary = recorder.poll_finalization()

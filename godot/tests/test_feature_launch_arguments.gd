@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 func _initialize() -> void:
 	run.call_deferred()
 
@@ -12,7 +14,7 @@ func run() -> void:
 		quit()
 		return
 	change_scene_to_file("res://feature_launcher.tscn")
-	var deadline: int = Time.get_ticks_msec() + 60000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("main_ack_seconds")
 	while Time.get_ticks_msec() < deadline:
 		await process_frame
 		if current_scene != null and current_scene.scene_file_path in ["res://main.tscn", "res://depth_lab.tscn", "res://deepworks.tscn", "res://player_playground.tscn", "res://semantic_depth.tscn"]: break

@@ -30,15 +30,17 @@ for every preset's controls, gamepad mapping, focus/reset behavior and current
 qualification. `--player=acrobat` selects a preset at launch. These are experimental
 controls; headless regressions do not establish target-PC human feel acceptance.
 
-**Manual PLAY continuation, 31 October 2026:** the owner has deferred further
-Windows shader/compiler/cache investigations until after planned shader reworks.
-Existing cold-start failures and #308/#310 integration holds remain. Independent
-[LIFE009 candidate qualification](docs/audits/2026-10-31-play-life009-automatic-pause.md)
-adds real automatic-callback input/pause/resume tests for all five mechanical
-rigs, without changing production shaders, physics, native ownership or runtimes.
-It is headless behavior evidence, not graphical or human-feel acceptance. See
-[draft PR #317](https://github.com/techrote/cybersand/pull/317) for exact tested
-heads, preserved first failures and the remaining integration gates.
+**Manual PLAY continuation, 31 October 2026:** the owner now prioritizes
+qualification and integration of Claude's #326 shader improvement and replaces
+historical short CI deadlines with generous shared watchdogs. The
+[execution and performance contract](docs/operations/ci-execution-and-performance.md)
+separates correctness, complete execution and advisory timing history. Accepted
+main `adaaa37` has complete original post-merge gates; the active successors
+require their own source-matched review and full Windows/Linux and Native gates.
+Physical displays, controller devices and human feel remain unqualified. The
+[development handover](docs/operations/cybersand-codex-development-handover.md)
+and [#305 ledger](https://github.com/techrote/cybersand/issues/305) record active
+ownership. Scheduswarm remains paused.
 
 ## Deepworks — the exhibition below
 

@@ -98,9 +98,11 @@ func expect(value: bool, message: String) -> void:
 		push_error("PLAY_INPUT011: " + message)
 
 
-func bounded(predicate: Callable, name: String) -> bool:
+func bounded(predicate: Callable, name: String, allowance_usec: int = -1) -> bool:
+	if allowance_usec < 0:
+		allowance_usec = Watchdogs.microseconds("operation_seconds")
 	var started: int = Time.get_ticks_usec()
-	var deadline: int = mini(started + WAIT_TIMEOUT_MS * 1000, fixture_started_usec + 150000000)
+	var deadline: int = mini(started + allowance_usec, fixture_started_usec + Watchdogs.microseconds("complex_fixture_seconds"))
 	var passed: bool = false
 	while Time.get_ticks_usec() < deadline:
 		if predicate.call():
@@ -387,12 +389,13 @@ func run() -> void:
 	desktop.set_script(ObservedMain)
 	root.add_child(desktop)
 	await process_frame
-	var first_ok: bool = await bounded(Callable(self,"first_main_completed"),"first actual Main callback returns")
+	var first_ok: bool = await bounded(Callable(self,"first_main_completed"),
+		"first actual Main callback returns", Watchdogs.microseconds("main_ack_seconds"))
 	var main_ended_usec: int = int(desktop.first_main_usec)
 	expect(first_ok and main_ended_usec >= main_started_usec
-		and main_ended_usec-main_started_usec <= 30000000,
-		"first Main acknowledgement respects its original 30-second origin")
-	row.first_main = {"started_usec":main_started_usec,"acknowledged_usec":main_ended_usec,"limit_usec":30000000}
+		and main_ended_usec-main_started_usec <= Watchdogs.microseconds("main_ack_seconds"),
+		"first Main acknowledgement respects its configured Main acknowledgement watchdog")
+	row.first_main = {"started_usec":main_started_usec,"acknowledged_usec":main_ended_usec,"limit_usec":Watchdogs.microseconds("main_ack_seconds")}
 	var worker: CyberSimulationWorker = desktop.simulation_worker
 	var success: bool = false
 	if failures == 0 and worker != null and desktop.worker_start_error == OK and worker._thread.is_started():
@@ -408,9 +411,9 @@ func run() -> void:
 	var teardown_started_usec: int = Time.get_ticks_usec()
 	await close_cycle(desktop,worker,session,"INPUT011: ")
 	var teardown_usec: int = Time.get_ticks_usec()-teardown_started_usec
-	expect(teardown_usec <= WAIT_TIMEOUT_MS*1000,"teardown respects its 15-second operation limit")
+	expect(teardown_usec <= WAIT_TIMEOUT_MS*1000,"teardown respects its configured operation watchdog")
 	var elapsed_usec: int = Time.get_ticks_usec()-fixture_started_usec
-	expect(elapsed_usec <= 150000000,"fixture respects its 150-second total limit")
+	expect(elapsed_usec <= Watchdogs.microseconds("complex_fixture_seconds"),"fixture respects its configured fixture watchdog")
 	row.completed = success and failures == 0
 	print("PLAY_INPUT011_RESULT ",JSON.stringify({"schema":"play-input011-v2",
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"rig":str(rig),

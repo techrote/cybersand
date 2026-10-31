@@ -13,11 +13,14 @@ import platform
 import subprocess
 import sys
 
+from execution_policy import identity as policy_identity, watchdog_seconds
+
 ROOT = Path(__file__).resolve().parents[2]
 POOL_SHA256 = "6e0b106df73926d94db07ce5c4fea1764f4cc1d883d6a0d1e98c242c6d68a25d"
 SOURCE = "native/src/world.cpp"
 DRIVER = "native/tests/test_play_busy001_pool.cpp"
 GATE = "native/tests/support/play_busy001_barrier.hpp"
+POLICY_INPUTS = ("tools/ci/execution_policy.py", "godot/tests/support/ci_execution_policy.json")
 
 
 def extract_pool(raw: bytes) -> bytes:
@@ -44,10 +47,10 @@ def generated_header(pool: bytes) -> bytes:
 
 
 def git(*args: str) -> bytes:
-    return subprocess.check_output(["git", "-C", str(ROOT), *args], timeout=20)
+    return subprocess.check_output(["git", "-C", str(ROOT), *args], timeout=watchdog_seconds("operation_seconds"))
 
 
-def invoke(command: list[str], log: Path, timeout: int, env: dict | None = None) -> None:
+def invoke(command: list[str], log: Path, timeout: float, env: dict | None = None) -> None:
     with log.open("wb") as stream:
         try:
             process = subprocess.run(command, cwd=ROOT, stdout=stream,
@@ -69,7 +72,8 @@ def main() -> int:
                         help="explicit non-checkout mode; never a full-World provenance claim")
     args = parser.parse_args()
     output = args.output.resolve(); output.mkdir(parents=True, exist_ok=True)
-    receipt = {"schema": "play-busy001a-pool-apparatus-v1", "status": "failed",
+    receipt = {"schema": "play-busy001a-pool-apparatus-v2", "status": "failed",
+               "execution_policy": policy_identity(),
                "pool_class_sha256": POOL_SHA256, "platform": platform.platform(),
                "python": sys.version, "compiler": args.compiler, "sanitize": args.sanitize,
                "run_id": os.getenv("GITHUB_RUN_ID"), "run_attempt": os.getenv("GITHUB_RUN_ATTEMPT"),
@@ -87,7 +91,7 @@ def main() -> int:
             head = git("rev-parse", "HEAD").decode().strip()
             if not args.expected_source or head != args.expected_source:
                 raise ValueError("checkout must match explicit expected source SHA")
-            git("diff", "--exit-code", "HEAD", "--", SOURCE, DRIVER, GATE, "tools/ci/run_play_busy001_pool.py")
+            git("diff", "--exit-code", "HEAD", "--", SOURCE, DRIVER, GATE, "tools/ci/run_play_busy001_pool.py", *POLICY_INPUTS)
             raw = git("show", "HEAD:" + SOURCE)
             receipt.update(source_mode="exact_git_checkout", source_sha=head,
                            source_tree=git("rev-parse", "HEAD^{tree}").decode().strip(),
@@ -99,7 +103,7 @@ def main() -> int:
         header.write_bytes(generated_header(pool))
         receipt["input_sha256"] = {
             path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
-            for path in (DRIVER, GATE, "tools/ci/run_play_busy001_pool.py")}
+            for path in (DRIVER, GATE, "tools/ci/run_play_busy001_pool.py", *POLICY_INPUTS)}
         is_msvc = Path(args.compiler).name.lower() in ("cl", "cl.exe")
         binary = output / ("pool-test.exe" if os.name == "nt" else "pool-test")
         if is_msvc:
@@ -117,14 +121,14 @@ def main() -> int:
             command += [str(ROOT / DRIVER), "-o", str(binary)]
         receipt["compile_command"] = command
         identity = subprocess.run([args.compiler] if is_msvc else [args.compiler, "--version"],
-                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=15)
+                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=watchdog_seconds("operation_seconds"))
         (output / "compiler.txt").write_bytes(identity.stdout)
-        invoke(command, output / "compile.log", 120)
+        invoke(command, output / "compile.log", watchdog_seconds("native_compile_seconds"))
         receipt["binary_sha256"] = hashlib.sha256(binary.read_bytes()).hexdigest()
         env = dict(os.environ)
         env.update(ASAN_OPTIONS="detect_leaks=1:halt_on_error=1", UBSAN_OPTIONS="halt_on_error=1",
                    TSAN_OPTIONS="halt_on_error=1")
-        invoke([str(binary)], output / "execution.log", 30, env)
+        invoke([str(binary)], output / "execution.log", watchdog_seconds("native_case_seconds"), env)
         text = (output / "execution.log").read_text(encoding="utf-8")
         rows = [json.loads(line.split(" ", 1)[1]) for line in text.splitlines()
                 if line.startswith("PLAY_BUSY001_POOL_ROW ")]
@@ -146,7 +150,7 @@ def main() -> int:
         if not args.local_source_excerpt:
             if git("rev-parse", "HEAD").decode().strip() != args.expected_source:
                 raise ValueError("source HEAD moved during execution")
-            git("diff", "--exit-code", "HEAD", "--", SOURCE, DRIVER, GATE, "tools/ci/run_play_busy001_pool.py")
+            git("diff", "--exit-code", "HEAD", "--", SOURCE, DRIVER, GATE, "tools/ci/run_play_busy001_pool.py", *POLICY_INPUTS)
         receipt.update(status="passed", result=result, dispatches=rows)
     except (OSError, ValueError, KeyError, RuntimeError, subprocess.SubprocessError) as error:
         receipt["errors"].append(f"{type(error).__name__}: {error}")

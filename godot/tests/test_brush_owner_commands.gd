@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const DesktopTool = preload("res://scripts/main.gd")
 
 var failures: int = 0
@@ -70,7 +72,7 @@ func _run() -> void:
 	if start_error == OK:
 		var initial: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
 		var after_serial: int = -1 if initial == null else initial.serial
-		var deadline: int = Time.get_ticks_msec() + 5000
+		var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 		var applied_snapshot: CyberSimulationSnapshot
 		while Time.get_ticks_msec() < deadline:
 			await process_frame

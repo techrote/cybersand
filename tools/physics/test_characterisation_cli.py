@@ -2,13 +2,20 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 from fractions import Fraction
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
+import sys
 import time
 import unittest
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ci"))
+from execution_policy import watchdog_seconds
+from native_execution_policy import PHYSICS_DISPATCH_WORKERS, PHYSICS_INVOCATIONS
 
 
 MATERIAL_COUNT = 132
@@ -21,34 +28,100 @@ INVALID_IDS = (
 )
 
 
+def invocation_plan() -> list[dict]:
+    # unittest sorts the three existing method names. Preserve that observation
+    # order even when independent native processes finish in a different order.
+    plan = []
+    for material in BUILDING_IDS:
+        for role in ("upper", "lower"):
+            plan.append({"name": f"material-{material}-{role}",
+                         "top": material if role == "upper" else 1,
+                         "bottom": 1 if role == "upper" else material})
+    for index, material in enumerate(INVALID_IDS):
+        for role in ("upper", "lower"):
+            plan.append({"name": f"invalid-{index}-{role}",
+                         "top": material if role == "upper" else 1,
+                         "bottom": 1 if role == "upper" else material})
+    for material in (2, 80):
+        for role in ("upper", "lower"):
+            plan.append({"name": f"material-{material}-{role}",
+                         "top": material if role == "upper" else 1,
+                         "bottom": 1 if role == "upper" else material})
+    if len(plan) != PHYSICS_INVOCATIONS or len({row["name"] for row in plan}) != len(plan):
+        raise ValueError("Physics invocation inventory differs from its complete execution budget")
+    return plan
+
+
+def invocation_command(executable: Path, top: int | str, bottom: int | str) -> list[str]:
+    return [str(executable), str(top), str(bottom), "packed", "2", "0",
+            "1", "1", "baseline", "1", "0", "3"]
+
+
+def execute_invocation(executable: Path, output: Path, item: dict) -> dict:
+    label = item["name"]
+    command = invocation_command(executable, item["top"], item["bottom"])
+    timeout_seconds = watchdog_seconds("operation_seconds")
+    started = time.monotonic()
+    timed_out = False
+    launch_error = None
+    try:
+        result = subprocess.run(command, capture_output=True, text=True,
+                                encoding="utf-8", errors="replace", timeout=timeout_seconds)
+        stdout, stderr, returncode = result.stdout, result.stderr, result.returncode
+    except subprocess.TimeoutExpired as error:
+        def decoded(value: str | bytes | None) -> str:
+            return value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value or ""
+        stdout, stderr, returncode = decoded(error.stdout), decoded(error.stderr), None
+        timed_out = True
+    except OSError as error:
+        launch_error = type(error).__name__ + ": " + str(error)
+        stdout, stderr, returncode = "", launch_error + "\n", None
+    (output / (label + ".jsonl")).write_text(stdout, encoding="utf-8")
+    (output / (label + ".stderr.log")).write_text(stderr, encoding="utf-8")
+    return {"name": label, "command": command, "returncode": returncode,
+            "timed_out": timed_out, "launch_error": launch_error,
+            "seconds": round(time.monotonic() - started, 3),
+            "watchdog_key": "operation_seconds", "timeout_seconds": timeout_seconds,
+            "stdout_sha256": hashlib.sha256(stdout.encode()).hexdigest(),
+            "stderr_sha256": hashlib.sha256(stderr.encode()).hexdigest(),
+            "stdout": stdout, "stderr": stderr}
+
+
+def dispatch_invocations(executable: Path, output: Path, plan: list[dict]) -> list[dict]:
+    labels = [item["name"] for item in plan]
+    if len(set(labels)) != len(labels) or any(not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", label) for label in labels):
+        raise ValueError("Physics output labels must be unique safe names")
+    with ThreadPoolExecutor(max_workers=PHYSICS_DISPATCH_WORKERS, thread_name_prefix="physics-cli") as executor:
+        futures = [executor.submit(execute_invocation, executable, output, item) for item in plan]
+        # Only immutable per-label process results cross this boundary. All
+        # unittest assertions/subTest contexts remain on the calling thread.
+        return [future.result() for future in futures]
+
+
+def evidence_record(result: dict) -> dict:
+    return {key: value for key, value in result.items() if key not in {"stdout", "stderr"}}
+
+
 class CharacterisationCliTests(unittest.TestCase):
     executable: Path
     output: Path
     records: list[dict]
+    prepared_results: dict[str, dict] | None = None
+    checked_invocations: list[str]
 
     def invoke(self, label: str, top: int | str, bottom: int | str) -> dict:
-        command = [str(self.executable), str(top), str(bottom), "packed", "2", "0",
-                   "1", "1", "baseline", "1", "0", "3"]
-        started = time.monotonic()
-        timed_out = False
-        try:
-            result = subprocess.run(command, capture_output=True, text=True,
-                                    encoding="utf-8", errors="replace", timeout=10)
-            stdout, stderr, returncode = result.stdout, result.stderr, result.returncode
-        except subprocess.TimeoutExpired as error:
-            def decoded(value: str | bytes | None) -> str:
-                return value.decode("utf-8", errors="replace") if isinstance(value, bytes) else value or ""
-            stdout, stderr, returncode = decoded(error.stdout), decoded(error.stderr), None
-            timed_out = True
-        (self.output / (label + ".jsonl")).write_text(stdout, encoding="utf-8")
-        (self.output / (label + ".stderr.log")).write_text(stderr, encoding="utf-8")
-        record = {"name": label, "command": command, "returncode": returncode,
-                  "timed_out": timed_out, "seconds": round(time.monotonic() - started, 3),
-                  "stdout_sha256": hashlib.sha256(stdout.encode()).hexdigest(),
-                  "stderr_sha256": hashlib.sha256(stderr.encode()).hexdigest()}
-        self.records.append(record)
-        self.assertFalse(timed_out, f"{label}: CLI exceeded its 10-second deadline")
-        return record | {"stdout": stdout, "stderr": stderr}
+        if self.prepared_results is None:
+            result = execute_invocation(self.executable, self.output, {"name": label, "top": top, "bottom": bottom})
+            self.records.append(evidence_record(result))
+        else:
+            result = self.prepared_results[label]
+            self.checked_invocations.append(label)
+            self.assertEqual(result["command"], invocation_command(self.executable, top, bottom),
+                             "prefetched native command differs from the original scientific invocation")
+        self.assertIsNone(result["launch_error"], f"{label}: CLI could not launch")
+        self.assertFalse(result["timed_out"],
+                         f"{label}: CLI exceeded its configured {result['timeout_seconds']:g}-second watchdog")
+        return result
 
     def check_material(self, material: int, role: str) -> None:
         label = f"material-{material}-{role}"
@@ -124,18 +197,28 @@ def main() -> int:
     args.output.mkdir(parents=True, exist_ok=True)
     CharacterisationCliTests.executable = args.executable.resolve(strict=True)
     CharacterisationCliTests.output = args.output
-    CharacterisationCliTests.records = []
+    plan = invocation_plan()
+    prefetched = dispatch_invocations(CharacterisationCliTests.executable, args.output, plan)
+    CharacterisationCliTests.records = [evidence_record(row) for row in prefetched]
+    CharacterisationCliTests.prepared_results = {row["name"]: row for row in prefetched}
+    CharacterisationCliTests.checked_invocations = []
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(CharacterisationCliTests)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
-    report = {"status": "passed" if result.wasSuccessful() else "failed",
+    expected_order = [row["name"] for row in plan]
+    complete = CharacterisationCliTests.checked_invocations == expected_order
+    passed = result.wasSuccessful() and complete
+    report = {"status": "passed" if passed else "failed",
               "executable": str(CharacterisationCliTests.executable),
               "executable_sha256": hashlib.sha256(CharacterisationCliTests.executable.read_bytes()).hexdigest(),
               "test_groups": result.testsRun, "failures": len(result.failures), "errors": len(result.errors),
               "building_ids": list(BUILDING_IDS), "invalid_ids": list(INVALID_IDS),
+              "dispatch_workers": PHYSICS_DISPATCH_WORKERS, "planned_invocations": expected_order,
+              "checked_invocations": CharacterisationCliTests.checked_invocations,
+              "complete_invocation_inventory": complete,
               "invocations": CharacterisationCliTests.records}
     (args.output / "results.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(f"CLI material accounting: {report['status']}; {len(report['invocations'])} invocations")
-    return int(not result.wasSuccessful())
+    return int(not passed)
 
 
 if __name__ == "__main__":

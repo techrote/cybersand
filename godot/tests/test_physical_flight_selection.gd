@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Actual ordinary sandbox/exploratory F5 integration for all four drone IDs.
 # Retained SetP and benchmark-scientific protections run in the existing suites.
 const Flight = preload("res://scripts/physical_flight_profile.gd")
@@ -21,7 +23,7 @@ func expect(condition: bool, reason: String) -> void:
 
 
 func wait_for_reset() -> void:
-	var deadline: int = Time.get_ticks_msec() + 60000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("main_ack_seconds")
 	while (not desktop.pending_microscenario_apply.is_empty() or desktop._actor_reset_receipt != 0) \
 			and Time.get_ticks_msec() < deadline:
 		await process_frame
