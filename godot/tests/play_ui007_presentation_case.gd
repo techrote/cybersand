@@ -201,6 +201,9 @@ func test_sequence(rig: StringName) -> bool:
 		return false
 	expect(desktop.latest_snapshot.native_worker_participation.is_empty(),
 		"ordinary production frames leave optional participation observation off")
+	var unobserved: Dictionary = desktop.latest_snapshot.native_worker_participation
+	expect(unobserved.is_read_only(),
+		"unobserved native participation is an immutable publication value")
 	desktop.debug_stats_expanded = true
 	desktop.update_status()
 	if not await bounded(Callable(self, "sample_ready").bind(0), "exclusive owner supplies a real completed-tick participation sample"):
@@ -232,6 +235,11 @@ func test_sequence(rig: StringName) -> bool:
 	desktop.update_status()
 	if not await bounded(Callable(self, "sample_disabled"), "disabling details retires optional sampling"):
 		return false
+	var disabled: Dictionary = desktop.latest_snapshot.native_worker_participation
+	expect(disabled.is_read_only() and unobserved.is_read_only() and unobserved.is_empty()
+		and retained == first and retained.is_read_only(),
+		"disabled participation remains immutable without changing retained empty or populated samples")
+	row.empty_samples_immutable = unobserved.is_read_only() and disabled.is_read_only()
 
 	# Hold only Main consumption for a bounded interval; native callbacks and
 	# publications continue normally. No fake packet or parallel owner is used.

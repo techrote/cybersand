@@ -86,7 +86,9 @@ observations still own timing and visits; visual rings are not traversal proof.
 
 F3 expanded details in a running Play course request an optional owner-side
 statistics sample at most four times per second. Main only receives the frozen
-copy. The display separates the constructor's requested worker setting, capacity,
+copy, including a retained read-only empty value when sampling is off or
+unavailable. Replacing the owner slot preserves earlier published values.
+The display separates the constructor's requested worker setting, capacity,
 observed **task participants**, source native tick and sample age. Participants
 mean the maximum distinct task-claiming workers in one phase dispatch of that
 tick; an inline nonempty phase counts the owner as one. This does not measure

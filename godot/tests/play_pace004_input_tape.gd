@@ -10,6 +10,7 @@ const SAMPLE_USEC: int = 15000000
 var rig: StringName = &"acrobat"
 var workers: int = 0
 var policy_preset: int = 0
+var workload_mode: String = "none"
 var desktop: Control
 var fixture_started: int = 0
 var waits: Array[Dictionary] = []
@@ -21,6 +22,9 @@ var captures: Dictionary = {}
 class ObservedMain:
 	extends "res://scripts/main.gd"
 	const Observer = preload("res://tests/play_pace004_worker_probe.gd")
+	const BrushLoad = preload("res://tests/play_pace004_brush_load.gd")
+	var workload_mode: String = "none"
+	var brush_load = BrushLoad.new()
 	var focus_allowed: bool = true
 	var capture_active: bool = false
 	var sampling: bool = false
@@ -42,6 +46,7 @@ class ObservedMain:
 		# Replace an UNSTARTED allocation. Only this inherited production worker
 		# starts; the fixture introduces no second live owner or stepping loop.
 		simulation_worker = Observer.new()
+		simulation_worker.observe_brush_load = workload_mode != "none"
 		super._ready()
 		RenderingServer.frame_post_draw.connect(_draw_completed)
 
@@ -157,6 +162,9 @@ class ObservedMain:
 			"simulation_revision":int(latest_snapshot.simulation_world_revision),
 			"copy_ms":float(latest_snapshot.snapshot_copy_time_ms), "failed":bool(latest_snapshot.simulation_failed),
 			"rejected_render_snapshots":rejected_render_snapshot_count})
+		# Fixture enqueue work is timed separately, outside the production Main
+		# callback measurement; callback cadence still includes its real cost.
+		brush_load.pump(self)
 
 
 func expect(value: bool, message: String) -> void:
@@ -201,6 +209,12 @@ func edges_consumed() -> bool:
 
 func controls_ready() -> bool:
 	return actor_ready(desktop, rig) and not desktop._actor_input_rearm and not desktop.paused
+
+
+func load_owner_running() -> bool:
+	var current: Dictionary = desktop.state()
+	return controls_ready() and not current.is_empty() and not current.native_paused \
+		and not current.suspended and int(current.native_tick) > 0
 
 
 func pause_ack(before: Dictionary) -> bool:
@@ -290,6 +304,7 @@ func execute_tape() -> bool:
 	desktop.sampling = true
 	desktop.simulation_worker.begin_sample()
 	measurement = {"started_usec":Time.get_ticks_usec(), "initial":desktop.state()}
+	desktop.brush_load.begin(desktop,workload_mode,measurement.started_usec,measurement.initial)
 	# IDs 1..16: the loaded gameplay window contains real movement, trim and
 	# six quick button edges, with analogue state held until a completed step.
 	if not await applied_key(move_key, "forward", true, 3000000): return false
@@ -311,6 +326,7 @@ func execute_tape() -> bool:
 		return false
 	measurement["ended_usec"] = Time.get_ticks_usec()
 	measurement["final"] = desktop.state()
+	desktop.brush_load.stop(desktop)
 	desktop.sampling = false
 	desktop.simulation_worker.end_sample()
 	var before: Dictionary = desktop.state()
@@ -441,9 +457,11 @@ func run() -> void:
 		if argument.begins_with("--rig="): rig = StringName(argument.trim_prefix("--rig="))
 		elif argument.begins_with("--workers="): workers = argument.trim_prefix("--workers=").to_int()
 		elif argument.begins_with("--policy="): policy_preset = argument.trim_prefix("--policy=").to_int()
+		elif argument.begins_with("--workload="): workload_mode = argument.trim_prefix("--workload=")
 		else: expect(false, "unknown fixture argument")
 	expect(rig in Course.MECHANICAL_PRESETS and workers in [0,1] and policy_preset in [0,2],
 		"registered rig/worker/policy combination")
+	expect(workload_mode in ["none","brush_rain_v1","idle_control_v1"], "registered workload mode")
 	if failures > 0:
 		quit(1)
 		return
@@ -453,6 +471,8 @@ func run() -> void:
 	release_controls()
 	desktop = load("res://main.tscn").instantiate()
 	desktop.set_script(ObservedMain)
+	desktop.workload_mode = workload_mode
+	desktop.brush_load.mode = workload_mode
 	root.add_child(desktop)
 	await process_frame
 	var worker: Probe = desktop.simulation_worker as Probe
@@ -484,9 +504,18 @@ func run() -> void:
 	if ready:
 		desktop.playable_session_panel.resume_play()
 		ready = await bounded(Callable(self, "controls_ready"), "initial neutral input rearm")
+	if ready and workload_mode != "none":
+		# Main readiness can precede the first native unpaused publication. Begin
+		# the opt-in load only after that actual acknowledgement, without paint
+		# priming, manual stepping or a time-based warmup. Normal cases unchanged.
+		ready = await bounded(Callable(self, "load_owner_running"), "initial loaded owner native progress")
 	if ready:
 		ready = await execute_tape()
 	desktop.sampling = false
+	desktop.brush_load.stop(desktop)
+	var workload: Dictionary = desktop.brush_load.report()
+	if workload_mode != "none":
+		expect(workload.errors.is_empty(), "all bounded ordinary brush requests accounted for")
 	worker.end_sample()
 	desktop.capture_active = false
 	if ready:
@@ -529,6 +558,7 @@ func run() -> void:
 		"godot":Engine.get_version_info(), "recipe_hash":recipe, "policy":policy, "receipt":receipt,
 		"setup":setup, "measurement":measurement, "waits":waits, "trace":trace,
 		"main_rows":main_rows, "draw_usec":draws, "native_rows":native_rows, "publication_rows":publication_rows,
+		"workload":workload,
 		"snapshot_mutex_wait_usec":worker.mutex_acquire_wait_usec.duplicate(),
 		"snapshot_mutex_critical_usec":worker.mutex_critical_section_usec.duplicate(),
 		"snapshot_returns_new":worker.returned_new_snapshots, "snapshot_returns_none":worker.returned_no_new_snapshot,

@@ -26,6 +26,7 @@ import uuid
 import zipfile
 
 from pace004_contract import RIGS, extract, require, verify_result, verify_visual
+import pace004_load_contract as load_contract
 
 ROOT=Path(__file__).resolve().parents[2]
 BASE="0bf28d5760aed989a79386de03ef4fc6171fef42"
@@ -55,6 +56,11 @@ def plan(graphical: bool) -> list[tuple[str,int,int]]:
     rows=[(rig,workers,0) for rig in rigs for workers in (1,0)]
     rows += [(rig,workers,2) for rig in (("jetbarrel",) if graphical else ("acrobat","jetbarrel")) for workers in (1,0)]
     return rows
+
+
+def case_plan(graphical: bool, active_workload: bool) -> list[tuple[str,int,int,str]]:
+    require(not graphical or not active_workload,"Active brush workload is headless only")
+    return load_contract.plan() if active_workload else [(*row,"none") for row in plan(graphical)]
 
 
 def safe_file(root: Path,name: str) -> Path:
@@ -244,10 +250,13 @@ def verify_directory(output: Path,*,sealed: bool=True) -> dict:
     require(report.get("godot_identity",{}).get("version")==VERSION,"Wrong Godot engine")
     graphical=report.get("graphical")
     require(type(graphical) is bool and (not graphical or report.get("platform")=="linux"),"Unregistered platform scope")
-    expected=plan(graphical)
-    observed=[(row.get("rig"),row.get("workers"),row.get("policy")) for row in report["rows"]]
+    active_workload=report.get("active_workload",False)
+    require(type(active_workload) is bool,"Unregistered active workload campaign scope")
+    expected=case_plan(graphical,active_workload)
+    observed=[(row.get("rig"),row.get("workers"),row.get("policy"),row.get("workload","none")) for row in report["rows"]]
     require(Counter(observed)==Counter(expected) and len(observed)==len(expected),"Incomplete/duplicate rig-worker-policy inventory")
-    require(report.get("case_plan")==[list(row) for row in expected],"Registered case plan changed")
+    registered=[list(row) for row in expected] if active_workload else [list(row[:3]) for row in expected]
+    require(report.get("case_plan")==registered,"Registered case plan changed")
     verify_source_archive(output,report)
     verify_process(report["import"],240)
     require(sha(safe_file(output,report["import"]["log"]))==report["import_log_sha256"],"Import log changed")
@@ -273,10 +282,14 @@ def verify_directory(output: Path,*,sealed: bool=True) -> dict:
         require(result.get("engine_sha256")==expected_engine,"Actual process executable differs from prepared engine")
         summary=verify_result(result,row["rig"],row["workers"],row["policy"],report["source_commit"],graphical,report["platform"])
         summary["visual"]=verify_visual(result,directory)
+        if active_workload:
+            summary["workload"]=load_contract.verify_workload(result,row["workload"],report["execution_inputs"][load_contract.HELPER])
+        else:
+            require(result.get("workload",{"mode":"none"})=={"mode":"none"},"Unregistered workload in original campaign")
         require(summary==row["summary"],"Independent reduction differs from campaign summary")
         summaries.append(summary)
     return {"status":"passed","source_commit":report["source_commit"],"source_tree":report["source_tree"],
-            "platform":report["platform"],"graphical":graphical,"case_count":len(summaries),"rows":summaries,
+            "platform":report["platform"],"graphical":graphical,"active_workload":active_workload,"case_count":len(summaries),"rows":summaries,
             "qualification":"PACE004 scoped real host/input evidence; no physical devices, scanout FPS, human feel or shader qualification"}
 
 
@@ -292,6 +305,8 @@ def main() -> int:
     parser.add_argument("--expected-source-sha")
     parser.add_argument("--output",type=Path,required=True)
     parser.add_argument("--graphical",action="store_true")
+    parser.add_argument("--active-workload",action="store_true",
+                        help="Run16 paired active/no-load headless cases; original14-case and graphical cohorts remain separate")
     parser.add_argument("--verify-only",action="store_true")
     args=parser.parse_args()
     output=args.output.resolve()
@@ -303,6 +318,7 @@ def main() -> int:
         return 0
     require(args.godot_archive is not None and args.expected_source_sha is not None,"Execution requires archive and exact source")
     require(not args.graphical or sys.platform.startswith("linux"),"Graphical campaign is registered for Linux only")
+    require(not args.graphical or not args.active_workload,"Active brush workload is headless only")
     output.mkdir(parents=True,exist_ok=False)
     sys.path.insert(0,str(ROOT/"tools/ci"))
     import run_godot_regressions as runner
@@ -310,7 +326,8 @@ def main() -> int:
     from check_repository import verify_runtime,verify_rapier_overrides
     report={"schema":"play-pace004-campaign-v1","status":"failed","completed":False,
         "source_commit":None,"base_commit":BASE,"platform":sys.platform,"host":platform.platform(),
-        "python":sys.version,"graphical":args.graphical,"case_plan":[list(row) for row in plan(args.graphical)],
+        "python":sys.version,"graphical":args.graphical,"active_workload":args.active_workload,
+        "case_plan":[list(row) for row in load_contract.plan()] if args.active_workload else [list(row) for row in plan(args.graphical)],
         "run_id":os.getenv("GITHUB_RUN_ID"),"run_attempt":os.getenv("GITHUB_RUN_ATTEMPT"),"rows":[],"errors":[]}
     paths=[];before={};runtimes={}
 
@@ -378,19 +395,21 @@ def main() -> int:
         report["import_log_sha256"]=sha(output/report["import"]["log"])
         write(output/"campaign.json",report)
         verify_process(report["import"],240)
-        for rig,workers,policy in plan(args.graphical):
-            name=f"pace004-{rig}-workers{workers}-policy{policy}";directory=output/name
+        for rig,workers,policy,workload in case_plan(args.graphical,args.active_workload):
+            name=f"pace004-{rig}-workers{workers}-policy{policy}"+("-"+workload if args.active_workload else "")
+            directory=output/name
             directory.mkdir()
             nonce=uuid.uuid4().hex
             env=environment|{"CYBERSAND_PACE004_PROCESS_NONCE":nonce,"CYBERSAND_PACE004_CAPTURE":str(directory)}
             case=runner.Case(name,("--script","res://tests/play_pace004_input_tape.gd","--",
-                f"--rig={rig}",f"--workers={workers}",f"--policy={policy}"),180,0,args.graphical)
+                f"--rig={rig}",f"--workers={workers}",f"--policy={policy}",f"--workload={workload}"),180,0,args.graphical)
             started=time.perf_counter()
             process,failed=execute(binary,case,directory,"actual first-attempt input custody and gameplay measurement",env)
             observed=time.perf_counter()-started
             write(directory/"process.json",process)
             row={"rig":rig,"workers":workers,"policy":policy,"directory":name,"process_nonce":nonce,
                  "process":process,"observed_total_seconds":observed,"log_sha256":sha(directory/process["log"]),"errors":[]}
+            if args.active_workload:row["workload"]=workload
             report["rows"].append(row)
             try:
                 verify_process(process,180,args.graphical)
@@ -399,6 +418,10 @@ def main() -> int:
                 require(result.get("process_nonce")==nonce,"Process nonce mismatch")
                 row["summary"]=verify_result(result,rig,workers,policy,source,args.graphical,sys.platform)
                 row["summary"]["visual"]=verify_visual(result,directory)
+                if args.active_workload:
+                    row["summary"]["workload"]=load_contract.verify_workload(result,workload,before[load_contract.HELPER])
+                else:
+                    require(result.get("workload")=={"mode":"none"},"Unregistered workload in original campaign")
             except Exception as error:
                 row["errors"].append(f"{type(error).__name__}: {error}")
                 report["errors"].append(name+": "+row["errors"][-1])
@@ -408,7 +431,7 @@ def main() -> int:
             # graphical cohort. An incomplete inventory cannot pass. Continue
             # unaffected OS/headless cohorts in independent hosted jobs.
             if args.graphical and row["errors"]:break
-        report["completed"]=len(report["rows"])==len(plan(args.graphical))
+        report["completed"]=len(report["rows"])==len(case_plan(args.graphical,args.active_workload))
     except Exception as error:
         report["errors"].append(f"{type(error).__name__}: {error}")
     finally:

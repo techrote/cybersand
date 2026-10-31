@@ -166,6 +166,68 @@ explicit artifact directory and graphical command. The external graphical/case
 limit180s, import240s, operation15s, fixture150s and Main acknowledgement30s are
 unchanged. A skipped, timed-out or incomplete result is not a pass.
 
+## First hosted result and immutable-empty correction
+
+Published head `aa74448bad7ec77e5f152d9179a417ce76430009`, tree
+`3e11e03480e5e584c623db6fb71bc2e259887519`, was tested by the ordinary matrix
+at GitHub test-merge `f3e19d110e7d2ed2f85bdc300315585677bd3b0f` with the same
+tree. Documentation run41175131609 and scope advisory41175131573 passed.
+Scoped packet run41175131597 passed on Windows/Linux:13 methods normally and
+under Python optimization per OS, authenticated source/runtime preparation and
+all51 human rows still untested. Its original Windows ZIP is11,293 bytes,
+SHA-256 `a64430b072bc285b6819ecc2a00c6611208527ebc34990fe2e496b83b8005e43`;
+Linux is11,017 bytes,
+`65ddf91f2af4e28fc49566e344ea191e47d71ba69f414a8a68460aed3c9fc13f`.
+
+The first complete integration attempt is **not qualified**. In Godot
+run41175131563, Windows shard3's unchanged
+`test_liquid_desktop_default_host` prints86 assertions/0 failures, then exits
+`3221225477` (`0xC0000005`) after18.658s. The process result fails the gate;
+its assertion summary cannot override the access violation. Original artifact
+13033046602 is340,185 bytes, SHA-256
+`27be12f043ef4adc2d1d7a541282ee60c63a79d57f9cc0af5a2486386dfe05cc`.
+All five Windows UI007 cases themselves report57/0. The older LCB003 audit
+records a similar post-summary symptom; neither that history nor preceding
+green executions establishes this crash's cause. Preserve the first process
+and investigate with bounded exception capture rather than changing teardown,
+adding sleeps or converting the summary into a pass.
+
+Separately, Native run41175131608's TSan executable reaches its original15-minute
+bound and exits124 after153 of164 case-pass records. Its last recorded pass is
+`LCB-001 W-CY material hooks`; the retained log contains no TSan diagnostic.
+This is a timeout/incomplete result, not a sanitizer pass or proof of the timeout's
+cause. Original TSan artifact13033720929 is6,618 bytes, SHA-256
+`5f9965b19666d3f86b5ffe27b1b8271e0ef4368672154e48481b09fd210e7fe2`;
+the complete aggregate13033726507 is7,431 bytes,
+`f26f3a296b1d93733aca854a135eb345c1e5a96f8c6c9e8e59d147b80c6ea565`.
+Independent readback verified API sizes/digests, ZIP CRCs, retained log digest,
+source/tree and original nonzero exit propagation. All original bounds remain.
+
+Further production review found a distinct immutable-publication defect: the
+default-off, cleared or unavailable participation result could be a mutable
+empty dictionary. Local negative commit
+`d81126012c7f7882421bcc100ef4659466edf29d` adds two actual-host checks with the
+original production bytes. Its Acrobat process reports59 assertions/2 failures,
+exactly the initial-empty and disabled-empty immutability checks. Its report
+SHA-256 is `4cea0936a09629ecba1683205958b5cb8fb7c9881add16042e4f3796857c28c2`.
+
+Correction `fbb287b7e8e93104041f6c48e51d52f066611ddb`, tree
+`14775e83ae0308d1b3361c320cd83aefe9bc0bf3`, retains a read-only empty owner
+value on every empty-return path. Replacing the owner slot does not mutate
+previously published empty or populated samples. It also avoids allocating a
+new mutable empty dictionary on each default-off publication. The existing
+250ms opt-in interval and recursively frozen populated samples are unchanged.
+All five actual Main/native/Rapier Linux cases pass59/0 each (295/0 total),
+with process durations4.817–5.411s, worker joins, retired sessions and unchanged
+tested inputs. The positive report SHA-256 is
+`82b26cec45a342ae4a2c7e37f0637d574ba8e8a4c026ac155005704debed75e6`.
+Both cohorts use the pinned official Godot executable SHA-256
+`f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`
+and retained native/Rapier libraries. Independent review checked the code and
+original evidence. This correction does **not** establish a cause or cure for
+the separate Windows access violation or Native timeout. Its resulting published
+head requires a fresh complete matrix.
+
 ## Integration and residual acceptance
 
 The live PR must retain exact resulting head/tree, complete Docs/materialized

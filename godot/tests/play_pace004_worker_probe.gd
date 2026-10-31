@@ -11,6 +11,7 @@ var stop_join_usec: int = -1
 var _observer: Variant
 var _seen_generation: int = -1
 var _seen_tick: int = -1
+var observe_brush_load: bool = false # Configured before the worker starts.
 
 
 func _publish_snapshot(worker_step_time_ms: float, paused: bool,
@@ -70,6 +71,16 @@ func _publish_snapshot(worker_step_time_ms: float, paused: bool,
 		"overruns":_worker_overruns, "serial":_snapshot_serial}
 	native_rows.append(row)
 	row["observer_usec"] = Time.get_ticks_usec() - started
+	if observe_brush_load:
+		# Small copied observations made only by the existing exclusive owner.
+		# Main first reads these after join. These are observed cell values, not
+		# invented per-command acknowledgements of the ordinary paint queue.
+		var cells_started: int = Time.get_ticks_usec()
+		var cells: Array[Dictionary] = []
+		for point: Vector2i in [Vector2i(396,176),Vector2i(576,176)]:
+			cells.append(_observer.inspect_cell(_world,point))
+		row["brush_cells"] = cells
+		row["brush_observer_usec"] = Time.get_ticks_usec() - cells_started
 
 
 func stop_worker() -> void:
