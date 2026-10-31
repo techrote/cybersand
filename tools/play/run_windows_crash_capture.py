@@ -47,7 +47,7 @@ def build_control_command(python: str, mode: str) -> list[str]:
         script='import sys; print("OWNED_NONZERO", flush=True); sys.exit(19)'
     else:
         child='import os,time; print("OWNED_CHILD " + str(os.getpid()), flush=True); time.sleep('+('20' if mode=='orphan-hang' else '0.4')+')'
-        script=('import subprocess,sys,time; p=subprocess.Popen([sys.executable,"-c",'+repr(child)+']); '
+        script=('import subprocess,sys,time; p=subprocess.Popen([sys.executable,"-c",'+repr(child)+'],creationflags=subprocess.CREATE_NO_WINDOW); '
                 'print("OWNED_PARENT_CHILD " + str(p.pid), flush=True); '+
                 ('time.sleep(0.2)' if mode=='orphan-hang' else 'sys.exit(p.wait())'))
     return [python,'-c',script]

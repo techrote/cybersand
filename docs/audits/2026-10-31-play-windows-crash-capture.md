@@ -319,6 +319,44 @@ Both earlier failed runs retain their original commits and artifacts. There is
 no unchanged-source retry, build cache, prebuilt compiler output, deadline
 expansion, shader change or production-fixture change in this correction.
 
+## Original v3 ownership-control refusal and explicit console policy
+
+[Run 41193165592 attempt 1](https://github.com/techrote/cybersand/actions/runs/41193165592)
+executed diagnostic head `fd723a6dd8c7b76e2c211fef28f937f5c5b277d1`, tree
+`2b0db90e52b26c9ed156a1b427a59e038251ef6d`. All 54 crash/campaign and 14
+owned-build portable methods passed normally and with optimized Python. The
+first actual Windows ownership control then failed its exact two-process oracle.
+
+The original raw Job samples show root Python PID 196, child Python PID 6904 and
+`C:\\Windows\\System32\\conhost.exe` PID 2640. All three were observed and exited
+zero; the complete job was joined in 0.509983 seconds. The control nevertheless
+requires exactly two processes, so its original campaign is failed. Its message
+was `Build child was not observed inside its owned job`; the child was observed,
+but the combined predicate rejected the third process. SDK compilation, the
+remaining ownership controls, exception controls, import and gameplay fixture
+did not run. `fixture_attempts` remains zero.
+
+The original artifact 13039083064 contains 2,254,075 bytes, SHA-256
+`90d9a8b183cc391e562ad32d2fbd9133dd9bc05227cc06aa96a9bfbabd903fd8`.
+Independent original readback authenticated API size/digest, ZIP CRC and every
+entry, the sealed manifest, Git source pack, selected runtime chains and raw
+Job evidence. Receipt SHA-256:
+`d2f0de1e4bee01d37793d4d792a255487161d01f6a0143f0a9cf495b877565ad`.
+
+The narrow correction gives the deliberately spawned Python control child the
+explicit `subprocess.CREATE_NO_WINDOW` flag already used for its parent. Windows
+documents this flag as running a console application without a console window.
+The exact two-process inventory, actual observed child identity/exit, complete
+join and all original bounds remain mandatory. This does not allow extra
+processes or change the compiler, debugger, engine or gameplay launches.
+
+Two new portable regressions execute the generated command with a mocked launch
+to inspect its actual flags and verify that a third process still fails the
+control. Those tests are command/oracle checks, not Windows execution. Fresh
+Windows ownership, compiler, exception and fixture evidence is still required.
+The original v3 campaign and every preceding failed source remain unchanged;
+no earlier result is relabelled and no deadline is extended.
+
 ## Platform basis and limitations
 
 Microsoft documents that [debug events suspend target threads until continued](https://learn.microsoft.com/en-us/windows/win32/debug/debugging-events)

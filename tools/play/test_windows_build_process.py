@@ -2,7 +2,9 @@
 """Portable deadline/evidence adversaries; actual Windows controls run separately."""
 import copy
 import ctypes
+import contextlib
 import hashlib
+import io
 import json
 from pathlib import Path
 import tempfile
@@ -174,6 +176,33 @@ class OwnedBuildTests(unittest.TestCase):
                                          timeout=3 if mode=='orphan-hang' else 15)
             self.assertEqual(owned.verify(directory,command,self.identity,cwd=self.cwd),result)
             campaign.verify_build_control(mode,result,(directory/'process.log').read_text())
+
+    def test_child_control_explicitly_avoids_an_extra_console_process(self):
+        # Portable command-construction proof only; real Windows must still
+        # establish the unchanged exact two-process inventory and join.
+        for mode in ('normal-child','orphan-hang'):
+            child = mock.Mock(pid=11)
+            child.wait.return_value = 0
+            command = campaign.build_control_command('C:\\python.exe',mode)
+            with mock.patch('subprocess.Popen',return_value=child) as launch, \
+                 mock.patch('subprocess.CREATE_NO_WINDOW',0x08000000,create=True), \
+                 mock.patch('time.sleep'), contextlib.redirect_stdout(io.StringIO()):
+                if mode == 'normal-child':
+                    with self.assertRaises(SystemExit) as exited:
+                        exec(compile(command[2],'<owned-control>','exec'),{})
+                    self.assertEqual(exited.exception.code,0)
+                else:
+                    exec(compile(command[2],'<owned-control>','exec'),{})
+            self.assertEqual(launch.call_count,1)
+            self.assertEqual(launch.call_args.kwargs,{'creationflags':0x08000000})
+            self.assertEqual(child.wait.call_count,1 if mode == 'normal-child' else 0)
+
+    def test_extra_process_still_fails_the_exact_control_inventory(self):
+        self.fixture('normal-child')
+        self.result['samples'][-1]['total_processes'] = 3
+        with self.assertRaisesRegex(ValueError,'Build child was not observed inside its owned job'):
+            campaign.verify_build_control('normal-child',self.result,
+                                          (self.directory/'process.log').read_text())
 
     def test_nonzero_child_cannot_hide_behind_zero_root(self):
         self.fixture('normal-child')
