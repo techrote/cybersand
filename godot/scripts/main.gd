@@ -8,6 +8,8 @@ const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
+const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
+const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
 var playable_session_panel: PopupPanel
@@ -29,6 +31,7 @@ var physical_trial_input = PhysicalTrial.new()
 var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
+var playable_course_overlay: Control
 var _physical_epoch: int = 0
 var _physical_terrain_ready: bool = false
 const PHYSICAL_TOOL_KEYS: Array[int] = [KEY_M, KEY_N, KEY_U]
@@ -1340,6 +1343,7 @@ func _refresh_recording_button() -> void:
 var latest_snapshot: CyberSimulationSnapshot
 var worker_start_error: Error = OK
 var consumed_snapshot_serial: int = -1
+var worker_publication_counter = SnapshotPublicationCounter.new()
 
 var image: Image
 var texture: ImageTexture
@@ -1400,6 +1404,8 @@ var character_position: Vector2 = CHARACTER_SPAWN
 var camera_origin: Vector2 = Vector2.ZERO
 var camera_follow_enabled: bool = true
 var _playable_course_progress = PlayableCourseLap.new()
+var _playable_course_observation_valid: bool = false
+var _participation_sampling_requested: bool = false
 var player_representation: StringName = CyberPlayerRepresentation.SAMPLED
 var sampled_runtime_recovery_enabled: bool = true
 var barrel_player_spawn_position: Vector2 = CHARACTER_SPAWN
@@ -1563,6 +1569,7 @@ func _ready() -> void:
 			body.freeze = true
 	latest_snapshot = simulation_worker.take_latest_snapshot(-1)
 	if latest_snapshot != null:
+		worker_publication_counter.observe(latest_snapshot.serial)
 		consumed_snapshot_serial = latest_snapshot.serial
 		character_position = latest_snapshot.character_position
 		sync_hard_surface_colliders()
@@ -1678,6 +1685,7 @@ func _process(delta: float) -> void:
 	update_brush_preview()
 	handle_painting()
 	update_camera(delta)
+	_present_playable_course_targets()
 	actor_prototype_overlay.present(
 		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
 		camera_origin.floor(), current_view_size, view_content_rect()
@@ -2593,6 +2601,8 @@ func consume_worker_snapshot() -> void:
 	var snapshot: CyberSimulationSnapshot = simulation_worker.take_latest_snapshot(consumed_snapshot_serial)
 	if snapshot == null:
 		return
+	if not worker_publication_counter.observe(snapshot.serial):
+		return
 	latest_snapshot = snapshot
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
@@ -2802,6 +2812,10 @@ func setup_actor_prototypes() -> void:
 	usable_overlay.name = "UsableOverlay"
 	usable_overlay.clip_contents = true
 	$Layout/World.add_child(usable_overlay)
+	playable_course_overlay = PlayableCourseOverlay.new()
+	playable_course_overlay.name = "PlayableCourseOverlay"
+	$Layout/World.add_child(playable_course_overlay)
+	playable_course_overlay.clear_course()
 	physical_actor_overlay = PhysicalOverlay.new()
 	physical_actor_overlay.name = "PhysicalActorOverlay"
 	$Layout/World.add_child(physical_actor_overlay)
@@ -3016,6 +3030,9 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 
 func _close_physical_actors() -> void:
 	_physical_terrain_ready = false
+	_playable_course_observation_valid = false
+	if playable_course_overlay != null:
+		playable_course_overlay.clear_course()
 	if physical_actor_session == null:
 		return
 	simulation_worker.set_physical_actor_epoch(0)
@@ -3086,18 +3103,21 @@ func _record_completed_playable_course_step() -> void:
 # Both render and physics callbacks may call this: the lap model ignores
 # duplicate physics ticks and counts each completed native delta once.
 func _observe_playable_course_progress() -> void:
+	_playable_course_observation_valid = false
 	if not _playable_course_progress_identity():
 		_playable_course_progress.clear_session()
 		return
 	var observed: Dictionary = physical_actor_session.observation(0)
 	var position: Vector2 = observed.get("position", Vector2.INF)
-	if int(observed.get("epoch",-1)) != _physical_epoch or not position.is_finite():
+	if int(observed.get("epoch",-1)) != _physical_epoch or not position.is_finite() \
+		or not str(observed.get("fault", "")).is_empty():
 		return
 	var source_tick: int = int(latest_snapshot.tick_index)
 	if not _playable_course_progress.bind(physical_rig_id, _physical_epoch,
 		int(latest_snapshot.render_world_generation), source_tick):
 		return
-	_playable_course_progress.observe(source_tick, int(observed.get("tick",-1)), position, paused)
+	_playable_course_observation_valid = _playable_course_progress.observe(
+		source_tick, int(observed.get("tick",-1)), position, paused)
 
 
 # HUD text/visibility are published only on the independent presentation
@@ -3105,10 +3125,28 @@ func _observe_playable_course_progress() -> void:
 func _update_playable_course_progress() -> void:
 	course_timing_label.visible = false
 	_observe_playable_course_progress()
-	if not _playable_course_progress_identity() or _playable_course_progress.rig_id != physical_rig_id:
+	if not _playable_course_observation_valid or not _playable_course_progress_identity() \
+		or _playable_course_progress.rig_id != physical_rig_id:
 		return
 	course_timing_label.text = _playable_course_progress.display_text()
 	course_timing_label.visible = not microscenario_hud_hidden
+
+
+func _present_playable_course_targets() -> void:
+	if playable_course_overlay == null:
+		return
+	if microscenario_hud_hidden or not _playable_course_observation_valid \
+		or not _playable_course_progress_identity() or _playable_course_progress.rig_id != physical_rig_id \
+		or _playable_course_progress.actor_epoch != _physical_epoch \
+		or _playable_course_progress.world_generation != latest_snapshot.render_world_generation:
+		playable_course_overlay.clear_course()
+		return
+	playable_course_overlay.present_course({"rig":str(physical_rig_id), "actor_epoch":_physical_epoch,
+		"world_generation":int(latest_snapshot.render_world_generation),
+		"source_tick":_playable_course_progress.last_source_tick,
+		"physics_tick":_playable_course_progress.last_physics_tick,
+		"target_index":_playable_course_progress.target_index},
+		camera_origin.floor(), current_view_size, view_content_rect())
 
 
 # Only the authored PLAY course uses this copied controller adapter. All
@@ -4190,6 +4228,11 @@ func recording_status_for_hud() -> Dictionary:
 
 
 func update_status() -> void:
+	var sampling_requested: bool = debug_stats_visible and debug_stats_expanded \
+		and not microscenario_hud_hidden and _playable_course_controls_active()
+	if sampling_requested != _participation_sampling_requested:
+		_participation_sampling_requested = sampling_requested
+		simulation_worker.set_worker_participation_sampling(sampling_requested)
 	if latest_snapshot != null and latest_snapshot.simulation_failed:
 		status_label.visible = not microscenario_hud_hidden
 		status_label.text = "STOPPED — R reset | fault %d | %s" % [
@@ -4287,8 +4330,10 @@ func update_status() -> void:
 	]
 
 	if debug_stats_expanded:
-		var thread_text: String = "%s/%d threads" % [
+		var request_text: String = "Auto" if latest_snapshot.native_worker_request <= 0 else str(latest_snapshot.native_worker_request)
+		var thread_text: String = "%s requested %s / capacity %d" % [
 			latest_snapshot.backend_name,
+			request_text,
 			latest_snapshot.scheduler_thread_capacity_hint,
 		]
 		if worker_start_error != OK:
@@ -4337,6 +4382,16 @@ func update_status() -> void:
 				"glow" if glow_enabled else "no-glow",
 			]
 		)
+		var participation: Dictionary = latest_snapshot.native_worker_participation
+		var participation_text: String = "task participants unavailable (sampling requires a running Play course)"
+		if not participation.is_empty() and not latest_snapshot.simulation_failed \
+			and int(participation.get("world_generation", -1)) == latest_snapshot.render_world_generation:
+			participation_text = "%d task participants at native tick %d · sample age %.0fms" % [
+				int(participation.workers_observed), int(participation.completed_tick),
+				maxf(0.0, float(Time.get_ticks_usec()-int(participation.sampled_usec))/1000.0)]
+		status_label.text += "\nWORK %s · owner publications %d consumed / %d coalesced / %d refused · render payloads %d refused" % [
+			participation_text, worker_publication_counter.consumed, worker_publication_counter.coalesced,
+			worker_publication_counter.rejected, rejected_render_snapshot_count]
 
 	if latest_snapshot.tick_failure_count > 0:
 		status_label.text += " // STOPPED — R reset. Fault %d: %s" % [

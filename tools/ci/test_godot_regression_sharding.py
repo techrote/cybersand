@@ -114,6 +114,21 @@ class ResultTests(unittest.TestCase):
         self.assertEqual(result["status"], "passed")
         self.assertFalse(failed)
 
+    def test_process_can_retain_raw_artifacts_beside_its_log(self):
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            output = Path(directory)
+            command = [sys.executable, "-c", (
+                "import os; from pathlib import Path; "
+                "p=Path(os.environ['CYBERSAND_TEST_ARTIFACT_DIR']); "
+                "p.mkdir(); (p/'pixel-control.txt').write_text('retained child output'); "
+                "print('artifact control passed')"
+            )]
+            with mock.patch.object(subject, "case_command", return_value=command):
+                result, failed = subject.run_case("unused", fake("fixture", 1), output, "case")
+            self.assertFalse(failed)
+            self.assertEqual(result["status"], "passed")
+            self.assertEqual((output / "fixture-artifacts/pixel-control.txt").read_text(), "retained child output")
+
     def test_zero_exit_with_script_error_fails(self):
         result, failed = self.run_child("print('SCRIPT ERROR: assertion failed')")
         self.assertEqual(result["status"], "failed")
