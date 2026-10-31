@@ -4,7 +4,7 @@ import json
 import math
 import re
 
-CASES = frozenset({"test_physical_actor_arena", "test_physical_actor_rigs", "test_physical_usable_course"})
+CASES = frozenset({"test_physical_actor_arena", "test_physical_actor_rigs", "test_physical_usable_course", "play_busy001c_render"})
 SNAPSHOT_IDLE_SECONDS = 30.0
 FAIL_IDLE_SECONDS = 45.0
 

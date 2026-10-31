@@ -71,6 +71,14 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(result[:2], (False, None))
         self.assertEqual(snapshots, [])
 
+    def test_play_busy_render_stall_is_independently_watched(self):
+        result, snapshots = self.run_child(
+            'import time; print(\'CYBERSAND_PROGRESS {"case":"play_busy001c_render","phase":"course_queued","sequence":1}\'); time.sleep(10)',
+            name="play_busy001c_render")
+        self.assertEqual(result[:2], (True, "progress_watchdog"))
+        self.assertTrue(snapshots)
+        self.assertIsNone(snapshots[0][1])
+
     def test_progress_cannot_extend_original_case_deadline(self):
         result, snapshots = self.run_child('import json,time\nfor i in range(100):\n print("CYBERSAND_PROGRESS "+json.dumps({"phase":"step","steps":i})); time.sleep(0.01)', timeout=0.3)
         self.assertEqual(result[:2], (True, "case_deadline"))
