@@ -949,10 +949,25 @@ The native targets reuse generation objects within each existing compiler flag
 set under `$(BUILD_DIR)/worldgen-objects`: normal/sanitized and
 threaded/non-threaded variants stay separate. Source, shared-header and Makefile
 changes invalidate those objects. This avoids recompiling the same generation
-sources for each test while retaining all eight executables and the five-minute
-normal and ten-minute sanitizer CI bounds. The
+sources for each test. The current aggregates contain nine executables each,
+including GEN-005 semantic planes, with five-minute normal and ten-minute
+sanitizer CI bounds. The
 [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
 retains the cold-build timeout that motivated this change and subsequent results.
+
+The [bounded build investigation](../audits/2026-10-31-worldgen-bounded-build.md)
+retains the later post-merge sanitizer timeout: eight tests passed, and the ninth
+was interrupted after prerequisite compilation consumed most of its ten-minute
+budget. The candidate Native workflow uses exactly `make -j2` for these two
+aggregates only. Their nine test recipe lines remain sequential after all
+prerequisites complete; no compilation moves outside the original deadlines.
+The inventory helper checks forced serial/two-job dry runs without executing a
+compiler, and rejects omitted/reordered tests or altered source/flag families.
+Its passing checks do not replace actual cold compilation/execution. The first
+local two-job normal build failed at linking with an unexplained empty object;
+the separate sanitizer attempt stopped at its second test with a nonexecutable
+ELF output. Both failed qualifications and diagnostic records remain preserved.
+Fresh complete resulting-head hosted gates are required before integration.
 
 Godot execution requires a source-matched extension and the exact pinned editor.
 The [hierarchy profile](../../examples/worldgen/hierarchy-multi-district.json)
