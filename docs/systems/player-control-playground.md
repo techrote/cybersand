@@ -107,6 +107,16 @@ ticks per second; pressure policy records 52.873 Hz with one worker and
 limitations stay visible. This older source does not qualify a later composed
 head, a physical display, or the complete Windows/Linux hosted union.
 
+The separate [original d08 hosted audit](../audits/2026-10-31-play-pace004-hosted-d08.md)
+records an independently complete 72-case Windows/Linux artifact union: 7,684
+assertions, zero assertion failures and 2,880 accounted input events. Its
+provider aggregate status and later-source qualification remain separately
+tracked. Windows ANGLE/Microsoft Basic Render Driver records 6.670–9.073
+software draw submissions per second, with pressure native throughput of
+22.954–29.249 Hz. These are visible limitations in these hosted
+software-rendering observations, not physical FPS or acceptable-human-playability claims. The audit
+retains all 72 measurements, hardware identities and unmatched-pair exclusions.
+
 ## Current PLAY acceptance boundary — 2026-10-30
 
 The [authoritative owner decision](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
