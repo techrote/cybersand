@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import base64
 import hashlib
 import io
 import json
@@ -11,6 +12,7 @@ from pathlib import Path
 import tempfile
 import tarfile
 import unittest
+import zlib
 from unittest import mock
 
 import numpy as np
@@ -21,6 +23,10 @@ import run_palette_shader_qualification as runner
 
 
 HASHES = {'full_crossfade': 'a' * 64, 'angle_bounded_crossfade': 'b' * 64}
+# Original canonical CPU bytes, independently retained from 19ddd366's unchanged
+# factory. Compression keeps the registered 8,192-byte golden input compact.
+CANONICAL_PROGRAM = zlib.decompress(base64.b64decode(
+    'eNrtmL9v00AUx2/OzFAkdEohQW6jVDiOU/+4S6+oEFoaknTOwHQzcyYvzJ0tFiR2zx6tm++PIHPn7jzHThWjyI9ihJA4v8XWR9/zu2/ee7mEkIeLPcT+ax9n9bw9r+ditr2j/c+h8i0mTyq8oucQuV7Zyk5O5YnyxQKefGUTRrsx6B2e83wN50x6SS+awfNQvlQ+7To+YYvy/dTWrOUkL8jF7vqU043eCZ1QinSkjrJZff4Zsj/Mv+8LhGPri2b+t2/ArQHtSq/wxyp57qB+RQ+jK8KW4b0nPUIOnoEzvOTj+EKfEyZukPwQ/hXJ7yPiT7TLA+Vzlo4q+vmfqs/f9Hde1N+nsv7k1t8B4XLQeQ533jrIK44exi5hccnTUezqQI/byP7F9e7+73zrsf5dNqw/6L8E+g5yJ/IY8i/6b6CZcx6fkSFB9NGUsEmYnILmOPaVP9noaR8cEdCz/Ur/edCXTLkV/bzZfGrMRUOOrf8a5WwF9XX3U33BROSJc9CB+caejFbWbUC79x5htyW3hprr4ZcOeYOs/xbhE4S/Q/j7hvqGPML0l80+P6y/yBUyHxfNOOZvhPl//Yj5s299hGcIJ9NmXFS4VX6/tXqtHu2nIz2Mpuh8qs8fy+8Dkh/CowpPIXK+DJch7TtiPc4q/BvElkci6Wm2nxfnG5gJR1W+gticr1zlar4ePxVkVj9fsoXh/zmv7w/DDTe85Plc3pxv7Twk/E79u+/nAQ+K87kcKNthsf+v+4f+/2C44YYbbrjhhhtuuOGGG2644Yb/Av8BLU5WzA=='))
 
 
 def shader(variant='angle_bounded_crossfade'):
@@ -46,8 +52,43 @@ def capture(directory, label, values):
             'png_sha256': c.sha(png), 'size': [values.shape[1], values.shape[0]], 'format': 15}
 
 
+def program_inputs(directory):
+    canonical = np.frombuffer(CANONICAL_PROGRAM, '<f2').reshape(256, 4, 4)
+    edited = canonical.copy()
+    for row in range(256):
+        edited[row, 0] = (0, 1, 0, .5)
+        edited[row, 1] = (.25, .75, .25, .75)
+        edited[row, 2] = (1, 1, 0, .125)
+        edited[row, 3, :3] = (.5, 0, .25)
+    clamped = edited.copy(); clamped[:, 3, 3] = np.minimum(clamped[:, 3, 3], 1)
+    def cpu(name, values):
+        path = directory / ('program_' + name + '.rgba16f'); path.write_bytes(values.tobytes())
+        return {'file': path.name, 'sha256': c.sha(path), 'bytes': 8192, 'size': [4, 256], 'format': 15}
+    def scalar_image(values):
+        image = np.ones((256, 16, 4), dtype='<f2')
+        for column in range(4):
+            for channel in range(4):
+                scalar = values[:, column, channel].astype(float) / (64 if (column, channel) == (3, 3) else 1)
+                image[:, column * 4 + channel, :3] = scalar[:, None]
+        return image
+    bound = {'object_id': -5, 'rid': 9}; control = {'object_id': -6, 'rid': 10}
+    def probe(role, texture, values, begin):
+        return {'role': role, 'binding_before': copy.deepcopy(texture), 'binding_after': copy.deepcopy(texture),
+                'requested_usec': begin, 'readback_usec': begin + 1,
+                'capture': capture(directory, 'program_' + role, scalar_image(values))}
+    return {'schema': 'palette-program-gpu-inputs-v1', 'scalar_count': 4096, 'flair_scale': 64,
+            'canonical': cpu('canonical', canonical), 'edited': cpu('edited', edited),
+            'probe_shader_sha256': c.PROGRAM_PROBE_SHA256,
+            'production_bindings': [{'draw_index': i, 'before': copy.deepcopy(bound), 'after': copy.deepcopy(bound)}
+                                    for i in range(24) if i % 8 != 0],
+            'positive': probe('production_bound', bound, edited, 60),
+            'negative': probe('clamped_control', control, clamped, 62),
+            'positive_max_error': 0.0, 'negative_control_max_error': 0.0,
+            'negative_rejection_max_error': 49 / 64, 'sand_rejection_error': .5, 'water_rejection_error': .4375}
+
+
 def oracle(directory):
-    result = {'fixture': 'palette-bounded-crossfade-v2', 'assertions': 1216, 'failures': 0,
+    result = {'fixture': c.ORACLE_VERSION, 'assertions': c.ORACLE_ASSERTIONS, 'failures': 0, 'backend': 'opengl3',
               'conditions': [0, 128, 255], 'blends': [0, .5, 1], 'material_slots': 132,
               'tolerance': c.TOLERANCE, 'shader': shader(), 'rows': [], 'oracle_inputs': [],
               'draw_timings': [{'requested_usec': 10 + i * 2, 'readback_usec': 11 + i * 2} for i in range(24)]}
@@ -64,6 +105,7 @@ def oracle(directory):
                 'capture': capture(directory, f'actual-{condition}-{blend}', values),
                 'pan_capture': capture(directory, f'pan-{condition}-{blend}', panned),
                 'max_rgba_difference': 0.0, 'camera_pan_difference': 0.0})
+    result['program_inputs'] = program_inputs(directory)
     return result
 
 
@@ -330,6 +372,86 @@ class PixelReadback(unittest.TestCase):
         Image.new('RGBA', (64, 36), 'black').save(self.directory / record['png'])
         record['png_sha256'] = c.sha(self.directory / record['png'])
         with self.assertRaisesRegex(ValueError, 'PNG does not represent'): self.check()
+
+    def test_actual_gpu_hdr_input_and_rendered_clamped_negative_are_independent(self):
+        value = self.check()['program_inputs']
+        self.assertEqual(value['canonical_sha256'], '6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d')
+        self.assertEqual((value['scalars_per_probe'], value['retained_probe_images'], value['production_bindings']), (4096, 2, 21))
+        self.assertEqual((value['sand_rejection_error'], value['water_rejection_error']), (.5, .4375))
+
+    def test_coherent_endpoints_cannot_absorb_clamped_positive_gpu_program(self):
+        inputs = self.result['program_inputs']
+        clamped = c.pixels(self.directory, inputs['negative']['capture'])
+        self.replace(inputs['positive'], 'capture', clamped)
+        # All original endpoint/base/interpolation/camera pixels remain coherent.
+        with self.assertRaisesRegex(ValueError, 'positive instruction'): self.check()
+
+    def test_rehashed_canonical_and_edited_program_mutations_refuse(self):
+        for key in ('canonical', 'edited'):
+            inputs = self.result['program_inputs']; record = inputs[key]; path = self.directory / record['file']
+            values = np.frombuffer(path.read_bytes(), '<f2').copy().reshape(256, 4, 4)
+            values[2, 3, 3] = 1; path.write_bytes(values.tobytes()); record['sha256'] = c.sha(path)
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'independent'): self.check()
+            self.result = oracle(self.directory)
+
+    def test_production_or_probe_binding_substitution_and_alias_refuse(self):
+        changes = [lambda v: v['positive']['binding_before'].update(rid=99),
+                   lambda v: v['positive']['binding_after'].update(object_id=99),
+                   lambda v: v['production_bindings'][3]['after'].update(rid=99),
+                   lambda v: v['production_bindings'][0].update(draw_index=0),
+                   lambda v: v['negative']['binding_before'].update(rid=9),
+                   lambda v: v['negative']['binding_before'].update(object_id=-5),
+                   lambda v: v['positive']['binding_before'].update(object_id=True)]
+        for change in changes:
+            original = copy.deepcopy(self.result); change(self.result['program_inputs'])
+            with self.assertRaises(ValueError): self.check()
+            self.result = original
+
+    def test_negative_must_actually_render_the_clamped_recipe(self):
+        inputs = self.result['program_inputs']
+        good = c.pixels(self.directory, inputs['positive']['capture'])
+        for values in (good, np.zeros((256, 16, 4))):
+            self.replace(inputs['negative'], 'capture', values)
+            with self.assertRaisesRegex(ValueError, 'registered clamped'): self.check()
+
+    def test_program_probe_inventory_order_and_reduction_are_mandatory(self):
+        changes = [lambda v: v.pop('program_inputs'),
+                   lambda v: v['program_inputs'].update(scalar_count=4095),
+                   lambda v: v['program_inputs'].update(probe_shader_sha256='0' * 64),
+                   lambda v: v['program_inputs']['production_bindings'].pop(),
+                   lambda v: v['program_inputs']['positive'].update(requested_usec=1),
+                   lambda v: v['program_inputs']['negative'].update(requested_usec=60),
+                   lambda v: v['program_inputs'].update(negative_rejection_max_error=0),
+                   lambda v: v['program_inputs']['positive']['capture'].update(size=[16, 255]),
+                   lambda v: v.update(fixture='palette-bounded-crossfade-v2')]
+        for change in changes:
+            original = copy.deepcopy(self.result); change(self.result)
+            with self.assertRaises(ValueError): self.check()
+            self.result = original
+
+    def test_backend_finish_difference_is_retained_as_failed_diagnostic(self):
+        other = self.directory / 'angle'; other.mkdir(); right = oracle(other); right['backend'] = 'opengl3_angle'
+        for control in right['oracle_inputs']:
+            current = c.pixels(other, control['current']); current[30, 10, :3] += [.015, .12, .0975]
+            control['current'] = capture(other, control['current']['label'], current)
+            current = c.pixels(other, control['current'])
+            reference = c.pixels(other, control['reference'])
+            for row in right['rows']:
+                if row['condition'] != control['condition']: continue
+                values = (reference * (1 - row['blend']) + current * row['blend']).astype('<f2').astype(float)
+                row['capture'] = capture(other, row['capture']['label'], values)
+                row['pan_capture'] = capture(other, row['pan_capture']['label'], np.roll(values, (-2, -3), (0, 1)))
+        c.verify_oracle(right, other, {'shader_hashes': HASHES}); self.check()
+        c.write(self.directory / 'crossfade.json', self.result); c.write(other / 'crossfade.json', right)
+        result = c.compare_bounded_backends(self.directory, other)
+        self.assertEqual(result['status'], 'passed')
+        diagnostic = result['finished_image_diagnostic']
+        self.assertEqual(diagnostic['status'], 'failed'); self.assertEqual(diagnostic['original_threshold'], 2 / 255)
+        self.assertEqual(len(diagnostic['frames']), 9); self.assertEqual(len(result['outgoing_base_frames']), 3)
+        self.assertGreater(max(row['max_rgba_difference'] for row in diagnostic['frames']), .1)
+        row = right['rows'][0]; values = c.pixels(other, row['capture']); values[0, 0, 0] += .1
+        row['capture'] = capture(other, row['capture']['label'], values); c.write(other / 'crossfade.json', right)
+        with self.assertRaisesRegex(ValueError, 'outgoing CPU-base'): c.compare_bounded_backends(self.directory, other)
 
 
 class MainReadback(unittest.TestCase):

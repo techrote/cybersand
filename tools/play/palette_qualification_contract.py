@@ -26,6 +26,11 @@ BOUNDED = b'#define CYBER_BOUNDED_CROSSFADE\n'
 VERSION = '4.7.stable.official.5b4e0cb0f'
 GODOT_HASH = '5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88'
 TOLERANCE = 2 / 255
+ORACLE_VERSION = 'palette-bounded-crossfade-v3'
+ORACLE_ASSERTIONS = 1274
+# Independently registered canonical 4x256 RGBAH bytes, unchanged by v3.
+PROGRAM_SHA256 = '6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d'
+PROGRAM_PROBE_SHA256 = '9a21543c0cdf2105bf8350a94e7526547eed3a71f3062cee85370601f313e93e'
 # Runtime preparation is separate from the immutable scientific inputs.
 PYTHON_PACKAGES = ('numpy==2.3.5', 'Pillow==12.3.0')
 VISUAL = (
@@ -339,10 +344,100 @@ def reference_pixels(condition: int):
     return np.concatenate([rgb, np.ones((36, 64, 1))], axis=2)
 
 
+def edited_program(canonical: bytes):
+    import numpy as np
+    require(len(canonical) == 8192 and hashlib.sha256(canonical).hexdigest() == PROGRAM_SHA256,
+            'Canonical CPU program differs from the independent byte registration')
+    values = np.frombuffer(canonical, dtype='<f2').reshape(256, 4, 4).copy()
+    require(values[2, 3, 3] == 33 and values[3, 3, 3] == 29, 'Registered Sand/Water HDR instructions differ')
+    values[:, 0] = (0, 1, 0, .5)
+    values[:, 1] = (.25, .75, .25, .75)
+    values[:, 2] = (1, 1, 0, .125)
+    values[:, 3, :3] = (.5, 0, .25)
+    return values
+
+
+def program_scalar_pixels(program):
+    import numpy as np
+    values = program.astype(np.float64).reshape(256, 16).copy()
+    values[:, 15] /= 64
+    return np.concatenate([np.repeat(values[:, :, None], 3, axis=2), np.ones((256, 16, 1))], axis=2)
+
+
+def verify_program_inputs(value: dict, directory: Path, draw_timings: list) -> dict:
+    import numpy as np
+    require(isinstance(value, dict) and value.get('schema') == 'palette-program-gpu-inputs-v1'
+            and _same(value.get('scalar_count'), 4096) and _same(value.get('flair_scale'), 64)
+            and value.get('probe_shader_sha256') == PROGRAM_PROBE_SHA256, 'Missing/changed independent GPU program-input control')
+
+    def cpu_bytes(key: str) -> bytes:
+        item = value.get(key, {})
+        require(item.get('file') == 'program_' + key + '.rgba16f' and item.get('size') == [4, 256]
+                and _same(item.get('format'), 15) and _same(item.get('bytes'), 8192), 'CPU program byte inventory differs')
+        path = file(directory, item['file']); data = path.read_bytes()
+        require(len(data) == 8192 and sha(path) == item.get('sha256'), 'Retained CPU program bytes/digest differ')
+        return data
+
+    expected = edited_program(cpu_bytes('canonical'))
+    edited = cpu_bytes('edited')
+    require(edited == expected.tobytes(), 'Edited CPU program differs from independently reconstructed instructions')
+    clamped = expected.copy(); clamped[:, 3, 3] = np.minimum(clamped[:, 3, 3], 1)
+
+    def identity(item: object) -> dict:
+        require(isinstance(item, dict) and set(item) == {'object_id', 'rid'}
+                and all(type(v) is int and v != 0 for v in item.values()), 'Invalid actual program texture identity')
+        return item
+
+    positive = value.get('positive', {}); negative = value.get('negative', {})
+    bound = identity(positive.get('binding_before'))
+    control = identity(negative.get('binding_before'))
+    require(bound['object_id'] != control['object_id'] and bound['rid'] != control['rid'],
+            'Clamped control reused the production program object/RID')
+    bindings = value.get('production_bindings', [])
+    indices = [i for i in range(24) if i % 8 != 0]
+    require(isinstance(bindings, list) and len(bindings) == 21
+            and [row.get('draw_index') for row in bindings] == indices
+            and all(type(row.get('draw_index')) is int and identity(row.get('before')) == bound
+                    and identity(row.get('after')) == bound for row in bindings),
+            'Positive GPU probe differs from an actual production program binding')
+    require(len(draw_timings) == 24, 'Program probe has no original draw inventory')
+    previous_end = draw_timings[-1].get('readback_usec')
+    arrays = []
+    for probe, role, texture in ((positive, 'production_bound', bound), (negative, 'clamped_control', control)):
+        require(probe.get('role') == role and identity(probe.get('binding_after')) == texture,
+                'Program probe role/binding changed during rendering')
+        begin, end = probe.get('requested_usec'), probe.get('readback_usec')
+        require(type(begin) is int and type(end) is int and type(previous_end) is int
+                and previous_end <= begin < end, 'GPU program probes did not follow the unchanged original draws')
+        previous_end = end
+        record = probe.get('capture', {})
+        require(record.get('label') == 'program_' + role and record.get('raw') == 'program_' + role + '.raw'
+                and record.get('png') == 'program_' + role + '.png' and record.get('format') in (11, 15),
+                'GPU program probe capture identity differs')
+        arrays.append(pixels(directory, record, (16, 256)))
+    positive_error = float(np.max(np.abs(arrays[0] - program_scalar_pixels(expected))))
+    negative_error = float(np.max(np.abs(arrays[1] - program_scalar_pixels(clamped))))
+    rejection = np.abs(arrays[1] - program_scalar_pixels(expected))
+    rejection_error = float(np.max(rejection))
+    sand, water = (float(np.max(rejection[row, 15])) for row in (2, 3))
+    require(positive_error <= TOLERANCE, 'Actual bound GPU program failed independent positive instruction comparison')
+    require(negative_error <= TOLERANCE, 'Rendered negative control is not the registered clamped program')
+    require(rejection_error > TOLERANCE and sand > TOLERANCE and water > TOLERANCE,
+            'Positive instruction comparator did not reject the rendered clamped Sand/Water control')
+    errors = {'positive_max_error': positive_error, 'negative_control_max_error': negative_error,
+              'negative_rejection_max_error': rejection_error, 'sand_rejection_error': sand, 'water_rejection_error': water}
+    require(all(type(value.get(key)) in (int, float) and math.isclose(value[key], error, abs_tol=1e-6)
+                for key, error in errors.items()), 'GPU input self-report differs from independent scalar reduction')
+    return {'status': 'passed', 'canonical_sha256': PROGRAM_SHA256, 'edited_sha256': hashlib.sha256(edited).hexdigest(),
+            'scalars_per_probe': 4096, 'retained_probe_images': 2, 'production_bindings': 21,
+            'bound_texture': bound, 'clamped_texture': control, **errors,
+            'scope': 'Actual production-bound GPU instructions and separately rendered clamped negative; neither uses endpoint self-reference'}
+
+
 def verify_oracle(result: dict, directory: Path, report: dict) -> dict:
     import numpy as np
-    require(result.get('fixture') == 'palette-bounded-crossfade-v2'
-            and type(result.get('assertions')) is int and result['assertions'] == 1216
+    require(result.get('fixture') == ORACLE_VERSION
+            and type(result.get('assertions')) is int and result['assertions'] == ORACLE_ASSERTIONS
             and type(result.get('failures')) is int and result['failures'] == 0
             and result.get('conditions') == [0, 128, 255] and result.get('blends') == [0, .5, 1]
             and result.get('material_slots') == 132 and _same(result.get('tolerance'), TOLERANCE),
@@ -384,8 +479,35 @@ def verify_oracle(result: dict, directory: Path, report: dict) -> dict:
     require(len(result.get('draw_timings', [])) == 24 and all(
         row.get('readback_usec', 0) > row.get('requested_usec', 0) >= 0 for row in result['draw_timings']),
         'Missing bounded oracle actual draw/readback inventory')
+    program_inputs = verify_program_inputs(result.get('program_inputs'), directory, result['draw_timings'])
     return {'frames': 9, 'material_slots': 132, 'retained_images': 24, 'max_rgba_error': maximum,
-            'max_camera_error': camera_maximum, 'tolerance': TOLERANCE}
+            'max_camera_error': camera_maximum, 'tolerance': TOLERANCE, 'program_inputs': program_inputs}
+
+
+def compare_bounded_backends(left: Path, right: Path) -> dict:
+    """Reduce the pair after both complete, source-bound cohort readers pass."""
+    import numpy as np
+    a = json.loads(file(left, 'crossfade.json').read_text()); b = json.loads(file(right, 'crossfade.json').read_text())
+    require(a.get('fixture') == b.get('fixture') == ORACLE_VERSION and a.get('backend') == 'opengl3'
+            and b.get('backend') == 'opengl3_angle', 'Cross-backend semantic contract/backend differs')
+    require(len(a.get('rows', [])) == len(b.get('rows', [])) == 9, 'Cross-backend frame inventory differs')
+    frames = []; outgoing = []
+    for x, y in zip(a['rows'], b['rows']):
+        require((x['condition'], x['blend']) == (y['condition'], y['blend']), 'Cross-backend bounded frames differ in inputs')
+        delta = np.abs(pixels(left, x['capture'], (64, 36)) - pixels(right, y['capture'], (64, 36)))
+        error = float(np.max(delta)); count = int(np.count_nonzero(np.max(delta, axis=2) > TOLERANCE))
+        frame = {'condition': x['condition'], 'blend': x['blend'], 'max_rgba_difference': error,
+                 'pixels_exceeding_original_threshold': count, 'total_pixels': 2304}
+        frames.append(frame)
+        if x['blend'] == 0:
+            require(error <= TOLERANCE, 'Cross-backend positive outgoing CPU-base expectation failed')
+            outgoing.append(frame)
+    require(len(outgoing) == 3, 'Missing cross-backend outgoing CPU-base conditions')
+    return {'schema': 'palette-bounded-semantics-v3', 'status': 'passed', 'outgoing_base_frames': outgoing,
+            'finished_image_diagnostic': {'status': 'passed' if all(v['pixels_exceeding_original_threshold'] == 0 for v in frames) else 'failed',
+                'original_threshold': TOLERANCE, 'frames': frames,
+                'scope': 'Retained v2 finished-image identity diagnostic, not the v3 acceptance predicate. Procedural hash finish is stable on one GPU; no tolerated-pixel allowance is introduced.'},
+            'scope': 'Each backend independently passes all base/blend/full-current/camera and actual GPU-input controls; cross-backend CPU-base remains a positive fixed-tolerance gate.'}
 
 
 def verify_water(log: str, directory: Path) -> dict:
