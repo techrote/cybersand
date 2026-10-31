@@ -18,18 +18,35 @@ per-OS result was not full integration qualification. Independent review found
 and corrected an offline parser-negative false pass; corrected head
 `ca426a63d14f7b604799c7fa5cba1197240caa55` has a stricter v2 contract and bounded
 teardown. Its dedicated run41173057126 records Linux520/0 and Windows523/0;
-ordinary full gates and final merge/post-merge status belong to the live PR.
+full pre-merge Documentation, Native and Windows/Linux Godot gates passed before
+guarded merge at `5c709f837a0e2b3248bc9df85baf6da9c8a88a0b`, tree
+`901166624bfde7cf2691c57a8937e59d3402febc`. Its post-merge Godot run41175311073
+passed206 Windows and218 Linux cases. Post-merge Native41175310972 **failed**:
+the unchanged600-second worldgen-sanitize build/run bound interrupted the ninth
+sanitized executable after eight completed. That original result remains
+incomplete; a separate bounded build-scheduling repair is under review.
 Original source1686, run41171088500, cancelled ordinary attempts and all raw
 artifacts retain their original status and identities.
 
 PR #318 at `12380a590d1bc301a9700ec4af78cbc72ca027e0` adds the independently
-reproduced immediate-pause cancellation correction. The
+reproduced immediate-pause cancellation correction. Its own complete exact-head
+matrix and independent original-artifact review passed, including515 INPUT010
+assertions and50 actual LIFE001 lifetimes per OS. It was guardedly merged at
+`afa8185c8dc57405ef54765a6cdf71cb7bfbf6e4`, tree
+`6ec0ca07a9f49c4c3039b52c87d15414582c31e5`; original post-merge runs41178118495
+(Documentation),41178118533 (Native) and41178118530 (Godot) are separately
+tracked in the live ledger. The different-tree #317 failure is not relabelled
+by this qualification. The
 [UI007 desktop package](../audits/2026-10-31-play-ui007-desktop-readiness.md)
 adds authored target visibility, optional sampled task participation, publication
 accounting and visible launcher return. The [manual packet](play-desktop-manual-qualification.md)
 prepares exact-source launch/checklist files without executing Godot or claiming
 physical qualification. Consult the live PR and #305 ledgers for guarded merge
 and post-merge receipts; these source descriptions are not green-gate claims.
+The original #319 full matrix remains failed: Windows86/0 then0xC0000005 in
+the unchanged desktop-default fixture, and a separate TSan15-minute timeout
+after153/164 case passes. Its independently reviewed immutable-empty-publication
+correction is a distinct defect; no cause/cure for those failures is asserted.
 
 Continue #268 → #269 → #270 → #263 without another gameplay owner. Keep native
 World exclusive to the existing worker, immutable publications and main-thread
