@@ -10,6 +10,36 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Testing, validation, and replay
 
+## Windows palette decomposition feasibility
+
+The isolated [compiler experiment](../audits/2026-10-31-play-pace003-palette-decomposition.md)
+uses authenticated historical HLSL from #312's retained reproduction. The
+[generator](../../tools/diagnostics/pace003_decomposition_variants.py) records
+reversible edits for ordinary/building material programs and a compositor; the
+[harness](../../tools/diagnostics/run_pace003_decomposition.py) executes the fixed
+program set serially in fresh Windows processes with the original compiler,
+flags and 180-second bounds. Tiny valid and explicit invalid-source controls
+must pass their distinct contracts before the expensive inputs run.
+
+The preregistered screen requires a complete program family to fit both a
+20-second serial compiler sum and a 20-second whole-process observation sum.
+GO means a renderer prototype merits separate qualification; NO-GO concerns
+these tested families; broken controls or custody mean INCONCLUSIVE. The
+dedicated workflow preserves every first attempt and recomputes its decision
+from retained originals. Its result does not qualify pixels, device creation,
+cold Main startup or gameplay. #310's Linux candidate and frozen #312 remain
+separate; #308's Windows graphical hold and Scheduswarm pause remain in force.
+
+**Measured result, 2026-10-31:** exact `4982e767` Windows run `41165819892`
+completed with valid controls and readback, but **both families are NO-GO**:
+60.329724/57.652248 seconds of serial compiler wall time, respectively. Ordinary
+material shading alone took 42.474788 seconds. Successful compilation does not
+clear the budget or establish pixels; retained potential-uninitialized warnings
+remain unadjudicated. The [result record](../audits/2026-10-31-play-pace003-palette-decomposition.md#actual-windows-results-and-decision--2026-10-31)
+keeps the earlier apparatus failure and exact original artifact separate.
+
+## Earlier application qualification
+
 The [completed local35-case plus import run](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 passes every actual process and the strict current003 result verifier on
 functionale8f1d37b/DLL93d3ee3f. Separate [compat77/threaded76 actual Web tests](../audits/2026-10-25-lcb003-web-common-water.md)

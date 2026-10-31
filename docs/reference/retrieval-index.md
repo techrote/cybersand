@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [Does Windows palette decomposition compiler success qualify cold Main startup?](../operations/testing-validation-and-replay.md#windows-palette-decomposition-feasibility)
+  The complete-family serial compiler and process budgets are feasibility
+  screens; pixel equivalence, real Main startup and gameplay remain separate.
+  The [dated record](../audits/2026-10-31-play-pace003-palette-decomposition.md)
+  retains the authentic input, original attempts and bounded decision.
+  The measured `4982e767` result is NO-GO for both families; ordinary shading
+  alone compiles in 42.474788 seconds, and production Windows remains blocked.
+
 - [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
   #302 satisfies mandatory native-busy lifecycle qualification; #304 is optional
   and retains its failed evidence. Remaining #268/#269/#270 product, stress,

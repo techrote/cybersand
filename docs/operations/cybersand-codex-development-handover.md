@@ -10,6 +10,26 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Windows palette decomposition investigation — 2026-10-31
+
+The owner authorized the isolated compiler feasibility PR described in the
+[dated protocol and evidence](../audits/2026-10-31-play-pace003-palette-decomposition.md).
+It starts from main `0bf28d5760aed989a79386de03ef4fc6171fef42` and leaves #310
+at `dc324f7a` and frozen #312 at `5de46847`. Read the
+[test contract](testing-validation-and-replay.md#windows-palette-decomposition-feasibility)
+before interpreting any compiler GO as product acceptance. Original flags,
+compiler, case limits, negative evidence, #308's graphical hold and Scheduswarm
+pause remain unchanged. Results belong to their actual executed head.
+
+The exact `4982e767` first compiler run completed with valid controls and
+independent readback, but both tested families are **NO-GO**: 60.329724 and
+57.652248 seconds of serial compiler time. Ordinary shading alone takes
+42.474788 seconds. The [result addition](../audits/2026-10-31-play-pace003-palette-decomposition.md#actual-windows-results-and-decision--2026-10-31)
+retains all inputs, outputs, warnings and the original failed apparatus run.
+Do not implement these renderer splits as the startup remedy. Any next
+ordinary-program decomposition or compiler minimization is a separately
+registered diagnostic; no production correction or PLAY promotion occurred.
+
 ## CI parallel integration checkpoint — 2026-10-31
 
 The owner requested production integration of #311/#313/#314 in the active
