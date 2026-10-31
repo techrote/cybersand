@@ -7,11 +7,21 @@ from pathlib import Path
 import re
 import struct
 from urllib.parse import urlsplit
+from windows_crash_policy import CAPTURE_MS, DUMP_TIMEOUT_CONTROL_MS
 
-SCHEMA = 'play-windows-crash-v2'
+SCHEMA = 'play-windows-crash-v3'
 ACCESS_VIOLATION = 0xC0000005
 NOT_HANDLED = 0x80010001
 MAX_DUMP_BYTES = 64 * 1024 * 1024
+DUMP_FORMAT = {
+    'schema': 'play-windows-minidump-v2',
+    'requested_flags': 0x1000,
+    'allowed_output_flags': [0x1000, 0x201000],
+    'max_dump_bytes': MAX_DUMP_BYTES,
+    'max_exception_context_bytes': 64 * 1024,
+    'unused_stream_rule': 'exact-zero-directory-slot-only',
+    'disallowed_stream_types': [9],
+}
 
 def require(condition, message):
     if not condition:
@@ -65,7 +75,7 @@ def read_load_identities(root: Path, events: list[dict]) -> dict:
         if capture is None:
             identity={'hash_status':'not_requested'}
         else:
-            require(capture['valid'] is True and capture['limit_ms']==15000 and 0<=capture['milliseconds']<=15000
+            require(capture['valid'] is True and capture['limit_ms']==CAPTURE_MS and 0<=capture['milliseconds']<=CAPTURE_MS
                     and capture['helper_pid']>0 and capture['helper_exit']==0 and capture['helper_joined'] is True
                     and capture['helper_terminated'] is False and capture['timed_out'] is False,
                     'Required load-time hash failed, exceeded its bound or lacked joined ownership')
@@ -183,12 +193,22 @@ def safe_file(root: Path, relative: str) -> Path:
 def dump_identity(data: bytes) -> dict:
     """Read actual MINIDUMP streams without relying on the broker's JSON claim."""
     require(32 <= len(data) <= MAX_DUMP_BYTES and data[:4] == b'MDMP', 'Invalid/big minidump')
-    require(struct.unpack_from('<Q',data,24)[0]==0x1000,'Dump flags differ from bounded MiniDumpNormal/ThreadInfo contract')
+    dump_flags=struct.unpack_from('<Q',data,24)[0]
+    # DbgHelp on the retained hosted control added the documented AVX register
+    # context bit. No full-memory, private-memory, trace or unknown bit is allowed.
+    require(dump_flags in DUMP_FORMAT['allowed_output_flags'],
+            'Dump flags differ from bounded MiniDumpNormal/ThreadInfo contract')
     count, directory = struct.unpack_from('<II',data,8)
     require(1 <= count <= 128 and directory+12*count <= len(data), 'Invalid minidump stream directory')
-    streams = {}
+    streams = {};unused_stream_slots=0
     for index in range(count):
         kind,size,offset = struct.unpack_from('<III',data,directory+12*index)
+        if kind==0:
+            require(size==offset==0, 'Nonempty unused minidump directory slot')
+            unused_stream_slots+=1
+            continue
+        require(kind not in DUMP_FORMAT['disallowed_stream_types'],
+                'Full-memory minidump stream violates bounded dump contract')
         require(kind not in streams and offset+size <= len(data), 'Duplicate/truncated minidump stream')
         streams[kind] = (size,offset)
     require(all(k in streams for k in (3,4,6)), 'Minidump lacks threads/modules/exception')
@@ -197,7 +217,8 @@ def dump_identity(data: bytes) -> dict:
     tid,code = struct.unpack_from('<I',data,offset)[0],struct.unpack_from('<I',data,offset+8)[0]
     address = struct.unpack_from('<Q',data,offset+24)[0]
     context_size,context_at = struct.unpack_from('<II',data,offset+160)
-    require(context_size >= 256 and context_at+context_size <= len(data), 'Missing exception thread context')
+    require(1232 <= context_size <= DUMP_FORMAT['max_exception_context_bytes']
+            and context_at+context_size <= len(data), 'Missing/oversized exception thread context')
     flags = struct.unpack_from('<I',data,context_at+48)[0]
     require(flags & 0x100000 == 0x100000, 'Exception context is not x86_64')
     rip,rsp,rbp = (struct.unpack_from('<Q',data,context_at+x)[0] for x in (248,152,160))
@@ -229,7 +250,10 @@ def dump_identity(data: bytes) -> dict:
         module_rows.append({'base':base,'bytes':length,'path':name})
     parameters=struct.unpack_from('<I',data,offset+32)[0]
     require(parameters<=15,'Invalid exception parameter count')
-    return {'thread_id':tid,'code':code,'address':address,'rip':rip,'rsp':rsp,'rbp':rbp,
+    return {'dump_format_schema':DUMP_FORMAT['schema'],'dump_flags':dump_flags,
+            'exception_context_bytes':context_size,'unused_stream_slots':unused_stream_slots,
+            'stream_types':sorted(streams),
+            'thread_id':tid,'code':code,'address':address,'rip':rip,'rsp':rsp,'rbp':rbp,
             'flags':struct.unpack_from('<I',data,offset+12)[0],
             'nested_record':struct.unpack_from('<Q',data,offset+16)[0],
             'parameters':list(struct.unpack_from('<'+'Q'*parameters,data,offset+40)),
@@ -298,7 +322,7 @@ def verify_capture(root: Path, events: list[dict], receipt: dict) -> dict:
     for capture in captures:
         event=next(e for e in required if e['event_id']==capture['event_id'])
         require(capture['pid']==event['pid'] and capture['tid']==event['tid'] and capture['capture_exit']==0
-                and not capture['timed_out'] and 0<=capture['capture_ms']<=15000 and capture['capture_limit_ms']==15000
+                and not capture['timed_out'] and 0<=capture['capture_ms']<=CAPTURE_MS and capture['capture_limit_ms']==CAPTURE_MS
                 and capture['helper_pid']>0 and capture['helper_joined'] and not capture['helper_terminated']
                 and not capture['helper_control'], 'Failed/late/wrong-owner dump capture')
         prefix=capture['prefix']
@@ -326,7 +350,7 @@ def verify_dump_timeout_control(events: list[dict], receipt: dict) -> dict:
     require(len(captures)==1 and events[0]['schema']==SCHEMA and events[-1]['type']=='end', 'Missing hung-writer control receipt')
     capture=captures[0];end=events[-1]
     start=events[0]
-    require(start['broker_pid']==receipt['broker_pid'] and start['timeout_ms']==receipt['timeout_ms']==15000
+    require(start['broker_pid']==receipt['broker_pid'] and start['timeout_ms']==receipt['timeout_ms']==DUMP_TIMEOUT_CONTROL_MS
             and start['command_line']==' '.join(windows_quote(value) for value in receipt['debuggee_command']),
             'Hung-writer process/source command receipt mismatch')
     require(capture['helper_control'] and capture['capture_limit_ms']==1000 and capture['timed_out']
