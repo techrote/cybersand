@@ -442,3 +442,53 @@ apparatus and this audit are added. All 60 headless and 12 graphical cases,
 their source-bound independent readbacks, the final exact-inventory reducer,
 and the applicable full regression workflows remain required on that source
 before guarded acceptance.
+
+
+## Published d08 graphical evidence and v3 source composition
+
+Published source `d08e61013c2fefbf6238d50174b81655e80f1eb8`, tree
+`9b95e643d756f531db045e28272fa86bdeb97665`, completed all six local graphical
+cases on the preceding protected recovery baseline `02454f3a`. All three
+separately launched shards passed and their independent sealed readbacks
+confirmed all 87 original campaign files unchanged. The
+[complete compact receipt](play-pace004-2026-10-31/local-d08e6101-six-graphical.json)
+is retained byte-for-byte, SHA-256
+`d58e0122eaf9cdd912557250a88a66aaac228536c64da9f7eaf7bcc063111f0f`.
+The initial preparation refusal occurred before any engine launch and remains
+separate from the three successful executions.
+
+Together the six cases record 720 assertions with zero failures and 240
+individually accounted input events. The actual cohort is X11/OpenGL3 with
+llvmpipe LLVM 20.1.2, 256 bits, on a shared AMD EPYC 9V74 host reporting nine
+logical processors. Both selected runtime hashes, protected production inputs
+and source identities remain unchanged; every process completes naturally and
+all actor-removal, terrain-removal, restoration and safe-cleanup controls pass.
+This is automated graphical evidence, not a physical device or human result.
+
+Current-policy native throughput is approximately 59.96–60.01 completed ticks
+per second. The pressure-policy cases record approximately 52.87 with one
+worker and 46.33 with Auto; Rapier remains approximately 59.64–60.06 completed
+steps per second across the six cases. Those pressure-policy observations
+remain visible performance limitations of this shared software-rendering
+cohort. They are not compared against Avrea or the earlier b94 measurements.
+Draw submission is recorded separately; displayed FPS remains null.
+
+The complete local evidence archive is
+`pace004-d08e6101-six-linux-graphical-cases.tar.gz`, 266,720,364 bytes,
+SHA-256 `12e54eec090239610a28fe7fbf66034ddb2eb48c26623cf2d61ab1455e45ec65`;
+its 365 members were individually verified against the retained manifest.
+The original hosted d08 attempt is
+[run 41247752557](https://github.com/techrote/cybersand/actions/runs/41247752557),
+attempt 1; partial completed shards are not a full inventory qualification.
+
+The successor now inherits exact recovery source
+`4752aac3a300ae65da1c578609283c875b8448f8`, tree
+`41c0d18589ec5cc8911edcbdc73434556c99dc89`, through an ancestry-preserving merge.
+That baseline incorporates the separately reviewed
+[shader semantic/input v3 apparatus](2026-10-31-palette-shader-semantic-v3-registration.md)
+from `6f8f13f0`. No PACE004 apparatus, gameplay production code, input tape,
+scientific window, runtime or execution allowance changes in this composition.
+The six local d08 cases retain their actual source identity; they are not
+relabeled as successor executions. Fresh complete 60-headless/12-graphical
+hosted qualification and applicable full source-matched regressions remain
+required for the successor before guarded acceptance.
