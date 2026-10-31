@@ -1601,8 +1601,7 @@ func _ready() -> void:
 			latest_snapshot.render_patch_cells,
 			latest_snapshot.render_channels
 		)
-	texture = ImageTexture.create_from_image(image)
-	previous_texture = ImageTexture.create_from_image(image)
+	create_render_textures()
 	material_appearance_lut = CyberMaterialAppearanceLut.create_texture()
 	material_appearance_program = CyberMaterialAppearanceLut.create_program_texture()
 	world_view.texture = texture
@@ -2703,6 +2702,12 @@ func consume_worker_snapshot() -> void:
 		paused = true
 	if not player_uses_barrel():
 		character_position = snapshot.character_position
+	consume_render_snapshot(snapshot)
+	gameplay_recorder.ingest_snapshot(snapshot)
+
+
+func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	# Shared production upload/ACK path, also exercised by the rendered diagnostic.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
 		record_render_payload(snapshot)
 		var render_uploaded: bool = upload_texture_patches(
@@ -2723,7 +2728,6 @@ func consume_worker_snapshot() -> void:
 			)
 		else:
 			reject_render_snapshot(snapshot)
-	gameplay_recorder.ingest_snapshot(snapshot)
 
 
 func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
@@ -3925,6 +3929,11 @@ func view_content_rect() -> Rect2:
 	)
 	var shown_size: Vector2 = Vector2(current_view_size) * fit_scale
 	return Rect2((available_size - shown_size) * 0.5, shown_size)
+
+
+func create_render_textures() -> void:
+	texture = ImageTexture.create_from_image(image)
+	previous_texture = ImageTexture.create_from_image(image)
 
 
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:

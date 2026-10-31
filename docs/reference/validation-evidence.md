@@ -10,6 +10,14 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Render publication investigation — 2026-10-31
+
+The [dated A→B→C investigation](../audits/2026-10-31-render-publication-investigation.md)
+freezes main `adaaa37a`, records real Main graphical normal/withheld-ACK traces,
+keeps initial instrumentation limitations and uses corrected monotonic causal
+gates. Windows native GPU and Linux/WSLg llvmpipe are separate evidence cohorts.
+Neither CPU texture submission nor a frame witness proves GPU completion.
+
 ## CI parallelism evidence boundary — 2026-10-31
 
 The [dated production CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)

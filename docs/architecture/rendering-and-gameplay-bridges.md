@@ -93,6 +93,27 @@ publication cadence. Neither is a strict simulation-accuracy switch.
 compression/coalescing and tuned production snapshot defaults. Lower native
 copy volume does not establish any of those features.
 
+## Render publication investigation on frozen main
+
+**Current experimental instrumentation, 2026-10-31:**
+[`run_render_publication.gd`](../../godot/tests/run_render_publication.gd) installs
+bounded test subclasses on the real desktop Main scene. Normal uploads issue
+ordinary ACKs; an explicitly selected withheld-ACK control suppresses only those
+post-consumption ACKs. Monotonic owner counters and retained events trace native
+adapter calls, accumulation, publication, retrieval, validation, image patching,
+texture submission and the exact ACK value latched by the worker. Ordinary
+application policy is unchanged. The [dated investigation](../audits/2026-10-31-render-publication-investigation.md)
+owns source identities, graphical observations, historical #283 qualifications,
+candidate gates and failures.
+
+Godot `Time.get_ticks_usec()` is common to these two Godot threads. Publication
+visibility is bracketed by the snapshot's `published_usec` and owner-method
+return; it is not timestamped atomically at the pointer exchange. Native adapter
+timing includes extraction and Godot marshalling. Texture update return measures
+CPU submission; the retained frame-post-draw witness does not measure GPU
+completion. Diagnostic locking changes scheduling, so measured retry incidence
+is scoped to the instrumented host and fixture.
+
 ## Which gameplay command path exists today?
 
 **Current desktop:** main-thread methods replace frame state and copied body

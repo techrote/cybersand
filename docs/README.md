@@ -10,6 +10,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [frozen-main render-publication investigation](audits/2026-10-31-render-publication-investigation.md)
+separates graphical ACK/overflow reproduction, historical #283 evidence and
+opt-in E/R experiments. Ordinary rendering policy remains unchanged.
+
 ## CI parallel production integration — 2026-10-31
 
 The [production CI record](audits/2026-10-31-ci-parallel-production-integration.md)
