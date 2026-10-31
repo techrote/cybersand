@@ -30,6 +30,16 @@ for every preset's controls, gamepad mapping, focus/reset behavior and current
 qualification. `--player=acrobat` selects a preset at launch. These are experimental
 controls; headless regressions do not establish target-PC human feel acceptance.
 
+**Manual PLAY continuation, 31 October 2026:** the owner has deferred further
+Windows shader/compiler/cache investigations until after planned shader reworks.
+Existing cold-start failures and #308/#310 integration holds remain. Independent
+[LIFE009 candidate qualification](docs/audits/2026-10-31-play-life009-automatic-pause.md)
+adds real automatic-callback input/pause/resume tests for all five mechanical
+rigs, without changing production shaders, physics, native ownership or runtimes.
+It is headless behavior evidence, not graphical or human-feel acceptance. See
+[draft PR #317](https://github.com/techrote/cybersand/pull/317) for exact tested
+heads, preserved first failures and the remaining integration gates.
+
 ## Deepworks — the exhibition below
 
 Choose **Deepworks** in the launcher or pass **`--deepworks`** to open a
@@ -133,7 +143,7 @@ The GDScript fallback has different material semantics.
 The desktop sandbox includes 46 experimental
 [articulated actors](docs/systems/physical-actor-rigs.md) in eight sets: the original **SetA**
 Runner/Skimmer/Crawler controls, **SetB** ground machines, **SetF** flight and
-descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
+ descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
 **SetV** fictional interface personas, plus twelve **SetX** machines including
 multirotors, a suspended payload, a rocket blade and a concertina crawler, and
 the five human movement presets in **SetP**.
