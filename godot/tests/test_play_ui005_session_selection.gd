@@ -67,7 +67,7 @@ func exercise_selection(index: int, worker: CyberSimulationWorker) -> bool:
 		and desktop.playable_session_options == previous_options
 		and desktop.physical_actor_session == previous_session,
 		str(rig) + ": pending choice cannot relabel the old applied options/owner")
-	if not await wait_for(Callable(self, "new_actor").bind(rig, previous_epoch), 30000):
+	if not await wait_for(Callable(self, "new_actor").bind(rig, previous_epoch), Watchdogs.milliseconds("main_ack_seconds")):
 		expect(false, str(rig) + ": actual composed actor/World installation deadline")
 		return false
 	accepted_sessions += 1

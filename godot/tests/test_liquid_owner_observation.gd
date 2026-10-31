@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Host = preload("res://scripts/microscenario_host.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Runner = preload("res://tests/lcb_scenario_runner.gd")
@@ -25,7 +27,7 @@ func expect(value: bool, message: String) -> void:
 		failures += 1;push_error("LIQUID_OWNER_OBSERVATION: "+message)
 
 func wait_for(predicate: Callable) -> bool:
-	var deadline: int = Time.get_ticks_msec()+20000
+	var deadline: int = Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec() < deadline:
 		await process_frame
 		if predicate.call(): return true

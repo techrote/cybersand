@@ -10,12 +10,31 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Current owner policy and accepted baseline — 2026-10-31
+
+The owner supersedes the earlier shader deferral and short immutable deadline
+restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
+[shared execution watchdog and advisory performance policy](operations/ci-execution-and-performance.md).
+Its original attempt-1 post-merge Docs41204873388, scope41204873081,
+Native41204873121 and Godot41204873192 all passed. #269 is closed;
+#268/#270/#263 still require their remaining actual acceptance evidence.
+#324/#325 were already included and are administratively closed.
+
+The focused timeout/telemetry source requires fresh full CI and independent
+review. Shader integration and the source-preserving Windows crash diagnostic
+remain separate work packages. Historical failures keep their original status.
+The physical/human packet still has 51 untested rows. Scheduswarm stays paused;
+[#305](https://github.com/techrote/cybersand/issues/305) owns current coordination.
+Earlier dated checkpoints below describe their original restrictions and source,
+not today's superseding owner decision.
+
+
 ## CI parallel production integration — 2026-10-31
 
 The [production CI record](audits/2026-10-31-ci-parallel-production-integration.md)
 reconciles the six-family Native, four-way Windows and report-only scope trials.
 The [CI contract](operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31)
-preserves every original command deadline, scientific fixture and complete
+preserves scientific fixtures and complete
 Windows/Linux gate. Predecessor trial timing is distinct from resulting-head
 qualification and does not remove the separate PLAY graphical hold.
 

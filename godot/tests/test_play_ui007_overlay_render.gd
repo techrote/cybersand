@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Graphical unit only: real pixels from the production target overlay, without
 # Main, native jobs, actor bodies, terrain shaders or gameplay qualification.
 # A headless invocation fails explicitly instead of reporting a skipped pass.
@@ -97,11 +99,11 @@ func run() -> void:
 			str(rig) + ": invalid identity removes all actual target pixels")
 		record.invalid_identity_cleared = cleared.get_used_rect().size == Vector2i.ZERO
 		record.elapsed_usec = Time.get_ticks_usec()-case_started
-		expect(record.elapsed_usec <= 15000000, str(rig) + ": graphical unit respects 15-second operation bound")
+		expect(record.elapsed_usec <= Watchdogs.microseconds("operation_seconds"), str(rig) + ": graphical unit respects configured operation watchdog")
 		rows.append(record)
 	viewport.queue_free()
 	await process_frame
-	expect(Time.get_ticks_usec()-started <= 150000000, "complete graphical unit respects 150-second fixture bound")
+	expect(Time.get_ticks_usec()-started <= Watchdogs.microseconds("complex_fixture_seconds"), "complete graphical unit respects configured fixture watchdog")
 	print("PLAY_UI007_PIXELS_RESULT ",JSON.stringify({"schema":"play-ui007-pixels-v1",
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"assertions":assertions,"failures":failures,"rows":rows,"elapsed_usec":Time.get_ticks_usec()-started,

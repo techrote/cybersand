@@ -8,7 +8,7 @@ extends "res://tests/play_life001_shared_host_case.gd"
 # overlapping native phase-claim observation or interactive FPS is implied.
 const SnapshotProbe = preload("res://tests/play_wait001_snapshot_probe.gd")
 const SAMPLE_NATIVE_TICKS: int = 120
-const SAMPLE_TIMEOUT_MS: int = 30000
+var SAMPLE_TIMEOUT_MS: int = Watchdogs.milliseconds("operation_seconds")
 const MIN_MAIN_SAMPLES: int = 30
 
 

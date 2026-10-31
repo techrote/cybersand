@@ -120,21 +120,18 @@ duplicate or foreign source/run/attempt evidence, and all original command
 budgets remain in force. In particular, historical TSan exit124 is not repaired
 by rescheduling or a larger time limit.
 
-Windows now uses `--shard-count 4 --shard-index 0..3`; the independent coverage
-verifier also requires four. Every current applicable case executes exactly
-once, with one separate authentic import per shard. An admitted failed
-or cancelled matrix cannot suppress coverage verification or be mistaken for
-success. The original Windows runner, timeout diagnostics, LFS/provenance checks
-and all Linux graphical coverage remain authoritative. The source-scope report
-is advisory only and grants no Native exemption. Fresh resulting-head execution,
-including any additional PLAY cases on that head, is mandatory; predecessor
-201-case timing is not a newer208-case pass.
+Windows and Linux now use the complete source-derived matrix from
+[godot_job_plan.py](../../tools/ci/godot_job_plan.py). Both independent coverage
+readers require every assigned original case exactly once, source/runtime
+identity, natural completion and original logs. See the
+[execution policy](ci-execution-and-performance.md) for current parent arithmetic
+and advisory timing. Historical four-shard timing is not current-source evidence.
 
 ## Physical regression timeout diagnostics
 
 **Current apparatus for #233:**
 [`run_godot_regressions.py`](../../tools/ci/run_godot_regressions.py) keeps the
-ordinary physical test limit at 180 seconds. A timeout always fails, including
+complex physical process allowance at 3,940 seconds. A timeout always fails, including
 when diagnostics fail or the process exits during evidence collection. Before
 killing the process tree it retains the last 60 log lines and attempts bounded
 process/thread evidence. Windows records process ancestry and individual thread
@@ -147,9 +144,9 @@ rig/model and tick; they do not identify an exact blocked instruction.
 
 **Current #234 guards:** the independent runner-side
 [progress watchdog](../../tools/ci/physical_progress_watchdog.py) requests live
-capture after 30 seconds without a new main-thread marker and fails at 45 seconds
+capture after 300 seconds without a new main-thread marker and fails at 3,600 seconds
 idle. Capture runs independently, so a slow or failed debugger cannot extend that
-failure deadline. The 180-second outer case limit remains authoritative for all
+failure deadline. The 3,940-second outer complex case allowance remains authoritative for all
 execution; startup before fixture instrumentation and engine shutdown after quit
 remain covered. Both original `REGRESSION_PROGRESS` case/phase/rig/model/tick
 records and coarse `CYBERSAND_PROGRESS` heartbeat records are retained. Only real
@@ -157,10 +154,10 @@ marker/sequence changes renew liveness; unrelated output or timestamps alone do
 not. The heartbeat's cumulative `steps` is distinct from a fixture's physical tick.
 
 A fixture-only [internal observer](../../godot/tests/helpers/physical_internal_watchdog.gd)
-adds a 120-second whole-fixture deadline on a separate Godot thread. It uses
+adds a 3,600-second whole-fixture watchdog on a separate Godot thread. It uses
 monotonic time and copied mutex-owned context, calls no scene-tree, World or
 Rapier API, and emits sticky `ERROR: REGRESSION_WATCHDOG` on expiry. Completion
-cannot turn an expired deadline into a pass. Stop polls for at most one second
+cannot turn an expired deadline into a pass. Stop polls for at most the 300-second operation allowance
 and joins only an already-finished thread. It does not self-kill before evidence
 capture; the external monitor bounds a permanently blocked main thread. Startup
 before arming, process-wide runtime stalls and post-disarm engine shutdown remain
@@ -405,7 +402,7 @@ the blind session. The deterministic receipt control complements the live
 desktop worker and synchronous Web-controller cases in that runner. Execute it
 with the pinned Godot runtime using
 `--headless --path godot --script res://tests/test_water_feel_controller.gd`;
-the hosted case timeout is 180 seconds. Record script errors and nonzero exits
+the hosted complex process watchdog is 3,940 seconds. Record script errors and nonzero exits
 as failures. The [2026-10-22 correction evidence](../audits/2026-10-22-water-exit-acknowledgement.md)
 preserves the Windows scheduling failure rather than treating a later rerun as
 proof that no defect existed.

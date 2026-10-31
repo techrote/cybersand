@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # PLAY-COMP-002 / #267: five real SetP rigs in the single existing asynchronous
 # desktop host, on the original course geometry and source-matched rig origins.
 # A test-only focus seam preserves real physics, controller and native ownership.
@@ -36,7 +38,9 @@ func expect(condition: bool, reason: String) -> void:
 		push_error("PLAY_COMP002: " + reason)
 
 
-func wait_for(predicate: Callable, timeout_ms: int = 30000) -> bool:
+func wait_for(predicate: Callable, timeout_ms: int = -1) -> bool:
+	if timeout_ms < 0:
+		timeout_ms = Watchdogs.milliseconds("operation_seconds")
 	var deadline: int = Time.get_ticks_msec() + timeout_ms
 	while Time.get_ticks_msec() < deadline:
 		if predicate.call(): return true

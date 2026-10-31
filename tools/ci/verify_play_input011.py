@@ -18,6 +18,9 @@ import re
 import subprocess
 import sys
 
+from execution_policy import case_seconds, watchdog_microseconds, watchdog_seconds
+from play_execution_contract import policy_matches, process_policy_matches, verify_log_policy
+
 ROOT = Path(__file__).resolve().parents[2]
 MODES = ("actor_picker", "environment_tuning", "pause_button", "focused_pause_button", "gui_focus", "window_focus")
 LABELS = (*MODES, "bypass_negative")
@@ -64,6 +67,8 @@ def expected_waits() -> list[str]:
 
 
 def validate(result: dict, source: str, rig: str, file_hashes: dict) -> dict:
+    need("execution_policy" not in result or policy_matches(result["execution_policy"]),
+         "execution_policy_mismatch")
     need(result["schema"] == "play-input011-v2" and rig in RIGS and result["rig"] == rig,
          "schema_or_rig")
     need(bool(re.fullmatch(r"[0-9a-f]{40}", source)) and result["source_revision"] == source,
@@ -80,21 +85,22 @@ def validate(result: dict, source: str, rig: str, file_hashes: dict) -> dict:
          and all(result[key] is False for key in (
              "rendered_fps_measured", "physical_devices_qualified",
              "human_feel_qualified", "shader_startup_qualified")), "qualification_scope")
-    need(0 < result["elapsed_usec"] <= 150_000_000, "fixture_deadline")
+    need(0 < result["elapsed_usec"] <= watchdog_microseconds("complex_fixture_seconds"), "fixture_deadline")
     need(result["worker_joined"] is True and result["session_retired"] is True
-         and 0 < result["teardown_usec"] <= 15_000_000, "teardown")
+         and 0 < result["teardown_usec"] <= watchdog_microseconds("operation_seconds"), "teardown")
     row = result["row"]
     need(row["completed"] is True and row["capture_overflow"] is False, "incomplete_capture")
     ack = row["first_main"]
-    need(ack["limit_usec"] == 30_000_000
+    need(ack["limit_usec"] == watchdog_microseconds("main_ack_seconds")
          and 0 < ack["started_usec"] <= ack["acknowledged_usec"]
-         <= ack["started_usec"] + 30_000_000
+         <= ack["started_usec"] + watchdog_microseconds("main_ack_seconds")
          and ack["acknowledged_usec"] <= row["identity"]["time_usec"], "first_main_deadline")
     waits = row["waits"]
     need([wait["name"] for wait in waits] == expected_waits(), "wait_inventory")
     for wait in waits:
         need(wait["passed"] is True and wait["started_usec"] <= wait["ended_usec"] <= wait["deadline_usec"]
-             and 0 < wait["deadline_usec"] - wait["started_usec"] <= 15_000_000,
+             and 0 < wait["deadline_usec"] - wait["started_usec"] <= watchdog_microseconds(
+                 "main_ack_seconds" if wait["name"] == "first actual Main callback returns" else "operation_seconds"),
              "operation_deadline")
     identity = owner(row["identity"])
     need(bool(identity[3]) and all(type(identity[i]) is int and identity[i] != 0 for i in (0, 1, 2)),
@@ -231,7 +237,7 @@ def adverse_controls(result: dict, source: str, rig: str, hashes: dict) -> list[
         ("wrong_source", "source_identity", lambda r: r.update(source_revision="0" * 40)),
         ("wrong_runtime_read_source", "consumed_source_identity", lambda r: r.update(main_sha256="0" * 64)),
         ("late_first_main", "first_main_deadline", lambda r: r["row"]["first_main"].update(
-            acknowledged_usec=r["row"]["first_main"]["started_usec"] + 30_000_001)),
+            acknowledged_usec=r["row"]["first_main"]["started_usec"] + watchdog_microseconds("main_ack_seconds") + 1)),
         ("failed_wait", "operation_deadline", lambda r: r["row"]["waits"][2].update(passed=False)),
         ("missing_transition", "transition_inventory", lambda r: transitions(r).pop(1)),
         ("duplicate_transition", "transition_inventory", lambda r: transitions(r).__setitem__(1, deepcopy(transitions(r)[0]))),
@@ -278,14 +284,16 @@ def adverse_controls(result: dict, source: str, rig: str, hashes: dict) -> list[
 def check_process(process: dict, rig: str) -> None:
     need("status" in process and process["status"] == "passed"
          and type(process["returncode"]) is int and process["returncode"] == 0
-         and process["timeout_seconds"] == 180
+         and process["timeout_seconds"] == case_seconds("test_play_input011_" + rig)
+         and process_policy_matches(process)
          and not process.get("timed_out", False) and not process.get("timeout_kind")
          and not process.get("diagnostic_error") and not process.get("launch_error")
          and not process.get("capture_error") and not process.get("skip_messages")
+         and not process.get("timeout_diagnostic_error")
          and process.get("inputs_unchanged", True) is True, "process_failed_or_incomplete")
     seconds = process.get("seconds", process.get("elapsed_seconds"))
     need(isinstance(seconds, (int, float)) and not isinstance(seconds, bool)
-         and math.isfinite(seconds) and 0 < seconds <= 180, "process_deadline")
+         and math.isfinite(seconds) and 0 < seconds <= case_seconds("test_play_input011_" + rig), "process_deadline")
     need(isinstance(process["command"], list)
          and "res://tests/test_play_input011_" + rig + ".gd" in process["command"],
          "process_case_mismatch")
@@ -306,6 +314,7 @@ def main() -> int:
         original_log = args.log.read_bytes()
         original_process = args.process_json.read_bytes()
         log = original_log.decode("utf-8")
+        executed_policy = verify_log_policy(log, args.source)
         need("ERROR:" not in log and not re.search(r"\bskipped\b|^\s*SKIP\b", log, re.I | re.M),
              "log_failed_or_skipped")
         markers = [line[len(MARKER):] for line in log.splitlines() if line.startswith(MARKER)]
@@ -316,6 +325,7 @@ def main() -> int:
         process = json.loads(original_process)
         if "source_revision" in process:
             need(process["source_revision"] == args.source, "process_source_mismatch")
+        need("execution_policy" not in process or policy_matches(process["execution_policy"]), "execution_policy_mismatch")
         if "results" in process:
             rows = [value for value in process["results"] if value["name"] == "test_play_input011_" + args.rig]
             need(len(rows) == 1, "process_inventory")
@@ -328,7 +338,7 @@ def main() -> int:
         hashes = {}
         for field, path in FILES.items():
             canonical = subprocess.check_output(["git", "-C", str(ROOT), "show", args.source + ":" + path],
-                                                timeout=5)
+                                                timeout=watchdog_seconds("operation_seconds"))
             # Historical readback uses that exact Git revision, never a newer
             # checkout's source bytes. These paths have explicit eol=lf rules.
             hashes[field] = digest(canonical)
@@ -340,7 +350,8 @@ def main() -> int:
                 ("post_summary_crash", lambda p: p.update(returncode=-1073741819), "process_failed_or_incomplete"),
                 ("missing_status", lambda p: p.pop("status"), "process_failed_or_incomplete"),
                 ("process_timeout", lambda p: p.update(timed_out=True), "process_failed_or_incomplete"),
-                ("process_over_bound", lambda p: p.update(seconds=180.001, elapsed_seconds=180.001), "process_deadline"),
+                ("process_over_bound", lambda p: p.update(seconds=case_seconds("test_play_input011_" + args.rig) + .001,
+                    elapsed_seconds=case_seconds("test_play_input011_" + args.rig) + .001), "process_deadline"),
                 ("wrong_case", lambda p: p.update(command=["godot", "--quit"]), "process_case_mismatch"),
             ):
                 altered = deepcopy(process)
@@ -355,7 +366,7 @@ def main() -> int:
             reduced["process_adverse_controls"] = process_controls
         need(args.log.read_bytes() == original_log and args.process_json.read_bytes() == original_process,
              "original_evidence_changed")
-        reduced.update(log_sha256=digest(original_log), process_sha256=digest(original_process),
+        reduced.update(execution_policy=executed_policy, log_sha256=digest(original_log), process_sha256=digest(original_process),
                        raw_result_sha256=digest(markers[0].encode("utf-8")), consumed_source_sha256=hashes,
                        verifier_sha256=digest(Path(__file__).read_bytes()))
         if args.output:

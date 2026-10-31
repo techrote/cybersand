@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Trial = preload("res://scripts/physical_actor_trial.gd")
 const Blacksite = preload("res://scripts/blacksite_nine.gd")
 var failures: int = 0
@@ -37,7 +39,7 @@ func run() -> void:
 	for arm: String in Trial.ARMS:
 		var id: String = Trial.PREFIX + arm
 		expect(desktop.microscenario_launch(id, "Play", 0), "Desktop must admit trial " + arm)
-		var deadline: int = Time.get_ticks_msec() + 60000
+		var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("main_ack_seconds")
 		while Time.get_ticks_msec() < deadline:
 			await process_frame
 			if desktop.pending_microscenario_apply.is_empty() and str(desktop.microscenario_definition.get("id", "")) == id: break
@@ -64,7 +66,7 @@ func run() -> void:
 		desktop.blacksite_nine_presentation.frame_tile(1)
 		expect(bridge.body_transform(0).origin.distance_to(spawn) > 0.0, "Camera framing must preserve physical state")
 		desktop.microscenario_reset()
-		deadline = Time.get_ticks_msec() + 60000
+		deadline = Time.get_ticks_msec() + Watchdogs.milliseconds("main_ack_seconds")
 		while not desktop.pending_microscenario_apply.is_empty() and Time.get_ticks_msec() < deadline: await process_frame
 		expect(desktop.rapier_bridge.body_transform(0).origin.is_equal_approx(spawn), "Reset restores physical start")
 		expect(not desktop.physical_trial_input.armed, "Reset must cancel input")

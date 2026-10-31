@@ -9,20 +9,33 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import time
+
+from execution_policy import identity as execution_policy_identity, watchdog_seconds
+from native_execution_policy import COMMANDS, command_timeout_seconds, family_timeout_seconds
 
 ROOT = Path(__file__).resolve().parents[2]
 SUITES = frozenset({"tsan", "native-normal", "asan-ubsan", "worldgen", "soliding-normal", "soliding-asan"})
 CASE_SUITES = frozenset({"tsan", "native-normal", "asan-ubsan"})
-SCHEMA = "cybersand-native-shard-v1"
+SCHEMA = "cybersand-native-shard-v2"
 INPUTS = {
     "workflow": ".github/workflows/native.yml",
     "makefile": "Makefile",
     "test_registry": "native/tests/test_world.cpp",
     "verifier": "tools/ci/verify_native_shards.py",
     "verifier_tests": "tools/ci/test_native_shards.py",
+    "native_family": "tools/ci/run_native_family.sh",
+    "native_execution_policy": "tools/ci/native_execution_policy.py",
+    "command_runner": "tools/ci/run_timed_command.py",
+    "execution_policy": "tools/ci/execution_policy.py",
+    "watchdog_policy": "godot/tests/support/ci_execution_policy.json",
+    "physics_cli": "tools/physics/test_characterisation_cli.py",
+    "worldgen_inventory": "tools/ci/check_worldgen_build_inventory.py",
+    "native_watchdog_tests": "tools/ci/test_native_watchdogs.py",
 }
 EXIT_FILES = {"family": "family-exit-code.txt", "log_capture": "log-capture-exit-code.txt"}
 STAGE_OUTPUTS = frozenset({"stage3b-validation-synthetic-smoke.json", "stage3b-validation-plan-smoke.json"})
+
 
 
 def require(value, message):
@@ -54,13 +67,23 @@ def write_json(path, value):
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def git(root, *args):
-    return subprocess.check_output(["git", "-C", str(root), *args], text=True, timeout=60).strip()
+def git(root, *args, timeout_seconds=None):
+    return subprocess.check_output(["git", "-C", str(root), *args], text=True,
+                                   timeout=watchdog_seconds("operation_seconds") if timeout_seconds is None else timeout_seconds).strip()
 
 
 def source_identity(root):
-    source = git(root, "rev-parse", "HEAD")
-    tree = git(root, "rev-parse", "HEAD^{tree}")
+    # Four Git queries belong to one readback operation. Do not accidentally
+    # promise four full operation allowances inside the job's capture headroom.
+    deadline = time.monotonic() + watchdog_seconds("operation_seconds")
+
+    def read(*arguments):
+        remaining = deadline - time.monotonic()
+        require(remaining > 0, "Native source identity readback exceeded its operation watchdog")
+        return git(root, *arguments, timeout_seconds=remaining)
+
+    source = read("rev-parse", "HEAD")
+    tree = read("rev-parse", "HEAD^{tree}")
     require(re.fullmatch(r"[0-9a-f]{40}", source) and re.fullmatch(r"[0-9a-f]{40}", tree),
             "Incomplete source or tree identity")
     fingerprints = {key: digest((root / path).read_bytes()) for key, path in INPUTS.items()}
@@ -70,8 +93,9 @@ def source_identity(root):
     require(cases and len(cases) == len(set(cases)), "Native test registry is empty or ambiguous")
     # Fence the complete checkout, including transitive local scientific helpers.
     # Generated build outputs and Python caches keep the repository's ignore rules.
-    delta = sorted(set(git(root, "diff", "--name-only", "HEAD").splitlines())
-                   | set(git(root, "ls-files", "--others", "--exclude-standard").splitlines()))
+    delta = sorted(set(read("diff", "--name-only", "HEAD").splitlines())
+                   | set(read("ls-files", "--others", "--exclude-standard").splitlines()))
+    require(time.monotonic() <= deadline, "Native source identity readback exceeded its operation watchdog")
     require(not delta, "Native execution inputs changed: " + ", ".join(delta))
     return {"source_sha": source, "source_tree": tree, "source_fingerprints": fingerprints,
             "source_delta_paths": delta, "expected_cases": cases}
@@ -108,6 +132,54 @@ def read_exit_codes(folder):
         require(code <= 255, "Original shell exit code is out of range")
         codes[key], hashes[key] = code, digest(raw)
     return codes, hashes
+
+
+def command_inventory(folder):
+    inventory = {}
+    for name in ("family", "commands"):
+        directory = folder / name
+        require(not directory.is_symlink(), "Execution evidence directory is a symlink")
+        if not directory.exists():
+            continue
+        require(directory.is_dir(), "Execution evidence path is not a directory")
+        for path in sorted(directory.rglob("*")):
+            require(not path.is_symlink(), "Execution evidence contains a symlink")
+            if path.is_dir():
+                continue
+            require(path.is_file(), "Execution evidence is not a regular file")
+            raw = path.read_bytes()
+            inventory[path.relative_to(folder).as_posix()] = {"bytes": len(raw), "sha256": digest(raw)}
+    return inventory
+
+
+def validate_command_outputs(folder, suite, inventory):
+    require(isinstance(inventory, dict), "Execution output inventory is not an object")
+    expected = [("family", "native-family-" + suite, "native_suite_seconds", [
+        "bash", "tools/ci/run_native_family.sh", suite, "build/native-parallel/" + suite])]
+    expected += [("commands/" + label, suite + "-" + label, key, command)
+                 for label, key, command in COMMANDS[suite]]
+    expected_receipts = {directory + "/receipt.json" for directory, _, _, _ in expected}
+    observed_receipts = {name for name in inventory if name.endswith("/receipt.json")}
+    require(observed_receipts == expected_receipts, "Native command receipt inventory differs")
+    policy = execution_policy_identity()
+    for directory, label, key, command in expected:
+        receipt_name, log_name = directory + "/receipt.json", directory + "/command.log"
+        require(log_name in inventory, "Original command log is absent")
+        record = load_json((folder / receipt_name).read_text(encoding="utf-8"))
+        require(isinstance(record, dict) and record.get("schema") == "execution-command-v1",
+                "Unknown execution command schema")
+        require(record.get("label") == label and record.get("command") == command,
+                "Native command identity or ordered arguments differ")
+        require(record.get("complete") is True and record.get("status") == "passed"
+                and type(record.get("returncode")) is int and record["returncode"] == 0
+                and record.get("timed_out") is False and record.get("natural_completion") is True,
+                "Native command did not complete naturally and successfully")
+        timeout = family_timeout_seconds(suite) if directory == "family" else command_timeout_seconds(suite, directory.split("/")[1])
+        require(record.get("execution_policy") == policy
+                and record.get("timeout_seconds") == timeout,
+                "Native command execution policy differs")
+        require(record.get("log_sha256") == inventory[log_name]["sha256"],
+                "Original command log hash differs")
 
 
 def scientific_inventory(root):
@@ -171,7 +243,7 @@ def record_shard(root, output, suite, outcome, expected_source, run_id, run_atte
         "job_outcome": outcome, "runner_os": os.environ.get("RUNNER_OS", ""),
         "source_fingerprints": {}, "source_delta_paths": None,
         "log_present": log.is_file(), "log_bytes": None, "log_sha256": None,
-        "exit_codes": {}, "exit_code_sha256": {}, "scientific_outputs": {},
+        "exit_codes": {}, "exit_code_sha256": {}, "scientific_outputs": {}, "command_outputs": {},
         "errors": [],
     }
     try:
@@ -192,6 +264,11 @@ def record_shard(root, output, suite, outcome, expected_source, run_id, run_atte
         require(all(code == 0 for code in receipt["exit_codes"].values()), "Original family or log capture exited nonzero")
     except Exception as error:
         receipt["errors"].append("exit codes: " + type(error).__name__ + ": " + str(error))
+    try:
+        receipt["command_outputs"] = command_inventory(folder)
+        validate_command_outputs(folder, suite, receipt["command_outputs"])
+    except Exception as error:
+        receipt["errors"].append("execution outputs: " + type(error).__name__ + ": " + str(error))
     try:
         receipt["scientific_outputs"] = scientific_inventory(output.parent)
         validate_scientific_outputs(output.parent, suite, receipt["scientific_outputs"])
@@ -219,6 +296,13 @@ def verify_evidence(directory, identity, expected_source, run_id, run_attempt, p
     seen = {}
     originals = []
     for path in sorted(directory.rglob("receipt.json")):
+        # Command receipts are sealed and validated through their owning family.
+        # Other misplaced/duplicate receipts still enter the strict family gate.
+        if len(path.parents) >= 4 and ((path.parent.name == "family" and path.parents[1].name in SUITES
+                and path.parents[2].name == "native-parallel") or (
+                path.parents[1].name == "commands" and path.parents[2].name in SUITES
+                and path.parents[3].name == "native-parallel")):
+            continue
         try:
             require(not path.is_symlink(), "Receipt is a symlink")
             r = load_json(path.read_text(encoding="utf-8"))
@@ -247,6 +331,10 @@ def verify_evidence(directory, identity, expected_source, run_id, run_attempt, p
             require(r.get("exit_codes") == codes and r.get("exit_code_sha256") == code_hashes
                     and all(type(code) is int and code == 0 for code in r["exit_codes"].values()),
                     "Original family or log capture exit code differs or is nonzero")
+            command_outputs = command_inventory(path.parent)
+            require(r.get("command_outputs") == command_outputs,
+                    "Original execution output inventory/bytes differ")
+            validate_command_outputs(path.parent, suite, command_outputs)
             output_root = path.parent.parent.parent
             outputs = scientific_inventory(output_root)
             validate_scientific_outputs(output_root, suite, r.get("scientific_outputs"))
@@ -275,13 +363,13 @@ def verify_evidence(directory, identity, expected_source, run_id, run_attempt, p
                               "log": log.relative_to(directory).as_posix(), "log_bytes": len(raw),
                               "log_sha256": digest(raw), "source_case_passes": len(observed),
                               "exit_codes": codes, "exit_code_sha256": code_hashes,
-                              "scientific_outputs": outputs})
+                              "scientific_outputs": outputs, "command_outputs": command_outputs})
         except Exception as error:
             errors.append(str(path.relative_to(directory)) + ": " + type(error).__name__ + ": " + str(error))
     if set(seen) != SUITES:
         errors.append("Missing Native families: " + ", ".join(sorted(SUITES - set(seen))))
     return {
-        "schema": "cybersand-native-qualification-v1", "source_sha": expected_source,
+        "schema": "cybersand-native-qualification-v2", "source_sha": expected_source,
         "source_tree": identity.get("source_tree"), "run_id": run_id, "run_attempt": run_attempt,
         "expected_suites": sorted(SUITES), "received_suites": sorted(seen),
         "source_fingerprints": identity.get("source_fingerprints"),

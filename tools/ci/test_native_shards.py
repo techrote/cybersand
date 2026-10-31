@@ -42,6 +42,24 @@ class NativeEvidenceTests(unittest.TestCase):
             (folder / "run.log").write_bytes(raw)
             for name in gate.EXIT_FILES.values():
                 (folder / name).write_bytes(b"0\n")
+            commands = [("family", "native-family-" + suite, "native_suite_seconds", [
+                "bash", "tools/ci/run_native_family.sh", suite, "build/native-parallel/" + suite])]
+            commands += [("commands/" + label, suite + "-" + label, key, command)
+                         for label, key, command in gate.COMMANDS[suite]]
+            for directory, label, key, command in commands:
+                destination = folder / directory
+                destination.mkdir(parents=True)
+                log = b"original command output\n"
+                (destination / "command.log").write_bytes(log)
+                command_receipt = {
+                    "schema": "execution-command-v1", "label": label, "command": command,
+                    "execution_policy": gate.execution_policy_identity(),
+                    "timeout_seconds": gate.family_timeout_seconds(suite) if directory == "family" else gate.command_timeout_seconds(suite, directory.split("/")[1]),
+                    "status": "passed",
+                    "returncode": 0, "timed_out": False, "natural_completion": True,
+                    "complete": True, "elapsed_seconds": 1.0, "log_sha256": gate.digest(log),
+                }
+                (destination / "receipt.json").write_text(json.dumps(command_receipt))
             outputs = {}
             if suite == "worldgen":
                 outputs = {
@@ -69,6 +87,7 @@ class NativeEvidenceTests(unittest.TestCase):
                 "exit_code_sha256": {key: gate.digest(b"0\n") for key in gate.EXIT_FILES},
                 "scientific_outputs": {name: {"bytes": len(data), "sha256": gate.digest(data)}
                                        for name, data in outputs.items()},
+                "command_outputs": gate.command_inventory(folder),
             }
             path = folder / "receipt.json"
             path.write_text(json.dumps(receipt))
@@ -92,6 +111,14 @@ class NativeEvidenceTests(unittest.TestCase):
         raw = text.encode()
         (self.receipts["tsan"].parent / "run.log").write_bytes(raw)
         self.alter(log_bytes=len(raw), log_sha256=gate.digest(raw))
+
+    def alter_command(self, directory="commands/tests-tsan", **values):
+        folder = self.receipts["tsan"].parent
+        path = folder / directory / "receipt.json"
+        record = json.loads(path.read_text())
+        record.update(values)
+        path.write_text(json.dumps(record))
+        self.alter(command_outputs=gate.command_inventory(folder))
 
     def assert_failed(self, report, fragment=None):
         self.assertEqual(report["status"], "failed")
@@ -199,6 +226,50 @@ class NativeEvidenceTests(unittest.TestCase):
         self.alter(exit_codes={"family": 124, "log_capture": 0},
                    exit_code_sha256={"family": gate.digest(b"124\n"), "log_capture": gate.digest(b"0\n")})
         self.assert_failed(self.verify(), "exit code differs or is nonzero")
+
+    def test_interrupted_failed_or_timed_out_command_cannot_qualify(self):
+        path = self.receipts["tsan"].parent / "commands/tests-tsan/receipt.json"
+        original = path.read_bytes()
+        for values in ({"complete": False}, {"status": "failed"}, {"status": "timeout"},
+                       {"returncode": 19}, {"returncode": False}, {"timed_out": True},
+                       {"natural_completion": False}):
+            with self.subTest(values=values):
+                path.write_bytes(original)
+                self.alter_command(**values)
+                self.assert_failed(self.verify(), "did not complete naturally and successfully")
+
+    def test_resealed_missing_or_extra_command_cannot_reduce_inventory(self):
+        folder = self.receipts["tsan"].parent
+        removed = folder / "commands/build-tests-tsan"
+        shutil.rmtree(removed)
+        self.alter(command_outputs=gate.command_inventory(folder))
+        self.assert_failed(self.verify(), "command receipt inventory differs")
+        shutil.copytree(folder / "commands/tests-tsan", folder / "commands/unregistered")
+        self.alter(command_outputs=gate.command_inventory(folder))
+        self.assert_failed(self.verify(), "command receipt inventory differs")
+
+    def test_resealed_command_arguments_cannot_drop_sanitizer_controls(self):
+        self.alter_command(command=["./build/tests_tsan"])
+        self.assert_failed(self.verify(), "identity or ordered arguments differ")
+
+    def test_resealed_policy_substitution_or_short_timeout_is_rejected(self):
+        policy = gate.execution_policy_identity()
+        self.alter_command(execution_policy=policy | {"sha256": "0" * 64})
+        self.assert_failed(self.verify(), "execution policy differs")
+        self.alter_command(execution_policy=policy, timeout_seconds=10)
+        self.assert_failed(self.verify(), "execution policy differs")
+
+    def test_raw_command_log_and_telemetry_bytes_are_retained(self):
+        folder = self.receipts["tsan"].parent
+        log = folder / "commands/tests-tsan/command.log"
+        log.write_bytes(b"changed original output\n")
+        self.assert_failed(self.verify(), "execution output inventory/bytes differ")
+        self.alter(command_outputs=gate.command_inventory(folder))
+        self.assert_failed(self.verify(), "command log hash differs")
+
+    def test_incomplete_family_wrapper_cannot_be_hidden_by_all_passed_children(self):
+        self.alter_command(directory="family", complete=False)
+        self.assert_failed(self.verify(), "did not complete naturally and successfully")
 
     def test_missing_or_corrupted_retained_scientific_outputs_remain_red(self):
         for suite in ("worldgen", "soliding-normal"):
@@ -406,6 +477,21 @@ class NativeEvidenceTests(unittest.TestCase):
         self.assertEqual(identity["expected_cases"], ["case A", "case B"])
         self.assertEqual(identity["source_delta_paths"], [])
         self.assertEqual(set(identity["source_fingerprints"]), set(gate.INPUTS))
+
+    def test_source_readback_queries_share_one_operation_clock(self):
+        root = self.source_workspace()
+        clock = [0.0]
+
+        def slow_read(*args, **kwargs):
+            self.assertLessEqual(kwargs["timeout_seconds"], gate.watchdog_seconds("operation_seconds"))
+            clock[0] += gate.watchdog_seconds("operation_seconds") + 1
+            return self.source
+
+        with mock.patch.object(gate.time, "monotonic", side_effect=lambda: clock[0]), \
+                mock.patch.object(gate, "git", side_effect=slow_read) as read:
+            with self.assertRaisesRegex(ValueError, "readback exceeded"):
+                gate.source_identity(root)
+        self.assertEqual(read.call_count, 1)
 
     def test_tracked_or_untracked_execution_input_drift_is_rejected(self):
         root = self.source_workspace()

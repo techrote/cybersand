@@ -104,7 +104,7 @@ func expect(value: bool, message: String) -> void:
 
 func bounded(predicate: Callable, message: String) -> bool:
 	var start: int = Time.get_ticks_usec()
-	var deadline: int = mini(start + WAIT_TIMEOUT_MS * 1000, fixture_started_usec + 150000000)
+	var deadline: int = mini(start + WAIT_TIMEOUT_MS * 1000, fixture_started_usec + Watchdogs.microseconds("complex_fixture_seconds"))
 	var ok: bool = false
 	while Time.get_ticks_usec() < deadline:
 		if predicate.call():
@@ -307,7 +307,7 @@ func run() -> void:
 	var teardown_started_usec: int = Time.get_ticks_usec()
 	await close_cycle(desktop, worker, session, "LIFE009: ")
 	var teardown_usec: int = Time.get_ticks_usec() - teardown_started_usec
-	expect(teardown_usec <= WAIT_TIMEOUT_MS * 1000, "session retirement and worker join complete within 15 seconds")
+	expect(teardown_usec <= WAIT_TIMEOUT_MS * 1000, "session retirement and worker join complete within the operation watchdog")
 	print("PLAY_LIFE009_RESULT ", JSON.stringify({"schema":"play-life009-v2",
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"display_server":DisplayServer.get_name(), "physics_engine":ProjectSettings.get_setting("physics/2d/physics_engine"),

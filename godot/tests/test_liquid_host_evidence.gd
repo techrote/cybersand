@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Evidence = preload("res://scripts/liquid_host_evidence.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Host = preload("res://scripts/microscenario_host.gd")
@@ -156,7 +158,7 @@ func controlled_probe(runtime: Dictionary, evidence: RefCounted) -> void:
 	var marker := FileAccess.open(folder.path_join("ready.complete"),FileAccess.WRITE)
 	if marker == null: expect(false,"external probe completion marker is writable");return
 	marker.store_string("ready");marker.close()
-	var deadline: int = Time.get_ticks_msec()+15000
+	var deadline: int = Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while not FileAccess.file_exists(folder.path_join("release")) and Time.get_ticks_msec() < deadline:
 		await process_frame
 	expect(FileAccess.file_exists(folder.path_join("release")),"external module observation completed at the explicit process barrier")
@@ -164,7 +166,7 @@ func controlled_probe(runtime: Dictionary, evidence: RefCounted) -> void:
 func finish() -> void:
 	print("LIQUID_HOST_EVIDENCE: %d assertions, %d failures" % [assertions,failures])
 	if Engine.is_editor_hint():
-		var deadline: int = Time.get_ticks_msec()+15000
+		var deadline: int = Time.get_ticks_msec()+Watchdogs.milliseconds("godot_import_seconds")
 		while EditorInterface.get_resource_filesystem().is_scanning() and Time.get_ticks_msec() < deadline:
 			await process_frame
 	quit(1 if failures else 0)

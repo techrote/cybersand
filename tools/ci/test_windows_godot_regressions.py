@@ -234,7 +234,7 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual([item["name"] for item in report["results"]], ["import", "zero_exit_error", "zero_exit_skip", "later_case"])
         self.assertEqual([item["status"] for item in report["results"]], ["passed", "failed", "skipped", "passed"])
         self.assertEqual(report["executed_case_count"], 3)
-        self.assertEqual([item["timeout_seconds"] for item in report["results"]], [240, 5, 5, 5])
+        self.assertEqual([item["timeout_seconds"] for item in report["results"]], [subject.execution_policy.watchdog_seconds("godot_import_seconds"), 5, 5, 5])
 
     def test_failed_import_records_incomplete_suite(self):
         report = self.execute_fixture("ERROR: import failure")

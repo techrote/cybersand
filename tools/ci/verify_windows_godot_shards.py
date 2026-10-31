@@ -205,6 +205,14 @@ def verify(root: Path, source_sha: str, run_id: str, attempt: str,
                     and log_path.resolve().is_relative_to(path.parent.resolve())
                     and hashlib.sha256(log_path.read_bytes()).hexdigest() == expected_digest,
                     f"modified or missing original raw log: {log_path}")
+        import run_godot_regressions as runner
+        import verify_retained_play_readback
+        for row, planned in zip(tests, expected["plans"][index]):
+            case = runner.Case(planned["name"], tuple(planned["flags"]), planned["timeout_seconds"],
+                               planned["estimated_seconds"], planned["requires_display"])
+            if runner.case_readback_contract(case) is not None:
+                verify_retained_play_readback.verify(case, row, path.parent, source_sha, "Windows",
+                    output_dir=root.parent / "windows-play-readback" / case.name)
         identity = {
             name: report.get(name) for name in (
                 "source_commit", "source_tree", "runtime_source_commit",

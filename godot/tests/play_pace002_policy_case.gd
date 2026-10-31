@@ -4,7 +4,7 @@ extends "res://tests/play_life002_solver_case.gd"
 # LIFE002 reconstruction/reset/refusal routes. No production owner is replaced.
 # This helper deliberately depends only on accepted main, not PRs #296/#297.
 const WINDOW_USEC: int = 10000000
-const WINDOW_TIMEOUT_MS: int = 30000
+var WINDOW_TIMEOUT_MS: int = Watchdogs.milliseconds("operation_seconds")
 var policy_windows: Array[Dictionary] = []
 
 

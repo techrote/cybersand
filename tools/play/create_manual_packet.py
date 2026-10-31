@@ -17,6 +17,8 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools/ci"))
+from execution_policy import watchdog_seconds
 SCRIPT = "tools/play/create_manual_packet.py"
 GUIDE = "docs/operations/play-desktop-manual-qualification.md"
 SCHEMA = "play-desktop-manual-packet-v1"
@@ -39,7 +41,7 @@ PER_RIG_CASES = (
     ("reset_exit", "physical input / display", "Use R twice and resume after neutral release; accepted rig/policy persist, lap starts fresh. Open Play session and click Return to launcher (F2 is an optional shortcut); re-enter Play session and build a fresh rig."),
 )
 GLOBAL_CASES = (
-    ("startup", "actual display", "Record launch-to-launcher and launcher-to-Main visibility separately. Time Build selected session to visible applied actor/terrain readiness; retain video/log. The automated30s contract is Build to the first completed Main callback with that identity ready, not launcher reading time or a coroutine poll. Manual display timing does not replace that callback receipt; late/failed startup stays failed."),
+    ("startup", "actual display", "Record launch-to-launcher and launcher-to-Main visibility separately. Time Build selected session to visible applied actor/terrain readiness; retain video/log. The automated startup observation runs from Build to the first completed Main callback with that identity ready. Its execution watchdog comes from the source execution policy; elapsed times remain performance observations. Record launcher reading time separately. Manual display timing does not replace the automatic callback receipt; incomplete or failed startup stays failed."),
     ("selection", "keyboard / display", "Select Keyboard only and Free play; connected gamepad cannot drive it, lap UI is absent. Restore keyboard+gamepad/lap and verify actual applied labels."),
     ("policy", "keyboard / display", "Build Current, then an explicitly supported Water pressure choice using the policy editor. Screenshot requested family/variant and applied text; copy the applied native policy_hash and construction receipt_hash from the tooltip. Select Oil and inspect its disabled/unavailable pressure entry and refusal reason; applied state must remain unchanged. Do not inject an unsupported request."),
     ("secondary_device", "physical gamepads", "With two pads, verify only the selected first pad controls the course. An unrelated second-pad disconnect must not revoke the selected pad; record enumeration/order. Untested if unavailable."),
@@ -62,7 +64,7 @@ def digest(path: Path, algorithm: str = "sha256") -> str:
 
 
 def git(root: Path, *arguments: str) -> bytes:
-    return subprocess.check_output(["git", "-C", str(root), *arguments], timeout=60)
+    return subprocess.check_output(["git", "-C", str(root), *arguments], timeout=watchdog_seconds("operation_seconds"))
 
 
 def clean_identity(root: Path, expected: str) -> dict:

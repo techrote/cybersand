@@ -3,7 +3,7 @@
 
 The sentinel compiler is intentionally nonexistent. These are forced cold
 dry-runs only; real compilation and all nine ordered tests remain within their
-original workflow command deadline.
+shared execution-policy command watchdog.
 """
 
 from __future__ import annotations
@@ -16,6 +16,8 @@ import os
 from pathlib import Path
 import shlex
 import subprocess
+
+from execution_policy import watchdog_seconds
 
 ROOT = Path(__file__).resolve().parents[2]
 COMPILER = "worldgen-inventory-compiler-must-not-execute"
@@ -124,7 +126,7 @@ def dry_run(root: Path, target: str, jobs: int) -> dict:
     for variable in ("MAKEFLAGS", "MFLAGS"):
         env.pop(variable, None)
     process = subprocess.run(command, cwd=root, env=env, text=True,
-                             capture_output=True, timeout=15, check=True)
+                             capture_output=True, timeout=watchdog_seconds("operation_seconds"), check=True)
     require(not process.stderr.strip(), "Unexpected make diagnostic: " + process.stderr.strip())
     return {"command":command, "stdout":process.stdout,
             "stdout_sha256":hashlib.sha256(process.stdout.encode()).hexdigest()}
@@ -139,10 +141,12 @@ def check(root: Path) -> dict:
     return {
         "schema":"cybersand-worldgen-build-inventory-v1", "status":"passed",
         "scope":"forced cold dry-run prerequisite/flag/test-order equivalence; no compiler or test executed",
-        "source_revision":subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
+        "source_revision":subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True,
+                                                   timeout=watchdog_seconds("operation_seconds")).strip(),
         "makefile_sha256":hashlib.sha256((root / "Makefile").read_bytes()).hexdigest(),
         "helper_sha256":hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        "make_version":subprocess.check_output(["make", "--version"], text=True).splitlines()[0],
+        "make_version":subprocess.check_output(["make", "--version"], text=True,
+                                               timeout=watchdog_seconds("operation_seconds")).splitlines()[0],
         "compiler_substitution":COMPILER, "families":reports,
     }
 

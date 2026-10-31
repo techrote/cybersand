@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # PLAY-LIFE-001 / #269 shared helper. Each automatically discovered wrapper
 # runs ten complete lifetimes for exactly one mechanical SetP rig. This is the
 # accepted main.tscn + CyberSimulationWorker + main-thread Rapier path; no
@@ -7,7 +9,7 @@ extends SceneTree
 const Catalogue = preload("res://scripts/microscenario_catalogue.gd")
 const Course = preload("res://scripts/player_playground_course.gd")
 const CYCLES_PER_RIG: int = 10
-const WAIT_TIMEOUT_MS: int = 15000
+var WAIT_TIMEOUT_MS: int = Watchdogs.milliseconds("operation_seconds")
 
 var assertions: int = 0
 var failures: int = 0
@@ -32,6 +34,7 @@ func target_rig() -> StringName:
 
 
 func _initialize() -> void:
+	print("CYBERSAND_CI_POLICY ", JSON.stringify(Watchdogs.identity()))
 	run.call_deferred()
 
 
@@ -42,7 +45,9 @@ func expect(value: bool, message: String) -> void:
 		push_error("PLAY_LIFE001: " + message)
 
 
-func wait_for(predicate: Callable, timeout_ms: int = WAIT_TIMEOUT_MS) -> bool:
+func wait_for(predicate: Callable, timeout_ms: int = -1) -> bool:
+	if timeout_ms < 0:
+		timeout_ms = Watchdogs.milliseconds("operation_seconds")
 	var deadline: int = Time.get_ticks_msec() + timeout_ms
 	while Time.get_ticks_msec() < deadline:
 		if predicate.call():

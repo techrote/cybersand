@@ -23,21 +23,29 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pull-requests: read
 
 concurrency:
   group: native-${{ github.ref }}
   cancel-in-progress: true
 
+# Routine hosted budgets are derived together below. Local/test scaling remains
+# available; a larger hosted override must also fit its complete job allowance.
+env:
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+
 jobs:
   ready_scope:
     name: ready validation scope
     if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review'
     runs-on: ubuntu-24.04
-    timeout-minutes: 2
+    timeout-minutes: 180
     outputs:
       required: ${{ steps.scope.outputs.required }}
     steps:
+      - name: Check out execution policy
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Classify ready-for-review change scope
         id: scope
         env:
@@ -48,7 +56,11 @@ jobs:
           python3 - <<'PY'
           import json
           import os
+          import sys
           import urllib.request
+
+          sys.path.insert(0, "tools/ci")
+          from execution_policy import watchdog_seconds
 
           ignored_prefixes = (".github/workflows/", "docs/")
           ignored_exact = {
@@ -73,7 +85,7 @@ jobs:
                       "X-GitHub-Api-Version": "2022-11-28",
                   },
               )
-              with urllib.request.urlopen(request) as response:
+              with urllib.request.urlopen(request, timeout=watchdog_seconds("operation_seconds")) as response:
                   batch = json.load(response)
               files.extend(item["filename"] for item in batch)
               if len(batch) < 100:
@@ -103,36 +115,55 @@ jobs:
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 180
+    outputs:
+      matrix: ${{ steps.budgets.outputs.matrix }}
     steps:
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Derive complete family and hosted job allowances
+        id: budgets
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_timed_command.py --policy-key operation_seconds \
+            --label native-budget-plan --output-dir build/native-policy/budget-command -- \
+            python3 tools/ci/native_execution_policy.py matrix --output build/native-policy/matrix.json
+          printf 'matrix=%s\n' "$(cat build/native-policy/matrix.json)" >> "$GITHUB_OUTPUT"
+          python3 tools/ci/native_execution_policy.py inventory --output build/native-policy/budgets.json
       - name: Check hosted provider and evidence failure controls
         run: |
           set -euo pipefail
-          python3 tools/ci/check_ci_provider_policy.py
-          python3 tools/ci/test_ci_provider_policy.py
-          python3 tools/ci/test_native_shards.py
-          python3 tools/ci/test_worldgen_build_inventory.py
+          for check in check_ci_provider_policy test_ci_provider_policy test_native_shards test_worldgen_build_inventory test_native_watchdogs; do
+            python3 tools/ci/run_timed_command.py --policy-key operation_seconds \
+              --label "$check" --output-dir "build/native-policy/$check" -- \
+              python3 "tools/ci/$check.py"
+          done
+      - name: Preserve Native policy check results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-policy-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-policy/
+          if-no-files-found: error
+          retention-days: 90
 
   native-shards:
     name: Native family / ${{ matrix.suite }}
-    needs: [ready_scope]
+    needs: [ready_scope, policy]
     if: >-
-      always() &&
+      always() && needs.policy.outputs.matrix != '' &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    # Each command keeps its original bound; the existing 90 minute job ceiling is
-    # retained for each independent family, with no retry or test filtering.
-    timeout-minutes: 90
+    # Each job exceeds the complete sum of its command allowances, preparation
+    # and capture headroom. The planner refuses budgets above the hosted limit.
+    timeout-minutes: ${{ matrix.job_minutes }}
     strategy:
       fail-fast: false
       max-parallel: 6
-      matrix:
-        suite: [tsan, native-normal, asan-ubsan, worldgen, soliding-normal, soliding-asan]
+      matrix: ${{ fromJSON(needs.policy.outputs.matrix) }}
     env:
       CC: gcc-13
       CXX: g++-13
@@ -148,11 +179,12 @@ jobs:
           ld --version
           make --version
 
-      - name: Execute complete original test family on independent runner
+      - name: Execute complete test family with shared watchdogs
         id: execute
         shell: bash
         env:
           SUITE: ${{ matrix.suite }}
+          FAMILY_TIMEOUT_SECONDS: ${{ matrix.family_seconds }}
         run: |
           set -euo pipefail
           mkdir -p "build/native-parallel/$SUITE"
@@ -163,62 +195,11 @@ jobs:
             set -euo pipefail
             echo "source_sha=$GITHUB_SHA suite=$SUITE run=$GITHUB_RUN_ID attempt=$GITHUB_RUN_ATTEMPT"
             echo "compiler=$(g++-13 --version | head -n 1)"
-            case "$SUITE" in
-              tsan)
-                # Preserve the original TSan build and execution deadlines.
-                timeout 15m make build/tests_tsan
-                timeout 15m env TSAN_OPTIONS=halt_on_error=1 ./build/tests_tsan
-                ;;
-              native-normal)
-                timeout 5m make c-header-check
-                timeout 15m make build/tests
-                timeout 15m ./build/tests
-                timeout 15m make shared
-                timeout 15m make build/benchmark
-                timeout 10m ./build/benchmark
-                ;;
-              asan-ubsan)
-                timeout 15m make build/tests_sanitized
-                timeout 15m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
-                ;;
-              worldgen)
-                python3 tools/ci/check_worldgen_build_inventory.py --output build/native-parallel/worldgen/build-inventory.json
-                # Read-only host context; no compilation or test prebuild.
-                nproc
-                awk '/^MemTotal:/ { print }' /proc/meminfo
-                mkdir -p build/physics-cli-validation
-                timeout 5m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
-                # Two prerequisite jobs; the nine test recipe lines remain serial.
-                # time reports max-child RSS, not concurrent aggregate RSS.
-                timeout 5m /usr/bin/time -v make -j2 worldgen-test
-                timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 /usr/bin/time -v make -j2 worldgen-sanitize
-                ;;
-              soliding-normal)
-                timeout 5m make soliding-test
-                timeout 2m make soliding-benchmark-smoke
-                timeout 3m make soliding-stage3b-validation-apparatus-test
-                timeout 3m make soliding-stage3-cost-smoke
-                ;;
-              soliding-asan)
-                # Preserve the original resource-characterised settled-region build,
-                # followed by the full eight-binary sanitizer contract suite.
-                timeout 20m /usr/bin/time -v make build/test_settled_regions_sanitized
-                timeout 20m make \
-                  build/test_soliding_lifecycle_sanitized \
-                  build/test_settled_discovery_sanitized \
-                  build/test_settled_regions_sanitized \
-                  build/test_settled_world_discovery_sanitized \
-                  build/test_stage3b_runtime_storage_sanitized \
-                  build/test_stage3b_bounded_spatial_index_sanitized \
-                  build/test_stage3b_sparse_mutation_witness_sanitized \
-                  build/test_stage3b_sparse_activity_deadline_sanitized
-                timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make soliding-sanitize
-                ;;
-              *)
-                echo "Unknown suite: $SUITE" >&2
-                exit 2
-                ;;
-            esac
+            python3 tools/ci/run_timed_command.py \
+              --policy-key native_suite_seconds --label "native-family-$SUITE" \
+              --timeout-seconds "$FAMILY_TIMEOUT_SECONDS" \
+              --output-dir "build/native-parallel/$SUITE/family" -- \
+              bash tools/ci/run_native_family.sh "$SUITE" "build/native-parallel/$SUITE"
             echo "Native family passed: $SUITE"
           ) 2>&1 | tee "build/native-parallel/$SUITE/run.log"
           original_status=("${PIPESTATUS[@]}")
@@ -261,9 +242,10 @@ jobs:
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.result != 'success' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 180
     steps:
       - name: Check out exact verifier source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -292,4 +274,19 @@ jobs:
           name: native-qualification-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/native-qualification/
           if-no-files-found: error
+          retention-days: 90
+
+      - name: Retain advisory history across comparable native runs
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 tools/ci/performance_history.py --current build/native-evidence --output build/execution-performance --include-jobs
+      - name: Publish native execution performance observations
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: execution-performance-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/execution-performance/
+          if-no-files-found: warn
           retention-days: 90

@@ -72,23 +72,22 @@ a hand-edited hash.
 
 ## Parallel validation and source-scope advice — 2026-10-31
 
-The [Native workflow](../../.github/workflows/native.yml) now distributes the
-same validation among six independent GitHub-hosted Ubuntu families. The stable
-procedural gate remains `native`; it requires every family, policy check and
-source/run/attempt/original-evidence verification to pass. `fail-fast: false`
-retains sibling outcomes after failure. All original compilation/execution
-bounds, including the15-minute TSan suite limit, remain unchanged. The five
-larger experimental #311 limits are not part of this production port.
+The [shared execution policy](ci-execution-and-performance.md) now supersedes
+historical short command limits. Six Native families preserve every original
+command and scientific input, with complete derived parent budgets. Godot uses
+source-derived Linux/Windows matrices that contain all child watchdogs and
+independent exact-coverage readers. Historical elapsed-time weights and rolling
+performance warnings are advisory; assertions, crashes, incomplete readbacks and
+cleanup failures remain failures. Independent matrices continue after failures,
+and new commits retain earlier attempts.
 
-The [Godot workflow](../../.github/workflows/gdextension.yml) schedules four
-Windows headless shards and independently verifies their exact complete case
-union, source/runtime identities and original logs. The admitted coverage job
-runs after failed/cancelled matrices too, and explicitly requires matrix success.
-All original Linux build/rendered/sharded/aggregate and timing paths remain.
-Final qualification requires the unchanged `windows x86_64` cross-build, all
-applicable Windows execution jobs **and** their coverage reducer, plus the Linux
-aggregate; a skipped reducer is not a pass.
-Every case retains its existing process deadline and failure semantics.
+The stable `native`, `linux x86_64`, Windows cross-build and complete Windows
+execution/coverage gates remain required. A failed ready-scope classifier cannot
+make an admitted required aggregate pass by skipping it. The old optional
+four-shard serial-migration check is replaced by mandatory original-log,
+source/runtime and unique-case Linux coverage. Full resulting-source execution
+and independent review remain necessary; predecessor results are not successor
+qualification.
 
 The [Native source-scope advisory](../../.github/workflows/native-scope-advisory.yml)
 is informational. Its classifier authenticates immutable base/executed-head

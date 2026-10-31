@@ -5,9 +5,19 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 from life009_contract import MARKER, RIGS, extract, verify_inventory, verify_process, verify_result
 import run_life009_campaign as campaign
+from execution_policy import case_seconds, identity, watchdog_microseconds, watchdog_seconds
+from play_execution_contract import GODOT_KEYS, MARKER as POLICY_MARKER
+
+
+def policy_log():
+    policy = identity()
+    return POLICY_MARKER + json.dumps({"ok": True, "path": "res://tests/support/ci_execution_policy.json",
+        **{key: policy[key] for key in ("schema_version", "scale", "sha256")},
+        "watchdogs": {key: policy["watchdogs"][key] for key in GODOT_KEYS}}) + "\n"
 
 SOURCE = "1" * 40
 
@@ -64,7 +74,7 @@ def fixture(rig="jetbarrel"):
                final=copy.deepcopy(state), stale_refusal=denied, records=records,
                queued_edges_before_pause=[dict(button="primary", pressed=True), dict(button="primary", pressed=False)],
                completed=True, capture_overflow=False,
-               waits=[dict(name=str(i), started_usec=0, ended_usec=1000, deadline_usec=15000000,
+               waits=[dict(name=str(i), started_usec=0, ended_usec=1000, deadline_usec=watchdog_microseconds("operation_seconds"),
                            passed=True) for i in range(10)])
     return dict(schema="play-life009-v2", source_revision=SOURCE, rig=rig, row=row,
                 display_server="headless", physics_engine="Rapier2D",
@@ -94,7 +104,7 @@ class Controls(unittest.TestCase):
                      lambda v: v.update(automatic_callbacks=False), lambda v: v.update(retries=1),
                      lambda v: v.update(manual_physics_calls=1), lambda v: v.update(shader_startup_qualified=True),
                      lambda v: v.update(display_server="x11"), lambda v: v.update(physics_engine="GodotPhysics2D"),
-                     lambda v: v.update(elapsed_usec=150000001), lambda v: v["row"].update(capture_overflow=True),
+                     lambda v: v.update(elapsed_usec=watchdog_microseconds("complex_fixture_seconds") + 1), lambda v: v["row"].update(capture_overflow=True),
                      lambda v: v["row"].update(completed=False), lambda v: v["row"].update(records=[])]
         for mutation in mutations:
             with self.subTest(mutation=mutation): self.reject(mutation)
@@ -131,11 +141,11 @@ class Controls(unittest.TestCase):
             self.reject(lambda v,k=key,x=value: v["row"]["stale_refusal"].update({k:x}))
 
     def test_late_wait_false_wait_and_wrong_input(self):
-        self.reject(lambda v: v["row"]["waits"][0].update(ended_usec=15000001))
+        self.reject(lambda v: v["row"]["waits"][0].update(ended_usec=watchdog_microseconds("operation_seconds") + 1))
         self.reject(lambda v: v["row"]["waits"][0].update(passed=False))
         self.reject(lambda v: v["row"].update(expected_move=[1,0]))
         self.reject(lambda v: v["row"].update(queued_edges_before_pause=[]))
-        self.reject(lambda v: v.update(teardown_usec=15000001))
+        self.reject(lambda v: v.update(teardown_usec=watchdog_microseconds("operation_seconds") + 1))
         self.reject(lambda v: v.pop("teardown_usec"))
         self.reject(lambda v: v.update(schema="play-life009-v1"))
 
@@ -163,20 +173,36 @@ class Controls(unittest.TestCase):
         for invalid in (0, True, 1.5, float("nan"), 1 << 63, -(1 << 63) - 1, "11"):
             self.reject(lambda v, x=invalid: v["row"]["identity"].update(worker=x))
 
+    def test_slow_correctness_receipt_remains_valid(self):
+        value = fixture()
+        value.update(elapsed_usec=180_000_000, teardown_usec=20_000_000)
+        value["row"]["waits"][0].update(ended_usec=20_000_000)
+        self.assertTrue(verify_result(value, "jetbarrel", SOURCE)["same_owner"])
+        value["row"]["stale_refusal"]["reason"] = "timeout"
+        with self.assertRaisesRegex(ValueError, "Stale authority not refused"):
+            verify_result(value, "jetbarrel", SOURCE)
+
+
     def test_process_skips_and_late_exit_cannot_pass(self):
-        valid = dict(status="passed", returncode=0, timeout_seconds=180, seconds=10,
+        valid = dict(status="passed", returncode=0, timeout_seconds=case_seconds("test_play_life009_jetbarrel"), seconds=181,
+                     execution_policy=identity(), natural_completion=True,
                      skip_messages=[], diagnostic_error=False, launch_error=None, capture_error=None)
-        verify_process(valid,180)
-        for key,value in [("status","skipped"),("returncode",1),("seconds",180.001),
+        verify_process(valid,case_seconds("test_play_life009_jetbarrel"))
+        for key,value in [("status","skipped"),("returncode",1),("seconds",case_seconds("test_play_life009_jetbarrel") + .001),
                           ("seconds",float("nan")),("timeout_seconds",240),("skip_messages",["SKIP"]),
-                          ("capture_error","capture failed")]:
+                          ("capture_error","capture failed"),("natural_completion",False),
+                          ("timed_out",True),("timeout_kind","wall"),("execution_policy",{})]:
             with self.subTest(field=key), self.assertRaises(ValueError):
-                verify_process(valid|{key:value},180)
+                verify_process(valid|{key:value},case_seconds("test_play_life009_jetbarrel"))
 
 
 class ParserControls(unittest.TestCase):
     """Exercise the original false-pass through the complete offline entry point."""
     def setUp(self):
+        for target in ("play_execution_contract.verify_source_policy", "run_life009_campaign.verify_source_policy"):
+            patch = mock.patch(target, return_value=identity())
+            patch.start()
+            self.addCleanup(patch.stop)
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
         self.output = Path(self.tmp.name)
@@ -187,7 +213,8 @@ class ParserControls(unittest.TestCase):
             process = dict(name="parser-" + label, log="parser-" + label + ".log",
                            status="failed" if label == "original" else "passed",
                            returncode=1 if label == "original" else 0, seconds=1,
-                           timeout_seconds=30, diagnostic_error=label == "original",
+                           timeout_seconds=watchdog_seconds("operation_seconds"), diagnostic_error=label == "original",
+                           execution_policy=identity(), natural_completion=True,
                            launch_error=None, capture_error=None, skip_messages=[], timeout_kind=None)
             text = ('SCRIPT ERROR: Parse Error: Expected closing ")" after call arguments.\n'
                     '   at: GDScript::reload (/tmp/original-584b-helper.gd:205)\n'
@@ -195,19 +222,19 @@ class ParserControls(unittest.TestCase):
             (self.output / process["log"]).write_text(text, encoding="utf-8")
             self.records[label] = {"process": process, "log_sha256": campaign.sha(self.output / process["log"])}
             self.receipt(label)
-        self.report = dict(schema="play-life009-campaign-v1", source_commit=SOURCE,
+        self.report = dict(schema="play-life009-campaign-v2", execution_policy=identity(), source_commit=SOURCE,
                            source_tree="2" * 40, platform="synthetic-unit-only", completed=True, errors=[],
                            source_unchanged=True, runtimes_unchanged=True, production_paths_unchanged_from_base=True,
                            godot_identity={"version": campaign.VERSION}, parser_controls=self.records, rows=[])
-        imported = self.records["current"]["process"] | {"name": "import", "log": "import.log", "timeout_seconds": 240}
+        imported = self.records["current"]["process"] | {"name": "import", "log": "import.log", "timeout_seconds": watchdog_seconds("godot_import_seconds")}
         (self.output / "import.log").write_text("Imported\n", encoding="utf-8")
         self.report["import"] = imported
         self.report["import_log_sha256"] = campaign.sha(self.output / "import.log")
         for rig in RIGS:
             result = fixture(rig)
             name = "test_play_life009_" + rig
-            process = imported | {"name": name, "log": name + ".log", "timeout_seconds": 180}
-            (self.output / process["log"]).write_text(MARKER + json.dumps(result) + "\n", encoding="utf-8")
+            process = imported | {"name": name, "log": name + ".log", "timeout_seconds": case_seconds(name)}
+            (self.output / process["log"]).write_text(policy_log() + MARKER + json.dumps(result) + "\n", encoding="utf-8")
             campaign.write(self.output / (name + ".process.json"), process)
             self.report["rows"].append(dict(rig=rig, process=process, process_record=name + ".process.json",
                 observed_total_seconds=1, log_sha256=campaign.sha(self.output / process["log"]),
@@ -249,7 +276,7 @@ class ParserControls(unittest.TestCase):
             old = copy.deepcopy(self.records[label]["process"])
             for key, value in (("timeout_kind", "deadline"), ("launch_error", "no executable"),
                                ("capture_error", "lost log"), ("skip_messages", ["SKIP"]),
-                               ("timeout_seconds", 60), ("seconds", 30.001)):
+                               ("timeout_seconds", 60), ("seconds", watchdog_seconds("operation_seconds") + .001)):
                 with self.subTest(label=label, field=key):
                     self.records[label]["process"] = old | {key: value}
                     self.receipt(label)
