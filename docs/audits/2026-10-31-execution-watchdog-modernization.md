@@ -60,6 +60,52 @@ Local GDScript runtime evidence uses pinned Godot 4.7 with retained Linux native
 and Rapier bytes. These results establish local apparatus behavior; complete
 hosted original suites and independent source review remain acceptance gates.
 
+## Independent review corrections before acceptance
+
+The first published source `c3a7ff3084b5dc76c739c4e297eafff28b8d67d9`
+is preserved with its original hosted attempts. Subsequent review found that
+the parent planner's former single 30-second capture plus 10-second termination
+reserve did not cover every sequential Godot diagnostic path. The correction
+introduces one shared 240-second reserve for up to three legacy snapshots and
+their cleanup, the independent capture owner, and engine-tree retirement. Both
+the shard distribution and hosted parent planner use it, including import.
+No child execution allowance or assertion changes. The complete inventory is
+still 246 Linux cases, including 13 rendered cases, and 233 Windows headless
+cases; the corrected plan uses 77 and 75 shards respectively. Maximum execution
+steps are 276 and 263 minutes inside the existing 360-minute parents.
+
+Five policy controls and five parent-planner controls pass normally and under
+`python -O`. The original sharding suite passes 84 applicable controls in each
+mode; its actual Windows process-observation test is explicitly skipped on the
+local Linux host. The Windows evidence reader passes all 44 controls in both
+modes after its separate source/policy correction: every case, including cases
+without an independent PLAY footer, must bind the complete original command,
+source, effective policy, natural completion, runtime and original log bytes.
+
+The manual-packet correction derives its complete hosted parent from all eleven
+sequential steps: 166 minutes plus headroom fit inside the 180-minute default.
+Git provenance queries share one 300-second clock; nested callers cannot reset
+it. Packet and provenance controls each pass 17 tests normally and with
+`python -O`. Actual local source `dfe6c44722edfcd3201cd71a886755743f897159`
+created its packet in 2.722 seconds and independently reverified it in 2.773
+seconds after all 18 pinned LFS objects were materialized and the source was
+clean. An earlier refusal due to an untracked LFS temporary file remains in a
+separate retained attempt; that file was preserved outside the checkout before
+the next attempt. No engine ran, and all 51 physical/human rows remain untested.
+
+The first hosted Native run
+[41238044203, attempt 1](https://github.com/techrote/cybersand/actions/runs/41238044203)
+completed successfully. Its actual executed GitHub merge commit is
+`9bd9038f53af47db0542d0b46ed5860893c4a0d8`, with parents accepted main
+`adaaa37ae35ffcdaa961b80353be3a23b805c0cc` and the first published head above.
+Its tree `0bf363a43ebe9fd433fdd7bba3ad83a1ef007d7a` exactly matches that head.
+Performance artifact 13057042456 is 11,535 bytes, SHA-256
+`75ee2673624a867c4ebf0b59328a638d45c2af93fc64b243cb6f5e09d021683b`.
+Independent readback found 32 valid observations, including six completed
+whole-job clocks, with no input errors. Comparable default-branch history is
+not yet available; no baseline or regression warning is invented. This first
+run does not replace fresh source-matched qualification of the corrections.
+
 ## Diagnostic investigation remains separate
 
 The original Windows crash at `aa74448` is still unexplained. The first repaired

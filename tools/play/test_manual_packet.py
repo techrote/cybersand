@@ -2,6 +2,8 @@
 """Adverse provenance/packet controls; synthetic files are not engine evidence."""
 import csv
 import json
+import os
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -11,6 +13,64 @@ import warnings
 import zipfile
 
 import create_manual_packet as packet
+
+
+class ExecutionBudgetControls(unittest.TestCase):
+    def test_workflow_children_fit_the_named_parent_on_both_hosts(self):
+        with mock.patch.dict(os.environ, {"CYBERSAND_CI_WATCHDOG_SCALE": "1"}):
+            budget = packet.budgets()
+        self.assertEqual((budget["sequential_minutes"], budget["job_minutes"]), (166, 180))
+        workflow = (packet.ROOT / ".github/workflows/play-desktop-packet.yml").read_text()
+        for platform in ("linux", "windows"):
+            section = workflow.split("\n  " + platform + ":\n", 1)[1]
+            if platform == "linux": section = section.split("\n  windows:\n", 1)[0]
+            self.assertIn("\n    timeout-minutes: ${{ fromJSON(needs.plan.outputs.job_minutes) }}\n",
+                          section.split("\n    steps:\n", 1)[0])
+            total = 0
+            steps = re.split(r"(?m)^      - name: ", section)[1:]
+            self.assertEqual(len(steps), 11)
+            for step in steps:
+                field = re.search(r"timeout-minutes: \$\{\{ fromJSON\(needs.plan.outputs.([a-z_]+)\) \}\}", step)
+                self.assertIsNotNone(field, "Unbudgeted packet step: " + step.splitlines()[0])
+                total += budget[field[1]]
+            self.assertEqual(total, budget["sequential_minutes"])
+            self.assertGreaterEqual(budget["job_minutes"], total + budget["headroom_minutes"])
+        self.assertNotIn("--max-time 240", workflow)
+        self.assertIn('watchdog_seconds("dependency_prepare_seconds")', workflow)
+
+    def test_nested_metadata_does_not_reset_the_parent_clock(self):
+        clock = [0.0]
+        with mock.patch.object(packet.time, "monotonic", side_effect=lambda: clock[0]):
+            with packet.metadata_budget():
+                clock[0] = 200
+                with packet.metadata_budget():
+                    self.assertEqual(packet.metadata_remaining(), 100)
+            self.assertIsNone(packet._METADATA_DEADLINE)
+
+    def test_late_source_operation_stops_before_another_git_launch(self):
+        clock = [0.0]
+        with mock.patch.object(packet.time, "monotonic", side_effect=lambda: clock[0]), \
+             mock.patch.object(packet.subprocess, "check_output", return_value=b"source") as process:
+            with self.assertRaisesRegex(TimeoutError, "shared operation allowance"):
+                with packet.metadata_budget():
+                    packet.git(Path("/synthetic"), "rev-parse", "HEAD")
+                    clock[0] = 250
+                    packet.git(Path("/synthetic"), "rev-parse", "HEAD")
+                    clock[0] = 301
+                    packet.git(Path("/synthetic"), "rev-parse", "HEAD")
+            self.assertEqual([call.kwargs["timeout"] for call in process.call_args_list], [300, 50])
+            self.assertIsNone(packet._METADATA_DEADLINE)
+
+    def test_completed_collect_still_refuses_an_expired_metadata_budget(self):
+        clock = [0.0]
+        def late(*_args):
+            clock[0] = 301
+            return {}, {}
+        with mock.patch.object(packet.time, "monotonic", side_effect=lambda: clock[0]), \
+             mock.patch.object(packet, "_collect", side_effect=late):
+            with self.assertRaisesRegex((RuntimeError, TimeoutError), "allowance"):
+                packet.collect(Path("/synthetic"), "a" * 40, Path("archive"), Path("engine"))
+        self.assertIsNone(packet._METADATA_DEADLINE)
 
 
 class SourceControls(unittest.TestCase):

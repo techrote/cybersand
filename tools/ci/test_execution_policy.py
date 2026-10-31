@@ -3,6 +3,7 @@
 from contextlib import redirect_stdout
 import copy
 import io
+import inspect
 import json
 import os
 from pathlib import Path
@@ -16,6 +17,7 @@ from unittest import mock
 import execution_policy as policy
 import execution_telemetry as telemetry
 import run_timed_command as timed
+import run_godot_regressions as godot_runner
 
 
 class PolicyTests(unittest.TestCase):
@@ -38,6 +40,22 @@ class PolicyTests(unittest.TestCase):
         for scale in ("0", "-1", ".99", "nan", "inf", "nonsense"):
             with self.subTest(scale=scale), self.assertRaises(ValueError):
                 policy.validate_policy(self.raw, scale)
+
+    def test_complete_godot_cleanup_covers_sequential_snapshot_and_tree_paths(self):
+        # Windows taskkill can wait, force-kill and wait again, followed by the
+        # observed process wait and its last reap. Linux can request three
+        # legacy snapshots. Reserving their joint upper envelope is deliberate.
+        snapshot_wait = inspect.signature(godot_runner._snapshot_command).parameters["timeout"].default
+        engine_wait = inspect.signature(godot_runner._kill_process_tree).parameters["wait_seconds"].default
+        snapshot_tree = 2 + 2 + 2 + 5
+        engine_tree = engine_wait + 2 + engine_wait + 5
+        capture_owner = 2 + 2 + 2
+        sequential = 3 * (snapshot_wait + snapshot_tree) + engine_tree + capture_owner
+        self.assertGreater(sequential, 40, "The former single capture/grace reserve is incomplete")
+        self.assertGreaterEqual(policy.godot_process_cleanup_seconds(), sequential)
+        self.assertEqual(policy.godot_process_cleanup_seconds(), 240)
+        with mock.patch.dict(os.environ, {policy.SCALE_ENV: "2"}):
+            self.assertEqual(policy.godot_process_cleanup_seconds(), 480)
 
     def test_invalid_missing_boolean_nonfinite_and_overflow_fail_closed(self):
         for value in (True, False, None, 0, -3, float("nan"), float("inf"), 1e30):

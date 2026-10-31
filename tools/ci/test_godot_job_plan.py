@@ -47,7 +47,8 @@ class HostedBudgetTests(unittest.TestCase):
         first = subject.plan(cases, platform="linux")
         second = subject.plan(cases, platform="linux")
         self.assertEqual(first, second)
-        self.assertEqual(sum(s["case_budget_seconds"] for s in first["shards"]), 12 * 3940)
+        self.assertEqual(sum(s["case_budget_seconds"] for s in first["shards"]), 12 * 4140)
+        self.assertEqual(first["import_with_cleanup_seconds"], 1440)
 
     def test_actual_workflow_setup_steps_fit_the_reserved_budget(self):
         source = (execution_policy.ROOT / ".github/workflows/gdextension.yml").read_text()

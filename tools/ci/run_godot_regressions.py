@@ -129,8 +129,7 @@ def build_shard_plan(cases: list[Case], shard_count: int) -> tuple[list[list[Cas
     totals = [0.0] * shard_count
     allowances = [0.0] * shard_count
     policy = execution_policy.identity()["watchdogs"]
-    per_case_reserve = sum(policy[key] for key in (
-        "operation_seconds", "diagnostic_capture_seconds", "terminate_grace_seconds"))
+    per_case_reserve = policy["operation_seconds"] + execution_policy.godot_process_cleanup_seconds()
 
     # Assign historically expensive cases first, but balance complete execution
     # allowances before advisory weights. Otherwise many fast-weighted cases

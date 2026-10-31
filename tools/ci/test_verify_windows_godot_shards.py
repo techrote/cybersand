@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
+import execution_policy
 import verify_windows_godot_shards as subject
 
 SOURCE = "a" * 40
@@ -18,7 +19,8 @@ def digest(data: bytes) -> str:
 
 def case(name: str) -> dict:
     return {"name": name, "flags": ["--script", f"res://tests/{name}.gd"],
-            "timeout_seconds": 180, "estimated_seconds": 5.0, "requires_display": False}
+            "timeout_seconds": execution_policy.watchdog_seconds("ordinary_case_seconds"),
+            "estimated_seconds": 5.0, "requires_display": False}
 
 
 def fixture_contract() -> tuple[dict, bytes]:
@@ -27,6 +29,7 @@ def fixture_contract() -> tuple[dict, bytes]:
                 "source_inputs": {"native/src/world.cpp": "e" * 64}}
     raw = (json.dumps(manifest) + "\n").encode()
     expected = {
+        "execution_policy": execution_policy.identity(),
         "source_tree": "f" * 40, "all_discovered_case_count": 4,
         "applicable_case_count": 3, "applicable_cases": ["alpha", "beta", "gamma"],
         "out_of_scope_graphical_cases": ["visual_render"],
@@ -40,6 +43,7 @@ def fixture_contract() -> tuple[dict, bytes]:
         "rapier_runtime": {"path": "rapier.dll", "sha256": "1" * 64, "size": 2345},
         "godot_version": "4.7.test-fixture", "godot_archive_sha512": "2" * 128,
         "tested_input_paths": ["godot/tests/alpha.gd", "native/src/world.cpp"],
+        "tested_input_sha256": {p: ["5" * 64] for p in ("godot/tests/alpha.gd", "native/src/world.cpp")},
     }
     return expected, raw
 
@@ -50,7 +54,8 @@ def make_fixture(root: Path, expected: dict, manifest: bytes) -> None:
         directory.mkdir()
         (directory / "runtime-provenance.json").write_bytes(manifest)
         report = {k: copy.deepcopy(v) for k, v in expected.items()
-                  if k not in ("plans", "tested_input_paths", "godot_archive_sha512")}
+                  if k not in ("plans", "tested_input_paths", "tested_input_sha256",
+                               "godot_archive_sha512", "execution_policy")}
         report.update({
             "source_commit": SOURCE, "run_id": "123", "run_attempt": "1",
             "shard_count": 2, "shard_index": shard, "status": "passed", "completed": True,
@@ -61,15 +66,18 @@ def make_fixture(root: Path, expected: dict, manifest: bytes) -> None:
                 "console_sha256": "3" * 64, "runtime_sha256": "4" * 64},
             "tested_inputs": {p: "5" * 64 for p in expected["tested_input_paths"]},
         })
-        preflight = {"name": "import", "timeout_seconds": 240, "requires_display": False,
+        preflight = {"name": "import", "timeout_seconds": execution_policy.watchdog_seconds("godot_import_seconds"),
+                     "requires_display": False,
                      "flags": ["--editor", "--quit"]}
         for role, item in [("preflight", preflight), *[("case", c) for c in plan]]:
             name = item["name"]; log = name + ".log"; data = (name + " passed\n").encode()
             (directory / log).write_bytes(data)
             report["results"].append({"role": role, "name": name, "status": "passed",
-                "log": log, "returncode": 0, "skip_messages": [],
+                "log": log, "log_sha256": digest(data), "returncode": 0, "skip_messages": [],
+                "execution_policy": execution_policy.identity(), "natural_completion": True,
                 "requires_display": False, "timeout_seconds": item["timeout_seconds"],
-                "command": ["Godot_console.exe", "--headless", "--path", "godot", *item["flags"]]})
+                "command": [r"C:\tools\Godot_v4.7-stable_win64_console.exe", "--headless", "--path",
+                            r"C:\source\godot", *item["flags"]]})
             report["log_sha256"][log] = digest(data)
         (directory / "windows-execution.json").write_text(json.dumps(report), encoding="utf-8")
 
@@ -95,6 +103,9 @@ class WindowsCoverageTests(unittest.TestCase):
         self.assertEqual(result["status"], "passed")
         self.assertEqual(result["unique_case_count"], 3)
         self.assertEqual(result["raw_logs_verified"], 5)
+        self.assertEqual(result["source_tree"], self.expected["source_tree"])
+        self.assertEqual(result["execution_policy"], execution_policy.identity())
+        self.assertEqual(result["source_inputs_verified"], 2)
 
     def test_coordinated_omission_cannot_redefine_source_inventory(self):
         def omit(report):
@@ -182,6 +193,81 @@ class WindowsCoverageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "command or watchdog"):
             self.verify()
 
+    def test_import_deadline_is_source_derived(self):
+        self.mutate(0, lambda r: r["results"][0].update(timeout_seconds=1))
+        with self.assertRaisesRegex(ValueError, "command or watchdog"):
+            self.verify()
+
+    def test_import_must_execute_import(self):
+        self.mutate(0, lambda r: r["results"][0].update(command=["Godot_console.exe", "--version"]))
+        with self.assertRaisesRegex(ValueError, "command or watchdog"):
+            self.verify()
+
+    def test_extra_command_flag_is_not_source_equivalent(self):
+        self.mutate(0, lambda r: r["results"][1]["command"].insert(4, "--quit"))
+        with self.assertRaisesRegex(ValueError, "command or watchdog"):
+            self.verify()
+
+    def test_case_cannot_execute_another_host_project(self):
+        self.mutate(0, lambda r: r["results"][1]["command"].__setitem__(3, r"C:\foreign\godot"))
+        with self.assertRaisesRegex(ValueError, "command roots"):
+            self.verify()
+
+    def test_unknown_executable_is_not_the_pinned_console_wrapper(self):
+        self.mutate(0, lambda r: r["results"][1]["command"].__setitem__(0, r"C:\tools\python.exe"))
+        with self.assertRaisesRegex(ValueError, "command or watchdog"):
+            self.verify()
+
+    def test_each_import_and_case_requires_natural_completion(self):
+        for offset in (0, 1):
+            for value in (False, None, 1):
+                with self.subTest(offset=offset, value=value):
+                    self.mutate(0, lambda r: r["results"][offset].update(natural_completion=value))
+                    with self.assertRaisesRegex(ValueError, "nonpassing execution detail"):
+                        self.verify()
+                    self.mutate(0, lambda r: r["results"][offset].update(natural_completion=True))
+
+    def test_each_import_and_case_requires_exact_policy(self):
+        for offset in (0, 1):
+            for value in (None, {"schema_version": 1, "scale": 0.1}):
+                with self.subTest(offset=offset, value=value):
+                    self.mutate(0, lambda r: r["results"][offset].update(execution_policy=value))
+                    with self.assertRaisesRegex(ValueError, "execution policy"):
+                        self.verify()
+                    self.mutate(0, lambda r: r["results"][offset].update(execution_policy=execution_policy.identity()))
+
+    def test_boolean_policy_scale_is_not_numeric_one(self):
+        self.mutate(0, lambda r: r["results"][1]["execution_policy"].update(scale=True))
+        with self.assertRaisesRegex(ValueError, "execution policy"):
+            self.verify()
+
+    def test_source_contract_cannot_supply_another_policy(self):
+        self.expected["execution_policy"]["watchdogs"]["operation_seconds"] = 1
+        with self.assertRaisesRegex(ValueError, "coverage source execution policy"):
+            self.verify()
+
+    def test_source_hash_value_must_match_commit_not_just_syntax(self):
+        for index in (0, 1):
+            self.mutate(index, lambda r: r["tested_inputs"].update({"native/src/world.cpp": "9" * 64}))
+        with self.assertRaisesRegex(ValueError, "source input inventory"):
+            self.verify()
+
+    def test_row_log_hash_must_match_original_inventory(self):
+        self.mutate(0, lambda r: r["results"][1].update(log_sha256="9" * 64))
+        with self.assertRaisesRegex(ValueError, "row log seal"):
+            self.verify()
+
+    def test_resealed_error_or_skipped_raw_log_is_not_success(self):
+        for data in (b"ERROR: actual failure\n", b"SKIP missing runtime\n"):
+            with self.subTest(data=data):
+                (self.root / "shard-0/alpha.log").write_bytes(data)
+                def reseal(report):
+                    report["log_sha256"]["alpha.log"] = digest(data)
+                    report["results"][1]["log_sha256"] = digest(data)
+                self.mutate(0, reseal)
+                with self.assertRaisesRegex(ValueError, "error or skipped check"):
+                    self.verify()
+
     def test_wrong_command(self):
         self.mutate(0, lambda r: r["results"][1]["command"].__setitem__(-1, "res://other.gd"))
         with self.assertRaisesRegex(ValueError, "command or watchdog"):
@@ -227,10 +313,11 @@ class WindowsCoverageTests(unittest.TestCase):
 
     def test_profile_timeout_is_not_misclassified_as_default_budget(self):
         # Preserve the source planner's profile-specific deadline, not a
-        # blanket 180-second assertion that would silently drop existing scope.
-        self.expected["plans"][0][0]["timeout_seconds"] = 1200
-        self.mutate(0, lambda r: (r["case_plan"][0].update(timeout_seconds=1200),
-                                 r["results"][1].update(timeout_seconds=1200)))
+        # blanket ordinary-case assertion that would silently shorten scope.
+        timeout = execution_policy.complex_process_seconds()
+        self.expected["plans"][0][0]["timeout_seconds"] = timeout
+        self.mutate(0, lambda r: (r["case_plan"][0].update(timeout_seconds=timeout),
+                                 r["results"][1].update(timeout_seconds=timeout)))
         self.assertEqual(self.verify()["status"], "passed")
 
 
@@ -240,6 +327,7 @@ class SourceContractTests(unittest.TestCase):
         import subprocess
         import types
         from unittest import mock
+        import run_windows_godot_regressions as actual_windows
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         def git(root, *args):
@@ -252,7 +340,10 @@ class SourceContractTests(unittest.TestCase):
         provenance = "godot/addons/cybersand_native/runtime-provenance.json"
         self.native = native; self.provenance = provenance
         files = {"native/src/world.cpp": b"frozen\n", "godot/tests/test_one.gd": b"extends Node\n",
-                 "godot/tests/test_two.gd": b"extends Node\n"}
+                 "godot/tests/test_two.gd": b"extends Node\n",
+                 ".gitattributes": b"* text=auto\n*.gd text eol=lf\n*.ps1 text eol=crlf\n*.dll filter=lfs -text\n",
+                 "godot/notes.txt": b"first\nsecond\n", "godot/control.ps1": b"Write-Output 1\n",
+                 "godot/raw.bin": b"\0first\nsecond\n"}
         for path, hashchar, size in ((native, "d", 1234), (rapier, "1", 2345)):
             files[path] = (f"version https://git-lfs.github.com/spec/v1\noid sha256:{hashchar * 64}\nsize {size}\n").encode()
         manifest = {"schema_version": 1, "artifact": native, "source_commit": "b" * 40,
@@ -263,7 +354,8 @@ class SourceContractTests(unittest.TestCase):
             path = self.root / relative; path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(content)
         git(self.root, "add", "."); git(self.root, "commit", "-qm", "fixture source")
         self.sha = git(self.root, "rev-parse", "HEAD").decode().strip()
-        records = [types.SimpleNamespace(**{**case(name), "timeout": 180, "weight": 5.0})
+        records = [types.SimpleNamespace(**{**case(name),
+                    "timeout": execution_policy.watchdog_seconds("ordinary_case_seconds"), "weight": 5.0})
                    for name in ("test_one", "test_two")]
         self.runner = types.SimpleNamespace(
             discover_cases=mock.Mock(return_value=records),
@@ -273,6 +365,8 @@ class SourceContractTests(unittest.TestCase):
             git=git, INPUT_SCOPES=("godot", "native"), PROVENANCE=provenance,
             NATIVE=native, RAPIER=rapier, RAPIER_SHA256="1" * 64,
             GODOT_VERSION="4.7.fixture", GODOT_SHA512="2" * 128,
+            RAPIER_IMPORT_DESCRIPTORS=actual_windows.RAPIER_IMPORT_DESCRIPTORS,
+            metadata_budget=actual_windows.metadata_budget, metadata_remaining=actual_windows.metadata_remaining,
             native_input_paths=lambda root: {"native/src/world.cpp"})
         patch = mock.patch.dict("sys.modules", {"run_godot_regressions": self.runner,
                     "run_windows_godot_regressions": self.windows})
@@ -287,7 +381,34 @@ class SourceContractTests(unittest.TestCase):
         self.assertEqual(expected["source_tree"], self.git(self.root, "rev-parse", "HEAD^{tree}").decode().strip())
         self.assertEqual(expected["cybersand_runtime"]["sha256"], "d" * 64)
         self.assertIn("native/src/world.cpp", expected["tested_input_paths"])
+        self.assertEqual(expected["tested_input_sha256"][self.native], ["d" * 64])
+        self.assertEqual(expected["execution_policy"], execution_policy.identity())
         self.runner.discover_cases.assert_called_once_with(self.root)
+
+    def test_source_hashes_respect_declared_checkout_bytes(self):
+        hashes = self.contract()["tested_input_sha256"]
+        self.assertEqual(hashes["godot/tests/test_one.gd"], [digest(b"extends Node\n")])
+        self.assertEqual(set(hashes["godot/notes.txt"]), {digest(b"first\nsecond\n"), digest(b"first\r\nsecond\r\n")})
+        self.assertEqual(hashes["godot/control.ps1"], [digest(b"Write-Output 1\r\n")])
+        self.assertEqual(hashes["godot/raw.bin"], [digest(b"\0first\nsecond\n")])
+
+    def test_lfs_metadata_cannot_claim_pointer_as_executed_runtime(self):
+        hashes = self.contract()["tested_input_sha256"]
+        self.assertNotIn(digest((self.root / self.native).read_bytes()), hashes[self.native])
+
+    def test_unrelated_lfs_inputs_may_remain_unmaterialized(self):
+        path = self.root / "godot/retained-other.dll"
+        pointer = b"version https://git-lfs.github.com/spec/v1\noid sha256:" + b"6" * 64 + b"\nsize 789\n"
+        path.write_bytes(pointer)
+        self.git(self.root, "add", "."); self.git(self.root, "commit", "-qm", "other platform runtime")
+        self.sha = self.git(self.root, "rev-parse", "HEAD").decode().strip()
+        self.assertEqual(set(self.contract()["tested_input_sha256"]["godot/retained-other.dll"]),
+                         {digest(pointer), "6" * 64})
+
+    def test_attributes_come_from_commit_not_changed_worktree(self):
+        (self.root / ".gitattributes").write_bytes(b"* -text\n*.dll filter=lfs -text\n")
+        hashes = self.contract()["tested_input_sha256"]
+        self.assertEqual(hashes["godot/control.ps1"], [digest(b"Write-Output 1\r\n")])
 
     def test_wrong_checkout_sha(self):
         with self.assertRaisesRegex(ValueError, "coverage checkout"):

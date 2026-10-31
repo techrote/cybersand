@@ -78,6 +78,22 @@ def complex_process_seconds() -> float:
         "diagnostic_capture_seconds", "terminate_grace_seconds"))
 
 
+def godot_process_cleanup_seconds() -> float:
+    """Reserve every sequential diagnostic and teardown path after a process.
+
+    Up to three legacy snapshots each need capture plus tree termination.
+    Closing the independent capture owner and retiring the engine tree have
+    separate reserves. This affects parent accounting, never case acceptance.
+    """
+    values = identity()["watchdogs"]
+    capture = values["diagnostic_capture_seconds"]
+    grace = values["terminate_grace_seconds"]
+    snapshots = 3 * (capture + 3 * grace)
+    capture_owner_close = 3 * grace
+    engine_tree_close = 3 * grace
+    return snapshots + capture_owner_close + engine_tree_close
+
+
 def case_seconds(name: str, requires_display: bool = False, *, complex_fixture: bool = False) -> float:
     # Tests with an internal whole-fixture watchdog must have a strictly larger
     # parent; ordinary rendered cases and scripts have distinct allowances.

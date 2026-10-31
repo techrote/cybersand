@@ -18,8 +18,7 @@ import run_godot_regressions as runner
 
 def case_allowance(case: runner.Case) -> float:
     values = policy.identity()["watchdogs"]
-    return case.timeout + sum(values[key] for key in (
-        "operation_seconds", "diagnostic_capture_seconds", "terminate_grace_seconds"))
+    return case.timeout + values["operation_seconds"] + policy.godot_process_cleanup_seconds()
 
 
 def plan(cases: list[runner.Case], *, platform: str) -> dict:
@@ -29,7 +28,7 @@ def plan(cases: list[runner.Case], *, platform: str) -> dict:
         raise ValueError("Scaled Godot job exceeds the GitHub-hosted six-hour limit")
     if not cases:
         raise ValueError("A complete platform suite must contain cases")
-    import_seconds = values["godot_import_seconds"] + values["diagnostic_capture_seconds"] + values["terminate_grace_seconds"]
+    import_seconds = values["godot_import_seconds"] + policy.godot_process_cleanup_seconds()
     reserved = values["godot_setup_seconds"] + values["aggregate_headroom_seconds"]
     metadata_seconds = values["godot_metadata_seconds"]
     available = job_seconds - reserved - import_seconds - metadata_seconds

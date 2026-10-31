@@ -64,7 +64,8 @@ deliberately refuses newly generated untracked metadata, including `.gd.uid`
 files. Retain the first launch/import log and `git status` output; preserve that
 checkout as evidence and prepare a fresh dedicated checkout and packet at the
 same reviewed SHA. If an editor import is required, record it separately under
-the 240-second bound and reconcile its generated files before claiming a clean
+the [source execution policy](ci-execution-and-performance.md) import watchdog
+(1,200 seconds at the default scale) and reconcile its generated files before claiming a clean
 source. This packet does not delete metadata, ignore changes or promise an
 automatic relaunch after import.
 

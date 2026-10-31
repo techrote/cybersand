@@ -5,6 +5,7 @@ import re
 import shutil
 import tempfile
 import unittest
+from unittest import mock
 
 import check_m11_consistency as legacy
 import check_repository as current
@@ -53,6 +54,58 @@ class HistoricalChecks(unittest.TestCase):
         result = legacy.check(self.root, reader=missing)
         self.assertEqual(result["status"], "failed")
         self.assertIn("fetch full source history", result["errors"][0])
+
+class ProvenanceOperationBudget(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.data = b"synthetic-runtime"
+        self.pointer = ("version https://git-lfs.github.com/spec/v1\noid sha256:" + current.digest(self.data)
+                        + "\nsize " + str(len(self.data)) + "\n").encode()
+        manifest = {"source_inputs": {}, "artifact": "selected.bin", "sha256": current.digest(self.data), "size": len(self.data)}
+        records = {"third_party/native-toolchain.lock.json": {"artifacts": [{"name": "godot-cpp", "version": current.GODOT_CPP}]},
+                   "third_party/godot-runtime.lock.json": {"godot_version": current.GODOT},
+                   "godot/third_party/rapier2d.lock.json": {"rapier_tag": "v0.35.2"},
+                   "godot/addons/cybersand_native/runtime-provenance.json": manifest,
+                   "godot/addons/cybersand_native/runtime-provenance.linux.json": manifest}
+        for name, value in records.items():
+            path = self.root / name; path.parent.mkdir(parents=True, exist_ok=True); path.write_text(json.dumps(value))
+        for name in ("selected.bin", "godot/addons/first.dll", "godot/addons/second.so"):
+            path = self.root / name; path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(self.data)
+        for name in ("THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md", "godot/.godot/.gdignore",
+                     "godot/.godot/extension_list.cfg", "godot/.godot/global_script_class_cache.cfg",
+                     "godot/addons/godot-rapier2d/LICENSE", "godot/addons/godot-rapier2d/THIRDPARTY.txt",
+                     "godot/addons/cybersand_native/LICENSE-godot-cpp.md"):
+            path = self.root / name; path.parent.mkdir(parents=True, exist_ok=True); path.write_text("synthetic control")
+
+    def run_with_clock(self, elapsed, parent=None):
+        clock = [0.0]; limits = []
+        def command(args, **kwargs):
+            limits.append(kwargs["timeout"]); clock[0] += elapsed
+            return "godot/addons/first.dll\ngodot/addons/second.so\n" if "ls-files" in args else self.pointer
+        with mock.patch.object(current.time, "monotonic", side_effect=lambda: clock[0]), \
+             mock.patch.object(current, "check_docs", return_value={"status": "passed", "errors": []}), \
+             mock.patch.object(current.subprocess, "check_output", side_effect=command):
+            result = current.check(self.root, True, operation_deadline=parent)
+        return result, limits
+
+    def test_all_git_queries_share_one_allowance_and_retain_late_failure(self):
+        result, limits = self.run_with_clock(100)
+        self.assertEqual(limits, [300, 200, 100])
+        self.assertEqual(result["status"], "failed")
+        self.assertTrue(any("shared operation allowance" in item for item in result["errors"]))
+        self.assertEqual(len(result["materialized_runtime_files"]), 2)
+
+    def test_parent_budget_is_preserved_and_fast_identity_passes(self):
+        result, limits = self.run_with_clock(5, 50)
+        self.assertEqual(limits, [50, 45, 40])
+        self.assertEqual(result["status"], "passed")
+
+    def test_expired_parent_prevents_git_execution(self):
+        result, limits = self.run_with_clock(1, -1)
+        self.assertEqual(limits, [])
+        self.assertEqual(result["status"], "failed")
+
 
 class CurrentRuntimeChecks(unittest.TestCase):
     def setUp(self):

@@ -49,16 +49,19 @@ protocol bounds and the scene smoke check retains its 180-frame count.
 
 [The Godot planner](../../tools/ci/godot_job_plan.py) discovers every current
 fixture and derives a complete matrix. It reserves each case's process allowance,
-300 seconds for independent readback, 30 seconds for capture and 10 seconds for
-forced cleanup, plus import, three shared metadata operations, setup/artifact
-allowance and aggregate headroom.
+300 seconds for independent readback and 240 seconds for the complete sequential
+diagnostic and cleanup path. The shared `godot_process_cleanup_seconds()` helper
+includes up to three legacy snapshots and their process-tree retirement, closing
+the independent capture owner, and retiring the engine tree. Import receives the
+same cleanup reserve. Three shared metadata operations, setup/artifact allowance
+and aggregate headroom are counted separately.
 Historical elapsed-time weights only distribute work. They cannot shorten a
 case or omit it. The current watchdog source contains 246 Linux cases, including
 13 rendered cases, and 233 applicable Windows headless cases; the machine plan
 is authoritative when source discovery changes.
 
-The initial complete plan uses 67 Linux and 64 Windows shards. Each execution
-stage allows 276 minutes within a 360-minute parent, with 70 minutes reserved
+The corrected complete plan uses 77 Linux and 75 Windows shards. Linux execution
+allows 276 minutes and Windows 263 minutes within a 360-minute parent, with 70 minutes reserved
 for setup and artifacts and 10 minutes of additional headroom. These generous
 maxima are not expected runtime or a performance claim. The full suite no longer
 promises that dozens of one-hour child allowances fit inside a short four-shard
