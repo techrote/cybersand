@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "frozen_date": "2026-10-31",
+  "purpose": "Supplementary render-publication investigation questions; separate from frozen historical retrieval evaluation.",
+  "questions": [
+    {
+      "id": "RPUB001",
+      "query": "Does the graphical retained full plus dirty render publication overflow still happen with ordinary ACK, and is E enabled by default?",
+      "canonical": ["architecture/rendering-and-gameplay-bridges.md"],
+      "facts": [
+        "The frozen-main real Main graphical investigation reproduces byte-only forced retries with normal and withheld ACK; incidence is instrumented fixture and platform scoped.",
+        "E is an explicitly selected test-only complete-baseline exemption with bounded dirty budgets, no drop/rebase or implicit ACK; ordinary defaults remain unchanged.",
+        "Texture.update CPU return and a final frame/readback do not establish GPU-completion timing or human PLAY acceptance."
+      ],
+      "sources": ["../godot/tests/render_publication_e.gd", "../godot/tests/run_render_publication.gd"]
+    },
+    {
+      "id": "RCOPY001",
+      "query": "Does run-based native render copy R change ordinary rendering or supersede the E ACK retention experiment?",
+      "canonical": ["architecture/rendering-and-gameplay-bridges.md"],
+      "facts": [
+        "R is compiled only in standalone experimental test builds; ordinary native publication still calls the original copy method.",
+        "Byte-exact native differential/nonmutation tests and paired warm extraction timings are independent of worker retries and texture upload.",
+        "R reduces individual full-extraction cost; E removes retained-baseline overflow retries. Neither selects the other or establishes GPU pacing; existing PR290 owns production render-copy integration."
+      ],
+      "sources": ["../native/src/world.cpp", "../native/tests/test_render_copy_isolation.cpp"]
+    }
+  ]
+}

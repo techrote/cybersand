@@ -295,3 +295,21 @@ wsl --cd <worktree-linux-path> python3 tools/experiments/render_copy_isolation_c
 ```
 
 Final exact-head qualification and handover remain pending at the Stage-C checkpoint.
+
+Stage C checkpoint: `0babe8702f1ca7d92e83f8a9236c33ca020f9010`, tree
+`e102dcf6cfd6154f508b68aaa6e9b1187fa267a4`.
+
+## Final source-matched native attribution apparatus
+
+The final diagnostic build adds `CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC` around
+adapter-only clocks for exchange publication, full buffer preparation, original
+full extraction, dirty packing and total adapter time. Godot's monotonic clock
+shares the worker/main timeline. Native pool workers do not call it. Default
+compilation excludes the code and extra dictionary; R is not enabled by this
+flag. An explicit local runtime manifest authenticates all80 source inputs and
+the actual installed test binary; published provenance/LFS pointers stay intact.
+
+This closes a measurement gap in A/B's combined native-call timing. Residual
+adapter time still includes dictionary/array metadata and diagnostic overhead;
+it is not a pure isolated marshalling measurement. New local pinned builds and
+their final graphical/focused evidence are recorded below after execution.

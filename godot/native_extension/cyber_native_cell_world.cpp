@@ -6,6 +6,9 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+#include <godot_cpp/classes/time.hpp>
+#endif
 
 #include <algorithm>
 #include <array>
@@ -970,6 +973,17 @@ PackedByteArray CyberNativeCellWorld::get_cells() const {
 
 Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
     Dictionary packet;
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+    // Local diagnostic builds only; native pool workers never call this clock.
+    const auto stamp = [] { return static_cast<std::int64_t>(Time::get_singleton()->get_ticks_usec()); };
+    const auto diagnostic_start = stamp();
+    Dictionary diagnostic;
+    diagnostic["start_usec"] = diagnostic_start;
+    diagnostic["publish_usec"] = std::int64_t{0};
+    diagnostic["full_copy_usec"] = std::int64_t{0};
+    diagnostic["full_buffer_prepare_usec"] = std::int64_t{0};
+    diagnostic["dirty_pack_usec"] = std::int64_t{0};
+#endif
     if (has_failed()) {
         packet["failed"] = true;
         packet["error"] = last_tick_error_;
@@ -982,7 +996,13 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
     bool full_refresh = force_full || render_snapshot_full_refresh_required_;
 
     if (world_ != nullptr && render_exchange_ != nullptr) {
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+        const auto publish_start = stamp();
+#endif
         const auto publish_result = render_exchange_->publish(*world_);
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+        diagnostic["publish_usec"] = stamp() - publish_start;
+#endif
         status = publish_result.status;
         serial = publish_result.snapshot_serial;
 
@@ -993,13 +1013,23 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
         }
 
         if (full_refresh) {
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+            const auto prepare_start = stamp();
+#endif
             const auto width = static_cast<std::size_t>(kWorldWidth);
             const auto height = static_cast<std::size_t>(kWorldHeight);
             cells.resize(static_cast<std::int64_t>(width * height * 2U));
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+            const auto full_copy_start = stamp();
+            diagnostic["full_buffer_prepare_usec"] = full_copy_start - prepare_start;
+#endif
             world_->copy_render_cells(
                 {0, 0, kWorldWidth, kWorldHeight},
                 std::span<std::uint8_t>{cells.ptrw(), static_cast<std::size_t>(cells.size())},
                 width * 2U);
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+            diagnostic["full_copy_usec"] = stamp() - full_copy_start;
+#endif
             rectangles.resize(6);
             auto* metadata = rectangles.ptrw();
             metadata[0] = 0;
@@ -1013,6 +1043,9 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
             }
             render_snapshot_full_refresh_required_ = false;
         } else if (status == cybersand::RenderPublishStatus::Published) {
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+            const auto dirty_pack_start = stamp();
+#endif
             auto lease = render_exchange_->acquire_latest(serial - 1U);
             if (lease.has_value()) {
                 const auto patches = lease->patches();
@@ -1032,6 +1065,9 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
                     metadata[base + 5U] = static_cast<std::int32_t>(patch.stride_bytes);
                 }
             }
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+            diagnostic["dirty_pack_usec"] = stamp() - dirty_pack_start;
+#endif
         }
     }
 
@@ -1041,6 +1077,11 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
     packet["channels"] = 2;
     packet["rectangles"] = rectangles;
     packet["cells"] = cells;
+#ifdef CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC
+    diagnostic["end_usec"] = stamp();
+    diagnostic["total_usec"] = static_cast<std::int64_t>(diagnostic["end_usec"]) - diagnostic_start;
+    packet["_render_diagnostic"] = diagnostic;
+#endif
     return packet;
 }
 

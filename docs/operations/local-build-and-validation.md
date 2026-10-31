@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Render publication investigation builds
+
+The [frozen-main investigation](../audits/2026-10-31-render-publication-investigation.md)
+keeps graphical N/W and E cohorts separate from standalone R extraction. Run
+`tools/experiments/render_publication_campaign.py` with an explicit pinned engine
+and fresh output directory; `--candidate=E` selects only its test subclass.
+Ordinary application construction does not select E. The standalone
+`render_copy_isolation_campaign.py` uses the existing debug/release modes with
+`CYBERSAND_RENDER_COPY_EXPERIMENT`; normal native publication does not select R.
+
+`CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC` is a separate local GDExtension build
+flag. It adds bounded native adapter substage durations to returned copied
+packets using Godot's monotonic clock on the exclusive adapter owner. It adds no
+per-cell counters and no native-pool Godot calls. Default builds compile it out.
+An explicit local `--runtime-manifest` must authenticate every native source
+input and the actual installed test binary; inherited published provenance is
+not rewritten. `--require-native-stages` refuses a binary without those events.
+Local diagnostic artifacts are not published runtimes and remain outside Git.
+
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 
 The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged

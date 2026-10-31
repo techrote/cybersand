@@ -54,6 +54,15 @@ def reduce_trace(data):
     for refresh in {e["refresh"] for e in calls}:
         if sum(e["refresh"]==refresh for e in owner_ends)!=1:
             raise ValueError("missing/duplicate owner publication")
+    stages=[e["native_stages"] for e in calls if e.get("native_stages")]
+    native_stage_summary={}
+    if stages:
+        if len(stages)!=len(calls) or any(s["end_usec"]-s["start_usec"]!=s["total_usec"] or s["total_usec"]<0 for s in stages):
+            raise ValueError("invalid native substage trace")
+        for key in ["publish_usec","full_copy_usec","full_buffer_prepare_usec","dirty_pack_usec","total_usec"]:
+            native_stage_summary[key]=percentiles([s[key] for s in stages])
+        native_stage_summary["full_copy_nonzero_usec"]=percentiles([s["full_copy_usec"] for s in stages if s["full_copy_usec"]>0])
+        native_stage_summary["adapter_residual_usec"]=percentiles([s["total_usec"]-s["publish_usec"]-s["full_copy_usec"] for s in stages])
     retry_causes = []
     for retry in [e for e in calls if e["call"] == 2]:
         first = [e for e in events if e["event"] == "dirty_onto_full" and e["refresh"] == retry["refresh"]]
@@ -96,7 +105,7 @@ def reduce_trace(data):
             raise ValueError("ACK before successful upload")
     if data["arm"] == "W" and (select("ack_issue") or clears): raise ValueError("withheld control acknowledged")
     if data["arm"] == "N" and not select("ack_issue"): raise ValueError("normal arm has no ACK")
-    return {"counts": counts, "retry_causes": retry_causes,
+    return {"counts": counts, "retry_causes": retry_causes, "native_stages": native_stage_summary,
         "native_exchange_usec": percentiles([e["duration_usec"] for e in calls]),
         "native_first_usec": percentiles([e["duration_usec"] for e in calls if e["call"] == 1]),
         "native_retry_usec": percentiles([e["duration_usec"] for e in calls if e["call"] == 2]),
@@ -105,8 +114,8 @@ def reduce_trace(data):
         "native_bytes_per_refresh": sum(e["packet_bytes"] for e in calls)/max(1,counts.get("refresh",0)),
         "pending_high_water": data["pending_high_water"], "generations": sorted(seen_generations), **durations}
 
-def source_identity(engine):
-    provenance_path = ROOT / ("godot/addons/cybersand_native/runtime-provenance.json" if platform.system() == "Windows"
+def source_identity(engine, runtime_manifest=None):
+    provenance_path = runtime_manifest or ROOT / ("godot/addons/cybersand_native/runtime-provenance.json" if platform.system() == "Windows"
         else "godot/addons/cybersand_native/runtime-provenance.linux.json")
     provenance = json.loads(provenance_path.read_text())
     native = {}
@@ -125,6 +134,7 @@ def source_identity(engine):
         "tree": git_value("HEAD^{tree}"),
         "source_hashes": {str(p.relative_to(ROOT)).replace("\\","/"):digest(p) for p in files},
         "native_source_inputs": native, "runtime_sha256": digest(runtime), "runtime_path":str(runtime),
+        "runtime_manifest":str(provenance_path), "runtime_manifest_sha256":digest(provenance_path),
         "engine_sha256":digest(engine), "engine_path":str(engine), "platform":platform.platform()}
 
 def main():
@@ -133,9 +143,11 @@ def main():
     p.add_argument("--output", required=True, type=Path)
     p.add_argument("--repeats", type=int, default=3)
     p.add_argument("--candidate", choices=["control","E"], default="control")
+    p.add_argument("--runtime-manifest",type=Path)
+    p.add_argument("--require-native-stages",action="store_true")
     a=p.parse_args()
     a.output.mkdir(parents=True,exist_ok=False)
-    identity=source_identity(a.engine)
+    identity=source_identity(a.engine,a.runtime_manifest)
     (a.output/"inputs.json").write_text(json.dumps(identity,indent=2))
     results=[]
     for repeat in range(a.repeats):
@@ -163,11 +175,12 @@ def main():
                     raw=json.loads(receipt.read_text())
                     if raw["arm"]!=arm or raw["candidate"]!=a.candidate: raise ValueError("launched arm/candidate mismatch")
                     row["summary"]=reduce_trace(raw)
+                    if a.require_native_stages and not row["summary"]["native_stages"]: raise ValueError("native diagnostics absent")
                 except (ValueError,KeyError) as e: row["reader_failure"]=str(e)
             results.append(row)
             (a.output/"processes.json").write_text(json.dumps(results,indent=2))
             print(arm,repeat,code,row.get("summary",{}).get("counts",{}),flush=True)
-    after=source_identity(a.engine)
+    after=source_identity(a.engine,a.runtime_manifest)
     if after != identity: raise ValueError("source changed during campaign")
     report={"identity":identity,"processes":results}
     (a.output/"report.json").write_text(json.dumps(report,indent=2))

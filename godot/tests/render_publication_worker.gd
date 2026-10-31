@@ -76,6 +76,7 @@ func _take_native_render_snapshot(force: bool) -> Dictionary:
 	var channels: int = packet.get("channels", 0)
 	var complete: bool = bool(packet.get("full_refresh", false)) and channels in [1, 2] and packet.get("cells", PackedByteArray()).size() == 1024 * 1024 * channels and packet.get("rectangles", PackedInt32Array()) == PackedInt32Array([0, 0, 1024, 1024, 0, 1024 * channels])
 	record.merge({"start_usec": start, "end_usec": end, "duration_usec": end - start, "complete_full": complete,
+		"native_stages": packet.get("_render_diagnostic", {}),
 		"force_full": force, "call": calls_in_refresh, "status": packet.get("status", -1),
 		"packet_serial": packet.get("serial", 0), "packet_full": packet.get("full_refresh", false),
 		"packet_channels": packet.get("channels", 0), "packet_bytes": packet.get("cells", PackedByteArray()).size(),

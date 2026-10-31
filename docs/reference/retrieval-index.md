@@ -13,6 +13,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 - [Does retained full plus dirty still force render retries, and does ACK timing matter?](../architecture/rendering-and-gameplay-bridges.md#render-publication-investigation-on-frozen-main)
   The frozen-main graphical investigation separates current evidence, historical
   #283 results and opt-in candidates; texture submission is not GPU completion.
+  [Supplementary render questions](retrieval-questions-render-publication.json)
+  preserve those distinctions outside the frozen historical evaluation.
 
 - [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
   #302 satisfies mandatory native-busy lifecycle qualification; #304 is optional
