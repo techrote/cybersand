@@ -72,7 +72,7 @@ func _run() -> void:
 		return
 	var controller: Control = MAIN_SCRIPT.new()
 	controller.world_shader = ShaderMaterial.new()
-	controller.world_shader.shader = load("res://shaders/material_palette.gdshader")
+	controller.world_shader.shader = CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
 	controller.world_view = TextureRect.new()
 	controller.current_view_size = VIEW
 	controller.camera_origin = Vector2.ZERO

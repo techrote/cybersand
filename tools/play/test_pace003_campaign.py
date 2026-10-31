@@ -33,7 +33,7 @@ def example(graphical=True):
              "source_revision": expected["source_sha"], "failures": 0, "assertions": 17 if graphical else 15,
              "requested_rendering_driver": "engine-default",
              "presentation_shaders": [{"resource_path": "res://" + path,
-                 "file_sha256": "e" * 64, "loaded_code_sha256": "e" * 64,
+                 "file_sha256": "e" * 64, "loaded_code_sha256": "e" * 64, "bounded_crossfade": False,
                  "consumer_path": campaign.PRESENTATION_CONSUMERS[index],
                  "owner_node_matches": True, "owner_material_matches": True,
                  "inside_tree": True, "visible_in_tree": True, "use_parent_material": False,
@@ -65,7 +65,7 @@ def example(graphical=True):
                  "scene_instantiate_started_usec": 75_000, "scene_instantiate_completed_usec": 90_000,
                  "scene_add_child_started_usec": 95_000, "scene_add_child_completed_usec": 111_000},
              "setup_acknowledgement": {"predicate": "actor_ready", "observer": "after_actual_Main_process",
-                 "form_started_usec": 115_000, "request_started_usec": 120_000, "deadline_usec": 30_120_000,
+                 "form_started_usec": 115_000, "request_started_usec": 120_000, "deadline_usec": 60_120_000,
                  "acknowledged_usec": 500_000, "polled_usec": 600_000, "poll_elapsed_usec": 480_000,
                  "identity": {"rig": "jetbarrel", "actor_epoch": 1, "generation": 2}},
              "setup_observation": {"started_usec": 100_000, "ready_completed_usec": 110_000,
@@ -148,9 +148,9 @@ class ReadbackTests(unittest.TestCase):
         acknowledgement, observation = value["setup_acknowledgement"], value["setup_observation"]
         # Simulate a long render after Main already accepted. The request's
         # original deadline is fixed, while observation resumes later.
-        value["started_usec"] = 40_000_000
-        observation["ended_usec"] = 35_000_000
-        acknowledgement["polled_usec"] = 34_000_000
+        value["started_usec"] = 70_000_000
+        observation["ended_usec"] = 65_000_000
+        acknowledgement["polled_usec"] = 64_000_000
         acknowledgement["poll_elapsed_usec"] = acknowledgement["polled_usec"] - acknowledgement["request_started_usec"]
         value["construction_usec"] = acknowledgement["polled_usec"] - acknowledgement["form_started_usec"]
         campaign.verify_setup(value, True)
@@ -164,7 +164,7 @@ class ReadbackTests(unittest.TestCase):
     def test_absent_backward_or_unrecorded_main_acknowledgement_refuses(self):
         for key, replacement in (("acknowledged_usec", 0), ("acknowledged_usec", 119_999),
                                  ("acknowledged_usec", 499_999), ("polled_usec", 499_999),
-                                 ("request_started_usec", 500_001), ("deadline_usec", 30_120_001),
+                                 ("request_started_usec", 500_001), ("deadline_usec", 60_120_001),
                                  ("poll_elapsed_usec", 480_001)):
             with self.subTest(key=key, replacement=replacement):
                 value, _ = example()

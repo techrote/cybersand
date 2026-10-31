@@ -178,7 +178,7 @@ func _run() -> void:
 	var authoritative_before: Dictionary=world.water_experiment_observation(Vector2i.ZERO,
 		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT))
 	var material:=ShaderMaterial.new()
-	material.shader=load("res://shaders/material_palette.gdshader")
+	material.shader=CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
 	material.set_shader_parameter("water_presentation_mode",1.0)
 	material.set_shader_parameter("water_presentation_mode",2.0)
 	var authoritative_after: Dictionary=world.water_experiment_observation(Vector2i.ZERO,

@@ -275,7 +275,11 @@ previous and current material appearance during transitions. Only pixels whose
 displayed material changes and where either side is temporally smoothed are
 crossfaded. **Current since 2026-10-18:** each side's neighbour relief reads its
 own snapshot (same four reads), so `snapshot_blend` 0 and 1 reproduce the
-previous and current snapshot alone for those pixels. The emission pass reads
+previous and current snapshot alone for those pixels. **Current exception:** on
+`opengl3_angle`, [`CyberPaletteShader`](../../godot/scripts/palette_shader_selector.gd)
+selects `CYBER_BOUNDED_CROSSFADE`, whose outgoing side is the catalogue base colour
+and program response only, so blend 0 is not the previous finish there. Native
+OpenGL keeps the full previous finish. The emission pass reads
 only the latest snapshot; halo changes are not crossfaded. **Current desktop
 default:** publication targets 60 Hz; `H` cycles the retained 30/45/60 Hz
 presentation modes. The desktop simulation remains independently fixed at 60 Hz;

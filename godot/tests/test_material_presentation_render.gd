@@ -140,7 +140,7 @@ func _run() -> void:
 	program_lut = CyberMaterialAppearanceLut.create_program_texture()
 	# Retain these across fixtures instead of repeatedly compiling an identical
 	# large shader as each temporary viewport is freed.
-	palette_shader = load("res://shaders/material_palette.gdshader")
+	palette_shader = CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
 	emission_shader = load("res://shaders/material_emission.gdshader")
 	trail_shader = load("res://shaders/material_vapour_trail.gdshader")
 	var full: Rect2i = Rect2i(Vector2i.ZERO, SIDE)
@@ -226,8 +226,10 @@ func _run() -> void:
 	var new_alone: Image = await _render(current, current, 0.0)
 	var start: Image = await _render(current, previous, 0.0, 0.0)
 	var finish: Image = await _render(current, previous, 0.0, 1.0)
-	_expect(_difference(start, old_alone, eligible) <= TOLERANCE,
-		"blend 0 eligible pixels did not use the previous neighbourhood")
+	# The bounded ANGLE crossfade starts from the previous base colour by design.
+	if not CyberPaletteShader.uses_bounded_crossfade():
+		_expect(_difference(start, old_alone, eligible) <= TOLERANCE,
+			"blend 0 eligible pixels did not use the previous neighbourhood")
 	_expect(_difference(finish, new_alone, eligible) <= TOLERANCE, "blend 1 eligible pixels differ from current")
 	_expect(_difference(start, new_alone, same_id) <= TOLERANCE, "same-ID pixels were crossfaded")
 	_expect(_difference(start, new_alone, unsupported) <= TOLERANCE, "unsupported pair was crossfaded")

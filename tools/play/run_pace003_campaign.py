@@ -21,6 +21,8 @@ import struct
 import subprocess
 import sys
 
+SETUP_ALLOWANCE_USEC = 60_000_000
+PALETTE_SHADER = "shaders/material_palette.gdshader"
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/ci"))
 import check_repository
@@ -282,7 +284,7 @@ def verify_setup(value: dict, graphical: bool) -> None:
     require(all(type(acknowledgement.get(key)) is int and acknowledgement[key] >= 0 for key in keys),
             "Missing/nonmonotonic setup acknowledgement timestamps")
     form, request, deadline, acknowledged, polled, elapsed = (acknowledgement[key] for key in keys)
-    require(0 < form <= request <= acknowledged <= deadline and deadline - request == 30_000_000
+    require(0 < form <= request <= acknowledged <= deadline and deadline - request == SETUP_ALLOWANCE_USEC
             and acknowledged <= polled and elapsed == polled - request
             and value.get("construction_usec") == polled - form,
             "Absent, late or backward setup acknowledgement, changed deadline or poll latency")
@@ -352,6 +354,9 @@ def verify_row(value: dict, expected: dict) -> dict:
                 and shader.get("file_sha256") == digest
                 and shader.get("loaded_code_sha256") == digest,
                 "Actual attached shader differs from recorded production source: " + relative)
+        bounded = relative == PALETTE_SHADER and expected["rendering_driver"] == "opengl3_angle"
+        require(shader.get("bounded_crossfade") is bounded,
+                "Attached shader variant differs from the renderer selection: " + relative)
         require(shader.get("consumer_path") == consumer
                 and all(shader.get(key) is True for key in (
                     "owner_node_matches", "owner_material_matches", "inside_tree", "visible_in_tree",

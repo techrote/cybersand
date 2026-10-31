@@ -25,8 +25,11 @@ work, retaining all visual/gameplay/native/runtime contracts and fixed deadlines
 
 The [resulting-head ledger](https://github.com/techrote/cybersand/pull/310#issuecomment-6536644006)
 owns exact source/tree, original gates/artifacts and review. The unchanged15s
-LIFE008,30s Main and180s process limits remain mandatory; local diagnostic passes
-do not replace fresh hosted Windows/Linux evidence. Windows remains uncorrected.
+LIFE008 and180s process limits remain mandatory; the Main setup allowance is 60s
+by owner disposition (2026-10-31). Local passes do not replace fresh hosted
+Windows/Linux evidence. The Windows correction on `claude/palette-fxc-cost` is
+locally validated and awaits hosted runs; see the
+[cold-startup audit](../audits/2026-10-30-play-pace003-cold-startup.md#windows-fxc-correction-2026-10-31).
 The owner has separately authorized [CI production integration](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
 from #311/#313/#314, preserving all original Native limits and coverage with no
 scope-based skip authorization. Its branch is separate from #309/#308; do not
