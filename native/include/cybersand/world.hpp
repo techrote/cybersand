@@ -191,6 +191,9 @@ public:
     [[nodiscard]] SimulationBackend backend() const noexcept;
     [[nodiscard]] Material get(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Material stored_material(std::int64_t x, std::int64_t y) const noexcept;
+    // Exclusive diagnostic owner: copied carrier, including scheduling epoch.
+    // This value does not expose mutable storage or constitute a replay save.
+    [[nodiscard]] std::uint64_t stored_cell_bits(std::int64_t x, std::int64_t y) const noexcept;
     // Serialized external-owner query. Never called from a rule kernel: its
     // bounded read neighbourhood extends beyond the kernel write domain.
     [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,

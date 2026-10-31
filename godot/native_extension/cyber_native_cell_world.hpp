@@ -142,6 +142,10 @@ public:
     [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
                                                   bool include_histogram = false) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
+    // Explicit opt-in bounded investigation, called only by the exclusive owner.
+    bool diagnostic_ejection_capture(std::int64_t maximum_failed, std::int64_t maximum_success);
+    [[nodiscard]] Dictionary diagnostic_ejection_corpus() const;
+    [[nodiscard]] Dictionary diagnostic_replay_ejection(const Dictionary& capsule) const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
 protected:
@@ -186,6 +190,18 @@ private:
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
+    std::int64_t ejection_capture_failed_cap_ = 0, ejection_capture_success_cap_ = 0;
+    std::int64_t ejection_capture_attempts_ = 0, ejection_capture_duplicates_ = 0;
+    std::int64_t ejection_capture_dropped_ = 0, ejection_capture_failed_ = 0, ejection_capture_success_ = 0;
+    std::int64_t ejection_capture_no_target_ = 0, ejection_capture_target_found_ = 0;
+    std::int64_t ejection_capture_relocation_refused_ = 0;
+    std::int64_t ejection_capture_capacity_drops_ = 0, ejection_capture_oversized_drops_ = 0;
+    std::int64_t ejection_capture_stale_drops_ = 0, ejection_capture_replay_disagreements_ = 0;
+    std::uint64_t ejection_capture_generation_ = 0;
+    Array ejection_capsules_;
+    void capture_ejection(std::int32_t x, std::int32_t y, std::uint16_t body_id,
+                          Vector2 outward, double penetration, Vector2i target);
+    void clear_ejection_capture();
     bool default_demo_recipe_active_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;

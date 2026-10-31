@@ -154,7 +154,7 @@ soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/t
 	./$(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized
 	./$(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized
 
-test: c-header-check $(BUILD_DIR)/tests soliding-test worldgen-test
+test: c-header-check $(BUILD_DIR)/tests soliding-test worldgen-test ejection-search-test
 	./$(BUILD_DIR)/tests
 
 .PHONY: worldgen-test worldgen-sanitize worldgen-demo
@@ -277,3 +277,10 @@ $(BUILD_DIR)/test_generation_planes: $(GENERATION_OPT_THREADED_OBJECTS) $(CORE_H
 
 $(BUILD_DIR)/test_generation_planes_sanitized: $(GENERATION_SAN_THREADED_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_planes.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_THREADED_OBJECTS) native/tests/test_generation_planes.cpp -o $@
+
+.PHONY: ejection-search-test
+$(BUILD_DIR)/test_ejection_search: native/tests/test_ejection_search.cpp native/include/cybersand/ejection_search.hpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_ejection_search.cpp -o $@
+
+ejection-search-test: $(BUILD_DIR)/test_ejection_search
+	./$(BUILD_DIR)/test_ejection_search

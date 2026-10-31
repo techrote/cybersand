@@ -1,0 +1,98 @@
+[
+  {
+    "headRefName": "prepass/render-copy290-play-integration-20261031",
+    "headRefOid": "21d44e43e071d2d5777c2ed46a92f59675639599",
+    "isDraft": true,
+    "number": 333,
+    "title": "[DRAFT / NO MERGE] Reconcile PR #290 published render-copy stack with PLAY main",
+    "url": "https://github.com/techrote/cybersand/pull/333"
+  },
+  {
+    "headRefName": "codex/play-watchdogs-20261031",
+    "headRefOid": "a2543abdcf611d232f538462358bd12bfb0d152f",
+    "isDraft": false,
+    "number": 330,
+    "title": "CI: let complete qualification finish and retain advisory performance history",
+    "url": "https://github.com/techrote/cybersand/pull/330"
+  },
+  {
+    "headRefName": "claude/palette-fxc-cost",
+    "headRefOid": "1afe20c0b2abbffaf3e41ac1e1588b862274c52c",
+    "isDraft": true,
+    "number": 326,
+    "title": "[DRAFT] PLAY-PACE-003: bound the ANGLE palette compile and remove the X8000 trigger (#309)",
+    "url": "https://github.com/techrote/cybersand/pull/326"
+  },
+  {
+    "headRefName": "claude/render-copy-per-run",
+    "headRefOid": "ddf812f34c533f654f1488b9115eb0256305a288",
+    "isDraft": true,
+    "number": 290,
+    "title": "perf(native): copy full-frame render cells per chunk run",
+    "url": "https://github.com/techrote/cybersand/pull/290"
+  },
+  {
+    "headRefName": "work/sol281-native-detachment-20261027",
+    "headRefOid": "254235ec4c3d58782bba44b478caca86bf57c856",
+    "isDraft": true,
+    "number": 283,
+    "title": "[FROZEN EVIDENCE ARCHIVE] SOL-DETACH-001: native tree detachment, compound coupling and cause qualification",
+    "url": "https://github.com/techrote/cybersand/pull/283"
+  },
+  {
+    "headRefName": "docs/sol-structural-detachment-primary-20261027",
+    "headRefOid": "c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2",
+    "isDraft": true,
+    "number": 282,
+    "title": "SOL-DETACH-000: prioritize real native solid-tree detachment ahead of Stage 3B optimization",
+    "url": "https://github.com/techrote/cybersand/pull/282"
+  },
+  {
+    "headRefName": "codex/play-async-001-architecture",
+    "headRefOid": "00c76b338f65f15d01d7b8c2cba8ebc1a5b23753",
+    "isDraft": true,
+    "number": 272,
+    "title": "PLAY-ASYNC-001: dedicated async player World owner architecture, protocol and desktop baseline",
+    "url": "https://github.com/techrote/cybersand/pull/272"
+  },
+  {
+    "headRefName": "codex/player-playground-maps",
+    "headRefOid": "70ec119381a2cb9abab5d40ed3314fb07c9b1736",
+    "isDraft": false,
+    "number": 262,
+    "title": "feat(playground): 22 distinct maps, agile players and live NPC tools",
+    "url": "https://github.com/techrote/cybersand/pull/262"
+  },
+  {
+    "headRefName": "codex/lcb003-actor-host",
+    "headRefOid": "86f95617d2966f9071e9fe8bdd334ea3888fa5cd",
+    "isDraft": true,
+    "number": 260,
+    "title": "LCB-003: retain single actors during native-default solver changes",
+    "url": "https://github.com/techrote/cybersand/pull/260"
+  },
+  {
+    "headRefName": "codex/lcb004-observer",
+    "headRefOid": "fec2c73a33e146c63398849a1d128cf45c0ba59b",
+    "isDraft": false,
+    "number": 258,
+    "title": "LCB: expose copied inertial ledgers and actual worker participation",
+    "url": "https://github.com/techrote/cybersand/pull/258"
+  },
+  {
+    "headRefName": "mat/phase-quantity-quench",
+    "headRefOid": "19f7ff43ecc494185226d1fff07dc21ef4a220fb",
+    "isDraft": false,
+    "number": 162,
+    "title": "WAT-002: conserve Water phase quantity and scale hot-material quenching-archive",
+    "url": "https://github.com/techrote/cybersand/pull/162"
+  },
+  {
+    "headRefName": "codex/issue-12-soliding",
+    "headRefOid": "0b96ce2a2fd5f68560575d4c4db8b0ea2f3b3758",
+    "isDraft": true,
+    "number": 23,
+    "title": "Prototype bounded near-rest reversible soliding",
+    "url": "https://github.com/techrote/cybersand/pull/23"
+  }
+]

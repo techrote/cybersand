@@ -1729,3 +1729,12 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+## Physical displacement investigation — 2026-10-31
+
+**Current diagnostic work:** [Stage A/B/C evidence](../audits/2026-10-31-physical-detachment-abc.md)
+starts from frozen main `adaaa37a`, independently of frozen PR #283. Opt-in
+contact capsules replay the unchanged 81-probe decision; topology and short
+push-chain work remain copied-state diagnostics with separately recorded gates.
+No wider search, normal correction, material law or production rearrangement is
+selected. Broad body/granular acceptance remains open.

@@ -2,6 +2,8 @@
 
 #include "cybersand/material_rules.hpp"
 #include "cybersand/default_demo_recipe.hpp"
+#include "cybersand/ejection_search.hpp"
+#include "cybersand/sha256.hpp"
 
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
@@ -58,6 +60,23 @@ constexpr double kGranularBearingCorrectionFraction = 0.99;
     return length > 0.000001 ? value / length : Vector2{};
 }
 
+template<class... Values>
+Array ejection_array(Values... values) {
+    Array out;
+    (out.push_back(values), ...);
+    return out;
+}
+
+void ejection_hash_word(std::string& bytes, std::uint64_t value) {
+    for (unsigned i = 0; i < 8; ++i) bytes.push_back(static_cast<char>(value >> (i * 8U)));
+}
+
+String ejection_hex(std::uint64_t value) {
+    char buffer[17]{};
+    std::snprintf(buffer, sizeof(buffer), "%016llx", static_cast<unsigned long long>(value));
+    return String(buffer);
+}
+
 }  // namespace
 
 CyberNativeCellWorld::CyberNativeCellWorld() {
@@ -74,6 +93,9 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
+    ClassDB::bind_method(D_METHOD("diagnostic_ejection_capture", "maximum_failed", "maximum_success"), &CyberNativeCellWorld::diagnostic_ejection_capture);
+    ClassDB::bind_method(D_METHOD("diagnostic_ejection_corpus"), &CyberNativeCellWorld::diagnostic_ejection_corpus);
+    ClassDB::bind_method(D_METHOD("diagnostic_replay_ejection", "capsule"), &CyberNativeCellWorld::diagnostic_replay_ejection);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
     ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
@@ -300,6 +322,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
         world_.swap(candidate);
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
+        clear_ejection_capture();
         default_demo_recipe_active_ = true;
         reset_demo_coupling_parameters();
         render_snapshot_full_refresh_required_ = true;
@@ -615,7 +638,11 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     }
 
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
+    if (ejection_capture_failed_cap_ != 0 || ejection_capture_success_cap_ != 0)
+        capture_ejection(x, y, body_id, outward, penetration, target);
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
+        if (target.x >= 0 && (ejection_capture_failed_cap_ != 0 || ejection_capture_success_cap_ != 0))
+            ++ejection_capture_relocation_refused_;
         ++observation.unresolved;
         const auto impulse = -outward * displacement_gain_;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
@@ -672,25 +699,21 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
     const Vector2 tangent{-outward_normal.y, outward_normal.x};
     const Vector2 source_center{static_cast<double>(source_x) + 0.5,
                                 static_cast<double>(source_y) + 0.5};
-    const auto first_distance = std::max(1, static_cast<std::int32_t>(std::ceil(penetration)));
-    for (auto distance = first_distance;
-         distance <= first_distance + kMaximumEjectionDistance; ++distance) {
-        for (std::int32_t probe = 0; probe < 9; ++probe) {
-            const auto tangent_offset = symmetric_probe_offset(probe);
-            const auto candidate = source_center + outward_normal * distance +
-                                   tangent * tangent_offset;
-            const auto x = static_cast<std::int32_t>(std::floor(candidate.x));
-            const auto y = static_cast<std::int32_t>(std::floor(candidate.y));
-            if (!in_bounds(x, y) || world_->transient_obstacle_at(x, y) != 0U ||
-                world_->stored_material(x, y) != cybersand::Material::Empty) {
-                continue;
-            }
-            if (!ejection_path_reachable(source_x, source_y, x, y,
-                                         source_body_id)) continue;
-            return {x, y};
-        }
-    }
-    return {-1, -1};
+    const auto first = std::max(1, static_cast<std::int32_t>(std::ceil(penetration)));
+    const auto point = cybersand::ejection::search({source_x, source_y}, source_body_id, first,
+        [this](cybersand::ejection::Point p) {
+            if (!in_bounds(p.x, p.y)) return cybersand::ejection::Cell{};
+            return cybersand::ejection::Cell{true,
+                world_->stored_material(p.x, p.y) == cybersand::Material::Empty,
+                cybersand::MaterialRules::is_hard_surface(world_->stored_material(p.x, p.y)),
+                world_->transient_obstacle_at(p.x, p.y)};
+        },
+        [source_center, outward_normal, tangent](std::int32_t distance, std::int32_t offset) {
+            const auto candidate = source_center + outward_normal * distance + tangent * offset;
+            return cybersand::ejection::Point{static_cast<std::int32_t>(std::floor(candidate.x)),
+                                              static_cast<std::int32_t>(std::floor(candidate.y))};
+        }, [](cybersand::ejection::Point, cybersand::ejection::Reason) {});
+    return {point.x, point.y};
 }
 
 bool CyberNativeCellWorld::ejection_path_reachable(std::int32_t source_x,
@@ -698,22 +721,14 @@ bool CyberNativeCellWorld::ejection_path_reachable(std::int32_t source_x,
                                                     std::int32_t target_x,
                                                     std::int32_t target_y,
                                                     std::uint16_t source_body_id) const {
-    const auto delta_x = target_x - source_x;
-    const auto delta_y = target_y - source_y;
-    const auto samples = std::max(std::abs(delta_x), std::abs(delta_y)) * 2;
-    for (std::int32_t sample = 1; sample < samples; ++sample) {
-        const auto x = source_x + static_cast<std::int32_t>(
-            std::floor(static_cast<double>(delta_x * sample) / samples + 0.5));
-        const auto y = source_y + static_cast<std::int32_t>(
-            std::floor(static_cast<double>(delta_y * sample) / samples + 0.5));
-        if (!in_bounds(x, y)) return false;
-        const auto obstacle = world_->transient_obstacle_at(x, y);
-        if ((obstacle != 0U && obstacle != source_body_id) ||
-            cybersand::MaterialRules::is_hard_surface(world_->stored_material(x, y))) {
-            return false;
-        }
-    }
-    return true;
+    return cybersand::ejection::path_reason({source_x, source_y}, {target_x, target_y}, source_body_id,
+        [this](cybersand::ejection::Point p) {
+            if (!in_bounds(p.x, p.y)) return cybersand::ejection::Cell{};
+            return cybersand::ejection::Cell{true,
+                world_->stored_material(p.x, p.y) == cybersand::Material::Empty,
+                cybersand::MaterialRules::is_hard_surface(world_->stored_material(p.x, p.y)),
+                world_->transient_obstacle_at(p.x, p.y)};
+        }) == cybersand::ejection::Reason::Accepted;
 }
 
 void CyberNativeCellWorld::accumulate_boundary_pressure() {
@@ -1445,6 +1460,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         world_.swap(candidate);
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
+        clear_ejection_capture();
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;
         worker_threads_ = config.worker_threads;
@@ -1461,6 +1477,281 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         last_tick_error_ = error.what();
         return false;
     }
+}
+
+void CyberNativeCellWorld::clear_ejection_capture() {
+    ejection_capture_failed_cap_ = ejection_capture_success_cap_ = 0;
+    ejection_capture_attempts_ = ejection_capture_duplicates_ = ejection_capture_dropped_ = 0;
+    ejection_capture_failed_ = ejection_capture_success_ = 0;
+    ejection_capture_no_target_ = ejection_capture_target_found_ = ejection_capture_relocation_refused_ = 0;
+    ejection_capture_capacity_drops_ = ejection_capture_oversized_drops_ = 0;
+    ejection_capture_stale_drops_ = ejection_capture_replay_disagreements_ = 0;
+    ejection_capsules_.clear();
+}
+
+bool CyberNativeCellWorld::diagnostic_ejection_capture(std::int64_t maximum_failed,
+                                                       std::int64_t maximum_success) {
+    if (!diagnostic_fixture_ || has_failed() || maximum_failed < 0 || maximum_failed > 64 ||
+        maximum_success < 0 || maximum_success > 16 || world_->pressure_flow_enabled() ||
+        world_->inertial_enabled()) return false;
+    clear_ejection_capture();
+    ejection_capture_failed_cap_ = maximum_failed;
+    ejection_capture_success_cap_ = maximum_success;
+    ejection_capture_generation_ = liquid_policy_session_generation_;
+    return true;
+}
+
+Dictionary CyberNativeCellWorld::diagnostic_ejection_corpus() const {
+    Dictionary out;
+    out["schema_version"] = 1;
+    out["capsules"] = ejection_capsules_.duplicate(true);
+    out["attempts"] = ejection_capture_attempts_;
+    out["duplicates"] = ejection_capture_duplicates_;
+    out["dropped"] = ejection_capture_dropped_;
+    out["failed_unique"] = ejection_capture_failed_;
+    out["success_unique"] = ejection_capture_success_;
+    out["searched_no_target"] = ejection_capture_no_target_;
+    out["target_found"] = ejection_capture_target_found_;
+    out["relocation_refused"] = ejection_capture_relocation_refused_;
+    out["dropped_capacity"] = ejection_capture_capacity_drops_;
+    out["dropped_oversized"] = ejection_capture_oversized_drops_;
+    out["dropped_stale_or_sidecar"] = ejection_capture_stale_drops_;
+    out["replay_disagreements"] = ejection_capture_replay_disagreements_;
+    out["maximum_failed"] = ejection_capture_failed_cap_;
+    out["maximum_success"] = ejection_capture_success_cap_;
+    out["maximum_footprint_side"] = 128;
+    out["owner_current"] = ejection_capture_generation_ == liquid_policy_session_generation_;
+    return out;
+}
+
+void CyberNativeCellWorld::capture_ejection(std::int32_t x, std::int32_t y,
+    std::uint16_t body_id, Vector2 outward, double penetration, Vector2i target) {
+    ++ejection_capture_attempts_;
+    if (target.x < 0) ++ejection_capture_no_target_; else ++ejection_capture_target_found_;
+    if (ejection_capture_generation_ != liquid_policy_session_generation_ ||
+        world_->pressure_flow_enabled() || world_->inertial_enabled()) {
+        ++ejection_capture_dropped_; ++ejection_capture_stale_drops_; return;
+    }
+    const Vector2 center{static_cast<double>(x) + 0.5, static_cast<double>(y) + 0.5};
+    const Vector2 tangent{-outward.y, outward.x};
+    const auto first = std::max(1, static_cast<std::int32_t>(std::ceil(penetration)));
+    auto left = x, right = x, top = y, bottom = y;
+    for (auto distance = first; distance <= first + 8; ++distance) {
+        for (std::int32_t probe = 0; probe < 9; ++probe) {
+            const auto candidate = center + outward * distance + tangent * cybersand::ejection::symmetric_offset(probe);
+            const auto cx = static_cast<std::int32_t>(std::floor(candidate.x));
+            const auto cy = static_cast<std::int32_t>(std::floor(candidate.y));
+            left = std::min(left, cx); right = std::max(right, cx);
+            top = std::min(top, cy); bottom = std::max(bottom, cy);
+        }
+    }
+    --left; --top; ++right; ++bottom; // A diagnostic ring, never searched by production.
+    const auto width = right - left + 1, height = bottom - top + 1;
+    if (width > 128 || height > 128) {
+        ++ejection_capture_dropped_; ++ejection_capture_oversized_drops_; return;
+    }
+    Dictionary capsule;
+    capsule["schema_version"] = 1;
+    capsule["source"] = ejection_array(x, y);
+    capsule["body_id"] = body_id;
+    capsule["normal"] = ejection_array(static_cast<double>(outward.x), static_cast<double>(outward.y));
+    capsule["penetration"] = penetration;
+    capsule["first_distance"] = first;
+    capsule["maximum_distance"] = 8;
+    capsule["tangent_probes"] = 9;
+    capsule["bounds"] = ejection_array(left, top, width, height);
+    capsule["world_bounds"] = ejection_array(0, 0, kWorldWidth, kWorldHeight);
+    capsule["instance_id"] = String::num_uint64(get_instance_id());
+    capsule["reset_generation"] = String::num_uint64(liquid_policy_session_generation_);
+    capsule["tick"] = static_cast<std::int64_t>(world_->tick_index());
+    capsule["revision"] = static_cast<std::int64_t>(revision_);
+    const auto pack_body = [](const BodyState& b) {
+        return ejection_array(b.id, static_cast<double>(b.center.x), static_cast<double>(b.center.y),
+            b.rotation, static_cast<double>(b.half_size.x), static_cast<double>(b.half_size.y),
+            static_cast<double>(b.velocity.x), static_cast<double>(b.velocity.y), b.angular_velocity,
+            b.mass, b.sample_serial, b.valid);
+    };
+    capsule["current_body"] = pack_body(current_bodies_[body_id]);
+    capsule["previous_body"] = pack_body(previous_bodies_[body_id]);
+    capsule["sample_serial"] = current_bodies_[body_id].sample_serial;
+    const bool inside = cell_inside_body(current_bodies_[body_id], x, y);
+    capsule["inside_current_body"] = inside;
+    const auto travel = current_bodies_[body_id].center - previous_bodies_[body_id].center;
+    capsule["normal_mode"] = inside || normalized_or_zero(travel).length_squared() <= 0.000001
+        ? "overlap_face" : "sweep";
+    capsule["storage_policy"] = "default_cellular_no_pressure_or_inertial_sidecar";
+    capsule["ambient_temperature"] = world_->config().ambient_temperature;
+    Array cells;
+    cells.resize(width * height);
+    for (auto cy = top; cy <= bottom; ++cy) {
+        for (auto cx = left; cx <= right; ++cx) {
+            const bool valid = in_bounds(cx, cy);
+            const auto material = valid ? world_->stored_material(cx, cy) : cybersand::Material::Empty;
+            const auto state_a = valid ? world_->stored_state_a(cx, cy) : 0;
+            cells[(cy - top) * width + cx - left] = ejection_array(
+                static_cast<std::int64_t>(material), state_a,
+                valid ? world_->stored_state_b(cx, cy) : 0,
+                valid ? world_->stored_temperature(cx, cy) : world_->config().ambient_temperature,
+                valid ? world_->transient_obstacle_at(cx, cy) : 0,
+                cybersand::MaterialRules::is_hard_surface(material),
+                cybersand::MaterialRules::descriptor(material).movable,
+                material == cybersand::Material::Water ? state_a : 0,
+                ejection_hex(valid ? world_->stored_cell_bits(cx, cy) : 0));
+        }
+    }
+    capsule["cells"] = cells;
+    const auto replay = diagnostic_replay_ejection(capsule);
+    if (!static_cast<bool>(replay["valid"])) {
+        ++ejection_capture_dropped_; ++ejection_capture_replay_disagreements_; return;
+    }
+    const Array replay_target = replay["target"];
+    if (static_cast<std::int32_t>(replay_target[0]) != target.x ||
+        static_cast<std::int32_t>(replay_target[1]) != target.y) {
+        ++ejection_capture_dropped_; ++ejection_capture_replay_disagreements_; return;
+    }
+    const String hash = replay["replay_hash"];
+    for (std::int64_t i = 0; i < ejection_capsules_.size(); ++i) {
+        const Dictionary retained = ejection_capsules_[i];
+        if (static_cast<String>(retained["replay_hash"]) == hash) {
+            ++ejection_capture_duplicates_; return;
+        }
+    }
+    const bool success = target.x >= 0;
+    if ((success && ejection_capture_success_ >= ejection_capture_success_cap_) ||
+        (!success && ejection_capture_failed_ >= ejection_capture_failed_cap_)) {
+        ++ejection_capture_dropped_; ++ejection_capture_capacity_drops_; return;
+    }
+    capsule["target"] = replay["target"];
+    capsule["trace"] = replay["trace"];
+    capsule["replay_hash"] = hash;
+    ejection_capsules_.push_back(capsule);
+    if (success) ++ejection_capture_success_; else ++ejection_capture_failed_;
+}
+
+Dictionary CyberNativeCellWorld::diagnostic_replay_ejection(const Dictionary& capsule) const {
+    Dictionary out;
+    out["valid"] = false;
+    out["reason"] = "malformed_capsule";
+    // This never installs state. Incarnation fields fence live application but do
+    // not prevent offline replay by a different diagnostic World instance.
+    const auto number = [](const Variant& v, double minimum, double maximum, bool integer) {
+        if (v.get_type() != Variant::INT && v.get_type() != Variant::FLOAT) return false;
+        const double n = v;
+        return std::isfinite(n) && n >= minimum && n <= maximum && (!integer || std::floor(n) == n);
+    };
+    const auto array_field = [&capsule](const char* key, std::int64_t count) {
+        return capsule.has(key) && capsule[key].get_type() == Variant::ARRAY &&
+               static_cast<Array>(capsule[key]).size() == count;
+    };
+    if (!number(capsule.get("schema_version", Variant()), 1, 1, true) ||
+        !array_field("source", 2) || !array_field("normal", 2) ||
+        !array_field("bounds", 4) || !array_field("world_bounds", 4) ||
+        !capsule.has("cells") || capsule["cells"].get_type() != Variant::ARRAY ||
+        !number(capsule.get("maximum_distance", Variant()), 8, 8, true) ||
+        !number(capsule.get("tangent_probes", Variant()), 9, 9, true) ||
+        !number(capsule.get("first_distance", Variant()), 1, 128, true) ||
+        (capsule.has("replay_hash") && capsule["replay_hash"].get_type() != Variant::STRING)) return out;
+    const Array source = capsule["source"], normal = capsule["normal"], bounds = capsule["bounds"];
+    const Array world_bounds = capsule["world_bounds"], cells = capsule["cells"];
+    for (std::int64_t i = 0; i < 4; ++i) {
+        const double expected = i < 2 ? 0.0 : 1024.0;
+        if (!number(world_bounds[i], expected, expected, true)) return out;
+    }
+    for (std::int64_t i = 0; i < 2; ++i)
+        if (!number(source[i], 0, 1023, true) || !number(normal[i], -1.000001, 1.000001, false)) return out;
+    for (std::int64_t i = 0; i < 4; ++i)
+        if (!number(bounds[i], i < 2 ? -128 : 1, i < 2 ? 1152 : 128, true)) return out;
+    if (!number(capsule.get("penetration", Variant()), 0.5, 128, false) ||
+        !number(capsule.get("body_id", Variant()), 1, 64, true)) return out;
+    const auto x = static_cast<std::int32_t>(source[0]), y = static_cast<std::int32_t>(source[1]);
+    const auto left = static_cast<std::int32_t>(bounds[0]), top = static_cast<std::int32_t>(bounds[1]);
+    const auto width = static_cast<std::int32_t>(bounds[2]), height = static_cast<std::int32_t>(bounds[3]);
+    const auto body_id = static_cast<std::uint16_t>(static_cast<std::int64_t>(capsule["body_id"]));
+    const double penetration = capsule["penetration"];
+    const auto first = std::max(1, static_cast<std::int32_t>(std::ceil(penetration)));
+    if (static_cast<std::int64_t>(capsule.get("first_distance", -1)) != first || cells.size() != width * height) return out;
+    if (x < left || x >= left + width || y < top || y >= top + height) return out;
+    for (std::int64_t i = 0; i < cells.size(); ++i) {
+        if (cells[i].get_type() != Variant::ARRAY) return out;
+        const Array row = cells[i];
+        if (row.size() != 9 || !number(row[0], 0, static_cast<double>(cybersand::kLastMaterial), true) ||
+            !number(row[1], 0, 65535, true) || !number(row[2], 0, 255, true) ||
+            !number(row[3], -32768, 32767, true) || !number(row[4], 0, 64, true) ||
+            row[5].get_type() != Variant::BOOL || row[6].get_type() != Variant::BOOL ||
+            !number(row[7], 0, 65535, true) || row[8].get_type() != Variant::STRING) return out;
+        const auto material = static_cast<cybersand::Material>(static_cast<std::int64_t>(row[0]));
+        if (!cybersand::valid_material(static_cast<std::uint16_t>(material)) ||
+            static_cast<bool>(row[5]) != cybersand::MaterialRules::is_hard_surface(material) ||
+            static_cast<bool>(row[6]) != cybersand::MaterialRules::descriptor(material).movable) return out;
+        const String raw = row[8];
+        if (raw.length() != 16) return out;
+        std::uint64_t bits = 0;
+        for (std::int64_t digit = 0; digit < 16; ++digit) {
+            const auto c = raw[digit];
+            const auto value = c >= '0' && c <= '9' ? c - '0' : c >= 'a' && c <= 'f' ? c - 'a' + 10 : 16;
+            if (value > 15) return out;
+            bits = (bits << 4U) | value;
+        }
+        if ((bits & 65535U) != static_cast<std::uint64_t>(material) ||
+            ((bits >> 16U) & 65535U) != static_cast<std::uint64_t>(static_cast<std::int64_t>(row[1])) ||
+            ((bits >> 32U) & 255U) != static_cast<std::uint64_t>(static_cast<std::int64_t>(row[2])) ||
+            static_cast<std::int64_t>(row[7]) != (material == cybersand::Material::Water
+                ? static_cast<std::int64_t>(row[1]) : 0)) return out;
+    }
+    const Vector2 outward{static_cast<double>(normal[0]), static_cast<double>(normal[1])};
+    const Vector2 tangent{-outward.y, outward.x};
+    const Vector2 center{static_cast<double>(x) + 0.5, static_cast<double>(y) + 0.5};
+    Array trace;
+    bool covered = true;
+    std::string fingerprint;
+    // Quotient by discrete search equivalence: raw normal/penetration and
+    // provenance remain in the capsule, while only consulted relative positions
+    // and search classifications enter identity. Sub-cell normal changes which
+    // enumerate the same cells must not inflate the unique-contact corpus.
+    const auto target = cybersand::ejection::search({x, y}, body_id, first,
+        [&](cybersand::ejection::Point p) {
+            const bool valid = in_bounds(p.x, p.y);
+            ejection_hash_word(fingerprint, 0); // Tagged cell-read record.
+            ejection_hash_word(fingerprint, static_cast<std::uint64_t>(static_cast<std::int64_t>(p.x) - x));
+            ejection_hash_word(fingerprint, static_cast<std::uint64_t>(static_cast<std::int64_t>(p.y) - y));
+            ejection_hash_word(fingerprint, valid ? 1 : 0);
+            if (!valid) return cybersand::ejection::Cell{};
+            if (p.x < left || p.x >= left + width || p.y < top || p.y >= top + height) {
+                covered = false; return cybersand::ejection::Cell{};
+            }
+            const Array row = cells[(p.y - top) * width + p.x - left];
+            const auto body = static_cast<std::uint16_t>(static_cast<std::int64_t>(row[4]));
+            const bool empty = static_cast<std::int64_t>(row[0]) == 0, hard = row[5];
+            ejection_hash_word(fingerprint, empty ? 1 : 0);
+            ejection_hash_word(fingerprint, hard ? 1 : 0);
+            ejection_hash_word(fingerprint, body == 0 ? 0 : body == body_id ? 1 : 2);
+            return cybersand::ejection::Cell{true, empty, hard, body};
+        },
+        [center, outward, tangent](std::int32_t distance, std::int32_t offset) {
+            const auto p = center + outward * distance + tangent * offset;
+            return cybersand::ejection::Point{static_cast<std::int32_t>(std::floor(p.x)),
+                                              static_cast<std::int32_t>(std::floor(p.y))};
+        },
+        [&](cybersand::ejection::Point p, cybersand::ejection::Reason reason) {
+            ejection_hash_word(fingerprint, 1); // Tagged candidate boundary.
+            ejection_hash_word(fingerprint, static_cast<std::uint64_t>(static_cast<std::int64_t>(p.x) - x));
+            ejection_hash_word(fingerprint, static_cast<std::uint64_t>(static_cast<std::int64_t>(p.y) - y));
+            ejection_hash_word(fingerprint, static_cast<std::uint64_t>(reason));
+            trace.push_back(ejection_array(p.x, p.y, cybersand::ejection::reason_name(reason)));
+        });
+    if (!covered) { out["reason"] = "incomplete_footprint"; return out; }
+    const auto digest = cybersand::Sha256::hex(cybersand::Sha256::of(
+        {reinterpret_cast<const std::uint8_t*>(fingerprint.data()), fingerprint.size()}));
+    const String hash(digest.c_str());
+    if (capsule.has("replay_hash") && static_cast<String>(capsule["replay_hash"]) != hash) {
+        out["reason"] = "hash_mismatch"; return out;
+    }
+    out["valid"] = true;
+    out["reason"] = "ok";
+    out["target"] = ejection_array(target.x, target.y);
+    out["trace"] = trace;
+    out["replay_hash"] = hash;
+    return out;
 }
 
 bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,

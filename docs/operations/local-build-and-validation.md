@@ -1786,3 +1786,15 @@ separate results; seven affected Godot processes pass1078 assertions. Keep old
 failures, final EOF-only transition, raw/canonical source bindings and actual
 runtime identities. Fresh integrated native/publication/full platform gates
 remain required; do not substitute the old development DLL for them.
+
+## Physical detachment diagnostic replay
+
+Run `make ejection-search-test` for the literal pre-extraction differential
+oracle. After rebuilding a source-matched GDExtension, run Godot 4.7 headless
+with `--script res://tests/test_ejection_capsules.gd -- --capsule-output=<absolute.json>`
+for the finite real-Rapier contact fixture. Use
+`--capsule-input=<absolute.json> --capsule-output=<another.json>` to replay its
+frozen corpus without Rapier stepping. The script has a 120-second internal
+watchdog. Record the native DLL, engine, Rapier and source hashes; a retained
+DLL without diagnostic methods cannot execute this apparatus. See the
+[dated stage receipts](../audits/2026-10-31-physical-detachment-abc.md).

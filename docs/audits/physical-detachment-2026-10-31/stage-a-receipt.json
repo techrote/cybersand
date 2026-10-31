@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "attempts": 1301,
+  "duplicates": 173,
+  "dropped": 1048,
+  "failed_unique": 64,
+  "success_unique": 16,
+  "searched_no_target": 1231,
+  "target_found": 70,
+  "relocation_refused": 0,
+  "dropped_capacity": 1048,
+  "dropped_oversized": 0,
+  "dropped_stale_or_sidecar": 0,
+  "replay_disagreements": 0,
+  "maximum_failed": 64,
+  "maximum_success": 16,
+  "maximum_footprint_side": 128,
+  "owner_current": true,
+  "fixture": {
+    "name": "rem002-reduced-p4-four-height",
+    "left": 96,
+    "surface": 160,
+    "width": 32,
+    "depth": 48,
+    "body_size": [
+      8,
+      14
+    ],
+    "drop_heights": 4,
+    "initial_rotation": 0.08,
+    "initial_angular_velocity": 1.0,
+    "mass": 1,
+    "ticks": 600,
+    "workers": 1,
+    "raw_unresolved": 1231,
+    "raw_displaced": 70,
+    "real_rapier": true,
+    "capture_failed_cap": 64,
+    "capture_success_cap": 16
+  },
+  "stage_a": {
+    "ok": true,
+    "capsules": 80,
+    "failed_unique": 64,
+    "success_unique": 16,
+    "candidate_reasons": {
+      "non_empty": 5320,
+      "accepted": 16,
+      "source_body": 2
+    },
+    "native_fallback_target_trace_matches": 80,
+    "mutation_failures": 0,
+    "malformed_refusal_controls": 15,
+    "serialization": "Godot JSON full_precision=true, parsed before replay"
+  },
+  "source_revision": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc+stage-a-final-source-delta",
+  "engine_version": "4.7-stable (official)",
+  "frozen_main": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc",
+  "frozen_main_tree": "ad800ebd5c876f6d1ecd080a6dc3f02918b21870",
+  "tested_delta_sha256": {
+    "Makefile": "3082f9371155a377999b2adfb7ed330bb7b6cc53720e35f4df355502b526c73a",
+    "native/include/cybersand/ejection_search.hpp": "81af4b39aa40b14a714225ddfc9364ccc9d16673662476962d967452574d6328",
+    "native/include/cybersand/world.hpp": "7264659385e48626780ae442fdbd4801fd15573e9eea21bc4b7ab18c3f8f36e1",
+    "native/src/world.cpp": "1321b6627d1dcd567335b04488c02826059a80334c8bb322cdd102bc9ab7472b",
+    "godot/native_extension/cyber_native_cell_world.cpp": "81191f33794c5afee522524fb33a38da45abfae7a36bbc2fc720e77e56481311",
+    "godot/native_extension/cyber_native_cell_world.hpp": "03f88d9739ad87139b8174cdf9b46587bc2ca3c964f02fb11896b63941d169c0",
+    "native/tests/test_ejection_search.cpp": "7da9e918dfdf6fb8508cfde624885a4926cb8197eb56287d7703d2b192d14709",
+    "godot/tests/test_ejection_capsules.gd": "54a4dd6c99fcf4cf3af183a3f824b6a3886f7c9f430652d3555a321c61d9aae6"
+  },
+  "corpus_sha256": "1ccfccde46ca23907854ba4ebe604fae0c038c1c8881475bc65182b410d3a1e8",
+  "runtime_sha256": {
+    "native_dll": "1fbedcf510a5f6879552415c7dde94245f6886ac99a278fd2cbf9284f46ea66f",
+    "godot_exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "rapier_dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "platform": "Windows-11-10.0.26300-SP0",
+  "compiler": "LLVM-MinGW20260826 clang23.1.0, pinned Godot-cpp101ae380",
+  "timeout_seconds": 120,
+  "command": "Godot4.7 --headless --path build/godot --script res://tests/test_ejection_capsules.gd -- --capsule-output=<absolute-path>",
+  "search_differential": "4096 literal pre-extraction cases passed",
+  "duplicate_scope": "Repeats against retained representatives only; capacity drops may contain additional repeated states.",
+  "corpus_scope": "First retained representative per consulted discrete production-search input class. Not all physical topologies or efficacy.",
+  "preserved_failed_fixture_variants": [
+    {
+      "variant": "axis-control",
+      "outcome": "failed corpus quota; replay comparisons passed; early mutation_failures=-1 was generic failure sentinel, not detected mutation",
+      "summary": {
+        "schema_version": 1,
+        "attempts": 747,
+        "duplicates": 665,
+        "dropped": 56,
+        "failed_unique": 10,
+        "success_unique": 16,
+        "maximum_failed": 64,
+        "maximum_success": 16,
+        "maximum_footprint_side": 128,
+        "fixture": {
+          "name": "rem002-reduced-p4-four-height",
+          "left": 96,
+          "surface": 160,
+          "width": 32,
+          "depth": 48,
+          "body_size": [
+            8,
+            14
+          ],
+          "drop_heights": 4,
+          "mass": 1,
+          "ticks": 600,
+          "workers": 1,
+          "raw_unresolved": 669,
+          "raw_displaced": 78,
+          "real_rapier": true,
+          "capture_failed_cap": 64,
+          "capture_success_cap": 16
+        },
+        "stage_a": {
+          "ok": false,
+          "capsules": 26,
+          "failed_unique": 10,
+          "success_unique": 16,
+          "candidate_reasons": {
+            "non_empty": 952,
+            "accepted": 16
+          },
+          "native_fallback_target_trace_matches": 26,
+          "mutation_failures": -1,
+          "serialization": "Godot JSON full_precision=true, parsed before replay"
+        },
+        "source_revision": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc+stage-a-local-delta",
+        "engine_version": "4.7-stable (official)"
+      }
+    },
+    {
+      "variant": "tilt-control",
+      "outcome": "failed corpus quota; replay comparisons passed; early mutation_failures=-1 was generic failure sentinel, not detected mutation",
+      "summary": {
+        "schema_version": 1,
+        "attempts": 753,
+        "duplicates": 688,
+        "dropped": 37,
+        "failed_unique": 12,
+        "success_unique": 16,
+        "maximum_failed": 64,
+        "maximum_success": 16,
+        "maximum_footprint_side": 128,
+        "fixture": {
+          "name": "rem002-reduced-p4-four-height",
+          "left": 96,
+          "surface": 160,
+          "width": 32,
+          "depth": 48,
+          "body_size": [
+            8,
+            14
+          ],
+          "drop_heights": 4,
+          "initial_rotation": 0.08,
+          "mass": 1,
+          "ticks": 600,
+          "workers": 1,
+          "raw_unresolved": 696,
+          "raw_displaced": 57,
+          "real_rapier": true,
+          "capture_failed_cap": 64,
+          "capture_success_cap": 16
+        },
+        "stage_a": {
+          "ok": false,
+          "capsules": 28,
+          "failed_unique": 12,
+          "success_unique": 16,
+          "candidate_reasons": {
+            "non_empty": 1118,
+            "accepted": 16
+          },
+          "native_fallback_target_trace_matches": 28,
+          "mutation_failures": -1,
+          "serialization": "Godot JSON full_precision=true, parsed before replay"
+        },
+        "source_revision": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc+stage-a-local-delta",
+        "engine_version": "4.7-stable (official)"
+      }
+    },
+    {
+      "variant": "discrete-small-spin-control",
+      "outcome": "failed corpus quota; replay comparisons passed; early mutation_failures=-1 was generic failure sentinel, not detected mutation",
+      "summary": {
+        "schema_version": 1,
+        "attempts": 765,
+        "duplicates": 692,
+        "dropped": 35,
+        "failed_unique": 22,
+        "success_unique": 16,
+        "searched_no_target": 709,
+        "target_found": 56,
+        "relocation_refused": 0,
+        "dropped_capacity": 35,
+        "dropped_oversized": 0,
+        "dropped_stale_or_sidecar": 0,
+        "replay_disagreements": 0,
+        "maximum_failed": 64,
+        "maximum_success": 16,
+        "maximum_footprint_side": 128,
+        "owner_current": true,
+        "fixture": {
+          "name": "rem002-reduced-p4-four-height",
+          "left": 96,
+          "surface": 160,
+          "width": 32,
+          "depth": 48,
+          "body_size": [
+            8,
+            14
+          ],
+          "drop_heights": 4,
+          "initial_rotation": 0.08,
+          "initial_angular_impulse": 0.2,
+          "mass": 1,
+          "ticks": 600,
+          "workers": 1,
+          "raw_unresolved": 709,
+          "raw_displaced": 56,
+          "real_rapier": true,
+          "capture_failed_cap": 64,
+          "capture_success_cap": 16
+        },
+        "stage_a": {
+          "ok": false,
+          "capsules": 38,
+          "failed_unique": 22,
+          "success_unique": 16,
+          "candidate_reasons": {
+            "non_empty": 1926,
+            "accepted": 16
+          },
+          "native_fallback_target_trace_matches": 38,
+          "mutation_failures": 0,
+          "malformed_refusal_controls": 15,
+          "serialization": "Godot JSON full_precision=true, parsed before replay"
+        },
+        "source_revision": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc+stage-a-final-source-delta",
+        "engine_version": "4.7-stable (official)"
+      }
+    }
+  ],
+  "focused_regressions": {
+    "rem002": "passed Windows source-matched DLL",
+    "physics_instrumentation": "passed observer, workers, duplicate samples, hard/foreign barriers, stored Water mass"
+  },
+  "documentation_checks": {
+    "docs": "failed same6 baseline missing companion refs",
+    "repository": "failed same6 baseline missing companion refs",
+    "m11": "passed historical integrity",
+    "retrieval": "19/32 hit@1,32/32 hit@5,mrr0.7536",
+    "diff_check": "passed"
+  }
+}

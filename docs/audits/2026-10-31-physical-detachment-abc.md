@@ -1,0 +1,225 @@
+---
+title: Physical detachment deterministic replay and bounded rearrangement investigation
+status: Current
+document-kind: audit
+scope: Fresh-main rectangle ejection investigation with separate replay, topology and copied-state push-chain checkpoints; no production displacement admission
+canonical-for: []
+last-reviewed: 2026-10-31
+related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md, ../reference/status-and-roadmap.md, ../operations/local-build-and-validation.md, ../operations/current-and-historical-validation.md]
+---
+
+# Physical detachment investigation — 2026-10-31
+
+## Frozen source and investigation boundary
+
+The experimental baseline is freshly fetched `main`
+`adaaa37ae35ffcdaa961b80353be3a23b805c0cc`, Git tree
+`ad800ebd5c876f6d1ecd080a6dc3f02918b21870`. The new branch is
+`codex/physical-detachment-abc-20261031`, isolated at
+`C:/Users/_/.codex/worktrees/physical-detachment-abc/khybersand`.
+This run must retain that baseline: no rebase, merge from main, or consumption
+of commits from the concurrent investigation. Cross-branch reconciliation is
+a subsequent integration task. No merge is authorized by this experiment.
+
+The original source checkout `C:/khybersand` was on
+`mat/material-fidelity-pass-2`, HEAD
+`620826f59fbe248f93a45c45e786a7297f2e5288`, with unrelated modified native
+World/material/test files and a Windows runtime, plus untracked UID/handoff
+files. Those files were preserved; this branch was created in a separate
+worktree directly from the frozen main commit. The source remote remains
+`https://github.com/techrote/cybersand.git`.
+
+This is one dependent investigation: Stage A establishes immutable contact
+capsules and deterministic production-decision replay; Stage B reads that
+frozen corpus for topology and normal diagnosis; Stage C evaluates bounded
+conservative push chains on copied state. Each stage requires its own committed
+checkpoint. The oracle cannot be promoted into the runtime in this run.
+
+## Initial open-PR reconciliation
+
+Read-only GitHub metadata and changed-file inventory were captured on
+2026-10-31 with `gh pr list --repo techrote/cybersand --state open --limit 100
+--json number,title,headRefName,headRefOid,isDraft,url,files`. These are collision
+and evidence boundaries; their commits are not experimental inputs.
+
+| Open PR | Captured head | State and relevant surface |
+|---|---|---|
+| [#283](https://github.com/techrote/cybersand/pull/283) | `254235ec4c3d58782bba44b478caca86bf57c856` | Draft, frozen tree/compound/ejection archive only |
+| [#23](https://github.com/techrote/cybersand/pull/23) | `0b96ce2a2fd5f68560575d4c4db8b0ea2f3b3758` | Draft, historical soliding/coupling implementation |
+| [#282](https://github.com/techrote/cybersand/pull/282) | `c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2` | Draft, structural-detachment programme documentation |
+| [#333](https://github.com/techrote/cybersand/pull/333) | `21d44e43e071d2d5777c2ed46a92f59675639599` | Draft, render work sharing native World/test files |
+| [#290](https://github.com/techrote/cybersand/pull/290) | `ddf812f34c533f654f1488b9115eb0256305a288` | Draft, render-copy work sharing native World/test files |
+| [#162](https://github.com/techrote/cybersand/pull/162) | `19f7ff43ecc494185226d1fff07dc21ef4a220fb` | Ready, Water quantity/phase work sharing World authority |
+| [#258](https://github.com/techrote/cybersand/pull/258) | `fec2c73a33e146c63398849a1d128cf45c0ba59b` | Ready, native extension observer interfaces |
+| [#262](https://github.com/techrote/cybersand/pull/262) | `70ec119381a2cb9abab5d40ed3314fb07c9b1736` | Ready, Rapier bridge and player playground |
+| [#272](https://github.com/techrote/cybersand/pull/272) | `00c76b338f65f15d01d7b8c2cba8ebc1a5b23753` | Draft, async architecture and physics tests |
+| [#330](https://github.com/techrote/cybersand/pull/330) | `a2543abdcf611d232f538462358bd12bfb0d152f` | Ready, watchdog changes including body/physics tests |
+| [#260](https://github.com/techrote/cybersand/pull/260) | `86f95617d2966f9071e9fe8bdd334ea3888fa5cd` | Draft, liquid trial-body fixture |
+| [#326](https://github.com/techrote/cybersand/pull/326) | `1afe20c0b2abbffaf3e41ac1e1588b862274c52c` | Draft, palette/cadence test surface |
+
+The inventory distinguishes direct coupling changes from shared-file or test
+collisions. It does not establish that every open branch remains applicable to
+current main, or authorize integrating any of them.
+
+## Current baseline semantics from source
+
+**Current at the frozen baseline:** native rectangle ejection belongs to
+`CyberNativeCellWorld::find_ejection_target` and
+`ejection_path_reachable` in
+[`cyber_native_cell_world.cpp`](../../godot/native_extension/cyber_native_cell_world.cpp).
+The search starts at `max(1, ceil(penetration))`, visits nine inclusive distances
+through `first_distance + 8`, and tries tangent offsets
+`0, +1, -1, +2, -2, +3, -3, +4, -4` in that order: at most 81 candidates.
+Candidate construction uses the cell centre, outward normal and tangent, then
+floors each coordinate. Bounds, any endpoint body occupancy and non-empty stored
+material reject an endpoint. The intermediate sampled segment rejects hard
+surfaces and foreign body IDs, while allowing the source body's mask and
+intervening soft material. A passing segment therefore does not prove a strict
+empty route. This investigation does not widen those production bounds.
+
+For contacts inside the current rectangle, `overlap_normal` selects the nearest
+local rectangle face. Equal x/y penetration selects the y face; zero local
+coordinate selects its positive sign. The chosen axis is rotated into world
+coordinates and penetration is clamped to at least 0.5. Swept-only contacts use
+normalized translation when nonzero, with overlap-face fallback otherwise.
+Linear/angular state can explain how a contact arose without being an input to
+the subsequent endpoint search. The capsule must preserve both provenance and
+the exact decision inputs rather than infer one from the other.
+
+Native cellular storage remains authoritative under the transient mask.
+`World::relocate_stored_cell` is the move authority; a visible `material_at()`
+query beneath a body is insufficient to capture the stored source tuple.
+The GDScript fallback in [`cell_world.gd`](../../godot/scripts/cell_world.gd)
+retains the corresponding bounded endpoint/path policy. Controlled parity must
+be measured for the captured corpus. The archived #283 12-float cause protocol
+is not assumed to be the current-main body-result ABI.
+
+The existing `test_rem002_body_granular.gd` is a narrow source fixture route:
+an 8×14 rectangle and 16×16 granular support bed, with native/fallback bearing,
+excavation, Water and hard controls. Frozen #283's compound tree, render timing,
+lifecycle and A/B policy apparatus are unnecessary prerequisites for replay.
+
+## Frozen #283 evidence and limits
+
+The archive head is exactly
+`254235ec4c3d58782bba44b478caca86bf57c856`. It was inspected using `git show`;
+no checkout, rebase, wholesale merge or commit to that branch was performed.
+Its receipts qualify their recorded sources, not the frozen current-main source
+above.
+
+| Archived result | Executed source and tree | Retained finding |
+|---|---|---|
+| [Cause receipt](https://github.com/techrote/cybersand/blob/254235ec4c3d58782bba44b478caca86bf57c856/docs/audits/sol281-2026-10-28/unresolved-cause-receipt.json) | `756ae4882d346a1439244189c76eda8496070229`; `cf50b83207d28d63fef7b4a6562c87af99b6bb41` | Linux 1,557/1,557 and Windows 1,501/1,501 unresolved were no-target; other cause bins zero; unresolved attempts 97.8015% / 97.4043% |
+| [A/B negative receipt](https://github.com/techrote/cybersand/blob/254235ec4c3d58782bba44b478caca86bf57c856/docs/audits/sol281-2026-10-28/ejection-search-ab-receipt.json) | `2d623e1034075f26b5443997781a267f16eeee85`; `cfbbc0cfe385a5905886dfc44b94ada463565ac3` | B=289 improves no-target rate only 0.4302 pp Linux / 0.6119 pp Windows, below registered 20 pp; **NO-GO** |
+| [Corrected strict-route receipt](https://github.com/techrote/cybersand/blob/254235ec4c3d58782bba44b478caca86bf57c856/docs/audits/sol281-2026-10-28/strict-empty-route-receipt.json) | `ecacca3e701489d58a13793c038968d36f16bb03`; `94842a127df278655eb049383c52b7e61036a5b1` | 8,084 no-target attempts; 7,892 strict-empty-route absent; 7,891 permissive-direct with strict-empty-route absent |
+
+The strict-route sums independently reconcile as
+`2247 + 773 + 3486 + 1578 = 8084`,
+`2247 + 772 + 3296 + 1577 = 7892`, and
+`2247 + 772 + 3295 + 1577 = 7891`. They describe four different asynchronous
+histories; they are neither unique-cell counts nor matched causal efficacy
+measurements. The archive's initial failed strict-route run at `b68074d7`
+remains negative evidence: its test confused visible masked material with
+stored Sand and admitted unintended lateral escape from a rear fixture.
+Later fixture corrections do not erase that failure.
+
+These findings motivate testing small conservative rearrangement. They do not
+establish its physical validity or justify a normal correction, broader search,
+new material law, or production push chain.
+
+## Stage A — replay checkpoint
+
+**Passed on Windows x86_64, 2026-10-31:** the reduced REM-002 body/granular
+fixture (32×48 Sand bed, real 8×14 Rapier rectangle, four-height drop, initial
+rotation 0.08 radians and angular velocity 1 radian/second, 600 synchronous
+coupling/native steps, one native worker) reproduced unresolved ejection.
+Production material laws, geometry/search and gains remain unchanged.
+
+The [frozen corpus](physical-detachment-2026-10-31/stage-a-corpus.json) and
+[source/runtime receipt](physical-detachment-2026-10-31/stage-a-receipt.json)
+retain exact raw counts, bounded-capacity outcomes, commands and SHA-256 inputs.
+The corpus contains **64 unique no-target contacts and 16 successful controls**.
+The live run recorded1,301 attempts:1,231 no-target,70 targets found and zero
+authoritative relocation refusals;173 repeats matched retained states and1,048
+were capacity drops. All 80 round-tripped full-precision JSON capsules reproduce the exact native
+target, candidate order and rejection reason; actual fallback targets and its
+ordered reason census agree for all 80. There are zero mutation failures and
+15 malformed-input refusal controls. Existing REM-002 and physics observer/worker/
+duplicate/hard-foreign-barrier/stored-Water-mass Godot regressions pass against
+the rebuilt DLL. A literal pre-extraction native oracle
+passes 4,096 seeded differential cases plus barrier controls. Returned-array
+isolation, reset clearing and historical offline replay are also checked.
+
+The initial axis-aligned fixture produced 669 unresolved and 78 successful
+attempts but only 10 unique failures, so it failed the requested corpus quota.
+The small-tilt and small-angular-impulse variants also failed quota (12 and22
+unique failures). Their summaries are preserved in the receipt. The first two
+reports used -1 as a generic failure sentinel in the mutation field; they did
+not report an observed mutation. The final harness counts mutation separately.
+The primary hash was tightened before qualification: it hashes tagged discrete
+consulted reads/candidate records, excluding raw normal bits that would inflate
+uniqueness without changing discrete search. Raw normals remain in capsules.
+
+Counts of duplicates concern repeats of retained representatives; repeats of a
+state first dropped after capacity saturation cannot be counted completely.
+Unconsulted topology/tuple differences may share a search-equivalence hash.
+Subsequent topology/oracle distributions describe these first representatives,
+not all encountered physical neighbourhoods or asynchronous efficacy.
+
+Only source coordinates, source-body relation, discretized candidates and
+consulted Empty/hard/mask classifications determine search. Raw normal and
+penetration generate those candidates. Body dynamics/geometry and owner IDs
+are audit/fencing state, not additional replay dependencies once the decision
+inputs are fixed. Quantity, carrier/spare/epoch bits and temperature are kept
+for conservative copied-state movement, although they do not select the target.
+
+Frozen #283's bounded 81-probe semantics agree with current main. Its strict
+empty-route census cannot establish the need for rearrangement: production
+already traverses movable material. The local fixture independently establishes
+current no-target behavior; it does not qualify tree detachment or the archive's
+asynchronous proportions. Stage A is committed before Stage B implementation.
+
+## Toolchain inspection and initial repository gates
+
+Read-only inspection found Godot
+`C:/Godot47/Godot_v4.7-stable_win64_console.exe`, the pinned godot-cpp source
+under `C:/Users/_/lcb-local-toolchain/env/`, and LLVM-MinGW 20260826 under the
+same toolchain root. Compiler readback reports Clang 23.1.0; its isolated Python
+environment reports SCons 4.10.1. `python tools/verify_pinned_source_tree.py verify
+<godot-cpp-root>` passed. The revision, archive marker and source ledger match
+the repository's pins. The available Windows godot-cpp static library has
+SHA-256 `2629ba35adc7b1263deeb1155d674252e1e4188c2c89d1d7158e816d18f957df`.
+It is a local build, not the historical M11 byte-identical archive. These are
+dependency/source checks, not qualification of a rebuilt investigation runtime.
+The repository's `tools/build_native_extension_windows.sh` can target an
+isolated output using `CYBERSAND_NATIVE_OUTPUT`; shared prior build outputs
+must not become this investigation's source identity.
+
+Initial checks at the frozen baseline retained an existing documentation and
+repository failure: six missing companion-workspace references in this isolated
+source layout. Historical `python tools/ci/check_m11_consistency.py` passed;
+historical hashes remain unchanged. The frozen retrieval evaluation reported
+19/32 hit@1, 32/32 hit@5 and MRR 0.7536. These initial outcomes are baseline
+evidence, not final-head results; final checkpoint commands and exact outcomes
+must be recorded separately. Companion workspace recovery and unrelated link
+repairs are outside this bounded physical investigation.
+
+## Documentation obligation map
+
+| Canonical destination | Checkpoint obligation or unchanged boundary |
+|---|---|
+| [Coupling contract](../architecture/rigid-body-and-cellular-coupling.md) | Add the diagnostic replay route and its source-qualified scope; keep 81-candidate runtime semantics and unresolved material retention explicit |
+| [Ownership/lifetimes](../architecture/data-ownership-and-lifetimes.md) | Capsules own immutable copied local state; native World and main-thread Rapier ownership remain unchanged |
+| [Interfaces](../reference/interfaces-and-message-contracts.md) | Document the opt-in diagnostic capsule/fencing surface and explicit bounds; preserve ordinary body packet/result semantics |
+| [Invariants](../reference/invariants.md) | Retain hard/foreign-body barriers, authoritative tuple and quantity conservation; oracle assertions concern copied state only |
+| [Configuration](../reference/configuration-reference.md) | Record capture capacity and replay footprint if exposed; no production search-radius change |
+| [ADR-007](../decisions/ADR-007-rigid-body-cellular-coupling.md) | Runtime coupling design unchanged; diagnostics and test oracles do not select a successor production primitive |
+| [Roadmap](../reference/status-and-roadmap.md) | Link the dated A/B/C evidence with pending/completed claims separated; broad granular acceptance remains separate |
+| [Build/tests](../operations/local-build-and-validation.md) | Add focused replay, topology and oracle commands with source/runtime identities and execution limits |
+| [Index](../README.md), [retrieval routes](../reference/retrieval-index.md) and manifest/questions | Register this evidence and affected question routes without creating duplicate canonical ownership |
+| User controls and rendering | No ordinary controls, render publication, solver laws or pacing behavior changed |
+
+Stages B and C have no results at this Stage-A drafting checkpoint. Their reports
+must consume the committed Stage-A corpus without altering production
+displacement semantics, preserve refused/negative cases, and distinguish graph
+reachability from admissible matter movement.

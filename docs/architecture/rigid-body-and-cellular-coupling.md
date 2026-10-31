@@ -213,3 +213,32 @@ and bounded enclosure recovery. REM-002 reuses the same support predicate for a
 separate bounded body-coupling observation against stored material; it does not
 make the sampled character a Rapier collider and does not add a second material
 owner.
+
+## Diagnostic contact capsules and local replay
+
+**Current diagnostic apparatus, 2026-10-31:** the opt-in native
+`diagnostic_ejection_capture` captures pre-relocation attempts only in an
+explicit diagnostic default-cellular World. The ordinary search uses the shared
+[evaluator](../../native/include/cybersand/ejection_search.hpp): nine distances
+from `max(1, ceil(penetration))` through that value plus eight, each with tangent
+probes `0,+1,-1,+2,-2,+3,-3,+4,-4`. Intermediate movable material and the source
+body mask are traversable; hard terrain and foreign body masks reject the path.
+An absent strict-empty route therefore does not establish the cause of a
+production no-target outcome.
+
+Capsules own copied cell carrier bits, temperature and transient IDs, raw
+normal/penetration, previous/current body values and instance/reset/tick/revision
+identity. Capture retains at most 64 failed and 16 successful search-equivalence
+representatives, refuses footprints wider/taller than 128 cells and records
+capacity/refusal outcomes. The copied envelope contains every production
+endpoint and path sample plus a one-cell diagnostic ring. Pressure/inertial
+sidecar Worlds are excluded. `diagnostic_replay_ejection` reads only the capsule;
+it never installs captured state into a live World. Owner identity is audit
+provenance, not permission to apply a historic capture to a live owner.
+
+The [dated investigation](../audits/2026-10-31-physical-detachment-abc.md)
+records source-matched replay, topology diagnosis and copied-state oracle gates
+separately. Decision parity covers this controlled native/fallback corpus;
+fallback material laws and payload storage remain different. Neither capsules
+nor copied-state rearrangement provide full coupled trajectory replay or select
+production displacement behavior.
