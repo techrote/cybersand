@@ -1911,7 +1911,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_R:
 			reset_world()
 		KEY_P:
-			paused = not paused
+			if _playable_course_controls_active():
+				toggle_playable_course_pause()
+			else:
+				paused = not paused
+		KEY_ESCAPE:
+			if _playable_course_controls_active():
+				toggle_playable_course_pause()
 		KEY_F:
 			toggle_playable_course_camera()
 		KEY_L:
@@ -3126,6 +3132,32 @@ func cancel_playable_course_input() -> void:
 	physical_actor_session.cancel_input(0, _physical_epoch, &"human")
 
 
+func set_playable_course_paused(value: bool) -> bool:
+	if not _playable_course_controls_active():
+		return false
+	if not value and (simulation_worker.has_failed() or not _physical_terrain_ready
+		or _actor_reset_receipt != 0 or not pending_microscenario_apply.is_empty()
+		or _pending_physical_candidate != null):
+		return false
+	if value == paused:
+		return true
+	# Revoke at the user transition, not the next physics callback. Otherwise
+	# pause -> resume between callbacks retains queued edges and their authority.
+	# The same owner handles native-effect cancellation and neutral rearming.
+	cancel_playable_course_input()
+	paused = value
+	update_worker_frame_state()
+	return true
+
+
+func toggle_playable_course_pause() -> bool:
+	# Paused is deliberately excluded from context ownership: an owned pause
+	# key can resume, but a popup, another window or construction cannot do so.
+	if not _playable_course_controls_active() or not _actor_keyboard_context_allowed():
+		return false
+	return set_playable_course_paused(not paused)
+
+
 func _publish_physical_keyboard_input(trigger_override: Variant = null, alternate_override: Variant = null) -> void:
 	if actor_producer_selection != &"human":
 		return
@@ -3457,7 +3489,11 @@ func _actor_window_has_focus() -> bool:
 
 
 func actor_keyboard_allowed() -> bool:
-	if paused or not _actor_window_has_focus() or not actor_prototypes_allowed():
+	return not paused and _actor_keyboard_context_allowed()
+
+
+func _actor_keyboard_context_allowed() -> bool:
+	if not _actor_window_has_focus() or not actor_prototypes_allowed():
 		return false
 	if physical_actor_session != null and not _physical_terrain_ready:
 		return false

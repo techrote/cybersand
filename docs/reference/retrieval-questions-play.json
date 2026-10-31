@@ -3,40 +3,54 @@
     {
       "id": "PLAY-LIFETIME-01",
       "query": "Does the accepted PLAY fifty real desktop lifetime campaign qualify solver reconstruction, slow native work and human gameplay feel?",
-      "canonical": ["systems/player-control-playground.md"],
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
       "facts": [
         "PR #284 accepted 50 real host lifetimes and 1165 assertions per OS on its exact reviewed/tested tree.",
         "It has zero solver reconstruction cycles and no slow-native injection; adversarial stress and manual feel remain open."
       ],
-      "sources": ["../godot/tests/play_life001_shared_host_case.gd"]
+      "sources": [
+        "../godot/tests/play_life001_shared_host_case.gd"
+      ]
     },
     {
       "id": "PLAY-SOLVER-01",
       "query": "How does the PLAY solver reconstruction stress distinguish accepted rebuilds from unsupported liquid policy refusals and preserve the old Rapier owner?",
-      "canonical": ["systems/player-control-playground.md"],
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
       "facts": [
         "Five real SetP hosts rebuild pressure/reference and Current defaults through construction-time native commit, with newer identities and retained recipe/receipts.",
         "Controlled-route and native Oil-pressure refusals retain the accepted actor and World while closing the staged graph.",
         "Source 0a17fd97 has a fresh hosted Godot result of 335 assertions and zero failures on each Windows/Linux OS; PR #287 owns the final CI/review/accepted-tree receipt.",
         "Exclusive GDScript owner join with a retained worker reference is not an independently observed native pool destruction trace; broader stress and release acceptance remain separate."
       ],
-      "sources": ["../godot/tests/play_life002_solver_case.gd"]
+      "sources": [
+        "../godot/tests/play_life002_solver_case.gd"
+      ]
     },
     {
       "id": "PLAY-PENDING-01",
       "query": "Does the PLAY prepared reconstruction shutdown test prove a slow native tick or native worker join trace?",
-      "canonical": ["systems/player-control-playground.md"],
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
       "facts": [
         "LIFE003 holds native-prepared physical-ready construction before commit, observes actual Main callbacks and closes the real host after a bounded stop-fence release.",
         "The nonblocking helper retains the actual shutdown safety budget of15000ms; a separate25ms contended arm requires release while main holds the real joined-worker mutex. PR #289 accepted source92e0 as main91778603 after Windows/Linux150/0, exact-head CI and distinct review; earlier local proofs retain their source identities.",
         "It does not hold native simulation phase jobs, inject a slow native tick or observe an OS native-thread join trace."
       ],
-      "sources": ["../godot/tests/play_life003_prepared_shutdown_case.gd"]
+      "sources": [
+        "../godot/tests/play_life003_prepared_shutdown_case.gd"
+      ]
     },
     {
       "id": "PLAY-POPULATED-01",
       "query": "How does the populated PLAY reconstruction and reset test prove old queued human commands and lap progress cannot become the new session's input?",
-      "canonical": ["systems/player-control-playground.md"],
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
       "facts": [
         "LIFE004 requires real pending keyboard edges, an old-session-admitted observed human command, positive completed native lap ticks and a completed Rapier gate visit before construction and reset across all five rigs.",
         "The new unsuspended human session must reject the captured command specifically for run_or_epoch and require neutral release before fresh input; old lap and edges are retired.",
@@ -44,29 +58,39 @@
         "Whole-assembly gate placement and reinjection of a retained actual snapshot into Main are test-only instrumentation, not natural traversal or a native delivery race.",
         "It does not qualify native-busy shutdown, all stale-message paths, gameplay performance or human feel."
       ],
-      "sources": ["../godot/tests/play_life004_populated_retirement_case.gd"]
+      "sources": [
+        "../godot/tests/play_life004_populated_retirement_case.gd"
+      ]
     },
     {
       "id": "PLAY-FAILURE-01",
       "query": "How does the actual Main native failure recovery test stop Rapier and recover through reset, and does it qualify five SetP rigs or prepared liquid recovery?",
-      "canonical": ["systems/player-control-playground.md"],
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
       "facts": [
         "LIFE005 proves a healthy real Main/reference-Rapier session before two public queued Sand points trigger an actual native capacity failure; no fake World failure is supplied.",
         "Main callbacks continue while Rapier freezes after the observed failure fence, emission requests refuse and ordinary public R/reset creates a healthy newer native World using the same reference-body nodes and epoch zero.",
         "Source385 passes Windows/Linux30/0, exact-head CI and distinct reviews before accepted merge4b6c; the whole stored image is inspected only after owner join. Earlier27/29 probes retain their own source identities.",
         "Prepared construction still requires a healthy World. This does not qualify five SetP course rigs, native-busy shutdown, arbitrary cancellation races, gameplay performance or human feel."
       ],
-      "sources": ["../godot/tests/test_play_life005_failure_recovery.gd"]
+      "sources": [
+        "../godot/tests/test_play_life005_failure_recovery.gd"
+      ]
     },
     {
       "id": "PLAY-INPUT-01",
       "query": "Does the shared course gamepad event bridge prove physical controller and complete desktop focus qualification?",
-      "canonical": ["systems/player-control-playground.md"],
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
       "facts": [
         "PR #286 preserves ordered A/B/X press and release through existing publisher and session FIFO.",
         "Its synthetic device index and test host publisher do not prove hardware gamepad, complete desktop focus or human feel."
       ],
-      "sources": ["../godot/tests/test_play_ui004_gamepad_events.gd"]
+      "sources": [
+        "../godot/tests/test_play_ui004_gamepad_events.gd"
+      ]
     },
     {
       "id": "PLAY-BOUNDARY-01",
@@ -116,6 +140,23 @@
       "sources": [
         "../godot/scripts/playable_course_gamepad_events.gd",
         "../godot/tests/test_play_ui005_session_selection.gd"
+      ]
+    },
+    {
+      "id": "PLAY-PAUSE010-01",
+      "query": "Can a rapid pause and resume between physics callbacks retain queued gameplay input, and do Escape and gamepad Start share the same cancellation path?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "Every actual shared-course pause/resume transition immediately revokes the original physical-session input authority and queued button/equipment edges before the next callback.",
+        "P, Escape and selected-gamepad Start share the guarded toggle; keyboard-only, other-controller, modal and unfocused input do not gain authority.",
+        "The panel Resume path retains neutral rearm; failed native work or pending reconstruction/reset cannot resume. Actual device/focus acceptance remains separate."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/scripts/playable_course_gamepad_events.gd",
+        "../godot/tests/play_input010_pause_controls_case.gd"
       ]
     }
   ]

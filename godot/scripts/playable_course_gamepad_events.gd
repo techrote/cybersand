@@ -41,12 +41,19 @@ func _selected_joypad() -> int:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not event is InputEventJoypadButton or event.button_index not in ACTION_BUTTONS:
+	if not event is InputEventJoypadButton:
 		return
 	if event.device != _selected_joypad():
 		return
 	var host: Node = get_parent()
 	if not _gamepad_active(host):
+		return
+	if event.button_index == JOY_BUTTON_START:
+		if event.pressed and host.has_method("toggle_playable_course_pause"):
+			host.call("toggle_playable_course_pause")
+		get_viewport().set_input_as_handled()
+		return
+	if event.button_index not in ACTION_BUTTONS:
 		return
 	# Let Controls handle events first. Both edges which reach gameplay take the
 	# SAME production publisher as keyboard events; its normal refusal/rearm

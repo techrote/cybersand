@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-10-31
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -67,7 +67,7 @@ and follow camera; existing entry points retain their defaults.
 
 Requested and applied policy are displayed separately for the selected material;
 the applied native policy and construction-receipt hashes are available in the
-policy tooltip. The panel blocks gameplay input while open. P pauses, R restarts,
+policy tooltip. The panel blocks gameplay input while open. P/Escape and selected-gamepad Start pause, R restarts,
 F toggles the course camera and F2 returns to the launcher. Keyboard-only mode
 excludes gamepad polling and button forwarding. Free play suppresses the lap
 tracker/HUD. Protected scientific/blind fixtures refuse the new reconstruction
@@ -95,6 +95,28 @@ Only the OS-focus predicate and device enumeration are synthetic; they do not
 qualify real hardware, OS focus delivery, natural course traversal or human feel.
 The [dated audit](../audits/2026-10-30-play-ui005-integrated-session.md) owns local
 source hashes, commands, original failures and final-head hosted-gate status.
+
+## Immediate shared-course pause transitions
+
+**Current source behavior; final hosted acceptance is recorded separately:**
+P, Escape and the selected gamepad's Start route through the same shared-course
+pause setter. Every actual pause/resume transition immediately cancels input
+authority and queued button/equipment edges, before the next physics callback.
+A pause then resume within one callback interval therefore cannot retain an old
+press or lease. The existing native worker, World, actor session and Rapier
+bridge remain the owners; release controls to neutral before fresh input rearms.
+
+The pause toggle respects window/UI ownership. Unselected controllers and
+keyboard-only sessions cannot use Start; modal/unfocused input cannot resume.
+The panel's explicit Play / resume button uses the same cancellation path.
+Resume refuses failed native work, pending reconstruction/reset or unready terrain.
+Controls outside the composed course retain their previous behavior.
+
+The [INPUT010 audit](../audits/2026-10-31-play-input010-pause-transitions.md)
+records an actual failing-before callback-gap reproduction, all-five-rig
+automatic Main/native/Rapier regressions, original local environmental failures
+and required exact-head hosted results. Injected focus/device enumeration is
+explicitly synthetic; this is not physical-controller or OS-focus acceptance.
 
 ## PLAY composable existing-host route — accepted course and five-rig slice
 
