@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Local repository policy and unresolved remote CI and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-10-31
 related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ../audits/2026-09-19-runner-routing-weekend-benchmark.md]
 ---
 
@@ -70,6 +70,43 @@ evidence. Source-sensitive runtime provenance remains a hard gate: a changed
 runtime input requires a source-matched rebuild and provenance update rather than
 a hand-edited hash.
 
+## Parallel validation and source-scope advice — 2026-10-31
+
+The [Native workflow](../../.github/workflows/native.yml) now distributes the
+same validation among six independent GitHub-hosted Ubuntu families. The stable
+procedural gate remains `native`; it requires every family, policy check and
+source/run/attempt/original-evidence verification to pass. `fail-fast: false`
+retains sibling outcomes after failure. All original compilation/execution
+bounds, including the15-minute TSan suite limit, remain unchanged. The five
+larger experimental #311 limits are not part of this production port.
+
+The [Godot workflow](../../.github/workflows/gdextension.yml) schedules four
+Windows headless shards and independently verifies their exact complete case
+union, source/runtime identities and original logs. The admitted coverage job
+runs after failed/cancelled matrices too, and explicitly requires matrix success.
+All original Linux build/rendered/sharded/aggregate and timing paths remain.
+Final qualification requires the unchanged `windows x86_64` cross-build, all
+applicable Windows execution jobs **and** their coverage reducer, plus the Linux
+aggregate; a skipped reducer is not a pass.
+Every case retains its existing process deadline and failure semantics.
+
+The [Native source-scope advisory](../../.github/workflows/native-scope-advisory.yml)
+is informational. Its classifier authenticates immutable base/executed-head
+commits, trees, clean checkout and committed classifier bytes, and examines both
+sides of renames using Git `--no-renames`. Raw unsafe paths, unknown inputs and
+empty/duplicate inventories cannot recommend an exemption. The advice always
+sets `native_skip_authorized=false`; no required job consumes a candidate
+exemption. Actual dependency-aware skipping would require a separate owner
+policy decision and audit.
+
+The [production integration audit](../audits/2026-10-31-ci-parallel-production-integration.md)
+separates predecessor trials from exact resulting-head qualification and the
+[guarded integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140).
+The owner requested promotion on2026-10-31. The original branch-only drafts,
+original failed trials and historical Native timeout remain retained. Provider,
+scientific/training and source/runtime policies are unchanged. There is no
+Scheduswarm restart, new external provider or relaxation of PLAY graphical gates.
+
 ## Recovery closure checkpoint — 2026-09-24
 
 The [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md)
@@ -105,8 +142,10 @@ Rulesets** (or the equivalent branch-protection UI):
    Issue49 is path-scoped; making those names unconditional required checks can
    leave unrelated PRs permanently pending.
 6. For implementation/behavior PRs, the procedural final gate remains the
-   exact-head Native `native` job, GDExtension `windows x86_64` plus aggregate
-   `linux x86_64` job, and any applicable path-scoped apparatus workflow.
+   exact-head Native `native` aggregate, GDExtension `windows x86_64` cross-build,
+   all four applicable Windows execution shards, `windows sharded execution
+   coverage`, the aggregate `linux x86_64` job, and any applicable path-scoped
+   apparatus workflow.
 7. Keep only repository-owner/administrator emergency bypass. Any bypass is an
    incident/recovery action and must be recorded; it is not the normal merge path.
 8. After saving the rule, verify the branch page reports `main` protected and

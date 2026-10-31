@@ -4,11 +4,28 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-10-31
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## CI parallel integration checkpoint — 2026-10-31
+
+The owner requested production integration of #311/#313/#314 in the active
+#309 run. The separate branch `ci/parallel-production-integration-20261031`
+starts at main `b55ce690f9a3d2ca3026674a2e9c6a7635966f59`; the original draft
+trial branches remain intact. Read the [dated CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)
+and [source/qualification ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+for the exact resulting head, first-attempt gate results, review and integration
+lease. The source port uses six Native families with the stable `native` gate,
+four complete Windows Godot shards, unchanged Linux coverage and all original
+command deadlines. Five expanded #311 trial bounds are deliberately not promoted.
+Scope advice cannot authorize Native skips. The three predecessor trials passed
+their own scoped checks; they do not qualify this new source or prove an
+under-30-minute full production cycle. Preserve prior failed experiments and
+TSan exit124. CI integration does not merge #308, close PLAY issues, change any
+native/runtime/training input or restart Scheduswarm.
 
 ## PLAY convergence checkpoint — 2026-10-30
 
