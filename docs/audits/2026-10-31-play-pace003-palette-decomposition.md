@@ -144,6 +144,33 @@ No such visual comparison or device execution belongs to this compiler-only run.
 
 ## Execution and control protocol
 
+### Retained first hosted apparatus failure
+
+The first published head was `42963c4d1158c2c4d0213bf4c1447f9a24f71c21`,
+tree `810d0f0a491e414683371395de104f27e8474217`. Its original
+[run 41165620441](https://github.com/techrote/cybersand/actions/runs/41165620441)
+attempt 1 authenticated the original input and passed all 18 generator tests
+under normal and optimized Python. One of 30 harness tests failed on Windows:
+the backslash ZIP-name fixture was normalized by `ZipInfo` before the reader
+saw it. No compiler case ran. Readback correctly failed for the absent campaign;
+this is an apparatus failure, with no shader feasibility conclusion.
+
+Artifact `13029097591` retains all 17 files, 2,948,952 ZIP bytes, SHA-256
+`0b7f56ea08c8bce9431313e2216b57b0a5205b5b0b4b3988fb0c9402f5f4a290`.
+The complete original job log is separately retained. That head's Documentation
+and provenance run `41165620343` passed; its diagnostic failure remains failed.
+
+The correction inspects both `ZipInfo.orig_filename` and normalized `filename`,
+including NUL refusal. The fixture now changes both raw ZIP filename headers
+after construction with an equal-length replacement; another test explicitly
+emulates Windows separator normalization. The new regression fails before the
+reader correction and passes afterward. All 31 harness tests pass normally
+and with optimized Python. Independent review confirms every harness top-level
+element outside `read_original` and the complete generator are unchanged;
+the compiler inputs, ABI, deadlines, order and decision budgets stay fixed.
+
+### Registered execution sequence
+
 All programs execute **serially on one GitHub-hosted `windows-2022` runner**.
 Each invocation uses a fresh Windows x64 child process and the authenticated
 native System32 compiler with the original API arguments and flags. The eight

@@ -52,7 +52,19 @@ class CustodyTests(unittest.TestCase):
             output.writestr(harness.HLSL_PATH, source)
             output.writestr(harness.MANIFEST_PATH, json.dumps({"system_original": {"sha256": compiler}}))
             if extra:
-                output.writestr(extra, b"forbidden entry")
+                # ZipInfo normalizes the platform separator on both creation
+                # and reading. Write a portable safe name, then mutate both
+                # local and central directory names after the ZIP is closed.
+                # This ensures the negative contains actual raw backslash
+                # bytes on Windows as well as POSIX; writestr alone does not.
+                output.writestr(extra.replace("\\", "/"), b"forbidden entry")
+        if extra and "\\" in extra:
+            encoded_safe = extra.replace("\\", "/").encode("ascii")
+            encoded_raw = extra.encode("ascii")
+            raw = archive.read_bytes()
+            self.assertEqual(len(encoded_safe), len(encoded_raw))
+            self.assertEqual(raw.count(encoded_safe), 2)
+            archive.write_bytes(raw.replace(encoded_safe, encoded_raw))
         metadata = self.root / "metadata.json"
         metadata.write_text(json.dumps({"id": harness.ARTIFACT_ID,
                                        "workflow_run": {"id": harness.RUN_ID}, "expired": False}))
@@ -150,6 +162,19 @@ class CustodyTests(unittest.TestCase):
         for extra in ("../escape", "C:/escape", "bad\\escape", "/absolute"):
             archive, metadata, constants = self.original_fixture(extra=extra)
             with self.subTest(extra=extra), patch.multiple(harness, **constants), self.assertRaisesRegex(ValueError, "Unsafe"):
+                harness.read_original(archive, metadata)
+
+    def test_raw_backslash_is_rejected_after_windows_filename_normalization(self):
+        archive, metadata, constants = self.original_fixture(extra="bad\\escape")
+        # Emulate the ZipInfo platform normalization on every host. The stored
+        # orig_filename must retain the adversarial bytes even when filename
+        # is rewritten to an apparently safe portable path.
+        with patch.object(zipfile.os, "sep", "\\"):
+            with zipfile.ZipFile(archive) as retained:
+                entry = retained.infolist()[-1]
+                self.assertEqual(entry.orig_filename, "bad\\escape")
+                self.assertEqual(entry.filename, "bad/escape")
+            with patch.multiple(harness, **constants), self.assertRaisesRegex(ValueError, "Unsafe"):
                 harness.read_original(archive, metadata)
 
     def test_original_outputs_cannot_be_overwritten(self):

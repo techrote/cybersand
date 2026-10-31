@@ -81,11 +81,14 @@ def read_original(archive_path: Path, metadata_path: Path) -> tuple[bytes, dict]
         names = [entry.filename for entry in entries]
         require(len(names) == len(set(names)), "Duplicate original ZIP entry")
         for entry in entries:
-            name = entry.filename
-            path = PurePosixPath(name)
-            require(bool(name) and not path.is_absolute() and ".." not in path.parts
-                    and "\\" not in name and ":" not in name
-                    and not stat.S_ISLNK(entry.external_attr >> 16), "Unsafe original ZIP entry")
+            # ZipInfo normalizes Windows backslashes in filename while keeping
+            # the original central-directory name in orig_filename. Inspect
+            # both so a Windows read cannot sanitize away a refused raw path.
+            for name in (entry.orig_filename, entry.filename):
+                path = PurePosixPath(name)
+                require(bool(name) and not path.is_absolute() and ".." not in path.parts
+                        and "\\" not in name and ":" not in name and "\x00" not in name
+                        and not stat.S_ISLNK(entry.external_attr >> 16), "Unsafe original ZIP entry")
         require(archive.testzip() is None, "Original ZIP CRC failure")
         trace_raw = archive.read(TRACE_PATH)
         require(trace_raw.endswith(b"\n"), "Original trace is truncated")
