@@ -250,6 +250,75 @@ now 51 methods, including these shadow/file-ID/byte-substitution controls.
 Windows SDK compilation, actual hash/control behavior and the original Godot
 fixture remain unqualified until a fresh exact-head hosted run completes.
 
+## Second original failure and owned build correction
+
+The first v2 attempt used GitHub head
+`70c1586dd04bdc786c08c081b766402e7792d73d`, tree
+`76270686e4007cc76acc97845efe240bf989e1d3`, identical to local corrected
+source `8c6e65681caa48ff512e8c3d706d3d827aeaf1bb`.
+[Run 41180173514 attempt 1](https://github.com/techrote/cybersand/actions/runs/41180173514)
+passed all 51 portable methods normally and under `python -O` in 6.832 and
+6.463 seconds respectively. The selected runtime materialization and source
+proof passed. The debugger compilation then exceeded its unchanged 15-second
+bound. Its log records MSVC 19.44.35229 compiler passes and the input filename,
+without a compiler diagnostic or a completed object/executable. The cause of
+the compilation timeout is unproven.
+
+Original artifact 13034244321 is 2,236,529 bytes, SHA-256
+`b32a65717c03221aee0e58687a4a057e457e6844fdcd1eb7b8b94846fdbb4f3f`.
+Independent readback verified its API size/digest, ZIP CRC, complete four-file
+campaign manifest, exact commit/tree/Git pack with 792 scoped inputs, 80 native
+source inputs and both selected runtime identities. The source pack is
+2,161,027 bytes, SHA-256
+`9dd6507ab40aeeb5e7035760bf4fc4088f52c8f60130213dc342ad5f2328c8cc`.
+The C control build, actual controls, engine archive/version verification,
+editor import and Godot fixture were all unexecuted. The campaign retains
+`fixture_attempts=0`, `completed=false` and its original failure classification.
+
+This failure exposed a separate apparatus defect: the Python build function
+wrote its compiler/source receipt only after `subprocess.run` returned, so
+`TimeoutExpired` bypassed the receipt. It also did not explicitly own compiler
+descendants. The correction preserves a source/compiler/command identity in an
+exclusive `launch.json` **before** process creation, and records build progress
+and final failure in `tools/build.json` even when an operation fails.
+
+The narrow `windows_build_process.py` helper uses the Windows Job API directly,
+so establishing build ownership requires no precompiled diagnostic executable.
+The compiler starts suspended with creation-time job membership and a restricted
+inherited handle list. The job kills remaining descendants when its last owned
+handle closes. Successful cleanup additionally requires observed process exits
+and empty job accounting; closing a job alone is never recorded as a joined
+operation. The unchanged 15-second operation reserves 1.5 seconds for
+termination and observed cleanup. This may stop incomplete compilation earlier;
+it does not provide extra compiler time.
+
+At most 32 processes and 160 observations are retained per operation. Samples
+record actual process IDs, creation times, executable paths, cumulative job and
+process CPU time, observed exits and raw log byte progress. `/showIncludes`
+retains compiler include progress in the original log. These opt-in observations
+are outside all gameplay/frame paths. They do not diagnose the original compile
+timeout or the earlier Godot access violation by inference.
+
+Sampling at no more than 10 Hz may miss a short-lived child's identity and exit.
+Job accounting supplies containment and final empty-job evidence; retained
+process handles supply identities and exit codes only for observed children.
+The campaign receipt states this limitation. The actual ownership controls
+require their deliberately long-lived child to be observed and joined.
+
+Before SDK compilation, three actual Windows Python controls must complete:
+normal parent/child exit, preserved exit 19, and a parent that exits zero while
+its child remains alive until bounded job termination. The last control requires
+the observed child to exit 124 and the job to be completely joined within its
+3-second control operation. Portable deadline models and raw-evidence adversaries
+are separate: 54 crash/campaign methods and 14 ownership methods pass locally,
+normally and under optimization. Actual Windows execution of the new helper
+remains pending. The campaign schema is now `play-windows-crash-campaign-v3`;
+the debugger event schema remains v2 and the C/C++ source is unchanged.
+
+Both earlier failed runs retain their original commits and artifacts. There is
+no unchanged-source retry, build cache, prebuilt compiler output, deadline
+expansion, shader change or production-fixture change in this correction.
+
 ## Platform basis and limitations
 
 Microsoft documents that [debug events suspend target threads until continued](https://learn.microsoft.com/en-us/windows/win32/debug/debugging-events)
@@ -266,6 +335,13 @@ The hash helper uses documented [CNG incremental hashing](https://learn.microsof
 and the 128-bit [file identity information](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info)
 to compare its opened file with the debugger's original file handle. An
 unavailable file identity remains failure, not an inferred successful binding.
+
+The build owner uses the documented
+[job process inventory](https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_basic_process_id_list),
+[job accounting](https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_basic_accounting_information)
+and [process CPU time](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes)
+APIs. A requested termination has no assumed completion time; failure to observe
+the complete join within the fixed operation budget remains failed evidence.
 
 [WER LocalDumps](https://learn.microsoft.com/en-us/windows/win32/wer/collecting-user-mode-dumps)
 does not support applications that implement their own custom crash reporting,

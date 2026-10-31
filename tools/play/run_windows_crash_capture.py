@@ -15,6 +15,7 @@ import sys
 import tempfile
 import time
 import zipfile
+import windows_build_process as owned_build
 
 from windows_crash_contract import (child_environment, read_events, read_json, read_load_identities, require, safe_file, sha,
                                    verify_capture, verify_control, verify_dump_timeout_control, verify_module_bindings)
@@ -26,7 +27,8 @@ import run_windows_godot_regressions as windows
 BASE='aa74448bad7ec77e5f152d9179a417ce76430009'
 EXTRA=('tools/play/windows_crash_debugger.cpp','tools/play/windows_crash_control.c',
        'tools/play/windows_crash_contract.py','tools/play/run_windows_crash_capture.py',
-       'tools/play/test_windows_crash_contract.py','.github/workflows/play-windows-crash-capture.yml',
+       'tools/play/test_windows_crash_contract.py','tools/play/windows_build_process.py',
+       'tools/play/test_windows_build_process.py','.github/workflows/play-windows-crash-capture.yml',
        'docs/audits/2026-10-31-play-windows-crash-capture.md','.gitattributes',
        'tools/ci/check_repository.py','tools/ci/check_docs.py','tools/ci/check_ci_provider_policy.py')
 SCOPES=(*windows.INPUT_SCOPES,*EXTRA)
@@ -38,6 +40,56 @@ ENGINE_FILES={
 }
 ENGINE_ARCHIVE_BYTES=83764371
 CONTROL_MODES=('normal','handled','crash','child-crash','hang')
+BUILD_CONTROL_MODES=('normal-child','nonzero','orphan-hang')
+
+def build_control_command(python: str, mode: str) -> list[str]:
+    if mode=='nonzero':
+        script='import sys; print("OWNED_NONZERO", flush=True); sys.exit(19)'
+    else:
+        child='import os,time; print("OWNED_CHILD " + str(os.getpid()), flush=True); time.sleep('+('20' if mode=='orphan-hang' else '0.4')+')'
+        script=('import subprocess,sys,time; p=subprocess.Popen([sys.executable,"-c",'+repr(child)+']); '
+                'print("OWNED_PARENT_CHILD " + str(p.pid), flush=True); '+
+                ('time.sleep(0.2)' if mode=='orphan-hang' else 'sys.exit(p.wait())'))
+    return [python,'-c',script]
+
+def build_control_identity(python: dict, mode: str) -> dict:
+    return {'kind':'actual-windows-owned-process-control','mode':mode,'python':python}
+
+def verify_build_control(mode: str, result: dict, log: str) -> None:
+    require(result['job_joined'] is True and result['error'] is None,'Build ownership control did not join')
+    if mode=='nonzero':
+        require(result['status']=='failed' and result['root_exit']==19 and not result['timed_out']
+                and not result['termination_requested'] and 'OWNED_NONZERO' in log,'Build nonzero-exit control failed')
+        return
+    pids=re.findall(r'^OWNED_PARENT_CHILD ([0-9]+)$',log,re.M)
+    require(len(pids)==1,'Build child PID control output missing')
+    child=int(pids[0]);last=result['samples'][-1]
+    require(child!=result['root_pid'] and last['total_processes']==2
+            and any(child in [row['pid'] for row in sample['active_observed']] for sample in result['samples']),
+            'Build child was not observed inside its owned job')
+    exits={row['pid']:row['exit_code'] for row in last['exited_observed']}
+    require(result['root_exit']==0 and exits.get(child)==(124 if mode=='orphan-hang' else 0),
+            'Build child actual termination code mismatch')
+    require(result['timed_out']==(mode=='orphan-hang') and result['termination_requested']==(mode=='orphan-hang')
+            and result['status']==('failed' if mode=='orphan-hang' else 'passed'),'Build child-hang timeout control failed')
+
+def run_build_controls(output: Path, environment: dict) -> dict:
+    python={'path':str(Path(sys.executable).resolve()),'sha256':sha(Path(sys.executable)),
+            'bytes':Path(sys.executable).stat().st_size}
+    results={}
+    receipt={'python':python,'results':results}
+    write(output/'build-ownership-controls.json',receipt)
+    for mode in BUILD_CONTROL_MODES:
+        command=build_control_command(python['path'],mode)
+        directory=output/('build-control-'+mode)
+        identity=build_control_identity(python,mode)
+        actual=owned_build.run(command,ROOT,environment,directory,identity,timeout=3 if mode=='orphan-hang' else 15)
+        results[mode]=actual
+        write(output/'build-ownership-controls.json',receipt)
+        reduced=owned_build.verify(directory,command,identity,cwd=str(ROOT))
+        require(reduced==actual,'Build ownership control reduction differs')
+        verify_build_control(mode,reduced,(directory/'process.log').read_text())
+    return receipt
 
 def write(path: Path, value) -> None:
     path.write_text(json.dumps(value,indent=2,sort_keys=True)+'\n',encoding='utf-8')
@@ -235,28 +287,46 @@ def engine(archive: Path, output: Path, environment: dict) -> tuple[Path,dict]:
     return console,{'version':windows.GODOT_VERSION,'archive_sha512':windows.GODOT_SHA512,
                     'archive_bytes':archive.stat().st_size,'executables':binaries}
 
+def sdk_command(compiler: str, source: str, binary: str, obj: str, pdb: str, extension: str) -> list[str]:
+    command=[compiler,'/nologo','/Bv','/showIncludes','/Od','/W4','/WX','/Z7','/MT',source,
+             '/Fe:'+binary,'/Fo:'+obj]
+    if extension=='cpp':command+=['/std:c++17','/EHsc']
+    command+=['/link','/DEBUG:FULL','/PDB:'+pdb]
+    if extension=='cpp':command+=['Dbghelp.lib','Bcrypt.lib']
+    return command
+
 def build_tools(output: Path, environment: dict) -> tuple[Path,Path,dict]:
     compiler=shutil.which('cl.exe')
     require(compiler is not None,'Installed MSVC x64 developer environment required')
     directory=output/'tools';directory.mkdir()
-    record={'compiler':{'path':compiler,'sha256':sha(Path(compiler))},'builds':[]}
+    record={'compiler':{'path':compiler,'sha256':sha(Path(compiler)),'bytes':Path(compiler).stat().st_size},'builds':[]}
     targets=[]
     for name,extension in (('windows_crash_debugger','cpp'),('windows_crash_control','c')):
         source=ROOT/'tools/play'/f'{name}.{extension}';binary=directory/(name+'.exe')
-        command=[compiler,'/nologo','/Bv','/Od','/W4','/WX','/Z7','/MT',str(source),
-                 '/Fe:'+str(binary),'/Fo:'+str(directory/(name+'.obj'))]
-        if extension=='cpp': command+=['/std:c++17','/EHsc']
-        command+=['/link','/DEBUG:FULL','/PDB:'+str(directory/(name+'.pdb'))]
-        if extension=='cpp': command+=['Dbghelp.lib','Bcrypt.lib']
-        started=time.perf_counter()
-        with (directory/(name+'-build.log')).open('wb') as log:
-            process=subprocess.run(command,cwd=directory,env=environment,stdout=log,stderr=subprocess.STDOUT,timeout=15)
-        row={'command':command,'returncode':process.returncode,'seconds':time.perf_counter()-started,
-             'source':source.relative_to(ROOT).as_posix(),'source_sha256':sha(source)}
-        record['builds'].append(row);write(directory/'build.json',record)
-        require(process.returncode==0 and binary.is_file(),'MSVC diagnostic/control build failed')
+        command=sdk_command(compiler,str(source),str(binary),str(directory/(name+'.obj')),
+                            str(directory/(name+'.pdb')),extension)
+        identity={'source':source.relative_to(ROOT).as_posix(),'source_sha256':sha(source),
+                  'compiler':record['compiler']}
+        row={'command':command,'identity':identity,'operation':name+'-operation','status':'pending_owned_operation'}
+        record['builds'].append(row)
+        write(directory/'build.json',record)
+        operation=directory/row['operation']
+        try:
+            row['result']=owned_build.run(command,directory,environment,operation,identity)
+            row['status']=row['result']['status']
+        except (OSError,ValueError) as error:
+            row.update(status='failed',error=str(error))
+            raise
+        finally:
+            write(directory/'build.json',record)
+        require(sha(source)==identity['source_sha256'] and sha(Path(compiler))==record['compiler']['sha256'],
+                'Compiler/source changed during build')
+        require(row['result']['status']=='passed' and binary.is_file(),'MSVC diagnostic/control build failed or timed out; original operation evidence retained')
+        require(owned_build.verify(operation,command,identity,cwd=str(directory))==row['result'],'Build process reduction differs')
         require((directory/(name+'.pdb')).is_file(),'Diagnostic debug symbols were not retained')
-        row.update(binary_sha256=sha(binary),binary_bytes=binary.stat().st_size)
+        row.update(binary_sha256=sha(binary),binary_bytes=binary.stat().st_size,
+                   source=identity['source'],source_sha256=identity['source_sha256'],
+                   returncode=row['result']['root_exit'],seconds=row['result']['seconds'])
         targets.append(binary)
     write(directory/'build.json',record)
     return targets[0],targets[1],record
@@ -275,12 +345,21 @@ def verify_directory(output: Path, expected: str) -> dict:
     """Read original artifacts offline, preserving failure as failure."""
     verify_manifest(output)
     report=read_json(output/'campaign.json')
-    require(report['schema']=='play-windows-crash-campaign-v2' and report['completed'] is True
+    require(report['schema']=='play-windows-crash-campaign-v3' and report['completed'] is True
             and report['errors']==[] and report['fixture_attempts']==1,'Diagnostic campaign is incomplete')
     require(report['original_failed_run']==41175131563 and report['original_failed_source']==BASE
             and report['original_failure_still_blocking'] is True,'Original failure provenance was rewritten')
     canonical=verify_source_pack(output,report['source'],expected)
     runtime_proof(report['source'],canonical,report['runtime'])
+    controls=report['build_ownership_controls']
+    require(set(controls['results'])==set(BUILD_CONTROL_MODES),'Complete build ownership control inventory')
+    require(controls==read_json(output/'build-ownership-controls.json'),'Original build ownership control receipt differs')
+    for mode in BUILD_CONTROL_MODES:
+        directory=output/('build-control-'+mode)
+        reduced=owned_build.verify(directory,build_control_command(controls['python']['path'],mode),
+                                   build_control_identity(controls['python'],mode),cwd=report['paths']['source'])
+        require(reduced==controls['results'][mode],'Build ownership control original reduction mismatch')
+        verify_build_control(mode,reduced,(directory/'process.log').read_text())
     require(report['engine']=={'version':windows.GODOT_VERSION,'archive_sha512':windows.GODOT_SHA512,
                               'archive_bytes':ENGINE_ARCHIVE_BYTES,'executables':ENGINE_FILES},'Engine receipt differs from official pin')
     require((output/'version.log').read_text(encoding='utf-8').strip()==windows.GODOT_VERSION,'Original version log mismatch')
@@ -296,6 +375,19 @@ def verify_directory(output: Path, expected: str) -> dict:
                 and rows[0]['source_sha256']==hashlib.sha256(canonical[source_path]).hexdigest()
                 and rows[0]['binary_sha256']==tool['sha256'] and rows[0]['binary_bytes']==tool['bytes'],
                 'MSVC build does not bind the retained tool to exact source')
+        row=rows[0]
+        operation_name=name+'-operation'
+        expected_identity={'source':source_path,'source_sha256':hashlib.sha256(canonical[source_path]).hexdigest(),
+                           'compiler':report['build']['compiler']}
+        tools_path=ntpath.join(report['paths']['output'],'tools')
+        command=sdk_command(report['build']['compiler']['path'],ntpath.join(report['paths']['source'],source_path.replace('/','\\')),
+                            ntpath.join(tools_path,name+'.exe'),ntpath.join(tools_path,name+'.obj'),
+                            ntpath.join(tools_path,name+'.pdb'),extension)
+        require(row['operation']==operation_name and row['command']==command and row['identity']==expected_identity,
+                'Original build command/source identity mismatch')
+        reduced=owned_build.verify(output/'tools'/operation_name,command,expected_identity,cwd=tools_path)
+        require(reduced==row['result'] and reduced['status']=='passed' and reduced['timeout_seconds']==15,
+                'Original build ownership/deadline reduction mismatch')
     require(set(report['controls'])==set(CONTROL_MODES)|{'dump-writer-timeout'},'Complete diagnostic control inventory mismatch')
     results={}
     for name in (*('control-'+mode for mode in CONTROL_MODES),'control-dump-writer-timeout','import',FIXTURE):
@@ -359,9 +451,9 @@ def main() -> int:
     require(os.environ.get('GITHUB_RUN_ATTEMPT','1')=='1','Automatic reruns are not authorized by this one-attempt diagnostic')
     output=args.output.resolve(); require(not output.exists(),'Retain earlier evidence; output already exists')
     output.mkdir(parents=True)
-    report={'schema':'play-windows-crash-campaign-v2','status':'incomplete','completed':False,'errors':[],
+    report={'schema':'play-windows-crash-campaign-v3','status':'incomplete','completed':False,'errors':[],
             'original_failed_run':41175131563,'original_failed_source':BASE,'original_failure_still_blocking':True,
-            'scope':'Opt-in debugger evidence only; one prescribed unchanged-fixture attempt, no automatic retries or integration approval.',
+            'scope':'Opt-in debugger evidence only; one prescribed unchanged-fixture attempt, no automatic retries or integration approval. Build Job accounting establishes containment and final empty-job state; 10 Hz sampling records only observed child identities and exits, not every short-lived child.',
             'run_id':os.environ.get('GITHUB_RUN_ID'),'run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
             'platform':platform.platform(),'controls':{},'fixture_attempts':0,
             'paths':{'source':str(ROOT),'output':str(output)}}
@@ -372,6 +464,7 @@ def main() -> int:
     try:
         report['source']=source_archive(output,args.expected_source_sha)
         report['runtime']=windows.verify_retained_runtime(ROOT)
+        report['build_ownership_controls']=run_build_controls(output,environment)
         broker,control,report['build']=build_tools(output,environment)
         report['tools']={name:{'path':str(path.resolve()),'sha256':sha(path),'bytes':path.stat().st_size}
                          for name,path in [('broker',broker),('control',control)]}
@@ -404,6 +497,8 @@ def main() -> int:
         report['completed']=True
     except (OSError,RuntimeError,ValueError,KeyError,subprocess.SubprocessError,zipfile.BadZipFile) as error:
         report['status']='failed';report['errors'].append(str(error))
+        for name,path in (('build','tools/build.json'),('build_ownership_controls','build-ownership-controls.json')):
+            if (output/path).is_file():report[name]=read_json(output/path)
     seal(output,report)
     if report['completed']:
         try:verify_directory(output,args.expected_source_sha)

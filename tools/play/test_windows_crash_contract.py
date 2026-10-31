@@ -3,6 +3,7 @@
 import copy
 import hashlib
 import json
+import ntpath
 from pathlib import Path
 import struct
 import tempfile
@@ -11,6 +12,7 @@ from unittest import mock
 
 import windows_crash_contract as contract
 import run_windows_crash_capture as campaign
+from test_windows_build_process import synthetic_operation
 
 CODE=contract.ACCESS_VIOLATION
 
@@ -360,7 +362,7 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'inventory mismatch'):campaign.verify_manifest(self.root)
 
     def test_incomplete_campaign_is_not_an_offline_pass(self):
-        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v2','completed':False})
+        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v3','completed':False})
         campaign.write(self.root/'MANIFEST.json',{path.name:{'sha256':contract.sha(path),'bytes':path.stat().st_size}
             for path in self.root.iterdir() if path.name!='MANIFEST.json'})
         with self.assertRaisesRegex(ValueError,'campaign is incomplete'):campaign.verify_directory(self.root,'a'*40)
@@ -377,22 +379,38 @@ class OfflineCompositionTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
         self.head='a'*40;self.canonical={}
-        report=self.report={'schema':'play-windows-crash-campaign-v2','completed':True,'errors':[],'fixture_attempts':1,
+        report=self.report={'schema':'play-windows-crash-campaign-v3','completed':True,'errors':[],'fixture_attempts':1,
             'original_failed_run':41175131563,'original_failed_source':campaign.BASE,'original_failure_still_blocking':True,
             'paths':{'source':'C:\\source','output':'C:\\evidence'},'source':{'commit':self.head,'tree':'b'*40,'inputs':{}},
-            'runtime':{},'controls':{},'tools':{},'build':{'builds':[]},'assertion_footer_present':True,
+            'runtime':{},'controls':{},'tools':{},
+            'build':{'builds':[],'compiler':{'path':'C:\\compiler\\cl.exe','sha256':'3'*64,'bytes':1234}},
+            'assertion_footer_present':True,
             'status':'no_process_failure_observed',
             'engine':{'version':campaign.windows.GODOT_VERSION,'archive_sha512':campaign.windows.GODOT_SHA512,
                       'archive_bytes':campaign.ENGINE_ARCHIVE_BYTES,'executables':campaign.ENGINE_FILES}}
         (self.root/'tools').mkdir();(self.root/'version.log').write_text(campaign.windows.GODOT_VERSION+'\n')
+        python={'path':'C:\\python.exe','sha256':'4'*64,'bytes':4321}
+        report['build_ownership_controls']={'python':python,'results':{}}
+        for mode in campaign.BUILD_CONTROL_MODES:
+            command=campaign.build_control_command(python['path'],mode)
+            identity=campaign.build_control_identity(python,mode)
+            report['build_ownership_controls']['results'][mode]=synthetic_operation(
+                self.root/('build-control-'+mode),command,identity,report['paths']['source'],
+                mode=mode,timeout=3 if mode=='orphan-hang' else 15)
+        campaign.write(self.root/'build-ownership-controls.json',report['build_ownership_controls'])
         for role,name,extension in (('broker','windows_crash_debugger','cpp'),('control','windows_crash_control','c')):
             binary=self.root/'tools'/f'{name}.exe';binary.write_bytes(b'MZsynthetic-'+role.encode())
             source_path=f'tools/play/{name}.{extension}';self.canonical[source_path]=b'synthetic source\n'
             tool={'path':'C:\\evidence\\tools\\'+name+'.exe','sha256':contract.sha(binary),'bytes':binary.stat().st_size}
             report['tools'][role]=tool
-            report['build']['builds'].append({'source':source_path,'returncode':0,'seconds':1,
-                'source_sha256':hashlib.sha256(self.canonical[source_path]).hexdigest(),
-                'binary_sha256':tool['sha256'],'binary_bytes':tool['bytes']})
+            source_hash=hashlib.sha256(self.canonical[source_path]).hexdigest()
+            identity={'source':source_path,'source_sha256':source_hash,'compiler':report['build']['compiler']}
+            command=campaign.sdk_command(report['build']['compiler']['path'],ntpath.join('C:\\source',source_path.replace('/','\\')),
+                tool['path'],'C:\\evidence\\tools\\'+name+'.obj','C:\\evidence\\tools\\'+name+'.pdb',extension)
+            result=synthetic_operation(self.root/'tools'/(name+'-operation'),command,identity,'C:\\evidence\\tools')
+            report['build']['builds'].append({'source':source_path,'returncode':0,'seconds':result['seconds'],
+                'source_sha256':source_hash,'binary_sha256':tool['sha256'],'binary_bytes':tool['bytes'],
+                'operation':name+'-operation','identity':identity,'command':command,'result':result,'status':'passed'})
         campaign.write(self.root/'tools/build.json',report['build'])
         for path in (campaign.windows.NATIVE,campaign.windows.RAPIER):
             report['source']['inputs'][path]={'working_sha256':'d'*64,'working_bytes':1234}
@@ -453,6 +471,28 @@ class OfflineCompositionTests(unittest.TestCase):
 
     def test_full_offline_composition_reads_every_original_case(self):
         self.assertEqual(campaign.verify_directory(self.root,self.head)['status'],'no_process_failure_observed')
+
+    def test_resealed_missing_owned_build_control_is_refused(self):
+        del self.report['build_ownership_controls']['results']['orphan-hang']
+        campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'build ownership control inventory'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_changed_compile_command_is_refused(self):
+        row=self.report['build']['builds'][0]
+        row['command'].remove('/WX')
+        campaign.write(self.root/'tools/build.json',self.report['build'])
+        campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'build command/source identity'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_missing_build_join_is_refused(self):
+        operation=self.root/'tools/windows_crash_debugger-operation/result.json'
+        result=contract.read_json(operation);result['job_joined']=False
+        campaign.write(operation,result)
+        campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'ownership/cleanup'):
+            campaign.verify_directory(self.root,self.head)
 
     def test_resealed_wrong_actual_fixture_command_is_refused(self):
         path=self.root/campaign.FIXTURE/'process.json';receipt=contract.read_json(path);receipt['debuggee_command'][-1]='res://tests/neutral_only.gd'

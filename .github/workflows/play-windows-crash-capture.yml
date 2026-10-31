@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'tools/play/*windows_crash*'
+      - 'tools/play/*windows_build*'
       - '.github/workflows/play-windows-crash-capture.yml'
   workflow_dispatch:
 
@@ -56,6 +57,10 @@ jobs:
           python tools/play/test_windows_crash_contract.py 2>&1 | Tee-Object "$env:EVIDENCE_DIR/contracts.log"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -O tools/play/test_windows_crash_contract.py 2>&1 | Tee-Object "$env:EVIDENCE_DIR/contracts-optimized.log"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tools/play/test_windows_build_process.py 2>&1 | Tee-Object "$env:EVIDENCE_DIR/build-contracts.log"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -O tools/play/test_windows_build_process.py 2>&1 | Tee-Object "$env:EVIDENCE_DIR/build-contracts-optimized.log"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Materialize accepted selected runtimes and pinned engine archive
         working-directory: source
