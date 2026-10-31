@@ -1,6 +1,16 @@
 {
   "questions": [
     {
+      "id": "PLAY-DECOMPOSITION-01",
+      "query": "Does the Windows palette decomposition compiler feasibility GO satisfy the thirty-second cold Main startup contract?",
+      "canonical": ["operations/testing-validation-and-replay.md"],
+      "facts": [
+        "GO requires a complete program family inside both twenty-second serial compiler and whole-process observation budgets, with authenticated controls and original evidence.",
+        "It proposes a separately qualified renderer prototype and supplies no pixel, device, real Main or gameplay acceptance; broken apparatus is INCONCLUSIVE, not NO-GO for the shader."
+      ],
+      "sources": ["../tools/diagnostics/run_pace003_decomposition.py"]
+    },
+    {
       "id": "PLAY-LIFETIME-01",
       "query": "Does the accepted PLAY fifty real desktop lifetime campaign qualify solver reconstruction, slow native work and human gameplay feel?",
       "canonical": ["systems/player-control-playground.md"],

@@ -10,6 +10,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Windows palette decomposition feasibility — 2026-10-31
+
+The [isolated investigation](../audits/2026-10-31-play-pace003-palette-decomposition.md)
+tests whether smaller material programs plus a compositor fit a preregistered
+serial compiler budget. It changes no production renderer or runtime. The
+[test contract](../operations/testing-validation-and-replay.md#windows-palette-decomposition-feasibility)
+separates compiler GO/NO-GO from real Windows/Linux graphical acceptance.
+#310's demonstrated Linux correction and separately failed Windows gate remain
+distinct; #308 remains held, and #270's physical/human acceptance is still open.
+
 ## Production CI parallelism — 2026-10-31
 
 **Implemented in this integration source; resulting-head qualification remains

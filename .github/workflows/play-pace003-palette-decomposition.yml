@@ -1,0 +1,125 @@
+name: PLAY-PACE-003 NONQUALIFYING palette decomposition feasibility
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/diagnostics/run_pace003_decomposition.py'
+      - 'tools/diagnostics/test_run_pace003_decomposition.py'
+      - 'tools/diagnostics/pace003_decomposition_variants.py'
+      - 'tools/diagnostics/test_pace003_decomposition_variants.py'
+      - '.github/workflows/play-pace003-palette-decomposition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: play-pace003-decomposition-${{ github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  DIAGNOSTIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  EVIDENCE_DIR: build/play-pace003-decomposition
+  PYTHONUTF8: '1'
+
+# Explicit branch-scoped experiment, including draft PRs. No Godot or renderer
+# installation/execution; no production gate, runtime, shader or deadline change.
+jobs:
+  windows:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.ref == 'codex/play-pace003-palette-decomposition-20261031'
+    name: Windows NONQUALIFYING serial compiler feasibility
+    runs-on: windows-2022
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out exact diagnostic head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.DIAGNOSTIC_SHA }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Record exact source and provider policy
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR/input"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          test "$(git rev-parse HEAD)" = "$DIAGNOSTIC_SHA"
+          echo 'NONQUALIFYING compiler feasibility only. GO permits proposing a separately qualified renderer prototype.' > "$EVIDENCE_DIR/SCOPE.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider-policy.json"
+
+      - name: Record original Windows host
+        shell: pwsh
+        run: |
+          $identity = @{
+            Cpu = @(Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors)
+            Graphics = @(Get-CimInstance Win32_VideoController | Select-Object Name, DriverVersion, VideoProcessor)
+            OperatingSystem = @(Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber, TotalVisibleMemorySize)
+          }
+          $identity | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 "$env:EVIDENCE_DIR/host.json"
+
+      - name: Install pinned process snapshot dependency
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python -m pip install psutil==7.1.3 2>&1 | tee "$EVIDENCE_DIR/python-dependencies.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+
+      - name: Retain and authenticate original compiler input
+        timeout-minutes: 3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh --version > "$EVIDENCE_DIR/input/gh-version.txt"
+          gh api repos/techrote/cybersand/actions/artifacts/13020405751 > "$EVIDENCE_DIR/input/artifact-metadata.json"
+          gh api repos/techrote/cybersand/actions/artifacts/13020405751/zip > "$EVIDENCE_DIR/input/original-13020405751.zip"
+          python -B tools/diagnostics/run_pace003_decomposition.py --authenticate-only \
+            --archive "$EVIDENCE_DIR/input/original-13020405751.zip" \
+            --metadata "$EVIDENCE_DIR/input/artifact-metadata.json" \
+            --output "$EVIDENCE_DIR/authenticated" 2>&1 | tee "$EVIDENCE_DIR/input-authentication.log"
+
+      - name: Execute offline controls under normal and optimized Python
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python tools/diagnostics/test_pace003_decomposition_variants.py --source "$EVIDENCE_DIR/authenticated/captured-call44.hlsl" 2>&1 | tee "$EVIDENCE_DIR/variant-tests.log"
+          python -O tools/diagnostics/test_pace003_decomposition_variants.py --source "$EVIDENCE_DIR/authenticated/captured-call44.hlsl" 2>&1 | tee "$EVIDENCE_DIR/variant-optimized-tests.log"
+          python tools/diagnostics/test_run_pace003_decomposition.py --source "$EVIDENCE_DIR/authenticated/captured-call44.hlsl" 2>&1 | tee "$EVIDENCE_DIR/harness-tests.log"
+          python -O tools/diagnostics/test_run_pace003_decomposition.py --source "$EVIDENCE_DIR/authenticated/captured-call44.hlsl" 2>&1 | tee "$EVIDENCE_DIR/harness-optimized-tests.log"
+
+      - name: Execute registered fresh compiler processes serially
+        timeout-minutes: 28
+        run: |
+          set -euo pipefail
+          python -B tools/diagnostics/run_pace003_decomposition.py \
+            --archive "$EVIDENCE_DIR/input/original-13020405751.zip" \
+            --metadata "$EVIDENCE_DIR/input/artifact-metadata.json" \
+            --output "$EVIDENCE_DIR/campaign" --expected-source-sha "$DIAGNOSTIC_SHA" \
+            2>&1 | tee "$EVIDENCE_DIR/execution.log"
+
+      - name: Verify original evidence and recompute the decision
+        if: always()
+        run: |
+          set -euo pipefail
+          python -B tools/diagnostics/run_pace003_decomposition.py --verify \
+            --output "$EVIDENCE_DIR/campaign" --expected-source-sha "$DIAGNOSTIC_SHA" 2>&1 | tee "$EVIDENCE_DIR/readback.log"
+
+      - name: Retain every first attempt and negative result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-pace003-decomposition-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace003-decomposition/
+          if-no-files-found: error
+          retention-days: 30

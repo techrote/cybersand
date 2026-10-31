@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Windows palette decomposition feasibility — 2026-10-31
+
+The [bounded compiler experiment](audits/2026-10-31-play-pace003-palette-decomposition.md)
+owns exact inputs, controls, results and the prototype decision. The
+[test contract](operations/testing-validation-and-replay.md#windows-palette-decomposition-feasibility)
+explains why compiler success cannot clear Windows graphical startup or #308.
+
 ## CI parallel production integration — 2026-10-31
 
 The [production CI record](audits/2026-10-31-ci-parallel-production-integration.md)
