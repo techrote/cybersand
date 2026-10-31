@@ -1,0 +1,145 @@
+{
+  "schema": "cybersand.render-copy-int64-correction-qualification.v1",
+  "date": "2026-10-29",
+  "pull_request": 290,
+  "related_issue": 281,
+  "source": {
+    "base_main": "91778603db950a817b82fc6a4f75efee201f5044",
+    "reviewed_failure_source": "f041aac3f2574e5524b807f8c2efdc27bee241e0",
+    "repair_commit": "1769d6f77011ac51f6e47f0f60cd0be4e1cac307",
+    "executed_source": "60915dc86631271ea8661377a3458149adda9361",
+    "executed_tree": "dc370ee4e957ce34e752ff665afef0ed9e325326",
+    "changed_source_files": {
+      "native/src/world.cpp": {
+        "blob_sha": "a6afd8cad4264ac2eca0362d14711158e3606760",
+        "sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+      },
+      "native/tests/test_world.cpp": {
+        "blob_sha": "5613d2166c71fa49fd2b8f65e8caa93857b5d65f",
+        "sha256": "cfb54f5cc58388f1581bd367d3a19a7ff3d260583028980606c6b0e6fda7a69d"
+      }
+    }
+  },
+  "review": {
+    "original": "https://github.com/techrote/cybersand/pull/290#pullrequestreview-5691486464",
+    "reproducible_defect": "signed overflow forming exclusive region.x+region.width at INT64_MAX",
+    "correction_thread": "https://github.com/techrote/cybersand/pull/290#discussion_r4407554719",
+    "approval": "not-granted"
+  },
+  "qualification": {
+    "archived_source": {
+      "workflow_only_head": "7b8b4773077464de6aa25c5afbac004e285bab7e",
+      "run": 40796751009,
+      "artifact_id": 12863903343,
+      "zip_sha256": "e31cbc9fb7afac6e3af4fd563405cb4ff18902bf4b53cb1755e57a5551ac8e45",
+      "tar_sha256": "fa62e4e47e7bf6f42533acef31fe8884d8b676ab00135b9fb951b40ba328ad61",
+      "zip_crc": "pass",
+      "code_delta_from_executed_source": "only .github/workflows/render-copy-290-targeted.yml"
+    },
+    "native": {
+      "run": 40796751009,
+      "conclusion": "success",
+      "linux": {
+        "compiler": "GCC 13.3.0 Ubuntu 24.04",
+        "native_suite": {
+          "tests": 165,
+          "failures": 0
+        },
+        "focused_asan_ubsan_render": {
+          "tests": 3,
+          "failures": 0
+        },
+        "focused_asan_ubsan_c_api_rgba": {
+          "tests": 1,
+          "failures": 0
+        },
+        "sanitizer_reports": 0,
+        "artifact_id": 12864787443,
+        "zip_sha256": "9e4c581e0a82b9b8dd263ed9f175f04b648b87c60708dce036edbcd9c73e41f6",
+        "zip_crc": "pass"
+      },
+      "windows": {
+        "platform": "Windows Server 2022 MSVC 19.44.35229",
+        "native_suite": {
+          "tests": 165,
+          "failures": 0
+        },
+        "artifact_id": 12865140333,
+        "zip_sha256": "ff428f371ff59ac68a3a76ca0a78a96aa889f264c94353d78d4d0e762f7c4841",
+        "zip_crc": "pass"
+      }
+    },
+    "godot": {
+      "workflow_only_head": "fbb9eab458fcea7bcab942fc47db3d8eb9bcd9f2",
+      "source_delta": "only .github/workflows/render-copy-290-godot.yml",
+      "run": 40796772252,
+      "conclusion": "success",
+      "jobs": {
+        "linux_host": "success",
+        "windows_build": "success",
+        "windows_host": "success"
+      },
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "rapier_version": "0.35.2",
+      "both_hosts": {
+        "render_world_generation_assertions": 23,
+        "failures": 0,
+        "render_patch_handoff": "pass"
+      },
+      "linux": {
+        "artifact_id": 12864820692,
+        "zip_sha256": "9038b29ff81292c233b90d50e7df8d5886d8da87982277795a987c8459d3157f",
+        "zip_crc": "pass",
+        "built_runtime_sha256_reported": "0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45",
+        "runtime_binary_retained_in_zip": false
+      },
+      "windows_build": {
+        "artifact_id": 12864098143,
+        "zip_sha256": "776e3730026be74b44224e0c680952320f9c505072f1840e5712416486f29f22",
+        "zip_crc": "pass",
+        "built_dll_sha256_verified": "6b044fb6bba96d5053251c98125e5f4f0391e0e55ddb66da93e91f4495a89cdd"
+      },
+      "windows_host": {
+        "artifact_id": 12864666382,
+        "zip_sha256": "6205ed1c5ff9e52bd07db5b93e2b04186aacbb106eaf58373133f0c896e2c3c1",
+        "zip_crc": "pass",
+        "built_dll_sha_verified_against_build_manifest": true
+      }
+    },
+    "additional_local": {
+      "compiler": "Debian GCC 14.2.0",
+      "compile_flags": "-std=c++20 -O0 -g1 -fsanitize=undefined -fno-omit-frame-pointer",
+      "sanitizer_options": "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+      "outcome": "pass",
+      "valid_region_count": 12,
+      "stride_modes_per_region": 2,
+      "chunk_size_modes": [
+        128,
+        32
+      ],
+      "invalid_region_refusals_per_chunk": 2,
+      "c_api_extra_valid_max": 1,
+      "c_api_invalid_refusals": 2,
+      "scratch_probe_sha256": "f6c8162445422ea472f41d020342ceb8894ddd459aff0aaaf9573a622cc6a0f0",
+      "scratch_log_sha256": "5f838940140456287687d0fe396e744d59f9a22e0980f14a539da2a4c290b9b2",
+      "scratch_source_archived_in_git": false
+    }
+  },
+  "retained_negative": {
+    "run": 40792599185,
+    "executed_old_source": "f041aac3f2574e5524b807f8c2efdc27bee241e0",
+    "status": "failure",
+    "reason": "full 18-minute ASan/UBSan execution timeout exit 124 after 146 passing test lines",
+    "sanitizer_report_count": 0,
+    "full_suite_qualified": false,
+    "artifact_id": 12863827441,
+    "artifact_zip_sha256": "4ea00fee1f03231843c32459035388350de4e89b5adf475fdb9b105ca5c25f42"
+  },
+  "outstanding": [
+    "Full ASan/UBSan all-test and default ready-PR Native/GDExtension matrices not qualified by scoped lanes",
+    "Strict runtime source-sensitive provenance still stale; source-matched Windows/Linux LFS binaries not published",
+    "Separate independent review of corrected source required; author-account review not human approval",
+    "Web/browser and representative desktop GPU/frame pacing not qualified",
+    "Independent SOL281 physical search B=289 remains NO-GO"
+  ]
+}
