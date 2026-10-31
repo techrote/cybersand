@@ -1,0 +1,119 @@
+# Informational dependency advice; no required Native/Godot job consumes this result.
+name: Native source-scope advisory (report only)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      base_sha:
+        description: Immutable 40-hex base commit for this report
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-scope-advisory-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  classification:
+    name: exact-source report-only Native scope
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out the exact executed commit and complete comparison history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Preserve provider and runner policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_ci_provider_policy.py
+      - name: Verify scope advice and source-failure contracts
+        run: |
+          set -euo pipefail
+          python3 tools/ci/native_scope_classifier.py --self-test
+          python3 -O tools/ci/native_scope_classifier.py --self-test
+          python3 tools/ci/test_native_scope_classifier.py -v
+          python3 -O tools/ci/test_native_scope_classifier.py -v
+      - name: Report the immutable Git comparison without authorizing a skip
+        env:
+          SCOPE_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || inputs.base_sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/native-scope
+          python3 tools/ci/native_scope_classifier.py \
+            --base-sha "$SCOPE_BASE_SHA" \
+            --head-sha "$GITHUB_SHA" \
+            --output build/native-scope/candidate-advisory.json \
+            | tee build/native-scope/classifier-console.log
+      - name: Retain authenticated apparatus and report identities
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+
+          head = os.environ["GITHUB_SHA"]
+          folder = Path("build/native-scope")
+          retained = folder / "source"
+          retained.mkdir(parents=True, exist_ok=True)
+          sources = {}
+          paths = (
+              "tools/ci/native_scope_classifier.py",
+              "tools/ci/test_native_scope_classifier.py",
+              ".github/workflows/native-scope-advisory.yml",
+          )
+          for relative in paths:
+              data = Path(relative).read_bytes()
+              committed = subprocess.check_output(
+                  ["git", "show", head + ":" + relative], timeout=30)
+              if data != committed:
+                  raise SystemExit("Executed source differs from commit: " + relative)
+              target = retained / Path(relative).name
+              target.write_bytes(data)
+              sources[relative] = {
+                  "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(),
+                  "retained_path": str(target.relative_to(folder)),
+              }
+          outputs = {}
+          for name in ("candidate-advisory.json", "classifier-console.log"):
+              path = folder / name
+              if path.is_file():
+                  data = path.read_bytes()
+                  outputs[name] = {
+                      "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest(),
+                  }
+          receipt = {
+              "schema": "cybersand-native-scope-workflow-receipt-v1",
+              "source_sha": head,
+              "run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "event": os.environ["GITHUB_EVENT_NAME"],
+              "sources": sources, "outputs": outputs,
+              "native_skip_authorized": False,
+              "existing_native_merge_gate_changed": False,
+              "scope": "Report-only committed Git dependency advice; no native/runtime qualification",
+          }
+          (folder / "workflow-receipt.json").write_text(
+              json.dumps(receipt, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+          PYCODE
+      - name: Upload original scope evidence including failed decisions
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-scope-advisory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-scope/
+          if-no-files-found: error
+          retention-days: 90

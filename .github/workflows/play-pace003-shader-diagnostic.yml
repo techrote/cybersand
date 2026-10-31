@@ -1,0 +1,237 @@
+name: PLAY-PACE-003 NONQUALIFYING cold shader diagnosis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'godot/shaders/material_palette.gdshader'
+      - 'godot/tests/play_pace003_palette_atlas.gd'
+      - 'tools/play/compare_pace003_palette_atlas.py'
+      - 'tools/play/run_pace003_shader_diagnostic.py'
+      - 'tools/play/gl_startup_trace.c'
+      - '.github/workflows/play-pace003-shader-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: play-pace003-shader-diagnostic-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DIAGNOSTIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  EVIDENCE_DIR: build/play-pace003-shader-diagnostic
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+# Draft-eligible, bounded diagnosis only. An expected original baseline timeout
+# remains a failed job; candidate execution still runs and its evidence uploads.
+# Ordinary Main/PACE003 qualification remains in its separate untouched workflow.
+# Two literal hosted labels preserve the repository provider-policy contract.
+jobs:
+  linux:
+    name: Linux NONQUALIFYING original and candidate shaders
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+      GALLIVM_PERF: nopt
+    steps:
+      - name: Check out exact diagnostic head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.DIAGNOSTIC_SHA }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Record source and diagnostic scope
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          test "$(git rev-parse HEAD)" = "$DIAGNOSTIC_SHA"
+          git fetch --no-tags --depth=1 origin 2443a78378d649df588efeac9db7c54084473329
+          git show '2443a78378d649df588efeac9db7c54084473329:godot/shaders/material_palette.gdshader' > "$EVIDENCE_DIR/frozen-baseline.gdshader"
+          echo 'NONQUALIFYING isolated shader diagnosis; original Main/PACE003 acceptance is separate.' > "$EVIDENCE_DIR/SCOPE.txt"
+          lscpu > "$EVIDENCE_DIR/lscpu.txt"
+          cat /etc/os-release > "$EVIDENCE_DIR/os-release.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider-policy.json"
+          python tools/play/run_pace003_shader_diagnostic.py --self-test 2>&1 | tee "$EVIDENCE_DIR/apparatus-tests.log"
+
+      - name: Install pinned diagnostic analysis dependencies
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.4 Pillow==12.0.0 psutil==7.1.3 2>&1 | tee "$EVIDENCE_DIR/python-dependencies.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+          python -O tools/play/compare_pace003_palette_atlas.py --self-test 2>&1 | tee "$EVIDENCE_DIR/comparator-tests.log"
+
+      - name: Materialize original retained Linux runtimes
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude="" 2>&1 | tee "$EVIDENCE_DIR/lfs.log"
+
+      - name: Prepare identical pinned Linux Godot
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          curl --fail --location --connect-timeout 20 --max-time 240 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          sha256sum "$RUNNER_TEMP/godot.zip" "$GODOT_BIN" > "$EVIDENCE_DIR/godot.sha256"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Install identical hosted software graphics
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          sudo apt-get update 2>&1 | tee "$EVIDENCE_DIR/apt-update.log"
+          sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils 2>&1 | tee "$EVIDENCE_DIR/apt-install.log"
+
+      - name: Build source-matched NONQUALIFYING GL audit helper
+        timeout-minutes: 2
+        run: |
+          set -euo pipefail
+          cc --version > "$EVIDENCE_DIR/gl-trace-compiler.txt"
+          cc -std=c11 -O2 -Wall -Wextra -Werror -fPIC -shared -Wl,-Bsymbolic-functions \
+            tools/play/gl_startup_trace.c -o "$RUNNER_TEMP/gl_startup_trace.so" -ldl -pthread \
+            2>&1 | tee "$EVIDENCE_DIR/gl-trace-build.log"
+          sha256sum tools/play/gl_startup_trace.c "$RUNNER_TEMP/gl_startup_trace.so" > "$EVIDENCE_DIR/gl-trace.sha256"
+          echo "GL_TRACE_LIBRARY=$RUNNER_TEMP/gl_startup_trace.so" >> "$GITHUB_ENV"
+
+      - name: Run both cold shader diagnostics and retain original failures
+        # 240 s import; separate fixed 180 s graphical processes. The runner
+        # continues to candidate after original failure and returns nonzero.
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" bash -c '
+            set -euo pipefail
+            glxinfo -B > "$EVIDENCE_DIR/graphics.txt"
+            python tools/play/run_pace003_shader_diagnostic.py --godot "$GODOT_BIN" \
+              --output "$EVIDENCE_DIR/campaign" --expected-source-sha "$DIAGNOSTIC_SHA" \
+              --rendering-driver opengl3 --gl-trace-library "$GL_TRACE_LIBRARY"
+          ' 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+
+      - name: Retain all original Linux diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-pace003-shader-diagnostic-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace003-shader-diagnostic/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows:
+    name: Windows NONQUALIFYING original and candidate shaders
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    steps:
+      - name: Check out exact diagnostic head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.DIAGNOSTIC_SHA }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Record source and diagnostic scope
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          test "$(git rev-parse HEAD)" = "$DIAGNOSTIC_SHA"
+          git fetch --no-tags --depth=1 origin 2443a78378d649df588efeac9db7c54084473329
+          git show '2443a78378d649df588efeac9db7c54084473329:godot/shaders/material_palette.gdshader' > "$EVIDENCE_DIR/frozen-baseline.gdshader"
+          echo 'NONQUALIFYING isolated shader diagnosis; original Main/PACE003 acceptance is separate.' > "$EVIDENCE_DIR/SCOPE.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider-policy.json"
+          python tools/play/run_pace003_shader_diagnostic.py --self-test 2>&1 | tee "$EVIDENCE_DIR/apparatus-tests.log"
+
+      - name: Record original Windows CPU and graphics adapter
+        shell: pwsh
+        run: |
+          $identity = @{
+            Cpu = @(Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors)
+            Graphics = @(Get-CimInstance Win32_VideoController | Select-Object Name, DriverVersion, VideoProcessor)
+            OperatingSystem = @(Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber, TotalVisibleMemorySize)
+          }
+          $identity | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 "$env:EVIDENCE_DIR/host.json"
+
+      - name: Install pinned diagnostic analysis dependencies
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.4 Pillow==12.0.0 psutil==7.1.3 2>&1 | tee "$EVIDENCE_DIR/python-dependencies.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+          python -O tools/play/compare_pace003_palette_atlas.py --self-test 2>&1 | tee "$EVIDENCE_DIR/comparator-tests.log"
+
+      - name: Materialize original retained Windows runtimes
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude="" 2>&1 | tee "$EVIDENCE_DIR/lfs.log"
+
+      - name: Prepare identical pinned Windows Godot
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          curl --fail --location --connect-timeout 20 --max-time 240 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python - <<'PY' 2>&1 | tee "$EVIDENCE_DIR/godot-prepare.log"
+          import json, os, pathlib, sys
+          sys.path.insert(0, "tools/ci")
+          import run_windows_godot_regressions as windows
+          binary, identity = windows.prepare_godot(pathlib.Path(os.environ["RUNNER_TEMP"], "godot-windows.zip").resolve())
+          pathlib.Path(os.environ["EVIDENCE_DIR"], "godot-identity.json").write_text(json.dumps(identity, indent=2) + "\n")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
+              output.write("GODOT_BIN=" + str(binary) + "\n")
+          print(json.dumps(identity, indent=2))
+          PY
+
+      - name: Run both cold shader diagnostics and retain original failures
+        # The frozen Windows shader may exceed 180 s. That first attempt stays
+        # red and its dump/log survives; the candidate gets its own fresh process.
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          python tools/play/run_pace003_shader_diagnostic.py --godot "$GODOT_BIN" \
+            --output "$EVIDENCE_DIR/campaign" --expected-source-sha "$DIAGNOSTIC_SHA" \
+            --rendering-driver opengl3_angle 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+
+      - name: Retain all original Windows diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-pace003-shader-diagnostic-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace003-shader-diagnostic/
+          if-no-files-found: error
+          retention-days: 30

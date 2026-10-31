@@ -196,6 +196,25 @@
         "../godot/tests/play_pace003_worker_probe.gd",
         "../tools/play/run_pace003_campaign.py"
       ]
+    },
+    {
+      "id": "PLAY-COLD-START-01",
+      "query": "How does PLAY-PACE-003 distinguish cold graphical startup and palette shader compiler work from warm-cache execution, and may a warm Auto pass waive a first cold failure?",
+      "canonical": [
+        "operations/profiling-observability-and-performance.md",
+        "systems/material-appearance-and-rendering.md"
+      ],
+      "facts": [
+        "The fixed pre-Build Main acknowledgement is30 seconds and every fresh graphical process is bounded at180 seconds; cold startup remains separate from steady-state measurement.",
+        "Each row isolates actual Godot user shader cache through private XDG cache/config/data on Linux or AppData/LocalAppData on Windows and verifies the engine-reported path; unnamed driver caches remain uncontrolled.",
+        "The guarded structured-flair hoist preserves replacement-finish exclusions and appearance math; local Linux palette program linking is source-matched evidence, not Windows attribution by analogy.",
+        "Original failures, shared-user-cache historical Auto results and NONQUALIFYING isolated atlas evidence retain their separate scopes; no warm result or passing later row erases a first failure."
+      ],
+      "sources": [
+        "../godot/shaders/material_palette.gdshader",
+        "../tools/play/run_pace003_campaign.py",
+        "../godot/tests/play_pace003_shared_host.gd"
+      ]
     }
   ]
 }

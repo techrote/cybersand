@@ -217,12 +217,13 @@ def _snapshot_command(command: list[str], *, timeout: int = 12) -> str:
                 if sys.platform == "win32" else {"start_new_session": True}
             )
             process = subprocess.Popen(command, stdout=stdout, stderr=stderr, **options)
+            owned_pgid = process.pid if options.get("start_new_session") else None
             try:
                 process.wait(timeout=timeout)
                 status = f"exit={process.returncode}\n"
             except subprocess.TimeoutExpired:
                 status = f"SNAPSHOT UNAVAILABLE: TimeoutExpired after {timeout}s\n"
-                _kill_process_tree(process, wait_seconds=2)
+                _kill_process_tree(process, owned_pgid=owned_pgid, wait_seconds=2)
             out, out_truncated = _bounded_file_tail(stdout, 64000)
             err, err_truncated = _bounded_file_tail(stderr, 16000)
             if out_truncated or err_truncated:
@@ -292,8 +293,14 @@ def _capture_timeout_snapshot(pid: int, path: Path, log_path: Path, elapsed: flo
         print(f"Cannot write timeout snapshot {path}: {error}", flush=True)
 
 
-def _kill_process_tree(process: subprocess.Popen, *, wait_seconds: int = 10) -> None:
+def _kill_process_tree(process: subprocess.Popen, *, owned_pgid: int | None = None,
+                       wait_seconds: int = 10) -> None:
+    observed_returncode = process.poll()
     if sys.platform == "win32":
+        # The official wrapper's kill-on-close job owns its children. Do not
+        # send taskkill to the retired wrapper PID after observing its exit.
+        if observed_returncode is not None:
+            return
         # Windows Godot launches a console wrapper plus an engine child. Its
         # kill-on-close job and taskkill /T cover both processes.
         try:
@@ -313,9 +320,18 @@ def _kill_process_tree(process: subprocess.Popen, *, wait_seconds: int = 10) -> 
             print(f"Cannot terminate process tree for PID {process.pid}: {error}", flush=True)
     else:
         try:
-            os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+            # Both launchers create a new session and retain its PGID. A reaped
+            # leader may still have live descendants in that owned group.
+            # Cleanup must not look up a retired leader PID to find them.
+            if owned_pgid is None:
+                if observed_returncode is not None:
+                    return
+                owned_pgid = os.getpgid(process.pid)
+            os.killpg(owned_pgid, signal.SIGKILL)
         except ProcessLookupError:
             pass
+    if observed_returncode is not None:
+        return
     if process.poll() is None:
         process.kill()
     try:
@@ -341,6 +357,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     pid = None
     timeout_observed = None
     timeout_diagnostic_error = None
+    timeout_diagnostic_skipped = None
+    timeout_observed_returncode = None
     capture_error = None
     timeout_kind = None
     with log_path.open("w", encoding="utf-8") as log:
@@ -352,6 +370,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
             process = subprocess.Popen(
                 command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env=env, **options,
             )
+            owned_pgid = process.pid if options.get("start_new_session") else None
             pid = process.pid
             def observe_timeout(now):
                 nonlocal timeout_observed
@@ -368,7 +387,16 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
                     # which the independent monitor observed the failing limit.
                     log.flush()
                     try:
-                        _capture_timeout_snapshot(pid, snapshot_path, log_path, timeout_observed)
+                        timeout_observed_returncode = process.poll()
+                        if timeout_observed_returncode is None:
+                            _capture_timeout_snapshot(pid, snapshot_path, log_path, timeout_observed)
+                        else:
+                            timeout_diagnostic_skipped = "owned process already exited; no live PID capture attempted"
+                            snapshot_path.write_text(
+                                f"SNAPSHOT NOT ATTEMPTED: {timeout_diagnostic_skipped}; "
+                                f"observed exit={timeout_observed_returncode}\n",
+                                encoding="utf-8",
+                            )
                     except Exception as error:
                         timeout_diagnostic_error = f"{type(error).__name__}: {error}"
                         message = f"Timeout evidence unavailable for PID {pid}: {timeout_diagnostic_error}\n"
@@ -385,7 +413,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
                 # Observation failures and debugger refusal cannot bypass tree
                 # cleanup. A timeout always remains a failing result.
                 if timed_out or process.poll() is None:
-                    _kill_process_tree(process)
+                    _kill_process_tree(process, owned_pgid=owned_pgid)
         except OSError as error:
             launch_error = str(error)
             log.write(f"\nLAUNCH ERROR: {launch_error}\n")
@@ -425,6 +453,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "pid": pid,
         "timeout_diagnostics": snapshot_path.name if timed_out and snapshot_path.exists() else None,
         "timeout_diagnostic_error": timeout_diagnostic_error,
+        "timeout_diagnostic_skipped": timeout_diagnostic_skipped,
+        "timeout_observed_returncode": timeout_observed_returncode,
         "last_progress": next(
             (line for line in reversed(output.splitlines()) if line.startswith("REGRESSION_PROGRESS ")),
             diagnostics.last_progress(output),

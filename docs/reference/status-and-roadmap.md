@@ -4,11 +4,45 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-10-31
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## PLAY-PACE-003 full-resolution correction — 2026-10-31
+
+The [current cold-start audit](../audits/2026-10-30-play-pace003-cold-startup.md#full-resolution-readiness-correction-and-current-qualification-boundary--2026-10-31)
+preserves281's Linux Main passes and separate LIFE008 failure, Windows timeouts,
+and a complete source-matched local control/unified contrast. At the actual
+palette program, link plus first-draw wall time falls13.915902→6.674986s;
+initial actor readiness changes from deadline failure to11.518824s within the
+unchanged15-second operation. The unified process completes62assertions/0failures,
+three real fault/navigation orderings and six hosts, with full source/runtime/cache
+custody. Its32 original-versus-candidate native/PNG pairs remain exact. The local
+probe stays NONQUALIFYING, with zero /proc samples and retained clock/observer/
+resolver limits. The original v1 runtime-custody failure is not erased.
+
+Production shader62a41329ce96 is token-identical to tested10ed except two comments;
+its resulting-head hosted graphical/ordinary/Native/Docs matrix and actual emitted
+GLSL remain required in the [qualification ledger](https://github.com/techrote/cybersand/pull/310#issuecomment-6536644006).
+Windows is still uncorrected. Native/renderer/runtime/training semantics and
+30/180-second Main/case limits stay fixed. The separately authorized
+[CI parallelism integration](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+preserves coverage and all original command bounds; it cannot waive these gates
+or authorize #308/#309/PLAY completion.
+
+## Production CI parallelism — 2026-10-31
+
+**Implemented in this integration source; resulting-head qualification remains
+separate:** six independent Native families with original command limits and a
+complete `native` aggregate; four Windows Godot shards with independent coverage
+that fails on an admitted failed/missing matrix; unchanged Linux and scientific
+coverage. The conservative Native scope report authorizes no skips. The
+[dated audit](../audits/2026-10-31-ci-parallel-production-integration.md) preserves
+the actual predecessor timing, five rejected deadline expansions, adverse tests
+and exact [qualification/integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140).
+Faster CI cannot satisfy the separately red #309/#308 graphical contract.
 
 ## PLAY composable desktop checkpoint — 2026-10-30
 
@@ -47,6 +81,133 @@ observer must distinguish actual Main acknowledgement from a later poll;
 that apparatus correction does not waive startup or current-head CI failures.
 The dated audit retains both original platform artifacts. Keep #269 open and
 the combined implementation unmerged while its applicable scoped gate fails.
+
+**Bounded #309 successor:** [PR #310's
+audit](../audits/2026-10-30-play-pace003-cold-startup.md) now records head
+62d3f6cf/tree 9d7a2727 first-attempt Docs 41136597980, Native 41136597982 and
+ordinary Godot 41136597999 PASS, with proven ordinary-CI merge-tree equality.
+The original TSan exit 124 remains historical negative evidence; no native code,
+Makefile or mandatory Native workflow changed. PACE 41136597969 passes Linux
+cold one-worker/Auto Main and all seven graphical fixtures, but both Windows
+Main rows and six graphical fixtures time out at 180s. Its aggregate remains
+red. Cold-cache v2 custody retains actual per-row Godot user caches; the old
+shared-cache Auto result keeps its narrower scope.
+
+Draft diagnostic #312 is stacked on 62d: phase 1 at 3b986726 directly identifies
+the palette HLSL compiler path but all five cold variants still time out; phase
+2 at f20ae3ab now has a final independent receipt confirming all five first cold
+cases time out with no atlas, warm run or completed candidate. Available
+HLSL/source/runtime verification does not erase missing retained workflow/source
+copies. Phase 3 at source 512dbb9e / tree 4fb6655e adds reviewed single-exit
+hypotheses: 96 exact local Linux atlas comparisons support bounded visual
+equivalence, and three separate 62d-plus-local-delta Main previews retain two
+intact final pairs and one rejected terminal/report custody mismatch. Their
+input/pause/device coverage limits and mixed steady-state observations remain
+explicit. Windows 41144657058 is now terminal FAIL: all four first cold rows
+reach the unchanged 180-second limit, with 43 completed compiler calls followed
+by open palette call 44. Original artifact 13020549731 verifies all 791 inputs
+and ten copied sources; actual HLSL contains the intended single-exit returns
+and unified call-site reduction, with no returned palette result or atlas.
+The source-512 generic Windows original/hoist pair also fails in 41144657056,
+artifact 13020508845. Its Linux diagnostic pass does not qualify a single-exit
+candidate or Main. Earlier queue time is separate from measured case timeouts.
+The audit's ledgers retain all 30 original attempt-1 runs, 92 jobs, 17 executed
+logs and 16 ZIPs through 512; 75 skipped jobs are not passes.
+
+**Compiler-only diagnosis, terminal negative:** #312 head
+`5de468478c37c8ae9e2d446ba348d4e3ecf54bd6` / tree
+`8957ae44174226758069a534f8a4c03edce79e51`, parent 512, fails
+[41149030607](https://github.com/techrote/cybersand/actions/runs/41149030607)
+on 2026-10-31. It replays exact captured HLSL at `0xc000` versus `0xc004` in
+separate 180-second compiler-only processes, preserving validation and authentic
+System32 compiler identity. No Godot/device, production shader/runtime or
+renderer flag changes. Original artifact 13022287635 retains successful tiny
+preflights but two full-HLSL timeouts with no API-return record or bytecode.
+The failure reproduces without Godot/device/native World; adding skip
+optimization did not complete this input and does not isolate an O2-only or
+internal-pass defect. Retain that exact-input reproduction for a bounded
+owner/upstream compiler decision. Neither these failed variants nor this
+contrast establishes a Windows correction, production shader selection or
+fundamental renderer incapability. The prepared successor still
+includes explicit offline empty-directory readback with
+candidate-preview validation, preserving strict defaults and all Windows
+failures; it has not been accepted by this checkpoint. Neither
+diagnostic work nor Linux/ordinary-gate success promotes #308 or closes #309.
+Resolve the demonstrated Windows compiler blocker, qualify the resulting exact head and reconcile
+existing ownership before guarded stack integration; #269/#270/#263 and
+physical/human acceptance remain open.
+
+**Separate late diagnostic completion at 5de:** automatic matrix
+[41149030614](https://github.com/techrote/cybersand/actions/runs/41149030614),
+artifact 13021809621, retains three cold 180s timeouts and unified `cbad4e5b...`
+completing its isolated atlas in 175.903s, with first submission at 172.361599s.
+Its actual palette call 44 returns HRESULT 0 at original O2 flags `0xc000`,
+after 170.0066407s wall / 169.984375s same-thread CPU, with 1,213,964-byte DXBC.
+The next geometry call is not fallback. A copied-cache fresh process completes
+in 4.160s with 16 byte-exact PNG/native-framebuffer pairs against its cold
+candidate. No original Windows baseline frames exist, so original/candidate
+Windows parity remains unproved. Preserve the identical candidate's earlier
+source-512 timeout. This is separate from the two hoist-HLSL compiler-only
+failures above; it does not execute Main, satisfy its 30s deadline or authorize
+candidate adoption. The #312 index through 5de retains 37 runs, 112 jobs,
+22 executed logs and 21 ZIPs, SHA-256
+`3152fe21fe64a3573db8d1e14964834848efd5b0eed74ada772b03279dcdf50b`.
+
+**Proposed owner decision, not an implemented architecture:** retain the
+Linux-validated hoist, then separately register either a bounded palette-program
+decomposition preserving exact native-HDR/PNG/compositing semantics, or an
+upstream compiler/runtime investigation using exact source5de/run41149030607.
+Any changed engine needs a newly authenticated source/engine pin and explicit
+provenance scope before acceptance. The proposed code boundary is Godot
+shader/presentation, focused apparatus and docs; native/training stay excluded.
+Neither alternative is shown feasible here. No hardware/provider/renderer-flag
+switch, hidden prewarm or optional O0 expansion is proposed. The
+[bounded continuation contract](../audits/2026-10-30-play-pace003-cold-startup.md#proposed-bounded-owner-decision-and-continuation)
+requires original cold Windows/Linux Main one-worker/Auto, exact pixel and
+existing five-rig/graphical/lifecycle evidence, unchanged 30/180/240s limits,
+all resulting-head gates and substantive review before guarded integration.
+
+**Prepared apparatus correction:** the shared monitor now conservatively rejects
+completion first observed after the fixed case deadline, including exit zero,
+without retiming an in-bound observation during later capture cleanup. The new
+adverse control fails on the retained original monitor; eleven normal/optimized
+tests pass. Outer-runner guards avoid dead-leader live capture and Windows
+dead-wrapper `taskkill`, retaining POSIX descendant cleanup via groups captured
+at launch. Ten local Linux timeout tests pass normally/optimized, with an explicit
+Windows skip for the Linux-only group fixture; independent final review has no
+actionable findings. This supplies no Windows execution result. The
+successor still needs exact-head qualification; no original62d result, deadline,
+runtime or production shader is changed by these source/test edits.
+
+**Published successor failure preserved:** #310 head
+`28192d146d7b3d7475a92c1703d52bc94d155dd2` / tree
+`2f7884e656bce936862aaa64125517ce23d4919a`, parent 62d, fails ordinary Godot
+[41150430766](https://github.com/techrote/cybersand/actions/runs/41150430766)
+before engine-suite execution because two sharding-test cleanup observers
+reject `owned_pgid`. Original logs remain retained. The bounded test-only fix
+accepts/forwards/asserts PGID and always cleans up in `finally`, preserving all
+existing assertions. Corrected-head gates are pending; no shader, runtime,
+deadline or historical result changes, and no Windows startup repair is claimed.
+
+**Precise responsiveness continuation:** retain the existing cold pair and all
+seven graphical fixtures, including five-rig acceptance, input admission/rearm,
+native-failure recovery, stale epochs, join/leakage and real-pixel assertions.
+Before a new measured-route responsiveness claim, require and validate PACE's
+existing `raw.input_tape` with a non-neutral admitted command and completed
+Rapier witness, then observe one healthy same-owner pause/acknowledge/resume
+round trip through automatic callbacks after the sample window/capture. Current
+manual physics pause and actual failure recovery remain concrete evidence;
+ordinary LIFE001's separate healthy Rapier pause/resume does not fill this
+measured graphical-route gap. Keep original deadlines and add focused adverse
+controls, without repeating broad lifecycle suites before startup is resolved.
+
+**Separate ownership:** #311 was freshly reconciled at 2026-10-30 23:50 UTC as
+draft head `3ed088cfa3d289dd18b6e40bf1d7e810a6785ea5`, tree
+`34dbadbc4ecfd1a9e832090f4d5f458d764eeff2`, based on accepted b55ce690. Its added
+Native-experiment workflow is disjoint, non-required and explicitly owner-held
+DO NOT MERGE. Success metadata for 41139999997 has no independent original-log
+qualification here; changed sanitizer bounds are not the mandatory gate. Do not
+alter, adopt or promote that PR as part of #309.
 
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
