@@ -257,12 +257,43 @@ func _controls(world: Object, corpus: Dictionary) -> void:
 	_check(bool(old_replay.get("valid", false)), "offline replay rejected historical incarnation")
 
 
+func _same_target(left: Array, right: Array) -> bool:
+	# JSON parses integral coordinates as floats. Variant Array equality checks
+	# element types; decision equality compares the exact coordinate values.
+	if left.size() != 2 or right.size() != 2:
+		return false
+	for axis: int in range(2):
+		if not (left[axis] is int or left[axis] is float) or not (right[axis] is int or right[axis] is float):
+			return false
+		var a: float = float(left[axis])
+		var b: float = float(right[axis])
+		if not is_finite(a) or not is_finite(b) or a != floorf(a) or b != floorf(b) or a != b:
+			return false
+	return true
+
+
+func _same_trace(left: Array, right: Array) -> bool:
+	if left.size() != right.size():
+		return false
+	for index: int in range(left.size()):
+		if not left[index] is Array or not right[index] is Array:
+			return false
+		var a: Array = left[index]
+		var b: Array = right[index]
+		if a.size() != 3 or b.size() != 3 or not a[2] is String or not b[2] is String:
+			return false
+		if not _same_target([a[0], a[1]], [b[0], b[1]]) or a[2] != b[2]:
+			return false
+	return true
+
+
 func _replay(world: Object, corpus: Dictionary) -> Dictionary:
 	var capsules: Array = corpus.get("capsules", [])
 	var fallback := CyberCellWorld.new()
 	var failed_count: int = 0
 	var successful_count: int = 0
 	var replay_count: int = 0
+	var matched_count: int = 0
 	var reasons: Dictionary = {}
 	var identities: Dictionary = {}
 	var before: String = world.get_physical_state_hash()
@@ -276,8 +307,10 @@ func _replay(world: Object, corpus: Dictionary) -> Dictionary:
 		var copied_before: String = JSON.stringify(copied, "", false, true)
 		var replay: Dictionary = world.diagnostic_replay_ejection(copied)
 		_check(bool(replay.get("valid", false)), "native replay invalid: " + str(replay))
-		_check(replay.get("target", []) == capsule.target, "native target mismatch")
-		_check(replay.get("trace", []) == capsule.trace, "native candidate/reason mismatch")
+		var native_target_matches: bool = _same_target(replay.get("target", []), capsule.target)
+		var native_trace_matches: bool = _same_trace(replay.get("trace", []), capsule.trace)
+		_check(native_target_matches, "native target mismatch")
+		_check(native_trace_matches, "native candidate/reason mismatch")
 		_check(str(replay.get("replay_hash", "")) == str(capsule.replay_hash), "serialized state hash mismatch")
 		_check_immutable(JSON.stringify(copied, "", false, true) == copied_before, "native replay mutated its input capsule")
 		_check_immutable(JSON.stringify(capsule, "", false, true) == serialized, "replay mutated capsule")
@@ -288,9 +321,16 @@ func _replay(world: Object, corpus: Dictionary) -> Dictionary:
 			int(copied.source[1]), int(copied.body_id),
 			Vector2(float(copied.normal[0]), float(copied.normal[1])), float(copied.penetration))
 		var differential: Dictionary = _fallback_trace(fallback, copied)
-		_check([actual.x, actual.y] == differential.target, "fallback actual/trace target mismatch")
-		_check(differential.target == capsule.target, "native/fallback target mismatch")
-		_check(differential.trace == capsule.trace, "native/fallback candidate/reason mismatch")
+		var fallback_actual_matches: bool = _same_target([actual.x, actual.y], differential.target)
+		var fallback_target_matches: bool = _same_target(differential.target, capsule.target)
+		var fallback_trace_matches: bool = _same_trace(differential.trace, capsule.trace)
+		_check(fallback_actual_matches, "fallback actual/trace target mismatch")
+		_check(fallback_target_matches, "native/fallback target mismatch")
+		_check(fallback_trace_matches, "native/fallback candidate/reason mismatch")
+		if bool(replay.get("valid", false)) and native_target_matches and native_trace_matches \
+				and str(replay.get("replay_hash", "")) == str(capsule.replay_hash) \
+				and fallback_actual_matches and fallback_target_matches and fallback_trace_matches:
+			matched_count += 1
 		_check_immutable(fallback.cells == cells_before and fallback.rigid_body_occupancy == mask_before,
 			"fallback replay mutated cellular state")
 		_check(not identities.has(str(capsule.replay_hash)), "duplicate replay state retained")
@@ -309,7 +349,7 @@ func _replay(world: Object, corpus: Dictionary) -> Dictionary:
 	_check(successful_count >= 8, "fewer than8 natural positive controls")
 	return {"ok": not _failed, "capsules": replay_count, "failed_unique": failed_count,
 		"success_unique": successful_count, "candidate_reasons": reasons,
-		"native_fallback_target_trace_matches": replay_count, "mutation_failures": _mutation_failures,
+		"native_fallback_target_trace_matches": matched_count, "mutation_failures": _mutation_failures,
 		"malformed_refusal_controls": _refusal_controls,
 		"serialization": "Godot JSON full_precision=true, parsed before replay"}
 

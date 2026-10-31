@@ -179,6 +179,19 @@ already traverses movable material. The local fixture independently establishes
 current no-target behavior; it does not qualify tree detachment or the archive's
 asynchronous proportions. Stage A is committed before Stage B implementation.
 
+### File-only replay correction
+
+Stage-A checkpoint `838b2a9df6bde37a902b588f0984161b2a78a22f`, tree
+`d229acb59ec1fd5ac1f81a790c57ecaf8c2ff036`, retained the corpus. Its separate
+file-only replay exposed strict Godot Array equality comparing parsed floating
+coordinates against native integer coordinates. Native validation/hash checks
+passed, while the harness comparisons failed. The correction compares exact
+finite integral values and reasons without numeric tolerance, and increments
+matches only after all comparisons pass. Corrected file-only replay passes
+80/80 with zero mutations. The corpus/native source/DLL are unchanged. This
+failure is a harness serialization-comparison defect, not discarded physical
+evidence; both outcomes remain in the Stage-A receipt.
+
 ## Toolchain inspection and initial repository gates
 
 Read-only inspection found Godot

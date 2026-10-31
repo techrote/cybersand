@@ -254,5 +254,12 @@
     "m11": "passed historical integrity",
     "retrieval": "19/32 hit@1,32/32 hit@5,mrr0.7536",
     "diff_check": "passed"
+  },
+  "offline_replay_correction": {
+    "initial_attempt": "failed at838b2a9d:strict Array comparison rejected JSON FLOAT coords versus replay INT coords; native validity/hash passed; corpus unchanged",
+    "corrected_attempt": "passed80/80 exact integral-coordinate/ordered-reason matches and zero mutations",
+    "harness_sha256": "f108759ff57a4a4397d0ef9ac501f3bd5e92a62788422d810400abddc6499873",
+    "native_source_and_dll": "unchanged",
+    "scope": "file-only replay now directly qualified; successful match count increments only for all comparisons passing"
   }
 }
