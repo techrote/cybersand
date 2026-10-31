@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 ---
 
 # Data ownership and lifetimes
@@ -268,6 +268,13 @@ before `acknowledge_render_snapshot`. Rejection requests a full refresh and
 does not acknowledge success. The worker clears accumulated patches only when
 the acknowledged serial covers the pending publication. Acquiring an older
 snapshot never authorizes clearing bytes it can still observe.
+
+The [test-only E investigation](rendering-and-gameplay-bridges.md#render-publication-investigation-on-frozen-main)
+retains one verified baseline and its ordered dirty suffix under the same
+latest-serial ACK rule. Its explicit preflight bounds pending storage to one
+baseline plus the existing dirty budget, while immutable published copies retain
+their own consumer lifetime. This pending bound is not a bound on all application
+Images, textures, native slots or externally retained snapshots.
 
 **Current Web:** copied packets are consumed synchronously on the main thread;
 the desktop mutex/accumulation/acknowledgement protocol is not instantiated.

@@ -1,0 +1,2608 @@
+{
+  "code_checkpoint": "cc3b5e82bbebea71a10ff5495434c90ff5a95c33",
+  "code_tree": "1a0962252aeb495e1b558c84bc01a1009bf3781b",
+  "native_builds": [
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-native-Windows-manifest.json",
+      "sha256": "b79684e1046bb9d62f84a8ce3103027cb4f592db295e4617938549e03ca2bf6f",
+      "content": {
+        "scope": "local diagnostic build only; not published runtime provenance",
+        "source_commit": "64e2f4e71bf4c0b6145bd573dbb5d81bdd9309a6",
+        "source_tree": "6d3c65e916d90ba6fd07150327111bd80ce434c5",
+        "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "4f538ea0ba4153c4e67468b29c15c9be138a4d74d2977bccdb722a21d894d3b7",
+        "size": 4845568,
+        "source_inputs": {
+          "godot/native_extension/cyber_demo_bridge.hpp": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+          "godot/native_extension/cyber_native_cell_world.cpp": "bc6820044155c2cdc16907833f7feb3f940b4b1867518b0ff240073a65c7d6a6",
+          "godot/native_extension/cyber_native_cell_world.hpp": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c",
+          "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+          "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+          "godot/native_extension/cyber_prepared_liquid_world.hpp": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2",
+          "godot/native_extension/cyber_world_generator.cpp": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
+          "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+          "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+          "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+          "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+          "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+          "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+          "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+          "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+          "godot/native_extension/pressure_optimization_inspection.inc": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
+          "godot/native_extension/register_types.cpp": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/inertial_cellular.hpp": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae",
+          "native/include/cybersand/prepared_world.hpp": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985",
+          "native/include/cybersand/pressure_flow.hpp": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e",
+          "native/include/cybersand/pressure_optimization.hpp": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72",
+          "native/include/cybersand/quantity_ledger.hpp": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05",
+          "native/include/cybersand/world.hpp": "5b92305776a180f8e402f1703158d9481a4a67f29dc2ad34b5a0d4bafdf5d2be",
+          "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+          "native/src/c_api.cpp": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ee8f1f40d51b0f12bddbe510ec4bd53fb6fa284fd86a39164770170a50620279",
+          "native/src/world_generation.cpp": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+          "native/src/world_inertial.inc": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+          "native/src/world_pressure.inc": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+          "native/src/world_pressure_cache.inc": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc",
+          "native/src/world_pressure_cache_state.inc": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0",
+          "native/src/world_pressure_gas_cache.inc": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+          "native/src/world_pressure_state.inc": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c",
+          "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+        },
+        "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; working CRLF normalizes to LF",
+        "compile_defines": [
+          "CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC"
+        ],
+        "R_enabled": false,
+        "build_log": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-native-Windows-build.log",
+        "build_log_sha256": "47a2708beb16e73d2b8c8a4cdfad13881ed3649616394f8a817c2788fb15b424"
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-native-Linux-manifest.json",
+      "sha256": "ccddc5851cc3c895ad99a9a5b27ebe9a521cafeade3ed5c4f373557768233dd8",
+      "content": {
+        "scope": "local diagnostic build only; not published runtime provenance",
+        "source_commit": "64e2f4e71bf4c0b6145bd573dbb5d81bdd9309a6",
+        "source_tree": "6d3c65e916d90ba6fd07150327111bd80ce434c5",
+        "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "805151d4dd64dd28939d2b3a543b859073ddfa8c0c77df059563b7a9f431b68b",
+        "size": 4251432,
+        "source_inputs": {
+          "godot/native_extension/cyber_demo_bridge.hpp": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+          "godot/native_extension/cyber_native_cell_world.cpp": "bc6820044155c2cdc16907833f7feb3f940b4b1867518b0ff240073a65c7d6a6",
+          "godot/native_extension/cyber_native_cell_world.hpp": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c",
+          "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+          "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+          "godot/native_extension/cyber_prepared_liquid_world.hpp": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2",
+          "godot/native_extension/cyber_world_generator.cpp": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
+          "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+          "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+          "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+          "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+          "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+          "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+          "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+          "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+          "godot/native_extension/pressure_optimization_inspection.inc": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
+          "godot/native_extension/register_types.cpp": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/inertial_cellular.hpp": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae",
+          "native/include/cybersand/prepared_world.hpp": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985",
+          "native/include/cybersand/pressure_flow.hpp": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e",
+          "native/include/cybersand/pressure_optimization.hpp": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72",
+          "native/include/cybersand/quantity_ledger.hpp": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05",
+          "native/include/cybersand/world.hpp": "5b92305776a180f8e402f1703158d9481a4a67f29dc2ad34b5a0d4bafdf5d2be",
+          "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+          "native/src/c_api.cpp": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ee8f1f40d51b0f12bddbe510ec4bd53fb6fa284fd86a39164770170a50620279",
+          "native/src/world_generation.cpp": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+          "native/src/world_inertial.inc": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+          "native/src/world_pressure.inc": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+          "native/src/world_pressure_cache.inc": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc",
+          "native/src/world_pressure_cache_state.inc": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0",
+          "native/src/world_pressure_gas_cache.inc": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+          "native/src/world_pressure_state.inc": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c",
+          "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+        },
+        "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; working CRLF normalizes to LF",
+        "compile_defines": [
+          "CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC"
+        ],
+        "R_enabled": false,
+        "build_log": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-native-Linux-build.log",
+        "build_log_sha256": "c01b2a67c7d0a99c007df0298f169f82291066f0ceef7b75f6a64130fa6d75bd"
+      }
+    }
+  ],
+  "focused": [
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\Final2-focused-Windows\\report.json",
+      "sha256": "0deef6bea92f3955046b38f40d673295902f1e16127cd9e491f2f554b52bbce5",
+      "content": {
+        "identity": {
+          "frozen_main": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc",
+          "head": "cc3b5e82bbebea71a10ff5495434c90ff5a95c33",
+          "tree": "1a0962252aeb495e1b558c84bc01a1009bf3781b",
+          "source_hashes": {
+            "godot/scripts/actor_prototype.gd": "ccb25275e52150f1e4bfdd228854da3bcaa6e1d2026b52775c3150e6f451bb92",
+            "godot/scripts/actor_prototype_overlay.gd": "e87dcbf76ba33e3eceef42654e3be6e35b79a3d85cf73ee079406d11d3fe7735",
+            "godot/scripts/actor_prototype_panel.gd": "8c28e322bd8eca393441cd41dfd9e6d0a1ff75ca4612ec9816e4a25dfa4e8c1e",
+            "godot/scripts/actor_prototype_session.gd": "c87ed7c684675d686b093b1aab758c4099430343c4775dd36da89214354f7282",
+            "godot/scripts/actor_rig_actuation.gd": "78ba62edbffcf9af9e0f4f1b35831dd29d5ad67bc60e7b2ecbfd78fee59ae251",
+            "godot/scripts/actor_rig_catalog.gd": "5808438bd056686c7f96d4ee81908588a2004b49d4b7c048124a86042ade2944",
+            "godot/scripts/actor_rig_effects.gd": "8f9aa562fc023a32963ce8ad7c005f131d5ce655b5d2c401b624ce83918df2a1",
+            "godot/scripts/actor_rig_motor.gd": "2a876dcd7e7dd9b9506dd278f81090f1fab011b7bc8006886d2d4d796f6b5c90",
+            "godot/scripts/blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244",
+            "godot/scripts/blacksite_nine_art.gd": "651428983c725e1a2d87e3596279f8c7a5964a5e49663a35782bc3f1e450a22e",
+            "godot/scripts/blacksite_nine_depths.gd": "fe6db42104fc135e56aaa731895cb85b42ecbb5d29acf4ed79f2bb099638d2d1",
+            "godot/scripts/blacksite_nine_layout.gd": "ccc27cdaf2479d58a9ec4391485f9141c8ac07b58d0c1d97e2c35f4f286ac69d",
+            "godot/scripts/blacksite_nine_midworks.gd": "eaf655d2ccf6ce54551a49852e0a6c39038bfa93f1fb7624a2db68100d71ace6",
+            "godot/scripts/blacksite_nine_presentation.gd": "36e2b92a3b8b982b2fb1ecf9445a302120dad50cf5a22ae1f7609c3f10e23587",
+            "godot/scripts/blacksite_nine_surface.gd": "347888118cf2b20b564d8171f35d8d80feae1c0341f90829fbfee482b0397813",
+            "godot/scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+            "godot/scripts/decompression_diagnostic.gd": "fda5d64f917ddb4b65fd811784ce693177f1f1c76830ea55efe7c0a710c77ee9",
+            "godot/scripts/demo_save_codec.gd": "0f47752549ba84447e4168fcb6ae4ec4d7ba852a3c603cbc9d4bb92f92703047",
+            "godot/scripts/demo_worlds.gd": "a83ad490681cc9da262f9d2863d9b9100bbb5dbc17eef88e6cfba55d88a8cf5d",
+            "godot/scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+            "godot/scripts/feature_launcher.gd": "18816e00d0b60adabbdd5e42bcba27f04a76fbdcd70940804216fb83494968d0",
+            "godot/scripts/feature_navigation.gd": "17da6bec36ab3bfc35643e357b68e08f94dd36f42f9b7f5d98585231c69a051a",
+            "godot/scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+            "godot/scripts/industrial_underswamp.gd": "d603d587c36e1ebf0d2ec16bd244c03df1c0cab83896e95472d768fb9c418cf8",
+            "godot/scripts/interaction_policy.gd": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+            "godot/scripts/interaction_policy_probe.gd": "e369778ca76a365af4cea4eccda7d288c2c498e623d6b3ff76f0d3cfcc01da36",
+            "godot/scripts/liquid_comparison_panel.gd": "ce4bd0713f5d4d2eca8d194c9449edbaa8c7861f167ccce6a6b5495dc95f442a",
+            "godot/scripts/liquid_host_evidence.gd": "ef44977aff88f5569a3fbc5495317f4c09671e42d0868b770677670cdf63cd0f",
+            "godot/scripts/liquid_host_web_probe.gd": "dbcfe003cf9f2c0fa41bdee2d3cbfec06620c18ddbf9c6329c7a67396e804ef2",
+            "godot/scripts/main.gd": "531f9f393c64aeee6c0b0e79d28ed577f13c4881865bd94c01c644cc9dd07de5",
+            "godot/scripts/material_appearance_lut.gd": "781a48ad8d30b6e1c46ae56fa976dfb4e6078ae240cc558c5cbff574b0fac237",
+            "godot/scripts/microscenario_catalogue.gd": "22e4e0db5c76035add1b0a11d63bd29e40987d0a15ed2b05e2c4eaee0a2f1b7c",
+            "godot/scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+            "godot/scripts/microscenario_contract.gd": "6c15e65b8e7c4f3747d6dcca93d014897ebef6681cbfd1881fb12be32ec14540",
+            "godot/scripts/microscenario_host.gd": "a351bf83e55d042dfa17798503ba05b0de4aeb9689622d6dbf8373991d29a3c0",
+            "godot/scripts/microscenario_identity.gd": "84131b8d511ad5ed46d17f1743fef74d61e9fc9fdfbb3acebc384e30424121f6",
+            "godot/scripts/microscenario_panel.gd": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7",
+            "godot/scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+            "godot/scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+            "godot/scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+            "godot/scripts/middle_cyberberbia.gd": "aee352913a6cb7e067f3412f061698f1a6ee64c21044b5b7997cf7ac419420c8",
+            "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+            "godot/scripts/physical_actor_arena.gd": "39ed6d5afcde4a6096d9a1ff9df28a78fc8007b79723304e3894f2117fef18c2",
+            "godot/scripts/physical_actor_catalog.gd": "a5f2f800e0e4caa6199a1d4dd2be9d0a1603cfa172947b41fe0f90fe428d9489",
+            "godot/scripts/physical_actor_effects.gd": "335de660c67a446f77a1027b4d88b3218172fb6374dadc05cccd83a860251b1a",
+            "godot/scripts/physical_actor_overlay.gd": "dd39efc1ead8e65751fe18b9a82e834bedd7cf88b95a7eeceee87de6fdba3a9d",
+            "godot/scripts/physical_actor_rig.gd": "4e3fe63b46a5db3365d77c9c055a032b704f70ea2265ad0f0013574b785e692e",
+            "godot/scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+            "godot/scripts/physical_actor_session.gd": "993fdca10bc9ad6be42b8ffd7b1f352de9d460b9c2bdafcc6b668e721057bf83",
+            "godot/scripts/physical_actor_trial.gd": "8f2255cc3eedef597c945d5d7a9b9a50a5937ccd3a21ff3383a4414404ef8ffe",
+            "godot/scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+            "godot/scripts/physical_flight_course.gd": "29557a84577fce245fc84c9d5922939bf118404c223dcd0dad42b537e49c2915",
+            "godot/scripts/physical_flight_course_view.gd": "9534d0dd3ca39efd7a86fcdc57e92a83fbb588412d74de4e9e589671a426535a",
+            "godot/scripts/physical_flight_development_scoring.gd": "dc938fcb80a41dc5990662f9428cc871f80d8c488c7582866c5276dbbd73095e",
+            "godot/scripts/physical_flight_episode.gd": "b8b42195c97dcf3b5292f841ff53043db8b7fb486e8b46a35707838a7e75f8d0",
+            "godot/scripts/physical_flight_lab_screen.gd": "110cc086644517b49dffe9c033e952e05c783002fe97db370b8519e5691a1f90",
+            "godot/scripts/physical_flight_observation_adapter.gd": "afa43dad5ed8737961567070bbf04754107547c065ab61cb58c56b2df447d71d",
+            "godot/scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+            "godot/scripts/physical_flight_sealed_suite.gd": "2270b7b9a54a8380d0db9437fa33ffe1331bf5a92070f640db933e46965781f8",
+            "godot/scripts/physical_flight_teacher.gd": "0fb571cfd314a53fc86b3517fb5a8258a77d7215fcbcb43fc7f53519e7e29761",
+            "godot/scripts/physical_usable_course.gd": "4dc9cff392b2a82ceb8f63280f084b56d0ae11bc32020d7ccb4a1636b424f2c5",
+            "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+            "godot/scripts/physical_usable_loadouts.gd": "f09afeabae2aea9abbc033b721bfa3d11f6dcadb110c0079c991d2f908826bcc",
+            "godot/scripts/physical_usable_runtime.gd": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+            "godot/scripts/physical_usable_script.gd": "e21454479b42b1a54e001c02c219d8892101884348ad7aabc9ea4d1e3e58bb19",
+            "godot/scripts/physics_characterisation.gd": "43eca3584031d6059872d2d4b5e0b6b48d35511d01658673b5c78468dc7a1783",
+            "godot/scripts/playable_course_gamepad_events.gd": "6c27178e11ea723ec587158fc635372db1abcdc70c8492bec13e0a4d35c4c3d2",
+            "godot/scripts/playable_course_lap.gd": "17d93b12ad1d1123e63e9ab8e9f14c291c5288bd4edb0d1a7588909be6acab3e",
+            "godot/scripts/playable_course_overlay.gd": "83209ef8fda16c6479c0d4a3a10f307a6be055e453e8e241c02c0670c10b8a22",
+            "godot/scripts/playable_session_panel.gd": "4c9e66a5ff83193ada1dc80f0489639c104e110451ba724c7b66a06402dea197",
+            "godot/scripts/player_acrobat_controller.gd": "9cf4d6a65a9c8d7ee1c94179c53aaaf4e118662b52e4ad9469c78deef3fb04a7",
+            "godot/scripts/player_actor_catalog.gd": "f506c97fcfe6772ffb3a989b422c2d0a5e7ae189f2020bf15826fa4f6a0a7091",
+            "godot/scripts/player_environment_panel.gd": "743aea24cf53d583759fa39fad331804b5e88d017b784920d81f4897f9233115",
+            "godot/scripts/player_environment_profiles.gd": "7c9ee013758d303125da456e1128bbf3a7bbba3d841c65341ba38617d52fbc16",
+            "godot/scripts/player_playground.gd": "20822400c57998f4bef223b19920c551cf7ee0ff3cdb25c6221b0dd9d420b2e8",
+            "godot/scripts/player_playground_course.gd": "1fb66932f1c12f6d6d408afcd0ab42904bd858211a008ff1f8b5a4f81164997d",
+            "godot/scripts/player_playground_input.gd": "6a16650f9f6478a0053bc6b7f463d584fe74d9f6351a9909eaa655429315512c",
+            "godot/scripts/player_playground_overlay.gd": "bc297ae298a80a27c02459be098f9b3b975eb3c90d85564ebe3a67ff50aeee80",
+            "godot/scripts/player_playground_runtime.gd": "77ac953a10e5253e2c9bce4a08291f6ec3de9bf121d975499aa3e5a9685c3eb6",
+            "godot/scripts/player_representation.gd": "4b481c04af45ecf9139cd57d0c5ef3dd9d7579c1ce21addaef99132ff420dc96",
+            "godot/scripts/player_vehicle_controller.gd": "c20ab7420bde632b2d77efe1e17f3bc82910d2b8f07e1612890f05fac624f6d2",
+            "godot/scripts/prepared_level_session.gd": "ec3bde428d416751f10891075f0ac0193cb0f03014bb04977516cdad4776a855",
+            "godot/scripts/prepared_physical_session.gd": "a2b5a050af7b66caca70a9623bdfaad2a86c939d517d15efffebcd2506ea9b99",
+            "godot/scripts/prepared_reference_body_session.gd": "73992c1e6dc65252ba23398c3902ad077bc7f4efb4541ab07416115bddbe6f77",
+            "godot/scripts/prepared_sampled_session.gd": "9238e92229ae5ea1f703c0a025c5dbbbb680a3583622ed2698fc1c24b95635b0",
+            "godot/scripts/prepared_synchronous_reference_session.gd": "31115ef143804e2e60079c3a8917b600ca51e7790007bf0fbb53bb00453e7af9",
+            "godot/scripts/prepared_trial_body_session.gd": "52918effaa521f13912fce3c193aeb6dbae740fa522b70893693bbd13409e494",
+            "godot/scripts/rapier_physics_bridge.gd": "44585c25307569590937a0d0f51099438fcaacc16b385efca66ff78184909c37",
+            "godot/scripts/rigid_body_coupling.gd": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142",
+            "godot/scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+            "godot/scripts/sewertech_alley.gd": "985371f4632880ceb297128b332bf6a265a83cbcc7675bde342119a6d2822357",
+            "godot/scripts/showcase_presentation.gd": "e478efd9e63db7f3994c7e86ee73d1d32a276c0202fb37bbf20d270d25e16d6b",
+            "godot/scripts/showcase_tiles.gd": "c496da1fb7507e11763cec92113ad594b3f0fae44e54af040f8501f91e03a7d5",
+            "godot/scripts/simulation_snapshot.gd": "8c7ca1429e8aa0010c0f0aec1ce77d35a7e70ca8fa0d00fa43d2116382c138d0",
+            "godot/scripts/simulation_worker.gd": "425004a9fbe844b45bc6a57d4d7447c248f86734ea24612a60a9107d172bbcb1",
+            "godot/scripts/snapshot_publication_counter.gd": "89a7fe973cc8c162f3211c6c051dc9083a42a8775ec9bb3a155c106d3029f6d8",
+            "godot/scripts/thunderbowl_arena.gd": "d075422be9275fc3ca2543e977a39d39d2397335f2785d9c475df78c20fd5ab5",
+            "godot/scripts/thunderbowl_contract.gd": "1eb1c5cfcd6ec5db398a9677413ec1afefcaf0c2337427d51c6c545a21391218",
+            "godot/scripts/tick_failure_probe.gd": "575910573f6f70093fae9d5f8dfe20d8d6219e22671e0d6aa28603bc26c4f14a",
+            "godot/scripts/tower_panel.gd": "14cc8fa74867924d08477b76357ee5a958ad7f06ca4853e473b84c2cae79c255",
+            "godot/scripts/transport_probe.gd": "c7f495b72eeb165dc366667ac6d31bdbf79c0323a67f0779797cd73975d287e8",
+            "godot/scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+            "godot/scripts/transport_profile_panel.gd": "456e6c24213979c8ba2ff983078ad29d530acb80a2c929013aeae24c1b35bd6b",
+            "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+            "godot/scripts/usable_overlay.gd": "cd0d7adf024dcdedaf75dff21782ece2ad7070f2d37068ee0eebe6f64307c208",
+            "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+            "godot/scripts/usable_session.gd": "0b6c3a1903f1469a7ee2a9f94e5f7fcb23687e1d2eeca9dcc79e670926c3bc50",
+            "godot/scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+            "godot/scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+            "godot/scripts/water_experiment_panel.gd": "0ff5791741fcf72220a72f161ceecdb553bf827838c0d1aad9c19c420b5ee903",
+            "godot/scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+            "godot/scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+            "godot/scripts/water_feel_web_probe.gd": "81ddc84d026fe7a81868a59ab5f0556e34885275ef3c1fc484e884d9549de2a4",
+            "godot/scripts/water_presentation_model.gd": "6c5d808c98ef3359b4d697a46750dec41f344894ec58b5e2adc5a7e9969c4f24",
+            "godot/scripts/web_capabilities.gd": "c7435f4af9e5161e6aab337b1804e5fe2e39b974f2149b519778caaf6e311527",
+            "godot/scripts/web_demo_controller.gd": "d2115bbc71901a2baa1e49245e93a9c0643fc8546a763e29d3c49410abf67e9e",
+            "godot/scripts/web_demo_menu.gd": "0f7a0de13a45b9cb29b98061d564e9955c204155bdb76c5388cae0a339bcc272",
+            "godot/scripts/web_rapier_probe.gd": "d91540caab0ab3db296a55a45b6cc87c44780c6141cde85c6620462093065026",
+            "godot/scripts/web_worker_probe.gd": "e13b3e12484c41fd5d19b4b135bb2d464c576abce429a23cb3d1618a4150a2f5",
+            "godot/scripts/worker_benchmark.gd": "9028c48f440f3ee436403fa4b65e209094514ecceb274c6a1cbc6d81b539f121",
+            "godot/scripts/worldgen_preview.gd": "f9f23c1b0f968a341560646489ec940767a9efaaf11f23b0d1c5f0c58389bd3f",
+            "godot/scripts/worldgen_qualification.gd": "5b4a54e0a4933646e5822947040f1c3613a7387c3853a25f95d4b5429db354f5",
+            "godot/scripts/worldgen_qualification_data.gd": "ea518a05167d728df2dab4528152d6462c5b8dc873f75b8a3179eb6bf707da47",
+            "godot/scripts/worldgen_workbench.gd": "e4ffed66d8e628cfafb6ab6f95274be9aa66172da4c4205a4241f900c91c6d5f",
+            "godot/scripts/worldgen_workbench_tools.gd": "764e1eac346ea8fba5e29d572b22548e27971d766755291a67b2d35aacb38908",
+            "godot/tests/render_publication_consumer.gd": "f9df590ac76b4792ccd7b0798145d81dfdb29bca21a10e9df802b03e05011bcf",
+            "godot/tests/render_publication_e.gd": "58cc4301ea4481346507e73d38233bf1b133f73f31ebf38d6ee0e05a16aa6be4",
+            "godot/tests/render_publication_trace.gd": "06bbf690eb36bc0e4896ec9c6046e8ee42e436dc28df1a22693ded8d2994a502",
+            "godot/tests/render_publication_worker.gd": "05c4f9be719b17c6e8bc6a8795d209f659d6f43ea1abd9fad43e56c82afdafea",
+            "godot/tests/run_render_publication.gd": "4d6d7736d562b9110d76122130ce2f6cf3a665ecfefd890eb467a08c9c83cea8",
+            "godot/main.tscn": "de1039e09ece8ca4bf6a22a995399b897cf8e080f3ac436f33ddd268402aabf1",
+            "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+            "godot/shaders/material_palette.gdshader": "3d9ee3b04ce6eee03490ad2c4af1f487f208e9ff0db31e6d514127633c2e0fef",
+            "tools/experiments/render_publication_campaign.py": "bce04621daa4316d16f1af24a7eddb1207d80cb7a73c1b46d9b11b50efd1dd79"
+          },
+          "native_source_inputs": {
+            "godot/native_extension/cyber_demo_bridge.hpp": {
+              "expected": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+              "actual": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371"
+            },
+            "godot/native_extension/cyber_native_cell_world.cpp": {
+              "expected": "bc6820044155c2cdc16907833f7feb3f940b4b1867518b0ff240073a65c7d6a6",
+              "actual": "bc6820044155c2cdc16907833f7feb3f940b4b1867518b0ff240073a65c7d6a6"
+            },
+            "godot/native_extension/cyber_native_cell_world.hpp": {
+              "expected": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c",
+              "actual": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c"
+            },
+            "godot/native_extension/cyber_observation_values.hpp": {
+              "expected": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+              "actual": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f"
+            },
+            "godot/native_extension/cyber_prepared_level_payload.hpp": {
+              "expected": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+              "actual": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a"
+            },
+            "godot/native_extension/cyber_prepared_liquid_world.hpp": {
+              "expected": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2",
+              "actual": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2"
+            },
+            "godot/native_extension/cyber_world_generator.cpp": {
+              "expected": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
+              "actual": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b"
+            },
+            "godot/native_extension/cyber_world_generator.hpp": {
+              "expected": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+              "actual": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822"
+            },
+            "godot/native_extension/generation_grammar_adapter.inc": {
+              "expected": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+              "actual": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53"
+            },
+            "godot/native_extension/generation_grammar_inspection.inc": {
+              "expected": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+              "actual": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c"
+            },
+            "godot/native_extension/generation_planes_adapter.inc": {
+              "expected": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+              "actual": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b"
+            },
+            "godot/native_extension/generation_planes_inspection.inc": {
+              "expected": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+              "actual": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72"
+            },
+            "godot/native_extension/generation_planes_methods.inc": {
+              "expected": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+              "actual": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051"
+            },
+            "godot/native_extension/generation_workbench_inspection.inc": {
+              "expected": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+              "actual": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf"
+            },
+            "godot/native_extension/generation_workbench_methods.inc": {
+              "expected": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+              "actual": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8"
+            },
+            "godot/native_extension/pressure_optimization_inspection.inc": {
+              "expected": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
+              "actual": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e"
+            },
+            "godot/native_extension/register_types.cpp": {
+              "expected": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+              "actual": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1"
+            },
+            "native/include/cybersand/bounded_ordered_index.hpp": {
+              "expected": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+              "actual": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147"
+            },
+            "native/include/cybersand/c_api.h": {
+              "expected": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
+              "actual": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1"
+            },
+            "native/include/cybersand/default_demo_recipe.hpp": {
+              "expected": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+              "actual": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4"
+            },
+            "native/include/cybersand/demo_snapshot.hpp": {
+              "expected": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163",
+              "actual": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163"
+            },
+            "native/include/cybersand/generation_fields.hpp": {
+              "expected": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+              "actual": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+            },
+            "native/include/cybersand/generation_grammar.hpp": {
+              "expected": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+              "actual": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+            },
+            "native/include/cybersand/generation_numeric.hpp": {
+              "expected": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+              "actual": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a"
+            },
+            "native/include/cybersand/generation_planes.hpp": {
+              "expected": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+              "actual": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+            },
+            "native/include/cybersand/generation_spatial.hpp": {
+              "expected": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+              "actual": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2"
+            },
+            "native/include/cybersand/generation_typed_fields.hpp": {
+              "expected": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+              "actual": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+            },
+            "native/include/cybersand/inertial_cellular.hpp": {
+              "expected": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+              "actual": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1"
+            },
+            "native/include/cybersand/interaction_policy.hpp": {
+              "expected": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+              "actual": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff"
+            },
+            "native/include/cybersand/interaction_rules.hpp": {
+              "expected": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+              "actual": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+            },
+            "native/include/cybersand/liquid_comparison.hpp": {
+              "expected": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+              "actual": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105"
+            },
+            "native/include/cybersand/liquid_construction_refusal.hpp": {
+              "expected": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+              "actual": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61"
+            },
+            "native/include/cybersand/liquid_policy_catalogue.hpp": {
+              "expected": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+              "actual": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+            },
+            "native/include/cybersand/liquid_run_receipt.hpp": {
+              "expected": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67",
+              "actual": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67"
+            },
+            "native/include/cybersand/liquid_run_receipt_native_capture.hpp": {
+              "expected": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+              "actual": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2"
+            },
+            "native/include/cybersand/liquid_solver_policy.hpp": {
+              "expected": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+              "actual": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+            },
+            "native/include/cybersand/material.hpp": {
+              "expected": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+              "actual": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+            },
+            "native/include/cybersand/material_appearance.hpp": {
+              "expected": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+              "actual": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+            },
+            "native/include/cybersand/material_rules.hpp": {
+              "expected": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+              "actual": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+            },
+            "native/include/cybersand/physics_diagnostics.hpp": {
+              "expected": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+              "actual": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4"
+            },
+            "native/include/cybersand/precision_storage.hpp": {
+              "expected": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+              "actual": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+            },
+            "native/include/cybersand/prepared_setup_identity.hpp": {
+              "expected": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae",
+              "actual": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae"
+            },
+            "native/include/cybersand/prepared_world.hpp": {
+              "expected": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985",
+              "actual": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985"
+            },
+            "native/include/cybersand/pressure_flow.hpp": {
+              "expected": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e",
+              "actual": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e"
+            },
+            "native/include/cybersand/pressure_optimization.hpp": {
+              "expected": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092",
+              "actual": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092"
+            },
+            "native/include/cybersand/pressure_setup_capacity.hpp": {
+              "expected": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72",
+              "actual": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72"
+            },
+            "native/include/cybersand/quantity_ledger.hpp": {
+              "expected": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+              "actual": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+            },
+            "native/include/cybersand/render_snapshot.hpp": {
+              "expected": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+              "actual": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3"
+            },
+            "native/include/cybersand/scheduler_geometry.hpp": {
+              "expected": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+              "actual": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460"
+            },
+            "native/include/cybersand/settled_discovery.hpp": {
+              "expected": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+              "actual": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3"
+            },
+            "native/include/cybersand/settled_regions.hpp": {
+              "expected": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+              "actual": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1"
+            },
+            "native/include/cybersand/settled_world_discovery.hpp": {
+              "expected": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+              "actual": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138"
+            },
+            "native/include/cybersand/sha256.hpp": {
+              "expected": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+              "actual": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7"
+            },
+            "native/include/cybersand/soliding_lifecycle.hpp": {
+              "expected": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+              "actual": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd"
+            },
+            "native/include/cybersand/transport_policy.hpp": {
+              "expected": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+              "actual": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+            },
+            "native/include/cybersand/water_cellular_yield.hpp": {
+              "expected": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+              "actual": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85"
+            },
+            "native/include/cybersand/water_experiment_policy.hpp": {
+              "expected": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+              "actual": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+            },
+            "native/include/cybersand/water_normalization.hpp": {
+              "expected": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05",
+              "actual": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05"
+            },
+            "native/include/cybersand/world.hpp": {
+              "expected": "5b92305776a180f8e402f1703158d9481a4a67f29dc2ad34b5a0d4bafdf5d2be",
+              "actual": "5b92305776a180f8e402f1703158d9481a4a67f29dc2ad34b5a0d4bafdf5d2be"
+            },
+            "native/include/cybersand/world_generation.hpp": {
+              "expected": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+              "actual": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c"
+            },
+            "native/src/c_api.cpp": {
+              "expected": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
+              "actual": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4"
+            },
+            "native/src/generation_fields.cpp": {
+              "expected": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+              "actual": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3"
+            },
+            "native/src/generation_grammar.cpp": {
+              "expected": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+              "actual": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453"
+            },
+            "native/src/generation_planes.cpp": {
+              "expected": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+              "actual": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb"
+            },
+            "native/src/generation_spatial.cpp": {
+              "expected": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+              "actual": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961"
+            },
+            "native/src/generation_typed_fields.cpp": {
+              "expected": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+              "actual": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d"
+            },
+            "native/src/material_rules.cpp": {
+              "expected": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+              "actual": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+            },
+            "native/src/render_snapshot.cpp": {
+              "expected": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+              "actual": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04"
+            },
+            "native/src/render_snapshot_internal.hpp": {
+              "expected": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+              "actual": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998"
+            },
+            "native/src/scheduler_geometry.cpp": {
+              "expected": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+              "actual": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764"
+            },
+            "native/src/settled_world_discovery.cpp": {
+              "expected": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+              "actual": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6"
+            },
+            "native/src/world.cpp": {
+              "expected": "ee8f1f40d51b0f12bddbe510ec4bd53fb6fa284fd86a39164770170a50620279",
+              "actual": "ee8f1f40d51b0f12bddbe510ec4bd53fb6fa284fd86a39164770170a50620279"
+            },
+            "native/src/world_generation.cpp": {
+              "expected": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+              "actual": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535"
+            },
+            "native/src/world_inertial.inc": {
+              "expected": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+              "actual": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd"
+            },
+            "native/src/world_pressure.inc": {
+              "expected": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+              "actual": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b"
+            },
+            "native/src/world_pressure_cache.inc": {
+              "expected": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc",
+              "actual": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc"
+            },
+            "native/src/world_pressure_cache_state.inc": {
+              "expected": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0",
+              "actual": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0"
+            },
+            "native/src/world_pressure_gas_cache.inc": {
+              "expected": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+              "actual": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8"
+            },
+            "native/src/world_pressure_state.inc": {
+              "expected": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c",
+              "actual": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c"
+            },
+            "native/src/world_quantity.inc": {
+              "expected": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+              "actual": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+            }
+          },
+          "runtime_sha256": "4f538ea0ba4153c4e67468b29c15c9be138a4d74d2977bccdb722a21d894d3b7",
+          "runtime_path": "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot\\addons\\cybersand_native\\bin\\cybersand_native.windows.x86_64.dll",
+          "runtime_manifest": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-native-Windows-manifest.json",
+          "runtime_manifest_sha256": "b79684e1046bb9d62f84a8ce3103027cb4f592db295e4617938549e03ca2bf6f",
+          "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+          "engine_path": "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "platform": "Windows-11-10.0.26300-SP0"
+        },
+        "processes": [
+          {
+            "case": "test_render_publication_trace",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_render_publication_trace.gd"
+            ],
+            "exit": 0,
+            "seconds": 0.3870147999987239,
+            "log_sha256": "f06039d1acef711a50a24be62b027a045949b150705a6bfbcb5c325af07077ca",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "RENDER_PUBLICATION_TRACE: 5 assertions, 0 failures"
+            ]
+          },
+          {
+            "case": "test_render_patch_handoff_regression",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_render_patch_handoff_regression.gd"
+            ],
+            "exit": 0,
+            "seconds": 1.4864127000037115,
+            "log_sha256": "325147e1b802ac53e9980a91624e4d3ec2cce2b806c26e44559d9979be49ec75",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "Render patch handoff regression passed"
+            ]
+          },
+          {
+            "case": "test_native_render_bridge_regression",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_native_render_bridge_regression.gd"
+            ],
+            "exit": 0,
+            "seconds": 0.28688330000295537,
+            "log_sha256": "3aa010763f460fa28f433d21b46f21dccba132c0bdc15a3c4136d8e7aa992a0e",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "Native RenderBridge regression passed; full 2097152 bytes, delta 18 bytes/1 patches"
+            ]
+          },
+          {
+            "case": "test_render_world_generation",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_render_world_generation.gd"
+            ],
+            "exit": 0,
+            "seconds": 3.805264700000407,
+            "log_sha256": "8a87bff211be78b0627bc0b32c86afa4c99236d8cf96245653c4c025d39e0efd",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "RENDER_WORLD_GENERATION: 23 assertions, 0 failures"
+            ]
+          },
+          {
+            "case": "test_render_publication_e",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_render_publication_e.gd"
+            ],
+            "exit": 0,
+            "seconds": 2.235074899996107,
+            "log_sha256": "cd2792aae9e37b016d26a694bfbe8f4c362fa50e58c483aff0e3e342fc886cc0",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "RENDER_PUBLICATION_E: 72 assertions, 0 failures"
+            ]
+          },
+          {
+            "case": "test_physics_async",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_physics_async.gd"
+            ],
+            "exit": 0,
+            "seconds": 3.161870399999316,
+            "log_sha256": "deee6002f1bbacb851b527f35f8c49c3af2b3f34b4b90010a29256fca6e05a0b",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "PHYSICS_ASYNC {\"age_histogram\":[101,1,0,0,0,0,0,0,0,0],\"applied_impulse\":[1.24576878547668,-162.593002319336],\"completed_ticks\":120,\"final\":{\"active_chunks\":1,\"attempted_ticks\":120,\"chunk_allocations\":0,\"chunks\":64,\"completed_ticks\":120,\"cores\":2,\"counts\":[12288,1122,36864,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"failed\":false,\"hash\":\"1630ee722e3621ea\",\"histogram\":[[100794368,29],[100794373,1],[84017415,288],[268435460,155],[285212676,153],[84017414,3229],[100794371,1],[117571592,441],[16908296,40],[84017672,527990],[100794370,30],[16908295,53],[84017671,535400],[117571590,428],[16908294,43],[100794374,1],[84017670,531964],[84017416,7197]],\"histogram_used\":18,\"overflow\":0,\"sum_y\":[1566781,383616,14137283,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"water_mass\":0},\"floor_contact_tick\":-1,\"initial\":{\"active_chunks\":10,\"attempted_ticks\":0,\"chunk_allocations\":0,\"chunks\":64,\"completed_ticks\":0,\"cores\":0,\"counts\":[12288,1122,36864,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"failed\":false,\"hash\":\"769300847df023a3\",\"histogram_used\":1,\"overflow\":0,\"sum_y\":[1566720,383616,14137344,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"water_mass\":0},\"mode\":\"desktop-asynchronous\",\"ok\":true,\"peak_depth\":7.19754028320313,\"platform\":\"Windows\",\"rapier_ticks\":123,\"rows\":[{\"cell_tick\":56,\"depth\":7.19754028320313,\"rapier_tick\":60,\"rotation\":0.0,\"x\":143.270935058594,\"y\":192.197540283203},{\"cell_tick\":116,\"depth\":1.87991333007813,\"rapier_tick\":120,\"rotation\":0.0,\"x\":144.086486816406,\"y\":186.879913330078}],\"seed\":0,\"worker_overruns\":0}"
+            ]
+          },
+          {
+            "case": "test_tick_failure_regression",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_tick_failure_regression.gd"
+            ],
+            "exit": 0,
+            "seconds": 3.1601394999961485,
+            "log_sha256": "8be2acf1f3a2793c3be97622537b4723d4f9dd0863dd993ed90445699878dc06",
+            "error_in_log": false,
+            "tail": [
+              "WEB_RAPIER_PROBE {\"ok\":true,\"reason\":\"Manual-step/CCD probe passed\",\"y\":72.5059432983398}",
+              "WEB_DEMO_READY CYBERSAND/NATIVE \u00c2\u00b7 THREADED \u00c2\u00b7 1 WORKERS \u00c2\u00b7 RAPIER2D \u00c2\u00b7 AUTO (12 logical threads)",
+              "TICK_FAILURE_WEB_OWNER {\"controller\":true,\"events\":[false,true],\"failures\":[],\"ok\":true,\"workers\":1}",
+              "INTEREST_REGION_WEB_OWNER {\"controller\":true,\"excluded_ticks\":8,\"failures\":[],\"ok\":true,\"resumed_steps\":1,\"workers\":1}",
+              "Tick failure regression: passed"
+            ]
+          },
+          {
+            "case": "test_play_life001_jetbarrel",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_play_life001_jetbarrel.gd"
+            ],
+            "exit": 0,
+            "seconds": 18.53305890000047,
+            "log_sha256": "c1c427a62c4cf205ea5c9fd47111a05de236c065edd5becebc9c88aadabee04b",
+            "error_in_log": false,
+            "tail": [
+              "PLAY_LIFE001_CYCLE {\"cycle\":6,\"elapsed_ms\":1727,\"initial_actor_epoch\":1,\"initial_world_generation\":3,\"reset_actor_epoch\":2,\"reset_ok\":true,\"reset_world_generation\":4,\"rig\":\"jetbarrel\",\"worker_joined\":true}",
+              "PLAY_LIFE001_CYCLE {\"cycle\":7,\"elapsed_ms\":1694,\"initial_actor_epoch\":1,\"initial_world_generation\":3,\"reset_actor_epoch\":2,\"reset_ok\":true,\"reset_world_generation\":4,\"rig\":\"jetbarrel\",\"worker_joined\":true}",
+              "PLAY_LIFE001_CYCLE {\"cycle\":8,\"elapsed_ms\":1737,\"initial_actor_epoch\":1,\"initial_world_generation\":3,\"reset_actor_epoch\":2,\"reset_ok\":true,\"reset_world_generation\":4,\"rig\":\"jetbarrel\",\"worker_joined\":true}",
+              "PLAY_LIFE001_CYCLE {\"cycle\":9,\"elapsed_ms\":1728,\"initial_actor_epoch\":1,\"initial_world_generation\":3,\"reset_actor_epoch\":2,\"reset_ok\":true,\"reset_world_generation\":4,\"rig\":\"jetbarrel\",\"worker_joined\":true}",
+              "PLAY_LIFE001_RESULT {\"assertions\":233,\"cycles_completed\":10,\"cycles_requested\":10,\"elapsed_ms\":17008,\"failures\":0,\"host\":\"main.tscn+CyberSimulationWorker+main-thread-Rapier\",\"liquid_policy_reconstruction_cycles\":0,\"maximum_cycle_ms\":1737,\"physical_gamepad_qualified\":false,\"rapier_sessions_retired\":10,\"real_host\":true,\"rendered_fps_measured\":false,\"retries\":0,\"rig\":\"jetbarrel\",\"slow_native_injection\":false,\"workers_joined\":10}"
+            ]
+          },
+          {
+            "case": "test_play_life003_jetbarrel",
+            "argv": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot",
+              "--script",
+              "res://tests/test_play_life003_jetbarrel.gd"
+            ],
+            "exit": 0,
+            "seconds": 3.7212064000050304,
+            "log_sha256": "f230447308036d5c4dba201a4677df9d6d036d57c0aaaa106e7df85ec068b299",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "PLAY_LIFE003_RESULT {\"actor_epoch\":1,\"applied_session_generation\":3,\"assertions\":30,\"contended_safety_probe\":{\"deadline_expired\":true,\"elapsed_ms\":25,\"released_while_mutex_held\":true,\"safety_timeout_ms\":25,\"stop_observed\":false},\"elapsed_ms\":2253,\"failures\":0,\"host\":\"main.tscn+CyberSimulationWorker+main-thread-Rapier\",\"main_callbacks_during_delay\":8,\"native_adapter_destroyed\":true,\"native_phase_jobs_held\":false,\"native_thread_join_trace\":false,\"prepared_operations\":1,\"prepared_token\":1,\"real_host\":true,\"rendered_fps_measured\":false,\"retries\":0,\"rig\":\"jetbarrel\",\"slow_native_injection\":false,\"stop_fences_observed\":1,\"worker_destroyed\":true,\"workers_joined\":1,\"world_generation\":3}"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\Final2-focused-Linux\\report.json",
+      "sha256": "7ec0ed95103b7e2b94559d1ba814d4beb044e2c904a266b620dd069849fc96b9",
+      "content": {
+        "identity": {
+          "frozen_main": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc",
+          "head": "cc3b5e82bbebea71a10ff5495434c90ff5a95c33",
+          "tree": "1a0962252aeb495e1b558c84bc01a1009bf3781b",
+          "source_hashes": {
+            "godot/scripts/actor_prototype.gd": "ccb25275e52150f1e4bfdd228854da3bcaa6e1d2026b52775c3150e6f451bb92",
+            "godot/scripts/actor_prototype_overlay.gd": "e87dcbf76ba33e3eceef42654e3be6e35b79a3d85cf73ee079406d11d3fe7735",
+            "godot/scripts/actor_prototype_panel.gd": "8c28e322bd8eca393441cd41dfd9e6d0a1ff75ca4612ec9816e4a25dfa4e8c1e",
+            "godot/scripts/actor_prototype_session.gd": "c87ed7c684675d686b093b1aab758c4099430343c4775dd36da89214354f7282",
+            "godot/scripts/actor_rig_actuation.gd": "78ba62edbffcf9af9e0f4f1b35831dd29d5ad67bc60e7b2ecbfd78fee59ae251",
+            "godot/scripts/actor_rig_catalog.gd": "5808438bd056686c7f96d4ee81908588a2004b49d4b7c048124a86042ade2944",
+            "godot/scripts/actor_rig_effects.gd": "8f9aa562fc023a32963ce8ad7c005f131d5ce655b5d2c401b624ce83918df2a1",
+            "godot/scripts/actor_rig_motor.gd": "2a876dcd7e7dd9b9506dd278f81090f1fab011b7bc8006886d2d4d796f6b5c90",
+            "godot/scripts/blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244",
+            "godot/scripts/blacksite_nine_art.gd": "651428983c725e1a2d87e3596279f8c7a5964a5e49663a35782bc3f1e450a22e",
+            "godot/scripts/blacksite_nine_depths.gd": "fe6db42104fc135e56aaa731895cb85b42ecbb5d29acf4ed79f2bb099638d2d1",
+            "godot/scripts/blacksite_nine_layout.gd": "ccc27cdaf2479d58a9ec4391485f9141c8ac07b58d0c1d97e2c35f4f286ac69d",
+            "godot/scripts/blacksite_nine_midworks.gd": "eaf655d2ccf6ce54551a49852e0a6c39038bfa93f1fb7624a2db68100d71ace6",
+            "godot/scripts/blacksite_nine_presentation.gd": "36e2b92a3b8b982b2fb1ecf9445a302120dad50cf5a22ae1f7609c3f10e23587",
+            "godot/scripts/blacksite_nine_surface.gd": "347888118cf2b20b564d8171f35d8d80feae1c0341f90829fbfee482b0397813",
+            "godot/scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+            "godot/scripts/decompression_diagnostic.gd": "fda5d64f917ddb4b65fd811784ce693177f1f1c76830ea55efe7c0a710c77ee9",
+            "godot/scripts/demo_save_codec.gd": "0f47752549ba84447e4168fcb6ae4ec4d7ba852a3c603cbc9d4bb92f92703047",
+            "godot/scripts/demo_worlds.gd": "a83ad490681cc9da262f9d2863d9b9100bbb5dbc17eef88e6cfba55d88a8cf5d",
+            "godot/scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+            "godot/scripts/feature_launcher.gd": "18816e00d0b60adabbdd5e42bcba27f04a76fbdcd70940804216fb83494968d0",
+            "godot/scripts/feature_navigation.gd": "17da6bec36ab3bfc35643e357b68e08f94dd36f42f9b7f5d98585231c69a051a",
+            "godot/scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+            "godot/scripts/industrial_underswamp.gd": "d603d587c36e1ebf0d2ec16bd244c03df1c0cab83896e95472d768fb9c418cf8",
+            "godot/scripts/interaction_policy.gd": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+            "godot/scripts/interaction_policy_probe.gd": "e369778ca76a365af4cea4eccda7d288c2c498e623d6b3ff76f0d3cfcc01da36",
+            "godot/scripts/liquid_comparison_panel.gd": "ce4bd0713f5d4d2eca8d194c9449edbaa8c7861f167ccce6a6b5495dc95f442a",
+            "godot/scripts/liquid_host_evidence.gd": "ef44977aff88f5569a3fbc5495317f4c09671e42d0868b770677670cdf63cd0f",
+            "godot/scripts/liquid_host_web_probe.gd": "dbcfe003cf9f2c0fa41bdee2d3cbfec06620c18ddbf9c6329c7a67396e804ef2",
+            "godot/scripts/main.gd": "531f9f393c64aeee6c0b0e79d28ed577f13c4881865bd94c01c644cc9dd07de5",
+            "godot/scripts/material_appearance_lut.gd": "781a48ad8d30b6e1c46ae56fa976dfb4e6078ae240cc558c5cbff574b0fac237",
+            "godot/scripts/microscenario_catalogue.gd": "22e4e0db5c76035add1b0a11d63bd29e40987d0a15ed2b05e2c4eaee0a2f1b7c",
+            "godot/scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+            "godot/scripts/microscenario_contract.gd": "6c15e65b8e7c4f3747d6dcca93d014897ebef6681cbfd1881fb12be32ec14540",
+            "godot/scripts/microscenario_host.gd": "a351bf83e55d042dfa17798503ba05b0de4aeb9689622d6dbf8373991d29a3c0",
+            "godot/scripts/microscenario_identity.gd": "84131b8d511ad5ed46d17f1743fef74d61e9fc9fdfbb3acebc384e30424121f6",
+            "godot/scripts/microscenario_panel.gd": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7",
+            "godot/scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+            "godot/scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+            "godot/scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+            "godot/scripts/middle_cyberberbia.gd": "aee352913a6cb7e067f3412f061698f1a6ee64c21044b5b7997cf7ac419420c8",
+            "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+            "godot/scripts/physical_actor_arena.gd": "39ed6d5afcde4a6096d9a1ff9df28a78fc8007b79723304e3894f2117fef18c2",
+            "godot/scripts/physical_actor_catalog.gd": "a5f2f800e0e4caa6199a1d4dd2be9d0a1603cfa172947b41fe0f90fe428d9489",
+            "godot/scripts/physical_actor_effects.gd": "335de660c67a446f77a1027b4d88b3218172fb6374dadc05cccd83a860251b1a",
+            "godot/scripts/physical_actor_overlay.gd": "dd39efc1ead8e65751fe18b9a82e834bedd7cf88b95a7eeceee87de6fdba3a9d",
+            "godot/scripts/physical_actor_rig.gd": "4e3fe63b46a5db3365d77c9c055a032b704f70ea2265ad0f0013574b785e692e",
+            "godot/scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+            "godot/scripts/physical_actor_session.gd": "993fdca10bc9ad6be42b8ffd7b1f352de9d460b9c2bdafcc6b668e721057bf83",
+            "godot/scripts/physical_actor_trial.gd": "8f2255cc3eedef597c945d5d7a9b9a50a5937ccd3a21ff3383a4414404ef8ffe",
+            "godot/scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+            "godot/scripts/physical_flight_course.gd": "29557a84577fce245fc84c9d5922939bf118404c223dcd0dad42b537e49c2915",
+            "godot/scripts/physical_flight_course_view.gd": "9534d0dd3ca39efd7a86fcdc57e92a83fbb588412d74de4e9e589671a426535a",
+            "godot/scripts/physical_flight_development_scoring.gd": "dc938fcb80a41dc5990662f9428cc871f80d8c488c7582866c5276dbbd73095e",
+            "godot/scripts/physical_flight_episode.gd": "b8b42195c97dcf3b5292f841ff53043db8b7fb486e8b46a35707838a7e75f8d0",
+            "godot/scripts/physical_flight_lab_screen.gd": "110cc086644517b49dffe9c033e952e05c783002fe97db370b8519e5691a1f90",
+            "godot/scripts/physical_flight_observation_adapter.gd": "afa43dad5ed8737961567070bbf04754107547c065ab61cb58c56b2df447d71d",
+            "godot/scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+            "godot/scripts/physical_flight_sealed_suite.gd": "2270b7b9a54a8380d0db9437fa33ffe1331bf5a92070f640db933e46965781f8",
+            "godot/scripts/physical_flight_teacher.gd": "0fb571cfd314a53fc86b3517fb5a8258a77d7215fcbcb43fc7f53519e7e29761",
+            "godot/scripts/physical_usable_course.gd": "4dc9cff392b2a82ceb8f63280f084b56d0ae11bc32020d7ccb4a1636b424f2c5",
+            "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+            "godot/scripts/physical_usable_loadouts.gd": "f09afeabae2aea9abbc033b721bfa3d11f6dcadb110c0079c991d2f908826bcc",
+            "godot/scripts/physical_usable_runtime.gd": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+            "godot/scripts/physical_usable_script.gd": "e21454479b42b1a54e001c02c219d8892101884348ad7aabc9ea4d1e3e58bb19",
+            "godot/scripts/physics_characterisation.gd": "43eca3584031d6059872d2d4b5e0b6b48d35511d01658673b5c78468dc7a1783",
+            "godot/scripts/playable_course_gamepad_events.gd": "6c27178e11ea723ec587158fc635372db1abcdc70c8492bec13e0a4d35c4c3d2",
+            "godot/scripts/playable_course_lap.gd": "17d93b12ad1d1123e63e9ab8e9f14c291c5288bd4edb0d1a7588909be6acab3e",
+            "godot/scripts/playable_course_overlay.gd": "83209ef8fda16c6479c0d4a3a10f307a6be055e453e8e241c02c0670c10b8a22",
+            "godot/scripts/playable_session_panel.gd": "4c9e66a5ff83193ada1dc80f0489639c104e110451ba724c7b66a06402dea197",
+            "godot/scripts/player_acrobat_controller.gd": "9cf4d6a65a9c8d7ee1c94179c53aaaf4e118662b52e4ad9469c78deef3fb04a7",
+            "godot/scripts/player_actor_catalog.gd": "f506c97fcfe6772ffb3a989b422c2d0a5e7ae189f2020bf15826fa4f6a0a7091",
+            "godot/scripts/player_environment_panel.gd": "743aea24cf53d583759fa39fad331804b5e88d017b784920d81f4897f9233115",
+            "godot/scripts/player_environment_profiles.gd": "7c9ee013758d303125da456e1128bbf3a7bbba3d841c65341ba38617d52fbc16",
+            "godot/scripts/player_playground.gd": "20822400c57998f4bef223b19920c551cf7ee0ff3cdb25c6221b0dd9d420b2e8",
+            "godot/scripts/player_playground_course.gd": "1fb66932f1c12f6d6d408afcd0ab42904bd858211a008ff1f8b5a4f81164997d",
+            "godot/scripts/player_playground_input.gd": "6a16650f9f6478a0053bc6b7f463d584fe74d9f6351a9909eaa655429315512c",
+            "godot/scripts/player_playground_overlay.gd": "bc297ae298a80a27c02459be098f9b3b975eb3c90d85564ebe3a67ff50aeee80",
+            "godot/scripts/player_playground_runtime.gd": "77ac953a10e5253e2c9bce4a08291f6ec3de9bf121d975499aa3e5a9685c3eb6",
+            "godot/scripts/player_representation.gd": "4b481c04af45ecf9139cd57d0c5ef3dd9d7579c1ce21addaef99132ff420dc96",
+            "godot/scripts/player_vehicle_controller.gd": "c20ab7420bde632b2d77efe1e17f3bc82910d2b8f07e1612890f05fac624f6d2",
+            "godot/scripts/prepared_level_session.gd": "ec3bde428d416751f10891075f0ac0193cb0f03014bb04977516cdad4776a855",
+            "godot/scripts/prepared_physical_session.gd": "a2b5a050af7b66caca70a9623bdfaad2a86c939d517d15efffebcd2506ea9b99",
+            "godot/scripts/prepared_reference_body_session.gd": "73992c1e6dc65252ba23398c3902ad077bc7f4efb4541ab07416115bddbe6f77",
+            "godot/scripts/prepared_sampled_session.gd": "9238e92229ae5ea1f703c0a025c5dbbbb680a3583622ed2698fc1c24b95635b0",
+            "godot/scripts/prepared_synchronous_reference_session.gd": "31115ef143804e2e60079c3a8917b600ca51e7790007bf0fbb53bb00453e7af9",
+            "godot/scripts/prepared_trial_body_session.gd": "52918effaa521f13912fce3c193aeb6dbae740fa522b70893693bbd13409e494",
+            "godot/scripts/rapier_physics_bridge.gd": "44585c25307569590937a0d0f51099438fcaacc16b385efca66ff78184909c37",
+            "godot/scripts/rigid_body_coupling.gd": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142",
+            "godot/scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+            "godot/scripts/sewertech_alley.gd": "985371f4632880ceb297128b332bf6a265a83cbcc7675bde342119a6d2822357",
+            "godot/scripts/showcase_presentation.gd": "e478efd9e63db7f3994c7e86ee73d1d32a276c0202fb37bbf20d270d25e16d6b",
+            "godot/scripts/showcase_tiles.gd": "c496da1fb7507e11763cec92113ad594b3f0fae44e54af040f8501f91e03a7d5",
+            "godot/scripts/simulation_snapshot.gd": "8c7ca1429e8aa0010c0f0aec1ce77d35a7e70ca8fa0d00fa43d2116382c138d0",
+            "godot/scripts/simulation_worker.gd": "425004a9fbe844b45bc6a57d4d7447c248f86734ea24612a60a9107d172bbcb1",
+            "godot/scripts/snapshot_publication_counter.gd": "89a7fe973cc8c162f3211c6c051dc9083a42a8775ec9bb3a155c106d3029f6d8",
+            "godot/scripts/thunderbowl_arena.gd": "d075422be9275fc3ca2543e977a39d39d2397335f2785d9c475df78c20fd5ab5",
+            "godot/scripts/thunderbowl_contract.gd": "1eb1c5cfcd6ec5db398a9677413ec1afefcaf0c2337427d51c6c545a21391218",
+            "godot/scripts/tick_failure_probe.gd": "575910573f6f70093fae9d5f8dfe20d8d6219e22671e0d6aa28603bc26c4f14a",
+            "godot/scripts/tower_panel.gd": "14cc8fa74867924d08477b76357ee5a958ad7f06ca4853e473b84c2cae79c255",
+            "godot/scripts/transport_probe.gd": "c7f495b72eeb165dc366667ac6d31bdbf79c0323a67f0779797cd73975d287e8",
+            "godot/scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+            "godot/scripts/transport_profile_panel.gd": "456e6c24213979c8ba2ff983078ad29d530acb80a2c929013aeae24c1b35bd6b",
+            "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+            "godot/scripts/usable_overlay.gd": "cd0d7adf024dcdedaf75dff21782ece2ad7070f2d37068ee0eebe6f64307c208",
+            "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+            "godot/scripts/usable_session.gd": "0b6c3a1903f1469a7ee2a9f94e5f7fcb23687e1d2eeca9dcc79e670926c3bc50",
+            "godot/scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+            "godot/scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+            "godot/scripts/water_experiment_panel.gd": "0ff5791741fcf72220a72f161ceecdb553bf827838c0d1aad9c19c420b5ee903",
+            "godot/scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+            "godot/scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+            "godot/scripts/water_feel_web_probe.gd": "81ddc84d026fe7a81868a59ab5f0556e34885275ef3c1fc484e884d9549de2a4",
+            "godot/scripts/water_presentation_model.gd": "6c5d808c98ef3359b4d697a46750dec41f344894ec58b5e2adc5a7e9969c4f24",
+            "godot/scripts/web_capabilities.gd": "c7435f4af9e5161e6aab337b1804e5fe2e39b974f2149b519778caaf6e311527",
+            "godot/scripts/web_demo_controller.gd": "d2115bbc71901a2baa1e49245e93a9c0643fc8546a763e29d3c49410abf67e9e",
+            "godot/scripts/web_demo_menu.gd": "0f7a0de13a45b9cb29b98061d564e9955c204155bdb76c5388cae0a339bcc272",
+            "godot/scripts/web_rapier_probe.gd": "d91540caab0ab3db296a55a45b6cc87c44780c6141cde85c6620462093065026",
+            "godot/scripts/web_worker_probe.gd": "e13b3e12484c41fd5d19b4b135bb2d464c576abce429a23cb3d1618a4150a2f5",
+            "godot/scripts/worker_benchmark.gd": "9028c48f440f3ee436403fa4b65e209094514ecceb274c6a1cbc6d81b539f121",
+            "godot/scripts/worldgen_preview.gd": "f9f23c1b0f968a341560646489ec940767a9efaaf11f23b0d1c5f0c58389bd3f",
+            "godot/scripts/worldgen_qualification.gd": "5b4a54e0a4933646e5822947040f1c3613a7387c3853a25f95d4b5429db354f5",
+            "godot/scripts/worldgen_qualification_data.gd": "ea518a05167d728df2dab4528152d6462c5b8dc873f75b8a3179eb6bf707da47",
+            "godot/scripts/worldgen_workbench.gd": "e4ffed66d8e628cfafb6ab6f95274be9aa66172da4c4205a4241f900c91c6d5f",
+            "godot/scripts/worldgen_workbench_tools.gd": "764e1eac346ea8fba5e29d572b22548e27971d766755291a67b2d35aacb38908",
+            "godot/tests/render_publication_consumer.gd": "f9df590ac76b4792ccd7b0798145d81dfdb29bca21a10e9df802b03e05011bcf",
+            "godot/tests/render_publication_e.gd": "58cc4301ea4481346507e73d38233bf1b133f73f31ebf38d6ee0e05a16aa6be4",
+            "godot/tests/render_publication_trace.gd": "06bbf690eb36bc0e4896ec9c6046e8ee42e436dc28df1a22693ded8d2994a502",
+            "godot/tests/render_publication_worker.gd": "05c4f9be719b17c6e8bc6a8795d209f659d6f43ea1abd9fad43e56c82afdafea",
+            "godot/tests/run_render_publication.gd": "4d6d7736d562b9110d76122130ce2f6cf3a665ecfefd890eb467a08c9c83cea8",
+            "godot/main.tscn": "de1039e09ece8ca4bf6a22a995399b897cf8e080f3ac436f33ddd268402aabf1",
+            "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+            "godot/shaders/material_palette.gdshader": "3d9ee3b04ce6eee03490ad2c4af1f487f208e9ff0db31e6d514127633c2e0fef",
+            "tools/experiments/render_publication_campaign.py": "bce04621daa4316d16f1af24a7eddb1207d80cb7a73c1b46d9b11b50efd1dd79"
+          },
+          "native_source_inputs": {
+            "godot/native_extension/cyber_demo_bridge.hpp": {
+              "expected": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+              "actual": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371"
+            },
+            "godot/native_extension/cyber_native_cell_world.cpp": {
+              "expected": "bc6820044155c2cdc16907833f7feb3f940b4b1867518b0ff240073a65c7d6a6",
+              "actual": "bc6820044155c2cdc16907833f7feb3f940b4b1867518b0ff240073a65c7d6a6"
+            },
+            "godot/native_extension/cyber_native_cell_world.hpp": {
+              "expected": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c",
+              "actual": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c"
+            },
+            "godot/native_extension/cyber_observation_values.hpp": {
+              "expected": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+              "actual": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f"
+            },
+            "godot/native_extension/cyber_prepared_level_payload.hpp": {
+              "expected": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+              "actual": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a"
+            },
+            "godot/native_extension/cyber_prepared_liquid_world.hpp": {
+              "expected": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2",
+              "actual": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2"
+            },
+            "godot/native_extension/cyber_world_generator.cpp": {
+              "expected": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
+              "actual": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b"
+            },
+            "godot/native_extension/cyber_world_generator.hpp": {
+              "expected": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+              "actual": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822"
+            },
+            "godot/native_extension/generation_grammar_adapter.inc": {
+              "expected": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+              "actual": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53"
+            },
+            "godot/native_extension/generation_grammar_inspection.inc": {
+              "expected": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+              "actual": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c"
+            },
+            "godot/native_extension/generation_planes_adapter.inc": {
+              "expected": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+              "actual": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b"
+            },
+            "godot/native_extension/generation_planes_inspection.inc": {
+              "expected": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+              "actual": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72"
+            },
+            "godot/native_extension/generation_planes_methods.inc": {
+              "expected": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+              "actual": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051"
+            },
+            "godot/native_extension/generation_workbench_inspection.inc": {
+              "expected": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+              "actual": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf"
+            },
+            "godot/native_extension/generation_workbench_methods.inc": {
+              "expected": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+              "actual": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8"
+            },
+            "godot/native_extension/pressure_optimization_inspection.inc": {
+              "expected": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
+              "actual": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e"
+            },
+            "godot/native_extension/register_types.cpp": {
+              "expected": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+              "actual": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1"
+            },
+            "native/include/cybersand/bounded_ordered_index.hpp": {
+              "expected": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+              "actual": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147"
+            },
+            "native/include/cybersand/c_api.h": {
+              "expected": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
+              "actual": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1"
+            },
+            "native/include/cybersand/default_demo_recipe.hpp": {
+              "expected": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+              "actual": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4"
+            },
+            "native/include/cybersand/demo_snapshot.hpp": {
+              "expected": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163",
+              "actual": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163"
+            },
+            "native/include/cybersand/generation_fields.hpp": {
+              "expected": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+              "actual": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+            },
+            "native/include/cybersand/generation_grammar.hpp": {
+              "expected": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+              "actual": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+            },
+            "native/include/cybersand/generation_numeric.hpp": {
+              "expected": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+              "actual": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a"
+            },
+            "native/include/cybersand/generation_planes.hpp": {
+              "expected": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+              "actual": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+            },
+            "native/include/cybersand/generation_spatial.hpp": {
+              "expected": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+              "actual": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2"
+            },
+            "native/include/cybersand/generation_typed_fields.hpp": {
+              "expected": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+              "actual": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+            },
+            "native/include/cybersand/inertial_cellular.hpp": {
+              "expected": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+              "actual": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1"
+            },
+            "native/include/cybersand/interaction_policy.hpp": {
+              "expected": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+              "actual": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff"
+            },
+            "native/include/cybersand/interaction_rules.hpp": {
+              "expected": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+              "actual": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+            },
+            "native/include/cybersand/liquid_comparison.hpp": {
+              "expected": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+              "actual": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105"
+            },
+            "native/include/cybersand/liquid_construction_refusal.hpp": {
+              "expected": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+              "actual": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61"
+            },
+            "native/include/cybersand/liquid_policy_catalogue.hpp": {
+              "expected": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+              "actual": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+            },
+            "native/include/cybersand/liquid_run_receipt.hpp": {
+              "expected": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67",
+              "actual": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67"
+            },
+            "native/include/cybersand/liquid_run_receipt_native_capture.hpp": {
+              "expected": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+              "actual": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2"
+            },
+            "native/include/cybersand/liquid_solver_policy.hpp": {
+              "expected": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+              "actual": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+            },
+            "native/include/cybersand/material.hpp": {
+              "expected": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+              "actual": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+            },
+            "native/include/cybersand/material_appearance.hpp": {
+              "expected": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+              "actual": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+            },
+            "native/include/cybersand/material_rules.hpp": {
+              "expected": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+              "actual": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+            },
+            "native/include/cybersand/physics_diagnostics.hpp": {
+              "expected": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+              "actual": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4"
+            },
+            "native/include/cybersand/precision_storage.hpp": {
+              "expected": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+              "actual": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+            },
+            "native/include/cybersand/prepared_setup_identity.hpp": {
+              "expected": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae",
+              "actual": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae"
+            },
+            "native/include/cybersand/prepared_world.hpp": {
+              "expected": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985",
+              "actual": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985"
+            },
+            "native/include/cybersand/pressure_flow.hpp": {
+              "expected": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e",
+              "actual": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e"
+            },
+            "native/include/cybersand/pressure_optimization.hpp": {
+              "expected": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092",
+              "actual": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092"
+            },
+            "native/include/cybersand/pressure_setup_capacity.hpp": {
+              "expected": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72",
+              "actual": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72"
+            },
+            "native/include/cybersand/quantity_ledger.hpp": {
+              "expected": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+              "actual": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+            },
+            "native/include/cybersand/render_snapshot.hpp": {
+              "expected": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+              "actual": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3"
+            },
+            "native/include/cybersand/scheduler_geometry.hpp": {
+              "expected": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+              "actual": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460"
+            },
+            "native/include/cybersand/settled_discovery.hpp": {
+              "expected": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+              "actual": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3"
+            },
+            "native/include/cybersand/settled_regions.hpp": {
+              "expected": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+              "actual": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1"
+            },
+            "native/include/cybersand/settled_world_discovery.hpp": {
+              "expected": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+              "actual": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138"
+            },
+            "native/include/cybersand/sha256.hpp": {
+              "expected": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+              "actual": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7"
+            },
+            "native/include/cybersand/soliding_lifecycle.hpp": {
+              "expected": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+              "actual": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd"
+            },
+            "native/include/cybersand/transport_policy.hpp": {
+              "expected": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+              "actual": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+            },
+            "native/include/cybersand/water_cellular_yield.hpp": {
+              "expected": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+              "actual": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85"
+            },
+            "native/include/cybersand/water_experiment_policy.hpp": {
+              "expected": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+              "actual": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+            },
+            "native/include/cybersand/water_normalization.hpp": {
+              "expected": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05",
+              "actual": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05"
+            },
+            "native/include/cybersand/world.hpp": {
+              "expected": "5b92305776a180f8e402f1703158d9481a4a67f29dc2ad34b5a0d4bafdf5d2be",
+              "actual": "5b92305776a180f8e402f1703158d9481a4a67f29dc2ad34b5a0d4bafdf5d2be"
+            },
+            "native/include/cybersand/world_generation.hpp": {
+              "expected": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+              "actual": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c"
+            },
+            "native/src/c_api.cpp": {
+              "expected": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
+              "actual": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4"
+            },
+            "native/src/generation_fields.cpp": {
+              "expected": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+              "actual": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3"
+            },
+            "native/src/generation_grammar.cpp": {
+              "expected": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+              "actual": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453"
+            },
+            "native/src/generation_planes.cpp": {
+              "expected": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+              "actual": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb"
+            },
+            "native/src/generation_spatial.cpp": {
+              "expected": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+              "actual": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961"
+            },
+            "native/src/generation_typed_fields.cpp": {
+              "expected": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+              "actual": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d"
+            },
+            "native/src/material_rules.cpp": {
+              "expected": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+              "actual": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+            },
+            "native/src/render_snapshot.cpp": {
+              "expected": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+              "actual": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04"
+            },
+            "native/src/render_snapshot_internal.hpp": {
+              "expected": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+              "actual": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998"
+            },
+            "native/src/scheduler_geometry.cpp": {
+              "expected": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+              "actual": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764"
+            },
+            "native/src/settled_world_discovery.cpp": {
+              "expected": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+              "actual": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6"
+            },
+            "native/src/world.cpp": {
+              "expected": "ee8f1f40d51b0f12bddbe510ec4bd53fb6fa284fd86a39164770170a50620279",
+              "actual": "ee8f1f40d51b0f12bddbe510ec4bd53fb6fa284fd86a39164770170a50620279"
+            },
+            "native/src/world_generation.cpp": {
+              "expected": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+              "actual": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535"
+            },
+            "native/src/world_inertial.inc": {
+              "expected": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+              "actual": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd"
+            },
+            "native/src/world_pressure.inc": {
+              "expected": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+              "actual": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b"
+            },
+            "native/src/world_pressure_cache.inc": {
+              "expected": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc",
+              "actual": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc"
+            },
+            "native/src/world_pressure_cache_state.inc": {
+              "expected": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0",
+              "actual": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0"
+            },
+            "native/src/world_pressure_gas_cache.inc": {
+              "expected": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+              "actual": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8"
+            },
+            "native/src/world_pressure_state.inc": {
+              "expected": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c",
+              "actual": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c"
+            },
+            "native/src/world_quantity.inc": {
+              "expected": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+              "actual": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+            }
+          },
+          "runtime_sha256": "805151d4dd64dd28939d2b3a543b859073ddfa8c0c77df059563b7a9f431b68b",
+          "runtime_path": "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "runtime_manifest": "/mnt/c/Users/_/.codex/tmp/render-publication-abc/final-native-Linux-manifest.json",
+          "runtime_manifest_sha256": "ccddc5851cc3c895ad99a9a5b27ebe9a521cafeade3ed5c4f373557768233dd8",
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "engine_path": "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+          "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+        },
+        "processes": [
+          {
+            "case": "test_render_publication_trace",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_render_publication_trace.gd"
+            ],
+            "exit": 0,
+            "seconds": 0.4692487159999996,
+            "log_sha256": "12d497c706fc8c4d97fa26de60b4e47f0a388d461db11b0c2ebf2471367c8e2c",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "RENDER_PUBLICATION_TRACE: 5 assertions, 0 failures"
+            ]
+          },
+          {
+            "case": "test_render_patch_handoff_regression",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_render_patch_handoff_regression.gd"
+            ],
+            "exit": 0,
+            "seconds": 4.427688926999999,
+            "log_sha256": "08263aedb595ff899a3fe56ccdf61b3337c034a5b930b1214bc9b8d008a7a51a",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "Render patch handoff regression passed"
+            ]
+          },
+          {
+            "case": "test_native_render_bridge_regression",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_native_render_bridge_regression.gd"
+            ],
+            "exit": 0,
+            "seconds": 0.5209598199999999,
+            "log_sha256": "b6bd1c7536364ed768cf529f9a831d4d4db3fb79c2e3141d1828e926f04815a8",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "Native RenderBridge regression passed; full 2097152 bytes, delta 18 bytes/1 patches"
+            ]
+          },
+          {
+            "case": "test_render_world_generation",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_render_world_generation.gd"
+            ],
+            "exit": 0,
+            "seconds": 5.179399332999999,
+            "log_sha256": "b75505bfd0cb9c5dc461db528c2691042070620afbac3ebfec49845947cd8255",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "RENDER_WORLD_GENERATION: 23 assertions, 0 failures"
+            ]
+          },
+          {
+            "case": "test_render_publication_e",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_render_publication_e.gd"
+            ],
+            "exit": 0,
+            "seconds": 5.280502266000001,
+            "log_sha256": "bbc1096cbd68aee1b7ee0a821cb8dadb4171da58405c62cdf3571f69d4b8750a",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "RENDER_PUBLICATION_E: 72 assertions, 0 failures"
+            ]
+          },
+          {
+            "case": "test_physics_async",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_physics_async.gd"
+            ],
+            "exit": 0,
+            "seconds": 5.179883069999999,
+            "log_sha256": "3fe2bae10b593997f8c0d46a03798e48fae2019ff30a00073ea2322d6e320432",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "PHYSICS_ASYNC {\"age_histogram\":[98,0,0,0,0,0,0,0,1,0],\"applied_impulse\":[0.791021347045898,-167.174438476562],\"completed_ticks\":120,\"final\":{\"active_chunks\":1,\"attempted_ticks\":120,\"chunk_allocations\":0,\"chunks\":64,\"completed_ticks\":120,\"cores\":2,\"counts\":[12288,1122,36864,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"failed\":false,\"hash\":\"6a7b2f5e44bb7c69\",\"histogram\":[[100794368,14],[100794373,1],[84017415,288],[268435460,178],[285212676,176],[84017414,3229],[117571592,371],[16908296,23],[100794376,2],[84017672,544289],[100794370,21],[16908295,28],[84017671,551864],[117571590,323],[16908294,33],[84017670,548555],[84017416,7453]],\"histogram_used\":17,\"overflow\":0,\"sum_y\":[1566741,383616,14137323,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"water_mass\":0},\"floor_contact_tick\":-1,\"initial\":{\"active_chunks\":10,\"attempted_ticks\":0,\"chunk_allocations\":0,\"chunks\":64,\"completed_ticks\":0,\"cores\":0,\"counts\":[12288,1122,36864,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"failed\":false,\"hash\":\"769300847df023a3\",\"histogram_used\":1,\"overflow\":0,\"sum_y\":[1566720,383616,14137344,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"water_mass\":0},\"mode\":\"desktop-asynchronous\",\"ok\":true,\"peak_depth\":4.76321411132812,\"platform\":\"Linux\",\"rapier_ticks\":127,\"rows\":[{\"cell_tick\":52,\"depth\":4.70695495605469,\"rapier_tick\":60,\"rotation\":0.0,\"x\":142.953002929688,\"y\":189.706954956055},{\"cell_tick\":112,\"depth\":0.704437255859375,\"rapier_tick\":120,\"rotation\":0.0,\"x\":143.502075195312,\"y\":185.704437255859}],\"seed\":0,\"worker_overruns\":0}"
+            ]
+          },
+          {
+            "case": "test_tick_failure_regression",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_tick_failure_regression.gd"
+            ],
+            "exit": 0,
+            "seconds": 7.685339094000003,
+            "log_sha256": "cb4967749e95bf420bf253a722dcf0d7ac1e39eba7f896acea944e559d6d2f6a",
+            "error_in_log": false,
+            "tail": [
+              "WEB_RAPIER_PROBE {\"ok\":true,\"reason\":\"Manual-step/CCD probe passed\",\"y\":72.5059432983398}",
+              "WEB_DEMO_READY CYBERSAND/NATIVE \u00b7 THREADED \u00b7 1 WORKERS \u00b7 RAPIER2D \u00b7 AUTO (12 logical threads)",
+              "TICK_FAILURE_WEB_OWNER {\"controller\":true,\"events\":[false,true],\"failures\":[],\"ok\":true,\"workers\":1}",
+              "INTEREST_REGION_WEB_OWNER {\"controller\":true,\"excluded_ticks\":8,\"failures\":[],\"ok\":true,\"resumed_steps\":1,\"workers\":1}",
+              "Tick failure regression: passed"
+            ]
+          },
+          {
+            "case": "test_play_life001_jetbarrel",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_play_life001_jetbarrel.gd"
+            ],
+            "exit": 0,
+            "seconds": 20.216594246999996,
+            "log_sha256": "50faf4d87fac1fb482327f299bdfcb1e49a76704f638fbfcfd491520f3a79dc5",
+            "error_in_log": false,
+            "tail": [
+              "PLAY_LIFE001_CYCLE {\"cycle\":6,\"elapsed_ms\":1586,\"initial_actor_epoch\":1,\"initial_world_generation\":3,\"reset_actor_epoch\":2,\"reset_ok\":true,\"reset_world_generation\":4,\"rig\":\"jetbarrel\",\"worker_joined\":true}",
+              "PLAY_LIFE001_CYCLE {\"cycle\":7,\"elapsed_ms\":1559,\"initial_actor_epoch\":1,\"initial_world_generation\":3,\"reset_actor_epoch\":2,\"reset_ok\":true,\"reset_world_generation\":4,\"rig\":\"jetbarrel\",\"worker_joined\":true}",
+              "PLAY_LIFE001_CYCLE {\"cycle\":8,\"elapsed_ms\":1567,\"initial_actor_epoch\":1,\"initial_world_generation\":3,\"reset_actor_epoch\":2,\"reset_ok\":true,\"reset_world_generation\":4,\"rig\":\"jetbarrel\",\"worker_joined\":true}",
+              "PLAY_LIFE001_CYCLE {\"cycle\":9,\"elapsed_ms\":1548,\"initial_actor_epoch\":1,\"initial_world_generation\":3,\"reset_actor_epoch\":2,\"reset_ok\":true,\"reset_world_generation\":4,\"rig\":\"jetbarrel\",\"worker_joined\":true}",
+              "PLAY_LIFE001_RESULT {\"assertions\":233,\"cycles_completed\":10,\"cycles_requested\":10,\"elapsed_ms\":15730,\"failures\":0,\"host\":\"main.tscn+CyberSimulationWorker+main-thread-Rapier\",\"liquid_policy_reconstruction_cycles\":0,\"maximum_cycle_ms\":1609,\"physical_gamepad_qualified\":false,\"rapier_sessions_retired\":10,\"real_host\":true,\"rendered_fps_measured\":false,\"retries\":0,\"rig\":\"jetbarrel\",\"slow_native_injection\":false,\"workers_joined\":10}"
+            ]
+          },
+          {
+            "case": "test_play_life003_jetbarrel",
+            "argv": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--audio-driver",
+              "Dummy",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot",
+              "--script",
+              "res://tests/test_play_life003_jetbarrel.gd"
+            ],
+            "exit": 0,
+            "seconds": 10.587939654000003,
+            "log_sha256": "5c87646c7c967a3037afd0ccd8fd2baf30b1218a5da42a93558ee67610e5dc76",
+            "error_in_log": false,
+            "tail": [
+              "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+              "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+              "",
+              "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+              "PLAY_LIFE003_RESULT {\"actor_epoch\":1,\"applied_session_generation\":3,\"assertions\":30,\"contended_safety_probe\":{\"deadline_expired\":true,\"elapsed_ms\":26,\"released_while_mutex_held\":true,\"safety_timeout_ms\":25,\"stop_observed\":false},\"elapsed_ms\":6439,\"failures\":0,\"host\":\"main.tscn+CyberSimulationWorker+main-thread-Rapier\",\"main_callbacks_during_delay\":8,\"native_adapter_destroyed\":true,\"native_phase_jobs_held\":false,\"native_thread_join_trace\":false,\"prepared_operations\":1,\"prepared_token\":1,\"real_host\":true,\"rendered_fps_measured\":false,\"retries\":0,\"rig\":\"jetbarrel\",\"slow_native_injection\":false,\"stop_fences_observed\":1,\"worker_destroyed\":true,\"workers_joined\":1,\"world_generation\":3}"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "native_oracles": {
+    "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-native-oracles.json",
+    "sha256": "4b19c272f6acc9bda4646c991671ab00fc520a87341b75cd73df266fe9ca0cb1",
+    "content": {
+      "head": "cc3b5e82bbebea71a10ff5495434c90ff5a95c33",
+      "runs": [
+        {
+          "name": "C-Windows-debug",
+          "argv": [
+            "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\C-Windows-debug\\oracle.exe"
+          ],
+          "exit": 0,
+          "seconds": 4.36044530000072,
+          "source_inputs_equal_current_head": true,
+          "oracle_sha256": "6363c9e5dc96347cf65c4575a2cb7b127e7c124606b5b2e7cc4f5aedf5a2011f",
+          "log_sha256": "4f3a7f4fd23d90c3505996e687b050ebb5e63809520ce04845cd1afdbc7fe28f",
+          "output": "RENDER_COPY_ISOLATION: assertions=10225432 regions=265 failures=0"
+        },
+        {
+          "name": "C-Windows-release",
+          "argv": [
+            "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\C-Windows-release\\oracle.exe"
+          ],
+          "exit": 0,
+          "seconds": 0.60946580000018,
+          "source_inputs_equal_current_head": true,
+          "oracle_sha256": "02eacc16cc5b8b8654d6a937ecfbd6867be0d263ca99eb424ac35d48d34f0668",
+          "log_sha256": "4f3a7f4fd23d90c3505996e687b050ebb5e63809520ce04845cd1afdbc7fe28f",
+          "output": "RENDER_COPY_ISOLATION: assertions=10225432 regions=265 failures=0"
+        },
+        {
+          "name": "C-Linux-debug",
+          "argv": [
+            "C:/Windows/System32/wsl.exe",
+            "--",
+            "/mnt/c/Users/_/.codex/tmp/render-publication-abc/C-Linux-debug/oracle"
+          ],
+          "exit": 0,
+          "seconds": 10.499681799999962,
+          "source_inputs_equal_current_head": true,
+          "oracle_sha256": "6f466d44b4e49d4bb38d3915b45cae0c12a0d8ad9bb8730b9025baf6831c4b89",
+          "log_sha256": "4c80cb328069e9ae12e6e01033850d0860364b9d973beb537fd343f76974a2c0",
+          "output": "RENDER_COPY_ISOLATION: assertions=10225432 regions=265 failures=0"
+        },
+        {
+          "name": "C-Linux-release",
+          "argv": [
+            "C:/Windows/System32/wsl.exe",
+            "--",
+            "/mnt/c/Users/_/.codex/tmp/render-publication-abc/C-Linux-release/oracle"
+          ],
+          "exit": 0,
+          "seconds": 1.0581762000001618,
+          "source_inputs_equal_current_head": true,
+          "oracle_sha256": "6b892f639228d7789fd4c67df12a78ca5d5646eaa0dbd5efb8f72911fd900e71",
+          "log_sha256": "4c80cb328069e9ae12e6e01033850d0860364b9d973beb537fd343f76974a2c0",
+          "output": "RENDER_COPY_ISOLATION: assertions=10225432 regions=265 failures=0"
+        },
+        {
+          "name": "C-Linux-sanitize",
+          "argv": [
+            "C:/Windows/System32/wsl.exe",
+            "--",
+            "/mnt/c/Users/_/.codex/tmp/render-publication-abc/C-Linux-sanitize/oracle"
+          ],
+          "exit": 0,
+          "seconds": 7.423756299998786,
+          "source_inputs_equal_current_head": true,
+          "oracle_sha256": "90a79894d91aeee46f44ccf7f29b0f6e93a892d35e3a06c13c485dd4a6368965",
+          "log_sha256": "4c80cb328069e9ae12e6e01033850d0860364b9d973beb537fd343f76974a2c0",
+          "output": "RENDER_COPY_ISOLATION: assertions=10225432 regions=265 failures=0"
+        }
+      ]
+    }
+  },
+  "runtime_manifest_controls": [
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\Final2-manifest-controls-Windows\\result.json",
+      "sha256": "94ac4246b3c0feaee8208e00348636632453f0b52bae1abce1090c7ba3a434d6",
+      "content": {
+        "status": "passed",
+        "positive": "actual installed runtime and all native source inputs",
+        "negative_controls": [
+          "wrong-platform-library",
+          "missing-native-input",
+          "extra-native-input",
+          "mismatched-native-input",
+          "wrong-runtime-bytes"
+        ]
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\Final2-manifest-controls-Linux\\result.json",
+      "sha256": "e810cdeb84d04e0567b9dbf5b3868ccb83944da5e30d3185be21b8427ded15b3",
+      "content": {
+        "status": "passed",
+        "positive": "actual installed runtime and all native source inputs",
+        "negative_controls": [
+          "wrong-platform-library",
+          "missing-native-input",
+          "extra-native-input",
+          "mismatched-native-input",
+          "wrong-runtime-bytes"
+        ]
+      }
+    }
+  ],
+  "ordinary_native_compile_and_render": {
+    "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\default-native-render\\report.json",
+    "sha256": "c80bb3df8cc74180189f2c5235bcc84b04648f758673c28b2f34bd1dcc8cf412",
+    "content": {
+      "head": "cc3b5e82bbebea71a10ff5495434c90ff5a95c33",
+      "experimental_defines": [],
+      "processes": [
+        {
+          "name": "compile",
+          "argv": [
+            "C:/Program Files/LLVM/bin/clang++.exe",
+            "-std=c++20",
+            "-O0",
+            "-g",
+            "-Inative/include",
+            "native/src/world.cpp",
+            "native/src/material_rules.cpp",
+            "native/src/scheduler_geometry.cpp",
+            "native/src/settled_world_discovery.cpp",
+            "native/src/render_snapshot.cpp",
+            "native/src/c_api.cpp",
+            "native/tests/test_lcb_inertial.cpp",
+            "native/tests/test_water_inertial.cpp",
+            "native/tests/test_world.cpp",
+            "native/tests/test_liquid_solver_policy.cpp",
+            "native/tests/test_lcb_pressure.cpp",
+            "native/tests/test_pressure_moving_mask.cpp",
+            "native/tests/test_pressure_setup_capacity.cpp",
+            "native/tests/test_water_cellular_yield.cpp",
+            "native/tests/test_water_normalization.cpp",
+            "native/tests/test_liquid_run_receipt.cpp",
+            "native/tests/test_liquid_construction_refusal.cpp",
+            "native/tests/test_quantity_ledger.cpp",
+            "-o",
+            "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\default-native-render\\tests.exe"
+          ],
+          "exit": 0,
+          "seconds": 29.440745200001402,
+          "log_sha256": "580517232b2cf79834c938e615843c927176aa47c5a5789b6664955830582540",
+          "tail": [
+            "      |                                                       ^",
+            "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vcruntime.h:358:47: note: expanded from macro '_CRT_DEPRECATE_TEXT'",
+            "  358 | #define _CRT_DEPRECATE_TEXT(_Text) __declspec(deprecated(_Text))",
+            "      |                                               ^",
+            "1 warning generated."
+          ]
+        },
+        {
+          "name": "render",
+          "argv": [
+            "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\default-native-render\\tests.exe",
+            "render"
+          ],
+          "exit": 0,
+          "seconds": 0.6867138000015984,
+          "log_sha256": "fd1becb1bdde1d46572aea118bd05660276a326cbde04f4fe071a22632abcd52",
+          "tail": [
+            "[pass] immutable render snapshots",
+            "[pass] concurrent render leases",
+            "2 tests passed"
+          ]
+        },
+        {
+          "name": "copy",
+          "argv": [
+            "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\default-native-render\\tests.exe",
+            "bulk"
+          ],
+          "exit": 1,
+          "seconds": 0.2768962000045576,
+          "log_sha256": "0e5448e2dc89a621ebec888c53173b657523707ab4e96b7a864c27813d0c3ef9",
+          "tail": [
+            "No tests matched the requested name filter"
+          ]
+        }
+      ]
+    }
+  },
+  "ordinary_native_corrected_cases": [
+    {
+      "argv": [
+        "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\default-native-render\\tests.exe",
+        "dirty rectangles"
+      ],
+      "output": "[pass] dirty rectangles\n1 tests passed",
+      "log_sha256": "78a6c720c9a69672b1504cf5d805cdd46f096e181d12ca706c08e5ee5823c1f3",
+      "binary_sha256": "00f361610a5d88cbac121f8a401bf7e9c7ba330cf727805733d4a7fa50def8bf"
+    },
+    {
+      "argv": [
+        "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\default-native-render\\tests.exe",
+        "C API and RGBA"
+      ],
+      "output": "[pass] C API and RGBA\n1 tests passed",
+      "log_sha256": "f13d54a8b56e5f8b47fc1701e81cf806e3af891cfce09b37554c5db01838238f",
+      "binary_sha256": "00f361610a5d88cbac121f8a401bf7e9c7ba330cf727805733d4a7fa50def8bf"
+    }
+  ],
+  "tools": [
+    {
+      "path": "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+      "size": 198152,
+      "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+    },
+    {
+      "path": "C:\\Godot47\\Godot_v4.7-stable_win64.exe",
+      "size": 178485256,
+      "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+    },
+    {
+      "path": "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\x86_64-w64-mingw32-g++.exe",
+      "size": 14336,
+      "sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690"
+    },
+    {
+      "path": "C:\\Users\\_\\lcb-local-toolchain\\env\\godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496\\bin\\libgodot-cpp.windows.template_debug.x86_64.a",
+      "size": 66374316,
+      "sha256": "2629ba35adc7b1263deeb1155d674252e1e4188c2c89d1d7158e816d18f957df"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\windows-profile-cxx.sh",
+      "size": 156,
+      "sha256": "032e1516add49c8710d15067f92bd8ca1163bea2c5028344f2a79c8dcfb5ae01"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\linux-profile-cxx.sh",
+      "size": 104,
+      "sha256": "afef26698cb7888bcafb06f3a3645e3f90b10e25ee37fecdd2bbf993987c18a4"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-native-Windows-build.log",
+      "size": 2448,
+      "sha256": "47a2708beb16e73d2b8c8a4cdfad13881ed3649616394f8a817c2788fb15b424"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-native-Linux-build.log",
+      "size": 22493,
+      "sha256": "c01b2a67c7d0a99c007df0298f169f82291066f0ceef7b75f6a64130fa6d75bd"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-linux-godot-cpp.log",
+      "size": 61199,
+      "sha256": "f42c8330b1233843374418392553392a396e6d4aaaa51e6be5b55b5b235ab3c5"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot\\addons\\godot-rapier2d\\bin\\libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "size": 9987072,
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\worktrees\\render-publication-abc\\khybersand\\godot\\addons\\godot-rapier2d\\bin\\libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "size": 117275416,
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  ],
+  "preserved_failures": [
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\Final-E-Linux\\W-2.json",
+      "sha256": "d1b755f48e1768d757781985a134013036e2a698b8597940992b4022758dfd2e",
+      "log_sha256": "96eaddc5e8c8fbb68548233a60c721f5d7df803081d674beef9df79ee74f5589",
+      "source_identity": {
+        "frozen_main": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc",
+        "head": "f90cafcf34b9d006cbd6a2d963cb3f64eed5b313",
+        "tree": "5d5f1a003aa8b4152e2be63068a2dc059f0b2383",
+        "source_hashes": {
+          "godot/scripts/actor_prototype.gd": "ccb25275e52150f1e4bfdd228854da3bcaa6e1d2026b52775c3150e6f451bb92",
+          "godot/scripts/actor_prototype_overlay.gd": "e87dcbf76ba33e3eceef42654e3be6e35b79a3d85cf73ee079406d11d3fe7735",
+          "godot/scripts/actor_prototype_panel.gd": "8c28e322bd8eca393441cd41dfd9e6d0a1ff75ca4612ec9816e4a25dfa4e8c1e",
+          "godot/scripts/actor_prototype_session.gd": "c87ed7c684675d686b093b1aab758c4099430343c4775dd36da89214354f7282",
+          "godot/scripts/actor_rig_actuation.gd": "78ba62edbffcf9af9e0f4f1b35831dd29d5ad67bc60e7b2ecbfd78fee59ae251",
+          "godot/scripts/actor_rig_catalog.gd": "5808438bd056686c7f96d4ee81908588a2004b49d4b7c048124a86042ade2944",
+          "godot/scripts/actor_rig_effects.gd": "8f9aa562fc023a32963ce8ad7c005f131d5ce655b5d2c401b624ce83918df2a1",
+          "godot/scripts/actor_rig_motor.gd": "2a876dcd7e7dd9b9506dd278f81090f1fab011b7bc8006886d2d4d796f6b5c90",
+          "godot/scripts/blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244",
+          "godot/scripts/blacksite_nine_art.gd": "651428983c725e1a2d87e3596279f8c7a5964a5e49663a35782bc3f1e450a22e",
+          "godot/scripts/blacksite_nine_depths.gd": "fe6db42104fc135e56aaa731895cb85b42ecbb5d29acf4ed79f2bb099638d2d1",
+          "godot/scripts/blacksite_nine_layout.gd": "ccc27cdaf2479d58a9ec4391485f9141c8ac07b58d0c1d97e2c35f4f286ac69d",
+          "godot/scripts/blacksite_nine_midworks.gd": "eaf655d2ccf6ce54551a49852e0a6c39038bfa93f1fb7624a2db68100d71ace6",
+          "godot/scripts/blacksite_nine_presentation.gd": "36e2b92a3b8b982b2fb1ecf9445a302120dad50cf5a22ae1f7609c3f10e23587",
+          "godot/scripts/blacksite_nine_surface.gd": "347888118cf2b20b564d8171f35d8d80feae1c0341f90829fbfee482b0397813",
+          "godot/scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+          "godot/scripts/decompression_diagnostic.gd": "fda5d64f917ddb4b65fd811784ce693177f1f1c76830ea55efe7c0a710c77ee9",
+          "godot/scripts/demo_save_codec.gd": "0f47752549ba84447e4168fcb6ae4ec4d7ba852a3c603cbc9d4bb92f92703047",
+          "godot/scripts/demo_worlds.gd": "a83ad490681cc9da262f9d2863d9b9100bbb5dbc17eef88e6cfba55d88a8cf5d",
+          "godot/scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+          "godot/scripts/feature_launcher.gd": "18816e00d0b60adabbdd5e42bcba27f04a76fbdcd70940804216fb83494968d0",
+          "godot/scripts/feature_navigation.gd": "17da6bec36ab3bfc35643e357b68e08f94dd36f42f9b7f5d98585231c69a051a",
+          "godot/scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+          "godot/scripts/industrial_underswamp.gd": "d603d587c36e1ebf0d2ec16bd244c03df1c0cab83896e95472d768fb9c418cf8",
+          "godot/scripts/interaction_policy.gd": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+          "godot/scripts/interaction_policy_probe.gd": "e369778ca76a365af4cea4eccda7d288c2c498e623d6b3ff76f0d3cfcc01da36",
+          "godot/scripts/liquid_comparison_panel.gd": "ce4bd0713f5d4d2eca8d194c9449edbaa8c7861f167ccce6a6b5495dc95f442a",
+          "godot/scripts/liquid_host_evidence.gd": "ef44977aff88f5569a3fbc5495317f4c09671e42d0868b770677670cdf63cd0f",
+          "godot/scripts/liquid_host_web_probe.gd": "dbcfe003cf9f2c0fa41bdee2d3cbfec06620c18ddbf9c6329c7a67396e804ef2",
+          "godot/scripts/main.gd": "531f9f393c64aeee6c0b0e79d28ed577f13c4881865bd94c01c644cc9dd07de5",
+          "godot/scripts/material_appearance_lut.gd": "781a48ad8d30b6e1c46ae56fa976dfb4e6078ae240cc558c5cbff574b0fac237",
+          "godot/scripts/microscenario_catalogue.gd": "22e4e0db5c76035add1b0a11d63bd29e40987d0a15ed2b05e2c4eaee0a2f1b7c",
+          "godot/scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+          "godot/scripts/microscenario_contract.gd": "6c15e65b8e7c4f3747d6dcca93d014897ebef6681cbfd1881fb12be32ec14540",
+          "godot/scripts/microscenario_host.gd": "a351bf83e55d042dfa17798503ba05b0de4aeb9689622d6dbf8373991d29a3c0",
+          "godot/scripts/microscenario_identity.gd": "84131b8d511ad5ed46d17f1743fef74d61e9fc9fdfbb3acebc384e30424121f6",
+          "godot/scripts/microscenario_panel.gd": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7",
+          "godot/scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+          "godot/scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+          "godot/scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+          "godot/scripts/middle_cyberberbia.gd": "aee352913a6cb7e067f3412f061698f1a6ee64c21044b5b7997cf7ac419420c8",
+          "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+          "godot/scripts/physical_actor_arena.gd": "39ed6d5afcde4a6096d9a1ff9df28a78fc8007b79723304e3894f2117fef18c2",
+          "godot/scripts/physical_actor_catalog.gd": "a5f2f800e0e4caa6199a1d4dd2be9d0a1603cfa172947b41fe0f90fe428d9489",
+          "godot/scripts/physical_actor_effects.gd": "335de660c67a446f77a1027b4d88b3218172fb6374dadc05cccd83a860251b1a",
+          "godot/scripts/physical_actor_overlay.gd": "dd39efc1ead8e65751fe18b9a82e834bedd7cf88b95a7eeceee87de6fdba3a9d",
+          "godot/scripts/physical_actor_rig.gd": "4e3fe63b46a5db3365d77c9c055a032b704f70ea2265ad0f0013574b785e692e",
+          "godot/scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+          "godot/scripts/physical_actor_session.gd": "993fdca10bc9ad6be42b8ffd7b1f352de9d460b9c2bdafcc6b668e721057bf83",
+          "godot/scripts/physical_actor_trial.gd": "8f2255cc3eedef597c945d5d7a9b9a50a5937ccd3a21ff3383a4414404ef8ffe",
+          "godot/scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+          "godot/scripts/physical_flight_course.gd": "29557a84577fce245fc84c9d5922939bf118404c223dcd0dad42b537e49c2915",
+          "godot/scripts/physical_flight_course_view.gd": "9534d0dd3ca39efd7a86fcdc57e92a83fbb588412d74de4e9e589671a426535a",
+          "godot/scripts/physical_flight_development_scoring.gd": "dc938fcb80a41dc5990662f9428cc871f80d8c488c7582866c5276dbbd73095e",
+          "godot/scripts/physical_flight_episode.gd": "b8b42195c97dcf3b5292f841ff53043db8b7fb486e8b46a35707838a7e75f8d0",
+          "godot/scripts/physical_flight_lab_screen.gd": "110cc086644517b49dffe9c033e952e05c783002fe97db370b8519e5691a1f90",
+          "godot/scripts/physical_flight_observation_adapter.gd": "afa43dad5ed8737961567070bbf04754107547c065ab61cb58c56b2df447d71d",
+          "godot/scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+          "godot/scripts/physical_flight_sealed_suite.gd": "2270b7b9a54a8380d0db9437fa33ffe1331bf5a92070f640db933e46965781f8",
+          "godot/scripts/physical_flight_teacher.gd": "0fb571cfd314a53fc86b3517fb5a8258a77d7215fcbcb43fc7f53519e7e29761",
+          "godot/scripts/physical_usable_course.gd": "4dc9cff392b2a82ceb8f63280f084b56d0ae11bc32020d7ccb4a1636b424f2c5",
+          "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+          "godot/scripts/physical_usable_loadouts.gd": "f09afeabae2aea9abbc033b721bfa3d11f6dcadb110c0079c991d2f908826bcc",
+          "godot/scripts/physical_usable_runtime.gd": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+          "godot/scripts/physical_usable_script.gd": "e21454479b42b1a54e001c02c219d8892101884348ad7aabc9ea4d1e3e58bb19",
+          "godot/scripts/physics_characterisation.gd": "43eca3584031d6059872d2d4b5e0b6b48d35511d01658673b5c78468dc7a1783",
+          "godot/scripts/playable_course_gamepad_events.gd": "6c27178e11ea723ec587158fc635372db1abcdc70c8492bec13e0a4d35c4c3d2",
+          "godot/scripts/playable_course_lap.gd": "17d93b12ad1d1123e63e9ab8e9f14c291c5288bd4edb0d1a7588909be6acab3e",
+          "godot/scripts/playable_course_overlay.gd": "83209ef8fda16c6479c0d4a3a10f307a6be055e453e8e241c02c0670c10b8a22",
+          "godot/scripts/playable_session_panel.gd": "4c9e66a5ff83193ada1dc80f0489639c104e110451ba724c7b66a06402dea197",
+          "godot/scripts/player_acrobat_controller.gd": "9cf4d6a65a9c8d7ee1c94179c53aaaf4e118662b52e4ad9469c78deef3fb04a7",
+          "godot/scripts/player_actor_catalog.gd": "f506c97fcfe6772ffb3a989b422c2d0a5e7ae189f2020bf15826fa4f6a0a7091",
+          "godot/scripts/player_environment_panel.gd": "743aea24cf53d583759fa39fad331804b5e88d017b784920d81f4897f9233115",
+          "godot/scripts/player_environment_profiles.gd": "7c9ee013758d303125da456e1128bbf3a7bbba3d841c65341ba38617d52fbc16",
+          "godot/scripts/player_playground.gd": "20822400c57998f4bef223b19920c551cf7ee0ff3cdb25c6221b0dd9d420b2e8",
+          "godot/scripts/player_playground_course.gd": "1fb66932f1c12f6d6d408afcd0ab42904bd858211a008ff1f8b5a4f81164997d",
+          "godot/scripts/player_playground_input.gd": "6a16650f9f6478a0053bc6b7f463d584fe74d9f6351a9909eaa655429315512c",
+          "godot/scripts/player_playground_overlay.gd": "bc297ae298a80a27c02459be098f9b3b975eb3c90d85564ebe3a67ff50aeee80",
+          "godot/scripts/player_playground_runtime.gd": "77ac953a10e5253e2c9bce4a08291f6ec3de9bf121d975499aa3e5a9685c3eb6",
+          "godot/scripts/player_representation.gd": "4b481c04af45ecf9139cd57d0c5ef3dd9d7579c1ce21addaef99132ff420dc96",
+          "godot/scripts/player_vehicle_controller.gd": "c20ab7420bde632b2d77efe1e17f3bc82910d2b8f07e1612890f05fac624f6d2",
+          "godot/scripts/prepared_level_session.gd": "ec3bde428d416751f10891075f0ac0193cb0f03014bb04977516cdad4776a855",
+          "godot/scripts/prepared_physical_session.gd": "a2b5a050af7b66caca70a9623bdfaad2a86c939d517d15efffebcd2506ea9b99",
+          "godot/scripts/prepared_reference_body_session.gd": "73992c1e6dc65252ba23398c3902ad077bc7f4efb4541ab07416115bddbe6f77",
+          "godot/scripts/prepared_sampled_session.gd": "9238e92229ae5ea1f703c0a025c5dbbbb680a3583622ed2698fc1c24b95635b0",
+          "godot/scripts/prepared_synchronous_reference_session.gd": "31115ef143804e2e60079c3a8917b600ca51e7790007bf0fbb53bb00453e7af9",
+          "godot/scripts/prepared_trial_body_session.gd": "52918effaa521f13912fce3c193aeb6dbae740fa522b70893693bbd13409e494",
+          "godot/scripts/rapier_physics_bridge.gd": "44585c25307569590937a0d0f51099438fcaacc16b385efca66ff78184909c37",
+          "godot/scripts/rigid_body_coupling.gd": "a3f5562be71adcdb209b6c45a7e67374bc05a419816b195c48e65d1e0e66d142",
+          "godot/scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+          "godot/scripts/sewertech_alley.gd": "985371f4632880ceb297128b332bf6a265a83cbcc7675bde342119a6d2822357",
+          "godot/scripts/showcase_presentation.gd": "e478efd9e63db7f3994c7e86ee73d1d32a276c0202fb37bbf20d270d25e16d6b",
+          "godot/scripts/showcase_tiles.gd": "c496da1fb7507e11763cec92113ad594b3f0fae44e54af040f8501f91e03a7d5",
+          "godot/scripts/simulation_snapshot.gd": "8c7ca1429e8aa0010c0f0aec1ce77d35a7e70ca8fa0d00fa43d2116382c138d0",
+          "godot/scripts/simulation_worker.gd": "425004a9fbe844b45bc6a57d4d7447c248f86734ea24612a60a9107d172bbcb1",
+          "godot/scripts/snapshot_publication_counter.gd": "89a7fe973cc8c162f3211c6c051dc9083a42a8775ec9bb3a155c106d3029f6d8",
+          "godot/scripts/thunderbowl_arena.gd": "d075422be9275fc3ca2543e977a39d39d2397335f2785d9c475df78c20fd5ab5",
+          "godot/scripts/thunderbowl_contract.gd": "1eb1c5cfcd6ec5db398a9677413ec1afefcaf0c2337427d51c6c545a21391218",
+          "godot/scripts/tick_failure_probe.gd": "575910573f6f70093fae9d5f8dfe20d8d6219e22671e0d6aa28603bc26c4f14a",
+          "godot/scripts/tower_panel.gd": "14cc8fa74867924d08477b76357ee5a958ad7f06ca4853e473b84c2cae79c255",
+          "godot/scripts/transport_probe.gd": "c7f495b72eeb165dc366667ac6d31bdbf79c0323a67f0779797cd73975d287e8",
+          "godot/scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "godot/scripts/transport_profile_panel.gd": "456e6c24213979c8ba2ff983078ad29d530acb80a2c929013aeae24c1b35bd6b",
+          "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+          "godot/scripts/usable_overlay.gd": "cd0d7adf024dcdedaf75dff21782ece2ad7070f2d37068ee0eebe6f64307c208",
+          "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+          "godot/scripts/usable_session.gd": "0b6c3a1903f1469a7ee2a9f94e5f7fcb23687e1d2eeca9dcc79e670926c3bc50",
+          "godot/scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+          "godot/scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+          "godot/scripts/water_experiment_panel.gd": "0ff5791741fcf72220a72f161ceecdb553bf827838c0d1aad9c19c420b5ee903",
+          "godot/scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+          "godot/scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+          "godot/scripts/water_feel_web_probe.gd": "81ddc84d026fe7a81868a59ab5f0556e34885275ef3c1fc484e884d9549de2a4",
+          "godot/scripts/water_presentation_model.gd": "6c5d808c98ef3359b4d697a46750dec41f344894ec58b5e2adc5a7e9969c4f24",
+          "godot/scripts/web_capabilities.gd": "c7435f4af9e5161e6aab337b1804e5fe2e39b974f2149b519778caaf6e311527",
+          "godot/scripts/web_demo_controller.gd": "d2115bbc71901a2baa1e49245e93a9c0643fc8546a763e29d3c49410abf67e9e",
+          "godot/scripts/web_demo_menu.gd": "0f7a0de13a45b9cb29b98061d564e9955c204155bdb76c5388cae0a339bcc272",
+          "godot/scripts/web_rapier_probe.gd": "d91540caab0ab3db296a55a45b6cc87c44780c6141cde85c6620462093065026",
+          "godot/scripts/web_worker_probe.gd": "e13b3e12484c41fd5d19b4b135bb2d464c576abce429a23cb3d1618a4150a2f5",
+          "godot/scripts/worker_benchmark.gd": "9028c48f440f3ee436403fa4b65e209094514ecceb274c6a1cbc6d81b539f121",
+          "godot/scripts/worldgen_preview.gd": "f9f23c1b0f968a341560646489ec940767a9efaaf11f23b0d1c5f0c58389bd3f",
+          "godot/scripts/worldgen_qualification.gd": "5b4a54e0a4933646e5822947040f1c3613a7387c3853a25f95d4b5429db354f5",
+          "godot/scripts/worldgen_qualification_data.gd": "ea518a05167d728df2dab4528152d6462c5b8dc873f75b8a3179eb6bf707da47",
+          "godot/scripts/worldgen_workbench.gd": "e4ffed66d8e628cfafb6ab6f95274be9aa66172da4c4205a4241f900c91c6d5f",
+          "godot/scripts/worldgen_workbench_tools.gd": "764e1eac346ea8fba5e29d572b22548e27971d766755291a67b2d35aacb38908",
+          "godot/tests/render_publication_consumer.gd": "f9df590ac76b4792ccd7b0798145d81dfdb29bca21a10e9df802b03e05011bcf",
+          "godot/tests/render_publication_e.gd": "58cc4301ea4481346507e73d38233bf1b133f73f31ebf38d6ee0e05a16aa6be4",
+          "godot/tests/render_publication_trace.gd": "dae22d1d951b0f848a2a4b2025b450f7ce4fdb6b8dddc05bccd7af33af22d6e1",
+          "godot/tests/render_publication_worker.gd": "05c4f9be719b17c6e8bc6a8795d209f659d6f43ea1abd9fad43e56c82afdafea",
+          "godot/tests/run_render_publication.gd": "92a664f23f6588b69f3f6e382d990c164384a945c10067ae34d39ac90a7d8024",
+          "godot/main.tscn": "de1039e09ece8ca4bf6a22a995399b897cf8e080f3ac436f33ddd268402aabf1",
+          "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+          "godot/shaders/material_palette.gdshader": "3d9ee3b04ce6eee03490ad2c4af1f487f208e9ff0db31e6d514127633c2e0fef",
+          "tools/experiments/render_publication_campaign.py": "760a85b435db3e42601c07c89cef6cff8b2a073706a8eaea4207b3df3afba66a"
+        },
+        "native_source_inputs": {
+          "godot/native_extension/cyber_demo_bridge.hpp": {
+            "expected": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+            "actual": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371"
+          },
+          "godot/native_extension/cyber_native_cell_world.cpp": {
+            "expected": "bc6820044155c2cdc16907833f7feb3f940b4b1867518b0ff240073a65c7d6a6",
+            "actual": "bc6820044155c2cdc16907833f7feb3f940b4b1867518b0ff240073a65c7d6a6"
+          },
+          "godot/native_extension/cyber_native_cell_world.hpp": {
+            "expected": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c",
+            "actual": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c"
+          },
+          "godot/native_extension/cyber_observation_values.hpp": {
+            "expected": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+            "actual": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f"
+          },
+          "godot/native_extension/cyber_prepared_level_payload.hpp": {
+            "expected": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+            "actual": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a"
+          },
+          "godot/native_extension/cyber_prepared_liquid_world.hpp": {
+            "expected": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2",
+            "actual": "3ab805a5276fdc4da7785287137b8db2e16ea977893b5472031b4a986ea542c2"
+          },
+          "godot/native_extension/cyber_world_generator.cpp": {
+            "expected": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
+            "actual": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b"
+          },
+          "godot/native_extension/cyber_world_generator.hpp": {
+            "expected": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+            "actual": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822"
+          },
+          "godot/native_extension/generation_grammar_adapter.inc": {
+            "expected": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+            "actual": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53"
+          },
+          "godot/native_extension/generation_grammar_inspection.inc": {
+            "expected": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+            "actual": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c"
+          },
+          "godot/native_extension/generation_planes_adapter.inc": {
+            "expected": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+            "actual": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b"
+          },
+          "godot/native_extension/generation_planes_inspection.inc": {
+            "expected": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+            "actual": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72"
+          },
+          "godot/native_extension/generation_planes_methods.inc": {
+            "expected": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+            "actual": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051"
+          },
+          "godot/native_extension/generation_workbench_inspection.inc": {
+            "expected": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+            "actual": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf"
+          },
+          "godot/native_extension/generation_workbench_methods.inc": {
+            "expected": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+            "actual": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8"
+          },
+          "godot/native_extension/pressure_optimization_inspection.inc": {
+            "expected": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e",
+            "actual": "e31280bec687c478d37b6dd169d46593adb4397c6584c9c597c98d6cb2d9420e"
+          },
+          "godot/native_extension/register_types.cpp": {
+            "expected": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+            "actual": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1"
+          },
+          "native/include/cybersand/bounded_ordered_index.hpp": {
+            "expected": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+            "actual": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147"
+          },
+          "native/include/cybersand/c_api.h": {
+            "expected": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1",
+            "actual": "7d62023cc3dc611fadc92a56cf26f050965b5c5b32ab8e1fd001b0c3469934b1"
+          },
+          "native/include/cybersand/default_demo_recipe.hpp": {
+            "expected": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+            "actual": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4"
+          },
+          "native/include/cybersand/demo_snapshot.hpp": {
+            "expected": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163",
+            "actual": "95362db4821cc50f1591384ea67f4b8a263016222eb79671e09573e983429163"
+          },
+          "native/include/cybersand/generation_fields.hpp": {
+            "expected": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+            "actual": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79"
+          },
+          "native/include/cybersand/generation_grammar.hpp": {
+            "expected": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+            "actual": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0"
+          },
+          "native/include/cybersand/generation_numeric.hpp": {
+            "expected": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+            "actual": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a"
+          },
+          "native/include/cybersand/generation_planes.hpp": {
+            "expected": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+            "actual": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947"
+          },
+          "native/include/cybersand/generation_spatial.hpp": {
+            "expected": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+            "actual": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2"
+          },
+          "native/include/cybersand/generation_typed_fields.hpp": {
+            "expected": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+            "actual": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151"
+          },
+          "native/include/cybersand/inertial_cellular.hpp": {
+            "expected": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+            "actual": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1"
+          },
+          "native/include/cybersand/interaction_policy.hpp": {
+            "expected": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+            "actual": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff"
+          },
+          "native/include/cybersand/interaction_rules.hpp": {
+            "expected": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+            "actual": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+          },
+          "native/include/cybersand/liquid_comparison.hpp": {
+            "expected": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+            "actual": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105"
+          },
+          "native/include/cybersand/liquid_construction_refusal.hpp": {
+            "expected": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+            "actual": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61"
+          },
+          "native/include/cybersand/liquid_policy_catalogue.hpp": {
+            "expected": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+            "actual": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+          },
+          "native/include/cybersand/liquid_run_receipt.hpp": {
+            "expected": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67",
+            "actual": "2ec1203c3b5e20355d6dcd716b4c729beb353612e83ddfaf9cb9c0c9d1b46f67"
+          },
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": {
+            "expected": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+            "actual": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2"
+          },
+          "native/include/cybersand/liquid_solver_policy.hpp": {
+            "expected": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+            "actual": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+          },
+          "native/include/cybersand/material.hpp": {
+            "expected": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+            "actual": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+          },
+          "native/include/cybersand/material_appearance.hpp": {
+            "expected": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+            "actual": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+          },
+          "native/include/cybersand/material_rules.hpp": {
+            "expected": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+            "actual": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+          },
+          "native/include/cybersand/physics_diagnostics.hpp": {
+            "expected": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+            "actual": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4"
+          },
+          "native/include/cybersand/precision_storage.hpp": {
+            "expected": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+            "actual": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+          },
+          "native/include/cybersand/prepared_setup_identity.hpp": {
+            "expected": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae",
+            "actual": "febd9208b89ef3d35cfc12dae2c6be9a511e30a9c2c9fae7180f8621611c98ae"
+          },
+          "native/include/cybersand/prepared_world.hpp": {
+            "expected": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985",
+            "actual": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985"
+          },
+          "native/include/cybersand/pressure_flow.hpp": {
+            "expected": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e",
+            "actual": "706e6726f6e5799d45dce9c163592d3a9964b8dac0028f2b7099cae1a0bed38e"
+          },
+          "native/include/cybersand/pressure_optimization.hpp": {
+            "expected": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092",
+            "actual": "89186e3b79b9ab0c87ae7e0b9c9c0210358774980e32b2d5e8c38c622eb62092"
+          },
+          "native/include/cybersand/pressure_setup_capacity.hpp": {
+            "expected": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72",
+            "actual": "e6ce75ad3c2f89368be7b7b936d648196d3004d597bf7674301da03551e02a72"
+          },
+          "native/include/cybersand/quantity_ledger.hpp": {
+            "expected": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+            "actual": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+          },
+          "native/include/cybersand/render_snapshot.hpp": {
+            "expected": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+            "actual": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3"
+          },
+          "native/include/cybersand/scheduler_geometry.hpp": {
+            "expected": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+            "actual": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460"
+          },
+          "native/include/cybersand/settled_discovery.hpp": {
+            "expected": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+            "actual": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3"
+          },
+          "native/include/cybersand/settled_regions.hpp": {
+            "expected": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+            "actual": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1"
+          },
+          "native/include/cybersand/settled_world_discovery.hpp": {
+            "expected": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+            "actual": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138"
+          },
+          "native/include/cybersand/sha256.hpp": {
+            "expected": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+            "actual": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7"
+          },
+          "native/include/cybersand/soliding_lifecycle.hpp": {
+            "expected": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+            "actual": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd"
+          },
+          "native/include/cybersand/transport_policy.hpp": {
+            "expected": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+            "actual": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+          },
+          "native/include/cybersand/water_cellular_yield.hpp": {
+            "expected": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+            "actual": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85"
+          },
+          "native/include/cybersand/water_experiment_policy.hpp": {
+            "expected": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+            "actual": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+          },
+          "native/include/cybersand/water_normalization.hpp": {
+            "expected": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05",
+            "actual": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05"
+          },
+          "native/include/cybersand/world.hpp": {
+            "expected": "5b92305776a180f8e402f1703158d9481a4a67f29dc2ad34b5a0d4bafdf5d2be",
+            "actual": "5b92305776a180f8e402f1703158d9481a4a67f29dc2ad34b5a0d4bafdf5d2be"
+          },
+          "native/include/cybersand/world_generation.hpp": {
+            "expected": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+            "actual": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c"
+          },
+          "native/src/c_api.cpp": {
+            "expected": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4",
+            "actual": "48d079c7787ad6f555f23d38b85f0b27e1e937483c32cf2c8e9a4bfa8b0f4ec4"
+          },
+          "native/src/generation_fields.cpp": {
+            "expected": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+            "actual": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3"
+          },
+          "native/src/generation_grammar.cpp": {
+            "expected": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+            "actual": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453"
+          },
+          "native/src/generation_planes.cpp": {
+            "expected": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+            "actual": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb"
+          },
+          "native/src/generation_spatial.cpp": {
+            "expected": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+            "actual": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961"
+          },
+          "native/src/generation_typed_fields.cpp": {
+            "expected": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+            "actual": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d"
+          },
+          "native/src/material_rules.cpp": {
+            "expected": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+            "actual": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+          },
+          "native/src/render_snapshot.cpp": {
+            "expected": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+            "actual": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04"
+          },
+          "native/src/render_snapshot_internal.hpp": {
+            "expected": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+            "actual": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998"
+          },
+          "native/src/scheduler_geometry.cpp": {
+            "expected": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+            "actual": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764"
+          },
+          "native/src/settled_world_discovery.cpp": {
+            "expected": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+            "actual": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6"
+          },
+          "native/src/world.cpp": {
+            "expected": "ee8f1f40d51b0f12bddbe510ec4bd53fb6fa284fd86a39164770170a50620279",
+            "actual": "ee8f1f40d51b0f12bddbe510ec4bd53fb6fa284fd86a39164770170a50620279"
+          },
+          "native/src/world_generation.cpp": {
+            "expected": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+            "actual": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535"
+          },
+          "native/src/world_inertial.inc": {
+            "expected": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+            "actual": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd"
+          },
+          "native/src/world_pressure.inc": {
+            "expected": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+            "actual": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b"
+          },
+          "native/src/world_pressure_cache.inc": {
+            "expected": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc",
+            "actual": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc"
+          },
+          "native/src/world_pressure_cache_state.inc": {
+            "expected": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0",
+            "actual": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0"
+          },
+          "native/src/world_pressure_gas_cache.inc": {
+            "expected": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+            "actual": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8"
+          },
+          "native/src/world_pressure_state.inc": {
+            "expected": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c",
+            "actual": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c"
+          },
+          "native/src/world_quantity.inc": {
+            "expected": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+            "actual": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+          }
+        },
+        "runtime_sha256": "805151d4dd64dd28939d2b3a543b859073ddfa8c0c77df059563b7a9f431b68b",
+        "runtime_path": "/mnt/c/Users/_/.codex/worktrees/render-publication-abc/khybersand/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "runtime_manifest": "/mnt/c/Users/_/.codex/tmp/render-publication-abc/final-native-Linux-manifest.json",
+        "runtime_manifest_sha256": "ccddc5851cc3c895ad99a9a5b27ebe9a521cafeade3ed5c4f373557768233dd8",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_path": "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+      },
+      "failures": 1,
+      "cpu_native_equal": false,
+      "texture_cpu_equal": true,
+      "diagnosis": "shutdown before ordinary cadence published last edit; not demonstrated E byte loss",
+      "elapsed_between_owner_start_and_previous_native_begin_usec": 14317,
+      "native_revision": 121,
+      "render_revision": 120,
+      "normal_interval_usec": 16667
+    }
+  ],
+  "review": {
+    "kind": "independent AI code/evidence review; not human approval",
+    "code_head": "cc3b5e82bbebea71a10ff5495434c90ff5a95c33",
+    "outcome": "no remaining actionable blocker",
+    "readback": "24 raw/log/PNG hashes and exact recomputed summaries verified",
+    "control_retries": {
+      "Windows_N": [
+        4,
+        363
+      ],
+      "Windows_W": [
+        357,
+        363
+      ],
+      "Linux_N": [
+        79,
+        224
+      ],
+      "Linux_W": [
+        163,
+        169
+      ]
+    },
+    "E_retries": 0,
+    "E_refreshes": 1268,
+    "median_full_copy_share_percent": {
+      "Windows": 98.167284070969,
+      "Linux": 99.75951656663652
+    }
+  },
+  "canonical_gates_before_evidence_commit": {
+    "head": "cc3b5e82bbebea71a10ff5495434c90ff5a95c33",
+    "commands": [
+      {
+        "name": "docs",
+        "argv": [
+          "python",
+          "tools/ci/check_docs.py"
+        ],
+        "exit": 0,
+        "stdout_sha256": "9a356db0dbaa3ccf7c60cdb4723bb740f9ab32e0bd29c788ef1fdf9c48cb1a0f",
+        "stderr_sha256": "6bf8a0d24f98a2752123d2a3b56c563196444f66ebe8d16075d354a2d982bf9d",
+        "result": {
+          "status": "passed",
+          "documents": 116,
+          "navigation_link_documents": 8,
+          "canonical_claims": 228,
+          "local_links": 3426,
+          "heading_anchors": 642,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        }
+      },
+      {
+        "name": "m11",
+        "argv": [
+          "python",
+          "tools/ci/check_m11_consistency.py"
+        ],
+        "exit": 0,
+        "stdout_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "result": {
+          "status": "passed",
+          "scope": "historical M11 integrity; no current runtime acceptance",
+          "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+          "records_checked": 18,
+          "source_hashes_checked": 28,
+          "compare_working_tree": false,
+          "working_tree_differences": [],
+          "errors": []
+        }
+      },
+      {
+        "name": "repository",
+        "argv": [
+          "python",
+          "tools/ci/check_repository.py"
+        ],
+        "exit": 1,
+        "stdout_sha256": "7157d4cb1c159688f53d678119fbae6c41ee59034f7f0cbd4a3c505048711423",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "result": {
+          "status": "failed",
+          "scope": "current source/documentation and artifact identity",
+          "documentation": {
+            "status": "passed",
+            "documents": 116,
+            "navigation_link_documents": 8,
+            "canonical_claims": 228,
+            "local_links": 3426,
+            "heading_anchors": 642,
+            "questions": 32,
+            "errors": [],
+            "warnings": [],
+            "limitations": [
+              "Does not verify source semantics or runtime claims",
+              "Does not fetch external URLs",
+              "Does not rewrite or reattest historical audits",
+              "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+            ]
+          },
+          "materialized_runtime_files": [
+            "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+          ],
+          "unmaterialized_runtime_files": [],
+          "errors": [
+            "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+            "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/include/cybersand/world.hpp",
+            "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/src/world.cpp",
+            "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+            "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/include/cybersand/world.hpp",
+            "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/src/world.cpp"
+          ],
+          "limitations": [
+            "Identity is not execution evidence; read the dated runtime acceptance report",
+            "Retained vendor binaries and platform execution have separate dated provenance",
+            "Historical M11 integrity is checked separately by check_m11_consistency.py"
+          ]
+        }
+      },
+      {
+        "name": "retrieval",
+        "argv": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-checks-before-commit\\retrieval.json"
+        ],
+        "exit": 0,
+        "stdout_sha256": "3d695f6a8fccc130e18dda9330622305ae7b50fd97774b6c8c66b1bfb18a2e29",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "render-retrieval",
+        "argv": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-questions-render-publication.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\tmp\\render-publication-abc\\final-checks-before-commit\\render-retrieval.json"
+        ],
+        "exit": 0,
+        "stdout_sha256": "aa9cdcf5e6566189aa051a4eda4950826eff0f714abf9de5887ff85415a58015",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "diff",
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "raw_archive": {
+    "path": "C:\\Users\\_\\.codex\\tmp\\render-publication-abc-20261031-evidence.zip",
+    "sha256": "cc6d3254bac3c86765ee21e924e2d7fcfec4b3917b2a56ec9ca527d2829e944c",
+    "size": 13614573,
+    "members": 526,
+    "scope": "Raw process/event reports, PNGs, original logs, local helper scripts and explicitly labelled transcriptions; excludes compiled binaries/toolchains/caches and post-commit canonical gate results"
+  },
+  "early_C_failure_custody": {
+    "schema": "render-copy-stage-c-preflight-failures-transcribed-v1",
+    "custody_label": "transcribed tool result; no original stdout file",
+    "original_stdout_files_retained": false,
+    "original_stderr_files_retained": false,
+    "transcription_basis": "Exact command strings and tool-returned outputs retained in this child agent's conversation transcript. This JSON is a later transcription, not an original process log.",
+    "repository": "techrote/cybersand",
+    "experimental_baseline": {
+      "commit": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc",
+      "tree": "ad800ebd5c876f6d1ecd080a6dc3f02918b21870",
+      "worktree": "C:/Users/_/.codex/worktrees/render-publication-abc/khybersand"
+    },
+    "stage_c_tracked_native_patch": {
+      "path": "C:/Users/_/.codex/tmp/render-publication-abc/stage-c.patch",
+      "sha256": "2d6f303478021854e3114e720751466866aa5417f815886007b9bccc596efd2e",
+      "scope": [
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp"
+      ],
+      "qualification": "Patch was saved after these preflights; those two native files had not changed between the preflights and patch capture. This is not a complete source-input manifest."
+    },
+    "tool_runtime": {
+      "shell": "PowerShell",
+      "compiler_path": "C:/Program Files/LLVM/bin/clang++.exe",
+      "compiler_version_recorded_later": "clang version 23.1.4 (https://github.com/llvm/llvm-project 7a941dfb2877a0b8cf30323fefa85ad019e0b0f5)",
+      "compiler_target_recorded_later": "x86_64-pc-windows-msvc",
+      "platform": "actual Windows host",
+      "exact_run_timestamps": "not captured in an original artifact; transcript supplies wall durations but no per-command UTC start/end"
+    },
+    "failures": [
+      {
+        "id": "stage-c-initial-fixture-touched-chunk-capacity",
+        "tool_chunk_id": "434bbf",
+        "build_command": "& 'C:/Program Files/LLVM/bin/clang++.exe' -std=c++20 -O0 -g -DCYBERSAND_RENDER_COPY_EXPERIMENT -Inative/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/tests/test_render_copy_isolation.cpp -o build/render-copy-isolation/tests.exe",
+        "command": "& build/render-copy-isolation/tests.exe",
+        "cwd": "C:/Users/_/.codex/worktrees/render-publication-abc/khybersand",
+        "exit_code": 1,
+        "wall_time_seconds": 5.1013594,
+        "returned_combined_output": "RENDER_COPY_ISOLATION: assertions=8395040 regions=160 failure=per-job touched-chunk capacity exhausted\r\n",
+        "original_output_path": null,
+        "failing_executable_retained": false,
+        "executable_identity_limit": "The failing tests.exe was overwritten by the subsequent corrected compilation. No hash of the original failing executable was captured.",
+        "source_identity_limit": "Executed uncommitted Stage-C source over frozen baseline. The test had not yet set scheduling_core_size=chunk_size for the 16/64/128 chunk fixture. No complete source archive, source-input hash manifest, or exact failing test-file hash was captured at failure time.",
+        "correction": "Set config.scheduling_core_size=chunk_size in the small-chunk subsequent-simulation fixture. The unchanged render-copy oracle had reached 160 regions before that simulation-fixture failure; this does not convert the failed process into a pass.",
+        "corrected_result_separate": "RENDER_COPY_ISOLATION: assertions=8462697 regions=162 failures=0",
+        "corrected_test_file_sha256_recorded_later": "6d636deb0c5f7aa75d1de778f64d96bb35a5be348487cf57b0d59e4d54c39f3c",
+        "corrected_executable_sha256_recorded_later": "a41f14d062b154107ee693f023429a026ce6812adc62c112ca9d2799f4f643fa"
+      },
+      {
+        "id": "stage-c-initial-windows-lto-linker-selection",
+        "tool_chunk_id": "76c00f",
+        "command": "& 'C:/Program Files/LLVM/bin/clang++.exe' -std=c++20 -O3 -DNDEBUG -flto -DCYBERSAND_RENDER_COPY_EXPERIMENT -Inative/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/bench/render_copy_isolation.cpp -o build/render-copy-isolation/benchmark-release.exe",
+        "cwd": "C:/Users/_/.codex/worktrees/render-publication-abc/khybersand",
+        "exit_code": 1,
+        "wall_time_seconds": 0.1621123,
+        "returned_combined_output": "clang++: error: LTO requires -fuse-ld=lld\r\n",
+        "original_output_path": null,
+        "failing_executable_retained": false,
+        "executable_identity_limit": "Compiler invocation failed before producing the requested release executable. The later benchmark-release.exe is the successful corrected build, not an artifact of this failure.",
+        "source_identity_limit": "Uncommitted Stage-C patch plus benchmark over frozen baseline; no complete source-input manifest was captured for the failed invocation. The benchmark source did not change between this failure and its later SHA-256 capture.",
+        "benchmark_source_sha256_recorded_later": "7f84993446bb65d43c71bba47eca929c250e94912eb97115239bcb6394597663",
+        "correction": "Add -fuse-ld=lld to the otherwise identical Windows LLVM release command."
+      }
+    ],
+    "retention_gap": "The build/render-copy-isolation directory contains successful binaries/PDBs and positive smoke JSONL only. Neither initial failure was redirected to an original stdout/stderr file. This receipt preserves their transcribed negative outcomes while explicitly recording that original-log and failing-binary custody are unavailable.",
+    "later_source_identity": {
+      "commit_at_transcription": "cc3b5e82bbebea71a10ff5495434c90ff5a95c33",
+      "tree_at_transcription": "1a0962252aeb495e1b558c84bc01a1009bf3781b",
+      "qualification": "Later committed head is context only and was not the source of these historical preflight failures."
+    }
+  },
+  "ordinary_native_selection_note": "Original optional bulk filter matched no case and exited1; corrected named dirty rectangles and C API/RGBA invocations pass alongside the original render lease groups."
+}

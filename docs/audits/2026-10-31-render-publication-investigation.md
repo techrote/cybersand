@@ -28,6 +28,11 @@ was inspected; their commits and implementations were not imported. R here is
 an independent test-only differential experiment. Cross-branch integration
 belongs to a subsequent pass.
 
+The onboarding/identity guides retain the historical `C:/kybersand/source`
+layout. That differs from this host's inspected Git root; the actual paths above
+govern this run. Historical identities and the separate companion records were
+not rewritten to make them describe this checkout.
+
 All 18 required LFS objects were materialized. Each graphical campaign verifies
 all 80 canonical native source inputs against the inherited runtime manifest,
 the actual runtime hash, and before/after script identities. Generated imports,
@@ -284,8 +289,16 @@ Preserved C failures: the early worker's first oracle reached8,395,040 checks an
 160 matching regions before its16-cell-chunk simulation fixture exhausted touched
 capacity with a64-cell scheduling core; matching fixture geometry corrected it.
 The early Windows LTO build required explicit LLD selection. Prior8,462,697/162
-passes belong to the earlier oracle, not the strengthened current one. All
-original outputs remain under the raw root and ignored build directory.
+passes belong to the earlier oracle, not the strengthened current one. The
+positive smoke JSONL/binaries remain in the ignored build directory. The two
+early failures were tool-output-only: no original stdout/stderr files, complete
+failing-source manifest or failing executable hash were captured, and the test
+binary was overwritten. Exact commands/errors were later transcribed into
+`stage-c-preflight-failures-transcribed.json` under the raw root (SHA256
+`98a7d9c11985e87c7baef1d00ba9274b45cc1a90800b70c6b203e686ac990028`).
+That receipt states its custody limits; it is not an original process log or a
+fully source-bound failed-run qualification. Current qualified campaigns have
+their separate complete receipts.
 
 Example standalone commands (1200s per compile/test/benchmark process):
 
@@ -313,3 +326,175 @@ This closes a measurement gap in A/B's combined native-call timing. Residual
 adapter time still includes dictionary/array metadata and diagnostic overhead;
 it is not a pure isolated marshalling measurement. New local pinned builds and
 their final graphical/focused evidence are recorded below after execution.
+
+## Final qualification and preserved tail failure
+
+Exact final runtime/fixture code checkpoint:
+`cc3b5e82bbebea71a10ff5495434c90ff5a95c33`, tree
+`1a0962252aeb495e1b558c84bc01a1009bf3781b`. Local native binaries were built
+from committed `64e2f4e71bf4c0b6145bd573dbb5d81bdd9309a6`; all80 native inputs
+are byte-identical at the final fixture checkpoint and are authenticated again
+before/after each campaign. Windows DLL SHA256 starts `4f538ea0`; Linux SO starts
+`805151d4`. Full identities, commands and hashes are in the
+[final qualification receipt](render-publication-2026-10-31/final-qualification.json)
+and [final graphical receipt](render-publication-2026-10-31/final-graphical.json).
+Only the render-publication diagnostic flag is enabled; R remains unselected.
+
+The first final Linux E/W2 process is deliberately retained as a **failed run**:
+JSON SHA256 `d1b755f48e1768d757781985a134013036e2a698b8597940992b4022758dfd2e`.
+Its final CPU image matched its GPU texture but not the stopped native World.
+The trace showed render revision120 while native revision121 had been changed
+only14.314ms after the previous extraction, inside the ordinary16.667ms cadence.
+Joining the worker does not force publication. This was premature comparison of
+different revisions, not demonstrated E byte loss. No failed artifact was edited
+or promoted to a passing run.
+
+The corrected harness stops emitting after its240-frame window, then lets normal
+Main consumption/worker cadence continue. It safely reads monotonic owner-end
+counts, requires two additional completions and generation2 with equal immutable
+render/simulation revisions, then disables processing and joins without another
+await. It requests no full refresh and issues no artificial ACK. Strict native/
+CPU/texture parity remains required after join. A deterministic cadence oracle
+reproduces deferred publication and ordinary catch-up; the final E suite has
+**72 assertions, zero failures on each OS**. The tail has its own event boundary
+and elapsed time. Refresh ratios and native/worker/upload percentiles include
+startup, reset and ordinary drain; the240 frame intervals exclude the drain.
+Tail event counts can straddle an adapter call and are not a separate matched
+call population.
+
+Final2 reran the complete24-process graphical matrix on that corrected source:
+
+| Platform | Control N retries/refreshes | Control W | E N | E W |
+|---|---:|---:|---:|---:|
+| Windows native OpenGL/NVIDIA | 4/363 (1.10%) | 357/363 (98.35%) | 0/363 | 0/363 |
+| Linux WSLg/X11 llvmpipe | 79/224 (35.27%) | 163/169 (96.45%) | 0/269 | 0/273 |
+
+All24 complete normally with no rejected snapshot, truncated trace, failed owner,
+generation error or parity mismatch. Each E process has exactly two full
+publications (startup/reset); its largest pending payload is2,097,272 bytes.
+Every control retry remains Published-dirty → retained-full → **byte-only**
+overflow → second forced full. Independent AI readback recomputed every summary
+and checked all raw/log/PNG hashes. This is not independent human approval.
+
+Median of per-process p95, final instrumented runs (milliseconds):
+
+| Platform / arm, control → E | Combined native call | Worker publication | Main CPU patch | Texture.update CPU call |240-frame interval |
+|---|---:|---:|---:|---:|---:|
+| Windows N | .019 → .017 | .367 → .364 | .020 → .020 | .243 → .242 | 16.738 → 16.741 |
+| Windows W | 16.444 → .019 | 19.747 → .795 | 1.481 → 1.482 | .223 → .210 | 16.746 → 16.748 |
+| Linux N | 52.628 → .049 | 54.164 → .906 | .887 → .026 | .573 → .597 | 13.088 → 12.509 |
+| Linux W | 54.898 → .056 | 57.075 → 1.462 | .907 → .861 | .590 → .556 | 13.533 → 12.938 |
+
+E eliminates the feedback CPU cost without equivalent main-thread transfer in
+this workload. Main still replays retained full+dirty under W and uploads the
+entire backing texture. The normal Windows p95 scarcely changes because retries
+are rare there. ACK-issue→clear p95 among successful clears is mixed: Windows
+14.598→9.294ms, Linux14.899→19.182ms. Stale/censored ACK populations differ;
+there is no blanket scheduling/ACK-latency improvement claim. W has no issued ACK
+or clear latency. Full p50/p95/p99/max distributions, returned bytes/refresh,
+publication ratios, capacity and phase counters remain in the machine receipt.
+
+Native timing closes the cost attribution question: in control W, the median
+per-full-packet **full-copy scope / total C++ adapter scope** is98.167% Windows
+and99.760% Linux. Exchange publication and remaining adapter work are small in
+these retries. This fraction is not a hash-lookup fraction or total-frame share.
+After E, snapshot copying/worker construction and main image/texture work dominate
+the small dirty exchanges; legitimate initial/reset full extraction remains.
+
+## One complete causal timeline
+
+Final2 Windows N0, generation2, refresh127. Times are milliseconds relative to
+owner entry at Godot monotonic4,225,387us; diagnostic event overhead is included.
+Native call start/end use the explicitly captured outer-call timestamps.
+
+| Relative time | Event |
+|---:|---|
+| -.731 | Main retrieves retained full publication62 |
+| -.535 | Main begins CPU patch application for62 |
+| .008 | Worker latches ACK61 against pending62; it cannot clear |
+| .019–.028 | First native dirty call returns two bytes |
+| .490 | Dirty append advances pending63 to2,097,154 bytes; rectangles do not overflow |
+| .511–17.921 | Second native call forces a complete full copy |
+| .538 | Main finishes CPU patch62 |
+| .548–.742 | Main calls Texture.update for62 |
+| .758 / .767 | Upload succeeds; Main issues valid ACK62 during the forced copy |
+| 18.033 | Full recovery replaces pending with serial64,2,097,152 bytes |
+| 18.100–18.183 | Publication64 becomes visible within the recorded publication bracket |
+| 18.282 | Worker observes ACK62 against pending64; no clear |
+| 32.608 | Main retrieves64; another dirty/forced-full cycle follows |
+| 68.274 | A covering ACK66 finally clears retained serial66 and releases2,097,152 bytes |
+
+Correct consumption/ACK can therefore lose the race to publication advancement.
+The newer PLAY/lifecycle/generation work in frozen main preserves replacement
+fencing but has not removed this mechanism. Changes in observed incidence cannot
+be causally attributed to PLAY alone: source, workload and renderer differ from
+the historical campaign.
+
+## Final validation and integration handover
+
+Nine focused real-native Godot processes per OS pass: bounded trace, patch
+handoff, native render bridge, native/fallback world generations, E72, physics
+async, failed-tick quarantine/reset, ten-cycle real Main LIFE001 Jet Barrel and
+prepared-shutdown LIFE003 Jet Barrel. LIFE001 passes233 assertions/10 joined
+workers per OS; LIFE003 passes30. All original outputs/hashes are retained.
+The five native R oracle binaries were freshly executed after verifying every
+compiled input equals current source: each again passes10,225,432 checks/265
+regions. Uninstrumented ordinary native render leases, dirty rectangles and C
+API/RGBA groups also pass. One optional native invocation used an unmatched
+`bulk` test filter; that no-tests failure is retained beside corrected named
+invocations. It is not a code-regression pass.
+
+Readback adverse controls pass20 mutations for control-N and19 for E-W on both
+OSes; runtime-manifest controls reject five wrong-library/roster/source/byte
+variants on each OS. Frozen retrieval stays hit@1=19/32, hit@5=32/32, MRR.7536;
+the separate two render questions both hit their canonical bridge at rank1.
+Independent AI code and evidence reviews found no remaining actionable blocker
+on the final runtime/fixture code. Semantic review confirms that retrieval must
+retain test-only, platform and GPU-completion qualifiers.
+
+**Publication gate remains open:** final documentation/M11/retrieval/whitespace
+checks are separate from current published-runtime provenance. The deliberately
+unchanged inherited LFS runtimes have three changed source inputs per OS
+(`world.hpp`, `world.cpp`, `cyber_native_cell_world.cpp`); the strict repository
+checker must report those six rebuild/provenance mismatches after restoring the
+original binaries. Local rebuilt diagnostic runtime proof does not waive that
+gate or authorize publishing diagnostic binaries. No source-bound publisher
+request is reused, no published manifest/hash is rewritten, and no ready-PR/full
+release matrix or merge is claimed. A later integration must reconcile the
+advanced main and existing #290 ownership, then qualify/publish the resulting
+production source under its proper request.
+
+Recommended next production work is a separately reviewed strict E retention
+policy, preserving this complete-frame/type/generation validation and bounded
+preflight, with active PLAY/ANGLE/target-device pacing before a default change.
+R remains an independent extraction improvement to reconcile through #290's
+existing owner. Its large isolated win plus measured extraction dominance
+supports an initial/reset/recovery benefit, but this branch intentionally never
+measures ordinary publication with R enabled. Neither candidate supersedes the
+other. Do not pursue baseline dropping/rebasing, coalescing complexity, early ACK,
+weaker fencing or unrelated physical/shader changes as part of this repair.
+
+Remaining hypotheses are representative active-world prevalence, GPU completion
+and queueing, ANGLE/cold-cache behavior, human frame pacing and whole-process
+memory under retained consumer lifetimes. The paused deterministic fixture,
+native warm-copy benchmark and final readback do not answer those. Host activity
+outside this branch was not controlled; small timing differences and frame-rate
+gains are not accepted causal findings.
+
+The tested local binaries remain under the raw root as `final-native-Windows.dll`
+and `final-native-Linux.so`, with their source-bound manifest JSON files. To rerun
+on this host, temporarily copy the selected diagnostic binary into its declared
+`godot/addons/cybersand_native/bin` path, pass that platform's manifest with
+`--runtime-manifest` and require `--require-native-stages`, then restore the
+retained `inherited-*` binary after testing. The driver refuses wrong-platform,
+subset, changed-source or wrong-byte manifests. This is an explicit diagnostic
+procedure, not a published-runtime installation or production selection.
+
+The local raw-evidence archive is
+`C:/Users/_/.codex/tmp/render-publication-abc-20261031-evidence.zip`:
+13,614,573 bytes,526 members, SHA256
+`cc6d3254bac3c86765ee21e924e2d7fcfec4b3917b2a56ec9ca527d2829e944c`.
+It contains raw events, original reports/logs/PNG witnesses, reproducibility
+helpers and explicitly labelled failure transcriptions. It excludes compiled
+binaries, toolchains/caches and post-commit canonical gate outputs. Curated
+receipts are committed; the archive and local diagnostic binaries are not.

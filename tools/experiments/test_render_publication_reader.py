@@ -31,6 +31,10 @@ def main():
         rejects("texture-CPU-parity",lambda d:d.update(final_texture_image_equal=False))
         rejects("wrong-owner",lambda d:d.update(owner_script="res://wrong.gd"))
         if original["candidate"]=="E": rejects("pending-bound",lambda d:d.update(pending_high_water=4194305))
+    if "tail_drained" in original:
+        rejects("tail-not-drained",lambda d:d.update(tail_drained=False))
+        rejects("tail-in-flight-only",lambda d:next(e for e in d["events"] if e["event"]=="tail_caught_up").update(owner_count=0))
+        rejects("tail-revision-lag",lambda d:next(e for e in d["events"] if e["event"]=="tail_caught_up").update(simulation_revision=-1))
     ack_kind="ack_issue" if original["arm"]=="N" else "ack_withheld"
     rejects("ack-before-upload",lambda d:next(e for e in d["events"] if e["event"]==ack_kind).update(usec=0))
     if any(e["event"]=="forced_retry" for e in original["events"]):

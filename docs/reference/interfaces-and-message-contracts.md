@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 ---
 
 # Interfaces and message contracts
@@ -494,6 +494,14 @@ ordinary R8 fallback frames retain the same World generation. Consumers update
 their displayed generation only after successful upload of the corresponding
 render serial; main uses that transition to invalidate vapour history. This is
 private GDScript snapshot metadata and does not change the native C ABI.
+
+**Diagnostic builds only:** `CYBERSAND_RENDER_PUBLICATION_DIAGNOSTIC` adds the
+bounded `_render_diagnostic` dictionary to the Godot adapter packet. It records
+monotonic start/end and elapsed exchange/full-copy/packing scopes; ordinary builds
+omit it. The opt-in E fixture consumes ordered `render_patch_*` for current
+pixels; its legacy `cells` field remains the last complete baseline cache while
+dirty patches are retained. No consumer may treat that cache alone as the current
+composed image. See the [investigation contract](../architecture/rendering-and-gameplay-bridges.md#render-publication-investigation-on-frozen-main).
 
 See [snapshot fields](../../godot/scripts/simulation_snapshot.gd),
 [lifetime](../architecture/data-ownership-and-lifetimes.md) and
