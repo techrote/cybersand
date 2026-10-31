@@ -11,7 +11,7 @@ SOURCE = "1" * 40
 
 def fixture(rig="jetbarrel"):
     state = dict(worker=11, session=12, bridge=13, run_id="test-only-synthetic-run", epoch=1,
-                 world_generation=1, physics_tick=10, bridge_step=10, native_tick=10,
+                 world_generation=1, native_backend="native-phased", physics_tick=10, bridge_step=10, native_tick=10,
                  snapshot_serial=1, time_usec=1000, control_generation=1, sequence=1,
                  pending_edges=0, main_callbacks=1, physics_callbacks=1, accepted_commands=1,
                  lap_ticks=0, native_paused=False, paused=False, suspended=False, rearm=False,
@@ -64,6 +64,7 @@ def fixture(rig="jetbarrel"):
                waits=[dict(name=str(i), started_usec=0, ended_usec=1000, deadline_usec=15000000,
                            passed=True) for i in range(10)])
     return dict(schema="play-life009-v1", source_revision=SOURCE, rig=rig, row=row,
+                display_server="headless", physics_engine="Rapier2D",
                 assertions=100, failures=0, elapsed_usec=2000000, worker_joined=True,
                 session_retired=True, real_host=True, automatic_callbacks=True,
                 headless_focus_seam=True, input_suppression_is_negative_control=True,
@@ -89,6 +90,7 @@ class Controls(unittest.TestCase):
                      lambda v: v.update(worker_joined=False), lambda v: v.update(session_retired=False),
                      lambda v: v.update(automatic_callbacks=False), lambda v: v.update(retries=1),
                      lambda v: v.update(manual_physics_calls=1), lambda v: v.update(shader_startup_qualified=True),
+                     lambda v: v.update(display_server="x11"), lambda v: v.update(physics_engine="GodotPhysics2D"),
                      lambda v: v.update(elapsed_usec=150000001), lambda v: v["row"].update(capture_overflow=True),
                      lambda v: v["row"].update(completed=False), lambda v: v["row"].update(records=[])]
         for mutation in mutations:
@@ -107,6 +109,7 @@ class Controls(unittest.TestCase):
                      lambda v: record(v,"dropped")["after"].update(move=[0,-1]),
                      lambda v: record(v,"dropped").update(dropped_input_control=False),
                      lambda v: record(v,"fresh")["after"].update(fault="fault"),
+                     lambda v: record(v,"fresh")["after"].update(native_backend="gdscript"),
                      lambda v: record(v,"fresh")["after"].update(position=[float("nan"),0])]
         for mutation in mutations:
             with self.subTest(mutation=mutation): self.reject(mutation)

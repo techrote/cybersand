@@ -55,6 +55,7 @@ class ObservedMain:
 			"session":physical_actor_session.get_instance_id(), "bridge":rapier_bridge.get_instance_id(),
 			"run_id":str(view.run_id), "epoch":int(view.epoch),
 			"world_generation":int(latest_snapshot.render_world_generation),
+			"native_backend":str(latest_snapshot.backend_name),
 			"physics_tick":int(view.tick), "bridge_step":rapier_bridge.manual_step_count(),
 			"native_tick":int(latest_snapshot.tick_index), "snapshot_serial":int(latest_snapshot.serial),
 			"native_paused":bool(latest_snapshot.paused), "paused":paused,
@@ -127,9 +128,24 @@ func records_for(phase: String, completed_only: bool = false) -> Array[Dictionar
 	return result
 
 
+func phase_complete(phase: String, count: int) -> bool:
+	return records_for(phase, true).size() >= count
+
+
+func pause_acknowledged() -> bool:
+	var value: Dictionary = desktop.state()
+	return (value.paused and value.native_paused and value.suspended and value.rearm
+		and value.snapshot_serial > row.pre_pause.snapshot_serial)
+
+
+func input_rearmed() -> bool:
+	return not desktop._actor_input_rearm
+
+
 func observe_completed(phase: String, count: int = 4) -> bool:
-	return await bounded(func() -> bool: return records_for(phase, true).size() >= count,
+	var complete: bool = await bounded(Callable(self, "phase_complete").bind(phase, count),
 		phase + ": automatic completed Rapier steps")
+	return complete
 
 
 func same_owner(reference: Dictionary, value: Dictionary) -> bool:
@@ -200,11 +216,9 @@ func test_sequence(rig: StringName) -> bool:
 	desktop.phase = "pausing"
 	parse_key(KEY_P, true)
 	parse_key(KEY_P, false)
-	if not await bounded(func() -> bool:
-		var value: Dictionary = desktop.state()
-		return value.paused and value.native_paused and value.suspended and value.rearm
-			and value.snapshot_serial > row.pre_pause.snapshot_serial,
-		"new native publication acknowledges pause"):
+	var acknowledged: bool = await bounded(Callable(self, "pause_acknowledged"),
+		"new native publication acknowledges pause")
+	if not acknowledged:
 		return false
 	row.pause_ack = desktop.state()
 	expect(row.pause_ack.pending_edges == 0 and row.pause_ack.control_generation > row.pre_pause.control_generation,
@@ -243,7 +257,7 @@ func test_sequence(rig: StringName) -> bool:
 
 	desktop.phase = "neutral_after"
 	parse_key(code, false)
-	if not await bounded(func() -> bool: return not desktop._actor_input_rearm, "release restores neutral input admission"):
+	if not await bounded(Callable(self, "input_rearmed"), "release restores neutral input admission"):
 		return false
 	desktop.phase = "fresh"
 	parse_key(code, true)
@@ -272,6 +286,7 @@ func run() -> void:
 	var rig: StringName = target_rig()
 	row = {"rig":str(rig), "waits":[], "expected_move":[], "records":[]}
 	release_controls()
+	expect(ClassDB.class_exists("CyberNativeCellWorld"), "native backend class is present")
 	expect(rig in Course.MECHANICAL_PRESETS, "wrapper selects a mechanical SetP rig")
 	expect(Input.get_connected_joypads().is_empty(), "keyboard-only fixture refuses unexpected connected hardware")
 	desktop = load("res://main.tscn").instantiate()
@@ -292,6 +307,7 @@ func run() -> void:
 	await close_cycle(desktop, worker, session, "LIFE009: ")
 	print("PLAY_LIFE009_RESULT ", JSON.stringify({"schema":"play-life009-v1",
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"display_server":DisplayServer.get_name(), "physics_engine":ProjectSettings.get_setting("physics/2d/physics_engine"),
 		"assertions":assertions, "failures":failures, "rig":str(rig), "row":row,
 		"elapsed_usec":Time.get_ticks_usec()-fixture_started_usec,
 		"worker_joined":joined_workers == 1, "session_retired":retired_sessions == 1,

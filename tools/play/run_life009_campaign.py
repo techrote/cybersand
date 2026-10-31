@@ -46,6 +46,29 @@ def safe_child(root: Path, name: str) -> Path:
     return p
 
 
+def parser_checks(binary: str, output: Path, runner, environment: dict) -> dict:
+    """The frozen malformed predecessor must fail; current helper must parse."""
+    original = git("show", "584b9c35085e45a0ab911730965b3cc30474dfd0:godot/tests/play_life009_same_owner_case.gd")
+    old_path = output / "original-584b-helper.gd"
+    old_path.write_bytes(original)
+    records = {}
+    for label, script in (("original", str(old_path)),
+                          ("current", "res://tests/play_life009_same_owner_case.gd")):
+        record, _ = runner.run_case(binary, runner.Case("parser-" + label,
+            ("--check-only", "--script", script), 30, 0), output,
+            "parser control only; does not execute gameplay", env=environment)
+        write(output / ("parser-" + label + ".process.json"), record)
+        records[label] = {"process": record, "log_sha256": sha(output / record["log"])}
+    records["original_source_sha256"] = hashlib.sha256(original).hexdigest()
+    write(output / "parser-controls.json", records)
+    old = records["original"]["process"]
+    text = (output / old["log"]).read_text(encoding="utf-8")
+    require(old["returncode"] == 1 and old["seconds"] <= 30 and "Parse Error:" in text,
+            "Original parser negative control did not fail as expected")
+    verify_process(records["current"]["process"], 30)
+    return records
+
+
 def verify_directory(output: Path) -> dict:
     report = json.loads((output / "campaign.json").read_text(encoding="utf-8"))
     require(report.get("schema") == "play-life009-campaign-v1", "Wrong campaign schema")
@@ -55,6 +78,12 @@ def verify_directory(output: Path) -> dict:
             "Source/runtime postflight failed")
     require(report.get("production_paths_unchanged_from_base") is True, "Production scope changed")
     require(report.get("godot_identity", {}).get("version") == VERSION, "Wrong Godot version")
+    parser_controls = json.loads(safe_child(output, "parser-controls.json").read_text())
+    require(parser_controls == report.get("parser_controls"), "Parser controls changed")
+    verify_process(parser_controls["current"]["process"], 30)
+    for item in (parser_controls["original"], parser_controls["current"]):
+        require(sha(safe_child(output, item["process"]["log"])) == item["log_sha256"],
+                "Parser original log changed")
     verify_process(report["import"], 240)
     require(sha(safe_child(output, report["import"]["log"])) == report["import_log_sha256"],
             "Import log changed")
@@ -154,10 +183,12 @@ def main() -> int:
             report["godot_identity"] = {"version": version, "binary_sha256": sha(binary),
                                         "archive_sha256": sha(archive)}
         require(report["godot_identity"]["version"] == VERSION, "Wrong engine version")
-        # Exact tracked source only: never package .git, credentials or generated caches.
+        # Exact tracked source only, with LFS smudge disabled. Keep runtime
+        # identities separate; never package credentials or generated caches.
         with (output / "executed-source.tar").open("wb") as handle:
             subprocess.run(["git", "archive", "--format=tar", "HEAD"], cwd=ROOT,
-                           stdout=handle, check=True, timeout=60)
+                           stdout=handle, check=True, timeout=60,
+                           env=os.environ | {"GIT_LFS_SKIP_SMUDGE": "1"})
         report["executed_source_archive_sha256"] = sha(output / "executed-source.tar")
         environment = os.environ | {"CYBERSAND_SOURCE_REVISION": source, "GODOT_SILENCE_ROOT_WARNING": "1"}
         report["import"], failed = runner.run_case(str(binary), runner.Case("import", ("--editor", "--quit"), 240, 0),
@@ -166,6 +197,7 @@ def main() -> int:
         write(output / "campaign.json", report)
         if not failed:
             verify_process(report["import"], 240)
+            report["parser_controls"] = parser_checks(str(binary), output, runner, environment)
             for rig in RIGS:
                 name = "test_play_life009_" + rig
                 start = time.perf_counter()

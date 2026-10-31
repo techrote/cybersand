@@ -39,6 +39,7 @@ def same_owner(reference: dict, state: dict) -> None:
 def state_valid(reference: dict, state: dict) -> None:
     require(isinstance(state, dict), "Missing state")
     same_owner(reference, state)
+    require(state.get("native_backend") == "native-phased", "Fallback/non-native backend refused")
     for name in ("time_usec", "physics_tick", "bridge_step", "native_tick", "snapshot_serial",
                  "control_generation", "pending_edges", "main_callbacks", "physics_callbacks",
                  "accepted_commands", "lap_ticks"):
@@ -81,6 +82,8 @@ def verify_result(result: dict, rig: str, source: str) -> dict:
     require(rig in RIGS and result.get("rig") == rig, "Wrong rig")
     require(result.get("schema") == "play-life009-v1" and result.get("source_revision") == source,
             "Wrong schema/source")
+    require(result.get("display_server") == "headless" and result.get("physics_engine") == "Rapier2D",
+            "Wrong display or physics engine")
     for field in ("real_host", "automatic_callbacks", "headless_focus_seam",
                   "input_suppression_is_negative_control", "worker_joined", "session_retired"):
         require(result.get(field) is True, "Required evidence absent: " + field)
