@@ -1786,3 +1786,29 @@ separate results; seven affected Godot processes pass1078 assertions. Keep old
 failures, final EOF-only transition, raw/canonical source bindings and actual
 runtime identities. Fresh integrated native/publication/full platform gates
 remain required; do not substitute the old development DLL for them.
+
+## Physical detachment diagnostic replay
+
+Run `make ejection-search-test` for the literal pre-extraction differential
+oracle. After rebuilding a source-matched GDExtension, run Godot 4.7 headless
+with `--script res://tests/test_ejection_capsules.gd -- --capsule-output=<absolute.json>`
+for the finite real-Rapier contact fixture. Use
+`--capsule-input=<absolute.json> --capsule-output=<another.json>` to replay its
+frozen corpus without Rapier stepping. The script has a 120-second internal
+watchdog. Record the native DLL, engine, Rapier and source hashes; a retained
+DLL without diagnostic methods cannot execute this apparatus. See the
+[dated stage receipts](../audits/2026-10-31-physical-detachment-abc.md).
+
+For read-only topology diagnosis of the frozen contact corpus:
+`python tools/experiments/test_ejection_topology.py` then
+`python tools/experiments/ejection_topology.py --input docs/audits/physical-detachment-2026-10-31/stage-a-corpus.json --output <local-stage-b.json>`.
+The report checks every Python float32 production trace against the capsule and
+separates the current local envelope from its diagnostic one-cell ring.
+
+Run `make ejection-oracle-test` for the focused native differential, topology,
+short-chain and copied-World aggregate. Equivalently, run the two Python test
+scripts and `ejection_push_chain.py --input <frozen-corpus> --output <local.json>
+--native-cases <local.txt>`, then pass the exported text to
+`build/test_ejection_chain_world`. Native qualification compares semantic
+material/state/temperature/Water quantity; Python copies additionally preserve
+captured raw epoch/spare bits. Neither path mutates the real simulation World.

@@ -940,3 +940,15 @@ and reaction oracles; actual rendered captures; cost/memory and source-matched
 Linux/Windows publication each retain their own scope. Pending or skipped gates
 do not establish completion. Retained Deepworks evidence is the visual reference,
 not a substituted result for the new procedural scene.
+
+## Physical displacement replay investigation — 2026-10-31
+
+The [dated A/B/C investigation](../audits/2026-10-31-physical-detachment-abc.md)
+starts from frozen main`adaaa37a` on an isolated branch, with Stage-A checkpoint
+`838b2a9d` and corrected file-only replay`5683acf8`. It records Windows actual
+Rapier capture,80 exact native/fallback replay matches, literal native search
+regressions, and independent Windows/Linux frozen topology diagnosis. Source and
+runtime hashes, failed corpus-quota variants and the JSON comparison correction
+remain explicit. Copied-state oracle evidence and final-head checks are separately
+recorded there; no production solver promotion, full trajectory replay or human
+body/granular acceptance follows.

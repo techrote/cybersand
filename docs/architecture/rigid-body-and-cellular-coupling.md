@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-31
 ---
 
 # Rigid-body and cellular coupling
@@ -78,7 +78,7 @@ unit contract. Packed fields are documented in
 |---|---|
 | Translation sweep | More than 32 pixels between samples is treated as a teleport: endpoint only |
 | Sweep sampling | Approximately one-cell spacing, capped at 24 intervals/25 samples; interpolates centre, shortest rotation and size |
-| Endpoint overlap | Search outward from nearest face and along its tangent, at most eight cells; the bounded half-cell path may not cross hard terrain or another body's transient mask |
+| Endpoint overlap | Search nine distances from `max(1, ceil(penetration))` through that value plus eight, with nine tangent probes each; the half-cell path may not cross hard terrain or another body's transient mask |
 | Swept-only overlap | Prefer ejection in body-travel direction; rotational response remains approximate |
 | No valid destination | Retain the complete stored cell payload and report unresolved overlap plus reaction; no particle fallback or silent deletion |
 | Granular bearing | Exposed downward body cells query the version-1 granular support predicate against stored material; response is recomputed each accepted sample, capped at 20 impulse units and uses at most 0.5-cell low-speed correction |
@@ -213,3 +213,32 @@ and bounded enclosure recovery. REM-002 reuses the same support predicate for a
 separate bounded body-coupling observation against stored material; it does not
 make the sampled character a Rapier collider and does not add a second material
 owner.
+
+## Diagnostic contact capsules and local replay
+
+**Current diagnostic apparatus, 2026-10-31:** the opt-in native
+`diagnostic_ejection_capture` captures pre-relocation attempts only in an
+explicit diagnostic default-cellular World. The ordinary search uses the shared
+[evaluator](../../native/include/cybersand/ejection_search.hpp): nine distances
+from `max(1, ceil(penetration))` through that value plus eight, each with tangent
+probes `0,+1,-1,+2,-2,+3,-3,+4,-4`. Intermediate movable material and the source
+body mask are traversable; hard terrain and foreign body masks reject the path.
+An absent strict-empty route therefore does not establish the cause of a
+production no-target outcome.
+
+Capsules own copied cell carrier bits, temperature and transient IDs, raw
+normal/penetration, previous/current body values and instance/reset/tick/revision
+identity. Capture retains at most 64 failed and 16 successful search-equivalence
+representatives, refuses footprints wider/taller than 128 cells and records
+capacity/refusal outcomes. The copied envelope contains every production
+endpoint and path sample plus a one-cell diagnostic ring. Pressure/inertial
+sidecar Worlds are excluded. `diagnostic_replay_ejection` reads only the capsule;
+it never installs captured state into a live World. Owner identity is audit
+provenance, not permission to apply a historic capture to a live owner.
+
+The [dated investigation](../audits/2026-10-31-physical-detachment-abc.md)
+records source-matched replay, topology diagnosis and copied-state oracle gates
+separately. Decision parity covers this controlled native/fallback corpus;
+fallback material laws and payload storage remain different. Neither capsules
+nor copied-state rearrangement provide full coupled trajectory replay or select
+production displacement behavior.

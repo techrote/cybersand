@@ -334,3 +334,5 @@ GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-b
 
 For authored checkpoint visibility, Return to launcher, sampled task participants and
 coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).
+
+Physical detachment diagnostic replay: use the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md#diagnostic-contact-capsules-and-local-replay) and its dated evidence; strict-empty topology is distinct from production path acceptance.

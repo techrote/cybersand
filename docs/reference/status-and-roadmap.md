@@ -1748,3 +1748,19 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+## Physical displacement investigation — 2026-10-31
+
+**Current diagnostic work:** [Stage A/B/C evidence](../audits/2026-10-31-physical-detachment-abc.md)
+starts from frozen main `adaaa37a`, independently of frozen PR #283. Opt-in
+contact capsules replay the unchanged 81-probe decision; topology and short
+push-chain work remain copied-state diagnostics with separately recorded gates.
+No wider search, normal correction, material law or production rearrangement is
+selected. Broad body/granular acceptance remains open.
+
+**Measured bounded disposition:** the frozen64 no-target/16 positive contact
+corpus replays exactly. Its copied-state push chains of1–4 moved cells recover
+zero of64 failures under either nonrear directional policy. This is a NO-GO for
+promoting that tiny primitive on this cohort; the dated report recommends a
+bounded saturated-contact/bearing experiment and broader fixture coverage.
+It does not establish global jamming or authorize a production solver change.

@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1241,3 +1241,13 @@ memory/work limits. A conservative maximum local candidate charge bounds each
 raster sample. Real geometry/mask checks and canonical ordering still select
 materials. Measured index checks and local chunk durations are distinct from
 these declared logical charges.
+
+## Diagnostic ejection capacity
+
+The opt-in [contact capsule apparatus](../architecture/rigid-body-and-cellular-coupling.md#diagnostic-contact-capsules-and-local-replay)
+retains at most64 failed and16 successful search-state representatives with a
+maximum128×128 copied envelope. Capacity/footprint/stale outcomes are explicit;
+per-attempt bounds do not qualify tick-time overhead. The current search constant
+8 is an inclusive extension after the penetration-derived first distance, giving
+nine distances and nine tangent probes (81 attempts). No runtime radius or
+ordinary worker/render policy is changed by the diagnostic oracle.

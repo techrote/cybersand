@@ -1609,6 +1609,12 @@ Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {
     return chunk == nullptr ? Material::Empty : chunk->cells[target.index].material_value();
 }
 
+std::uint64_t World::stored_cell_bits(std::int64_t x, std::int64_t y) const noexcept {
+    const auto target = address(x, y);
+    const auto* chunk = find_chunk(target.chunk);
+    return chunk == nullptr ? 0 : chunk->cells[target.index].bits;
+}
+
 std::uint16_t World::stored_state_a(std::int64_t x, std::int64_t y) const noexcept {
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
