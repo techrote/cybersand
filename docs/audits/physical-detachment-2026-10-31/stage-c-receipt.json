@@ -1,0 +1,42 @@
+{
+  "previous_stage_commit": "f18e1378897ee42b8ad519debb3a18c25160d5bf",
+  "frozen_corpus_sha256": "1ccfccde46ca23907854ba4ebe604fae0c038c1c8881475bc65182b410d3a1e8",
+  "source_sha256": {
+    "tools/experiments/ejection_push_chain.py": "5f151fabe309933c843e9fe4801af02eb351ec1a6d56263ccd327f82db7d86b1",
+    "tools/experiments/test_ejection_push_chain.py": "399c3c194c5f939a2bd1b673355af7100541aadce579eecc32aa91c40975c7f8",
+    "native/tests/test_ejection_chain_world.cpp": "ba03708f854ba7fc7a447bbb4b8fd1755854de89271636b35448bcc2d0f01dc2"
+  },
+  "report_sha256": "955ecf2a6ea980c0037560f53eebf3f8301403ac5a69b79bb070fbc28c84f69e",
+  "commands": [
+    "python tools/experiments/test_ejection_push_chain.py",
+    "python tools/experiments/ejection_push_chain.py --input <frozen-corpus> --output <local.json> --native-cases <local.txt>",
+    "g++ -std=c++20 -O2 -pthread -Inative/include native/src/{world,material_rules,scheduler_geometry,settled_world_discovery}.cpp native/tests/test_ejection_chain_world.cpp -o <native-test>",
+    "<native-test> <local.txt>"
+  ],
+  "timeouts_seconds": {
+    "python": 60,
+    "native_execute": 60,
+    "native_build": 300
+  },
+  "windows_python": "15tests passed",
+  "linux_python": "15tests passed on WSL Ubuntu24.04 Python3.12.3",
+  "windows_native": {
+    "self_controls": 21,
+    "imported_legal_chains": 50,
+    "conservation_failures": 0,
+    "barrier_violations": 0,
+    "overlap_reduction_failures": 0,
+    "qualification": "copied World semantic tuple/temperature/Water quantity; raw epoch/spare import excluded"
+  },
+  "linux_native": "21selfcontrols plus50imported legal chains passed, zero failures (parent executed worker-built binary from same final test source)",
+  "native_binary_sha256_windows": "2cd7fa426cf619688bc63975b4b55eb73a7f118486a0b4ff03045d30aba5083d",
+  "native_cases_sha256": "ee2354706bc28835232dbd7fb4e74a41180caad7603c6e35f8fb48bdaffe04e0",
+  "independent_read_only_algorithm": "All64 failures unrecovered; positive chain cumulative0,1,2,5 agrees. All20 enumerated real-chain postconditions passed. AI/subagent review is not human approval.",
+  "preserved_failures": [
+    "CLI input/output alias guard gap found by review and corrected before qualification; input bytes and samefile aliases checked.",
+    "First latest native21st-control run failed control coordinate missing because fixture copied coordinate key; corrected fixture preserves destination key, finalWindows/Linux21+50 pass.",
+    "Existing World::try_move conversion warning under -Wconversion remains unchanged."
+  ],
+  "scope": "Pure oracle conserves nonempty raw carrier and persistent temperature exactly. Native imports compare semantic fields/temperature/Water quantity, excluding arbitrary captured epoch/spare import. Vacated source Empty at ambient; no whole-grid empty thermal conservation claim.",
+  "disposition": "NO-GO tiny chain runtime promotion on retained Sand cohort:0/64 recovered at everycap/policy; baseline16/80 unchanged."
+}

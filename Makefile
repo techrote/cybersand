@@ -284,3 +284,13 @@ $(BUILD_DIR)/test_ejection_search: native/tests/test_ejection_search.cpp native/
 
 ejection-search-test: $(BUILD_DIR)/test_ejection_search
 	./$(BUILD_DIR)/test_ejection_search
+
+.PHONY: ejection-oracle-test
+$(BUILD_DIR)/test_ejection_chain_world: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_ejection_chain_world.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) -pthread $(SIMULATION_SOURCES) native/tests/test_ejection_chain_world.cpp -o $@
+
+ejection-oracle-test: ejection-search-test $(BUILD_DIR)/test_ejection_chain_world
+	python3 tools/experiments/test_ejection_topology.py
+	python3 tools/experiments/test_ejection_push_chain.py
+	python3 tools/experiments/ejection_push_chain.py --input docs/audits/physical-detachment-2026-10-31/stage-a-corpus.json --output $(BUILD_DIR)/ejection-chain-report.json --native-cases $(BUILD_DIR)/ejection-chain-world-cases.txt
+	./$(BUILD_DIR)/test_ejection_chain_world $(BUILD_DIR)/ejection-chain-world-cases.txt

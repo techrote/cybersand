@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 ---
 
 # Interfaces and message contracts
@@ -1425,3 +1425,12 @@ uses copied origin/qualified observation slots and exact request/settings/native
 guards for owner adoption. Actual initial pressure-capacity excess produces a
 native typed refusal before capture/token/swap, with actual attempt readback.
 Complete host binding and final platform publication remain separate.
+
+## Diagnostic ejection contact boundary
+
+The [coupling capsule contract](../architecture/rigid-body-and-cellular-coupling.md#diagnostic-contact-capsules-and-local-replay)
+owns the opt-in capture/replay schema and bounds. It exchanges owned copied
+values; no mutable World pointer or live Rapier object crosses this boundary.
+Raw carrier bits use hexadecimal strings to survive JSON number precision.
+Instance/reset/tick/revision identify provenance; offline replay never installs
+historic state into a live owner. Ordinary body input/result packets are unchanged.

@@ -1804,3 +1804,11 @@ For read-only topology diagnosis of the frozen contact corpus:
 `python tools/experiments/ejection_topology.py --input docs/audits/physical-detachment-2026-10-31/stage-a-corpus.json --output <local-stage-b.json>`.
 The report checks every Python float32 production trace against the capsule and
 separates the current local envelope from its diagnostic one-cell ring.
+
+Run `make ejection-oracle-test` for the focused native differential, topology,
+short-chain and copied-World aggregate. Equivalently, run the two Python test
+scripts and `ejection_push_chain.py --input <frozen-corpus> --output <local.json>
+--native-cases <local.txt>`, then pass the exported text to
+`build/test_ejection_chain_world`. Native qualification compares semantic
+material/state/temperature/Water quantity; Python copies additionally preserve
+captured raw epoch/spare bits. Neither path mutates the real simulation World.

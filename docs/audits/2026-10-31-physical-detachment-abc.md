@@ -283,9 +283,105 @@ is not established by this finite envelope. Stage C must test legal copied-state
 chains separately, particularly own-body masks and displacement direction.
 
 Stage-B qualification: ten focused graph/geometry/barrier/nonmutation tests pass
-on Windows Python3.13 and Linux/WSL Python3; both complete machine reports are
-semantically equal. A first synthetic45-degree sector boundary failed because
+on Windows Python3.13 and Linux/WSL Python3; discrete costs, routes, coordinates, sectors and aggregate distributions agree.
+The full reports differ in61 angle values by at most2.842170943040401e-14
+degrees across host math libraries; the receipt correctly records full-report
+inequality. A first synthetic45-degree sector boundary failed because
 acos rounded to45.00000000000001 degrees; a1e-10-degree diagnostic sector
 tolerance corrects that classification without altering search or graph costs.
 The [Stage-B receipt](physical-detachment-2026-10-31/stage-b-receipt.json) retains
-commands, hashes and this failure. Stage C has not begun at this checkpoint.
+commands, hashes and this failure. Stage B was committed as `f18e1378897ee42b8ad519debb3a18c25160d5bf` before Stage C began.
+
+## Stage C — bounded conservative push-chain oracle
+
+The [pure oracle](../../tools/experiments/ejection_push_chain.py) works only on
+copied local state. It enumerates simple four-connected chains within the same
+Stage-B interior AABB, with moved-cell caps1,2,3,4 **including the source**.
+Every destination must be unmasked, including by the source body; every moved
+parcel is nonempty, movable and non-hard. The terminal is unmasked Empty.
+Tail-first application preserves each moved nonempty parcel's complete raw
+carrier bits (including spare/epoch), state, quantity and persistent temperature.
+Body masks remain positional. The vacated source becomes Empty at ambient
+temperature, matching the semantic vacancy rule; terminal Empty temperature is
+not asserted conserved. Production relocation itself resets scheduling epochs.
+
+The policies use exact per-hop projection: forward requires `dot > 0`;
+forward plus lateral requires `dot >= 0`. No rearward hop or epsilon is admitted.
+These literal hemispheres differ only at the lateral boundary. All80 retained
+normals have both components nonzero, so a four-connected grid has no exactly
+lateral axis hop and the policies coincide here. An axis-aligned synthetic
+lateral fixture distinguishes them. This zero marginal does not establish that
+all geometrically lateral motion is useless under a different declared policy.
+
+| Cumulative accepted contact states | Forward | Forward plus lateral |
+|---|---:|---:|
+| Production direct | 16/80 | 16/80 |
+| Direct or chain at most1 | 16/80 | 16/80 |
+| Direct or chain at most2 | 16/80 | 16/80 |
+| Direct or chain at most3 | 16/80 | 16/80 |
+| Direct or chain at most4 | 16/80 | 16/80 |
+
+**Zero of64 unresolved contacts is recovered at every cap under both policies.**
+At cap4,47 lack any local terminal void and17 have voids but no legal chain
+under these directional/mask/cap constraints. Graph-cost0 is not a physical
+chain proof: the permissive graph can traverse masked Empty space. Five of the
+16 production-positive controls admit legal chains by cap4; their chain-only
+cumulative counts are0,1,2,5. They are positive validation, not new recovery.
+The [per-capsule oracle report](physical-detachment-2026-10-31/stage-c-oracle.json)
+records paths, minimum lengths, terminal geometry, moved material sequences,
+multiple-path counts and exact refusal/frontier reasons for every cap/policy.
+
+Fifteen adversarial/conservation Python tests pass. Sand, Water with custom
+quantity/state/temperature/spare bits, mixed materials, hard/foreign/own masks,
+masked Empty terminals, ring terminals, missing voids, cap overflow, rear-only
+escape, exact lateral policy, overlapping candidate paths and frozen-input CLI
+alias protection are covered. There are zero conservation failures, hard/foreign
+violations or newly created overlaps. The selected real copied applications
+number16 across policy/cap combinations; a separately written read-only
+enumerator checks all20 real legal paths with zero postcondition failures.
+All live capsules are Sand. Water/mixed evidence is conservation/control
+qualification, not measured live liquid recoverability.
+
+A fresh native copied-World validator independently imports semantic tuples and
+temperature, installs positional masks, applies the selected chain tail first,
+and verifies material/state/temperature multisets, exact Water quantity,
+source vacancy and one fewer material/body overlap. It checks50 exported cases
+(16 real positive applications and34 synthetic applications) plus21 native
+controls. Its public setters cannot import arbitrary captured epoch/spare bits;
+that raw-bit qualification remains in the pure copied-state tests. It never
+accesses the real captured simulation World. The first21st-control attempt
+failed before application because a test-fixture cell copy changed its coordinate
+key; the corrected control preserves that negative result and is requalified.
+
+## Interpretation and next engineering checkpoint
+
+This retained current-main cohort gives **NO-GO for promoting a tiny push chain**.
+It recovers0/64 failures. Production already crosses movable material to an
+empty endpoint, and all16 successful controls also lack a strict empty route.
+Neither the historical strict-route census nor this bounded graph licenses a
+wider search, normal correction or production rearrangement by itself.
+
+The strongest supported hypothesis is insufficient admissible local free volume
+combined with the body/contact response, with a smaller lateral topology subset.
+The normals are not generally reversed;47/64 failures have no void in the local
+envelope and25 lack even a diagnostic-ring void. This does not prove global
+jamming or select a broad compaction algorithm.
+
+The next production-facing experiment should target generic granular contact/
+bearing response under local saturation: test whether a body can stop or deflect
+before accumulating deep unresolved material overlap, using the existing plunge/
+excavation controls and explicit free-volume variants. Establish trajectory and
+conservation evidence before selecting a runtime primitive. Expand fixture
+coverage separately to swept-only contacts, other body shapes and materials;
+this Sand rectangle cohort cannot qualify frozen tree detachment or all liquids.
+
+Do not pursue B=289 as a primary approach, treat strict-empty-route absence as
+causal proof, promote this four-cell chain, or label bounded saturation global
+jamming. Source semantics/render publication/material laws remain unchanged;
+the investigation branch stays draft and unmerged. Cross-branch reconciliation
+is deferred to a later integration pass from the frozen-main boundary.
+
+The [Stage-C source/command receipt](physical-detachment-2026-10-31/stage-c-receipt.json)
+records corrected Windows and Linux21+50 copied-World passes and the preserved
+failed fixture attempt. Production native inputs and DLL remain identical to
+the qualified Stage-A build; later changes add offline tools/tests/documentation.

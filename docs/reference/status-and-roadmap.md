@@ -1738,3 +1738,10 @@ contact capsules replay the unchanged 81-probe decision; topology and short
 push-chain work remain copied-state diagnostics with separately recorded gates.
 No wider search, normal correction, material law or production rearrangement is
 selected. Broad body/granular acceptance remains open.
+
+**Measured bounded disposition:** the frozen64 no-target/16 positive contact
+corpus replays exactly. Its copied-state push chains of1–4 moved cells recover
+zero of64 failures under either nonrear directional policy. This is a NO-GO for
+promoting that tiny primitive on this cohort; the dated report recommends a
+bounded saturated-contact/bearing experiment and broader fixture coverage.
+It does not establish global jamming or authorize a production solver change.
