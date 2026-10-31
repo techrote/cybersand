@@ -6,6 +6,7 @@ import contextlib
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -470,6 +471,134 @@ class OwnedBuildTests(unittest.TestCase):
         path.write_text(path.read_text().replace('"status": "passed"','"status": "failed", "status": "passed"'))
         with self.assertRaisesRegex(ValueError,'Duplicate'):
             self.verify()
+
+
+class ImportEnvironmentTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
+        self.environment={'JAVA_HOME':r'C:\jdk','PATH':'retained path','APPDATA':r'C:\profile',
+                          'ANDROID_HOME':r'C:\android','UNRELATED_SECRET':'must-not-be-recorded'}
+        self.paths={'source':r'C:\source','output':r'C:\evidence'}
+
+    def copy(self,environment=None):
+        with mock.patch.object(campaign,'path_is_absent',return_value=True):
+            return campaign.copied_import_environment(self.environment if environment is None else environment,self.paths)
+
+    def test_only_java_home_is_removed_and_original_game_environment_is_unchanged(self):
+        original=self.environment.copy();child,receipt=self.copy()
+        self.assertEqual(self.environment,original)
+        self.assertEqual(child,{key:value for key,value in original.items() if key!='JAVA_HOME'})
+        self.assertEqual(receipt['original_java_home'],[{'name':'JAVA_HOME','value':r'C:\jdk'}])
+        self.assertNotIn('must-not-be-recorded',json.dumps(receipt))
+        self.assertNotIn('retained path',json.dumps(receipt))
+        campaign.verify_import_environment(receipt,self.paths,campaign.environment_sha256(original))
+
+    def test_missing_and_case_variant_java_names_keep_all_other_variables(self):
+        for names in ({},{'Java_Home':'x'},{'JAVA_HOME':'x','java_home':'y'}):
+            original={key:value for key,value in self.environment.items() if key!='JAVA_HOME'}|names
+            child,receipt=self.copy(original)
+            self.assertEqual(child,{key:value for key,value in original.items() if key.upper()!='JAVA_HOME'})
+            self.assertEqual(receipt['original_java_home'],[{'name':name,'value':names[name]} for name in sorted(names)])
+            campaign.verify_import_environment(receipt,self.paths,campaign.environment_sha256(original))
+
+    def test_exact_minor_fallback_self_contained_and_project_relative_guards(self):
+        expected=[campaign.ntpath.join(r'C:\profile\Godot',name) for name in ('editor_settings-4.7.tres','editor_settings-4.6.tres',
+                  'editor_settings-4.5.tres','editor_settings-4.4.tres','editor_settings-4.3.tres','editor_settings-4.tres')]
+        expected.extend([r'C:\evidence\engine\._sc_',r'C:\evidence\engine\_sc_',r'C:\source\godot\bin\keytool.exe'])
+        self.assertEqual(campaign.import_absence_paths(self.paths,r'C:\profile'),expected)
+        for existing in expected:
+            with mock.patch.object(campaign,'path_is_absent',side_effect=lambda path:path!=existing):
+                _,receipt=campaign.copied_import_environment(self.environment,self.paths)
+            self.assertFalse(next(row['absent'] for row in receipt['guard_paths'] if row['path']==existing))
+            with self.subTest(existing=existing),self.assertRaisesRegex(ValueError,'not absent'):
+                campaign.verify_import_environment(receipt,self.paths,campaign.environment_sha256(self.environment))
+
+    def test_ambiguous_missing_or_relative_appdata_is_refused(self):
+        for environment in ({key:value for key,value in self.environment.items() if key!='APPDATA'},
+                            self.environment|{'appdata':r'C:\other'},self.environment|{'APPDATA':'.'},
+                            self.environment|{'APPDATA':r'\root-relative'}):
+            with self.assertRaisesRegex(ValueError,'APPDATA'):self.copy(environment)
+
+    def test_actual_file_directory_and_dangling_link_are_not_absence(self):
+        missing=self.root/'missing';self.assertTrue(campaign.path_is_absent(str(missing)))
+        file=self.root/'file';file.write_text('cached setting');self.assertFalse(campaign.path_is_absent(str(file)))
+        self.assertFalse(campaign.path_is_absent(str(self.root)))
+        if os.name!='nt':
+            link=self.root/'dangling';link.symlink_to(missing);self.assertFalse(campaign.path_is_absent(str(link)))
+        with mock.patch.object(Path,'lstat',side_effect=PermissionError('denied')):
+            with self.assertRaises(PermissionError):campaign.path_is_absent(str(missing))
+
+    def test_receipt_cannot_claim_other_removals_or_false_absence(self):
+        _,receipt=self.copy()
+        variants=[copy.deepcopy(receipt) for _ in range(4)]
+        variants[0]['original_java_home'].append({'name':'PATH','value':'unrelated'})
+        variants[1]['java_home_absent']=False
+        variants[2]['parent_environment_sha256']='0'*64
+        variants[3]['guard_paths'][0]['absent']=1
+        for variant in variants:
+            with self.assertRaises(ValueError):
+                campaign.verify_import_environment(variant,self.paths,campaign.environment_sha256(self.environment))
+
+    def test_changed_actual_environment_or_late_cached_file_blocks_every_launch(self):
+        for index,changed in enumerate(('environment','cached-file')):
+            output=self.root/str(index);output.mkdir()
+            paths={'source':str(campaign.ROOT),'output':str(output)}
+            with mock.patch.object(campaign,'path_is_absent',return_value=True):
+                child,receipt=campaign.copied_import_environment(self.environment,paths)
+            campaign.write(output/'import-environment.json',receipt)
+            if changed=='environment':child['PATH']='substituted'
+            with mock.patch.object(campaign,'path_is_absent',return_value=changed!='cached-file'),\
+                 mock.patch.object(campaign.subprocess,'Popen') as launch:
+                with self.assertRaisesRegex(ValueError,'environment differs|appeared before launch'):
+                    campaign.execute(Path('broker.exe'),['engine.exe'],output/'import',campaign.policy.IMPORT_MS,child,{}, {},
+                                     environment_custody=output/'import-environment.json')
+                launch.assert_not_called()
+
+    def run_main_model(self, *, cached=False):
+        """Observe real main() argument flow, without claiming a Windows execution."""
+        output=self.root/'campaign';broker=self.root/'broker.exe';control=self.root/'control.exe'
+        broker.write_bytes(b'broker');control.write_bytes(b'control');calls=[]
+        def capture(name,environment):calls.append((name,environment.copy()))
+        def execute(_broker,_command,directory,_timeout,environment,*_bindings,**_kwargs):
+            capture(directory.name,environment);directory.mkdir()
+            (directory/'engine.log').write_text('LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures\n' if directory.name==campaign.FIXTURE else '')
+            return {'effective_exit':0,'timed_out':False}
+        def build_controls(_output,environment):capture('build-controls',environment);return {}
+        def build_tools(_output,environment):capture('build-tools',environment);return broker,control,{}
+        def engine(_archive,_output,environment):capture('engine-version',environment);return Path('engine.exe'),{}
+        with contextlib.ExitStack() as stack:
+            stack.enter_context(mock.patch.dict(os.environ,self.environment,clear=True))
+            stack.enter_context(mock.patch.object(sys,'platform','win32'))
+            stack.enter_context(mock.patch.object(sys,'argv',['capture','--expected-source-sha','a'*40,'--godot-archive','archive.zip','--output',str(output)]))
+            for owner,name,value in ((campaign.platform,'machine',lambda:'AMD64'),(campaign,'source_archive',lambda *_:{}),
+                (campaign.windows,'verify_retained_runtime',lambda *_:{}),(campaign,'run_build_controls',build_controls),
+                (campaign,'build_tools',build_tools),(campaign,'engine',engine),(campaign,'execute',execute),
+                (campaign,'verify_control',lambda *_:None),(campaign,'bindings',lambda *_args,**_kwargs:({},{})),
+                (campaign,'source_unchanged',lambda *_:None),(campaign,'verify_source_pack',lambda *_:{}),
+                (campaign,'verify_directory',lambda *_:{}),(campaign,'path_is_absent',lambda _:not cached)):
+                stack.enter_context(mock.patch.object(owner,name,value))
+            stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
+            status=campaign.main()
+            self.assertEqual(dict(os.environ),self.environment)
+        return status,calls,json.loads((output/'campaign.json').read_text())
+
+    def test_main_preserves_all_control_version_and_game_environments(self):
+        status,calls,report=self.run_main_model();self.assertEqual(status,0)
+        expected=campaign.child_environment(self.environment)[0]|{'CYBERSAND_SOURCE_REVISION':'a'*40}
+        self.assertEqual(len(calls),11)
+        for name,environment in calls:
+            prescribed=({key:value for key,value in expected.items() if key!='JAVA_HOME'} if name=='import' else
+                        expected|{'CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL':'1'} if name=='control-dump-writer-timeout' else expected)
+            self.assertEqual(environment,prescribed,name)
+        self.assertEqual(report['fixture_attempts'],1)
+
+    def test_main_seals_cached_setting_failure_before_import_or_game_launch(self):
+        status,calls,report=self.run_main_model(cached=True);self.assertEqual(status,1)
+        self.assertNotIn('import',[name for name,_ in calls]);self.assertNotIn(campaign.FIXTURE,[name for name,_ in calls])
+        self.assertEqual(report['fixture_attempts'],0)
+        self.assertEqual(report['import_environment']['original_java_home'],[{'name':'JAVA_HOME','value':r'C:\jdk'}])
+        self.assertFalse(report['import_environment']['guard_paths'][0]['absent'])
+        self.assertEqual(report['import_environment'],json.loads((self.root/'campaign/import-environment.json').read_text()))
 
 
 if __name__ == '__main__':

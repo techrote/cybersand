@@ -10,14 +10,15 @@ related-documents: [../operations/local-build-and-validation.md, ../operations/g
 
 # Windows exception capture — 2026-10-31
 
-The [v6 dump-reader correction](#bounded-dbghelp-output-reader--v6)
-follows the retained v5 LLVM attempts. The
-[source-pin correction](#llvm-source-pin-correction--toolchain-identity-v2)
-verified the complete official compiler bytes; the next hosted run compiled
-both diagnostic tools and exposed a minidump format interpretation error.
-It preserves the original production/fixture source and every prior failure.
-Local portable controls are complete; resulting-source Windows execution is
-still required. No successful new engine execution or crash repair is asserted.
+The [v7 import-environment correction](#scoped-editor-import-environment--v7)
+follows a hosted v6 attempt that passed all debugger controls, then refused
+unregistered Java signing-tool children during editor import. The
+[v6 dump-reader correction](#bounded-dbghelp-output-reader--v6) and
+[LLVM source-pin correction](#llvm-source-pin-correction--toolchain-identity-v2)
+remain separately versioned. Original production/fixture source and every
+prior failure are preserved. The v7 source requires its own first hosted
+execution. The original game fixture has not yet been reached by this
+diagnostic, and no crash repair is asserted.
 
 ## Original blocking result and narrow purpose
 
@@ -883,3 +884,110 @@ hits and MRR 0.7536, without implying answer correctness. Protected production
 scopes still match the original failed source byte for byte; local runtime
 libraries remain unmaterialized pointers, so no new Windows execution is
 claimed by these portable checks.
+
+## Scoped editor-import environment — v7
+
+[Run41242988776, attempt1](https://github.com/techrote/cybersand/actions/runs/41242988776),
+job124660539105, remains a failed v6 campaign at source
+`1fdebd99b7ce6dbff16c4fa64a268ebded0b909b`, tree
+`a4991c42b132a38200d9e431d0cdc6d2c2cdcca3`.
+Artifact13057774865 is 7,106,479 bytes with SHA-256
+`5e6caf2dd5c331a910d13d9cb4bf75fe5d0409100fedb0107e5ec0edd96b22b5`.
+All 137 ZIP members pass CRC checks. Independent readback using its 15
+source-matched Python readers verifies 129 sealed entries, 795 canonical
+inputs, runtime provenance, all five build-ownership controls, both LLVM
+version probes and all four compile/link operations. All six debugger
+controls satisfy their intended contracts: normal completion, handled
+first-chance fault, unhandled fault, child fault, hang and dump-writer timeout.
+The control failures remain required negative observations, not game passes.
+
+Import's raw capture completed naturally with effective exit zero after
+154,437 ms, and all four observed processes exited. Its pinned console
+launcher was PID5248 and engine PID2084. At 4,500 ms the debugger also observed
+PID2976 at
+`C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64\bin\keytool.exe`
+and PID5792 at `C:\Windows\System32\conhost.exe`. Their load hashes were
+explicitly not requested. The strict reader correctly refused
+`Unexpected debuggee executable`; the campaign never reached the original
+fixture and retains `fixture_attempts=0`. All 130 retained campaign files
+remain hash-identical before and after the independent forensic readback.
+The original full campaign still fails as incomplete.
+
+The pinned engine's primary source explains a specific editor-startup path.
+Godot 4.7's Android
+[export registration](https://github.com/godotengine/godot/blob/4.7-stable/platform/android/export/export.cpp)
+defaults `export/android/java_sdk_path` from `JAVA_HOME`.
+[Export initialization](https://github.com/godotengine/godot/blob/4.7-stable/platform/android/export/export_plugin.cpp)
+calls `_create_editor_debug_keystore_if_needed()`, obtains
+`java_sdk_path/bin/keytool.exe`, and returns before spawning a process if
+that file is absent. With a usable Java SDK and no debug keystore, it invokes
+keytool to create the editor's Android signing key. This is a source-supported
+explanation of the observed child path; the old campaign did not retain its
+JAVA_HOME value, editor-settings files or keytool command line, so those are
+not retroactively claimed as measured inputs.
+
+An empty Java setting resolves to relative `bin/keytool.exe`; clearing
+JAVA_HOME alone is therefore insufficient evidence. Godot's
+[command-line parser](https://github.com/godotengine/godot/blob/4.7-stable/main/main.cpp)
+sets the working directory to the `--path` project, and
+[Windows file access](https://github.com/godotengine/godot/blob/4.7-stable/drivers/windows/file_access_windows.cpp)
+resolves relative paths against that working directory.
+[Editor settings](https://github.com/godotengine/godot/blob/4.7-stable/editor/settings/editor_settings.cpp)
+can also load an existing explicit SDK setting from versions 4.7, 4.6, 4.5,
+4.4, 4.3 or the older `editor_settings-4.tres` fallback.
+[Editor paths](https://github.com/godotengine/godot/blob/4.7-stable/editor/file_system/editor_paths.cpp)
+use a self-contained configuration if `_sc_` or `._sc_` exists beside the
+engine; otherwise the
+[Windows configuration path](https://github.com/godotengine/godot/blob/4.7-stable/platform/windows/os_windows.cpp)
+is `APPDATA/Godot`. The protected original project contains no Android Java
+SDK editor-setting override.
+
+Campaign v7 declares `play-windows-editor-import-environment-v1`. It copies
+the already-sanitized launch environment and removes only case variants of
+JAVA_HOME for editor import. PATH, APPDATA, ANDROID_HOME and every other
+remaining variable retain their original values. The six possible settings
+files, both self-contained markers and project-relative `bin/keytool.exe`
+must all be absent. Existing files, directories, dangling links, ambiguous
+or missing APPDATA, relative APPDATA and access errors stop the attempt.
+The same absence checks run again immediately before the import launch.
+No settings file or keystore is created, deleted or rewritten by the harness.
+
+The sealed import-custody file records the original JAVA_HOME path, the
+APPDATA path required to interpret the checks, their exact guarded paths,
+and digests of the original and copied environment mappings. Other
+environment values are not dumped. The record is written before its
+preconditions are accepted, preserving an observed cached-settings failure.
+Each actual debugger process receipt binds the digest of its launch mapping;
+only import additionally binds the custody-file digest. Offline reduction
+requires the exact source-declared policy and path inventory, original
+control/game mapping, and prescribed dump-timeout-control exception. A
+receipt cannot add removals, omit an absence guard, retain a recorded
+present/unknown path, transfer import custody to a control/game process, or
+relabel a historical v6 campaign as v7. Offline reduction checks the sealed
+observations and source-matched launch logic; it does not independently
+re-observe the former host filesystem. Unexpected keytool/conhost children still fail
+the unchanged executable binding; they receive no allowed-image entry.
+
+This four-file successor changes the campaign runner, its two existing
+portable test files and this audit. It preserves the pinned engine, original
+C++ debugger and injected controls, workflow, command arguments, watchdogs,
+strict process ownership, production/fixture source and every previous raw
+attempt. Fresh source-matched Windows execution remains required through
+all gates and the single original fixture. The original source
+`aa74448bad7ec77e5f152d9179a417ce76430009` / run41175131563
+post-footer `0xC0000005` remains unexplained and blocking.
+
+Local validation uses parent `1fdebd99b7ce6dbff16c4fa64a268ebded0b909b`
+plus the four-file delta on `codex/play-windows-import-environment-20261031`.
+The portable controls exercise every cached-setting/relative-keytool guard,
+original environment preservation through the real campaign argument flow,
+late prelaunch changes, sealed refusal before import/game launch, receipt
+substitution and unchanged unexpected-child refusal. Windows execution is
+not inferred from these synthetic launch and offline custody controls.
+All 42 ownership/environment and 78 crash/artifact tests pass normally and
+with Python assertions disabled. Documentation, repository identity,
+historical M11, provider and whitespace checks pass. Retrieval remains
+32/32 canonical top-five hits, 19 top-one hits and MRR 0.7536, with answer
+sufficiency separate. Protected production scopes still match the original
+failed source byte for byte; local runtime libraries remain unmaterialized
+pointers.

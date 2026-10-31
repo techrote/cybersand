@@ -278,6 +278,16 @@ class CaptureTests(unittest.TestCase):
         next(e for e in self.events if e['type']=='process' and not e['root'])['image']='C:\\other.exe'
         with self.assertRaisesRegex(ValueError,'identity receipt mismatch'):self.bind()
 
+    def test_android_keytool_and_console_host_are_still_unregistered_children(self):
+        for image in (r'C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64\bin\keytool.exe',
+                      r'C:\Windows\System32\conhost.exe'):
+            self.bound_fixture('normal')
+            self.events.insert(-2,{'type':'process','pid':22,'tid':23,'root':False,
+                                   'image':image,'base':0x160000000,'load_hash':None})
+            self.identities[image]={'hash_status':'not_requested'}
+            with self.subTest(image=image),self.assertRaisesRegex(ValueError,'Unexpected debuggee executable'):
+                self.bind()
+
     def test_both_runtime_modules_required_on_actual_engine_owner(self):
         self.bound_fixture('normal');self.images['C:\\synthetic-control.exe']['requires_runtime']=True
         for index,name in enumerate(('native','rapier')):
@@ -438,7 +448,7 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'inventory mismatch'):campaign.verify_manifest(self.root)
 
     def test_incomplete_campaign_is_not_an_offline_pass(self):
-        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v6','completed':False})
+        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v7','completed':False})
         campaign.write(self.root/'MANIFEST.json',{path.name:{'sha256':contract.sha(path),'bytes':path.stat().st_size}
             for path in self.root.iterdir() if path.name!='MANIFEST.json'})
         with self.assertRaisesRegex(ValueError,'campaign is incomplete'):campaign.verify_directory(self.root,'a'*40)
@@ -455,7 +465,7 @@ class OfflineCompositionTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
         self.head='a'*40;self.canonical={}
-        report=self.report={'schema':'play-windows-crash-campaign-v6','completed':True,'errors':[],'fixture_attempts':1,
+        report=self.report={'schema':'play-windows-crash-campaign-v7','completed':True,'errors':[],'fixture_attempts':1,
             'watchdog_policy':campaign.policy.POLICY,
             'dump_format':copy.deepcopy(campaign.DUMP_FORMAT),
             'original_failed_run':41175131563,'original_failed_source':campaign.BASE,'original_failure_still_blocking':True,
@@ -468,6 +478,12 @@ class OfflineCompositionTests(unittest.TestCase):
             'status':'no_process_failure_observed',
             'engine':{'version':campaign.windows.GODOT_VERSION,'archive_sha512':campaign.windows.GODOT_SHA512,
                       'archive_bytes':campaign.ENGINE_ARCHIVE_BYTES,'executables':campaign.ENGINE_FILES}}
+        self.environment={'APPDATA':r'C:\profile','JAVA_HOME':r'C:\jdk','PATH':'unchanged path'}
+        report['environment_sha256']=campaign.environment_sha256(self.environment)
+        report['dump_timeout_environment_sha256']=campaign.environment_sha256(self.environment|{'CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL':'1'})
+        with mock.patch.object(campaign,'path_is_absent',return_value=True):
+            self.import_environment,report['import_environment']=campaign.copied_import_environment(self.environment,report['paths'])
+        campaign.write(self.root/'import-environment.json',report['import_environment'])
         (self.root/'tools').mkdir();(self.root/'version.log').write_text(campaign.windows.GODOT_VERSION+'\n')
         python={'path':'C:\\python.exe','sha256':'4'*64,'bytes':4321}
         report['build_ownership_controls']={'python':python,'results':{}}
@@ -549,6 +565,9 @@ class OfflineCompositionTests(unittest.TestCase):
         events[0]['command_line']=' '.join(contract.windows_quote(arg) for arg in receipt['debuggee_command'])
         receipt['broker_command']=[self.report['tools']['broker']['path'],'--output','C:\\evidence\\'+name,
                                    '--timeout-ms',str(limit),'--',*receipt['debuggee_command']]
+        receipt['environment_sha256']=(self.report['import_environment']['effective_environment_sha256'] if name=='import' else
+            self.report['dump_timeout_environment_sha256'] if mode=='dump-writer-timeout' else self.report['environment_sha256'])
+        if name=='import':receipt['environment_custody_sha256']=contract.sha(self.root/'import-environment.json')
         identities={path:{'sha256':identity['sha256'],'bytes':identity['bytes']} for path,identity in (images|runtimes).items()}
         for event in events:
             path=event.get('image') if event['type']=='process' else event.get('path') if event['type']=='module' else None
@@ -657,6 +676,39 @@ class OfflineCompositionTests(unittest.TestCase):
         self.report['schema']='play-windows-crash-campaign-v5';campaign.seal(self.root,self.report)
         with self.assertRaisesRegex(ValueError,'campaign is incomplete'):
             campaign.verify_directory(self.root,self.head)
+
+    def test_historical_v6_campaign_is_not_relabelled_as_import_environment_evidence(self):
+        self.report['schema']='play-windows-crash-campaign-v6';campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'campaign is incomplete'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_import_policy_or_cached_settings_cannot_override_source(self):
+        original=copy.deepcopy(self.report['import_environment'])
+        variants=[copy.deepcopy(original) for _ in range(3)]
+        variants[0]['policy']['removed_names'].append('PATH')
+        variants[1]['guard_paths'].pop()
+        variants[2]['guard_paths'][0]['absent']=False
+        for changed in variants:
+            self.report['import_environment']=changed;campaign.write(self.root/'import-environment.json',changed)
+            campaign.seal(self.root,self.report)
+            with self.assertRaisesRegex(ValueError,'policy differs|not absent'):
+                campaign.verify_directory(self.root,self.head)
+
+    def test_resealed_import_custody_must_match_actual_process_receipt(self):
+        self.report['import_environment']['original_java_home'][0]['value']=r'C:\other-jdk'
+        campaign.write(self.root/'import-environment.json',self.report['import_environment']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'custody attached to wrong process'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_import_environment_cannot_leak_to_control_or_original_fixture(self):
+        for name in ('control-normal',campaign.FIXTURE):
+            path=self.root/name/'process.json';original=contract.read_json(path)
+            for changed in (original|{'environment_sha256':self.report['import_environment']['effective_environment_sha256']},
+                            original|{'environment_custody_sha256':contract.sha(self.root/'import-environment.json')}):
+                campaign.write(path,changed);campaign.seal(self.root,self.report)
+                with self.subTest(name=name),self.assertRaisesRegex(ValueError,'environment differs|custody attached to wrong process'):
+                    campaign.verify_directory(self.root,self.head)
+            campaign.write(path,original)
 
     def test_receipt_cannot_expand_source_declared_dump_format(self):
         self.report['dump_format']['allowed_output_flags'].append(0x1002)

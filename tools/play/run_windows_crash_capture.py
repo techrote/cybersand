@@ -58,6 +58,75 @@ TOOLCHAIN={
 }
 BUILD_OVERRIDE_NAMES=frozenset(('CL','_CL_','LINK','_LINK_','CCC_OVERRIDE_OPTIONS','CCC_ADD_ARGS',
                               'CLANG_CONFIG_FILE_SYSTEM_DIR','CLANG_CONFIG_FILE_USER_DIR'))
+IMPORT_ENVIRONMENT_POLICY={
+    'schema':'play-windows-editor-import-environment-v1',
+    'scope':'editor-import-only',
+    'removed_names':['JAVA_HOME'],
+    'settings_files':['editor_settings-4.7.tres','editor_settings-4.6.tres','editor_settings-4.5.tres',
+                      'editor_settings-4.4.tres','editor_settings-4.3.tres','editor_settings-4.tres'],
+    'self_contained_markers':['._sc_','_sc_'],
+    'relative_keytool':'godot/bin/keytool.exe',
+    'precondition':'Every prescribed settings, marker and relative-keytool path must be absent.',
+}
+
+def environment_sha256(environment: dict[str,str]) -> str:
+    """Bind the exact launch mapping without retaining unrelated environment values."""
+    return hashlib.sha256(json.dumps(environment,sort_keys=True,ensure_ascii=True,separators=(',',':')).encode()).hexdigest()
+
+def import_absence_paths(paths: dict, appdata: str) -> list[str]:
+    # The pinned Windows editor uses APPDATA/Godot unless a self-contained marker
+    # exists. --path changes cwd to the project before Android export initializes.
+    require(isinstance(appdata,str) and re.match(r'^[A-Za-z]:[\\/]',appdata) is not None
+            and '\0' not in appdata,'Import requires an absolute local APPDATA path')
+    return [*(ntpath.join(appdata,'Godot',name) for name in IMPORT_ENVIRONMENT_POLICY['settings_files']),
+            *(ntpath.join(paths['output'],'engine',name) for name in IMPORT_ENVIRONMENT_POLICY['self_contained_markers']),
+            ntpath.join(paths['source'],IMPORT_ENVIRONMENT_POLICY['relative_keytool'].replace('/','\\'))]
+
+def path_is_absent(path: str) -> bool:
+    # lstat also refuses a dangling link or a directory at a guarded file path.
+    # Access errors propagate; an unreadable path is not evidence of absence.
+    try:Path(path).lstat()
+    except FileNotFoundError:return True
+    return False
+
+def copied_import_environment(environment: dict[str,str], paths: dict) -> tuple[dict[str,str],dict]:
+    """Suppress unrelated Android debug-keystore bootstrap only for editor import."""
+    names=sorted(name for name in environment if name.upper()=='JAVA_HOME')
+    appdata_names=[name for name in environment if name.upper()=='APPDATA']
+    require(len(appdata_names)==1,'Import requires one unambiguous APPDATA variable')
+    appdata={'name':appdata_names[0],'value':environment[appdata_names[0]]}
+    child={name:value for name,value in environment.items() if name not in names}
+    receipt={'policy':IMPORT_ENVIRONMENT_POLICY,
+             'original_java_home':[{'name':name,'value':environment[name]} for name in names],
+             'appdata':appdata,'parent_environment_sha256':environment_sha256(environment),
+             'effective_environment_sha256':environment_sha256(child),
+             'java_home_absent':not any(name.upper()=='JAVA_HOME' for name in child),
+             'guard_paths':[{'path':path,'absent':path_is_absent(path)}
+                            for path in import_absence_paths(paths,appdata['value'])]}
+    return child,receipt
+
+def verify_import_environment(receipt: dict, paths: dict, parent_sha256: str) -> None:
+    require(isinstance(receipt,dict) and set(receipt)=={'policy','original_java_home','appdata',
+            'parent_environment_sha256','effective_environment_sha256','java_home_absent','guard_paths'},
+            'Import environment custody inventory differs')
+    require(receipt['policy']==IMPORT_ENVIRONMENT_POLICY,'Import environment policy differs from source')
+    original=receipt['original_java_home']
+    require(isinstance(original,list) and all(isinstance(row,dict) and set(row)=={'name','value'}
+            and isinstance(row['name'],str) and row['name'].upper()=='JAVA_HOME'
+            and isinstance(row['value'],str) and len(row['value'])<=32767 and '\0' not in row['value'] for row in original),
+            'Original JAVA_HOME custody differs')
+    names=[row['name'] for row in original]
+    require(names==sorted(set(names)),'Original JAVA_HOME inventory is duplicated or unordered')
+    appdata=receipt['appdata']
+    require(isinstance(appdata,dict) and set(appdata)=={'name','value'} and isinstance(appdata['name'],str)
+            and appdata['name'].upper()=='APPDATA','Import APPDATA custody differs')
+    require(all(isinstance(value,str) and re.fullmatch(r'[0-9a-f]{64}',value) is not None
+                for value in (parent_sha256,receipt['parent_environment_sha256'],receipt['effective_environment_sha256']))
+            and receipt['parent_environment_sha256']==parent_sha256,'Import parent environment differs')
+    require(receipt['java_home_absent'] is True,'Import JAVA_HOME was not removed')
+    expected=[{'path':path,'absent':True} for path in import_absence_paths(paths,appdata['value'])]
+    require(receipt['guard_paths']==expected and all(row['absent'] is True for row in receipt['guard_paths']),
+            'Cached editor settings, self-contained mode or relative keytool is not absent')
 
 def build_environment(environment: dict[str,str]) -> tuple[dict[str,str],list[str]]:
     """Keep SDK discovery inputs; prevent ambient flags/config from changing commands."""
@@ -260,9 +329,21 @@ def source_unchanged(source: dict) -> None:
         require(hashlib.sha256(data).hexdigest()==record['working_sha256'],'Executed input changed: '+path)
 
 def execute(broker: Path, command: list[str], output: Path, timeout_ms: int, environment: dict,
-            images: dict, runtimes: dict, *, dump_timeout_control=False) -> dict:
+            images: dict, runtimes: dict, *, dump_timeout_control=False, environment_custody: Path|None=None) -> dict:
     output.mkdir(exist_ok=False)
     broker_command=[str(broker),'--output',str(output),'--timeout-ms',str(timeout_ms),'--',*command]
+    launch_environment_sha256=environment_sha256(environment)
+    custody_sha256=None
+    if environment_custody is not None:
+        require(output.name=='import' and environment_custody==output.parent/'import-environment.json',
+                'Import environment custody is bound to the import launch only')
+        custody=read_json(environment_custody)
+        verify_import_environment(custody,{'source':str(ROOT),'output':str(output.parent)},custody['parent_environment_sha256'])
+        require(launch_environment_sha256==custody['effective_environment_sha256']
+                and not any(name.upper()=='JAVA_HOME' for name in environment),'Actual import environment differs from custody')
+        require(all(path_is_absent(row['path']) for row in custody['guard_paths']),
+                'Import settings or relative keytool appeared before launch')
+        custody_sha256=sha(environment_custody)
     started=time.perf_counter(); outer_timeout=False
     with (output/'broker.log').open('wb') as log:
         process=subprocess.Popen(broker_command,cwd=ROOT,env=environment,stdout=log,stderr=subprocess.STDOUT,
@@ -274,7 +355,8 @@ def execute(broker: Path, command: list[str], output: Path, timeout_ms: int, env
             process.kill();process.wait(timeout=policy.CLEANUP_SECONDS)
     receipt={'broker_command':broker_command,'debuggee_command':command,'broker_pid':process.pid,
              'returncode':process.returncode,'timeout_ms':timeout_ms,'outer_timeout':outer_timeout,
-             'wall_seconds':time.perf_counter()-started}
+             'wall_seconds':time.perf_counter()-started,'environment_sha256':launch_environment_sha256}
+    if custody_sha256 is not None:receipt['environment_custody_sha256']=custody_sha256
     write(output/'process.json',receipt)
     events=read_events(output/'events.jsonl')
     identities=read_load_identities(output,events)
@@ -511,12 +593,17 @@ def verify_directory(output: Path, expected: str) -> dict:
     """Read original artifacts offline, preserving failure as failure."""
     verify_manifest(output)
     report=read_json(output/'campaign.json')
-    require(report['schema']=='play-windows-crash-campaign-v6' and report['completed'] is True
+    require(report['schema']=='play-windows-crash-campaign-v7' and report['completed'] is True
             and report['errors']==[] and report['fixture_attempts']==1,'Diagnostic campaign is incomplete')
     require(report['original_failed_run']==41175131563 and report['original_failed_source']==BASE
             and report['original_failure_still_blocking'] is True,'Original failure provenance was rewritten')
     require(report['watchdog_policy']==policy.POLICY,'Diagnostic watchdog policy differs from source')
     require(report.get('dump_format')==DUMP_FORMAT,'Diagnostic dump format differs from source')
+    require(all(isinstance(report.get(key),str) and re.fullmatch(r'[0-9a-f]{64}',report[key]) is not None
+                for key in ('environment_sha256','dump_timeout_environment_sha256')),'Original launch environment identity missing')
+    custody=read_json(output/'import-environment.json')
+    require(custody==report.get('import_environment'),'Original import environment custody differs')
+    verify_import_environment(custody,report['paths'],report['environment_sha256'])
     canonical=verify_source_pack(output,report['source'],expected)
     runtime_proof(report['source'],canonical,report['runtime'])
     controls=report['build_ownership_controls']
@@ -537,6 +624,11 @@ def verify_directory(output: Path, expected: str) -> dict:
     for name in (*('control-'+mode for mode in CONTROL_MODES),'control-dump-writer-timeout','import',FIXTURE):
         directory=output/name;receipt=read_json(directory/'process.json');events=read_events(directory/'events.jsonl')
         control=name.startswith('control-');mode=name.removeprefix('control-')
+        expected_environment=(custody['effective_environment_sha256'] if name=='import' else
+                              report['dump_timeout_environment_sha256'] if mode=='dump-writer-timeout' else report['environment_sha256'])
+        require(receipt.get('environment_sha256')==expected_environment,'Actual process environment differs from prescribed scope')
+        require(receipt.get('environment_custody_sha256')==sha(output/'import-environment.json') if name=='import' else
+                'environment_custody_sha256' not in receipt,'Import environment custody attached to wrong process')
         limit=policy.case_limit_ms(name,FIXTURE)
         command=([report['tools']['control']['path'],'crash' if mode=='dump-writer-timeout' else mode] if control else
                  [ntpath.join(report['paths']['output'],'engine','Godot_v4.7-stable_win64_console.exe'),
@@ -595,7 +687,7 @@ def main() -> int:
     require(os.environ.get('GITHUB_RUN_ATTEMPT','1')=='1','Automatic reruns are not authorized by this one-attempt diagnostic')
     output=args.output.resolve(); require(not output.exists(),'Retain earlier evidence; output already exists')
     output.mkdir(parents=True)
-    report={'schema':'play-windows-crash-campaign-v6','status':'incomplete','completed':False,'errors':[],
+    report={'schema':'play-windows-crash-campaign-v7','status':'incomplete','completed':False,'errors':[],
             'watchdog_policy':policy.POLICY,
             'dump_format':DUMP_FORMAT,
             'original_failed_run':41175131563,'original_failed_source':BASE,'original_failure_still_blocking':True,
@@ -607,6 +699,9 @@ def main() -> int:
     environment.pop('CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL',None)
     report['removed_environment_names']=removed
     environment['CYBERSAND_SOURCE_REVISION']=args.expected_source_sha
+    report['environment_sha256']=environment_sha256(environment)
+    dump_timeout_environment=environment|{'CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL':'1'}
+    report['dump_timeout_environment_sha256']=environment_sha256(dump_timeout_environment)
     try:
         report['source']=source_archive(output,args.expected_source_sha)
         report['runtime']=windows.verify_retained_runtime(ROOT)
@@ -620,10 +715,15 @@ def main() -> int:
             verify_control(mode,result);report['controls'][mode]=result
             write(output/'campaign.json',report)
         report['controls']['dump-writer-timeout']=execute(broker,[str(control),'crash'],output/'control-dump-writer-timeout',
-            policy.DUMP_TIMEOUT_CONTROL_MS,environment|{'CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL':'1'},*bindings(report,controls=True),dump_timeout_control=True)
+            policy.DUMP_TIMEOUT_CONTROL_MS,dump_timeout_environment,*bindings(report,controls=True),dump_timeout_control=True)
         binary,report['engine']=engine(args.godot_archive.resolve(),output,environment)
+        import_environment,report['import_environment']=copied_import_environment(environment,report['paths'])
+        write(output/'import-environment.json',report['import_environment'])
+        write(output/'campaign.json',report)
+        verify_import_environment(report['import_environment'],report['paths'],report['environment_sha256'])
         imported=execute(broker,[str(binary),'--headless','--path',str(ROOT/'godot'),'--editor','--quit'],
-                         output/'import',policy.IMPORT_MS,environment,*bindings(report))
+                         output/'import',policy.IMPORT_MS,import_environment,*bindings(report),
+                         environment_custody=output/'import-environment.json')
         report['import']=imported
         require(imported['effective_exit']==0 and not imported['timed_out'],'Import did not finish under its execution watchdog')
         require(not re.search(r'SCRIPT ERROR:|ERROR:|\bskipped\b|^\s*SKIP\b',(output/'import/engine.log').read_text(errors='replace'),re.M|re.I),
