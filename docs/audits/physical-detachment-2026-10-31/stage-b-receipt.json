@@ -1,0 +1,49 @@
+{
+  "stage_a_commit": "838b2a9df6bde37a902b588f0984161b2a78a22f",
+  "stage_a_replay_correction": "5683acf8a4ab31007c9c1155ced1dfc0453321dc",
+  "input_sha256": "1ccfccde46ca23907854ba4ebe604fae0c038c1c8881475bc65182b410d3a1e8",
+  "analyzer_sha256": "8664d5a6ab7830b8bab19b96e2fe219ad5d59eec1a57903c4bec596d0f8ce2bc",
+  "tests_sha256": "3bd8d52e065a6be17f96cd14596c72adc8121c1fdc6ed7ef17ace8fe4dfa4158",
+  "report_sha256": "a84dc3e051446f9b0b2f38f4d0c23cd04e421797c0644b12225bde7d855b4953",
+  "command": "python tools/experiments/test_ejection_topology.py; python tools/experiments/ejection_topology.py --input <frozen-stage-a-corpus> --output <stage-b-report>",
+  "timeout_seconds": 60,
+  "windows": "Python3.13,10tests passed,80trace differential and nonmutation passed",
+  "linux": "WSL Ubuntu24.04 Python3,10tests passed,80trace differential and nonmutation passed",
+  "linux_windows_report_semantically_equal": false,
+  "independent_reduction": "Separate scratch implementation agrees64/64 cost,sector,void counts",
+  "first_failure": "Synthetic45degree sector calculation produced45.00000000000001; diagnostic sector boundary uses1e-10degree tolerance; graph and production decisions unchanged",
+  "unresolved": {
+    "contacts": 64,
+    "contacts_with_enumerated_empty_void": 0,
+    "disconnecting_barrier_classes": {},
+    "forward_or_lateral_cost_1_or_2": 1,
+    "lowest_route_sector": {
+      "forward": 0,
+      "lateral": 15,
+      "rear": 2,
+      "unreachable": 47
+    },
+    "minimum_cost": {
+      "0": 2,
+      "1": 1,
+      "2": 0,
+      "3": 6,
+      "4+": 8,
+      "unreachable": 47
+    },
+    "no_void_interior_or_ring": 25,
+    "nonnegative_dot_cost_1_or_2": 1,
+    "outer_ring_reachable_only": 21,
+    "overlap_faces": {
+      "positive_x": 31,
+      "positive_y": 33
+    },
+    "permissive_movable_routes": 17,
+    "refusals": {
+      "no_interior_void": 47,
+      "none": 17
+    },
+    "ring_void_exists_without_interior_void": 22,
+    "strict_empty_routes": 0
+  }
+}

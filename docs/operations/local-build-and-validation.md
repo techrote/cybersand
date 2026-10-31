@@ -1798,3 +1798,9 @@ frozen corpus without Rapier stepping. The script has a 120-second internal
 watchdog. Record the native DLL, engine, Rapier and source hashes; a retained
 DLL without diagnostic methods cannot execute this apparatus. See the
 [dated stage receipts](../audits/2026-10-31-physical-detachment-abc.md).
+
+For read-only topology diagnosis of the frozen contact corpus:
+`python tools/experiments/test_ejection_topology.py` then
+`python tools/experiments/ejection_topology.py --input docs/audits/physical-detachment-2026-10-31/stage-a-corpus.json --output <local-stage-b.json>`.
+The report checks every Python float32 production trace against the capsule and
+separates the current local envelope from its diagnostic one-cell ring.

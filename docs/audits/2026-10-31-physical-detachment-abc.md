@@ -232,7 +232,60 @@ repairs are outside this bounded physical investigation.
 | [Index](../README.md), [retrieval routes](../reference/retrieval-index.md) and manifest/questions | Register this evidence and affected question routes without creating duplicate canonical ownership |
 | User controls and rendering | No ordinary controls, render publication, solver laws or pacing behavior changed |
 
-Stages B and C have no results at this Stage-A drafting checkpoint. Their reports
-must consume the committed Stage-A corpus without altering production
-displacement semantics, preserve refused/negative cases, and distinguish graph
-reachability from admissible matter movement.
+## Stage B — frozen topology and normal diagnosis
+
+Stage B consumes the immutable Stage-A corpus from `838b2a9d`; file-only replay
+was corrected and qualified at `5683acf8`. The graph interior is the AABB of the
+source and all81 production endpoint cells, excluding the one-cell captured
+outer ring. This deliberately declared geometric overapproximation includes
+cells the directional enumeration cannot inspect. Every void records whether
+it is actually enumerated, its vector/distances/dot/angle and reachability.
+Four-connected costs exclude the source and charge one per intervening movable
+cell. Own-body occupancy is traversable only in the permissive diagnostic graph;
+this cannot establish an admissible matter move. Strict routes require empty,
+unmasked cells after the source. Hard, foreign and immovable cells are barriers.
+
+| Minimum intermediate movable cells | Unresolved contacts |
+|---|---:|
+| 0 | 2 |
+| 1 | 1 |
+| 2 | 0 |
+| 3 | 6 |
+| 4+ | 8 |
+| Unreachable | 47 |
+
+All64 failures lack a strict route. Seventeen have a permissive route to an
+interior void:15 lowest-cost voids are lateral (45–135 degrees), two are rear;
+none are forward (at most45 degrees). Only1/64 has a forward/lateral route of
+cost1 or2; that case also has nonnegative dot. Zero failures have an unmasked
+empty endpoint in the actual81-probe enumeration. All47 unreachable cases lack
+any interior void; none is a case of an existing interior void separated by
+hard/foreign/immovable material. Of those47,22 have a void in the diagnostic
+ring,21 can reach a ring void permissively, and25 lack even a ring void. These
+bounds diagnose local saturation/edge truncation, not global jamming or a
+justification to widen the runtime search.
+
+All64 failures use overlap-face normals (31 positive-x,33 positive-y).
+Independent reduction finds positive agreement with translation (cosine
+0.629–0.779, median0.765) and radial direction (0.0649–0.99998, median0.931).
+The selected interior voids are lateral or rear, but there is no general reversed
+normal defect. A normal correction could redirect enumeration only for a subset;
+it cannot manufacture missing local void volume. Exact per-capsule graph, void
+and normal results are in the
+[Stage-B machine report](physical-detachment-2026-10-31/stage-b-topology.json).
+Two separately written reductions agree on every failed capsule's minimum cost,
+selected sector and interior void count. The analyzer also differentially
+reproduces all80 production traces with explicit Godot float32 operations.
+
+The dominant bounded missing resource in this fixture is **local free volume**;
+there is a small lateral rearrangement subset. Broad compaction or global jamming
+is not established by this finite envelope. Stage C must test legal copied-state
+chains separately, particularly own-body masks and displacement direction.
+
+Stage-B qualification: ten focused graph/geometry/barrier/nonmutation tests pass
+on Windows Python3.13 and Linux/WSL Python3; both complete machine reports are
+semantically equal. A first synthetic45-degree sector boundary failed because
+acos rounded to45.00000000000001 degrees; a1e-10-degree diagnostic sector
+tolerance corrects that classification without altering search or graph costs.
+The [Stage-B receipt](physical-detachment-2026-10-31/stage-b-receipt.json) retains
+commands, hashes and this failure. Stage C has not begun at this checkpoint.
