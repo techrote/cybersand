@@ -115,9 +115,14 @@ def reduce_trace(data):
         "pending_high_water": data["pending_high_water"], "generations": sorted(seen_generations), **durations}
 
 def source_identity(engine, runtime_manifest=None):
-    provenance_path = runtime_manifest or ROOT / ("godot/addons/cybersand_native/runtime-provenance.json" if platform.system() == "Windows"
+    canonical_path = ROOT / ("godot/addons/cybersand_native/runtime-provenance.json" if platform.system() == "Windows"
         else "godot/addons/cybersand_native/runtime-provenance.linux.json")
+    canonical = json.loads(canonical_path.read_text())
+    provenance_path = runtime_manifest or canonical_path
     provenance = json.loads(provenance_path.read_text())
+    selected_artifact="godot/addons/cybersand_native/bin/" + ("cybersand_native.windows.x86_64.dll" if platform.system()=="Windows" else "libcybersand_native.linux.x86_64.so")
+    if provenance["artifact"]!=selected_artifact or set(provenance["source_inputs"])!=set(canonical["source_inputs"]):
+        raise ValueError("runtime manifest does not cover the selected platform library and complete native source roster")
     native = {}
     for path, expected in provenance["source_inputs"].items():
         actual = hashlib.sha256((ROOT/path).read_bytes().replace(b"\r\n", b"\n")).hexdigest()

@@ -97,6 +97,21 @@ func _test_rectangle_budget() -> void:
 	_expect(worker._pending_render_patch_rectangles.size() == 257 * 6, "rectangle preflight allowed transient over-cap retention")
 
 func _test_invalid_state() -> void:
+	for field: String in ["channels", "full_refresh", "cells", "rectangles", "failed"]:
+		var invalid_type = _synthetic()
+		var coerced: Dictionary = _full(2)
+		match field:
+			"channels": coerced.channels = "2"
+			"full_refresh": coerced.full_refresh = 1
+			"cells": coerced.cells = []
+			"rectangles": coerced.rectangles = [0, 0, 1024, 1024, 0, 2048]
+			"failed": coerced.failed = ""
+		invalid_type._append_native_render_packet(coerced)
+		_expect(not invalid_type._e_has_qualified_baseline() and invalid_type._pending_render_exceeds_budget(), "coerced full identity received exemption: " + field)
+	for full_flag: bool in [true, false]:
+		var empty_invalid = _synthetic()
+		empty_invalid._append_native_render_packet(_packet(2, 2, full_flag, PackedInt32Array(), 0))
+		_expect(not empty_invalid._e_has_qualified_baseline() and empty_invalid._pending_render_exceeds_budget(), "empty Published/full envelope retained exemption")
 	for field: String in ["failed", "status", "serial"]:
 		var invalid = _synthetic()
 		var full_packet: Dictionary = _full(2)

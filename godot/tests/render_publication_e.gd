@@ -64,10 +64,17 @@ func _preflight_recovery(reason: String, bytes: int, rectangles: int,
 		"generation": _world_generation, "pending_serial": _pending_render_snapshot_serial})
 
 func _append_native_render_packet(packet: Dictionary) -> void:
+	# Validate types before GDScript's value constructors can coerce them.
+	if (typeof(packet.get("cells")) != TYPE_PACKED_BYTE_ARRAY
+		or typeof(packet.get("rectangles")) != TYPE_PACKED_INT32_ARRAY
+		or typeof(packet.get("channels")) != TYPE_INT
+		or typeof(packet.get("full_refresh")) != TYPE_BOOL
+		or (packet.has("failed") and typeof(packet.failed) != TYPE_BOOL)):
+		_revoke_e_baseline()
+		_preflight_recovery("invalid_field_type", _pending_render_patch_cells.size(), _pending_render_patch_rectangles.size() / 6)
+		return
 	var cells: PackedByteArray = packet.get("cells", PackedByteArray())
 	var rectangles: PackedInt32Array = packet.get("rectangles", PackedInt32Array())
-	if cells.is_empty() and rectangles.is_empty():
-		return
 	var channels: int = int(packet.get("channels", 0))
 	var full: bool = bool(packet.get("full_refresh", false))
 	# A forced full copy can accompany any known native publish outcome (even
@@ -79,6 +86,8 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 		_revoke_e_baseline()
 		_preflight_recovery("invalid_envelope", cells.size(), rectangles.size() / 6)
 		return
+	if not full and cells.is_empty() and rectangles.is_empty() and int(packet.status) in [0, 2]:
+		return # Ordinary NoChanges/backpressure carries no newly appended payload.
 	if full:
 		_revoke_e_baseline()
 		if (rectangles.size() != 6 or not _complete_full_metadata(rectangles, channels)
