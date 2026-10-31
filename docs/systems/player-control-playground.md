@@ -147,11 +147,25 @@ The panel's explicit Play / resume button uses the same cancellation path.
 Resume refuses failed native work, pending reconstruction/reset or unready terrain.
 Controls outside the composed course retain their previous behavior.
 
+Ordinary actor-picker and environment-tuning opening, GUI focus acquisition and
+window-focus-loss notification also revoke course authority immediately. The
+visible MicroScenario Pause / resume button calls the central pause setter as
+an explicit UI action, including while its Seed field retains text focus. The
+keyboard/gamepad toggle remains context-gated. Every successful transition still
+requires neutral controls before fresh physical input can rearm.
+
 The [INPUT010 audit](../audits/2026-10-31-play-input010-pause-transitions.md)
 records an actual failing-before callback-gap reproduction, all-five-rig
 automatic Main/native/Rapier regressions, original local environmental failures
 and required exact-head hosted results. Injected focus/device enumeration is
 explicitly synthetic; this is not physical-controller or OS-focus acceptance.
+The [INPUT011 audit](../audits/2026-10-31-play-input011-authority-transitions.md)
+preserves the rapid modal/focus failure and the separately reproduced focused
+button refusal. Its v2 five-rig cases include both explicit-button success and
+keyboard-toggle refusal with retained text focus, actual later neutral/fresh
+Rapier steps, and the matched stale-input negative. The ordinary parent runner
+requires source-bound raw-evidence readback before accepting each rig case;
+synthetic window notifications do not establish real OS-focus delivery.
 
 ## Live adversarial delivery qualification
 

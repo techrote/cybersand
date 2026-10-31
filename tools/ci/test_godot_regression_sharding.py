@@ -541,5 +541,275 @@ class Life010VerifierIdentityTests(unittest.TestCase):
             self.check_identity(b"altered verifier\n", b"original verifier\n")
 
 
+class Input011ReadbackTests(unittest.TestCase):
+    """Controlled parent receipts only; no Godot or gameplay qualification."""
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.output = self.root / "output"
+        self.output.mkdir()
+        self.contract = subject.INPUT011_READBACK
+        self.case = fake("test_play_input011_acrobat", 5)
+        self.source = "1" * 40
+        self.record = {"name": self.case.name, "status": "passed", "returncode": 0,
+                       "log": self.case.name + ".log", "seconds": 1.0, "timeout_seconds": 180}
+        self.raw = b'{"scope":"synthetic parent gate control only"}'
+        self.original_log = b"engine control\nPLAY_INPUT011_RESULT " + self.raw + b"\n"
+        (self.output / self.record["log"]).write_bytes(self.original_log)
+        paths = (self.contract.verifier, *self.contract.source_inputs)
+        self.source_bytes = {path.format(rig="acrobat"): (path + "\n").encode() for path in paths}
+        for name, data in self.source_bytes.items():
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        root_patch = mock.patch.object(subject, "ROOT", self.root)
+        root_patch.start()
+        self.addCleanup(root_patch.stop)
+        git_patch = mock.patch.object(subject.subprocess, "check_output", side_effect=self.canonical_source)
+        git_patch.start()
+        self.addCleanup(git_patch.stop)
+
+    def canonical_source(self, command, *, cwd, timeout):
+        self.assertEqual(command[:2], ["git", "show"])
+        self.assertEqual(cwd, self.root)
+        self.assertGreater(timeout, 0)
+        self.assertLessEqual(timeout, 5)
+        source, path = command[2].split(":", 1)
+        self.assertEqual(source, self.source)
+        return self.source_bytes[path]
+
+    def successful_verifier(self, command, **kwargs):
+        self.assertIn("--self-test", command)
+        self.assertEqual(command[command.index("--rig") + 1], "acrobat")
+        self.assertEqual(command[command.index("--source") + 1], self.source)
+        self.assertGreater(kwargs["timeout"], 0)
+        self.assertLessEqual(kwargs["timeout"], 15)
+        result = dict(self.contract.required_values, source_revision=self.source, rig="acrobat")
+        result.update(self.contract.minimum_values)
+        for field, count in self.contract.control_counts:
+            result[field] = [{"name": str(index), "rejected_for": "controlled"} for index in range(count)]
+        for field, argument in (("process_sha256", "--process-json"), ("log_sha256", "--log"),
+                                ("raw_result_sha256", "--result")):
+            result[field] = subject.sha256(Path(command[command.index(argument) + 1]))
+        result["verifier_sha256"] = subject.sha256(self.root / self.contract.verifier)
+        result["consumed_source_sha256"] = {
+            field: subject.hashlib.sha256(self.source_bytes[path]).hexdigest()
+            for field, path in self.contract.consumed_source_fields}
+        subject.write_json(Path(command[command.index("--output") + 1]), result)
+        return subject.subprocess.CompletedProcess(command, 0)
+
+    def verify(self, execute=None):
+        with mock.patch.object(subject.subprocess, "run", side_effect=execute or self.successful_verifier):
+            return subject.verify_case_evidence(self.case, self.record, self.output, self.source, self.contract)
+
+    def alter_evidence(self, change):
+        def altered(command, **kwargs):
+            result = self.successful_verifier(command, **kwargs)
+            path = Path(command[command.index("--output") + 1])
+            value = json.loads(path.read_text())
+            change(value)
+            subject.write_json(path, value)
+            return result
+        return self.verify(altered)
+
+    def test_exact_embedded_payload_and_original_receipt_are_retained(self):
+        result = self.verify()
+        self.assertEqual(result["status"], "passed")
+        self.assertEqual((self.output / result["raw_result"]).read_bytes(), self.raw)
+        self.assertEqual((self.output / self.record["log"]).read_bytes(), self.original_log)
+        self.assertEqual(json.loads((self.output / result["receipt"]).read_text()), self.record)
+        self.assertEqual(len(result["source_input_identity"]), 5)
+        self.assertEqual(subject.sha256(self.output / result["output"]), result["output_sha256"])
+        self.assertEqual(subject.sha256(self.output / result["verifier_log"]), result["verifier_log_sha256"])
+
+    def test_nonzero_verifier_cannot_promote_engine_success(self):
+        result = self.verify(lambda *args, **kwargs: subject.subprocess.CompletedProcess([], 1))
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["returncode"], 1)
+        self.assertEqual(self.record["returncode"], 0)
+
+    def test_timeout_cannot_promote_engine_success(self):
+        def timeout(*args, **kwargs):
+            raise subject.subprocess.TimeoutExpired([], 15)
+        result = self.verify(timeout)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("TimeoutExpired", result["error"])
+
+    def test_zero_exit_without_evidence_is_incomplete(self):
+        result = self.verify(lambda *args, **kwargs: subject.subprocess.CompletedProcess([], 0))
+        self.assertEqual(result["status"], "failed")
+
+    def test_missing_raw_marker_is_refused_before_verifier_execution(self):
+        (self.output / self.record["log"]).write_bytes(b"engine footer only\n")
+        with mock.patch.object(subject.subprocess, "run") as execute:
+            result = subject.verify_case_evidence(self.case, self.record, self.output, self.source, self.contract)
+        execute.assert_not_called()
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("raw result inventory", result["error"])
+
+    def test_duplicate_raw_marker_is_not_arbitrarily_selected(self):
+        (self.output / self.record["log"]).write_bytes(self.original_log * 2)
+        result = self.verify()
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("raw result inventory", result["error"])
+
+    def test_missing_trace_control_is_incomplete(self):
+        result = self.alter_evidence(lambda value: value["adverse_controls"].pop())
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("inventory is incomplete", result["error"])
+
+    def test_missing_process_control_is_incomplete(self):
+        result = self.alter_evidence(lambda value: value["process_adverse_controls"].pop())
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("inventory is incomplete", result["error"])
+
+    def test_duplicate_control_cannot_replace_missing_control(self):
+        result = self.alter_evidence(lambda value: value["adverse_controls"][1].update(name="0"))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("inventory is incomplete", result["error"])
+
+    def test_malformed_control_does_not_abort_later_cases(self):
+        result = self.alter_evidence(lambda value: value["process_adverse_controls"].__setitem__(0, 1))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("inventory is malformed", result["error"])
+
+    def test_incomplete_physical_result_cannot_pass(self):
+        result = self.alter_evidence(lambda value: value.update(completed_fresh_steps=0))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("inventory is incomplete", result["error"])
+
+    def test_additional_valid_physics_samples_do_not_fail_the_parent(self):
+        result = self.alter_evidence(lambda value: value.update(completed_held_steps=22, completed_fresh_steps=22))
+        self.assertEqual(result["status"], "passed")
+
+    def test_below_minimum_completed_samples_are_refused(self):
+        result = self.alter_evidence(lambda value: value.update(completed_held_steps=20))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("inventory is incomplete", result["error"])
+
+    def test_wrong_rig_cannot_pass(self):
+        result = self.alter_evidence(lambda value: value.update(rig="jetbarrel"))
+        self.assertEqual(result["status"], "failed")
+
+    def test_substituted_raw_payload_digest_is_refused(self):
+        result = self.alter_evidence(lambda value: value.update(raw_result_sha256="0" * 64))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("input digest mismatch", result["error"])
+
+    def test_substituted_original_log_digest_is_refused(self):
+        result = self.alter_evidence(lambda value: value.update(log_sha256="0" * 64))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("input digest mismatch", result["error"])
+
+    def test_substituted_engine_receipt_digest_is_refused(self):
+        result = self.alter_evidence(lambda value: value.update(process_sha256="0" * 64))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("input digest mismatch", result["error"])
+
+    def test_substituted_consumed_source_digest_is_refused(self):
+        result = self.alter_evidence(lambda value: value["consumed_source_sha256"].update(main_sha256="0" * 64))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("consumed source digest mismatch", result["error"])
+
+    def test_substituted_verifier_digest_is_refused(self):
+        result = self.alter_evidence(lambda value: value.update(verifier_sha256="0" * 64))
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("verifier digest mismatch", result["error"])
+
+    def test_source_mismatch_prevents_verifier_execution(self):
+        self.source_bytes["godot/scripts/main.gd"] = b"different canonical source\n"
+        with mock.patch.object(subject.subprocess, "run") as execute:
+            result = subject.verify_case_evidence(self.case, self.record, self.output, self.source, self.contract)
+        execute.assert_not_called()
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("differs from its source commit", result["error"])
+
+    def test_original_log_mutation_during_verification_fails(self):
+        def changed(command, **kwargs):
+            result = self.successful_verifier(command, **kwargs)
+            path = Path(command[command.index("--log") + 1])
+            path.write_bytes(path.read_bytes() + b"changed\n")
+            return result
+        result = self.verify(changed)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("original input changed", result["error"])
+
+    def test_source_mutation_during_verification_fails(self):
+        def changed(command, **kwargs):
+            result = self.successful_verifier(command, **kwargs)
+            (self.root / "godot/scripts/main.gd").write_bytes(b"changed during readback\n")
+            return result
+        result = self.verify(changed)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("source input changed", result["error"])
+
+    def test_verifier_mutation_during_verification_fails(self):
+        def changed(command, **kwargs):
+            result = self.successful_verifier(command, **kwargs)
+            (self.root / self.contract.verifier).write_bytes(b"changed during readback\n")
+            return result
+        result = self.verify(changed)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("verifier changed", result["error"])
+
+    def test_existing_readback_is_never_overwritten(self):
+        folder = self.output / (self.case.name + "-readback")
+        folder.mkdir()
+        receipt = folder / "engine-process.json"
+        receipt.write_bytes(b"retained original attempt\n")
+        result = self.verify()
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(receipt.read_bytes(), b"retained original attempt\n")
+
+    def test_identity_checks_share_the_overall_fifteen_second_budget(self):
+        with mock.patch.object(subject.time, "perf_counter", side_effect=[0, 16, 16]), \
+             mock.patch.object(subject.subprocess, "run") as execute:
+            result = subject.verify_case_evidence(self.case, self.record, self.output, self.source, self.contract)
+        execute.assert_not_called()
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("15-second bound", result["error"])
+
+    def test_success_after_overall_deadline_is_failed(self):
+        now = [0.0]
+        def late(command, **kwargs):
+            result = self.successful_verifier(command, **kwargs)
+            now[0] = 16.0
+            return result
+        with mock.patch.object(subject.time, "perf_counter", side_effect=lambda: now[0]):
+            result = self.verify(late)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("exceeded its 15-second bound", result["error"])
+
+    def test_parent_does_not_promote_zero_exit_after_failed_readback(self):
+        with mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", "print('engine control')"]), \
+             mock.patch.object(subject, "verify_case_evidence", return_value={"status": "failed", "error": "controlled refusal"}), \
+             redirect_stdout(io.StringIO()):
+            record, failed = subject.run_case(sys.executable, self.case, self.output, "case")
+        self.assertTrue(failed)
+        self.assertEqual(record["status"], "failed")
+        self.assertEqual(record["returncode"], 0)
+        self.assertEqual(record["independent_evidence"]["error"], "controlled refusal")
+
+
+class ReadbackRegistrationTests(unittest.TestCase):
+    def test_exact_five_input011_cases_require_readback(self):
+        for rig in subject.READBACK_RIGS:
+            self.assertIs(subject.case_readback_contract(fake("test_play_input011_" + rig, 5)), subject.INPUT011_READBACK)
+
+    def test_legacy_input011_case_keeps_its_own_ordinary_contract(self):
+        self.assertIsNone(subject.case_readback_contract(fake("test_play_input011_legacy_pause", 5)))
+
+    def test_life010_entry_points_remain_registered(self):
+        for rig in subject.READBACK_RIGS:
+            self.assertIs(subject.case_readback_contract(fake("test_play_life010_" + rig, 5)), subject.LIFE010_READBACK)
+
+    def test_windows_custody_includes_both_current_verifiers(self):
+        import run_windows_godot_regressions as windows
+        self.assertIn(subject.LIFE010_READBACK.verifier, windows.INPUT_SCOPES)
+        self.assertIn(subject.INPUT011_READBACK.verifier, windows.INPUT_SCOPES)
+
+
 if __name__ == "__main__":
     unittest.main()

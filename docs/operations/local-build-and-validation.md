@@ -31,6 +31,35 @@ the original local five-field receipt format requires the deliberately named
 missing status in hosted evidence. The independent reader checks both positive
 native/physical effects and21 reason-specific corrupt-evidence controls.
 
+## PLAY INPUT011 ordinary UI authority and raw-evidence gate — 2026-10-31
+
+The five `test_play_input011_<rig>.gd` cases use the same bounded parent
+readback mechanism as LIFE010. Their v2 trace exercises six ordinary UI/focus
+transitions, including the explicit Pause / resume button while Seed text
+focus remains, plus a real-host cancellation-bypass negative. The separate
+`test_play_input011_legacy_pause.gd` case retains its ordinary legacy-controller
+contract and is not interpreted as a five-rig trace.
+
+The parent preserves the engine receipt and original log, extracts the exact
+single JSON payload into a new readback directory, and invokes
+`tools/ci/verify_play_input011.py --self-test` under one **15-second overall
+readback bound**. It binds the verifier, consumed scripts, rig wrapper and
+existing shared-host helper to the declared Git source, retaining actual and
+canonical hashes. Original process/log/result and source hashes must remain
+unchanged through readback. All 23 trace and five process adverse controls are
+required. Completed held/fresh sample totals retain their existing minimums;
+additional fully validated physics callbacks do not become false failures.
+Windows input custody includes both LIFE010 and INPUT011 verifiers.
+
+The common `ReadbackContract` owns only explicit verifier paths, source
+dependencies, arguments and summary/control requirements. LIFE010's entry
+points, raw packet checks and original limits remain. Missing, malformed,
+late, nonzero, mutated or source-mismatched readback fails its parent case
+without changing the actual engine exit or overwriting an earlier attempt.
+The [dated INPUT011 record](../audits/2026-10-31-play-input011-authority-transitions.md#life010-integration-and-focused-button-correction)
+separates original v1 evidence, the v2 focused-button failure, the correction
+and resulting-head qualification still required in hosted CI.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
