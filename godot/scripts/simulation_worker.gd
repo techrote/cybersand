@@ -860,15 +860,24 @@ func set_worker_participation_sampling(enabled: bool) -> void:
 	_mutex.unlock()
 
 
+func _empty_worker_participation() -> Dictionary:
+	# An unobserved value is published too. Retain one immutable empty value
+	# instead of allocating a mutable Dictionary on every default-off frame.
+	# Replacing the owner slot must not mutate any previously published sample.
+	if not _participation_sample.is_empty() or not _participation_sample.is_read_only():
+		_participation_sample = {}
+		_participation_sample.make_read_only()
+	return _participation_sample
+
+
 func _sample_worker_participation(now_usec: int) -> Dictionary:
 	_mutex.lock()
 	var enabled: bool = _participation_sampling_enabled
 	_mutex.unlock()
 	if not enabled:
-		_participation_sample = {}
-		return _participation_sample
+		return _empty_worker_participation()
 	if int(_participation_sample.get("world_generation", -1)) != _world_generation:
-		_participation_sample = {}
+		_empty_worker_participation()
 	var completed_tick: int = int(_world.tick_index)
 	if completed_tick <= 0 or completed_tick == int(_participation_sample.get("completed_tick", -1)) \
 		or now_usec - _participation_sample_usec < PARTICIPATION_SAMPLE_INTERVAL_USEC:
@@ -878,17 +887,16 @@ func _sample_worker_participation(now_usec: int) -> Dictionary:
 	# reference crosses to Main. No native kernel or worker-pool API changes.
 	_participation_sample_usec = now_usec
 	if _backend_name != "native-phased" or not ClassDB.class_exists(&"CyberDemoBridge"):
-		return {}
+		return _empty_worker_participation()
 	if _participation_bridge == null:
 		_participation_bridge = ClassDB.instantiate(&"CyberDemoBridge")
 	if _participation_bridge == null or not _participation_bridge.has_method(&"inspect_statistics"):
-		return {}
+		return _empty_worker_participation()
 	var started: int = Time.get_ticks_usec()
 	_participation_sample_usec = started
 	var values: Dictionary = _participation_bridge.inspect_statistics(_world)
 	if not values.get("ok", false) or int(values.get("completed_tick", -1)) != completed_tick:
-		_participation_sample = {}
-		return _participation_sample
+		return _empty_worker_participation()
 	_participation_sample_sequence += 1
 	_participation_sample = {"world_generation":_world_generation, "completed_tick":completed_tick,
 		"sampled_usec":started, "sequence":_participation_sample_sequence,
