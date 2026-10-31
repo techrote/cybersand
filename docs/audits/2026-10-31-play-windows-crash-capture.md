@@ -119,8 +119,10 @@ official archive identity and observed loaded-file hashes remain recorded.
 The root debuggee must be the commanded pinned executable. All descendant
 executables must belong to the expected control or Godot image inventory.
 Each actual Godot engine process must load both selected native/Rapier DLLs
-with the pinned bytes. Module basenames cannot silently resolve to another
-directory. The reader reconstructs active module bases from load/unload
+with the pinned bytes. The v2 correction below captures their file identities
+while the debug event is stopped and admits the documented exact import-only
+shadow paths. Module basenames cannot silently resolve to another directory.
+The reader reconstructs active module bases from load/unload
 events at each capture and joins the dump's fault-time module list to that
 process. It does not attribute a fault to a union of historical DLL loads.
 
@@ -172,7 +174,7 @@ compile, debugger execution or actual crash capture is claimed in this
 implementation checkpoint.** Fresh hosted compile/control/fixture results
 and independent original-artifact review are mandatory next evidence.
 
-Local validation passes43 portable tests normally and under `python -O`, plus
+The initial local checkpoint passed 43 portable tests normally and under `python -O`, plus
 provider policy, documentation, retained M11 integrity and pointer-aware
 repository identity. Offline inspection authenticates the accepted native
 80-input provenance and both Rapier manifests. Runtime payload execution is
@@ -186,6 +188,68 @@ executable/runtime enforcement and unload continuity; those source findings
 were corrected before hosted execution. No original runtime failure was
 overwritten or rerun to conceal a failed attempt.
 
+## First hosted failure and v2 correction
+
+Draft #321 published the same implementation tree as local source
+`02f3b4bcb373b84ca727cb5a9ad3a6535169fe5d` under GitHub head
+`88c633490851223deb02eae9fe04c56e9951a2de`, tree
+`aee4ab8bbc45b938da822254bdd8134786ba99dc`.
+[Run 41178685606 attempt 1](https://github.com/techrote/cybersand/actions/runs/41178685606)
+failed in portable preflight: 43 methods ran, 42 passed and
+`ManifestTests.test_exact_original_manifest_passes` raised one error. Its
+synthetic `raw.log` used platform-default text newline translation but expected
+18 bytes. Windows emitted CRLF; the real manifest verifier correctly rejected
+the resulting mismatch. Optimized tests, runtime materialization, SDK builds,
+actual controls, editor import and the Godot fixture were all unexecuted.
+
+The original artifact 13034435611 is 2,209 bytes, SHA-256
+`9350a2d6f0a450ea080769476271159405d59fdcdbc64081343223baacc6d061`.
+Its API identity, ZIP CRC, source/tree files, original test log and provider
+result were independently verified and retained with the original job log.
+The failed run is not retried or relabelled.
+
+The synthetic fixture now writes explicit LF **bytes**. Real artifact hashing
+still uses exact original bytes. An additional control accepts an authentic
+CRLF artifact only with its original CRLF hash/size, and rejects later LF
+normalization.
+
+Independent source reconciliation also found the existing
+[Windows editor shadow observation](2026-10-25-lcb003-qualified-host-observation.md#controlled-standalone-and-editor-observation):
+the pinned editor loads `~cybersand_native.windows.x86_64.dll` even when
+`reloadable=false`. The initial diagnostic assumed original DLL paths and
+hashed module files after process exit. That assumption was unexecuted in the
+failed attempt, but would refuse the real editor import and could lose a
+deleted shadow file. It is corrected before the next source-qualified attempt.
+
+The v2 broker hashes only the control executable, pinned console/GUI images
+and original or exact `~`-prefixed native/Rapier names. It holds the native
+CREATE_PROCESS/LOAD_DLL event and its file handle until a bounded external
+helper finishes. The shared helper launcher supplies the same creation-time
+job ownership, 15-second/remaining-case budget, termination reserve and observed
+join used by the hung-writer control. At most 16 files, each at
+most 256 MiB, may be hashed in one process attempt; reads use 64 KiB buffers.
+Unrelated OS modules retain their paths, bases and load/unload events with an
+explicit unhashed classification. There is no unbounded post-exit module scan.
+
+SHA-256 uses Windows CNG. The retained 64-byte record contains volume serial,
+the 128-bit `FILE_ID_INFO` identity, exact size and digest. The broker compares
+the helper-opened file's identity and size with the still-held debug-event
+file handle; the portable reader independently repeats that binary/JSON join.
+The 128-bit ID avoids an unqualified 64-bit file-index assumption on ReFS.
+These are file-at-load observations; mapped-memory hashing is not claimed.
+
+Only the exact prescribed `--headless --path <project> --editor --quit`
+import command admits the `~` file in the original runtime directory, and its
+bytes must still equal the committed runtime pin. The standalone fixture
+requires the original paths. Wrong directories, extra prefixes, substituted
+bytes, mismatched file IDs, missing raw records, expired hash budgets and
+unjoined helpers fail. The schema is `play-windows-crash-v2`; source-bound v1
+history remains available at its original commit. Local portable coverage is
+now 51 methods, including these shadow/file-ID/byte-substitution controls.
+
+Windows SDK compilation, actual hash/control behavior and the original Godot
+fixture remain unqualified until a fresh exact-head hosted run completes.
+
 ## Platform basis and limitations
 
 Microsoft documents that [debug events suspend target threads until continued](https://learn.microsoft.com/en-us/windows/win32/debug/debugging-events)
@@ -197,6 +261,11 @@ and requires a non-null exception parameter to include exception information.
 describes debugger-local exception pointers. [Creation-time job-list attributes](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute)
 and an observed wait after [asynchronous `TerminateProcess`](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminateprocess)
 provide helper ownership and explicit completion evidence.
+
+The hash helper uses documented [CNG incremental hashing](https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcrypthashdata)
+and the 128-bit [file identity information](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info)
+to compare its opened file with the debugger's original file handle. An
+unavailable file identity remains failure, not an inferred successful binding.
 
 [WER LocalDumps](https://learn.microsoft.com/en-us/windows/win32/wer/collecting-user-mode-dumps)
 does not support applications that implement their own custom crash reporting,

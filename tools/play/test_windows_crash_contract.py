@@ -40,6 +40,18 @@ def synthetic_dump(code=CODE,tid=7,address=0x140001234,module_name='C:\\syntheti
     struct.pack_into('<I',raw_exception,0,code);struct.pack_into('<Q',raw_exception,16,address)
     return bytes(data),bytes(data[context_at:context_at+1232]),bytes(raw_exception)
 
+def synthetic_load_hash(root,event,identity):
+    """Synthetic file-ID receipt; never a Windows load observation."""
+    sequence=0
+    while (root/('image-'+str(sequence)+'.identity')).exists():sequence+=1
+    name='image-'+str(sequence)+'.identity'
+    file_id=bytes.fromhex('12'*16)
+    original={'volume':123,'file_id':file_id.hex(),'bytes':identity['bytes']}
+    (root/name).write_bytes(struct.pack('<Q16sQ32s',123,file_id,identity['bytes'],bytes.fromhex(identity['sha256'])))
+    event['load_hash']={'valid':True,'record':name,'milliseconds':1,'limit_ms':15000,'helper_pid':101,
+                       'helper_exit':0,'helper_joined':True,'helper_terminated':False,'timed_out':False,
+                       'original_file':original,'file':original|{'sha256':identity['sha256']}}
+
 class CaptureTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
@@ -50,9 +62,9 @@ class CaptureTests(unittest.TestCase):
         image=getattr(self,'control_image','C:\\synthetic-control.exe')
         self.events=[{'type':'start','schema':contract.SCHEMA,'broker_pid':99,'timeout_ms':15000,
                       'command_line':contract.windows_quote(image)+' "'+mode+'"'},
-                     {'type':'process','pid':pid,'tid':tid,'root':True,'image':image,'base':0x140000000}]
+                     {'type':'process','pid':pid,'tid':tid,'root':True,'image':image,'base':0x140000000,'load_hash':None}]
         if child:
-            pid=11;self.events.append({'type':'process','pid':pid,'tid':tid,'root':False,'image':image,'base':0x140000000})
+            pid=11;self.events.append({'type':'process','pid':pid,'tid':tid,'root':False,'image':image,'base':0x140000000,'load_hash':None})
         chances=[] if mode in ('normal','hang') else [True] if mode=='handled' else [True,False]
         for index,chance in enumerate(chances,2):
             prefix='fault-'+str(index)
@@ -206,6 +218,7 @@ class CaptureTests(unittest.TestCase):
         self.assertNotIn('must-not-leak',json.dumps({'removed':removed,'clean':clean}))
 
     def bound_fixture(self,mode='crash'):
+        for path in self.root.glob('*.identity'):path.unlink()
         result=self.fixture(mode)
         self.images={'C:\\synthetic-control.exe':{'sha256':'a'*64,'bytes':100}}
         self.identities=copy.deepcopy(self.images);self.runtimes={}
@@ -213,12 +226,17 @@ class CaptureTests(unittest.TestCase):
         return self.bind()
 
     def bind(self):
-        return contract.verify_module_bindings(self.events,self.receipt,self.identities,self.images,self.runtimes,self.result)
+        for event in self.events:
+            path=event.get('image') if event['type']=='process' else event.get('path') if event['type']=='module' else None
+            if path is not None and not event.get('load_hash'):
+                if 'sha256' in self.identities.get(path,{}):synthetic_load_hash(self.root,event,self.identities[path])
+                else:event['load_hash']=None
+        return contract.verify_module_bindings(self.events,self.receipt,self.identities,self.images,self.runtimes,self.result,root=self.root)
 
     def test_actual_process_and_dump_modules_bind_to_pinned_bytes(self):
         result=self.bound_fixture();self.assertEqual(result['images'],['c:\\synthetic-control.exe'])
         self.identities['C:\\synthetic-control.exe']['sha256']='b'*64
-        with self.assertRaisesRegex(ValueError,'module bytes mismatch'):self.bind()
+        with self.assertRaisesRegex(ValueError,'identity receipt mismatch'):self.bind()
 
     def test_substituted_engine_and_unknown_process_refused(self):
         self.bound_fixture()
@@ -226,7 +244,7 @@ class CaptureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Root debuggee differs'):self.bind()
         self.bound_fixture('child-crash')
         next(e for e in self.events if e['type']=='process' and not e['root'])['image']='C:\\other.exe'
-        with self.assertRaisesRegex(ValueError,'Unexpected debuggee'):self.bind()
+        with self.assertRaisesRegex(ValueError,'identity receipt mismatch'):self.bind()
 
     def test_both_runtime_modules_required_on_actual_engine_owner(self):
         self.bound_fixture('normal');self.images['C:\\synthetic-control.exe']['requires_runtime']=True
@@ -236,9 +254,11 @@ class CaptureTests(unittest.TestCase):
             self.events.insert(-2,{'type':'module','pid':10,'base':0x150000000+index*0x100000,'path':path})
         self.assertEqual(self.bind()['runtime_processes'],[10])
         self.identities['C:\\runtime\\native.dll']['sha256']='9'*64
-        with self.assertRaisesRegex(ValueError,'module bytes mismatch'):self.bind()
+        with self.assertRaisesRegex(ValueError,'identity receipt mismatch'):self.bind()
         self.identities['C:\\runtime\\native.dll']=self.runtimes['C:\\runtime\\native.dll'].copy()
         self.events=[e for e in self.events if e.get('path')!='C:\\runtime\\rapier.dll']
+        for path in self.root.glob('*.identity'):
+            if path.name not in {e['load_hash']['record'] for e in self.events if e.get('load_hash')}:path.unlink()
         del self.identities['C:\\runtime\\rapier.dll']
         with self.assertRaisesRegex(ValueError,'both selected'):self.bind()
 
@@ -259,7 +279,7 @@ class CaptureTests(unittest.TestCase):
 
     def test_unbound_or_missing_module_identity_refused(self):
         self.bound_fixture('normal');self.identities['C:\\invented.dll']={'sha256':'d'*64,'bytes':222}
-        with self.assertRaisesRegex(ValueError,'identity inventory'):self.bind()
+        with self.assertRaisesRegex(ValueError,'identity receipt mismatch'):self.bind()
         self.bound_fixture();self.result['captures'][0]['identity']['modules'][0]['path']='C:\\fabricated.dll'
         with self.assertRaisesRegex(ValueError,'actual load event'):self.bind()
 
@@ -272,10 +292,60 @@ class CaptureTests(unittest.TestCase):
         struct.pack_into('<I',data,24,1);struct.pack_into('<Q',data,32,123)
         (self.root/'fault-2.exception').write_bytes(data);self.reject('flags/parameters')
 
+    def shadow_fixture(self):
+        self.bound_fixture('normal');self.images['C:\\synthetic-control.exe']['requires_runtime']=True
+        self.receipt['debuggee_command']=['C:\\synthetic-control.exe','--headless','--path','C:\\synthetic-project','--editor','--quit']
+        self.events[0]['command_line']=' '.join(contract.windows_quote(arg) for arg in self.receipt['debuggee_command'])
+        for index,name in enumerate(('native','rapier')):
+            original='C:\\synthetic-project\\bin\\'+name+'.dll';shadow='C:\\synthetic-project\\bin\\~'+name+'.dll'
+            identity={'sha256':str(index)*64,'bytes':123+index}
+            self.runtimes[original]=identity;self.identities[shadow]=identity.copy()
+            self.events.insert(-2,{'type':'module','pid':10,'base':0x150000000+index*0x100000,'path':shadow})
+        return self.bind()
+
+    def test_exact_editor_shadow_paths_use_load_time_identity(self):
+        result=self.shadow_fixture()
+        self.assertTrue(result['import_shadow_paths_permitted'])
+        self.assertEqual(result['runtime_processes'],[10])
+        self.assertFalse((self.root/'~native.dll').exists())
+        self.assertEqual(result['hashed_module_path_count'],3)
+
+    def test_shadow_runtime_is_refused_for_standalone_fixture(self):
+        self.shadow_fixture();self.receipt['debuggee_command']=['C:\\synthetic-control.exe','normal']
+        with self.assertRaisesRegex(ValueError,'shadow path is not admitted'):self.bind()
+
+    def test_shadow_in_another_directory_is_refused(self):
+        self.shadow_fixture();event=next(e for e in self.events if e.get('path','').endswith('~native.dll'))
+        identity=self.identities.pop(event['path']);event['path']='C:\\wrong-directory\\~native.dll';self.identities[event['path']]=identity
+        with self.assertRaisesRegex(ValueError,'substituted path'):self.bind()
+
+    def test_changed_shadow_bytes_fail_even_with_consistent_raw_hash_record(self):
+        self.shadow_fixture();event=next(e for e in self.events if e.get('path','').endswith('~native.dll'))
+        self.identities[event['path']]['sha256']='e'*64
+        (self.root/event['load_hash']['record']).unlink();event['load_hash']=None
+        with self.assertRaisesRegex(ValueError,'module bytes mismatch'):self.bind()
+
+    def test_hash_helper_must_match_original_debug_file_identity(self):
+        self.bound_fixture();event=next(e for e in self.events if e['type']=='process')
+        event['load_hash']['original_file']['file_id']='34'*16
+        with self.assertRaisesRegex(ValueError,'debug event handle file identity'):self.bind()
+
+    def test_load_hash_deadline_and_join_are_enforced(self):
+        for field,value in (('milliseconds',15001),('helper_joined',False),('helper_exit',124)):
+            self.bound_fixture('normal');event=next(e for e in self.events if e['type']=='process')
+            event['load_hash'][field]=value
+            with self.subTest(field=field),self.assertRaisesRegex(ValueError,'load-time hash failed'):self.bind()
+
+    def test_unrelated_system_modules_have_explicit_unhashed_scope(self):
+        self.bound_fixture('normal');path='C:\\Windows\\System32\\unrelated.dll'
+        self.identities[path]={'hash_status':'not_requested'}
+        self.events.insert(-2,{'type':'module','pid':10,'base':0x170000000,'path':path,'load_hash':None})
+        result=self.bind();self.assertEqual(result['module_path_count'],2);self.assertEqual(result['hashed_module_path_count'],1)
+
 class ManifestTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
-        (self.root/'raw.log').write_text('original evidence\n')
+        (self.root/'raw.log').write_bytes(b'original evidence\n')
         campaign.write(self.root/'MANIFEST.json',{'raw.log':{'sha256':contract.sha(self.root/'raw.log'),'bytes':18}})
 
     def test_exact_original_manifest_passes(self):
@@ -290,17 +360,24 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'inventory mismatch'):campaign.verify_manifest(self.root)
 
     def test_incomplete_campaign_is_not_an_offline_pass(self):
-        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v1','completed':False})
+        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v2','completed':False})
         campaign.write(self.root/'MANIFEST.json',{path.name:{'sha256':contract.sha(path),'bytes':path.stat().st_size}
             for path in self.root.iterdir() if path.name!='MANIFEST.json'})
         with self.assertRaisesRegex(ValueError,'campaign is incomplete'):campaign.verify_directory(self.root,'a'*40)
+
+    def test_actual_crlf_artifacts_are_never_normalized_to_make_them_pass(self):
+        path=self.root/'raw.log';path.write_bytes(b'original evidence\r\n')
+        campaign.write(self.root/'MANIFEST.json',{'raw.log':{'sha256':contract.sha(path),'bytes':19}})
+        campaign.verify_manifest(self.root)
+        path.write_bytes(b'original evidence\n')
+        with self.assertRaisesRegex(ValueError,'digest mismatch'):campaign.verify_manifest(self.root)
 
 class OfflineCompositionTests(unittest.TestCase):
     """Compose synthetic records; real Git/native provenance has separate controls."""
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
         self.head='a'*40;self.canonical={}
-        report=self.report={'schema':'play-windows-crash-campaign-v1','completed':True,'errors':[],'fixture_attempts':1,
+        report=self.report={'schema':'play-windows-crash-campaign-v2','completed':True,'errors':[],'fixture_attempts':1,
             'original_failed_run':41175131563,'original_failed_source':campaign.BASE,'original_failure_still_blocking':True,
             'paths':{'source':'C:\\source','output':'C:\\evidence'},'source':{'commit':self.head,'tree':'b'*40,'inputs':{}},
             'runtime':{},'controls':{},'tools':{},'build':{'builds':[]},'assertion_footer_present':True,
@@ -360,8 +437,11 @@ class OfflineCompositionTests(unittest.TestCase):
         receipt['broker_command']=[self.report['tools']['broker']['path'],'--output','C:\\evidence\\'+name,
                                    '--timeout-ms',str(limit),'--',*receipt['debuggee_command']]
         identities={path:{'sha256':identity['sha256'],'bytes':identity['bytes']} for path,identity in (images|runtimes).items()}
+        for event in events:
+            path=event.get('image') if event['type']=='process' else event.get('path') if event['type']=='module' else None
+            if path is not None:synthetic_load_hash(directory,event,identities[path])
         result=contract.verify_dump_timeout_control(events,receipt) if mode=='dump-writer-timeout' else contract.verify_capture(directory,events,receipt)
-        result['module_bindings']=contract.verify_module_bindings(events,receipt,identities,images,runtimes,result)
+        result['module_bindings']=contract.verify_module_bindings(events,receipt,identities,images,runtimes,result,root=directory)
         (directory/'events.jsonl').write_text(''.join(json.dumps(event)+'\n' for event in events))
         campaign.write(directory/'process.json',receipt);campaign.write(directory/'module-identities.json',identities)
         campaign.write(directory/'verified.json',result)
@@ -387,7 +467,7 @@ class OfflineCompositionTests(unittest.TestCase):
         path=self.root/campaign.FIXTURE/'module-identities.json';identities=contract.read_json(path)
         native=next(key for key in identities if 'cybersand_native.windows' in key);identities[native]['sha256']='f'*64
         campaign.write(path,identities);campaign.seal(self.root,self.report)
-        with self.assertRaisesRegex(ValueError,'module bytes mismatch'):campaign.verify_directory(self.root,self.head)
+        with self.assertRaisesRegex(ValueError,'identity receipt mismatch'):campaign.verify_directory(self.root,self.head)
 
     def test_assertion_footer_cannot_overwrite_actual_process_failure(self):
         directory=self.root/campaign.FIXTURE;receipt=contract.read_json(directory/'process.json')
@@ -397,7 +477,7 @@ class OfflineCompositionTests(unittest.TestCase):
         events[-1].update(root_exit=CODE,effective_exit=CODE)
         result=contract.verify_capture(directory,events,receipt)
         result['module_bindings']=contract.verify_module_bindings(events,receipt,
-            contract.read_json(directory/'module-identities.json'),*campaign.bindings(self.report),result)
+            contract.read_json(directory/'module-identities.json'),*campaign.bindings(self.report),result,root=directory)
         campaign.write(directory/'process.json',receipt);campaign.write(directory/'verified.json',result)
         (directory/'events.jsonl').write_text(''.join(json.dumps(event)+'\n' for event in events))
         self.report['fixture']=result;campaign.seal(self.root,self.report)

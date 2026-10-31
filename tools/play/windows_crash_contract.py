@@ -8,7 +8,7 @@ import re
 import struct
 from urllib.parse import urlsplit
 
-SCHEMA = 'play-windows-crash-v1'
+SCHEMA = 'play-windows-crash-v2'
 ACCESS_VIOLATION = 0xC0000005
 NOT_HANDLED = 0x80010001
 MAX_DUMP_BYTES = 64 * 1024 * 1024
@@ -54,18 +54,54 @@ def windows_path(path: str) -> str:
     require(ntpath.isabs(path) and bool(ntpath.splitdrive(path)[0]),'Nonabsolute Windows module path')
     return ntpath.normcase(ntpath.normpath(path))
 
+def read_load_identities(root: Path, events: list[dict]) -> dict:
+    """Read bounded required-image hashes retained at their actual load stops."""
+    identities={};records=set()
+    for event in events:
+        if event.get('type') not in ('process','module'):continue
+        path=event['image'] if event['type']=='process' else event['path']
+        require(path and 'load_hash' in event,'Loaded image lacks explicit hash scope')
+        capture=event['load_hash']
+        if capture is None:
+            identity={'hash_status':'not_requested'}
+        else:
+            require(capture['valid'] is True and capture['limit_ms']==15000 and 0<=capture['milliseconds']<=15000
+                    and capture['helper_pid']>0 and capture['helper_exit']==0 and capture['helper_joined'] is True
+                    and capture['helper_terminated'] is False and capture['timed_out'] is False,
+                    'Required load-time hash failed, exceeded its bound or lacked joined ownership')
+            relative=capture['record'];require(relative not in records,'Duplicate load-time identity record')
+            records.add(relative);raw=safe_file(root,relative).read_bytes()
+            require(len(raw)==64,'Wrong raw load-time identity size')
+            volume,file_id,size,digest=struct.unpack('<Q16sQ32s',raw)
+            require(0<size<=256*1024*1024,'Invalid bounded image size')
+            require(capture['original_file']=={'volume':volume,'file_id':file_id.hex(),'bytes':size}
+                    and capture['file']=={'volume':volume,'file_id':file_id.hex(),'bytes':size,'sha256':digest.hex()},
+                    'Hash helper did not read the debug event handle file identity')
+            identity={'sha256':digest.hex(),'bytes':size}
+        require(path not in identities or identities[path]==identity,'Loaded image bytes changed between events')
+        identities[path]=identity
+    require(len(records)<=16 and {path.name for path in root.glob('*.identity')}==records,
+            'Complete load-time image hash inventory mismatch')
+    return identities
+
 def verify_module_bindings(events: list[dict], receipt: dict, identities: dict,
-                           images: dict, runtimes: dict, result: dict) -> dict:
+                           images: dict, runtimes: dict, result: dict, *, root: Path) -> dict:
     """Bind actual debug-event owners and loaded bytes to authenticated inputs."""
     images={windows_path(path):value for path,value in images.items()}
     runtimes={windows_path(path):value for path,value in runtimes.items()}
-    expected=images|runtimes
+    command=receipt['debuggee_command']
+    importing=len(command)==6 and command[1:3]==['--headless','--path'] and command[-2:]==['--editor','--quit']
+    runtime_paths={path:path for path in runtimes}
+    if importing:
+        runtime_paths.update({ntpath.join(ntpath.dirname(path),'~'+ntpath.basename(path)):path for path in runtimes})
+    expected=images|{path:runtimes[canonical] for path,canonical in runtime_paths.items()}
     named={ntpath.basename(path):path for path in expected}
     require(len(named)==len(expected),'Ambiguous expected module basename')
     processes=[event for event in events if event.get('type')=='process']
     require(processes,'No actual process image to authenticate')
-    root=next(event for event in processes if event['root'])
-    require(windows_path(root['image'])==windows_path(receipt['debuggee_command'][0]),'Root debuggee differs from commanded pinned executable')
+    root_process=next(event for event in processes if event['root'])
+    require(windows_path(root_process['image'])==windows_path(receipt['debuggee_command'][0]),'Root debuggee differs from commanded pinned executable')
+    require(identities==read_load_identities(root,events),'Load-stop identity receipt mismatch')
     observed={};captured_modules={};images_seen=set();modules_by_pid={event['pid']:set() for event in processes}
     event_paths=set()
     for event in events:
@@ -90,9 +126,11 @@ def verify_module_bindings(events: list[dict], receipt: dict, identities: dict,
             images_seen.add(key)
         if ntpath.basename(key) in named:
             require(key==named[ntpath.basename(key)],'Pinned module loaded from substituted path')
+        if ntpath.basename(key).lstrip('~') in {ntpath.basename(path) for path in runtimes}:
+            require(key in runtime_paths,'Runtime shadow path is not admitted for this exact process command')
         if key in expected:
             require(identities.get(path)=={'sha256':expected[key]['sha256'],'bytes':expected[key]['bytes']},'Pinned executable/runtime module bytes mismatch')
-            modules_by_pid[event['pid']].add(key)
+            modules_by_pid[event['pid']].add(runtime_paths.get(key,key))
     require(set(identities)==event_paths,'Actual loaded-module identity inventory mismatch')
     require(images_seen==set(images),'Expected executable process was not observed')
     for process in processes:
@@ -110,7 +148,8 @@ def verify_module_bindings(events: list[dict], receipt: dict, identities: dict,
                     for module in dump_modules),'Minidump omits its actual process image')
     return {'images':sorted(images_seen),'runtime_processes':sorted(process['pid'] for process in processes
             if images[windows_path(process['image'])].get('requires_runtime')),
-            'module_identity_count':len(event_paths)}
+            'module_path_count':len(event_paths),'hashed_module_path_count':sum('sha256' in row for row in identities.values()),
+            'import_shadow_paths_permitted':importing}
 
 def child_environment(environment: dict[str,str]) -> tuple[dict[str,str], list[str]]:
     """Remove credential-bearing names, preserving ordinary OS/toolchain inputs."""

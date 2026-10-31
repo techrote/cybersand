@@ -4,6 +4,7 @@
 #define _WIN32_WINNT 0x0A00
 #include <windows.h>
 #include <dbghelp.h>
+#include <bcrypt.h>
 #include <psapi.h>
 #include <shellapi.h>
 #include <algorithm>
@@ -11,6 +12,7 @@
 #include <cstdlib>
 #include <cwchar>
 #include <cstdint>
+#include <cstring>
 #include <fcntl.h>
 #include <io.h>
 #include <map>
@@ -135,11 +137,153 @@ static int dump_worker(DWORD pid, DWORD tid, const std::wstring &prefix, const s
     return ok ? 0 : 84;
 }
 
+struct ImageIdentity { ULONGLONG volume = 0; unsigned char file_id[16]{}; ULONGLONG bytes = 0; unsigned char digest[32]{}; };
+static_assert(sizeof(ImageIdentity) == 64, "Portable image identity layout must stay exact");
+static bool file_identity(HANDLE file, ImageIdentity &result) {
+    FILE_ID_INFO value{}; LARGE_INTEGER size{};
+    if (!file || file == INVALID_HANDLE_VALUE ||
+            !GetFileInformationByHandleEx(file, FileIdInfo, &value, sizeof(value)) || !GetFileSizeEx(file, &size) || size.QuadPart <= 0) return false;
+    result.volume = value.VolumeSerialNumber;
+    memcpy(result.file_id, value.FileId.Identifier, sizeof(result.file_id));
+    result.bytes = static_cast<ULONGLONG>(size.QuadPart);
+    return result.bytes > 0 && result.bytes <= 256ULL * 1024 * 1024;
+}
+static int hash_worker(const std::wstring &path, const std::wstring &output) {
+    HANDLE file = CreateFileW(path.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+        nullptr, OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, nullptr);
+    if (file == INVALID_HANDLE_VALUE) return 91;
+    ImageIdentity identity{}, after{};
+    BCRYPT_ALG_HANDLE algorithm = nullptr; BCRYPT_HASH_HANDLE hash = nullptr;
+    bool ok = file_identity(file, identity) &&
+        BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM, nullptr, 0) >= 0 &&
+        BCryptCreateHash(algorithm, &hash, nullptr, 0, nullptr, 0, 0) >= 0;
+    std::vector<unsigned char> buffer(65536); ULONGLONG total = 0;
+    while (ok && total < identity.bytes) {
+        DWORD count = 0;
+        const DWORD wanted = static_cast<DWORD>(std::min<ULONGLONG>(buffer.size(), identity.bytes - total));
+        ok = ReadFile(file, buffer.data(), wanted, &count, nullptr) && count > 0 && count <= wanted;
+        if (ok) { ok = BCryptHashData(hash, buffer.data(), count, 0) >= 0; total += count; }
+    }
+    ok = ok && total == identity.bytes && file_identity(file, after) &&
+        identity.volume == after.volume && memcmp(identity.file_id, after.file_id, sizeof(identity.file_id)) == 0 && identity.bytes == after.bytes &&
+        BCryptFinishHash(hash, identity.digest, sizeof(identity.digest), 0) >= 0;
+    if (hash) BCryptDestroyHash(hash);
+    if (algorithm) BCryptCloseAlgorithmProvider(algorithm, 0);
+    CloseHandle(file);
+    return ok && write_bytes(output, &identity, sizeof(identity)) ? 0 : 92;
+}
+
+struct HelperResult {
+    DWORD code = 85, pid = 0, limit = CAPTURE_LIMIT_MS;
+    bool timeout = false, joined = false, terminated = false;
+    ULONGLONG milliseconds = 0;
+};
+static HelperResult run_helper(const std::wstring &broker, const std::vector<std::wstring> &arguments,
+                               HANDLE job, DWORD process_limit, DWORD helper_limit) {
+    const ULONGLONG started = GetTickCount64();
+    HelperResult result; result.limit = helper_limit;
+    if (started >= began + process_limit) return result;
+    std::wstring line = command(arguments);
+    SIZE_T attribute_bytes = 0;
+    InitializeProcThreadAttributeList(nullptr, 1, 0, &attribute_bytes);
+    std::vector<unsigned char> storage(attribute_bytes);
+    STARTUPINFOEXW startup{}; startup.StartupInfo.cb = sizeof(startup);
+    startup.lpAttributeList = reinterpret_cast<LPPROC_THREAD_ATTRIBUTE_LIST>(storage.data());
+    bool initialized = attribute_bytes && InitializeProcThreadAttributeList(startup.lpAttributeList, 1, 0, &attribute_bytes);
+    bool ready = initialized && UpdateProcThreadAttribute(startup.lpAttributeList, 0,
+        PROC_THREAD_ATTRIBUTE_JOB_LIST, &job, sizeof(job), nullptr, nullptr);
+    PROCESS_INFORMATION child{};
+    // Atomic creation-time job membership prevents an unowned helper window.
+    if (ready && CreateProcessW(broker.c_str(), line.data(), nullptr, nullptr, FALSE,
+            CREATE_NO_WINDOW | CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT,
+            nullptr, nullptr, &startup.StartupInfo, &child)) {
+        result.pid = child.dwProcessId;
+        const ULONGLONG until = std::min(started + helper_limit, began + process_limit);
+        const ULONGLONG created_at = GetTickCount64();
+        const ULONGLONG available = until > created_at ? until - created_at : 0;
+        const ULONGLONG work_until = until - std::min<ULONGLONG>(2000, available / 2);
+        DWORD wait = WAIT_TIMEOUT;
+        const bool resumed = ResumeThread(child.hThread) != static_cast<DWORD>(-1);
+        while (resumed && wait == WAIT_TIMEOUT) {
+            const ULONGLONG tick = GetTickCount64();
+            if (tick >= work_until) break;
+            wait = WaitForSingleObject(child.hProcess, static_cast<DWORD>(std::min<ULONGLONG>(100, work_until - tick)));
+        }
+        if (wait != WAIT_OBJECT_0) {
+            result.timeout = resumed && wait == WAIT_TIMEOUT;
+            result.terminated = TerminateProcess(child.hProcess, result.timeout ? 124 : 86) != FALSE;
+            do {
+                const ULONGLONG tick = GetTickCount64();
+                if (tick >= until) break;
+                wait = WaitForSingleObject(child.hProcess, static_cast<DWORD>(std::min<ULONGLONG>(100, until - tick)));
+            } while (wait == WAIT_TIMEOUT);
+        }
+        result.joined = wait == WAIT_OBJECT_0;
+        if (result.joined) GetExitCodeProcess(child.hProcess, &result.code);
+        CloseHandle(child.hProcess); CloseHandle(child.hThread);
+    }
+    if (initialized) DeleteProcThreadAttributeList(startup.lpAttributeList);
+    result.milliseconds = GetTickCount64() - started;
+    return result;
+}
+static bool required_image(const std::wstring &path) {
+    const auto slash = path.find_last_of(L"\\/");
+    const std::wstring name = path.substr(slash == std::wstring::npos ? 0 : slash + 1);
+    for (const auto *expected : {L"windows_crash_control.exe", L"Godot_v4.7-stable_win64.exe", L"Godot_v4.7-stable_win64_console.exe",
+            L"cybersand_native.windows.x86_64.dll", L"~cybersand_native.windows.x86_64.dll",
+            L"libgodot_rapier.windows.x86_64-pc-windows-msvc.dll", L"~libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"})
+        if (_wcsicmp(name.c_str(), expected) == 0) return true;
+    return false;
+}
+static std::string identity_json(const ImageIdentity &value, bool with_digest = true) {
+    std::wstring digest, file_id;
+    for (auto byte : value.digest) { digest += L"0123456789abcdef"[byte >> 4]; digest += L"0123456789abcdef"[byte & 15]; }
+    for (auto byte : value.file_id) { file_id += L"0123456789abcdef"[byte >> 4]; file_id += L"0123456789abcdef"[byte & 15]; }
+    return "{\"volume\":" + number(value.volume) + ",\"file_id\":" + json(file_id) +
+        ",\"bytes\":" + number(value.bytes) + (with_digest ? ",\"sha256\":" + json(digest) : "") + "}";
+}
+static std::string module_hash(const std::wstring &broker, HANDLE job, DWORD limit, HANDLE original_file,
+                               const std::wstring &path, const std::wstring &output, const std::wstring &name,
+                               unsigned &errors) {
+    if (!required_image(path)) return "null";
+    static unsigned image_hashes = 0;
+    const ULONGLONG started = GetTickCount64();
+    ImageIdentity original{}, copied{};
+    HelperResult helper;
+    bool valid = ++image_hashes <= 16 && file_identity(original_file, original);
+    const std::wstring record = name + L".identity";
+    if (valid) {
+        helper = run_helper(broker, {broker, L"--hash-worker", path, output + L"\\" + record}, job, limit, CAPTURE_LIMIT_MS);
+        valid = helper.code == 0 && helper.joined && !helper.timeout && !helper.terminated;
+    }
+    if (valid) {
+        HANDLE file = CreateFileW((output + L"\\" + record).c_str(), GENERIC_READ, FILE_SHARE_READ,
+            nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        DWORD count = 0; LARGE_INTEGER size{};
+        valid = file != INVALID_HANDLE_VALUE && GetFileSizeEx(file, &size) && size.QuadPart == static_cast<LONGLONG>(sizeof(copied)) &&
+            ReadFile(file, &copied, sizeof(copied), &count, nullptr) && count == sizeof(copied);
+        if (file != INVALID_HANDLE_VALUE) CloseHandle(file);
+        valid = valid && copied.volume == original.volume &&
+            memcmp(copied.file_id, original.file_id, sizeof(copied.file_id)) == 0 && copied.bytes == original.bytes;
+    }
+    const ULONGLONG duration = GetTickCount64() - started;
+    valid = valid && duration <= CAPTURE_LIMIT_MS;
+    if (!valid) ++errors;
+    return "{\"valid\":" + std::string(valid ? "true" : "false") + ",\"record\":" + json(record) +
+        ",\"milliseconds\":" + number(duration) + ",\"limit_ms\":" + number(CAPTURE_LIMIT_MS) +
+        ",\"helper_pid\":" + number(helper.pid) + ",\"helper_exit\":" + number(helper.code) +
+        ",\"helper_joined\":" + (helper.joined ? "true" : "false") +
+        ",\"helper_terminated\":" + (helper.terminated ? "true" : "false") +
+        ",\"timed_out\":" + (helper.timeout ? "true" : "false") +
+        ",\"original_file\":" + identity_json(original, false) + ",\"file\":" + identity_json(copied) + "}";
+}
+
 struct Process { HANDLE handle = nullptr; std::map<DWORD, HANDLE> threads; bool loader_breakpoint = false; };
 
 int wmain(int argc, wchar_t **argv) {
     if (argc == 6 && wcscmp(argv[1], L"--dump-worker") == 0)
         return dump_worker(wcstoul(argv[2], nullptr, 10), wcstoul(argv[3], nullptr, 10), argv[4], argv[5]);
+    if (argc == 4 && wcscmp(argv[1], L"--hash-worker") == 0) return hash_worker(argv[2], argv[3]);
     if (argc < 7 || wcscmp(argv[1], L"--output") || wcscmp(argv[3], L"--timeout-ms") || wcscmp(argv[5], L"--")) return 64;
     const std::wstring output = argv[2];
     const DWORD limit = wcstoul(argv[4], nullptr, 10);
@@ -161,7 +305,7 @@ int wmain(int argc, wchar_t **argv) {
         if (dump_job) CloseHandle(dump_job); fclose(events); return 74;
     }
     began = GetTickCount64();
-    emit("{\"type\":\"start\",\"schema\":\"play-windows-crash-v1\",\"broker_pid\":" + number(GetCurrentProcessId()) +
+    emit("{\"type\":\"start\",\"schema\":\"play-windows-crash-v2\",\"broker_pid\":" + number(GetCurrentProcessId()) +
          ",\"timeout_ms\":" + number(limit) + ",\"command_line\":" + json(line) + "}");
     SECURITY_ATTRIBUTES attributes{sizeof(attributes), nullptr, TRUE};
     HANDLE log = CreateFileW((output + L"\\engine.log").c_str(), GENERIC_WRITE, FILE_SHARE_READ, &attributes, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -205,8 +349,11 @@ int wmain(int argc, wchar_t **argv) {
             processes[pid].handle = value.hProcess; processes[pid].threads[tid] = value.hThread;
             if (pid == root) saw_root = true;
             std::wstring image = image_path(value.hProcess, nullptr, value.hFile, true);
+            const auto identity = module_hash(broker, dump_job, limit, value.hFile, image, output,
+                L"image-" + std::to_wstring(pid) + L"-" + std::to_wstring(event_count), errors);
             emit("{\"type\":\"process\"" + common + ",\"root\":" + (pid == root ? "true" : "false") +
-                 ",\"image\":" + json(image) + ",\"base\":" + number(reinterpret_cast<ULONG_PTR>(value.lpBaseOfImage)) + "}");
+                 ",\"image\":" + json(image) + ",\"base\":" + number(reinterpret_cast<ULONG_PTR>(value.lpBaseOfImage)) +
+                 ",\"load_hash\":" + identity + "}");
             if (value.hFile) CloseHandle(value.hFile);
             break;
         }
@@ -214,9 +361,11 @@ int wmain(int argc, wchar_t **argv) {
         case EXIT_THREAD_DEBUG_EVENT: processes[pid].threads.erase(tid); break;
         case LOAD_DLL_DEBUG_EVENT: {
             auto &value = event.u.LoadDll;
-            emit("{\"type\":\"module\"" + common + ",\"path\":" + json(image_path(processes[pid].handle,
-                 static_cast<HMODULE>(value.lpBaseOfDll), value.hFile, false)) +
-                 ",\"base\":" + number(reinterpret_cast<ULONG_PTR>(value.lpBaseOfDll)) + "}");
+            const auto path = image_path(processes[pid].handle, static_cast<HMODULE>(value.lpBaseOfDll), value.hFile, false);
+            const auto identity = module_hash(broker, dump_job, limit, value.hFile, path, output,
+                L"image-" + std::to_wstring(pid) + L"-" + std::to_wstring(event_count), errors);
+            emit("{\"type\":\"module\"" + common + ",\"path\":" + json(path) +
+                 ",\"base\":" + number(reinterpret_cast<ULONG_PTR>(value.lpBaseOfDll)) + ",\"load_hash\":" + identity + "}");
             if (value.hFile) CloseHandle(value.hFile);
             break;
         }
@@ -239,53 +388,14 @@ int wmain(int argc, wchar_t **argv) {
                 const ULONGLONG capture_started = GetTickCount64();
                 const std::wstring name = L"fault-" + std::to_wstring(pid) + L"-" + std::to_wstring(tid) + L"-" + std::to_wstring(event_id);
                 const std::wstring prefix = output + L"\\" + name;
-                DWORD dump_exit = 85, helper_pid = 0; bool capture_timeout = false, joined = false, terminated = false;
                 wchar_t control[2]{};
                 const bool hung_control = GetEnvironmentVariableW(L"CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL", control, 2) == 1 && control[0] == L'1';
                 const DWORD capture_limit = hung_control ? 1000 : CAPTURE_LIMIT_MS;
-                if (elapsed() < limit) {
-                    std::wstring dump_command = command({broker, L"--dump-worker", std::to_wstring(pid), std::to_wstring(tid), prefix, hex_record(value.ExceptionRecord)});
-                    SIZE_T attribute_bytes = 0;
-                    InitializeProcThreadAttributeList(nullptr, 1, 0, &attribute_bytes);
-                    std::vector<unsigned char> attribute_storage(attribute_bytes);
-                    STARTUPINFOEXW dump_start{}; dump_start.StartupInfo.cb = sizeof(dump_start);
-                    dump_start.lpAttributeList = reinterpret_cast<LPPROC_THREAD_ATTRIBUTE_LIST>(attribute_storage.data());
-                    bool initialized = attribute_bytes && InitializeProcThreadAttributeList(dump_start.lpAttributeList, 1, 0, &attribute_bytes);
-                    bool attributes_ready = initialized && UpdateProcThreadAttribute(dump_start.lpAttributeList, 0,
-                        PROC_THREAD_ATTRIBUTE_JOB_LIST, &dump_job, sizeof(dump_job), nullptr, nullptr);
-                    PROCESS_INFORMATION dump{};
-                    // Atomic creation-time job membership closes the orphan gap
-                    // between process creation and a later AssignProcess call.
-                    if (attributes_ready && CreateProcessW(broker.c_str(), dump_command.data(), nullptr, nullptr, FALSE,
-                            CREATE_NO_WINDOW | CREATE_SUSPENDED | EXTENDED_STARTUPINFO_PRESENT,
-                            nullptr, nullptr, &dump_start.StartupInfo, &dump)) {
-                        helper_pid = dump.dwProcessId;
-                        const ULONGLONG until = std::min(capture_started + capture_limit, began + limit);
-                        const ULONGLONG created_at = GetTickCount64();
-                        const ULONGLONG available = until > created_at ? until - created_at : 0;
-                        const ULONGLONG work_until = until - std::min<ULONGLONG>(2000, available / 2);
-                        DWORD wait = WAIT_TIMEOUT;
-                        bool assigned = ResumeThread(dump.hThread) != static_cast<DWORD>(-1);
-                        while (assigned && wait == WAIT_TIMEOUT) {
-                            const ULONGLONG tick = GetTickCount64();
-                            if (tick >= work_until) break;
-                            wait = WaitForSingleObject(dump.hProcess, static_cast<DWORD>(std::min<ULONGLONG>(100, work_until - tick)));
-                        }
-                        if (wait != WAIT_OBJECT_0) {
-                            capture_timeout = assigned && wait == WAIT_TIMEOUT;
-                            terminated = TerminateProcess(dump.hProcess, capture_timeout ? 124 : 86) != FALSE;
-                            do {
-                                const ULONGLONG tick = GetTickCount64();
-                                if (tick >= until) break;
-                                wait = WaitForSingleObject(dump.hProcess, static_cast<DWORD>(std::min<ULONGLONG>(100, until - tick)));
-                            } while (wait == WAIT_TIMEOUT);
-                        }
-                        joined = wait == WAIT_OBJECT_0;
-                        if (joined) GetExitCodeProcess(dump.hProcess, &dump_exit);
-                        CloseHandle(dump.hProcess); CloseHandle(dump.hThread);
-                    }
-                    if (initialized) DeleteProcThreadAttributeList(dump_start.lpAttributeList);
-                }
+                const auto helper = run_helper(broker,
+                    {broker, L"--dump-worker", std::to_wstring(pid), std::to_wstring(tid), prefix, hex_record(value.ExceptionRecord)},
+                    dump_job, limit, capture_limit);
+                const DWORD dump_exit = helper.code, helper_pid = helper.pid;
+                const bool capture_timeout = helper.timeout, joined = helper.joined, terminated = helper.terminated;
                 if (dump_exit != 0 || !joined) ++errors;
                 emit("{\"type\":\"capture\"" + common + ",\"prefix\":" + json(name) + ",\"capture_ms\":" + number(GetTickCount64() - capture_started) +
                      ",\"capture_exit\":" + number(dump_exit) + ",\"timed_out\":" + (capture_timeout ? "true" : "false") +

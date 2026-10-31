@@ -16,7 +16,7 @@ import tempfile
 import time
 import zipfile
 
-from windows_crash_contract import (child_environment, read_events, read_json, require, safe_file, sha,
+from windows_crash_contract import (child_environment, read_events, read_json, read_load_identities, require, safe_file, sha,
                                    verify_capture, verify_control, verify_dump_timeout_control, verify_module_bindings)
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -161,16 +161,10 @@ def execute(broker: Path, command: list[str], output: Path, timeout_ms: int, env
              'wall_seconds':time.perf_counter()-started}
     write(output/'process.json',receipt)
     events=read_events(output/'events.jsonl')
-    identities={}
-    for event in events:
-        path=event.get('image') if event.get('type')=='process' else event.get('path') if event.get('type')=='module' else None
-        if path and path not in identities:
-            candidate=Path(path)
-            try: identities[path]={'sha256':sha(candidate),'bytes':candidate.stat().st_size}
-            except OSError as error: identities[path]={'unavailable':type(error).__name__}
+    identities=read_load_identities(output,events)
     write(output/'module-identities.json',identities)
     result=verify_dump_timeout_control(events,receipt) if dump_timeout_control else verify_capture(output,events,receipt)
-    result['module_bindings']=verify_module_bindings(events,receipt,identities,images,runtimes,result)
+    result['module_bindings']=verify_module_bindings(events,receipt,identities,images,runtimes,result,root=output)
     write(output/'verified.json',result)
     return result
 
@@ -253,7 +247,7 @@ def build_tools(output: Path, environment: dict) -> tuple[Path,Path,dict]:
                  '/Fe:'+str(binary),'/Fo:'+str(directory/(name+'.obj'))]
         if extension=='cpp': command+=['/std:c++17','/EHsc']
         command+=['/link','/DEBUG:FULL','/PDB:'+str(directory/(name+'.pdb'))]
-        if extension=='cpp': command+=['Dbghelp.lib']
+        if extension=='cpp': command+=['Dbghelp.lib','Bcrypt.lib']
         started=time.perf_counter()
         with (directory/(name+'-build.log')).open('wb') as log:
             process=subprocess.run(command,cwd=directory,env=environment,stdout=log,stderr=subprocess.STDOUT,timeout=15)
@@ -281,7 +275,7 @@ def verify_directory(output: Path, expected: str) -> dict:
     """Read original artifacts offline, preserving failure as failure."""
     verify_manifest(output)
     report=read_json(output/'campaign.json')
-    require(report['schema']=='play-windows-crash-campaign-v1' and report['completed'] is True
+    require(report['schema']=='play-windows-crash-campaign-v2' and report['completed'] is True
             and report['errors']==[] and report['fixture_attempts']==1,'Diagnostic campaign is incomplete')
     require(report['original_failed_run']==41175131563 and report['original_failed_source']==BASE
             and report['original_failure_still_blocking'] is True,'Original failure provenance was rewritten')
@@ -318,7 +312,7 @@ def verify_directory(output: Path, expected: str) -> dict:
         require(receipt['broker_command']==expected_broker,'Original broker executable/arguments mismatch')
         result=(verify_dump_timeout_control(events,receipt) if mode=='dump-writer-timeout' else verify_capture(directory,events,receipt))
         result['module_bindings']=verify_module_bindings(events,receipt,read_json(directory/'module-identities.json'),
-                                                        *bindings(report,controls=control),result)
+                                                        *bindings(report,controls=control),result,root=directory)
         require(result==read_json(directory/'verified.json'),'Reduced process evidence differs from original verification')
         expected_result=report['controls'][mode] if control else report[name if name=='import' else 'fixture']
         require(result==expected_result,'Campaign reduction differs from raw process evidence')
@@ -365,7 +359,7 @@ def main() -> int:
     require(os.environ.get('GITHUB_RUN_ATTEMPT','1')=='1','Automatic reruns are not authorized by this one-attempt diagnostic')
     output=args.output.resolve(); require(not output.exists(),'Retain earlier evidence; output already exists')
     output.mkdir(parents=True)
-    report={'schema':'play-windows-crash-campaign-v1','status':'incomplete','completed':False,'errors':[],
+    report={'schema':'play-windows-crash-campaign-v2','status':'incomplete','completed':False,'errors':[],
             'original_failed_run':41175131563,'original_failed_source':BASE,'original_failure_still_blocking':True,
             'scope':'Opt-in debugger evidence only; one prescribed unchanged-fixture attempt, no automatic retries or integration approval.',
             'run_id':os.environ.get('GITHUB_RUN_ID'),'run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
