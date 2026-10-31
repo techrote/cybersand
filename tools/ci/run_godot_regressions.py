@@ -328,6 +328,213 @@ def _kill_process_tree(process: subprocess.Popen, *, wait_seconds: int = 10) -> 
             print(f"Timed-out Godot PID {process.pid} did not exit after SIGKILL", flush=True)
 
 
+@dataclass(frozen=True)
+class ReadbackContract:
+    """Explicit per-fixture requirements for the same bounded parent gate."""
+
+    label: str
+    prefix: str
+    verifier: str
+    result_suffix: str
+    required_values: tuple[tuple[str, object], ...]
+    control_counts: tuple[tuple[str, int], ...]
+    minimum_values: tuple[tuple[str, int], ...] = ()
+    arguments: tuple[str, ...] = ()
+    embedded_marker: str = ""
+    result_digest_field: str = "result_sha256"
+    source_inputs: tuple[str, ...] = ()
+    consumed_source_fields: tuple[tuple[str, str], ...] = ()
+    verifier_digest_field: str = ""
+
+
+LIFE010_READBACK = ReadbackContract(
+    "LIFE010", "test_play_life010_", "tools/ci/verify_play_life010.py", "life010",
+    (("failures", 0), ("real_lifetimes", 2), ("rejected_deliveries", 5),
+     ("native_commits", 2), ("lease_valid_cancellations", 1)),
+    (("adverse_controls", 21),),
+)
+INPUT011_READBACK = ReadbackContract(
+    "INPUT011", "test_play_input011_", "tools/ci/verify_play_input011.py", "input011",
+    (("status", "passed"), ("production_transitions", 6), ("actual_bypass_negatives", 1),
+     ("physical_devices_qualified", False), ("graphical_qualification", False)),
+    (("adverse_controls", 23), ("process_adverse_controls", 5)),
+    minimum_values=(("completed_held_steps", 21), ("completed_fresh_steps", 21)),
+    arguments=("--rig", "{rig}"), embedded_marker="PLAY_INPUT011_RESULT ",
+    result_digest_field="raw_result_sha256",
+    source_inputs=("godot/tests/play_input011_authority_case.gd", "godot/scripts/main.gd",
+                   "godot/scripts/microscenario_panel.gd", "godot/tests/test_play_input011_{rig}.gd",
+                   "godot/tests/play_life001_shared_host_case.gd"),
+    consumed_source_fields=(("fixture_sha256", "godot/tests/play_input011_authority_case.gd"),
+                            ("main_sha256", "godot/scripts/main.gd"),
+                            ("panel_sha256", "godot/scripts/microscenario_panel.gd")),
+    verifier_digest_field="verifier_sha256",
+)
+LIFE011_READBACK = ReadbackContract(
+    "LIFE011", "test_play_life011_", "tools/ci/verify_play_life011.py", "life011",
+    (("failures", 0), ("presets", 8), ("constructions", 8), ("resets", 8),
+     ("retired_graphs", 16), ("nonneutral_completed_physical_samples", 72),
+     ("old_owner_refusals", 8), ("old_generation_refusals", 8),
+     ("fresh_observation_admissions", 8), ("unsupported_oil_refusals", 8),
+     ("inertial_radius_refusals", 3), ("waits", 75),
+     ("graphical_qualification", False), ("physical_device_qualification", False)),
+    (("adverse_controls", 37),), arguments=("--platform", "{platform}"),
+    source_inputs=("godot/tests/play_life011_solver_case.gd",
+                   "godot/scripts/liquid_comparison_panel.gd",
+                   "godot/tests/test_play_life011_{rig}.gd",
+                   "godot/tests/play_life001_shared_host_case.gd",
+                   "tools/lcb/policy_contract.py", "tools/lcb/inertial_parameter_contract.py",
+                   "docs/reference/liquid-solver-capability-matrix.json",
+                   "native/include/cybersand/material.hpp",
+                   "native/include/cybersand/interaction_rules.hpp"),
+)
+READBACK_RIGS = ("stuntbuggy", "trialsbike", "acrobat", "arcadelander", "jetbarrel")
+# A subsequent fixture adds one contract and its explicit source dependencies;
+# it does not implement another process runner or weaken the current contracts.
+READBACK_CONTRACTS = (LIFE010_READBACK, INPUT011_READBACK, LIFE011_READBACK)
+
+
+def case_readback_contract(case: Case) -> ReadbackContract | None:
+    for contract in READBACK_CONTRACTS:
+        if case.name in {contract.prefix + rig for rig in READBACK_RIGS}:
+            return contract
+    # Keep LIFE010's existing public prefix behavior. INPUT011's separate
+    # legacy-controller test is deliberately outside the five-rig contract.
+    return LIFE010_READBACK if case.name.startswith(LIFE010_READBACK.prefix) else None
+
+
+def readback_source_identity(source: str, relative: str, label: str, timeout: float = 5) -> dict:
+    """Bind actual and canonical source bytes without erasing CRLF identity."""
+    if not re.fullmatch(r"[0-9a-f]{40}", source):
+        raise ValueError(label + " verifier requires an exact source commit")
+    actual = (ROOT / relative).read_bytes()
+    canonical = subprocess.check_output(["git", "show", source + ":" + relative], cwd=ROOT, timeout=timeout)
+    # Git's canonical text is LF; a Windows checkout may use CRLF. Keep both
+    # identities so permitted checkout conversion never erases actual bytes.
+    if actual.replace(b"\r\n", b"\n") != canonical:
+        raise ValueError(label + " verifier differs from its source commit: " + relative)
+    return {"path": relative, "source_revision": source,
+            "actual_sha256": hashlib.sha256(actual).hexdigest(),
+            "canonical_sha256": hashlib.sha256(canonical).hexdigest()}
+
+
+def life010_verifier_identity(source: str) -> dict:
+    """Retained LIFE010 API for its source-bound verifier identity."""
+    return readback_source_identity(source, LIFE010_READBACK.verifier, "LIFE010")
+
+
+def verify_case_evidence(case: Case, record: dict, output_dir: Path, source: str,
+                         contract: ReadbackContract, *, verifier_identity=None) -> dict:
+    """Reduce original evidence under one unchanged 15-second overall bound."""
+    started = time.perf_counter()
+    result = {"status": "failed", "timeout_seconds": 15, "returncode": None,
+              "seconds": 0.0, "error": None}
+    def remaining() -> float:
+        available = 15 - (time.perf_counter() - started)
+        if available <= 0:
+            raise ValueError(contract.label + " readback exhausted its 15-second bound before execution")
+        return available
+
+    verifier_log = None
+    try:
+        directory = output_dir / (case.name + "-readback")
+        directory.mkdir(exist_ok=False)
+        receipt = directory / "engine-process.json"
+        write_json(receipt, record)
+        reduced = directory / "verified.json"
+        rig = case.name.removeprefix(contract.prefix)
+        inputs = {"process": receipt, "log": output_dir / record["log"]}
+        if contract.embedded_marker:
+            marker = contract.embedded_marker.encode("utf-8")
+            payloads = [line[len(marker):] for line in inputs["log"].read_bytes().splitlines()
+                        if line.startswith(marker)]
+            if len(payloads) != 1:
+                raise ValueError(contract.label + " original raw result inventory is incomplete")
+            inputs["result"] = directory / "raw-result.json"
+            # Retain the exact log payload bytes; no parse/reformat/relabel.
+            inputs["result"].write_bytes(payloads[0])
+            result["raw_result"] = inputs["result"].relative_to(output_dir).as_posix()
+        else:
+            inputs["result"] = output_dir / (case.name + "-artifacts") / (rig + "-" + contract.result_suffix + ".json")
+        expected_hashes = {name: sha256(path) for name, path in inputs.items()}
+        result["input_sha256"] = expected_hashes
+        result["verifier_identity"] = (verifier_identity(source) if verifier_identity else
+            readback_source_identity(source, contract.verifier, contract.label, min(5, remaining())))
+        source_inputs = {path.format(rig=rig): readback_source_identity(
+            source, path.format(rig=rig), contract.label, min(5, remaining())) for path in contract.source_inputs}
+        if source_inputs:
+            result["source_input_identity"] = source_inputs
+        command = [sys.executable, str(ROOT / contract.verifier),
+                   "--result", str(inputs["result"].resolve()),
+                   "--log", str(inputs["log"].resolve()),
+                   "--process-json", str(receipt.resolve()), "--source", source,
+                   *(argument.format(rig=rig, platform="Windows" if sys.platform == "win32" else "Linux")
+                     for argument in contract.arguments),
+                   "--self-test", "--output", str(reduced.resolve())]
+        result["command"] = command
+        result["receipt"] = receipt.relative_to(output_dir).as_posix()
+        result["receipt_sha256"] = sha256(receipt)
+        result["output"] = reduced.relative_to(output_dir).as_posix()
+        verifier_log = directory / "verifier-output.txt"
+        with verifier_log.open("w", encoding="utf-8") as log:
+            process = subprocess.run(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, timeout=remaining())
+        result["returncode"] = process.returncode
+        if process.returncode != 0:
+            raise ValueError(contract.label + " raw-evidence verifier failed")
+        evidence = json.loads(reduced.read_text(encoding="utf-8"))
+        if not isinstance(evidence, dict):
+            raise ValueError(contract.label + " independent result is not an object")
+        if any(evidence.get(contract.result_digest_field if name == "result" else name + "_sha256") != digest
+               for name, digest in expected_hashes.items()):
+            raise ValueError(contract.label + " independent input digest mismatch")
+        if any(sha256(inputs[name]) != digest for name, digest in expected_hashes.items()):
+            raise ValueError(contract.label + " original input changed during readback")
+        if sha256(ROOT / contract.verifier) != result["verifier_identity"]["actual_sha256"]:
+            raise ValueError(contract.label + " verifier changed during readback")
+        if any(sha256(ROOT / path) != identity["actual_sha256"] for path, identity in source_inputs.items()):
+            raise ValueError(contract.label + " source input changed during readback")
+        if contract.verifier_digest_field and evidence.get(contract.verifier_digest_field) != result["verifier_identity"]["actual_sha256"]:
+            raise ValueError(contract.label + " independent verifier digest mismatch")
+        if contract.consumed_source_fields:
+            consumed = evidence.get("consumed_source_sha256", {})
+            if not isinstance(consumed, dict) or consumed != {
+                    field: source_inputs[path]["canonical_sha256"] for field, path in contract.consumed_source_fields}:
+                raise ValueError(contract.label + " independent consumed source digest mismatch")
+        for field, count in contract.control_counts:
+            controls = evidence.get(field, [])
+            if not isinstance(controls, list) or not all(isinstance(row, dict) for row in controls):
+                raise ValueError(contract.label + " independent control inventory is malformed")
+            if not (len(controls) == count and len({row["name"] for row in controls}) == count
+                    and all(row.get("rejected_for") for row in controls)):
+                raise ValueError(contract.label + " independent result/control inventory is incomplete")
+        if not (evidence.get("source_revision") == source and evidence.get("rig") == rig
+                and all(evidence.get(field) == value for field, value in contract.required_values)
+                and all(type(evidence.get(field)) is int and evidence[field] >= value
+                        for field, value in contract.minimum_values)):
+            raise ValueError(contract.label + " independent result/control inventory is incomplete")
+        result["output_sha256"] = sha256(reduced)
+        result["status"] = "passed"
+    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
+        result["error"] = f"{type(error).__name__}: {error}"
+    try:
+        if verifier_log is not None and verifier_log.is_file():
+            result["verifier_log"] = verifier_log.relative_to(output_dir).as_posix()
+            result["verifier_log_sha256"] = sha256(verifier_log)
+    except OSError as error:
+        result["status"] = "failed"
+        result["error"] = result["error"] or f"{type(error).__name__}: {error}"
+    result["seconds"] = round(time.perf_counter() - started, 6)
+    if result["seconds"] > 15:
+        result["status"] = "failed"
+        result["error"] = result["error"] or contract.label + " readback exceeded its 15-second bound"
+    return result
+
+
+def verify_life010_case(case: Case, record: dict, output_dir: Path, source: str) -> dict:
+    """Retained LIFE010 entry point and original engine-receipt semantics."""
+    return verify_case_evidence(case, record, output_dir, source, LIFE010_READBACK,
+                                verifier_identity=life010_verifier_identity)
+
+
 def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
              env: dict[str, str] | None = None) -> tuple[dict, bool]:
     log_path = output_dir / (case.name + ".log")
@@ -343,6 +550,12 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     timeout_diagnostic_error = None
     capture_error = None
     timeout_kind = None
+    # Let graphical fixtures retain their raw captures beside the process log.
+    # This is per-process test evidence, never production-frame instrumentation.
+    process_env = dict(os.environ if env is None else env)
+    process_env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(
+        (output_dir / (case.name + "-artifacts")).resolve()
+    )
     with log_path.open("w", encoding="utf-8") as log:
         try:
             options = (
@@ -350,7 +563,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
                 if sys.platform == "win32" else {"start_new_session": True}
             )
             process = subprocess.Popen(
-                command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env=env, **options,
+                command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env=process_env, **options,
             )
             pid = process.pid
             def observe_timeout(now):
@@ -432,6 +645,17 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "last_heartbeat": diagnostics.last_progress(output),
         "diagnostics": case.name + "-diagnostics" if (output_dir / (case.name + "-diagnostics")).exists() else None,
     }
+    contract = case_readback_contract(case)
+    if not failed and contract is not None:
+        # The engine footer is necessary but insufficient for this adversarial
+        # fixture. Preserve its original receipt, then require independent raw
+        # packet/owner/deadline validation and all reason-specific controls.
+        source = process_env.get("CYBERSAND_SOURCE_REVISION", "")
+        record["independent_evidence"] = (verify_life010_case(case, dict(record), output_dir, source)
+            if contract is LIFE010_READBACK else verify_case_evidence(case, dict(record), output_dir, source, contract))
+        if record["independent_evidence"]["status"] != "passed":
+            failed = True
+            status = record["status"] = "failed"
     if failed:
         print(
             f"{case.name} {status}; elapsed={record['seconds']:.3f}s; exit={returncode}; "
@@ -468,6 +692,7 @@ def main() -> int:
         raise RuntimeError(f"Missing Rapier runtime: {rapier}")
 
     source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    os.environ["CYBERSAND_SOURCE_REVISION"] = source_sha
     godot_version = subprocess.check_output([args.godot, "--version"], text=True).strip()
     identity = {
         "source_sha": source_sha,

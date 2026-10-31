@@ -26,9 +26,11 @@ const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
+const PARTICIPATION_SAMPLE_INTERVAL_USEC: int = 250000
 
 var _thread: Thread = Thread.new()
 var _mutex: Mutex = Mutex.new()
+var _native_worker_request: int = int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0))
 # The Linux test build uses the compiled native phased backend. Unsupported
 # platforms retain the script world as a functional compatibility fallback.
 var _world = _create_world()
@@ -845,6 +847,66 @@ var _last_hard_surface_snapshot_usec: int = -HARD_SURFACE_SNAPSHOT_INTERVAL_USEC
 var _worker_overruns: int = 0
 var _scheduler_thread_capacity_hint: int = 1
 var _backend_name: String = "gdscript-serial-fallback"
+var _participation_sampling_enabled: bool = false # Mutex-owned request; default off.
+var _participation_bridge: Variant
+var _participation_sample: Dictionary = {} # Worker-exclusive immutable value.
+var _participation_sample_sequence: int = 0
+var _participation_sample_usec: int = -PARTICIPATION_SAMPLE_INTERVAL_USEC
+
+
+func set_worker_participation_sampling(enabled: bool) -> void:
+	_mutex.lock()
+	_participation_sampling_enabled = enabled
+	_mutex.unlock()
+
+
+func _empty_worker_participation() -> Dictionary:
+	# An unobserved value is published too. Retain one immutable empty value
+	# instead of allocating a mutable Dictionary on every default-off frame.
+	# Replacing the owner slot must not mutate any previously published sample.
+	if not _participation_sample.is_empty() or not _participation_sample.is_read_only():
+		_participation_sample = {}
+		_participation_sample.make_read_only()
+	return _participation_sample
+
+
+func _sample_worker_participation(now_usec: int) -> Dictionary:
+	_mutex.lock()
+	var enabled: bool = _participation_sampling_enabled
+	_mutex.unlock()
+	if not enabled:
+		return _empty_worker_participation()
+	if int(_participation_sample.get("world_generation", -1)) != _world_generation:
+		_empty_worker_participation()
+	var completed_tick: int = int(_world.tick_index)
+	if completed_tick <= 0 or completed_tick == int(_participation_sample.get("completed_tick", -1)) \
+		or now_usec - _participation_sample_usec < PARTICIPATION_SAMPLE_INTERVAL_USEC:
+		return _participation_sample
+	# Only the exclusive owner queries copied adapter statistics. This is an
+	# opt-in, at-most-4Hz bounded count query; no cells, textures, or live World
+	# reference crosses to Main. No native kernel or worker-pool API changes.
+	_participation_sample_usec = now_usec
+	if _backend_name != "native-phased" or not ClassDB.class_exists(&"CyberDemoBridge"):
+		return _empty_worker_participation()
+	if _participation_bridge == null:
+		_participation_bridge = ClassDB.instantiate(&"CyberDemoBridge")
+	if _participation_bridge == null or not _participation_bridge.has_method(&"inspect_statistics"):
+		return _empty_worker_participation()
+	var started: int = Time.get_ticks_usec()
+	_participation_sample_usec = started
+	var values: Dictionary = _participation_bridge.inspect_statistics(_world)
+	if not values.get("ok", false) or int(values.get("completed_tick", -1)) != completed_tick:
+		return _empty_worker_participation()
+	_participation_sample_sequence += 1
+	_participation_sample = {"world_generation":_world_generation, "completed_tick":completed_tick,
+		"sampled_usec":started, "sequence":_participation_sample_sequence,
+		"workers_observed":int(values.get("values", {}).get("worker_threads_observed", -1)),
+		"worker_capacity":int(_world.get_worker_threads()),
+		"phase_jobs":values.get("phase_jobs_last_tick", []).duplicate(),
+		"collection_usec":Time.get_ticks_usec()-started,
+		"scope":"maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution"}
+	_freeze_capture(_participation_sample)
+	return _participation_sample
 
 
 func _create_world():
@@ -2006,6 +2068,8 @@ func _publish_snapshot(
 	snapshot.scheduler_jobs_last_tick = _world.scheduler_jobs_last_tick
 	snapshot.scheduler_parallel_phases_last_tick = _world.scheduler_parallel_phases_last_tick
 	snapshot.scheduler_thread_capacity_hint = _scheduler_thread_capacity_hint
+	snapshot.native_worker_request = _native_worker_request
+	snapshot.native_worker_participation = _sample_worker_participation(now_usec)
 	snapshot.backend_name = _backend_name
 	snapshot.sparse_flight_moves_last_tick = _world.sparse_flight_moves_last_tick
 	snapshot.rigid_body_results = _world.rigid_body_results()

@@ -10,6 +10,81 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## PLAY LIFE010 raw-evidence gate — 2026-10-31
+
+The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged
+ordinary Windows/Linux shard planner. Each actual engine process retains its
+180-second bound; import240s, fixture150s, operations/teardown15s and initial
+Main acknowledgement30s remain unchanged. A passing engine summary alone is
+insufficient: the common runner retains the original engine receipt, then runs
+`tools/ci/verify_play_life010.py --self-test` against the exact source, raw log,
+result and packet files under a separate15-second readback bound. Missing,
+failed, late or incomplete readback fails the case while preserving the actual
+engine exit and original log. An existing readback directory is refused instead
+of overwriting its original receipt.
+
+The [dated LIFE010 record](../audits/2026-10-31-play-life010-live-delivery.md)
+separates actual-host and source-bound local evidence from future hosted gates.
+Standalone independent readback accepts ordinary receipts with explicit status;
+the original local five-field receipt format requires the deliberately named
+`--local-process-receipt` option. This compatibility path does not authorize a
+missing status in hosted evidence. The independent reader checks both positive
+native/physical effects and21 reason-specific corrupt-evidence controls.
+
+## PLAY INPUT011 ordinary UI authority and raw-evidence gate — 2026-10-31
+
+The five `test_play_input011_<rig>.gd` cases use the same bounded parent
+readback mechanism as LIFE010. Their v2 trace exercises six ordinary UI/focus
+transitions, including the explicit Pause / resume button while Seed text
+focus remains, plus a real-host cancellation-bypass negative. The separate
+`test_play_input011_legacy_pause.gd` case retains its ordinary legacy-controller
+contract and is not interpreted as a five-rig trace.
+
+The parent preserves the engine receipt and original log, extracts the exact
+single JSON payload into a new readback directory, and invokes
+`tools/ci/verify_play_input011.py --self-test` under one **15-second overall
+readback bound**. It binds the verifier, consumed scripts, rig wrapper and
+existing shared-host helper to the declared Git source, retaining actual and
+canonical hashes. Original process/log/result and source hashes must remain
+unchanged through readback. All 23 trace and five process adverse controls are
+required. Completed held/fresh sample totals retain their existing minimums;
+additional fully validated physics callbacks do not become false failures.
+Windows input custody includes both LIFE010 and INPUT011 verifiers.
+
+The common `ReadbackContract` owns only explicit verifier paths, source
+dependencies, arguments and summary/control requirements. LIFE010's entry
+points, raw packet checks and original limits remain. Missing, malformed,
+late, nonzero, mutated or source-mismatched readback fails its parent case
+without changing the actual engine exit or overwriting an earlier attempt.
+The [dated INPUT011 record](../audits/2026-10-31-play-input011-authority-transitions.md#life010-integration-and-focused-button-correction)
+separates original v1 evidence, the v2 focused-button failure, the correction
+and resulting-head qualification still required in hosted CI.
+
+## PLAY LIFE011 composed-policy raw-evidence gate — 2026-10-31
+
+The five `test_play_life011_<rig>.gd` cases add an explicit contract to the same
+ordinary parent hook. Their original external JSON result, log and engine
+receipt are retained and passed to `tools/ci/verify_play_life011.py --platform
+Linux|Windows --self-test` with the exact source. Each rig must retain eight
+presets, eight builds, eight resets, 72 nonneutral completed physical samples,
+eight old-owner and eight old-generation refusals, eleven actual native policy
+refusals, sixteen retired graphs and all 37 reason-specific adverse controls.
+
+One 15-second overall readback budget includes source checks, reduction and
+result validation. Canonical and actual before/after hashes cover the verifier,
+fixture, preset script, rig wrapper, shared-host helper, two policy-contract
+Python dependencies, capability matrix and two native catalogue headers.
+Windows execution custody includes the exact Python and JSON dependency paths;
+its existing native-header scope is preserved. Original process/log/result
+digests, the reduced result and verifier log remain independently checkable.
+The engine180s, import240s, fixture150s, operation/teardown15s and first-Main30s
+bounds are unchanged. A late, partial or failed readback fails its parent case.
+
+The [dated LIFE011 record](../audits/2026-10-31-play-life011-composed-solver-matrix.md)
+separates the original frozen 704de34 local campaign from this integration.
+Headless native/Rapier results do not establish graphical or physical-device
+qualification, and a cherry-pick does not qualify the resulting source.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
@@ -967,7 +1042,15 @@ Its passing checks do not replace actual cold compilation/execution. The first
 local two-job normal build failed at linking with an unexplained empty object;
 the separate sanitizer attempt stopped at its second test with a nonexecutable
 ELF output. Both failed qualifications and diagnostic records remain preserved.
-Fresh complete resulting-head hosted gates are required before integration.
+Original candidate `b7a29cac` subsequently passed its first hosted Native matrix,
+with all nine normal and nine sanitized binaries completing in 103.95 and
+289.31 seconds inside the same 300/600-second limits. Independent raw readback
+checks all six families, exact compilation/test inventories and 154 scientific
+CLI invocations; maximum child RSS is not concurrent aggregate memory. The
+[cumulative LIFE011 preparation](../audits/2026-10-31-worldgen-bounded-build.md#cumulative-life011-integration--preparation-only)
+preserves that evidence's original source identity and all failed attempts.
+It changes no Makefile, native/Godot/scientific input or runtime. Fresh complete
+resulting-head hosted gates are required before integration.
 
 Godot execution requires a source-matched extension and the exact pinned editor.
 The [hierarchy profile](../../examples/worldgen/hierarchy-multi-district.json)
@@ -1210,6 +1293,10 @@ Controls and manual course entry are in the
 ## Actor control prototype checks
 
 ### Shared Play session and owner qualification
+
+The [executable manual packet](play-desktop-manual-qualification.md) prepares
+a source/runtime-pinned checklist and initially untested result sheet. Its
+generator performs no engine or physical execution and cannot grant acceptance.
 
 Use the exact candidate checkout named by its PR, Godot
 `4.7.stable.official.5b4e0cb0f` and the repository-pinned native/Rapier LFS bytes.

@@ -22,15 +22,7 @@ func _draw() -> void:
 		draw_line(_point(Vector2(x, 128)), _point(Vector2(x, 384)), Color(0.23, 0.42, 0.52, 0.10), 1.0)
 	for y: int in range(128, 385, 32):
 		draw_line(_point(Vector2(128, y)), _point(Vector2(640, y)), Color(0.23, 0.42, 0.52, 0.10), 1.0)
-	for index: int in range(targets.size()):
-		var point: Vector2 = _point(targets[index])
-		var radius: float = 13.0 * size.x / _view_size.x
-		var color: Color = accent if index == target_index else Color(0.5, 0.65, 0.72, 0.24)
-		if index < target_index:
-			color = Color(0.5, 0.95, 0.7, 0.55)
-		draw_arc(point, radius, 0.0, TAU, 40, color, 2.0, true)
-		var label: String = str(index + 1) if index >= target_index else "✓"
-		draw_string(ThemeDB.fallback_font, point + Vector2(-4, -radius - 7), label, HORIZONTAL_ALIGNMENT_CENTER, -1, 15, color)
+	draw_target_markers()
 	if material_field:
 		var point: Vector2 = _point(actor_position)
 		draw_arc(point, field_radius * size.x / _view_size.x, 0.0, TAU, 64, Color(accent, 0.20), 1.0, true)
@@ -65,3 +57,15 @@ func _draw() -> void:
 					_point(pose * Vector2(half.x, half.y * band)), Color("405364"), 2.0, true)
 			draw_line(_point(pose * Vector2(-half.x * 0.55, -half.y * 0.85)),
 				_point(pose * Vector2(-half.x * 0.55, half.y * 0.85)), Color(1, 0.9, 0.65, 0.55), 1.0, true)
+
+
+func draw_target_markers() -> void:
+	for index: int in range(targets.size()):
+		var point: Vector2 = _point(targets[index])
+		var radius: float = 13.0 * size.x / _view_size.x
+		var color: Color = accent if index == target_index else Color(0.5, 0.65, 0.72, 0.24)
+		if index < target_index:
+			color = Color(0.5, 0.95, 0.7, 0.55)
+		draw_arc(point, radius, 0.0, TAU, 40, color, 2.0, true)
+		var label: String = str(index + 1) if index >= target_index else "✓"
+		draw_string(ThemeDB.fallback_font, point + Vector2(-4, -radius - 7), label, HORIZONTAL_ALIGNMENT_CENTER, -1, 15, color)

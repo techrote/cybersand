@@ -19,6 +19,7 @@ var policy_editor: CyberLiquidComparisonPanel
 var build_button: Button
 var resume_button: Button
 var reset_button: Button
+var return_button: Button
 var applied_label: Label
 var policy_label: Label
 var status_label: Label
@@ -102,6 +103,7 @@ func setup(controller: Control) -> void:
 	build_button = _button(actions, "Build selected session", build_selected)
 	resume_button = _button(actions, "Play / resume", resume_play)
 	reset_button = _button(actions, "Restart applied session", restart_applied)
+	return_button = _button(actions, "Return to launcher", return_to_launcher)
 	_button(actions, "Close", hide)
 	_refresh_controls()
 	refresh()
@@ -158,6 +160,11 @@ func restart_applied() -> void:
 	if not host._playable_course_controls_active(): return
 	host.microscenario_reset()
 	refresh()
+
+
+func return_to_launcher() -> void:
+	# Reuse the ordinary navigation/autoload teardown, including Main's join.
+	get_node("/root/FeatureNavigation").return_to_launcher()
 
 
 func _policy_assignment(policy: Dictionary, material: int, applied: bool) -> String:

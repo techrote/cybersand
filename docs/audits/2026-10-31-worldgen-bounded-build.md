@@ -2,13 +2,15 @@
 title: Bounded worldgen build investigation
 status: Current
 document-kind: evidence
-scope: Original post-merge worldgen timeout, unchanged-deadline two-job prerequisite candidate, inventory controls and retained local qualification failures
+scope: Original worldgen failures, source-bound hosted two-job success and cumulative LIFE011 integration with unchanged command deadlines
 canonical-for: []
 last-reviewed: 2026-10-31
 related-documents: [../operations/local-build-and-validation.md, ../operations/github-development-and-release.md, 2026-10-31-ci-parallel-production-integration.md, 2026-10-21-gen004-hierarchical-generation.md]
 ---
 
 # Bounded worldgen build investigation
+
+## Original candidate
 
 This isolated candidate starts from accepted main
 `5c709f837a0e2b3248bc9df85baf6da9c8a88a0b`, tree
@@ -49,6 +51,109 @@ retry. The normal and sanitizer failures below retain their original **5c709f
 base plus local candidate delta** identities; cherry-picking them onto a newer
 main does not requalify or relabel those executions. Full resulting-head hosted
 gates and independent final review remain required.
+
+## Original hosted candidate success — exact b7a29cac
+
+The original five-path candidate was published in
+[PR #322](https://github.com/techrote/cybersand/pull/322) at
+`b7a29cac5dec70691c8da2f67aa86dc83ae0f615`, tree
+`0dafdb549b2c5292a7555e4edb74dfb45df76576`. Its first Native run
+[41179879175](https://github.com/techrote/cybersand/actions/runs/41179879175)
+executed test merge `5bf4a99c8d46c364b63e35373c5bcea2fe9dbd14`, with parents
+accepted main `afa8185c8dc57405ef54765a6cdf71cb7bfbf6e4` and that PR head.
+The test merge has the same tree as the published head. Independent readback
+authenticated both original Git commit objects, all seven artifact ZIPs against
+their API sizes/SHA-256 and complete ZIP CRCs, and the eight successful jobs'
+retained decoded logs. The workflow-conditioned ready-scope job was skipped;
+it is not an executed test pass.
+
+All six Native families and the original aggregate pass independent reduction.
+Normal, ASan/UBSan and TSan each retain all 164 ordered registered cases.
+Worldgen retains nine normal and nine sanitized completed binaries; soliding
+retains eight normal and eight sanitized binaries. The original scientific
+assertions were reapplied offline to all 154 physics CLI invocations and their
+308 unchanged stdout/stderr files. The 64 Stage3B smoke rows retain six synthetic
+successes and 58 unavailable rows; this is parser/apparatus smoke, not scientific
+candidate or performance acceptance.
+
+The worldgen job
+[124474925892](https://github.com/techrote/cybersand/actions/runs/41179879175/job/124474925892)
+used GitHub-hosted Ubuntu 24.04.5 image `20261025.353.1`, GCC 13.3.0 and Make 4.3.
+It reported four logical CPUs and `MemTotal: 16367520 kB`. Each variant executed
+the exact twelve object and nine binary compile/link commands, including their
+distinct threaded flags and outputs, then all nine tests in source order.
+Both semantic-plane binaries completed 774,842 assertions with zero failures.
+The retained dry-run streams match their source-bound helper/Makefile hashes
+and the actual compiler command inventories. The original policy job passed
+6 provider, 38 Native-evidence and 12 inventory controls. Independent copied-stream
+adverse controls refused missing prerequisites, missing/reordered tests,
+sanitizer loss in both streams, output aliasing, late compilation and an unknown
+executable for their intended reasons; no compiler or fixture was rerun.
+
+| Original measurement | Normal | Sanitized |
+|---|---:|---:|
+| GNU time elapsed, seconds | 103.95 | 289.31 |
+| Unchanged command limit, seconds | 300 | 600 |
+| First compilation to first test, original log seconds | 95.814342 | 235.120842 |
+| First test to ninth completion, original log seconds | 8.120854 | 54.123974 |
+| GNU time maximum child RSS, KiB | 715,120 | 1,167,988 |
+| Actual exit | 0 | 0 |
+
+The timestamped job's complete family block matches the ZIP-retained raw log.
+GNU time's RSS is a maximum child observation, not simultaneous aggregate
+memory. Configured `-j2` bounds make recipes; its aggregate CPU accounting is
+not a per-process participation trace. This single source-bound hosted success
+does not establish a universal timing margin or the cause of any earlier failure.
+
+The original artifact identities are retained for independent download/readback:
+
+| Artifact ID / family | ZIP SHA-256 |
+|---|---|
+| `13035295140` / normal | `0fa17217255cc393e04050e8861adfe9a63863dfada271852e4c81589a12e3d7` |
+| `13035115973` / ASan/UBSan | `9e823b68b915a9d154a4d25209a3d29e9d0f8d5266018b4adb45ad9dd0c9ca3b` |
+| `13034657276` / TSan | `75a9058c9c8ec55ac463a8a2c623649eda7ee032a06083f2e5cc07f7be77a248` |
+| `13034841283` / worldgen | `e278c618b17bf194c8e20f9a89765183d93bd62a480676442f1044fb1b15aeaa` |
+| `13034770875` / soliding normal | `59f5d867b71c393b0c09aae7feaa0d622bfa40ba6f6f6781f10cc61060ca294b` |
+| `13034504877` / soliding ASan | `f2cbb30758faf99ea767e8bd868cec07b3a714c15dcc91e1f06df3e27396e75c` |
+| `13035261398` / aggregate | `91362db0fc864e77ba324ea9a50792c37254dc6f61da3b668e8e57a4e8f4322b` |
+
+The independent receipt is retained in the parent run at
+`evidence/322-native-independent/independent-review.json`, SHA-256
+`920d3f667fd8f374d6f92ef954118b93973147d20d4767ac4e9b548d008e440b`.
+Its source/command reader, original ZIPs and logs remain alongside it.
+This Native-only review does not requalify Godot or erase the original main
+timeout or either local failure below.
+
+## Cumulative LIFE011 integration — preparation only
+
+The cumulative local candidate starts at frozen LIFE011
+`9f51d0bb6e5aab557a7da14a70a775b7f698b14c`, tree
+`6076c4520c91fbcbbb2bbebf1da90e14be34d0f7`, on the isolated
+`work/worldgen-life011-integration` branch. The unchanged original worldgen
+patch cherry-picks without conflicts as
+`8a59cf10a88e3bf7bd20310d9a63073773817e78`; the following documentation
+reconciliation changes only this audit and the canonical build guide.
+
+The Native workflow, inventory checker and twelve-test source remain byte-identical
+to original `b7a29cac`. Relative to the LIFE011 base, only the same five worldgen
+paths differ. Makefile, native and Godot source, authored fixtures, solver
+defaults, runtime LFS pointers, native/Rapier provenance, dependency locks and
+protected scientific/training inputs remain exact. All twenty timeout-wrapped
+commands preserve their limits/order except for the two already reviewed
+worldgen command wrappers; all nine test recipe lines remain serial.
+
+This integration uses source/inventory, provider, Native-evidence, documentation,
+repository identity, historical M11 and retrieval checks only. It performs no
+local compilation, runtime materialization, engine execution, retry or repair of
+the failed local outputs. The original `b7a29cac` hosted result and the LIFE011
+execution at its own earlier source retain their original identities. No earlier
+execution is relabeled as a test of this cumulative tree.
+
+Publication must update the existing #322 history to consume the published
+LIFE011 child. Fresh complete applicable exact-head hosted gates and independent
+resulting-source/evidence review remain required before guarded integration.
+The current documentation route remains the canonical build guide; no new
+scientific, solver, user-control, ADR or scheduling decision is introduced.
 
 ## Original hosted failure
 
