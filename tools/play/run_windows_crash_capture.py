@@ -9,7 +9,6 @@ import os
 from pathlib import Path
 import platform
 import re
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -44,6 +43,49 @@ ENGINE_ARCHIVE_BYTES=83764371
 CONTROL_MODES=('normal','handled','crash','child-crash','hang')
 BUILD_CONTROL_MODES=('normal-child','nonzero','orphan-hang','slow-child','late-child-failure')
 SLOW_CONTROL_SECONDS=20
+TOOLCHAIN={
+    'schema':'play-windows-clang-lld-v1',
+    'family':'clang-cl/lld-link',
+    'version':'20.1.8',
+    'official_installer':{
+        'url':'https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.8/LLVM-20.1.8-win64.exe',
+        'bytes':385658654,
+        'sha256':'3197846a2b19063687dd56e93e34cd941e3548d907f23a6131571321bdf9fe7b'},
+    'compiler':{'path':r'C:\Program Files\LLVM\bin\clang-cl.exe','bytes':101879296,
+                'sha256':'51ace51d190c6f09af277bb8d6354b3fb2fd8495cae3d80dcb1c36c2d1a816d4'},
+    'linker':{'path':r'C:\Program Files\LLVM\bin\lld-link.exe','bytes':67509760,
+              'sha256':'6590ac0122cd5e11fcd05cc9cd5b7ad01cb89961487b9b81c4330fb59abcb5d9'},
+}
+BUILD_OVERRIDE_NAMES=frozenset(('CL','_CL_','LINK','_LINK_','CCC_OVERRIDE_OPTIONS','CCC_ADD_ARGS',
+                              'CLANG_CONFIG_FILE_SYSTEM_DIR','CLANG_CONFIG_FILE_USER_DIR'))
+
+def build_environment(environment: dict[str,str]) -> tuple[dict[str,str],list[str]]:
+    """Keep SDK discovery inputs; prevent ambient flags/config from changing commands."""
+    removed=sorted(name for name in environment if name.upper() in BUILD_OVERRIDE_NAMES)
+    return {name:value for name,value in environment.items() if name not in removed},removed
+
+def verify_tool_files(observed: dict|None=None) -> None:
+    for role in ('compiler','linker'):
+        identity=TOOLCHAIN[role];path=Path(identity['path'])
+        actual=({'path':str(path),'bytes':path.stat().st_size,'sha256':sha(path)} if path.is_file()
+                else {'path':str(path),'missing':True})
+        if observed is not None:observed[role]=actual
+        require(actual==identity,'Pinned LLVM '+role+' executable differs or is missing')
+
+def version_command(role: str) -> list[str]:
+    require(role in ('compiler','linker'),'Unknown diagnostic tool role')
+    return [TOOLCHAIN[role]['path'],*(['--no-default-config'] if role=='compiler' else []),'--version']
+
+def verify_tool_version(role: str, log: str) -> None:
+    lines=log.splitlines()
+    prefix='clang version ' if role=='compiler' else 'LLD '
+    require(lines and re.fullmatch(re.escape(prefix+TOOLCHAIN['version'])+r'(?: \([^\r\n]*\))?',lines[0]) is not None,
+            'Pinned LLVM '+role+' version differs')
+    if role=='compiler':
+        require('Target: x86_64-pc-windows-msvc' in lines,'LLVM compiler target differs')
+
+def version_identity(role: str) -> dict:
+    return {'stage':'version','role':role,'toolchain':TOOLCHAIN}
 
 def build_control_command(python: str, mode: str) -> list[str]:
     require(mode in BUILD_CONTROL_MODES,'Unknown build ownership control')
@@ -309,51 +351,94 @@ def engine(archive: Path, output: Path, environment: dict) -> tuple[Path,dict]:
     return console,{'version':windows.GODOT_VERSION,'archive_sha512':windows.GODOT_SHA512,
                     'archive_bytes':archive.stat().st_size,'executables':binaries}
 
-def sdk_command(compiler: str, source: str, binary: str, obj: str, pdb: str, extension: str) -> list[str]:
-    command=[compiler,'/nologo','/Bv','/showIncludes','/Od','/W4','/WX','/Z7','/MT',source,
-             '/Fe:'+binary,'/Fo:'+obj]
+def compile_command(source: str, obj: str, extension: str) -> list[str]:
+    command=[TOOLCHAIN['compiler']['path'],'--no-default-config','--target=x86_64-pc-windows-msvc',
+             '/nologo','/showIncludes','/Od','/W4','/WX','/Z7','/MT','/c',source,'/Fo:'+obj]
     if extension=='cpp':
         command+=['/std:c++17','/EHsc',
                   '/DCYBERSAND_CRASH_CAPTURE_LIMIT_MS='+str(policy.CAPTURE_MS),
                   '/DCYBERSAND_CRASH_MAX_CASE_MS='+str(policy.FIXTURE_MS)]
-    command+=['/link','/DEBUG:FULL','/PDB:'+pdb]
+    return command
+
+def link_command(obj: str, binary: str, pdb: str, extension: str) -> list[str]:
+    command=[TOOLCHAIN['linker']['path'],'/NOLOGO','/WX','/MACHINE:X64','/SUBSYSTEM:CONSOLE',
+             '/DEBUG:FULL','/OUT:'+binary,'/PDB:'+pdb,obj,'kernel32.lib']
     if extension=='cpp':command+=['Dbghelp.lib','Bcrypt.lib']
     return command
 
+def build_identity(stage: str, source: str, source_sha256: str, *, obj: dict|None=None) -> dict:
+    require(stage in ('compile','link') and (obj is not None)==(stage=='link'),'Unknown diagnostic build phase')
+    identity={'stage':stage,'source':source,'source_sha256':source_sha256,'toolchain':TOOLCHAIN}
+    if obj is not None:identity['object']=obj
+    return identity
+
+def retained_identity(path: Path) -> dict:
+    require(path.is_file() and path.stat().st_size>0,'Diagnostic output missing: '+path.name)
+    return {'sha256':sha(path),'bytes':path.stat().st_size}
+
+def run_tool_operation(directory: Path, environment: dict, record: dict, row: dict) -> None:
+    """Seal failure before raising; an exit-zero root cannot hide any owned child."""
+    write(directory/'build.json',record)
+    operation=directory/row['operation']
+    try:
+        row['result']=owned_build.run(row['command'],directory,environment,operation,row['identity'])
+        require(row['result']['status']=='passed',
+                'LLVM diagnostic '+row['identity']['stage']+' failed or timed out; original operation evidence retained')
+        require(owned_build.verify(operation,row['command'],row['identity'],cwd=str(directory))==row['result'],
+                'Build process reduction differs')
+        verify_complete_tool_exits(row['result'])
+        verify_tool_files(record['observed_tools'])
+        row['status']='passed'
+    except (OSError,ValueError) as error:
+        row.update(status='failed',error=str(error))
+        raise
+    finally:
+        write(directory/'build.json',record)
+
+def probe_toolchain(directory: Path, environment: dict, record: dict) -> None:
+    for role in ('compiler','linker'):
+        row={'command':version_command(role),'identity':version_identity(role),
+             'operation':role+'-version-operation','status':'pending_owned_operation'}
+        record['probes'].append(row)
+        run_tool_operation(directory,environment,record,row)
+        verify_tool_version(role,(directory/row['operation']/'process.log').read_text(encoding='utf-8'))
+
 def build_tools(output: Path, environment: dict) -> tuple[Path,Path,dict]:
-    compiler=shutil.which('cl.exe')
-    require(compiler is not None,'Installed MSVC x64 developer environment required')
     directory=output/'tools';directory.mkdir()
-    record={'compiler':{'path':compiler,'sha256':sha(Path(compiler)),'bytes':Path(compiler).stat().st_size},'builds':[]}
+    environment,removed=build_environment(environment)
+    record={'schema':'play-windows-diagnostic-build-v2','toolchain':TOOLCHAIN,
+            'observed_tools':{},
+            'removed_override_names':removed,
+            'sdk_environment':{name:value for name,value in environment.items()
+                if name.upper() in ('INCLUDE','LIB','LIBPATH','VCTOOLSVERSION','WINDOWSSDKVERSION')},
+            'probes':[],'builds':[]}
+    write(directory/'build.json',record)
+    try:verify_tool_files(record['observed_tools'])
+    finally:write(directory/'build.json',record)
+    probe_toolchain(directory,environment,record)
     targets=[]
     for name,extension in (('windows_crash_debugger','cpp'),('windows_crash_control','c')):
         source=ROOT/'tools/play'/f'{name}.{extension}';binary=directory/(name+'.exe')
-        command=sdk_command(compiler,str(source),str(binary),str(directory/(name+'.obj')),
-                            str(directory/(name+'.pdb')),extension)
-        identity={'source':source.relative_to(ROOT).as_posix(),'source_sha256':sha(source),
-                  'compiler':record['compiler']}
-        row={'command':command,'identity':identity,'operation':name+'-operation','status':'pending_owned_operation'}
-        record['builds'].append(row)
-        write(directory/'build.json',record)
-        operation=directory/row['operation']
-        try:
-            row['result']=owned_build.run(command,directory,environment,operation,identity)
-            row['status']=row['result']['status']
-        except (OSError,ValueError) as error:
-            row.update(status='failed',error=str(error))
-            raise
-        finally:
+        obj=directory/(name+'.obj');pdb=directory/(name+'.pdb')
+        target={'source':source.relative_to(ROOT).as_posix(),'source_sha256':sha(source),'phases':[],
+                'status':'pending_owned_operation'}
+        record['builds'].append(target)
+        for stage in ('compile','link'):
+            command=(compile_command(str(source),str(obj),extension) if stage=='compile'
+                     else link_command(str(obj),str(binary),str(pdb),extension))
+            identity=build_identity(stage,target['source'],target['source_sha256'],
+                                    obj=target.get('object') if stage=='link' else None)
+            row={'command':command,'identity':identity,'operation':name+'-'+stage+'-operation',
+                 'status':'pending_owned_operation'}
+            target['phases'].append(row)
+            run_tool_operation(directory,environment,record,row)
+            require(sha(source)==target['source_sha256'],'Diagnostic source changed during build')
+            if stage=='compile':target['object']=retained_identity(obj)
+            else:
+                require(retained_identity(obj)==target['object'],'Diagnostic object changed while linking')
+                target.update(binary=retained_identity(binary),pdb=retained_identity(pdb),status='passed')
             write(directory/'build.json',record)
-        require(sha(source)==identity['source_sha256'] and sha(Path(compiler))==record['compiler']['sha256'],
-                'Compiler/source changed during build')
-        require(row['result']['status']=='passed' and binary.is_file(),'MSVC diagnostic/control build failed or timed out; original operation evidence retained')
-        require(owned_build.verify(operation,command,identity,cwd=str(directory))==row['result'],'Build process reduction differs')
-        require((directory/(name+'.pdb')).is_file(),'Diagnostic debug symbols were not retained')
-        row.update(binary_sha256=sha(binary),binary_bytes=binary.stat().st_size,
-                   source=identity['source'],source_sha256=identity['source_sha256'],
-                   returncode=row['result']['root_exit'],seconds=row['result']['seconds'])
         targets.append(binary)
-    write(directory/'build.json',record)
     return targets[0],targets[1],record
 
 def verify_manifest(output: Path) -> dict:
@@ -366,11 +451,67 @@ def verify_manifest(output: Path) -> dict:
         require({'sha256':sha(path),'bytes':path.stat().st_size}==expected,'Diagnostic artifact digest mismatch: '+relative)
     return manifest
 
+def verify_complete_tool_exits(result: dict) -> None:
+    last=result['samples'][-1]
+    require(last['total_processes']==len({process['pid'] for process in last['exited_observed']}),
+            'LLVM operation has an unobserved process exit')
+
+def verify_tool_operation(directory: Path, row: dict, command: list[str], identity: dict, cwd: str) -> None:
+    require(row['command']==command and row['identity']==identity,
+            'Original build command/source identity mismatch')
+    reduced=owned_build.verify(directory/row['operation'],command,identity,cwd=cwd)
+    require(row['status']=='passed' and reduced==row['result'] and reduced['status']=='passed'
+            and reduced['timeout_seconds']==policy.OPERATION_SECONDS,
+            'Original build ownership/deadline reduction mismatch')
+    verify_complete_tool_exits(reduced)
+
+def verify_build_record(output: Path, report: dict, canonical: dict[str,bytes]) -> None:
+    record=report['build']
+    require(record==read_json(output/'tools/build.json') and record['schema']=='play-windows-diagnostic-build-v2',
+            'Build receipt mismatch')
+    require(record['toolchain']==TOOLCHAIN,'Pinned LLVM toolchain receipt differs from source')
+    require(record['observed_tools']=={role:TOOLCHAIN[role] for role in ('compiler','linker')},
+            'Observed LLVM tool files differ from source pins')
+    require(isinstance(record['removed_override_names'],list)
+            and all(isinstance(name,str) and name.upper() in BUILD_OVERRIDE_NAMES for name in record['removed_override_names']),
+            'Compiler override sanitation receipt differs')
+    require(isinstance(record['sdk_environment'],dict)
+            and all(isinstance(name,str) and isinstance(value,str)
+                    and name.upper() in ('INCLUDE','LIB','LIBPATH','VCTOOLSVERSION','WINDOWSSDKVERSION')
+                    for name,value in record['sdk_environment'].items()),'SDK environment inventory differs')
+    directory=output/'tools';tools_path=ntpath.join(report['paths']['output'],'tools')
+    require(len(record['probes'])==2,'Complete LLVM version probe inventory required')
+    for role,row in zip(('compiler','linker'),record['probes']):
+        require(row['operation']==role+'-version-operation','LLVM version probe identity differs')
+        verify_tool_operation(directory,row,version_command(role),version_identity(role),tools_path)
+        verify_tool_version(role,(directory/row['operation']/'process.log').read_text(encoding='utf-8'))
+    require(len(record['builds'])==2 and set(report['tools'])=={'broker','control'},'Diagnostic tool inventory mismatch')
+    for role,name,extension in (('broker','windows_crash_debugger','cpp'),('control','windows_crash_control','c')):
+        source_path='tools/play/'+name+'.'+extension
+        source_sha256=hashlib.sha256(canonical[source_path]).hexdigest()
+        rows=[row for row in record['builds'] if row['source']==source_path]
+        require(len(rows)==1,'Diagnostic source build inventory differs')
+        target=rows[0]
+        require(target['source_sha256']==source_sha256 and target['status']=='passed','Diagnostic source build did not complete')
+        for key,suffix in (('binary','.exe'),('object','.obj'),('pdb','.pdb')):
+            require(target[key]==retained_identity(safe_file(output,'tools/'+name+suffix)),
+                    'Retained diagnostic '+key+' differs from build')
+        require(report['tools'][role]=={'path':ntpath.join(tools_path,name+'.exe'),**target['binary']},
+                'Retained diagnostic executable differs from original tool receipt')
+        require(len(target['phases'])==2,'Complete compile and link phase inventory required')
+        source=ntpath.join(report['paths']['source'],source_path.replace('/','\\'))
+        obj=ntpath.join(tools_path,name+'.obj');binary=ntpath.join(tools_path,name+'.exe');pdb=ntpath.join(tools_path,name+'.pdb')
+        for stage,row in zip(('compile','link'),target['phases']):
+            require(row['operation']==name+'-'+stage+'-operation','Original build phase identity differs')
+            command=compile_command(source,obj,extension) if stage=='compile' else link_command(obj,binary,pdb,extension)
+            identity=build_identity(stage,source_path,source_sha256,obj=target['object'] if stage=='link' else None)
+            verify_tool_operation(directory,row,command,identity,tools_path)
+
 def verify_directory(output: Path, expected: str) -> dict:
     """Read original artifacts offline, preserving failure as failure."""
     verify_manifest(output)
     report=read_json(output/'campaign.json')
-    require(report['schema']=='play-windows-crash-campaign-v4' and report['completed'] is True
+    require(report['schema']=='play-windows-crash-campaign-v5' and report['completed'] is True
             and report['errors']==[] and report['fixture_attempts']==1,'Diagnostic campaign is incomplete')
     require(report['original_failed_run']==41175131563 and report['original_failed_source']==BASE
             and report['original_failure_still_blocking'] is True,'Original failure provenance was rewritten')
@@ -389,31 +530,7 @@ def verify_directory(output: Path, expected: str) -> dict:
     require(report['engine']=={'version':windows.GODOT_VERSION,'archive_sha512':windows.GODOT_SHA512,
                               'archive_bytes':ENGINE_ARCHIVE_BYTES,'executables':ENGINE_FILES},'Engine receipt differs from official pin')
     require((output/'version.log').read_text(encoding='utf-8').strip()==windows.GODOT_VERSION,'Original version log mismatch')
-    require(report['build']==read_json(output/'tools/build.json') and len(report['build']['builds'])==2,'Build receipt mismatch')
-    require(set(report['tools'])=={'broker','control'},'Diagnostic tool inventory mismatch')
-    for role,name in (('broker','windows_crash_debugger'),('control','windows_crash_control')):
-        tool=report['tools'][role];binary=safe_file(output,'tools/'+name+'.exe')
-        require(tool=={'path':ntpath.join(report['paths']['output'],'tools',name+'.exe'),'sha256':sha(binary),'bytes':binary.stat().st_size},
-                'Retained diagnostic executable differs from original tool receipt')
-        extension='cpp' if role=='broker' else 'c';source_path='tools/play/'+name+'.'+extension
-        rows=[row for row in report['build']['builds'] if row['source']==source_path]
-        require(len(rows)==1 and rows[0]['returncode']==0 and rows[0]['seconds']<=policy.OPERATION_SECONDS
-                and rows[0]['source_sha256']==hashlib.sha256(canonical[source_path]).hexdigest()
-                and rows[0]['binary_sha256']==tool['sha256'] and rows[0]['binary_bytes']==tool['bytes'],
-                'MSVC build does not bind the retained tool to exact source')
-        row=rows[0]
-        operation_name=name+'-operation'
-        expected_identity={'source':source_path,'source_sha256':hashlib.sha256(canonical[source_path]).hexdigest(),
-                           'compiler':report['build']['compiler']}
-        tools_path=ntpath.join(report['paths']['output'],'tools')
-        command=sdk_command(report['build']['compiler']['path'],ntpath.join(report['paths']['source'],source_path.replace('/','\\')),
-                            ntpath.join(tools_path,name+'.exe'),ntpath.join(tools_path,name+'.obj'),
-                            ntpath.join(tools_path,name+'.pdb'),extension)
-        require(row['operation']==operation_name and row['command']==command and row['identity']==expected_identity,
-                'Original build command/source identity mismatch')
-        reduced=owned_build.verify(output/'tools'/operation_name,command,expected_identity,cwd=tools_path)
-        require(reduced==row['result'] and reduced['status']=='passed' and reduced['timeout_seconds']==policy.OPERATION_SECONDS,
-                'Original build ownership/deadline reduction mismatch')
+    verify_build_record(output,report,canonical)
     require(set(report['controls'])==set(CONTROL_MODES)|{'dump-writer-timeout'},'Complete diagnostic control inventory mismatch')
     results={}
     for name in (*('control-'+mode for mode in CONTROL_MODES),'control-dump-writer-timeout','import',FIXTURE):
@@ -477,10 +594,10 @@ def main() -> int:
     require(os.environ.get('GITHUB_RUN_ATTEMPT','1')=='1','Automatic reruns are not authorized by this one-attempt diagnostic')
     output=args.output.resolve(); require(not output.exists(),'Retain earlier evidence; output already exists')
     output.mkdir(parents=True)
-    report={'schema':'play-windows-crash-campaign-v4','status':'incomplete','completed':False,'errors':[],
+    report={'schema':'play-windows-crash-campaign-v5','status':'incomplete','completed':False,'errors':[],
             'watchdog_policy':policy.POLICY,
             'original_failed_run':41175131563,'original_failed_source':BASE,'original_failure_still_blocking':True,
-            'scope':'Opt-in debugger evidence only; one prescribed unchanged-fixture attempt, no automatic retries or integration approval. Build Job accounting establishes containment and final empty-job state; 10 Hz sampling records only observed child identities and exits, not every short-lived child.',
+            'scope':'Opt-in debugger evidence only; one prescribed unchanged-fixture attempt, no automatic retries or integration approval. Build Job accounting establishes containment and final empty-job state; LLVM qualification additionally requires the total process count to equal all distinct observed exits.',
             'run_id':os.environ.get('GITHUB_RUN_ID'),'run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
             'platform':platform.platform(),'controls':{},'fixture_attempts':0,
             'paths':{'source':str(ROOT),'output':str(output)}}

@@ -8,11 +8,12 @@ their short, independently identified deadlines.
 """
 
 POLICY = {
-    'schema': 'play-windows-diagnostic-watchdogs-v1',
+    'schema': 'play-windows-diagnostic-watchdogs-v2',
     'operation_seconds': 300,
     'godot_import_seconds': 1200,
     'complex_fixture_seconds': 3600,
-    'hosted_job_minutes': 180,
+    'hosted_job_minutes': 270,
+    'diagnostic_stage_minutes': 180,
     'cleanup_seconds': 10,
     'orphan_control_seconds': 3,
     'hang_control_ms': 500,

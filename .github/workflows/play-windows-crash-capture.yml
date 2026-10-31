@@ -24,8 +24,8 @@ env:
 jobs:
   windows-diagnostic:
     runs-on: windows-2022
-    # 45m dependency preparation + 150m diagnostic + setup/upload headroom.
-    timeout-minutes: 240
+    # 45m dependencies + 180m diagnostic + setup/source/readback/upload headroom.
+    timeout-minutes: 270
     defaults:
       run:
         shell: pwsh
@@ -72,11 +72,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           curl.exe --fail --location --connect-timeout 60 --max-time 1200 --output "$env:RUNNER_TEMP/crash-godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Compile controls and diagnose the unchanged fixture once
+      - name: Compile diagnostic tools with pinned LLVM and diagnose the unchanged fixture once
         working-directory: source
         shell: cmd
-        timeout-minutes: 150
+        timeout-minutes: 180
         run: |
+          rem VsDevCmd supplies Windows SDK/CRT headers and libraries only.
+          rem The source-bound runner verifies fixed clang-cl/lld-link hashes;
+          rem cl.exe and link.exe are never selected as build fallbacks.
           for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "CYBERSAND_CAPTURE_VS=%%i"
           if not defined CYBERSAND_CAPTURE_VS exit /b 1
           call "%CYBERSAND_CAPTURE_VS%\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64

@@ -189,22 +189,73 @@ class OwnedBuildTests(unittest.TestCase):
         self.assertTrue((directory/'result.json').is_file())
 
     def test_build_timeout_keeps_compiler_and_source_receipt(self):
-        compiler = self.root/'cl.exe'
-        compiler.write_bytes(b'synthetic compiler identity')
         failure = {'status':'failed','timed_out':True,'root_exit':124,'job_joined':True}
-        with mock.patch.object(campaign.shutil,'which',return_value=str(compiler)), \
+        with mock.patch.object(campaign,'verify_tool_files'), \
+             mock.patch.object(campaign,'probe_toolchain'), \
              mock.patch.object(campaign.owned_build,'run',return_value=failure):
-            with self.assertRaisesRegex(ValueError,'build failed or timed out'):
+            with self.assertRaisesRegex(ValueError,'compile failed or timed out'):
                 campaign.build_tools(self.root,{})
         record = json.loads((self.root/'tools/build.json').read_bytes())
-        self.assertEqual(record['compiler']['sha256'],hashlib.sha256(compiler.read_bytes()).hexdigest())
-        row = record['builds'][0]
+        self.assertEqual(record['toolchain'],campaign.TOOLCHAIN)
+        row = record['builds'][0]['phases'][0]
         self.assertEqual(row['result'],failure)
+        self.assertEqual(row['status'],'failed')
         self.assertEqual(row['identity']['source_sha256'],owned.digest(campaign.ROOT/row['identity']['source']))
         self.assertIn('/showIncludes',row['command'])
         self.assertIn('/WX',row['command'])
         self.assertIn('/DCYBERSAND_CRASH_CAPTURE_LIMIT_MS='+str(campaign.policy.CAPTURE_MS),row['command'])
         self.assertIn('/DCYBERSAND_CRASH_MAX_CASE_MS='+str(campaign.policy.FIXTURE_MS),row['command'])
+
+    def test_tool_version_timeout_is_retained_before_any_compilation(self):
+        failure = {'status':'failed','timed_out':True,'root_exit':124,'job_joined':True}
+        with mock.patch.object(campaign,'verify_tool_files'), \
+             mock.patch.object(campaign.owned_build,'run',return_value=failure):
+            with self.assertRaisesRegex(ValueError,'version failed or timed out'):
+                campaign.build_tools(self.root,{})
+        record=json.loads((self.root/'tools/build.json').read_bytes())
+        self.assertEqual(record['builds'],[])
+        self.assertEqual(record['probes'][0]['result'],failure)
+        self.assertEqual(record['probes'][0]['status'],'failed')
+
+    def test_short_unobserved_child_cannot_qualify_new_llvm_operation(self):
+        self.fixture()
+        self.result['samples'][-1]['total_processes']=2
+        self.rewrite_samples()
+        # Historical v2 promises containment plus observed exits only.
+        self.assertEqual(self.verify()['status'],'passed')
+        with self.assertRaisesRegex(ValueError,'unobserved process exit'):
+            campaign.verify_complete_tool_exits(self.result)
+
+    def test_compiler_overrides_are_removed_only_from_build_environment(self):
+        original={'INCLUDE':'sdk includes','LIB':'sdk libraries','PATH':'sdk tools','CL':'/DUNDECLARED',
+                  '_cl_':'/DUNDECLARED_TOO','CCC_OVERRIDE_OPTIONS':'^--config=unknown.cfg',
+                  'CLANG_CONFIG_FILE_USER_DIR':'untrusted configs','LINK':'/FORCE'}
+        clean,removed=campaign.build_environment(original)
+        self.assertEqual(clean,{'INCLUDE':'sdk includes','LIB':'sdk libraries','PATH':'sdk tools'})
+        self.assertEqual(set(removed),set(original)-set(clean))
+        self.assertIn('CL',original)
+
+    def test_pinned_tool_files_reject_same_size_substitution(self):
+        pins=copy.deepcopy(campaign.TOOLCHAIN)
+        for role in ('compiler','linker'):
+            path=self.root/(role+'.exe');path.write_bytes(role.encode())
+            pins[role]={'path':str(path),'bytes':path.stat().st_size,'sha256':owned.digest(path)}
+        with mock.patch.object(campaign,'TOOLCHAIN',pins):
+            campaign.verify_tool_files()
+            Path(pins['linker']['path']).write_bytes(b'X'*pins['linker']['bytes'])
+            observed={}
+            with self.assertRaisesRegex(ValueError,'Pinned LLVM linker executable'):
+                campaign.verify_tool_files(observed)
+            self.assertEqual(observed['linker']['sha256'],owned.digest(Path(pins['linker']['path'])))
+
+    def test_versions_require_both_exact_release_and_x64_msvc_target(self):
+        campaign.verify_tool_version('compiler','clang version 20.1.8\nTarget: x86_64-pc-windows-msvc\n')
+        campaign.verify_tool_version('linker','LLD 20.1.8\n')
+        for role,log in (('compiler','clang version 20.1.7\nTarget: x86_64-pc-windows-msvc\n'),
+                         ('compiler','clang version 20.1.8\nTarget: i686-pc-windows-msvc\n'),
+                         ('linker','LLD 20.1.9\n')):
+            with self.subTest(role=role,log=log),self.assertRaisesRegex(ValueError,'version differs|target differs'):
+                campaign.verify_tool_version(role,log)
 
     def test_original_synthetic_positive_and_negative_controls_reduce(self):
         for mode in campaign.BUILD_CONTROL_MODES:
