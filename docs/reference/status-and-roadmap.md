@@ -1760,3 +1760,7 @@ longer speculative chains and broad compaction are not selected.
 measures entry momentum, support/cap/yield terms and applied response. A2 observed
 bearing before first ejection, exact age-zero delivery and no global bearing-cap
 saturation. No response-law change or broad granular acceptance follows.
+
+## Granular entry-response measurement - 2026-11-01
+
+**Measured:** the [fixed-law successor](../audits/2026-11-01-granular-bearing-pre-overlap.md) qualifies matched height controls and zero-spin velocity arms, with3117 replayed attempts and exact observer neutrality. Entry momentum monotonically increases penetration/overlap; raw support collapse, unused globalcap20 and stale/lost delivery do not explain entry here. **Planned:** separate yield-only braking and bounded pre-step-admission interventions require their own registration; no response or material law changes in this measurement.

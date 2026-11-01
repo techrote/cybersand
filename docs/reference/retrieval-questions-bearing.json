@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-01",
+  "purpose": "Granular-bearing measurement retrieval; no response-law acceptance",
+  "questions": [
+    {
+      "id": "BEARING-001",
+      "query": "How do granular bearing raw support, braking momentum and positional correction explain high-speed saturated rigid body overlaps?",
+      "canonical": [
+        "operations/granular-bearing-pre-overlap-investigation.md"
+      ],
+      "facts": [
+        "Fixed-pose zero-spin entry speed increases peak entry and overlap monotonically in the registered family.",
+        "Raw support remains present during entry, global cap20 is unused and delivery age is zero.",
+        "Correction velocity zeroing is a distinct momentum term; no response-law intervention is selected."
+      ],
+      "sources": [
+        "audits/2026-11-01-granular-bearing-pre-overlap.md",
+        "../tools/experiments/granular_bearing_analysis.py"
+      ]
+    }
+  ]
+}

@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-01
 ---
 
 # Data ownership and lifetimes
@@ -531,3 +531,7 @@ The [canonical prepared boundary](liquid-prepared-setup-and-receipts.md#desktop-
 and [dated proof](../audits/2026-10-25-lcb003-desktop-native-default-host.md) keep
 local Windows qualification, test-resource lifetime remediation and final
 combined/platform/full-host gaps separate.
+
+## Bearing measurement observations
+
+The opt-in [bearing fixture](../operations/granular-bearing-pre-overlap-investigation.md) reads copied support probes only on the serialized native owner. Its main-thread owner copies Rapier values immediately; live server states/RIDs never cross to native workers. Detailed bridge arrays are deep-copied before the next application clears their fixed body-bound contents. No extra packing, mask publication, material owner or render lifetime is introduced.

@@ -9,6 +9,7 @@ import math
 from pathlib import Path
 
 from ejection_a2 import write_json
+import ejection_topology as topology
 
 
 def first(frames, predicate):
@@ -117,6 +118,29 @@ def summarize(acquisition, trajectory, population):
                 "contour_columns":frame["geometry"]["pre_ejection_contour_columns"]}
     first_failure = min(failures,key=lambda c:c["event_ordinal"]) if failures else None
     entry_budgets = [budgets[f["tick"]] for f in entry]
+    entry_step_dp = sum(f["after_step"][4]-f["before_step"][4] for f in entry)
+    entry_impulse = sum(b["accepted_impulse"][1] for b in entry_budgets)
+    entry_correction = sum(b["correction_dp"][1] for b in entry_budgets)
+    entry_closure = ((entry[-1]["after_application"][4]-entry[0]["before_step"][4]) -
+                     (entry_step_dp+entry_impulse+entry_correction)) if entry else None
+    entry_probes = [p for f in entry for p in f["bearing"]["probes"]]
+    collapse = support_collapse(frames)
+    candidate_reasons = Counter()
+    unmasked_empty_counts = Counter()
+    first_failure_candidates = None
+    for c in capsules:
+        weight=weights[c["topology_hash"]]
+        for _,_,reason in c["trace"]:candidate_reasons[reason] += weight
+        grid=topology.Grid(c)
+        endpoint_counts=Counter()
+        for point in topology.enumerate_candidates(c):
+            if not grid.in_world(point):endpoint_counts["bounds"] += 1
+            else:
+                row=grid.row(point)
+                endpoint_counts["own_body" if row[4] == grid.body_id else "foreign_body" if row[4] else
+                                "stored_non_empty" if row[0] else "unmasked_empty"] += 1
+        if c["target"][0] < 0:unmasked_empty_counts[str(endpoint_counts["unmasked_empty"])] += weight
+        if first_failure is c:first_failure_candidates=dict(endpoint_counts)
     return {"arm":acquisition["fixture"]["name"],"frames":len(frames),
             "attempts":acquisition["native_counters"]["attempts"],
             "no_target":sum(weights[c["topology_hash"]] for c in failures),
@@ -131,12 +155,23 @@ def summarize(acquisition, trajectory, population):
             "maximum_post_tick_overlap":max(f["geometry"]["post_tick_overlap_at_packed_pose"] for f in frames),
             "maximum_raw_support":max(f["bearing"]["raw_support"] for f in frames),
             "support_collapse_ticks":support_collapse(frames),"bearing_limiters":dict(limiters),
+            "support_collapse_entry_window_ticks":[tick for tick in collapse if support and support["tick"]<=tick<=end],
+            "support_collapse_with_overlap_ticks":[tick for tick in collapse if frames[tick]["geometry"]["pre_overlap"]>0],
             "global_cap_limiting_frames":sum(f["bearing"]["bearing_y"] == -20 and f["bearing"]["capacity"] ==20 for f in frames),
             "maximum_bearing":max(-f["bearing"]["bearing_y"] for f in frames),
             "support_probe_reason_counts":dict(reasons),"stable_below_histogram":dict(stable_histogram),
             "support_visited_rejections":dict(support_failures),
             "raw_support_while_rising_frames":sum(f["body_input"][7]<=0 and f["bearing"]["raw_support"]>0 for f in frames),
             "entry_window":[support["tick"],end] if support else None,
+            "entry_observed_Rapier_dp_y":entry_step_dp,"entry_momentum_closure_error":entry_closure,
+            "entry_reported_contact_frames":sum(bool(f["backend"]["contacts"]) for f in entry),
+            "entry_probe_reason_counts":dict(Counter(str(p[2]) for p in entry_probes)),
+            "entry_visited_rejections":{name:sum(p[index] for p in entry_probes) for index,name in
+                                        [(5,"paused"),(6,"fresh"),(7,"unsupported"),(8,"missing")]},
+            "entry_nominal_bearing_y":sum(f["bearing"]["bearing_y"] for f in entry),
+            "bearing_frames_requested_y_differs_from_nominal":sum(abs(f["requested_results"][2]-f["bearing"]["bearing_y"])>1e-6
+                for f in frames if f["bearing"]["bearing_y"]<0),
+            "max_applied_correction_y":max(abs(f["application_details"][0]["applied_correction"][1]) for f in frames),
             "entry_accepted_net_y":sum(b["accepted_impulse"][1] for b in entry_budgets),
             "entry_correction_dp_y":sum(b["correction_dp"][1] for b in entry_budgets),
             "entry_backend_gravity_dp_y":sum(b["gravity_dp"][1] for b in entry_budgets),
@@ -147,6 +182,9 @@ def summarize(acquisition, trajectory, population):
             "backend_gravities":sorted({tuple(f["backend"]["gravity"]) for f in frames}),
             "backend_linear_damping":sorted({f["backend"]["linear_damp"] for f in frames}),
             "hard_contact_frames":sum(bool(f["backend"]["contacts"]) for f in frames),
+            "reported_contact_impulse_sum":[sum(c["reported_impulse"][axis] for f in frames for c in f["backend"]["contacts"]) for axis in (0,1)],
+            "candidate_reasons":dict(candidate_reasons),"failure_unmasked_empty_endpoint_histogram":dict(unmasked_empty_counts),
+            "first_failure_candidate_counts":first_failure_candidates,
             "contact_reporting_at_capacity_frames":sum(f["backend"]["at_capacity"] for f in frames),
             "descent_failures":sum(weights[c["topology_hash"]] for c in failures if c["current_body"][7]>0),
             "rising_or_stationary_failures":sum(weights[c["topology_hash"]] for c in failures if c["current_body"][7]<=0),

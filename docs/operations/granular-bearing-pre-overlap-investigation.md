@@ -1,6 +1,6 @@
 ---
 title: Granular bearing and pre-overlap response investigation
-status: Planned
+status: Current
 document-kind: guide
 scope: Measurement-first causal successor to the A2 finite-cohort local-rearrangement no-go; no bearing changes approved here
 canonical-for: [granular-bearing-pre-overlap-investigation]
@@ -18,7 +18,7 @@ push chains as the primary solution in its measured Sand/drop cohort. This
 successor investigates the upstream response, without treating a wider radius,
 longer chain, broad compaction or a bearing gain change as the assumed answer.
 Generic body/granular ownership remains the existing coupling contract and
-REM-004 / #83. This document specifies a future experiment, not runtime policy.
+REM-004 / #83. This document owns the registered measurement and its scoped disposition; it does not select runtime policy.
 
 ## Current measured premise
 
@@ -155,3 +155,30 @@ bearing change, generalized granular compaction or broad gameplay acceptance.
 Opt-in `diagnostic_reset({bearing_trace:true})` allocates a single-body fixed256-probe observer before World replacement. `diagnostic_bearing_state()` returns copied post-ejection/pre-velocity-gate support values for body1. It shares the actual granular predicate with an optional fixed-count inspection; reason counters cover only visited tests. Other body IDs are not observed by this fixture API. Bridge `enable_diagnostics(true)` adds at most64 copied application rows; ordinary six-field diagnostics and packed11/9 ABI remain unchanged.
 
 The fixture records600 complete frames,16 Rapier contacts with explicit at-cap metadata and the existing256-pending/8192-total event bounds. Its source-matched runner refuses changed compiled inputs, changed isolated scripts, overwritten output and uncommitted speed admission. No worker reads a live Rapier object. Contour rows are `[column,top_stored_Sand_y,polygon_lower_y,lower_minus_top]`: a signed column-envelope entry, not minimum cell/body distance. Loose grains above an exiting body can increase it. Persistent/new overlap tracks cell coordinates, not parcel identity. Backend values are copied after cellular API calls; contact buffers belong to the preceding Rapier step. Reported normal/impulse conventions are retained rather than treated as calibrated force.
+
+## Measured disposition and next discriminating intervention
+
+**Measured 2026-11-01:** the [six-arm audit](../audits/2026-11-01-granular-bearing-pre-overlap.md#fixed-pose-result-and-causal-disposition)
+qualifies3,117 attempts and six600-frame observer-neutral pairs. Fixed-pose achieved
+entry velocities17.93/34.20/62.55/92.31 produce peak reference entries1.07/2.59/4.72/
+8.09 and peak overlaps7/14/18/33. Momentum-dependent entry is strongly supported
+within this family. Raw support remains present during initial braking; globalcap20,
+stale delivery and missing accepted response are not supported explanations.
+Initial sample capacity and subsequent yielding limit braking, while the highest
+speed first acquires support on a sample that already overlaps material. Existing
+vy<=4 correction then acts near peak entry and zeroes residual downward momentum.
+
+**Planned / proposed, not implemented or selected:** distinguish stronger braking
+from earlier admission using the same zero-spin speed30/90 controls and fresh
+owners. First compare unchanged response against a yield-only diagnostic arm
+(velocity factor.18 versus1.0, retaining per-sample capacity2 and globalcap20).
+Separately compare unchanged post-step admission against one-step downward support
+lookahead bounded to2px, retaining the original law and one total response per
+sample. The latter must replace timing, never add a second support owner/impulse.
+Do not combine interventions initially. Record the existing causal channels,
+first-overlap/no-target, peak entry/overlap, accepted work and post-contact upward
+motion. Retain speed0 release/settling, excavation release, hard-wall and Water
+negative controls so improved braking cannot conceal artificial support or lift.
+These are concrete future causal candidates requiring their own preregistration,
+source/runtime qualification and owner decision; neither is a production fix.
+The measured unused global cap is not the next knob to raise.

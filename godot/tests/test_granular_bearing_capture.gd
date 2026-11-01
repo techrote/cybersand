@@ -18,20 +18,36 @@ func _backend(body: RigidBody2D) -> Dictionary:
 	if state == null:
 		return {"available":false}
 	var contacts: Array = []
-	var rotation: float = state.transform.get_rotation()
+	var tangent_available: bool = ClassDB.class_has_method(&"RapierPhysicsServer2D",&"body_get_contact_tangent_impulse")
+	var totals_available: bool = ClassDB.class_has_method(&"RapierPhysicsServer2D",&"body_get_total_contact_impulse") \
+		and ClassDB.class_has_method(&"RapierPhysicsServer2D",&"body_get_total_friction_impulse")
 	for index: int in range(state.get_contact_count()):
 		var normal: Vector2 = state.get_contact_local_normal(index)
 		var position: Vector2 = state.get_contact_local_position(index)
 		var impulse: Vector2 = state.get_contact_impulse(index)
-		var world_normal := normal.rotated(rotation)
-		contacts.append({"local_normal":[normal.x,normal.y],"rotated_normal":[world_normal.x,world_normal.y],
-			"reported_position":[position.x,position.y],"reported_impulse":[impulse.x,impulse.y]})
+		var contact: Dictionary = {"reported_normal":[normal.x,normal.y],
+			"reported_position":[position.x,position.y],"reported_impulse":[impulse.x,impulse.y]}
+		if tangent_available:
+			var tangent: Variant = ClassDB.class_call_static(&"RapierPhysicsServer2D",&"body_get_contact_tangent_impulse",body.get_rid(),index)
+			contact["reported_tangent_impulse"] = _reported_backend_value(tangent)
+		contacts.append(contact)
+	var totals: Dictionary = {}
+	if totals_available:
+		var normal_total: Variant = ClassDB.class_call_static(&"RapierPhysicsServer2D",&"body_get_total_contact_impulse",body.get_rid())
+		var friction_total: Variant = ClassDB.class_call_static(&"RapierPhysicsServer2D",&"body_get_total_friction_impulse",body.get_rid())
+		totals = {"normal":_reported_backend_value(normal_total),"friction":_reported_backend_value(friction_total)}
 	return {"available":true,"gravity":[state.total_gravity.x,state.total_gravity.y],
 		"boundary":"after cellular API calls; contacts belong to preceding Rapier step",
+		"normal_qualification":"pinned Rapier reports world normal/position despite local API names; contact impulse is normal component",
+		"tangent_available":tangent_available,"totals_available":totals_available,"reported_totals":totals,
 		"linear_damp":state.total_linear_damp,"angular_damp":state.total_angular_damp,
 		"step":state.step,"constant_force":[state.get_constant_force().x,state.get_constant_force().y],
 		"constant_torque":state.get_constant_torque(),"contacts":contacts,
 		"contact_capacity":16,"at_capacity":state.get_contact_count() >= 16}
+
+
+func _reported_backend_value(value: Variant) -> Dictionary:
+	return {"type":type_string(typeof(value)),"value":[value.x,value.y] if value is Vector2 else value}
 
 
 func _cell(snapshot: Dictionary, x: int, y: int) -> int:
@@ -262,9 +278,65 @@ func _replay_series() -> void:
 	print("BEARING_REPLAY ",JSON.stringify(report))
 
 
+func _bearing_controls() -> void:
+	var world: Object = _new_world()
+	_check(world.diagnostic_bearing_state().is_empty(),"observer enabled by default")
+	_check(world.diagnostic_reset({"workers":1,"bearing_trace":true}),"observer enable")
+	_check(world.diagnostic_fill_rect(Vector2i(96,100),Vector2i(24,8),CyberCellWorld.SAND),"support control fill")
+	world.prepare_rigid_body_coupling(PackedFloat32Array([1,108,96,0,8,8,0,0,0,1,1]),true)
+	var state: Dictionary = world.diagnostic_bearing_state()
+	_check(int(state.raw_support) == 8 and state.bearing_y == 0,"raw stationary support gated away")
+	var physical: String = world.get_physical_state_hash()
+	state.probes[0][0] = -123
+	_check(world.get_physical_state_hash() == physical and world.diagnostic_bearing_state().probes[0][0] != -123,"observer aliases authority")
+	_check(not world.diagnostic_reset({"workers":-1,"bearing_trace":true}) and world.get_physical_state_hash() == physical,"invalid reset replaced authority")
+	_check(world.diagnostic_reset({"workers":1}) and world.diagnostic_bearing_state().is_empty(),"reset retained observer")
+	var viewport := SubViewport.new()
+	viewport.world_2d = World2D.new()
+	root.add_child(viewport)
+	var body := RigidBody2D.new()
+	var collision := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(8,14)
+	collision.shape = shape
+	body.add_child(collision)
+	viewport.add_child(body)
+	await process_frame
+	var bridge := CyberRapierPhysicsBridge.new()
+	var bodies: Array[RigidBody2D] = [body]
+	_check(bridge.initialize(viewport.world_2d.space,bodies,PackedVector2Array([Vector2(8,14)])) == OK,"control bridge initialize")
+	bridge.enable_diagnostics(true)
+	bridge.reset_body(0,Vector2(112,100),0.08)
+	PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,3))
+	bridge.refresh_all_states()
+	bridge.pack_body_states() # Dedicated serial/freshness control, no fixture step.
+	bridge.apply_cellular_results(1,PackedFloat32Array([1,0,-2,0,-.1,0,0,0,1]))
+	var detail: Dictionary = bridge.diagnostic_application_details[0]
+	_check(detail.before[4] == 3 and detail.after_correction[4] == 0 and detail.after_impulse[4] == -2,"velocity-zero/impulse boundaries")
+	bridge.apply_cellular_results(1,PackedFloat32Array([1,0,-2,0,-.1,0,0,0,1]))
+	_check(bridge.diagnostic_application_details.is_empty() and bridge.diagnostic_applications[3] == 1,"duplicate details misleading")
+	for index: int in range(10):
+		bridge.pack_body_states()
+	bridge.apply_cellular_results(2,PackedFloat32Array([1,0,-2,0,-.1,0,0,0,2]))
+	_check(bridge.diagnostic_application_details.is_empty() and bridge.diagnostic_applications[4] == 1,"stale details misleading")
+	bridge.apply_cellular_results(3,PackedFloat32Array([1,0,-2,0,-.1,0,0,0,9]))
+	detail = bridge.diagnostic_application_details[0]
+	_check(detail.correction_age_suppressed and detail.applied_correction == [0.0,0.0],"aged correction not suppressed")
+	bridge.shutdown()
+	_check(bridge.diagnostic_application_details.is_empty(),"shutdown retained detailed observations")
+	viewport.queue_free()
+	await process_frame
+
+
 func _run() -> void:
 	_watchdog = WATCHDOG.new()
 	_check(_watchdog.start("granular-bearing",120000) == OK,"watchdog start")
+	if _argument("--mode=") == "controls":
+		await _bearing_controls()
+		_check(_watchdog.stop(),"watchdog stop")
+		print("BEARING_CONTROLS ",JSON.stringify({"ok":not _failed}))
+		quit(1 if _failed else 0)
+		return
 	if _argument("--mode=") == "replay":
 		_replay_series()
 		_check(_watchdog.stop(),"watchdog stop")
