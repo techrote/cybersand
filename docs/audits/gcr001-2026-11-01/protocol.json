@@ -1514,5 +1514,13 @@
     "moving_event_normal_budget_first": true,
     "bin_capacity": "min(20,2*sum_samples)*bin_samples/sum_samples",
     "stream": "deep supported bed; source tick120..239 x=initial COM-5 y=SURFACE-24 width3; ledgered ordinary edits"
+  },
+  "normal_tangent_evaluator": {
+    "kind": "projected Jacobi",
+    "passes": 4,
+    "relaxation": "1/active_bin_count",
+    "update": "provisional v/omega after each normal/tangent phase; accumulated perbin shared caps never renew",
+    "reason": "finite fixed-order PGS introduces mirror bias; specification choice before physical runs",
+    "physical_results_before_amendment": false
   }
 }
