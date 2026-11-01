@@ -35,7 +35,9 @@ peak penetration by at least20% in19/21 eligible primary rows, but heavy/thin
 high-speed clearance and creep fail registered bounds. Real delayed snapshots
 at ages3–5 let both candidates reach the deep hard floor. Scalar bearing also
 lacks granular torque under asymmetric support. These findings block broad
-production promotion; B0 remains default and owner gameplay acceptance is pending.
+production promotion; B0 remains default. The subsequent owner comparison
+positively prefers Y1 and describes remaining visible issues as minor; that
+judgement does not turn the registered technical failures into passes.
 The [dated audit](../audits/2026-11-01-y1-production-envelope.md) retains exact
 numbers, source/runtime identities, recurrence, performance triggers and limits.
 
@@ -128,17 +130,38 @@ Record the owner's actual answers to these questions with the printed identity:
 - Does excavation/support loss look natural?
 - Is there an obvious new gameplay regression?
 
-The [actual owner review](../audits/2026-11-01-y1-production-envelope.md#actual-owner-review-and-pause-repair--2026-11-01)
-is now recorded against `ac3839e`: all nine recordings are explicitly confirmed
-Y1. The owner praises impact embedding but objects to withdrawal/wiggle, missing
-edge rotation/corner catch, lateral glide/creep and abrupt hard-floor response.
-The full envelope has **not** received gameplay acceptance. Engineering
-disposition is **ADVANCE WITH REFINEMENT REQUIRED** for impact response, with
-**DISTINCT MECHANISM GAP** for granular torque and tangential contact.
+The [initial owner review](../audits/2026-11-01-y1-production-envelope.md#actual-owner-review-and-pause-repair--2026-11-01)
+and [subsequent B0 comparison](../audits/2026-11-01-y1-production-envelope.md#subsequent-b0-comparison-and-pixel-presentation--2026-11-01)
+are recorded against `ac3839e`. After reviewing both sets, the owner calls Y1
+a **definite improvement** and describes remaining issues as **minor**, possibly
+mitigated through presentation. Heavy/angled/edge/excavation/lateral behavior is
+mostly shared with B0, with some B0 bounce/restlessness worse. The comparison
+supersedes interpreting the earlier Y1-only objections as overall rejection.
+Engineering disposition remains **ADVANCE WITH REFINEMENT REQUIRED** for the
+registered physical failures, with **DISTINCT MECHANISM GAP** for shared
+granular torque and tangential contact. The positive owner preference does not
+select a production default or authorize merge.
+
+The review-only **body presentation** menu applies immediately without reset:
+
+- **Vector diagnostic · original** retains the initial display for comparison.
+- **Cell grid · one-cell inner outline** rasterizes the actual rotated rectangle
+  at material-cell centres, with a dark inner border one cell deep.
+- **Cell grid · fill only** uses that same grid without the border.
+
+Both grid modes composite into the copied material image before nearest-filtered
+enlargement. Rapier pose, native cells, velocities, physics samples and tick are
+unchanged; no smoothing, collision snap or angular law is added. Pause first,
+switch display, then resume to compare perceived restlessness. Test anchor-90,
+angle-45-30 and mass-2-90 first; use edge/slide to distinguish silhouette shimmer
+from actual missing rotation or tangential response. Pixel coverage still changes
+when the real pose crosses a cell boundary. Improved perceived motion remains a
+hypothesis for owner review, not a measured fix or production renderer choice.
 
 The review-only Space shortcut consumes press, repeat and release before GUI
 controls; only the initial press toggles. This fixes the observed focused-button
 release conflict. Relaunch an existing review process to load the repair.
 
-**AWAITING OWNER GAMEPLAY ACCEPTANCE.** #83/REM-004 remains open; no production
-default promotion is justified. The qualification PR stays draft and unmerged.
+**Owner comparative preference: Y1.** Full-envelope acceptance/default selection
+remains outstanding; #83/REM-004 stays open. The qualification PR remains draft
+and unmerged, with explicit owner mergedown authorization required.

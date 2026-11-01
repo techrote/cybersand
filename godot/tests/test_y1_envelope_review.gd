@@ -13,7 +13,7 @@ func _test_pause_input(review: Control) -> bool:
 	# Dispatch through SceneTree/GUI, including focused buttons' ui_accept.
 	# Calling toggle_pause directly cannot catch a competing GUI activation.
 	var row: HBoxContainer = review.chooser.get_parent()
-	var controls: Array[Control] = [row.get_child(3), row.get_child(2), review.chooser, review.arm]
+	var controls: Array[Control] = [row.get_child(3), row.get_child(2), review.chooser, review.arm, review.presentation]
 	for control: Control in controls:
 		control.grab_focus()
 		await process_frame
@@ -51,6 +51,47 @@ func _test_pause_input(review: Control) -> bool:
 func _init() -> void:
 	call_deferred("_run")
 
+func _test_presentation(review: Control) -> bool:
+	review.paused = true
+	var owner: Object = review.fixture.world
+	var pose: Array = review.fixture.pose(0)
+	var tick: int = review.fixture.tick
+	var cells: PackedByteArray = review.fixture.observation(true).cells
+	for mode: int in [1,2,0]:
+		review.presentation.select(mode)
+		review.refresh_view()
+		if review.fixture.world != owner or review.fixture.tick != tick or review.fixture.pose(0) != pose or review.fixture.observation(true).cells != cells:
+			push_error("Review presentation changed authoritative simulation")
+			return false
+	var image := Image.create(40,40,false,Image.FORMAT_RGBA8)
+	review.raster_body(image,Vector2(20,20),Vector2(8,14),0.0,true)
+	var fill_count: int = 0
+	var border_count: int = 0
+	for y: int in range(40):
+		for x: int in range(40):
+			var color: Color = image.get_pixel(x,y)
+			if color.a == 0.0: continue
+			if color.r > 0.5: fill_count += 1
+			else: border_count += 1
+	if fill_count != 72 or border_count != 40:
+		push_error("Pixel review rectangle lost its one-cell inner border/size")
+		return false
+	var shifted := Image.create(40,40,false,Image.FORMAT_RGBA8)
+	review.raster_body(shifted,Vector2(20.2,20.2),Vector2(8,14),0.0,true)
+	if image.get_data() != shifted.get_data():
+		push_error("Subcell translation bypassed the presentation cell grid")
+		return false
+	# Rotated/clipped projection must remain a finite palette, with no AA fringe.
+	var rotated := Image.create(40,40,false,Image.FORMAT_RGBA8)
+	review.raster_body(rotated,Vector2(0,20),Vector2(8,14),PI/4.0,false)
+	for y: int in range(40):
+		for x: int in range(40):
+			var color: Color = rotated.get_pixel(x,y)
+			if color.a != 0.0 and not color.is_equal_approx(image.get_pixel(20,20)):
+				push_error("Pixel review introduced an antialias palette fringe")
+				return false
+	return true
+
 func _run() -> void:
 	var scene: PackedScene = load("res://y1_envelope_review.tscn")
 	var review: Control = scene.instantiate()
@@ -62,6 +103,9 @@ func _run() -> void:
 		quit(1)
 		return
 	review.paused = true
+	if not _test_presentation(review):
+		quit(1)
+		return
 	if not await _test_pause_input(review):
 		quit(1)
 		return
@@ -96,5 +140,5 @@ func _run() -> void:
 	review.fixture = null
 	review.queue_free()
 	await process_frame
-	print("Y1 review fresh-owner selection, focused Space press/hold/release and hard excavation passed; no human gameplay verdict")
+	print("Y1 review fresh owners, Space focus, presentation authority/pixel grid and hard excavation passed; no automated human verdict")
 	quit(0)

@@ -398,3 +398,71 @@ smallest justified refinement. Support torque, tangential contact and the
 transition to hard terrain need distinct accounting. No new coefficient,
 friction law, angular law, search expansion or production promotion is selected
 by this feedback checkpoint.
+
+## Subsequent B0 comparison and pixel presentation — 2026-11-01
+
+The owner subsequently supplied nine B0 lossless-frame archives containing
+6,919frames, also showing source `ac3839e`. The owner now calls the candidate
+a **definite improvement** and describes the remaining issues as **minor**,
+possibly mitigated with smart rendering presentation. This later comparison
+supersedes interpreting the earlier Y1-only objections as an overall owner
+rejection. The owner's term `y0` is understood as the previously confirmed Y1
+recording set; the apparatus implements only B0/Y1, without a third candidate.
+[Comparison registration](y1-envelope-2026-11-01/owner-comparison.json) retains
+the actual reports and every archive's SHA-256, bytes, frame count and CRC.
+Original archives are unchanged; byte-identical local copies remain under
+`build/b0-owner-recordings/archives`. Selected original frames were inspected
+across all nine cases. The recordings include pre-reset state, so identical
+frame numbers in the two sets are not aligned simulation states.
+
+| B0 recording | Actual comparative owner assessment |
+|---|---|
+| anchor-30 | Trampoline-like bounce, then very slow left drift. |
+| anchor90 | Energetic ejection and side-to-side hovering, like the light body. |
+| mass-05-90 | Apparently shallower entry, rapid energetic spring from its divot, then compressed-air-like wandering. |
+| mass-2-90 | Basically the same as Y1, possibly longer and larger-amplitude sloshing. |
+| angle-45-30 | Almost the same, with initial bounce and possibly greater restlessness. |
+| edge-30 | Same until final movements, when B0 bounces upright. |
+| excavate | Small initial bounce, then essentially the same as Y1. |
+| slide | Small initial bounce, otherwise essentially the same. |
+| slope-slide | Essentially the same as Y1. |
+
+The current owner verdict is **positive comparative preference for Y1**.
+Remaining gameplay severity is the owner's revised minor assessment. Torque,
+lateral contact and restlessness are largely shared baseline limitations;
+they are not established Y1-specific regressions. Registered heavy/thin,
+withdrawal/recurrence, delayed-delivery and performance failures remain actual
+technical limitations. No threshold is relaxed or failed result relabelled.
+Engineering refinement and distinct mechanism-gap dispositions therefore
+remain, while the gameplay preference is updated. No production-default
+selection, full #83 acceptance or mergedown authorization is inferred.
+
+The owner identifies the thin vector border as a visual amplifier: it occupies
+a finer grid than the enlarged cell scene and changes apparent width with angle
+and subpixel position. Source inspection qualifies the antialiasing hypothesis:
+the review's `draw_polyline` already uses default false antialiasing;
+`physical_actor_overlay.gd` explicitly passes false at width1, and
+`physical_actor_rig.gd` explicitly passes false at width0.6. This does not rule
+out visual swimming: those paths still rasterize fractional geometry at display
+resolution rather than the material image's grid. The recordings do not isolate
+all rasterizer contributions or establish that rendering alone fixes motion.
+
+A bounded **review-only presentation comparison** now offers original vector,
+cell-grid one-cell inner outline, and cell-grid fill-only modes. Original vector
+remains the initial mode. Cell modes sample the same actual rotated rectangle
+at cell centres into the copied image, then enlarge with nearest filtering.
+No native cell is overwritten; no Rapier transform/velocity is rounded or
+changed. There is no temporal smoothing, pose integration, new friction/torque,
+physics tick, candidate reset or ordinary production renderer change. A real
+pose crossing a cell boundary can still change the silhouette; this is not a
+claim to eliminate all visual motion.
+
+The focused regression verifies that switching all modes leaves the World,
+tick, pose and authoritative cells identical; an8×14 upright body occupies
+112cells with a40-cell inner border, fractional translation below the coverage
+threshold preserves its raster, and a rotated/clipped body has no interpolated
+palette fringe. Space focus coverage includes the new presentation menu.
+The menu can be switched while paused to compare the exact same physical state.
+The new presentation has **not yet received owner visual acceptance**. Source
+and runtime identity, commands and Windows/Linux results belong to the PR's
+exact-head follow-up receipt; all native production inputs remain unchanged.

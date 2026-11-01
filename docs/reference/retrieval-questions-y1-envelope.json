@@ -30,8 +30,9 @@
       "facts": [
         "run_y1_review.py authenticates source, runtime, Godot and scenario configuration.",
         "Explicit experimental selection then fresh reset; Space pause, arrows lateral, E excavation.",
-        "Owner confirms all nine recordings are Y1 at ac3839e: impact praised, settling/rotation/lateral behavior unaccepted; awaiting gameplay acceptance.",
-        "Space consumes press/repeat/release before GUI focus handlers and toggles only on non-echo press; relaunch loads the review-only fix."
+        "Owner's later B0 comparison positively prefers Y1 at ac3839e and describes residual issues as minor; technical failures remain and merge is not authorized.",
+        "Space consumes press/repeat/release before GUI focus handlers and toggles only on non-echo press; relaunch loads the review-only fix.",
+        "Review-only presentation offers original vector, cell-grid inner outline and cell-grid fill only, without changing physics poses or cells."
       ],
       "sources": [
         "../tools/experiments/run_y1_review.py",

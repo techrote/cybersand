@@ -1763,10 +1763,13 @@ results, initialization failure and runtime identity. REM-004/#83 stays open;
 owner gameplay acceptance is required and the focused draft must not merge
 without explicit owner authorization.
 
-The subsequent [owner review](../audits/2026-11-01-y1-production-envelope.md#actual-owner-review-and-pause-repair--2026-11-01)
-confirms Y1 throughout nine30FPS recordings: impact embedding is praised, while
-withdrawal/wiggle, missing granular torque, lateral glide/creep and hard-contact
-transition remain unacceptable observations. Engineering disposition is
-refinement required plus distinct torque/tangential mechanism gaps; no full
-gameplay acceptance or default promotion. The separate review-only Space focus
-conflict is reproduced and repaired without changing physics.
+The initial owner review confirms Y1 throughout nine30FPS recordings. The
+[later B0 comparison](../audits/2026-11-01-y1-production-envelope.md#subsequent-b0-comparison-and-pixel-presentation--2026-11-01)
+positively prefers Y1 and describes remaining issues as minor, potentially
+mitigated through presentation. Most rotation/lateral/restlessness limitations
+are shared with B0. Engineering refinement and distinct torque/tangential gaps
+remain because the registered technical failures stand. A review-only menu
+compares original vector and cell-grid body presentation without changing
+physics; owner visual acceptance of that display is pending. The separate
+review-only Space focus conflict is repaired. No full-envelope closure,
+production-default selection or merge authorization is inferred.

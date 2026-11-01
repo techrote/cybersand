@@ -5,6 +5,7 @@ var fixture: RefCounted
 var cases: Array = []
 var chooser: OptionButton
 var arm: OptionButton
+var presentation: OptionButton
 var status: Label
 var paused: bool = false
 var resetting: bool = false
@@ -18,6 +19,7 @@ var native_sha256: String
 var protocol_path: String
 
 func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	protocol_path = ProjectSettings.globalize_path("res://").path_join("../docs/audits/y1-envelope-2026-11-01/protocol.json").simplify_path()
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--protocol="): protocol_path = argument.trim_prefix("--protocol=")
@@ -57,6 +59,21 @@ func _ready() -> void:
 	row.add_child(excavate)
 	status = Label.new()
 	panel.add_child(status)
+	var visual_panel := VBoxContainer.new()
+	visual_panel.position = Vector2(710,180)
+	add_child(visual_panel)
+	var visual_title := Label.new()
+	visual_title.text = "Review-only body presentation (applies immediately)"
+	visual_panel.add_child(visual_title)
+	presentation = OptionButton.new()
+	presentation.add_item("Vector diagnostic · original")
+	presentation.add_item("Cell grid · one-cell inner outline")
+	presentation.add_item("Cell grid · fill only")
+	presentation.item_selected.connect(func(_index: int) -> void: refresh_view())
+	visual_panel.add_child(presentation)
+	var visual_note := Label.new()
+	visual_note.text = "Both grid modes use the Sand image's pixel grid.\nNo pose smoothing, physics snapping or tick/reset.\nPause, switch display, then resume to compare motion."
+	visual_panel.add_child(visual_note)
 	var help := Label.new()
 	help.position = Vector2(20,675)
 	help.text = "Select a case and B0/Y1, then Reset. Each reset creates a fresh native World and Rapier space.\nLeft/right: existing bounded lateral impulse. E: remove current bed. Space: pause. R: reset.\nJudge impact rigidity, sinking, late withdrawal, light/heavy support, lateral motion, edge rotation and excavation.\nAWAITING OWNER GAMEPLAY ACCEPTANCE — test automation supplies no human verdict."
@@ -132,15 +149,34 @@ func refresh_view() -> void:
 			elif material == 23: color = Color(0.86,0.8,0.96)
 			elif material == 3: color = Color(0.2,0.5,0.95)
 			image.set_pixel(x,y,color)
+	if presentation != null and presentation.selected != 0:
+		for i: int in range(fixture.bodies.size()):
+			var pose: Array = fixture.pose(i)
+			raster_body(image,Vector2(pose[0]-fixture.left+1,pose[1]),fixture.body_size,float(pose[2]),presentation.selected == 1)
 	texture = ImageTexture.create_from_image(image)
 	scale_factor = minf(4.0,540.0/float(fixture.floor_y-Fixture.SURFACE+85))
 	status.text = "%s | %s | tick %d / %d | %s%s\nsource %s | Godot %s | %s | native %s" % [fixture.spec.id,fixture.candidate,fixture.tick,int(fixture.spec.ticks),"paused" if paused else "running"," · scripted edit at tick600" if fixture.spec.group=="support-change" else "",OS.get_environment("CYBERSAND_SOURCE_REVISION"),Engine.get_version_info().string,ProjectSettings.get_setting("physics/2d/physics_engine"),native_sha256.left(16)]
 	queue_redraw()
 
+func raster_body(image: Image, center: Vector2, body_size: Vector2, angle: float, outline: bool) -> void:
+	# Copied presentation only: sample a rotated rectangle at material-cell
+	# centres, then enlarge the combined image with nearest filtering.
+	# Never round or write the Rapier transform or authoritative native cells.
+	var half: Vector2 = body_size*0.5
+	var extent := Vector2(absf(cos(angle))*half.x+absf(sin(angle))*half.y,
+		absf(sin(angle))*half.x+absf(cos(angle))*half.y)
+	for y: int in range(maxi(0,floori(center.y-extent.y)),mini(image.get_height(),ceili(center.y+extent.y))):
+		for x: int in range(maxi(0,floori(center.x-extent.x)),mini(image.get_width(),ceili(center.x+extent.x))):
+			var local := (Vector2(x+0.5,y+0.5)-center).rotated(-angle)
+			if absf(local.x) >= half.x or absf(local.y) >= half.y: continue
+			var border: bool = outline and (absf(local.x) >= half.x-1.0 or absf(local.y) >= half.y-1.0)
+			image.set_pixel(x,y,Color(0.25,0.07,0.08) if border else Color(0.95,0.18,0.2))
+
 func _draw() -> void:
 	if resetting or fixture == null or fixture.bridge == null or texture == null: return
 	var crop_top: float = Fixture.SURFACE-70.0
 	draw_texture_rect_region(texture,Rect2(origin,Vector2(fixture.width+2,fixture.floor_y-crop_top+1)*scale_factor),Rect2(0,crop_top,fixture.width+2,fixture.floor_y-crop_top+1))
+	if presentation != null and presentation.selected != 0: return
 	for i: int in range(fixture.bodies.size()):
 		var pose: Array = fixture.pose(i)
 		var center := origin+Vector2(pose[0]-fixture.left+1,pose[1]-crop_top)*scale_factor

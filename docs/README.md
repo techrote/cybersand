@@ -551,4 +551,4 @@ the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparis
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
 
-For the fresh-main experimental B0/Y1 physical envelope, source-matched comparison and recorded owner feedback, use the [Y1 qualification runbook](operations/y1-granular-bearing-qualification.md). Impact is praised; settling, rotation and lateral behavior remain unaccepted. Production selection and owner gameplay acceptance remain open.
+For the fresh-main B0/Y1 envelope, recorded owner comparison and review-only pixel-grid display, use the [Y1 qualification runbook](operations/y1-granular-bearing-qualification.md). The owner prefers Y1 and describes residual issues as minor. Registered technical limitations remain; production selection and merge authorization are outstanding.
