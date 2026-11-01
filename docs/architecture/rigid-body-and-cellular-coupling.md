@@ -266,3 +266,7 @@ now targets high-speed entry under the existing bounded yielding response. A2
 measured accepted bearing before the first ejection, age zero throughout and no
 global20-cap saturation. No bearing, normal, search, material or rendering policy
 is changed by A2; live efficacy evidence remains the single Sand rectangle family.
+
+## Granular entry-response observer
+
+**Current diagnostic apparatus, 2026-11-01:** the [bearing measurement owner](../operations/granular-bearing-pre-overlap-investigation.md#height-arm-measurement-checkpoint) observes raw support before its velocity gate, shared-predicate rejection categories, fixed-law terms and actual correction/impulse API boundaries. Its observer is opt-in and bounded; production response, fallback, packed values, World authority and render publication are unchanged. Correction-induced velocity zeroing is recorded separately from impulses. The optional native support inspection preserves the predicate and requires rebuilding C++ consumers.

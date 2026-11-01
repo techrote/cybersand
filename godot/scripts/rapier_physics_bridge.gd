@@ -48,13 +48,24 @@ var _last_stale_results_rejected: int = 0
 var _hard_surface_shape_count: int = 0
 var _last_hard_surface_build_time_ms: float = 0.0
 var diagnostic_applications: PackedFloat64Array = PackedFloat64Array()
+var diagnostic_application_details: Array = []
+var _diagnostic_details_enabled: bool = false
 
 
 # Opt-in fixed storage: age, accepted x/y, duplicate, stale, received per body.
 # Reset each apply call; callers copy/aggregate at their serialized boundary.
-func enable_diagnostics() -> void:
+func enable_diagnostics(details: bool = false) -> void:
 	diagnostic_applications.resize(_body_rids.size() * 6)
 	diagnostic_applications.fill(0.0)
+	_diagnostic_details_enabled = details
+	diagnostic_application_details.clear()
+
+
+func _diagnostic_motion(rid: RID) -> Array:
+	var pose: Transform2D = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+	var velocity: Vector2 = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+	return [pose.origin.x, pose.origin.y, pose.get_rotation(), velocity.x, velocity.y,
+		PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)]
 
 
 func initialize(
@@ -165,6 +176,8 @@ func apply_cellular_results(
 ) -> int:
 	_last_results_applied = 0
 	_last_stale_results_rejected = 0
+	if _diagnostic_details_enabled:
+		diagnostic_application_details.clear()
 	if not diagnostic_applications.is_empty():
 		diagnostic_applications.fill(0.0)
 	if not _initialized or snapshot_serial == _last_result_snapshot_serial:
@@ -208,6 +221,12 @@ func apply_cellular_results(
 			results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_X],
 			results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_Y]
 		)
+		var detail: Variant = null
+		if _diagnostic_details_enabled:
+			detail = {"snapshot_serial": snapshot_serial, "sample_serial": result_sample_serial,
+				"age": sample_age, "before": _diagnostic_motion(body_rid),
+				"requested_correction": [correction.x, correction.y],
+				"requested_impulse": [impulse.x, impulse.y], "consumer_usec": Time.get_ticks_usec()}
 		if sample_age > MAX_POSITIONAL_CORRECTION_AGE_TICKS:
 			correction = Vector2.ZERO
 
@@ -237,6 +256,10 @@ func apply_cellular_results(
 				PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,
 				corrected_velocity
 			)
+		if _diagnostic_details_enabled:
+			detail["after_correction"] = _diagnostic_motion(body_rid)
+			detail["applied_correction"] = [correction.x, correction.y] if correction.length_squared() > MOTION_EPSILON_SQUARED else [0.0, 0.0]
+			detail["correction_age_suppressed"] = sample_age > MAX_POSITIONAL_CORRECTION_AGE_TICKS
 
 		# A bounded age falloff preserves two-way fluid/particle coupling without
 		# injecting a full-strength impulse computed from a several-frame-old pose.
@@ -257,6 +280,10 @@ func apply_cellular_results(
 				false
 			)
 			_last_results_applied += 1
+		if _diagnostic_details_enabled:
+			detail["impulse_age_scale"] = impulse_age_scale
+			detail["after_impulse"] = _diagnostic_motion(body_rid)
+			diagnostic_application_details.append(detail)
 
 	return _last_results_applied
 
@@ -910,6 +937,8 @@ func refresh_dynamic_states() -> void:
 
 func clear_state() -> void:
 	_initialized = false
+	_diagnostic_details_enabled = false
+	diagnostic_application_details.clear()
 	_space = RID()
 	_bodies.clear()
 	_body_rids.clear()

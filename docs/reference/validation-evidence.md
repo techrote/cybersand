@@ -962,3 +962,7 @@ mask-clearing recoveries, strong finite-cohort multi-parcel NO-GO, independent
 hash/sampling/oracle checks and the planned causal successor. Final-head checks
 and platform limits are separately recorded; no ready-for-review publication or
 production bearing change is inferred.
+
+## Granular bearing height-arm checkpoint - 2026-11-01
+
+The [measurement audit](../audits/2026-11-01-granular-bearing-pre-overlap.md) records actual Windows real-Rapier one-/four-height arms,220/1301 exact capsule replays and600-frame on/off neutrality. Rebuilt native164 and measurement-boundary8 tests pass. This admits the separately registered zero-spin speed comparison; no gain change or broad physical acceptance follows.

@@ -1558,15 +1558,20 @@ Material World::get(std::int64_t x, std::int64_t y) const noexcept {
 }
 
 bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
-                                bool include_transient_obstacles) const noexcept {
+                                bool include_transient_obstacles,
+                                GranularSupportInspection* inspection) const noexcept {
+    if (inspection) *inspection = {};
     const auto material_at = [this, include_transient_obstacles](std::int64_t sx,
                                                                  std::int64_t sy) {
         return include_transient_obstacles ? get(sx, sy) : stored_material(sx, sy);
     };
-    const auto stable = [this, &material_at](std::int64_t sx, std::int64_t sy) {
+    const auto stable = [this, &material_at, inspection](std::int64_t sx, std::int64_t sy) {
         const auto material = material_at(sx, sy);
         if (MaterialRules::is_hard_surface(material)) return true;
-        if (!MaterialRules::supports_granular_load(material)) return false;
+        if (!MaterialRules::supports_granular_load(material)) {
+            if (inspection) ++inspection->unsupported;
+            return false;
+        }
         const auto a = address(sx, sy);
         const auto* chunk = find_chunk(a.chunk);
         if (chunk && config_.backend == SimulationBackend::PhasedInPlace &&
@@ -1583,24 +1588,38 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
             if (chunk->activity_blocks[block_index].active &&
                 (core.x < region.min_x || core.x > region.max_x ||
                  core.y < region.min_y || core.y > region.max_y)) {
+                if (inspection) ++inspection->paused;
                 return false;
             }
         }
         // A transported/newly transformed grain cannot immediately bear a
         // sampled owner. This reads the most recently completed tick.
-        return chunk && (tick_index_ == 0 ||
-            chunk->cells[a.index].epoch_value() != update_epoch_);
+        if (!chunk) { if (inspection) ++inspection->missing; return false; }
+        const bool result = tick_index_ == 0 || chunk->cells[a.index].epoch_value() != update_epoch_;
+        if (!result && inspection) ++inspection->fresh;
+        return result;
     };
-    if (!MaterialRules::supports_granular_load(material_at(x, y)) || !stable(x, y)) return false;
+    if (!MaterialRules::supports_granular_load(material_at(x, y))) {
+        if (inspection) inspection->reason = 1;
+        return false;
+    }
+    if (!stable(x, y)) { if (inspection) inspection->reason = 2; return false; }
     int below = 0;
     for (int dy = 0; dy <= 2; ++dy)
         for (int dx = -1; dx <= 1; ++dx) below += stable(x + dx, y + dy);
-    if (below < config_.interaction_policy.downward_support_cells) return false;
+    if (inspection) inspection->stable_below = static_cast<std::uint8_t>(below);
+    if (below < config_.interaction_policy.downward_support_cells) {
+        if (inspection) inspection->reason = 3;
+        return false;
+    }
     if (!side) return true;
     int around = 0;
     for (int dy = -1; dy <= 1; ++dy)
         for (int dx = -1; dx <= 1; ++dx) around += stable(x + dx, y + dy);
-    return around >= config_.interaction_policy.side_support_cells;
+    if (inspection) inspection->stable_around = static_cast<std::uint8_t>(around);
+    const bool result = around >= config_.interaction_policy.side_support_cells;
+    if (!result && inspection) inspection->reason = 4;
+    return result;
 }
 
 Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {

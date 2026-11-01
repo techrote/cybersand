@@ -1259,3 +1259,7 @@ predeclared offline retention has36phase/depth/cardinal-normal strata with24
 scientific classes each, plus16positive controls (at most880retained globally
 before cross-stratum union deduplication). Empty strata are reported. See the
 [coupling scope](../architecture/rigid-body-and-cellular-coupling.md#a2-topology-diversity-and-upstream-response).
+
+## Granular bearing measurement capacity
+
+The [registered measurement apparatus](../operations/granular-bearing-pre-overlap-investigation.md#height-arm-measurement-checkpoint) adds diagnostic fresh-reset option `bearing_trace` (default false), body1 only,256 support probes per prepare with explicit drops. Existing event bounds remain256 pending/8192 lifetime. Main-thread Rapier reporting is16 contacts; a full buffer is potentially truncated. Detailed bridge output is bounded by64 accepted body records. The finite fixture records600 frames, with120-second internal and150-second outer guards. No bearing gains/defaults are changed.
