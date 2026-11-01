@@ -9,6 +9,23 @@ bool gcr_near(double a,double b,double tolerance=1e-10) {
 }
 void test_gcr_analytic_wrench() {
     using namespace cybersand::gcr;
+    // Compare the portable scaled norm against an independent platform oracle,
+    // including finite values whose naive squared norm overflows/underflows.
+    const double maximum=std::numeric_limits<double>::max();
+    const double minimum=std::numeric_limits<double>::min();
+    const double denormal=std::numeric_limits<double>::denorm_min();
+    for(const Vec value:std::array<Vec,12>{{{3,4},{-3,4},{0,0},{-0.,0},
+            {1e308,1e308},{maximum,0},{maximum,maximum},{minimum,minimum},
+            {denormal,denormal},{1e308,1e-308},{1e-300,1e-300},{999999.25,-999998.75}}}) {
+        const double expected=std::hypot(value.x,value.y),actual=length(value);
+        if(std::isinf(expected)) gcr_require(std::isinf(actual),"GCR norm hid true overflow");
+        else if(expected==0) gcr_require(actual==0 && !std::signbit(actual),"GCR zero norm changed sign");
+        else gcr_require(std::abs(actual-expected)<=expected*5e-15 || actual==expected,
+                         "GCR scaled norm differs from independent hypot oracle");
+    }
+    const double infinity=std::numeric_limits<double>::infinity(),nan=std::numeric_limits<double>::quiet_NaN();
+    gcr_require(std::isinf(length({infinity,nan})) && std::isnan(length({nan,1})),
+                "GCR portable norm changed nonfinite classification");
     Body body; body.mass=2; body.inertia=4; body.velocity={0,1};
     std::array<Bin,8> bins{};
     bins[0].add({1,0},{0,-1},body.com);
@@ -32,6 +49,10 @@ void test_gcr_analytic_wrench() {
     const auto angular=solve(body,bins);
     gcr_require(angular.normal>0 && angular.torque<0,
                 "GCR ignored angular contact-point closing velocity");
+    const Body overflow_body{{maximum,maximum},{},0,2,4,0};
+    const auto refused_energy=solve(overflow_body,bins);
+    gcr_require(refused_energy.passive_rejected && length(refused_energy.impulse)==0 && refused_energy.torque==0,
+                "GCR portable norm bypassed nonfinite-energy refusal");
     // At Y1 coefficient1, gravity+max(v-g,0) is >=v for v>=0;
     // min(arrest,yield,capacity) therefore equals min(m*max(v,0),capacity).
     for (const double mass:{.5,1.,2.}) for (const double speed:{-1.,0.,.2,1.5,4.,90.}) {

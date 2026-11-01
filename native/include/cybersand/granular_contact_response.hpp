@@ -4,6 +4,7 @@
 #include <array>
 #include <cmath>
 #include <cstdint>
+#include <limits>
 
 namespace cybersand::gcr {
 
@@ -17,7 +18,17 @@ struct Vec {
 };
 inline double dot(Vec a, Vec b) { return a.x*b.x+a.y*b.y; }
 inline double cross(Vec a, Vec b) { return a.x*b.y-a.y*b.x; }
-inline double length(Vec a) { return std::hypot(a.x,a.y); }
+// Keep the Linux runtime floor independent of newer libm hypot symbol versions.
+// Scaling avoids intermediate-square overflow/underflow for finite inputs.
+inline double length(Vec a) {
+    const double x=std::abs(a.x),y=std::abs(a.y);
+    if(std::isinf(x) || std::isinf(y)) return std::numeric_limits<double>::infinity();
+    if(std::isnan(x) || std::isnan(y)) return std::numeric_limits<double>::quiet_NaN();
+    const double high=std::max(x,y),low=std::min(x,y);
+    if(high==0) return 0.;
+    const double ratio=low/high;
+    return high*std::sqrt(1.+ratio*ratio);
+}
 struct Bin {
     std::uint32_t count = 0;
     std::uint64_t material_mask = 0;
