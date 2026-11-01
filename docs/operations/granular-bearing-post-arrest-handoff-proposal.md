@@ -10,6 +10,16 @@ related-documents: [granular-bearing-pre-overlap-investigation.md, development-c
 
 # Granular bearing post-arrest handoff proposal
 
+## Authorized successor checkpoint — 2026-11-01
+
+**Current on the isolated successor branch:** Stage A's literal copied-value
+oracle closes exactly after float32 accounting over42 retained Y1 samples.
+The [successor audit](../audits/2026-11-01-y1-post-arrest-clearance.md) records
+source custody, residuals and the missing sample600 boundary. Stage B still
+requires its separate committed preregistration before execution. The proposal
+below preserves the original pre-execution rationale; it authorizes no response
+change, parameter tuning or production selection.
+
 This is a proposed next question under REM-004 / issue #83, after the
 [candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md).
 It is not an executed experiment, an approved production model, or permission
