@@ -6,6 +6,7 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+#include <godot_cpp/variant/rect2i.hpp>
 
 #include <algorithm>
 #include <array>
@@ -68,11 +69,14 @@ CyberNativeCellWorld::CyberNativeCellWorld() {
 CyberNativeCellWorld::~CyberNativeCellWorld() = default;
 
 void CyberNativeCellWorld::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("solid_detachment_fenced"), &CyberNativeCellWorld::solid_detachment_fenced);
+    ClassDB::bind_method(D_METHOD("solid_detachment_command", "command"), &CyberNativeCellWorld::solid_detachment_command);
+    ClassDB::bind_method(D_METHOD("diagnostic_replay_conservative_contact", "capsule"), &CyberNativeCellWorld::diagnostic_replay_conservative_contact);
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
-    ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
+    ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram", "include_hash"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false), DEFVAL(true));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
@@ -126,6 +130,16 @@ void CyberNativeCellWorld::_bind_methods() {
                                   "resolve_overlaps"),
                          &CyberNativeCellWorld::prepare_rigid_body_coupling,
                          DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("prepare_gcr_coupling", "states", "resolve_overlaps"),
+                         &CyberNativeCellWorld::prepare_gcr_coupling, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("gcr_body_results"), &CyberNativeCellWorld::gcr_body_results);
+    ClassDB::bind_method(D_METHOD("prepare_gcr_compound_coupling", "states", "lease", "resolve_overlaps"),
+        &CyberNativeCellWorld::prepare_gcr_compound_coupling, DEFVAL(true));
+    ClassDB::bind_method(D_METHOD("gcr_compound_results"), &CyberNativeCellWorld::gcr_compound_results);
+    ClassDB::bind_method(D_METHOD("gcr_compound_diagnostics"), &CyberNativeCellWorld::gcr_compound_diagnostics);
+    ClassDB::bind_method(D_METHOD("gcr_diagnostics"), &CyberNativeCellWorld::gcr_diagnostics);
+    ClassDB::bind_method(D_METHOD("get_gcr_admission_variant"), &CyberNativeCellWorld::get_gcr_admission_variant);
+    ClassDB::bind_method(D_METHOD("get_gcr_admission_counters"), &CyberNativeCellWorld::get_gcr_admission_counters);
     ClassDB::bind_method(D_METHOD("rigid_body_results"),
                          &CyberNativeCellWorld::rigid_body_results);
     ClassDB::bind_method(D_METHOD("rigid_body_id_at", "x", "y"),
@@ -335,6 +349,22 @@ Dictionary CyberNativeCellWorld::get_default_demo_identity() const {
 
 void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     diagnostic_fixture_ = false;
+    conservative_displacement_ = false;
+    displacement_accounting_ = {};
+    displacement_touched_count_ = displacement_attempts_this_sample_ = 0;
+    displacement_token_ = {};
+    displacement_sample_ = -1;
+    displacement_sample_valid_ = false;
+    granular_yield_response_ = kGranularYieldVelocityResponse;
+    gcr_enabled_ = false;
+    gcr_admission_a1_ = false;
+    gcr_compound_mode_ = gcr_preparing_compound_ = false; gcr_compound_count_ = 0;
+    gcr_compound_token_ = {}; gcr_compound_generation_ = gcr_compound_physics_epoch_ = 0;
+    gcr_compound_workspace_.reset();
+    gcr_session_id_ = 0;
+    gcr_response_valid_ = false; gcr_sample_tick_ = 0;
+    gcr_bins_ = {};
+    gcr_last_serials_.fill(-1);
     body_diagnostics_.reset();
     displacement_gain_ = kBodyDisplacementReactionImpulse;
     boundary_gain_ = kBodyBoundaryPressureImpulse;
@@ -344,7 +374,12 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
 }
 
 bool CyberNativeCellWorld::simulation_tick() {
-    if (world_ == nullptr || world_->has_failed()) return false;
+    if (world_ == nullptr || world_->has_failed() || world_->solid_detachment_fenced()) return false;
+    // One accepted body sample owns at most one native physical step. Reusing
+    // occupancy is safe, but cannot republish old passive bins or renew budget.
+    if (gcr_enabled_ && gcr_response_valid_ && world_->completed_tick_index()>gcr_sample_tick_)
+        invalidate_gcr_response();
+    if (gcr_enabled_ && !gcr_response_valid_) world_->clear_transient_contact_observations();
     const auto start = std::chrono::steady_clock::now();
     bool succeeded = false;
     try {
@@ -412,10 +447,17 @@ void CyberNativeCellWorld::paint_disc(std::int64_t centre_x, std::int64_t centre
 
 void CyberNativeCellWorld::prepare_rigid_body_coupling(
     const PackedFloat32Array& states, bool resolve_overlaps) {
-    if (world_ == nullptr || world_->has_failed()) return;
+    if (gcr_enabled_) { invalidate_gcr_response(); return; }
+    if (world_ == nullptr || world_->has_failed() || world_->solid_detachment_fenced()) return;
+    parse_body_states(states);
+    prepare_body_coupling(resolve_overlaps);
+}
+
+void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
     world_->clear_transient_obstacles();
     clear_observations();
-    parse_body_states(states);
+    if (conservative_displacement_) prepare_conservative_sample();
+    gcr_bins_ = {};
 
     raster_indices_.clear();
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
@@ -426,6 +468,16 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
         else rasterize_body(body);
     }
     if (resolve_overlaps) reconcile_swept_overlaps();
+    if (world_->has_failed()) {
+        // A conservative transaction quarantines unexpected partial progress.
+        // Do not call another mutating World API (including mask clearing), or
+        // publish forces from that incomplete preparation. simulation_tick()
+        // returns false and the existing worker publishes its stopped state.
+        ++tick_failure_count_;
+        last_tick_error_ = "conservative contact transaction quarantined the World";
+        clear_observations();
+        return;
+    }
 
     world_->clear_transient_obstacles();
     raster_indices_.clear();
@@ -434,13 +486,19 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
     }
     if (resolve_overlaps) {
         accumulate_boundary_pressure();
-        accumulate_granular_bearing();
+        if (gcr_enabled_) accumulate_gcr_contacts();
+        else accumulate_granular_bearing();
+        if(gcr_compound_mode_) gcr_compound_overlap_measured_=true;
     }
     previous_bodies_ = current_bodies_;
 }
 
 void CyberNativeCellWorld::clear_observations() {
     observations_ = {};
+    admission_observations_ = {};
+    gcr_compound_last_valid_ = false;
+    gcr_compound_overlap_pre_ = gcr_compound_overlap_post_ = gcr_compound_overlap_geometry_tests_ = 0;
+    gcr_compound_overlap_measured_ = false;
     if (body_diagnostics_) *body_diagnostics_ = {};
 }
 
@@ -576,7 +634,16 @@ void CyberNativeCellWorld::reconcile_swept_overlaps() {
         const auto y = cell_index / kWorldWidth;
         const auto body_id = world_->transient_obstacle_at(x, y);
         if (body_id != 0U && world_->stored_material(x, y) != cybersand::Material::Empty) {
+            const auto material=world_->stored_material(x,y);
+            if(gcr_compound_mode_ && !cybersand::MaterialRules::is_hard_surface(material) &&
+                cybersand::MaterialRules::descriptor(material).movable) {
+                for(std::size_t proxy=1;proxy<=gcr_compound_count_;++proxy) {
+                    ++gcr_compound_overlap_geometry_tests_;
+                    if(cell_inside_body(current_bodies_[proxy],x,y)) {++gcr_compound_overlap_pre_;break;}
+                }
+            }
             reconcile_overlap(cell_index, body_id);
+            if (world_->has_failed()) return;
         }
     }
 }
@@ -611,21 +678,55 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     }
     if (!cybersand::MaterialRules::descriptor(material).movable) {
         ++observation.unresolved;
+        ++observation.unresolved_immovable;
         return;
     }
 
+    // Only the explicitly admitted detachment host selects this path. Ordinary
+    // body coupling, forces, bearing and liquid/material rules retain main's
+    // policy. There is no permissive direct-ejection fallback in strict mode.
+    if (conservative_displacement_) {
+        const auto attempt = conservative_displace(x, y, body_id, outward);
+        if (attempt.outcome == DisplacementOutcome::Quarantined) return;
+        const bool moved = attempt.outcome == DisplacementOutcome::Applied;
+        if (moved) {
+            ++observation.displaced;
+            ++revision_;
+        } else {
+            ++observation.unresolved;
+            if (attempt.outcome == DisplacementOutcome::TransactionRefused)
+                ++observation.unresolved_relocation_refused;
+            else ++observation.unresolved_no_target;
+        }
+        // One existing reaction per original contact, never per chain parcel.
+        // The shared coupling owner (and GCR) retains force/torque policy.
+        const auto impulse = -outward * displacement_gain_ *
+            (moved ? density_scale(material) : 1.0);
+        if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
+        if (!gcr_enabled_ || !cybersand::MaterialRules::supports_granular_load(material))
+            record_impulse(body_id, impulse);
+        return;
+    }
+
+    if (body_diagnostics_) ++(*body_diagnostics_)[body_id].attempts;
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
+    if (body_diagnostics_ && target.x < 0) ++(*body_diagnostics_)[body_id].no_target;
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
+        if (body_diagnostics_ && target.x >= 0) ++(*body_diagnostics_)[body_id].relocation_refused;
         ++observation.unresolved;
+        if (target.x < 0) ++observation.unresolved_no_target;
+        else ++observation.unresolved_relocation_refused;
         const auto impulse = -outward * displacement_gain_;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
-        record_impulse(body_id, impulse);
+        if (!gcr_enabled_ || !cybersand::MaterialRules::supports_granular_load(material))
+            record_impulse(body_id, impulse);
         return;
     }
     ++observation.displaced;
     const auto impulse = -outward * displacement_gain_ * density_scale(material);
     if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
-    record_impulse(body_id, impulse);
+    if (!gcr_enabled_ || !cybersand::MaterialRules::supports_granular_load(material))
+        record_impulse(body_id, impulse);
     ++revision_;
 }
 
@@ -681,12 +782,24 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
                                    tangent * tangent_offset;
             const auto x = static_cast<std::int32_t>(std::floor(candidate.x));
             const auto y = static_cast<std::int32_t>(std::floor(candidate.y));
-            if (!in_bounds(x, y) || world_->transient_obstacle_at(x, y) != 0U ||
-                world_->stored_material(x, y) != cybersand::Material::Empty) {
+            auto* census = body_diagnostics_ ? &(*body_diagnostics_)[source_body_id].endpoints : nullptr;
+            if (!in_bounds(x, y)) {
+                if (census) ++(*census)[0];
                 continue;
             }
-            if (!ejection_path_reachable(source_x, source_y, x, y,
-                                         source_body_id)) continue;
+            if (world_->transient_obstacle_at(x, y) != 0U) {
+                if (census) ++(*census)[1];
+                continue;
+            }
+            if (world_->stored_material(x, y) != cybersand::Material::Empty) {
+                if (census) ++(*census)[2];
+                continue;
+            }
+            if (!ejection_path_reachable(source_x, source_y, x, y, source_body_id)) {
+                if (census) ++(*census)[3];
+                continue;
+            }
+            if (census) ++(*census)[4];
             return {x, y};
         }
     }
@@ -725,6 +838,11 @@ void CyberNativeCellWorld::accumulate_boundary_pressure() {
         const auto y = cell_index / kWorldWidth;
         const auto body_id = world_->transient_obstacle_at(x, y);
         if (body_id == 0U || body_id >= observations_.size()) continue;
+        if(gcr_compound_mode_) {
+            const auto material=world_->stored_material(x,y);
+            if(material!=cybersand::Material::Empty && !cybersand::MaterialRules::is_hard_surface(material) &&
+                cybersand::MaterialRules::descriptor(material).movable) ++gcr_compound_overlap_post_;
+        }
         for (const auto direction : directions) {
             const auto target_x = x + direction.x;
             const auto target_y = y + direction.y;
@@ -740,6 +858,7 @@ void CyberNativeCellWorld::accumulate_boundary_pressure() {
             ++observations_[body_id].contacts;
             const Vector2 normal{-static_cast<double>(direction.x),
                                  -static_cast<double>(direction.y)};
+            if (gcr_enabled_ && cybersand::MaterialRules::supports_granular_load(material)) continue;
             const auto impulse = normal * boundary_gain_ * density_scale(material, 0.01);
             if (body_diagnostics_) {
                 auto& diagnostic = (*body_diagnostics_)[body_id];
@@ -764,8 +883,15 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
             !in_bounds(x, y + 1) || world_->transient_obstacle_at(x, y + 1) != 0U) {
             continue;
         }
+        if (body_diagnostics_) ++(*body_diagnostics_)[body_id].boundaries;
         if (world_->granular_support_at(x, y + 1, false, false)) {
             ++support_samples[body_id];
+            if (body_diagnostics_) {
+                auto& diagnostic = (*body_diagnostics_)[body_id];
+                ++diagnostic.raw_support;
+                if (static_cast<double>(x) + 0.5 < current_bodies_[body_id].center.x) ++diagnostic.left_support;
+                else ++diagnostic.right_support;
+            }
         }
     }
 
@@ -778,7 +904,7 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
         const auto arrest = body.velocity.y * body.mass;
         const auto yielding = gravity + std::max(
             0.0, body.velocity.y - kGravityImpulsePerMassTick) *
-            body.mass * kGranularYieldVelocityResponse;
+            body.mass * granular_yield_response_;
         const auto capacity = std::min(
             kMaximumGranularBearingImpulse,
             static_cast<double>(samples) * kGranularImpulseCapacityPerSample);
@@ -806,6 +932,7 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
 
 void CyberNativeCellWorld::record_impulse(std::uint16_t body_id, Vector2 impulse) {
     if (body_id == 0U || body_id >= observations_.size()) return;
+    if (gcr_compound_mode_) { observations_[body_id].impulse += impulse; return; }
     auto combined = observations_[body_id].impulse + impulse;
     if (combined.length() > impulse_cap_) {
         if (body_diagnostics_) ++(*body_diagnostics_)[body_id].intermediate_caps;
@@ -816,6 +943,7 @@ void CyberNativeCellWorld::record_impulse(std::uint16_t body_id, Vector2 impulse
 
 PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
     PackedFloat32Array results;
+    if (gcr_enabled_) return results;
     if (world_ == nullptr || world_->has_failed()) return results;
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
         const auto& body = current_bodies_[body_id];
@@ -853,6 +981,299 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
         results.append(static_cast<float>(body.sample_serial));
     }
     return results;
+}
+
+void CyberNativeCellWorld::invalidate_gcr_response() {
+    gcr_response_valid_=false;
+    gcr_bins_={}; clear_observations();
+    if(world_ && !world_->has_failed() && !world_->solid_detachment_fenced()) world_->clear_transient_contact_observations();
+}
+
+bool CyberNativeCellWorld::prepare_gcr_coupling(const PackedFloat64Array& states,
+                                                       bool resolve_overlaps) {
+    if (!gcr_enabled_ || world_ == nullptr || world_->has_failed() || world_->solid_detachment_fenced()) return false;
+    if (gcr_compound_mode_ && !gcr_preparing_compound_) { invalidate_gcr_response(); return false; }
+    const auto refuse=[this]() { invalidate_gcr_response(); return false; };
+    if (states.size()%17 != 0 || states.size()/17 > cybersand::World::kMaximumTransientBodies) return refuse();
+    BodyStates next{};
+    double session=gcr_session_id_;
+    // Validate before replacing masks, session or serials. Refusal invalidates
+    // response observations atomically while preserving previous occupancy.
+    for (std::int64_t offset=0; offset<states.size(); offset+=17) {
+        for (std::int64_t field=0;field<17;++field)
+            if (!std::isfinite(states[offset+field])) return refuse();
+        const double incoming_session=states[offset+16];
+        if (incoming_session<1 || incoming_session>9'007'199'254'740'991. ||
+            std::trunc(incoming_session)!=incoming_session || (session!=0 && session!=incoming_session)) return refuse();
+        session=incoming_session;
+        const double id=states[offset],serial=states[offset+10];
+        if (id<1 || id>cybersand::World::kMaximumTransientBodies || std::trunc(id)!=id ||
+            serial<0 || serial>=1'000'000 || std::trunc(serial)!=serial ||
+            states[offset+4]<1 || states[offset+5]<1 ||
+            states[offset+4]>128 || states[offset+5]>128 ||
+            states[offset+9]<1e-9 || states[offset+9]>1e12 ||
+            states[offset+11]<1e-9 || states[offset+11]>1e12 ||
+            states[offset+14]<0 || states[offset+14]>16 ||
+            states[offset+15]<=0 || states[offset+15]>.1) return refuse();
+        for (const int field : {1,2,6,7,8,12,13})
+            if (std::abs(states[offset+field])>1e6) return refuse();
+        const auto index=static_cast<std::size_t>(id);
+        auto& body=next[index];
+        if (body.valid) return refuse();
+        const auto sample=static_cast<std::int32_t>(serial);
+        const auto last=gcr_last_serials_[index];
+        if (last>=0) {
+            const auto advance=(sample-last+1'000'000)%1'000'000;
+            if (advance==0 || advance>=500'000) return refuse();
+        }
+        body.id=static_cast<std::uint16_t>(id);
+        body.center={states[offset+1],states[offset+2]};
+        body.rotation=states[offset+3];
+        body.half_size={states[offset+4]*.5,states[offset+5]*.5};
+        body.velocity={states[offset+6],states[offset+7]};
+        body.angular_velocity=states[offset+8]; body.mass=states[offset+9];
+        body.sample_serial=sample; body.inertia=states[offset+11];
+        body.com={states[offset+12],states[offset+13]};
+        body.friction=states[offset+14]; body.dt=states[offset+15]; body.valid=true;
+    }
+    current_bodies_=next;
+    gcr_session_id_=session;
+    prepare_body_coupling(resolve_overlaps);
+    if (world_->has_failed()) { gcr_response_valid_=false; return false; }
+    gcr_sample_tick_=world_->completed_tick_index();
+    gcr_response_valid_=true;
+    for (std::size_t i=1;i<next.size();++i)
+        if (next[i].valid) gcr_last_serials_[i]=next[i].sample_serial;
+    return true;
+}
+
+void CyberNativeCellWorld::accumulate_gcr_contacts() {
+    static constexpr std::array<Vector2i,4> directions{{{0,-1},{1,0},{0,1},{-1,0}}};
+    for (const auto cell_index:raster_indices_) {
+        const auto x=cell_index%kWorldWidth,y=cell_index/kWorldWidth;
+        const auto id=world_->transient_obstacle_at(x,y);
+        if (id==0 || id>=current_bodies_.size()) continue;
+        const auto& body=current_bodies_[id];
+        for (const auto direction:directions) {
+            const auto tx=x+direction.x,ty=y+direction.y;
+            if (!in_bounds(tx,ty) || world_->transient_obstacle_at(tx,ty)!=0) continue;
+            if (body_diagnostics_) ++(*body_diagnostics_)[id].boundaries;
+            const auto material=world_->stored_material(tx,ty);
+            if (!cybersand::MaterialRules::supports_granular_load(material)) continue;
+            // A stored cell can neighbour multiple raster pixels. Admit exactly
+            // one, using the first neighbour of that cell in cardinal order.
+            bool owner=false;
+            for (const auto neighbour:directions) {
+                const auto adjacent=world_->transient_obstacle_at(tx+neighbour.x,ty+neighbour.y);
+                if (adjacent==id || (gcr_compound_mode_ && adjacent>=1 && adjacent<=gcr_compound_count_)) {
+                    owner=adjacent==id && tx+neighbour.x==x && ty+neighbour.y==y; break;
+                }
+            }
+            if (!owner) continue;
+            const auto contact=cybersand::gcr::project(
+                {body.center.x,body.center.y},{body.half_size.x,body.half_size.y},
+                body.rotation,{static_cast<double>(tx)+.5,static_cast<double>(ty)+.5});
+            // Downward support uses existing8/9. Every other orientation uses
+            // the stricter side/up9/9 predicate. No new material/state law.
+            const bool side=contact.inward.y>=-std::sqrt(.5);
+            if (gcr_admission_a1_ && side) {
+                const auto admission=world_->granular_contact_admission_at(tx,ty,-contact.inward.x,-contact.inward.y);
+                {
+                    auto& a=admission_observations_[id];
+                    a.source_candidates+=admission.source_candidates;
+                    a.geometry_mask_checks+=admission.geometry_mask_checks; a.mask_checks+=admission.mask_checks;
+                    a.path_checks+=admission.path_checks; a.shared_witness_calls+=admission.shared_witness_calls;
+                    a.admitted+=admission.admitted ? 1U:0U;
+                    ++a.selected_depth_counts[admission.selected_depth];
+                    if(admission.selected_depth) ++a.witness_offset_counts[
+                        static_cast<std::size_t>(admission.witness_dy+2)*5U+static_cast<std::size_t>(admission.witness_dx+2)];
+                    ++a.refusal_counts[static_cast<std::size_t>(admission.refusal_reason)];
+                    a.last=admission;
+                }
+                if (!admission.admitted) continue;
+            } else if (!world_->granular_support_at(tx,ty,side,false)) continue;
+            auto& bin=gcr_bins_[id][contact.bin];
+            bin.add(contact.point,contact.inward,{body.com.x,body.com.y});
+            bin.material_mask|=std::uint64_t{1}<<static_cast<unsigned>(material);
+            const auto state_b=world_->stored_state_b(tx,ty);
+            bin.state_b_min=std::min(bin.state_b_min,state_b);
+            bin.state_b_max=std::max(bin.state_b_max,state_b);
+            ++observations_[id].contacts;
+            if (body_diagnostics_) {
+                auto& d=(*body_diagnostics_)[id]; ++d.support_samples; ++d.raw_support;
+                if (contact.point.x<body.center.x) ++d.left_support; else ++d.right_support;
+                ++d.faces[(contact.bin/2)*cybersand::kMaterialDefinitions.size()+static_cast<std::size_t>(material)];
+            }
+            // Preserve the previous bounded downward low-speed correction only.
+            const auto& previous=previous_bodies_[id];
+            const double correction_speed=gcr_compound_mode_
+                ? body.velocity.y+body.angular_velocity*(body.center.x-body.com.x) : body.velocity.y;
+            if (!side && previous.valid && correction_speed>0 && correction_speed<=kGranularSettleVelocity) {
+                const double travel=std::max(0.,static_cast<double>(body.center.y-previous.center.y));
+                observations_[id].correction.y=-std::min(kMaximumGranularBearingCorrection,
+                    travel*kGranularBearingCorrectionFraction);
+            }
+        }
+    }
+}
+
+CyberNativeCellWorld::GcrEvaluation CyberNativeCellWorld::evaluate_gcr(std::size_t id) const {
+    GcrEvaluation out;
+    const auto& body=current_bodies_[id];
+    const auto body_id=static_cast<std::uint16_t>(id);
+    out.refused=world_->transient_granular_wrench_refused(body_id);
+    if (out.refused) return out;
+    const double gx=static_cast<double>(world_->transient_granular_impulse_x(body_id));
+    const double gy=static_cast<double>(world_->transient_granular_impulse_y(body_id));
+    const double gain=contact_gain_/1000.;
+    out.event_raw={gx*gain,gy*gain};
+    out.event_raw_torque=(static_cast<double>(world_->transient_granular_moment2(body_id))*.5-
+        static_cast<double>(body.com.x)*gy+static_cast<double>(body.com.y)*gx)*gain;
+    // A source is adjacent to a masked pixel. Rectangle circumradius + two
+    // cells bounds that source, also for an offset COM. Limit the complete
+    // moving-event wrench with one factor before spending the shared budget.
+    const double radius=static_cast<double>((body.com-body.center).length()+body.half_size.length())+2.;
+    const double cost=std::max(static_cast<double>(out.event_raw.length()),std::abs(out.event_raw_torque)/radius);
+    out.event_scale=cost>20?20/cost:1.;
+    out.event=out.event_raw*out.event_scale;
+    out.event_torque=out.event_raw_torque*out.event_scale;
+    out.event_cost=cost*out.event_scale;
+    cybersand::gcr::Body state;
+    state.velocity={body.velocity.x+out.event.x/body.mass,body.velocity.y+out.event.y/body.mass};
+    state.omega=body.angular_velocity+out.event_torque/body.inertia;
+    state.com={body.com.x,body.com.y}; state.mass=body.mass; state.inertia=body.inertia; state.mu=body.friction;
+    out.passive=cybersand::gcr::solve(state,gcr_bins_[id],20-out.event_cost);
+    // Non-granular legacy mechanisms keep their old central cap. The granular
+    // kernel channel has already entered the new ledger, so subtract it here.
+    out.legacy=observations_[id].impulse+Vector2{
+        (static_cast<double>(world_->transient_contact_impulse_x(body_id))-gx)*gain,
+        (static_cast<double>(world_->transient_contact_impulse_y(body_id))-gy)*gain};
+    if (out.legacy.length()>impulse_cap_) out.legacy=out.legacy.normalized()*impulse_cap_;
+    out.impulse=out.legacy+out.event+Vector2{out.passive.impulse.x,out.passive.impulse.y};
+    out.torque=out.event_torque+out.passive.torque;
+    return out;
+}
+
+PackedFloat64Array CyberNativeCellWorld::gcr_body_results() const {
+    PackedFloat64Array result;
+    if (gcr_compound_mode_ || !gcr_enabled_ || !gcr_response_valid_ || world_==nullptr || world_->has_failed() ||
+        world_->completed_tick_index()>gcr_sample_tick_+1) return result;
+    // An accumulator overflow refuses the whole batch. No partial publication
+    // or central-only fallback can be mistaken for the registered mechanism.
+    for (std::size_t id=1;id<current_bodies_.size();++id)
+        if (current_bodies_[id].valid && world_->transient_granular_wrench_refused(static_cast<std::uint16_t>(id))) return result;
+    for (std::size_t id=1;id<current_bodies_.size();++id) {
+        const auto& body=current_bodies_[id]; if (!body.valid) continue;
+        const auto evaluation=evaluate_gcr(id);
+        const auto& o=observations_[id];
+        result.append(static_cast<double>(id)); result.append(evaluation.impulse.x); result.append(evaluation.impulse.y);
+        result.append(o.correction.x); result.append(o.correction.y);
+        result.append(static_cast<double>(o.contacts+world_->transient_contact_count(static_cast<std::uint16_t>(id))));
+        result.append(static_cast<double>(o.displaced)); result.append(static_cast<double>(o.unresolved));
+        result.append(body.sample_serial); result.append(evaluation.torque);
+        result.append(body.com.x); result.append(body.com.y); result.append(1.); result.append(gcr_session_id_);
+    }
+    return result;
+}
+
+String CyberNativeCellWorld::get_gcr_admission_variant() const {
+    return !gcr_enabled_ ? "disabled" : gcr_admission_a1_ ? "A1" : "R2";
+}
+
+Dictionary CyberNativeCellWorld::admission_counters_for(std::size_t id) const {
+    Dictionary admission;
+    const auto& a=admission_observations_[id];
+    admission["source_candidates"]=static_cast<std::int64_t>(a.source_candidates);
+    admission["geometry_mask_checks"]=static_cast<std::int64_t>(a.geometry_mask_checks);
+    admission["mask_checks"]=static_cast<std::int64_t>(a.mask_checks);
+    admission["path_checks"]=static_cast<std::int64_t>(a.path_checks);
+    admission["shared_witness_calls"]=static_cast<std::int64_t>(a.shared_witness_calls);
+    admission["admitted"]=static_cast<std::int64_t>(a.admitted);
+    Array depths,offsets;
+    for(const auto value:a.selected_depth_counts) depths.append(static_cast<std::int64_t>(value));
+    for(const auto value:a.witness_offset_counts) offsets.append(static_cast<std::int64_t>(value));
+    admission["selected_depth_counts"]=depths; admission["witness_offset_counts"]=offsets;
+    admission["selected_depth"]=a.last.selected_depth;
+    admission["witness_dx"]=a.last.witness_dx; admission["witness_dy"]=a.last.witness_dy;
+    static constexpr std::array<const char*,11> names{{"None","Invalid","FailedWorld","NoMaskFreeWitness",
+        "SourceMasked","SourceNonCapable","SourceUnstable","PathMasked","PathNonCapable","PathUnstable","Packing"}};
+    Dictionary refusals;
+    for(std::size_t i=0;i<names.size();++i) refusals[names[i]]=static_cast<std::int64_t>(a.refusal_counts[i]);
+    admission["refusal_counts"]=refusals;
+    admission["refusal_reason"]=names[static_cast<std::size_t>(a.last.refusal_reason)];
+    admission["id"]=static_cast<std::int64_t>(id);
+    admission["sample_serial"]=current_bodies_[id].sample_serial;
+    admission["admission_variant"]=get_gcr_admission_variant();
+    return admission;
+}
+
+Array CyberNativeCellWorld::get_gcr_admission_counters() const {
+    Array result;
+    if (!gcr_enabled_ || !gcr_response_valid_ || !world_ || world_->has_failed() ||
+        world_->completed_tick_index()>gcr_sample_tick_+1) return result;
+    for(std::size_t id=1;id<current_bodies_.size();++id)
+        if(current_bodies_[id].valid) result.append(admission_counters_for(id));
+    return result;
+}
+
+Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
+    if(gcr_compound_mode_) return gcr_compound_diagnostics();
+    Dictionary result; result["enabled"]=gcr_enabled_; result["protocol_version"]=1;
+    result["candidate"]=gcr_admission_a1_ ? "GCR-A1":"GCR";
+    result["experiment"]=gcr_admission_a1_ ? "GCR-ADMISSION-001-2026-11-01":"GCR-001-2026-11-01";
+    result["admission_variant"]=get_gcr_admission_variant();
+    result["evaluator_variant"]="R2-second-moment-quadrature";
+    result["fixed_bin_storage_bytes"]=static_cast<std::int64_t>(sizeof(gcr_bins_));
+    result["raster_capacity_indices"]=static_cast<std::int64_t>(raster_indices_.capacity());
+    result["maximum_nodes_per_body"]=16; result["maximum_scalar_updates_per_64_bodies"]=8192;
+    Array bodies;
+    result["response_valid"]=gcr_response_valid_;
+    result["sample_native_tick"]=static_cast<std::int64_t>(gcr_sample_tick_);
+    if (gcr_enabled_ && gcr_response_valid_ && world_ && !world_->has_failed() &&
+        world_->completed_tick_index()<=gcr_sample_tick_+1) for (std::size_t id=1;id<current_bodies_.size();++id) {
+        const auto& body=current_bodies_[id]; if(!body.valid) continue;
+        const auto evaluation=evaluate_gcr(id); const auto& p=evaluation.passive;
+        Dictionary row; row["id"]=static_cast<std::int64_t>(id); row["sample_serial"]=body.sample_serial;
+        row["normal_raw"]=p.raw_normal; row["normal_accepted"]=p.normal;
+        row["tangent_raw"]=p.raw_tangent; row["tangent_accepted"]=p.tangent;
+        row["normal_rejected"]=std::max(0.,p.raw_normal-p.normal);
+        row["tangent_rejected"]=std::max(0.,p.raw_tangent-p.tangent);
+        row["normal_impulse"]=Vector2{p.normal_impulse.x,p.normal_impulse.y};
+        row["tangent_impulse"]=Vector2{p.tangent_impulse.x,p.tangent_impulse.y};
+        row["passive_torque"]=p.torque; row["normal_capacity"]=p.capacity;
+        row["passive_raw_impulse"]=Vector2{p.raw_impulse.x,p.raw_impulse.y};
+        row["passive_raw_torque"]=p.raw_torque;
+        row["passive_rejected_torque"]=p.raw_torque-p.torque;
+        row["normal_cap_hits"]=p.normal_cap_hits; row["tangent_cap_hits"]=p.tangent_cap_hits;
+        row["probes"]=body_diagnostics_ ? static_cast<std::int64_t>((*body_diagnostics_)[id].boundaries) : 0;
+        row["event_raw"]=evaluation.event_raw; row["event_accepted"]=evaluation.event;
+        row["event_raw_torque"]=evaluation.event_raw_torque; row["event_torque"]=evaluation.event_torque;
+        row["event_scale"]=evaluation.event_scale; row["event_budget_cost"]=evaluation.event_cost;
+        row["legacy_non_granular"]=evaluation.legacy;
+        row["impulse"]=evaluation.impulse; row["torque"]=evaluation.torque;
+        row["sample_com"]=body.com; row["inertia"]=body.inertia; row["mu"]=body.friction; row["dt"]=body.dt;
+        row["energy_before"]=p.energy_before; row["energy_after"]=p.energy_after;
+        row["passivity_rejected"]=p.passive_rejected; row["refused"]=evaluation.refused;
+        row["bins"]=p.bins; row["nodes"]=p.nodes; row["quadrature_clamps"]=p.quadrature_clamps;
+        row["updates"]=p.updates; row["maximum_radius"]=p.max_radius;
+        Array bins;
+        for (const auto& bin:gcr_bins_[id]) {
+            Dictionary b; b["count"]=bin.count; b["normal"]=Vector2{bin.normal.x,bin.normal.y};
+            b["position_sum"]=Vector2{bin.position_sum.x,bin.position_sum.y};
+            b["material_mask"]=static_cast<std::int64_t>(bin.material_mask);
+            b["state_b_min"]=bin.state_b_min; b["state_b_max"]=bin.state_b_max;
+            b["tangent_mean"]=bin.tangent_mean; b["tangent_m2"]=bin.tangent_m2;
+            b["tangent_min"]=bin.tangent_min; b["tangent_max"]=bin.tangent_max;
+            const auto q=cybersand::gcr::quadrature(bin);
+            b["quadrature_nodes"]=q.nodes; b["quadrature_clamped"]=q.clamped;
+            b["quadrature_low"]=Vector2{q.low.x,q.low.y}; b["quadrature_high"]=Vector2{q.high.x,q.high.y};
+            bins.append(b);
+        }
+        row["contact_bins"]=bins;
+        const auto admission=admission_counters_for(id);
+        row["admission"]=admission; bodies.append(row);
+    }
+    result["session_id"]=gcr_session_id_; result["bodies"]=bodies; return result;
 }
 
 std::int64_t CyberNativeCellWorld::material_at(std::int64_t x, std::int64_t y) const {
@@ -1396,6 +1817,21 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
     // Explicit API, fresh construction, no live descriptor edits. A demo reset
     // restores production defaults. Validate before replacing existing authority.
     try {
+        double yield_response = kGranularYieldVelocityResponse;
+        bool gcr = false;
+        bool admission_a1 = false;
+        if (options.has("bearing_candidate") || options.has("bearing_experiment")) {
+            if (options.get("bearing_candidate", Variant()).get_type() != Variant::STRING ||
+                options.get("bearing_experiment", Variant()).get_type() != Variant::STRING ||
+                !options.has("bearing_candidate") || !options.has("bearing_experiment")) return false;
+            const String selected = options["bearing_candidate"];
+            const String experiment = options["bearing_experiment"];
+            admission_a1 = selected == "GCR-A1" && experiment == "GCR-ADMISSION-001-2026-11-01";
+            gcr = admission_a1 || (selected == "GCR" && experiment == "GCR-001-2026-11-01");
+            if (!gcr && (experiment != "Y1-ENVELOPE-2026-11-01" ||
+                (selected != "B0" && selected != "Y1"))) return false;
+            if (selected == "Y1") yield_response = 1.0;
+        }
         const auto workers = static_cast<std::int64_t>(options.get("workers", 1));
         if (workers < 1 || workers > 32) return false;
 #if defined(__EMSCRIPTEN__) && !defined(__EMSCRIPTEN_PTHREADS__)
@@ -1413,6 +1849,9 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto cap = gain("cap", 3.0);
         const auto density = gain("density_limit", 1.6);
         if (density < 0.05 || cap <= 0) return false;
+        if (options.has("conservative_displacement") &&
+            options["conservative_displacement"].get_type() != Variant::BOOL) return false;
+        const bool conservative = options.get("conservative_displacement", false);
         cybersand::WorldConfig config;
         config.worker_threads = static_cast<std::uint32_t>(workers);
         config.maximum_chunk_count = 128;
@@ -1442,11 +1881,32 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
+        auto compound_workspace = gcr && conservative ? std::make_unique<cybersand::gcr::CompoundWorkspace>() : nullptr;
+        // First-writer occupancy admits at most one index per world cell,
+        // including sweep union. Reserve GCR's entire bound at construction.
+        if (gcr) raster_indices_.reserve(std::size_t{kWorldWidth} * kWorldHeight);
         world_.swap(candidate);
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
+        granular_yield_response_ = yield_response;
+        gcr_enabled_ = gcr;
+        gcr_admission_a1_ = admission_a1;
+        gcr_compound_mode_ = gcr_preparing_compound_ = false; gcr_compound_count_ = 0;
+        gcr_compound_token_ = {}; gcr_compound_generation_ = gcr_compound_physics_epoch_ = 0;
+        gcr_compound_workspace_ = std::move(compound_workspace);
+        gcr_session_id_ = 0;
+        gcr_response_valid_ = false; gcr_sample_tick_ = 0;
+        gcr_bins_ = {};
+        gcr_last_serials_.fill(-1);
+        world_->enable_transient_granular_wrenches(gcr);
         diagnostic_fixture_ = true;
+        conservative_displacement_ = conservative;
+        displacement_accounting_ = {};
+        displacement_touched_count_ = displacement_attempts_this_sample_ = 0;
+        displacement_token_ = {};
+        displacement_sample_ = -1;
+        displacement_sample_valid_ = false;
         worker_threads_ = config.worker_threads;
         displacement_gain_ = displacement; boundary_gain_ = boundary;
         contact_gain_ = contact; impulse_cap_ = cap; density_limit_ = density;
@@ -2006,7 +2466,7 @@ Dictionary CyberNativeCellWorld::water_experiment_observation(
     return result;
 }
 
-Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i size, bool include_histogram) const {
+Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i size, bool include_histogram, bool include_hash) const {
     Dictionary result;
     if (!diagnostic_fixture_ || size.x < 1 || size.y < 1 || size.x > 512 || size.y > 768 ||
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
@@ -2029,7 +2489,7 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
     for (std::size_t i = 0; i < counts.size(); ++i) { material_counts.append(counts[i]); material_sum_y.append(sum_y[i]); }
     result["counts"] = material_counts; result["sum_y"] = material_sum_y;
     result["water_mass"] = water; result["cells"] = cells;
-    result["hash"] = String::num_uint64(world_->state_hash(), 16);
+    if (include_hash) result["hash"] = String::num_uint64(world_->state_hash(), 16);
     result["completed_ticks"] = static_cast<std::int64_t>(world_->completed_tick_index());
     result["attempted_ticks"] = static_cast<std::int64_t>(world_->tick_index());
     result["failed"] = world_->has_failed();
@@ -2053,7 +2513,8 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
 
 Array CyberNativeCellWorld::diagnostic_body_metrics() const {
     Array result;
-    if (!body_diagnostics_ || has_failed()) return result;
+    if (!body_diagnostics_ || has_failed() || (gcr_enabled_ && (!gcr_response_valid_ ||
+        world_->completed_tick_index()>gcr_sample_tick_+1))) return result;
     for (std::size_t id = 1; id < current_bodies_.size(); ++id) {
         if (!current_bodies_[id].valid) continue;
         const auto& d = (*body_diagnostics_)[id];
@@ -2068,6 +2529,7 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
             pre_final += o.bearing;
             pre_final.y = std::max(pre_final.y, o.bearing.y);
         }
+        if (gcr_enabled_) pre_final=evaluate_gcr(id).impulse;
         Array row;
         row.append(static_cast<std::int64_t>(id)); row.append(current_bodies_[id].sample_serial);
         for (const auto v : {d.displacement, d.boundary, pixel, o.impulse, pre_final}) {
@@ -2081,6 +2543,20 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
         row.append(faces);
         row.append(d.bearing.x); row.append(d.bearing.y);
         row.append(static_cast<std::int64_t>(d.support_samples));
+        Dictionary envelope;
+        envelope["candidate"] = gcr_enabled_ ? (gcr_admission_a1_ ? "GCR-A1":"GCR") : granular_yield_response_ == 1.0 ? "Y1" : "B0";
+        envelope["yield_factor"] = granular_yield_response_;
+        envelope["boundaries"] = static_cast<std::int64_t>(d.boundaries);
+        envelope["raw_support"] = static_cast<std::int64_t>(d.raw_support);
+        envelope["left_support"] = static_cast<std::int64_t>(d.left_support);
+        envelope["right_support"] = static_cast<std::int64_t>(d.right_support);
+        envelope["attempts"] = static_cast<std::int64_t>(d.attempts);
+        envelope["no_target"] = static_cast<std::int64_t>(d.no_target);
+        envelope["relocation_refused"] = static_cast<std::int64_t>(d.relocation_refused);
+        Array endpoints;
+        for (const auto count : d.endpoints) endpoints.append(static_cast<std::int64_t>(count));
+        envelope["endpoints"] = endpoints;
+        row.append(envelope);
         result.append(row);
     }
     return result;
@@ -2095,5 +2571,8 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 }
 
 #include "pressure_optimization_inspection.inc"
+#include "conservative_displacement_adapter.inc"
+#include "solid_detachment_adapter.inc"
+#include "gcr_compound_adapter.inc"
 
 }  // namespace godot
