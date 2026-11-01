@@ -531,3 +531,6 @@ the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
 
 - [Physical detachment replay and bounded oracle investigation, 2026-10-31](audits/2026-10-31-physical-detachment-abc.md) — frozen current-main source, archive reconciliation and staged diagnostic evidence.
+
+- [Physical detachment A2](audits/2026-10-31-physical-detachment-a2.md): complete topology-diverse census, preserved B/C policies and local-chain disposition.
+- [Granular bearing / pre-overlap investigation](operations/granular-bearing-pre-overlap-investigation.md): planned causal successor, with no bearing implementation selected.

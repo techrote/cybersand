@@ -335,3 +335,8 @@ For authored checkpoint visibility, Return to launcher, sampled task participant
 coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).
 
 Physical detachment diagnostic replay: use the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md#diagnostic-contact-capsules-and-local-replay) and its dated evidence; strict-empty topology is distinct from production path acceptance.
+
+For topology diversity hidden by production ejection deduplication, use the
+[coupling A2 contract](../architecture/rigid-body-and-cellular-coupling.md#a2-topology-diversity-and-upstream-response);
+for the next entry-momentum/support experiment use the separately
+[Planned bearing investigation](../operations/granular-bearing-pre-overlap-investigation.md).

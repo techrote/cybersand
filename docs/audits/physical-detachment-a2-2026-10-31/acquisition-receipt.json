@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "tested_source": "8203d2d1",
+  "tested_source_full": "8203d2d1bae2151c1a2d4909df5b08ab5b5012eb",
+  "source_parent": "7e04e8fde1496c5f32d3f83099ec2a6bfb6bb7d6",
+  "protocol_commit": "c68f44e49434e7f7267e1a08edc808fa18d01c4c",
+  "acquisition": {
+    "complete": true,
+    "native_counters": {
+      "schema_version": 1,
+      "attempts": 1301,
+      "duplicates": 0,
+      "dropped": 0,
+      "failed_unique": 0,
+      "success_unique": 0,
+      "searched_no_target": 1231,
+      "target_found": 70,
+      "relocation_refused": 0,
+      "dropped_capacity": 0,
+      "dropped_oversized": 0,
+      "dropped_stale_or_sidecar": 0,
+      "replay_disagreements": 0,
+      "maximum_failed": 0,
+      "maximum_success": 0,
+      "maximum_footprint_side": 128,
+      "owner_current": true,
+      "stream_mode": true,
+      "stream_pending_limit": 256,
+      "stream_emitted": 1301,
+      "stream_total_limit": 8192,
+      "stream_pending_drops": 0,
+      "stream_total_drops": 0,
+      "capture_instance_id": "9223372066869216746",
+      "capture_reset_generation": "2",
+      "fixture": {
+        "name": "rem002-reduced-p4-four-height",
+        "left": 96,
+        "surface": 160,
+        "width": 32,
+        "depth": 48,
+        "body_size": [
+          8,
+          14
+        ],
+        "drop_heights": 4,
+        "initial_rotation": 0.08,
+        "initial_angular_velocity": 1.0,
+        "mass": 1,
+        "ticks": 600,
+        "workers": 1,
+        "raw_unresolved": 1231,
+        "raw_displaced": 70,
+        "real_rapier": true,
+        "capture_failed_cap": 64,
+        "capture_success_cap": 16
+      },
+      "complete": true,
+      "maximum_pending_seen": 45,
+      "events_written": 1301,
+      "final_physical_hash": "f2d5a87b39cf6c45"
+    },
+    "fixture": {
+      "name": "rem002-reduced-p4-four-height",
+      "left": 96,
+      "surface": 160,
+      "width": 32,
+      "depth": 48,
+      "body_size": [
+        8,
+        14
+      ],
+      "drop_heights": 4,
+      "initial_rotation": 0.08,
+      "initial_angular_velocity": 1.0,
+      "mass": 1,
+      "ticks": 600,
+      "workers": 1,
+      "raw_unresolved": 1231,
+      "raw_displaced": 70,
+      "real_rapier": true,
+      "capture_failed_cap": 64,
+      "capture_success_cap": 16
+    },
+    "source_revision": "8203d2d1bae2151c1a2d4909df5b08ab5b5012eb",
+    "mode": "acquire",
+    "stream_controls": true,
+    "legacy_hashes": [],
+    "legacy_capsules": []
+  },
+  "replay": {
+    "ok": true,
+    "capsules": 1301,
+    "failed_unique": 1231,
+    "success_unique": 70,
+    "candidate_reasons": {
+      "non_empty": 100182,
+      "accepted": 70,
+      "source_body": 22
+    },
+    "native_fallback_target_trace_matches": 1301,
+    "mutation_failures": 0,
+    "malformed_refusal_controls": 15,
+    "serialization": "Godot JSON full_precision=true, parsed before replay"
+  },
+  "comparison_to_original": {
+    "original_failures": 64,
+    "original_positive_controls": 16,
+    "a2_full_failures": 1231,
+    "a2_retained_failures": 144,
+    "full_broadening_factor": 19.234375,
+    "sample_broadening_factor": 2.25,
+    "failure_events_sharing_original64_searchhashes": 228,
+    "failure_states_collapsed_within_original64": 164,
+    "failure_events_excluded_by_original_capacity": 1003,
+    "positive_duplicates_in_original16_searchclasses": 9,
+    "positive_events_excluded_by_original_capacity": 45
+  },
+  "neutrality": {
+    "all600frames_equal_excluding_diagnostic_event_count": true,
+    "fields": "body inputs, pre/posttick native metrics/results, bridge applications/livevelocity, physicalhash",
+    "original80_legacy_hashes_match": true,
+    "legacy_trace_sha256": "0f7a3777ac727f0f4588a3d5742afeb9f638c864c665a96fbef212bcb46e4fc6",
+    "stream_trace_sha256": "2215732a75c265b4d1e904876777cdbdc51d3d552767ccaeef1959d5289ae26d"
+  },
+  "artifact_sha256": {
+    "corpus.json": "5754e67027e1d551a4d88c5617a277842044ae01512f25abf9ea781144b383de",
+    "population.json": "ba2953a46e6691dad77bc1b385db7eb4d9760bd362c5c40bd6da3e13044d6687",
+    "sampling.json": "284f7eef6f40d129afc6f99d6136af1211d763c6b4c19d9834374b84f1eafd7f",
+    "trajectory.json": "2215732a75c265b4d1e904876777cdbdc51d3d552767ccaeef1959d5289ae26d"
+  },
+  "raw_stream_sha256": "b9a40c2f616a69e9d72bfc7964d4e64c33685280959a45ed75cb90d26f35860d",
+  "raw_stream_recovery": "Every1301event retained as full immutable capsule in population.json, recover chronological order by event_ordinal; raw JSON formatting and two added identity keys differ. No raw events discarded.",
+  "native_runtime_sha256": "3954748735c1329eb1371ff36aeed70518a6933c3ff37cc66172127a6a0641e7",
+  "godot_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+  "capture_input_sha256": {
+    "godot/native_extension/cyber_native_cell_world.cpp": "449d9c412be92cf32b0cd42db2f88805f38b5b1e605f99fe22d1be462461948f",
+    "godot/native_extension/cyber_native_cell_world.hpp": "fdaddcbdf8591355e661a0954d0d8186c9f3ab4ecc2484eed9d5cbb87b86aeac",
+    "godot/tests/test_ejection_topology_capture.gd": "36a053f072164bcdb5d543364b439b51f6e48be508595f86ae7d0cb7891e1113",
+    "tools/experiments/ejection_a2.py": "393ed77fedba02e66dcec3c6ce3199abb4d9db0dbf6529ec76ee70ec450f5432"
+  },
+  "commands": [
+    "tools/build_native_extension_windows.sh with pinned Godot-cpp101ae380 and LLVM-MinGW20260826/Clang23.1.0; isolated output",
+    "Godot4.7 --headless --path build/godot --script res://tests/test_ejection_topology_capture.gd -- --mode=acquire --events=<events.jsonl> --acquisition=<receipt.json> --trace=<trajectory.json>",
+    "same script --mode=legacy with separate receipt/trace",
+    "python tools/experiments/ejection_a2.py --events <events> --acquisition <receipt> --output-directory <local>",
+    "same Godot script --mode=replay --capsule-input=<population.json> --replay-report=<replay.json>"
+  ],
+  "guards_seconds": {
+    "native_build_python_subprocess_timeout": 300,
+    "Godot_internal_watchdog": 120,
+    "Godot_outer_subprocess_timeout": 150
+  },
+  "sampling_independent_audit": "Separate stdlib-only implementation recomputed1301 scientific+structural hashes and all36 bottom-k memberships with zero mismatches. AI review is not human approval.",
+  "failure_history": [
+    {
+      "kind": "unqualified early smoke",
+      "reason": "Run started while qualified build was pending, using previous DLL without lifetime/fence metadata. Excluded from all B/C results. Old DLL SHA not recorded. Version guard added before qualified run.",
+      "summary": {
+        "attempts": 1301,
+        "no_target": 1231,
+        "success": 70,
+        "drops": 0
+      }
+    }
+  ]
+}

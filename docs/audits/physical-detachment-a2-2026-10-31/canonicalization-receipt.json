@@ -1,0 +1,33 @@
+{
+  "kind": "explicit publication newline canonicalization",
+  "reason": "Windows write_text emitted CRLF while .gitattributes already publishes JSON with LF. Published population is requalified by exact SHA-bound native/fallback replay. No scientific inputs/identities/sampler/oracle outcomes changed.",
+  "old_hash_policy": "Preserve historical working-byte hashes; canonical Git identities recorded separately, never relabel old runs.",
+  "artifacts": {
+    "acquisition-receipt.json": {
+      "acquisition_or_working_sha256": "4e86af987b4eb21c189ff0c6cb3a39bf93c6d262135aa60194541e3e0a0b2c55",
+      "published_git_LF_sha256": "16af6a9a5109780a2f6d405bdbb84aa02046d30d43c2fe8c93698a0a46933913",
+      "semantic_json_equal": true
+    },
+    "corpus.json": {
+      "acquisition_or_working_sha256": "5754e67027e1d551a4d88c5617a277842044ae01512f25abf9ea781144b383de",
+      "published_git_LF_sha256": "bf47444105a355f83ee889ad3bbbdbbb67e4cab31a721aed87fb09f310625419",
+      "semantic_json_equal": true
+    },
+    "population.json": {
+      "acquisition_or_working_sha256": "ba2953a46e6691dad77bc1b385db7eb4d9760bd362c5c40bd6da3e13044d6687",
+      "published_git_LF_sha256": "d3c8bfeb19355e7bf20518bb7d6afd4b03e1f3790644a09414c4d8ea0955d33c",
+      "semantic_json_equal": true
+    },
+    "protocol.json": {
+      "acquisition_or_working_sha256": "1da5fc7ddd562ae8ed190f9238650834b604caf606f45ad59c4391fce431643b",
+      "published_git_LF_sha256": "3022cf2dd675eb58585763b17d678a135beec9829f88f1d21ad81037e8cae68f",
+      "semantic_json_equal": true
+    },
+    "sampling.json": {
+      "acquisition_or_working_sha256": "284f7eef6f40d129afc6f99d6136af1211d763c6b4c19d9834374b84f1eafd7f",
+      "published_git_LF_sha256": "c5c6ebe52860caeef749573ad481a30b3ec41b5e5d0442c2bce3559781e39c22",
+      "semantic_json_equal": true
+    }
+  },
+  "scope": "These mappings preserve acquisition/protocol input working-byte identities. Final regenerated report identities are in analysis-receipt.json."
+}

@@ -94,6 +94,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
     ClassDB::bind_method(D_METHOD("diagnostic_ejection_capture", "maximum_failed", "maximum_success"), &CyberNativeCellWorld::diagnostic_ejection_capture);
+    ClassDB::bind_method(D_METHOD("diagnostic_ejection_stream"), &CyberNativeCellWorld::diagnostic_ejection_stream);
+    ClassDB::bind_method(D_METHOD("diagnostic_take_ejection_events"), &CyberNativeCellWorld::diagnostic_take_ejection_events);
     ClassDB::bind_method(D_METHOD("diagnostic_ejection_corpus"), &CyberNativeCellWorld::diagnostic_ejection_corpus);
     ClassDB::bind_method(D_METHOD("diagnostic_replay_ejection", "capsule"), &CyberNativeCellWorld::diagnostic_replay_ejection);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
@@ -638,10 +640,10 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     }
 
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
-    if (ejection_capture_failed_cap_ != 0 || ejection_capture_success_cap_ != 0)
+    if (ejection_capture_stream_ || ejection_capture_failed_cap_ != 0 || ejection_capture_success_cap_ != 0)
         capture_ejection(x, y, body_id, outward, penetration, target);
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
-        if (target.x >= 0 && (ejection_capture_failed_cap_ != 0 || ejection_capture_success_cap_ != 0))
+        if (target.x >= 0 && (ejection_capture_stream_ || ejection_capture_failed_cap_ != 0 || ejection_capture_success_cap_ != 0))
             ++ejection_capture_relocation_refused_;
         ++observation.unresolved;
         const auto impulse = -outward * displacement_gain_;
@@ -1487,6 +1489,9 @@ void CyberNativeCellWorld::clear_ejection_capture() {
     ejection_capture_capacity_drops_ = ejection_capture_oversized_drops_ = 0;
     ejection_capture_stale_drops_ = ejection_capture_replay_disagreements_ = 0;
     ejection_capsules_.clear();
+    ejection_capture_stream_ = false;
+    ejection_capture_stream_emitted_ = 0;
+    ejection_capture_pending_drops_ = ejection_capture_total_drops_ = 0;
 }
 
 bool CyberNativeCellWorld::diagnostic_ejection_capture(std::int64_t maximum_failed,
@@ -1499,6 +1504,19 @@ bool CyberNativeCellWorld::diagnostic_ejection_capture(std::int64_t maximum_fail
     ejection_capture_success_cap_ = maximum_success;
     ejection_capture_generation_ = liquid_policy_session_generation_;
     return true;
+}
+
+bool CyberNativeCellWorld::diagnostic_ejection_stream() {
+    if (!diagnostic_ejection_capture(0, 0)) return false;
+    ejection_capture_stream_ = true;
+    return true;
+}
+
+Dictionary CyberNativeCellWorld::diagnostic_take_ejection_events() {
+    // Same owner, immutable value copy. Never installs state or changes fencing.
+    auto out = diagnostic_ejection_corpus();
+    if (ejection_capture_stream_) ejection_capsules_.clear();
+    return out;
 }
 
 Dictionary CyberNativeCellWorld::diagnostic_ejection_corpus() const {
@@ -1521,6 +1539,14 @@ Dictionary CyberNativeCellWorld::diagnostic_ejection_corpus() const {
     out["maximum_success"] = ejection_capture_success_cap_;
     out["maximum_footprint_side"] = 128;
     out["owner_current"] = ejection_capture_generation_ == liquid_policy_session_generation_;
+    out["stream_mode"] = ejection_capture_stream_;
+    out["stream_pending_limit"] = 256;
+    out["stream_emitted"] = ejection_capture_stream_emitted_;
+    out["stream_total_limit"] = 8192;
+    out["stream_pending_drops"] = ejection_capture_pending_drops_;
+    out["stream_total_drops"] = ejection_capture_total_drops_;
+    out["capture_instance_id"] = String::num_uint64(get_instance_id());
+    out["capture_reset_generation"] = String::num_uint64(ejection_capture_generation_);
     return out;
 }
 
@@ -1531,6 +1557,12 @@ void CyberNativeCellWorld::capture_ejection(std::int32_t x, std::int32_t y,
     if (ejection_capture_generation_ != liquid_policy_session_generation_ ||
         world_->pressure_flow_enabled() || world_->inertial_enabled()) {
         ++ejection_capture_dropped_; ++ejection_capture_stale_drops_; return;
+    }
+    if (ejection_capture_stream_ && (ejection_capture_stream_emitted_ >= 8192 || ejection_capsules_.size() >= 256)) {
+        ++ejection_capture_dropped_; ++ejection_capture_capacity_drops_;
+        if (ejection_capture_stream_emitted_ >= 8192) ++ejection_capture_total_drops_;
+        else ++ejection_capture_pending_drops_;
+        return;
     }
     const Vector2 center{static_cast<double>(x) + 0.5, static_cast<double>(y) + 0.5};
     const Vector2 tangent{-outward.y, outward.x};
@@ -1610,6 +1642,15 @@ void CyberNativeCellWorld::capture_ejection(std::int32_t x, std::int32_t y,
         ++ejection_capture_dropped_; ++ejection_capture_replay_disagreements_; return;
     }
     const String hash = replay["replay_hash"];
+    if (ejection_capture_stream_) {
+        capsule["target"] = replay["target"];
+        capsule["trace"] = replay["trace"];
+        capsule["replay_hash"] = hash;
+        capsule["event_ordinal"] = ejection_capture_attempts_;
+        ejection_capsules_.push_back(capsule);
+        ++ejection_capture_stream_emitted_;
+        return;
+    }
     for (std::int64_t i = 0; i < ejection_capsules_.size(); ++i) {
         const Dictionary retained = ejection_capsules_[i];
         if (static_cast<String>(retained["replay_hash"]) == hash) {
