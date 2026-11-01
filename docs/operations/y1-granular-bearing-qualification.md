@@ -29,6 +29,16 @@ owns the response and ownership semantics. The exposed downward samples retain
 capacity2/sample and global20 cap, the original arrest term and low-speed
 correction. No A2 lookahead is present.
 
+**Measured technical status (2026-11-01):** the full matrix executed on Windows11
+Pro x86_64; Linux has separate focused host/core qualification. Y1 improves
+peak penetration by at least20% in19/21 eligible primary rows, but heavy/thin
+high-speed clearance and creep fail registered bounds. Real delayed snapshots
+at ages3–5 let both candidates reach the deep hard floor. Scalar bearing also
+lacks granular torque under asymmetric support. These findings block broad
+production promotion; B0 remains default and owner gameplay acceptance is pending.
+The [dated audit](../audits/2026-11-01-y1-production-envelope.md) retains exact
+numbers, source/runtime identities, recurrence, performance triggers and limits.
+
 ## How is the physical envelope registered and acquired?
 
 [Protocol](../audits/y1-envelope-2026-11-01/protocol.json) was committed before
