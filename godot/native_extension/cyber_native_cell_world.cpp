@@ -1079,7 +1079,10 @@ PackedFloat64Array CyberNativeCellWorld::gcr_body_results() const {
 Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
     Dictionary result; result["enabled"]=gcr_enabled_; result["protocol_version"]=1;
     result["candidate"]="GCR"; result["experiment"]="GCR-001-2026-11-01";
-    result["evaluator_variant"]="R1-sample-count-Jacobi";
+    result["evaluator_variant"]="R2-second-moment-quadrature";
+    result["fixed_bin_storage_bytes"]=static_cast<std::int64_t>(sizeof(gcr_bins_));
+    result["raster_capacity_indices"]=static_cast<std::int64_t>(raster_indices_.capacity());
+    result["maximum_nodes_per_body"]=16; result["maximum_scalar_updates_per_64_bodies"]=8192;
     Array bodies;
     result["response_valid"]=gcr_response_valid_;
     result["sample_native_tick"]=static_cast<std::int64_t>(gcr_sample_tick_);
@@ -1108,13 +1111,19 @@ Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
         row["sample_com"]=body.com; row["inertia"]=body.inertia; row["mu"]=body.friction; row["dt"]=body.dt;
         row["energy_before"]=p.energy_before; row["energy_after"]=p.energy_after;
         row["passivity_rejected"]=p.passive_rejected; row["refused"]=evaluation.refused;
-        row["bins"]=p.bins; row["updates"]=p.updates; row["maximum_radius"]=p.max_radius;
+        row["bins"]=p.bins; row["nodes"]=p.nodes; row["quadrature_clamps"]=p.quadrature_clamps;
+        row["updates"]=p.updates; row["maximum_radius"]=p.max_radius;
         Array bins;
         for (const auto& bin:gcr_bins_[id]) {
             Dictionary b; b["count"]=bin.count; b["normal"]=Vector2{bin.normal.x,bin.normal.y};
             b["position_sum"]=Vector2{bin.position_sum.x,bin.position_sum.y};
             b["material_mask"]=static_cast<std::int64_t>(bin.material_mask);
             b["state_b_min"]=bin.state_b_min; b["state_b_max"]=bin.state_b_max;
+            b["tangent_mean"]=bin.tangent_mean; b["tangent_m2"]=bin.tangent_m2;
+            b["tangent_min"]=bin.tangent_min; b["tangent_max"]=bin.tangent_max;
+            const auto q=cybersand::gcr::quadrature(bin);
+            b["quadrature_nodes"]=q.nodes; b["quadrature_clamped"]=q.clamped;
+            b["quadrature_low"]=Vector2{q.low.x,q.low.y}; b["quadrature_high"]=Vector2{q.high.x,q.high.y};
             bins.append(b);
         }
         row["contact_bins"]=bins; bodies.append(row);

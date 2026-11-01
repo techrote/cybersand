@@ -24,85 +24,114 @@ struct Bin {
     std::uint8_t state_b_min = 255, state_b_max = 0;
     Vec position_sum{}, normal{};
     double maximum_radius = 0;
+    double tangent_mean = 0, tangent_m2 = 0, tangent_min = 0, tangent_max = 0;
     void add(Vec point, Vec inward, Vec com) {
         ++count; position_sum=position_sum+point; normal=inward;
+        const double coordinate=dot(point,Vec{-inward.y,inward.x});
+        if(count==1) tangent_mean=tangent_min=tangent_max=coordinate;
+        else {
+            const double previous=tangent_mean;
+            tangent_mean+=(coordinate-tangent_mean)/count;
+            tangent_m2+=(coordinate-previous)*(coordinate-tangent_mean);
+            tangent_min=std::min(tangent_min,coordinate); tangent_max=std::max(tangent_max,coordinate);
+        }
         maximum_radius=std::max(maximum_radius,length(point-com));
     }
 };
+struct Quadrature {
+    Vec low{},high{};
+    std::uint32_t nodes=0;
+    bool clamped=false;
+};
+inline Quadrature quadrature(const Bin& bin) {
+    if(!bin.count) return {};
+    const Vec center=bin.position_sum*(1./bin.count),t{-bin.normal.y,bin.normal.x};
+    const double sigma=std::sqrt(std::max(0.,bin.tangent_m2/bin.count));
+    // Symmetric clipping preserves the first moment; represented variance may
+    // decrease and is explicitly qualified rather than silently extrapolated.
+    const double extent=std::max(0.,std::min(bin.tangent_mean-bin.tangent_min,
+                                           bin.tangent_max-bin.tangent_mean));
+    const double distance=std::min(sigma,extent);
+    return {center-t*distance,center+t*distance,distance==0 ? 1U:2U,sigma>extent+1e-12};
+}
 struct Body { Vec velocity{}, com{}; double omega=0,mass=1,inertia=1,mu=0; };
 struct Result {
     Vec impulse{}, normal_impulse{}, tangent_impulse{}, raw_impulse{};
     double torque=0, raw_torque=0, normal=0, tangent=0, raw_normal=0, raw_tangent=0;
     double capacity=0, energy_before=0, energy_after=0, scale=1, max_radius=0;
-    std::uint32_t bins=0, updates=0, normal_cap_hits=0, tangent_cap_hits=0;
+    std::uint32_t bins=0, nodes=0, quadrature_clamps=0, updates=0, normal_cap_hits=0, tangent_cap_hits=0;
     bool passive_rejected=false;
 };
 inline double kinetic(const Body& b, Vec v, double w) {
     return .5*b.mass*dot(v,v)+.5*b.inertia*w*w;
 }
-// Four deterministic projected Jacobi passes. Accumulated contact loads
-// may be released; the sum of current nonnegative loads owns the one budget.
+// R2: eight source bins reduce to at most sixteen numerical quadrature
+// contacts. Each node represents copied values, never a per-cell physics object.
+// Accumulated nonnegative loads share one capacity across all four passes.
 inline Result solve(const Body& b, const std::array<Bin,8>& bins,
                     double available=20) {
     Result out;
-    std::array<double,8> jn{},jt{},caps{};
+    struct Contact {
+        Vec position{},normal{};
+        double weight=0,capacity=0,jn=0,jt=0;
+    };
+    std::array<Contact,16> contacts{};
     std::uint64_t samples=0;
     for(const auto& bin:bins) samples+=bin.count;
     out.capacity=std::min(std::clamp(available,0.,20.),2.*static_cast<double>(samples));
-    for(std::size_t i=0;i<8;++i) {
-        caps[i]=samples ? out.capacity*static_cast<double>(bins[i].count)/static_cast<double>(samples):0;
-        if(bins[i].count) ++out.bins;
-        out.max_radius=std::max(out.max_radius,bins[i].maximum_radius);
+    for(const auto& bin:bins) {
+        if(!bin.count) continue;
+        ++out.bins; out.max_radius=std::max(out.max_radius,bin.maximum_radius);
+        const auto points=quadrature(bin);
+        const double weight=static_cast<double>(bin.count)/static_cast<double>(samples);
+        if(points.clamped) ++out.quadrature_clamps;
+        if(points.nodes==1) contacts[out.nodes++]={points.low,bin.normal,weight,out.capacity*weight};
+        else {
+            contacts[out.nodes++]={points.low,bin.normal,weight*.5,out.capacity*weight*.5};
+            contacts[out.nodes++]={points.high,bin.normal,weight*.5,out.capacity*weight*.5};
+        }
     }
     Vec v=b.velocity; double w=b.omega;
     for(unsigned pass=0;pass<4;++pass) for(unsigned axis=0;axis<2;++axis) {
-        // Evaluate every bin from one provisional state before applying the
-        // phase. Sample-count weights preserve the unreduced quadrature weight
-        // and mirrors without traversal-order torque on flat support.
-        std::array<double,8> delta{};
-        for(std::size_t i=0;i<8;++i) {
-            const auto& bin=bins[i]; if(!bin.count) continue;
-            const double relaxation=static_cast<double>(bin.count)/static_cast<double>(samples);
-            const Vec r=bin.position_sum*(1./bin.count)-b.com;
-            const Vec n=bin.normal,d=axis ? Vec{-n.y,n.x} : n;
-            const double arm=cross(r,d);
-            const double speed=dot(v+Vec{-w*r.y,w*r.x},d);
+        std::array<double,16> delta{};
+        for(std::size_t i=0;i<out.nodes;++i) {
+            auto& contact=contacts[i];
+            const Vec r=contact.position-b.com,n=contact.normal,d=axis ? Vec{-n.y,n.x}:n;
+            const double arm=cross(r,d),speed=dot(v+Vec{-w*r.y,w*r.x},d);
             const double requested=-speed/(1./b.mass+arm*arm/b.inertia);
             if(axis) {
                 out.raw_tangent+=std::abs(requested);
-                const double target=jt[i]+requested*relaxation;
-                if (std::abs(target)>b.mu*jn[i]) ++out.tangent_cap_hits;
-                const double next=std::clamp(target,-b.mu*jn[i],b.mu*jn[i]);
-                delta[i]=next-jt[i]; jt[i]=next;
+                const double target=contact.jt+requested*contact.weight;
+                if(std::abs(target)>b.mu*contact.jn) ++out.tangent_cap_hits;
+                const double next=std::clamp(target,-b.mu*contact.jn,b.mu*contact.jn);
+                delta[i]=next-contact.jt; contact.jt=next;
             } else {
                 out.raw_normal+=std::max(0.,requested);
-                const double target=jn[i]+requested*relaxation;
-                if (target>caps[i]) ++out.normal_cap_hits;
-                const double next=std::clamp(target,0.,caps[i]);
-                delta[i]=next-jn[i]; jn[i]=next;
+                const double target=contact.jn+requested*contact.weight;
+                if(target>contact.capacity) ++out.normal_cap_hits;
+                const double next=std::clamp(target,0.,contact.capacity);
+                delta[i]=next-contact.jn; contact.jn=next;
             }
             ++out.updates;
         }
-        for(std::size_t i=0;i<8;++i) if(bins[i].count) {
-            const Vec r=bins[i].position_sum*(1./bins[i].count)-b.com;
-            const Vec n=bins[i].normal,d=axis ? Vec{-n.y,n.x} : n;
+        for(std::size_t i=0;i<out.nodes;++i) {
+            const auto& contact=contacts[i];
+            const Vec r=contact.position-b.com,n=contact.normal,d=axis ? Vec{-n.y,n.x}:n;
             v=v+d*(delta[i]/b.mass); w+=cross(r,d)*delta[i]/b.inertia;
         }
     }
-    for(std::size_t i=0;i<8;++i) if(bins[i].count) {
-        const Vec n=bins[i].normal,t{-n.y,n.x};
-        const Vec j=n*jn[i]+t*jt[i];
+    for(std::size_t i=0;i<out.nodes;++i) {
+        const auto& contact=contacts[i]; const Vec n=contact.normal,t{-n.y,n.x};
+        const Vec j=n*contact.jn+t*contact.jt;
         out.impulse=out.impulse+j;
-        out.normal_impulse=out.normal_impulse+n*jn[i];
-        out.tangent_impulse=out.tangent_impulse+t*jt[i];
-        out.torque+=cross(bins[i].position_sum*(1./bins[i].count)-b.com,j);
-        out.normal+=jn[i]; out.tangent+=std::abs(jt[i]);
+        out.normal_impulse=out.normal_impulse+n*contact.jn;
+        out.tangent_impulse=out.tangent_impulse+t*contact.jt;
+        out.torque+=cross(contact.position-b.com,j);
+        out.normal+=contact.jn; out.tangent+=std::abs(contact.jt);
     }
     out.raw_impulse=out.impulse; out.raw_torque=out.torque;
     out.energy_before=kinetic(b,b.velocity,b.omega);
     out.energy_after=kinetic(b,b.velocity+out.impulse*(1./b.mass),b.omega+out.torque/b.inertia);
-    // A cone projection can redistribute a previous pass. Independently refuse
-    // the whole passive wrench if it injects energy beyond the registered bound.
     if(!std::isfinite(out.energy_after) || out.energy_after>out.energy_before+1e-6*std::max(1.,out.energy_before)) {
         out.passive_rejected=true; out.scale=0;
         out.impulse={}; out.normal_impulse={}; out.tangent_impulse={};

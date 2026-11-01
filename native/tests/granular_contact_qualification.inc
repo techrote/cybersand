@@ -67,13 +67,18 @@ void test_gcr_friction_symmetry_and_budget() {
     gcr_require(zero_mu.tangent==0 && zero_mu.impulse.x==0,"GCR zero-mu ablation retained friction");
     const auto exhausted=solve(body,bins,0);
     gcr_require(length(exhausted.impulse)==0 && exhausted.torque==0,"GCR zero shared capacity leaked response");
+    std::array<Bin,8> full{};
+    for(auto& bin:full) {bin.add({-1,1},{0,-1},{});bin.add({1,1},{0,-1},{});}
+    const auto maximum_work=solve(body,full);
+    gcr_require(maximum_work.nodes==16 && maximum_work.updates==128,
+                "GCR sixteen-node/four-pass scalar work bound changed");
     // Fill all8 bins and stress speed/inertia/mu without changing coefficients.
     for (int i=0;i<8;++i) bins[static_cast<std::size_t>(i)].add({double(i)-3.,1},{0,-1},body.com);
     for (const double inertia:{.01,1.,100.}) for(const double mu:{0.,.78,16.}) {
         body.inertia=inertia; body.mu=mu; body.velocity={100,100}; body.omega=20;
         const auto stressed=solve(body,bins);
         gcr_require(std::isfinite(stressed.torque) && stressed.normal<=20+1e-9 &&
-                    stressed.tangent<=mu*stressed.normal+1e-9 && stressed.updates<=64,
+                    stressed.tangent<=mu*stressed.normal+1e-9 && stressed.updates<=128,
                     "GCR finite8-bin capacity/work stress failed");
         gcr_require(stressed.energy_after<=stressed.energy_before+1e-6*stressed.energy_before,
                     "GCR stress injected passive energy");
@@ -119,6 +124,24 @@ void test_gcr_geometry_and_reduction() {
     for(const double x:{3.,4.,5.,6.}) mean_arm_squared+=(x-com.x)*(x-com.x)/4.;
     gcr_require(mean_arm_squared>centroid_arm*centroid_arm,
                 "GCR oracle no longer exposes second-moment reduction approximation");
+    Bin quadrature_bin;
+    for(const double x:{0.,1.,2.,3.}) quadrature_bin.add({x,4},{0,-1},{});
+    const auto two_nodes=quadrature(quadrature_bin);
+    const double node_mean=(two_nodes.low.x+two_nodes.high.x)*.5;
+    const double node_variance=((two_nodes.low.x-node_mean)*(two_nodes.low.x-node_mean)+
+        (two_nodes.high.x-node_mean)*(two_nodes.high.x-node_mean))*.5;
+    gcr_require(two_nodes.nodes==2 && !two_nodes.clamped && gcr_near(node_mean,1.5) && gcr_near(node_variance,1.25),
+                "GCR quadrature failed first/second moment preservation");
+    Bin skewed;
+    for(const double x:{0.,0.,0.,4.}) skewed.add({x,4},{0,-1},{});
+    const auto clipped=quadrature(skewed);
+    gcr_require(clipped.clamped && clipped.nodes==2 && gcr_near((clipped.low.x+clipped.high.x)*.5,1.) &&
+                clipped.low.x>=0 && clipped.high.x<=4,
+                "GCR skewed quadrature did not record clipping/preserve first moment");
+    Bin singleton; singleton.add({2,4},{0,-1},{});
+    const auto one_node=quadrature(singleton);
+    gcr_require(one_node.nodes==1 && one_node.low.x==2 && one_node.low.y==4,
+                "GCR singleton quadrature failed exact merge");
     // Independent unreduced4-pass oracle: one load per physical sample,
     // independent scalar equations and per-sample cone projection.
     double maximum_normalized_error=0;
