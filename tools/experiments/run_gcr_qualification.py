@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 ROOT = Path(__file__).resolve().parents[2]
 PROTOCOL = ROOT / 'docs/audits/gcr001-2026-11-01/protocol.json'
@@ -110,6 +111,7 @@ def main():
     parser.add_argument('--telemetry', choices=['on', 'off'], default='on')
     parser.add_argument('--timeout', type=int, default=240)
     parser.add_argument('--identity-only', action='store_true')
+    parser.add_argument('--jobs',type=int,default=1,choices=[1,2,3],help='Independent functional processes; timing always one')
     args = parser.parse_args()
     protocol, identity = authenticate(args)
     if args.identity_only:
@@ -128,24 +130,30 @@ def main():
         raise RuntimeError('Async captures require one of the six registered delayed-worker cases')
     if args.mode == 'timing' and not args.case:
         raise RuntimeError('Timing requires an explicit bounded registered case list')
+    if args.mode == 'timing' and args.jobs != 1:
+        raise RuntimeError('Performance acquisition must be sequential')
     args.output.mkdir(parents=True, exist_ok=True)
-    campaign = {'schema': 1, 'identity': identity, 'captures': [], 'complete': False}
+    campaign = {'schema': 1, 'identity': identity, 'captures': [], 'complete': False,
+                'functional_process_concurrency':args.jobs,'timing_scope':'functional concurrent timings are not performance evidence' if args.jobs>1 else 'sequential'}
     index = args.output / 'campaign.json'
     if index.exists():
         raise RuntimeError('Use a fresh output directory; prior failures must remain recoverable')
     index.write_text(json.dumps(campaign, indent=2))
+    tasks=[]
     for repeat in range(3 if args.mode == 'timing' else 1):
         arms = args.arms if repeat % 2 == 0 else list(reversed(args.arms))
         for case in cases:
             for arm in arms:
-                # Source and runtime guards repeat before each independent process.
-                _, current = authenticate(args)
-                if current != identity:
-                    raise RuntimeError('Campaign input identity changed; stop rather than mix captures')
-                row = capture(args, identity, case, arm, repeat, 'async' if args.mode == 'async' else 'sync')
-                campaign['captures'].append(row)
-                index.write_text(json.dumps(campaign, indent=2))
-                print(f'{row["status"]}: {case} {arm} r{repeat}', flush=True)
+                tasks.append((case,arm,repeat))
+    def execute(task):
+        _,current=authenticate(args)
+        if current!=identity: raise RuntimeError('Campaign input identity changed; stop rather than mix captures')
+        return capture(args,identity,*task,'async' if args.mode=='async' else 'sync')
+    with ThreadPoolExecutor(args.jobs) as pool:
+        for row in pool.map(execute,tasks):
+            campaign['captures'].append(row)
+            index.write_text(json.dumps(campaign,indent=2))
+            print(f'{row["status"]}: {row["case"]} {row["arm"]} r{row["repeat"]}',flush=True)
     campaign['complete'] = all(row['status'] == 'captured' for row in campaign['captures'])
     index.write_text(json.dumps(campaign, indent=2))
     return 0 if campaign['complete'] else 1
