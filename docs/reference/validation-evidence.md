@@ -19,6 +19,16 @@ source-matched runtime, graphical Control/R and full-CI results retain their
 own identities. Historical #290/#301/#333/#335 results do not qualify this
 candidate. The PR remains draft; no merge is authorized.
 
+New ordinary and hosted leak-enabled ASan/UBSan runs each pass 153,284
+assertions, 231 regions and 8,338,180 compared bytes. Five fresh graphical
+processes per Control/R × normal/withheld-ACK cohort pass final byte parity.
+Normal retries are 2/605 for Control and 0/605 for R; withheld retries remain
+595/605 in both, with much cheaper R copies. Sustained normal lock-in and a
+frame-hitch improvement are not established on this llvmpipe host. E is not
+justified by this evidence. Fresh Linux/Windows publication is `c405db68`,
+compiled from `a7ee10f`; final exact-head gates remain separately recorded in
+[draft #344](https://github.com/techrote/cybersand/pull/344).
+
 ## CI parallelism evidence boundary — 2026-10-31
 
 The [dated production CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)

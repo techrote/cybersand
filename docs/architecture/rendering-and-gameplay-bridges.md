@@ -56,6 +56,10 @@ unchanged `project_visual_state`. Absent chunks remain Empty. Signed regions,
 stride padding and inclusive `INT64_MAX` endpoints retain their defined
 semantics; an unrepresentable final coordinate is refused before any write.
 The World remains unbounded and sparse: native extraction introduces no clipping.
+The finite desktop full snapshot explicitly selects the 1024-square window;
+Main rejects patches crossing its image bounds. The handoff regression accepts
+the final RG8 pixel and verifies that refused edge crossings leave the image
+unchanged.
 
 The production function comes from corrected #290/#301. A test-only literal
 per-cell oracle checks bytes, persistence, dirty metadata and subsequent
