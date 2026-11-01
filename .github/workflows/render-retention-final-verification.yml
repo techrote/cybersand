@@ -1,0 +1,189 @@
+name: E final-head canonical gate dispatch
+
+# EPHEMERAL: only verify/render-retention-final-20261101. This workflow is the
+# sole added file in a one-parent child of TARGET_SHA; it never belongs
+# to the production PR. Both SHA fields seal the final documentation-inclusive E
+# head. This launcher never changes readiness or claims any dispatched gate passed.
+# Re-running this job is refused to prevent duplicate/ambiguous POST retries.
+# BASE_SOURCE_SHA is accepted R main; all six gate blobs equal the earlier25ce
+# baseline. Scope advice therefore describes the E delta against accepted R.
+# Sealed source/tree: 2461a6a9da130a39dcf2578059f3d47337db4c58 /
+# fa099c1589053fe86a9182254e4975874780d5fd. Qualification remains root-owned.
+on:
+  push:
+    branches: [verify/render-retention-final-20261101]
+    paths: ['.github/workflows/render-retention-final-verification.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-retention-final-verification-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  TARGET_SHA: 2461a6a9da130a39dcf2578059f3d47337db4c58
+  WORKFLOW_PARENT_SHA: 2461a6a9da130a39dcf2578059f3d47337db4c58
+  CANDIDATE_BRANCH: codex/render-retention-production-20261101
+  BASE_SOURCE_SHA: 809fd30dfac0c5e127302997075be9c4b279e5aa
+  PYTHONUTF8: '1'
+
+jobs:
+  dispatch-current-gates:
+    name: dispatch unchanged gates at the frozen candidate
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/verify/render-retention-final-20261101'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: write
+    defaults:
+      run:
+        shell: bash
+        working-directory: workspace/source
+    steps:
+      - name: Check out the exact production candidate
+        timeout-minutes: 10
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          path: workspace/source
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - name: Verify source lease and dispatch the six unchanged workflows
+        timeout-minutes: 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DISPATCH_EVIDENCE: ${{ github.workspace }}/evidence-dispatch
+        run: |
+          set -euo pipefail
+          python3 - <<'PYCODE'
+          import datetime, hashlib, json, os, pathlib, re, subprocess, time, urllib.error, urllib.parse, urllib.request
+          repository = 'techrote/cybersand'
+          source, base = os.environ['TARGET_SHA'], os.environ['BASE_SOURCE_SHA']
+          parent = os.environ['WORKFLOW_PARENT_SHA']
+          branch = os.environ['CANDIDATE_BRANCH']
+          evidence = pathlib.Path(os.environ['DISPATCH_EVIDENCE'])
+          evidence.mkdir(parents=True, exist_ok=False)
+          receipt = {'schema': 'render-retention-final-dispatch-v1', 'source_sha': source,
+                     'base_sha': base, 'branch': branch, 'workflow_parent_sha': parent, 'verification_workflow_sha': os.environ['GITHUB_SHA'],
+                     'api_version': '2022-11-28',
+                     'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+                     'dispatches': [], 'status': 'started', 'gate_passes_claimed': False}
+          def save():
+              (evidence/'dispatch-receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
+          def git(*args):
+              return subprocess.check_output(['git', *args], timeout=60).decode().strip()
+          def api(path, data=None):
+              request = urllib.request.Request('https://api.github.com/repos/'+repository+path,
+                  data=None if data is None else json.dumps(data).encode(),
+                  headers={'Authorization': 'Bearer '+os.environ['GH_TOKEN'],
+                           'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28',
+                           'Content-Type': 'application/json'})
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  raw = response.read()
+                  return response.status, response.headers.get('X-GitHub-Request-Id'), json.loads(raw) if raw else None
+          def lease():
+              _, _, value = api('/git/ref/heads/'+urllib.parse.quote(branch, safe='/'))
+              if value['object']['type'] != 'commit' or value['object']['sha'] != source:
+                  raise RuntimeError('Candidate branch advanced: refusing source-ambiguous dispatch')
+              return value['object']['sha']
+          def runs(workflow):
+              query = urllib.parse.urlencode({'event':'workflow_dispatch','branch':branch,'head_sha':source,'per_page':100})
+              return api('/actions/workflows/'+workflow+'/runs?'+query)[2]['workflow_runs']
+          try:
+              if not all(re.fullmatch(r'[0-9a-f]{40}', value) for value in (source, base, parent)):
+                  raise RuntimeError('Replace TARGET_SHA and WORKFLOW_PARENT_SHA with the exact final candidate SHA')
+              if parent != source:
+                  raise RuntimeError('Verification parent must equal the exact production target')
+              if os.environ['GITHUB_RUN_ATTEMPT'] != '1':
+                  raise RuntimeError('Refuse automatic re-dispatch on job rerun; inspect existing receipt and runs')
+              if git('rev-parse','HEAD') != source:
+                  raise RuntimeError('Wrong target checkout')
+              receipt['source_tree'] = git('rev-parse','HEAD^{tree}')
+              verification = os.environ['GITHUB_SHA']
+              parents = git('rev-list','--parents','-n','1',verification).split()
+              if parents != [verification,parent]:
+                  raise RuntimeError('Verification workflow must be a direct single-parent child of candidate')
+              changed = git('diff-tree','--no-commit-id','--name-status','-r',verification).splitlines()
+              workflow_path = '.github/workflows/render-retention-final-verification.yml'
+              if changed != ['A\t'+workflow_path]:
+                  raise RuntimeError('Verification child must add only its ephemeral workflow')
+              workflow_bytes = subprocess.check_output(['git','show',verification+':'+workflow_path], timeout=60)
+              (evidence/'executed-verification-workflow.yml').write_bytes(workflow_bytes)
+              receipt['verification_workflow_sha256'] = hashlib.sha256(workflow_bytes).hexdigest()
+              workflows = ['native.yml','gdextension.yml','documentation.yml',
+                           'issue49-water-apparatus.yml','play-desktop-packet.yml','native-scope-advisory.yml']
+              for workflow in workflows:
+                  path = '.github/workflows/'+workflow
+                  if git('rev-parse',source+':'+path) != git('rev-parse',base+':'+path):
+                      raise RuntimeError('Existing qualification workflow changed: '+workflow)
+              receipt['initial_branch_lease'] = lease()
+              save()
+              for workflow in workflows:
+                  lease()
+                  previous = {row['id'] for row in runs(workflow)}
+                  # Pinned 2022-11-28 API: explicitly retain its documented 204
+                  # response; run identities are independently discovered below.
+                  payload = {'ref':branch,'return_run_details':False}
+                  if workflow == 'native-scope-advisory.yml':
+                      payload['inputs'] = {'base_sha':base}
+                  row = {'workflow':workflow,'workflow_blob':git('rev-parse',source+':.github/workflows/'+workflow),
+                         'request':payload,'previous_run_ids':sorted(previous),
+                         'requested_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                         'status':'requesting','registered_runs':[]}
+                  receipt['dispatches'].append(row)
+                  save()
+                  # Never automatically repeat a POST whose response was lost.
+                  status, request_id, response_body = api('/actions/workflows/'+workflow+'/dispatches',payload)
+                  row.update(status='accepted' if status==204 else 'unexpected_response',
+                             http_status=status,github_request_id=request_id,response_body=response_body)
+                  save()
+                  if status != 204:
+                      raise RuntimeError('Unexpected dispatch response')
+              deadline = time.monotonic()+180
+              while True:
+                  for row in receipt['dispatches']:
+                      new = [run for run in runs(row['workflow']) if run['id'] not in row['previous_run_ids']]
+                      row['registered_runs'] = [{'id':run['id'],'url':run['html_url'],
+                                                'head_sha':run['head_sha'],'head_branch':run['head_branch'],
+                                                'event':run['event'],'workflow_id':run['workflow_id'],
+                                                'run_attempt':run['run_attempt'],'status':run['status'],
+                                                'conclusion':run['conclusion'],'created_at':run['created_at'],
+                                                'actor':run.get('actor',{}).get('login')} for run in new]
+                      if any(run['head_sha'] != source or run['event'] != 'workflow_dispatch'
+                             or run['head_branch'] != branch for run in new):
+                          save()
+                          raise RuntimeError('Dispatched run does not match frozen source/event/branch')
+                      row['registration'] = 'unique' if len(new)==1 else ('ambiguous' if len(new)>1 else 'pending')
+                  save()
+                  if all(row['registered_runs'] for row in receipt['dispatches']) or time.monotonic()>=deadline:
+                      break
+                  time.sleep(5)
+              receipt['final_branch_lease'] = lease()
+              if any(row.get('registration') != 'unique' for row in receipt['dispatches']):
+                  raise RuntimeError('Missing or ambiguous matching run identity; accepted POST is not a registered gate')
+              if len(receipt['dispatches']) != len(workflows):
+                  raise RuntimeError('Incomplete canonical dispatch inventory')
+              receipt['status'] = 'all_six_exact_head_runs_registered'
+              print(json.dumps({'status':receipt['status'], 'source_sha':source,
+                                'runs':[row['registered_runs'][0] for row in receipt['dispatches']]}, indent=2))
+          except Exception as error:
+              receipt.update(status='failed',error=type(error).__name__+': '+str(error))
+              raise
+          finally:
+              save()
+          PYCODE
+
+      - name: Retain dispatch custody including failures
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-retention-final-dispatch-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-dispatch/
+          if-no-files-found: error
+          retention-days: 90
+
