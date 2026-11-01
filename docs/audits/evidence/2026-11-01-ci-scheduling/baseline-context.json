@@ -1,0 +1,60 @@
+{
+  "baseline_run": 41250780110,
+  "causal_evidence": "Earlier same-branch run41243402757 completes at23:46:29Z, identical to first created jobs of41250780110; intermediate pending run41247393922 canceled23:02:07Z after newer run created23:02:06Z. This matches one-running/one-pending noncanceling concurrency semantics.",
+  "failure_diagnosis": {
+    "classification": "infrastructure_dependency_setup_timeout",
+    "command": "sudo apt-get update",
+    "failed_step": "Install software rendering display",
+    "job": "linux regression shard 30",
+    "limitation": "Logs establish stalled mirror/index acquisition; they do not identify a definitive network-layer cause.",
+    "observations": [
+      "00:26:28Z update started",
+      "00:26:43Z Azure Ubuntu mirror InRelease indexes ignored; repeated at 00:26:44Z",
+      "00:26:45Z archive.ubuntu.com InRelease indexes succeeded but Azure package indexes ignored",
+      "Last apt output at 00:26:45.6557381Z; step reached its 15-minute timeout at 00:41:40.8486762Z",
+      "apt-get install and Godot regression execution never started"
+    ]
+  },
+  "historical_workflow_concurrency": {
+    "cancel_in_progress": false,
+    "interpretation": "Same ref and suite share a noncanceling group; explicit Rapier pair is run-unique; physical actor stress gets a separate suffix."
+  },
+  "input_sha256": {
+    "blocking-run.json": "a1d4492926d41ecf76b6f8c405b6c60d6d8aa1664c62482d4fb81db6c9e28ec7",
+    "gdextension.yml": "de6bf0db529bc12ce7cae0f0a90ddc37e789a9c2e26d26e2a82449777189a3d1",
+    "linux-shard30.log": "39a3979f5064745b905d499840998362ad141bb2cc71f9a17455895c23eee1e2",
+    "replaced-pending-run.json": "4684d8664b2db89424f8bb238fa3b82f138867f9b309f425edd2d289ca8eb8b9"
+  },
+  "interpretation_limits": [
+    "API has162 total job records including2 skipped, explaining historical160 executed-job description.",
+    "Historical baseline itself failed Linux completeness;233/246 fresh-main inventory differs from236/250 historical source.",
+    "Fresh-main run41248137886 also had2 Linux setup failures; no successful exact-main baseline exists in inspected history.",
+    "Previous successful run41204873192 uses4shards per platform and earlier watchdog policy; contextual reference only.",
+    "Account-wide active jobs and unrelated repository use cannot be recovered from this repository-only evidence."
+  ],
+  "related_runs": [
+    {
+      "conclusion": "failure",
+      "created_at": "2026-10-31T21:23:55Z",
+      "event": "pull_request",
+      "head_branch": "codex/play-recovery-qualified-20261031",
+      "head_sha": "ef9611de00ed4a8defec32226919e773b0fabb86",
+      "id": 41243402757,
+      "run_started_at": "2026-10-31T21:23:55Z",
+      "status": "completed",
+      "updated_at": "2026-10-31T23:46:29Z"
+    },
+    {
+      "conclusion": "cancelled",
+      "created_at": "2026-10-31T22:15:58Z",
+      "event": "pull_request",
+      "head_branch": "codex/play-recovery-qualified-20261031",
+      "head_sha": "02454f3aa6a6130d375727d1aa28113772f658e4",
+      "id": 41247393922,
+      "run_started_at": "2026-10-31T22:15:58Z",
+      "status": "completed",
+      "updated_at": "2026-10-31T23:02:07Z"
+    }
+  ],
+  "schema": "ci-scheduling-baseline-context-v1"
+}

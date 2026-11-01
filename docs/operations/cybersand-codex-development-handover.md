@@ -10,6 +10,8 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. This isolated draft is not merged; main development remains paused.
+
 ## Current owner policy and accepted baseline — 2026-10-31
 
 The owner supersedes the earlier shader deferral and short immutable deadline

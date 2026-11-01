@@ -1,0 +1,1324 @@
+{
+  "api_inputs": {
+    "artifact-pages.json": "bb3b99991bc8f998ed5e4649227aea424879282204ff5cf616d30213ec59dbe4",
+    "job-pages.json": "3885b6b791b4a0b2837ab0d713ad5cb799b69ebac2cd94606d52f36fed72a6b5",
+    "run.json": "5e473f24b125d0bc04d2f15ffc65d5b3ad217ef94e9ad920432bbb31c1266e8e"
+  },
+  "artifacts": [
+    {
+      "digest": "sha256:6486bf06fd7c88cc4ff543b9439983d21e729425eb2bd773e09ee9899bf80f8f",
+      "expired": false,
+      "id": 13044558226,
+      "name": "linux-godot-shard-0-41204873192",
+      "size_in_bytes": 4272628
+    },
+    {
+      "digest": "sha256:91f512d477af97cf4848d9e698af35a5496cb98f79b13d365631787af11fa3e6",
+      "expired": false,
+      "id": 13044318822,
+      "name": "windows-godot-headless-0-41204873192",
+      "size_in_bytes": 899194
+    },
+    {
+      "digest": "sha256:53931cd87bf60bb8ca4604c03936cd5cb75dbb19f414a30f9b35117f8f25a617",
+      "expired": false,
+      "id": 13044279138,
+      "name": "linux-godot-shard-1-41204873192",
+      "size_in_bytes": 613368
+    },
+    {
+      "digest": "sha256:31f6819b79b974ec23b7749451d3ce5e7f1a2bd1998e2e96395821db940e99e8",
+      "expired": false,
+      "id": 13044144060,
+      "name": "windows-godot-headless-3-41204873192",
+      "size_in_bytes": 591475
+    },
+    {
+      "digest": "sha256:cd37e612238983349c860fdf2383ed6b3eb0552ee01e41d34d34c4d3ab7e0418",
+      "expired": false,
+      "id": 13044062345,
+      "name": "linux-runtime-41204873192",
+      "size_in_bytes": 21905803
+    },
+    {
+      "digest": "sha256:de05f2a67d1ac404e941b848881498cd9978153176183a5cca834cbbe4dfc327",
+      "expired": false,
+      "id": 13043994528,
+      "name": "windows-coverage-41204873192",
+      "size_in_bytes": 2849
+    },
+    {
+      "digest": "sha256:f81a15dbefa8ebf13f5c11b5fa4e9685e3c1edc2a8cc529e736f8b0ea069033b",
+      "expired": false,
+      "id": 13043874427,
+      "name": "windows-godot-headless-1-41204873192",
+      "size_in_bytes": 722790
+    },
+    {
+      "digest": "sha256:ff6c84e7a7da2295081be2a1d26db6eb64216e9b26cbac7dd4363f35d1c1f230",
+      "expired": false,
+      "id": 13043594475,
+      "name": "linux-godot-shard-3-41204873192",
+      "size_in_bytes": 1301599
+    },
+    {
+      "digest": "sha256:4d28cf13aacdd610c1f71c6a140bacb0fc27b8fcc47f47f8b95140e7aa6d97fd",
+      "expired": false,
+      "id": 13043549694,
+      "name": "physical-timing-41204873192-1",
+      "size_in_bytes": 3729
+    },
+    {
+      "digest": "sha256:0b05703f2d5c6b9ee5f29a0863d0a6c09fa9246ec83637a0828523e0cb2cb336",
+      "expired": false,
+      "id": 13043538477,
+      "name": "windows-godot-headless-2-41204873192",
+      "size_in_bytes": 562575
+    },
+    {
+      "digest": "sha256:31bcb2f51b91ea6034781238b181df0ac75df7939ac371a88a4981105d7930db",
+      "expired": false,
+      "id": 13043439222,
+      "name": "linux-godot-shard-2-41204873192",
+      "size_in_bytes": 3639063
+    }
+  ],
+  "attempt": 1,
+  "collection": {
+    "artifact_count": 11,
+    "artifact_pages": 1,
+    "complete_job_inventory": true,
+    "job_pages": 1
+  },
+  "executed_jobs": 13,
+  "first_job_created_at": "2026-10-31T13:17:15Z",
+  "groups": {
+    "linux_regression": {
+      "conclusions": {
+        "success": 4
+      },
+      "execution_seconds": {
+        "count": 4,
+        "max": 1014.0,
+        "median": 728.0,
+        "p95": 1014.0,
+        "total": 3022.0
+      },
+      "jobs": 4,
+      "peak_active_jobs": 4,
+      "phase_seconds": {
+        "preparation_and_controls": {
+          "count": 4,
+          "max": 30.0,
+          "median": 22.5,
+          "p95": 30.0,
+          "total": 97.0
+        },
+        "publication_and_teardown": {
+          "count": 4,
+          "max": 3.0,
+          "median": 2.5,
+          "p95": 3.0,
+          "total": 10.0
+        },
+        "regression_step": {
+          "count": 4,
+          "max": 988.0,
+          "median": 699.5,
+          "p95": 988.0,
+          "total": 2904.0
+        }
+      },
+      "queue_seconds": {
+        "count": 4,
+        "max": 12.0,
+        "median": 7.5,
+        "p95": 12.0,
+        "total": 30.0
+      },
+      "successful_execution_seconds": {
+        "count": 4,
+        "max": 1014.0,
+        "median": 728.0,
+        "p95": 1014.0,
+        "total": 3022.0
+      }
+    },
+    "other": {
+      "conclusions": {
+        "skipped": 3,
+        "success": 5
+      },
+      "execution_seconds": {
+        "count": 5,
+        "max": 441.0,
+        "median": 10.0,
+        "p95": 441.0,
+        "total": 812.0
+      },
+      "jobs": 8,
+      "peak_active_jobs": 2,
+      "phase_seconds": {
+        "preparation_and_controls": {
+          "count": 5,
+          "max": 440.0,
+          "median": 6.0,
+          "p95": 440.0,
+          "total": 795.0
+        },
+        "publication_and_teardown": {
+          "count": 5,
+          "max": 2.0,
+          "median": 1.0,
+          "p95": 2.0,
+          "total": 4.0
+        },
+        "regression_step": {
+          "count": 5,
+          "max": 0,
+          "median": 0,
+          "p95": 0,
+          "total": 0
+        }
+      },
+      "queue_seconds": {
+        "count": 5,
+        "max": 3.0,
+        "median": 2.0,
+        "p95": 3.0,
+        "total": 11.0
+      },
+      "successful_execution_seconds": {
+        "count": 5,
+        "max": 441.0,
+        "median": 10.0,
+        "p95": 441.0,
+        "total": 812.0
+      }
+    },
+    "windows_regression": {
+      "conclusions": {
+        "success": 4
+      },
+      "execution_seconds": {
+        "count": 4,
+        "max": 851.0,
+        "median": 775.5,
+        "p95": 851.0,
+        "total": 3069.0
+      },
+      "jobs": 4,
+      "peak_active_jobs": 4,
+      "phase_seconds": {
+        "preparation_and_controls": {
+          "count": 4,
+          "max": 42.0,
+          "median": 36.0,
+          "p95": 42.0,
+          "total": 146.0
+        },
+        "publication_and_teardown": {
+          "count": 4,
+          "max": 4.0,
+          "median": 3.0,
+          "p95": 4.0,
+          "total": 13.0
+        },
+        "regression_step": {
+          "count": 4,
+          "max": 814.0,
+          "median": 731.0,
+          "p95": 814.0,
+          "total": 2902.0
+        }
+      },
+      "queue_seconds": {
+        "count": 4,
+        "max": 2.0,
+        "median": 2.0,
+        "p95": 2.0,
+        "total": 8.0
+      },
+      "successful_execution_seconds": {
+        "count": 4,
+        "max": 851.0,
+        "median": 775.5,
+        "p95": 851.0,
+        "total": 3069.0
+      }
+    }
+  },
+  "job_records": 16,
+  "jobs": [
+    {
+      "completed_at": "2026-10-31T13:24:38Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:17:15Z",
+      "execution_seconds": 441.0,
+      "group": "other",
+      "id": 124547810341,
+      "name": "linux build x86_64",
+      "phase_seconds": {
+        "preparation_and_controls": 440.0,
+        "publication_and_teardown": 0.0,
+        "regression_step": 0
+      },
+      "queue_seconds": 2.0,
+      "started_at": "2026-10-31T13:17:17Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out source",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Fetch Linux Rapier runtime only",
+          "phase": "preparation_and_controls",
+          "seconds": 6.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Validate shard planner",
+          "phase": "preparation_and_controls",
+          "seconds": 5.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Install pinned SCons",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact godot-cpp source",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Build Linux godot-cpp and CyberSand extension",
+          "phase": "preparation_and_controls",
+          "seconds": 417.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Validate and stage exact Linux runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Publish Linux runtime for isolated regression shards",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out source",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:31:28Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:17:15Z",
+      "execution_seconds": 851.0,
+      "group": "windows_regression",
+      "id": 124547810424,
+      "name": "windows headless regression shard 3",
+      "phase_seconds": {
+        "preparation_and_controls": 32.0,
+        "publication_and_teardown": 3.0,
+        "regression_step": 814.0
+      },
+      "queue_seconds": 2.0,
+      "started_at": "2026-10-31T13:17:17Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact tested source",
+          "phase": "preparation_and_controls",
+          "seconds": 8.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Select Python 3.12",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Materialize retained Windows CyberSand and pinned Rapier runtimes",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Validate Windows execution harness",
+          "phase": "preparation_and_controls",
+          "seconds": 18.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Download official Windows Godot archive",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify retained runtime and execute every applicable Windows case",
+          "phase": "regression_step",
+          "seconds": 814.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain actual Windows execution evidence",
+          "phase": "publication_and_teardown",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Select Python 3.12",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact tested source",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:29:20Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:17:15Z",
+      "execution_seconds": 723.0,
+      "group": "windows_regression",
+      "id": 124547810466,
+      "name": "windows headless regression shard 2",
+      "phase_seconds": {
+        "preparation_and_controls": 36.0,
+        "publication_and_teardown": 4.0,
+        "regression_step": 681.0
+      },
+      "queue_seconds": 2.0,
+      "started_at": "2026-10-31T13:17:17Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact tested source",
+          "phase": "preparation_and_controls",
+          "seconds": 10.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Select Python 3.12",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Materialize retained Windows CyberSand and pinned Rapier runtimes",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Validate Windows execution harness",
+          "phase": "preparation_and_controls",
+          "seconds": 20.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Download official Windows Godot archive",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify retained runtime and execute every applicable Windows case",
+          "phase": "regression_step",
+          "seconds": 681.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain actual Windows execution evidence",
+          "phase": "publication_and_teardown",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Select Python 3.12",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact tested source",
+          "phase": "publication_and_teardown",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:28:24Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:17:15Z",
+      "execution_seconds": 667.0,
+      "group": "windows_regression",
+      "id": 124547810517,
+      "name": "windows headless regression shard 1",
+      "phase_seconds": {
+        "preparation_and_controls": 36.0,
+        "publication_and_teardown": 3.0,
+        "regression_step": 626.0
+      },
+      "queue_seconds": 2.0,
+      "started_at": "2026-10-31T13:17:17Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact tested source",
+          "phase": "preparation_and_controls",
+          "seconds": 10.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Select Python 3.12",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Materialize retained Windows CyberSand and pinned Rapier runtimes",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Validate Windows execution harness",
+          "phase": "preparation_and_controls",
+          "seconds": 20.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Download official Windows Godot archive",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify retained runtime and execute every applicable Windows case",
+          "phase": "regression_step",
+          "seconds": 626.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain actual Windows execution evidence",
+          "phase": "publication_and_teardown",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Select Python 3.12",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact tested source",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:31:05Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:17:15Z",
+      "execution_seconds": 828.0,
+      "group": "windows_regression",
+      "id": 124547810518,
+      "name": "windows headless regression shard 0",
+      "phase_seconds": {
+        "preparation_and_controls": 42.0,
+        "publication_and_teardown": 3.0,
+        "regression_step": 781.0
+      },
+      "queue_seconds": 2.0,
+      "started_at": "2026-10-31T13:17:17Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact tested source",
+          "phase": "preparation_and_controls",
+          "seconds": 8.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Select Python 3.12",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Materialize retained Windows CyberSand and pinned Rapier runtimes",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Validate Windows execution harness",
+          "phase": "preparation_and_controls",
+          "seconds": 29.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Download official Windows Godot archive",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify retained runtime and execute every applicable Windows case",
+          "phase": "regression_step",
+          "seconds": 781.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prove internal watchdog observes a synchronously blocked Windows main thread",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain actual Windows execution evidence",
+          "phase": "publication_and_teardown",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Select Python 3.12",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact tested source",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:23:04Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:17:15Z",
+      "execution_seconds": 347.0,
+      "group": "other",
+      "id": 124547810526,
+      "name": "windows x86_64",
+      "phase_seconds": {
+        "preparation_and_controls": 343.0,
+        "publication_and_teardown": 1.0,
+        "regression_step": 0
+      },
+      "queue_seconds": 2.0,
+      "started_at": "2026-10-31T13:17:17Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out source",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify required host tools",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Install pinned SCons",
+          "phase": "preparation_and_controls",
+          "seconds": 4.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact godot-cpp source",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prepare exact LLVM-MinGW",
+          "phase": "preparation_and_controls",
+          "seconds": 7.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Build Windows godot-cpp and CyberSand extension",
+          "phase": "preparation_and_controls",
+          "seconds": 326.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out source",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:17:14Z",
+      "conclusion": "skipped",
+      "created_at": "2026-10-31T13:17:15Z",
+      "execution_seconds": null,
+      "group": "other",
+      "id": 124547811218,
+      "name": "ready validation scope",
+      "phase_seconds": {
+        "preparation_and_controls": 0,
+        "publication_and_teardown": 0,
+        "regression_step": 0
+      },
+      "queue_seconds": null,
+      "started_at": "2026-10-31T13:17:15Z",
+      "steps": []
+    },
+    {
+      "completed_at": "2026-10-31T13:17:14Z",
+      "conclusion": "skipped",
+      "created_at": "2026-10-31T13:17:15Z",
+      "execution_seconds": null,
+      "group": "other",
+      "id": 124547811393,
+      "name": "physical-actor-stress",
+      "phase_seconds": {
+        "preparation_and_controls": 0,
+        "publication_and_teardown": 0,
+        "regression_step": 0
+      },
+      "queue_seconds": null,
+      "started_at": "2026-10-31T13:17:15Z",
+      "steps": []
+    },
+    {
+      "completed_at": "2026-10-31T13:37:00Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:24:39Z",
+      "execution_seconds": 738.0,
+      "group": "linux_regression",
+      "id": 124549438568,
+      "name": "linux regression shard 2",
+      "phase_seconds": {
+        "preparation_and_controls": 23.0,
+        "publication_and_teardown": 3.0,
+        "regression_step": 708.0
+      },
+      "queue_seconds": 3.0,
+      "started_at": "2026-10-31T13:24:42Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact source",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Restore exact Linux runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify and install runtime artifact",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prepare exact Godot runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 7.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Install software rendering display",
+          "phase": "preparation_and_controls",
+          "seconds": 9.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Run isolated regression shard with actual rendered-pixel tests",
+          "phase": "regression_step",
+          "seconds": 708.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain shard evidence",
+          "phase": "publication_and_teardown",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact source",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:34:03Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:24:39Z",
+      "execution_seconds": 552.0,
+      "group": "linux_regression",
+      "id": 124549438587,
+      "name": "linux regression shard 1",
+      "phase_seconds": {
+        "preparation_and_controls": 30.0,
+        "publication_and_teardown": 2.0,
+        "regression_step": 517.0
+      },
+      "queue_seconds": 12.0,
+      "started_at": "2026-10-31T13:24:51Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact source",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Restore exact Linux runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify and install runtime artifact",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prepare exact Godot runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 7.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Install software rendering display",
+          "phase": "preparation_and_controls",
+          "seconds": 16.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Run isolated regression shard with actual rendered-pixel tests",
+          "phase": "regression_step",
+          "seconds": 517.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain shard evidence",
+          "phase": "publication_and_teardown",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact source",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:41:38Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:24:39Z",
+      "execution_seconds": 1014.0,
+      "group": "linux_regression",
+      "id": 124549438611,
+      "name": "linux regression shard 3",
+      "phase_seconds": {
+        "preparation_and_controls": 22.0,
+        "publication_and_teardown": 2.0,
+        "regression_step": 988.0
+      },
+      "queue_seconds": 5.0,
+      "started_at": "2026-10-31T13:24:44Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact source",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Restore exact Linux runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify and install runtime artifact",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prepare exact Godot runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 5.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Install software rendering display",
+          "phase": "preparation_and_controls",
+          "seconds": 12.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Run isolated regression shard with actual rendered-pixel tests",
+          "phase": "regression_step",
+          "seconds": 988.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain shard evidence",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact source",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:36:47Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:24:39Z",
+      "execution_seconds": 718.0,
+      "group": "linux_regression",
+      "id": 124549438748,
+      "name": "linux regression shard 0",
+      "phase_seconds": {
+        "preparation_and_controls": 22.0,
+        "publication_and_teardown": 3.0,
+        "regression_step": 691.0
+      },
+      "queue_seconds": 10.0,
+      "started_at": "2026-10-31T13:24:49Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact source",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Restore exact Linux runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 2.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify and install runtime artifact",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prepare exact Godot runtime",
+          "phase": "preparation_and_controls",
+          "seconds": 6.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Prove internal watchdog observes a synchronously blocked Linux main thread",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Install software rendering display",
+          "phase": "preparation_and_controls",
+          "seconds": 9.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Run isolated regression shard with actual rendered-pixel tests",
+          "phase": "regression_step",
+          "seconds": 691.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain shard evidence",
+          "phase": "publication_and_teardown",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact source",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:24:39Z",
+      "conclusion": "skipped",
+      "created_at": "2026-10-31T13:24:39Z",
+      "execution_seconds": null,
+      "group": "other",
+      "id": 124549439949,
+      "name": "linux serial equivalence",
+      "phase_seconds": {
+        "preparation_and_controls": 0,
+        "publication_and_teardown": 0,
+        "regression_step": 0
+      },
+      "queue_seconds": null,
+      "started_at": "2026-10-31T13:24:39Z",
+      "steps": []
+    },
+    {
+      "completed_at": "2026-10-31T13:31:41Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:31:29Z",
+      "execution_seconds": 10.0,
+      "group": "other",
+      "id": 124550925666,
+      "name": "windows sharded execution coverage",
+      "phase_seconds": {
+        "preparation_and_controls": 5.0,
+        "publication_and_teardown": 2.0,
+        "regression_step": 0
+      },
+      "queue_seconds": 2.0,
+      "started_at": "2026-10-31T13:31:31Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out exact verification source",
+          "phase": "preparation_and_controls",
+          "seconds": 3.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Download all four original Windows shard artifacts",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Independently verify complete, unique Windows case execution",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain Windows exact-coverage receipt",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out exact verification source",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:41:45Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:41:38Z",
+      "execution_seconds": 4.0,
+      "group": "other",
+      "id": 124553166093,
+      "name": "linux x86_64",
+      "phase_seconds": {
+        "preparation_and_controls": 1.0,
+        "publication_and_teardown": 0.0,
+        "regression_step": 0
+      },
+      "queue_seconds": 3.0,
+      "started_at": "2026-10-31T13:41:41Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Require all sharded regressions",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-10-31T13:41:50Z",
+      "conclusion": "success",
+      "created_at": "2026-10-31T13:41:38Z",
+      "execution_seconds": 10.0,
+      "group": "other",
+      "id": 124553166094,
+      "name": "physical regression timing distribution",
+      "phase_seconds": {
+        "preparation_and_controls": 6.0,
+        "publication_and_teardown": 1.0,
+        "regression_step": 0
+      },
+      "queue_seconds": 2.0,
+      "started_at": "2026-10-31T13:41:40Z",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Check out timing reducer",
+          "phase": "preparation_and_controls",
+          "seconds": 4.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Fetch existing per-platform Godot test evidence",
+          "phase": "preparation_and_controls",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Produce source-bound distributions, retaining timeouts",
+          "phase": "preparation_and_controls",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Retain physical regression timing history for this run",
+          "phase": "publication_and_teardown",
+          "seconds": 1.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Check out timing reducer",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "phase": "publication_and_teardown",
+          "seconds": 0.0
+        }
+      ]
+    }
+  ],
+  "jobs_created_to_last_completed_seconds": 1475.0,
+  "last_job_completed_at": "2026-10-31T13:41:50Z",
+  "limitations": [
+    "Pre-dispatch interval includes workflow scheduling; concurrency causation needs other run evidence.",
+    "Job creation-to-start includes matrix admission, dispatch and runner capacity; API does not distinguish them.",
+    "Regression step includes import, evidence and readbacks; use case telemetry for useful process execution.",
+    "Peak is this workflow only; other repositories and account capacity are not observed.",
+    "API head_sha is a PR head; checkout may execute its merge SHA. Original artifacts own tested source identity.",
+    "Step timestamps have one-second precision; phase sums exclude inter-step gaps."
+  ],
+  "peak_active_jobs": 8,
+  "pre_dispatch_seconds": 1.0,
+  "run": {
+    "conclusion": "success",
+    "created_at": "2026-10-31T13:17:14Z",
+    "event": "push",
+    "head_branch": "main",
+    "head_sha": "adaaa37ae35ffcdaa961b80353be3a23b805c0cc",
+    "html_url": "https://github.com/techrote/cybersand/actions/runs/41204873192",
+    "id": 41204873192,
+    "run_number": 1694,
+    "run_started_at": "2026-10-31T13:17:14Z",
+    "updated_at": "2026-10-31T13:41:50Z"
+  },
+  "schema": "github-actions-scheduling-v1",
+  "successful_runner_execution_seconds": 6903.0,
+  "total_runner_execution_seconds": 6903.0,
+  "unsuccessful_runner_execution_seconds": 0,
+  "workflow_created_to_last_job_seconds": 1476.0
+}

@@ -26,9 +26,10 @@ permissions:
   actions: read
   pull-requests: read
 
+# Supersede ordinary PR checks; preserve every manual and main-source run.
 concurrency:
-  group: native-${{ github.ref }}
-  cancel-in-progress: true
+  group: native-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # Routine hosted budgets are derived together below. Local/test scaling remains
 # available; a larger hosted override must also fit its complete job allowance.

@@ -30,15 +30,17 @@ on:
 permissions:
   contents: read
 
+# Supersede ordinary PR checks; preserve every manual and main-source run.
 concurrency:
-  group: issue49-water-${{ github.ref }}
-  cancel-in-progress: true
+  group: issue49-water-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   apparatus:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    # 69m of existing explicit child allowances plus checkout and artifacts.
+    timeout-minutes: 90
     env:
       CC: gcc-13
       CXX: g++-13
