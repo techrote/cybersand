@@ -134,7 +134,10 @@
       "gap": 2,
       "ticks": 1800,
       "workers": 1,
-      "mechanism": "vertical"
+      "mechanism": "vertical",
+      "state_b_by_material": {
+        "13": 1
+      }
     },
     {
       "id": "stone-horizontal",
@@ -159,7 +162,10 @@
         0
       ],
       "bank_gap": 14,
-      "bank_body_y": 24
+      "bank_body_y": 24,
+      "state_b_by_material": {
+        "13": 1
+      }
     },
     {
       "id": "stone-glancing",
@@ -184,7 +190,10 @@
         30
       ],
       "bank_gap": 14,
-      "bank_body_y": 24
+      "bank_body_y": 24,
+      "state_b_by_material": {
+        "13": 1
+      }
     },
     {
       "id": "stone-slide",
@@ -203,7 +212,10 @@
       "gap": 2,
       "ticks": 1800,
       "workers": 1,
-      "mechanism": "slide"
+      "mechanism": "slide",
+      "state_b_by_material": {
+        "13": 1
+      }
     },
     {
       "id": "dust-vertical",
@@ -1179,7 +1191,10 @@
       "depth": 96,
       "gap": 2,
       "ticks": 1800,
-      "workers": 1
+      "workers": 1,
+      "state_b_by_material": {
+        "13": 1
+      }
     },
     {
       "id": "sand-stream",
@@ -1265,7 +1280,10 @@
       "depth": 96,
       "gap": 2,
       "ticks": 1800,
-      "workers": 1
+      "workers": 1,
+      "state_b_by_material": {
+        "13": 1
+      }
     },
     {
       "id": "anchor-gentle",
@@ -1513,7 +1531,8 @@
     "rectangle_dimension_max": 128,
     "moving_event_normal_budget_first": true,
     "bin_capacity": "min(20,2*sum_samples)*bin_samples/sum_samples",
-    "stream": "deep supported bed; source tick120..239 x=initial COM-5 y=SURFACE-24 width3; ledgered ordinary edits"
+    "stream": "deep supported bed; source tick120..239 x=initial COM-5 y=SURFACE-24 width3; ledgered ordinary edits",
+    "rectangle_dimension_min": 1
   },
   "normal_tangent_evaluator": {
     "kind": "projected Jacobi",
@@ -1522,5 +1541,14 @@
     "update": "provisional v/omega after each normal/tangent phase; accumulated perbin shared caps never renew",
     "reason": "finite fixed-order PGS introduces mirror bias; specification choice before physical runs",
     "physical_results_before_amendment": false
+  },
+  "reduction_gate": {
+    "stage": "Gate1 analytic-design qualification before physical acquisition",
+    "maximum_normalized_wrench_error": 0.1,
+    "normalization": "sqrt(dJx^2+dJy^2+(dL/R)^2)/max(1e-9,sqrt(Jrefx^2+Jrefy^2+(Lref/R)^2)); R=maxcontactradius",
+    "zero_reference_absolute_tolerance": 1e-05,
+    "scope": "independent unreduced contact solver comparisons; scalar analytic tolerance1e-5 unchanged",
+    "prior_diagnostic": "First compared reduced/unreduced analytic fixture differed by J=.112151,L=.198068; this prephysical diagnostic motivated explicit approximation admission, not equivalence or a physical efficacy result",
+    "do_not_relax_after_physical_results": true
   }
 }
