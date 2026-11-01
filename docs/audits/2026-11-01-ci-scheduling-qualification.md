@@ -25,7 +25,8 @@ The canonical [execution contract](../operations/ci-execution-and-performance.md
 owns current scheduling and watchdog semantics. The separate
 [workflow audit](2026-11-01-ci-workflow-audit.md) covers every workflow. No native
 simulation, scientific fixture, per-case watchdog or runtime publication changes
-are in scope. This work is delivered for draft review; it does not authorize merge.
+are in scope. The initial delivery was for draft review and did not authorize
+merge. The owner's subsequent final-integration instruction is recorded below.
 
 ## Historical baseline and comparability
 
@@ -245,6 +246,47 @@ guaranteed, and regrouping can change runtime. This small uncertain gain does no
 justify a second full launch or relaxing the reviewed useful-work target now.
 Retain the qualified 19/20 split, then revisit after comparable history accumulates.
 No stress campaign was launched and no failed run was replaced by a retry.
+
+## Final integration authorization and evidence boundary
+
+After the initial draft delivery, the owner requested a fresh independent review,
+resolution of material findings, ready-for-review transition, all required
+exact-head checks, conditional merge and post-merge verification. The prior
+`9a01d782` trial remains the measured scheduling qualification; it does not
+substitute for those later source-bound gates.
+
+Final independent review starts from PR head
+`6080414e75ba6288bf3ee1b520890120009a3b99` against unchanged main
+`15b3a4012b9d5998e808fb371792dd7a71398507`. Separate reviewers examine the
+scheduler/runners and workflow/evidence contracts. The final
+[PR integration ledger](https://github.com/techrote/cybersand/pull/340) records
+their disposition, the frozen final head, its actual tested merge-checkout
+identity, complete run IDs, guarded merge commit and post-merge results.
+These outcomes are recorded there after execution, without changing the source
+under an in-flight qualification run or retroactively relabelling earlier trials.
+
+Both fresh reviews found no material production defect. The scheduler reviewer
+reran all 181 focused controls and independently compared base/current discovered
+case attributes. The workflow reviewer reran actionlint, all 24 inventory checks
+and focused contracts, and recomputed retained job/count/timing claims from the
+machine reports. An adjacent pre-existing Windows archive-test fixture normalized
+its deliberately unsafe backslash name before validation. The final test-only
+correction preserves the requested ZIP member bytes and asserts the actual member
+name before requiring rejection. Production archive validation was already correct
+and is unchanged. All 31 history tests pass on Windows and Ubuntu 24.04 WSL after
+the fixture correction; this is not a relaxed archive-admission rule.
+
+Native, GDExtension, Documentation/provenance and the affected PLAY desktop
+identity workflow require complete successful results. Water receives an explicit
+final-source dispatch when its path filters do not admit the changed workflow,
+rather than counting a skipped job as runtime qualification. LIFE009's dedicated
+campaign is restricted to historical source: `run_life009_campaign.py` compares
+protected production/runtime/workflow inputs against `0bf28d57` and intentionally
+refuses current main. Its five cases remain in the complete GDExtension programme
+with independent readbacks. That obsolete campaign is not a required current-main
+gate, and its source guard is not weakened to manufacture a passing manual run.
+Dedicated stress campaigns and historical source-pinned publishers retain their
+separate registration and acceptance boundaries.
 
 ## Documentation change map
 
