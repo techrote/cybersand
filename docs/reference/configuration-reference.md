@@ -1241,3 +1241,15 @@ memory/work limits. A conservative maximum local candidate charge bounds each
 raster sample. Real geometry/mask checks and canonical ordering still select
 materials. Measured index checks and local chunk durations are distinct from
 these declared logical charges.
+
+## Experimental granular bearing selector
+
+Ordinary `kGranularYieldVelocityResponse` remains0.18. Fresh native
+`diagnostic_reset` accepts B0/0.18 or Y1/1.0 only with string
+`bearing_experiment="Y1-ENVELOPE-2026-11-01"` and `bearing_candidate`.
+Unknown/missing/wrong-type values refuse before replacing authority. Default
+construction and demo reset restore B0. Capacity2/sample, cap20, settle speed4,
+maximum correction0.5 and fraction0.99 are unchanged. The
+[Y1 runbook](../operations/y1-granular-bearing-qualification.md) owns the finite
+matrix and review controls. This is native-only diagnostic configuration, not
+a transport/material law, persisted policy or ordinary gameplay preference.

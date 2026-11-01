@@ -142,11 +142,11 @@ func conserved(value: Dictionary) -> bool:
 		if id != 3 and int(value.counts[id]) != int(expected.counts[id]): return false
 	return true
 
-func step(telemetry: bool = true) -> Array:
+func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 	edit_at(tick)
 	var start: int = Time.get_ticks_usec()
 	for i: int in range(bodies.size()):
-		bridge.apply_horizontal_control(i,float(spec.horizontal) if tick >= 120 and tick < 480 else 0.0,24.0,80.0,3.0,1.0/60.0)
+		bridge.apply_horizontal_control(i,horizontal_override if not is_nan(horizontal_override) else (float(spec.horizontal) if tick >= 120 and tick < 480 else 0.0),24.0,80.0,3.0,1.0/60.0)
 	bridge.step()
 	var step_us: int = Time.get_ticks_usec()-start
 	var states: PackedFloat32Array = bridge.pack_body_states() # exactly once per intended boundary

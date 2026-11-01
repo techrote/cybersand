@@ -67,3 +67,26 @@ It changes no candidate law, geometry, threshold or scenario. `build/preflight`
 and interrupted `build/campaign` remain retained locally; neither is used as a
 final efficacy population. Exact repeated physical channels are required before
 the corrected acquisition. This failure is a fixture defect, not candidate evidence.
+
+## Documentation checkpoint map
+
+| Concern | Canonical mapping |
+|---|---|
+| Source/checkpoint | Fresh-main identity above; registration and acquisition/fix commits retained in branch history |
+| Coupling/ownership | Coupling contract links the diagnostic selection; no new World, Rapier, support, snapshot-lifetime or worker ownership |
+| Interface | Existing body11/result9 ABI retained; optional snapshot hash and additive metric dictionary documented in measurement runbook/interfaces |
+| Invariants/capacity | Same support predicate, capacities2/20, search81 candidate bound and correction; no new event buffers |
+| Configuration | Configuration reference records exact native-only fresh-world selector/default/refusal |
+| ADRs | ADR-007/009/011 architecture decisions unchanged; no new backend, support policy or solver decision |
+| Roadmap/handover | Experimental envelope route and explicit owner/merge boundary added |
+| Build/tests | Build guide/runbook link current builds, paired acquisition and focused gates |
+| User controls | Separate experimental review scene and authenticated launcher; no ordinary selector |
+| Retrieval | Focused runbook admitted to corpus; index/navigation and separate supplementary questions added; frozen32 preserved |
+| Historical evidence | Earlier PRs and failed captures untouched; no historical hashes rewritten |
+
+The six initial local documentation errors were missing companion reference files,
+not source documentation defects. The exact Documentation-CI companion pin
+`6a58311982941b75f46e22109a0829e5acb83c7e` supplied read-only reference blobs at the
+expected parent paths; their SHA-256 ledger is retained locally. No companion
+source was edited. The subsequent local documentation check has zero errors.
+Current published-runtime rebuild findings remain distinct until fresh publication.

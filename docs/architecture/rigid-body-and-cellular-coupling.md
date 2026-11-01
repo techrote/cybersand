@@ -213,3 +213,15 @@ and bounded enclosure recovery. REM-002 reuses the same support predicate for a
 separate bounded body-coupling observation against stored material; it does not
 make the sampled character a Rapier collider and does not add a second material
 owner.
+
+## Experimental Y1 qualification boundary
+
+**Current default:** B0 retains yield factor0.18. A fresh native diagnostic
+World can explicitly select Y1 factor1.0 with the exact experiment token; default
+construction/demo reset restores B0. The [qualification runbook](../operations/y1-granular-bearing-qualification.md)
+owns selector admission, registered envelope, copied diagnostic channels and
+playable review. This changes only the existing owner's yield multiplication;
+support geometry/predicate, capacity2/sample, global20 cap, arrest/correction,
+ejection, sample-age policy and the11/9-float ABI remain unchanged. Fallback
+retains B0. Y1 is not a selected production default or REM-004 completion.
+Owner gameplay acceptance and explicit merge authorization remain outstanding.

@@ -99,9 +99,7 @@ func _physics_process(_delta: float) -> void:
 		paused = true
 		return
 	var horizontal: float = float(Input.is_physical_key_pressed(KEY_RIGHT))-float(Input.is_physical_key_pressed(KEY_LEFT))
-	if horizontal != 0:
-		fixture.bridge.apply_horizontal_control(0,horizontal,24,80,3,1.0/60.0)
-	last_rows = fixture.step()
+	last_rows = fixture.step(true,horizontal if horizontal != 0 else NAN)
 	refresh_view()
 
 func refresh_view() -> void:
@@ -120,7 +118,6 @@ func refresh_view() -> void:
 			image.set_pixel(x,y,color)
 	texture = ImageTexture.create_from_image(image)
 	scale_factor = minf(4.0,540.0/float(fixture.floor_y-Fixture.SURFACE+85))
-	var native_path: String = "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
 	status.text = "%s | %s | tick %d / %d | %s%s\nsource %s | Godot %s | %s | native %s" % [fixture.spec.id,fixture.candidate,fixture.tick,int(fixture.spec.ticks),"paused" if paused else "running"," · scripted edit at tick600" if fixture.spec.group=="support-change" else "",OS.get_environment("CYBERSAND_SOURCE_REVISION"),Engine.get_version_info().string,ProjectSettings.get_setting("physics/2d/physics_engine"),native_sha256.left(16)]
 	queue_redraw()
 

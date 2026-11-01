@@ -334,3 +334,5 @@ GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-b
 
 For authored checkpoint visibility, Return to launcher, sampled task participants and
 coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).
+
+- [Does Y1 generalize beyond the canonical barrel, and how can the owner compare B0/Y1?](../operations/y1-granular-bearing-qualification.md) The registered envelope and source-authenticated review are experimental; owner acceptance and production/default selection remain separate.

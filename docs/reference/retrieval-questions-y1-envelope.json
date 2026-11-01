@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-01",
+  "purpose": "Supplementary Y1 envelope questions registered independently of the frozen32; no embedding claim.",
+  "questions": [
+    {
+      "id": "Y1-ENV-001",
+      "query": "Does Y1 granular braking generalize across body mass scale orientation and support loss, and is it a production default?",
+      "canonical": [
+        "operations/y1-granular-bearing-qualification.md",
+        "architecture/rigid-body-and-cellular-coupling.md"
+      ],
+      "facts": [
+        "B0 remains default0.18; Y1 native diagnostic factor1.0 needs exact fresh-world experiment token.",
+        "44 paired synchronous strata plus real-worker latency; mass/scale/orientation/support/lateral/rotation distinct.",
+        "Technical status, unsupported envelope and actual owner acceptance remain explicit; no default promotion or merge."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "audits/y1-envelope-2026-11-01/protocol.json"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "Y1-ENV-002",
+      "query": "How do I play a source matched B0 Y1 granular bearing owner comparison and provide a gameplay verdict?",
+      "canonical": [
+        "operations/y1-granular-bearing-qualification.md"
+      ],
+      "facts": [
+        "run_y1_review.py authenticates source, runtime, Godot and scenario configuration.",
+        "Explicit experimental selection then fresh reset; Space pause, arrows lateral, E excavation.",
+        "Owner judgement on sinking, rigidity, latency, mass, lateral, rotation and release must be actual and source-bound; awaiting owner acceptance."
+      ],
+      "sources": [
+        "../tools/experiments/run_y1_review.py",
+        "../godot/tests/support/y1_envelope_review.gd"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}
