@@ -1872,7 +1872,7 @@
       "offset_2_1_cells": 4
     },
     "ties": "Both signs at normalizedcomponent0.5 at k1, and0.25/0.75 at k2, plus all axis/quadrant mirrors",
-    "negative_mutations": "For each independent path cell, substitute Empty/Water/hard/ownmask/foreignmask; first failure must be source/path refusal. Nonpath mutations must not be mislabeled path failures. Masks in either full witness footprint and depth2 exhaustion tested.",
+    "negative_mutations": "For material-only path mutations, require source/path refusal. For own/foreign mask mutations, independently enumerate geometry FIRST: if both full stencil unions are blocked expect NoMaskFreeWitness; otherwise select first eligible geometry and expect source/path mask refusal if that path is blocked. Nonpath mutations must not be mislabeled path failures.",
     "no_deeper_packing": "Construct mask-free k1 with failed packing and packed k2: MUST refuse Packing with one shared call and selected_depth1",
     "additional_families": [
       "all9 capable materials plusStone0/1",
@@ -1897,7 +1897,9 @@
     "godot/scripts/rigid_body_coupling.gd": "0b760cef49de8e1816f981badd51725d110f6c316c06fa07762a55da807c5187",
     "godot/scripts/player_vehicle_controller.gd": "c20ab7420bde632b2d77efe1e17f3bc82910d2b8f07e1612890f05fac624f6d2",
     "godot/scripts/player_playground_course.gd": "1fb66932f1c12f6d6d408afcd0ab42904bd858211a008ff1f8b5a4f81164997d",
-    "godot/scripts/physical_actor_catalog.gd": "a5f2f800e0e4caa6199a1d4dd2be9d0a1603cfa172947b41fe0f90fe428d9489"
+    "godot/scripts/physical_actor_catalog.gd": "a5f2f800e0e4caa6199a1d4dd2be9d0a1603cfa172947b41fe0f90fe428d9489",
+    "godot/scripts/player_acrobat_controller.gd": "9cf4d6a65a9c8d7ee1c94179c53aaaf4e118662b52e4ad9469c78deef3fb04a7",
+    "godot/scripts/player_actor_catalog.gd": "f506c97fcfe6772ffb3a989b422c2d0a5e7ae189f2020bf15826fa4f6a0a7091"
   },
   "frozen_adapter_functions": {
     "CyberNativeCellWorld::evaluate_gcr(": "f6547daca64e60c28392cc6e18be1608ca5c92599f33a215d9bad47539d66a69",
@@ -1949,5 +1951,10 @@
     "R2_evidence": "Retained NO-GO and limitations unchanged",
     "independent_review": "normal-ray geometry, rounding, first-maskfree selection, closed-square supercover, bounds and named mechanical positives reviewed before registration",
     "A1_physical_results_before_registration": false
+  },
+  "pre_efficacy_clarification": {
+    "reason": "Independent review clarified geometry-first refusal priority for mask substitutions and completed actual controller/catalogue locks. No geometric, law, coefficient, threshold or capture-population change.",
+    "physical_results_before_clarification": false,
+    "prior_registration": "8d3cecf2a61e10318f70c5f953cd8d54413ff977"
   }
 }
