@@ -171,3 +171,11 @@ The crown pixel hole and AABB concavity are distinct empty geometric regions,
 not a claim of two enclosed topological holes. The physical population remains
 56 maximum across both OS; extra lifecycle/mechanical assertions are not new
 efficacy captures. This clarification precedes new code execution/acquisition.
+
+The preparation signature includes a copied `lease` dictionary between states
+and resolve_overlaps. It echoes the existing native token, body_id,
+body_generation and physics_epoch, checked against the active native snapshot
+before mutation. Outer mailbox fences remain necessary but do not substitute
+for this association. Non-granular compatibility uses one common scale from
+the sum of proxy impulse norms under legacy3; apply that scale to both net J
+and proxy-centred moment. It is not a point-resolved Water law.
