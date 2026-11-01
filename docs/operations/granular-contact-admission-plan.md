@@ -171,3 +171,15 @@ real async, source/runtime and documentation/retrieval checks on the final
 composition. A playable source-bound comparison and the owner's actual verdict
 remain separate gates. PR#346 and the successor stay unmerged; REM-004 stays open
 until all its gates genuinely pass.
+
+## Executed checkpoint — 2026-11-01
+
+**Current:** registration8d3cecf2 preceded implementation. Clarification7cbe5f8c
+was made during implementation, before efficacy: mask-free geometry takes
+selection priority, and actual controller catalogue hashes are locked. Mechanical
+fixture correction47b89c07 and explicit-UTF8 repair1a111dd2 also precede acquisition.
+No physical gate was relaxed. Implementation3d0b1ed7 is the clean source for
+all237 captures. Mechanical admission passes; unchanged-law physical qualification
+is **NO-GO**. The [dated audit](../audits/2026-11-01-gcr-admission-qualification.md)
+owns results, runtime/host identities and retained failures. R2 and its evidence
+remain frozen at PR#346; the focused successor also stays draft and unmerged.

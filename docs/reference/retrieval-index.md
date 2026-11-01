@@ -13,6 +13,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 ## Experimental granular contact
 
 - Does GCR change ordinary physics, and what did R2 qualify? [Current experimental contract](../architecture/granular-contact-response.md).
+- Did the side-contact fix qualify friction or sidewall load? [A1 admission and remaining NO-GO](../architecture/granular-contact-response.md#how-does-admission-only-a1-select-contacts-and-why-is-it-still-no-go).
 - How was category-wide resistance/friction/torque registered? [Plan](../operations/granular-contact-response-plan.md).
 - Which physical gates failed, and which runtime/source was tested? [Dated qualification](../audits/2026-11-01-gcr001-qualification.md).
 

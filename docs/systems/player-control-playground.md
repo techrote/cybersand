@@ -12,7 +12,7 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 ## Experimental contact comparison — 2026-11-01
 
-The [explicit GCR/Y1 development launch](../architecture/granular-contact-response.md#how-do-i-compare-gcr-and-y1-with-actual-rocket-barrel-controls) reuses the actual rocket-barrel/articulated host and unchanged controllers. Ordinary launch remains B0. Source-bound headless comparisons cannot supply owner gameplay preference; current GCR R2 is physically NO-GO and is not a production or feel acceptance. No sleep policy was added.
+The [explicit A1/R2/Y1 development launch](../architecture/granular-contact-response.md#how-do-i-compare-a1-retained-r2-and-y1-with-actual-playground-controls) reuses the actual rocket-barrel/articulated host and unchanged controllers. Ordinary launch remains B0. Source-bound headless comparisons cannot supply owner gameplay preference; retained GCR R2 and admission-only A1 are physically NO-GO; A1 mechanical admission passes and is not a production or feel acceptance. No sleep policy was added.
 
 
 ## Current PLAY acceptance boundary — 2026-10-30

@@ -10,7 +10,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
-Category contact: [experimental GCR-001 contract](architecture/granular-contact-response.md), [registered plan](operations/granular-contact-response-plan.md) and [qualification audit](audits/2026-11-01-gcr001-qualification.md). R2 is NO-GO; B0 remains default, sleep is deferred, and the draft remains unmerged.
+Category contact: [experimental GCR-001 contract](architecture/granular-contact-response.md), [registered plan](operations/granular-contact-response-plan.md) and [qualification audit](audits/2026-11-01-gcr001-qualification.md). R2 and admission-only A1 are physical NO-GO; A1 mechanical admission passes. The [A1 registration](operations/granular-contact-admission-plan.md) and [A1 audit](audits/2026-11-01-gcr-admission-qualification.md) keep those scopes separate. B0 remains default, sleep is deferred, and both drafts remain unmerged.
 
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).

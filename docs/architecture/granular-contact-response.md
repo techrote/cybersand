@@ -2,17 +2,17 @@
 title: GCR-001 experimental granular contact response
 status: Current
 document-kind: contract
-scope: Opt-in GCR-001 R2 value protocol, bounded contact evaluator and failed integration boundary; ordinary B0 remains the default
+scope: Opt-in retained GCR R2 and admission-only GCR-A1, bounded value ownership and failed physical qualification; ordinary B0 remains default
 canonical-for: [experimental-granular-contact-response]
 last-reviewed: 2026-11-01
-related-documents: [rigid-body-and-cellular-coupling.md, ../systems/granular-interaction-policy.md, ../operations/granular-contact-response-plan.md, ../audits/2026-11-01-gcr001-qualification.md]
+related-documents: [rigid-body-and-cellular-coupling.md, ../systems/granular-interaction-policy.md, ../operations/granular-contact-response-plan.md, ../audits/2026-11-01-gcr001-qualification.md, ../operations/granular-contact-admission-plan.md, ../audits/2026-11-01-gcr-admission-qualification.md]
 ---
 
 # GCR-001 experimental granular contact response
 
-## Does GCR change ordinary physics, and did R2 qualification pass?
+## Does GCR change ordinary physics, and did qualification pass?
 
-**Current experimental source:** GCR-001 R2 combines geometric normal resistance,
+**Current experimental source:** retained GCR-001 R2 combines geometric normal resistance,
 friction and contact moment for copied rectangular Rapier parts. It is selected
 only by explicit fresh developer/test construction. Ordinary B0 remains the
 default; the retained B0 and experimental Y1 response paths are unchanged.
@@ -23,6 +23,16 @@ physical comparisons show material resistance/preservation regressions. A passed
 mechanics/reduction oracle does not qualify the integrated behavior. The audit
 owns exact case results and source-bound Windows/Linux qualification; neither
 this contract nor the review UI supplies owner gameplay acceptance.
+
+**Current admission-only successor:** explicit `GCR-A1` /
+`GCR-ADMISSION-001-2026-11-01` fixes clean side/up admission while retaining the
+R2 response law. The native query/oracle and actual adapter gates pass, including
+all nine capable materials. **Its integrated physical qualification is also
+NO-GO**: Sand/Dust/Rust bank entry and four impact-preservation cases fail.
+All237 registered captures completed; additional contacts expose response/load
+allocation limitations rather than supplying an accepted friction law. See the
+[new audit](../audits/2026-11-01-gcr-admission-qualification.md). Neither draft
+changes the default or establishes owner gameplay acceptance.
 
 **Deferred:** sleep admission/wake changes, persistent support/rest caches,
 freezing, soliding/desoliding and body-to-cell conversion. Ejection search,
@@ -39,10 +49,11 @@ predicate itself admits both states when its existing neighborhood test passes.
 Seed becoming Plant removes powder capability. Reactive transformations retain
 their existing sources/sinks and cannot be judged by closed per-ID conservation.
 
-The nine-material/state predicate table is narrower than actual adapter reaction
-qualification. Exact GCR adapter state/temperature preservation and actual
-germination/reactive support-loss coverage remain explicit gaps; inherited
-native conservative-relocation tests are the direct payload evidence.
+The A1 actual adapter mechanically admits clean interfaces for all nine materials.
+Native query tests preserve material/state/temperature and cover actual Dust-to-Fire
+and Seed-to-Plant support retirement. These native reaction tests do not establish
+full adapter reactive/state/temperature payload qualification; that remains a gap.
+Inherited native conservative-relocation tests remain separate payload evidence.
 See [granular policy](../systems/granular-interaction-policy.md) and the
 [registration](../audits/gcr001-2026-11-01/protocol.json).
 
@@ -125,7 +136,7 @@ unchanged gate; this is scoped approximation evidence, not universal equivalence
 or physical efficacy. See [bounded evaluator](../../native/include/cybersand/granular_contact_response.hpp),
 [oracle](../../native/tests/granular_contact_qualification.inc), and the dated audit.
 
-## Why is the current physical integration NO-GO?
+## Why did retained R2 fail side admission?
 
 The adapter ejects interior cells before collecting exterior contacts. A side
 source is immediately adjacent to a masked pixel, while the unchanged side 9/9
@@ -148,31 +159,65 @@ are distinct registered response policies; event/capacity ledgers must establish
 their contribution to any observed vertical regression. Neither blocked attempts
 nor repeated displacement attempts are independent physical efficacy samples.
 
-A successor needs separate registration: first test a bounded material-interior
-witness that excludes body masks, retains source stability and geometric contact
-location, and leaves shared support semantics/ejection/coefficients unchanged.
-Event-budget changes belong in a separate candidate or isolated ablation. Retain
-R1/R2 failures and do not rewrite their artifacts after selecting a successor.
+## How does admission-only A1 select contacts, and why is it still NO-GO?
 
-## How do I compare GCR and Y1 with actual rocket-barrel controls?
+The [preregistered A1 plan](../operations/granular-contact-admission-plan.md)
+owns the exact algorithm, population and frozen hashes. `World::granular_contact_witness`
+uses the original geometric outward normal to choose the first mask-free depth1
+or2 witness (Chebyshev2, Euclidean at most2sqrt(2)). Its full12-cell predicate
+footprint must exclude every body ID; the source and closed-square straight-path
+supercover must contain actual stable capable powder. Only then does the unchanged
+shared side9/9 plus downward8/9 predicate run once. Material/path/packing refusal
+does not select a deeper witness. The original projection, source count and
+capacity remain authoritative. The ordinary downward8/9 branch is unchanged.
+The bound is65 logical probes per side candidate, including at most31 mask,
+26 stability and34 material reads. These overlapping categories are not summed
+as separate probes. No allocation, World mutation or persistent support is added.
+Sources: [World helper](../../native/src/world.cpp),
+[adapter selection/counters](../../godot/native_extension/cyber_native_cell_world.cpp),
+and [independent query oracle](../../native/tests/granular_admission_qualification.inc).
+
+All named mechanical cases pass, with zero mask-interior grains required at clean
+interfaces. Physical Sand/Dust/Rust bank penetration nevertheless worsens versus
+Y1, and heavy high entry reaches the hard floor. Timing also triggers investigation.
+The frozen solver allocates its normal budget across **all** source counts before
+resolving closing velocity, without transferring unused node capacity. Correctly
+admitting more side/up sources can dilute nominal-bottom allocation. Detailed
+heavy-case ledgers support this mechanism but do not isolate its dominant causal
+contribution; retained R2 ledgers and current A1 have explicitly different source
+identities. Events, evolving geometry/stability, delivery and hard collisions
+remain separate influences. No counterfactual law or load refinement was tested.
+
+Pure vertical sliding on an upright side still creates zero normal load and zero
+Coulomb tangent response. Raising friction alone cannot create confinement load.
+Any allocator, event-budget, friction or load-law change needs a new registration;
+A1 admission success does not authorize post-result tuning. R1/R2 failures and
+their original artifacts remain unchanged.
+
+## How do I compare A1, retained R2 and Y1 with actual playground controls?
 
 Use a source-matched, authenticated project and engine; Windows example from the
 repository root (substitute the authenticated project path for an isolated copy):
 
 ```powershell
 $env:CYBERSAND_SOURCE_REVISION = (git rev-parse HEAD)
-& C:/Godot47/Godot_v4.7-stable_win64_console.exe --path ./godot res://player_playground.tscn -- --player=jetbarrel --granular-experiment=GCR --granular-token=GCR-001-2026-11-01 --granular-review-material=2
+& C:/Godot47/Godot_v4.7-stable_win64_console.exe --path ./godot res://player_playground.tscn -- --player=jetbarrel --granular-experiment=GCR-A1 --granular-token=GCR-ADMISSION-001-2026-11-01 --granular-review-material=2
 ```
 
-Change only `GCR` to `Y1` for the reference; material 2/14/29 selects Sand/Dust/Rust.
-Before a manual launch, run `python tools/experiments/run_gcr_qualification.py
+Change `GCR-A1` to `Y1` for the reference. Retained R2 uses `GCR` with
+`GCR-001-2026-11-01`; material2/14/29 selects Sand/Dust/Rust.
+Before a manual launch, run `python tools/experiments/run_gcr_admission.py
 --identity-only` from the same checkout to authenticate its native/Rapier/engine
 and project-source identities. The environment value labels that inspected Git
 revision; it is not independently an artifact authenticity check.
 `--player=acrobat` selects the articulated runner. The explicit route starts a
 fresh experiment, raises the initial spawn identically, removes stock material
 samples and creates the same supported review bed. Reset reconstructs the arm;
-controller commands do not restore cells. No persisted setting enables GCR.
+controller commands do not restore cells. The compact
+`y1_envelope_review.tscn` comparison uses the A1 protocol explicitly; ordinary
+review still uses its retained protocol. The authenticated A1 runner requires a
+fresh source-bound mechanical receipt before review/acquisition. The dated audit
+records the captured checkpoint and supported receipt identities. No persisted setting enables GCR.
 Ordinary launch without experiment arguments retains B0 and the authored course.
 Swarm presets refuse this comparison. Circle occupancy remains the existing
 rectangle approximation, and this bounded view is not the full planned topology

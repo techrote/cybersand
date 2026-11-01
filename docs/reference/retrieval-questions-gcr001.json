@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "purpose": "GCR-001 current experimental semantics; distinct from historical mechanics and owner acceptance.",
+  "purpose": "GCR-001 current experimental semantics; distinct from historical mechanics and owner acceptance. Additive A1 checkpoint question registered after execution; no retrieval improvement claim or change to existing query strings.",
   "questions": [
     {
       "id": "GCR-STATUS-01",
@@ -49,6 +49,25 @@
       "sources": [
         "../godot/scripts/player_playground.gd",
         "../godot/tests/test_gcr_playground.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCR-ADMISSION-01",
+      "query": "Did fixing clean side contact qualify GCR friction, sidewall sinking resistance and playground feel?",
+      "canonical": [
+        "architecture/granular-contact-response.md"
+      ],
+      "facts": [
+        "Admission-only GCR-A1 uses bounded mask-free witness and straight stable capable powder path; R2 law and ordinary downward admission are unchanged.",
+        "Mechanical admission passes on both platforms and all nine materials; unchanged-law integrated physical qualification remains NO-GO, with failed banks/heavy entry and unresolved timing.",
+        "Source-count capacity dilution is a supported mechanism, not isolated dominant causality; upright pure vertical slip has zero normal load and raising mu alone cannot create it.",
+        "Controllers remain unchanged; automated actual-host reports do not establish human feel; sleep is deferred and both PRs stay unmerged."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../native/include/cybersand/granular_contact_response.hpp",
+        "audits/2026-11-01-gcr-admission-qualification.md"
       ],
       "revision_sensitive": true
     }
