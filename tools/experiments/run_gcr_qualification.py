@@ -44,11 +44,16 @@ def authenticate(args):
     rapier = json.loads(rapier_manifest.read_text())
     if digest(ROOT / rapier['artifact']) != rapier['sha256']:
         raise RuntimeError('Rapier differs from retained pinned runtime')
+    if digest(args.project / Path(rapier['artifact']).relative_to('godot')) != rapier['sha256']:
+        raise RuntimeError('Isolated project Rapier differs from pinned runtime')
+    expected_native = args.project / 'addons/cybersand_native/bin' / Path(manifest['artifact']).name
+    if digest(expected_native) != manifest['sha256']:
+        raise RuntimeError('Isolated project native differs from authenticated runtime')
     # Authenticate every executable project source; retain the entire mapping
     # once per campaign, rather than repeat it in every 1800-tick raw file.
     inputs = {}
     for path in sorted((ROOT / 'godot').rglob('*')):
-        if path.is_file() and '.godot' not in path.parts and path.suffix in {'.gd', '.tscn', '.gdshader', '.tres'}:
+        if path.is_file() and '.godot' not in path.parts and (path.suffix in {'.gd', '.tscn', '.gdshader', '.tres', '.gdextension'} or path.name == 'project.godot'):
             inputs[path.relative_to(ROOT).as_posix()] = digest(path, True)
             if digest(args.project / path.relative_to(ROOT / 'godot'), True) != digest(path, True):
                 raise RuntimeError('Project source differs: ' + str(path))
