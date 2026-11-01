@@ -121,7 +121,8 @@
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
-    "operations/ci-execution-and-performance.md"
+    "operations/ci-execution-and-performance.md",
+    "operations/granular-contact-admission-plan.md"
   ],
   "navigation": [
     "README.md",
