@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Conditional E qualification after accepted R — 2026-11-01
+
+The [R-versus-R+E qualification](../audits/2026-11-01-render-production-integration.md)
+uses accepted main `809fd30d`, tree `863db60c`, after native run-copy PR #344
+merged. Strict retained-baseline accounting remains branch-current in draft
+#345. Its production admission requires incremental benefit beyond R, with
+consumer cost, freshness and memory considered alongside avoided extraction.
+Historical #335 does not establish that benefit. No E merge or production-default
+change is authorized; owner approval remains separate from technical review.
+Hardware GPU presentation qualification is still open, and exact-head results
+retain their actual platform/backend scope.
+
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
 
 ## Current owner policy and accepted baseline — 2026-10-31

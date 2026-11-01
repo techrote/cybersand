@@ -10,6 +10,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Conditional E qualification on accepted R: [branch-current retained-baseline contract](architecture/rendering-and-gameplay-bridges.md#strict-retained-baseline-accounting)
+and [dated R-versus-R+E evidence](audits/2026-11-01-render-production-integration.md).
+R is accepted at `809fd30d`; E remains an isolated draft proposal in #345.
+
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).

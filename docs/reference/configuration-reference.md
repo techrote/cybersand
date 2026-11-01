@@ -664,13 +664,16 @@ Sources: [main.gd](../../godot/scripts/main.gd),
 | `HARD_SURFACE_REBUILD_INTERVAL` | 0.10 s, controller sync cooldown |
 | `HARD_SURFACE_CHUNKS_PER_FRAME` | 32 queued chunks |
 | `HARD_SURFACE_FRAME_BUDGET_USEC` | 750, checked between chunk rebuilds |
-| `MAX_PENDING_RENDER_PATCHES` | 256 before full-refresh recovery |
-| Pending render-byte recovery threshold | Greater than 2,097,152 bytes |
+| `MAX_PENDING_RENDER_PATCHES` | Experimental E branch (#345): 256 dirty records; an exact retained full baseline exempts one additional record |
+| `MAX_PENDING_RENDER_BYTES` | 2,097,152 dirty bytes; an exact retained full baseline exempts its own frame bytes |
+| Pending RG8 payload bound | 4,194,304 bytes: one complete 1024×1024×2 baseline plus the dirty budget |
 | `RENDER_PATCH_METADATA_STRIDE` | 6 integers |
 
 The 750 µs check excludes extraction and packet validation/copy/queueing; a single
-chunk can exceed it. Pending limits trigger recovery after accumulation and are
-not process-wide allocation ceilings. Target pacing does not guarantee actual
+chunk can exceed it. Pending limits are checked before dirty append; exact limits
+are admitted and one-over requests full recovery. The complete-baseline exemption
+requires the current World generation/dimensions/channels and exact metadata.
+These bounds are not process-wide allocation ceilings. Target pacing does not guarantee actual
 60 ticks/s.
 
 ## Web quality

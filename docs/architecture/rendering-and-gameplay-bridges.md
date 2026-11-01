@@ -84,6 +84,32 @@ The historical handoff race is guarded by
 [test_render_patch_handoff_regression](../../godot/tests/test_render_patch_handoff_regression.gd).
 Do not reuse pending buffers while a published generation remains observable.
 
+### Strict retained-baseline accounting
+
+**Current on the experimental E branch (#345), admission pending:** an exact complete current-World baseline
+is retained until an ordinary covering ACK. The worker exempts only its exact
+full-frame bytes and one six-integer rectangle record from the existing dirty
+budgets. Later dirty bytes and records remain charged; admission happens before
+append. Exceeding either dirty budget invokes the existing forced-full recovery.
+No baseline drop/rebase, early ACK, coalescing or weaker serial fence is added.
+
+The exemption requires the accepted baseline tag, current World generation,
+matching dimensions/channels, and complete contiguous metadata. Malformed state,
+channel mismatch and old-generation retained data receive no exemption. Rejected
+packets preserve the old published payload and require actual full recovery;
+they cannot certify a newer native revision. An ACK retires accepted pixels and
+cannot satisfy unresolved recovery. The legacy `snapshot.cells` remains exactly
+the last full frame; accumulated changes use the immutable patch payload.
+Source: `CyberSimulationWorker._append_native_render_packet`,
+`_has_qualified_render_baseline` and `_pending_render_exceeds_budget` in the
+[desktop owner](../../godot/scripts/simulation_worker.gd).
+
+The [production integration audit](../audits/2026-11-01-render-production-integration.md)
+separates this source change, accepted native R from #344, historical #335
+evidence and hardware presentation qualification. Accepted main `809fd30d` uses
+R without E; the paired comparison determines E's incremental value. Native exchange, Web ownership
+and whole-backing texture upload behavior remain as described above.
+
 **Current desktop reset identity:** the exclusive GDScript owner advances a
 World generation only after an accepted World reset or scenario replacement.
 It retains `render_world_generation` with the exact render publication, forcing

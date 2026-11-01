@@ -36,6 +36,7 @@ Existing IDs are retained, including when an earlier description was corrected.
 | CUR-012 | Current: themed 38–80 are hard surfaces; inert radius zero, Oak/Thatch radius-one combustible | [Construction](../systems/themed-construction-materials.md) |
 | CUR-013 | Current: flair uses immutable display inputs and cannot write Cell state | [Appearance](../systems/material-appearance-and-rendering.md) |
 | CUR-014 | Current: neighbor relief samples the existing uploaded texture without a second authoritative image/readback | [Appearance](../systems/material-appearance-and-rendering.md) |
+| RENDER-BASELINE-001 | Current experimental E branch (#345), admission pending: only an exact complete current-generation baseline is exempt from dirty budgets; preflight, immutable publication and ordinary covering ACK remain mandatory | [Bridges](../architecture/rendering-and-gameplay-bridges.md#strict-retained-baseline-accounting) |
 | SAVE-001 | Current: CYSD1 reconstructs a level and selected metadata; no exact continuation | [Saves/replay](level-saves-and-replay.md) |
 | REPLAY-001 | Approved, incomplete: replay must capture every future-affecting input; current hash coverage is partial | [Hash coverage](../architecture/determinism-and-boundary-transfers.md#replay-state-coverage) |
 | WEB-001 | Current: pthread jobs do not remove Web's synchronous main-thread tick wait | [Threading](../architecture/simulation-tick-and-threading.md) |
