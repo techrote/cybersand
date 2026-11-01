@@ -1130,11 +1130,11 @@ func set_frame_state(
 
 func configure_granular_experiment(candidate: String) -> bool:
 	# Test/developer construction only, before ownership moves to the thread.
-	if _thread.is_started() or candidate not in ["Y1", "GCR"] or not _world.has_method(&"diagnostic_reset"):
+	if _thread.is_started() or candidate not in ["Y1", "GCR", "GCR-A1"] or not _world.has_method(&"diagnostic_reset"):
 		return false
-	var token: String = "GCR-001-2026-11-01" if candidate == "GCR" else "Y1-ENVELOPE-2026-11-01"
+	var token: String = "GCR-ADMISSION-001-2026-11-01" if candidate == "GCR-A1" else ("GCR-001-2026-11-01" if candidate == "GCR" else "Y1-ENVELOPE-2026-11-01")
 	if not _world.diagnostic_reset({"workers":1,"bearing_candidate":candidate,"bearing_experiment":token}): return false
-	_gcr_experiment = candidate == "GCR"
+	_gcr_experiment = candidate in ["GCR", "GCR-A1"]
 	_gcr_world_generation = _world_generation
 	return true
 

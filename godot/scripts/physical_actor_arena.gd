@@ -125,7 +125,8 @@ func configure(value: Variant) -> bool:
 	return _configure_granular(value,"B0")
 
 func configure_granular_experiment(value: Variant, candidate: String, token: String, spawn_offset: Vector2 = Vector2.ZERO) -> bool:
-	if candidate not in ["Y1","GCR"] or token != "GCR-001-2026-11-01":
+	var expected_token: String = "GCR-ADMISSION-001-2026-11-01" if candidate == "GCR-A1" else "GCR-001-2026-11-01"
+	if candidate not in ["Y1","GCR","GCR-A1"] or token != expected_token:
 		last_error = "granular_experiment_refused"
 		return false
 	if not spawn_offset.is_finite() or spawn_offset.length() > 64.0: return false
@@ -149,7 +150,7 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 	var native_options: Dictionary = {"workers":1,"telemetry":false}
 	if granular_candidate != "B0":
 		native_options["bearing_candidate"] = granular_candidate
-		native_options["bearing_experiment"] = "GCR-001-2026-11-01" if granular_candidate == "GCR" else "Y1-ENVELOPE-2026-11-01"
+		native_options["bearing_experiment"] = "GCR-ADMISSION-001-2026-11-01" if granular_candidate == "GCR-A1" else ("GCR-001-2026-11-01" if granular_candidate == "GCR" else "Y1-ENVELOPE-2026-11-01")
 	if not world.diagnostic_reset(native_options):
 		last_error = "native_reset"
 		return false
@@ -210,7 +211,7 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 	_sync_terrain()
 	if _failed:
 		return false
-	if granular_candidate == "GCR":
+	if granular_candidate in ["GCR","GCR-A1"]:
 		if not _prepare_gcr_frame(false): return false
 	else:
 		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), false)
@@ -387,7 +388,7 @@ func step(commands: Variant = []) -> Dictionary:
 			seen[actor] = true
 	# A mask is copied from the current actual pose. Actuation adds forces but
 	# does not integrate: usable source positions match this mask exactly.
-	if config.get("granular_experiment","B0") == "GCR":
+	if config.get("granular_experiment","B0") in ["GCR","GCR-A1"]:
 		if not _prepare_gcr_frame(true): return snapshot()
 	else:
 		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), true)
@@ -419,7 +420,7 @@ func step(commands: Variant = []) -> Dictionary:
 	if not bool(_world.simulation_tick()):
 		_fail("native_tick")
 		return snapshot()
-	if config.get("granular_experiment","B0") == "GCR":
+	if config.get("granular_experiment","B0") in ["GCR","GCR-A1"]:
 		_coupling_results = PackedFloat32Array()
 		var results: PackedFloat64Array = _world.gcr_body_results()
 		if results.size() != session.bodies().size()*CyberRigidBodyCoupling.GCR_RESULT_STRIDE:
@@ -606,7 +607,7 @@ func presentation_cells(view: Rect2i = ARENA_RECT) -> PackedByteArray:
 
 func close() -> void:
 	if _world != null and not bool(_world.has_failed()):
-		if config.get("granular_experiment","B0") == "GCR":
+		if config.get("granular_experiment","B0") in ["GCR","GCR-A1"]:
 			_world.prepare_gcr_coupling(PackedFloat64Array())
 		else:
 			_world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
