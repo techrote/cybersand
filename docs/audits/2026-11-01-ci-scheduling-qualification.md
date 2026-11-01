@@ -109,8 +109,142 @@ costs must be considered when interpreting any speedup.
 Local Python 3.13 Windows and Python 3.12 WSL checks are supplemented by actual
 GitHub-hosted qualification below. actionlint 1.7.12 validates the whole workflow
 inventory; syntax validation has shellcheck/pyflakes integration disabled.
-Hosted results and independent review disposition are recorded as they complete.
-No runtime improvement is claimed from shard count alone.
+The original hosted results and independent review disposition follow. Runtime
+improvement is measured separately from the reduction in shard count.
+
+## Exact implementation checkpoint and independent review
+
+Implementation commit `9a01d782a6b93cb3878b12e50ee40ebfd502e31b`, tree
+`39b73e3bbbd33d4da983d194fd50bf3fa81b19f1`, is the recoverable hosted qualification source in
+[draft PR #340](https://github.com/techrote/cybersand/pull/340). The final evidence
+checkpoint records documentation only; the implementation identity remains explicit.
+The execution policy bytes remain SHA-256
+`9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc`.
+
+An independent reviewer examined the exact committed scheduler, both runners,
+original coverage readers, workflow policies, display preparation and metrics
+reduction. A second reviewer independently challenged partition capacity and
+history sample semantics. Corrected findings before hosted launch:
+
+- Canonical relative-path sorting makes source fingerprints identical on Windows
+  and Linux; only tracked inputs contribute.
+- History cohorts identify fixture and platform, malformed input falls back, and
+  integer/string spellings cannot inflate the distinct-run sample count.
+- The 16-case capacity is enforced on every shard, including adversarial mixtures
+  of expensive and cheap cases.
+- Windows evidence includes the imported history dependency in its input manifest.
+- Local enlarged watchdog policy remains supported, while hosted planning keeps
+  the six-hour limit.
+- Metrics reject telemetry or successful coverage from another source/run/attempt,
+  and distinguish PR head SHA from actual merge-checkout SHA.
+- Synthetic Native log and Windows LFS-pointer fixtures now use explicit bytes,
+  preserving their intended failure checks on Windows.
+
+The exact-commit reviewer reported no unresolved material finding and independently
+reran all 44 Windows coverage-reader tests successfully. The implementation worker's
+181 focused tests passed (10 scheduling, 11 planner, 87 shared runner, 19 Windows
+runner, 10 Linux reader, 44 Windows reader). Workflow scheduling 10, metrics 7,
+provider 6, validation-contract 17, Native-shard 45 (one platform skip), physical
+stress 12, Rapier-pair 12 and Linux display-setup 4 controls also passed in their
+applicable environments. `check_docs`, materialized `check_repository`, historical
+`check_m11_consistency`, provider policy, scheduling policy and `git diff --check`
+passed. Retrieval finds the canonical page in the top five for 32/32 frozen and
+154/155 supplementary questions; the new CI scheduling question ranks first.
+The retained unrelated LCB03 miss is explicit; lexical retrieval is not semantic
+answer validation.
+
+## Hosted qualification and measured outcome
+
+Original attempt 1 passed at implementation source `9a01d782`:
+
+- [GDExtension 41261767969](https://github.com/techrote/cybersand/actions/runs/41261767969):
+  both complete matrices, cross-builds, independent coverage and timing collection.
+- [Native 41261769747](https://github.com/techrote/cybersand/actions/runs/41261769747):
+  all six families and the stable aggregate, with no errors in the source-bound
+  [retained aggregate receipt](evidence/2026-11-01-ci-scheduling/native-qualification-41261769747.json).
+- [Documentation 41261769387](https://github.com/techrote/cybersand/actions/runs/41261769387):
+  current documentation, retained history, retrieval, workflow inventory and actionlint.
+- [Desktop identity packet 41261769405](https://github.com/techrote/cybersand/actions/runs/41261769405)
+  and [Native scope advisory 41261769322](https://github.com/techrote/cybersand/actions/runs/41261769322)
+  also passed. Draft-suppressed behavioral jobs are not counted as qualification.
+
+| Measure | Historical #1711 | Fresh-main baseline | Revised original run |
+|---|---:|---:|---:|
+| Executed jobs (all job records) | 160 (162) | 158 (160) | **45 (47)** |
+| Windows / Linux regression shards | 76 / 78 | 75 / 77 | **19 / 20** |
+| Median Windows / Linux creation-to-start delay | 19.02 / 22.71 min | 49.23 / 61.68 min | **2m50s / 2m57s** |
+| Median Windows / Linux job execution | 82 / 90 s | 79 / 88 s | **193 / 179 s** |
+| Peak active workflow jobs | 15 | 9 | **10** |
+| Peak active Windows / Linux matrix jobs | 10 / 15 | 9 / 9 | **8 / 8** |
+| Average active jobs over complete workflow | 3.00 | 2.27 | **6.65** |
+| Workflow creation to last job completion | 105m22s | 123m21s | **20m30s** |
+| Total runner execution | 316.28 min | 280.13 min | **136.25 min** |
+| Successful case-process time / all runner wall time | 28.55% | 33.06% | **70.59%** |
+| Successful Windows / Linux cases | 236 / 237 | 233 / 240 | **233 / 246** |
+| Missing expected cases | 13 Linux | 6 Linux | **0** |
+| Unexpected / duplicate observed cases | 0 / 0 | 0 / 0 | **0 / 0** |
+| Outcome | Failed setup / incomplete coverage | Failed setup / incomplete coverage | **Passed complete coverage** |
+
+The revised run uses **71.9% fewer executed jobs**, **80.5% less end-to-end time**
+and **56.9% fewer runner-minutes** than #1711. Comparing only #1711's successful
+job time still gives a 46.4% runner-time reduction; the old failed setup costs do
+not explain the entire saving. Runner time is summed job wall time, not CPU time
+or billing-weighted Windows minutes. Larger median jobs are intentional and
+remain far below their unchanged watchdogs.
+
+These are observed whole-system results, not a controlled causal attribution of
+every saved second to sharding. The owner upgraded to Pro and the repository
+queue was clear at launch; other repositories' occupancy is not observable from
+this repository's job data. Native qualification ran alongside GDExtension. API
+creation-to-start delay includes intentional matrix-cap waiting; it cannot isolate
+runner acquisition from matrix admission or dispatch. Linux starts after its
+build, by which time Windows is largely finished, explaining an overall peak 10
+despite independent 8/8 limits. No global account cap is claimed. Average active
+jobs includes pre-dispatch blocking, while process-time share includes setup and
+failed jobs in its denominator; neither measures CPU utilization.
+
+Fresh-main and revised original plans have identical case-name Counters and
+identical timeout, flags and display-requirement fields. All 479 revised telemetry
+case rows are natural successful completions. Both original hosted independent
+coverage readers passed. A separate local Windows reread verifies 233 cases,
+19 shards and 252 original logs; Linux verifies 246 cases, 20 shards and 266 logs.
+Each platform also passes 15 fresh PLAY readbacks. The Linux local adapter changes
+only the derived expected `--path` to the fixed original hosted checkout path;
+it does not alter original receipts/logs or derive arbitrary expectations from
+untrusted commands. The [independent report](evidence/2026-11-01-ci-scheduling/independent-qualification-41261767969.json)
+retains reader receipts, hashes, exact inventory comparisons and adapter scope.
+Source/runtime
+identity is unchanged: the selected Windows native DLL is SHA-256
+`e66b9b04b546b09cb4feea204373faf12a7248abf1701da88fc6ecf87b666ecb`;
+the freshly rebuilt Linux native library is
+`496bf3df06be2c6bf47b2e5e4ea525ed4d969c3a34cf1a97d71e4668cdc250e6`,
+also matching the retained fresh-main bytes. Full source-input and Rapier identities
+remain in the original receipts.
+
+The [complete revised reduction](evidence/2026-11-01-ci-scheduling/revised-41261767969.json)
+records all job pages, artifact IDs/digests, step categories and actual case costs.
+Median preparation / regression-step / publication-and-teardown times are
+13 / 175 / 3 seconds on Windows and 23.5 / 152.5 / 2 seconds on Linux.
+Regression-step time includes import and independent readbacks. Actual case
+processes total 5,770.428 seconds. The whole-workflow critical path is reduced
+without claiming all elapsed runner time is useful CPU execution.
+
+## Why retain 19 Windows and 20 Linux shards?
+
+The completed run supports the initial conservative estimates and keeps the
+longest actual jobs at 246 seconds Windows and 230 seconds Linux. An offline
+16-shard alternative reassigns exactly the same cases with the same algorithm,
+using measured case/readback durations and median fixed per-job overhead with
+eight idealized slots. Index-order dispatch predicts only 17 seconds Windows
+and 31 seconds Linux improvement, about 4.25 runner-minutes total, while longest
+projected jobs increase from about 234/230 to 274/275 seconds. Four dispatch-order
+sensitivities and their assumptions are retained in the independent report.
+
+One sample does not establish a stable distribution, GitHub dispatch order is not
+guaranteed, and regrouping can change runtime. This small uncertain gain does not
+justify a second full launch or relaxing the reviewed useful-work target now.
+Retain the qualified 19/20 split, then revisit after comparable history accumulates.
+No stress campaign was launched and no failed run was replaced by a retry.
 
 ## Documentation change map
 

@@ -1,0 +1,32 @@
+{
+  "schema": "cybersand-native-qualification-v2",
+  "status": "passed",
+  "errors": [],
+  "source_sha": "9a01d782a6b93cb3878b12e50ee40ebfd502e31b",
+  "source_tree": "39b73e3bbbd33d4da983d194fd50bf3fa81b19f1",
+  "run_id": 41261769747,
+  "run_attempt": 1,
+  "expected_native_case_count": 164,
+  "expected_suites": [
+    "asan-ubsan",
+    "native-normal",
+    "soliding-asan",
+    "soliding-normal",
+    "tsan",
+    "worldgen"
+  ],
+  "received_suites": [
+    "asan-ubsan",
+    "native-normal",
+    "soliding-asan",
+    "soliding-normal",
+    "tsan",
+    "worldgen"
+  ],
+  "matrix_result": "success",
+  "policy_result": "success",
+  "original_aggregate_sha256": "f4ca0b23f0d33b2875d2efd738568420236e4987fe2dc35a01fcc821cfe025c7",
+  "artifact_id": 13065169838,
+  "artifact_name": "native-qualification-41261769747-1",
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/41261769747"
+}
