@@ -49,6 +49,8 @@ def authenticate(args):
     for path in sorted((ROOT / 'godot').rglob('*')):
         if path.is_file() and '.godot' not in path.parts and path.suffix in {'.gd', '.tscn', '.gdshader', '.tres'}:
             inputs[path.relative_to(ROOT).as_posix()] = digest(path, True)
+            if digest(args.project / path.relative_to(ROOT / 'godot'), True) != digest(path, True):
+                raise RuntimeError('Project source differs: ' + str(path))
     input_identity = hashlib.sha256(json.dumps(inputs, sort_keys=True).encode()).hexdigest()
     version = subprocess.check_output([str(args.godot), '--version'], text=True, timeout=30).strip()
     if version != '4.7.stable.official.5b4e0cb0f':
@@ -69,7 +71,7 @@ def capture(args, identity, case, arm, repeat, mode):
     env = os.environ.copy()
     env['CYBERSAND_SOURCE_REVISION'] = identity['source']
     env['CYBERSAND_INPUT_IDENTITY'] = identity['input_identity']
-    command = [str(args.godot), '--headless', '--path', str(ROOT / 'godot'),
+    command = [str(args.godot), '--headless', '--path', str(args.project),
                '--script', f'res://tests/test_gcr_{"async" if mode == "async" else "envelope"}.gd',
                '--', f'--protocol={PROTOCOL}', f'--case={case}', f'--candidate={arm}',
                f'--output={output}', f'--telemetry={args.telemetry}']
@@ -96,6 +98,7 @@ def capture(args, identity, case, arm, repeat, mode):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--godot', type=Path, default=Path('C:/Godot47/Godot_v4.7-stable_win64_console.exe'))
+    parser.add_argument('--project', type=Path, default=ROOT / 'godot')
     platform = 'windows' if os.name == 'nt' else 'linux'
     parser.add_argument('--native-manifest', type=Path, default=ROOT / ('godot/addons/cybersand_native/runtime-provenance.json' if platform == 'windows' else 'godot/addons/cybersand_native/runtime-provenance.linux.json'))
     parser.add_argument('--output', type=Path, default=ROOT / 'out/gcr001')
