@@ -15,6 +15,57 @@ def timings(values):
     return {name: percentile(values, q) for name, q in [('p50', .5), ('p95', .95), ('p99', .99), ('max', 1)]}
 
 
+def applied_wrench(row, candidate):
+    if row.get('held'):
+        return [0., 0., 0.]
+    if candidate.startswith('GCR'):
+        application = row.get('application')
+        if not isinstance(application, dict) or 'accepted' not in application:
+            return None
+        if not application['accepted']:
+            return [0., 0., 0.]
+        index = int(row.get('body', 1))-1
+        bodies = [body for body in application.get('bodies', []) if body.get('index') == index]
+        if len(bodies) != 1:
+            return None
+        body = bodies[0]
+        impulse = body.get('impulse')
+        if not isinstance(impulse, list) or len(impulse) != 2 or 'angular_impulse' not in body:
+            return None
+        return [impulse[0], impulse[1], body['angular_impulse']]
+    values = row.get('legacy_application')
+    return [values[1], values[2], 0.] if isinstance(values, list) and len(values) == 6 else None
+
+
+def observed_packet_total(rows, key):
+    packets = [row[key] for row in rows if len(row.get(key, [])) >= 9]
+    if not packets:
+        return None
+    return [sum(packet[1] for packet in packets), sum(packet[2] for packet in packets),
+            sum(packet[9] if len(packet) >= 13 else 0 for packet in packets)]
+
+
+def nonworsening(after, before, absolute, relative):
+    return None if after is None or before is None else after-before <= max(absolute, relative*before)
+
+
+def compare_pair(y1, gcr, repeat=0):
+    yentry, gentry = y1['peak_horizontal_entry'], gcr['peak_horizontal_entry']
+    improvement = (yentry-gentry)/yentry if yentry is not None and yentry > 0 and gentry is not None else None
+    pair = {'case': y1['case'], 'repeat': repeat, 'horizontal_improvement_fraction': improvement,
+            'horizontal_nonworsening': nonworsening(gentry, yentry, .5, .1),
+            'vertical_nonworsening': nonworsening(gcr['peak_vertical_entry'], y1['peak_vertical_entry'], .5, .1),
+            'pre_overlap_nonworsening': nonworsening(gcr['peak_pre_overlap'], y1['peak_pre_overlap'], 1, .1),
+            'post_overlap_nonworsening': nonworsening(gcr['peak_post_overlap'], y1['peak_post_overlap'], 1, .1)}
+    if y1['case'] in {'sand-horizontal', 'dust-horizontal', 'rust-horizontal'}:
+        pair['registered_25percent_horizontal_gate'] = None if improvement is None else improvement >= .25
+    before, after = y1['timing_us']['coupling']['p95'], gcr['timing_us']['coupling']['p95']
+    pair['timing_investigation_required'] = None if before is None or after is None else after > before*1.25 and after-before > 25
+    before, after = y1['work']['scanned']['p95'], gcr['work']['scanned']['p95']
+    pair['scanned_work_investigation_required'] = None if before is None or after is None else after > before*2
+    return pair
+
+
 def summarize(report):
     rows = report['rows']
     warm = [row for row in rows if row['tick'] >= 120]
@@ -23,14 +74,9 @@ def summarize(report):
         if row.get('hard_floor_contact'): break
         pre_hard.append(row)
     def peak(name, population=None):
-        return max((row.get(name, 0) for row in (rows if population is None else population)), default=0)
-    totals = [0., 0., 0.]
-    for row in rows:
-        result = row.get('result', [])
-        if len(result) >= 9:
-            totals[0] += result[1]
-            totals[1] += result[2]
-        if len(result) >= 13: totals[2] += result[9]
+        return max((row[name] for row in (rows if population is None else population) if row.get(name) is not None), default=None)
+    applied = [applied_wrench(row, report['candidate']) for row in rows]
+    actual_total = [sum(value[i] for value in applied) for i in range(3)] if applied and all(value is not None for value in applied) else None
     result = {'case': report['case']['id'], 'candidate': report['candidate'],
               'mode': report['mode'], 'complete': bool(report.get('ok')) and (int(report.get('completed_ticks',0)) >= 1800 if report['mode']=='desktop-asynchronous' else len(rows) == 1800*int(report['case'].get('body_count', 1))),
               'conserved': all(row.get('conserved', False) for row in rows),
@@ -41,7 +87,9 @@ def summarize(report):
               'first_unresolved_tick': next((row['tick'] for row in rows if len(row.get('result', [])) >= 9 and row['result'][7] > 0), None),
               'first_hard_floor_tick': next((row['tick'] for row in rows if row.get('hard_floor_contact')), None),
               'pre_hard_peak_abs_omega': max((abs(row['out'][5]) for row in pre_hard), default=0),
-              'total_applied_result_Jx_Jy_L': totals,
+              'total_observed_packet_Jx_Jy_L': observed_packet_total(rows, 'result'),
+              'total_observed_computed_Jx_Jy_L': observed_packet_total(rows, 'computed_result'),
+              'total_applied_Jx_Jy_L': actual_total,
               'late_peak_speed': max((math.hypot(row['out'][3], row['out'][4]) for row in rows if row['tick'] >= 1500), default=0),
               'late_peak_abs_omega': max((abs(row['out'][5]) for row in rows if row['tick'] >= 1500), default=0),
               'age_histogram': {str(age): sum(row.get('age') == age for row in rows) for age in range(10)},
@@ -56,9 +104,9 @@ def summarize(report):
                                                 'max': max(d[key] for d in support if isinstance(d, dict) and key in d)} for key in keys}
     gcr = [row['gcr'] for row in rows if 'gcr' in row]
     result['gcr_ledger_totals'] = {key: sum(d.get(key, 0) for d in gcr) for key in
-                                 ['normal_raw','normal_accepted','normal_rejected','tangent_raw','tangent_accepted','tangent_rejected','passive_torque','event_torque','torque','bins','updates']}
+                                 ['normal_raw','normal_accepted','normal_rejected','tangent_raw','tangent_accepted','tangent_rejected','passive_torque','event_torque','torque','bins','updates']} if gcr else None
     result['peak_abs_local_slip'] = max((abs(v) for row in rows for v in row.get('local_slip',[])), default=None)
-    result['passivity_rejections'] = sum(bool(d.get('passivity_rejected')) for d in gcr)
+    result['passivity_rejections'] = sum(bool(d.get('passivity_rejected')) for d in gcr) if gcr else None
     result['timing_us']['total_measured_components'] = timings([sum(row['times_us'])+row.get('packing_us',0) for row in warm if 'times_us' in row])
     for name in ['coupling_prepare_us','result_generation_us','diagnostic_copy_us','packing_us']:
         result['timing_us'][name] = timings([row[name] for row in warm if name in row])
@@ -91,20 +139,7 @@ def main():
     for (case, arm, repeat), y1 in grouped.items():
         if arm != 'Y1' or (case, 'GCR', repeat) not in grouped: continue
         gcr = grouped[(case, 'GCR', repeat)]
-        yentry, gentry = y1['peak_horizontal_entry'], gcr['peak_horizontal_entry']
-        pair = {'case': case, 'repeat': repeat, 'horizontal_improvement_fraction': (yentry-gentry)/yentry if yentry else None,
-                'horizontal_nonworsening': gentry-yentry <= max(.5, .1*yentry),
-                'vertical_nonworsening': gcr['peak_vertical_entry']-y1['peak_vertical_entry'] <= max(.5, .1*y1['peak_vertical_entry']),
-                'pre_overlap_nonworsening': gcr['peak_pre_overlap']-y1['peak_pre_overlap'] <= max(1, .1*y1['peak_pre_overlap']),
-                'post_overlap_nonworsening': gcr['peak_post_overlap']-y1['peak_post_overlap'] <= max(1, .1*y1['peak_post_overlap'])}
-        if case in {'sand-horizontal', 'dust-horizontal', 'rust-horizontal'}:
-            pair['registered_25percent_horizontal_gate'] = pair['horizontal_improvement_fraction'] is not None and pair['horizontal_improvement_fraction'] >= .25
-        before = y1['timing_us']['coupling']['p95']
-        after = gcr['timing_us']['coupling']['p95']
-        pair['timing_investigation_required'] = before is not None and after is not None and after > before*1.25 and after-before > 25
-        work_before, work_after = y1['work']['scanned']['p95'], gcr['work']['scanned']['p95']
-        pair['scanned_work_investigation_required'] = work_before is not None and work_after is not None and work_after > work_before*2
-        pairs.append(pair)
+        pairs.append(compare_pair(y1,gcr,repeat))
     summary = {'schema': 1, 'identity': campaign['identity'], 'capture_complete': campaign['complete'],
                'failures': failures, 'receipts': receipts, 'pairs': pairs,
                'disposition': 'MEASURED ONLY; owner feel, torque causality, category/state and platform gates require separate review',

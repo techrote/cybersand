@@ -96,15 +96,17 @@ func _run() -> void:
 		var pose: Array = fixture.pose(0)
 		var applications: PackedFloat64Array = fixture.bridge.diagnostic_applications
 		var row: Dictionary = {"tick":snapshot.tick_index,"rapier_tick":fixture.bridge.manual_step_count(),
-			"delivery":delivery,"held":delivery%6==0,"out":pose,"age":int(applications[0]),
+			"delivery":delivery,"held":delivery%6==0,"out":pose,"age":null if delivery%6==0 else int(applications[0]),
+			"legacy_application":[0,0,0,0,0,0] if delivery%6==0 else Array(applications.slice(0,6)),
 			"vertical_depth":maxf(0.0,float(pose[1])+absf(cos(pose[2]))*fixture.body_size.y/2+absf(sin(pose[2]))*fixture.body_size.x/2-Fixture.SURFACE),
 			"horizontal_depth":maxf(0.0,float(pose[0])+absf(cos(pose[2]))*fixture.body_size.x/2+absf(sin(pose[2]))*fixture.body_size.y/2-fixture.bank_x) if not is_nan(fixture.bank_x) else 0.0,
 			"hard_floor_contact":float(pose[1])+absf(cos(pose[2]))*fixture.body_size.y/2+absf(sin(pose[2]))*fixture.body_size.x/2 >= fixture.floor_y-.5}
 		if fixture.is_gcr():
-			row["application"] = fixture.json_value(fixture.bridge.gcr_application_diagnostics())
+			row["application"] = {"accepted":false,"refusal":"held","bodies":[]} if delivery%6==0 else fixture.json_value(fixture.bridge.gcr_application_diagnostics())
 			row["computed_result"] = Array(snapshot.gcr_body_results)
 			row["result"] = Array(fixture.application_results(snapshot.gcr_body_results))
 			row["ablation"] = fixture.ablation_receipt()
+		else: row["result"] = Array(snapshot.rigid_body_results)
 		rows.append(row)
 		worker.acknowledge_render_snapshot(snapshot.render_snapshot_serial)
 		if snapshot.tick_index >= int(spec.ticks): break

@@ -277,15 +277,15 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 			"times_us":[step_us,coupling_us,tick_us,apply_us],"work":[world.get_scanned_last_tick(),world.get_moves_last_tick(),world.get_active_blocks_last_tick()],
 			"coupling_prepare_us":coupling_prepare_us,"result_generation_us":result_generation_us,"diagnostic_copy_us":diagnostic_copy_us,"packing_us":packing_us,
 			"result":Array(results.slice(i*(CyberRigidBodyCoupling.GCR_RESULT_STRIDE if is_gcr() else 9),(i+1)*(CyberRigidBodyCoupling.GCR_RESULT_STRIDE if is_gcr() else 9))),"age":int(bridge.diagnostic_applications[i*6]),
+			"legacy_application":Array(bridge.diagnostic_applications.slice(i*6,(i+1)*6)),
 			"vertical_depth":maxf(0.0,float(outgoing[1])+absf(cos(outgoing[2]))*body_size.y/2+absf(sin(outgoing[2]))*body_size.x/2-SURFACE),
 			"horizontal_depth":maxf(0.0,float(outgoing[0])+absf(cos(outgoing[2]))*body_size.x/2+absf(sin(outgoing[2]))*body_size.y/2-bank_x) if not is_nan(bank_x) else 0.0,
 			"hard_floor_contact":float(outgoing[1])+absf(cos(outgoing[2]))*body_size.y/2+absf(sin(outgoing[2]))*body_size.x/2 >= floor_y-0.5}
 		if telemetry:
 			row["bearing_y"] = diagnostics[i][18]
 			row["support"] = diagnostics[i][20]
-			if is_gcr() and bridge.has_method("gcr_application_diagnostics"):
-				row["application"] = json_value(bridge.gcr_application_diagnostics())
 		if is_gcr():
+			row["application"] = json_value(bridge.gcr_application_diagnostics())
 			row["computed_result"] = Array(computed_results.slice(i*CyberRigidBodyCoupling.GCR_RESULT_STRIDE,(i+1)*CyberRigidBodyCoupling.GCR_RESULT_STRIDE))
 			row["ablation"] = ablation_receipt()
 		if is_gcr() and i < gcr.get("bodies",[]).size():
