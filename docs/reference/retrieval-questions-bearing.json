@@ -1,7 +1,7 @@
 {
   "version": 1,
   "reviewed": "2026-11-01",
-  "purpose": "Granular-bearing measurement retrieval; no response-law acceptance",
+  "purpose": "Granular-bearing measurement and candidate discrimination; no production response selection",
   "questions": [
     {
       "id": "BEARING-001",
@@ -12,11 +12,27 @@
       "facts": [
         "Fixed-pose zero-spin entry speed increases peak entry and overlap monotonically in the registered family.",
         "Raw support remains present during entry, global cap20 is unused and delivery age is zero.",
-        "Correction velocity zeroing is a distinct momentum term; no response-law intervention is selected."
+        "Correction velocity zeroing is a distinct momentum term; no production response law is selected."
       ],
       "sources": [
         "audits/2026-11-01-granular-bearing-pre-overlap.md",
         "../tools/experiments/granular_bearing_analysis.py"
+      ]
+    },
+    {
+      "id": "BEARING-002",
+      "query": "Do full capacity braking Y1 and two pixel earlier admission A2 solve saturated body Sand overlap, and what should be tested next?",
+      "canonical": [
+        "operations/granular-bearing-pre-overlap-investigation.md"
+      ],
+      "facts": [
+        "Y1 meets the registered causal efficacy and control gates; A2 misses speed30 overlap reduction and is partial.",
+        "Y1 speed90 retains slow correction-associated overlapping withdrawal; a peak benefit is not production acceptance.",
+        "Ordinary B0 remains default. A copied-value handoff oracle and separately registered finite longer B0/Y1 observation are proposed; no combination is authorized."
+      ],
+      "sources": [
+        "audits/2026-11-01-granular-bearing-candidate-discrimination.md",
+        "operations/granular-bearing-post-arrest-handoff-proposal.md"
       ]
     }
   ]

@@ -1,0 +1,205 @@
+{
+  "schema": 1,
+  "registered_date": "2026-11-01",
+  "experiment": "GBD-2026-11-01",
+  "parent_pr": 339,
+  "parent_head": "8b4e53d76881f15ad400a3f4137c69c28daf0571",
+  "parent_tree": "3b774a68ec5f4a51ac25207e7fbcd5b7d5be8f99",
+  "main_observed_only": "15b3a4012b9d5998e808fb371792dd7a71398507",
+  "branch": "codex/granular-bearing-candidates-20261101",
+  "candidate_selection": {
+    "values": [
+      "B0",
+      "Y1",
+      "A2"
+    ],
+    "default": "B0",
+    "activation": "fresh diagnostic_reset only; explicit bearing_experiment=GBD-2026-11-01 plus bearing_candidate; validate before swap; no mutable setter/combined flags; normal create/reset B0",
+    "immutable_run": true
+  },
+  "candidates": {
+    "B0": "Exact339 response, geometry, schedule, yield coefficient0.18",
+    "Y1": "Only coefficient0.18->1.0; unchanged admission/support, mass/arrest/gravity/sample2/global20/correction/ejection/age",
+    "A2": {
+      "coefficient": 0.18,
+      "lookahead": "clamp(max(current input vy,0)*1/60,0,2)",
+      "phase": "Post-RapierT accepted pose, post-ejection/pre-cellular-tick terrain; one packet applied beforeRapierT+1. No new query after cellular tick. Bootstrap inherited, no T-1 packet.",
+      "geometry": "For exposed downward endpoint-raster cell(x,y), compute continuous lower OBB intersection h at x+0.5. Current support-query phase q=(y+1)+frac(h+0.5), anchored to the authoritative current below-neighbour. This equals the vertically translated raster-support sampling phase away from floating-point boundary ties. Enumerate unique cells floor(q+d) for d in[0,L], at0 and exact integer-grid crossings, in increasing distance, including terminal crossing if exactlyL. At most3 central cells/2extra per boundary. The existing half-cell raster support convention is retained; L is additional downward translation, no ceil overshoot.",
+      "exclusions": "Out-of-world, hard, foreign or own mask encountered terminates ray. Water/Empty/nonqualifying/unstable/paused cells never qualify but may be traversed to deeper qualifying stored material withinL; each queried point retains existing stable/fresh/paused predicate and stored-neighbour policy. Central hard/foreign nevercounted.",
+      "admission": "Earliest qualifying cell only; count each original boundary once; one selected supportset and one unchanged B0 law evaluation. Zero/rising delegates ordinarycurrent semantics. Record current count, lookahead-only count, every sampled coordinate/crossing/reason and correction from predicted-only support.",
+      "no_second_owner": true
+    }
+  },
+  "fixture": {
+    "bank": [
+      96,
+      160,
+      32,
+      48
+    ],
+    "body": [
+      8,
+      14
+    ],
+    "mass": 1,
+    "rotation": 0.08,
+    "angular_velocity": 0,
+    "lower_oriented_clearance": 2,
+    "dt": 0.016666666666666666,
+    "workers": 1,
+    "ticks": 600,
+    "gravity_scale": 0.094,
+    "linear_damp": 0.15,
+    "angular_damp": 0.35,
+    "ccd": "cast shape",
+    "velocity_set": "initialization once",
+    "primary_speeds": [
+      30,
+      90
+    ]
+  },
+  "outcomes": {
+    "primary": [
+      "maximum initial-surface entry",
+      "maximum pre-ejection endpoint overlap"
+    ],
+    "other": [
+      "maximum post-ejection overlap",
+      "first overlap tick/vy/entry",
+      "first no_target tick/vy/entry",
+      "descent vs rising/stationary no_target separately",
+      "support-to-first nonpositive downward velocity time/distance",
+      "cumulative accepted netY and nominal bearing in inclusive339 entrywindow",
+      "selected limiter everyframe/current/admittedsupport",
+      "peakpost-arrest upward speed",
+      "firstcorrection tick/request/applied",
+      "currentcontour",
+      "candidate reasons and material/quantity conservation"
+    ],
+    "entrywindow": "first selected raw support>0 through first subsequent post-step vy<=0 inclusive, else599. Rawcurrent onset separately. Counts0based.",
+    "stopping": "Common-initialization cumulative positive Rapier-step COM descent through first post-application vy<=0 at or after first SELECTED support. Excludes correction displacement; correction distance separate. Censored at600 never qualifies shorter."
+  },
+  "thresholds": {
+    "required_both_speeds": {
+      "pre_overlap_reduction": 0.25,
+      "reference_entry_reduction": 0.2
+    },
+    "corroboration_any_at_each_speed": {
+      "descent_no_target_reduction": 0.25,
+      "first_no_target_delay_samples": 1,
+      "common_start_stopping_distance_reduction_fraction": 0.2,
+      "common_start_stopping_distance_reduction_absolute_px": 0.5
+    },
+    "precision": "Unrounded exact stored numbers; absentfirstfailure onlycomplete600 counts prevention/delay; no reduced denominator/raw eventtotal substitute.",
+    "exact_H_boolean": "safety_pass AND for_each_speed(30,90): overlap_reduction>=0.25 AND entry_reduction>=0.20 AND (descent_no_target_reduction>=0.25 OR first_no_target_delay>=1 OR (common_start_stopping_fraction>=0.20 AND common_start_stopping_absolute_px>=0.5))"
+  },
+  "controls": {
+    "speed0": {
+      "same339_geometry": true,
+      "rebound_reject": "candidate peak post-arrest upward magnitude>B0*1.25 AND difference>2px/s",
+      "settled_window": [
+        300,
+        599
+      ],
+      "settled": "center span<=1px; absolute netdrift<=0.5px; p95|vy|<=4,max|vy|<=8; last300 posttick overlap count/sum/max mustnot exceed B0. Report all deltas.",
+      "hover": "Reject30 consecutive samples with rawcurrent0, selectedlookahead>0, all admitted support cells have physical polygon-to-cell-top gap>0.5px and |vy|<=1. Gap computed at admitted x+0.5 against currentOBB lower edge, not topmostloose contour.",
+      "oscillation": "Reject>=3 full positional cycles of amplitude>1px inlast300, absentinB0; span>1 alreadyfails settling.",
+      "artificial_lift": "Reject3 consecutive already-rising post-step samples gaining upward speed>0.05px/s while rawcurrent0, absent inB0. Ordinary braking whilevy>0 is not lift.",
+      "retirement": "Count predicted-only bearing/correction and actual/raw-zero frames; no bearing with selectedsupport0; correction absent with selectedsupport0. No age/fencing violations."
+    },
+    "excavation": {
+      "base": "speed0",
+      "edit_tick": 300,
+      "edit_phase": "before Rapierstep",
+      "erase": [
+        96,
+        1,
+        32,
+        207
+      ],
+      "route": "diagnostic_fill_rect EMPTY authoritative edit; preserve walls; exact removed material and Water quantity ledger",
+      "precondition": "ticks240..299 span<=1px and some raw/admitted support inlast60",
+      "release": "first postedit selected/current support0, bearing0 and requested correction0; must remain0 while empty. Beforehard contact: first20step freeflight implicitgravity/damping residual<=1e-4px/s; positivevy and COM descent>=1px bytick319."
+    },
+    "hard": {
+      "base": "speed90",
+      "replace_bank": "Wall",
+      "require": "zero selected/current granular support/bearing/correction; all600 motion, inputs, results, applied response and cellular hashes EXACTLY equalB0; no after-data tolerances; no extrahard owner"
+    },
+    "water": {
+      "base": "speed90",
+      "replace_bank": "Water",
+      "require": "zero granular response; all600 motion, inputs, results, applied response and physical/quantity hashes EXACTLY equalB0; exact authoritative stored mass before/afterejection/aftertick includingmasks; Water cellcount maychange; Walls/othermaterial counts invariant"
+    },
+    "neutrality": "B0 on/off exact relevant339 speed0/30/90 physical trajectories; each candidate on/off exact trajectories with probes stillmeasured in compact counters. No history evidence substituted."
+  },
+  "bounds": {
+    "lookahead_px": 2,
+    "central_queries_per_boundary": 3,
+    "extra_queries_per_boundary": 2,
+    "body_probe_trace": 256,
+    "packed_bodies": 64,
+    "contacts": 16,
+    "steps": 600,
+    "pack_per_step": 1,
+    "response_per_sample": 1,
+    "native_stream_pending": 256,
+    "native_stream_segment_total": 8192,
+    "capture_segments": 10,
+    "segment_ticks": 60,
+    "total_event_ceiling": 81920,
+    "capsules_per_replay_part": 500,
+    "guards_seconds": {
+      "build": 300,
+      "native": 300,
+      "Godot_internal": 120,
+      "Godot_outer": 150,
+      "Python_collection": 180
+    }
+  },
+  "capture": "Same native stream reset/drain every60ticks, no World reset. Store native ordinal + segment + global ordinal so original capsules recoverable. Aggregate all ten native counter/fence receipts. Zero loss required. Reuse original production hash and topology identities; full capsules in <=500-event parts, no first-N retention. Replay each part exactly native/fallback, zero mutation. Empty corpus valid for zero-contact controls.",
+  "work": "Record actual World predicate calls, additionalA2 calls, admittedboundary count, perbody/sample, maxray crossing offset and nominalL; couplingprepare wall usec p50/p95/max all600 and bearing-active subset (descriptive host timings).",
+  "execution_order": [
+    "compile common frozen source",
+    "candidate/unit/neutrality qualification without intervention efficacy runs",
+    "B0 speed30",
+    "Y1 speed30",
+    "B0 speed90",
+    "Y1 speed90",
+    "B0 speed0/excavation/hard/Water comparators then Y1 controls",
+    "A2 speed30 reusing exactsameB0",
+    "A2 speed90",
+    "A2 speed0/excavation/hard/Water controls",
+    "on/off repetitions and finalexacthead evidence",
+    "independent raw-data reduction/review"
+  ],
+  "disposition": {
+    "H": "Both primary speed gates and each corroboration plus all safety; no unqualified data.",
+    "P": "A prespecified material outcome at a speed plus source/channel mechanism verified, but fullgate/generalization incomplete without severe safetyfail. Material=25%overlap OR20%entry ORregistered stoppinggain OR1sample failure delay.",
+    "N": "No material effect or unacceptable safety/artificialsupport. Anyseverecontrolfail overrides efficacy.",
+    "mapping": {
+      "H/H": "Y1 HIGH-VALUE / A2 HIGH-VALUE — separate combination experiment warranted",
+      "H/N": "Y1 HIGH-VALUE / A2 NO-GO",
+      "N/H": "A2 HIGH-VALUE / Y1 NO-GO",
+      "N/N": "both NO-GO",
+      "any P": "partial/mechanistic result only"
+    },
+    "safety_severity": "Any registered rebound/hover/lift/settling/oscillation/persistent-overlap/excavation/hard/Water safety failure is unacceptable and N. P requires all safety green, a verified material/mechanistic effect, but incomplete two-speed efficacy. No after-data nonsevere exception."
+  },
+  "stop_conditions": [
+    "replay/drift/loss/identity/conservation failure blocks interpretation untilapparatusfixed; preserveoriginalfailures",
+    "No parameter changes after results; noY1+A2, search widening, chain extension, capincrease or productiondefault",
+    "Severecontrolfail makes candidateNO-GO; retain primary/othercontroldata asnegativeevidence, no rescue",
+    "No rebase/merge/main/concurrent commits; newdraftPR stacked339, stop afterreport"
+  ],
+  "qualification": [
+    "full native Windows and Linux",
+    "source-matched diagnostic extension",
+    "newcandidateunit/ray/malformed/mask/stability/exclusion tests",
+    "REM002/REM003/async/stale/duplicate",
+    "originalreplay/A2 streambounds/supportinspection",
+    "all newcase replayparts/onoff/conservation",
+    "independentformula/singleowner/control/threshold/custody review; AI nothumanapproval"
+  ],
+  "pre_result_geometry_review": "Independent review rejected floor(L)-only extra rows because it erases fractional-pose crossings. This phase-aware translated-raster convention is frozen before intervention results; no alternative rounding scan afterdata."
+}

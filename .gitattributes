@@ -19,9 +19,14 @@
 # Retained raw campaign reports preserve their original target-host bytes.
 docs/audits/play-auto002-2026-10-28/windows-campaign.json -text whitespace=cr-at-eol
 docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
+docs/audits/granular-bearing-candidates-2026-11-01/qualification-source39d.json -text whitespace=cr-at-eol
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
+
+# Complete machine evidence stays reviewable separately from experiment source.
+docs/audits/granular-bearing-candidates-2026-11-01/campaign/** linguist-generated=true
+docs/audits/granular-bearing-candidates-2026-11-01/frozen-summaries/** linguist-generated=true
 
 # Runtime libraries are required for drag-and-run checkouts but are not useful
 # as ordinary Git deltas. Git LFS keeps them versioned without bloating future

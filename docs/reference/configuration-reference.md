@@ -1263,3 +1263,7 @@ before cross-stratum union deduplication). Empty strata are reported. See the
 ## Granular bearing measurement capacity
 
 The [registered measurement apparatus](../operations/granular-bearing-pre-overlap-investigation.md#height-arm-measurement-checkpoint) adds diagnostic fresh-reset option `bearing_trace` (default false), body1 only,256 support probes per prepare with explicit drops. Existing event bounds remain256 pending/8192 lifetime. Main-thread Rapier reporting is16 contacts; a full buffer is potentially truncated. Detailed bridge output is bounded by64 accepted body records. The finite fixture records600 frames, with120-second internal and150-second outer guards. No bearing gains/defaults are changed.
+
+## Diagnostic candidate bounds
+
+The [registered candidate apparatus](../operations/granular-bearing-pre-overlap-investigation.md#registered-candidate-discrimination---2026-11-01) uses fixed1/60 and downward lookahead0..2px; each existing boundary makes at most3 central queries/2 extra, contributes once and retains at most256 detailed body1 rays. Work cannot grow with velocity beyond2px. The study drains unchanged256-pending/8192-lifetime streams in ten60-tick diagnostic segments; no World reset occurs. Global81920-event custody and500-capsule replay parts are fixed, with zero loss required. Experimental mode is not a gameplay setting or saved policy.

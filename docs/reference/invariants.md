@@ -445,3 +445,7 @@ quality judgments remain separately labelled evidence.
 ## Bearing measurement invariants
 
 The [causal measurement protocol](../operations/granular-bearing-pre-overlap-investigation.md) requires exactly one packed sample per step, stored-material conservation including masks, zero observer drops and exact diagnostic on/off physical trajectories. Post-reconcile raw support is separate from earlier overlap/contour geometry. Correction velocity assignment is separate from applied net impulse. Age-zero synchronous observations do not qualify asynchronous cadence or broader granular acceptance.
+
+## Candidate discrimination invariants
+
+[B0/Y1/A2 registration](../operations/granular-bearing-pre-overlap-investigation.md#registered-candidate-discrimination---2026-11-01) forbids combined interventions, mutable per-run selection, extra response owners, search/cap changes and production selection. A2's earliest qualifying point contributes at most once; hard/foreign/out-of-world rays stop and every actual granular predicate preserves stable/fresh/paused rules. Predicted-only correction is observable and subject to hover/release controls, never silently suppressed.

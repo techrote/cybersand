@@ -535,3 +535,7 @@ combined/platform/full-host gaps separate.
 ## Bearing measurement observations
 
 The opt-in [bearing fixture](../operations/granular-bearing-pre-overlap-investigation.md) reads copied support probes only on the serialized native owner. Its main-thread owner copies Rapier values immediately; live server states/RIDs never cross to native workers. Detailed bridge arrays are deep-copied before the next application clears their fixed body-bound contents. No extra packing, mask publication, material owner or render lifetime is introduced.
+
+## Candidate owner boundary
+
+The [candidate study](../operations/granular-bearing-pre-overlap-investigation.md#registered-candidate-discrimination---2026-11-01) predicts support from the accepted post-RapierT values on the exclusive native owner. It returns the same single response applied before T+1; it does not query newer terrain after the cellular tick. Fixed POD ray/counter storage is diagnostic; native pool workers call no Godot/Rapier APIs. Stream segmentation resets copied capture metadata only, preserving live World/body identity.

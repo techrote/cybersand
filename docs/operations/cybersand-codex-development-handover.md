@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1531,3 +1531,7 @@ PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) wit
 ## Granular bearing measurement successor - 2026-11-01
 
 The owner-authorized [fixed-law measurement](../audits/2026-11-01-granular-bearing-pre-overlap.md) is isolated on A2 head61f0398e, without main/concurrent integration. Six arms separate spinning height effects from fixed-pose zero-spin initial velocity, qualify observer neutrality and retain failed instrumentation. The [canonical disposition and next candidates](granular-bearing-pre-overlap-investigation.md#measured-disposition-and-next-discriminating-intervention) separate finite braking/admission timing from unsupported support-collapse/global-cap/stale-delivery explanations. No bearing change, gameplay acceptance or merge follows.
+
+## Bearing candidate discrimination handoff - 2026-11-01
+
+The [completed candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) owns B0/Y1/A2 source/runtime custody, full replay corpus, controls, negative evidence and the frozen-gate result. All runtime inputs were frozen before intervention; post-acquisition prerequisite enforcement preserves original metric ASTs/protocol bytes. Ordinary/default mode remains B0, including every successful ordinary/prepared World replacement. The [post-arrest proposal](granular-bearing-post-arrest-handoff-proposal.md) is the next finite REM-004 question, not a production change or authorization to continue beyond the current draft PR.

@@ -3,6 +3,7 @@
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/world.hpp"
 #include "cybersand/prepared_world.hpp"
+#include "cybersand/granular_bearing_candidate.hpp"
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
@@ -144,6 +145,7 @@ public:
     [[nodiscard]] Array diagnostic_body_metrics() const;
     // Opt-in single-body measurement fixture; fixed probe capacity, copied values.
     [[nodiscard]] Dictionary diagnostic_bearing_state() const;
+    [[nodiscard]] Dictionary diagnostic_bearing_candidate() const;
     // Explicit opt-in bounded investigation, called only by the exclusive owner.
     bool diagnostic_ejection_capture(std::int64_t maximum_failed, std::int64_t maximum_success);
     [[nodiscard]] Dictionary diagnostic_ejection_corpus() const;
@@ -204,8 +206,17 @@ private:
         bool previous_valid = false;
         double downward_travel = 0;
         std::array<BearingProbe, 256> probes{};
+        std::array<cybersand::bearing_experiment::Ray, 256> admissions{};
     };
     std::unique_ptr<BearingTrace> bearing_trace_;
+    cybersand::bearing_experiment::Mode bearing_candidate_ = cybersand::bearing_experiment::Mode::B0;
+    struct CandidateObservation {
+        std::uint32_t boundaries=0, current_support=0, selected_support=0;
+        std::uint32_t cell_tests=0, predicate_queries=0, extra_cells=0, predicted_only=0, invalid_geometry=0;
+        std::uint32_t maximum_ray_cells=0;
+        double lookahead=0, maximum_hit_distance=0;
+    };
+    std::array<CandidateObservation, cybersand::World::kMaximumTransientBodies+1U> candidate_observations_{};
     bool diagnostic_fixture_ = false;
     std::int64_t ejection_capture_failed_cap_ = 0, ejection_capture_success_cap_ = 0;
     std::int64_t ejection_capture_attempts_ = 0, ejection_capture_duplicates_ = 0;

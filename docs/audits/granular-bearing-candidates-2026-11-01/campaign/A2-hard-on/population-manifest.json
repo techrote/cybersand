@@ -1,0 +1,1 @@
+{"schema":1,"candidate":"A2","parts":[],"events":[],"event_multiplicities":{},"attempts":0,"no_target":0,"success":0,"candidate_reasons":{},"stream_drops":0,"reconstruction":"Each capsule retains native ordinal/segment; global ordinal is diagnostic custody. Restore native ordinal and remove added provenance/hash keys to recover original values."}

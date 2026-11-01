@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "attempts": [
+    {
+      "artifact": "candidate-unit-first-failed.log",
+      "sha256": "9c82d02de71e9b914ade96e27b4b8300b6fa861d99341b22ba57d158e2b31636",
+      "output": "translated raster differential mismatch\n",
+      "scope": "pre-result unit/qualification attempts; original local file retained"
+    },
+    {
+      "artifact": "candidate-unit.log",
+      "sha256": "9c82d02de71e9b914ade96e27b4b8300b6fa861d99341b22ba57d158e2b31636",
+      "output": "translated raster differential mismatch\n",
+      "scope": "pre-result unit/qualification attempts; original local file retained"
+    },
+    {
+      "artifact": "candidate-unit-expanded.log",
+      "sha256": "67ce8ed18b6365c02f7155ab3a59c824877c1b752a6838284ea11c2abe605ae4",
+      "output": "phase anchor/work bound\n",
+      "scope": "pre-result unit/qualification attempts; original local file retained"
+    },
+    {
+      "artifact": "candidate-unit-native-rounded.log",
+      "sha256": "b86bf9ade3ffec3451c278dc61a5be006dd1480b67dd0e9f2b78357104eed601",
+      "output": "32548 candidate checks passed; translated-raster comparisons=7910; non-axis float-boundary cases separately labelled=285\noriginal-boundary rays whose future raster column vanishes=30\n",
+      "scope": "pre-result unit/qualification attempts; original local file retained"
+    },
+    {
+      "artifact": "candidate-unit-tie-corrected.log",
+      "sha256": "abd07d6598574d314cf1e1143c3f3f3473ddf5b4c950662d9a34b592de2603a0",
+      "output": "8156 candidate checks passed; translated-raster comparisons=1976; non-axis float-boundary cases separately labelled=70\noriginal-boundary rays whose future raster column vanishes=12\n",
+      "scope": "pre-result unit/qualification attempts; original local file retained"
+    },
+    {
+      "artifact": "candidate-unit-corrected.log",
+      "sha256": "f2ed869ca4def950fbebf44387d0c28579ad8a1ce4d34a642459b136a813feac",
+      "output": "angle=1.5708 cy=150.5 x=107 d=0.125 h=154.5 below=155 q=156 actual=156 expected=155\ntranslated raster differential mismatch\n",
+      "scope": "pre-result unit/qualification attempts; original local file retained"
+    },
+    {
+      "artifact": "linux-native-make-location-failed.txt",
+      "sha256": "a0de3614d4d4cea58905a2933484bf0e5dd671c03fa78218e4a4860a403ea508",
+      "output": "timeout: failed to run command \u2018/tmp/cybersand-gbd-make/package/usr/bin/make\u2019: No such file or directory\n",
+      "scope": "pre-result unit/qualification attempts; original local file retained"
+    },
+    {
+      "artifact": "qualification/linux-native.txt",
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "sha256": "6a3959d9db7da86037dce41f82985a8cef84fce463d3091c4d58dc241c7cc938",
+      "exit": 124,
+      "guard_seconds": 300,
+      "profile": "Linux g++ debug/O0 full164-case core suite",
+      "reported_passes_before_timeout": 113,
+      "output": "[pass] player material field payloads and signed seams\n[pass] player material field blocking and invalid nonmutation\n[pass] player material field budgets and source snapshot\n[pass] player material field storage refusal\n[pass] player material field distinct spread and squeeze\n[pass] player material field native quantity and worker parity\n[pass] persistent material contacts survive sleep\n[pass] Ice contact boundaries and worker parity\n[pass] inert material contacts still sleep\n[pass] material deadlines pause and unmask\n[pass] Ice neighbor success keeps pending contact\n[pass] material deadlines follow contact removal and reset\n[pass] material deadlines with discovery observer\n[pass] INT-000 sparse schema shadow equivalence\n[pass] flow resting packing, films, barriers and signed seams\n[pass] flow conserved state, temperature, workers and exclusion\n[pass] powder pairs and void-driven rearrangement\n[pass] Mercury lanes, sleeping wakes, seams and worker parity\n[pass] granular sampled support policy\n[pass] physics diagnostic observer and worker parity\n[pass] physics diagnostic isolated controls\n[pass] physics masked source characterisation\n[pass] ACT-004 articulated body identity capacity\n[pass] negative coordinates\n[pass] scheduler geometry\n[pass] sand fall\n[pass] cross chunk\n[pass] cross scheduler core\n[pass] activity sleep and wake\n[pass] serial/phased behavioral parity\n[pass] density swap\n[info] water settled after 209 ticks\n[pass] conserved water\n[pass] Water lateral speed\n[pass] level water surface\n[pass] water single/multiworker parity\n[pass] water storage boundary\n[pass] runtime Water experiment policy\n[pass] odd-lattice Water boundaries and ledgers\n[pass] Water experiment validation and coherence\n[pass] Water coherence gravity and exhaustive merge\n[pass] Water experiment worker parity\n[pass] default Water experiment state-hash correspondence\n[pass] optional temperature movement\n[pass] serialized relocation preserves payload\n[pass] preallocated hot path\n[pass] chunk capacity\n[pass] smoke\n[pass] smoke density displacement\n[pass] smoke lifecycle and fire exclusion\n[pass] fire and extinguishing\n[pass] hot material reactions\n[pass] acid and stone\n[pass] water/oil density\n[pass] cloner\n[pass] deferred explosion\n[pass] explosion worker parity\n[pass] growth and seed\n[pass] mite and rocket\n[pass] complete material worker parity\n[pass] determinism\n[pass] single/multiworker determinism\n[pass] sleeping\n[pass] issue #1 failed tick stop/reset\n[pass] issue #1 late failure and publication\n[pass] issue #1 C API failure/recovery\n[pass] issue #2 interest resume boundaries\n[pass] issue #2 sleeping region transitions\n[pass] issue #2 conservation and worker determinism\n[pass] issues #1/#2 failed re-entry and recovery\n[pass] dirty rectangles\n[pass] immutable render snapshots\n[pass] concurrent render leases\n[pass] C API and RGBA\n[pass] extended material families\n[pass] Sandspiel material catalog\n[pass] themed static material catalog\n[pass] themed combustible kernels\n[pass] building material catalog\n[pass] building combustibles ignite\n[pass] building pair reactions execute\n[pass] building inert controls stay inert\n[pass] building CYSD1 constructor and snapshot round trip\n[pass] building transport schema bounds\n[pass] building contact boundaries and worker parity\n[pass] LCB-001 liquid policy SHA-256 known answers\n[pass] LCB-001 liquid policy identity matches source\n[pass] LCB-001 liquid policy catalogue matches descriptors\n[pass] LCB-001 liquid policy wire vectors\n[pass] LCB-001 liquid policy session transcript\n[pass] LCB-001 liquid policy running build admits defaults and qualified candidates\n[pass] LCB-001 liquid policy World construction and refusal\n[pass] LCB-001 liquid policy default behavior and workers\n[pass] LCB-001 liquid policy C API transaction\nIN worker observation: damping=0/16 configured=4 observed=4\nIN worker observation: damping=1/16 configured=4 observed=4\nIN worker observation: damping=16/16 configured=4 observed=4\n[pass] LCB-005 inertial boundary workers\n[pass] LCB-005 inertial reset products\nIN storage 1024: slot=6 align=2 bytes=6291456 owners=2048 worker_ledgers=622592 world=289 total_components=6916385 serialized=12603966 capture_restore_seconds=1.21564\n[pass] LCB-005 inertial storage capture\n[pass] LCB-005 inertial residual motion\n[pass] LCB-005 inertial admission\n[pass] Water IN admission and normalization\n[pass] Water IN coherence and resting contacts\nWater IN carry x=55 y=40 bits=3 workers=1 enabled=1 no_motion=0 pickups=2\nWater IN carry x=55 y=40 bits=3 workers=1 enabled=0 no_motion=0 pickups=0\nWater IN carry x=55 y=40 bits=3 workers=1 enabled=1 no_motion=1 pickups=0\nWater IN carry x=10 y=-24 bits=3 workers=1 enabled=1 no_motion=0 pickups=2\nWater IN carry x=10 y=-24 bits=3 workers=1 enabled=0 no_motion=0 pickups=0\nWater IN carry x=10 y=-24 bits=3 workers=1 enabled=1 no_motion=1 pickups=0\nWater IN carry x=55 y=40 bits=8 workers=1 enabled=1 no_motion=0 pickups=2\nWater IN carry x=55 y=40 bits=8 workers=1 enabled=0 no_motion=0 pickups=0\nWater IN carry x=55 y=40 bits=8 workers=1 enabled=1 no_motion=1 pickups=0\nWater IN carry x=10 y=-24 bits=8 workers=1 enabled=1 no_motion=0 pickups=2\nWater IN carry x=10 y=-24 bits=8 workers=1 enabled=0 no_motion=0 pickups=0\nWater IN carry x=10 y=-24 bits=8 workers=1 enabled=1 no_motion=1 pickups=0\nWater IN carry x=55 y=40 bits=3 workers=4 enabled=1 no_motion=0 pickups=2\nWater IN carry x=55 y=40 bits=3 workers=4 enabled=0 no_motion=0 pickups=0\nWater IN carry x=55 y=40 bits=3 workers=4 enabled=1 no_motion=1 pickups=0\nWater IN carry x=10 y=-24 bits=3 workers=4 enabled=1 no_motion=0 pickups=2\nWater IN carry x=10 y=-24 bits=3 workers=4 enabled=0 no_motion=0 pickups=0\nWater IN carry x=10 y=-24 bits=3 workers=4 enabled=1 no_motion=1 pickups=0\nWater IN carry x=55 y=40 bits=8 workers=4 enabled=1 no_motion=0 pickups=2\nWater IN carry x=55 y=40 bits=8 workers=4 enabled=0 no_motion=0 pickups=0\nWater IN carry x=55 y=40 bits=8 workers=4 enabled=1 no_motion=1 pickups=0\nWater IN carry x=10 y=-24 bits=8 workers=4 enabled=1 no_motion=0 pickups=2\nWater IN carry x=10 y=-24 bits=8 workers=4 enabled=0 no_motion=0 pickups=0\nWater IN carry x=10 y=-24 bits=8 workers=4 enabled=1 no_motion=1 pickups=0\n[pass] Water IN actual carrier and complete footprint\n[pass] Water IN real workers and continuation\nactivity:256 targets/job without discovery passed\nactivity:optional discovery overflow independent passed\nactivity:same-phase shared middle block passed\nactivity:unaligned negative seams and serial passed\nactivity:Current deadlines and diagnostics passed\n[pass] worker activity publication and observer independence\n[pass] Water IN mandatory material hooks and lifecycle\n[pass] Water IN independent arithmetic examples\n[pass] Water IN cadence and powder exchange control\nWater IN storage side=128 slot=6 alignment=2 slot_capacity=16384 array_bytes=98304 owner_bytes=32 job_ledger_bytes=622592 world_members=289 total_components=721217 simultaneous_world_components=1442434 legacy_resident_bytes=131328\nWater IN storage side=1024 slot=6 alignment=2 slot_capacity=1048576 array_bytes=6291456 owner_bytes=2048 job_ledger_bytes=622592 world_members=289 total_components=6916385 simultaneous_world_components=13832770 legacy_resident_bytes=8404992\nWater IN storage side=2048 slot=6 alignment=2 slot_capacity=4194304 array_bytes=25165824 owner_bytes=8192 job_ledger_bytes=622592 world_members=289 total_components=25796897 simultaneous_world_components=51593794 legacy_resident_bytes=33619968\n[pass] Water IN storage pause and capacity\nIN damping tail: numerator=0/16 tick=30 x=65 vx=24 loss=120\nIN damping tail: numerator=1/16 tick=30 x=50 vx=15 loss=129\nIN damping tail: numerator=8/16 tick=30 x=21 vx=0 loss=56\nIN damping tail: numerator=16/16 tick=30 x=20 vx=0 loss=40\n[pass] LCB-005 inertial damping parameters\n[pass] LCB-005 inertial comparison projections\n[pass] LCB-005 inertial contract examples\n[pass] LCB-005 inertial ledgers rest parity\n[pass] LCB-005 inertial no tunnelling\n[pass] LCB-005 inertial lifecycle\n",
+      "disposition": "execution gap preserved; separately rebuilt optimized suite passes; not an assertion failure"
+    },
+    {
+      "artifact": "PowerShell local final-driver edit command",
+      "effect": "Parser rejected quoting before command execution; no code/data mutation. Applied as file patch instead.",
+      "scientific_run": false
+    },
+    {
+      "kind": "post-acquisition documentation encoding harness failure",
+      "effect": "Default cp1252 read recoded UTF8 historical prose; originals restored byte-for-byte from frozen39d, then regenerated with explicitUTF8; no scientific data changed",
+      "exception": "UnicodeDecodeError: charmap codec cannot decode byte0x9d",
+      "preserved_local_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\failed-documentation-encoding",
+      "failed_file_sha256": {
+        "docs\\README.md": "e320068527508aecc7e233c928c5ff379789d4dc955cb2e0784426fd9fca2c43",
+        "docs\\architecture\\rigid-body-and-cellular-coupling.md": "5865a472051f52e72ed466a50ebda8a4206792d20575a2c5f68d3434f6e31d35",
+        "docs\\audits\\2026-11-01-granular-bearing-candidate-discrimination.md": "818fd4c19a2ddccfd67361fdc6106549f8736e5df89646d03da9a740dd4fe426",
+        "docs\\operations\\cybersand-codex-development-handover.md": "dde32e2b6639a8937f8f59bdb5e7ff431d1ca57c54def5fd6a8fd5bcbea56dd9",
+        "docs\\operations\\granular-bearing-pre-overlap-investigation.md": "62e455e2e159b66ee695ece89db7d75af3171ffc7bb3c0eec95a41d1e887be07",
+        "docs\\operations\\local-build-and-validation.md": "1216445b2c00309ce556f985b9fa1e0d675addd68a44583d50eb8867de90b5fe",
+        "docs\\reference\\interfaces-and-message-contracts.md": "7fd7b8171b9defbcb42429a546b11e2043522178fb1506b4df5bf0d32a2743a1",
+        "docs\\reference\\retrieval-corpus.json": "23aa62e016a0d6ac774d2d8521a026a9a2012a825455233b553aabfca786f545",
+        "docs\\reference\\retrieval-index.md": "1e88a5ff2b147c0de4509da1bde1022219da2398639d78622096a01faa1976be",
+        "docs\\reference\\retrieval-questions-bearing.json": "5ad1ec8d3df9cb8952e44a1833d06b98b321275a04500b0d0353517f811d073e",
+        "docs\\reference\\status-and-roadmap.md": "3d4c45652078158a36f5c41a8167a55091387212b68d55b613aa7d3423cf9d83"
+      }
+    },
+    {
+      "kind": "pre-final documentation metadata validation",
+      "errors": [
+        "missing canonical-for",
+        "canonical-for must be inline or simple list"
+      ],
+      "resolution": "Added unique planned-proposal canonical identity; no owner collision"
+    }
+  ],
+  "negative_scientific_evidence": {
+    "Y1_speed90": "4154 no-target; 4073 at0<incoming vy<=4; all300tailframesoverlap,1008posttickcellticks",
+    "A2_speed30": "14to11 overlap=21.428571428571427%, misses25%gate; no threshold change"
+  },
+  "published_runtime_gate": "12 retained source-rebuild findings (Windows/Linux); diagnostic execution proof is separate and publication remains unqualified"
+}

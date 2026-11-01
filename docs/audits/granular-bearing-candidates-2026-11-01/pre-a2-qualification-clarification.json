@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-11-01T03:21:40.716103+00:00",
+  "stage": "Y1 Water OFF acquisition/replay; no A2 primary acquired",
+  "measured_source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+  "qualification_scope": "Every positive-offset admitted ray requires an observed ideal physical gap, including mixed current/predicted sets. Missing geometry blocks qualification, never produces a scientific NO-GO.",
+  "unchanged": [
+    "candidate native/Godot source",
+    "all original metric function bodies",
+    "registered hover rawcurrent0 condition",
+    "all efficacy/control thresholds",
+    "preregistration bytes"
+  ],
+  "reason": "Resolve literal addendum completeness ambiguity identified in independent pre-A2 review; existing aggregate-current0 check alone only establishes hover completeness.",
+  "validator_sha256": "5b3588fc836a16f75890f43695c33096c2545ecfb69f6cbbd9a1cf597c12b868",
+  "integration": "Read-only post-acquisition layer, not consumed by frozen acquisition; commit/integrate after campaign."
+}

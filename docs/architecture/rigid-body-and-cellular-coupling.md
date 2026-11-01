@@ -270,3 +270,7 @@ is changed by A2; live efficacy evidence remains the single Sand rectangle famil
 ## Granular entry-response observer
 
 **Current diagnostic apparatus, 2026-11-01:** the [bearing measurement owner](../operations/granular-bearing-pre-overlap-investigation.md#height-arm-measurement-checkpoint) observes raw support before its velocity gate, shared-predicate rejection categories, fixed-law terms and actual correction/impulse API boundaries. Its observer is opt-in and bounded; production response, fallback, packed values, World authority and render publication are unchanged. Correction-induced velocity zeroing is recorded separately from impulses. The optional native support inspection preserves the predicate and requires rebuilding C++ consumers.
+
+## Diagnostic bearing candidates
+
+**Current diagnostic source / measured finite experiment:** the [registered candidate protocol](../operations/granular-bearing-pre-overlap-investigation.md#registered-candidate-discrimination---2026-11-01) permits only fresh diagnostic Worlds to select B0/Y1/A2 with an explicit experiment ID. Default/ordinary resets remain B0. Y1 changes only the yield coefficient; A2 changes the admitted support set through bounded downward translated-raster rays. The same owner, mask, support predicate, ejection, cell tick and one packed response remain authoritative. No second prepare, pack, query after the cell tick or Rapier step is added. Native/fallback production ejection remains unchanged; fallback does not implement these native-only diagnostic response candidates.

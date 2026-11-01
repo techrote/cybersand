@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
@@ -536,3 +536,7 @@ and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconcilia
 - [Granular bearing / pre-overlap investigation](operations/granular-bearing-pre-overlap-investigation.md): registered measurement successor, with no response-law change selected.
 
 - [Granular entry-response measurement, 2026-11-01](audits/2026-11-01-granular-bearing-pre-overlap.md): fixed-law height/speed arms, observer neutrality and causal accounting.
+
+- [Granular bearing candidate discrimination](audits/2026-11-01-granular-bearing-candidate-discrimination.md): completed source-matched B0/Y1/A2 comparisons, controls and preserved negative evidence; no production default.
+
+- [Proposed post-arrest bearing handoff](operations/granular-bearing-post-arrest-handoff-proposal.md): bounded future observation and copied-value accounting; not executed.
