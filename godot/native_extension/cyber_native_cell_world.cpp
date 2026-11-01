@@ -72,7 +72,7 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
-    ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
+    ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram", "include_hash"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false), DEFVAL(true));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
@@ -335,6 +335,7 @@ Dictionary CyberNativeCellWorld::get_default_demo_identity() const {
 
 void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     diagnostic_fixture_ = false;
+    granular_yield_response_ = kGranularYieldVelocityResponse;
     body_diagnostics_.reset();
     displacement_gain_ = kBodyDisplacementReactionImpulse;
     boundary_gain_ = kBodyBoundaryPressureImpulse;
@@ -614,8 +615,11 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
         return;
     }
 
+    if (body_diagnostics_) ++(*body_diagnostics_)[body_id].attempts;
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
+    if (body_diagnostics_ && target.x < 0) ++(*body_diagnostics_)[body_id].no_target;
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
+        if (body_diagnostics_ && target.x >= 0) ++(*body_diagnostics_)[body_id].relocation_refused;
         ++observation.unresolved;
         const auto impulse = -outward * displacement_gain_;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
@@ -681,12 +685,24 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
                                    tangent * tangent_offset;
             const auto x = static_cast<std::int32_t>(std::floor(candidate.x));
             const auto y = static_cast<std::int32_t>(std::floor(candidate.y));
-            if (!in_bounds(x, y) || world_->transient_obstacle_at(x, y) != 0U ||
-                world_->stored_material(x, y) != cybersand::Material::Empty) {
+            auto* census = body_diagnostics_ ? &(*body_diagnostics_)[source_body_id].endpoints : nullptr;
+            if (!in_bounds(x, y)) {
+                if (census) ++(*census)[0];
                 continue;
             }
-            if (!ejection_path_reachable(source_x, source_y, x, y,
-                                         source_body_id)) continue;
+            if (world_->transient_obstacle_at(x, y) != 0U) {
+                if (census) ++(*census)[1];
+                continue;
+            }
+            if (world_->stored_material(x, y) != cybersand::Material::Empty) {
+                if (census) ++(*census)[2];
+                continue;
+            }
+            if (!ejection_path_reachable(source_x, source_y, x, y, source_body_id)) {
+                if (census) ++(*census)[3];
+                continue;
+            }
+            if (census) ++(*census)[4];
             return {x, y};
         }
     }
@@ -764,8 +780,15 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
             !in_bounds(x, y + 1) || world_->transient_obstacle_at(x, y + 1) != 0U) {
             continue;
         }
+        if (body_diagnostics_) ++(*body_diagnostics_)[body_id].boundaries;
         if (world_->granular_support_at(x, y + 1, false, false)) {
             ++support_samples[body_id];
+            if (body_diagnostics_) {
+                auto& diagnostic = (*body_diagnostics_)[body_id];
+                ++diagnostic.raw_support;
+                if (static_cast<double>(x) + 0.5 < current_bodies_[body_id].center.x) ++diagnostic.left_support;
+                else ++diagnostic.right_support;
+            }
         }
     }
 
@@ -778,7 +801,7 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
         const auto arrest = body.velocity.y * body.mass;
         const auto yielding = gravity + std::max(
             0.0, body.velocity.y - kGravityImpulsePerMassTick) *
-            body.mass * kGranularYieldVelocityResponse;
+            body.mass * granular_yield_response_;
         const auto capacity = std::min(
             kMaximumGranularBearingImpulse,
             static_cast<double>(samples) * kGranularImpulseCapacityPerSample);
@@ -1396,6 +1419,15 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
     // Explicit API, fresh construction, no live descriptor edits. A demo reset
     // restores production defaults. Validate before replacing existing authority.
     try {
+        double yield_response = kGranularYieldVelocityResponse;
+        if (options.has("bearing_candidate") || options.has("bearing_experiment")) {
+            if (options.get("bearing_candidate", Variant()).get_type() != Variant::STRING ||
+                options.get("bearing_experiment", Variant()).get_type() != Variant::STRING ||
+                String(options["bearing_experiment"]) != "Y1-ENVELOPE-2026-11-01") return false;
+            const String selected = options["bearing_candidate"];
+            if (selected != "B0" && selected != "Y1") return false;
+            if (selected == "Y1") yield_response = 1.0;
+        }
         const auto workers = static_cast<std::int64_t>(options.get("workers", 1));
         if (workers < 1 || workers > 32) return false;
 #if defined(__EMSCRIPTEN__) && !defined(__EMSCRIPTEN_PTHREADS__)
@@ -1446,6 +1478,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
+        granular_yield_response_ = yield_response;
         diagnostic_fixture_ = true;
         worker_threads_ = config.worker_threads;
         displacement_gain_ = displacement; boundary_gain_ = boundary;
@@ -2006,7 +2039,7 @@ Dictionary CyberNativeCellWorld::water_experiment_observation(
     return result;
 }
 
-Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i size, bool include_histogram) const {
+Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i size, bool include_histogram, bool include_hash) const {
     Dictionary result;
     if (!diagnostic_fixture_ || size.x < 1 || size.y < 1 || size.x > 512 || size.y > 768 ||
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
@@ -2029,7 +2062,7 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
     for (std::size_t i = 0; i < counts.size(); ++i) { material_counts.append(counts[i]); material_sum_y.append(sum_y[i]); }
     result["counts"] = material_counts; result["sum_y"] = material_sum_y;
     result["water_mass"] = water; result["cells"] = cells;
-    result["hash"] = String::num_uint64(world_->state_hash(), 16);
+    if (include_hash) result["hash"] = String::num_uint64(world_->state_hash(), 16);
     result["completed_ticks"] = static_cast<std::int64_t>(world_->completed_tick_index());
     result["attempted_ticks"] = static_cast<std::int64_t>(world_->tick_index());
     result["failed"] = world_->has_failed();
@@ -2081,6 +2114,20 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
         row.append(faces);
         row.append(d.bearing.x); row.append(d.bearing.y);
         row.append(static_cast<std::int64_t>(d.support_samples));
+        Dictionary envelope;
+        envelope["candidate"] = granular_yield_response_ == 1.0 ? "Y1" : "B0";
+        envelope["yield_factor"] = granular_yield_response_;
+        envelope["boundaries"] = static_cast<std::int64_t>(d.boundaries);
+        envelope["raw_support"] = static_cast<std::int64_t>(d.raw_support);
+        envelope["left_support"] = static_cast<std::int64_t>(d.left_support);
+        envelope["right_support"] = static_cast<std::int64_t>(d.right_support);
+        envelope["attempts"] = static_cast<std::int64_t>(d.attempts);
+        envelope["no_target"] = static_cast<std::int64_t>(d.no_target);
+        envelope["relocation_refused"] = static_cast<std::int64_t>(d.relocation_refused);
+        Array endpoints;
+        for (const auto count : d.endpoints) endpoints.append(static_cast<std::int64_t>(count));
+        envelope["endpoints"] = endpoints;
+        row.append(envelope);
         result.append(row);
     }
     return result;
