@@ -46,6 +46,15 @@
     "cutoff": "stop stepping when the first observed native tick is at or above release_native_tick+1200; record actual tick and any observed overshoot",
     "derivatives": "retain raw pose/velocity samples; finite differences require positive recorded physics-step dt and both endpoints; no synthetic endpoint at cutoff",
     "missing_or_cutoff_metric": null,
+    "metric_definitions": {
+      "reference_entry_com_cells": "max(0,max(observed body COM.y-release COM.y)); fixture-relative downward entry proxy, not cell penetration",
+      "reference_union_bottom_entry": "current maximum y of all24 original rectangle corners minus its release value; exact union extent, not stored-cell overlap",
+      "pre_overlap": "native copied pre-displacement stored-cell overlap if available; otherwise null",
+      "post_overlap": "native copied post-displacement stored-cell overlap if available; otherwise null",
+      "lowest_union_at_or_below_floor_y": "lowest union corner y>=72; geometric plane flag only, not Rapier contact or finite-floor intersection",
+      "conservation_census": "registered source fixture region(0,0,160,128); exact reported regional counts, not an unmeasured full-world census",
+      "actually_applied_wrench": "accepted application receipts only, deduplicated by snapshot; rejected receipt contributes zero; absent receipt remains null"
+    },
     "asynchronous_pacing": "actual CyberSimulationWorker and main-thread Rapier; no second native clock",
     "capture_timeout_is_failure": true,
     "failed_logs_retained_ignored": true
