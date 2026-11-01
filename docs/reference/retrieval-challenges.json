@@ -4,6 +4,25 @@
   "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission. PLAY01-PLAY05 independently cover the seven human presets, acrobat chains, native material field bounds, input lifetime/gamepad mapping and circular-wheel approximation. GEN005-1–GEN005-3 cover coherent plane projection, identity-bound admission/events and actual finite fixture/capture evidence. 4LY01-4LY05 cover the flight family selection and candidate calibration distinction, goal-blind bounded velocity controller, neutral/lifecycle, evidence/learning gates, and copied policy-visible static capabilities. LCB01 covers final bounded admission, landed evidence, the native successor scope and separately deferred host/family work. LCB06-LCB09 independently challenge final-tuple normalization and comparator identity, native-issued construction outcomes, exact Water accounting and typed receipt/provenance boundaries in the native contract accepted on main through #246. LCB10 separately asks accepted checkpoint evidence and remaining host ownership. LCB11 independently asks optimized head/gas/certificate obligations, cost admission and execution identity without changing earlier queries. LCB-IN-ADAPTER-01 independently covers actual IN binding values and explicit/reset geometry in the combined source. The existing #202 host challenges LCB10–LCB18 remain; independently added incoming acceptance/pressure queries are retained as LCB-MAIN-ACCEPTANCE-01 and LCB-PRESSURE-OPT-01 because LCB10/LCB11 were already occupied on this branch.",
   "questions": [
     {
+      "id": "RENDER-COPY-01",
+      "query": "Does chunk-run native render copying change pixels, Water state, dirty retention or GPU upload size?",
+      "canonical": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "operations/profiling-observability-and-performance.md"
+      ],
+      "facts": [
+        "The corrected #290/#301 chunk-run copy resolves one chunk per row run and keeps material/state projection, absent chunks, signed coordinates and validated stride semantics.",
+        "A literal test-only oracle checks exact bytes and nonmutation; ordinary runtime has no alternative copy selector.",
+        "The change leaves worker dirty retention, overflow, ACK policy and full-image texture submission unchanged. Practical publication performance needs separately source-matched real-consumer evidence."
+      ],
+      "sources": [
+        "../native/src/world.cpp::copy_render_cells",
+        "../native/tests/render_copy_qualification.inc",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/main.gd"
+      ]
+    },
+    {
       "id": "C05",
       "query": "Why can powder pass through the player and Mercury pass through sand, and which tuning will help?",
       "canonical": [
