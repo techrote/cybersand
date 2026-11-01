@@ -52,7 +52,7 @@ chooses the first mask-free witness, and actual controller catalogue files are
 locked. Fixture correction `47b89c07` and explicit-UTF8 repair `1a111dd2` also
 precede acquisition. No outcome threshold was changed.
 
-All237 physical captures use clean source
+All237 Windows physical captures use clean source
 `3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba`, tree
 `72f29fb292695685fa85ecb71d848edde6254b38`. The project identity covers520 files:
 `276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd`.
@@ -118,7 +118,7 @@ new helper, not that it has no ordinary contacts.
 
 ## Registered population and physical results
 
-Exactly237 captures completed:132 Y1/A1 pairs over66 inherited cases,24 same-build
+Exactly237 captures completed:132 Y1/A1 captures forming66 inherited case pairs,24 same-build
 R2 attribution cases,18 real asynchronous,9 negative controls,9 selected replays
 and45 sequential timing captures. Every capture conserved its measured quantities.
 Events/repeats are not independent efficacy populations. Existing gates remain:
@@ -135,11 +135,13 @@ max(0.5cell,10%); overlap allowance max(1cell,10%).
 Eight of nine bank nonworsening checks fail. Four of six designated impact
 preservation cases fail both entry and post-ejection overlap: anchor90
 4.770→6.690 cells, light90 2.582→3.222, heavy90 9.734→94.391, half-size90
-10.386→23.596. Heavy A1 reaches the hard floor at tick98; its late stability
+10.386→23.596. Heavy A1 first sets the geometric hard-floor flag at tick98; its late stability
 cannot count as granular rest. Gentle preservation passes;45-degree entry
 improves2.052→1.810. Moderate mass2 cases in Sand/Dust/Rust narrowly exceed the
 0.5-cell allowance. Moderate scale and90-degree comparisons remain within the
-registered allowance. The compact per-case summaries retain all66 outcomes.
+registered allowance. The compact per-case summaries retain all66 outcomes. Hard-floor flags are
+geometric fixture observations, not Rapier collision callbacks. Linux qualification
+covers native/oracle/adapter and scoped host execution, not a second physical matrix.
 
 In the last300 samples of the Sand vertical A1 case, center span is0.184cell,
 absolute vertical-velocity p95 approximately3.032 and correction is active113/300.

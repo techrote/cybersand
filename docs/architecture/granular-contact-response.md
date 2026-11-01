@@ -204,8 +204,9 @@ $env:CYBERSAND_SOURCE_REVISION = (git rev-parse HEAD)
 & C:/Godot47/Godot_v4.7-stable_win64_console.exe --path ./godot res://player_playground.tscn -- --player=jetbarrel --granular-experiment=GCR-A1 --granular-token=GCR-ADMISSION-001-2026-11-01 --granular-review-material=2
 ```
 
-Change `GCR-A1` to `Y1` for the reference. Retained R2 uses `GCR` with
-`GCR-001-2026-11-01`; material2/14/29 selects Sand/Dust/Rust.
+For the Y1 reference change both the arm to `Y1` and token to
+`GCR-001-2026-11-01`. Retained R2 uses `GCR` with that same old token.
+Material2/14/29 selects Sand/Dust/Rust.
 Before a manual launch, run `python tools/experiments/run_gcr_admission.py
 --identity-only` from the same checkout to authenticate its native/Rapier/engine
 and project-source identities. The environment value labels that inspected Git
