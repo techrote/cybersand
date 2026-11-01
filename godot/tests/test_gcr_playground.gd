@@ -49,8 +49,12 @@ func _capture(rig: StringName, candidate: String, material: int) -> Dictionary:
 		rows.append(poses)
 	var after: Dictionary = world.diagnostic_snapshot(Vector2i(128,128),Vector2i(512,256),false,false)
 	if candidate == "GCR":
-		check(runtime._arena.gcr_stats.responses > 0 and runtime._arena.gcr_stats.applications > 0,"actual GCR responses admitted/applied")
-		if material != 0: check(runtime._arena.gcr_stats.granular_frames > 0,"actual granular response exercised")
+		# A valid hard/air record contains zero impulse. The arena separately
+		# requires atomic bridge admission on every returned batch; an applied
+		# nonzero impulse is required only where grains are actually present.
+		check(runtime._arena.gcr_stats.responses > 0,"actual GCR response records admitted")
+		if material != 0:
+			check(runtime._arena.gcr_stats.applications > 0 and runtime._arena.gcr_stats.granular_frames > 0,"actual granular response exercised/applied")
 	check(before.counts == after.counts and before.water_mass == after.water_mass,"closed host material conservation")
 	var report: Dictionary = {"rig":str(rig),"candidate":candidate,"material":material,"ticks":360,"poses":rows,"gcr_stats":runtime._arena.gcr_stats.duplicate(),"conserved":before.counts==after.counts and before.water_mass==after.water_mass,"host":"actual CyberPlayerPlaygroundRuntime/CyberPhysicalActorArena/CyberPhysicalActorSession","owner_acceptance":false}
 	runtime.close()

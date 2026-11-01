@@ -33,7 +33,7 @@ func _ready() -> void:
 	panel.position = Vector2(20,12)
 	add_child(panel)
 	var title := Label.new()
-	title.text = "EXPERIMENTAL granular bearing — B0 / Y1 owner review — no production default change"
+	title.text = "EXPERIMENTAL category contact — B0 / Y1 / GCR comparison — no production default change"
 	panel.add_child(title)
 	var row := HBoxContainer.new()
 	panel.add_child(row)
@@ -44,6 +44,8 @@ func _ready() -> void:
 	arm = OptionButton.new()
 	arm.add_item("B0 · 0.18")
 	arm.add_item("Y1 · 1.0 · experimental")
+	arm.add_item("GCR · resistance / friction / torque · experimental")
+	arm.select(1)
 	row.add_child(arm)
 	var reset := Button.new()
 	reset.text = "Reset / apply selection (R)"
