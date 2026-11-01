@@ -182,3 +182,7 @@ negative controls so improved braking cannot conceal artificial support or lift.
 These are concrete future causal candidates requiring their own preregistration,
 source/runtime qualification and owner decision; neither is a production fix.
 The measured unused global cap is not the next knob to raise.
+
+## Registered candidate discrimination - 2026-11-01
+
+**Approved experiment / Planned execution:** the owner authorized isolated B0 versus Y1 (yield coefficient1.0) and B0 versus A2 (bounded2px admission), on exact PR339 head8b4e53d7. The [machine preregistration](../audits/granular-bearing-candidates-2026-11-01/protocol.json) freezes source lineage, subpixel lookahead geometry, thresholds, safety controls and order before interventions. The [candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) records execution and disposition. Ordinary/default behavior remains B0; no combined arm or production selection is authorized.

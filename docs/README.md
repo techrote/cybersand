@@ -536,3 +536,5 @@ and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconcilia
 - [Granular bearing / pre-overlap investigation](operations/granular-bearing-pre-overlap-investigation.md): registered measurement successor, with no response-law change selected.
 
 - [Granular entry-response measurement, 2026-11-01](audits/2026-11-01-granular-bearing-pre-overlap.md): fixed-law height/speed arms, observer neutrality and causal accounting.
+
+- [Granular bearing candidate discrimination](audits/2026-11-01-granular-bearing-candidate-discrimination.md): preregistered B0/Y1/A2 causal comparisons and safety gates; no production default.
