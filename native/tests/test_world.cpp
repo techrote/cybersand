@@ -22,6 +22,7 @@
 #include <vector>
 
 #include "render_copy_qualification.inc"
+#include "granular_contact_qualification.inc"
 
 namespace cybersand {
 class PrecisionProbe {
@@ -2474,6 +2475,57 @@ void test_physics_masked_source_characterisation() {
     require(stored_sand==1, "masked source material was lost or duplicated");
 }
 
+void test_gcr_current_material_state_admission() {
+    const std::array<Material,9> materials{{Material::Sand,Material::Stone,Material::Dust,Material::Seed,
+        Material::Salt,Material::Sodium,Material::Gunpowder,Material::Coal,Material::Rust}};
+    for(const auto material:materials) for(const auto state:{0U,1U}) {
+        World world;
+        for(int y=0;y<5;++y) for(int x=0;x<5;++x)
+            require(world.set_cell_state(x,y,material,0,static_cast<std::uint8_t>(state)),"GCR category fixture setup");
+        require(world.granular_support_at(2,1,false,false) && world.granular_support_at(2,1,true,false),
+                "GCR current category/state support admission mismatch");
+        world.set(2,0,Material::Empty);
+        require(world.granular_support_at(2,1,false,false) && !world.granular_support_at(2,1,true,false),
+                "GCR current8/9 downward versus9/9 side boundary changed");
+        world.set(2,1,Material::Plant);
+        require(!world.granular_support_at(2,1,false,false),"GCR Seed-to-Plant/nonpowder retained support");
+        for(int y=0;y<5;++y) for(int x=0;x<5;++x) world.set(x,y,Material::Empty);
+        require(!world.granular_support_at(2,1,false,false),"GCR excavation retained support");
+    }
+    // Stone states0/1 intentionally follow existing support policy in this
+    // table. Native bracing/movement semantics remain a separate owner.
+}
+
+void test_gcr_native_moving_grain_moment() {
+    std::array<std::int64_t,3> reference{};
+    for (const auto workers:{1U,4U}) for(const bool enabled:{false,true}) {
+        WorldConfig config; config.worker_threads=workers; config.parallel_job_threshold=1;
+        World world(config); world.reserve_region({-16,-16,32,32});
+        world.configure_transient_obstacles({-16,-16,32,32});
+        world.enable_transient_granular_wrenches(enabled);
+        world.set(-1,-2,Material::Sand); world.set(-2,-2,Material::Wall); world.set(0,-2,Material::Wall);
+        for(int x=-2;x<=0;++x) require(world.set_transient_obstacle(x,-1,1),"GCR grain mask setup");
+        const auto before=world.content_hash(); (void)world.tick();
+        require(world.content_hash()==before && world.transient_contact_impulse_y(1)>0,
+                "GCR moving-grain test changed material or missed actual native contact");
+        const auto x=world.transient_granular_impulse_x(1),y=world.transient_granular_impulse_y(1);
+        const auto moment=world.transient_granular_moment2(1);
+        if(enabled) {
+            require(y>0 && moment==(-1)*y-(-3)*x,"GCR lost signed source moment before reduction");
+            require(!world.transient_granular_wrench_refused(1),"GCR admitted bounded event refused");
+            const std::array<std::int64_t,3> current{x,y,moment};
+            if(workers==1) reference=current;
+            else require(current==reference,"GCR integer moving-grain moment changed at workers4");
+        } else require(x==0 && y==0 && moment==0,"GCR opt-out accumulated new wrench");
+        world.clear_transient_contact_observations();
+        require(world.transient_obstacle_at(-1,-1)==1 && world.transient_granular_impulse_y(1)==0,
+                "GCR observation retirement changed occupancy");
+        world.clear_transient_obstacles();
+        require(world.transient_granular_impulse_y(1)==0 && world.transient_granular_moment2(1)==0,
+                "GCR retired mask retained stale moment");
+    }
+}
+
 void test_articulated_body_identity_capacity() {
     static_assert(World::kMaximumTransientBodies == 64U);
     std::uint64_t reference_hash = 0;
@@ -3815,6 +3867,11 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"GCR-001 analytic wrench and Y1 reference",test_gcr_analytic_wrench},
+        {"GCR-001 friction symmetry and budget",test_gcr_friction_symmetry_and_budget},
+        {"GCR-001 geometry and reduction oracle",test_gcr_geometry_and_reduction},
+        {"GCR-001 native moving-grain moment",test_gcr_native_moving_grain_moment},
+        {"GCR-001 current material and state admission",test_gcr_current_material_state_admission},
         {"player material field payloads and signed seams", test_player_field_payloads_and_signed_seams},
         {"player material field blocking and invalid nonmutation", test_player_field_blocking_and_invalid_nonmutation},
         {"player material field budgets and source snapshot", test_player_field_budgets_and_single_source_snapshot},

@@ -113,6 +113,7 @@ class CyberDemoBridge final : public RefCounted {
         candidate->set_simulation_region(adapter.world_->simulation_region());
         // All fallible allocation and validation precede these no-throw swaps.
         adapter.world_.swap(candidate);
+        if (adapter.gcr_enabled_) adapter.reset_demo_coupling_parameters();
         adapter.render_exchange_.swap(exchange);
         adapter.retire_liquid_construction_identity();
         ++adapter.liquid_policy_session_generation_;

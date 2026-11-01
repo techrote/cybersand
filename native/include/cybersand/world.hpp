@@ -249,6 +249,14 @@ public:
     [[nodiscard]] std::uint64_t transient_contact_count(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_x(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_y(std::uint16_t body_id) const noexcept;
+    // GCR-001 value-only moving-grain wrench. Moments use doubled world cell
+    // centres and integer density weights; the consumer translates to its COM.
+    void enable_transient_granular_wrenches(bool enabled) noexcept;
+    void clear_transient_contact_observations() noexcept;
+    [[nodiscard]] std::int64_t transient_granular_impulse_x(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_granular_impulse_y(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_granular_moment2(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] bool transient_granular_wrench_refused(std::uint16_t body_id) const noexcept;
     [[nodiscard]] bool queue_explosion(std::int64_t x, std::int64_t y,
                                        std::int32_t radius,
                                        std::uint8_t collapse_strength = 255);
@@ -532,7 +540,8 @@ private:
     [[nodiscard]] std::uint8_t deterministic_random(std::int64_t x, std::int64_t y,
                                                     std::uint32_t stream) const noexcept;
     void record_transient_contact(std::uint16_t body_id, Material material,
-                                  std::int64_t delta_x, std::int64_t delta_y) noexcept;
+                                  std::int64_t delta_x, std::int64_t delta_y, std::int64_t source_x,
+                                  std::int64_t source_y) noexcept;
     [[nodiscard]] std::int32_t deterministic_direction(std::int64_t x, std::int64_t y) const noexcept;
     void begin_tick(TickStats& stats);
     void require_healthy() const;

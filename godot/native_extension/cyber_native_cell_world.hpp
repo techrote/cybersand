@@ -3,12 +3,14 @@
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/world.hpp"
 #include "cybersand/prepared_world.hpp"
+#include "cybersand/granular_contact_response.hpp"
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
 #include <godot_cpp/variant/packed_float32_array.hpp>
+#include <godot_cpp/variant/packed_float64_array.hpp>
 #include <godot_cpp/variant/packed_int32_array.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/vector2.hpp>
@@ -55,6 +57,9 @@ public:
     void prepare_rigid_body_coupling(const PackedFloat32Array& states,
                                      bool resolve_overlaps = true);
     [[nodiscard]] PackedFloat32Array rigid_body_results() const;
+    bool prepare_gcr_coupling(const PackedFloat64Array& states, bool resolve_overlaps = true);
+    [[nodiscard]] PackedFloat64Array gcr_body_results() const;
+    [[nodiscard]] Dictionary gcr_diagnostics() const;
 
     [[nodiscard]] std::int64_t material_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] std::int64_t rigid_body_id_at(std::int64_t x, std::int64_t y) const;
@@ -140,7 +145,7 @@ public:
     // Hard-surface sources are rejected so this helper cannot bypass collider ownership.
     bool diagnostic_relocate_cell(Vector2i from, Vector2i to);
     [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
-                                                  bool include_histogram = false) const;
+                                                  bool include_histogram = false, bool include_hash = true) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
@@ -161,6 +166,8 @@ private:
         double angular_velocity = 0.0;
         double mass = 1.0;
         std::int32_t sample_serial = 0;
+        double inertia = 1.0, friction = 0.0, dt = 1.0 / 60.0;
+        Vector2 com{};
         bool valid = false;
     };
 
@@ -175,6 +182,10 @@ private:
         std::uint64_t unresolved = 0;
     };
     struct BodyDiagnostic {
+        std::uint64_t boundaries = 0, raw_support = 0, left_support = 0, right_support = 0;
+        std::uint64_t attempts = 0, no_target = 0, relocation_refused = 0;
+        // First rejection category per endpoint: outside, masked, occupied, path, accepted.
+        std::array<std::uint64_t, 5> endpoints{};
         Vector2 displacement{};
         Vector2 boundary{};
         Vector2 bearing{};
@@ -187,6 +198,22 @@ private:
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
     bool default_demo_recipe_active_ = false;
+    // Fresh diagnostic construction only; demo/default reset always restores B0.
+    double granular_yield_response_ = 0.18;
+    bool gcr_enabled_ = false;
+    double gcr_session_id_ = 0;
+    bool gcr_response_valid_ = false;
+    std::uint64_t gcr_sample_tick_ = 0;
+    void invalidate_gcr_response();
+    std::array<std::array<cybersand::gcr::Bin,8>, cybersand::World::kMaximumTransientBodies + 1U> gcr_bins_{};
+    std::array<std::int32_t, cybersand::World::kMaximumTransientBodies + 1U> gcr_last_serials_{};
+    struct GcrEvaluation {
+        cybersand::gcr::Result passive;
+        Vector2 event_raw{}, event{}, legacy{}, impulse{};
+        double event_raw_torque=0,event_torque=0,event_scale=1,event_cost=0,torque=0;
+        bool refused=false;
+    };
+    [[nodiscard]] GcrEvaluation evaluate_gcr(std::size_t body_id) const;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;
     double contact_gain_ = 0.025;
@@ -267,6 +294,8 @@ private:
     void reconcile_overlap(std::int32_t cell_index, std::uint16_t body_id);
     void accumulate_boundary_pressure();
     void accumulate_granular_bearing();
+    void accumulate_gcr_contacts();
+    void prepare_body_coupling(bool resolve_overlaps);
     [[nodiscard]] bool cell_inside_body(const BodyState& body,
                                         std::int32_t x, std::int32_t y) const;
     [[nodiscard]] Vector2 overlap_normal(const BodyState& body,
