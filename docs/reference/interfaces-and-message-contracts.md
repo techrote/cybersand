@@ -464,7 +464,7 @@ packed records are not an unrestricted public network protocol. Numerical respon
 
 ## Immutable dirty snapshot contract
 
-**Current production E branch:** wire fields and the six-integer patch layout are
+**Current experimental E branch (#345), admission pending:** wire fields and the six-integer patch layout are
 unchanged. A complete full packet must describe the exact finite World at origin,
 with one tightly packed rectangle and its exact channel-dependent byte extent.
 Dirty extents must be contiguous, in bounds and channel-consistent. The desktop

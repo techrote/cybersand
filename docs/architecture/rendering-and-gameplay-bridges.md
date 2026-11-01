@@ -86,7 +86,7 @@ Do not reuse pending buffers while a published generation remains observable.
 
 ### Strict retained-baseline accounting
 
-**Current on the production E branch:** an exact complete current-World baseline
+**Current on the experimental E branch (#345), admission pending:** an exact complete current-World baseline
 is retained until an ordinary covering ACK. The worker exempts only its exact
 full-frame bytes and one six-integer rectangle record from the existing dirty
 budgets. Later dirty bytes and records remain charged; admission happens before
@@ -105,8 +105,9 @@ Source: `CyberSimulationWorker._append_native_render_packet`,
 [desktop owner](../../godot/scripts/simulation_worker.gd).
 
 The [production integration audit](../audits/2026-11-01-render-production-integration.md)
-separates this source change, independent native R PR #344, historical #335
-evidence and hardware presentation qualification. Native exchange, Web ownership
+separates this source change, accepted native R from #344, historical #335
+evidence and hardware presentation qualification. Accepted main `809fd30d` uses
+R without E; the paired comparison determines E's incremental value. Native exchange, Web ownership
 and whole-backing texture upload behavior remain as described above.
 
 **Current desktop reset identity:** the exclusive GDScript owner advances a

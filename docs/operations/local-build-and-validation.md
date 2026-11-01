@@ -10,9 +10,9 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
-## Production retained-baseline regression
+## Experimental retained-baseline regression
 
-The production E branch adds
+The isolated E proposal in draft #345 adds
 [`test_render_retained_baseline.gd`](../../godot/tests/test_render_retained_baseline.gd).
 After a clean import, run it with the pinned engine and source-matched retained
 native runtime, alongside render handoff, native render bridge, generation,

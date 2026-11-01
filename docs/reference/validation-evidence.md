@@ -10,13 +10,14 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
-## Production E/R integration — 2026-11-01
+## Conditional E qualification after accepted R — 2026-11-01
 
 The [production integration audit](../audits/2026-11-01-render-production-integration.md)
-records the frozen25ce baseline, unchanged R6fff ownership, strict ordinary E,
-source-matched artifacts, current-source native comparisons and broader graphical
-qualification. Hardware GPU completion/presentation remains a separate explicit
-gate. No merge or human approval is inferred from local or AI checks.
+records accepted R809fd30d/tree863db60c, preserved E candidate c0875748,
+source-matched artifacts and paired normal/delayed/withheld-ACK qualification.
+E remains a draft proposal; historical pre-R improvement does not establish
+incremental production value. Hardware GPU completion/presentation remains a
+separate explicit gate. No merge or human approval is inferred from local or AI checks.
 
 ## Earlier R-only qualification — 2026-11-01
 

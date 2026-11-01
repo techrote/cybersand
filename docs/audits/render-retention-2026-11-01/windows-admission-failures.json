@@ -1,0 +1,126 @@
+{
+  "schema": "render-retention-windows-admission-failures-v1",
+  "run_id": 41317775947,
+  "verification_sha": "82f7b982a2fc466960a75fba96873e0a8233070b",
+  "control_sha": "809fd30dfac0c5e127302997075be9c4b279e5aa",
+  "candidate_sha": "c0875748fc59c896b3461b5836105250a597229a",
+  "measured_processes_started": 0,
+  "planned_measured_processes": 30,
+  "scope": "Software ANGLE/Direct3D11 graphical admissions timed out before a fresh benchmark receipt. Exact internal stall cause is unresolved; no Windows performance or image correctness result is claimed.",
+  "artifacts": [
+    {
+      "artifact_id": 13088379076,
+      "name": "render-retention-paired-windows-0-41317775947-1",
+      "sha256": "a5497162f546e9ef5e3b7a100cd74cb2ca4720ab209eee8ca40425c8c8d1beb6",
+      "bytes": 188038,
+      "repeat": 0,
+      "workflow_sha256": "cd25a79b2e6f4af1d629097b9dc089301ab3d8c304f770ecaee62e85219f24e0",
+      "admission_arm": "R",
+      "process_id": 8000,
+      "exit": "timeout",
+      "seconds": 1210.25,
+      "reader_failure": [
+        "fresh receipt missing"
+      ],
+      "cleanup": {
+        "required": true,
+        "forced": true,
+        "pid": 8000,
+        "errors": [],
+        "returncode": 1
+      },
+      "source_after_verified": true,
+      "log_sha256": "7fa2b04a1a4b837feacbcc4e198056b3104ccad3336fb714a2cd14b6f35e8f06",
+      "graphics_startup_log": "OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "video_controller": {
+        "Name": "Microsoft Hyper-V Video",
+        "AdapterCompatibility": "Microsoft",
+        "DriverVersion": "10.0.20348.1",
+        "VideoProcessor": null,
+        "PNPDeviceID": "VMBUS\\{DA0A7802-E377-4AAC-8E77-0558EB1073F8}\\{5620E0C7-8062-4DCE-AEB7-520C7EF76171}",
+        "Status": "OK"
+      },
+      "observed_peak_working_set_bytes": 1130967040,
+      "memory_sample_count": 2402,
+      "memory_scope": "direct_process_only",
+      "admission_status": "failed_or_incomplete",
+      "measured_processes_started": 0
+    },
+    {
+      "artifact_id": 13088289465,
+      "name": "render-retention-paired-windows-1-41317775947-1",
+      "sha256": "7c2d3bf18ed7c3d1f7315ed97b9ff178ac27558efcc73d531682663096799328",
+      "bytes": 188488,
+      "repeat": 1,
+      "workflow_sha256": "cd25a79b2e6f4af1d629097b9dc089301ab3d8c304f770ecaee62e85219f24e0",
+      "admission_arm": "ER",
+      "process_id": 4996,
+      "exit": "timeout",
+      "seconds": 1210.203,
+      "reader_failure": [
+        "fresh receipt missing"
+      ],
+      "cleanup": {
+        "required": true,
+        "forced": true,
+        "pid": 4996,
+        "errors": [],
+        "returncode": 1
+      },
+      "source_after_verified": true,
+      "log_sha256": "7fa2b04a1a4b837feacbcc4e198056b3104ccad3336fb714a2cd14b6f35e8f06",
+      "graphics_startup_log": "OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "video_controller": {
+        "Name": "Microsoft Hyper-V Video",
+        "AdapterCompatibility": "Microsoft",
+        "DriverVersion": "10.0.20348.1",
+        "VideoProcessor": null,
+        "PNPDeviceID": "VMBUS\\{DA0A7802-E377-4AAC-8E77-0558EB1073F8}\\{5620E0C7-8062-4DCE-AEB7-520C7EF76171}",
+        "Status": "OK"
+      },
+      "observed_peak_working_set_bytes": 1129930752,
+      "memory_sample_count": 2402,
+      "memory_scope": "direct_process_only",
+      "admission_status": "failed_or_incomplete",
+      "measured_processes_started": 0
+    },
+    {
+      "artifact_id": 13089280072,
+      "name": "render-retention-paired-windows-2-41317775947-1",
+      "sha256": "5173e98d0a68b84caf32304707472d6476aeff28cfd0e7b9b72d4acfcaf341ca",
+      "bytes": 189028,
+      "repeat": 2,
+      "workflow_sha256": "cd25a79b2e6f4af1d629097b9dc089301ab3d8c304f770ecaee62e85219f24e0",
+      "admission_arm": "R",
+      "process_id": 7452,
+      "exit": "timeout",
+      "seconds": 1210.2810000000002,
+      "reader_failure": [
+        "fresh receipt missing"
+      ],
+      "cleanup": {
+        "required": true,
+        "forced": true,
+        "pid": 7452,
+        "errors": [],
+        "returncode": 1
+      },
+      "source_after_verified": true,
+      "log_sha256": "7fa2b04a1a4b837feacbcc4e198056b3104ccad3336fb714a2cd14b6f35e8f06",
+      "graphics_startup_log": "OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "video_controller": {
+        "Name": "Microsoft Hyper-V Video",
+        "AdapterCompatibility": "Microsoft",
+        "DriverVersion": "10.0.20348.1",
+        "VideoProcessor": null,
+        "PNPDeviceID": "VMBUS\\{DA0A7802-E377-4AAC-8E77-0558EB1073F8}\\{5620E0C7-8062-4DCE-AEB7-520C7EF76171}",
+        "Status": "OK"
+      },
+      "observed_peak_working_set_bytes": 1132343296,
+      "memory_sample_count": 2402,
+      "memory_scope": "direct_process_only",
+      "admission_status": "failed_or_incomplete",
+      "measured_processes_started": 0
+    }
+  ]
+}

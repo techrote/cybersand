@@ -10,9 +10,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
-Production render integration: [strict retained-baseline contract](architecture/rendering-and-gameplay-bridges.md#strict-retained-baseline-accounting)
-and [dated E/R integration audit](audits/2026-11-01-render-production-integration.md).
-E and native R are separately reviewable and remain subject to applicable gates.
+Conditional E qualification on accepted R: [branch-current retained-baseline contract](architecture/rendering-and-gameplay-bridges.md#strict-retained-baseline-accounting)
+and [dated R-versus-R+E evidence](audits/2026-11-01-render-production-integration.md).
+R is accepted at `809fd30d`; E remains an isolated draft proposal in #345.
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 

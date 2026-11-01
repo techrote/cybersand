@@ -269,7 +269,7 @@ does not acknowledge success. The worker clears accumulated patches only when
 the acknowledged serial covers the pending publication. Acquiring an older
 snapshot never authorizes clearing bytes it can still observe.
 
-**Current production E branch:** an exact complete baseline retains its original
+**Current experimental E branch (#345), admission pending:** an exact complete baseline retains its original
 serial/generation/channel tag while dirty packets append. Only that baseline's
 bytes and one rectangle are exempt from dirty-budget accounting; ordinary
 covering ACK retirement is unchanged. Preflight bounds the worker's pending

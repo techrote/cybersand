@@ -10,9 +10,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-Production render integration freezes main `25ce0731`; strict E and existing R
-PR #344 retain separate source ownership. Read the [integration audit](../audits/2026-11-01-render-production-integration.md)
-for provenance, current qualification and the explicit no-merge/hardware gate.
+Conditional E qualification uses owner-accepted main `809fd30d`, tree `863db60c`,
+after R merged through #344. E remains isolated in draft #345. Read the
+[integration audit](../audits/2026-11-01-render-production-integration.md) for
+paired evidence, provenance and the explicit owner-approval/hardware boundary.
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
 

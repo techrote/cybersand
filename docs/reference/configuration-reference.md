@@ -664,7 +664,7 @@ Sources: [main.gd](../../godot/scripts/main.gd),
 | `HARD_SURFACE_REBUILD_INTERVAL` | 0.10 s, controller sync cooldown |
 | `HARD_SURFACE_CHUNKS_PER_FRAME` | 32 queued chunks |
 | `HARD_SURFACE_FRAME_BUDGET_USEC` | 750, checked between chunk rebuilds |
-| `MAX_PENDING_RENDER_PATCHES` | 256 dirty records; an exact retained full baseline exempts one additional record |
+| `MAX_PENDING_RENDER_PATCHES` | Experimental E branch (#345): 256 dirty records; an exact retained full baseline exempts one additional record |
 | `MAX_PENDING_RENDER_BYTES` | 2,097,152 dirty bytes; an exact retained full baseline exempts its own frame bytes |
 | Pending RG8 payload bound | 4,194,304 bytes: one complete 1024×1024×2 baseline plus the dirty budget |
 | `RENDER_PATCH_METADATA_STRIDE` | 6 integers |
