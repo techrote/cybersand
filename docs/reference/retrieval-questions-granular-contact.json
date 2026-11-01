@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-01",
+  "purpose": "Independent prospective GCR-001 planning questions; preserves frozen32 and prior Y1 queries. No runtime or embedding acceptance claim.",
+  "questions": [
+    {
+      "id": "GCR-001-CATEGORY",
+      "query": "Does sands mean only yellow Sand or all granular powders, and what is the combined resistance friction torque development plan?",
+      "canonical": ["operations/granular-contact-response-plan.md", "reference/product-intent-and-priorities.md"],
+      "facts": [
+        "Approved owner direction is foundational generic rigid-body coupling across the granular/powder category, not a yellow-Sand or barrel-specific mechanic.",
+        "Planned GCR-001 combines normal resistance, tangential friction and their moments; Current B0/Y1 and production default remain unchanged.",
+        "All nine current capability materials are admitted through policy; sleep, freezing, support/rest caches and body-to-cells conversion are deferred."
+      ],
+      "sources": ["../native/src/material_rules.cpp", "systems/granular-interaction-policy.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCR-001-MECHANICS",
+      "query": "How will sideways granular resistance and friction produce contact torque without double solving bearing or hard terrain?",
+      "canonical": ["operations/granular-contact-response-plan.md", "architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": [
+        "Proposed bounded contact bins retain positions/normals, actual COM and inertia, normal plus tangent impulse and the corresponding moment.",
+        "One shared body budget and a component ledger replace overlapping granular reactions; hard terrain remains Rapier-owned.",
+        "A new opt-in versioned value protocol must carry moments; unchanged legacy11/9 and frozen aggregate proxy results are not a validated new torque law."
+      ],
+      "sources": ["../godot/scripts/rigid_body_coupling.gd", "../godot/native_extension/cyber_native_cell_world.cpp"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCR-001-FEEL",
+      "query": "How will new granular contact preserve rocket barrel playground feel and be tested across materials without sleep hacks?",
+      "canonical": ["operations/granular-contact-response-plan.md"],
+      "facts": [
+        "Freeze controllers, thrust, braking, damping, hard friction, gravity, CCD and joints; compare actual player/actor hosts as well as fixtures.",
+        "66 paired Y1/GCR cases plus separate negative/state/async/capacity controls, all-nine category coverage, analytical torque/energy tests and source-bound owner review.",
+        "No sleep work package; preserve honest late-motion failures. Fresh main now includes PR344 and requires new source/runtime composition before implementation qualification; PR343 remains unmerged."
+      ],
+      "sources": ["../godot/scripts/player_vehicle_controller.gd", "../godot/scripts/physical_actor_rig.gd"],
+      "revision_sensitive": true
+    }
+  ]
+}

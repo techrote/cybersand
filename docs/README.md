@@ -552,3 +552,8 @@ the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
 
 For the fresh-main B0/Y1 envelope, recorded owner comparison and review-only pixel-grid display, use the [Y1 qualification runbook](operations/y1-granular-bearing-qualification.md). The owner prefers Y1 and describes residual issues as minor. Registered technical limitations remain; production selection and merge authorization are outstanding.
+
+For the proposed category-wide normal resistance, friction and contact torque,
+use the [combined granular contact plan](operations/granular-contact-response-plan.md).
+It preserves playground controls, tests all currently admitted powders, requires
+fresh-main/runtime reconciliation and explicitly defers sleep and rest caches.

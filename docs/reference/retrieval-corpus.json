@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-31",
+  "reviewed": "2026-11-01",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -120,7 +120,8 @@
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
     "operations/ci-execution-and-performance.md",
-    "operations/y1-granular-bearing-qualification.md"
+    "operations/y1-granular-bearing-qualification.md",
+    "operations/granular-contact-response-plan.md"
   ],
   "navigation": [
     "README.md",

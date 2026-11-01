@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-11-01
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -161,6 +161,23 @@ roughly half their depth, then remain supported. Include eventual reversible
 motion and ballistics. Exact thresholds and representation changes are
 **Planned**, not current physics. The [characterisation plan](../operations/physics-characterisation-plan.md)
 owns experiments, candidate tuning and staged architecture decisions.
+
+## Granular category and combined contact direction, 2026-11-01
+
+**Approved owner clarification:** “sands” denotes all sandlike, powder and
+granular solid materials as a category. This is foundational pixel-engine
+behavior, not a special yellow-Sand or barrel mechanic. The owner prefers Y1
+over B0 and considers it very close to good. The liked actor/player playground
+friction, momentum and rocket-barrel responsiveness should be preserved while
+addressing easy horizontal passage through granular beds.
+
+Develop normal resistance, tangential friction and their contact moments
+together. The [GCR-001 plan](../operations/granular-contact-response-plan.md)
+owns the proposed bounded implementation and evidence gates. Sleep, freezing,
+rest/support caches and body-to-cells conversion are deferred well beyond this
+phase; do not use them as acceptance shortcuts. This preference does not select
+coefficients, erase existing qualification failures, change the production
+default or authorize merging PR #343.
 
 ## Backend, generic-body and Water clarification, 2026-09-20
 

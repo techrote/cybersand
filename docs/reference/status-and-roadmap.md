@@ -1773,3 +1773,17 @@ compares original vector and cell-grid body presentation without changing
 physics; owner visual acceptance of that display is pending. The separate
 review-only Space focus conflict is repaired. No full-envelope closure,
 production-default selection or merge authorization is inferred.
+
+## Combined granular resistance, friction and torque — 2026-11-01
+
+**Approved owner direction; Planned implementation:** “sands” means the entire
+granular/powder category. [GCR-001](../operations/granular-contact-response-plan.md)
+specifies one bounded normal/tangential/angular response under #83, with
+sideways resistance, all-nine material admission, a66-pair stratified matrix,
+analytic moment/dissipation tests and unchanged actor/player controls. Sleep,
+freezing, rest caches and body-to-cells conversion are deferred beyond this
+phase. The plan retains archived #23/#281/#282/#283 qualifications and search
+NO-GOs. Main has advanced to `809fd30d` through render-copy PR #344, so future
+implementation needs a fresh-main composition and source-matched runtimes;
+old Y1 receipts are not reattested. Current B0/Y1 behavior is unchanged and
+PR #343 stays draft and unmerged. No new physical result or #83 closure exists.

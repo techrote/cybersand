@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-01
 ---
 
 # Rigid-body and cellular coupling
@@ -225,3 +225,16 @@ support geometry/predicate, capacity2/sample, global20 cap, arrest/correction,
 ejection, sample-age policy and the11/9-float ABI remain unchanged. Fallback
 retains B0. Y1 is not a selected production default or REM-004 completion.
 Owner gameplay acceptance and explicit merge authorization remain outstanding.
+
+## Planned combined granular contact response
+
+The owner-authorized [GCR-001 plan](../operations/granular-contact-response-plan.md)
+addresses normal resistance, tangential friction and contact moments as one
+bounded generic-body mechanism across the full granular/powder category.
+It includes sideways resistance and moving-grain impact attribution; yellow
+Sand is one fixture material. Current scalar bearing and the11/9 ABI remain
+unchanged at this documentation checkpoint. Any new moment/COM/inertia protocol
+must be explicitly versioned and preserve one native material owner and one
+main-thread body-response owner. Shared hard contact is not solved twice.
+Sleep, freezing, support/rest caches and representation transfers are deferred;
+the plan adds no Current runtime behavior or production default.

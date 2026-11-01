@@ -165,3 +165,14 @@ release conflict. Relaunch an existing review process to load the repair.
 **Owner comparative preference: Y1.** Full-envelope acceptance/default selection
 remains outstanding; #83/REM-004 stays open. The qualification PR remains draft
 and unmerged, with explicit owner mergedown authorization required.
+
+## What follows the Y1 comparison?
+
+The [combined granular contact plan](granular-contact-response-plan.md) records
+the next owner-authorized planning direction: category-wide normal resistance,
+friction and contact torque together, preserving the playground feel. In owner
+usage “sands” means all granular/powder solids; this is not a yellow-Sand special
+case. That plan is prospective and requires current-main reconciliation and a
+new registration before candidate results. Sleep and rest-cache work are
+deferred beyond it. Existing Y1 results, failures and source identities remain
+unchanged, and PR #343 remains draft and unmerged.
