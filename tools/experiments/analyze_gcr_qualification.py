@@ -59,7 +59,9 @@ def summarize(report):
                                  ['normal_raw','normal_accepted','normal_rejected','tangent_raw','tangent_accepted','tangent_rejected','passive_torque','event_torque','torque','bins','updates']}
     result['peak_abs_local_slip'] = max((abs(v) for row in rows for v in row.get('local_slip',[])), default=None)
     result['passivity_rejections'] = sum(bool(d.get('passivity_rejected')) for d in gcr)
-    result['timing_us']['total_measured_components'] = timings([sum(row['times_us']) for row in warm if 'times_us' in row])
+    result['timing_us']['total_measured_components'] = timings([sum(row['times_us'])+row.get('packing_us',0) for row in warm if 'times_us' in row])
+    for name in ['coupling_prepare_us','result_generation_us','diagnostic_copy_us','packing_us']:
+        result['timing_us'][name] = timings([row[name] for row in warm if name in row])
     return result
 
 

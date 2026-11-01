@@ -62,7 +62,9 @@ func json_value(value: Variant) -> Variant:
 	return value
 
 func fill(x: int, y: int, w: int, h: int, material: int) -> void:
-	if w > 0 and h > 0 and not world.diagnostic_fill_rect(Vector2i(x,y), Vector2i(w,h), material):
+	var states: Dictionary = spec.get("state_b_by_material",{})
+	var state_b: int = int(states.get(str(material),spec.get("state_b",0) if material == int(spec.get("material",0)) else 0))
+	if w > 0 and h > 0 and not world.diagnostic_fill_rect(Vector2i(x,y), Vector2i(w,h), material,state_b):
 		error = "fixture fill refused"
 
 func observation(include_cells: bool = false) -> Dictionary:
@@ -226,7 +228,9 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 		bridge.apply_horizontal_control(i,horizontal_override if not is_nan(horizontal_override) else (float(spec.get("horizontal",0)) if tick >= 120 and tick < 480 else 0.0),24.0,80.0,3.0,1.0/60.0)
 	bridge.step()
 	var step_us: int = Time.get_ticks_usec()-start
+	start = Time.get_ticks_usec()
 	var states: Variant = packed_boundary_states() # exactly once per intended boundary
+	var packing_us: int = Time.get_ticks_usec()-start
 	var incoming: Array = []
 	for i: int in range(bodies.size()): incoming.append(pose(i))
 	var before: Dictionary = observation(true)
@@ -236,20 +240,29 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 			error = "native GCR sample protocol refused"
 			return []
 	else: world.prepare_rigid_body_coupling(states,true)
-	var coupling_us: int = Time.get_ticks_usec()-start
+	var coupling_prepare_us: int = Time.get_ticks_usec()-start
 	var after: Dictionary = observation(true)
-	var diagnostics: Array = world.diagnostic_body_metrics() if telemetry else []
 	start = Time.get_ticks_usec()
 	if not world.simulation_tick(): error = "native tick failed"
 	var tick_us: int = Time.get_ticks_usec()-start
+	# The result getter performs the native four-pass GCR evaluation. Include
+	# its actual primary call in coupling cost in both physical arms.
+	start = Time.get_ticks_usec()
 	var results: Variant = world.gcr_body_results() if is_gcr() else world.rigid_body_results()
+	var result_generation_us: int = Time.get_ticks_usec()-start
+	var coupling_us: int = coupling_prepare_us+result_generation_us
 	if results.size() != bodies.size()*(CyberRigidBodyCoupling.GCR_RESULT_STRIDE if is_gcr() else 9):
 		error = "native result record capacity/stride mismatch"
 		return []
-	var gcr: Dictionary = world.gcr_diagnostics() if is_gcr() else {}
+	# These observation getters can independently re-evaluate GCR. Their
+	# diagnostic work is disclosed separately and absent in telemetry-off runs.
+	start = Time.get_ticks_usec()
+	var diagnostics: Array = world.diagnostic_body_metrics() if telemetry else []
+	var gcr: Dictionary = world.gcr_diagnostics() if is_gcr() and telemetry else {}
+	var diagnostic_copy_us: int = Time.get_ticks_usec()-start
+	start = Time.get_ticks_usec()
 	var computed_results: Variant = results.duplicate()
 	if is_gcr(): results = application_results(computed_results)
-	start = Time.get_ticks_usec()
 	if is_gcr(): bridge.apply_gcr_results(tick+1,results)
 	else: bridge.apply_cellular_results(tick+1,results)
 	var apply_us: int = Time.get_ticks_usec()-start
@@ -262,6 +275,7 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 			"pre_overlap":overlap(before,incoming[i]),"post_overlap":overlap(after,incoming[i]),"tick_overlap":overlap(post,outgoing),
 			"conserved":valid_conservation,"water":post.water_mass,"material_count":post.counts[int(spec.material)],
 			"times_us":[step_us,coupling_us,tick_us,apply_us],"work":[world.get_scanned_last_tick(),world.get_moves_last_tick(),world.get_active_blocks_last_tick()],
+			"coupling_prepare_us":coupling_prepare_us,"result_generation_us":result_generation_us,"diagnostic_copy_us":diagnostic_copy_us,"packing_us":packing_us,
 			"result":Array(results.slice(i*(CyberRigidBodyCoupling.GCR_RESULT_STRIDE if is_gcr() else 9),(i+1)*(CyberRigidBodyCoupling.GCR_RESULT_STRIDE if is_gcr() else 9))),"age":int(bridge.diagnostic_applications[i*6]),
 			"vertical_depth":maxf(0.0,float(outgoing[1])+absf(cos(outgoing[2]))*body_size.y/2+absf(sin(outgoing[2]))*body_size.x/2-SURFACE),
 			"horizontal_depth":maxf(0.0,float(outgoing[0])+absf(cos(outgoing[2]))*body_size.x/2+absf(sin(outgoing[2]))*body_size.y/2-bank_x) if not is_nan(bank_x) else 0.0,

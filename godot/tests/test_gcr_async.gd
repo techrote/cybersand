@@ -10,6 +10,7 @@ class Observer extends CyberSimulationWorker:
 	var trace: Array = []
 	var recorded: int = -1
 	var conservation: bool = true
+	var capture_telemetry: bool = true
 
 	func _activate_sampled_character(spawn_position: Vector2, _recovery: bool) -> void:
 		_configure_sampled_character(spawn_position,false,false)
@@ -20,9 +21,11 @@ class Observer extends CyberSimulationWorker:
 		if tick != recorded and tick <= limit:
 			var observation: Dictionary = fixture.observation()
 			conservation = conservation and fixture.conserved(observation)
-			trace[tick] = {"tick":tick,"worker_step_ms":step_ms,"metrics":_world.diagnostic_body_metrics(),
+			var diagnostic_start: int = Time.get_ticks_usec()
+			trace[tick] = {"tick":tick,"worker_step_ms":step_ms,"metrics":_world.diagnostic_body_metrics() if capture_telemetry else [],
 				"scanned":_world.get_scanned_last_tick(),"moves":_world.get_moves_last_tick(),"active":_world.get_active_blocks_last_tick()}
-			if fixture.is_gcr(): trace[tick]["gcr"] = fixture.json_value(_world.gcr_diagnostics())
+			if fixture.is_gcr() and capture_telemetry: trace[tick]["gcr"] = fixture.json_value(_world.gcr_diagnostics())
+			trace[tick]["diagnostic_copy_us"] = Time.get_ticks_usec()-diagnostic_start
 			fixture.edit_at(tick)
 			recorded = tick
 		super._publish_snapshot(step_ms,paused,interval,force_full,states,epoch)
@@ -49,7 +52,8 @@ func _run() -> void:
 		if value.id == args["case"]: spec = value
 	var arm: String = str(args.get("candidate","Y1"))
 	var fixture = Fixture.new()
-	if not await fixture.setup(root,spec,arm):
+	var telemetry: bool = str(args.get("telemetry","on")) != "off"
+	if not await fixture.setup(root,spec,arm,telemetry):
 		push_error("GCR async setup refused: " + fixture.error)
 		fixture.close()
 		quit(1)
@@ -57,6 +61,7 @@ func _run() -> void:
 	var worker = Observer.new()
 	worker._world = fixture.world
 	worker.fixture = fixture
+	worker.capture_telemetry = telemetry
 	worker.trace.resize(int(spec.ticks)+1)
 	worker.limit = int(spec.ticks)
 	# Test-only transfer of the already constructed fixture authority. Calling
