@@ -36,6 +36,7 @@ func _run() -> void:
 	worker._world = fixture.world
 	worker.limit = 1000
 	worker.excavation = spec.layout == "excavate"
+	worker.expected_arm = arm
 	worker.bed_left = fixture.left
 	worker.bed_width = fixture.width
 	worker.bed_depth = int(spec.depth)
@@ -73,7 +74,7 @@ func _run() -> void:
 		var offset: int = tick*Observer.STRIDE
 		if worker.trace[offset+19] != 0: trace.append(Array(worker.trace.slice(offset,offset+Observer.STRIDE)))
 	var report: Dictionary = {"schema":1,"ok":failure.is_empty(),"error":failure,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
-		"case":registered,"base":spec,"candidate":arm,"rows":rows,"owner_trace":trace,"edits":worker.edit_count,
+		"case":registered,"base":spec,"candidate":arm,"rows":rows,"owner_trace":trace,"edits":worker.edit_count,"edit_receipt":worker.edit_receipt,"selector_failures":worker.selector_failures,
 		"final":fixture.observation(),"native_sha256":FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"),
 		"platform":OS.get_name(),"engine":Engine.get_version_info().string,"backend":ProjectSettings.get_setting("physics/2d/physics_engine")}
 	var file := FileAccess.open(str(arguments.output),FileAccess.WRITE)

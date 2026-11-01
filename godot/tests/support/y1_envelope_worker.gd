@@ -12,6 +12,9 @@ var bed_width: int = 64
 var bed_depth: int = 96
 var material: int = 2
 var edit_count: int = 0
+var edit_receipt: Dictionary = {}
+var expected_arm: String = "B0"
+var selector_failures: int = 0
 
 func _activate_sampled_character(spawn_position: Vector2, runtime_recovery_enabled: bool) -> void:
 	# Body-only fixture uses the production configuration boundary before start.
@@ -32,6 +35,7 @@ func _publish_snapshot(step_ms: float, paused: bool, interval: int, force_full: 
 		var metrics: Array = _world.diagnostic_body_metrics()
 		if not metrics.is_empty():
 			var d: Array = metrics[0]
+			if d[20].candidate != expected_arm: selector_failures += 1
 			trace[offset+2] = d[1]
 			trace[offset+3] = d[18]
 			trace[offset+4] = d[20].raw_support
@@ -57,7 +61,10 @@ func _publish_snapshot(step_ms: float, paused: bool, interval: int, force_full: 
 	# Edit belongs exclusively to the cellular owner after the tick599 result.
 	# The next accepted sample recomputes support, including normal mailbox delay.
 	if excavation and tick == 599 and edit_count == 0:
+		var before: Dictionary = _world.diagnostic_snapshot(Vector2i(bed_left-1,0),Vector2i(bed_width+2,192+bed_depth+1),false,false)
 		if _world.diagnostic_fill_rect(Vector2i(bed_left,192),Vector2i(bed_width,bed_depth),0): edit_count = 1
+		var after: Dictionary = _world.diagnostic_snapshot(Vector2i(bed_left-1,0),Vector2i(bed_width+2,192+bed_depth+1),false,false)
+		edit_receipt = {"tick":tick,"before":before.counts,"after":after.counts,"water_before":before.water_mass,"water_after":after.water_mass}
 	if tick >= limit:
 		_mutex.lock()
 		_running = false
