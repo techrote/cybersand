@@ -62,6 +62,7 @@ var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _gcr_body_states: PackedFloat64Array = PackedFloat64Array()
 var _gcr_experiment: bool = false
+var _gcr_world_generation: int = 1
 var _rigid_body_epoch: int = 0
 var _physical_effect_epoch: int = 0
 var _physical_effect_generations := PackedInt64Array([0, 0, 0, 0, 0, 0, 0, 0])
@@ -1134,6 +1135,7 @@ func configure_granular_experiment(candidate: String) -> bool:
 	var token: String = "GCR-001-2026-11-01" if candidate == "GCR" else "Y1-ENVELOPE-2026-11-01"
 	if not _world.diagnostic_reset({"workers":1,"bearing_candidate":candidate,"bearing_experiment":token}): return false
 	_gcr_experiment = candidate == "GCR"
+	_gcr_world_generation = _world_generation
 	return true
 
 func set_gcr_body_states(states: PackedFloat64Array, body_epoch: int = 0) -> bool:
@@ -1832,13 +1834,14 @@ func _worker_loop() -> void:
 		else:
 			_usable_session.clear()
 		if not _simulation_failed:
-			if _gcr_experiment and not bool(_world.gcr_diagnostics().get("enabled",false)):
+			if _gcr_experiment and _gcr_world_generation != _world_generation and not bool(_world.gcr_diagnostics().get("enabled",false)):
 				# An admitted ordinary World replacement retires experiment mode.
 				# This is not a fallback for stale/refused GCR response samples.
 				_gcr_experiment = false
 				_mutex.lock()
 				_gcr_body_states = PackedFloat64Array()
 				_mutex.unlock()
+			_gcr_world_generation = _world_generation
 			if _gcr_experiment:
 				_world.prepare_gcr_coupling(local_gcr_body_states, not local_paused)
 			else:

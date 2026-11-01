@@ -1537,7 +1537,7 @@
   "normal_tangent_evaluator": {
     "kind": "projected Jacobi",
     "passes": 4,
-    "relaxation": "1/active_bin_count",
+    "relaxation": "bin.count/total_samples",
     "update": "provisional v/omega after each normal/tangent phase; accumulated perbin shared caps never renew",
     "reason": "finite fixed-order PGS introduces mirror bias; specification choice before physical runs",
     "physical_results_before_amendment": false
@@ -1550,5 +1550,12 @@
     "scope": "independent unreduced contact solver comparisons; scalar analytic tolerance1e-5 unchanged",
     "prior_diagnostic": "First compared reduced/unreduced analytic fixture differed by J=.112151,L=.198068; this prephysical diagnostic motivated explicit approximation admission, not equivalence or a physical efficacy result",
     "do_not_relax_after_physical_results": true
+  },
+  "reduction_revision": {
+    "variant": "R1 before physical acquisition",
+    "reason": "Initial asymmetric analyticoracle13.3955%/11.7183%failed10%gate; equal-bin relaxation ignoredunequalquadrature weights",
+    "change": "sample-count weighted Jacobi phase updates; budgets/coefficients/gate unchanged",
+    "prior_failure_retained": true,
+    "physical_results_before_revision": false
   }
 }
