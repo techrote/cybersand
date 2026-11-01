@@ -31,7 +31,7 @@ func _ready() -> void:
 	panel.position = Vector2(20,12)
 	add_child(panel)
 	var title := Label.new()
-	title.text = "EXPERIMENTAL granular bearing â€” B0 / Y1 owner review â€” no production default change"
+	title.text = "EXPERIMENTAL granular bearing — B0 / Y1 owner review — no production default change"
 	panel.add_child(title)
 	var row := HBoxContainer.new()
 	panel.add_child(row)
@@ -40,8 +40,8 @@ func _ready() -> void:
 	chooser.select(1)
 	row.add_child(chooser)
 	arm = OptionButton.new()
-	arm.add_item("B0 Â· 0.18")
-	arm.add_item("Y1 Â· 1.0 Â· experimental")
+	arm.add_item("B0 · 0.18")
+	arm.add_item("Y1 · 1.0 · experimental")
 	row.add_child(arm)
 	var reset := Button.new()
 	reset.text = "Reset / apply selection (R)"
@@ -59,7 +59,7 @@ func _ready() -> void:
 	panel.add_child(status)
 	var help := Label.new()
 	help.position = Vector2(20,675)
-	help.text = "Select a case and B0/Y1, then Reset. Each reset creates a fresh native World and Rapier space.\nLeft/right: existing bounded lateral impulse. E: remove current bed. Space: pause. R: reset.\nJudge impact rigidity, sinking, late withdrawal, light/heavy support, lateral motion, edge rotation and excavation.\nAWAITING OWNER GAMEPLAY ACCEPTANCE â€” test automation supplies no human verdict."
+	help.text = "Select a case and B0/Y1, then Reset. Each reset creates a fresh native World and Rapier space.\nLeft/right: existing bounded lateral impulse. E: remove current bed. Space: pause. R: reset.\nJudge impact rigidity, sinking, late withdrawal, light/heavy support, lateral motion, edge rotation and excavation.\nAWAITING OWNER GAMEPLAY ACCEPTANCE — test automation supplies no human verdict."
 	add_child(help)
 	await reset_case()
 	DisplayServer.window_set_title("CyberSand Y1 envelope owner review")
@@ -124,7 +124,7 @@ func refresh_view() -> void:
 			image.set_pixel(x,y,color)
 	texture = ImageTexture.create_from_image(image)
 	scale_factor = minf(4.0,540.0/float(fixture.floor_y-Fixture.SURFACE+85))
-	status.text = "%s | %s | tick %d / %d | %s%s\nsource %s | Godot %s | %s | native %s" % [fixture.spec.id,fixture.candidate,fixture.tick,int(fixture.spec.ticks),"paused" if paused else "running"," Â· scripted edit at tick600" if fixture.spec.group=="support-change" else "",OS.get_environment("CYBERSAND_SOURCE_REVISION"),Engine.get_version_info().string,ProjectSettings.get_setting("physics/2d/physics_engine"),native_sha256.left(16)]
+	status.text = "%s | %s | tick %d / %d | %s%s\nsource %s | Godot %s | %s | native %s" % [fixture.spec.id,fixture.candidate,fixture.tick,int(fixture.spec.ticks),"paused" if paused else "running"," · scripted edit at tick600" if fixture.spec.group=="support-change" else "",OS.get_environment("CYBERSAND_SOURCE_REVISION"),Engine.get_version_info().string,ProjectSettings.get_setting("physics/2d/physics_engine"),native_sha256.left(16)]
 	queue_redraw()
 
 func _draw() -> void:
