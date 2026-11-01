@@ -20,6 +20,13 @@ func _capture(rig: StringName, candidate: String, material: int) -> Dictionary:
 	if not runtime.active(): runtime.queue_free(); return {}
 	await process_frame
 	var world: Object = runtime._arena._world
+	# Remove course material samples identically; material0 is a real hard/air
+	# control, not an assumption that a controller never reaches the stock pools.
+	check(world.diagnostic_fill_rect(Vector2i(454,346),Vector2i(34,6),0),"remove stock grains")
+	check(world.diagnostic_fill_rect(Vector2i(552,344),Vector2i(60,8),0),"remove stock Water")
+	for index: int in range(runtime._arena.session.bodies().size()):
+		var pose: Transform2D = runtime._arena.session.bridge.body_transform(index)
+		runtime._arena.session.bridge.reset_body(index,pose.origin+Vector2(0,-40),pose.get_rotation())
 	if material != 0:
 		check(world.diagnostic_fill_rect(Vector2i(148,326),Vector2i(72,26),material),"ordinary granular setup")
 	var before: Dictionary = world.diagnostic_snapshot(Vector2i(128,128),Vector2i(512,256),false,false)
@@ -27,8 +34,8 @@ func _capture(rig: StringName, candidate: String, material: int) -> Dictionary:
 	for step: int in range(360):
 		var action: Dictionary = {"move":Vector2.ZERO,"aim":Vector2.RIGHT,"effort":1.0,"trim":0.0,"reel":0.0,"primary":false,"secondary":false,"auxiliary":false,"tool":false}
 		if rig == &"jetbarrel":
-			action.primary = step >= 30 and step < 90
-			action.trim = .2 if step >= 90 and step < 120 else 0.0
+			action.primary = step >= 90 and step < 150
+			action.trim = .2 if step >= 125 and step < 155 else 0.0
 			action.secondary = step >= 180 and step < 210
 		else:
 			action.move = Vector2.RIGHT if step < 150 else Vector2.ZERO
@@ -43,8 +50,11 @@ func _capture(rig: StringName, candidate: String, material: int) -> Dictionary:
 			poses.append([pose.origin.x,pose.origin.y,pose.get_rotation(),velocity.x,velocity.y,float(PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))])
 		rows.append(poses)
 	var after: Dictionary = world.diagnostic_snapshot(Vector2i(128,128),Vector2i(512,256),false,false)
+	if candidate == "GCR":
+		check(runtime._arena.gcr_stats.responses > 0 and runtime._arena.gcr_stats.applications > 0,"actual GCR responses admitted/applied")
+		if material != 0: check(runtime._arena.gcr_stats.granular_frames > 0,"actual granular response exercised")
 	check(before.counts == after.counts and before.water_mass == after.water_mass,"closed host material conservation")
-	var report: Dictionary = {"rig":str(rig),"candidate":candidate,"material":material,"ticks":360,"poses":rows,"conserved":before.counts==after.counts and before.water_mass==after.water_mass,"host":"actual CyberPlayerPlaygroundRuntime/CyberPhysicalActorArena/CyberPhysicalActorSession","owner_acceptance":false}
+	var report: Dictionary = {"rig":str(rig),"candidate":candidate,"material":material,"ticks":360,"poses":rows,"gcr_stats":runtime._arena.gcr_stats.duplicate(),"conserved":before.counts==after.counts and before.water_mass==after.water_mass,"host":"actual CyberPlayerPlaygroundRuntime/CyberPhysicalActorArena/CyberPhysicalActorSession","owner_acceptance":false}
 	runtime.close()
 	runtime.queue_free()
 	await process_frame

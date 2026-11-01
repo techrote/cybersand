@@ -22,6 +22,7 @@ const SCHEDULE: String = "synchronous-mask-actuation-effects-material-feedback-t
 
 var last_error: String = ""
 var session: CyberPhysicalActorSession
+var gcr_stats: Dictionary = {}
 var config: Dictionary = {}
 var _world: Object
 var _viewport: SubViewport
@@ -182,6 +183,7 @@ func _configure_granular(value: Variant, granular_candidate: String) -> bool:
 	session = candidate
 	config = validated.duplicate(true)
 	config["granular_experiment"] = granular_candidate
+	gcr_stats = {"prepared":0,"responses":0,"applications":0,"granular_frames":0}
 	_epoch_counter += 1
 	_effects.reset(_epoch_counter)
 	_usables.reset(_epoch_counter)
@@ -205,7 +207,7 @@ func _configure_granular(value: Variant, granular_candidate: String) -> bool:
 	if _failed:
 		return false
 	if granular_candidate == "GCR":
-		_world.prepare_gcr_coupling(session.bridge.pack_gcr_body_states(),false)
+		if not _prepare_gcr_frame(false): return false
 	else:
 		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), false)
 	return true
@@ -355,6 +357,14 @@ func set_paused(paused: bool) -> void:
 	if session != null:
 		session.set_suspended(paused)
 
+func _prepare_gcr_frame(resolve: bool) -> bool:
+	var states: PackedFloat64Array = session.bridge.pack_gcr_body_states()
+	if states.size() != session.bodies().size()*CyberRigidBodyCoupling.GCR_INPUT_STRIDE or states.is_empty() or not _world.prepare_gcr_coupling(states,resolve):
+		_fail("gcr_input_refused")
+		return false
+	gcr_stats.prepared += 1
+	return true
+
 
 func step(commands: Variant = []) -> Dictionary:
 	if session == null or _finished or _paused:
@@ -374,7 +384,7 @@ func step(commands: Variant = []) -> Dictionary:
 	# A mask is copied from the current actual pose. Actuation adds forces but
 	# does not integrate: usable source positions match this mask exactly.
 	if config.get("granular_experiment","B0") == "GCR":
-		_world.prepare_gcr_coupling(session.bridge.pack_gcr_body_states())
+		if not _prepare_gcr_frame(true): return snapshot()
 	else:
 		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), true)
 	for command: Variant in commands:
@@ -407,7 +417,18 @@ func step(commands: Variant = []) -> Dictionary:
 		return snapshot()
 	if config.get("granular_experiment","B0") == "GCR":
 		_coupling_results = PackedFloat32Array()
-		session.bridge.apply_gcr_results(session.tick + 1, _world.gcr_body_results())
+		var results: PackedFloat64Array = _world.gcr_body_results()
+		if results.size() != session.bodies().size()*CyberRigidBodyCoupling.GCR_RESULT_STRIDE:
+			_fail("gcr_response_refused")
+			return snapshot()
+		gcr_stats.responses += results.size()/CyberRigidBodyCoupling.GCR_RESULT_STRIDE
+		gcr_stats.applications += session.bridge.apply_gcr_results(session.tick+1,results)
+		if not bool(session.bridge.gcr_application_diagnostics().get("accepted",false)):
+			_fail("gcr_application_refused")
+			return snapshot()
+		for body: Dictionary in _world.gcr_diagnostics().get("bodies",[]):
+			if float(body.get("normal_accepted",0))+float(body.get("event_accepted",0)) > 0:
+				gcr_stats.granular_frames += 1
 	else:
 		_coupling_results = _world.rigid_body_results()
 		session.bridge.apply_cellular_results(session.tick + 1, _coupling_results)
