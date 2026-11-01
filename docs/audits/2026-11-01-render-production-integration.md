@@ -374,8 +374,9 @@ Neither the native ledgers nor historical hashes were rewritten.
 Frozen retrieval changes from accepted R's 19/32 hit@1 and 32/32 hit@5 to
 20/32 and 32/32. Supplementary retrieval is 121/157 at rank 1 and 156/157 within
 rank 5. All 156 pre-existing question objects remain unchanged; the new E
-question reaches a canonical capacity contract at rank 2. Its retrieved top-five
-contracts cover exact qualification, independent dirty budgets, ordinary ACK
+question reaches its expected canonical ownership contract at rank 2; capacity
+is the highest lexical hit at rank 1. Its retrieved top-five contracts cover
+exact qualification, independent dirty budgets, ordinary ACK
 versus outstanding recovery, and the distinction between pending storage and
 total process memory. This is lexical retrieval evaluation, not answer proof.
 The inherited LCB03 rank-five miss also exists at accepted R; ACT14 moves from
