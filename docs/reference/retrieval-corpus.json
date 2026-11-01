@@ -120,7 +120,8 @@
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
     "operations/ci-execution-and-performance.md",
-    "operations/gcr-detachment-integration-plan.md"
+    "operations/gcr-detachment-integration-plan.md",
+    "architecture/compound-granular-coupling.md"
   ],
   "navigation": [
     "README.md",

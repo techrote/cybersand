@@ -552,3 +552,5 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+Native detachment plus granular response: [compound owner contract](architecture/compound-granular-coupling.md) and [preregistration](operations/gcr-detachment-integration-plan.md). Experimental composition requires fresh qualification; no merge/default or gameplay expansion.

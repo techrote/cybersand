@@ -213,3 +213,5 @@ and bounded enclosure recovery. REM-002 reuses the same support predicate for a
 separate bounded body-coupling observation against stored material; it does not
 make the sampled character a Rapier collider and does not add a second material
 owner.
+
+The separately opt-in [compound granular/detachment composition](compound-granular-coupling.md) retains exact proxy geometry while assigning one physical mass/COM/inertia and one response budget to a native detached aggregate. Qualification is separate from ordinary rectangles and earlier experimental sources.

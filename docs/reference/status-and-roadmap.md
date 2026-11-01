@@ -1750,3 +1750,5 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+**Planned authorized composition, 2026-11-01:** [native detachment and GCR](../architecture/compound-granular-coupling.md) reconciles shared coupling before further fleet qualification. Registered mechanical/physical gates remain distinct, actual520-unit mass is retained, and all drafts stay unmerged. No gameplay-room expansion or sleep work.

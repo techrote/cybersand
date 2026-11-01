@@ -1548,3 +1548,5 @@ Use the [physical actor programme](physical-actor-programme.md) for the combined
 ## Reconstructed depth prototype — 2026-10-18
 
 PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.
+
+The isolated `codex/gcr-detachment-integration-20261101` starts at actual maina8f08a67 and selectively composes detachment5af50b3c with GCRbe184746. The [registration](gcr-detachment-integration-plan.md) precedes candidate execution; the [compound contract](../architecture/compound-granular-coupling.md) owns geometry/physical owner distinction and explicit mask acknowledgement. Existing PRs, evidence and the local fleet branch remain untouched. Fresh native runtimes and combined-source qualification are required before claims.

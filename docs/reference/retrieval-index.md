@@ -334,3 +334,5 @@ GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-b
 
 For authored checkpoint visibility, Return to launcher, sampled task participants and
 coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).
+
+- How do detached native structures share granular torque and response budgets without duplicate physics ownership? [Compound response contract](../architecture/compound-granular-coupling.md).

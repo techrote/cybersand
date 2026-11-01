@@ -278,3 +278,5 @@ performs no export. Future schema must version representation policy, identities
 sole payload and required motion/state, validate loads before replacement, and
 record source/config/profile provenance. Struct-byte dumps and implied exact
 replay are rejected. Stage 8 owns production persistence implementation.
+
+The bounded [detachment/GCR composition](compound-granular-coupling.md) retains prepare/ack/commit/finalize, native payload and failure fences while qualifying one compound response owner. It does not admit general fracture, restoration or Stage-3B acceleration.
