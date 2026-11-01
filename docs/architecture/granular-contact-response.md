@@ -93,6 +93,9 @@ observations while retaining occupancy. There is no central-only legacy fallback
 Delayed wrench transport uses `Lcurrent = Lsample + (COMsample − COMcurrent − correction) × J`;
 the same age scale applies to J and L. Correction has its own age 1 ceiling.
 Duplicate, malformed, cross-session and stale/geometry refusal are atomic.
+Accepted nonzero angular impulses use the same response-triggered wake behavior
+as existing linear impulses; no sleep admission, rest threshold or wake-scheduling
+scheme is introduced.
 Sources: [ABI definitions](../../godot/scripts/rigid_body_coupling.gd),
 [producer validation](../../godot/native_extension/cyber_native_cell_world.cpp),
 [application and moment transport](../../godot/scripts/rapier_physics_bridge.gd).

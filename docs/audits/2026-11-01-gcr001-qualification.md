@@ -393,3 +393,34 @@ The failed precondition log is retained locally with the final receipt; it is
 not a native test failure or a waived provenance mismatch. Hosted draft skips
 remain non-evidence for Native/Godot execution. The final PR's cheap
 Documentation/provenance result is reported separately from these local gates.
+
+## Concurrent main reconciliation after the first draft
+
+Main advanced to `a8f08a67fea3c58f6df7473cbae1831334fcc04e` through accepted
+palette-shader PR#331 while this draft was being published. That main was
+merged into the experimental branch at
+`0ef7eff3d600e8b02c0cd43aa770420d7370317c`; no archive branch was imported.
+Independent source review found presentation/renderer-selection changes in
+DepthLayerSurface, Main, the material appearance texture wrapper, the new shader
+selector and class registration. There is zero incoming delta to native code,
+native extension, worker/snapshot, coupling bridges, actor arena/runtime,
+controllers/catalogue, project settings or native/Rapier artifacts.
+
+The81 compiled native inputs and84 native/test inputs remain unchanged. Native
+runtime rebuilding is therefore unnecessary for this GDScript/shader-only merge.
+Imports and six focused scripts per OS were rerun on the resulting composition:
+GCR protocol, actual playground, corrected review/pause, REM-002, REM-003 and
+palette shader compile bounds. All14 processes pass; see the
+[post-main host receipt](gcr001-2026-11-01/main-host-qualification.json).
+Four fresh Windows synchronous captures (Y1/GCR horizontal and high anchor)
+match their prior recorded physical projections exactly, preserving their
+failures; the [comparison](gcr001-2026-11-01/main-smoke-comparison.json),
+[summary](gcr001-2026-11-01/main-smoke-summary.json) and
+[raw manifest](gcr001-2026-11-01/main-smoke-raw-manifest.json) retain that scope.
+
+The original196 captures remain attributed to their pre-#331 source composition.
+The14 host processes and four smokes are separate post-merge evidence, not a new
+complete physical matrix, new performance campaign or async trajectory-equivalence
+claim. Shader compilation/rendering can affect scheduling; graphical/device
+and successor async acceptance remain open. The accepted main shader work keeps
+its own qualification owner. PR#346 stays draft/unmerged and R2 stays NO-GO.
