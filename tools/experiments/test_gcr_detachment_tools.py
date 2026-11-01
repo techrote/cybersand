@@ -9,6 +9,12 @@ import run_gcr_detachment as run
 
 
 class QualificationTests(unittest.TestCase):
+    def test_native_project_path_accepts_canonical_and_local_manifests(self):
+        project=Path('isolated-project')
+        for artifact in ['godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll',
+                         'build/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll']:
+            self.assertEqual(run.native_project_path(project,artifact),project/'addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll')
+
     def test_population_is_bounded_and_repeat_is_separate(self):
         protocol=json.loads(run.PROTOCOL.read_text(encoding='utf-8'))
         population=[row for platform in protocol['platforms'] for row in run.schedule(protocol,platform)]
@@ -68,6 +74,7 @@ class QualificationTests(unittest.TestCase):
     def test_legacy_uses_explicit_applied_reducer_values(self):
         app={'accepted':True,'impulse':[9,9],'actual_impulse':[.1,.2],'actual_angular_impulse':.3}
         self.assertEqual(analyze.actual_application(app),([.1,.2],.3))
+        self.assertEqual(analyze.actual_application({'accepted':True,'bodies':[]}),(None,None))
 
 
 if __name__=='__main__':

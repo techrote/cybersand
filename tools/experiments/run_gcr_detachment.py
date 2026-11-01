@@ -22,6 +22,13 @@ def git(*args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args], timeout=30)
 
 
+def native_project_path(project, artifact):
+    # A fresh local build manifest can name build/godot/... rather than the
+    # published canonical godot/... artifact. Its loaded project location is
+    # fixed by the extension, independently of that provenance source path.
+    return Path(project) / 'addons/cybersand_native/bin' / Path(artifact).name
+
+
 def schedule(protocol, platform):
     if platform not in protocol['platforms']:
         raise ValueError('Unregistered platform')
@@ -58,9 +65,10 @@ def authenticate(args):
     platform = 'windows' if os.name == 'nt' else 'linux'
     rapier_path = ROOT / f'godot/addons/godot-rapier2d/runtime-provenance.{platform}.json'
     rapier = json.loads(rapier_path.read_text(encoding='utf-8'))
-    for artifact, expected in [(manifest['artifact'], manifest['sha256']), (rapier['artifact'], rapier['sha256'])]:
-        if digest(ROOT / artifact) != expected or digest(args.project / Path(artifact).relative_to('godot')) != expected:
-            raise RuntimeError('Native/Rapier project artifact mismatch: ' + artifact)
+    if digest(native_project_path(args.project, manifest['artifact'])) != manifest['sha256']:
+        raise RuntimeError('Native project artifact mismatch')
+    if digest(ROOT / rapier['artifact']) != rapier['sha256'] or digest(args.project / Path(rapier['artifact']).relative_to('godot')) != rapier['sha256']:
+        raise RuntimeError('Rapier project artifact mismatch')
     inputs = {}
     for path in sorted((ROOT / 'godot').rglob('*')):
         if path.is_file() and '.godot' not in path.parts and (path.suffix in {'.gd', '.tscn', '.tres', '.gdshader', '.gdextension'} or path.name == 'project.godot'):
@@ -76,7 +84,7 @@ def authenticate(args):
                 'local_delta_sha256': hashlib.sha256(git('diff', '--binary', 'HEAD')).hexdigest(),
                 'protocol_sha256': digest(PROTOCOL), 'native_sha256': manifest['sha256'],
                 'native_manifest_sha256': digest(args.native_manifest),
-                'native_build_commit': manifest.get('build_commit'), 'rapier_sha256': rapier['sha256'],
+                'native_build_commit': manifest.get('build_commit') or manifest.get('source_commit'), 'rapier_sha256': rapier['sha256'],
                 'engine_sha256': digest(args.godot), 'godot': version,
                 'project_inputs': inputs,
                 'input_identity': hashlib.sha256(json.dumps(inputs, sort_keys=True).encode('utf-8')).hexdigest()}

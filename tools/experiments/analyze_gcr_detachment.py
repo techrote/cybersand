@@ -39,6 +39,8 @@ def actual_application(application):
         rows = [application]
     if not isinstance(rows, list):
         return None, None
+    if not rows:
+        return None, None
     impulses, torques = [], []
     for row in rows:
         if not isinstance(row,dict):

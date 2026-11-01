@@ -112,6 +112,7 @@ func _run() -> void:
 			report["release_lowest_union_y"] = release_bottom
 			var previous_velocity := Vector2.ZERO
 			var previous_omega: float = 0.0
+			var previous_rapier_steps: int = session.bridge.manual_step_count()
 			session.set_paused(false)
 			while failures.is_empty() and last_tick < target:
 				await physics_frame
@@ -122,14 +123,15 @@ func _run() -> void:
 				var velocity: Vector2 = PhysicsServer2D.body_get_state(session.body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
 				var omega: float = session.angular_velocity()
 				var bottom: float = lowest_union_y(session,pose)
+				var rapier_steps: int = session.bridge.manual_step_count()
+				var dt: float = float(rapier_steps-previous_rapier_steps)*session.bridge.fixed_delta()
 				last_tick = int(metrics.get("native_tick", last_tick))
-				var row: Dictionary = {"step":step,"native_tick":last_tick,"physics_dt":session.bridge.fixed_delta(),
+				var row: Dictionary = {"step":step,"native_tick":last_tick,"rapier_step":rapier_steps,"physics_dt":dt,
 					"position":portable(pose.origin),"rotation":pose.get_rotation(),"velocity":portable(velocity),"omega":omega,
 					"lowest_union_y":bottom,"reference_union_bottom_entry":bottom-release_bottom,
 					"lowest_union_at_or_below_floor_y":bottom>=72.0,
 					"metrics":compact(metrics),"pose_derivative":null,"acceleration":null,"angular_acceleration":null,
 					"pre_overlap":null,"post_overlap":null,"local_slip":null}
-				var dt: float = session.bridge.fixed_delta()
 				if step > 0 and dt > 0.0:
 					row.pose_derivative = portable((pose.origin-previous_pose.origin)/dt)
 					row.acceleration = portable((velocity-previous_velocity)/dt)
@@ -139,6 +141,7 @@ func _run() -> void:
 				if step % 60 == 0:
 					report.selected_observations.append({"step":step,"native_tick":last_tick,"metrics":portable(metrics)})
 				previous_pose = pose; previous_velocity = velocity; previous_omega = omega
+				previous_rapier_steps = rapier_steps
 				step += 1
 				check(pose.origin.is_finite() and is_finite(pose.get_rotation()) and velocity.is_finite() and is_finite(omega), "finite actual body")
 				check(not session.worker.has_failed(), "native owner healthy")
