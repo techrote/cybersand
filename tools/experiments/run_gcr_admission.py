@@ -34,7 +34,7 @@ def validate_registration(protocol):
         if protocol[key]!=original[key]:raise RuntimeError('Inherited scenario change: '+key)
     for relative,expected in protocol['frozen_law_files'].items():
         if legacy.digest(ROOT/relative,True)!=expected:raise RuntimeError('Frozen law/controller changed: '+relative)
-    adapter=(ROOT/'godot/native_extension/cyber_native_cell_world.cpp').read_text()
+    adapter=(ROOT/'godot/native_extension/cyber_native_cell_world.cpp').read_text(encoding='utf-8')
     for name,expected in protocol['frozen_adapter_functions'].items():
         if hashlib.sha256(function_body(adapter,name).encode()).hexdigest()!=expected:
             raise RuntimeError('Frozen response/ejection function changed: '+name)
@@ -63,7 +63,7 @@ def schedule(protocol, phase):
 
 def validate_mechanical_receipt(path,identity):
     if path is None:raise RuntimeError('Physical acquisition requires the source-bound native/query/oracle/adapter mechanical receipt')
-    value=json.loads(path.read_text())
+    value=json.loads(path.read_text(encoding='utf-8'))
     if value.get('ok') is not True:raise RuntimeError('Mechanical gate is not passing')
     for key in ['source','protocol_sha256','native_sha256','input_identity']:
         if value.get(key)!=identity[key]:raise RuntimeError('Stale mechanical receipt: '+key)
@@ -106,22 +106,22 @@ def main():
     campaign={'schema':1,'registration':REGISTRATION,'phase':args.phase,'identity':identity,'mechanical_receipt_sha256':mechanical_sha,
               'planned_captures':len(tasks),'functional_process_concurrency':args.jobs,
               'timing_scope':'sequential' if args.jobs==1 else 'functional concurrent timings are not performance evidence','captures':[],'complete':False}
-    index.write_text(json.dumps(campaign,indent=2))
+    index.write_text(json.dumps(campaign,indent=2),encoding='utf-8')
     def execute(task):
         _,current=authenticate(args)
         if current!=identity:raise RuntimeError('Source/runtime/project changed during campaign')
         if legacy.digest(args.mechanical_receipt)!=mechanical_sha:raise RuntimeError('Mechanical receipt changed during campaign')
         row=legacy.capture(args,identity,*task,protocol_path=PROTOCOL)
         if row['status']=='captured':
-            report=json.loads((args.output/row['raw']).read_text());wanted='A1' if task[1]=='GCR-A1' else ('R2' if task[1]=='GCR' else 'disabled')
+            report=json.loads((args.output/row['raw']).read_text(encoding='utf-8'));wanted='A1' if task[1]=='GCR-A1' else ('R2' if task[1]=='GCR' else 'disabled')
             if report.get('registration')!=REGISTRATION or report.get('granular_identity',{}).get('admission_variant')!=wanted:
                 row['status']='failed';row['identity_refusal']='actual admission variant or registration mismatch'
         return row
     with ThreadPoolExecutor(args.jobs) as pool:
         for row in pool.map(execute,tasks):
-            campaign['captures'].append(row);index.write_text(json.dumps(campaign,indent=2));print(row['status'],row['case'],row['arm'],row['repeat'],flush=True)
+            campaign['captures'].append(row);index.write_text(json.dumps(campaign,indent=2),encoding='utf-8');print(row['status'],row['case'],row['arm'],row['repeat'],flush=True)
     campaign['complete']=len(campaign['captures'])==len(tasks) and all(r['status']=='captured' for r in campaign['captures'])
-    index.write_text(json.dumps(campaign,indent=2));return 0 if campaign['complete'] else 1
+    index.write_text(json.dumps(campaign,indent=2),encoding='utf-8');return 0 if campaign['complete'] else 1
 
 
 if __name__=='__main__':sys.exit(main())

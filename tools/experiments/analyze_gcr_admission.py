@@ -58,7 +58,7 @@ def reduce_reports(reports):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('campaign',type=Path);parser.add_argument('--output',type=Path,required=True)
-    args=parser.parse_args();campaign=json.loads(args.campaign.read_text())
+    args=parser.parse_args();campaign=json.loads(args.campaign.read_text(encoding='utf-8'))
     if campaign.get('registration')!=REGISTRATION:raise RuntimeError('Not an admission campaign')
     reports=[];failures=[]
     for capture in campaign['captures']:
@@ -75,7 +75,7 @@ def main():
             'mechanical_receipt_sha256':campaign.get('mechanical_receipt_sha256'),'capture_complete':campaign['complete'],
             'failures':failures,'receipts':receipts,'Y1_physical_comparisons':physical,'R2_A1_attribution':attribution,
             'disposition':'MEASURED ONLY: mechanical admission validity, unchanged-law adequacy, performance and owner feel are separate gates; no default or merge inferred.'}
-    args.output.write_text(json.dumps(output,indent=2));print(len(receipts),'captures',len(physical),'Y1/A1 comparisons',len(attribution),'R2/A1 descriptive comparisons',len(failures),'execution failures')
+    args.output.write_text(json.dumps(output,indent=2),encoding='utf-8');print(len(receipts),'captures',len(physical),'Y1/A1 comparisons',len(attribution),'R2/A1 descriptive comparisons',len(failures),'execution failures')
 
 
 if __name__=='__main__':main()
