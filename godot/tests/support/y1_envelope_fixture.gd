@@ -63,6 +63,7 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 	viewport.size = Vector2i(1024,768)
 	host.add_child(viewport)
 	var sizes := PackedVector2Array()
+	var initial_centres := PackedVector2Array()
 	var angle: float = float(spec.angle)
 	var extent: float = absf(cos(angle))*body_size.y + absf(sin(angle))*body_size.x
 	var body_x: float = left + width/2.0
@@ -77,6 +78,7 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 		body.angular_damp = 0.35
 		body.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
 		body.position = Vector2(body_x + (index-.5)*float(spec.get("separation",0)), local_surface-extent/2.0-float(spec.gap))
+		initial_centres.append(body.position)
 		body.rotation = angle
 		var collision := CollisionShape2D.new()
 		var rectangle := RectangleShape2D.new()
@@ -91,7 +93,7 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 	if bridge.initialize(viewport.world_2d.space,bodies,sizes) != OK: return false
 	bridge.enable_diagnostics()
 	for i: int in range(bodies.size()):
-		bridge.reset_body(i,bodies[i].position,angle)
+		bridge.reset_body(i,initial_centres[i],angle)
 		PhysicsServer2D.body_set_param(bodies[i].get_rid(),PhysicsServer2D.BODY_PARAM_FRICTION,0.78)
 		PhysicsServer2D.body_set_state(bodies[i].get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(0,float(spec.speed)))
 		PhysicsServer2D.body_set_state(bodies[i].get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,float(spec.spin))

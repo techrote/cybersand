@@ -55,3 +55,15 @@ acceptance, production default promotion or merge is authorized by this record.
 qualification are pending at this registration checkpoint. The protocol includes
 credible-rest/rebound/support-release/performance bounds and explicit handling of
 rotation as a distinct mechanism. Owner judgement is not inferred from tests.
+
+## Preserved acquisition failure and initialization correction
+
+The first source8737 acquisition is **nonqualifying**. Its preflight/current
+moderate trajectories disagreed because fixture setup yielded after adding a
+live body, then reset Rapier from the presentation node's potentially advanced
+position. The protocol requests a fixed initial gap. The correction retains
+planned centres before yielding and resets the manual space from those values.
+It changes no candidate law, geometry, threshold or scenario. `build/preflight`
+and interrupted `build/campaign` remain retained locally; neither is used as a
+final efficacy population. Exact repeated physical channels are required before
+the corrected acquisition. This failure is a fixture defect, not candidate evidence.
