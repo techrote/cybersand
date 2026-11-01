@@ -31,3 +31,7 @@ docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
 *.dylib filter=lfs diff=lfs merge=lfs -text
 *.wasm filter=lfs diff=lfs merge=lfs -text
 godot/addons/godot-rapier2d/bin/*.framework/libgodot_rapier.* filter=lfs diff=lfs merge=lfs -text
+
+# Preserve exact Linux/Windows qualification artifact bytes and their hashes.
+docs/audits/sol281-20261101/hosted/** -text whitespace=cr-at-eol,-blank-at-eof
+docs/audits/sol281-20261101/graphical-smoke/glxinfo.txt -text whitespace=-blank-at-eof

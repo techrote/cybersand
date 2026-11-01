@@ -12,6 +12,7 @@ on:
       - third_party/**
       - Makefile
       - AGENTS.md
+      - .gitattributes
       - .github/workflows/sol281-current-main.yml
       - .github/workflows/rapier-bvh-build.yml
   workflow_dispatch:
@@ -245,5 +246,64 @@ jobs:
         with:
           name: sol281-qualified-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/sol281/qualification.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  publish:
+    name: publish qualified development runtimes on the draft branch
+    needs: [build, evidence]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Check out the exact qualified source with publication credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Retrieve both original build bundles
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: sol281-build-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/publication-builds
+      - name: Retrieve all six original host bundles
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: sol281-host-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/publication-hosts
+      - name: Reverify qualification and prepare truthful runtime provenance
+        run: |
+          git lfs install --local
+          python3 tools/sol281/test_publish_runtime.py
+          python3 tools/sol281/publish_runtime.py --build-root build/sol281/publication-builds --evidence-root build/sol281/publication-hosts --output build/sol281/publication.json
+          python3 - <<'PY'
+          import json, subprocess
+          paths = json.load(open('build/sol281/publication.json'))['publication_paths']
+          subprocess.run(['git', 'add', '-f', '--', *paths], check=True)
+          PY
+          python3 tools/sol281/publish_runtime.py --build-root build/sol281/publication-builds --evidence-root build/sol281/publication-hosts --output build/sol281/publication.json --verify-staged
+      - name: Publish only against the still-qualified branch head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          branch_name=sol-detach-001-current-main
+          actual_head="$(git ls-remote --exit-code origin "refs/heads/$branch_name" | cut -f1)"
+          test "$actual_head" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git diff --cached --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Publish qualified SOL281 development runtimes from $GITHUB_SHA"
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          git push --force-with-lease="refs/heads/$branch_name:$GITHUB_SHA" origin "HEAD:refs/heads/$branch_name"
+          gh workflow run documentation.yml --ref "$branch_name"
+      - name: Retain publication decision and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol281-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/publication.json
           if-no-files-found: warn
           retention-days: 90

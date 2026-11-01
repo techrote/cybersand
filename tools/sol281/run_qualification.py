@@ -22,7 +22,7 @@ import run_godot_regressions as runner
 from run_windows_godot_regressions import GODOT_SHA512, GODOT_VERSION
 
 COHORTS = ("core", "contact-w1", "contact-w4")
-SCOPES = ("native", "godot", "tools", "third_party", "Makefile", "AGENTS.md",
+SCOPES = ("native", "godot", "tools", "third_party", "Makefile", "AGENTS.md", ".gitattributes",
           ".github/workflows/sol281-current-main.yml", ".github/workflows/rapier-bvh-build.yml")
 RESULT_FILES = frozenset({"test_solid_detachment", "test_solid_detachment_coupling",
                           "test_solid_detachment_populated", "test_solid_detachment_displacement"})
@@ -47,6 +47,29 @@ def source_identity():
             "tree": git("rev-parse", "HEAD^{tree}").decode().strip()}
 
 
+def committed_crlf_paths(paths):
+    # Git stores canonical LF but intentionally checks PS1/BAT out as CRLF on
+    # both platforms. Only committed attributes may authorize that conversion.
+    attributes = git("show", "HEAD:.gitattributes")
+    require((ROOT / ".gitattributes").read_bytes() == attributes, "Checkout .gitattributes differs from Git")
+    info_path = Path(git("rev-parse", "--git-path", "info/attributes").decode().strip())
+    if not info_path.is_absolute():
+        info_path = ROOT / info_path
+    require(not info_path.is_file() or not info_path.read_bytes(), "Unversioned Git attributes cannot authorize qualification")
+    output = subprocess.check_output(["git", "-C", str(ROOT), "-c", "core.attributesFile=" + os.devnull,
+        "check-attr", "--source=HEAD", "-z", "--stdin", "eol"], input=("\0".join(paths) + "\0").encode(),
+        timeout=policy.watchdog_seconds("operation_seconds"),
+        env={**os.environ, "GIT_ATTR_NOSYSTEM": "1"}).decode().split("\0")
+    require(output[-1] == "" and len(output) == 3 * len(paths) + 1, "Incomplete committed attribute inventory")
+    permitted = set()
+    for index, path in enumerate(paths):
+        name, attribute, value = output[index * 3:index * 3 + 3]
+        require(name == path and attribute == "eol", "Mismatched committed attribute result")
+        if value == "crlf":
+            permitted.add(path)
+    return permitted
+
+
 def source_inputs():
     """Authenticate all tracked execution/build inputs against exact Git blobs.
 
@@ -59,6 +82,7 @@ def source_inputs():
                    and not (p.startswith("godot/addons/") and "/bin/" in p)
                    and not p.endswith(".import"))
     require(paths and all("\n" not in p for p in paths), "Invalid source inventory")
+    crlf_paths = committed_crlf_paths(paths)
     objects = subprocess.check_output(["git", "-C", str(ROOT), "cat-file", "--batch"],
         input="".join("HEAD:" + p + "\n" for p in paths).encode(),
         timeout=policy.watchdog_seconds("operation_seconds"))
@@ -70,11 +94,18 @@ def source_inputs():
         require(len(header) == 3 and header[1] == b"blob", "Missing Git blob: " + path)
         size = int(header[2])
         raw = objects[end + 1:end + 1 + size]
-        require((ROOT / path).read_bytes() == raw, "Checkout source differs from Git: " + path)
+        actual = (ROOT / path).read_bytes()
+        converted = path in crlf_paths and b"\r\n" not in raw and actual == raw.replace(b"\n", b"\r\n")
+        require(actual == raw or converted, "Checkout source differs from Git: " + path)
         inputs[path] = hashlib.sha256(raw).hexdigest()
         offset = end + size + 2
     require(offset == len(objects), "Unconsumed source blob data")
     return inputs
+
+
+def checkout_inputs(canonical_inputs):
+    """Raw host bytes, recorded separately from the cross-platform Git identity."""
+    return {path: digest(ROOT / path) for path in canonical_inputs}
 
 
 def write_json(path: Path, value):
@@ -85,10 +116,12 @@ def write_json(path: Path, value):
 def manifest(args):
     document = {"schema": "cybersand.sol281.source-build.v1", "source": source_identity(),
                 "inputs": source_inputs(), "scope": "scoped qualification; not runtime publication"}
+    document["checkout_inputs"] = checkout_inputs(document["inputs"])
     if args.before:
         before = json.loads(args.before.read_text(encoding="utf-8"))
         require(before["source"] == document["source"] and before["inputs"] == document["inputs"],
                 "Build changed its authenticated source inputs")
+        require(before["checkout_inputs"] == document["checkout_inputs"], "Build changed its raw checkout source bytes")
         document["before_manifest_sha256"] = digest(args.before)
     if args.runtime:
         require(args.runtime.is_file() and args.runtime.stat().st_size > 4096, "Runtime build absent")
@@ -267,7 +300,9 @@ def run(args):
         require(not os.environ.get("GITHUB_SHA") or os.environ["GITHUB_SHA"] == build["source"]["sha"], "Workflow SHA differs from source")
         before = source_inputs()
         require(before == build["inputs"], "Execution input set differs from build input set")
+        checkout_before = checkout_inputs(before)
         write_json(args.output / "inputs-before.json", before)
+        write_json(args.output / "checkout-inputs-before.json", checkout_before)
         report["build_manifest_sha256"] = digest(args.manifest)
         require(args.runtime.name == build["runtime"]["filename"] and digest(args.runtime) == build["runtime"]["sha256"],
                 "Runtime differs from built artifact")
@@ -320,11 +355,15 @@ def run(args):
         require([x["name"] for x in report["records"]] == report["expected_cases"], "Incomplete or reordered case inventory")
         after = source_inputs()
         write_json(args.output / "inputs-after.json", after)
+        checkout_after = checkout_inputs(after)
+        write_json(args.output / "checkout-inputs-after.json", checkout_after)
         require(after == before and source_identity() == build["source"], "Execution changed source inputs")
+        require(checkout_after == checkout_before, "Execution changed raw checkout source bytes")
         require(digest(native) == build["runtime"]["sha256"], "Execution changed native runtime")
         _, after_rapier = verify_rapier(args.platform)
         require(after_rapier == report["rapier"], "Execution changed Rapier runtime")
         report["source_unchanged"] = True
+        report["checkout_inputs_unchanged"] = True
         report["status"] = "failed" if report["errors"] else "passed"
     except Exception as error:
         report["errors"].append(f"{type(error).__name__}: {error}")
@@ -359,6 +398,10 @@ def summarize(args):
             inputs = json.loads((path.parent / "inputs-before.json").read_text(encoding="utf-8"))
             require(inputs == json.loads((path.parent / "inputs-after.json").read_text(encoding="utf-8")),
                     "Cohort source changed")
+            checkout_before = json.loads((path.parent / "checkout-inputs-before.json").read_text(encoding="utf-8"))
+            checkout_after = json.loads((path.parent / "checkout-inputs-after.json").read_text(encoding="utf-8"))
+            require(set(checkout_before) == set(inputs) and checkout_before == checkout_after
+                    and report.get("checkout_inputs_unchanged") is True, "Cohort raw checkout bytes changed or inventory incomplete")
             require(input_identity == inputs, "Cohort execution inputs differ from reducer Git source")
             runtime = report["runtime"]
             require(key[0] not in runtimes or runtimes[key[0]] == runtime, "Platform cohorts used different native runtimes")

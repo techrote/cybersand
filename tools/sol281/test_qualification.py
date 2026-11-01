@@ -159,6 +159,8 @@ class QualificationReader(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             subprocess.run(["git", "init", "-q", str(root)], check=True)
+            attributes = root / ".gitattributes"
+            attributes.write_bytes(b"*.cpp text eol=lf\n")
             (root / "native").mkdir()
             file = root / "native/fixture.cpp"
             file.write_bytes(b"canonical\n")
@@ -166,8 +168,50 @@ class QualificationReader(unittest.TestCase):
             subprocess.run(["git", "-C", str(root), "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
                             "commit", "-qm", "reader fixture"], check=True)
             with patch.object(q, "ROOT", root):
-                self.assertEqual(q.source_inputs(), {"native/fixture.cpp": hashlib.sha256(b"canonical\n").hexdigest()})
+                self.assertEqual(q.source_inputs(), {"native/fixture.cpp": hashlib.sha256(b"canonical\n").hexdigest(),
+                    ".gitattributes": hashlib.sha256(attributes.read_bytes()).hexdigest()})
                 file.write_bytes(b"uncommitted mutation\n")
+                with self.assertRaises(RuntimeError):
+                    q.source_inputs()
+
+    def test_only_committed_crlf_conversion_is_admitted_and_raw_identity_is_retained(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            subprocess.run(["git", "init", "-q", str(root)], check=True)
+            attributes = root / ".gitattributes"
+            attributes.write_bytes(b"*.ps1 text eol=crlf\n*.cpp text eol=lf\n")
+            (root / "tools").mkdir()
+            (root / "native").mkdir()
+            script = root / "tools/fixture.ps1"
+            native = root / "native/fixture.cpp"
+            script.write_bytes(b"first\nsecond\n")
+            native.write_bytes(b"exact native source\n")
+            subprocess.run(["git", "-C", str(root), "add", "."], check=True, capture_output=True)
+            subprocess.run(["git", "-C", str(root), "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                            "commit", "-qm", "explicit CRLF checkout fixture"], check=True)
+            with patch.object(q, "ROOT", root):
+                canonical = q.source_inputs()
+                raw_lf = q.checkout_inputs(canonical)
+                script.write_bytes(b"first\r\nsecond\r\n")
+                self.assertEqual(q.source_inputs(), canonical)
+                raw_crlf = q.checkout_inputs(canonical)
+                self.assertEqual(set(raw_lf), set(raw_crlf))
+                self.assertNotEqual(raw_lf, raw_crlf)
+                self.assertEqual(raw_crlf["tools/fixture.ps1"], hashlib.sha256(script.read_bytes()).hexdigest())
+                for invalid in (b"first\r\nsecond\n", b"first\r\nchanged\r\n"):
+                    script.write_bytes(invalid)
+                    with self.assertRaises(RuntimeError):
+                        q.source_inputs()
+                script.write_bytes(b"first\r\nsecond\r\n")
+                native.write_bytes(b"exact native source\r\n")
+                with self.assertRaises(RuntimeError):
+                    q.source_inputs()
+                attributes.write_bytes(b"*.ps1 text eol=crlf\n*.cpp text eol=crlf\n")
+                with self.assertRaises(RuntimeError):
+                    q.source_inputs()
+                attributes.write_bytes(b"*.ps1 text eol=crlf\n*.cpp text eol=lf\n")
+                native.write_bytes(b"exact native source\n")
+                (root / ".git/info/attributes").write_bytes(b"*.cpp eol=crlf\n")
                 with self.assertRaises(RuntimeError):
                     q.source_inputs()
 
@@ -183,6 +227,8 @@ class QualificationReader(unittest.TestCase):
                     output.mkdir()
                     q.write_json(output / "inputs-before.json", {"fixture": "identity"})
                     q.write_json(output / "inputs-after.json", {"fixture": "identity"})
+                    q.write_json(output / "checkout-inputs-before.json", {"fixture": "raw-" + platform})
+                    q.write_json(output / "checkout-inputs-after.json", {"fixture": "raw-" + platform})
                     cases = q.inventory(cohort)
                     records = []
                     for spec in cases:
@@ -199,6 +245,7 @@ class QualificationReader(unittest.TestCase):
                             "result": q.verify_result_file(spec, output, readback)})
                     report = {"schema": "cybersand.sol281.qualification.v1", "status": "passed", "source": source,
                         "platform": platform, "cohort": cohort, "source_unchanged": True, "errors": [],
+                        "checkout_inputs_unchanged": True,
                         "runtime": {"sha256": platform}, "expected_cases": [x.name for x in cases], "records": records}
                     q.write_json(output / "report.json", report)
                     if first_path is None:
@@ -214,6 +261,12 @@ class QualificationReader(unittest.TestCase):
                 self.assertEqual(q.summarize(args), 1)
                 for inventory in inventories:
                     q.write_json(inventory, {"fixture": "identity"})
+                self.assertEqual(q.summarize(args), 0)
+                raw_after = first_path.parent / "checkout-inputs-after.json"
+                raw_original = raw_after.read_bytes()
+                q.write_json(raw_after, {"fixture": "changed raw bytes with identical canonical source"})
+                self.assertEqual(q.summarize(args), 1)
+                raw_after.write_bytes(raw_original)
                 self.assertEqual(q.summarize(args), 0)
                 original = first_path.read_bytes()
                 first_path.unlink()

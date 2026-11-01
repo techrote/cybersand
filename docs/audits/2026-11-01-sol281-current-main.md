@@ -30,7 +30,11 @@ cherry-pick, radius experiment, coalescing or retained-baseline exemption is use
 At intake, PLAY #331/#332/#334, GCR #339/#341/#342/#343 and E #345 were independent
 open streams. This branch neither edits their branches nor waits for GCR to
 implement detachment. A later accepted GCR candidate needs separate integration
-qualification; current-main contact behavior is the initial control.
+qualification; current-main contact behavior is the initial control. Reinspection
+confirms #343 is still draft/unmerged at
+`2aff460c60f36c0f209b67fe682d0f8b9e5e0f83`. Its owner preference for Y1 is retained,
+but its registered technical failures and absent production promotion remain.
+No GCR integration qualification is claimed by this branch.
 
 ## Preserved negative evidence and selected mechanism
 
@@ -84,9 +88,11 @@ review work. Significant findings resolved in source include:
 - Numeric narrowing and exceptional replay setup fail closed; quarantined
   partial progress is distinct from a mutation-free refusal.
 - Active-owner world replacement, failed-native publication and nonconsecutive
-  compound sample replay were identified in the independent host review. Their
-  final repair and actual-host regression disposition is recorded with the
-  hosted results below; they are not waived by the isolated motion proof.
+  compound sample replay were identified in the independent host review. All three are repaired and have focused actual-host regression controls;
+  their final-source execution disposition is recorded with the hosted results.
+- A quarantined transaction previously could reach a later healthy-only mask
+  mutation and throw across the adapter. It now stops before further masks or
+  forces; this exceptional path is source-reviewed, not directly fault-injected.
 
 ## Validation ledger
 
@@ -98,12 +104,13 @@ ready-for-review acceptance.
 | Gate | Recorded state at initial implementation checkpoint |
 |---|---|
 | Native detachment | Linux GCC13: nine groups / 19,338 checks pass. |
+| Shared native/material regressions | Existing 165 tests pass on the recovered source; original log retained. |
 | Native displacement | Linux GCC13: six groups / 281 checks pass, including exact source-mask ownership. |
 | Native ASan/UBSan | Both focused suites pass ASan/UBSan: 19,338 and 281 checks. |
 | Deterministic replay | 17 cases / 292 checks each on workers 1 and 4; complete case results identical. Initial failed attempts retained. |
 | Actual Linux Godot/Rapier | Fresh native runtime built; full focused host matrix pending. |
 | Actual Windows Godot/Rapier | Source-matched hosted build/execution pending. |
-| Graphical presentation / target GPU | Not tested at this checkpoint; headless times are not FPS acceptance. |
+| Graphical presentation / target GPU | Rendered dry/mixed visual smoke passed under Xvfb/llvmpipe; representative GPU pacing remains not tested. |
 | Ready-PR full CI / merge | Deferred: the requested deliverable remains draft and requires owner approval to merge. |
 
 The initial replay failure is preserved: no-op setters were mistakenly treated
@@ -125,7 +132,7 @@ execution and uninjected unexpected-exception coverage remain distinct.
 
 ## Issue #281 gate disposition
 
-The broader owner requirement remains open. Initial dispositions are explicit;
+The broader owner requirement remains open. Dispositions are explicit;
 successful later host runs update only their corresponding rows.
 
 | Acceptance gate | Disposition and practical boundary |
@@ -146,6 +153,20 @@ successful later host runs update only their corresponding rows.
 | Fracture / inherited fragment motion / persistence | Explicitly deferred; unsupported aggregate saves refuse. |
 | Normal gameplay and physical owner acceptance | Explicitly deferred; opt-in playable lab provided. |
 | Representative GPU pacing and independent final review | Not tested / review in progress. |
+
+## Rendered scene inspection
+
+[Original visual receipt](sol281-20261101/graphical-smoke/visual-review.json) and
+[complete source/runtime record](sol281-20261101/graphical-smoke/report.json) retain
+actual rendered dry and mixed captures at local freeze `dd18bca6`, whose exact
+tree is also preserved by remote implementation commit `83a12466`. This is
+software OpenGL (Mesa 25.2.8 / llvmpipe LLVM 20.1.2), not representative GPU
+frame-pacing acceptance. Both scenes exited successfully. The mixed captures
+also visibly retain the dense penetration limitation.
+
+![Actual anchored mixed fixture](sol281-20261101/graphical-smoke/mixed-anchored.png)
+
+![Actual mixed fixture after 240 Rapier steps](sol281-20261101/graphical-smoke/mixed-tick240.png)
 
 ## Documentation change map
 

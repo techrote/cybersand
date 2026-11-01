@@ -176,6 +176,14 @@ retain their original source metadata and negative outcomes; four new shallow
 boundary controls demonstrate real multi-parcel movement. No historical result
 is relabelled as a current execution.
 
+The scoped GitHub-hosted workflow authenticates build inputs and all six actual
+Linux/Windows cohorts, then reopens their original evidence before publishing
+the two development runtimes on this draft branch. Publication requires an exact
+branch-head lease; its commit is a child of the qualified source. Provenance
+continues to name the original build/execution commit and tree. Raw Windows
+evidence retains its original line endings. A later metadata commit does not
+become a newly executed physics source by relabelling the records.
+
 **Deferred:** reactive Wood/bark, heterogeneous bonds, arbitrary fracture,
 multiple persistent aggregates, transformed rest-to-cell restoration, normal
 gameplay integration and Web qualification. Sleeping is still aggregate ownership.

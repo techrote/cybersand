@@ -1,0 +1,335 @@
+/usr/bin/g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp -o build/tests
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:2854:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 2854 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+native/src/c_api.cpp: In function ‘uint8_t cybersand_world_liquid_mass(const cybersand_world*, int64_t, int64_t)’:
+native/src/c_api.cpp:418:29: warning: conversion from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} may change value [-Wconversion]
+  418 |     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);
+      |            ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+native/tests/test_lcb_inertial.cpp: In function ‘void {anonymous}::test_inertial_sparse_serial_seam()’:
+native/tests/test_lcb_inertial.cpp:429:33: warning: loop variable ‘start’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  429 |                 for (const auto start : {std::pair{3, 7}, std::pair{-5, -1}}) {
+      |                                 ^~~~~
+native/tests/test_lcb_inertial.cpp:429:33: note: use reference type to prevent copying
+  429 |                 for (const auto start : {std::pair{3, 7}, std::pair{-5, -1}}) {
+      |                                 ^~~~~
+      |                                 &
+native/tests/test_lcb_inertial.cpp: In function ‘uint64_t {anonymous}::check_resting_body_contact(int, int, int, int)’:
+native/tests/test_lcb_inertial.cpp:916:21: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  916 |     for (const auto [x, y] : kContactOrigins) {
+      |                     ^~~~~~
+native/tests/test_lcb_inertial.cpp:916:21: note: use reference type to prevent copying
+  916 |     for (const auto [x, y] : kContactOrigins) {
+      |                     ^~~~~~
+      |                     &
+native/tests/test_lcb_inertial.cpp: In function ‘void {anonymous}::test_inertial_body_contact()’:
+native/tests/test_lcb_inertial.cpp:1019:25: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+ 1019 |         for (const auto [dx, dy] : std::array<std::pair<int, int>, 5>{{{0, 1}, {-1, 0}, {1, 0}, {-1, 1}, {1, 1}}}) {
+      |                         ^~~~~~~~
+native/tests/test_lcb_inertial.cpp:1019:25: note: use reference type to prevent copying
+ 1019 |         for (const auto [dx, dy] : std::array<std::pair<int, int>, 5>{{{0, 1}, {-1, 0}, {1, 0}, {-1, 1}, {1, 1}}}) {
+      |                         ^~~~~~~~
+      |                         &
+In file included from native/tests/test_water_inertial.cpp:4:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:44:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   44 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_water_inertial.cpp: In function ‘void {anonymous}::body_contacts()’:
+native/tests/test_water_inertial.cpp:211:54: warning: loop variable ‘normal’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  211 |     for (const auto workers:{1U,4U}) for (const auto normal:std::array<std::pair<int,int>,3>{{{0,1},{-1,1},{1,1}}}) {
+      |                                                      ^~~~~~
+native/tests/test_water_inertial.cpp:211:54: note: use reference type to prevent copying
+  211 |     for (const auto workers:{1U,4U}) for (const auto normal:std::array<std::pair<int,int>,3>{{{0,1},{-1,1},{1,1}}}) {
+      |                                                      ^~~~~~
+      |                                                      &
+native/tests/test_water_inertial.cpp:215:25: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  215 |         for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}}) {
+      |                         ^~~~~
+native/tests/test_water_inertial.cpp:215:25: note: use reference type to prevent copying
+  215 |         for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}}) {
+      |                         ^~~~~
+      |                         &
+native/tests/test_water_inertial.cpp:222:29: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  222 |             for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}})
+      |                             ^~~~~
+native/tests/test_water_inertial.cpp:222:29: note: use reference type to prevent copying
+  222 |             for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}})
+      |                             ^~~~~
+      |                             &
+native/tests/test_water_inertial.cpp: In function ‘void {anonymous}::unaligned_and_serial_activity()’:
+native/tests/test_water_inertial.cpp:533:20: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  533 |     for(const auto [chunk,block]:std::array<std::pair<int,int>,2>{{{10,3},{34,33}}})
+      |                    ^~~~~~~~~~~~~
+native/tests/test_water_inertial.cpp:533:20: note: use reference type to prevent copying
+  533 |     for(const auto [chunk,block]:std::array<std::pair<int,int>,2>{{{10,3},{34,33}}})
+      |                    ^~~~~~~~~~~~~
+      |                    &
+native/tests/test_water_inertial.cpp: In function ‘void test_water_inertial_carrying()’:
+native/tests/test_water_inertial.cpp:609:24: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  609 |         for(const auto [x,y]:std::array<std::pair<int,int>,2>{{{55,40},{10,-24}}}) {
+      |                        ^~~~~
+native/tests/test_water_inertial.cpp:609:24: note: use reference type to prevent copying
+  609 |         for(const auto [x,y]:std::array<std::pair<int,int>,2>{{{55,40},{10,-24}}}) {
+      |                        ^~~~~
+      |                        &
+In file included from native/tests/test_world.cpp:2:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:44:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   44 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_world.cpp: In function ‘void test_water_experiment_policy_validation_and_coherence()’:
+native/tests/test_world.cpp:2951:21: warning: loop variable ‘invalid_policy’ creates a copy from type ‘const std::pair<unsigned char, unsigned char>’ [-Wrange-loop-construct]
+ 2951 |     for (const auto invalid_policy : {
+      |                     ^~~~~~~~~~~~~~
+native/tests/test_world.cpp:2951:21: note: use reference type to prevent copying
+ 2951 |     for (const auto invalid_policy : {
+      |                     ^~~~~~~~~~~~~~
+      |                     &
+native/tests/test_lcb_pressure.cpp: In lambda function:
+native/tests/test_lcb_pressure.cpp:979:14: warning: declaration of ‘config’ shadows a previous local [-Wshadow]
+  979 |         auto config = pressure_config();
+      |              ^~~~~~
+native/tests/test_lcb_pressure.cpp:930:10: note: shadowed declaration is here
+  930 |     auto config = pressure_config();
+      |          ^~~~~~
+native/tests/test_lcb_pressure.cpp:983:14: warning: declaration of ‘world’ shadows a previous local [-Wshadow]
+  983 |         auto world = std::make_unique<World>(config);
+      |              ^~~~~
+native/tests/test_lcb_pressure.cpp:934:11: note: shadowed declaration is here
+  934 |     World world(config);
+      |           ^~~~~
+In file included from native/include/cybersand/default_demo_recipe.hpp:3,
+                 from native/tests/test_pressure_setup_capacity.cpp:1:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:44:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   44 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+In file included from native/tests/test_water_cellular_yield.cpp:5:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:44:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   44 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_water_cellular_yield.cpp: In function ‘void {anonymous}::admission_and_ingress()’:
+native/tests/test_water_cellular_yield.cpp:93:66: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   93 |         require(!world.set_cell_state(8,8,Material::Water,maximum-1U,0) &&
+      |                                                           ~~~~~~~^~~
+[pass] player material field payloads and signed seams
+[pass] player material field blocking and invalid nonmutation
+[pass] player material field budgets and source snapshot
+[pass] player material field storage refusal
+[pass] player material field distinct spread and squeeze
+[pass] player material field native quantity and worker parity
+[pass] persistent material contacts survive sleep
+[pass] Ice contact boundaries and worker parity
+[pass] inert material contacts still sleep
+[pass] material deadlines pause and unmask
+[pass] Ice neighbor success keeps pending contact
+[pass] material deadlines follow contact removal and reset
+[pass] material deadlines with discovery observer
+[pass] INT-000 sparse schema shadow equivalence
+[pass] flow resting packing, films, barriers and signed seams
+[pass] flow conserved state, temperature, workers and exclusion
+[pass] powder pairs and void-driven rearrangement
+[pass] Mercury lanes, sleeping wakes, seams and worker parity
+[pass] granular sampled support policy
+[pass] physics diagnostic observer and worker parity
+[pass] physics diagnostic isolated controls
+[pass] physics masked source characterisation
+[pass] ACT-004 articulated body identity capacity
+[pass] negative coordinates
+[pass] scheduler geometry
+[pass] sand fall
+[pass] cross chunk
+[pass] cross scheduler core
+[pass] activity sleep and wake
+[pass] serial/phased behavioral parity
+[pass] density swap
+[info] water settled after 209 ticks
+[pass] conserved water
+[pass] Water lateral speed
+[pass] level water surface
+[pass] water single/multiworker parity
+[pass] water storage boundary
+[pass] runtime Water experiment policy
+[pass] odd-lattice Water boundaries and ledgers
+[pass] Water experiment validation and coherence
+[pass] Water coherence gravity and exhaustive merge
+[pass] Water experiment worker parity
+[pass] default Water experiment state-hash correspondence
+[pass] optional temperature movement
+[pass] serialized relocation preserves payload
+[pass] preallocated hot path
+[pass] chunk capacity
+[pass] smoke
+[pass] smoke density displacement
+[pass] smoke lifecycle and fire exclusion
+[pass] fire and extinguishing
+[pass] hot material reactions
+[pass] acid and stone
+[pass] water/oil density
+[pass] cloner
+[pass] deferred explosion
+[pass] explosion worker parity
+[pass] growth and seed
+[pass] mite and rocket
+[pass] complete material worker parity
+[pass] determinism
+[pass] single/multiworker determinism
+[pass] sleeping
+[pass] issue #1 failed tick stop/reset
+[pass] issue #1 late failure and publication
+[pass] issue #1 C API failure/recovery
+[pass] issue #2 interest resume boundaries
+[pass] issue #2 sleeping region transitions
+[pass] issue #2 conservation and worker determinism
+[pass] issues #1/#2 failed re-entry and recovery
+[pass] dirty rectangles
+[pass] immutable render snapshots
+RENDER_COPY_QUALIFICATION {"assertions":153284,"regions":231,"compared_bytes":8338180,"nonmutation_checks":42,"refusal_checks":18,"failures":0}
+[pass] render copy production qualification
+[pass] concurrent render leases
+[pass] C API and RGBA
+[pass] extended material families
+[pass] Sandspiel material catalog
+[pass] themed static material catalog
+[pass] themed combustible kernels
+[pass] building material catalog
+[pass] building combustibles ignite
+[pass] building pair reactions execute
+[pass] building inert controls stay inert
+[pass] building CYSD1 constructor and snapshot round trip
+[pass] building transport schema bounds
+[pass] building contact boundaries and worker parity
+[pass] LCB-001 liquid policy SHA-256 known answers
+[pass] LCB-001 liquid policy identity matches source
+[pass] LCB-001 liquid policy catalogue matches descriptors
+[pass] LCB-001 liquid policy wire vectors
+[pass] LCB-001 liquid policy session transcript
+[pass] LCB-001 liquid policy running build admits defaults and qualified candidates
+[pass] LCB-001 liquid policy World construction and refusal
+[pass] LCB-001 liquid policy default behavior and workers
+[pass] LCB-001 liquid policy C API transaction
+IN worker observation: damping=0/16 configured=4 observed=4
+IN worker observation: damping=1/16 configured=4 observed=4
+IN worker observation: damping=16/16 configured=4 observed=4
+[pass] LCB-005 inertial boundary workers
+[pass] LCB-005 inertial reset products
+IN storage 1024: slot=6 align=2 bytes=6291456 owners=2048 worker_ledgers=622592 world=289 total_components=6916385 serialized=12603966 capture_restore_seconds=1.82318
+[pass] LCB-005 inertial storage capture
+[pass] LCB-005 inertial residual motion
+[pass] LCB-005 inertial admission
+[pass] Water IN admission and normalization
+[pass] Water IN coherence and resting contacts
+Water IN carry x=55 y=40 bits=3 workers=1 enabled=1 no_motion=0 pickups=2
+Water IN carry x=55 y=40 bits=3 workers=1 enabled=0 no_motion=0 pickups=0
+Water IN carry x=55 y=40 bits=3 workers=1 enabled=1 no_motion=1 pickups=0
+Water IN carry x=10 y=-24 bits=3 workers=1 enabled=1 no_motion=0 pickups=2
+Water IN carry x=10 y=-24 bits=3 workers=1 enabled=0 no_motion=0 pickups=0
+Water IN carry x=10 y=-24 bits=3 workers=1 enabled=1 no_motion=1 pickups=0
+Water IN carry x=55 y=40 bits=8 workers=1 enabled=1 no_motion=0 pickups=2
+Water IN carry x=55 y=40 bits=8 workers=1 enabled=0 no_motion=0 pickups=0
+Water IN carry x=55 y=40 bits=8 workers=1 enabled=1 no_motion=1 pickups=0
+Water IN carry x=10 y=-24 bits=8 workers=1 enabled=1 no_motion=0 pickups=2
+Water IN carry x=10 y=-24 bits=8 workers=1 enabled=0 no_motion=0 pickups=0
+Water IN carry x=10 y=-24 bits=8 workers=1 enabled=1 no_motion=1 pickups=0
+Water IN carry x=55 y=40 bits=3 workers=4 enabled=1 no_motion=0 pickups=2
+Water IN carry x=55 y=40 bits=3 workers=4 enabled=0 no_motion=0 pickups=0
+Water IN carry x=55 y=40 bits=3 workers=4 enabled=1 no_motion=1 pickups=0
+Water IN carry x=10 y=-24 bits=3 workers=4 enabled=1 no_motion=0 pickups=2
+Water IN carry x=10 y=-24 bits=3 workers=4 enabled=0 no_motion=0 pickups=0
+Water IN carry x=10 y=-24 bits=3 workers=4 enabled=1 no_motion=1 pickups=0
+Water IN carry x=55 y=40 bits=8 workers=4 enabled=1 no_motion=0 pickups=2
+Water IN carry x=55 y=40 bits=8 workers=4 enabled=0 no_motion=0 pickups=0
+Water IN carry x=55 y=40 bits=8 workers=4 enabled=1 no_motion=1 pickups=0
+Water IN carry x=10 y=-24 bits=8 workers=4 enabled=1 no_motion=0 pickups=2
+Water IN carry x=10 y=-24 bits=8 workers=4 enabled=0 no_motion=0 pickups=0
+Water IN carry x=10 y=-24 bits=8 workers=4 enabled=1 no_motion=1 pickups=0
+[pass] Water IN actual carrier and complete footprint
+[pass] Water IN real workers and continuation
+activity:256 targets/job without discovery passed
+activity:optional discovery overflow independent passed
+activity:same-phase shared middle block passed
+activity:unaligned negative seams and serial passed
+activity:Current deadlines and diagnostics passed
+[pass] worker activity publication and observer independence
+[pass] Water IN mandatory material hooks and lifecycle
+[pass] Water IN independent arithmetic examples
+[pass] Water IN cadence and powder exchange control
+Water IN storage side=128 slot=6 alignment=2 slot_capacity=16384 array_bytes=98304 owner_bytes=32 job_ledger_bytes=622592 world_members=289 total_components=721217 simultaneous_world_components=1442434 legacy_resident_bytes=131328
+Water IN storage side=1024 slot=6 alignment=2 slot_capacity=1048576 array_bytes=6291456 owner_bytes=2048 job_ledger_bytes=622592 world_members=289 total_components=6916385 simultaneous_world_components=13832770 legacy_resident_bytes=8404992
+Water IN storage side=2048 slot=6 alignment=2 slot_capacity=4194304 array_bytes=25165824 owner_bytes=8192 job_ledger_bytes=622592 world_members=289 total_components=25796897 simultaneous_world_components=51593794 legacy_resident_bytes=33619968
+[pass] Water IN storage pause and capacity
+IN damping tail: numerator=0/16 tick=30 x=65 vx=24 loss=120
+IN damping tail: numerator=1/16 tick=30 x=50 vx=15 loss=129
+IN damping tail: numerator=8/16 tick=30 x=21 vx=0 loss=56
+IN damping tail: numerator=16/16 tick=30 x=20 vx=0 loss=40
+[pass] LCB-005 inertial damping parameters
+[pass] LCB-005 inertial comparison projections
+[pass] LCB-005 inertial contract examples
+[pass] LCB-005 inertial ledgers rest parity
+[pass] LCB-005 inertial no tunnelling
+[pass] LCB-005 inertial lifecycle
+[pass] LCB-005 inertial three families
+[pass] LCB-005 inertial body contact
+[pass] LCB-001 pressure admission and refusal
+[pass] LCB-001 pressure gas ID restore bounds
+[pass] LCB-001 pressure gas ID creation exhaustion
+[pass] LCB-001 pressure gas ID split exhaustion
+[pass] LCB-001 pressure quantity rectangle bounds
+[pass] LCB-001 pressure pending event restore bounds
+[pass] LCB-001 pressure gas single and twin pockets
+[pass] LCB-001 pressure gas unequal merge
+[pass] LCB-001 pressure gas compress, vent and reseal
+[pass] LCB-001 pressure gas split
+[pass] LCB-001 pressure gas in Empty-only and unallocated chunks
+[pass] LCB-001 pressure quantity, motion and worker parity
+[pass] LCB-001 pressure vented two-limb head transmission
+[pass] LCB-001 pressure walls and body masks block head
+[pass] LCB-001 pressure static rest, sleep and remote wake
+[pass] LCB-001 pressure lifecycle state and ledgers
+[pass] LCB-001 pressure physical hash and exact persistence
+[pass] LCB-001 pressure default policy untouched
+[pass] LCB-002 comparison static content and retained authority
+[pass] LCB-002 comparison pressure variant normalization
+[pass] LCB-002 cached incremental heads and continuation
+[pass] LCB-002 native optimization identity and readback
+LCB002_CERTIFICATE_COST_POSITIVE jobs=4 enabled=1 suspend=0 saved=154752 reuse=152256 charge=20368 credit=159744 resets=1 invalid=7271 attempts=2496 coldcells=4096 chunks=4 water=159744
+[pass] LCB-002 deterministic dormant proof-cost admission
+[pass] LCB-002 cached gas invalidation and exact fallback
+[pass] LCB-002 affected gas component discovery and continuation
+[pass] LCB-002 gas component capacity and pair-budget fallback
+LCB002_BODY_COST_NEGATIVE workers=1 saved=182 reuse=156 refmotion=1280 motion=1098 attempts=32 charge=16852 credit=448 reset=4 suspended=4
+LCB002_BODY_COST_NEGATIVE workers=4 saved=182 reuse=156 refmotion=1280 motion=1098 attempts=32 charge=16852 credit=448 reset=4 suspended=4
+[pass] LCB-002 dormant motion and stationary body obligations
+[pass] LCB-002 acceptance remote hydraulic wake and sparse interest
+[pass] LCB-002 acceptance rotating native masks
+[pass] LCB-002 acceptance mandatory obligations and reconstruction
+LCB002_BASIN_DIAGNOSTICS: workers=1 passage_height=1 resident_samples_per_arm=552960 prepared_samples_per_arm=83882 max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=161 maximum_net_inflow=133 tick_sources=0 tick_sinks=0
+LCB002_BASIN_DIAGNOSTICS: workers=1 passage_height=4 resident_samples_per_arm=552960 prepared_samples_per_arm=89142 max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=202 maximum_net_inflow=219 tick_sources=0 tick_sinks=0
+LCB002_BASIN_DIAGNOSTICS: workers=4 passage_height=1 resident_samples_per_arm=552960 prepared_samples_per_arm=83882 max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=161 maximum_net_inflow=133 tick_sources=0 tick_sinks=0
+LCB002_BASIN_DIAGNOSTICS: workers=4 passage_height=4 resident_samples_per_arm=552960 prepared_samples_per_arm=89142 max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=202 maximum_net_inflow=219 tick_sources=0 tick_sinks=0
+[pass] LCB-002 acceptance communicating narrow and broad passages
+[pass] LCB-002 acceptance isolated vent into certified target
+MOVING_GAS_MASK: collapse/split/merge/vent/live; PF0/1/2; configured1/4; masked restore; exact parity
+[pass] LCB-002 moving gas masks retire and preserve exact identities
+PRESSURE_SETUP_CAPACITY: 46 assertions; 0 failures
+[pass] LCB-003 prepared initial pressure gas capacity
+[pass] LCB-001 liquid policy C API allocation failures
+[pass] LCB-001 W-CY admission and ingress
+[pass] LCB-001 W-CY coherence, viscosity and masks
+[pass] LCB-001 W-CY material hooks
+[pass] LCB-001 W-CY workers, persistence and transport
+[pass] LCB-001 W-CY liveness and cadence
+[pass] LCB-001 Water normalization rounding
+[pass] LCB-001 Water normalization refusals
+[pass] LCB-001 Water normalization final identity
+[pass] LCB-001 Water normalization thermal fields
+[pass] LCB-001 Water normalization arithmetic
+[pass] LCB-001 Water normalization canonical vectors
+63 receipt assertions passed; host fields remain explicitly qualified
+[pass] LCB-001 native run receipt identity
+[pass] LCB-001 native-issued construction refusals
+[pass] LCB-001 native quantity ledger
+165 tests passed
