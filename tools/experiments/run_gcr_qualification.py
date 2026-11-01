@@ -75,6 +75,8 @@ def capture(args, identity, case, arm, repeat, mode):
                '--script', f'res://tests/test_gcr_{"async" if mode == "async" else "envelope"}.gd',
                '--', f'--protocol={PROTOCOL}', f'--case={case}', f'--candidate={arm}',
                f'--output={output}', f'--telemetry={args.telemetry}']
+    if mode == 'async':
+        command.append('--hold-every=6')
     start = time.monotonic()
     status, returncode = 'failed', None
     with log.open('w', encoding='utf-8') as handle:
@@ -122,6 +124,8 @@ def main():
     cases = args.case or (protocol['async_cases'] if args.mode == 'async' else [spec['id'] for spec in protocol['cases']])
     if not set(cases) <= valid or not set(args.arms) <= {'B0', 'Y1', 'GCR', 'GCR-MU0', 'GCR-CENTRAL'}:
         raise RuntimeError('Unknown registered case/arm')
+    if args.mode == 'async' and not set(cases) <= set(protocol['async_cases']):
+        raise RuntimeError('Async captures require one of the six registered delayed-worker cases')
     if args.mode == 'timing' and not args.case:
         raise RuntimeError('Timing requires an explicit bounded registered case list')
     args.output.mkdir(parents=True, exist_ok=True)

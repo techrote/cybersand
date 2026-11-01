@@ -17,8 +17,10 @@ class Observer extends CyberSimulationWorker:
 
 	func _publish_snapshot(step_ms: float, paused: bool, interval: int,
 			force_full: bool = false, states: PackedFloat32Array = PackedFloat32Array(), epoch: int = 0) -> void:
+		var observer_start: int = Time.get_ticks_usec()
 		var tick: int = int(_world.get_tick_index())
-		if tick != recorded and tick <= limit:
+		var fresh_trace: bool = tick != recorded and tick <= limit
+		if fresh_trace:
 			var observation: Dictionary = fixture.observation()
 			conservation = conservation and fixture.conserved(observation)
 			var diagnostic_start: int = Time.get_ticks_usec()
@@ -28,7 +30,17 @@ class Observer extends CyberSimulationWorker:
 			trace[tick]["diagnostic_copy_us"] = Time.get_ticks_usec()-diagnostic_start
 			fixture.edit_at(tick)
 			recorded = tick
+		var observer_before_publication_us: int = Time.get_ticks_usec()-observer_start
+		var publication_start: int = Time.get_ticks_usec()
 		super._publish_snapshot(step_ms,paused,interval,force_full,states,epoch)
+		var publication_wall_us: int = Time.get_ticks_usec()-publication_start
+		if fresh_trace:
+			_mutex.lock()
+			var result_generation_us: int = _published_snapshot.gcr_result_generation_usec
+			_mutex.unlock()
+			trace[tick]["gcr_result_generation_us"] = result_generation_us
+			trace[tick]["publication_wall_including_result_us"] = publication_wall_us
+			trace[tick]["observer_before_publication_us"] = observer_before_publication_us
 		if tick >= limit:
 			_mutex.lock()
 			_running = false
@@ -42,6 +54,11 @@ func _run() -> void:
 	for argument: String in OS.get_cmdline_user_args():
 		var pair := argument.trim_prefix("--").split("=",true,1)
 		if pair.size() == 2: args[pair[0]] = pair[1]
+	var hold_every: int = int(args.get("hold-every",6))
+	if hold_every != 6:
+		push_error("GCR async: only the registered every-sixth-delivery hold is supported")
+		quit(1)
+		return
 	var protocol: Variant = JSON.parse_string(FileAccess.get_file_as_string(str(args.get("protocol",""))))
 	if not protocol is Dictionary or not str(args.get("case","")) in protocol.get("async_cases",[]):
 		push_error("GCR async: unknown registered delayed-worker case")
@@ -90,19 +107,20 @@ func _run() -> void:
 		delivery += 1
 		# Hold every sixth physical delivery for one frame. The next mailbox
 		# value remains immutable; native and Rapier clocks keep their own pace.
-		if delivery % 6 != 0:
+		if delivery % hold_every != 0:
 			if fixture.is_gcr(): fixture.bridge.apply_gcr_results(snapshot.serial,fixture.application_results(snapshot.gcr_body_results))
 			else: fixture.bridge.apply_cellular_results(snapshot.serial,snapshot.rigid_body_results)
 		var pose: Array = fixture.pose(0)
 		var applications: PackedFloat64Array = fixture.bridge.diagnostic_applications
 		var row: Dictionary = {"tick":snapshot.tick_index,"rapier_tick":fixture.bridge.manual_step_count(),
-			"delivery":delivery,"held":delivery%6==0,"out":pose,"age":null if delivery%6==0 else int(applications[0]),
-			"legacy_application":[0,0,0,0,0,0] if delivery%6==0 else Array(applications.slice(0,6)),
+			"delivery":delivery,"held":delivery%hold_every==0,"out":pose,"age":null if delivery%hold_every==0 else int(applications[0]),
+			"legacy_application":[0,0,0,0,0,0] if delivery%hold_every==0 else Array(applications.slice(0,6)),
+			"gcr_result_generation_us":snapshot.gcr_result_generation_usec,
 			"vertical_depth":maxf(0.0,float(pose[1])+absf(cos(pose[2]))*fixture.body_size.y/2+absf(sin(pose[2]))*fixture.body_size.x/2-Fixture.SURFACE),
 			"horizontal_depth":maxf(0.0,float(pose[0])+absf(cos(pose[2]))*fixture.body_size.x/2+absf(sin(pose[2]))*fixture.body_size.y/2-fixture.bank_x) if not is_nan(fixture.bank_x) else 0.0,
 			"hard_floor_contact":float(pose[1])+absf(cos(pose[2]))*fixture.body_size.y/2+absf(sin(pose[2]))*fixture.body_size.x/2 >= fixture.floor_y-.5}
 		if fixture.is_gcr():
-			row["application"] = {"accepted":false,"refusal":"held","bodies":[]} if delivery%6==0 else fixture.json_value(fixture.bridge.gcr_application_diagnostics())
+			row["application"] = {"accepted":false,"refusal":"held","bodies":[]} if delivery%hold_every==0 else fixture.json_value(fixture.bridge.gcr_application_diagnostics())
 			row["computed_result"] = Array(snapshot.gcr_body_results)
 			row["result"] = Array(fixture.application_results(snapshot.gcr_body_results))
 			row["ablation"] = fixture.ablation_receipt()
@@ -127,6 +145,8 @@ func _run() -> void:
 		"protocol_sha256":FileAccess.get_sha256(str(args.protocol)),"candidate":arm,"ablation":fixture.ablation_receipt(),"case":spec,
 		"runtime":{"engine":FileAccess.get_sha256(OS.get_executable_path()),"native":FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")},
 		"rows":rows,"worker_trace":worker.trace,"completed_ticks":worker.recorded,
+		"delivery_policy":{"hold_every":hold_every,"hold_frames":1},
+		"timing_contract":"worker_step_ms excludes publication; publication_wall includes result generation; observer measurements are separate apparatus overhead",
 		"rapier_ticks":fixture.bridge.manual_step_count(),"conserved":conserved,"edits":fixture.edits,
 		"final":final,"worker_overruns":snapshot.worker_overruns,"platform":OS.get_name()}
 	var file := FileAccess.open(str(args.get("output","")),FileAccess.WRITE)

@@ -110,6 +110,12 @@ def summarize(report):
     result['timing_us']['total_measured_components'] = timings([sum(row['times_us'])+row.get('packing_us',0) for row in warm if 'times_us' in row])
     for name in ['coupling_prepare_us','result_generation_us','diagnostic_copy_us','packing_us']:
         result['timing_us'][name] = timings([row[name] for row in warm if name in row])
+    trace = [row for row in report.get('worker_trace',[]) if isinstance(row,dict) and row.get('tick',0) >= 120]
+    if report['mode'] == 'desktop-asynchronous':
+        result['async_timing_us'] = {name:timings([row[name] for row in trace if name in row]) for name in
+                                    ['gcr_result_generation_us','publication_wall_including_result_us','observer_before_publication_us','diagnostic_copy_us']}
+        result['async_timing_us']['worker_step_excluding_publication_us'] = timings([row['worker_step_ms']*1000 for row in trace if 'worker_step_ms' in row])
+        result['async_timing_us']['worker_plus_publication_us'] = timings([row['worker_step_ms']*1000+row['publication_wall_including_result_us'] for row in trace if 'worker_step_ms' in row and 'publication_wall_including_result_us' in row])
     return result
 
 
