@@ -130,6 +130,24 @@ The final [independent ownership review](sol281-20261101/review/host-review.md)
 closes H1–H4 at source level and retains the initial findings. Actual hosted
 execution and uninjected unexpected-exception coverage remain distinct.
 
+### Preserved first hosted attempt
+
+[Run 41329746261](https://github.com/techrote/cybersand/actions/runs/41329746261)
+qualified source `c8c81a8b81677abd173de199a9d436f46de2268b`, tree
+`214f927af0e9feeb65c664e981b32b7fbc15e39b`. Both pinned platform builds and all
+three Linux host cohorts passed. All three Windows cohorts refused the checkout
+before Godot or physics execution: `Checkout .gitattributes differs from Git`.
+The evidence reducer failed and runtime publication was correctly skipped.
+[Original reports, Windows job log and artifact-entry hashes](sol281-20261101/hosted/c8c81a8b81677abd173de199a9d436f46de2268b/first-attempt/inventory.json)
+preserve this failed attempt without changing its source identity or raw bytes.
+
+`core.autocrlf=false` alone retained Windows' native `core.eol` default, converting
+automatic-text files to CRLF. The narrow repair sets `core.eol=lf` before checkout;
+explicit committed `eol=crlf` files still use CRLF. A real-Git regression with the
+repository's committed attributes reproduces the rejection and verifies the
+repair. All nine qualification-reader tests pass. No attributes or validator
+rules are relaxed. The corrected source requires a new complete platform run.
+
 ## Issue #281 gate disposition
 
 The broader owner requirement remains open. Dispositions are explicit;

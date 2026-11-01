@@ -6,6 +6,7 @@ from contextlib import redirect_stdout
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -214,6 +215,47 @@ class QualificationReader(unittest.TestCase):
                 (root / ".git/info/attributes").write_bytes(b"*.cpp eol=crlf\n")
                 with self.assertRaises(RuntimeError):
                     q.source_inputs()
+
+    def test_lf_checkout_default_preserves_real_attributes_and_explicit_ps1_crlf(self):
+        # core.autocrlf=false alone retains the platform's core.eol default.
+        # Reproduce the Windows CRLF default portably, then apply the hosted fix.
+        attributes = q.git("show", "HEAD:.gitattributes")
+        source = {".gitattributes": attributes,
+                  "tools/fixture.ps1": b"first\nsecond\n",
+                  "tools/implicit-eol.txt": b"ordinary auto text\n",
+                  "native/fixture.cpp": b"explicit LF source\n"}
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            def git(*args):
+                return subprocess.check_output(["git", "-C", str(root), "-c", "core.attributesFile=" + os.devnull,
+                    *args], stderr=subprocess.PIPE, env={**os.environ, "GIT_ATTR_NOSYSTEM": "1"})
+            git("init", "-q")
+            git("config", "core.autocrlf", "false")
+            git("config", "core.eol", "crlf")
+            for relative, raw in source.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(raw)
+            git("add", ".")
+            git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                "commit", "-qm", "actual attributes checkout regression")
+            for relative in source:
+                (root / relative).unlink()
+            git("checkout-index", "--all", "--force")
+            self.assertEqual((root / ".gitattributes").read_bytes(), attributes.replace(b"\n", b"\r\n"))
+            self.assertEqual((root / "tools/implicit-eol.txt").read_bytes(), b"ordinary auto text\r\n")
+            with patch.object(q, "ROOT", root):
+                with self.assertRaisesRegex(RuntimeError, "Checkout .gitattributes differs from Git"):
+                    q.source_inputs()
+                git("config", "core.eol", "lf")
+                for relative in source:
+                    (root / relative).unlink()
+                git("checkout-index", "--all", "--force")
+                self.assertEqual((root / ".gitattributes").read_bytes(), attributes)
+                self.assertEqual((root / "tools/fixture.ps1").read_bytes(), b"first\r\nsecond\r\n")
+                self.assertEqual((root / "tools/implicit-eol.txt").read_bytes(), source["tools/implicit-eol.txt"])
+                self.assertEqual((root / "native/fixture.cpp").read_bytes(), source["native/fixture.cpp"])
+                self.assertEqual(q.source_inputs(), {path: hashlib.sha256(raw).hexdigest() for path, raw in source.items()})
 
     def test_complete_aggregate_rejects_missing_and_altered_evidence(self):
         source = {"sha": "a" * 40, "tree": "b" * 40}
