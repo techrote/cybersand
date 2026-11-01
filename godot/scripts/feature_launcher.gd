@@ -6,6 +6,8 @@ func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)
+	if first_launch:
+		CyberWindowPlacement.apply_at_launch(get_window())
 	if first_launch and "--semantic-depth" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://semantic_depth.tscn")
 		return
