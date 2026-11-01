@@ -297,6 +297,12 @@ static func _hue_variation_for(material_id: int) -> float:
 
 
 static func create_program_texture() -> ImageTexture:
+	return ImageTexture.create_from_image(create_program_image())
+
+
+static func create_program_image() -> Image:
+	# Retain the CPU instructions before upload. GLES texture readback passes
+	# through RGBA8 and cannot preserve HDR values or integer flair tags > 1.
 	# Four bounded RGBA16F instructions per material:
 	# 0: condition tint RGB + maximum blend
 	# 1: smoothstep min/max + value multiplier at 0/1
@@ -501,7 +507,7 @@ static func create_program_texture() -> ImageTexture:
 	_set_flair(program, [33], FLAIR_MERCURY)
 	_set_flair(program, [28], FLAIR_CHARGED_METAL)
 	_set_flair(program, [5], FLAIR_CLONER)
-	return ImageTexture.create_from_image(program)
+	return program
 
 
 static func _set_flair(program: Image, material_ids: Array, flair: int) -> void:

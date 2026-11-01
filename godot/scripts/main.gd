@@ -1517,6 +1517,7 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
 	if OS.get_cmdline_user_args().has("--depth-lab") and not get_tree().has_meta("cybersand_depth_lab_visited"):
 		set_process(false)
 		call_deferred("open_depth_lab")

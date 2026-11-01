@@ -1,0 +1,298 @@
+name: Palette shader actual backend qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'godot/shaders/**'
+      - 'godot/scripts/palette_shader_selector.gd'
+      - 'godot/scripts/main.gd'
+      - 'godot/tests/*palette*.gd'
+      - 'godot/tests/test_material*render.gd'
+      - 'godot/tests/test_water*render.gd'
+      - 'godot/tests/test_water_feel_integration.gd'
+      - 'godot/tests/play_life001_shared_host_case.gd'
+      - 'godot/tests/support/ci_execution_policy.*'
+      - 'godot/addons/**'
+      - 'godot/project.godot'
+      - 'godot/main.tscn'
+      - 'native/**'
+      - 'third_party/**'
+      - 'tools/play/*palette*.py'
+      - 'tools/ci/*.py'
+      - '.github/workflows/palette-shader-qualification.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'godot/shaders/**'
+      - 'godot/scripts/palette_shader_selector.gd'
+      - 'godot/scripts/main.gd'
+      - 'godot/tests/*palette*.gd'
+      - 'godot/tests/test_material*render.gd'
+      - 'godot/tests/test_water*render.gd'
+      - 'godot/tests/test_water_feel_integration.gd'
+      - 'godot/tests/support/ci_execution_policy.*'
+      - 'godot/addons/**'
+      - 'native/**'
+      - 'third_party/**'
+      - 'tools/play/*palette*.py'
+      - 'tools/ci/execution_policy.py'
+      - '.github/workflows/palette-shader-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: palette-shader-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  PALETTE_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  plan:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      linux_matrix: ${{ steps.plan.outputs.linux_matrix }}
+      windows_matrix: ${{ steps.plan.outputs.windows_matrix }}
+      reducer: ${{ steps.plan.outputs.reducer }}
+    steps:
+      - name: Check out exact source and preserved native baseline
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PALETTE_SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Derive complete registered inventory and every outer budget
+        id: plan
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/palette-shader-plan
+          test "$(git rev-parse HEAD)" = "$PALETTE_SOURCE_SHA"
+          python tools/ci/check_ci_provider_policy.py | tee build/palette-shader-plan/provider.json
+          python tools/play/run_palette_shader_qualification.py --plan-json > build/palette-shader-plan/plan.json
+          python - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          plan = json.loads(Path('build/palette-shader-plan/plan.json').read_text())
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as handle:
+              for name, platform in [('linux', 'linux'), ('windows', 'win32')]:
+                  value = {'include': [row for row in plan['include'] if row['platform'] == platform]}
+                  handle.write(name + '_matrix=' + json.dumps(value, separators=(',', ':')) + '\n')
+              handle.write('reducer=' + json.dumps(plan['reducer'], separators=(',', ':')) + '\n')
+          PYTHON
+      - name: Retain exact plan and provider control
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: palette-shader-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/palette-shader-plan/
+          if-no-files-found: error
+          retention-days: 30
+
+  linux:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ matrix.job_minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.linux_matrix) }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/palette-shader-linux-${{ matrix.group }}-${{ matrix.shard_index }}
+      PALETTE_GROUP: ${{ matrix.group }}
+      PALETTE_SHARD: ${{ matrix.shard_index }}
+      LIBGL_ALWAYS_SOFTWARE: '1'
+    steps:
+      - name: Check out exact source
+        timeout-minutes: ${{ matrix.metadata_step_minutes }}
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PALETTE_SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: ${{ matrix.metadata_step_minutes }}
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize source-pinned dependencies and run portable adverse controls
+        timeout-minutes: ${{ matrix.dependency_minutes }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python tools/play/run_palette_shader_qualification.py --prepare-dependencies \
+            --expected-source-sha "$PALETTE_SOURCE_SHA" --godot-archive "$RUNNER_TEMP/palette-godot.zip" \
+            --output "$EVIDENCE_DIR/dependencies" 2>&1 | tee "$EVIDENCE_DIR/dependencies.log"
+      - name: Execute actual native GL cohort with full source-policy allowances
+        timeout-minutes: ${{ matrix.suite_minutes }}
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python tools/play/run_palette_shader_qualification.py --group "$PALETTE_GROUP" --shard-index "$PALETTE_SHARD" \
+            --expected-source-sha "$PALETTE_SOURCE_SHA" --godot-archive "$RUNNER_TEMP/palette-godot.zip" \
+            --output "$EVIDENCE_DIR/qualification" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently reread retained source, pixels and cache lineage
+        if: always()
+        timeout-minutes: ${{ matrix.readback_minutes }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python tools/play/run_palette_shader_qualification.py --verify-only \
+            --expected-source-sha "$PALETTE_SOURCE_SHA" --output "$EVIDENCE_DIR/qualification" \
+            2>&1 | tee "$EVIDENCE_DIR/offline-readback.log"
+      - name: Preserve every original success, failure, raw frame and managed cache
+        if: always()
+        timeout-minutes: ${{ matrix.metadata_step_minutes }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: palette-shader-cohort-linux-${{ matrix.group }}-${{ matrix.shard_index }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE_DIR }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  windows:
+    needs: plan
+    runs-on: windows-2022
+    timeout-minutes: ${{ matrix.job_minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.windows_matrix) }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/palette-shader-windows-${{ matrix.group }}-${{ matrix.shard_index }}
+      PALETTE_GROUP: ${{ matrix.group }}
+      PALETTE_SHARD: ${{ matrix.shard_index }}
+    steps:
+      - name: Preserve exact source text bytes before checkout
+        timeout-minutes: ${{ matrix.metadata_step_minutes }}
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out exact source
+        timeout-minutes: ${{ matrix.metadata_step_minutes }}
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PALETTE_SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: ${{ matrix.metadata_step_minutes }}
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize source-pinned dependencies and run portable adverse controls
+        timeout-minutes: ${{ matrix.dependency_minutes }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python tools/play/run_palette_shader_qualification.py --prepare-dependencies \
+            --expected-source-sha "$PALETTE_SOURCE_SHA" --godot-archive "$RUNNER_TEMP/palette-godot.zip" \
+            --output "$EVIDENCE_DIR/dependencies" 2>&1 | tee "$EVIDENCE_DIR/dependencies.log"
+      - name: Execute actual Windows ANGLE cohort with full source-policy allowances
+        timeout-minutes: ${{ matrix.suite_minutes }}
+        run: |
+          set -euo pipefail
+          python tools/play/run_palette_shader_qualification.py --group "$PALETTE_GROUP" --shard-index "$PALETTE_SHARD" \
+            --expected-source-sha "$PALETTE_SOURCE_SHA" --godot-archive "$RUNNER_TEMP/palette-godot.zip" \
+            --output "$EVIDENCE_DIR/qualification" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently reread retained source, pixels and cache lineage
+        if: always()
+        timeout-minutes: ${{ matrix.readback_minutes }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python tools/play/run_palette_shader_qualification.py --verify-only \
+            --expected-source-sha "$PALETTE_SOURCE_SHA" --output "$EVIDENCE_DIR/qualification" \
+            2>&1 | tee "$EVIDENCE_DIR/offline-readback.log"
+      - name: Preserve every original success, failure, raw frame and managed cache
+        if: always()
+        timeout-minutes: ${{ matrix.metadata_step_minutes }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: palette-shader-cohort-win32-${{ matrix.group }}-${{ matrix.shard_index }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE_DIR }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  readback:
+    if: always() && needs.plan.result == 'success'
+    needs: [plan, linux, windows]
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.reducer).job_minutes }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the independently expected source
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.reducer).metadata_step_minutes }}
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PALETTE_SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.reducer).metadata_step_minutes }}
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retrieve all six original cohorts without merging their files
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.reducer).metadata_step_minutes }}
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: palette-shader-cohort-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/palette-shader-originals/
+          merge-multiple: false
+      - name: Prepare the independently pinned pixel readers
+        if: always()
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.reducer).dependency_minutes }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/palette-shader-readback
+          python tools/play/run_palette_shader_qualification.py --prepare-reader \
+            --expected-source-sha "$PALETTE_SOURCE_SHA" --output build/palette-shader-readback/dependencies \
+            2>&1 | tee build/palette-shader-readback/dependencies.log
+      - name: Require the complete source-bound inventory and same-variant native versus ANGLE pixels
+        if: always()
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.reducer).readback_minutes }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/palette-shader-readback
+          python tools/play/run_palette_shader_qualification.py --verify-suite \
+            --expected-source-sha "$PALETTE_SOURCE_SHA" --output build/palette-shader-originals \
+            2>&1 | tee build/palette-shader-readback/suite-readback.log
+      - name: Preserve the final independent verdict, including missing or failed cohorts
+        if: always()
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.reducer).metadata_step_minutes }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: palette-shader-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/palette-shader-readback/
+          if-no-files-found: error
+          retention-days: 30
