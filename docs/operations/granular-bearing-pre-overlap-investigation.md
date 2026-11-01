@@ -4,7 +4,7 @@ status: Planned
 document-kind: guide
 scope: Measurement-first causal successor to the A2 finite-cohort local-rearrangement no-go; no bearing changes approved here
 canonical-for: [granular-bearing-pre-overlap-investigation]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 related-documents: [../audits/2026-10-31-physical-detachment-a2.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/granular-interaction-policy.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -143,3 +143,7 @@ bounded traces, diagnostic-neutrality controls, material conservation and an
 independently reviewed causal account. A later owner-approved response experiment
 must be justified by that account. Neither this plan nor A2 admits a production
 bearing change, generalized granular compaction or broad gameplay acceptance.
+
+## Registered measurement run - 2026-11-01
+
+**Planned / registered:** the [finite protocol](../audits/granular-bearing-2026-11-01/protocol.json) starts from exact A2 head `61f0398e` on a separate branch. Current main `15b3a401` is drift metadata only. The owner authorized executing this measurement successor. Two matched spinning height arms precede a conditionally admitted, separately registered zero-spin speed series. All response laws remain fixed; diagnostics require exact on/off neutrality. Results and disposition remain unmeasured at registration.

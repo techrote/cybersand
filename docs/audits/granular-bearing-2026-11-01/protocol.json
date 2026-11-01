@@ -1,0 +1,142 @@
+{
+  "schema": 1,
+  "registered_date": "2026-11-01",
+  "parent_pr": 338,
+  "parent_head": "61f0398e5a6d63432be681dc4a4d32da769f2b20",
+  "main_observed_only": "15b3a4012b9d5998e808fb371792dd7a71398507",
+  "branch": "codex/granular-bearing-pre-overlap-20261101",
+  "question": "Why do saturated rigid/cellular overlaps arise before bounded displacement can clear them?",
+  "immutable": [
+    "production ejection and rejection order",
+    "bearing/support/correction laws and constants",
+    "packed ABI",
+    "body mass/damping/gravity",
+    "cellular laws",
+    "native/fallback semantics",
+    "all previous evidence"
+  ],
+  "fixture": {
+    "bank": [
+      96,
+      160,
+      32,
+      48
+    ],
+    "body_size": [
+      8,
+      14
+    ],
+    "mass": 1,
+    "rotation": 0.08,
+    "ticks": 600,
+    "workers": 1,
+    "dt": 0.016666666666666666,
+    "owner": "fresh diagnostic native World and real main-thread manual Rapier"
+  },
+  "phase1": [
+    {
+      "name": "drop1",
+      "center": [
+        112,
+        139
+      ],
+      "initial_velocity": [
+        0,
+        0
+      ],
+      "angular_velocity": 1
+    },
+    {
+      "name": "drop4",
+      "center": [
+        112,
+        97
+      ],
+      "initial_velocity": [
+        0,
+        0
+      ],
+      "angular_velocity": 1
+    }
+  ],
+  "phase2_gate": "Register separate zero-spin series before running iff drop4 achieved first-raw-support vy exceeds drop1 AND its maximum oriented initial-surface entry OR peak endpoint overlap exceeds drop1. Spinning-arm comparison alone is descriptive/confounded.",
+  "phase2_if_admitted": {
+    "names": [
+      "speed0",
+      "speed30",
+      "speed60",
+      "speed90"
+    ],
+    "lower_extent_clearance": 2,
+    "initial_rotation": 0.08,
+    "angular_velocity": 0,
+    "initial_vertical_velocities": [
+      0,
+      30,
+      60,
+      90
+    ],
+    "velocity_assignment": "once after bridge.reset_body, never per tick"
+  },
+  "definitions": {
+    "first_support": "first raw qualifying downward support count>0 before velocity gate",
+    "first_overlap": "first pre-reconcile endpoint mask with stored movable>0",
+    "first_failure": "first recorded no_target event",
+    "first_braking": "first accepted upward NET impulse after raw support onset",
+    "first_correction": "first applied correction above bridge epsilon",
+    "entry_window": "first raw support through first pre-application nonpositive vy, inclusive; else599",
+    "support_collapse": "raw positive becomes zero >=2 consecutive descending ticks while endpoint overlap nondecreases",
+    "initial_surface_entry": "oriented lower body extent minus160; reference only",
+    "current_contour_entry": "maximum lower body polygon Y minus top occupied Sand cell Y over its horizontal footprint; signed per-column intersections; pre-ejection state",
+    "new_overlap": "pre-reconcile endpoint mask cells with stored movable not present in previous tick pre-reconcile set",
+    "persistent_overlap": "intersection with previous tick pre-reconcile set"
+  },
+  "observations": [
+    "all600 compact and detailed boundaries (no shortened window)",
+    "live pre/post Rapier and post correction/impulse motion",
+    "raw/published support and exact shared-predicate failure categories/histogram",
+    "nominal bearing/arrest/yield/capacity/ties",
+    "generic displacement/boundary/pixel and incremental/final caps",
+    "requested/accepted NET impulse and separate velocity-zero momentum",
+    "endpoint overlap pre/post ejection and post tick; current contour",
+    "all events and both A2 identities, exact replay",
+    "Rapier gravity/damping/constant force and bounded contacts/impulses",
+    "sample/reset/tick/revision/timestamps; no extra pack calls"
+  ],
+  "bounds": {
+    "frames": 600,
+    "events_pending": 256,
+    "events_total": 8192,
+    "support_probe_points": 256,
+    "Rapier_contacts": 16,
+    "World_snapshot_cells_max": 393216,
+    "Godot_internal_seconds": 120,
+    "Godot_outer_seconds": 150,
+    "build_seconds": 300
+  },
+  "neutrality": "Each arm paired diagnostics/contact-reporting off vs on; all600 physical hashes, packed input/results, application results and event hash/order must match. Repeat drop4. New getters cannot advance sample or refresh native mask.",
+  "conservation": "Authoritative stored Sand count1536 and hard count invariant every frame before/after simulation; quantity/state copy tests retained. No material edits after initialization.",
+  "interpretation": {
+    "momentum": "Compare achieved support-entry momentum to cumulative accepted NET impulse and correction velocity-zero momentum; report all zero-spin adjacent speed orderings including contradictory ones. No independent-trial statistics.",
+    "late_response": "Compare first raw support and first accepted braking to current-contour clearance and first raster overlap.",
+    "support_loss": "Separate raw count from published velocity-gated count; classify mask/unsupported/unstable/paused/neighborhood failures.",
+    "cap": "Capacity/yield/arrest ties explicit; global20 is limiting only when selected, genericcap3 does not imply bearing attenuation.",
+    "cadence": "Synchronous source cause first; age0 does not qualify asynchronous gameplay.",
+    "scope": "Measurement-only. Do not change gains, predict motion, widen search, extend chains or merge."
+  },
+  "qualification": [
+    "protocol committed before measurements",
+    "source/runtime hashes and exact commands",
+    "replay all acquired attempts through unchanged production oracle",
+    "diagnostic-neutrality and conservation",
+    "native support inspection differential tests",
+    "existing coupling and A2 regressions",
+    "independent causal/source review",
+    "new draft stacked PR, no merge"
+  ],
+  "boundary_caveats": [
+    "Raw support is post-ejection endpoint-mask geometry, pre-velocity gate. Pre-prepare contour/overlap is a distinct earlier boundary.",
+    "Cell-center support/masking differs from continuous lower extent by discretization and one stepped travel.",
+    "Observed backend gravity is92.12 nominal, law reference92; correction velocity-zero momentum is separate from impulses."
+  ]
+}
