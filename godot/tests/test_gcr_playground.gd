@@ -16,7 +16,7 @@ func check(value: bool, reason: String) -> void:
 func _capture(rig: StringName, candidate: String, material: int) -> Dictionary:
 	var runtime = Runtime.new()
 	root.add_child(runtime)
-	check(runtime.configure_granular_experiment(rig,candidate,"GCR-001-2026-11-01"),"construct " + str(rig) + " " + candidate + ": " + runtime.last_error)
+	check(runtime.configure_granular_experiment(rig,candidate,"GCR-001-2026-11-01",Vector2(0,-40)),"construct " + str(rig) + " " + candidate + ": " + runtime.last_error)
 	if not runtime.active(): runtime.queue_free(); return {}
 	await process_frame
 	var world: Object = runtime._arena._world
@@ -24,9 +24,6 @@ func _capture(rig: StringName, candidate: String, material: int) -> Dictionary:
 	# control, not an assumption that a controller never reaches the stock pools.
 	check(world.diagnostic_fill_rect(Vector2i(454,346),Vector2i(34,6),0),"remove stock grains")
 	check(world.diagnostic_fill_rect(Vector2i(552,344),Vector2i(60,8),0),"remove stock Water")
-	for index: int in range(runtime._arena.session.bodies().size()):
-		var pose: Transform2D = runtime._arena.session.bridge.body_transform(index)
-		runtime._arena.session.bridge.reset_body(index,pose.origin+Vector2(0,-40),pose.get_rotation())
 	if material != 0:
 		check(world.diagnostic_fill_rect(Vector2i(148,326),Vector2i(72,26),material),"ordinary granular setup")
 	var before: Dictionary = world.diagnostic_snapshot(Vector2i(128,128),Vector2i(512,256),false,false)
@@ -43,6 +40,7 @@ func _capture(rig: StringName, candidate: String, material: int) -> Dictionary:
 		check(runtime.submit_action(action),"actual controller command accepted")
 		var view: Dictionary = runtime.step()
 		check(not runtime.failed,"actual playground host healthy: " + runtime.last_error)
+		if runtime.failed: break
 		var poses: Array = []
 		for body: RigidBody2D in runtime._arena.session.bodies():
 			var pose: Transform2D = PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM)

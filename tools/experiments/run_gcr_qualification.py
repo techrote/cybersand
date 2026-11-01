@@ -118,6 +118,8 @@ def main():
     parser.add_argument('--identity-only', action='store_true')
     parser.add_argument('--jobs',type=int,default=1,choices=[1,2,3],help='Independent functional processes; timing always one')
     args = parser.parse_args()
+    args.output = args.output.resolve()
+    args.project = args.project.resolve()
     protocol, identity = authenticate(args)
     if args.identity_only:
         print(json.dumps(identity, indent=2))

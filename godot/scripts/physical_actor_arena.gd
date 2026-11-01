@@ -124,17 +124,21 @@ func _validated_config(value: Variant) -> Dictionary:
 func configure(value: Variant) -> bool:
 	return _configure_granular(value,"B0")
 
-func configure_granular_experiment(value: Variant, candidate: String, token: String) -> bool:
+func configure_granular_experiment(value: Variant, candidate: String, token: String, spawn_offset: Vector2 = Vector2.ZERO) -> bool:
 	if candidate not in ["Y1","GCR"] or token != "GCR-001-2026-11-01":
 		last_error = "granular_experiment_refused"
 		return false
-	return _configure_granular(value,candidate)
+	if not spawn_offset.is_finite() or spawn_offset.length() > 64.0: return false
+	return _configure_granular(value,candidate,spawn_offset)
 
-func _configure_granular(value: Variant, granular_candidate: String) -> bool:
+func _configure_granular(value: Variant, granular_candidate: String, spawn_offset: Vector2 = Vector2.ZERO) -> bool:
 	var validated: Dictionary = _validated_config(value)
 	if validated.is_empty() or not is_inside_tree():
 		last_error = "invalid_config_or_owner"
 		return false
+	for actor: Dictionary in validated.actors:
+		actor.position += spawn_offset
+	if not Session.valid_definitions(validated.actors): return false
 	if not ClassDB.class_exists(&"CyberNativeCellWorld") or not ClassDB.class_exists(&"RapierPhysicsServer2D"):
 		last_error = "native_or_rapier_unavailable"
 		return false
