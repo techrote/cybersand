@@ -35,6 +35,15 @@ var _applied_buttons: Dictionary = {}
 
 
 func configure(id: StringName) -> bool:
+	return _configure_granular(id,"B0","")
+
+func configure_granular_experiment(id: StringName, candidate: String, token: String) -> bool:
+	if Course.is_swarm(id) or candidate not in ["Y1","GCR"] or token != "GCR-001-2026-11-01":
+		last_error = "granular_experiment_refused"
+		return false
+	return _configure_granular(id,candidate,token)
+
+func _configure_granular(id: StringName, granular_candidate: String, token: String) -> bool:
 	if id not in Course.PRESETS or not is_inside_tree():
 		last_error = "Unknown player preset or missing scene owner."
 		return false
@@ -73,7 +82,8 @@ func configure(id: StringName) -> bool:
 		var config: Dictionary = {"version": Arena.VERSION, "seed": 0, "max_ticks": Arena.MAX_TICKS,
 			"local_patch_radius": 0, "course": Course.ID,
 			"actors": [{"model": str(id), "producer": "human", "position": spawn}]}
-		if not candidate_arena.configure(config):
+		var admitted: bool = candidate_arena.configure(config) if granular_candidate == "B0" else candidate_arena.configure_granular_experiment(config,granular_candidate,token)
+		if not admitted:
 			last_error = candidate_arena.last_error
 			candidate_arena.free()
 			return false

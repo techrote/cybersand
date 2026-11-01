@@ -121,6 +121,15 @@ func _validated_config(value: Variant) -> Dictionary:
 
 
 func configure(value: Variant) -> bool:
+	return _configure_granular(value,"B0")
+
+func configure_granular_experiment(value: Variant, candidate: String, token: String) -> bool:
+	if candidate not in ["Y1","GCR"] or token != "GCR-001-2026-11-01":
+		last_error = "granular_experiment_refused"
+		return false
+	return _configure_granular(value,candidate)
+
+func _configure_granular(value: Variant, granular_candidate: String) -> bool:
 	var validated: Dictionary = _validated_config(value)
 	if validated.is_empty() or not is_inside_tree():
 		last_error = "invalid_config_or_owner"
@@ -132,7 +141,11 @@ func configure(value: Variant) -> bool:
 		last_error = "physical_arena_requires_60_hz"
 		return false
 	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
-	if not world.diagnostic_reset({"workers": 1, "telemetry": false}):
+	var native_options: Dictionary = {"workers":1,"telemetry":false}
+	if granular_candidate != "B0":
+		native_options["bearing_candidate"] = granular_candidate
+		native_options["bearing_experiment"] = "GCR-001-2026-11-01" if granular_candidate == "GCR" else "Y1-ENVELOPE-2026-11-01"
+	if not world.diagnostic_reset(native_options):
 		last_error = "native_reset"
 		return false
 	world.set_simulation_window_enabled(false)
@@ -168,6 +181,7 @@ func configure(value: Variant) -> bool:
 	_viewport = viewport
 	session = candidate
 	config = validated.duplicate(true)
+	config["granular_experiment"] = granular_candidate
 	_epoch_counter += 1
 	_effects.reset(_epoch_counter)
 	_usables.reset(_epoch_counter)
@@ -190,7 +204,10 @@ func configure(value: Variant) -> bool:
 	_sync_terrain()
 	if _failed:
 		return false
-	_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), false)
+	if granular_candidate == "GCR":
+		_world.prepare_gcr_coupling(session.bridge.pack_gcr_body_states(),false)
+	else:
+		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), false)
 	return true
 
 
@@ -356,7 +373,10 @@ func step(commands: Variant = []) -> Dictionary:
 			seen[actor] = true
 	# A mask is copied from the current actual pose. Actuation adds forces but
 	# does not integrate: usable source positions match this mask exactly.
-	_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), true)
+	if config.get("granular_experiment","B0") == "GCR":
+		_world.prepare_gcr_coupling(session.bridge.pack_gcr_body_states())
+	else:
+		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), true)
 	for command: Variant in commands:
 		var accepted: bool = submit(command, &"policy")
 		_command_receipts.append({"accepted": accepted,
@@ -385,8 +405,12 @@ func step(commands: Variant = []) -> Dictionary:
 	if not bool(_world.simulation_tick()):
 		_fail("native_tick")
 		return snapshot()
-	_coupling_results = _world.rigid_body_results()
-	session.bridge.apply_cellular_results(session.tick + 1, _coupling_results)
+	if config.get("granular_experiment","B0") == "GCR":
+		_coupling_results = PackedFloat32Array()
+		session.bridge.apply_gcr_results(session.tick + 1, _world.gcr_body_results())
+	else:
+		_coupling_results = _world.rigid_body_results()
+		session.bridge.apply_cellular_results(session.tick + 1, _coupling_results)
 	_sync_terrain()
 	if _failed:
 		return snapshot()
@@ -555,7 +579,10 @@ func presentation_cells(view: Rect2i = ARENA_RECT) -> PackedByteArray:
 
 func close() -> void:
 	if _world != null and not bool(_world.has_failed()):
-		_world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
+		if config.get("granular_experiment","B0") == "GCR":
+			_world.prepare_gcr_coupling(PackedFloat64Array())
+		else:
+			_world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
 	if session != null:
 		session.close()
 		session = null
