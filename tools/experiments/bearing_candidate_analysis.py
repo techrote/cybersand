@@ -135,7 +135,7 @@ def describe(directory):
             "entry_accepted_net_y":sum(f["bridge_application"][2] for f in entry),
             "entry_nominal_bearing_y":sum(f["bearing"]["bearing_y"] for f in entry),
             "entry_correction_dp_y":sum(budgets[f["tick"]]["correction_dp"][1] for f in entry),
-            "peak_upward_rebound":max([max(-f["after_application"][4],0) for f in frames[arrest["tick"]:]] or [0]) if arrest else 0,
+            "peak_upward_rebound":max([max(-f["after_step"][4],-f["after_application"][4],0) for f in frames[arrest["tick"]:]] or [0]) if arrest else 0,
             "bearing_limiters":dict(limiters),"per_frame_selection":per_frame,
             "predicted_only_frames":sum(f["candidate_metrics"]["predicted_only"]>0 for f in frames),
             "maximum_lookahead":max(f["candidate_metrics"]["lookahead"] for f in frames),
