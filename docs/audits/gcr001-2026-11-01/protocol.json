@@ -1441,8 +1441,8 @@
   "normal_per_sample_capacity": 2,
   "normal_body_capacity": 20,
   "mu": "unchanged body friction (fixture0.78); material multiplier1",
-  "new_input_stride": 16,
-  "new_result_stride": 13,
+  "new_input_stride": 17,
+  "new_result_stride": 14,
   "protocol_version": 1,
   "token": "GCR-001-2026-11-01",
   "age": {
@@ -1498,5 +1498,21 @@
     "Repeated displacement attempts are work, not independent efficacy population.",
     "Stream placements use ordinary admitted edits with quantity ledger and both arms same source schedule.",
     "All failures and unsupported arms remain reported; no owner acceptance or merge inferred."
-  ]
+  ],
+  "protocol_amendment": {
+    "stage": "Gate1 pre-physical-acquisition",
+    "reason": "Explicit wire session fence required;16/13 design omitted it",
+    "input_session_offset": 16,
+    "result_session_offset": 13,
+    "identity": "process-scoped nonwrapping bridge session; exact finite positive integer<=2^53",
+    "physical_results_before_amendment": false
+  },
+  "admission": {
+    "dt_max": 0.1,
+    "mu_max": 16,
+    "rectangle_dimension_max": 128,
+    "moving_event_normal_budget_first": true,
+    "bin_capacity": "min(20,2*sum_samples)*bin_samples/sum_samples",
+    "stream": "deep supported bed; source tick120..239 x=initial COM-5 y=SURFACE-24 width3; ledgered ordinary edits"
+  }
 }
