@@ -28,6 +28,10 @@ class Observer extends CyberSimulationWorker:
 				"scanned":_world.get_scanned_last_tick(),"moves":_world.get_moves_last_tick(),"active":_world.get_active_blocks_last_tick()}
 			if fixture.is_gcr() and capture_telemetry: trace[tick]["gcr"] = fixture.json_value(_world.gcr_diagnostics())
 			trace[tick]["diagnostic_copy_us"] = Time.get_ticks_usec()-diagnostic_start
+			var admission_copy_start: int = Time.get_ticks_usec()
+			if fixture.is_gcr() and _world.has_method("get_gcr_admission_counters"):
+				trace[tick]["admission_counters"] = _world.get_gcr_admission_counters()
+			trace[tick]["admission_counter_copy_us"] = Time.get_ticks_usec()-admission_copy_start
 			fixture.edit_at(tick)
 			recorded = tick
 		var observer_before_publication_us: int = Time.get_ticks_usec()-observer_start
@@ -147,7 +151,9 @@ func _run() -> void:
 		"protocol_version":CyberRigidBodyCoupling.GCR_POLICY_VERSION if fixture.is_gcr() else 0,
 		"abi":{"input_stride":CyberRigidBodyCoupling.GCR_INPUT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.INPUT_STRIDE,
 			"result_stride":CyberRigidBodyCoupling.GCR_RESULT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.RESULT_STRIDE},
-		"experiment":Fixture.GCR_TOKEN,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"experiment":Fixture.ADMISSION_TOKEN if arm == "GCR-A1" else Fixture.GCR_TOKEN,
+		"registration":str(protocol.get("registration","")),"granular_identity":fixture.runtime_identity(),
+		"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"input_identity":OS.get_environment("CYBERSAND_INPUT_IDENTITY"),
 		"protocol_sha256":FileAccess.get_sha256(str(args.protocol)),"candidate":arm,"ablation":fixture.ablation_receipt(),"case":spec,
 		"runtime":{"engine":FileAccess.get_sha256(OS.get_executable_path()),"native":FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")},

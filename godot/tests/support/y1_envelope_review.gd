@@ -17,6 +17,7 @@ var origin := Vector2(32,120)
 var last_rows: Array = []
 var native_sha256: String
 var protocol_path: String
+var admission_enabled: bool = false
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -30,6 +31,7 @@ func _ready() -> void:
 		return
 	cases = parsed.cases.duplicate(true)
 	cases.append_array(parsed.get("controls",[]))
+	admission_enabled = str(parsed.get("registration","")) == Fixture.ADMISSION_TOKEN
 	var panel := VBoxContainer.new()
 	panel.position = Vector2(20,12)
 	add_child(panel)
@@ -46,6 +48,7 @@ func _ready() -> void:
 	arm.add_item("B0 · 0.18")
 	arm.add_item("Y1 · 1.0 · experimental")
 	arm.add_item("GCR · resistance / friction / torque · experimental")
+	if admission_enabled: arm.add_item("GCR-A1 · admission only · R2 law unchanged")
 	arm.select(1)
 	row.add_child(arm)
 	var reset := Button.new()
@@ -97,7 +100,7 @@ func reset_case() -> void:
 		await get_tree().process_frame
 	fixture = Fixture.new()
 	var spec: Dictionary = cases[chooser.selected].duplicate(true)
-	if not await fixture.setup(self,spec,["B0","Y1","GCR"][arm.selected]):
+	if not await fixture.setup(self,spec,["B0","Y1","GCR","GCR-A1"][arm.selected]):
 		last_error = "Review fixture setup refused"
 		push_error(last_error)
 	native_sha256 = FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")
@@ -160,6 +163,7 @@ func refresh_view() -> void:
 	texture = ImageTexture.create_from_image(image)
 	scale_factor = minf(4.0,540.0/float(fixture.floor_y-Fixture.SURFACE+85))
 	status.text = "%s | %s | tick %d / %d | %s%s\nsource %s | Godot %s | %s | native %s" % [fixture.spec.id,fixture.candidate,fixture.tick,int(fixture.spec.ticks),"paused" if paused else "running"," · scripted edit at tick600" if str(fixture.spec.get("group",""))=="support-change" else "",OS.get_environment("CYBERSAND_SOURCE_REVISION"),Engine.get_version_info().string,ProjectSettings.get_setting("physics/2d/physics_engine"),native_sha256.left(16)]
+	status.text += " | admission " + str(fixture.runtime_identity().admission_variant)
 	queue_redraw()
 
 func raster_body(image: Image, center: Vector2, body_size: Vector2, angle: float, outline: bool) -> void:

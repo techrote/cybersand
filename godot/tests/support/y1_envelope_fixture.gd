@@ -4,6 +4,7 @@ extends RefCounted
 # Native material authority and main-thread Rapier authority remain separate.
 const TOKEN := "Y1-ENVELOPE-2026-11-01"
 const GCR_TOKEN := "GCR-001-2026-11-01"
+const ADMISSION_TOKEN := "GCR-ADMISSION-001-2026-11-01"
 const SURFACE := 192
 var spec: Dictionary
 var candidate: String
@@ -25,6 +26,12 @@ var initial_poses: Array = []
 func is_gcr() -> bool:
 	return candidate.begins_with("GCR")
 
+func runtime_identity() -> Dictionary:
+	return {"native_candidate":"GCR-A1" if candidate == "GCR-A1" else ("GCR" if is_gcr() else candidate),
+		"admission_variant":str(world.get_gcr_admission_variant()) if world.has_method("get_gcr_admission_variant") else ("unsupported" if is_gcr() else "disabled"),
+		"evaluator_variant":"R2-second-moment-quadrature" if is_gcr() else candidate,
+		"experiment":ADMISSION_TOKEN if candidate == "GCR-A1" else (GCR_TOKEN if is_gcr() else TOKEN)}
+
 func packed_boundary_states() -> Variant:
 	if not is_gcr(): return bridge.pack_body_states()
 	var states: PackedFloat64Array = bridge.pack_gcr_body_states()
@@ -45,7 +52,7 @@ func application_results(computed: PackedFloat64Array) -> PackedFloat64Array:
 	return values
 
 func ablation_receipt() -> Dictionary:
-	return {"native_candidate":"GCR" if is_gcr() else candidate,"diagnostic_arm":candidate,
+	return {"native_candidate":"GCR-A1" if candidate == "GCR-A1" else ("GCR" if is_gcr() else candidate),"diagnostic_arm":candidate,
 		"zero_mu_input":candidate == "GCR-MU0","zero_packet_angular_impulse":candidate == "GCR-CENTRAL",
 		"central_reference":"sample COM; ordinary bridge wrench translation remains active"}
 
@@ -75,7 +82,7 @@ func observation(include_cells: bool = false) -> Dictionary:
 func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool = true) -> bool:
 	spec = configuration.duplicate(true)
 	candidate = arm
-	if arm not in ["B0", "Y1", "GCR", "GCR-MU0", "GCR-CENTRAL"] or int(spec.get("ticks",1800)) > 1800: return false
+	if arm not in ["B0", "Y1", "GCR", "GCR-A1", "GCR-MU0", "GCR-CENTRAL"] or int(spec.get("ticks",1800)) > 1800: return false
 	left = int(spec.get("left",96))
 	width = int(spec.width)
 	floor_y = SURFACE + int(spec.depth)
@@ -85,9 +92,12 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 		"bearing_candidate":arm,"bearing_experiment":TOKEN}
 	if is_gcr():
 		construction = {"workers":int(spec.get("workers",1)),"telemetry":telemetry,
-			"bearing_candidate":"GCR","bearing_experiment":GCR_TOKEN}
+			"bearing_candidate":"GCR-A1" if arm == "GCR-A1" else "GCR","bearing_experiment":ADMISSION_TOKEN if arm == "GCR-A1" else GCR_TOKEN}
 	if world == null or not world.diagnostic_reset(construction):
 		error = "fresh candidate construction refused: " + arm
+		return false
+	if arm == "GCR-A1" and runtime_identity().admission_variant != "A1":
+		error = "native A1 construction identity mismatch"
 		return false
 	world.set_simulation_window(Vector2i(left-4,0), Vector2i(width+8,floor_y+4),0,0)
 	fill(left-1,0,1,floor_y+1,1)
@@ -261,6 +271,9 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 	var gcr: Dictionary = world.gcr_diagnostics() if is_gcr() and telemetry else {}
 	var diagnostic_copy_us: int = Time.get_ticks_usec()-start
 	start = Time.get_ticks_usec()
+	var admission_copy_start: int = Time.get_ticks_usec()
+	var admission_counters: Array = world.get_gcr_admission_counters() if is_gcr() and world.has_method("get_gcr_admission_counters") else []
+	var admission_counter_copy_us: int = Time.get_ticks_usec()-admission_copy_start
 	var computed_results: Variant = results.duplicate()
 	if is_gcr(): results = application_results(computed_results)
 	if is_gcr(): bridge.apply_gcr_results(tick+1,results)
@@ -276,6 +289,7 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 			"conserved":valid_conservation,"water":post.water_mass,"material_count":post.counts[int(spec.material)],
 			"times_us":[step_us,coupling_us,tick_us,apply_us],"work":[world.get_scanned_last_tick(),world.get_moves_last_tick(),world.get_active_blocks_last_tick()],
 			"coupling_prepare_us":coupling_prepare_us,"result_generation_us":result_generation_us,"diagnostic_copy_us":diagnostic_copy_us,"packing_us":packing_us,
+			"admission_counter_copy_us":admission_counter_copy_us,
 			"result":Array(results.slice(i*(CyberRigidBodyCoupling.GCR_RESULT_STRIDE if is_gcr() else 9),(i+1)*(CyberRigidBodyCoupling.GCR_RESULT_STRIDE if is_gcr() else 9))),"age":int(bridge.diagnostic_applications[i*6]),
 			"legacy_application":Array(bridge.diagnostic_applications.slice(i*6,(i+1)*6)),
 			"vertical_depth":maxf(0.0,float(outgoing[1])+absf(cos(outgoing[2]))*body_size.y/2+absf(sin(outgoing[2]))*body_size.x/2-SURFACE),
@@ -286,6 +300,7 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 			row["support"] = diagnostics[i][20]
 		if is_gcr():
 			row["application"] = json_value(bridge.gcr_application_diagnostics())
+			if i < admission_counters.size(): row["admission"] = json_value(admission_counters[i])
 			row["computed_result"] = Array(computed_results.slice(i*CyberRigidBodyCoupling.GCR_RESULT_STRIDE,(i+1)*CyberRigidBodyCoupling.GCR_RESULT_STRIDE))
 			row["ablation"] = ablation_receipt()
 		if is_gcr() and i < gcr.get("bodies",[]).size():
