@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "experiment": "GBD-2026-11-01",
+  "date": "2026-11-01",
+  "protocol_commit": "69076bf2",
+  "candidate_source_initial_commit": "a8904e11",
+  "stage": "qualification before ANY primary/control efficacy acquisition",
+  "unchanged": [
+    "B0/Y1/A2 identity",
+    "Y1 coefficient1.0",
+    "A2 coefficient0.18",
+    "additional lookahead<=2px",
+    "all efficacy/control thresholds",
+    "one original boundary ray, earliest hit, same owner/schedule"
+  ],
+  "findings": [
+    {
+      "kind": "unit oracle",
+      "failure": "Thin original corner column can vanish from prospective full raster at a translated pose. The registered ray retains each ORIGINAL boundary sample, so comparing against an absent future column was an invalid oracle.",
+      "correction": "Retain its continuous lower-edge ray, verify bounds and phase; distinguish vanished future columns in test output, never discard original samples or change admission."
+    },
+    {
+      "kind": "numeric phase anchoring",
+      "failure": "At a native real_t=float boundary tie, lower+.5 may fall one ULP below the actual current below-neighbour. Adding its frac to the actual row shifted q by almost an entire cell.",
+      "correction": "Use raw_q=lower+.5 when inside authoritative current row. If just outside, snap into that row at lower boundary or nextafter(upper,lower), limited to8*float_epsilon*max(1,abs(raw_q),abs(x)). Larger disagreement is invalid geometry and blocks capture. Record signed phase_adjustment per ray; never translate a whole row to copy a near-one fraction.",
+      "reason": "Restores intended equivalence to native current raster while keeping continuous vertical phase, rather than introducing another admission parameter."
+    },
+    {
+      "kind": "native real_t membership",
+      "failure": "Expanded matrix exposed near-axis float local-coordinate rounding, where ideal double OBB edges disagree with native raster membership over a thin column.",
+      "correction": "For admission phase only, model native float-rounded local comparisons using the midpoint between each half extent and its next representable float. Keep ideal geometric_lower separately for physical hover gaps; nonintersecting ideal columns are marked null, not fabricated contact. Retain bounded current-row tie snap. This matches the existing native raster convention rather than changing physics or candidate extent.",
+      "qualification": "Expanded angles, horizontal/vertical phases and native literal float membership differential before any primary acquisition."
+    }
+  ],
+  "qualification": "Actual raster comparisons away from future float-boundary ties; exact axis-aligned half-integer ties; labelled non-axis future ties; allcurrent authoritative anchors and per-step bounds; record every original failure. Source must be frozen again before efficacy runs.",
+  "safety_missing_geometry": "Predicted-only selected support with any unmeasured ideal physical gap blocks hover interpretation; never silently drop unknown points or count unknown as no-hover.",
+  "isolation_review": "Every successful non-diagnostic World install and prepared commit retires selected Y1/A2 to B0, including constructors that intentionally retain other coupling settings. Rejected operations retain existing mode/authority."
+}

@@ -2,7 +2,7 @@
 title: Granular bearing and pre-overlap response investigation
 status: Current
 document-kind: guide
-scope: Measurement-first causal successor to the A2 finite-cohort local-rearrangement no-go; no bearing changes approved here
+scope: Granular bearing measurement and explicitly isolated candidate experiments; no production selection
 canonical-for: [granular-bearing-pre-overlap-investigation]
 last-reviewed: 2026-11-01
 related-documents: [../audits/2026-10-31-physical-detachment-a2.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/granular-interaction-policy.md, ../reference/status-and-roadmap.md]
@@ -186,3 +186,5 @@ The measured unused global cap is not the next knob to raise.
 ## Registered candidate discrimination - 2026-11-01
 
 **Approved experiment / Planned execution:** the owner authorized isolated B0 versus Y1 (yield coefficient1.0) and B0 versus A2 (bounded2px admission), on exact PR339 head8b4e53d7. The [machine preregistration](../audits/granular-bearing-candidates-2026-11-01/protocol.json) freezes source lineage, subpixel lookahead geometry, thresholds, safety controls and order before interventions. The [candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) records execution and disposition. Ordinary/default behavior remains B0; no combined arm or production selection is authorized.
+
+The [qualification addendum](../audits/granular-bearing-candidates-2026-11-01/qualification-addendum.json) preserves pre-result unit-oracle and native float-boundary corrections. Admission phase follows the native float membership envelope; ideal physical geometry remains separate for hover. All original efficacy/control thresholds, candidate coefficients and2px bound remain unchanged. Successful ordinary World adoption retires test mode to B0.

@@ -809,6 +809,8 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
             const auto& body = current_bodies_[body_id];
             work.lookahead = cybersand::bearing_experiment::lookahead(body.velocity.y);
             const auto lower = cybersand::bearing_experiment::lower_edge(body.center.x, body.center.y,
+                body.rotation, body.half_size.x, body.half_size.y, static_cast<double>(x)+0.5,true);
+            const auto geometric_lower = cybersand::bearing_experiment::lower_edge(body.center.x, body.center.y,
                 body.rotation, body.half_size.x, body.half_size.y, static_cast<double>(x)+0.5);
             std::array<cybersand::World::GranularSupportInspection,3> inspections{};
             std::size_t visited=0;
@@ -830,6 +832,7 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
                     cell.unsupported=i.unsupported;cell.missing=i.missing;
                     return cell;
                 });
+            ray.geometric_lower=geometric_lower;
             work.cell_tests+=ray.used;
             work.extra_cells+=ray.used>0 ? ray.used-1U : 0U;
             work.maximum_ray_cells=std::max(work.maximum_ray_cells,ray.used);
@@ -2541,6 +2544,8 @@ Dictionary CyberNativeCellWorld::diagnostic_bearing_state() const {
             if (ray.used==0) continue; // zero/rising uses the original path
             Dictionary r;
             r["lower"]=ray.lower; r["q"]=ray.q; r["length"]=ray.length;
+            r["geometric_lower"]=std::isfinite(ray.geometric_lower) ? Variant(ray.geometric_lower) : Variant();
+            r["phase_adjustment"]=ray.phase_adjustment;
             r["selected"]=ray.selected; r["stop"]=static_cast<int>(ray.stop);
             Array steps;
             for (std::size_t j=0;j<ray.used;++j) {

@@ -60,3 +60,30 @@ historical gates and runtime qualification remain separate. Missing companion
 workspace references are expected to retain the established six-error baseline.
 The canonical guide owns future runtime policy; this branch may only compare
 the two owner-authorized test candidates, never combine or promote them.
+
+## Qualification before primary acquisition
+
+The original69076bf2 preregistration is retained. No primary intervention
+acquisition occurred before this source freeze. Sourcea8904e11's initial raster
+unit oracle incorrectly demanded a surviving full future raster column for every
+original ray; a thin corner column can vanish. A second failed matrix exposed
+near-axis native float membership versus ideal double OBB boundaries. The
+[pre-result addendum](granular-bearing-candidates-2026-11-01/qualification-addendum.json)
+records both corrections without changing any efficacy threshold, coefficient or
+lookahead limit. Native admission phase models float-rounded local membership;
+current-row tie correction is bounded, and ideal physical gaps stay separate.
+
+The corrected expanded unit has32548 checks,7910 literal future-raster
+comparisons,285 labelled non-axis future-boundary cases and30 retained original
+rays whose prospective raster column vanishes. The latter categories are not
+claimed exhaustive exact future-mask parity. Reduction controls pass11 synthetic
+threshold/rebound/censoring/disposition tests. Initial native selector/formula and
+negative synthetic controls passed at the earlier source; source-matched final
+controls remain mandatory after rebuilding.
+
+Independent source review found ordinary World installation/prepared adoption
+could retain experimental mode; both successful replacement routes now retire it
+to B0 without changing existing gain/configuration ownership. New regressions
+cover Y1/A2 through both routes. Missing ideal gap data in a predicted-only
+support state blocks safety interpretation rather than passing as no hover.
+AI review is not human approval. Primary results remain unmeasured here.

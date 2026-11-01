@@ -1,5 +1,6 @@
 CXX ?= g++
 CC ?= gcc
+
 BUILD_DIR := build
 INCLUDE_DIR := native/include
 COMMON_FLAGS := -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -I$(INCLUDE_DIR)
@@ -299,3 +300,11 @@ ejection-oracle-test: ejection-search-test $(BUILD_DIR)/test_ejection_chain_worl
 ejection-a2-test: ejection-oracle-test
 	python3 tools/experiments/test_ejection_a2.py
 	python3 tools/experiments/test_ejection_a2_analysis.py
+
+.PHONY: bearing-candidate-test
+bearing-candidate-test: $(BUILD_DIR)/test_granular_bearing_candidate
+	./$(BUILD_DIR)/test_granular_bearing_candidate
+	python3 tools/experiments/test_bearing_candidate_analysis.py
+
+$(BUILD_DIR)/test_granular_bearing_candidate: native/tests/test_granular_bearing_candidate.cpp native/include/cybersand/granular_bearing_candidate.hpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror native/tests/test_granular_bearing_candidate.cpp -o $@

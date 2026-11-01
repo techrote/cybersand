@@ -49,13 +49,13 @@ int main() {
         }
         check(admit(0,10,9.7,0,none).used==1,"zero lookahead changed current test");
         check(admit(0,10,std::numeric_limits<double>::infinity(),2,none).used==0,"malformed geometry queried world");
-        int comparisons=0,ties=0;
+        int comparisons=0,ties=0,vanished=0;
         for(float angle:{0.F,.08F,.7F,-.3F,1.3F,1.57079637F})
-            for(float phase:{0.F,.2F,.5F,.9F}) for(int x=104;x<120;++x) {
-                const double cx=112,cy=150.F+phase;
+            for(float phase:{0.F,.2F,.5F,.9F}) for(float xphase:{0.F,.2F,.5F,.9F}) for(int x=103;x<123;++x) {
+                const double cx=112.F+xphase,cy=150.F+phase;
                 const int below=raster_below(cx,cy,angle,x);
                 if(below<-1000) continue;
-                const double h=lower_edge(cx,cy,angle,4,7,x+.5);
+                const double h=lower_edge(cx,cy,angle,4,7,x+.5,true);
                 check(std::isfinite(h),"current raster column has no polygon lower edge");
                 for(double d:{0.,.125,.5,.875,1.,1.5,2.}) {
                     const auto ray=admit(x,below,h,d,none);
@@ -64,11 +64,21 @@ int main() {
                     const double nearest=std::abs((h+.5+d)-std::round(h+.5+d));
                     if(nearest<2e-5 && angle!=0.F){++ties;continue;}
                     const int expected=raster_below(cx,static_cast<float>(cy+d),angle,x);
+                    // The registered primitive retains ORIGINAL boundary rays.
+                    // A thin corner column can contain no prospective raster cell;
+                    // that does not remove its continuous original sample ray.
+                    if(expected<-1000) {
+                        check(ray.steps[ray.used-1].y==static_cast<int>(std::floor(h+.5+d)),"vanished column lower-edge phase");
+                        ++vanished;continue;
+                    }
+                    if(ray.steps[ray.used-1].y!=expected) std::cerr<<"angle="<<angle<<" cy="<<cy<<" x="<<x
+                        <<" d="<<d<<" h="<<h<<" below="<<below<<" q="<<ray.q<<" actual="<<ray.steps[ray.used-1].y<<" expected="<<expected<<"\n";
                     check(ray.steps[ray.used-1].y==expected,"translated raster differential mismatch");
                     ++comparisons;
                 }
             }
         std::cout<<checks<<" candidate checks passed; translated-raster comparisons="<<comparisons
                  <<"; non-axis float-boundary cases separately labelled="<<ties<<"\n";
+        std::cout<<"original-boundary rays whose future raster column vanishes="<<vanished<<"\n";
     } catch(const std::exception& e) {std::cerr<<e.what()<<"\n";return 1;}
 }

@@ -3,6 +3,26 @@ extends "res://tests/test_granular_bearing_capture.gd"
 # GBD-2026-11-01. Same one-pack/step/response owner as339; no combined arm.
 var _candidate: String = "B0"
 var _bank_material: int = CyberCellWorld.SAND
+const CANDIDATE_PROFILES = preload("res://scripts/transport_profiles.gd")
+
+
+func _mask_geometry(world: Object, before: Dictionary, after: Dictionary,
+		input: PackedFloat32Array, previous: Dictionary) -> Dictionary:
+	# Normalize only copied observation bytes for the inherited bank geometry.
+	# Authoritative snapshots, quantities and World cells remain unchanged.
+	var normalized: Array = []
+	for snapshot: Dictionary in [before,after]:
+		var copied: Dictionary = snapshot.duplicate()
+		if _bank_material != CyberCellWorld.SAND:
+			var bytes: PackedByteArray = snapshot.cells.duplicate()
+			for index: int in range(bytes.size()):
+				if int(bytes[index]) == _bank_material:
+					bytes[index] = CyberCellWorld.SAND
+			copied["cells"] = bytes
+		normalized.append(copied)
+	var geometry: Dictionary = super._mask_geometry(world,normalized[0],normalized[1],input,previous)
+	geometry["bank_material"] = _bank_material
+	return geometry
 
 
 func _conserve(snapshot: Dictionary, expected: Dictionary) -> void:
@@ -138,7 +158,7 @@ func _capture_case(name: String, world: Object, directory: String) -> Dictionary
 			var masked_after_tick: int = 0
 			for y: int in range(maxi(0,floori(input[2]-10)),mini(212,ceili(input[2]+10))):
 				for x: int in range(maxi(92,floori(input[1]-10)),mini(132,ceili(input[1]+10))):
-					if world.rigid_body_id_at(x,y) == 1 and _cell(final_snapshot,x,y) == CyberCellWorld.SAND:
+					if world.rigid_body_id_at(x,y) == 1 and _cell(final_snapshot,x,y) == _bank_material:
 						masked_after_tick += 1
 			geometry["post_tick_overlap_at_packed_pose"] = masked_after_tick
 		var row: Dictionary = {"tick":tick,"candidate":_candidate,"candidate_metrics":candidate_metrics,"coupling_usec":coupling_usec,"body_input":Array(input),"before_step":before_step,
@@ -226,7 +246,33 @@ func _candidate_controls() -> void:
 		world.prepare_rigid_body_coupling(PackedFloat32Array([1,108,96,0,8,8,0,vy,0,1,1]),true)
 		var info: Dictionary = world.diagnostic_bearing_candidate()
 		_check(info.lookahead == 0 and info.current_support == info.selected_support and info.extra_cells == 0,"zero/rising semantics changed")
+	for condition: String in ["fresh","paused","film","hard_barrier","bounds"]:
+		_check(world.diagnostic_reset({"bearing_trace":true,"bearing_experiment":"GBD-2026-11-01","bearing_candidate":"A2"}),"stability reset")
+		world.set_simulation_window(Vector2i(80,80),Vector2i(64,64),0,0)
+		world.diagnostic_fill_rect(Vector2i(96,100),Vector2i(24,1 if condition == "film" else 8),CyberCellWorld.SAND)
+		if condition == "hard_barrier":
+			world.diagnostic_fill_rect(Vector2i(96,100),Vector2i(24,1),CyberCellWorld.WALL)
+		if condition == "paused":
+			world.set_simulation_window(Vector2i(400,400),Vector2i(32,32),0,0)
+		if condition in ["fresh","paused"]:
+			_check(world.simulation_tick(),"stability tick")
+		var center_y: float = 1018.0 if condition == "bounds" else 95.0
+		world.prepare_rigid_body_coupling(PackedFloat32Array([1,108,center_y,0,8,8,0,90,0,1,1]),true)
+		_check(world.diagnostic_bearing_candidate().selected_support == 0,"fresh/paused/film/hard/bounds support weakened: "+condition)
 	_check(world.diagnostic_reset({"workers":1}) and world.diagnostic_bearing_candidate().candidate == "B0","normal reset retained candidate")
+	var demo: Object = ClassDB.instantiate(&"CyberDemoBridge")
+	var defaults: PackedInt32Array = demo.default_liquid_policy()
+	var profile: Dictionary = CANDIDATE_PROFILES.resolve(CANDIDATE_PROFILES.preset(0))
+	for selected: String in ["Y1","A2"]:
+		_check(world.diagnostic_reset({"bearing_experiment":"GBD-2026-11-01","bearing_candidate":selected}),"install selection")
+		_check(demo.build_world(world,PackedInt32Array([0,0,1,1,CyberCellWorld.WALL])),"ordinary install")
+		_check(world.diagnostic_bearing_candidate().candidate == "B0","ordinary install leaked experimental mode")
+		_check(world.diagnostic_reset({"bearing_experiment":"GBD-2026-11-01","bearing_candidate":selected}),"prepared selection")
+		var token: int = demo.prepare_liquid_world(world,PackedInt32Array([0,0,1,1,CyberCellWorld.WALL]),
+			profile.packed,PackedInt32Array([1,8,12,0]),PackedInt32Array(),defaults,
+			{"definition_hash":"0".repeat(64),"region":PackedInt32Array([0,0,32,32])})
+		_check(token > 0 and demo.commit_liquid_world(world,token),"ordinary prepared install")
+		_check(world.diagnostic_bearing_candidate().candidate == "B0","prepared install leaked experimental mode")
 
 
 func _run() -> void:
