@@ -10,6 +10,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Production render integration: [strict retained-baseline contract](architecture/rendering-and-gameplay-bridges.md#strict-retained-baseline-accounting)
+and [dated E/R integration audit](audits/2026-11-01-render-production-integration.md).
+E and native R are separately reviewable and remain subject to applicable gates.
+
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).

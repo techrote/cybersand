@@ -10,14 +10,25 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
-## Chunk-run render copy on current main — 2026-11-01
+## Production E/R integration — 2026-11-01
+
+The [production integration audit](../audits/2026-11-01-render-production-integration.md)
+records the frozen25ce baseline, unchanged R6fff ownership, strict ordinary E,
+source-matched artifacts, current-source native comparisons and broader graphical
+qualification. Hardware GPU completion/presentation remains a separate explicit
+gate. No merge or human approval is inferred from local or AI checks.
+
+## Earlier R-only qualification — 2026-11-01
 
 The [production reconciliation record](../audits/2026-11-01-render-copy-production-reconciliation.md)
 starts from main `25ce0731`, selects corrected #290/#301's exact native
 function, and reuses only the necessary #335 test apparatus. New native,
 source-matched runtime, graphical Control/R and full-CI results retain their
 own identities. Historical #290/#301/#333/#335 results do not qualify this
-candidate. The PR remains draft; no merge is authorized.
+candidate. The following paragraph preserves that earlier R-only assessment.
+A subsequent API check records external merge of #344 at 13:31:41 UTC; its
+merge tree is the same selected R tree. This integration execution did not merge
+it. The broader E/interactive/hardware acceptance is recorded above.
 
 New ordinary and hosted leak-enabled ASan/UBSan runs each pass 153,284
 assertions, 231 regions and 8,338,180 compared bytes. Five fresh graphical
@@ -27,7 +38,7 @@ Normal retries are 2/605 for Control and 0/605 for R; withheld retries remain
 frame-hitch improvement are not established on this llvmpipe host. E is not
 justified by this evidence. Fresh Linux/Windows publication is `c405db68`,
 compiled from `a7ee10f`; final exact-head gates remain separately recorded in
-[draft #344](https://github.com/techrote/cybersand/pull/344).
+[#344](https://github.com/techrote/cybersand/pull/344).
 
 ## CI parallelism evidence boundary — 2026-10-31
 

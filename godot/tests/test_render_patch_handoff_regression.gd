@@ -109,17 +109,22 @@ func _test_render_payload_validation() -> void:
 func _test_published_payload_ownership() -> void:
 	var worker: CyberSimulationWorker = CyberSimulationWorker.new()
 	worker._append_native_render_packet({
+		"status": 1,
 		"serial": 1,
 		"channels": 2,
-		"full_refresh": true,
+		"full_refresh": false,
 		"rectangles": PackedInt32Array([0, 0, 2, 1, 0, 4]),
 		"cells": PackedByteArray([1, 2, 3, 4]),
 	})
+	# These are compact dirty packets; only a complete World may claim full.
+	# Model the owner's generation commit between actual publications.
+	worker._pending_render_world_generation = worker._world_generation
 	worker._refresh_published_render_payload()
 	var first_rectangles: PackedInt32Array = worker._published_render_patch_rectangles
 	var first_cells: PackedByteArray = worker._published_render_patch_cells
 
 	worker._append_native_render_packet({
+		"status": 1,
 		"serial": 2,
 		"channels": 2,
 		"full_refresh": false,

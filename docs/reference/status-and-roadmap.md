@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Production render integration — 2026-11-01
+
+The [E/R integration pass](../audits/2026-11-01-render-production-integration.md)
+freezes main `25ce0731` and keeps strict retained-baseline accounting separate
+from native run-copy ownership in PR #344. E changes the ordinary desktop worker
+policy; R changes only native extraction traversal while preserving bytes.
+No merge is authorized in this pass. Historical #335 remains investigation
+evidence. Hardware GPU presentation qualification is still required before this
+pass can claim complete production acceptance; exact-head checks and results
+are dated in the audit rather than inferred from old benchmark wins.
+
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
 
 ## Current owner policy and accepted baseline — 2026-10-31

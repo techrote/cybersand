@@ -464,6 +464,15 @@ packed records are not an unrestricted public network protocol. Numerical respon
 
 ## Immutable dirty snapshot contract
 
+**Current production E branch:** wire fields and the six-integer patch layout are
+unchanged. A complete full packet must describe the exact finite World at origin,
+with one tightly packed rectangle and its exact channel-dependent byte extent.
+Dirty extents must be contiguous, in bounds and channel-consistent. The desktop
+owner privately tags that accepted baseline; the tag is not a new public API or
+an ACK. Malformed/ambiguous data obtains no budget exemption. See
+[strict baseline accounting](../architecture/rendering-and-gameplay-bridges.md#strict-retained-baseline-accounting)
+for capacity and ordinary-ACK semantics.
+
 **Current native:** `cybersand_render_patch` stores `int64_t` x/y/width/height
 plus byte offset and row stride. Payload is two bytes/cell: material ID and
 read-only condition projection. `take_dirty_chunks` with null/insufficient

@@ -45,6 +45,13 @@ has separate mandatory slot, patch-per-slot, and byte-per-slot capacities.
 The finite adapter chooses concrete values, but the general API supplies no
 production defaults.
 
+The desktop worker separately preflights retained dirty packets against its
+[configured byte/rectangle budgets](../reference/configuration-reference.md).
+On the production E branch only an exact complete current-generation baseline
+is exempt. Dirty accumulation stays bounded by those original budgets; overflow
+requests the existing full recovery. This does not change native slot capacities
+or bound all consumer-held immutable generations.
+
 Capacity bounds allocated work/storage; it is not a permanent stored-world
 dimension. Native lazy preparation can allocate chunks/temperature during a tick.
 The Approved goal of allocation-free prepared ticks is narrower than a claim

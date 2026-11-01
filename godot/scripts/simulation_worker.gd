@@ -24,6 +24,7 @@ const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
 const HARD_SURFACE_SNAPSHOT_INTERVAL_USEC: int = 250000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
+const MAX_PENDING_RENDER_BYTES: int = CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
 const PARTICIPATION_SAMPLE_INTERVAL_USEC: int = 250000
@@ -820,6 +821,12 @@ var _pending_render_channels: int = 1
 var _pending_render_full_refresh: bool = false
 var _pending_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var _pending_render_patch_cells: PackedByteArray = PackedByteArray()
+# Only an exact current-World full frame earns an exemption from the dirty
+# budgets. The original baseline identity survives subsequent dirty appends.
+var _pending_render_baseline_serial: int = 0
+var _pending_render_baseline_generation: int = 0
+var _pending_render_baseline_channels: int = 0
+var _pending_render_recovery_required: bool = false
 var _pending_render_tick_index: int = 0
 var _pending_render_generated_usec: int = 0
 var _pending_render_character_position: Vector2 = Vector2.ZERO
@@ -1906,6 +1913,7 @@ func _publish_snapshot(
 	force_render_full_refresh = (
 		force_render_full_refresh or render_full_refresh_requested
 		or _world_generation != _pending_render_world_generation
+		or _pending_render_recovery_required
 	)
 	if (
 		_pending_render_snapshot_serial > 0
@@ -1920,20 +1928,20 @@ func _publish_snapshot(
 		)
 	):
 		if _world.has_method(&"take_render_snapshot"):
+			# A forced request is not fulfilled by an empty or dirty response.
+			# Only acceptance of a complete full packet can retire this fence.
+			if force_render_full_refresh:
+				_pending_render_recovery_required = true
 			var render_packet: Dictionary = _take_native_render_snapshot(
 				force_render_full_refresh
 			)
 			_append_native_render_packet(render_packet)
-			if (
-				_pending_render_patch_cells.size()
-				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
-				or _pending_render_patch_rectangles.size()
-				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
-			):
+			if _pending_render_exceeds_budget():
+				_pending_render_recovery_required = true
 				_append_native_render_packet(_take_native_render_snapshot(true))
-			if _pending_render_full_refresh:
-				_snapshot_cells = _pending_render_patch_cells.duplicate()
 		else:
+			_revoke_render_baseline()
+			_pending_render_recovery_required = false
 			_snapshot_cells = PackedByteArray(_world.get_cells())
 			_fallback_render_snapshot_serial += 1
 			_pending_render_snapshot_serial = _fallback_render_snapshot_serial
@@ -1949,7 +1957,10 @@ func _publish_snapshot(
 			])
 			_pending_render_patch_cells = _snapshot_cells
 			_pending_render_payload_generation += 1
-		_snapshot_world_revision = _world.revision
+		# Rejected packets cannot certify pixels for a newer native revision.
+		# Recovery stays armed until an actual complete full packet is accepted.
+		if not _pending_render_recovery_required:
+			_snapshot_world_revision = _world.revision
 		_last_render_snapshot_usec = now_usec
 		if _pending_render_snapshot_serial > render_serial_before:
 			_pending_render_world_generation = _world_generation
@@ -2228,6 +2239,9 @@ func _clear_pending_render_patches() -> void:
 	_pending_render_full_refresh = false
 	_pending_render_patch_rectangles = PackedInt32Array()
 	_pending_render_patch_cells = PackedByteArray()
+	_revoke_render_baseline()
+	# An ACK covers only accepted pixels, never a rejected packet or an
+	# unfulfilled full request. The recovery fence survives this byte release.
 	_pending_render_payload_generation += 1
 
 
@@ -2242,23 +2256,138 @@ func _refresh_published_render_payload() -> void:
 	_published_render_payload_generation = _pending_render_payload_generation
 
 
-func _append_native_render_packet(packet: Dictionary) -> void:
-	var packet_cells: PackedByteArray = packet.get("cells", PackedByteArray())
-	var packet_rectangles: PackedInt32Array = packet.get(
-		"rectangles",
-		PackedInt32Array()
-	)
-	if packet_cells.is_empty() or packet_rectangles.is_empty():
-		return
+func _revoke_render_baseline() -> void:
+	_pending_render_baseline_serial = 0
+	_pending_render_baseline_generation = 0
+	_pending_render_baseline_channels = 0
 
-	var packet_serial: int = int(packet.get("serial", 0))
-	var packet_channels: int = int(packet.get("channels", 2))
-	var packet_full_refresh: bool = bool(packet.get("full_refresh", false))
+
+func _complete_render_baseline_metadata(rectangles: PackedInt32Array, channels: int) -> bool:
+	return (channels in [1, 2] and rectangles.size() >= RENDER_PATCH_METADATA_STRIDE
+		and rectangles[0] == 0 and rectangles[1] == 0
+		and rectangles[2] == CyberCellWorld.WORLD_WIDTH
+		and rectangles[3] == CyberCellWorld.WORLD_HEIGHT and rectangles[4] == 0
+		and rectangles[5] == CyberCellWorld.WORLD_WIDTH * channels)
+
+
+func _valid_render_patch_extents(rectangles: PackedInt32Array, bytes: int, channels: int) -> bool:
+	if (channels not in [1, 2] or rectangles.is_empty()
+		or rectangles.size() % RENDER_PATCH_METADATA_STRIDE != 0):
+		return false
+	var next_offset: int = 0
+	for index: int in range(0, rectangles.size(), RENDER_PATCH_METADATA_STRIDE):
+		var x: int = rectangles[index]
+		var y: int = rectangles[index + 1]
+		var width: int = rectangles[index + 2]
+		var height: int = rectangles[index + 3]
+		var pitch: int = rectangles[index + 5]
+		if (x < 0 or y < 0 or width <= 0 or height <= 0
+			or x > CyberCellWorld.WORLD_WIDTH - width
+			or y > CyberCellWorld.WORLD_HEIGHT - height):
+			return false
+		# Native payloads are tightly packed and contiguous. Aliased, gapped or
+		# padded extents must not make ambiguous retained state exempt.
+		if pitch != width * channels or rectangles[index + 4] != next_offset:
+			return false
+		next_offset += pitch * height
+		if next_offset > bytes:
+			return false
+	return next_offset == bytes
+
+
+func _has_qualified_render_baseline() -> bool:
+	return (_pending_render_baseline_serial > 0
+		and _pending_render_baseline_serial <= _pending_render_snapshot_serial
+		and _pending_render_baseline_generation == _world_generation
+		and _pending_render_world_generation == _world_generation
+		and _pending_render_baseline_channels == _pending_render_channels
+		and _pending_render_full_refresh
+		and _complete_render_baseline_metadata(_pending_render_patch_rectangles, _pending_render_channels)
+		and _valid_render_patch_extents(_pending_render_patch_rectangles,
+			_pending_render_patch_cells.size(), _pending_render_channels))
+
+
+func _pending_render_exceeds_budget() -> bool:
+	if _pending_render_recovery_required:
+		return true
+	var exempt_bytes: int = 0
+	var exempt_metadata: int = 0
+	if _has_qualified_render_baseline():
+		exempt_bytes = CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * _pending_render_channels
+		exempt_metadata = RENDER_PATCH_METADATA_STRIDE
+	return (_pending_render_patch_cells.size() - exempt_bytes > MAX_PENDING_RENDER_BYTES
+		or _pending_render_patch_rectangles.size() - exempt_metadata
+			> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE)
+
+
+func _reject_render_packet() -> void:
+	_revoke_render_baseline()
+	_pending_render_recovery_required = true
+
+
+func _append_native_render_packet(packet: Dictionary) -> void:
+	# Reject before typed assignments can coerce malformed packet identities.
+	if (typeof(packet.get("cells")) != TYPE_PACKED_BYTE_ARRAY
+		or typeof(packet.get("rectangles")) != TYPE_PACKED_INT32_ARRAY
+		or typeof(packet.get("channels")) != TYPE_INT
+		or typeof(packet.get("full_refresh")) != TYPE_BOOL
+		or typeof(packet.get("status")) != TYPE_INT
+		or typeof(packet.get("serial")) != TYPE_INT
+		or (packet.has("failed") and typeof(packet.failed) != TYPE_BOOL)):
+		_reject_render_packet()
+		return
+	var packet_cells: PackedByteArray = packet.cells
+	var packet_rectangles: PackedInt32Array = packet.rectangles
+	var packet_serial: int = packet.serial
+	var packet_channels: int = packet.channels
+	var packet_full_refresh: bool = packet.full_refresh
+	if (packet.get("failed", false) or packet.status not in [0, 1, 2, 3]
+		or packet_serial < 0 or packet_channels not in [1, 2]):
+		_reject_render_packet()
+		return
+	if (not packet_full_refresh and packet_cells.is_empty() and packet_rectangles.is_empty()
+		and packet.status in [0, 2]):
+		if not _pending_render_patch_cells.is_empty() and packet_channels != _pending_render_channels:
+			_reject_render_packet()
+		return # NoChanges/backpressure adds no new payload and clears no ACK.
+
 	if packet_full_refresh:
+		# A forced full copy may accompany any known publication outcome,
+		# including NoChanges or Backpressure with native serial zero.
+		if (packet_rectangles.size() != RENDER_PATCH_METADATA_STRIDE
+			or not _complete_render_baseline_metadata(packet_rectangles, packet_channels)
+			or packet_cells.size() != CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * packet_channels):
+			_reject_render_packet()
+			return
 		_pending_render_patch_rectangles = packet_rectangles
 		_pending_render_patch_cells = packet_cells
 		_pending_render_full_refresh = true
+		_pending_render_recovery_required = false
+		# This legacy field remains the last complete frame, never full+suffix.
+		_snapshot_cells = packet_cells.duplicate()
 	else:
+		if (packet.status != 1 or packet_serial <= 0
+			or not _valid_render_patch_extents(packet_rectangles, packet_cells.size(), packet_channels)
+			or (not _pending_render_patch_cells.is_empty()
+				and (packet_channels != _pending_render_channels
+					or _pending_render_world_generation != _world_generation))):
+			_reject_render_packet()
+			return
+		if _pending_render_recovery_required:
+			return
+		var exempt_bytes: int = 0
+		var exempt_metadata: int = 0
+		if _has_qualified_render_baseline():
+			exempt_bytes = CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * packet_channels
+			exempt_metadata = RENDER_PATCH_METADATA_STRIDE
+		# Check before append so rejected dirty data cannot transiently exceed
+		# one baseline plus the existing dirty budgets. Existing full recovery
+		# replaces the retained packet; the baseline is never dropped/rebased.
+		if (_pending_render_patch_cells.size() + packet_cells.size() - exempt_bytes > MAX_PENDING_RENDER_BYTES
+			or _pending_render_patch_rectangles.size() + packet_rectangles.size() - exempt_metadata
+				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE):
+			_pending_render_recovery_required = true
+			return
 		var data_offset_base: int = _pending_render_patch_cells.size()
 		_pending_render_patch_cells.append_array(packet_cells)
 		for metadata_offset: int in range(
@@ -2279,4 +2408,8 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 	# acknowledgements belong to the worker lifetime and must remain monotonic.
 	_pending_render_snapshot_serial = maxi(_pending_render_snapshot_serial+1,packet_serial)
 	_pending_render_channels = packet_channels
+	if packet_full_refresh:
+		_pending_render_baseline_serial = _pending_render_snapshot_serial
+		_pending_render_baseline_generation = _world_generation
+		_pending_render_baseline_channels = packet_channels
 	_pending_render_payload_generation += 1

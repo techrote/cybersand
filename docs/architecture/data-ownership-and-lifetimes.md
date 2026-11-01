@@ -269,6 +269,15 @@ does not acknowledge success. The worker clears accumulated patches only when
 the acknowledged serial covers the pending publication. Acquiring an older
 snapshot never authorizes clearing bytes it can still observe.
 
+**Current production E branch:** an exact complete baseline retains its original
+serial/generation/channel tag while dirty packets append. Only that baseline's
+bytes and one rectangle are exempt from dirty-budget accounting; ordinary
+covering ACK retirement is unchanged. Preflight bounds the worker's pending
+payload to one full frame plus the existing dirty budget. This is not a bound on
+all immutable generations held by consumers or on total process memory. Failed
+validation revokes exemption and requires full recovery before new dirty data
+can certify the display. A new World cannot inherit its predecessor's baseline.
+
 **Current Web:** copied packets are consumed synchronously on the main thread;
 the desktop mutex/accumulation/acknowledgement protocol is not instantiated.
 The [bridge contract](rendering-and-gameplay-bridges.md) owns format and failure
@@ -283,8 +292,9 @@ covered regions. This is not proof that every adapter allocation is absent.
 
 Desktop frame inputs and body arrays are replaced under a mutex. Emissions use
 a dynamic `Array[Vector4i]` with no production capacity/full-queue result.
-Pending render arrays also grow dynamically, then switch to a finite full
-refresh when byte or patch thresholds are exceeded. This recovery bounds the
+Pending render arrays grow only after metadata and dirty-budget preflight, then
+switch to a finite full refresh when admission would exceed the budget. The
+qualified complete baseline has the narrow exemption described above. Recovery bounds the
 retained display representation; it does not implement generalized bounded
 GameplayBridge queues.
 

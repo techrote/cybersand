@@ -10,6 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Production retained-baseline regression
+
+The production E branch adds
+[`test_render_retained_baseline.gd`](../../godot/tests/test_render_retained_baseline.gd).
+After a clean import, run it with the pinned engine and source-matched retained
+native runtime, alongside render handoff, native render bridge, generation,
+worker reset and PLAY lifecycle regressions. The automatic Godot inventory
+discovers it without a manual allowlist. Counters exist only in its test subclass.
+E changes GDScript only: matching native `source_inputs` permit existing runtime
+reuse, while historical `build_inputs` are not rewritten to claim new-script
+execution. The [integration audit](../audits/2026-11-01-render-production-integration.md)
+records exact source/artifacts, commands, failures and hardware coverage limits.
+
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 
 The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged
