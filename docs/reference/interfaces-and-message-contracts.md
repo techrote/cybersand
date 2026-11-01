@@ -566,7 +566,7 @@ may treat the failed attempted identity as a successful publication. See
 
 **Current:** `CyberNativeCellWorld` exposes `diagnostic_reset(options)`,
 `diagnostic_fill_rect(origin,size,material,state_b=0)`,
-`diagnostic_snapshot(origin,size,include_histogram=false)` and
+`diagnostic_snapshot(origin,size,include_histogram=false,include_hash=true)` and
 `diagnostic_body_metrics()`. Their bounded schemas, units and valid options are
 owned by the [measurement runbook](../operations/physics-characterisation.md).
 Reset constructs a fresh empty fixture; invalid options preserve the old world.

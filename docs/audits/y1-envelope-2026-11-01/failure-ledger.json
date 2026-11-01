@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "failures": [
+    {
+      "stage": "first acquisition",
+      "outcome": "nonqualifying and interrupted",
+      "reason": "Live presentation body position was read after setup yielded; requested initial gap changed.",
+      "disposition": "Fixed by retaining planned centres before yield; exact corrected repeats pass.",
+      "evidence": "raw archive campaign and preflight directories"
+    },
+    {
+      "stage": "review smoke first attempt",
+      "outcome": "Godot script errors despite exit0",
+      "reason": "Draw callback observed an incompletely replaced fixture during reset.",
+      "disposition": "Reset/bridge guard added; repeated smoke has no errors.",
+      "evidence": "raw archive review-prequalify.log and review-prequalify-v2.log"
+    },
+    {
+      "stage": "Linux initial build launch",
+      "outcome": "exit1",
+      "reason": "Default compiler wrapper had CRLF shebang.",
+      "disposition": "Use explicit pinned LINUX_CXX=/usr/bin/g++-13; no source/toolchain-pin rewrite.",
+      "evidence": "raw archive linux-build.log and linux-build-pinned.log"
+    },
+    {
+      "stage": "native sanitizer first run",
+      "outcome": "timeout124 after300s",
+      "reason": "Local guard reached while suite was still progressing; no reported sanitizer defect before cutoff.",
+      "disposition": "Retain original timeout; final exact-head rerun uses current native-case allowance.",
+      "evidence": "raw archive native-qualification/linux-asan.log and receipt.json"
+    },
+    {
+      "stage": "first partial reduction of angle strata",
+      "outcome": "ValueError capture identity/registration failure",
+      "reason": "Godot JSON decimal angle formatting differs below float32 carrier precision.",
+      "disposition": "Require same float32 carrier bits, <=1e-14 angle-only formatting drift and exact protocol hash. Physical trace comparisons stay exact.",
+      "evidence": "tracked reducer and regression test; original error in chat tool output"
+    },
+    {
+      "stage": "documentation result generator",
+      "outcome": "UnicodeEncodeError cp1252 for arrow character",
+      "reason": "Windows implicit text encoding was used in a local documentation helper.",
+      "disposition": "Restore own audit from exact HEAD blob, rerun with explicit UTF-8, then recheck documentation; no historical audit rewrite.",
+      "evidence": "local build/fix_encoding.py, build/write_results.py; original exception in chat tool output"
+    }
+  ],
+  "qualification_limits": [
+    "No owner gameplay verdict",
+    "Delayed age3-5 bearing fails to prevent deep-floor descent",
+    "Heavy/thin high-speed clearance and creep fail registered bounds",
+    "Scalar bearing lacks granular torque",
+    "Several one-process performance triggers and18.113ms collapse outlier remain incompletely attributed",
+    "Web/macOS/mobile and general shapes/crowding unqualified"
+  ]
+}

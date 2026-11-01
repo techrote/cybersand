@@ -1548,3 +1548,13 @@ Use the [physical actor programme](physical-actor-programme.md) for the combined
 ## Reconstructed depth prototype — 2026-10-18
 
 PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.
+
+## Y1 physical envelope checkpoint — 2026-11-01
+
+Use the [Y1 qualification runbook](y1-granular-bearing-qualification.md) and
+[dated audit](../audits/2026-11-01-y1-production-envelope.md) for the fresh-main
+stratified B0/Y1 campaign and shared playable comparison. Earlier diagnostic PRs
+remain read-only. B0 stays default; native Y1 needs explicit fresh-world selection.
+The first acquisition had a corrected scene-initialization defect and is retained
+as nonqualifying evidence. #83 remains open. **AWAITING OWNER GAMEPLAY ACCEPTANCE**;
+do not merge this draft without explicit owner authorization.

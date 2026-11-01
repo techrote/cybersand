@@ -318,3 +318,23 @@ Use `--browser-suffix` and `--async-result` to select separately retained final
 reruns, rather than overwriting earlier browser or owner traces. Final acceptance
 also verifies invalid construction options preserve authority and ordinary demo
 reset restores the compiled support/permeability defaults.
+
+## Y1 production envelope diagnostic channels
+
+The [Y1 runbook](y1-granular-bearing-qualification.md) defines explicit fresh-world
+B0/Y1 admission and the finite physical envelope. `diagnostic_body_metrics()`
+retains fields0..19 and appends a copied dictionary at20: candidate/yield factor,
+exposed downward boundaries, raw support (including rising/zero-velocity queries),
+left/right support split at body centre, ejection attempts/no-targets/relocation
+refusals and five endpoint counters. Endpoint categories are the first rejection
+in original search order: outside, masked, occupied, blocked path, accepted.
+They describe search work; they are not a per-event replay corpus. Existing
+hard/foreign-mask regressions retain path-safety ownership.
+
+`diagnostic_snapshot` adds optional fourth `include_hash=true`. False omits only
+the expensive whole-World state hash while preserving copied cells, material
+counts, stored Water quantity and work fields. Existing calls keep their default
+hash. It is observation-only and must use the serialized owner. Production
+body/result strides, ordinary gains and all search/relocation decisions remain
+unchanged. Diagnostics allocate bounded copied output outside native ticks;
+no per-event queue or worker callback is added.

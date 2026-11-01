@@ -550,3 +550,5 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+For the fresh-main B0/Y1 envelope, recorded owner comparison and review-only pixel-grid display, use the [Y1 qualification runbook](operations/y1-granular-bearing-qualification.md). The owner prefers Y1 and describes residual issues as minor. Registered technical limitations remain; production selection and merge authorization are outstanding.

@@ -140,7 +140,7 @@ public:
     // Hard-surface sources are rejected so this helper cannot bypass collider ownership.
     bool diagnostic_relocate_cell(Vector2i from, Vector2i to);
     [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
-                                                  bool include_histogram = false) const;
+                                                  bool include_histogram = false, bool include_hash = true) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
@@ -175,6 +175,10 @@ private:
         std::uint64_t unresolved = 0;
     };
     struct BodyDiagnostic {
+        std::uint64_t boundaries = 0, raw_support = 0, left_support = 0, right_support = 0;
+        std::uint64_t attempts = 0, no_target = 0, relocation_refused = 0;
+        // First rejection category per endpoint: outside, masked, occupied, path, accepted.
+        std::array<std::uint64_t, 5> endpoints{};
         Vector2 displacement{};
         Vector2 boundary{};
         Vector2 bearing{};
@@ -187,6 +191,8 @@ private:
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
     bool default_demo_recipe_active_ = false;
+    // Fresh diagnostic construction only; demo/default reset always restores B0.
+    double granular_yield_response_ = 0.18;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;
     double contact_gain_ = 0.025;

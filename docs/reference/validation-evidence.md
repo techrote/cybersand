@@ -940,3 +940,13 @@ and reaction oracles; actual rendered captures; cost/memory and source-matched
 Linux/Windows publication each retain their own scope. Pending or skipped gates
 do not establish completion. Retained Deepworks evidence is the visual reference,
 not a substituted result for the new procedural scene.
+
+## Y1 granular bearing envelope — 2026-11-01
+
+The [dated fresh-main audit](../audits/2026-11-01-y1-production-envelope.md) and
+[Y1 runbook](../operations/y1-granular-bearing-qualification.md) bind the bounded
+B0/Y1 matrix to actual source/runtime identities. The first source8737 capture
+is nonqualifying because scene setup advanced the requested initial pose; its
+failure and corrected exact-repeat check are retained. Final results, platform
+limits and remaining gates must be read from that audit. Synthetic qualification
+never supplies owner gameplay acceptance or #83 closure.

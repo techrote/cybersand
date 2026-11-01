@@ -1786,3 +1786,15 @@ separate results; seven affected Godot processes pass1078 assertions. Keep old
 failures, final EOF-only transition, raw/canonical source bindings and actual
 runtime identities. Fresh integrated native/publication/full platform gates
 remain required; do not substitute the old development DLL for them.
+
+## Y1 envelope and playable comparison
+
+The [Y1 runbook](y1-granular-bearing-qualification.md) gives sequential registered
+acquisition/reduction and source-authenticated owner-review commands. Rebuild both
+Windows/Linux extensions when the native adapter changes. The default new Godot
+tests cover selector/refusal, capacity, asymmetric/full support removal, negative
+controls and fresh review ownership; batch/real-worker acquisition requires
+explicit protocol/case/output arguments. Existing REM-002/003, instrumentation,
+async, body-mask/hard-floor and failed-world/region gates remain applicable.
+No default promotion, full platform certification or human acceptance follows
+from these tests.

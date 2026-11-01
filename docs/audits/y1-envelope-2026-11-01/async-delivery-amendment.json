@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "base_protocol": "protocol.json",
+  "reason": "Pre-acquisition API inspection: selecting only the newest snapshot every third frame can skip deliveries without deliberately ageing the consumed value. Retain one real immutable snapshot between consumption boundaries to exercise bounded actual delayed delivery. No serial, pose, age or native state is altered. No corrected campaign results or asynchronous candidate results exist at amendment.",
+  "delivery": "Every third physics frame applies the actual snapshot retained at the preceding consume boundary, then retains the latest. First boundary uses latest. Exactly one snapshot retained; main continues stepping/packing once per frame, production worker continues unchanged.",
+  "unchanged": [
+    "all scenarios",
+    "candidate laws",
+    "registered thresholds",
+    "900 main frames",
+    "consume_every3",
+    "one exclusive material owner",
+    "fixed trace capacity",
+    "decision rules"
+  ]
+}

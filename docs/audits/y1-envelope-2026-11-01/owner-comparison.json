@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "date": "2026-11-01",
+  "reviewed_source": "ac3839ec645a2fc3ec622eb33d72a4ab18b114ba",
+  "source_basis": "Source overlay visible in original B0 frames, including full SHA in wide slide capture; source-matched prior package. Cropped clips omit selector.",
+  "candidate": "B0",
+  "candidate_basis": "Explicit owner assessment and supplied b0 filenames.",
+  "comparison_candidate": "Y1",
+  "candidate_alias": "Owner calls previous set y0; interpreted as Y1 based on prior explicit Y1-throughout confirmation and only B0/Y1 selector. No third physical candidate exists.",
+  "recording_fps": 30,
+  "frames": 6919,
+  "archives": [
+    {
+      "name": "b0-anchor-30.zip",
+      "sha256": "ed7a8fd077a19fa28904f03e6797e6f0e5c1000c8b9382b7ebec6c7fc11d2be7",
+      "bytes": 3432494,
+      "frames": 930,
+      "frame_range": [
+        1,
+        930
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        239,
+        583
+      ],
+      "owner_report": "Trampoline-like surface bounce followed by very slow left drift."
+    },
+    {
+      "name": "b0-anchor90.zip",
+      "sha256": "be9d4c9b49386d2236e5bcc56e4119b94c7a723d6745beb83240ee6cb4044871",
+      "bytes": 3552312,
+      "frames": 933,
+      "frame_range": [
+        1,
+        933
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        239,
+        583
+      ],
+      "owner_report": "Energetic ejection then side-to-side hovering, like the light high-speed case."
+    },
+    {
+      "name": "b0-angle-45-30.zip",
+      "sha256": "747334f426c29951022413feaca1afd7e95e3117f2dde5df9d46d034498d2460",
+      "bytes": 4727209,
+      "frames": 927,
+      "frame_range": [
+        1,
+        927
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        239,
+        583
+      ],
+      "owner_report": "Almost the same as candidate, with initial bounce and possibly slightly greater restlessness."
+    },
+    {
+      "name": "b0-edge-30.zip",
+      "sha256": "afb7ad09e66ca0f0ca54bb3e4bb6bdb5aad596ac68c180fb1e61eaf244b971f7",
+      "bytes": 2574111,
+      "frames": 447,
+      "frame_range": [
+        1,
+        447
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        239,
+        583
+      ],
+      "owner_report": "Same as candidate until final movements; B0 bounces upright."
+    },
+    {
+      "name": "b0-excavate.zip",
+      "sha256": "976d249fcef291384b9d36b3a2c916946ea6ccc6336b960eda1448af3f052cda",
+      "bytes": 3120965,
+      "frames": 629,
+      "frame_range": [
+        1,
+        629
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        239,
+        583
+      ],
+      "owner_report": "Small initial bounce, then essentially the same as candidate."
+    },
+    {
+      "name": "b0-mass-05-90.zip",
+      "sha256": "8fb8dc25a703519e474f5e2b8d3d6c4e072be9d55216e3b8ae0cf5ab05d2d2f7",
+      "bytes": 4782992,
+      "frames": 936,
+      "frame_range": [
+        1,
+        936
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        239,
+        583
+      ],
+      "owner_report": "Apparently shallower penetration, near-immediate energetic spring out of divot, then wandering like suspension on compressed air."
+    },
+    {
+      "name": "b0-mass-2-90.zip",
+      "sha256": "3e8c9825805890d97cb503315fae2a54c0764e9eb1c891d717f6ee3d759c03cc",
+      "bytes": 3023851,
+      "frames": 942,
+      "frame_range": [
+        1,
+        942
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        239,
+        583
+      ],
+      "owner_report": "Basically the same as candidate, possibly longer and larger-amplitude sloshing."
+    },
+    {
+      "name": "b0-slide.zip",
+      "sha256": "2a156f3c34ec915f6773e93405ca388523b6a90a41f51847d8b1e49f2ad8316f",
+      "bytes": 8518794,
+      "frames": 933,
+      "frame_range": [
+        1,
+        933
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        560,
+        589
+      ],
+      "owner_report": "Small initial bounce, otherwise essentially the same as candidate."
+    },
+    {
+      "name": "b0-slope-slide.zip",
+      "sha256": "53c324e4f6eda7b4e1558354b62128f11a19c0bdd9eca7d2f6f5d8621d2081b2",
+      "bytes": 2360834,
+      "frames": 242,
+      "frame_range": [
+        1,
+        242
+      ],
+      "crc_valid": true,
+      "dimensions": [
+        560,
+        589
+      ],
+      "owner_report": "Essentially the same as candidate."
+    }
+  ],
+  "custody": "Original files unchanged; byte-identical retained copies in build/b0-owner-recordings/archives; selected frames inspected; full images not committed.",
+  "owner_comparison": {
+    "preference": "Y1 is a definite improvement.",
+    "remaining_severity": "Owner now describes the remaining issues as minor and potentially mitigated by smart rendering presentation.",
+    "interpretation": "This later comparative assessment supersedes treating the earlier Y1-only objections as an overall owner rejection.",
+    "shared_behavior": "Heavy/angled/edge/excavation/flat-slide/slope behavior is reported mostly shared with B0, with some B0 bounce/restlessness worse.",
+    "limits": "Positive comparative preference is recorded. No explicit production-default change or merge authorization is supplied; prior technical-envelope failures are not reclassified as passes."
+  },
+  "presentation_hypothesis": {
+    "owner_report": "Vector outlines are visually uncohesive with pixel materials. Thin border swimming, angle/subpixel-dependent 1/2 display-pixel width and perceived antialiasing draw attention to motion.",
+    "source_finding": "Review draw_polyline uses default false antialiasing; physical_actor_overlay explicitly false at display width1 and physical_actor_rig explicitly false at width0.6. A material/display grid mismatch remains even with line AA disabled.",
+    "status": "Plausible visual amplification; reduction in perceived restlessness has not yet been measured or accepted.",
+    "bounded_followup": "Development-review-only toggle between original vector diagnostic, shared cell-grid one-cell inner outline, and cell-grid fill only. All read the same Rapier pose and copied cell image; no smoothing, altered collision/torque/friction, physics snapping or default change. Original vector mode remains initial display."
+  },
+  "technical_status": "ADVANCE WITH REFINEMENT REQUIRED remains an engineering disposition due registered physical failures; torque/tangential gaps are retained as shared model limitations. Owner preference now positively supports Y1. Full-envelope promotion remains unqualified; PR draft and unmerged."
+}
