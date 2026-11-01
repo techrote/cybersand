@@ -38,7 +38,8 @@ func configure(id: StringName) -> bool:
 	return _configure_granular(id,"B0","")
 
 func configure_granular_experiment(id: StringName, candidate: String, token: String, spawn_offset: Vector2 = Vector2.ZERO) -> bool:
-	if Course.is_swarm(id) or candidate not in ["Y1","GCR"] or token != "GCR-001-2026-11-01":
+	var expected_token: String = "GCR-ADMISSION-001-2026-11-01" if candidate == "GCR-A1" else "GCR-001-2026-11-01"
+	if Course.is_swarm(id) or candidate not in ["Y1","GCR","GCR-A1"] or token != expected_token:
 		last_error = "granular_experiment_refused"
 		return false
 	return _configure_granular(id,candidate,token,spawn_offset)

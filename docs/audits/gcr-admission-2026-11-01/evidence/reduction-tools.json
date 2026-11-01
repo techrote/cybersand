@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "scope": "Published analysis-only wrappers; archived original helper bytes remain separate. No physical source or capture changes.",
+  "tools": [
+    {
+      "path": "tools/experiments/analyze_gcr_admission.py",
+      "canonical_sha256": "3f24672b0f94893e0db34ba283850eddd8920681df3ddeb42053d2cb941669c9",
+      "working_raw_sha256": "f1e5d6561cb638f44f61a0ed96e0afe24e3ef8f7d8616a1e448b570ece17bace"
+    },
+    {
+      "path": "tools/experiments/analyze_gcr_admission_timing.py",
+      "canonical_sha256": "6920867e644ccba993e2e94f16aa0b49a971ed052bcb738afb0f323073a7e138",
+      "working_raw_sha256": "84d66d4b67e31d482720827f763cea33fdbb37feb5efa1893c934bab148aecca"
+    },
+    {
+      "path": "tools/experiments/characterize_gcr_admission_heavy.py",
+      "canonical_sha256": "363e7f3cd3352c904dd66645c8dd7d5f734a133e43abe9d5bf0069b37ce20757",
+      "working_raw_sha256": "ec287134929a057a98244e4e4fd3744ca0e323d74768d08782c293810bb198a0"
+    },
+    {
+      "path": "tools/experiments/compare_gcr_admission_controls.py",
+      "canonical_sha256": "edc346eea65d985b0f63991882443f3b737ed1ec0d44e2d074f52535717bcfaf",
+      "working_raw_sha256": "2726e77d3d0152c3837e2d845ea149b823304ef7e29f3da90130eca6676e5e4d"
+    },
+    {
+      "path": "tools/experiments/compare_gcr_admission_r2.py",
+      "canonical_sha256": "13d5d0d24de2bc0579c5f5c706914e33fb661c8922d4cfe9fbcace5f9559804e",
+      "working_raw_sha256": "9a049dee852d9be0c050c9475ba32e2390b4e3829f40b7f2ec6ff3b5b31f7b6a"
+    },
+    {
+      "path": "tools/experiments/compare_gcr_admission_replay.py",
+      "canonical_sha256": "0427ff0f5feda7e6d4c3939ef00af4b7ce2fced6759280611bf7ed58c9e4835e",
+      "working_raw_sha256": "395ef0984f05f3b4532dd5a298db460be999d0ac6e1fbd3fd2c6d6f800413afb"
+    },
+    {
+      "path": "tools/experiments/describe_gcr_admission_late_motion.py",
+      "canonical_sha256": "c2ba5c8835b7fa7de19702e2644dd3f131ffe58d6df991562a27bc1f502c8ae9",
+      "working_raw_sha256": "6bc9d48edf8e752ecf842e31ecb1bf26576932e04cfc9ad63a2e762238c5402a"
+    },
+    {
+      "path": "tools/experiments/export_gcr_admission_evidence.py",
+      "canonical_sha256": "a6de4be33c5182f19e7ed00dbd82884c851f290ba298ce89d22594a8da8282d8",
+      "working_raw_sha256": "78ec00abca865cea082de5a8bf708c595f8707185b05727e2c98af08afa2c42e"
+    },
+    {
+      "path": "tools/experiments/package_gcr_admission_evidence.py",
+      "canonical_sha256": "ab8fc0ec86bf8254330200fd56a230b59fc21e2f75a8f13a5f8cdd8bfcf2a7fc",
+      "working_raw_sha256": "47ac331a5e09792973f3f77b395baff77357a89ec90d5d656e30f8868c116a57"
+    },
+    {
+      "path": "tools/experiments/run_gcr_admission.py",
+      "canonical_sha256": "46fb6b0fe4aa095168d43365a92c71d9ad9d5aa96154ffc3098a9e6a4486e93f",
+      "working_raw_sha256": "7aa57acb68f48cfa2cc25f132d30e9c90de640236d7286d5c1437f51fcd18758"
+    },
+    {
+      "path": "tools/experiments/test_gcr_admission.py",
+      "canonical_sha256": "8784dc38fdf2c2b1e26289e04e3040ea05a0ca5423ce3bfdace109c1002eae90",
+      "working_raw_sha256": "c2dcd616fb5cc5a7fa16741cd85bdfaab98b0fc0a2860e51f20f07528cb0bd14"
+    }
+  ],
+  "portable_replay_projection_checks": [
+    {
+      "case": "sand-vertical",
+      "arm": "Y1",
+      "portable_projection_matches_original": true
+    },
+    {
+      "case": "sand-vertical",
+      "arm": "GCR",
+      "portable_projection_matches_original": true
+    },
+    {
+      "case": "sand-vertical",
+      "arm": "GCR-A1",
+      "portable_projection_matches_original": true
+    },
+    {
+      "case": "sand-horizontal",
+      "arm": "GCR-A1",
+      "portable_projection_matches_original": true
+    },
+    {
+      "case": "sand-horizontal",
+      "arm": "GCR",
+      "portable_projection_matches_original": true
+    },
+    {
+      "case": "sand-horizontal",
+      "arm": "Y1",
+      "portable_projection_matches_original": true
+    },
+    {
+      "case": "sand-glancing",
+      "arm": "Y1",
+      "portable_projection_matches_original": true
+    },
+    {
+      "case": "sand-glancing",
+      "arm": "GCR",
+      "portable_projection_matches_original": true
+    },
+    {
+      "case": "sand-glancing",
+      "arm": "GCR-A1",
+      "portable_projection_matches_original": true
+    }
+  ],
+  "tool_hash_scope": "canonical_sha256 identifies LF-normalized committed Git bytes; working_raw_sha256 identifies packaging workspace bytes. Archive member hashes always identify exact raw archived bytes."
+}

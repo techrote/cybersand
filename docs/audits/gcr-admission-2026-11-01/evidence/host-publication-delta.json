@@ -1,0 +1,11 @@
+{
+  "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+  "delta_sha256": "363c3e311796ff8722bac7640fd97e2d5262a48f629f74aa8a1b8f9b74ee6f60",
+  "paths": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "scope": "Host tests execute unchanged source3d CPP/GDScript bytes with source-matched published runtime/provenance delta only; all237physical captures finished before this publication."
+}

@@ -17,6 +17,16 @@ Fresh main809fd30dfac0c5e127302997075be9c4b279e5aa underlies the isolated `codex
 Draft [PR#346](https://github.com/techrote/cybersand/pull/346) subsequently reconciles maina8f08a67's palette-shader integration without changing inspected physics inputs. The audit distinguishes the original196 captures from post-main host checks/four representative smokes. No owner acceptance or merge follows.
 
 
+The admission-only successor `codex/gcr-admission-only-20261101` starts from
+frozen#346 `be240130` (including freshly fetched maina8f08a67). Registration8d3
+precedes implementation3d0b1ed7 and all237 captures. Both source-matched runtimes
+are published at162d11b4. Mechanical admission passes; the unchanged GCR law
+remains physical **NO-GO**. The [new audit](../audits/2026-11-01-gcr-admission-qualification.md)
+records bounds, conservation, failed gates, actual unchanged-controller hosts,
+async and timing. Friction/load laws, controllers and sleep were not changed.
+PR#346 stays frozen; both drafts remain unmerged.
+
+
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
 
 ## Current owner policy and accepted baseline — 2026-10-31

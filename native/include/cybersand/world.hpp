@@ -196,6 +196,24 @@ public:
     [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,
                                            bool side = false,
                                            bool include_transient_obstacles = true) const noexcept;
+    enum class GranularAdmissionRefusal : std::uint8_t {
+        None, Invalid, FailedWorld, NoMaskFreeWitness, SourceMasked,
+        SourceNonCapable, SourceUnstable, PathMasked, PathNonCapable,
+        PathUnstable, Packing, Count
+    };
+    struct GranularContactAdmission {
+        bool admitted = false;
+        std::uint8_t selected_depth = 0;
+        std::int8_t witness_dx = 0, witness_dy = 0;
+        std::uint32_t source_candidates = 1, geometry_mask_checks = 0;
+        std::uint32_t mask_checks = 0, path_checks = 0, shared_witness_calls = 0;
+        GranularAdmissionRefusal refusal_reason = GranularAdmissionRefusal::None;
+    };
+    // GCR-A1 side/up-only serialized-owner query. Source/force geometry stays
+    // external; this copied witness carries no material or response ownership.
+    [[nodiscard]] GranularContactAdmission granular_contact_admission_at(
+        std::int64_t source_x, std::int64_t source_y,
+        double outward_x, double outward_y) const noexcept;
     [[nodiscard]] std::uint16_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint16_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
@@ -539,6 +557,8 @@ private:
                                           JobEffects* effects);
     [[nodiscard]] std::uint8_t deterministic_random(std::int64_t x, std::int64_t y,
                                                     std::uint32_t stream) const noexcept;
+    [[nodiscard]] bool granular_sample_stable(std::int64_t x, std::int64_t y,
+                                               bool include_transient_obstacles) const noexcept;
     void record_transient_contact(std::uint16_t body_id, Material material,
                                   std::int64_t delta_x, std::int64_t delta_y, std::int64_t source_x,
                                   std::int64_t source_y) noexcept;

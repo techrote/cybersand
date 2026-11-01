@@ -1,0 +1,8 @@
+{
+  "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+  "protocol_canonical_sha256": "807391ce39bc92c44ec5e0f242e4d4f0c106187d63afc9d3afe4e72d048e1d06",
+  "file_locks": 10,
+  "function_locks": 6,
+  "failures": [],
+  "ok": true
+}

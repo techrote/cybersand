@@ -1,0 +1,257 @@
+{
+  "schema": 1,
+  "reference_identity": {
+    "source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+    "tree": "841a74694394250527961c7be4c481c008509d0d",
+    "local_delta_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "protocol_sha256": "df60c0461fcec358e68a0563771aac0cd053acd3a4540764a0efccffa80ae08f",
+    "native_sha256": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+    "native_manifest_sha256": "78639b8589ad8f05863c062c598e6622529ea7c1b63ab5b681d433231aa285aa",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "input_identity": "a79e89171dd032422217f4d0d57bf883cf2c783ae4c0269e894dac54ee3daf00"
+  },
+  "successor_identity": {
+    "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+    "tree": "72f29fb292695685fa85ecb71d848edde6254b38",
+    "local_delta_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+    "native_sha256": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+    "native_manifest_sha256": "2366103b31a2df58dadf23290f2fc9c943dc23d5c615669e767731028a100e41",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd"
+  },
+  "scope": "Exact selected retained R2 physical/material observations across explicitly different source/native compositions, not same-runtime identity or full cell-state equivalence.",
+  "explicit_exclusions": [
+    "row timing fields",
+    "row new admission counters and counter-copy time",
+    "nested gcr.admission metadata",
+    "source/receipt metadata",
+    "result offsets8sample/13session",
+    "application.snapshot",
+    "application.bodies.sample"
+  ],
+  "projection_script_sha256": "13d5d0d24de2bc0579c5f5c706914e33fb661c8922d4cfe9fbcace5f9559804e",
+  "all_selected_exact": true,
+  "results": [
+    {
+      "case": "sand-vertical",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "2cdcdde416d702c46a0ea88bdc8b0f1396d439421e449b4c5dff6970a10c4ecb",
+      "successor_raw_sha256": "2a7cdd01f55a8dcb178db25bbf9b97b567db569eefb32b78c4fb43a2d9b80e64",
+      "reference_physical_sha256": "b021773a82353ea3218c9dddd50c2dadab8688455e155d03c7bdfe00efb471ae",
+      "successor_physical_sha256": "b021773a82353ea3218c9dddd50c2dadab8688455e155d03c7bdfe00efb471ae",
+      "first_difference": null
+    },
+    {
+      "case": "sand-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "13df01decce7fef3eff7a795c30887916c7089c6f1f1949085cd60220f546cd0",
+      "successor_raw_sha256": "d0b98a287f28f5bacbf8a3cb1f19d5e5b2836827e03730de5443f0710584b0d1",
+      "reference_physical_sha256": "c2af4d6678883e9a3e67a78c688ccf9d7c6147fc2dba5019aa6df8219cc5bb2b",
+      "successor_physical_sha256": "c2af4d6678883e9a3e67a78c688ccf9d7c6147fc2dba5019aa6df8219cc5bb2b",
+      "first_difference": null
+    },
+    {
+      "case": "sand-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "fc6da64741746deca35a0c94c6fa7b695783c67166cbb0879b46aae44a0291ae",
+      "successor_raw_sha256": "6e97ba5e6945b714e9d24ce04ef5b635b6449fd48ee159574179ca3cfeb1c946",
+      "reference_physical_sha256": "03fb7306c8031e22ab0e120bf836d64dfb40599d561223745923d8446fe576c8",
+      "successor_physical_sha256": "03fb7306c8031e22ab0e120bf836d64dfb40599d561223745923d8446fe576c8",
+      "first_difference": null
+    },
+    {
+      "case": "stone-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "89d63f669cf39e0024f3b6e0f86c16027adb976ebe6545eccd558f81bd9b8589",
+      "successor_raw_sha256": "ba8931299705f004fc094909764546b3dcf031e30cddc1d241346c8694eea225",
+      "reference_physical_sha256": "b600cd1f838f7e09d4a5ba983a1d5ae6461243e9be6c1237c3846214e65f7554",
+      "successor_physical_sha256": "b600cd1f838f7e09d4a5ba983a1d5ae6461243e9be6c1237c3846214e65f7554",
+      "first_difference": null
+    },
+    {
+      "case": "stone-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "0a1d4f665fae82e64480b74e1af7b2a12c23bc2601fa76724c1cc1897d3ec5eb",
+      "successor_raw_sha256": "2cec6aaffc5bce23dbfd04010bf8685cc9fcfff4c8f4ca464b0673cac4252492",
+      "reference_physical_sha256": "65dd64728502a1ab2979d89230b513708f523c03b4d0e63aa4010d07f3258b30",
+      "successor_physical_sha256": "65dd64728502a1ab2979d89230b513708f523c03b4d0e63aa4010d07f3258b30",
+      "first_difference": null
+    },
+    {
+      "case": "dust-vertical",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "ff0d853a893936f66df4213d85dab300615e94a5e405cbb7e57aa8cb6da1fcab",
+      "successor_raw_sha256": "26b0144fa6d8a99613982e4f147a879c7cd6813422795a2b50f5016d5a74b0d0",
+      "reference_physical_sha256": "002a8444efcc994b6c22b04f475cb259149ad1975991044d35d26c327b100070",
+      "successor_physical_sha256": "002a8444efcc994b6c22b04f475cb259149ad1975991044d35d26c327b100070",
+      "first_difference": null
+    },
+    {
+      "case": "dust-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "86e7b05e85dcd9a3f64db6300181065e90e8c7e58bd8adb9f377ffc9e5fb357e",
+      "successor_raw_sha256": "81183121b336b4395c9be8f940599d864a65567821a444a825339cfc07a445b3",
+      "reference_physical_sha256": "40dfac96c72a4a1eb1cb620f997b629d5bbe915ac4ea36399f119c97c9084480",
+      "successor_physical_sha256": "40dfac96c72a4a1eb1cb620f997b629d5bbe915ac4ea36399f119c97c9084480",
+      "first_difference": null
+    },
+    {
+      "case": "dust-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "30735e5dea0d0ba31d73a1c366c6846e40bd76b9475354a0184e6137fd7ee08c",
+      "successor_raw_sha256": "fb05703b0c3703c9ff412883f3d71a2ecda61ef28bb10c27823623380cdbb3fb",
+      "reference_physical_sha256": "e884e4106f2b3a28e7e097ae07b62ce8804120eac7db9d47fd44bf1ee79c0dc2",
+      "successor_physical_sha256": "e884e4106f2b3a28e7e097ae07b62ce8804120eac7db9d47fd44bf1ee79c0dc2",
+      "first_difference": null
+    },
+    {
+      "case": "seed-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "45e74250214be2e1dd18c61c8cd290d93e169464b9ebc86d3bad45d238ea3a5d",
+      "successor_raw_sha256": "595f6a950799509f1bbf7636d06d32ddf947c8be84d37a37be3b0cac0cb648d1",
+      "reference_physical_sha256": "aa4e45160dac460aa0a1e57f2111ef9e8134b9fa67274446cc51fefba2720bb1",
+      "successor_physical_sha256": "aa4e45160dac460aa0a1e57f2111ef9e8134b9fa67274446cc51fefba2720bb1",
+      "first_difference": null
+    },
+    {
+      "case": "seed-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "00d3244fedf9505ea9fe2017398d973b2037475ee4b078540f533e0a55bb69e5",
+      "successor_raw_sha256": "49ffc8c25db46d48f58c851618a7c04c0773371c8fb0da9d7d6727c132a26fce",
+      "reference_physical_sha256": "585fe39bdeaa8045182491f3a477016ab10f80e43d5754ea7ae970e7e7ba31a1",
+      "successor_physical_sha256": "585fe39bdeaa8045182491f3a477016ab10f80e43d5754ea7ae970e7e7ba31a1",
+      "first_difference": null
+    },
+    {
+      "case": "salt-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "38a99c93cfc07ae287d3877754d01d76c12b5dcec0d2823bed11ca8669a61d59",
+      "successor_raw_sha256": "7858df59016c914563e88edc0df1aa84d84c8adf3c56e1b5b7396ddf6f8f9185",
+      "reference_physical_sha256": "b35268f209f5553e9986349d781913853e9b1afb40ffb3dfdc7a52ef017e1ffd",
+      "successor_physical_sha256": "b35268f209f5553e9986349d781913853e9b1afb40ffb3dfdc7a52ef017e1ffd",
+      "first_difference": null
+    },
+    {
+      "case": "salt-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "a0340215fd3a155d75755ad5132dbc8623da601c77caddc5a38ec0ce1ac63384",
+      "successor_raw_sha256": "6232235527635aab1c2abd8ae31cfa15530b2f65aae998e7f59286935ea291b3",
+      "reference_physical_sha256": "ed8e0859547be6fbac3d394824684716534928849a06ce6d70fb173264da8a88",
+      "successor_physical_sha256": "ed8e0859547be6fbac3d394824684716534928849a06ce6d70fb173264da8a88",
+      "first_difference": null
+    },
+    {
+      "case": "sodium-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "66badd1f8921569b8e26ada75c9cda30b7fcca978e2c37d6f5e88856b6fdaa85",
+      "successor_raw_sha256": "8b1899c63c138e8e8c9a42857170427c6371d3e2f71f7c136ca57671eca07a28",
+      "reference_physical_sha256": "639d0016c1151ababa2aaf21aa6922b3bdbb7b72fa8f497c717bef82afd4084d",
+      "successor_physical_sha256": "639d0016c1151ababa2aaf21aa6922b3bdbb7b72fa8f497c717bef82afd4084d",
+      "first_difference": null
+    },
+    {
+      "case": "sodium-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "5660bdcfce692a7d15774647566339522ea329576ec7e458ad7af81daedf50d7",
+      "successor_raw_sha256": "428bf56f7f02f2b34f3e2271055c142f8300a00a8228c82e711d5928548350c1",
+      "reference_physical_sha256": "646908b64fd33b17ab4e9be6a1a1391e5837408854cc4f230507dbadd8b9de3e",
+      "successor_physical_sha256": "646908b64fd33b17ab4e9be6a1a1391e5837408854cc4f230507dbadd8b9de3e",
+      "first_difference": null
+    },
+    {
+      "case": "gunpowder-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "2292f435c6eaedbe0aa3b98829ad424e92e6f2b88c169c39c60ac21fa27fb27d",
+      "successor_raw_sha256": "a151912b28ffc2c31d02622106d088040541a845e1a416b29a4ab43f34e084f5",
+      "reference_physical_sha256": "658b4d37f8d8a71d10e94b95fb247d0e0451c552eb504b79331f86dff2a11ca2",
+      "successor_physical_sha256": "658b4d37f8d8a71d10e94b95fb247d0e0451c552eb504b79331f86dff2a11ca2",
+      "first_difference": null
+    },
+    {
+      "case": "gunpowder-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "20e2ab4027f52fb57d71c558778a270310b1e56a5a6743a39f254f83c5c6cbf6",
+      "successor_raw_sha256": "d3083756c9cb3a4d3ac431f72b665c297ae7a38b6e397e160643c5e12f21e761",
+      "reference_physical_sha256": "fd3713a6781896b6fa0fb3f0c336659c31077a3e2fd2af3846d43ffed0661a4c",
+      "successor_physical_sha256": "fd3713a6781896b6fa0fb3f0c336659c31077a3e2fd2af3846d43ffed0661a4c",
+      "first_difference": null
+    },
+    {
+      "case": "coal-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "61e6d1d5425c4cc13b0704ac25dd673a8b54f99b5a7d0404e39f631735961691",
+      "successor_raw_sha256": "6ed08d07ce8b66f43130844573a1f037497849f89b739f30126055843082bbf2",
+      "reference_physical_sha256": "3bbd2f494b4f984fba3d44e7adcf0136a3c552efeff78e2f3e7b1d848af47a26",
+      "successor_physical_sha256": "3bbd2f494b4f984fba3d44e7adcf0136a3c552efeff78e2f3e7b1d848af47a26",
+      "first_difference": null
+    },
+    {
+      "case": "coal-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "bc5205278fa20b03464d8d5377be791f2193f97185893765aa8eb8147826c0d3",
+      "successor_raw_sha256": "15bdf43449cfdb12c6bd6aa9e652a21b5c6531ed7abf7f2f65427215e97cba7c",
+      "reference_physical_sha256": "acf9d7a59c8a572ad22aecd3c8d08c05598aea4ac4128ec0d04b21c47f2acfc8",
+      "successor_physical_sha256": "acf9d7a59c8a572ad22aecd3c8d08c05598aea4ac4128ec0d04b21c47f2acfc8",
+      "first_difference": null
+    },
+    {
+      "case": "rust-vertical",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "f8696ae995d95efb70057f8dc9999791e704634524550bec5ae324318df98445",
+      "successor_raw_sha256": "f3926e3154b777becdec42293461497c8b0feac2bbe182c311176dd85e664907",
+      "reference_physical_sha256": "cb4c695174d26e267cb9f8de2500af7bf11d9a2986acf856dd0b7c88da093b8b",
+      "successor_physical_sha256": "cb4c695174d26e267cb9f8de2500af7bf11d9a2986acf856dd0b7c88da093b8b",
+      "first_difference": null
+    },
+    {
+      "case": "rust-horizontal",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "831fe9a89d68f14ce34bee2e23e2653ed9e7cc863b5324e94579f1392728e48e",
+      "successor_raw_sha256": "6c6a19932c9432512eb02d75edc5ee4cfcb881cfce2625a5138e437246f0f6fd",
+      "reference_physical_sha256": "a5b4ead7563ee3983cb5f2d5dc538c348462b138b3e66c5537de51c0b9f99cf4",
+      "successor_physical_sha256": "a5b4ead7563ee3983cb5f2d5dc538c348462b138b3e66c5537de51c0b9f99cf4",
+      "first_difference": null
+    },
+    {
+      "case": "rust-glancing",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "960bcb51c334833617d1dca27979b4515255fed148580d3053b82f304c9916ed",
+      "successor_raw_sha256": "4ec0cf0f597a734c36463cc327cc3f0b97a7b692bc30dba1a866eac7cec639f8",
+      "reference_physical_sha256": "2d535396036d4750274ff30f44a19e7319b66c7fd1ef7c91ede6ff216d977fb8",
+      "successor_physical_sha256": "2d535396036d4750274ff30f44a19e7319b66c7fd1ef7c91ede6ff216d977fb8",
+      "first_difference": null
+    },
+    {
+      "case": "sand-size-2-30",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "4edfb423b340cd0e83f4156f1bcf5dbfce2fe7201e9d7107dc1cff20eda159a1",
+      "successor_raw_sha256": "0acdc7ad72f0d42dab3cf861377206972fe85b406a93b3fbcf01c204364c4686",
+      "reference_physical_sha256": "fa8db49381c90240b8a6a7d6ec16e5e57ed0100f5a88069be69a5bf0ef286161",
+      "successor_physical_sha256": "fa8db49381c90240b8a6a7d6ec16e5e57ed0100f5a88069be69a5bf0ef286161",
+      "first_difference": null
+    },
+    {
+      "case": "mixed-seam-reentry",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "5bd8f79280f157a8d071023b754f566e3ab052cf817524beef407e8bfcc14a91",
+      "successor_raw_sha256": "633b0af74452dc59440691a647a20ede4a11af9d9898ccf69b21c9d59474e5dc",
+      "reference_physical_sha256": "b447a388ae16b73f5491cc837904255885e63fc30d0a9a4e217ad41c43285aea",
+      "successor_physical_sha256": "b447a388ae16b73f5491cc837904255885e63fc30d0a9a4e217ad41c43285aea",
+      "first_difference": null
+    },
+    {
+      "case": "angle45-30",
+      "selected_R2_physical_values_exact": true,
+      "reference_raw_sha256": "eb3c9334a248c63bf1c54ac42a5d9f961ff639a649ca44efaeadb0d747c6206c",
+      "successor_raw_sha256": "74e362f5fb8cb5359b7ca31428935f1b741582b81ac27878f3d87abead18c04a",
+      "reference_physical_sha256": "12c7866e9ec40df78283ccb7afa00a43fcd7a0dcaf13f98c3bf0fc45add4132a",
+      "successor_physical_sha256": "12c7866e9ec40df78283ccb7afa00a43fcd7a0dcaf13f98c3bf0fc45add4132a",
+      "first_difference": null
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu-24.04",
+    "--cd",
+    "C:\\Users\\_\\.codex\\worktrees\\gcr-admission\\khybersand",
+    "--",
+    "bash",
+    "tools/.admission-floor-local.sh"
+  ],
+  "exit": 0,
+  "canonical_script_sha256": "12f372ffa2222c83f07367f4e93409eaf51dcde861ecf4c1f3c3f3da80a8d251",
+  "artifact_sha256": "7c676c0cb2190e91f604966ef4b39b75ff0383db07438192e9e9ccfd6166530f",
+  "log_sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c",
+  "retained_stdout": "Linux runtime floor passed: GLIBC_2.34 bundle (CyberSand GLIBC_2.32, GLIBCXX_3.4.30, CXXABI_1.3.9; Rapier2D GLIBC_2.34)\n",
+  "source_receipt_sha256": "1c7945a7e065a3f88aca72e05da78a1e37fe4feee0cda858f4f6772c6f01a248",
+  "raw_log_location": "Ignored original archive only; raw log is not committed."
+}

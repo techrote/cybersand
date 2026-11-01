@@ -1,0 +1,99 @@
+[
+  {
+    "case": "sand-vertical",
+    "rows": 1804,
+    "accepted": 1451,
+    "accepted_ages": {
+      "0": 1451
+    },
+    "refusals": {
+      "layout": 53,
+      "held": 300
+    },
+    "max_accepted_contact_displacement": 2.15791860682657e-05,
+    "raw_sha256": "b706b1eb0ca5e5b681fc46722aa01a10b627a43d68ba164f3929bab95f47dcf3"
+  },
+  {
+    "case": "anchor-90",
+    "rows": 1803,
+    "accepted": 894,
+    "accepted_ages": {
+      "0": 802,
+      "1": 92
+    },
+    "refusals": {
+      "layout": 516,
+      "age": 1,
+      "held": 300,
+      "duplicate": 92
+    },
+    "max_accepted_contact_displacement": 0.000122308498248458,
+    "raw_sha256": "883b0bea05095010c7304783ed09a93d19a9565b2f897d17437c5180d98948b9"
+  },
+  {
+    "case": "sand-horizontal",
+    "rows": 1804,
+    "accepted": 1393,
+    "accepted_ages": {
+      "0": 1333,
+      "1": 60
+    },
+    "refusals": {
+      "layout": 62,
+      "held": 300,
+      "geometry": 6,
+      "duplicate": 43
+    },
+    "max_accepted_contact_displacement": 0.0970397293567657,
+    "raw_sha256": "39969aefebaf6a9812eef910d4f6f269a218da8c1e454b83610c89f847f570bb"
+  },
+  {
+    "case": "sand-glancing",
+    "rows": 1804,
+    "accepted": 1355,
+    "accepted_ages": {
+      "0": 1273,
+      "1": 82
+    },
+    "refusals": {
+      "layout": 16,
+      "held": 300,
+      "duplicate": 132,
+      "age": 1
+    },
+    "max_accepted_contact_displacement": 0.472710728645325,
+    "raw_sha256": "802c6dcedb8d63399622019c20e744dc10c54af4afe2063bfd10222b742d955d"
+  },
+  {
+    "case": "sand-stream",
+    "rows": 1803,
+    "accepted": 852,
+    "accepted_ages": {
+      "0": 797,
+      "1": 55
+    },
+    "refusals": {
+      "layout": 512,
+      "age": 1,
+      "held": 300,
+      "geometry": 12,
+      "duplicate": 126
+    },
+    "max_accepted_contact_displacement": 0.478977859020233,
+    "raw_sha256": "41e3bf11c7f9adbd272dd5f25466848abe530d288cb1ae4271e454ec7d4719df"
+  },
+  {
+    "case": "stone-excavate",
+    "rows": 1804,
+    "accepted": 1458,
+    "accepted_ages": {
+      "0": 1458
+    },
+    "refusals": {
+      "layout": 46,
+      "held": 300
+    },
+    "max_accepted_contact_displacement": 3.0517578125e-05,
+    "raw_sha256": "37559cd35d5c1b7dde945012190d47058a1623a7f4ea87eb58caed60c6a0028a"
+  }
+]

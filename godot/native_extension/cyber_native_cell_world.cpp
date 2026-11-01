@@ -130,6 +130,8 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::prepare_gcr_coupling, DEFVAL(true));
     ClassDB::bind_method(D_METHOD("gcr_body_results"), &CyberNativeCellWorld::gcr_body_results);
     ClassDB::bind_method(D_METHOD("gcr_diagnostics"), &CyberNativeCellWorld::gcr_diagnostics);
+    ClassDB::bind_method(D_METHOD("get_gcr_admission_variant"), &CyberNativeCellWorld::get_gcr_admission_variant);
+    ClassDB::bind_method(D_METHOD("get_gcr_admission_counters"), &CyberNativeCellWorld::get_gcr_admission_counters);
     ClassDB::bind_method(D_METHOD("rigid_body_results"),
                          &CyberNativeCellWorld::rigid_body_results);
     ClassDB::bind_method(D_METHOD("rigid_body_id_at", "x", "y"),
@@ -341,6 +343,7 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     diagnostic_fixture_ = false;
     granular_yield_response_ = kGranularYieldVelocityResponse;
     gcr_enabled_ = false;
+    gcr_admission_a1_ = false;
     gcr_session_id_ = 0;
     gcr_response_valid_ = false; gcr_sample_tick_ = 0;
     gcr_bins_ = {};
@@ -463,6 +466,7 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
 
 void CyberNativeCellWorld::clear_observations() {
     observations_ = {};
+    admission_observations_ = {};
     if (body_diagnostics_) *body_diagnostics_ = {};
 }
 
@@ -993,7 +997,22 @@ void CyberNativeCellWorld::accumulate_gcr_contacts() {
             // Downward support uses existing8/9. Every other orientation uses
             // the stricter side/up9/9 predicate. No new material/state law.
             const bool side=contact.inward.y>=-std::sqrt(.5);
-            if (!world_->granular_support_at(tx,ty,side,false)) continue;
+            if (gcr_admission_a1_ && side) {
+                const auto admission=world_->granular_contact_admission_at(tx,ty,-contact.inward.x,-contact.inward.y);
+                {
+                    auto& a=admission_observations_[id];
+                    a.source_candidates+=admission.source_candidates;
+                    a.geometry_mask_checks+=admission.geometry_mask_checks; a.mask_checks+=admission.mask_checks;
+                    a.path_checks+=admission.path_checks; a.shared_witness_calls+=admission.shared_witness_calls;
+                    a.admitted+=admission.admitted ? 1U:0U;
+                    ++a.selected_depth_counts[admission.selected_depth];
+                    if(admission.selected_depth) ++a.witness_offset_counts[
+                        static_cast<std::size_t>(admission.witness_dy+2)*5U+static_cast<std::size_t>(admission.witness_dx+2)];
+                    ++a.refusal_counts[static_cast<std::size_t>(admission.refusal_reason)];
+                    a.last=admission;
+                }
+                if (!admission.admitted) continue;
+            } else if (!world_->granular_support_at(tx,ty,side,false)) continue;
             auto& bin=gcr_bins_[id][contact.bin];
             bin.add(contact.point,contact.inward,{body.com.x,body.com.y});
             bin.material_mask|=std::uint64_t{1}<<static_cast<unsigned>(material);
@@ -1076,9 +1095,51 @@ PackedFloat64Array CyberNativeCellWorld::gcr_body_results() const {
     return result;
 }
 
+String CyberNativeCellWorld::get_gcr_admission_variant() const {
+    return !gcr_enabled_ ? "disabled" : gcr_admission_a1_ ? "A1" : "R2";
+}
+
+Dictionary CyberNativeCellWorld::admission_counters_for(std::size_t id) const {
+    Dictionary admission;
+    const auto& a=admission_observations_[id];
+    admission["source_candidates"]=static_cast<std::int64_t>(a.source_candidates);
+    admission["geometry_mask_checks"]=static_cast<std::int64_t>(a.geometry_mask_checks);
+    admission["mask_checks"]=static_cast<std::int64_t>(a.mask_checks);
+    admission["path_checks"]=static_cast<std::int64_t>(a.path_checks);
+    admission["shared_witness_calls"]=static_cast<std::int64_t>(a.shared_witness_calls);
+    admission["admitted"]=static_cast<std::int64_t>(a.admitted);
+    Array depths,offsets;
+    for(const auto value:a.selected_depth_counts) depths.append(static_cast<std::int64_t>(value));
+    for(const auto value:a.witness_offset_counts) offsets.append(static_cast<std::int64_t>(value));
+    admission["selected_depth_counts"]=depths; admission["witness_offset_counts"]=offsets;
+    admission["selected_depth"]=a.last.selected_depth;
+    admission["witness_dx"]=a.last.witness_dx; admission["witness_dy"]=a.last.witness_dy;
+    static constexpr std::array<const char*,11> names{{"None","Invalid","FailedWorld","NoMaskFreeWitness",
+        "SourceMasked","SourceNonCapable","SourceUnstable","PathMasked","PathNonCapable","PathUnstable","Packing"}};
+    Dictionary refusals;
+    for(std::size_t i=0;i<names.size();++i) refusals[names[i]]=static_cast<std::int64_t>(a.refusal_counts[i]);
+    admission["refusal_counts"]=refusals;
+    admission["refusal_reason"]=names[static_cast<std::size_t>(a.last.refusal_reason)];
+    admission["id"]=static_cast<std::int64_t>(id);
+    admission["sample_serial"]=current_bodies_[id].sample_serial;
+    admission["admission_variant"]=get_gcr_admission_variant();
+    return admission;
+}
+
+Array CyberNativeCellWorld::get_gcr_admission_counters() const {
+    Array result;
+    if (!gcr_enabled_ || !gcr_response_valid_ || !world_ || world_->has_failed() ||
+        world_->completed_tick_index()>gcr_sample_tick_+1) return result;
+    for(std::size_t id=1;id<current_bodies_.size();++id)
+        if(current_bodies_[id].valid) result.append(admission_counters_for(id));
+    return result;
+}
+
 Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
     Dictionary result; result["enabled"]=gcr_enabled_; result["protocol_version"]=1;
-    result["candidate"]="GCR"; result["experiment"]="GCR-001-2026-11-01";
+    result["candidate"]=gcr_admission_a1_ ? "GCR-A1":"GCR";
+    result["experiment"]=gcr_admission_a1_ ? "GCR-ADMISSION-001-2026-11-01":"GCR-001-2026-11-01";
+    result["admission_variant"]=get_gcr_admission_variant();
     result["evaluator_variant"]="R2-second-moment-quadrature";
     result["fixed_bin_storage_bytes"]=static_cast<std::int64_t>(sizeof(gcr_bins_));
     result["raster_capacity_indices"]=static_cast<std::int64_t>(raster_indices_.capacity());
@@ -1126,7 +1187,9 @@ Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
             b["quadrature_low"]=Vector2{q.low.x,q.low.y}; b["quadrature_high"]=Vector2{q.high.x,q.high.y};
             bins.append(b);
         }
-        row["contact_bins"]=bins; bodies.append(row);
+        row["contact_bins"]=bins;
+        const auto admission=admission_counters_for(id);
+        row["admission"]=admission; bodies.append(row);
     }
     result["session_id"]=gcr_session_id_; result["bodies"]=bodies; return result;
 }
@@ -1674,13 +1737,15 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
     try {
         double yield_response = kGranularYieldVelocityResponse;
         bool gcr = false;
+        bool admission_a1 = false;
         if (options.has("bearing_candidate") || options.has("bearing_experiment")) {
             if (options.get("bearing_candidate", Variant()).get_type() != Variant::STRING ||
                 options.get("bearing_experiment", Variant()).get_type() != Variant::STRING ||
                 !options.has("bearing_candidate") || !options.has("bearing_experiment")) return false;
             const String selected = options["bearing_candidate"];
             const String experiment = options["bearing_experiment"];
-            gcr = selected == "GCR" && experiment == "GCR-001-2026-11-01";
+            admission_a1 = selected == "GCR-A1" && experiment == "GCR-ADMISSION-001-2026-11-01";
+            gcr = admission_a1 || (selected == "GCR" && experiment == "GCR-001-2026-11-01");
             if (!gcr && (experiment != "Y1-ENVELOPE-2026-11-01" ||
                 (selected != "B0" && selected != "Y1"))) return false;
             if (selected == "Y1") yield_response = 1.0;
@@ -1740,6 +1805,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         body_diagnostics_ = std::move(diagnostics);
         granular_yield_response_ = yield_response;
         gcr_enabled_ = gcr;
+        gcr_admission_a1_ = admission_a1;
         gcr_session_id_ = 0;
         gcr_response_valid_ = false; gcr_sample_tick_ = 0;
         gcr_bins_ = {};
@@ -2383,7 +2449,7 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
         row.append(d.bearing.x); row.append(d.bearing.y);
         row.append(static_cast<std::int64_t>(d.support_samples));
         Dictionary envelope;
-        envelope["candidate"] = gcr_enabled_ ? "GCR" : granular_yield_response_ == 1.0 ? "Y1" : "B0";
+        envelope["candidate"] = gcr_enabled_ ? (gcr_admission_a1_ ? "GCR-A1":"GCR") : granular_yield_response_ == 1.0 ? "Y1" : "B0";
         envelope["yield_factor"] = granular_yield_response_;
         envelope["boundaries"] = static_cast<std::int64_t>(d.boundaries);
         envelope["raw_support"] = static_cast<std::int64_t>(d.raw_support);

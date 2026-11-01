@@ -126,7 +126,7 @@ func _run() -> void:
 	var hard_index: int = -1
 	for i: int in range(review.cases.size()):
 		if review.cases[i].id == "hard": hard_index = i
-	if hard_index < 0 or review.arm.item_count != 3:
+	if hard_index < 0 or review.arm.item_count != (4 if review.admission_enabled else 3):
 		push_error("Review omitted registered controls or GCR selection")
 		quit(1)
 		return
@@ -136,7 +136,14 @@ func _run() -> void:
 		push_error("GCR review selector did not construct the experimental native owner")
 		quit(1)
 		return
-	for arm_index: int in [0,1,2]:
+	if review.admission_enabled:
+		review.arm.select(3)
+		await review.reset_case()
+		if review.fixture.candidate != "GCR-A1" or review.fixture.runtime_identity().admission_variant != "A1":
+			push_error("A1 review selector did not construct admission-only native owner")
+			quit(1)
+			return
+	for arm_index: int in range(review.arm.item_count):
 		review.chooser.select(hard_index)
 		review.arm.select(arm_index)
 		await review.reset_case()

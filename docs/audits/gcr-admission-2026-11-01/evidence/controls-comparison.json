@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+  "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+  "scope": "Actual controlled material/pose/application observations, not full cell state. Projection retains existing physical fields and removes only declared clocks/sample/session/snapshot/arm/admission metadata.",
+  "additional_arm_metadata_excluded": [
+    "report.candidate",
+    "rows.support.candidate"
+  ],
+  "projection_script_sha256": "0e4774a1591ba07647081f79525459eecadfb86ae7b96da6e63ab3f2b15125b8",
+  "records": [
+    {
+      "case": "hard",
+      "R2_A1_selected_core_exact": true,
+      "first_difference": null,
+      "R2_selected_core_sha256": "9e5fcf240574f8bf3e9f088d6e720b0570ff0599f5c30d7f42258eab723cc461",
+      "A1_selected_core_sha256": "9e5fcf240574f8bf3e9f088d6e720b0570ff0599f5c30d7f42258eab723cc461",
+      "Y1_A1_max_abs_pose_linear_angular_velocity_difference": 0.0,
+      "maximum_A1_new_normal": 0.0,
+      "maximum_A1_new_tangent": 0.0,
+      "maximum_A1_event_budget_cost": 0.0,
+      "raw_sha256": {
+        "Y1": "b82da08174a3c1a8fcee8014d2ca3c60ef8c202cfc8fb4af00a08d2b04cdcce0",
+        "GCR": "3f774dd3d6bf9d9e84c835730075c7e4f4879c0adf46585264fba1db315a264c",
+        "GCR-A1": "61c03ed66fd41b79e3f578d79dcf8acbc25cca46176ad88a4787f2b812f80836"
+      }
+    },
+    {
+      "case": "water",
+      "R2_A1_selected_core_exact": true,
+      "first_difference": null,
+      "R2_selected_core_sha256": "2b7c95147bea3a7767844be76879177d220cc29e695cccf2744ae7b72d6bb559",
+      "A1_selected_core_sha256": "2b7c95147bea3a7767844be76879177d220cc29e695cccf2744ae7b72d6bb559",
+      "Y1_A1_max_abs_pose_linear_angular_velocity_difference": 0.0,
+      "maximum_A1_new_normal": 0.0,
+      "maximum_A1_new_tangent": 0.0,
+      "maximum_A1_event_budget_cost": 0.0,
+      "raw_sha256": {
+        "Y1": "166f2202a21f047a226a842ccd0cc974c623d7f3de50b686deb778ac5cd1ccd2",
+        "GCR": "4cfa9a22c9450505bd5dd5c8a59022cd4bb3764f66d261e6f14b3888f0349b87",
+        "GCR-A1": "e8f1e8af891fdf7edbade2999b5f42e9f9c74e645b57059459a9ca01a4ae7ef0"
+      }
+    },
+    {
+      "case": "empty",
+      "R2_A1_selected_core_exact": true,
+      "first_difference": null,
+      "R2_selected_core_sha256": "c229cd659ba304cd5fe87253c63e8802d9e8e4ffcef2951554c32047639f974e",
+      "A1_selected_core_sha256": "c229cd659ba304cd5fe87253c63e8802d9e8e4ffcef2951554c32047639f974e",
+      "Y1_A1_max_abs_pose_linear_angular_velocity_difference": 0.0,
+      "maximum_A1_new_normal": 0.0,
+      "maximum_A1_new_tangent": 0.0,
+      "maximum_A1_event_budget_cost": 0.0,
+      "raw_sha256": {
+        "Y1": "36541111bf9dabd8573e65d43cdfa9b9fedd24d398e4801307e1605dda1e15b6",
+        "GCR": "922b721a26cea23f337d0f82cc85939bd2f84129f59c5693740b342aa0a552ea",
+        "GCR-A1": "2a073853146acb943f689ce9e62659342b824f607db5eb4cbc6968b5303d2239"
+      }
+    }
+  ]
+}

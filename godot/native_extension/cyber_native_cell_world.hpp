@@ -60,6 +60,8 @@ public:
     bool prepare_gcr_coupling(const PackedFloat64Array& states, bool resolve_overlaps = true);
     [[nodiscard]] PackedFloat64Array gcr_body_results() const;
     [[nodiscard]] Dictionary gcr_diagnostics() const;
+    [[nodiscard]] String get_gcr_admission_variant() const;
+    [[nodiscard]] Array get_gcr_admission_counters() const;
 
     [[nodiscard]] std::int64_t material_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] std::int64_t rigid_body_id_at(std::int64_t x, std::int64_t y) const;
@@ -181,6 +183,17 @@ private:
         std::uint64_t displaced = 0;
         std::uint64_t unresolved = 0;
     };
+    struct AdmissionObservation {
+        std::uint64_t source_candidates=0,geometry_mask_checks=0,mask_checks=0;
+        std::uint64_t path_checks=0,shared_witness_calls=0,admitted=0;
+        std::array<std::uint64_t,3> selected_depth_counts{};
+        std::array<std::uint64_t,25> witness_offset_counts{};
+        std::array<std::uint64_t,static_cast<std::size_t>(cybersand::World::GranularAdmissionRefusal::Count)> refusal_counts{};
+        cybersand::World::GranularContactAdmission last{};
+    };
+
+    std::array<AdmissionObservation,cybersand::World::kMaximumTransientBodies+1U> admission_observations_{};
+    [[nodiscard]] Dictionary admission_counters_for(std::size_t id) const;
     struct BodyDiagnostic {
         std::uint64_t boundaries = 0, raw_support = 0, left_support = 0, right_support = 0;
         std::uint64_t attempts = 0, no_target = 0, relocation_refused = 0;
@@ -201,6 +214,7 @@ private:
     // Fresh diagnostic construction only; demo/default reset always restores B0.
     double granular_yield_response_ = 0.18;
     bool gcr_enabled_ = false;
+    bool gcr_admission_a1_ = false;
     double gcr_session_id_ = 0;
     bool gcr_response_valid_ = false;
     std::uint64_t gcr_sample_tick_ = 0;

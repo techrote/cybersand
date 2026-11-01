@@ -1,0 +1,4049 @@
+{
+  "schema": 1,
+  "members": [
+    {
+      "path": "build/adapter-mechanical-linux.json",
+      "sha256": "7baf324275ab15d1b2ff640d08322bc8a2c66916b7c4074a7b4a21a45daa1f63",
+      "size": 505,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/adapter-mechanical-linux.log",
+      "sha256": "95bbce731bb2e5386969b8864c90ae7f9d4fbd0e94d8906786a9ff864f4a23e3",
+      "size": 323,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/adapter-mechanical-windows.json",
+      "sha256": "fda9df69e07ba7781420822a9d6a7afcabc082c1056e09a1d3d4b094db0ab50a",
+      "size": 505,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/adapter-mechanical-windows.log",
+      "sha256": "6216b59567be6d89c907914a973e6f36bb4ab1da7115f864fbb92c2b9370a080",
+      "size": 327,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-R2-heavy-stream-retention.json",
+      "sha256": "d3d8148c313f3bdd55caa9cf2a569869576655f667be377f6ae514149ce849df",
+      "size": 4382,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-R2-retention.json",
+      "sha256": "5e6f2ac78ba7a0b08e617a0830f8c79a627b649cdf577c87ab3324c90119bba2",
+      "size": 15207,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-all-evidence-index.json",
+      "sha256": "936efc65868027929efab10417fcce5d5c1e3dc1d1e6ab2d5d7b4f773af9184c",
+      "size": 113384,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-async-applications.json",
+      "sha256": "80cd6b8a345de93c1edb6cfc39cc0f0a83f0221a032b103aaf6730d627e1c099",
+      "size": 2338,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-async-late-motion.json",
+      "sha256": "fb0eb35aee9539e29c5b9f8cb31ef3a5591f76aea9d3518df2243001ead8c3a5",
+      "size": 29691,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-async-summary.json",
+      "sha256": "c3850f2b84bead073ce47422fe62b1cdf1ac5a8df1a2d8dfb44bf9ad08e102f2",
+      "size": 1868765,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-async.log",
+      "sha256": "9fc61b8a8716d0224a86faa2cb0e0fd2c8bbaa4fcf20166c24edb7f0bfd7e79c",
+      "size": 543,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-async/async-anchor-90-GCR-A1-r0.json",
+      "sha256": "883b0bea05095010c7304783ed09a93d19a9565b2f897d17437c5180d98948b9",
+      "size": 12927567,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-anchor-90-GCR-A1-r0.log",
+      "sha256": "ecab2abec80d652ec976c946fd4a4a7a5e12977f1c3fafff74121307e31916d2",
+      "size": 285,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-anchor-90-GCR-r0.json",
+      "sha256": "b417ac85416c4d374c17fdd97c852d0a4d11d2a11122e1a1afaa6e7267bf2878",
+      "size": 12605308,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-anchor-90-GCR-r0.log",
+      "sha256": "f20e69ed813020fd830dd371421e0e75ee800d4eb5679a905c498e4381884a50",
+      "size": 282,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-anchor-90-Y1-r0.json",
+      "sha256": "c863a179fd2d8a2728f41115e6d7d31a8d8471c2f1f19969e6465b6e031c7a9b",
+      "size": 3873726,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-anchor-90-Y1-r0.log",
+      "sha256": "3d4a38ce8b0eeb7b6b8587ee5cee225f85a72c96eead804617125abf10215ed3",
+      "size": 281,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-glancing-GCR-A1-r0.json",
+      "sha256": "802c6dcedb8d63399622019c20e744dc10c54af4afe2063bfd10222b742d955d",
+      "size": 15944991,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-glancing-GCR-A1-r0.log",
+      "sha256": "ae508b6bc20bfcb2b36ddcdd8d7dd5398b06d4f48591fe653e85d34d4ef95405",
+      "size": 289,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-glancing-GCR-r0.json",
+      "sha256": "6d92ec501a8b751ac578025a815fdb99b8ad848043187fb69862b1a4019dea7b",
+      "size": 14283440,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-glancing-GCR-r0.log",
+      "sha256": "c51014330925a2236c6db649dc57b8ccadc30e8781351936bed5394c5e6e68a1",
+      "size": 286,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-glancing-Y1-r0.json",
+      "sha256": "67341c8470426a5cd654f87a4921c39d9c175cacbc44c2067cf0425d106429d4",
+      "size": 3752776,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-glancing-Y1-r0.log",
+      "sha256": "798ba12a2e71fa356d8d730910f9d49b4001dea90afcbeffcc0ba1c78249bdec",
+      "size": 285,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-horizontal-GCR-A1-r0.json",
+      "sha256": "39969aefebaf6a9812eef910d4f6f269a218da8c1e454b83610c89f847f570bb",
+      "size": 14872314,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-horizontal-GCR-A1-r0.log",
+      "sha256": "45bf7bb05a35c32bb4e7504556b090228e68a085078c4ae0e9d4252a9758d011",
+      "size": 291,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-horizontal-GCR-r0.json",
+      "sha256": "c779c25c7f1587d414697181f3710c597c30046b48b4af3b0af8903ca4dd9f66",
+      "size": 16318874,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-horizontal-GCR-r0.log",
+      "sha256": "54a019319c13d93d31c9b4d252de23b4acb7bbd0f632c713c4bae4740d94edbf",
+      "size": 288,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-horizontal-Y1-r0.json",
+      "sha256": "c2bfba8bdcedb1e1ea6bd9b1c6553ba6cdc358517f916479ea9be3b00afba7ef",
+      "size": 3873436,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-horizontal-Y1-r0.log",
+      "sha256": "ea5b52b7ebfa8f39d20febb55d6534170efbdd2b99c1c8ddb8772715f385746a",
+      "size": 287,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-stream-GCR-A1-r0.json",
+      "sha256": "41e3bf11c7f9adbd272dd5f25466848abe530d288cb1ae4271e454ec7d4719df",
+      "size": 12684118,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-stream-GCR-A1-r0.log",
+      "sha256": "5a052de375deb74152350260cc512a20dd58d9336430983c412fefec85625cf2",
+      "size": 287,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-stream-GCR-r0.json",
+      "sha256": "fbb9502da04ea2cee2a96a35b140742670bcf523979fb5ad0bdc6427ece37a59",
+      "size": 14562476,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-stream-GCR-r0.log",
+      "sha256": "b8f8898df73f16dae23249e14ffb957c99b9d27ce99489bd32c1121732c7d9a5",
+      "size": 284,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-stream-Y1-r0.json",
+      "sha256": "8ca61a1d98c95bea1da54071bdee73d1dc8951b8f0dc847b8fdc4c16171d18af",
+      "size": 3712545,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-stream-Y1-r0.log",
+      "sha256": "bd64600ef0f8ac5a47c3822dade93981ecd285b298f8a33e7a4bb69bedf99509",
+      "size": 283,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-vertical-GCR-A1-r0.json",
+      "sha256": "b706b1eb0ca5e5b681fc46722aa01a10b627a43d68ba164f3929bab95f47dcf3",
+      "size": 14368793,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-vertical-GCR-A1-r0.log",
+      "sha256": "a5e25ee238cc9b37b8fae1f622b4f3f3feb9886fb179d64b6214363f1641e1b8",
+      "size": 289,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-vertical-GCR-r0.json",
+      "sha256": "cd6338f571c8b60bc2ea72e85cafa9d2d8f6da8d64d1894101609933d1b1aebb",
+      "size": 15135663,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-vertical-GCR-r0.log",
+      "sha256": "2107de52e8364fd1a50674d2e4b47975c28b99c3b50847d6454c4258417f7dbc",
+      "size": 286,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-sand-vertical-Y1-r0.json",
+      "sha256": "b0ce9a0708d9e0a505c6752b83c1a4a086b3a106b025c38a3b4a7b2b936d7270",
+      "size": 3600407,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-sand-vertical-Y1-r0.log",
+      "sha256": "148cd83d474d1fe71114c96b8e8acef6996a2f8db6dd34ef75d29d7423b2e57b",
+      "size": 285,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-stone-excavate-GCR-A1-r0.json",
+      "sha256": "37559cd35d5c1b7dde945012190d47058a1623a7f4ea87eb58caed60c6a0028a",
+      "size": 13552756,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-stone-excavate-GCR-A1-r0.log",
+      "sha256": "50f92047ae2c8527b1e6927cd4bedc49d6040d062bb44fd32e4982f24b33ef99",
+      "size": 290,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-stone-excavate-GCR-r0.json",
+      "sha256": "eddf74db5c097da1432ee4d1990ec64e22fc172158df958cd4ffe8f87ab71745",
+      "size": 12375821,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-stone-excavate-GCR-r0.log",
+      "sha256": "2621da7b1bfac7604094e5fb88dec9df41b97441c15d7f2294ee481be080c7de",
+      "size": 287,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/async-stone-excavate-Y1-r0.json",
+      "sha256": "ee3e102a76b96180bb32779b226b136d7b52b842ae0136f621ee187fe2260d7d",
+      "size": 3486392,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-async/async-stone-excavate-Y1-r0.log",
+      "sha256": "74e3b31e57311bf7b5be2356e71683eb8adf772de9b091ffc513ff612ca5bc87",
+      "size": 286,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-async/campaign.json",
+      "sha256": "d9e63bb1122e284e62a4fddfbd802a9f9b228884e972d04d2df039d0b2bb2624",
+      "size": 85294,
+      "kind": "campaign"
+    },
+    {
+      "path": "build/admission-controls-comparison.json",
+      "sha256": "2f3124c091d80bcd11815402e7203b354ab282cb1ea4a579e074649618476889",
+      "size": 2979,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-controls-summary.json",
+      "sha256": "a69960680f30aa5e37bfcdac1638551a52244b935678a7fd7f10518fd1e3d24e",
+      "size": 155131,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-controls.log",
+      "sha256": "b85f36a18c9438b077bed10e4a09d42c478f3593b20f672665dff00216763c4c",
+      "size": 201,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-controls/campaign.json",
+      "sha256": "c9997dfe5ecd5d79fe2091bb605d6d657ddd766c35784092ecd306e4a618a0cb",
+      "size": 73979,
+      "kind": "campaign"
+    },
+    {
+      "path": "build/admission-controls/sync-empty-GCR-A1-r0.json",
+      "sha256": "2a073853146acb943f689ce9e62659342b824f607db5eb4cbc6968b5303d2239",
+      "size": 10893648,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-empty-GCR-A1-r0.log",
+      "sha256": "fb13eb04cc562b459d71ac69e2af092574831bee19bcb9b26cee3c9aaa3df6bb",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-controls/sync-empty-GCR-r0.json",
+      "sha256": "922b721a26cea23f337d0f82cc85939bd2f84129f59c5693740b342aa0a552ea",
+      "size": 10877567,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-empty-GCR-r0.log",
+      "sha256": "0cb4fc38dcfb4a946f605baae82dcb885eacb92b8f95b0a0f00e2a62164b9466",
+      "size": 306,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-controls/sync-empty-Y1-r0.json",
+      "sha256": "36541111bf9dabd8573e65d43cdfa9b9fedd24d398e4801307e1605dda1e15b6",
+      "size": 1478872,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-empty-Y1-r0.log",
+      "sha256": "32a9534a38fe680cae555a85672c8b9f97bb1a0460769a6494539347b9e84e4c",
+      "size": 305,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-controls/sync-hard-GCR-A1-r0.json",
+      "sha256": "61c03ed66fd41b79e3f578d79dcf8acbc25cca46176ad88a4787f2b812f80836",
+      "size": 10911513,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-hard-GCR-A1-r0.log",
+      "sha256": "f0a3493eac6a3b70f105eefe2b9396b08991bdbcb5990f4c509142e63fb26c1d",
+      "size": 308,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-controls/sync-hard-GCR-r0.json",
+      "sha256": "3f774dd3d6bf9d9e84c835730075c7e4f4879c0adf46585264fba1db315a264c",
+      "size": 10895141,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-hard-GCR-r0.log",
+      "sha256": "0eb83f9fb392c027082bdf569bd8b6a514008aa9d5bd306115a4d4757f4affb7",
+      "size": 305,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-controls/sync-hard-Y1-r0.json",
+      "sha256": "b82da08174a3c1a8fcee8014d2ca3c60ef8c202cfc8fb4af00a08d2b04cdcce0",
+      "size": 1501196,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-hard-Y1-r0.log",
+      "sha256": "7d2c24921952b80bb5db2eb268e29dd4f21fce95a2c91f7918278dfdd13b2eb1",
+      "size": 304,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-controls/sync-water-GCR-A1-r0.json",
+      "sha256": "e8f1e8af891fdf7edbade2999b5f42e9f9c74e645b57059459a9ca01a4ae7ef0",
+      "size": 11205231,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-water-GCR-A1-r0.log",
+      "sha256": "05c75b8a7fbd1a05e13848485cfac90f685bcebbb5770a32de44eb45ad63f66b",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-controls/sync-water-GCR-r0.json",
+      "sha256": "4cfa9a22c9450505bd5dd5c8a59022cd4bb3764f66d261e6f14b3888f0349b87",
+      "size": 11191084,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-water-GCR-r0.log",
+      "sha256": "c9abf6e3cde2d3fdc1263829137875ced565917a08085989c858deaa1412a9b1",
+      "size": 306,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-controls/sync-water-Y1-r0.json",
+      "sha256": "166f2202a21f047a226a842ccd0cc974c623d7f3de50b686deb778ac5cd1ccd2",
+      "size": 1653550,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-controls/sync-water-Y1-r0.log",
+      "sha256": "3e8360ee3f9c81838feff3725dd59ecbdd5839c0110a304b150635cd807864c8",
+      "size": 305,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-evidence-readonly/async-selected-traces.json",
+      "sha256": "0ceee39bda653d517511ec684ca49ae34d46cff22dfad67e8cab1cc987975fbb",
+      "size": 342702,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-evidence-readonly/async-summary.json",
+      "sha256": "6f5372a091a4a16f12492b80ebf4126bf7d2bfa8949cb90e74dc46ab18288ff6",
+      "size": 88215,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-evidence-readonly/primary-selected-traces.json",
+      "sha256": "c870743eda2739c513bce3d2afa378ce66fd9eac3f94cd1a4faffcaf723246a9",
+      "size": 737632,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-evidence-readonly/primary-summary.json",
+      "sha256": "1f48aa229c44e7f56d97673c350a97be04cf57e15dbf57b4ca6ff497e35e785c",
+      "size": 646923,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-extra-evidence-readonly/controls-summary.json",
+      "sha256": "08b64602666b80fffa54b83b68efc8fc06684814ee3195906d59b6003a20c853",
+      "size": 43551,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-extra-evidence-readonly/replay-summary.json",
+      "sha256": "edcca0f1429710ac7326270c935b8bb235ad3eda739fd9f098fd266dc0ed3a08",
+      "size": 45390,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-extra-evidence-readonly/timing-summary.json",
+      "sha256": "39f7d969e2e0dec36bab3b1a4c6dd91942a491dfb32b69555173890db3c1d4b0",
+      "size": 213550,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-heavy-allocation.json",
+      "sha256": "7abb6e7fd400dd927ad7d74aab25f379e89cce5102252a483f21c572507244cb",
+      "size": 118812,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification.log",
+      "sha256": "ad1e142e723e0a6cc5afb097a0ecb2a6d813d26550701b09fdc21de8c4e9e6cb",
+      "size": 1212,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/actual-playground-linux.json",
+      "sha256": "a160f116aad0753c14a19d2dead73d217a66f79d6832e86b6ad4c6d2bb4f7c6b",
+      "size": 5612805,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/actual-playground-windows.json",
+      "sha256": "caf7fd232ad1491a00b93828745157ae30a0bcab9f1a6b3609faf66d8d8eef7f",
+      "size": 5620233,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-import.log",
+      "sha256": "978bbfbba9081e9a2101436385a84e5e3d00c797e4fa4e547297624732a0e666",
+      "size": 1595,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_act004_body_capacity.log",
+      "sha256": "348967c9fdbcf3bfc500ff80a5969fc64894ce072aba2df18109af554f2bc867",
+      "size": 411,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_cell_world.log",
+      "sha256": "8ffe61f698d40eb7806719d89275f37a784012208ed66ef0451b50deeb259f1b",
+      "size": 255,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_gcr_admission.log",
+      "sha256": "95bbce731bb2e5386969b8864c90ae7f9d4fbd0e94d8906786a9ff864f4a23e3",
+      "size": 323,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_gcr_envelope.log",
+      "sha256": "2e1a42475b3085183df0170b377d371a9c9e46299609e8422b964220372f717d",
+      "size": 301,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_gcr_playground.log",
+      "sha256": "9d9a4f217ac898d2dc39f5a2c9a7444a170a6c7043da4a777a118521d2ccedca",
+      "size": 276,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_gcr_protocol.log",
+      "sha256": "a2a783f1fba990078b34f4b4e7c1acf7f0f1d42b34d93a4178b6f3d04aa20b9d",
+      "size": 260,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_interaction_async.log",
+      "sha256": "720daf657f474799751114fa540ba86d20876008b7396848b0175420097e9fe2",
+      "size": 28922,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_native_edge_contact_regression.log",
+      "sha256": "38d4d56484a2dc3046a73f08773c1b2dc1e656c999823b0bc9f7923b14f609ee",
+      "size": 298,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_physics_async.log",
+      "sha256": "22231987f41705fdf6678a6555afb0332c4db6d69f616b803924c5babb80e83d",
+      "size": 2633,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_physics_instrumentation.log",
+      "sha256": "c8fb193284d1e4d14eef32071ba747b3fa991ef0c7f7f6f27948bfc683ebdc5e",
+      "size": 296,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_prepared_physical_owner.log",
+      "sha256": "bcaa81dcf05a8b4f68fdad8b2ff7c7e5c7a402a3f45fe8a73b9343303d3bf32a",
+      "size": 272,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_rapier_manual_step.log",
+      "sha256": "919623e3c65bf2262b30590338c66087a0522e311e93d6ed64f3c8faaebe9684",
+      "size": 266,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_rem002_body_granular.log",
+      "sha256": "f8a4682de50aa128224ca2d907d0ce63524f1b82f5ec99b94c7b42e0a57ab55f",
+      "size": 511,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_rem003_player_granular.log",
+      "sha256": "b38746b6efa61b8dc7b0aaea13ba3ebbd31fd6c822a3b8f79cd4770153b22863",
+      "size": 70785,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_tick_failure_regression.log",
+      "sha256": "cb4967749e95bf420bf253a722dcf0d7ac1e39eba7f896acea944e559d6d2f6a",
+      "size": 1149,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_y1_envelope.log",
+      "sha256": "9a5ace7fa0b830fe7ecc6448e69e2401c365e1af6693cfc62adc4e3421626f35",
+      "size": 276,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/linux-test_y1_envelope_review.log",
+      "sha256": "a464c2d63280968b0f284f89636260f588e47e0f4f57ac306be8c40ada4e9106",
+      "size": 347,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/receipt.json",
+      "sha256": "1e11041766e9fecaa765131dc91ac1cb2ff1d2578fa7f65d3dc24aac7fbafc36",
+      "size": 49736,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-import.log",
+      "sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59",
+      "size": 1182,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_act004_body_capacity.log",
+      "sha256": "bdc11569c0cd527546b01aa400703b2fde723f1a68e98810da0c1c0461cd231a",
+      "size": 417,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_cell_world.log",
+      "sha256": "9aa23796f9d762f96b9c14afe348dddc0c8c6fc4c64bd46be8bd26b768af1469",
+      "size": 259,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_gcr_admission.log",
+      "sha256": "6216b59567be6d89c907914a973e6f36bb4ab1da7115f864fbb92c2b9370a080",
+      "size": 327,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_gcr_envelope.log",
+      "sha256": "471c50dbc99d16bcfb2b213e5b422932d6b7652e659650d12d4836abe12b967a",
+      "size": 306,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_gcr_playground.log",
+      "sha256": "7b386434d022d0f7ead0d75dfa28185558ee09b555a86eb61868323815829119",
+      "size": 280,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_gcr_protocol.log",
+      "sha256": "a4a0499c90df41053877985a6aa85f7a87df5019504d8510f29226bf312d25f4",
+      "size": 264,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_interaction_async.log",
+      "sha256": "169e2b78a3627b9bef858705aabf32e14ac876572994c9451afd42beb5b12ccf",
+      "size": 28926,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_native_edge_contact_regression.log",
+      "sha256": "0527c3e23ce9b7fde00f873551e540fb820e5f3b9bd4b222b8306f13be32c5c9",
+      "size": 302,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_physics_async.log",
+      "sha256": "9cd88d4c684320f488475ea057ecc2060ffd54b3855a019061c314e48a18ec52",
+      "size": 2593,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_physics_instrumentation.log",
+      "sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738",
+      "size": 300,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_prepared_physical_owner.log",
+      "sha256": "1909b3b5b7a7afe47ac8d5984f464a6ebc0e80114311a2e38120b16d34cd8ece",
+      "size": 276,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_rapier_manual_step.log",
+      "sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+      "size": 270,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_rem002_body_granular.log",
+      "sha256": "9679fb4f7e8478d7bf8a1218ac266b1396f09936a00efe5e8dda5debd8d93288",
+      "size": 516,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_rem003_player_granular.log",
+      "sha256": "51b9aa39deebf61a4cf72758f4bbf309c7fb1e98dc0ab0fc9df03b14add80437",
+      "size": 70783,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_tick_failure_regression.log",
+      "sha256": "8be2acf1f3a2793c3be97622537b4723d4f9dd0863dd993ed90445699878dc06",
+      "size": 1162,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_y1_envelope.log",
+      "sha256": "aa0800b87c1bbbc77b60097e47ac18ea3ed7ef35d67064d745eb00af51f8b650",
+      "size": 280,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-host-qualification/windows-test_y1_envelope_review.log",
+      "sha256": "09ad268bfb05e5e96c45e92cca566b84bcd2c7cdfc9e75bf8efed68950c9a8e8",
+      "size": 351,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-linux-floor.json",
+      "sha256": "1c7945a7e065a3f88aca72e05da78a1e37fe4feee0cda858f4f6772c6f01a248",
+      "size": 499,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-linux-floor.log",
+      "sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c",
+      "size": 120,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/input-manifest.json",
+      "sha256": "aca70e8fb0a0a8d13742a175c1a3bc94a7f4a0cc4405cec6741bc92ea280f301",
+      "size": 10760,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/linux-asan-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/linux-asan.log",
+      "sha256": "ddf62313b06f0a54b29bda547c044f96ce6fc07c91ab40498ae350ba125fc06d",
+      "size": 16412,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/linux-core-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/linux-core.log",
+      "sha256": "d88f9dad44f087170408c846b8c370b35c6f472b8edf2e33e5e00e3ce9fa683d",
+      "size": 16412,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/receipt.json",
+      "sha256": "a25290cddc94d1dfd4b84e253cb6762fc5efdf008e98f2e54ba8cf327d3a36c8",
+      "size": 19255,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/tool-identities.json",
+      "sha256": "0c440b4fa76271f6dfac4e093f0967cd4e72ea1ff8bb1363462206fb6fec5024",
+      "size": 1277,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/windows-core-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native-full/windows-core.log",
+      "sha256": "7a3e6edf5b30f3e195f2281bab7ad96a5036180a5753a8766b4de388ecc5ef34",
+      "size": 16676,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/driver.cpp",
+      "sha256": "589482479dcaed24b411b079b6b910c63dea28fdcb837ed46ad682a2e1ef4680",
+      "size": 528,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/focused-receipt.json",
+      "sha256": "108d55125ce02f101bd06026cc80a96a39ab33761955c87d104f03c2b91a836f",
+      "size": 2948,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/linux-final-result.txt",
+      "sha256": "ddf17aeb238da989a48ba97de61ccb4fe7f585ed29b3af8d22f1cedef3f0e5f7",
+      "size": 66,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/linux-result.txt",
+      "sha256": "39c2c87e24a945f3859a36c88288b71ddac9ff5d0c58b3363161bfbd93de853d",
+      "size": 50,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/r2-driver.cpp",
+      "sha256": "adfbc17705d0b454b63c4ab4b0af64c88a38d8be9ebb0f7f3e172a9008213355",
+      "size": 421,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/r2-linux-result.txt",
+      "sha256": "7114bb2021767e39586de17991c4cceb88ebc3e62fd9520744009a1d8ffb1db6",
+      "size": 3486,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/r2-windows-result.txt",
+      "sha256": "7114bb2021767e39586de17991c4cceb88ebc3e62fd9520744009a1d8ffb1db6",
+      "size": 3486,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/trial1-failure.json",
+      "sha256": "2f1d465fa0d137796c371fa71820e36fc794b6613000726b1baaa3afd873a114",
+      "size": 754,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/windows-final-result.txt",
+      "sha256": "ddf17aeb238da989a48ba97de61ccb4fe7f585ed29b3af8d22f1cedef3f0e5f7",
+      "size": 66,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-native/windows-result.txt",
+      "sha256": "39c2c87e24a945f3859a36c88288b71ddac9ff5d0c58b3363161bfbd93de853d",
+      "size": 50,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-primary-late-motion.json",
+      "sha256": "b6b4745ef2d8cd639108be81d40fed64430486e6e249b691d5d8bb2c0694f9de",
+      "size": 248508,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-primary-summary.json",
+      "sha256": "4b8bbf6068cae2a1d1bf876d4ed47f6b547010137f6780edfe6e69150f8a87b2",
+      "size": 3754004,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-primary.log",
+      "sha256": "dc42c80a2311aeb31120dd97ca316da095c45fc35de61fced23aee1a04ea2245",
+      "size": 4881,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-primary/campaign.json",
+      "sha256": "25074dd7fa4de1647c09110a6061189aad425f0223623c0e97baf9aa6e1a9539",
+      "size": 246077,
+      "kind": "campaign"
+    },
+    {
+      "path": "build/admission-primary/sync-anchor-90-GCR-A1-r0.json",
+      "sha256": "9b823d71fb6f22f101c06910980c81828fe1b103faba907c4c919e4929b89274",
+      "size": 13294169,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-anchor-90-GCR-A1-r0.log",
+      "sha256": "8edec5c61f7088d51913bd078082d315a27aac8bd5508770053b7269cad45e19",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-anchor-90-Y1-r0.json",
+      "sha256": "22856ce43d28a57b4802319999eaa87ac229ede941d0a3ae05d474d1a2286f81",
+      "size": 1675254,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-anchor-90-Y1-r0.log",
+      "sha256": "140bdd554e75377a3814e8eeb2b74f25e236b63bd0dbcccc80e4f2b560532272",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-anchor-gentle-GCR-A1-r0.json",
+      "sha256": "96dc235fef3f154e07b8ff6b1995f7337f036f99ab34f102a44c9b6c84fea190",
+      "size": 11929725,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-anchor-gentle-GCR-A1-r0.log",
+      "sha256": "14ca2b7e0ff64da1f1b4ae9c1a09f31b26ae227058d930ac1b50133ad4a3d6bf",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-anchor-gentle-Y1-r0.json",
+      "sha256": "e8c72898bf6ab9c5fc6c148d97296b149144c680b44146c96f7f86778c61a917",
+      "size": 1482301,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-anchor-gentle-Y1-r0.log",
+      "sha256": "2fd950a056e12c03113d9595b6be7045c331b1bfc5e215223c62a0a4bb7a9789",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-angle45-30-GCR-A1-r0.json",
+      "sha256": "fab845d8b1fe59203c8771338507b934c64b39ba0a327cf2be7b40c0f3834cbf",
+      "size": 11802785,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-angle45-30-GCR-A1-r0.log",
+      "sha256": "25345e95584de6043c5e4a325595cfee03bbb9eeaf2f3cceb4e94991d6641558",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-angle45-30-GCR-r0.json",
+      "sha256": "74e362f5fb8cb5359b7ca31428935f1b741582b81ac27878f3d87abead18c04a",
+      "size": 11787476,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-angle45-30-GCR-r0.log",
+      "sha256": "a789323c656095833ac94f352ee252fa7841ebf20c52ed88052307bad29060ec",
+      "size": 311,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-angle45-30-Y1-r0.json",
+      "sha256": "46aef2c8b6f4e0a60413d4f0ea8bd9382f219b1c1af13adac6b1884e9b08230c",
+      "size": 1612607,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-angle45-30-Y1-r0.log",
+      "sha256": "f61cd9485371ce0d5be64463279a78235f4628a304a55f1a844ceecea9ff6527",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-glancing-GCR-A1-r0.json",
+      "sha256": "14f9f7f35baa552d476c8cc5dcbca4f3c349e6976604dc3660a46c0875fa1492",
+      "size": 13018943,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-glancing-GCR-A1-r0.log",
+      "sha256": "88def8d36c9b2a6d305032d29d61fac942c83ba9ebdccec36b274e007e9b8de7",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-glancing-GCR-r0.json",
+      "sha256": "15bdf43449cfdb12c6bd6aa9e652a21b5c6531ed7abf7f2f65427215e97cba7c",
+      "size": 12714454,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-glancing-GCR-r0.log",
+      "sha256": "b0574f9166c7e11efdb8e76547d8f7b62ed1d491fb6ad293f9417a8cb6bd2671",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-glancing-Y1-r0.json",
+      "sha256": "ff499aac02a8ffe194e5bbba85eadd07b99a56041a9dd56e9fd2c233e7b50465",
+      "size": 1760200,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-glancing-Y1-r0.log",
+      "sha256": "289c80a4faa5717e8a74e2678891f592b1cd34ad20801792879af45e7c20b7e3",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-horizontal-GCR-A1-r0.json",
+      "sha256": "4d7c54348fb6d702a793d11e8e5096462952b3a939a276584245b3a1e7f8a988",
+      "size": 14643426,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-horizontal-GCR-A1-r0.log",
+      "sha256": "59cce7907c4243a61136a08e5ff67fd29f5914770c2c9459f38567b4e8bc6546",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-horizontal-GCR-r0.json",
+      "sha256": "6ed08d07ce8b66f43130844573a1f037497849f89b739f30126055843082bbf2",
+      "size": 14000320,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-horizontal-GCR-r0.log",
+      "sha256": "405cfa828b6b8a2536ea2e59303cf15ff8915f79db9737b6f9248cf015cf8b82",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-horizontal-Y1-r0.json",
+      "sha256": "ffb3dc769210d8ecbe338ba6060b09abcfb6c26fd30af609d1c4b03724ea37a6",
+      "size": 1757448,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-horizontal-Y1-r0.log",
+      "sha256": "d1fa8da9cb59eeb13254051782eb1983b3f6f6832c77f15edd1b910c7d4c3b8d",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-slide-GCR-A1-r0.json",
+      "sha256": "27107ad18b935b013b8d6e0a91cf284ab4313f644730633ae6a0cfac56391e07",
+      "size": 11945860,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-slide-GCR-A1-r0.log",
+      "sha256": "a16949512c69cbf34e05e2808df22a2092dd3bca7654aa883fdf690c9abacddb",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-slide-Y1-r0.json",
+      "sha256": "e2f3dac9c11c215c09d5423c7c9bcc40d0dd42c9ee180e4858a0c572ce55fdb3",
+      "size": 1687305,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-slide-Y1-r0.log",
+      "sha256": "ddd2a30238192e6f5717735078b69a87a36b4014822dab1e0ce079486d96403d",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-vertical-GCR-A1-r0.json",
+      "sha256": "ba3320f9634abbf195d2c0b77d2e48315add20d3c3677e054f0a98aacf5a9615",
+      "size": 12044767,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-vertical-GCR-A1-r0.log",
+      "sha256": "46a7f4ddd7d88ebbae62c08d7d7672b89d55cb3d594c87db240f0119ce6f04c6",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-vertical-Y1-r0.json",
+      "sha256": "e8caa2f78a36785c5473b5de8368e390b9d7ddf9a175f147f4fa3fe8f2087526",
+      "size": 1479581,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-coal-vertical-Y1-r0.log",
+      "sha256": "5267a3783acdb2fd8778f7a62289b1afc0690c90fe3baddc7913a5836a76c7ff",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-edge-GCR-A1-r0.json",
+      "sha256": "01bcfe3b153e597c2f93dfd2f656360de926868df6136b6885a1ee183e2a947b",
+      "size": 13806715,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-edge-GCR-A1-r0.log",
+      "sha256": "3a031d1ffab657d7797ede078dbfd28ce3ca0a26b36b24673bcf8928d6e23066",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-edge-Y1-r0.json",
+      "sha256": "ebead2439bf4fcd6bd857138200a3a9e3cbc2d3a97f9a2322e4e8e7587ba5833",
+      "size": 1762310,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-edge-Y1-r0.log",
+      "sha256": "6e5d84fa3828e774d98cb2b58a75618dc4628065017fa90cfe240e731d776b2f",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-glancing-GCR-A1-r0.json",
+      "sha256": "1ee2c91b5e9aad5e53929fdc4d7dfd10278ac0de285fcd965cb3285d6fbdc202",
+      "size": 14210702,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-glancing-GCR-A1-r0.log",
+      "sha256": "749eca54434422ae38e9b7a6f99a389c0895ead94c5029fb8838519d366717f6",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-glancing-GCR-r0.json",
+      "sha256": "fb05703b0c3703c9ff412883f3d71a2ecda61ef28bb10c27823623380cdbb3fb",
+      "size": 12917696,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-glancing-GCR-r0.log",
+      "sha256": "4bb11699f31e2647b38df3228735337021b0bc8fcd497a6dbf654216775a2be0",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-glancing-Y1-r0.json",
+      "sha256": "f526d5f89a3e5f1a9425b9f4767a8924b959efc39d2a7f662bb7eab89a8cf00a",
+      "size": 1749703,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-glancing-Y1-r0.log",
+      "sha256": "8e5a82d76ae66a70f6ca5a3a484ccdd954f5f9234ddc3dbf47ccc460ffbe1d11",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-horizontal-GCR-A1-r0.json",
+      "sha256": "2dc4a916fc8b91ef0b24b4f6a92d44041b784c7416af7b90663ff564fa07774d",
+      "size": 13101033,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-horizontal-GCR-A1-r0.log",
+      "sha256": "e732b0b5291b02b4aa49e48db9ecae4bdff5bd77f39fbb511c65a5efba235d27",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-horizontal-GCR-r0.json",
+      "sha256": "81183121b336b4395c9be8f940599d864a65567821a444a825339cfc07a445b3",
+      "size": 13438187,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-horizontal-GCR-r0.log",
+      "sha256": "364543671dffcfc40bf0c4700ab88afc3b8d31f4520edf45fea999ac901130fb",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-horizontal-Y1-r0.json",
+      "sha256": "28b9611fe74dd6d8d58b94514bf62e0cd0cb9573cd84f9eb9de58ce8a1ca6a67",
+      "size": 1726157,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-horizontal-Y1-r0.log",
+      "sha256": "76daaa39b51f9e8ec7f4d0b10b3ec07977417b03f612c40e5898c566657fdd57",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-mass-0.5-30-GCR-A1-r0.json",
+      "sha256": "c3d085ba05881ce11351448424052a87ab9c0a573273331b84420330c9a9f4c6",
+      "size": 11957606,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-mass-0.5-30-GCR-A1-r0.log",
+      "sha256": "a9b9ec47fccec4383be00c7341386da221656b8ec2055be32d79ea51a52218aa",
+      "size": 320,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-mass-0.5-30-Y1-r0.json",
+      "sha256": "f9a88001aae875bb29dd4d767a115472936c374026b95768a9bcf07dfbe5cd0d",
+      "size": 1521838,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-mass-0.5-30-Y1-r0.log",
+      "sha256": "3d39f00e811aac6efdee2a561e5c9074b773f26820008d56d9961ad038ebe9b3",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-mass-2-30-GCR-A1-r0.json",
+      "sha256": "129dbc4aff82e323c675a0e14ca5a4bfabd9aa54d8f8e9c359cf73d3dc79cd43",
+      "size": 11877299,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-mass-2-30-GCR-A1-r0.log",
+      "sha256": "5e7089179c0d6cfb060c70130c0b46aa6f30a85f7dca21ef4d0b7402ea3d90f4",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-mass-2-30-Y1-r0.json",
+      "sha256": "c2115b00e3134cd607908e0e520ca6230e8b96e941fd83ea7012664c649a5b34",
+      "size": 1595135,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-mass-2-30-Y1-r0.log",
+      "sha256": "ed1c38d2d2e7040b453a0ea8d3c9e4e89c0b9ff35134b8bd3ce631a36e2df807",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-slide-GCR-A1-r0.json",
+      "sha256": "dacae8ddebf38c4e02cea02a2c5ad22e3c70c9eca78e6021b0781e2a3530b7e0",
+      "size": 11976816,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-slide-GCR-A1-r0.log",
+      "sha256": "39333c8261fa0a99a4fe8d50a842a56835c2afb1fcb7da6816e29d5ebbb5405a",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-slide-Y1-r0.json",
+      "sha256": "d3dfaac86f53ddeb2f9d04bf0f56b3d9814a56fda62d111fe8da08690adb3d92",
+      "size": 1681565,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-slide-Y1-r0.log",
+      "sha256": "6d994f50d1f1ba26e9a8a12dddbfa812c3740d05216f369bcefca1984e68de6c",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-slope-GCR-A1-r0.json",
+      "sha256": "06ad46a5bbd1c624e3250d28b263ecfa4101951ba50757aa47ef88ab0e9309e9",
+      "size": 11995357,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-slope-GCR-A1-r0.log",
+      "sha256": "23691cb5b4aff8504483f1e50b3dbea982d32d9aba0c6af5641a3165b9514d69",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-slope-Y1-r0.json",
+      "sha256": "7901071d15ca4600ac76967dfd68cffaaea91252fe1d5044a6def2ecdc5a2417",
+      "size": 1742295,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-slope-Y1-r0.log",
+      "sha256": "7bca09a0823528dc7d37759ecb19a9dfbb2937dee85508dd4c6b298a96b95302",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-vertical-GCR-A1-r0.json",
+      "sha256": "ea8cdf983ab9174fd4e88a1a1cd1a83b7ac9a9b727d91d94f1ae0c1bbf0690d9",
+      "size": 12036002,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-vertical-GCR-A1-r0.log",
+      "sha256": "7f15d1e572d1bfcbfbefd4a12a202684afe8f2df1d2811d929f1623aa76dcf32",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-vertical-GCR-r0.json",
+      "sha256": "26b0144fa6d8a99613982e4f147a879c7cd6813422795a2b50f5016d5a74b0d0",
+      "size": 11887174,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-vertical-GCR-r0.log",
+      "sha256": "af23ae8c2ba76bc716cef022b426edb1c77c12d06c20fd1443c02526ea1cd29d",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-vertical-Y1-r0.json",
+      "sha256": "3ae9e0cd9a1b0ac2c2901d96ec52121c837da91b32446a751cbf620dbf663ecb",
+      "size": 1486968,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-dust-vertical-Y1-r0.log",
+      "sha256": "b650033d0b781323288611d1a2ce5f0466b471004e676dcd1df66caa457b9812",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-glancing-GCR-A1-r0.json",
+      "sha256": "9b61b63c2a48863d1a4a2e5ed9fa4938cd453f0705578530bedbfaad5295d8af",
+      "size": 13253406,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-glancing-GCR-A1-r0.log",
+      "sha256": "c48f282c1a7aa117e08e1ba5156119b5242b906c45c5aaaa158e9a32dfb2cf54",
+      "size": 322,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-glancing-GCR-r0.json",
+      "sha256": "d3083756c9cb3a4d3ac431f72b665c297ae7a38b6e397e160643c5e12f21e761",
+      "size": 12697251,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-glancing-GCR-r0.log",
+      "sha256": "99588cd2ee63fbe1b451d11589f723440403c7ff82bc0d216b1604758032cc45",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-glancing-Y1-r0.json",
+      "sha256": "00a0df2f99d54270d8b33b078817b5c1ab57e9c8a53fd1efeb9813755ad5d745",
+      "size": 1794235,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-glancing-Y1-r0.log",
+      "sha256": "7ca428e63e7ad61f4d26cdff3ad658a2d71fea390e9876d48555fd09fef4c931",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-horizontal-GCR-A1-r0.json",
+      "sha256": "ce5163e97101dd75d09492f31d52110cf842b9c44ee75689852f6c3a19449320",
+      "size": 13401484,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-horizontal-GCR-A1-r0.log",
+      "sha256": "abf98fde06387b944b1c4e85fb9bc3d1b701f3cab88fdf70d6e8543f4773d1a5",
+      "size": 324,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-horizontal-GCR-r0.json",
+      "sha256": "a151912b28ffc2c31d02622106d088040541a845e1a416b29a4ab43f34e084f5",
+      "size": 14055395,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-horizontal-GCR-r0.log",
+      "sha256": "f6ac977fd0e7da81e034019ffb77e06b1814d3008afc75b324df25f69b998c09",
+      "size": 321,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-horizontal-Y1-r0.json",
+      "sha256": "ebf184bfa0c8990330e149b7f04182ee10b29548031010498ab179e773ef77cc",
+      "size": 1763411,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-horizontal-Y1-r0.log",
+      "sha256": "a2f9ff6796069867e3e19dd340127dcd4f82ef8cba733e1a3567ef0f9db856e2",
+      "size": 320,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-slide-GCR-A1-r0.json",
+      "sha256": "d47763793310aaa85a366e5428c479886c71d27569cd15d7a55f0b4e930a4973",
+      "size": 11802058,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-slide-GCR-A1-r0.log",
+      "sha256": "7ed027e488b3cd9a45124d7f3594d8f1201acddda98905b5ef6db49f4194b140",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-slide-Y1-r0.json",
+      "sha256": "86b97a6481205784d09800054197c2f455547449921c09ab0ebd6065250604ba",
+      "size": 1681300,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-slide-Y1-r0.log",
+      "sha256": "6ab01af8851afab32b8922239a52dfa17c90735e12e6e0c44ebe060cf3e84c61",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-vertical-GCR-A1-r0.json",
+      "sha256": "791eaef6f55f2d70e369d7839ef47d625f52c29d679f940173cead572bd9bdf6",
+      "size": 12043792,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-vertical-GCR-A1-r0.log",
+      "sha256": "dd409c474dc45228f77d7e03e2e65c2a851946a01ac4e3cc8c1a3b804a214294",
+      "size": 322,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-vertical-Y1-r0.json",
+      "sha256": "e0c7022dab06a595a5ef017d95905ceed2be3ebdc5f2425323fdb23bb9fdd2e5",
+      "size": 1479060,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-gunpowder-vertical-Y1-r0.log",
+      "sha256": "b86f2ba03f2a633f44b33ed14177b55105d273fc6f287892bde9d2955df8317a",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-half-90-GCR-A1-r0.json",
+      "sha256": "f5b74850ef97e274904cd8acd6a93578bdf4e5005ba3e59b8201eace9af9d78f",
+      "size": 14744837,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-half-90-GCR-A1-r0.log",
+      "sha256": "8335a2b93900301f28247d21a64b3db2bdb62fdf6f3dfc4333ca5e903ce2a886",
+      "size": 311,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-half-90-Y1-r0.json",
+      "sha256": "c33c1f7e03081830f170df81b25a45dd0f6fc90d753f2d2beb46933bd51648b0",
+      "size": 1723225,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-half-90-Y1-r0.log",
+      "sha256": "b25f397f9895eb89c238c82a091fd9d58b2633d6b6574651ac689fd148655664",
+      "size": 307,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-heavy-90-GCR-A1-r0.json",
+      "sha256": "0c32c47c3fb47199bfbbe6ef363be57309ac256556006cd622dd32e9a37050fe",
+      "size": 13865777,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-heavy-90-GCR-A1-r0.log",
+      "sha256": "d1c4feef9c4e55bef951552ab5cf07d4b8b6ad9bc6212da3ac7e8d7c6b4cc42c",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-heavy-90-Y1-r0.json",
+      "sha256": "3af240fd315177ecb0c737e860ffe118a6e56a87f620881d83f4efb1eb4ec117",
+      "size": 1724053,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-heavy-90-Y1-r0.log",
+      "sha256": "dfd539f55cdc74c73aba690e8adb5dd074d976ac1695f6388abaa34f24fe6acc",
+      "size": 308,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-light-90-GCR-A1-r0.json",
+      "sha256": "0eae37cea3f4ef7d096f908d43b9475beb7fcbbbf4e762aa6c6c64d9dad31518",
+      "size": 12092883,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-light-90-GCR-A1-r0.log",
+      "sha256": "cd637b210167ba9b6d880537107fb5a1a6942bf47f8aac8dd147af7fd3cd9a88",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-light-90-Y1-r0.json",
+      "sha256": "ab688edf2b0eef6b610cf38ac75b4bed09480cf77c0df135ec4c046a10b21dd8",
+      "size": 1647118,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-light-90-Y1-r0.log",
+      "sha256": "d242b97856f4b2d5df19a6c0f05025d44795b4719b3993fd1fcf057bd69e28f1",
+      "size": 308,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-mixed-seam-reentry-GCR-A1-r0.json",
+      "sha256": "8adf33e8bbd6ba8903d04a571550b09b9541434d060ccc83f65a038f02a26b61",
+      "size": 13129579,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-mixed-seam-reentry-GCR-A1-r0.log",
+      "sha256": "3cf18a83de1c9a4a29b5ea8d4ee83e9434dcd69820a07d4dcaceb28181d1a65a",
+      "size": 322,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-mixed-seam-reentry-GCR-r0.json",
+      "sha256": "633b0af74452dc59440691a647a20ede4a11af9d9898ccf69b21c9d59474e5dc",
+      "size": 12635298,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-mixed-seam-reentry-GCR-r0.log",
+      "sha256": "96f5d9f6719c0049613ece59c25c97444e0e6f28c80c348b2ea616646764cfa9",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-mixed-seam-reentry-Y1-r0.json",
+      "sha256": "751b935dce7ea724f2fae28f63e5cc0267dfa9d2bc7bdcbc534249856d482499",
+      "size": 1482990,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-mixed-seam-reentry-Y1-r0.log",
+      "sha256": "84c059aa864c7bdbddce156ba9f7e93e33c61597a89f62f177f1158b27e70cfa",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-angle90-30-GCR-A1-r0.json",
+      "sha256": "b3b2a0bc781f52cfd429e4a568e7533396f9fafe3e6e8a4fee60215e785f6d97",
+      "size": 11949890,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-angle90-30-GCR-A1-r0.log",
+      "sha256": "82db799f8972be05d4816a399495d1a013e1fb79cde4fa6866dfad8957a2dca9",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-angle90-30-Y1-r0.json",
+      "sha256": "5c0e75e44e150c8e79d7693dce1d7d9be33de21e2dc918abb748ec10585c341d",
+      "size": 1516125,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-angle90-30-Y1-r0.log",
+      "sha256": "cf28b985575983e080b4b9d37c0e65e096e57f3c05b169aaf4669c963c79836e",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-edge-GCR-A1-r0.json",
+      "sha256": "e3d00fb12b2dd679f5baa92eae8fd47669def6f79dcc3c75fd6385180572181a",
+      "size": 13757280,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-edge-GCR-A1-r0.log",
+      "sha256": "748105dc6cf0f1d9aa4a36ecc768766ed1562af548368eb3f6ffcf2d7fdd8011",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-edge-Y1-r0.json",
+      "sha256": "af7a7e06253052269c565eb6bb570dd8793dc75e80e64f2cfba9e26ed704983d",
+      "size": 1739445,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-edge-Y1-r0.log",
+      "sha256": "2ed017c9acc09128b30ce211068926e6cfd7389e888af628d3b6f241c8283a89",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-glancing-GCR-A1-r0.json",
+      "sha256": "890bec2e998a72b1aa464def64b79c30f4a084e9ddbf73cb88dee984977aa27d",
+      "size": 13258540,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-glancing-GCR-A1-r0.log",
+      "sha256": "842a3d9a905160169ecf6c48014dfc913b7e5f5609ced9e58cd47dba7a9bd0dd",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-glancing-GCR-r0.json",
+      "sha256": "4ec0cf0f597a734c36463cc327cc3f0b97a7b692bc30dba1a866eac7cec639f8",
+      "size": 12700032,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-glancing-GCR-r0.log",
+      "sha256": "815d8e0c912ca332d80476fa48bbc6b64a4370622a7872c5cf5fdc3c667d0dd0",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-glancing-Y1-r0.json",
+      "sha256": "8a9ba5e85b52cad4b41e812e92babcc52cc3bad7c804a92e357528a411e54e7a",
+      "size": 1792902,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-glancing-Y1-r0.log",
+      "sha256": "1416da485a9f631fb3aa5898b63790330037898cecef5c69bcc269d4dd272bb4",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-horizontal-GCR-A1-r0.json",
+      "sha256": "29f65c28054a09527dcc336800c7a2d06be97660c60366393139fdaa777dbf77",
+      "size": 13407071,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-horizontal-GCR-A1-r0.log",
+      "sha256": "2da908eb81c87500995dc850d33403f212ea9fd17854a0d9f600cd2f02ca1cd0",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-horizontal-GCR-r0.json",
+      "sha256": "6c6a19932c9432512eb02d75edc5ee4cfcb881cfce2625a5138e437246f0f6fd",
+      "size": 14064171,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-horizontal-GCR-r0.log",
+      "sha256": "32ec2438e8639daf63960383fe11984dfe1eb56c68a38aaf0542bd953a725fd6",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-horizontal-Y1-r0.json",
+      "sha256": "3afe95d8bf25e54a09b90c85ac2c07e6ef7c281b04e358276bc38710e5eb69bf",
+      "size": 1762010,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-horizontal-Y1-r0.log",
+      "sha256": "edbffa78875b48277f6880243293da0d6acee33693c6751b79d666748005ddec",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-mass-0.5-30-GCR-A1-r0.json",
+      "sha256": "9fc4ce96d3116616cea39361b2456b4b8fff82dda425aaa8c4e5fd796c75f9a0",
+      "size": 11964898,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-mass-0.5-30-GCR-A1-r0.log",
+      "sha256": "ed353854ab049bd9a80d95ce9135555ad3508fc53e96cabbfb567a100fb5b447",
+      "size": 320,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-mass-0.5-30-Y1-r0.json",
+      "sha256": "a31b5fb22d9b81d82613f2487b99284f7e98729eb63df69bed7fa4ef1b3b6c02",
+      "size": 1516949,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-mass-0.5-30-Y1-r0.log",
+      "sha256": "e18786bc940f09fa42da2cbef49043f97da0f04d3580d7468ab1d55c2ca580ff",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-mass-2-30-GCR-A1-r0.json",
+      "sha256": "42d698d6c7350f70db2fed34107e4f03167680c84d4b5ec266413bbdab13b7fd",
+      "size": 11860859,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-mass-2-30-GCR-A1-r0.log",
+      "sha256": "9a954fe86f1174d644c28335296108541ddf0f15e4d0de37263f95bfbf1d35b8",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-mass-2-30-Y1-r0.json",
+      "sha256": "4863dc67de5b8f8e332c2332041dc78b81c45310c8c7417783d0b9fd726b7d0f",
+      "size": 1599375,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-mass-2-30-Y1-r0.log",
+      "sha256": "f000f9b83c74ee57a63d75239a4495044a451c4a80aa8a6185aa4b00fa41393c",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-size-0.5-30-GCR-A1-r0.json",
+      "sha256": "f5b1ab83406e6fecfbb99d33e2ecca0026c0f1ab02b212b91f678c0f16325862",
+      "size": 11887968,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-size-0.5-30-GCR-A1-r0.log",
+      "sha256": "dbd5859215c83dc3cf7ac472e83920145bad6f98f8ae60df74b5f9193fd4dafe",
+      "size": 320,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-size-0.5-30-Y1-r0.json",
+      "sha256": "a4f9db6772a6ae53892dbe9f613db18cc7b5929d5dc4c0da4d5f2295a2fb6142",
+      "size": 1594669,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-size-0.5-30-Y1-r0.log",
+      "sha256": "492d29f05abd4f2bd9962b3443e146b79cddd5eb32914aa60f7c716f29f6c237",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-size-2-30-GCR-A1-r0.json",
+      "sha256": "78303b4b1f011674ca107e68bb2046c7d099b3bdff87f0a70644a6aefd8d5645",
+      "size": 11925183,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-size-2-30-GCR-A1-r0.log",
+      "sha256": "d7b0a67443e859000194882234dfdb43626e01a35742e708046bb14ad2789155",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-size-2-30-Y1-r0.json",
+      "sha256": "e9dde3adf4e6a41c9bd49929d5669150b5b47958c0fb09e474cf03d37dcbfb6b",
+      "size": 1490217,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-size-2-30-Y1-r0.log",
+      "sha256": "a3aa8919dc794c5501fefc1cb5f81ada507650a15b7095ee1b8834ab66be1bab",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-slide-GCR-A1-r0.json",
+      "sha256": "f4c015cd6c250d6449ec1d80a4b7d78e048f394220b19be23b6e9c7c921d5e73",
+      "size": 11803155,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-slide-GCR-A1-r0.log",
+      "sha256": "2e2cb4ad3fce7c51f036439a68fe6d463a41d56c572fdfca6d0412b729b99438",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-slide-Y1-r0.json",
+      "sha256": "b47007526f7484337ee807e872daf0f4891d7ce054209f195f4ca2cd74843b27",
+      "size": 1679790,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-slide-Y1-r0.log",
+      "sha256": "4c0511cf2b5caa93edb3cf25dd32c7b46520bcd8d7d4b9e3425a1595e8274aa1",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-slope-GCR-A1-r0.json",
+      "sha256": "876aac89d485b19fa6e9e9a019f02932ba5f7ac01ad611dc06a728f92274c2f0",
+      "size": 12071306,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-slope-GCR-A1-r0.log",
+      "sha256": "e5ded57158a134c3bb782422884aa980870a5e8ca7d7197853b15ed86e9e4adc",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-slope-Y1-r0.json",
+      "sha256": "0cdb48a66ad0cd10be7d0d03a3e8541bbf4cdf8e96087cc18dd21041170223d9",
+      "size": 1754334,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-slope-Y1-r0.log",
+      "sha256": "3e982b640d3efc3830dd2f8669b5e30f6bfee4add43a28a967450d9843fbea34",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-stream-GCR-A1-r0.json",
+      "sha256": "461160f8264725297fea2ec8992791c1a60419e74c799d26cea555c3fd97103b",
+      "size": 14047980,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-stream-GCR-A1-r0.log",
+      "sha256": "acc8b9d86756e7a212315b61014dc5426b26ddc17c32b005c3cd55220de34b06",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-stream-Y1-r0.json",
+      "sha256": "6c456006ec1efe11145b3d5921a3993d3efe96b55a01f9bcf7a97a0fae4a646d",
+      "size": 1727470,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-stream-Y1-r0.log",
+      "sha256": "0969173d9e8eeea17bfe95d3abdbd361ae941797471dba1891cf126780ba480f",
+      "size": 311,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-vertical-GCR-A1-r0.json",
+      "sha256": "903b08db1f467cd80e9dbb85b352a486520b035eb1854ba4cfa822b056fdb0d4",
+      "size": 12044845,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-vertical-GCR-A1-r0.log",
+      "sha256": "9a489c324ec1f6041d9c37407c739b52e3df35c5eddb22dcbd227cd04d3bd799",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-vertical-GCR-r0.json",
+      "sha256": "f3926e3154b777becdec42293461497c8b0feac2bbe182c311176dd85e664907",
+      "size": 11837012,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-vertical-GCR-r0.log",
+      "sha256": "27b3e81580b59f3f860c9e15dd21073c108afc111d48c13d36cfccfc60de4d80",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-vertical-Y1-r0.json",
+      "sha256": "887c4b037edeea059981b5a9011362f0a5d27263b737ff5cb3b2b7e65c3c9e30",
+      "size": 1478851,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-rust-vertical-Y1-r0.log",
+      "sha256": "86babf1c6c7e7cbd68d49c92200a3bc359456cc69e4cac4fd0a4c5b305d467aa",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-glancing-GCR-A1-r0.json",
+      "sha256": "04d4d5005c4583488182028bfe72c6cc515482030f01f90061e733e037c15042",
+      "size": 13248982,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-glancing-GCR-A1-r0.log",
+      "sha256": "6572d42b67d0c232ca02a3c671821e693e6c64d99650be0f688af9184a1cd6e7",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-glancing-GCR-r0.json",
+      "sha256": "6232235527635aab1c2abd8ae31cfa15530b2f65aae998e7f59286935ea291b3",
+      "size": 12694666,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-glancing-GCR-r0.log",
+      "sha256": "1df671110a4f2e69f522ee9bc1f9bc19bb27a6dc7ca52658ef55a08541ad5937",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-glancing-Y1-r0.json",
+      "sha256": "88b16e90c8e1a7fe96073377012c1a0416421a033c27c06b04d12d9a3438da83",
+      "size": 1794910,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-glancing-Y1-r0.log",
+      "sha256": "9ffa7b041c3e3df527f213a9c1ef4e9d2bce252a6976e3e7af242b9225f51659",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-horizontal-GCR-A1-r0.json",
+      "sha256": "bcb13628ef000b9db4ecf02c02bf9deeafea11d4dac6b4d929b3041e987ff700",
+      "size": 13397063,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-horizontal-GCR-A1-r0.log",
+      "sha256": "db2fab61eb52805473213551f8e253f8d9e5e3455eea9e7f63cb94c83ab97514",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-horizontal-GCR-r0.json",
+      "sha256": "7858df59016c914563e88edc0df1aa84d84c8adf3c56e1b5b7396ddf6f8f9185",
+      "size": 14047347,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-horizontal-GCR-r0.log",
+      "sha256": "a3cfccfe82e7644c0070305806164d3a70d4cf269ce8dd80f56c39cf3ee55934",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-horizontal-Y1-r0.json",
+      "sha256": "7a474cba75d8b9a0885ee8cd30f8decd9984c3a2dc7703135e90376150fafa04",
+      "size": 1764647,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-horizontal-Y1-r0.log",
+      "sha256": "c3b20aba9944cc0bd4198ad800d068642bf86a39d9b1c65a8eb5e728922a56f1",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-slide-GCR-A1-r0.json",
+      "sha256": "1a42cca58dc8da2dbc35284a1555b1be1376dcf3957d72ebc12edfe624ae7a83",
+      "size": 11802633,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-slide-GCR-A1-r0.log",
+      "sha256": "d9a2f2a9df074f9eafa90ccf53548983187ea20e8e9586c6a1c135dd50ab7f90",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-slide-Y1-r0.json",
+      "sha256": "134aa5349c45bc170f90009876e4656ea7fa52320ead6d4670f0cc2d2e0d658f",
+      "size": 1682061,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-slide-Y1-r0.log",
+      "sha256": "1942f9be90dad817875336eaa1853f4a1ea9b173c405f96ff7f1cc26700687b0",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-vertical-GCR-A1-r0.json",
+      "sha256": "2d0dca07e5c5d484ef303818138b5eb498165b47470a05d8affbac0d71e9ea6a",
+      "size": 12042592,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-vertical-GCR-A1-r0.log",
+      "sha256": "8442e4732d65d8dc6a6ef7a2d61fd57c0e859446f50f81d3c74b4179d893e9b3",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-vertical-Y1-r0.json",
+      "sha256": "d5ccf0896f8bc05029407820f1da38b5d024eab89f9721fcfab12fc9c3596a4a",
+      "size": 1478781,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-salt-vertical-Y1-r0.log",
+      "sha256": "6d9e42f6af15bbea892619c608bc4c191ee76f065e302cf4d228ee439c084322",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-angle90-30-GCR-A1-r0.json",
+      "sha256": "3be8193e989caf4db0e7f031b72d1cd8e854d53a3fc7ec8ca2004c0b4b7758a5",
+      "size": 11932628,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-angle90-30-GCR-A1-r0.log",
+      "sha256": "e5a2b95463ce2484a0abc5c3d4e26b1eef6d6d98f88cb2e1c6807da8f77c8cdd",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-angle90-30-Y1-r0.json",
+      "sha256": "c864af3468d38edb9f848da0e0eb995403724974827e95b90859e3a9e94923de",
+      "size": 1516129,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-angle90-30-Y1-r0.log",
+      "sha256": "5cf33f27310ee601ff30bd314832a4fc2c319b1d6174f9b2928db7d8906ad29a",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-edge-GCR-A1-r0.json",
+      "sha256": "d243d2e0eb636e058cd8a76b67e8e65904eb28e27d077e55aac701bbdfa1a9f7",
+      "size": 13677232,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-edge-GCR-A1-r0.log",
+      "sha256": "54bb56fbb8c7e460cfd9b38840e10c67ee2948b1b0a1e8a2df152e290bd0e989",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-edge-Y1-r0.json",
+      "sha256": "848cba13bc08df76c321ebd24bf187af33fc82ab98ed4a3ab9a3645a76e253e9",
+      "size": 1739528,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-edge-Y1-r0.log",
+      "sha256": "e26fc8eaaac9afd8cbc4da70e9f5a8c61c7171a34b97312bf3be041f06b2c9c0",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-glancing-GCR-A1-r0.json",
+      "sha256": "f00bf4194990f5aae81740283ac5801f5a2e044c5bbc3fdcee0e0ba938d9a7c5",
+      "size": 13204637,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-glancing-GCR-A1-r0.log",
+      "sha256": "83ac626ab63741ac0e3bbaa66df55691edccb60d9161e26eb8530cde7b18568a",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-glancing-GCR-r0.json",
+      "sha256": "6e97ba5e6945b714e9d24ce04ef5b635b6449fd48ee159574179ca3cfeb1c946",
+      "size": 12669797,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-glancing-GCR-r0.log",
+      "sha256": "1b9625be910677229cade5ba52df73e5f820516b2e71ebac29b50c420ad831bb",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-glancing-Y1-r0.json",
+      "sha256": "1c7fceba3f737a50914a374246bcee83bdb6d48abb637621314190ec07397d06",
+      "size": 1792450,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-glancing-Y1-r0.log",
+      "sha256": "1a38efc9257d67fcba46a883d2f9f025b5979afa48cbb2d2692603866929ec17",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-horizontal-GCR-A1-r0.json",
+      "sha256": "bd4d454b0fc090806619206002319f280593dadabd7d7c49adacafab473c1e0f",
+      "size": 13350729,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-horizontal-GCR-A1-r0.log",
+      "sha256": "31837d4569488e1c79417bdbb26a013587aba4c953a6d29ba5389e3574a5154a",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-horizontal-GCR-r0.json",
+      "sha256": "d0b98a287f28f5bacbf8a3cb1f19d5e5b2836827e03730de5443f0710584b0d1",
+      "size": 13977755,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-horizontal-GCR-r0.log",
+      "sha256": "06255cba20382dcbda7132c1857d013874b61d232d5f16afe142c13d0bf8f696",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-horizontal-Y1-r0.json",
+      "sha256": "3bad3a4b70845827ccdbab0ef1e6e1b237d1699227be855473f09a3e582e4a19",
+      "size": 1762106,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-horizontal-Y1-r0.log",
+      "sha256": "8be55573e2396b235b31d194769be69437f2747465d122702d10452b4698cd30",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-mass-0.5-30-GCR-A1-r0.json",
+      "sha256": "f5954affc51de6255b6ad27106c100c89be6e239b23d205d793e4b7c8a521419",
+      "size": 11950062,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-mass-0.5-30-GCR-A1-r0.log",
+      "sha256": "f500e7b6dc9d7ce41bb3c0f26da771effff14b23d578da825f2551ca1ae53a28",
+      "size": 320,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-mass-0.5-30-Y1-r0.json",
+      "sha256": "42adacb773d127a64e0319caa93a9787d97033c9b1066594323f326f6c1b3bc6",
+      "size": 1517351,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-mass-0.5-30-Y1-r0.log",
+      "sha256": "9c976f9cdea753f5ba872487533adbec4c11a9029865c19552872ee74488cae9",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-mass-2-30-GCR-A1-r0.json",
+      "sha256": "862d0f103a41c324f1d3b9bf11eb70ca97cd9ed43b236b542208b33b0fa06bf6",
+      "size": 11847843,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-mass-2-30-GCR-A1-r0.log",
+      "sha256": "c72be2e201d74b7588c27ec58fe4656b66ae39a15319fd1a9c0c4fde5a3f0524",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-mass-2-30-Y1-r0.json",
+      "sha256": "1cd98dcc53f56e2a143ca6654c816ea13adb1975d44616ceadc16ecb2ef9544d",
+      "size": 1599284,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-mass-2-30-Y1-r0.log",
+      "sha256": "c2a6f16f5b7fcbd806d8c9288a58cbe7a3c6119d7cab0c6803d48ed79c822f91",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-side-excavate-GCR-A1-r0.json",
+      "sha256": "d81f806e80c58c682a5521fc1efd4c9616adff967b80972bd6027d14ada3904a",
+      "size": 12888290,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-side-excavate-GCR-A1-r0.log",
+      "sha256": "318fedd51377fd43787b8a539f273e1ba816466a2213ef9063b0b171a1c949f5",
+      "size": 322,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-side-excavate-Y1-r0.json",
+      "sha256": "f7fce8752a7bab61511574170bce293d4572cf2720952eba16664519656c540d",
+      "size": 1668683,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-side-excavate-Y1-r0.log",
+      "sha256": "70d1a27f61016839101064fcfce5149462fb3211162ccd834ceef98c6781f649",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-0.5-30-GCR-A1-r0.json",
+      "sha256": "0f1b9df368ccac71436f84b70b2ebf760525431b63fe94f7e7ec7f12a7ef3e3e",
+      "size": 11873476,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-0.5-30-GCR-A1-r0.log",
+      "sha256": "69be50e247fa4b69bfb41fd2773d599dd3020071e11623e8f2b131dff4468828",
+      "size": 320,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-0.5-30-Y1-r0.json",
+      "sha256": "22374608c07783cbb959836722aef4fea5ccf3d26023a35a3423c4023ffdd9f9",
+      "size": 1594744,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-0.5-30-Y1-r0.log",
+      "sha256": "8d7d07ae89e2d4911bf6b5759b8978450fc8531f810806e5f8290ef0464ae9e4",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-2-30-GCR-A1-r0.json",
+      "sha256": "012289845e00d3fb968c602c3e15c2dfc1341a55aea1abd566515f3e91ee6fd6",
+      "size": 11911869,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-2-30-GCR-A1-r0.log",
+      "sha256": "ed87b8b4159eecfbdae126d959533cfc017edeca7895c6050afc05564bdfe9f2",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-2-30-GCR-r0.json",
+      "sha256": "0acdc7ad72f0d42dab3cf861377206972fe85b406a93b3fbcf01c204364c4686",
+      "size": 11895436,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-2-30-GCR-r0.log",
+      "sha256": "471e87064ce0ddfe16cd3676c8cce97ab1c4bedca7c8b61f88fb26c4e7139027",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-2-30-Y1-r0.json",
+      "sha256": "221f405be2264848849f72295b6b0928a5343156e7df66501065a2e7c5dfe921",
+      "size": 1490635,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-size-2-30-Y1-r0.log",
+      "sha256": "033a7049782891eb43f3b49fa39f4c7f86eb48013df6069ed3d4f8034ee57f27",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-slide-GCR-A1-r0.json",
+      "sha256": "93aeb99577a3f25da9c9e407df9e4ad2ced7e7508d54fbee39486099e8e5e466",
+      "size": 11791187,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-slide-GCR-A1-r0.log",
+      "sha256": "af332ca1eb3d484af47926d5ab0ba187d82469d8bce50682296606766cb5e98f",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-slide-Y1-r0.json",
+      "sha256": "334e41ce50ff4d801de476121ea63ea621042021b52d13571597a292f2583a13",
+      "size": 1679632,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-slide-Y1-r0.log",
+      "sha256": "521dc8ae4d63be0b68150fbac77cb72903fe738c8caec796f4822b9e2de7f7c7",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-slope-GCR-A1-r0.json",
+      "sha256": "16bd34c5248213b1a3e20c616c1b1f5af6d5655e7be7bc0f7e7d66f1e038d197",
+      "size": 12053607,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-slope-GCR-A1-r0.log",
+      "sha256": "dfb977e316f518e85e4bab197b40d7b1beaa574ae39eed63d2fb7258d19f1db3",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-slope-Y1-r0.json",
+      "sha256": "5fbaad135e400893211e86b9f6db53756bc7bdf185a4dd45e76a384ac4eb4118",
+      "size": 1754194,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-slope-Y1-r0.log",
+      "sha256": "83c8b077de09982f7fbf0d849cdc7bd51930355a32db740524342f6e65b43938",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-stream-GCR-A1-r0.json",
+      "sha256": "26e5729085204a2ca373d8960c93d9a1d7040d8c726db797959c23848ae57b0e",
+      "size": 13968190,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-stream-GCR-A1-r0.log",
+      "sha256": "93824b8a6857d92b8d8e58b70306758df34316ef75426034b07ecbb7c284118e",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-stream-Y1-r0.json",
+      "sha256": "2d889b0c9d2fdc02d5f9be57f2b990dbc5c969e7412458185d0830de9f809a32",
+      "size": 1727405,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-stream-Y1-r0.log",
+      "sha256": "cf37ef5c3282e45c10bde4ef94949b7c0e4c5c42353b322ae930d5428616cc0a",
+      "size": 311,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-vertical-GCR-A1-r0.json",
+      "sha256": "b5b6694ab23d7f0d3e58ae8a7f588d980bc2676a1e7bd01b4cadce7428f17ccf",
+      "size": 12027285,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-vertical-GCR-A1-r0.log",
+      "sha256": "a9dcce48f7995f1ec99dd063588cdf77a3dbe62ae36b4f10aad37530fc7f6ff5",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-vertical-GCR-r0.json",
+      "sha256": "2a7cdd01f55a8dcb178db25bbf9b97b567db569eefb32b78c4fb43a2d9b80e64",
+      "size": 11823121,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-vertical-GCR-r0.log",
+      "sha256": "34e77807ca13a310e6a547aac8b6fdc19a019e0def55a968c64d7b3466c2f671",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-vertical-Y1-r0.json",
+      "sha256": "4b18e264d573820efe2a513ccd7b691b87d4bc123b820195b078c3512226fbd0",
+      "size": 1478667,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sand-vertical-Y1-r0.log",
+      "sha256": "121f1c746a1bdf7761e214bcec493d15924b0dc6e022d42a780b1390a6d1980c",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-glancing-GCR-A1-r0.json",
+      "sha256": "24a15a8175cd014fa53489ba7776b0f07af2d1ad933cb004a574a8b7d2b2ba12",
+      "size": 13073054,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-glancing-GCR-A1-r0.log",
+      "sha256": "085bf419f9f58613dae2ff1f09c2dfe6d56158e97d3f0d1e81d9f8f333c569a8",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-glancing-GCR-r0.json",
+      "sha256": "49ffc8c25db46d48f58c851618a7c04c0773371c8fb0da9d7d6727c132a26fce",
+      "size": 13439032,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-glancing-GCR-r0.log",
+      "sha256": "92c3a315ef9d864b1d9a626a3b428da87e5178d9d7dc4655a780a604a909a632",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-glancing-Y1-r0.json",
+      "sha256": "c952aa565ee346fc3bbd905a23bbc8770047bdd168339807da5c18d3d54dc21e",
+      "size": 1761627,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-glancing-Y1-r0.log",
+      "sha256": "30adcd1d9aaacc7460714affe613d41f4601a8eeb3149d116d198f6921b55e8d",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-horizontal-GCR-A1-r0.json",
+      "sha256": "53e55639df15298922fa4817d62bda7b98e032b02531911ea50b3a21c13f2278",
+      "size": 12949693,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-horizontal-GCR-A1-r0.log",
+      "sha256": "e112edd9b034ffd9ac41ab13c3bb44debe96a777444b38897e6ca3884f0fa776",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-horizontal-GCR-r0.json",
+      "sha256": "595f6a950799509f1bbf7636d06d32ddf947c8be84d37a37be3b0cac0cb648d1",
+      "size": 12916438,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-horizontal-GCR-r0.log",
+      "sha256": "7445b2e483ac69bd57fc98a30379554066a793dc7802119122bd52260daf60f2",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-horizontal-Y1-r0.json",
+      "sha256": "fca144fe031d0ff50a025146704c7d03eb40267766bcbff3c040c9414724485e",
+      "size": 1716481,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-horizontal-Y1-r0.log",
+      "sha256": "6c8d017be29beb6472d9846e905d14f972b3a9b11d6753fa413dfdee0ecd6bfe",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-slide-GCR-A1-r0.json",
+      "sha256": "47cddd78d5453702a9921c9678cf13761b9a2a5a67abd6832f3d279a3617e828",
+      "size": 11910665,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-slide-GCR-A1-r0.log",
+      "sha256": "b4eccdc22b3f8be59bc7af64bdbe07eb6773717c8a850de62c1ff52a80317ed8",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-slide-Y1-r0.json",
+      "sha256": "ce17714d4e31300dc335216daae375411c8ab8099f20d3bf9e5bccf52a33810d",
+      "size": 1684287,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-slide-Y1-r0.log",
+      "sha256": "7e6974f23ebb36077d0e4a4ba8db0faed829e3263becd0b6c758a1b8006a4d3f",
+      "size": 310,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-vertical-GCR-A1-r0.json",
+      "sha256": "e6e84a942612743cc96cc5cae9ec922da95942cb0476dde773258e82c3d83299",
+      "size": 12038606,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-vertical-GCR-A1-r0.log",
+      "sha256": "60083e76c752e66bb1d8a304463b50c4cc837566142afde93041c811f49fbde4",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-vertical-Y1-r0.json",
+      "sha256": "c600a94b6cc72b35fc2881587d96a08e81f122c95e9aa8492cc72c0efdc33b8a",
+      "size": 1486347,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-seed-vertical-Y1-r0.log",
+      "sha256": "da5161f4003964c16a44d0bfc487f70868a0ff048bbd184c19f7db7338fb5f18",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-glancing-GCR-A1-r0.json",
+      "sha256": "17514a2c18b28a3c1fa4513ffef8cc608b1b48d9ea30f37c378c11c7e769760c",
+      "size": 13034334,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-glancing-GCR-A1-r0.log",
+      "sha256": "cef16d577a77f4db53a414254d03f1861c354f77b6f687913cd266b52f5c7d70",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-glancing-GCR-r0.json",
+      "sha256": "428bf56f7f02f2b34f3e2271055c142f8300a00a8228c82e711d5928548350c1",
+      "size": 11727452,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-glancing-GCR-r0.log",
+      "sha256": "2755d93fabe94811073578881a482b1e618f9bc28725d76ec1f53fa81bef5e04",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-glancing-Y1-r0.json",
+      "sha256": "ebaf169a6586e4d8b1f17b5f827fe6b3afbf0d9ee5238041bf77c257308cef24",
+      "size": 1766304,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-glancing-Y1-r0.log",
+      "sha256": "132ca3871fc93a73a54aff00aacd1e6498d78372fd3997be151f1797256a2b8c",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-horizontal-GCR-A1-r0.json",
+      "sha256": "277a1d29d81d0bf31757f243e01de6d664fe5304e34f1ed27a766e0b3967fb44",
+      "size": 13118328,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-horizontal-GCR-A1-r0.log",
+      "sha256": "ee332d8af8cf01f3ee25fd88c4b74727fd77f4a521c07d4935815e125798ab64",
+      "size": 321,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-horizontal-GCR-r0.json",
+      "sha256": "8b1899c63c138e8e8c9a42857170427c6371d3e2f71f7c136ca57671eca07a28",
+      "size": 13879147,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-horizontal-GCR-r0.log",
+      "sha256": "0403af754b72ef265a5d6c2e79035d2cefc0a39b1801720e5b404ba6057ca084",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-horizontal-Y1-r0.json",
+      "sha256": "2100a9d4e5b92d033c214eec0fd115aa7b1cbbd0e21f0bb89800aa3fcd324ebe",
+      "size": 1762207,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-horizontal-Y1-r0.log",
+      "sha256": "e638d9a685e30f8a1f2261787e34abec343e37ccd85448ba544cbc231167d39c",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-slide-GCR-A1-r0.json",
+      "sha256": "5dc05a7739055e8f4148895ecb06a590b5b496e07f5ac3009cd5603f6f519f95",
+      "size": 11940553,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-slide-GCR-A1-r0.log",
+      "sha256": "b6afd3e32746a0605fc06754f692a5dda89d2bd7cfc3335435f1ec5ed8c88320",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-slide-Y1-r0.json",
+      "sha256": "f31898145fc7bb7d04c962cacbefaf00d048595c096299fad9f18c9a80536a11",
+      "size": 1681099,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-slide-Y1-r0.log",
+      "sha256": "162a02b3bb2bac8d1579d8ac9d9e21ddf41ee2a593e5208d7de9bf866fe62248",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-vertical-GCR-A1-r0.json",
+      "sha256": "861808b1a6de8d41d790ff8d4e064a0bd67f1bd45b377dc817ae7c9ca49cdf87",
+      "size": 12045002,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-vertical-GCR-A1-r0.log",
+      "sha256": "aed6077de9951b9178652f9dcc8075530ada6c450a09dabe137d8103afb26d15",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-vertical-Y1-r0.json",
+      "sha256": "b4cfdc7fb20d78d7820ed44c290a562c2643e00499690d7d2c3ebe075b708470",
+      "size": 1484494,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-sodium-vertical-Y1-r0.log",
+      "sha256": "44707d7c30a38022c4969d104fc24dcd9d990c8430ab96abdd4049761e44d6bf",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-excavate-GCR-A1-r0.json",
+      "sha256": "ef31816a2e213e7914c97ea8d8af3adee81a2a42e6bd4b49057f45bcf1bd701a",
+      "size": 11271389,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-excavate-GCR-A1-r0.log",
+      "sha256": "f465af995b97e96699f6e1d313c7f4148a7ade98fd6f7678838bccf636986f39",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-excavate-Y1-r0.json",
+      "sha256": "a30725fcfb57c4f10a8af434f1fbbd9ca05d6fc0d9760c0c1bbf2064473dafaf",
+      "size": 1463052,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-excavate-Y1-r0.log",
+      "sha256": "cbe1ae0049ebbd71fdd2f75d1dbee91afc478c608323ccc5c1fc6a327908fe6b",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-glancing-GCR-A1-r0.json",
+      "sha256": "67c1c97596f8e00899ba51e39b7cf6bd63923f0758b3f26867a462efbd7da1ab",
+      "size": 10943852,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-glancing-GCR-A1-r0.log",
+      "sha256": "f4a4ad13c7ed64b72303532bef7da43066b4d0f9ef6eca29b7e8a539935dc790",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-glancing-GCR-r0.json",
+      "sha256": "2cec6aaffc5bce23dbfd04010bf8685cc9fcfff4c8f4ca464b0673cac4252492",
+      "size": 10907028,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-glancing-GCR-r0.log",
+      "sha256": "9f9e6c2fc89755836641315a783d63b61076a7151b4aa6c993ec27bf4eb76e0a",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-glancing-Y1-r0.json",
+      "sha256": "1282ef95fe5122ac2b509c290b20621e2c0cd03d73a98aeb6458569eefe4e0cd",
+      "size": 1488532,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-glancing-Y1-r0.log",
+      "sha256": "7035511821c537ecc5eef98d7546ae2c4f1017579f3d69b54b233e4519093a03",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-horizontal-GCR-A1-r0.json",
+      "sha256": "044618e18339bad8f1521ce8c1a86e2e8c20f4db7ab57293035623ad3b91d8c2",
+      "size": 10901170,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-horizontal-GCR-A1-r0.log",
+      "sha256": "e54086cde93b1af63932740c683ae3f0a45d3c0aeeae7867f08b35de3e3a4a17",
+      "size": 320,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-horizontal-GCR-r0.json",
+      "sha256": "ba8931299705f004fc094909764546b3dcf031e30cddc1d241346c8694eea225",
+      "size": 10885092,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-horizontal-GCR-r0.log",
+      "sha256": "057b03a9073360c395ae1ae6c713a08ffbaca211aa287a2fbbbddb433672a761",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-horizontal-Y1-r0.json",
+      "sha256": "38f866c3477f11f58516e41521571f497ec3705837b8d6ac9295a83a8f20883c",
+      "size": 1488194,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-horizontal-Y1-r0.log",
+      "sha256": "5a15f13f1c0c3138cf877153ba7199d31874d46795ee4ab086afa6ca11d89447",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-side-excavate-GCR-A1-r0.json",
+      "sha256": "0b2a682a7c0421984500369172792596d9dec7120dfaf7b9f1ea35439a5c709a",
+      "size": 11280969,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-side-excavate-GCR-A1-r0.log",
+      "sha256": "2b6af11ef6996472311a16c930b036e0b6d2ad02415819408ac3b2d85e839e95",
+      "size": 323,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-side-excavate-Y1-r0.json",
+      "sha256": "58959ebdd7e77afcf4c5de8e5f3bde16c36396394381bf1be7bafe0b44b3b01f",
+      "size": 1482893,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-side-excavate-Y1-r0.log",
+      "sha256": "a4dbb548a74afec094179359e5de4e4bce75f5b1bd899194343e0a110b4ab6c7",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-slide-GCR-A1-r0.json",
+      "sha256": "ed337438e8752fc226ac755e041cac5bc9fc0df8f70be6661d0d4d2ebf1a75eb",
+      "size": 11883990,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-slide-GCR-A1-r0.log",
+      "sha256": "2ff5f0d567351efc14cb9d8dda5e35de24553711cfe721133f616df85b1d960f",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-slide-Y1-r0.json",
+      "sha256": "275b40489925174acddbf23cc82dbdc58b921b2f4287d5792bd27e28f7a55fc0",
+      "size": 1679571,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-slide-Y1-r0.log",
+      "sha256": "5c19353a95c904680b8b9d85f208e774cee1dc294252682da5300bf1fff85763",
+      "size": 311,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-vertical-GCR-A1-r0.json",
+      "sha256": "704b007c058c89452ffe7d3af00428a06f76c0c7b80e7e34c93cf457ce4424eb",
+      "size": 12033985,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-vertical-GCR-A1-r0.log",
+      "sha256": "d94632a3e36692eac6fc868e4e48cee5d394ff3c2f912b6a6ec4582832bb7238",
+      "size": 318,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-vertical-Y1-r0.json",
+      "sha256": "f1bdea86c6f702827408c8362ff962ae2b968c45837ac6a5802631fbed843024",
+      "size": 1478763,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-primary/sync-stone-vertical-Y1-r0.log",
+      "sha256": "1bb14f57eb2f088aeabb1f96858b12475990db7bcb97d8e5d06b09249b15b134",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-protocol-draft.json",
+      "sha256": "3c87fa3acb248f1fe10646ada71bf571bab21aa966eb004c368681e4ef1902b1",
+      "size": 40477,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-qualification-proposal.md",
+      "sha256": "c92d98dd7e94f78e715a877dcd72779dc58163a3464e484f1b0474353772772d",
+      "size": 16946,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-qualification-review.md",
+      "sha256": "f968d4cfa76f6c5e53a30908939589665ad417009f6b3cbcc91b629a37217304",
+      "size": 7190,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-replay-comparison.json",
+      "sha256": "72866051b92d588e7e08b3aed620cf9c875389b8aa68aee770efbfa36c8fe874",
+      "size": 6262,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-replay-summary.json",
+      "sha256": "9786ef0aa2ba297126e29dc42889035e7883c824a11590e16887397912075712",
+      "size": 158016,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-replay.log",
+      "sha256": "85d4f6300f157dfe5f07b7703e0d311011e60dc91ad3c5f74b2eca18b3739e29",
+      "size": 282,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-replay/campaign.json",
+      "sha256": "c52aa42959428c93934eefa1707a06df28d692a6977c807ba93e713d2fbf8561",
+      "size": 74415,
+      "kind": "campaign"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-glancing-GCR-A1-r1.json",
+      "sha256": "bac4c9c8664087751679fe5a7fab43463fc09325757f8616841b9e41640bb68c",
+      "size": 13207982,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-glancing-GCR-A1-r1.log",
+      "sha256": "83ac626ab63741ac0e3bbaa66df55691edccb60d9161e26eb8530cde7b18568a",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-glancing-GCR-r1.json",
+      "sha256": "f2c9dfe74aa54ec82be946f2a3dd0b3e225aa83d0faf7468270b103de60e18aa",
+      "size": 12673226,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-glancing-GCR-r1.log",
+      "sha256": "1b9625be910677229cade5ba52df73e5f820516b2e71ebac29b50c420ad831bb",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-glancing-Y1-r1.json",
+      "sha256": "2e5f064a97140dce5f06ea11ada487d76886561c52cccc489455fca2ed94f15c",
+      "size": 1794249,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-glancing-Y1-r1.log",
+      "sha256": "1a38efc9257d67fcba46a883d2f9f025b5979afa48cbb2d2692603866929ec17",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-horizontal-GCR-A1-r1.json",
+      "sha256": "3c1e77182a81e21dc6212fcd3d6a9288b54fa54f18d547dfe2079f12dcbe7364",
+      "size": 13350189,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-horizontal-GCR-A1-r1.log",
+      "sha256": "31837d4569488e1c79417bdbb26a013587aba4c953a6d29ba5389e3574a5154a",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-horizontal-GCR-r1.json",
+      "sha256": "b490870e51dbfacb148f2e68f33ad57b1bb5c683d39518215e698a015823b2d3",
+      "size": 13980157,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-horizontal-GCR-r1.log",
+      "sha256": "06255cba20382dcbda7132c1857d013874b61d232d5f16afe142c13d0bf8f696",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-horizontal-Y1-r1.json",
+      "sha256": "fafc8f5a9ee5e7d1936263a3105e2d8cedfe91fc24eefd291044fb4af9fd1bb0",
+      "size": 1763746,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-horizontal-Y1-r1.log",
+      "sha256": "8be55573e2396b235b31d194769be69437f2747465d122702d10452b4698cd30",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-vertical-GCR-A1-r1.json",
+      "sha256": "7342fab2e9dfa27e1754e319b4088b42bb34cbdc92cab580741fa5286fb0ba06",
+      "size": 12026984,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-vertical-GCR-A1-r1.log",
+      "sha256": "a9dcce48f7995f1ec99dd063588cdf77a3dbe62ae36b4f10aad37530fc7f6ff5",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-vertical-GCR-r1.json",
+      "sha256": "06b9534fde8c8582780aeed998d249ab37aca9b4b977310ec525bdfc3d27c18b",
+      "size": 11822960,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-vertical-GCR-r1.log",
+      "sha256": "34e77807ca13a310e6a547aac8b6fdc19a019e0def55a968c64d7b3466c2f671",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-vertical-Y1-r1.json",
+      "sha256": "94dc87315df2397a087e34dec5a06b40f7341a9c568c67257ea6a8e65d5b2a4e",
+      "size": 1478656,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-replay/sync-sand-vertical-Y1-r1.log",
+      "sha256": "121f1c746a1bdf7761e214bcec493d15924b0dc6e022d42a780b1390a6d1980c",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-runtime-linux.json",
+      "sha256": "20867c4addb56ac827db54befdfcdf1d99bbfd19ba0a3deb25e9d16986dffe90",
+      "size": 11040,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-runtime-windows.json",
+      "sha256": "2366103b31a2df58dadf23290f2fc9c943dc23d5c615669e767731028a100e41",
+      "size": 10602,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-timing-detail.json",
+      "sha256": "c0b616e8ef6aa5d05754f49ace4f31d1982f9a790b6904be211d3c43143e2073",
+      "size": 196765,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-timing-summary.json",
+      "sha256": "0d6a450908c2a20190b702f02fa631c33350f0dad1ae28ecf3a3bb99a8e28a8b",
+      "size": 5295994,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-timing.log",
+      "sha256": "a6019765d9505ad30978a847fab39b13c070e7229b0d1832bd08e3340e3e81b9",
+      "size": 1335,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission-timing/campaign.json",
+      "sha256": "c2eb644f828677afe9cb14bdcd23d18a2fe0da497dd85adf69fc279992a6ec30",
+      "size": 116045,
+      "kind": "campaign"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-A1-r0.json",
+      "sha256": "63b6a7438c1b2c514c14f5db462e98ecd61824cc770907d0926470c4baa86ca6",
+      "size": 4389326,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-A1-r0.log",
+      "sha256": "d1c4feef9c4e55bef951552ab5cf07d4b8b6ad9bc6212da3ac7e8d7c6b4cc42c",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-A1-r1.json",
+      "sha256": "e5e804276fcaa6e4fdd8cda78db5f9029ee9de2adb7fa1c9e7293796658e6704",
+      "size": 4388840,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-A1-r1.log",
+      "sha256": "d1c4feef9c4e55bef951552ab5cf07d4b8b6ad9bc6212da3ac7e8d7c6b4cc42c",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-A1-r2.json",
+      "sha256": "1c8a7bf2b9b80d3cfd5feece8d18696623290ba1c41bebdc1ea2b467fedbb967",
+      "size": 4390216,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-A1-r2.log",
+      "sha256": "d1c4feef9c4e55bef951552ab5cf07d4b8b6ad9bc6212da3ac7e8d7c6b4cc42c",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-r0.json",
+      "sha256": "7bec223eb97dd5432b64f146f8ce4018f547e0f69ae0d296a8cd85ecd10f0ea6",
+      "size": 4312734,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-r0.log",
+      "sha256": "dbaa5745fec9ccf00a2c4a176948f3bd0d54ac1f933e32e1103cd0551d42bb14",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-r1.json",
+      "sha256": "b4e0dd0d2854efee00f12e53ef60ecdc5ead2f36c4cd92a367c9217a1a122bd6",
+      "size": 4314269,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-r1.log",
+      "sha256": "dbaa5745fec9ccf00a2c4a176948f3bd0d54ac1f933e32e1103cd0551d42bb14",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-r2.json",
+      "sha256": "3882845501a830036d81c43ee17f9342c6870843744530d656fde8c8263beb08",
+      "size": 4313453,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-GCR-r2.log",
+      "sha256": "dbaa5745fec9ccf00a2c4a176948f3bd0d54ac1f933e32e1103cd0551d42bb14",
+      "size": 309,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-Y1-r0.json",
+      "sha256": "7782cbd7121802c0e20f3af7055a50e473d7138c11ec5692adadfd497edcc37d",
+      "size": 1324059,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-Y1-r0.log",
+      "sha256": "dfd539f55cdc74c73aba690e8adb5dd074d976ac1695f6388abaa34f24fe6acc",
+      "size": 308,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-Y1-r1.json",
+      "sha256": "07e22d66702df9a9edce3f06c6cf66ed27849ee8413dbe6eb2cf1bbc9fc072b6",
+      "size": 1324840,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-Y1-r1.log",
+      "sha256": "dfd539f55cdc74c73aba690e8adb5dd074d976ac1695f6388abaa34f24fe6acc",
+      "size": 308,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-Y1-r2.json",
+      "sha256": "9d6764709e71bcab2559c64a8fef5b75ab67ce61609de32fa8a01bdf430e7249",
+      "size": 1324029,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-heavy-90-Y1-r2.log",
+      "sha256": "dfd539f55cdc74c73aba690e8adb5dd074d976ac1695f6388abaa34f24fe6acc",
+      "size": 308,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-A1-r0.json",
+      "sha256": "5dc5552d9ad556ccc98ad3edb9a386ab45c1d47ac225ab583f90cfbfc9c3aeb7",
+      "size": 4331597,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-A1-r0.log",
+      "sha256": "83ac626ab63741ac0e3bbaa66df55691edccb60d9161e26eb8530cde7b18568a",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-A1-r1.json",
+      "sha256": "a6c22da222abd28afb8a45cbd13241e74dba2100fd41aff8388afe1d248f05fd",
+      "size": 4331199,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-A1-r1.log",
+      "sha256": "83ac626ab63741ac0e3bbaa66df55691edccb60d9161e26eb8530cde7b18568a",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-A1-r2.json",
+      "sha256": "b62a46c2b5f9446afe1380ac1073b2cb3dbf6dfc00d63d1081c1c273ce8d383f",
+      "size": 4331596,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-A1-r2.log",
+      "sha256": "83ac626ab63741ac0e3bbaa66df55691edccb60d9161e26eb8530cde7b18568a",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-r0.json",
+      "sha256": "43e464d9465385d266466fa89bcaada29f67ce6907d4a113ce71ea3395770650",
+      "size": 4301826,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-r0.log",
+      "sha256": "1b9625be910677229cade5ba52df73e5f820516b2e71ebac29b50c420ad831bb",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-r1.json",
+      "sha256": "95b2f2a8c35077fca053354d5163c03490ab9b74d83fcb51ce1d3912f4ba0a3f",
+      "size": 4300530,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-r1.log",
+      "sha256": "1b9625be910677229cade5ba52df73e5f820516b2e71ebac29b50c420ad831bb",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-r2.json",
+      "sha256": "1fa8067d09877ddedbcc6f8fb5bfcbc7bf6a55b252a0677aac44633b62fb9616",
+      "size": 4301365,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-GCR-r2.log",
+      "sha256": "1b9625be910677229cade5ba52df73e5f820516b2e71ebac29b50c420ad831bb",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-Y1-r0.json",
+      "sha256": "024db3d9defcac515640ac265a924f0669afd21544358569cef11ca9051997d9",
+      "size": 1423444,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-Y1-r0.log",
+      "sha256": "1a38efc9257d67fcba46a883d2f9f025b5979afa48cbb2d2692603866929ec17",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-Y1-r1.json",
+      "sha256": "77b6f07dea1f8c50f13382f85a959c0c1e61d6f2b5e742326477d9593b29b356",
+      "size": 1423267,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-Y1-r1.log",
+      "sha256": "1a38efc9257d67fcba46a883d2f9f025b5979afa48cbb2d2692603866929ec17",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-Y1-r2.json",
+      "sha256": "4b52a9b9a8b7dfdf4a4e348dedbc1bc35075881264cbd5e4bd8015022c079a46",
+      "size": 1423150,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-glancing-Y1-r2.log",
+      "sha256": "1a38efc9257d67fcba46a883d2f9f025b5979afa48cbb2d2692603866929ec17",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-A1-r0.json",
+      "sha256": "07c84b6b67ec11575e568cd775f56526a376048589096bb7c2be844db1ea210a",
+      "size": 4335570,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-A1-r0.log",
+      "sha256": "31837d4569488e1c79417bdbb26a013587aba4c953a6d29ba5389e3574a5154a",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-A1-r1.json",
+      "sha256": "421f6246959cf6b1715b0fae2b7c0ddf4b70699e95146228cebe8bbe18e77bf3",
+      "size": 4334484,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-A1-r1.log",
+      "sha256": "31837d4569488e1c79417bdbb26a013587aba4c953a6d29ba5389e3574a5154a",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-A1-r2.json",
+      "sha256": "ef024affb945c426543329c5067af3208fb3fb73b409dd02a42b7aa4bc16c94c",
+      "size": 4334457,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-A1-r2.log",
+      "sha256": "31837d4569488e1c79417bdbb26a013587aba4c953a6d29ba5389e3574a5154a",
+      "size": 319,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-r0.json",
+      "sha256": "92804bc12d244e5fcd09d7b49aa4e8f6bb43ec260212949a61aa0e100067997c",
+      "size": 4327467,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-r0.log",
+      "sha256": "06255cba20382dcbda7132c1857d013874b61d232d5f16afe142c13d0bf8f696",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-r1.json",
+      "sha256": "9a68be8e35e01f7a4828f1362660ed93b1bb02d72bd516adf420340c423ca84e",
+      "size": 4327368,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-r1.log",
+      "sha256": "06255cba20382dcbda7132c1857d013874b61d232d5f16afe142c13d0bf8f696",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-r2.json",
+      "sha256": "98ca82e7fef9bd7656b3a16615bf2c3d54a4ecfe185ec1802f37caa0dc4237c5",
+      "size": 4325962,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-GCR-r2.log",
+      "sha256": "06255cba20382dcbda7132c1857d013874b61d232d5f16afe142c13d0bf8f696",
+      "size": 316,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-Y1-r0.json",
+      "sha256": "225ea1ca6233bf81578dbcbf896caabdbf682e8679889853e61093de71bb54b3",
+      "size": 1391740,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-Y1-r0.log",
+      "sha256": "8be55573e2396b235b31d194769be69437f2747465d122702d10452b4698cd30",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-Y1-r1.json",
+      "sha256": "03361e770018887241332d6ecdd5a7d6f8bd2b7d1644af23516ab2f9bb9a7e99",
+      "size": 1392484,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-Y1-r1.log",
+      "sha256": "8be55573e2396b235b31d194769be69437f2747465d122702d10452b4698cd30",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-Y1-r2.json",
+      "sha256": "5e9ce3df66e029f6e407360f521d03da632717e95e9ecc23624cd5843790f6bf",
+      "size": 1391335,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-horizontal-Y1-r2.log",
+      "sha256": "8be55573e2396b235b31d194769be69437f2747465d122702d10452b4698cd30",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-A1-r0.json",
+      "sha256": "9e7991658af925e8308bf707c3ef5b3498a5ff0bff7a432019103eafbd623990",
+      "size": 4414599,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-A1-r0.log",
+      "sha256": "93824b8a6857d92b8d8e58b70306758df34316ef75426034b07ecbb7c284118e",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-A1-r1.json",
+      "sha256": "1a42dc19f5ad28583c53f9b4a57178a9725bd14dfb3f135d00ed1107e8db41ed",
+      "size": 4415247,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-A1-r1.log",
+      "sha256": "93824b8a6857d92b8d8e58b70306758df34316ef75426034b07ecbb7c284118e",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-A1-r2.json",
+      "sha256": "1196dc2ae57c050ba117c5e9326234a8c6fd3268869b80795ddfd50a4edc60a9",
+      "size": 4414029,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-A1-r2.log",
+      "sha256": "93824b8a6857d92b8d8e58b70306758df34316ef75426034b07ecbb7c284118e",
+      "size": 315,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-r0.json",
+      "sha256": "32ef35dec837d6f76bbbade175ad4702bc7078854baac728daa5009037201e3e",
+      "size": 4255828,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-r0.log",
+      "sha256": "a7ab4d40f4568736064fd9b85085749f2aaea183350611dbe621e1d139b604e1",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-r1.json",
+      "sha256": "dba5c4960b9be8e26df55ebc10b6ffb5094e1565c609d0e15d57d0bd414df53d",
+      "size": 4255695,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-r1.log",
+      "sha256": "a7ab4d40f4568736064fd9b85085749f2aaea183350611dbe621e1d139b604e1",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-r2.json",
+      "sha256": "cc5901e2906c65e60c734074ecdf7398b9edcaaafce2e832babdf36a0439574c",
+      "size": 4255820,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-GCR-r2.log",
+      "sha256": "a7ab4d40f4568736064fd9b85085749f2aaea183350611dbe621e1d139b604e1",
+      "size": 312,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-Y1-r0.json",
+      "sha256": "3c5381fb786e27b4f5425a7420c9646bd9bd955e0c734caf563be595a98fef82",
+      "size": 1352297,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-Y1-r0.log",
+      "sha256": "cf37ef5c3282e45c10bde4ef94949b7c0e4c5c42353b322ae930d5428616cc0a",
+      "size": 311,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-Y1-r1.json",
+      "sha256": "cf63cd038fc49b305219de0019e5f8d3b11e409b7c73aaccc5cea65ce3dff52b",
+      "size": 1351864,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-Y1-r1.log",
+      "sha256": "cf37ef5c3282e45c10bde4ef94949b7c0e4c5c42353b322ae930d5428616cc0a",
+      "size": 311,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-Y1-r2.json",
+      "sha256": "e3f21c6213596aacc157b7d7fcdc374e1387b057755e12781eedd3d21d0227c3",
+      "size": 1352273,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-stream-Y1-r2.log",
+      "sha256": "cf37ef5c3282e45c10bde4ef94949b7c0e4c5c42353b322ae930d5428616cc0a",
+      "size": 311,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-A1-r0.json",
+      "sha256": "80e546e074325771542cb0a8388c1134790394f336641da647a02a0952b8b911",
+      "size": 4181799,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-A1-r0.log",
+      "sha256": "a9dcce48f7995f1ec99dd063588cdf77a3dbe62ae36b4f10aad37530fc7f6ff5",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-A1-r1.json",
+      "sha256": "c0d1e488a2c022d991ba4dcc1ab8b9f14f5131696309223187cf7ddbaab4bba3",
+      "size": 4181791,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-A1-r1.log",
+      "sha256": "a9dcce48f7995f1ec99dd063588cdf77a3dbe62ae36b4f10aad37530fc7f6ff5",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-A1-r2.json",
+      "sha256": "29a53d098f24d174e3e3bd87287a5098874d1a0d32b4b5f6865cacdfa49a831c",
+      "size": 4180965,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-A1-r2.log",
+      "sha256": "a9dcce48f7995f1ec99dd063588cdf77a3dbe62ae36b4f10aad37530fc7f6ff5",
+      "size": 317,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-r0.json",
+      "sha256": "cd78215caf6fe8d4f14b0ac56aedb4d3ce34a94ea6799e9b5abd6fa8d08f81ed",
+      "size": 4108012,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-r0.log",
+      "sha256": "34e77807ca13a310e6a547aac8b6fdc19a019e0def55a968c64d7b3466c2f671",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-r1.json",
+      "sha256": "9c90140aa0cbba9e216da5c8015e4a2e206d6f0f0b6a09b36c88e6e4479f64f4",
+      "size": 4108281,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-r1.log",
+      "sha256": "34e77807ca13a310e6a547aac8b6fdc19a019e0def55a968c64d7b3466c2f671",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-r2.json",
+      "sha256": "2766d6ced4dee5ca4d1dc29361ba34e736ea25710397073311627c1487bf800c",
+      "size": 4107923,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-GCR-r2.log",
+      "sha256": "34e77807ca13a310e6a547aac8b6fdc19a019e0def55a968c64d7b3466c2f671",
+      "size": 314,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-Y1-r0.json",
+      "sha256": "6bb5370e332ad2ebc6186019eb0e17b226f7199677f63e177c2f891b28fe1ba8",
+      "size": 1107721,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-Y1-r0.log",
+      "sha256": "121f1c746a1bdf7761e214bcec493d15924b0dc6e022d42a780b1390a6d1980c",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-Y1-r1.json",
+      "sha256": "6475c8a72b9e2cd86d999e9fe31595245be7f400d39bf78191cf778192e1a171",
+      "size": 1107715,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-Y1-r1.log",
+      "sha256": "121f1c746a1bdf7761e214bcec493d15924b0dc6e022d42a780b1390a6d1980c",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-Y1-r2.json",
+      "sha256": "a78640c68346f83a47b1108ce0ea4d76421a7f3b9e96057d59e77246653b060f",
+      "size": 1107767,
+      "kind": "capture-raw"
+    },
+    {
+      "path": "build/admission-timing/sync-sand-vertical-Y1-r2.log",
+      "sha256": "121f1c746a1bdf7761e214bcec493d15924b0dc6e022d42a780b1390a6d1980c",
+      "size": 313,
+      "kind": "capture-log"
+    },
+    {
+      "path": "build/admission_late_motion.py",
+      "sha256": "76f926f543a4da4bb8846a18dc1882eeb2f5a0b181ebb3f94c7920125d1a9fbe",
+      "size": 4161,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/admission_native_full_qualification.py",
+      "sha256": "5ce2cdac8eb60dc3be0e0ad3ea912ad1312f2532208aa61529e543c7bfa3fc12",
+      "size": 5017,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/analyze_admission_timing.py",
+      "sha256": "d66e7a7cdd473ad28d815f3f5583c58289f1ae294d3aa91d90d7312a3a2f75bb",
+      "size": 7978,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/build_extensions.py",
+      "sha256": "1e3d55b8dcd2e330725126997615e52699fc32ffb516934e2c59608d707b53dd",
+      "size": 3038,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/characterize_heavy_admission.py",
+      "sha256": "e3ea2f9575fa3f9f55960052f1f06a2a0c58897ca1b2152aaea92d30e183f990",
+      "size": 6062,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/compare_admission_controls.py",
+      "sha256": "0e4774a1591ba07647081f79525459eecadfb86ae7b96da6e63ab3f2b15125b8",
+      "size": 2622,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/compare_admission_replay.py",
+      "sha256": "41e8389278134d488410515ef66bbcc6c60de1794f980f3f72f4e1d332bae0eb",
+      "size": 2678,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/compare_retained_r2.py",
+      "sha256": "13d5d0d24de2bc0579c5f5c706914e33fb661c8922d4cfe9fbcace5f9559804e",
+      "size": 4336,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/export_admission_evidence.py",
+      "sha256": "e04b888550fb48e21f0c40fdfab7f4bfcdd869126c34aa5dea9a3d5efa304119",
+      "size": 5608,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/extension-builds.json",
+      "sha256": "8660581adea1a25ff871db5f71fb2784dc7be4aea1a50b1357eae6c0216dd9d4",
+      "size": 1225,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/extension-builds.log",
+      "sha256": "e4db71581433d0fa55071160b0912c7cf2515fde33e912c720a060374216dda5",
+      "size": 20,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/extension-linux.log",
+      "sha256": "bb8bfad5765e09b0cc9286239c1ab7319675be84eed91369a5c047244b94913c",
+      "size": 34899,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/extension-windows.log",
+      "sha256": "0ff12e6e7fcd8022f578785ba63a3fab246db80772a98078dab7b2ad0f64f2f0",
+      "size": 2434,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/finish_admission_docs.py",
+      "sha256": "1c9d9ef1edddcc3467c4f82e52863ff3f8c3732cf86385d68cf2907ef299cd5b",
+      "size": 10478,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/frozen-scope.json",
+      "sha256": "3ace4bea30d246cfec2cd34f58a2c4666f354b08a14e719b1e451d2556a49f34",
+      "size": 241,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/gcr-a1-independent-audit-notes.md",
+      "sha256": "d4929d762fc82a1029185eab7dac6fe24bd2f267aaf090a00b516f00f68fd9e6",
+      "size": 6057,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/host-publication-delta.json",
+      "sha256": "bb18ad829eed63b66175d421b90fc1f02ec9b8f38bf7b95e9250a6e79bc87121",
+      "size": 645,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/import-linux-mechanical.log",
+      "sha256": "9f1a05deb3bc0623b83c128783f6c9c030cb6fea3aad542a6c5df30aa5d8155b",
+      "size": 34628,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/import-mechanical.log",
+      "sha256": "9f1a05deb3bc0623b83c128783f6c9c030cb6fea3aad542a6c5df30aa5d8155b",
+      "size": 34628,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/mechanical-gate.json",
+      "sha256": "238e680648e94c301d2b1ab8f2bf1975e72d780f22449e3a99a6ea9d85c3d33b",
+      "size": 6596,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/mechanical-input-identity-linux-bridged.json",
+      "sha256": "e7bed9319defbcebe26f9d84461f561877ee302f9d74c5e76852c64cade6d14d",
+      "size": 61912,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/mechanical-input-identity-linux-bridged.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/mechanical-input-identity-linux-fixed.json",
+      "sha256": "c4c61720b1e3301e57c158aea603e386b59727bd30c7253a4845ba0245fe01f0",
+      "size": 31002,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/mechanical-input-identity-linux.json",
+      "sha256": "acf259f0125bb6aa78d50e0a48feef908c2467a41aac187c26f53dd8aa2d40f0",
+      "size": 1960,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/mechanical-input-identity.json",
+      "sha256": "ec7efc0ec9901f8412f5eeb11b8c27c5583e2112422dd0e7dd278e61a6510afc",
+      "size": 62446,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/mechanical-seal-preflight.json",
+      "sha256": "f638cfc97730f9780101e9fedb8d84a2537ac9e0da4013f811079e291347e352",
+      "size": 209,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/preregistration-docs.log",
+      "sha256": "dd25a330fdbee6d4d258f5732725585b40d16dcded17c45d854c61b51876222b",
+      "size": 736,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/publish_admission_runtimes.py",
+      "sha256": "823bcef5459763cb3a79e7839bf179c5d728b7ff66dfa8fe139275595ce6bc66",
+      "size": 2780,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/qualify_admission_checkpoint.py",
+      "sha256": "0f3617898d0744f2676577cda7c3c39afc0559ad16b108e68051ad87ce0bc291",
+      "size": 7492,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/qualify_admission_hosts.py",
+      "sha256": "b5a429ba6526e694fda7454079e56e63b7f38415d43e8663d8b14263005c0f12",
+      "size": 3354,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/register_admission.py",
+      "sha256": "27ca750ed4cba7c2ddcd8c793c9ef8873211345955806b3ab37dd8b01ffae720",
+      "size": 9080,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/seal_mechanical_gate.py",
+      "sha256": "501eb6056d5adc076f290948571fe21fb8b371c40ffcbba0f06cabd3bdc567e1",
+      "size": 3485,
+      "kind": "qualification"
+    },
+    {
+      "path": "build/verify_admission_scope.py",
+      "sha256": "fa20874ea1292f8d4ed0477790707a3c67e4ce88e54e97c4467b9fe563150309",
+      "size": 1279,
+      "kind": "qualification"
+    },
+    {
+      "path": "docs/audits/gcr-admission-2026-11-01/protocol.json",
+      "sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+      "size": 48986,
+      "kind": "frozen-registration"
+    },
+    {
+      "path": "historical/gcr001-final-primary/campaign.json",
+      "sha256": "94e16f2a0f97e310de25e0f9bc14bc82729abf81d098fef2c5d80021ba5c6535",
+      "size": 212142,
+      "kind": "historical-reference-manifest"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-angle45-30-GCR-r0.json",
+      "sha256": "eb3c9334a248c63bf1c54ac42a5d9f961ff639a649ca44efaeadb0d747c6206c",
+      "size": 9709239,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-angle45-30-GCR-r0.log",
+      "sha256": "a789323c656095833ac94f352ee252fa7841ebf20c52ed88052307bad29060ec",
+      "size": 311,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-coal-glancing-GCR-r0.json",
+      "sha256": "bc5205278fa20b03464d8d5377be791f2193f97185893765aa8eb8147826c0d3",
+      "size": 10638265,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-coal-glancing-GCR-r0.log",
+      "sha256": "b0574f9166c7e11efdb8e76547d8f7b62ed1d491fb6ad293f9417a8cb6bd2671",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-coal-horizontal-GCR-r0.json",
+      "sha256": "61e6d1d5425c4cc13b0704ac25dd673a8b54f99b5a7d0404e39f631735961691",
+      "size": 11925533,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-coal-horizontal-GCR-r0.log",
+      "sha256": "405cfa828b6b8a2536ea2e59303cf15ff8915f79db9737b6f9248cf015cf8b82",
+      "size": 316,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-dust-glancing-GCR-r0.json",
+      "sha256": "30735e5dea0d0ba31d73a1c366c6846e40bd76b9475354a0184e6137fd7ee08c",
+      "size": 10840841,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-dust-glancing-GCR-r0.log",
+      "sha256": "4bb11699f31e2647b38df3228735337021b0bc8fcd497a6dbf654216775a2be0",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-dust-horizontal-GCR-r0.json",
+      "sha256": "86e7b05e85dcd9a3f64db6300181065e90e8c7e58bd8adb9f377ffc9e5fb357e",
+      "size": 11360306,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-dust-horizontal-GCR-r0.log",
+      "sha256": "364543671dffcfc40bf0c4700ab88afc3b8d31f4520edf45fea999ac901130fb",
+      "size": 316,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-dust-vertical-GCR-r0.json",
+      "sha256": "ff0d853a893936f66df4213d85dab300615e94a5e405cbb7e57aa8cb6da1fcab",
+      "size": 9808003,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-dust-vertical-GCR-r0.log",
+      "sha256": "af23ae8c2ba76bc716cef022b426edb1c77c12d06c20fd1443c02526ea1cd29d",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-gunpowder-glancing-GCR-r0.json",
+      "sha256": "20e2ab4027f52fb57d71c558778a270310b1e56a5a6743a39f254f83c5c6cbf6",
+      "size": 10621749,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-gunpowder-glancing-GCR-r0.log",
+      "sha256": "99588cd2ee63fbe1b451d11589f723440403c7ff82bc0d216b1604758032cc45",
+      "size": 319,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-gunpowder-horizontal-GCR-r0.json",
+      "sha256": "2292f435c6eaedbe0aa3b98829ad424e92e6f2b88c169c39c60ac21fa27fb27d",
+      "size": 11978766,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-gunpowder-horizontal-GCR-r0.log",
+      "sha256": "f6ac977fd0e7da81e034019ffb77e06b1814d3008afc75b324df25f69b998c09",
+      "size": 321,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-heavy-90-GCR-r0.json",
+      "sha256": "06d67d15d3a2dd916c7813d91a331bd548319d8b22ba60c4a965ef8f5ac7577c",
+      "size": 11305332,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-heavy-90-GCR-r0.log",
+      "sha256": "dbaa5745fec9ccf00a2c4a176948f3bd0d54ac1f933e32e1103cd0551d42bb14",
+      "size": 309,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-mixed-seam-reentry-GCR-r0.json",
+      "sha256": "5bd8f79280f157a8d071023b754f566e3ab052cf817524beef407e8bfcc14a91",
+      "size": 10557008,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-mixed-seam-reentry-GCR-r0.log",
+      "sha256": "96f5d9f6719c0049613ece59c25c97444e0e6f28c80c348b2ea616646764cfa9",
+      "size": 319,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-rust-glancing-GCR-r0.json",
+      "sha256": "960bcb51c334833617d1dca27979b4515255fed148580d3053b82f304c9916ed",
+      "size": 10622908,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-rust-glancing-GCR-r0.log",
+      "sha256": "815d8e0c912ca332d80476fa48bbc6b64a4370622a7872c5cf5fdc3c667d0dd0",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-rust-horizontal-GCR-r0.json",
+      "sha256": "831fe9a89d68f14ce34bee2e23e2653ed9e7cc863b5324e94579f1392728e48e",
+      "size": 11988741,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-rust-horizontal-GCR-r0.log",
+      "sha256": "32ec2438e8639daf63960383fe11984dfe1eb56c68a38aaf0542bd953a725fd6",
+      "size": 316,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-rust-vertical-GCR-r0.json",
+      "sha256": "f8696ae995d95efb70057f8dc9999791e704634524550bec5ae324318df98445",
+      "size": 9758214,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-rust-vertical-GCR-r0.log",
+      "sha256": "27b3e81580b59f3f860c9e15dd21073c108afc111d48c13d36cfccfc60de4d80",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-salt-glancing-GCR-r0.json",
+      "sha256": "a0340215fd3a155d75755ad5132dbc8623da601c77caddc5a38ec0ce1ac63384",
+      "size": 10616261,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-salt-glancing-GCR-r0.log",
+      "sha256": "1df671110a4f2e69f522ee9bc1f9bc19bb27a6dc7ca52658ef55a08541ad5937",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-salt-horizontal-GCR-r0.json",
+      "sha256": "38a99c93cfc07ae287d3877754d01d76c12b5dcec0d2823bed11ca8669a61d59",
+      "size": 11968041,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-salt-horizontal-GCR-r0.log",
+      "sha256": "a3cfccfe82e7644c0070305806164d3a70d4cf269ce8dd80f56c39cf3ee55934",
+      "size": 316,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-glancing-GCR-r0.json",
+      "sha256": "fc6da64741746deca35a0c94c6fa7b695783c67166cbb0879b46aae44a0291ae",
+      "size": 10591301,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-glancing-GCR-r0.log",
+      "sha256": "1b9625be910677229cade5ba52df73e5f820516b2e71ebac29b50c420ad831bb",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-horizontal-GCR-r0.json",
+      "sha256": "13df01decce7fef3eff7a795c30887916c7089c6f1f1949085cd60220f546cd0",
+      "size": 11900470,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-horizontal-GCR-r0.log",
+      "sha256": "06255cba20382dcbda7132c1857d013874b61d232d5f16afe142c13d0bf8f696",
+      "size": 316,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-size-2-30-GCR-r0.json",
+      "sha256": "4edfb423b340cd0e83f4156f1bcf5dbfce2fe7201e9d7107dc1cff20eda159a1",
+      "size": 9816946,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-size-2-30-GCR-r0.log",
+      "sha256": "471e87064ce0ddfe16cd3676c8cce97ab1c4bedca7c8b61f88fb26c4e7139027",
+      "size": 315,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-stream-GCR-r0.json",
+      "sha256": "838510ed839c4061a5ebd613cedf593f024f83f6f0d84eead3ddaf54cffa3fc3",
+      "size": 10114462,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-stream-GCR-r0.log",
+      "sha256": "a7ab4d40f4568736064fd9b85085749f2aaea183350611dbe621e1d139b604e1",
+      "size": 312,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-vertical-GCR-r0.json",
+      "sha256": "2cdcdde416d702c46a0ea88bdc8b0f1396d439421e449b4c5dff6970a10c4ecb",
+      "size": 9743883,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sand-vertical-GCR-r0.log",
+      "sha256": "34e77807ca13a310e6a547aac8b6fdc19a019e0def55a968c64d7b3466c2f671",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-seed-glancing-GCR-r0.json",
+      "sha256": "00d3244fedf9505ea9fe2017398d973b2037475ee4b078540f533e0a55bb69e5",
+      "size": 11362342,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-seed-glancing-GCR-r0.log",
+      "sha256": "92c3a315ef9d864b1d9a626a3b428da87e5178d9d7dc4655a780a604a909a632",
+      "size": 314,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-seed-horizontal-GCR-r0.json",
+      "sha256": "45e74250214be2e1dd18c61c8cd290d93e169464b9ebc86d3bad45d238ea3a5d",
+      "size": 10839938,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-seed-horizontal-GCR-r0.log",
+      "sha256": "7445b2e483ac69bd57fc98a30379554066a793dc7802119122bd52260daf60f2",
+      "size": 316,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sodium-glancing-GCR-r0.json",
+      "sha256": "5660bdcfce692a7d15774647566339522ea329576ec7e458ad7af81daedf50d7",
+      "size": 9651211,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sodium-glancing-GCR-r0.log",
+      "sha256": "2755d93fabe94811073578881a482b1e618f9bc28725d76ec1f53fa81bef5e04",
+      "size": 316,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sodium-horizontal-GCR-r0.json",
+      "sha256": "66badd1f8921569b8e26ada75c9cda30b7fcca978e2c37d6f5e88856b6fdaa85",
+      "size": 11803955,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-sodium-horizontal-GCR-r0.log",
+      "sha256": "0403af754b72ef265a5d6c2e79035d2cefc0a39b1801720e5b404ba6057ca084",
+      "size": 318,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-stone-glancing-GCR-r0.json",
+      "sha256": "0a1d4f665fae82e64480b74e1af7b2a12c23bc2601fa76724c1cc1897d3ec5eb",
+      "size": 8828530,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-stone-glancing-GCR-r0.log",
+      "sha256": "9f9e6c2fc89755836641315a783d63b61076a7151b4aa6c993ec27bf4eb76e0a",
+      "size": 315,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-stone-horizontal-GCR-r0.json",
+      "sha256": "89d63f669cf39e0024f3b6e0f86c16027adb976ebe6545eccd558f81bd9b8589",
+      "size": 8807123,
+      "kind": "historical-reference-raw"
+    },
+    {
+      "path": "historical/gcr001-final-primary/sync-stone-horizontal-GCR-r0.log",
+      "sha256": "057b03a9073360c395ae1ae6c713a08ffbaca211aa287a2fbbbddb433672a761",
+      "size": 317,
+      "kind": "historical-reference-log"
+    },
+    {
+      "path": "tools/experiments/analyze_gcr_admission.py",
+      "sha256": "f1e5d6561cb638f44f61a0ed96e0afe24e3ef8f7d8616a1e448b570ece17bace",
+      "size": 6133,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/analyze_gcr_admission_timing.py",
+      "sha256": "84d66d4b67e31d482720827f763cea33fdbb37feb5efa1893c934bab148aecca",
+      "size": 8074,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/characterize_gcr_admission_heavy.py",
+      "sha256": "ec287134929a057a98244e4e4fd3744ca0e323d74768d08782c293810bb198a0",
+      "size": 6196,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/compare_gcr_admission_controls.py",
+      "sha256": "2726e77d3d0152c3837e2d845ea149b823304ef7e29f3da90130eca6676e5e4d",
+      "size": 2659,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/compare_gcr_admission_r2.py",
+      "sha256": "9a049dee852d9be0c050c9475ba32e2390b4e3829f40b7f2ec6ff3b5b31f7b6a",
+      "size": 4398,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/compare_gcr_admission_replay.py",
+      "sha256": "395ef0984f05f3b4532dd5a298db460be999d0ac6e1fbd3fd2c6d6f800413afb",
+      "size": 2737,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/describe_gcr_admission_late_motion.py",
+      "sha256": "6bc9d48edf8e752ecf842e31ecb1bf26576932e04cfc9ad63a2e762238c5402a",
+      "size": 4225,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/export_gcr_admission_evidence.py",
+      "sha256": "78ec00abca865cea082de5a8bf708c595f8707185b05727e2c98af08afa2c42e",
+      "size": 5605,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/package_gcr_admission_evidence.py",
+      "sha256": "85a95e6f73aac84f952476c47729c10517ee9cc0f992bc0f5f3890c71df766ca",
+      "size": 11497,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/run_gcr_admission.py",
+      "sha256": "7aa57acb68f48cfa2cc25f132d30e9c90de640236d7286d5c1437f51fcd18758",
+      "size": 7900,
+      "kind": "portable-analysis-tool"
+    },
+    {
+      "path": "tools/experiments/test_gcr_admission.py",
+      "sha256": "c2dcd616fb5cc5a7fa16741cd85bdfaab98b0fc0a2860e51f20f07528cb0bd14",
+      "size": 5808,
+      "kind": "portable-analysis-tool"
+    }
+  ]
+}

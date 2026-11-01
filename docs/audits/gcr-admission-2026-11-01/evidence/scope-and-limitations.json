@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "capture_source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+  "runtime_publication_commit": "162d11b4",
+  "captures": 237,
+  "capture_platform": "All237 physical captures are Windows ONLY; Linux native/query/adapter and17 scoped host tests do not establish a full physical matrix.",
+  "native_and_host_platforms": [
+    "Windows",
+    "Linux"
+  ],
+  "timing_reference_identity": "Timing and telemetry-on primary reference both record source3d and matching native/Rapier/engine/protocol hashes; the generic different-GDScript sentence in unchanged timing-detail.json is not applicable to this pair.",
+  "telemetry_comparison": "39 supported telemetry-on/off comparisons exact;6 R2 heavy/stream pairs unsupported because no same-source telemetry-on primary reference was registered.",
+  "historical_R2": "24 retainedR2 primary projections and6 heavy/stream timing projections compare explicitly different source/native identities; not same-runtime or full cell-state equivalence.",
+  "heavy_allocation": "R2 full bin ledger is retained source73 evidence; A1 ledger source3d. Current R2 timing has selected trajectory equivalence, not a newly measured full bin ledger. No counterfactual or dominant-cause claim.",
+  "mechanics": "Source3d native query/oracle and290 adapter assertions per OS pass; physical and performance adequacy remain NO-GO. No full per-query success trace was persisted beyond source-backed fixture/oracle tests and logs.",
+  "owner_feel": "Not supplied by automated host motion; no default/merge acceptance.",
+  "raw_archive": "Local ignored archive. Original failures and their hashes retained; no raw per-event corpus or binaries committed.",
+  "hard_floor_measurement": "Fixture geometric clearance flag, not a Rapier contact callback."
+}

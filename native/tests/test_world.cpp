@@ -23,6 +23,7 @@
 
 #include "render_copy_qualification.inc"
 #include "granular_contact_qualification.inc"
+#include "granular_admission_qualification.inc"
 
 namespace cybersand {
 class PrecisionProbe {
@@ -3867,6 +3868,10 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"GCR-A1 registered half-plane material/state interfaces",granular_admission_tests::interfaces},
+        {"GCR-A1 independent closed-square supercover oracle",granular_admission_tests::supercover_oracle},
+        {"GCR-A1 negative controls and geometric-only selection",granular_admission_tests::negatives_and_selection},
+        {"GCR-A1 stability excavation and lifecycle",granular_admission_tests::lifecycle_and_stability},
         {"GCR-001 analytic wrench and Y1 reference",test_gcr_analytic_wrench},
         {"GCR-001 friction symmetry and budget",test_gcr_friction_symmetry_and_budget},
         {"GCR-001 geometry and reduction oracle",test_gcr_geometry_and_reduction},

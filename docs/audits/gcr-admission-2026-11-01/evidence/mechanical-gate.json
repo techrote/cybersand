@@ -1,0 +1,137 @@
+{
+  "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+  "tree": "72f29fb292695685fa85ecb71d848edde6254b38",
+  "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+  "native_sha256": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+  "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd",
+  "schema": 1,
+  "ok": true,
+  "registration": "GCR-ADMISSION-001-2026-11-01",
+  "gates": {
+    "native_query": true,
+    "independent_oracle": true,
+    "adapter": true
+  },
+  "native_core_components": [
+    {
+      "name": "windows-core",
+      "command": [
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-admission\\khybersand\\build\\admission-native-full\\tests.exe"
+      ],
+      "timeout_seconds": 3600,
+      "exit": 0,
+      "start_utc": "2026-11-01T18:12:32.784472+00:00",
+      "end_utc": "2026-11-01T18:13:35.719041+00:00",
+      "elapsed_seconds": 62.934570499986876,
+      "log_sha256": "7a3e6edf5b30f3e195f2281bab7ad96a5036180a5753a8766b4de388ecc5ef34",
+      "native_inputs_sha256": "cd870949e8d79d3452ddf79d0b3d1c428fcd69716cb937a46680908dc6b8df16",
+      "passed_test_count": 174,
+      "summary_counts": [
+        "174"
+      ],
+      "failure_lines": [],
+      "binary_sha256": null
+    },
+    {
+      "name": "linux-core",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-admission\\khybersand",
+        "--",
+        "timeout",
+        "3600",
+        "build/admission-native-full/tests-linux"
+      ],
+      "timeout_seconds": 3610,
+      "exit": 0,
+      "start_utc": "2026-11-01T18:13:35.733036+00:00",
+      "end_utc": "2026-11-01T18:15:43.677559+00:00",
+      "elapsed_seconds": 127.94452910000109,
+      "log_sha256": "d88f9dad44f087170408c846b8c370b35c6f472b8edf2e33e5e00e3ce9fa683d",
+      "native_inputs_sha256": "cd870949e8d79d3452ddf79d0b3d1c428fcd69716cb937a46680908dc6b8df16",
+      "passed_test_count": 174,
+      "summary_counts": [
+        "174"
+      ],
+      "failure_lines": [],
+      "binary_sha256": null
+    }
+  ],
+  "adapters": {
+    "windows": {
+      "component": {
+        "assertions": 290,
+        "failures": 0,
+        "gate": "adapter",
+        "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd",
+        "limits": "Mechanical adapter controls only; independent native query/oracle gates remain separate. No coupled efficacy trajectory.",
+        "native_sha256": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+        "ok": true,
+        "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+        "schema": 1,
+        "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba"
+      },
+      "component_sha256": "fda9df69e07ba7781420822a9d6a7afcabc082c1056e09a1d3d4b094db0ab50a",
+      "log": "build/adapter-mechanical-windows.log",
+      "log_sha256": "6216b59567be6d89c907914a973e6f36bb4ab1da7115f864fbb92c2b9370a080",
+      "runtime_identity": {
+        "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+        "tree": "72f29fb292695685fa85ecb71d848edde6254b38",
+        "local_delta_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+        "native_sha256": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+        "native_manifest_sha256": "2366103b31a2df58dadf23290f2fc9c943dc23d5c615669e767731028a100e41",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot": "4.7.stable.official.5b4e0cb0f",
+        "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd"
+      }
+    },
+    "linux": {
+      "component": {
+        "assertions": 290,
+        "failures": 0,
+        "gate": "adapter",
+        "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd",
+        "limits": "Mechanical adapter controls only; independent native query/oracle gates remain separate. No coupled efficacy trajectory.",
+        "native_sha256": "7c676c0cb2190e91f604966ef4b39b75ff0383db07438192e9e9ccfd6166530f",
+        "ok": true,
+        "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+        "schema": 1,
+        "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba"
+      },
+      "component_sha256": "7baf324275ab15d1b2ff640d08322bc8a2c66916b7c4074a7b4a21a45daa1f63",
+      "log": "build/adapter-mechanical-linux.log",
+      "log_sha256": "95bbce731bb2e5386969b8864c90ae7f9d4fbd0e94d8906786a9ff864f4a23e3",
+      "runtime_identity": {
+        "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+        "tree": "72f29fb292695685fa85ecb71d848edde6254b38",
+        "local_delta_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+        "native_sha256": "7c676c0cb2190e91f604966ef4b39b75ff0383db07438192e9e9ccfd6166530f",
+        "native_manifest_sha256": "20867c4addb56ac827db54befdfcdf1d99bbfd19ba0a3deb25e9d16986dffe90",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot": "4.7.stable.official.5b4e0cb0f",
+        "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd"
+      }
+    }
+  },
+  "frozen_scope": {
+    "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+    "protocol_canonical_sha256": "807391ce39bc92c44ec5e0f242e4d4f0c106187d63afc9d3afe4e72d048e1d06",
+    "file_locks": 10,
+    "function_locks": 6,
+    "failures": [],
+    "ok": true
+  },
+  "native_input_manifest_sha256": "aca70e8fb0a0a8d13742a175c1a3bc94a7f4a0cc4405cec6741bc92ea280f301",
+  "limits": [
+    "Mechanical prerequisite only; no physical efficacy, performance or owner acceptance follows.",
+    "Native core174 passes include the independent new query/oracle groups; sanitizer completion recorded separately.",
+    "Linux linked-worktree identity uses an ignored wrapper delegating Git metadata to Windows Git for this same checkout; original native-Git path/timeout preflights are retained."
+  ]
+}

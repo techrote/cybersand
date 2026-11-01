@@ -1,0 +1,36 @@
+[
+  {
+    "platform": "windows",
+    "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+    "command": [
+      "C:/Program Files/Git/bin/bash.exe",
+      "tools/build_native_extension_windows.sh"
+    ],
+    "start": "2026-11-01T18:09:45.342802+00:00",
+    "timeout": 1200,
+    "exit": 0,
+    "log_sha256": "0ff12e6e7fcd8022f578785ba63a3fab246db80772a98078dab7b2ad0f64f2f0"
+  },
+  {
+    "platform": "linux",
+    "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "C:\\Users\\_\\.codex\\worktrees\\gcr-admission\\khybersand",
+      "--",
+      "env",
+      "LINUX_CXX=/usr/bin/g++-13",
+      "GODOT_CPP_ROOT=/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496",
+      "CYBERSAND_NATIVE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/gcr-admission/khybersand/build/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "bash",
+      "tools/build_native_extension.sh"
+    ],
+    "start": "2026-11-01T18:09:45.343005+00:00",
+    "timeout": 1200,
+    "exit": 0,
+    "log_sha256": "bb8bfad5765e09b0cc9286239c1ab7319675be84eed91369a5c047244b94913c"
+  }
+]

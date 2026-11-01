@@ -22,17 +22,18 @@ def git(*args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args], timeout=30)
 
 
-def authenticate(args):
+def authenticate(args, protocol_path=PROTOCOL, registration='GCR-001-2026-11-01'):
     # Registration is immutable during result acquisition. An uncommitted edit
     # fails even if all other source/runtime inputs have been rebuilt.
-    relative = PROTOCOL.relative_to(ROOT).as_posix()
+    protocol_path = Path(protocol_path)
+    relative = protocol_path.relative_to(ROOT).as_posix()
     registered = git('show', f'HEAD:{relative}').replace(b'\r\n', b'\n')
-    if registered != PROTOCOL.read_bytes().replace(b'\r\n', b'\n'):
+    if registered != protocol_path.read_bytes().replace(b'\r\n', b'\n'):
         raise RuntimeError('Protocol differs from committed registration')
-    protocol = json.loads(PROTOCOL.read_text())
-    if protocol.get('registration') != 'GCR-001-2026-11-01' or len(protocol['cases']) != 66:
+    protocol = json.loads(protocol_path.read_text(encoding='utf-8'))
+    if protocol.get('registration') != registration or len(protocol['cases']) != 66:
         raise RuntimeError('Expected the frozen 66-case GCR-001 registration')
-    manifest = json.loads(args.native_manifest.read_text())
+    manifest = json.loads(args.native_manifest.read_text(encoding='utf-8'))
     for relative, expected in manifest['source_inputs'].items():
         if digest(ROOT / relative, True) != expected:
             raise RuntimeError('Rebuild required for ' + relative)
@@ -41,7 +42,7 @@ def authenticate(args):
         raise RuntimeError('Native runtime differs from source-bound manifest')
     platform = 'windows' if os.name == 'nt' else 'linux'
     rapier_manifest = ROOT / f'godot/addons/godot-rapier2d/runtime-provenance.{platform}.json'
-    rapier = json.loads(rapier_manifest.read_text())
+    rapier = json.loads(rapier_manifest.read_text(encoding='utf-8'))
     if digest(ROOT / rapier['artifact']) != rapier['sha256']:
         raise RuntimeError('Rapier differs from retained pinned runtime')
     if digest(args.project / Path(rapier['artifact']).relative_to('godot')) != rapier['sha256']:
@@ -61,16 +62,16 @@ def authenticate(args):
     version = subprocess.check_output([str(args.godot), '--version'], text=True, timeout=30).strip()
     if version != '4.7.stable.official.5b4e0cb0f':
         raise RuntimeError('Expected pinned official Godot 4.7')
-    return protocol, {'source': git('rev-parse', 'HEAD').decode().strip(),
-                      'tree': git('rev-parse', 'HEAD^{tree}').decode().strip(),
+    return protocol, {'source': git('rev-parse', 'HEAD').decode('utf-8').strip(),
+                      'tree': git('rev-parse', 'HEAD^{tree}').decode('utf-8').strip(),
                       'local_delta_sha256': hashlib.sha256(git('diff', '--binary', 'HEAD')).hexdigest(),
-                      'protocol_sha256': digest(PROTOCOL), 'native_sha256': digest(artifact),
+                      'protocol_sha256': digest(protocol_path), 'native_sha256': digest(artifact),
                       'native_manifest_sha256': digest(args.native_manifest),
                       'rapier_sha256': rapier['sha256'], 'engine_sha256': digest(args.godot),
                       'godot': version, 'input_identity': input_identity, 'project_inputs': inputs}
 
 
-def capture(args, identity, case, arm, repeat, mode):
+def capture(args, identity, case, arm, repeat, mode, protocol_path=PROTOCOL):
     stem = f'{mode}-{case}-{arm}-r{repeat}'
     output = args.output / f'{stem}.json'
     log = args.output / f'{stem}.log'
@@ -79,7 +80,7 @@ def capture(args, identity, case, arm, repeat, mode):
     env['CYBERSAND_INPUT_IDENTITY'] = identity['input_identity']
     command = [str(args.godot), '--headless', '--path', str(args.project),
                '--script', f'res://tests/test_gcr_{"async" if mode == "async" else "envelope"}.gd',
-               '--', f'--protocol={PROTOCOL}', f'--case={case}', f'--candidate={arm}',
+               '--', f'--protocol={protocol_path}', f'--case={case}', f'--candidate={arm}',
                f'--output={output}', f'--telemetry={args.telemetry}']
     if mode == 'async':
         command.append('--hold-every=6')
@@ -91,7 +92,7 @@ def capture(args, identity, case, arm, repeat, mode):
                                      env=env, timeout=args.timeout, check=False)
             returncode = process.returncode
             if process.returncode == 0 and output.exists():
-                report = json.loads(output.read_text())
+                report = json.loads(output.read_text(encoding='utf-8'))
                 if report.get('ok') and report.get('protocol_sha256') == identity['protocol_sha256'] and report.get('input_identity') == identity['input_identity'] and report.get('runtime', {}).get('native') == identity['native_sha256']:
                     status = 'captured'
         except subprocess.TimeoutExpired:
@@ -145,7 +146,7 @@ def main():
     index = args.output / 'campaign.json'
     if index.exists():
         raise RuntimeError('Use a fresh output directory; prior failures must remain recoverable')
-    index.write_text(json.dumps(campaign, indent=2))
+    index.write_text(json.dumps(campaign, indent=2),encoding='utf-8')
     tasks=[]
     for repeat in range(3 if args.mode == 'timing' else 1):
         arms = args.arms if repeat % 2 == 0 else list(reversed(args.arms))
@@ -159,10 +160,10 @@ def main():
     with ThreadPoolExecutor(args.jobs) as pool:
         for row in pool.map(execute,tasks):
             campaign['captures'].append(row)
-            index.write_text(json.dumps(campaign,indent=2))
+            index.write_text(json.dumps(campaign,indent=2),encoding='utf-8')
             print(f'{row["status"]}: {row["case"]} {row["arm"]} r{row["repeat"]}',flush=True)
     campaign['complete'] = all(row['status'] == 'captured' for row in campaign['captures'])
-    index.write_text(json.dumps(campaign, indent=2))
+    index.write_text(json.dumps(campaign, indent=2),encoding='utf-8')
     return 0 if campaign['complete'] else 1
 
 

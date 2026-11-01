@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "path": "build/admission-native/trial1-failure.json",
+      "sha256": "2f1d465fa0d137796c371fa71820e36fc794b6613000726b1baaa3afd873a114",
+      "size": 754
+    },
+    {
+      "path": "build/admission-native/windows-result.txt",
+      "sha256": "39c2c87e24a945f3859a36c88288b71ddac9ff5d0c58b3363161bfbd93de853d",
+      "size": 50
+    },
+    {
+      "path": "build/admission-native/linux-result.txt",
+      "sha256": "39c2c87e24a945f3859a36c88288b71ddac9ff5d0c58b3363161bfbd93de853d",
+      "size": 50
+    },
+    {
+      "path": "build/mechanical-seal-preflight.json",
+      "sha256": "f638cfc97730f9780101e9fedb8d84a2537ac9e0da4013f811079e291347e352",
+      "size": 209
+    },
+    {
+      "path": "build/mechanical-input-identity-linux.json",
+      "sha256": "acf259f0125bb6aa78d50e0a48feef908c2467a41aac187c26f53dd8aa2d40f0",
+      "size": 1960
+    }
+  ],
+  "scope": "Retained failed mechanical fixture/schema/preflight evidence; not waived or relabelled as final passing qualification."
+}

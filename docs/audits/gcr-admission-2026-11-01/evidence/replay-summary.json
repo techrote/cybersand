@@ -1,0 +1,1641 @@
+{
+  "schema": 1,
+  "label": "replay",
+  "registration": "GCR-ADMISSION-001-2026-11-01",
+  "phase": "replay",
+  "identity": {
+    "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+    "tree": "72f29fb292695685fa85ecb71d848edde6254b38",
+    "local_delta_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+    "native_sha256": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+    "native_manifest_sha256": "2366103b31a2df58dadf23290f2fc9c943dc23d5c615669e767731028a100e41",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd"
+  },
+  "mechanical_receipt_sha256": "238e680648e94c301d2b1ab8f2bf1975e72d780f22449e3a99a6ea9d85c3d33b",
+  "timing_scope": "functional concurrent timings are not performance evidence",
+  "counts": {
+    "captures": 9,
+    "complete": 9,
+    "quantity_conserved": 9,
+    "execution_failures": 0
+  },
+  "gate_boolean_counts": {
+    "horizontal_nonworsening": {
+      "true": 1,
+      "false": 2,
+      "unsupported": 0,
+      "true_cases": [
+        "sand-vertical"
+      ],
+      "false_cases": [
+        "sand-horizontal",
+        "sand-glancing"
+      ]
+    },
+    "post_overlap_nonworsening": {
+      "true": 1,
+      "false": 2,
+      "unsupported": 0,
+      "true_cases": [
+        "sand-vertical"
+      ],
+      "false_cases": [
+        "sand-horizontal",
+        "sand-glancing"
+      ]
+    },
+    "pre_overlap_nonworsening": {
+      "true": 1,
+      "false": 2,
+      "unsupported": 0,
+      "true_cases": [
+        "sand-vertical"
+      ],
+      "false_cases": [
+        "sand-horizontal",
+        "sand-glancing"
+      ]
+    },
+    "registered_25percent_horizontal_gate": {
+      "true": 0,
+      "false": 1,
+      "unsupported": 0,
+      "true_cases": [],
+      "false_cases": [
+        "sand-horizontal"
+      ]
+    },
+    "scanned_work_investigation_required": {
+      "true": 0,
+      "false": 3,
+      "unsupported": 0,
+      "true_cases": [],
+      "false_cases": [
+        "sand-vertical",
+        "sand-horizontal",
+        "sand-glancing"
+      ]
+    },
+    "timing_investigation_required": {
+      "true": 2,
+      "false": 1,
+      "unsupported": 0,
+      "true_cases": [
+        "sand-horizontal",
+        "sand-glancing"
+      ],
+      "false_cases": [
+        "sand-vertical"
+      ]
+    },
+    "vertical_nonworsening": {
+      "true": 3,
+      "false": 0,
+      "unsupported": 0,
+      "true_cases": [
+        "sand-vertical",
+        "sand-horizontal",
+        "sand-glancing"
+      ],
+      "false_cases": []
+    }
+  },
+  "Y1_physical_comparisons": [
+    {
+      "case": "sand-vertical",
+      "repeat": 1,
+      "horizontal_improvement_fraction": null,
+      "horizontal_nonworsening": true,
+      "vertical_nonworsening": true,
+      "pre_overlap_nonworsening": true,
+      "post_overlap_nonworsening": true,
+      "timing_investigation_required": false,
+      "scanned_work_investigation_required": false,
+      "reference": "Y1",
+      "candidate": "GCR-A1"
+    },
+    {
+      "case": "sand-horizontal",
+      "repeat": 1,
+      "horizontal_improvement_fraction": -4.7126170704568775,
+      "horizontal_nonworsening": false,
+      "vertical_nonworsening": true,
+      "pre_overlap_nonworsening": false,
+      "post_overlap_nonworsening": false,
+      "registered_25percent_horizontal_gate": false,
+      "timing_investigation_required": true,
+      "scanned_work_investigation_required": false,
+      "reference": "Y1",
+      "candidate": "GCR-A1"
+    },
+    {
+      "case": "sand-glancing",
+      "repeat": 1,
+      "horizontal_improvement_fraction": -10.641579935993477,
+      "horizontal_nonworsening": false,
+      "vertical_nonworsening": true,
+      "pre_overlap_nonworsening": false,
+      "post_overlap_nonworsening": false,
+      "timing_investigation_required": true,
+      "scanned_work_investigation_required": false,
+      "reference": "Y1",
+      "candidate": "GCR-A1"
+    }
+  ],
+  "R2_A1_attribution": [
+    {
+      "case": "sand-vertical",
+      "repeat": 1,
+      "R2_admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 0,
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0,
+          "admitted": 0
+        },
+        "selected_depth_counts": [
+          0,
+          0,
+          0
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 0,
+          "None": 0,
+          "Packing": 0,
+          "PathMasked": 0,
+          "PathNonCapable": 0,
+          "PathUnstable": 0,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 0
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "A1_admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 290,
+          "geometry_mask_checks": 3764,
+          "mask_checks": 4833,
+          "path_checks": 1069,
+          "shared_witness_calls": 290,
+          "admitted": 205
+        },
+        "selected_depth_counts": [
+          0,
+          6,
+          284
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 0,
+          "None": 205,
+          "Packing": 85,
+          "PathMasked": 0,
+          "PathNonCapable": 0,
+          "PathUnstable": 0,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 0
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "R2_peak_horizontal_entry": 0.0,
+      "A1_peak_horizontal_entry": 0.0,
+      "R2_peak_vertical_entry": 1.13309628186246,
+      "A1_peak_vertical_entry": 0.72935723375582,
+      "qualification": "Descriptive same-input admission-variant trajectories; not a mechanical-oracle verdict or a substitute Y1 physical gate."
+    },
+    {
+      "case": "sand-horizontal",
+      "repeat": 1,
+      "R2_admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 0,
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0,
+          "admitted": 0
+        },
+        "selected_depth_counts": [
+          0,
+          0,
+          0
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 0,
+          "None": 0,
+          "Packing": 0,
+          "PathMasked": 0,
+          "PathNonCapable": 0,
+          "PathUnstable": 0,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 0
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "A1_admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 27514,
+          "geometry_mask_checks": 482205,
+          "mask_checks": 561136,
+          "path_checks": 78931,
+          "shared_witness_calls": 20003,
+          "admitted": 16951
+        },
+        "selected_depth_counts": [
+          345,
+          11051,
+          16118
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 345,
+          "None": 16951,
+          "Packing": 3052,
+          "PathMasked": 0,
+          "PathNonCapable": 2855,
+          "PathUnstable": 1244,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 3067
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "R2_peak_horizontal_entry": 6.97449547114556,
+      "A1_peak_horizontal_entry": 7.83772946225776,
+      "R2_peak_vertical_entry": 160.884863274444,
+      "A1_peak_vertical_entry": 190.858966924892,
+      "qualification": "Descriptive same-input admission-variant trajectories; not a mechanical-oracle verdict or a substitute Y1 physical gate."
+    },
+    {
+      "case": "sand-glancing",
+      "repeat": 1,
+      "R2_admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 0,
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0,
+          "admitted": 0
+        },
+        "selected_depth_counts": [
+          0,
+          0,
+          0
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 0,
+          "None": 0,
+          "Packing": 0,
+          "PathMasked": 0,
+          "PathNonCapable": 0,
+          "PathUnstable": 0,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 0
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "A1_admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 24795,
+          "geometry_mask_checks": 428799,
+          "mask_checks": 495452,
+          "path_checks": 66653,
+          "shared_witness_calls": 19743,
+          "admitted": 17022
+        },
+        "selected_depth_counts": [
+          248,
+          11091,
+          13456
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 248,
+          "None": 17022,
+          "Packing": 2721,
+          "PathMasked": 0,
+          "PathNonCapable": 2339,
+          "PathUnstable": 561,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 1904
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "R2_peak_horizontal_entry": 16.8164769087965,
+      "A1_peak_horizontal_entry": 17.1860481452502,
+      "R2_peak_vertical_entry": 190.910571237628,
+      "A1_peak_vertical_entry": 191.371038673352,
+      "qualification": "Descriptive same-input admission-variant trajectories; not a mechanical-oracle verdict or a substitute Y1 physical gate."
+    }
+  ],
+  "receipts": [
+    {
+      "case": "sand-vertical",
+      "candidate": "Y1",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "94dc87315df2397a087e34dec5a06b40f7341a9c568c67257ea6a8e65d5b2a4e",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "disabled",
+        "evaluator_variant": "Y1",
+        "experiment": "Y1-ENVELOPE-2026-11-01",
+        "native_candidate": "Y1"
+      },
+      "admission": null,
+      "peak_horizontal_entry": 0.0,
+      "peak_vertical_entry": 0.480193051607756,
+      "peak_pre_overlap": 0,
+      "peak_post_overlap": 0,
+      "peak_tick_overlap": 0,
+      "first_hard_floor_tick": null,
+      "first_unresolved_tick": null,
+      "late_peak_speed": 3.63108277320862,
+      "late_peak_abs_omega": 0.0,
+      "total_applied_Jx_Jy_L": [
+        0.0,
+        -1468.91262832284,
+        0.0
+      ],
+      "peak_abs_local_slip": null,
+      "timing_us": {
+        "rapier": {
+          "p50": 53,
+          "p95": 69,
+          "p99": 122,
+          "max": 171
+        },
+        "coupling": {
+          "p50": 32,
+          "p95": 47,
+          "p99": 57,
+          "max": 104
+        },
+        "native_tick": {
+          "p50": 200,
+          "p95": 344,
+          "p99": 389,
+          "max": 882
+        },
+        "main_application": {
+          "p50": 6,
+          "p95": 14,
+          "p99": 17,
+          "max": 33
+        },
+        "total_measured_components": {
+          "p50": 308,
+          "p95": 462,
+          "p99": 518,
+          "max": 986
+        },
+        "coupling_prepare_us": {
+          "p50": 29,
+          "p95": 43,
+          "p99": 52,
+          "max": 102
+        },
+        "result_generation_us": {
+          "p50": 2,
+          "p95": 4,
+          "p99": 5,
+          "max": 10
+        },
+        "diagnostic_copy_us": {
+          "p50": 15,
+          "p95": 23,
+          "p99": 32,
+          "max": 115
+        },
+        "packing_us": {
+          "p50": 4,
+          "p95": 6,
+          "p99": 8,
+          "max": 15
+        },
+        "admission_counter_copy_us": {
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "max": 2
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 2048,
+          "p95": 2048,
+          "p99": 2048,
+          "max": 2048
+        },
+        "moves": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        },
+        "active_blocks": {
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "max": 3
+        }
+      }
+    },
+    {
+      "case": "sand-vertical",
+      "candidate": "GCR",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "06b9534fde8c8582780aeed998d249ab37aca9b4b977310ec525bdfc3d27c18b",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "R2",
+        "evaluator_variant": "R2-second-moment-quadrature",
+        "experiment": "GCR-001-2026-11-01",
+        "native_candidate": "GCR"
+      },
+      "admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 0,
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0,
+          "admitted": 0
+        },
+        "selected_depth_counts": [
+          0,
+          0,
+          0
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 0,
+          "None": 0,
+          "Packing": 0,
+          "PathMasked": 0,
+          "PathNonCapable": 0,
+          "PathUnstable": 0,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 0
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "peak_horizontal_entry": 0.0,
+      "peak_vertical_entry": 1.13309628186246,
+      "peak_pre_overlap": 1,
+      "peak_post_overlap": 1,
+      "peak_tick_overlap": 1,
+      "first_hard_floor_tick": null,
+      "first_unresolved_tick": 5,
+      "late_peak_speed": 3.96926202428465,
+      "late_peak_abs_omega": 0.308134794235229,
+      "total_applied_Jx_Jy_L": [
+        1.854304357697952,
+        -1506.1361130715813,
+        41.76642823284504
+      ],
+      "peak_abs_local_slip": 8.72083282470703,
+      "timing_us": {
+        "rapier": {
+          "p50": 54,
+          "p95": 70,
+          "p99": 88,
+          "max": 165
+        },
+        "coupling": {
+          "p50": 35,
+          "p95": 53,
+          "p99": 59,
+          "max": 76
+        },
+        "native_tick": {
+          "p50": 196,
+          "p95": 344,
+          "p99": 564,
+          "max": 1070
+        },
+        "main_application": {
+          "p50": 37,
+          "p95": 58,
+          "p99": 107,
+          "max": 196
+        },
+        "total_measured_components": {
+          "p50": 351,
+          "p95": 514,
+          "p99": 725,
+          "max": 1339
+        },
+        "coupling_prepare_us": {
+          "p50": 32,
+          "p95": 49,
+          "p99": 54,
+          "max": 71
+        },
+        "result_generation_us": {
+          "p50": 3,
+          "p95": 5,
+          "p99": 6,
+          "max": 19
+        },
+        "diagnostic_copy_us": {
+          "p50": 60,
+          "p95": 116,
+          "p99": 158,
+          "max": 224
+        },
+        "packing_us": {
+          "p50": 15,
+          "p95": 19,
+          "p99": 22,
+          "max": 97
+        },
+        "admission_counter_copy_us": {
+          "p50": 8,
+          "p95": 13,
+          "p99": 65,
+          "max": 129
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 2047,
+          "p95": 2048,
+          "p99": 4096,
+          "max": 4096
+        },
+        "moves": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 1
+        },
+        "active_blocks": {
+          "p50": 2,
+          "p95": 3,
+          "p99": 4,
+          "max": 4
+        }
+      }
+    },
+    {
+      "case": "sand-vertical",
+      "candidate": "GCR-A1",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "7342fab2e9dfa27e1754e319b4088b42bb34cbdc92cab580741fa5286fb0ba06",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "A1",
+        "evaluator_variant": "R2-second-moment-quadrature",
+        "experiment": "GCR-ADMISSION-001-2026-11-01",
+        "native_candidate": "GCR-A1"
+      },
+      "admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 290,
+          "geometry_mask_checks": 3764,
+          "mask_checks": 4833,
+          "path_checks": 1069,
+          "shared_witness_calls": 290,
+          "admitted": 205
+        },
+        "selected_depth_counts": [
+          0,
+          6,
+          284
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 0,
+          "None": 205,
+          "Packing": 85,
+          "PathMasked": 0,
+          "PathNonCapable": 0,
+          "PathUnstable": 0,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 0
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "peak_horizontal_entry": 0.0,
+      "peak_vertical_entry": 0.72935723375582,
+      "peak_pre_overlap": 1,
+      "peak_post_overlap": 1,
+      "peak_tick_overlap": 1,
+      "first_hard_floor_tick": null,
+      "first_unresolved_tick": 5,
+      "late_peak_speed": 3.5711675663447555,
+      "late_peak_abs_omega": 0.157044664025307,
+      "total_applied_Jx_Jy_L": [
+        0.11379132972068536,
+        -1515.4312689164656,
+        -1.4730260153769048
+      ],
+      "peak_abs_local_slip": 2.73276138305664,
+      "timing_us": {
+        "rapier": {
+          "p50": 53,
+          "p95": 69,
+          "p99": 80,
+          "max": 146
+        },
+        "coupling": {
+          "p50": 34,
+          "p95": 53,
+          "p99": 61,
+          "max": 77
+        },
+        "native_tick": {
+          "p50": 346,
+          "p95": 624,
+          "p99": 645,
+          "max": 871
+        },
+        "main_application": {
+          "p50": 35,
+          "p95": 59,
+          "p99": 98,
+          "max": 145
+        },
+        "total_measured_components": {
+          "p50": 477,
+          "p95": 791,
+          "p99": 823,
+          "max": 1006
+        },
+        "coupling_prepare_us": {
+          "p50": 31,
+          "p95": 48,
+          "p99": 56,
+          "max": 74
+        },
+        "result_generation_us": {
+          "p50": 3,
+          "p95": 5,
+          "p99": 6,
+          "max": 21
+        },
+        "diagnostic_copy_us": {
+          "p50": 54,
+          "p95": 104,
+          "p99": 154,
+          "max": 295
+        },
+        "packing_us": {
+          "p50": 13,
+          "p95": 18,
+          "p99": 21,
+          "max": 31
+        },
+        "admission_counter_copy_us": {
+          "p50": 7,
+          "p95": 13,
+          "p99": 63,
+          "max": 114
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 4096,
+          "p95": 4096,
+          "p99": 4096,
+          "max": 4096
+        },
+        "moves": {
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "max": 0
+        },
+        "active_blocks": {
+          "p50": 4,
+          "p95": 4,
+          "p99": 4,
+          "max": 4
+        }
+      }
+    },
+    {
+      "case": "sand-horizontal",
+      "candidate": "GCR-A1",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "3c1e77182a81e21dc6212fcd3d6a9288b54fa54f18d547dfe2079f12dcbe7364",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "A1",
+        "evaluator_variant": "R2-second-moment-quadrature",
+        "experiment": "GCR-ADMISSION-001-2026-11-01",
+        "native_candidate": "GCR-A1"
+      },
+      "admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 27514,
+          "geometry_mask_checks": 482205,
+          "mask_checks": 561136,
+          "path_checks": 78931,
+          "shared_witness_calls": 20003,
+          "admitted": 16951
+        },
+        "selected_depth_counts": [
+          345,
+          11051,
+          16118
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 345,
+          "None": 16951,
+          "Packing": 3052,
+          "PathMasked": 0,
+          "PathNonCapable": 2855,
+          "PathUnstable": 1244,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 3067
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "peak_horizontal_entry": 7.83772946225776,
+      "peak_vertical_entry": 190.858966924892,
+      "peak_pre_overlap": 66,
+      "peak_post_overlap": 66,
+      "peak_tick_overlap": 66,
+      "first_hard_floor_tick": 769,
+      "first_unresolved_tick": 29,
+      "late_peak_speed": 4.982916480338277,
+      "late_peak_abs_omega": 0.137697905302048,
+      "total_applied_Jx_Jy_L": [
+        -476.54119367245585,
+        -324.15825820714196,
+        -2537.7874445009134
+      ],
+      "peak_abs_local_slip": 98.8517761230469,
+      "timing_us": {
+        "rapier": {
+          "p50": 71,
+          "p95": 116,
+          "p99": 180,
+          "max": 2953
+        },
+        "coupling": {
+          "p50": 74,
+          "p95": 462,
+          "p99": 508,
+          "max": 739
+        },
+        "native_tick": {
+          "p50": 1417,
+          "p95": 2377,
+          "p99": 2498,
+          "max": 3098
+        },
+        "main_application": {
+          "p50": 49,
+          "p95": 90,
+          "p99": 137,
+          "max": 208
+        },
+        "total_measured_components": {
+          "p50": 1722,
+          "p95": 2863,
+          "p99": 3122,
+          "max": 5664
+        },
+        "coupling_prepare_us": {
+          "p50": 69,
+          "p95": 455,
+          "p99": 501,
+          "max": 731
+        },
+        "result_generation_us": {
+          "p50": 6,
+          "p95": 9,
+          "p99": 15,
+          "max": 111
+        },
+        "diagnostic_copy_us": {
+          "p50": 71,
+          "p95": 137,
+          "p99": 177,
+          "max": 236
+        },
+        "packing_us": {
+          "p50": 18,
+          "p95": 25,
+          "p99": 38,
+          "max": 52
+        },
+        "admission_counter_copy_us": {
+          "p50": 9,
+          "p95": 17,
+          "p99": 71,
+          "max": 106
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 15360,
+          "p95": 15360,
+          "p99": 15360,
+          "max": 15360
+        },
+        "moves": {
+          "p50": 147,
+          "p95": 220,
+          "p99": 305,
+          "max": 743
+        },
+        "active_blocks": {
+          "p50": 13,
+          "p95": 16,
+          "p99": 16,
+          "max": 17
+        }
+      }
+    },
+    {
+      "case": "sand-horizontal",
+      "candidate": "GCR",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "b490870e51dbfacb148f2e68f33ad57b1bb5c683d39518215e698a015823b2d3",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "R2",
+        "evaluator_variant": "R2-second-moment-quadrature",
+        "experiment": "GCR-001-2026-11-01",
+        "native_candidate": "GCR"
+      },
+      "admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 0,
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0,
+          "admitted": 0
+        },
+        "selected_depth_counts": [
+          0,
+          0,
+          0
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 0,
+          "None": 0,
+          "Packing": 0,
+          "PathMasked": 0,
+          "PathNonCapable": 0,
+          "PathUnstable": 0,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 0
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "peak_horizontal_entry": 6.97449547114556,
+      "peak_vertical_entry": 160.884863274444,
+      "peak_pre_overlap": 64,
+      "peak_post_overlap": 60,
+      "peak_tick_overlap": 61,
+      "first_hard_floor_tick": null,
+      "first_unresolved_tick": 29,
+      "late_peak_speed": 1.2934680773881673,
+      "late_peak_abs_omega": 0.0512672439217567,
+      "total_applied_Jx_Jy_L": [
+        -27.58535692840811,
+        -1148.876160889864,
+        -21.22750799777619
+      ],
+      "peak_abs_local_slip": 122.740951538086,
+      "timing_us": {
+        "rapier": {
+          "p50": 89,
+          "p95": 168,
+          "p99": 243,
+          "max": 414
+        },
+        "coupling": {
+          "p50": 150,
+          "p95": 208,
+          "p99": 247,
+          "max": 572
+        },
+        "native_tick": {
+          "p50": 2111,
+          "p95": 2517,
+          "p99": 2803,
+          "max": 4295
+        },
+        "main_application": {
+          "p50": 65,
+          "p95": 126,
+          "p99": 177,
+          "max": 305
+        },
+        "total_measured_components": {
+          "p50": 2470,
+          "p95": 2973,
+          "p99": 3342,
+          "max": 5343
+        },
+        "coupling_prepare_us": {
+          "p50": 143,
+          "p95": 196,
+          "p99": 231,
+          "max": 546
+        },
+        "result_generation_us": {
+          "p50": 7,
+          "p95": 15,
+          "p99": 22,
+          "max": 156
+        },
+        "diagnostic_copy_us": {
+          "p50": 96,
+          "p95": 170,
+          "p99": 234,
+          "max": 365
+        },
+        "packing_us": {
+          "p50": 22,
+          "p95": 36,
+          "p99": 56,
+          "max": 216
+        },
+        "admission_counter_copy_us": {
+          "p50": 12,
+          "p95": 22,
+          "p99": 90,
+          "max": 133
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 15360,
+          "p95": 15360,
+          "p99": 15360,
+          "max": 15360
+        },
+        "moves": {
+          "p50": 149,
+          "p95": 188,
+          "p99": 505,
+          "max": 777
+        },
+        "active_blocks": {
+          "p50": 13,
+          "p95": 16,
+          "p99": 16,
+          "max": 17
+        }
+      }
+    },
+    {
+      "case": "sand-horizontal",
+      "candidate": "Y1",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "fafc8f5a9ee5e7d1936263a3105e2d8cedfe91fc24eefd291044fb4af9fd1bb0",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "disabled",
+        "evaluator_variant": "Y1",
+        "experiment": "Y1-ENVELOPE-2026-11-01",
+        "native_candidate": "Y1"
+      },
+      "admission": null,
+      "peak_horizontal_entry": 1.37200329824154,
+      "peak_vertical_entry": 191.01937762192,
+      "peak_pre_overlap": 40,
+      "peak_post_overlap": 33,
+      "peak_tick_overlap": 33,
+      "first_hard_floor_tick": 185,
+      "first_unresolved_tick": 29,
+      "late_peak_speed": 3.00000005093935,
+      "late_peak_abs_omega": 3.77562336950632e-09,
+      "total_applied_Jx_Jy_L": [
+        -2773.9926880151024,
+        88.38722333079188,
+        0.0
+      ],
+      "peak_abs_local_slip": null,
+      "timing_us": {
+        "rapier": {
+          "p50": 99,
+          "p95": 172,
+          "p99": 257,
+          "max": 2209
+        },
+        "coupling": {
+          "p50": 60,
+          "p95": 84,
+          "p99": 114,
+          "max": 361
+        },
+        "native_tick": {
+          "p50": 2045,
+          "p95": 2497,
+          "p99": 2819,
+          "max": 4092
+        },
+        "main_application": {
+          "p50": 16,
+          "p95": 28,
+          "p99": 44,
+          "max": 173
+        },
+        "total_measured_components": {
+          "p50": 2242,
+          "p95": 2732,
+          "p99": 3065,
+          "max": 5303
+        },
+        "coupling_prepare_us": {
+          "p50": 54,
+          "p95": 76,
+          "p99": 103,
+          "max": 353
+        },
+        "result_generation_us": {
+          "p50": 6,
+          "p95": 11,
+          "p99": 17,
+          "max": 38
+        },
+        "diagnostic_copy_us": {
+          "p50": 27,
+          "p95": 40,
+          "p99": 57,
+          "max": 97
+        },
+        "packing_us": {
+          "p50": 8,
+          "p95": 11,
+          "p99": 21,
+          "max": 163
+        },
+        "admission_counter_copy_us": {
+          "p50": 1,
+          "p95": 1,
+          "p99": 2,
+          "max": 11
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 15360,
+          "p95": 15360,
+          "p99": 15360,
+          "max": 15360
+        },
+        "moves": {
+          "p50": 148,
+          "p95": 187,
+          "p99": 413,
+          "max": 732
+        },
+        "active_blocks": {
+          "p50": 13,
+          "p95": 16,
+          "p99": 16,
+          "max": 17
+        }
+      }
+    },
+    {
+      "case": "sand-glancing",
+      "candidate": "Y1",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "2e5f064a97140dce5f06ea11ada487d76886561c52cccc489455fca2ed94f15c",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "disabled",
+        "evaluator_variant": "Y1",
+        "experiment": "Y1-ENVELOPE-2026-11-01",
+        "native_candidate": "Y1"
+      },
+      "admission": null,
+      "peak_horizontal_entry": 1.47626423902432,
+      "peak_vertical_entry": 191.074011949033,
+      "peak_pre_overlap": 26,
+      "peak_post_overlap": 20,
+      "peak_tick_overlap": 20,
+      "first_hard_floor_tick": 158,
+      "first_unresolved_tick": 33,
+      "late_peak_speed": 3.0000000463082905,
+      "late_peak_abs_omega": 3.90998877719539e-09,
+      "total_applied_Jx_Jy_L": [
+        -3348.1353812366683,
+        177.87911721412087,
+        0.0
+      ],
+      "peak_abs_local_slip": null,
+      "timing_us": {
+        "rapier": {
+          "p50": 96,
+          "p95": 151,
+          "p99": 235,
+          "max": 649
+        },
+        "coupling": {
+          "p50": 58,
+          "p95": 79,
+          "p99": 107,
+          "max": 188
+        },
+        "native_tick": {
+          "p50": 2007,
+          "p95": 2453,
+          "p99": 2615,
+          "max": 3276
+        },
+        "main_application": {
+          "p50": 15,
+          "p95": 26,
+          "p99": 36,
+          "max": 60
+        },
+        "total_measured_components": {
+          "p50": 2190,
+          "p95": 2670,
+          "p99": 2833,
+          "max": 3516
+        },
+        "coupling_prepare_us": {
+          "p50": 52,
+          "p95": 71,
+          "p99": 100,
+          "max": 183
+        },
+        "result_generation_us": {
+          "p50": 6,
+          "p95": 10,
+          "p99": 15,
+          "max": 31
+        },
+        "diagnostic_copy_us": {
+          "p50": 26,
+          "p95": 36,
+          "p99": 58,
+          "max": 108
+        },
+        "packing_us": {
+          "p50": 8,
+          "p95": 11,
+          "p99": 19,
+          "max": 143
+        },
+        "admission_counter_copy_us": {
+          "p50": 1,
+          "p95": 1,
+          "p99": 2,
+          "max": 12
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 15360,
+          "p95": 15360,
+          "p99": 15360,
+          "max": 15360
+        },
+        "moves": {
+          "p50": 147,
+          "p95": 186,
+          "p99": 445,
+          "max": 707
+        },
+        "active_blocks": {
+          "p50": 13,
+          "p95": 16,
+          "p99": 16,
+          "max": 17
+        }
+      }
+    },
+    {
+      "case": "sand-glancing",
+      "candidate": "GCR",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "f2c9dfe74aa54ec82be946f2a3dd0b3e225aa83d0faf7468270b103de60e18aa",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "R2",
+        "evaluator_variant": "R2-second-moment-quadrature",
+        "experiment": "GCR-001-2026-11-01",
+        "native_candidate": "GCR"
+      },
+      "admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 0,
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0,
+          "admitted": 0
+        },
+        "selected_depth_counts": [
+          0,
+          0,
+          0
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 0,
+          "None": 0,
+          "Packing": 0,
+          "PathMasked": 0,
+          "PathNonCapable": 0,
+          "PathUnstable": 0,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 0
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "peak_horizontal_entry": 16.8164769087965,
+      "peak_vertical_entry": 190.910571237628,
+      "peak_pre_overlap": 46,
+      "peak_post_overlap": 46,
+      "peak_tick_overlap": 46,
+      "first_hard_floor_tick": 608,
+      "first_unresolved_tick": 31,
+      "late_peak_speed": 2.2329607915385754,
+      "late_peak_abs_omega": 0.0587625689804554,
+      "total_applied_Jx_Jy_L": [
+        -434.76938277017325,
+        -43.62887874245587,
+        -1669.2899411317815
+      ],
+      "peak_abs_local_slip": 108.411979675293,
+      "timing_us": {
+        "rapier": {
+          "p50": 108,
+          "p95": 189,
+          "p99": 351,
+          "max": 3020
+        },
+        "coupling": {
+          "p50": 117,
+          "p95": 327,
+          "p99": 407,
+          "max": 1469
+        },
+        "native_tick": {
+          "p50": 2077,
+          "p95": 2568,
+          "p99": 3062,
+          "max": 4121
+        },
+        "main_application": {
+          "p50": 76,
+          "p95": 141,
+          "p99": 205,
+          "max": 461
+        },
+        "total_measured_components": {
+          "p50": 2465,
+          "p95": 3180,
+          "p99": 3824,
+          "max": 6715
+        },
+        "coupling_prepare_us": {
+          "p50": 108,
+          "p95": 314,
+          "p99": 386,
+          "max": 1455
+        },
+        "result_generation_us": {
+          "p50": 8,
+          "p95": 15,
+          "p99": 27,
+          "max": 165
+        },
+        "diagnostic_copy_us": {
+          "p50": 102,
+          "p95": 181,
+          "p99": 255,
+          "max": 462
+        },
+        "packing_us": {
+          "p50": 25,
+          "p95": 37,
+          "p99": 72,
+          "max": 525
+        },
+        "admission_counter_copy_us": {
+          "p50": 13,
+          "p95": 25,
+          "p99": 93,
+          "max": 332
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 15360,
+          "p95": 15360,
+          "p99": 15360,
+          "max": 15360
+        },
+        "moves": {
+          "p50": 149,
+          "p95": 197,
+          "p99": 520,
+          "max": 688
+        },
+        "active_blocks": {
+          "p50": 13,
+          "p95": 16,
+          "p99": 16,
+          "max": 17
+        }
+      }
+    },
+    {
+      "case": "sand-glancing",
+      "candidate": "GCR-A1",
+      "mode": "synchronous",
+      "repeat": 1,
+      "raw_sha256": "bac4c9c8664087751679fe5a7fab43463fc09325757f8616841b9e41640bb68c",
+      "complete": true,
+      "conserved": true,
+      "granular_identity": {
+        "admission_variant": "A1",
+        "evaluator_variant": "R2-second-moment-quadrature",
+        "experiment": "GCR-ADMISSION-001-2026-11-01",
+        "native_candidate": "GCR-A1"
+      },
+      "admission": {
+        "observed_native_boundaries": 1800,
+        "totals": {
+          "source_candidates": 24795,
+          "geometry_mask_checks": 428799,
+          "mask_checks": 495452,
+          "path_checks": 66653,
+          "shared_witness_calls": 19743,
+          "admitted": 17022
+        },
+        "selected_depth_counts": [
+          248,
+          11091,
+          13456
+        ],
+        "refusal_counts": {
+          "FailedWorld": 0,
+          "Invalid": 0,
+          "NoMaskFreeWitness": 248,
+          "None": 17022,
+          "Packing": 2721,
+          "PathMasked": 0,
+          "PathNonCapable": 2339,
+          "PathUnstable": 561,
+          "SourceMasked": 0,
+          "SourceNonCapable": 0,
+          "SourceUnstable": 1904
+        },
+        "bound_violation_boundaries": {
+          "geometry_mask_checks": 0,
+          "mask_checks": 0,
+          "path_checks": 0,
+          "shared_witness_calls": 0
+        },
+        "all_observed_probe_bounds_satisfied": true,
+        "limit": "Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison."
+      },
+      "peak_horizontal_entry": 17.1860481452502,
+      "peak_vertical_entry": 191.371038673352,
+      "peak_pre_overlap": 64,
+      "peak_post_overlap": 62,
+      "peak_tick_overlap": 62,
+      "first_hard_floor_tick": 328,
+      "first_unresolved_tick": 31,
+      "late_peak_speed": 2.229247132010292,
+      "late_peak_abs_omega": 0.00870870519429445,
+      "total_applied_Jx_Jy_L": [
+        -474.7588468885515,
+        68.95659407787106,
+        -2253.9381827274688
+      ],
+      "peak_abs_local_slip": 112.711112976074,
+      "timing_us": {
+        "rapier": {
+          "p50": 105,
+          "p95": 191,
+          "p99": 301,
+          "max": 2161
+        },
+        "coupling": {
+          "p50": 173,
+          "p95": 459,
+          "p99": 503,
+          "max": 764
+        },
+        "native_tick": {
+          "p50": 2029,
+          "p95": 2500,
+          "p99": 2890,
+          "max": 3867
+        },
+        "main_application": {
+          "p50": 72,
+          "p95": 137,
+          "p99": 209,
+          "max": 325
+        },
+        "total_measured_components": {
+          "p50": 2456,
+          "p95": 3136,
+          "p99": 3482,
+          "max": 5492
+        },
+        "coupling_prepare_us": {
+          "p50": 167,
+          "p95": 448,
+          "p99": 492,
+          "max": 752
+        },
+        "result_generation_us": {
+          "p50": 8,
+          "p95": 15,
+          "p99": 23,
+          "max": 37
+        },
+        "diagnostic_copy_us": {
+          "p50": 97,
+          "p95": 176,
+          "p99": 249,
+          "max": 2284
+        },
+        "packing_us": {
+          "p50": 23,
+          "p95": 37,
+          "p99": 54,
+          "max": 132
+        },
+        "admission_counter_copy_us": {
+          "p50": 13,
+          "p95": 22,
+          "p99": 93,
+          "max": 160
+        }
+      },
+      "work": {
+        "scanned": {
+          "p50": 15360,
+          "p95": 15360,
+          "p99": 15360,
+          "max": 15360
+        },
+        "moves": {
+          "p50": 149,
+          "p95": 197,
+          "p99": 508,
+          "max": 639
+        },
+        "active_blocks": {
+          "p50": 13,
+          "p95": 16,
+          "p99": 17,
+          "max": 17
+        }
+      }
+    }
+  ],
+  "execution_failures": [],
+  "limits": [
+    "Mechanical gate and law adequacy are separate. No owner verdict/default/merge inferred.",
+    "R2 admission counters count A1-helper work: zero R2 helper admissions is not zero ordinary R2 contacts.",
+    "Functional concurrent timing triggers are not performance qualification. Unknown measurements stay null."
+  ]
+}

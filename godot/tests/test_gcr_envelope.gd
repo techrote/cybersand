@@ -66,7 +66,8 @@ func _run() -> void:
 	var conservation: bool = fixture.conserved(final)
 	for row: Dictionary in rows: conservation = conservation and bool(row.conserved)
 	if not conservation: fail("exact closed-fixture material or Water quantity changed")
-	var report: Dictionary = {"schema":1,"ok":not failed,"mode":"synchronous","experiment":Fixture.GCR_TOKEN,
+	var report: Dictionary = {"schema":1,"ok":not failed,"mode":"synchronous","experiment":Fixture.ADMISSION_TOKEN if arm == "GCR-A1" else Fixture.GCR_TOKEN,
+		"registration":str(protocol.get("registration","")),"granular_identity":fixture.runtime_identity(),
 		"protocol_version":CyberRigidBodyCoupling.GCR_POLICY_VERSION if fixture.is_gcr() else 0,
 		"abi":{"input_stride":CyberRigidBodyCoupling.GCR_INPUT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.INPUT_STRIDE,
 			"result_stride":CyberRigidBodyCoupling.GCR_RESULT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.RESULT_STRIDE},
