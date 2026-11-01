@@ -1,0 +1,249 @@
+name: SOL-DETACH-001 current-main qualification
+
+on:
+  push:
+    branches: [sol-detach-001-current-main]
+    paths:
+      - native/**
+      - godot/**
+      - '!godot/addons/**/bin/**'
+      - '!godot/addons/cybersand_native/runtime-provenance*.json'
+      - tools/**
+      - third_party/**
+      - Makefile
+      - AGENTS.md
+      - .github/workflows/sol281-current-main.yml
+      - .github/workflows/rapier-bvh-build.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+# Every attempt retains its own positive and negative evidence.
+concurrency:
+  group: sol281-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
+
+env:
+  CYBERSAND_CI_WATCHDOG_SCALE: "1"
+  GODOT_SILENCE_ROOT_WARNING: "1"
+  PYTHONUTF8: "1"
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+
+jobs:
+  build:
+    name: pinned native build (${{ matrix.target }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [linux, windows]
+      max-parallel: 2
+    env:
+      SCONS_JOBS: "2"
+      CYBERSAND_REAL_CXX: /usr/bin/g++-13
+      LINUX_CXX: /usr/bin/g++-13
+      SOL281_TARGET: ${{ matrix.target }}
+    steps:
+      - name: Check out exact source without stale runtime objects
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - name: Set pinned build dependency locations
+        run: |
+          printf 'GODOT_CPP_ROOT=%s/godot-cpp\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'SCONS_PYTHON=%s/scons/bin/python\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'LLVM_MINGW_ROOT=%s/llvm-mingw\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'WINDOWS_CXX=%s/llvm-mingw/bin/x86_64-w64-mingw32-g++\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+      - name: Authenticate source and qualification reader
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/sol281/test_qualification.py
+          python3 tools/sol281/run_qualification.py manifest --output "build/sol281/build/$SOL281_TARGET/before.json"
+      - name: Prepare pinned bindings dependencies with shared watchdog
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key dependency_prepare_seconds --label bindings-dependencies --output-dir "build/sol281/build/$SOL281_TARGET/prepare" -- bash -euc '
+            python3 -m venv "$RUNNER_TEMP/scons"
+            "$SCONS_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt
+            mkdir "$GODOT_CPP_ROOT"
+            git -C "$GODOT_CPP_ROOT" init
+            git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+            git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+            git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+            test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          '
+      - name: Prepare pinned Windows cross compiler
+        if: matrix.target == 'windows'
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key dependency_prepare_seconds --label llvm-mingw --output-dir "build/sol281/build/$SOL281_TARGET/compiler" -- bash -euc '
+            curl --fail --location --retry 3 "$LLVM_MINGW_URL" -o "$RUNNER_TEMP/llvm-mingw.tar.xz"
+            printf "%s  %s\n" "$LLVM_MINGW_SHA256" "$RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+            mkdir "$LLVM_MINGW_ROOT"
+            tar -xf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$LLVM_MINGW_ROOT" --strip-components=1
+            if [ ! -e "$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-gcc-ar" ]; then
+              ln -s llvm-ar "$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-gcc-ar"
+            fi
+          '
+      - name: Build source-matched pinned bindings and extension
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label godot-cpp --output-dir "build/sol281/build/$SOL281_TARGET/bindings" -- tools/build_pinned_godot_cpp.sh "$SOL281_TARGET"
+          if [ "$SOL281_TARGET" = linux ]; then
+            export CYBERSAND_NATIVE_OUTPUT="$PWD/build/sol281/build/linux/libcybersand_native.linux.x86_64.so"
+            python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label native-extension --output-dir build/sol281/build/linux/extension -- tools/build_native_extension.sh
+            compiler_path="$LINUX_CXX"
+          else
+            export CYBERSAND_NATIVE_OUTPUT="$PWD/build/sol281/build/windows/cybersand_native.windows.x86_64.dll"
+            python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label native-extension --output-dir build/sol281/build/windows/extension -- tools/build_native_extension_windows.sh
+            compiler_path="$WINDOWS_CXX"
+          fi
+          python3 tools/sol281/run_qualification.py manifest --before "build/sol281/build/$SOL281_TARGET/before.json" --output "build/sol281/build/$SOL281_TARGET/build.json" --runtime "$CYBERSAND_NATIVE_OUTPUT" --bindings "$GODOT_CPP_ROOT/bin/libgodot-cpp.$SOL281_TARGET.template_debug.x86_64.a" --compiler "$compiler_path"
+      - name: Native ownership and relocation regressions with sanitizers
+        if: matrix.target == 'linux'
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds --label native-sol281 --output-dir build/sol281/build/linux/native-regressions -- make CXX=/usr/bin/g++-13 solid-detachment-test conservative-displacement-test solid-detachment-sanitize conservative-displacement-sanitize
+      - name: Preserve exact source archive
+        if: matrix.target == 'linux'
+        run: |
+          git -c filter.lfs.process= -c filter.lfs.smudge= -c filter.lfs.required=false archive --format=tar.gz -o build/sol281/build/linux/source.tar.gz HEAD
+          sha256sum build/sol281/build/linux/source.tar.gz > build/sol281/build/linux/source.tar.gz.sha256
+      - name: Retain build artifacts and every original command receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol281-build-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/build/${{ matrix.target }}
+          if-no-files-found: error
+          retention-days: 90
+
+  linux-host:
+    name: actual Linux host (${{ matrix.cohort }})
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        cohort: [core, contact-w1, contact-w4]
+      max-parallel: 3
+    steps:
+      - name: Check out exact host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - name: Retrieve source-matched native library
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sol281-build-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/runtime
+      - name: Materialize current Linux Rapier runtime
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key dependency_prepare_seconds --label rapier-runtime --output-dir build/sol281/prepare-rapier -- bash -euc '
+            git lfs install --local
+            git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          '
+      - name: Prepare pinned Godot host archive
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key dependency_prepare_seconds --label godot-runtime --output-dir build/sol281/prepare-engine -- bash -euc '
+            mkdir "$RUNNER_TEMP/godot"
+            curl --fail --location --retry 3 https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip -o "$RUNNER_TEMP/godot/godot.zip"
+            unzip -q "$RUNNER_TEMP/godot/godot.zip" -d "$RUNNER_TEMP/godot"
+            chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          '
+      - name: Run complete source-bound actual host cohort
+        run: |
+          python3 tools/sol281/run_qualification.py run --platform linux --cohort "${{ matrix.cohort }}" --manifest build/sol281/runtime/build.json --runtime build/sol281/runtime/libcybersand_native.linux.x86_64.so --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --godot-archive "$RUNNER_TEMP/godot/godot.zip" --output build/sol281/host
+      - name: Retain original Linux logs, results and source inventories
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol281-host-linux-${{ matrix.cohort }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/sol281/host
+            build/sol281/prepare-rapier
+            build/sol281/prepare-engine
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows-host:
+    name: actual Windows host (${{ matrix.cohort }})
+    needs: build
+    runs-on: windows-2022
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        cohort: [core, contact-w1, contact-w4]
+      max-parallel: 3
+    steps:
+      - name: Preserve canonical source bytes on Windows
+        shell: pwsh
+        run: git config --global core.autocrlf false
+      - name: Check out exact host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - name: Retrieve source-matched native library
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sol281-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/runtime
+      - name: Materialize current Windows Rapier runtime
+        timeout-minutes: 20
+        shell: pwsh
+        run: |
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Prepare pinned actual Windows Godot host
+        timeout-minutes: 20
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/godot" | Out-Null
+          Invoke-WebRequest -Uri "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip" -OutFile "$env:RUNNER_TEMP/godot/godot.zip" -TimeoutSec 1200
+          python -m zipfile -e "$env:RUNNER_TEMP/godot/godot.zip" "$env:RUNNER_TEMP/godot"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Run complete source-bound actual Windows cohort
+        shell: pwsh
+        run: |
+          python tools/sol281/run_qualification.py run --platform windows --cohort "${{ matrix.cohort }}" --manifest build/sol281/runtime/build.json --runtime build/sol281/runtime/cybersand_native.windows.x86_64.dll --godot "$env:RUNNER_TEMP/godot/Godot_v4.7-stable_win64_console.exe" --godot-archive "$env:RUNNER_TEMP/godot/godot.zip" --output build/sol281/host
+          exit $LASTEXITCODE
+      - name: Retain original Windows logs, results and source inventories
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol281-host-windows-${{ matrix.cohort }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/host
+          if-no-files-found: warn
+          retention-days: 90
+
+  evidence:
+    name: complete two-platform evidence inventory
+    if: always()
+    needs: [build, linux-host, windows-host]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out exact qualification reader
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+      - name: Download every original actual-host artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: sol281-host-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/evidence
+      - name: Reopen all six cohorts and reject absent or incomplete evidence
+        run: python3 tools/sol281/run_qualification.py summarize --input build/sol281/evidence --output build/sol281/qualification.json
+      - name: Retain bounded qualification disposition
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol281-qualified-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/qualification.json
+          if-no-files-found: warn
+          retention-days: 90

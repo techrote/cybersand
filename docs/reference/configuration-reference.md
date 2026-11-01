@@ -10,6 +10,17 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+## Structural detachment capacities — 2026-11-01
+
+The [opt-in structural runtime](../systems/solid-detachment.md) is disabled in
+ordinary Worlds. Its bounded store admits one component, domain≤64×64,
+member count≤1,024 and host-validated proxy IDs within1–64. Conservative contact
+search has depth/radius4, fixed81-site scratch, ≤4 parcel moves, ≤64 attempts
+and320 reserved path coordinates per complete compound sample. Full unit-square
+clearance uses a positive1e-6-cell margin. Defaults for ordinary coupling,
+liquid families, granular support, rendering and GCR are unchanged.
+
+
 The bounded [desktop trial-body constructor](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 has exactly one existing barrel8×14 or Ripper18×8 rectangle and uses the shared
 body packet/capacity limits unchanged. At least two actual physics frames and

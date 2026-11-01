@@ -10,6 +10,16 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Native structural detachment
+
+The opt-in [structural detachment lab](systems/solid-detachment.md) cuts real
+native RedBrick terrain into a hole-preserving Rapier aggregate and uses bounded
+conservative local Sand/Water displacement. The [dated gate ledger](audits/2026-11-01-sol281-current-main.md)
+distinguishes actual platform results from remaining dense-bed, fracture,
+restoration, gameplay and hardware acceptance. It preserves archive#283 and
+current-main render-copyR; it does not wait for global Stage3B or GCR completion.
+
+
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).

@@ -11,6 +11,19 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+## Structural detachment value interface — 2026-11-01
+
+The opt-in [detachment contract](../systems/solid-detachment.md) adds copied
+`solid_detachment_command` request/reply values through the existing exclusive
+worker. Prepare/acknowledge/commit/finalize and rollback bind incarnation,
+sequence, body generation, payload/shape digests and exact collision revision.
+The ordinary body input/result layouts remain11/9. Additional classified
+conservative-displacement counters are separate inspection dictionaries.
+`World::conservative_displace_cells` consumes2–5 expected tuples plus tick and
+optional aggregate lease; it moves each parcel one adjacent cell or reports a
+nonmutating refusal. Exceptional partial progress is explicit Quarantined.
+
+
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:
 `kind = trial_body`, barrel/Ripper arm, one valid actual rectangle packet,

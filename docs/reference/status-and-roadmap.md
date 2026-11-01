@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Structural detachment increment — 2026-11-01
+
+**Current unmerged experiment:** [SOL-DETACH-001](../systems/solid-detachment.md)
+recovers real native-cell support loss, exact aggregate ownership and compound
+Rapier motion on main809fd30d, plus a conservative local Sand/Water transaction.
+The [gate ledger](../audits/2026-11-01-sol281-current-main.md) keeps #281 and #12
+open: dense-bed resistance, reactive cohesion, fracture, moved-body restoration,
+persistence, normal gameplay and hardware physical acceptance remain incomplete.
+No automatic Stage3B or GCR dependency is added; frozen #283 and other PLAY/GCR
+branches remain separate.
+
+
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
 
 ## Current owner policy and accepted baseline — 2026-10-31

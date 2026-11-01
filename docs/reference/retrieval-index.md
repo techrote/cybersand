@@ -10,6 +10,17 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Structural detachment routing
+
+For native terrain support loss, compound Rapier motion, conservative local
+Sand/Water displacement or the diagnostic controls, retrieve
+[Native structural detachment](../systems/solid-detachment.md). For current
+#281 gates, original failed experiments and tested identities, explicitly
+retrieve the [dated SOL281 record](../audits/2026-11-01-sol281-current-main.md).
+Global acceleration and Stage3B ordering remain in the
+[soliding programme](../operations/soliding-programme.md).
+
+
 - [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
   #302 satisfies mandatory native-busy lifecycle qualification; #304 is optional
   and retains its failed evidence. Remaining #268/#269/#270 product, stress,

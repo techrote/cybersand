@@ -61,6 +61,35 @@ physics-characterisation-sanitize: $(BUILD_DIR)/physics_characterisation_sanitiz
 $(BUILD_DIR)/tests_tsan: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(TEST_HEADERS) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
+
+# SOL-DETACH-001 native ownership kernel; no Godot/Rapier host qualification.
+$(BUILD_DIR)/test_solid_detachment: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_solid_detachment.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) -pthread $(CORE_SOURCES) native/tests/test_solid_detachment.cpp -o $@
+
+$(BUILD_DIR)/test_solid_detachment_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_solid_detachment.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -pthread $(CORE_SOURCES) native/tests/test_solid_detachment.cpp -o $@
+
+.PHONY: solid-detachment-test solid-detachment-sanitize
+solid-detachment-test: $(BUILD_DIR)/test_solid_detachment
+	./$(BUILD_DIR)/test_solid_detachment
+
+solid-detachment-sanitize: $(BUILD_DIR)/test_solid_detachment_sanitized
+	./$(BUILD_DIR)/test_solid_detachment_sanitized
+
+
+$(BUILD_DIR)/test_conservative_displacement: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_conservative_displacement.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) -pthread $(CORE_SOURCES) native/tests/test_conservative_displacement.cpp -o $@
+
+$(BUILD_DIR)/test_conservative_displacement_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_conservative_displacement.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -pthread $(CORE_SOURCES) native/tests/test_conservative_displacement.cpp -o $@
+
+.PHONY: conservative-displacement-test conservative-displacement-sanitize
+conservative-displacement-test: $(BUILD_DIR)/test_conservative_displacement
+	./$(BUILD_DIR)/test_conservative_displacement
+
+conservative-displacement-sanitize: $(BUILD_DIR)/test_conservative_displacement_sanitized
+	./$(BUILD_DIR)/test_conservative_displacement_sanitized
+
 $(BUILD_DIR)/test_soliding_lifecycle: native/tests/test_soliding_lifecycle.cpp native/include/cybersand/soliding_lifecycle.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_soliding_lifecycle.cpp -o $@
 
@@ -115,7 +144,9 @@ soliding-stage3b-validation-apparatus-test: | $(BUILD_DIR)
 	python3 tools/experiments/stage3b_validation.py generate-plan --apparatus-source-commit=$$(git rev-parse HEAD) --profile smoke --output $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 	python3 tools/experiments/stage3b_validation.py validate-plan $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 
-soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline
+soliding-test: $(BUILD_DIR)/test_conservative_displacement $(BUILD_DIR)/test_solid_detachment $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline
+	./$(BUILD_DIR)/test_conservative_displacement
+	./$(BUILD_DIR)/test_solid_detachment
 	./$(BUILD_DIR)/test_soliding_lifecycle
 	./$(BUILD_DIR)/test_settled_discovery
 	./$(BUILD_DIR)/test_settled_regions
@@ -149,7 +180,9 @@ $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized: $(CORE_SOURCES) $(C
 $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_stage3b_sparse_activity_deadline.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_stage3b_sparse_activity_deadline.cpp -o $@
 
-soliding-sanitize: $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized
+soliding-sanitize: $(BUILD_DIR)/test_conservative_displacement_sanitized $(BUILD_DIR)/test_solid_detachment_sanitized $(BUILD_DIR)/test_soliding_lifecycle_sanitized $(BUILD_DIR)/test_settled_discovery_sanitized $(BUILD_DIR)/test_settled_regions_sanitized $(BUILD_DIR)/test_settled_world_discovery_sanitized $(BUILD_DIR)/test_stage3b_runtime_storage_sanitized $(BUILD_DIR)/test_stage3b_bounded_spatial_index_sanitized $(BUILD_DIR)/test_stage3b_sparse_mutation_witness_sanitized $(BUILD_DIR)/test_stage3b_sparse_activity_deadline_sanitized
+	./$(BUILD_DIR)/test_conservative_displacement_sanitized
+	./$(BUILD_DIR)/test_solid_detachment_sanitized
 	./$(BUILD_DIR)/test_soliding_lifecycle_sanitized
 	./$(BUILD_DIR)/test_settled_discovery_sanitized
 	./$(BUILD_DIR)/test_settled_regions_sanitized

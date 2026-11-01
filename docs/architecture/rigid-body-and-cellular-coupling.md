@@ -11,6 +11,19 @@ last-reviewed: 2026-10-22
 
 # Rigid-body and cellular coupling
 
+## Opt-in detached compounds — 2026-11-01
+
+**Current experimental source:** the [structural detachment host](../systems/solid-detachment.md)
+publishes an exact rectangle union for one genuine native-derived Rapier body.
+Its opt-in strict contact policy uses at most four one-cell cardinal parcel
+moves and requires full unit-square clearance against every oriented proxy.
+Ordinary independent-body ejection, material/Water rules and the11/9 packed ABI
+remain unchanged. The shared Rapier bridge owns both ordinary and compound
+response; the latter applies existing proxy impulses at rotated offsets and
+one weighted correction, refusing duplicate/mixed/stale samples. This is not
+a new bearing/friction law or a claim that dense-bed penetration is solved.
+
+
 ## When a crate moves through sand, are its pixels erased and restored?
 
 **Current:** native World owns cellular materials; Rapier2D owns independent
