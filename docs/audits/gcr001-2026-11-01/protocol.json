@@ -1557,5 +1557,17 @@
     "change": "sample-count weighted Jacobi phase updates; budgets/coefficients/gate unchanged",
     "prior_failure_retained": true,
     "physical_results_before_revision": false
+  },
+  "reduction_R2": {
+    "stage": "Gate1 before physical acquisition",
+    "failed_R1_source": "c775febb",
+    "reason": "singlecentroid discardscontactspread; same36 analyticoraclecasesfailed10%max=.133955",
+    "design": "Welford perbin tangent mean/M2 +supportextents; two equalweight contacts mean+-sigma; symmetricallylimit sigma tosupportinterval andcount clamps",
+    "source_bins": 8,
+    "maximum_numerical_contacts": 16,
+    "maximum_scalar_updates_per_64_body_boundary": 8192,
+    "limits": "normal20/per-source2, mu,4passes and10%gate unchanged",
+    "weights": "eachquadraturecontact halfsourcebin count; variancezero collapses one fullweightpoint",
+    "physical_results_before_revision": false
   }
 }
