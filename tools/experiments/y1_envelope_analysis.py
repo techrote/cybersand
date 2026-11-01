@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import math
+import struct
 from collections import Counter
 from pathlib import Path
 
@@ -34,7 +35,11 @@ def clearance(rows, consecutive=60):
         if run == consecutive:
             start = i-consecutive+1
             break
-    return {'contact': rows[contact]['tick'], 'sustained_start': rows[start]['tick'] if start is not None else None,
+    last_overlap = max((i for i in range(contact,len(rows)) if rows[i]['post_overlap'] or rows[i]['tick_overlap']),default=contact-1)
+    terminal = last_overlap+1 if len(rows)-last_overlap-1 >= consecutive else None
+    return {'terminal_start':rows[terminal]['tick'] if terminal is not None else None,
+            'terminal_latency_samples':terminal-contact if terminal is not None else None,
+            'contact': rows[contact]['tick'], 'sustained_start': rows[start]['tick'] if start is not None else None,
             'latency_samples': start-contact if start is not None else None,
             'status': 'cleared' if start is not None else 'right-censored',
             'recurrence': sum(bool(r['tick_overlap'] or r['post_overlap']) for r in rows[start+consecutive:]) if start is not None else None}
@@ -58,10 +63,21 @@ def excursions(values, amplitude=1.0):
     return count
 
 
+def registered_spec_equal(actual, expected):
+    # Godot JSON prints the original angle to fewer decimal digits. The body
+    # input ABI is float32: require identical carrier bits AND only decimal
+    # formatting-sized drift. Never apply this rule to physical observations.
+    if set(actual) != set(expected):
+        return False
+    return all((struct.pack('<f', actual[key]) == struct.pack('<f', expected[key])
+                and abs(actual[key]-expected[key]) <= 1e-14)
+               if key == 'angle' else actual[key] == expected[key] for key in expected)
+
+
 def reduce_capture(capture, protocol):
     spec = capture['case']
     registered = next(s for s in protocol['cases'] if s['id'] == spec['id'])
-    if spec != registered or capture['candidate'] not in protocol['arms'] or not capture['ok']:
+    if not registered_spec_equal(spec, registered) or capture['candidate'] not in protocol['arms'] or not capture['ok']:
         raise ValueError('capture identity/registration failure')
     if not capture['telemetry']:
         raise ValueError('primary reduction needs diagnostic channels')
@@ -107,10 +123,12 @@ def reduce_capture(capture, protocol):
             minimum = min(terms.values())
             limiters['+'.join(k for k,v in terms.items() if abs(v-minimum)<1e-8)] += 1
         clear = clearance(selected)
-        rest = {'y_span':max(ys)-min(ys),'net_y_drift':ys[-1]-ys[0],
+        rest = {'x_span':max(r['out'][0] for r in late)-min(r['out'][0] for r in late),
+                'net_x_drift':late[-1]['out'][0]-late[0]['out'][0],
+                'y_span':max(ys)-min(ys),'net_y_drift':ys[-1]-ys[0],
                 'abs_vy':quantiles([abs(r['out'][4]) for r in late]),
                 'correction_active_fraction':sum(r['result'][4]!=0 for r in late)/len(late),
-                'overlap_frames':sum(bool(r['tick_overlap']) for r in late),
+                'overlap_frames':sum(bool(r['tick_overlap']) for r in late),'post_ejection_overlap_frames':sum(bool(r['post_overlap']) for r in late),
                 'support':quantiles([r['support']['raw_support'] for r in late])}
         applicable = spec['group'] in ['anchor','mass','scale','orientation','material','historical']
         limits = protocol['decisions']['credible_rest']
@@ -137,7 +155,7 @@ def reduce_capture(capture, protocol):
             'stopping_distance':impact[stop]['out'][1]-impact[0]['in'][1] if stop is not None else None,
             'first_no_target':next((r['tick'] for r in selected if r['support']['no_target']),None),
             'clearance':clear,'peak_upward_speed':max(0,-min(r['out'][4] for r in impact[contact:] if contact is not None)) if contact is not None else None,
-            'accepted_bearing_request_sum':-sum(r['bearing_y'] for r in selected),'limiters':dict(limiters),
+            'bearing_request_sum':-sum(r['bearing_y'] for r in selected),'accepted_total_coupling_impulse_y':sum(r['result'][2] for r in selected),'limiters':dict(limiters),
             'rest':rest,'release':release,'ejection':phases,
             'lateral_travel_120_479':selected[479]['out'][0]-selected[119]['out'][0],
             'angle_change':selected[-1]['out'][2]-selected[0]['in'][2],
@@ -146,7 +164,7 @@ def reduce_capture(capture, protocol):
             'unsupported_hover_longest':longest_hover,'late_excursions_over_1px':excursions(ys),
             'post_arrest_excursions_over_1px':excursions([r['out'][1] for r in impact[stop:]]) if stop is not None else None,
             'area':size_x*size_y,'perimeter':2*(size_x+size_y),'initial_momentum':spec['mass']*spec['speed'],
-            'boundaries':quantiles([r['support']['boundaries'] for r in selected]),'sample_capacity':2,
+            'boundaries':quantiles([r['support']['boundaries'] for r in selected]),'sample_capacity':2,'response_without_current_support':sum((r['bearing_y']!=0 or r['result'][4]!=0) and not r['support']['raw_support'] for r in selected),
             'support_distribution':dict(Counter(r['support']['raw_support'] for r in selected)),
             'late_angle_span':max(r['out'][2] for r in late)-min(r['out'][2] for r in late)})
     first = [r for r in rows if r['body']==1]
@@ -173,6 +191,8 @@ def main():
         for arm in protocol['arms']:
             path = args.input/f'{spec["id"]}-{arm}.json'
             capture = json.loads(path.read_text())
+            if capture['protocol_sha256'] != hashlib.sha256(args.protocol.read_bytes()).hexdigest():
+                raise ValueError('protocol byte hash mismatch')
             result = reduce_capture(capture,protocol)
             result['raw_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
             captures.append(result)

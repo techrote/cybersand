@@ -1,0 +1,13 @@
+{
+  "pin": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "tree": "2d52f4046458ce90ce7a884d733cff5789b67f21",
+  "files": {
+    "SOURCE-PROVENANCE.json": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+    "SOURCE-CHECKPOINT.json": "cdb79329c898f38b25b5118c2367ea9d3f4fd229ee80993043a80bf5339b6343",
+    "docs/WEB_THREADING.md": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+    "docs/LOCAL_DEVELOPMENT.md": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d",
+    "tools/dev.py": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+    "validation/browser-results.json": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839"
+  },
+  "purpose": "Read-only reference blobs at the same parent paths used by Documentation CI; no companion source edits."
+}

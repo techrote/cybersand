@@ -1,6 +1,6 @@
 import unittest
 
-from y1_envelope_analysis import clearance, excursions, physical_rows, quantiles
+from y1_envelope_analysis import clearance, excursions, physical_rows, quantiles, registered_spec_equal
 
 
 def row(tick, overlap=0, support=0):
@@ -9,6 +9,11 @@ def row(tick, overlap=0, support=0):
 
 
 class EnvelopeAnalysisTests(unittest.TestCase):
+    def test_only_angle_decimal_formatting_can_round(self):
+        self.assertTrue(registered_spec_equal({'angle':.785398163397448}, {'angle':.7853981633974483}))
+        self.assertFalse(registered_spec_equal({'angle':.78539}, {'angle':.7853981633974483}))
+        self.assertFalse(registered_spec_equal({'mass':1.000000000000001,'angle':0.0}, {'mass':1.0,'angle':0.0}))
+
     def test_airborne_zero_is_not_clearance(self):
         rows = [row(i) for i in range(80)] + [row(80,1)]
         self.assertEqual(clearance(rows)['status'],'right-censored')
@@ -19,6 +24,7 @@ class EnvelopeAnalysisTests(unittest.TestCase):
         result = clearance(rows)
         self.assertEqual(result['sustained_start'],1)
         self.assertEqual(result['recurrence'],1)
+        self.assertIsNone(result['terminal_start'])
 
     def test_one_zero_boundary_does_not_clear(self):
         rows = [row(i,1 if i in (0,3) else 0) for i in range(63)]

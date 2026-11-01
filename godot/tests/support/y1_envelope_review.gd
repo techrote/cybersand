@@ -18,6 +18,7 @@ var native_sha256: String
 var protocol_path: String
 
 func _ready() -> void:
+	DisplayServer.window_set_title("CyberSand Y1 envelope owner review")
 	protocol_path = ProjectSettings.globalize_path("res://").path_join("../docs/audits/y1-envelope-2026-11-01/protocol.json").simplify_path()
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--protocol="): protocol_path = argument.trim_prefix("--protocol=")
