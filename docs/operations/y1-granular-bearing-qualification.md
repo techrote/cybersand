@@ -51,6 +51,9 @@ One packed sample follows each intended main-thread step. Instrumented
 observations remain copied values; material edits have an explicit quantity
 ledger. The asynchronous arm uses the production `CyberSimulationWorker`
 mailbox/cadence/publication and consumes snapshots every three physics frames.
+A [pre-acquisition clarification](../audits/y1-envelope-2026-11-01/async-delivery-amendment.json)
+retains one real immutable snapshot between consume boundaries, so delivery
+actually ages while main continues its ordinary step/sample boundary.
 It does not fabricate sample ages or read a live World from the main thread.
 Its bounded observer reads values under the exclusive worker owner; live
 Rapier access stays on main.

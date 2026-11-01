@@ -50,6 +50,7 @@ func _run() -> void:
 		return
 	var rows: Array = []
 	var failure: String = ""
+	var retained: CyberSimulationSnapshot
 	var deadline: int = Time.get_ticks_msec()+45000
 	for frame: int in range(int(registered.frames)):
 		await physics_frame
@@ -61,10 +62,13 @@ func _run() -> void:
 			failure = "failed World"
 			break
 		var applied: bool = frame % int(registered.consume_every) == 0
-		if applied: fixture.bridge.apply_cellular_results(snapshot.serial,snapshot.rigid_body_results)
+		var consumed: CyberSimulationSnapshot = retained if retained != null else snapshot
+		if applied:
+			fixture.bridge.apply_cellular_results(consumed.serial,consumed.rigid_body_results)
+			retained = snapshot
 		var apps: Array = Array(fixture.bridge.diagnostic_applications) if applied else []
-		rows.append({"frame":frame,"cell_tick":snapshot.tick_index,"snapshot_serial":snapshot.serial,"consumed":applied,
-			"pose":fixture.pose(0),"apps":apps,"result":Array(snapshot.rigid_body_results) if applied else []})
+		rows.append({"frame":frame,"cell_tick":snapshot.tick_index,"snapshot_serial":snapshot.serial,"consumed":applied,"consumed_cell_tick":consumed.tick_index if applied else -1,"consumed_snapshot_serial":consumed.serial if applied else -1,
+			"pose":fixture.pose(0),"apps":apps,"result":Array(consumed.rigid_body_results) if applied else []})
 		fixture.bridge.step()
 		worker.set_rigid_body_states(fixture.bridge.pack_body_states()) # once per live main boundary
 		worker.acknowledge_render_snapshot(snapshot.render_snapshot_serial)
