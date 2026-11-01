@@ -371,3 +371,25 @@ nonwrapping session. The replay projection executable is retained at
 [compare_gcr_replay.py](../../tools/experiments/compare_gcr_replay.py).
 Remaining acceptance limits listed above stay open; this checkpoint does not
 convert NO-GO into completion of REM-004 or owner gameplay acceptance.
+
+## Exact checkpoint checks and final handoff
+
+At `1c959cf2c632ce02666c5668a38918b3e1154036`, the
+[checkpoint receipt](gcr001-2026-11-01/checkpoint-qualification.json) records all
+focused checks passing: five GCR native groups on Windows, Linux and Linux
+ASan/UBSan; GCR protocol, six negative controls and corrected three-arm review
+on both platforms; actual rocket-barrel CLI construction on both platforms;
+seven analysis/export regressions; documentation, M11, repository/provenance,
+Linux runtime floor, frozen/challenge/GCR retrieval, authenticated review identity,
+LFS fsck and diff checks. The84 raw native/test inputs and81 canonical compiled
+inputs per platform were rechecked unchanged from the full170-test qualification.
+The subsequent handoff adds only receipt/documentation bytes; it does not change
+the physics, test bodies, controllers, fixture inputs or runtime artifacts.
+
+An initial local checkpoint harness stopped before executing tests because it
+compared the raw CRLF native-input ledger to normalized LF hashes. The corrected
+harness checks the original raw hashes and canonical Git equality separately.
+The failed precondition log is retained locally with the final receipt; it is
+not a native test failure or a waived provenance mismatch. Hosted draft skips
+remain non-evidence for Native/Godot execution. The final PR's cheap
+Documentation/provenance result is reported separately from these local gates.

@@ -157,10 +157,15 @@ Use a source-matched, authenticated project and engine; Windows example from the
 repository root (substitute the authenticated project path for an isolated copy):
 
 ```powershell
+$env:CYBERSAND_SOURCE_REVISION = (git rev-parse HEAD)
 & C:/Godot47/Godot_v4.7-stable_win64_console.exe --path ./godot res://player_playground.tscn -- --player=jetbarrel --granular-experiment=GCR --granular-token=GCR-001-2026-11-01 --granular-review-material=2
 ```
 
 Change only `GCR` to `Y1` for the reference; material 2/14/29 selects Sand/Dust/Rust.
+Before a manual launch, run `python tools/experiments/run_gcr_qualification.py
+--identity-only` from the same checkout to authenticate its native/Rapier/engine
+and project-source identities. The environment value labels that inspected Git
+revision; it is not independently an artifact authenticity check.
 `--player=acrobat` selects the articulated runner. The explicit route starts a
 fresh experiment, raises the initial spawn identically, removes stock material
 samples and creates the same supported review bed. Reset reconstructs the arm;
