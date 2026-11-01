@@ -99,8 +99,56 @@ class ShardingTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             subject.build_shard_plan([fake("a", 1)], 0)
 
+    def test_equal_expected_work_is_not_distorted_by_different_watchdogs(self):
+        cases = [subject.Case("long_ceiling", (), 3940, 30),
+                 subject.Case("normal_ceiling", (), 1200, 30), fake("short_a", 10), fake("short_b", 10)]
+        _, weights = subject.build_shard_plan(cases, 2)
+        self.assertEqual(weights, [40, 40])
+
 
 class ResultTests(unittest.TestCase):
+    def test_aggregate_deadline_persists_exact_incomplete_inventory_without_shortening_child(self):
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            root = Path(directory)
+            runtime, rapier = root / "runtime.so", root / "rapier.so"
+            runtime.write_bytes(b"runtime")
+            rapier.write_bytes(b"rapier")
+            output = root / "results"
+            cases = [subject.Case("slow", (), 3940, 100), fake("remaining", 5)]
+            budget = mock.Mock()
+            budget.metadata.return_value = {"execution_seconds": 6000}
+            budget.admission.side_effect = [
+                {"admitted": True}, {"admitted": True},
+                {"admitted": False, "remaining_seconds": 100, "required_seconds": 1620},
+            ]
+            executed = []
+
+            def run_case(_godot, case, output, role):
+                # The complete assigned inventory already exists before import.
+                initial = json.loads((output / "timings.json").read_text())
+                self.assertEqual(initial["assigned_cases"], ["slow", "remaining"])
+                self.assertFalse(initial["completed"])
+                executed.append((case.name, case.timeout))
+                return {"name": case.name, "role": role, "status": "passed"}, False
+
+            with (
+                mock.patch.object(subject, "ROOT", root),
+                mock.patch.object(subject, "runtime_paths", return_value=(runtime, rapier)),
+                mock.patch.object(subject, "discover_cases", return_value=cases),
+                mock.patch.object(subject, "run_case", side_effect=run_case),
+                mock.patch.object(subject.scheduling, "ExecutionBudget", return_value=budget),
+                mock.patch.object(subject.subprocess, "check_output", side_effect=["a" * 40, "Godot", "b" * 40]),
+                mock.patch.object(sys, "argv", ["runner", "--godot", "unused", "--output", str(output), "--keep-going"]),
+            ):
+                status = subject.main()
+            report = json.loads((output / "timings.json").read_text())
+        self.assertEqual(status, 1)
+        self.assertEqual(executed, [("import", 1200), ("slow", 3940)])
+        self.assertEqual(report["incomplete_cases"], ["remaining"])
+        self.assertEqual(report["incomplete_reason"], "aggregate_execution_budget_exhausted")
+        self.assertFalse(report["completed"])
+        self.assertEqual(report["status"], "failed")
+
     def run_child(self, program: str, *, timeout: float = 5) -> tuple[dict, bool]:
         case = subject.Case("fixture", (), timeout, 1)
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):

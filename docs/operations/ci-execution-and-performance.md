@@ -2,9 +2,9 @@
 title: CI execution watchdogs and advisory performance
 status: Current
 document-kind: runbook
-scope: Shared Godot, Python and native execution allowances, complete hosted budgets, retained failures and comparable performance history
-canonical-for: [ci-execution-watchdogs, advisory-performance-history]
-last-reviewed: 2026-10-31
+scope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history
+canonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]
+last-reviewed: 2026-11-01
 related-documents: [github-development-and-release.md, profiling-observability-and-performance.md, testing-validation-and-replay.md, ../audits/2026-10-31-execution-watchdog-modernization.md]
 ---
 
@@ -45,28 +45,31 @@ protocol inputs. They do not become watchdogs merely because they contain a
 number. In particular, BUSY001's held native phase controls retain their original
 protocol bounds and the scene smoke check retains its 180-frame count.
 
-## Complete hosted parents
+## Scheduling estimates and hosted safety boundaries
 
 [The Godot planner](../../tools/ci/godot_job_plan.py) discovers every current
-fixture and derives a complete matrix. It reserves each case's process allowance,
-300 seconds for independent readback and 240 seconds for the complete sequential
-diagnostic and cleanup path. The shared `godot_process_cleanup_seconds()` helper
-includes up to three legacy snapshots and their process-tree retirement, closing
-the independent capture owner, and retiring the engine tree. Import receives the
-same cleanup reserve. Three shared metadata operations, setup/artifact allowance
-and aggregate headroom are counted separately.
-Historical elapsed-time weights only distribute work. They cannot shorten a
-case or omit it. The current watchdog source contains 246 Linux cases, including
-13 rendered cases, and 233 applicable Windows headless cases; the machine plan
-is authoritative when source discovery changes.
+fixture and derives a deterministic complete matrix from expected execution
+cost. The 2026-11-01 scheduling change separates that estimate from each case's
+unchanged generous watchdog and from the six-hour hosted-job safety boundary.
+The previous sum-of-watchdogs partition multiplied short hosted jobs; its
+historical arithmetic remains in the 2026-10-31 audit.
 
-The corrected complete plan uses 77 Linux and 75 Windows shards. Linux execution
-allows 276 minutes and Windows 263 minutes within a 360-minute parent, with 70 minutes reserved
-for setup and artifacts and 10 minutes of additional headroom. These generous
-maxima are not expected runtime or a performance claim. The full suite no longer
-promises that dozens of one-hour child allowances fit inside a short four-shard
-parent. [GitHub's hosted job limit](https://docs.github.com/en/actions/reference/limits)
-is six hours; the planner fails if its policy would exceed it.
+**Current:** every admitted case retains its full process allowance, 300 seconds
+for independent readback and 240 seconds for sequential diagnostics/cleanup.
+The shared `godot_process_cleanup_seconds()` includes up to three legacy
+snapshots, capture-owner retirement and engine-tree retirement. Import retains
+its own full allowance. Three metadata operations, 70 minutes for setup/artifact
+steps and 10 minutes of headroom remain reserved. A shard admits its next case
+only when that case's full allowance fits the remaining execution boundary.
+Unstarted cases are explicitly incomplete and fail coverage; an underestimate
+never shortens a running case's watchdog or silently counts missing work.
+
+The source inventory at intake is 246 Linux cases, including 13 rendered cases,
+and 233 applicable Windows cases. Machine discovery remains authoritative as
+the game expands. The dated [scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md)
+records estimator inputs, selected counts, original results and limitations.
+The [hosted job limit](https://docs.github.com/en/actions/reference/limits) remains
+six hours; an individual case that cannot fit or an oversized matrix is rejected.
 
 The six Native families retain the exact original 20 commands and scientific
 inputs. [Their planner](../../tools/ci/native_execution_policy.py) derives
@@ -77,8 +80,9 @@ a bounded eight-process dispatch preserves arguments and output identity while
 all assertions run in their original order on the main test thread. The source
 inventory and family receipts remain required by the stable `native` gate.
 
-All independent matrices use `fail-fast: false`, and new commits do not cancel
-original attempts. Required aggregate jobs run after an admitted matrix or scope
+All independent matrices use `fail-fast: false`. New PR commits cancel superseded
+automatic checks for that PR; manual qualification and main push runs have unique
+run groups and retain their original attempts. Required aggregate jobs run after an admitted matrix or scope
 classifier failure. A skipped job is not accepted as a successful behavioral gate.
 The retired optional four-shard serial-migration job is replaced by mandatory
 [Linux coverage verification](../../tools/ci/verify_linux_godot_shards.py) on every
@@ -86,6 +90,25 @@ admitted run. It checks the complete original inventory, source/tree, runtime,
 policy, run/attempt, real rendered commands, natural completion, unchanged raw
 logs and required independent PLAY readbacks. The existing Windows coverage
 reader derives its complete plan from the same source.
+
+## Shared capacity and concurrency
+
+The GDExtension matrices each use `max-parallel: 8`. Together with Native's six
+families, the routine regression phase can use 22 slots before small auxiliary
+jobs. This leaves capacity within the owner's stated 40 standard hosted slots,
+but is not an account-wide cap: multiple PRs and other repositories add demand.
+Physical stress has its own smaller matrix budgets. Launch exceptional campaigns
+deliberately and use the [workflow audit](../audits/2026-11-01-ci-workflow-audit.md)
+and machine inventory when changing independent fan-out.
+
+Automatic GDExtension, Native and Documentation PR runs group by PR identity and
+cancel superseded checks. Main pushes and manual qualification use run identity,
+so a same-ref experiment cannot block or cancel a newer explicit qualification.
+No broad repository lock is introduced. Cancelled checks are not successful
+qualification, and original completed or failed artifacts retain their status.
+GitHub's default concurrency queue replaces an older pending member even when
+`cancel-in-progress` is false; run-unique manual groups avoid that hidden loss.
+See [GitHub concurrency semantics](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency).
 
 ## Original failures and process ownership
 

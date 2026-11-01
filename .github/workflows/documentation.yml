@@ -11,8 +11,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: docs-${{ github.ref }}
-  cancel-in-progress: false
+  group: docs-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   consistency:
@@ -37,6 +37,32 @@ jobs:
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_ci_provider_policy.py
       - name: Test CI provider policy checker
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_ci_provider_policy.py
+      - name: Validate Actions syntax with pinned actionlint
+        timeout-minutes: 10
+        run: |
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 300 \
+            -o "$RUNNER_TEMP/actionlint.tar.gz" \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/actionlint"
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP/actionlint" actionlint
+          "$RUNNER_TEMP/actionlint/actionlint" -shellcheck='' -pyflakes=''
+      - name: Audit workflow inventory and scheduling policies
+        timeout-minutes: 10
+        run: |
+          python3 -m venv "$RUNNER_TEMP/ci-audit"
+          "$RUNNER_TEMP/ci-audit/bin/python" -m pip install --require-hashes -r tools/requirements-ci-audit.txt
+          "$RUNNER_TEMP/ci-audit/bin/python" tools/ci/test_ci_scheduling_policy.py
+          "$RUNNER_TEMP/ci-audit/bin/python" tools/ci/check_ci_scheduling_policy.py --output build/ci-workflow-inventory.json
+          python3 tools/ci/test_ci_run_metrics.py
+      - name: Retain machine-readable workflow inventory
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ci-workflow-inventory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/build/ci-workflow-inventory.json
+          if-no-files-found: error
+          retention-days: 90
       - name: Check LCB capability matrix is source-derived
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/derive_capability_matrix.py --check
       - name: Check LCB policy wire/hash contract vectors

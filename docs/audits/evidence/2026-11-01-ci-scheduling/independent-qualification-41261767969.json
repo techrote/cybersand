@@ -1,0 +1,380 @@
+{
+  "attempt": "1",
+  "implementation_diff_empty": true,
+  "inventory": {
+    "linux": {
+      "case_count": 246,
+      "duplicates": [],
+      "exact_original_main_inventory": true,
+      "independent_play_readbacks": 15,
+      "missing": [],
+      "raw_logs_verified": 266,
+      "unexpected": [],
+      "watchdogs_flags_display_exclusions_unchanged": true
+    },
+    "windows": {
+      "case_count": 233,
+      "duplicates": [],
+      "exact_original_main_inventory": true,
+      "independent_play_readbacks": 15,
+      "missing": [],
+      "raw_logs_verified": 252,
+      "unexpected": [],
+      "watchdogs_flags_display_exclusions_unchanged": true
+    }
+  },
+  "linux_relocation_adapter": "Expected --path argument alone uses original hosted checkout /home/runner/work/cybersand/cybersand/godot; all other arguments, runtime/source identity, original receipt/log hashes and fresh PLAY readers verified unchanged.",
+  "local_readbacks": {
+    "linux": {
+      "receipt_sha256": "417a510eba72a6090333f00c43cb0555d8ee6b90de33497e83980877b2638c40",
+      "status": "passed"
+    },
+    "windows": {
+      "receipt_sha256": "98446912fbcf739289c9413ad14035578fcb1224608af66b4c123e2f504497d8",
+      "status": "passed"
+    }
+  },
+  "local_tracked_delta": [
+    "docs/audits/2026-11-01-ci-scheduling-qualification.md",
+    "docs/audits/2026-11-01-ci-workflow-audit.md"
+  ],
+  "recorded_utc": "2026-11-01T01:58:10.558960+00:00",
+  "run_id": "41261767969",
+  "runtime": {
+    "linux": {
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "496bf3df06be2c6bf47b2e5e4ea525ed4d969c3a34cf1a97d71e4668cdc250e6"
+      },
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      }
+    },
+    "windows": {
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "e66b9b04b546b09cb4feea204373faf12a7248abf1701da88fc6ecf87b666ecb",
+        "size": 4825088
+      },
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "runtime_build_commit": "d7e35aa3897ffa0bde422ece98226c551588040e",
+      "runtime_source_commit": "d7e35aa3897ffa0bde422ece98226c551588040e"
+    }
+  },
+  "schema": "ci-scheduling-independent-qualification-v1",
+  "script_sha256": "d758bc25374794bf16ca49cffdd42567f352471486aa20da8ca04555b349f9c5",
+  "sensitivity": {
+    "linux": {
+      "alternatives": {
+        "16": {
+          "case_counts": [
+            10,
+            14,
+            15,
+            16,
+            16,
+            15,
+            16,
+            16,
+            16,
+            16,
+            16,
+            16,
+            16,
+            16,
+            16,
+            16
+          ],
+          "expected_cost_seconds": [
+            362.25,
+            362.25,
+            367.5,
+            361.5,
+            361.5,
+            360.0,
+            351.0,
+            360.75,
+            360.0,
+            360.0,
+            357.0,
+            360.0,
+            360.0,
+            360.0,
+            352.5,
+            352.5
+          ],
+          "max_cases": 16,
+          "projected_job_seconds": [
+            255.9584985,
+            273.6594755,
+            254.7137165,
+            219.9386095,
+            149.3844755,
+            160.5894755,
+            221.9372835,
+            191.9375905,
+            216.2219195,
+            236.5844755,
+            274.7349845,
+            216.6584755,
+            212.6504755,
+            167.4491205,
+            197.1990705,
+            264.5067555
+          ],
+          "projected_matrix_seconds_index_order": 538.1662309999999,
+          "projected_matrix_seconds_longest_first": 451.912787,
+          "projected_matrix_seconds_reverse_index_order": 538.1662309999999,
+          "projected_matrix_seconds_shortest_first": 491.39346,
+          "projected_runner_seconds": 3514.124402
+        },
+        "20": {
+          "case_counts": [
+            4,
+            8,
+            10,
+            10,
+            10,
+            10,
+            12,
+            13,
+            13,
+            14,
+            12,
+            15,
+            16,
+            16,
+            16,
+            16,
+            12,
+            13,
+            13,
+            13
+          ],
+          "expected_cost_seconds": [
+            285.0,
+            285.0,
+            292.5,
+            292.5,
+            285.0,
+            285.0,
+            285.0,
+            292.5,
+            292.5,
+            285.0,
+            292.5,
+            285.0,
+            284.25,
+            285.0,
+            284.25,
+            284.25,
+            285.0,
+            292.5,
+            292.5,
+            283.5
+          ],
+          "max_cases": 16,
+          "projected_job_seconds": [
+            200.18947550000001,
+            177.7164755,
+            229.53547550000002,
+            204.5685805,
+            159.2234755,
+            135.7184755,
+            160.0204755,
+            163.0596655,
+            155.5566095,
+            159.8554755,
+            208.5866025,
+            185.1162565,
+            171.2841035,
+            221.6847515,
+            187.3128065,
+            224.6384985,
+            161.5684755,
+            132.5679625,
+            220.5971385,
+            202.2815245
+          ],
+          "projected_matrix_seconds_index_order": 568.7730605,
+          "projected_matrix_seconds_longest_first": 539.0941815,
+          "projected_matrix_seconds_reverse_index_order": 560.6750545,
+          "projected_matrix_seconds_shortest_first": 576.0717575000001,
+          "projected_runner_seconds": 3661.082304
+        }
+      },
+      "assumptions": [
+        "Offline projection, not hosted qualification.",
+        "Use actual naturally completed per-case process plus independent readback durations; keep case costs unchanged under regrouping.",
+        "Add median observed per-job residual overhead (setup, import, teardown and inter-step gaps).",
+        "Eight identical slots, immediate list scheduling, no external runner wait; GitHub dispatch order is not guaranteed.",
+        "Increasing cases per process environment can change timings; single-run measurements do not establish a stable distribution."
+      ],
+      "observed_overhead_seconds": {
+        "count": 20,
+        "max": 51.54999999999998,
+        "median": 36.739,
+        "p95": 43.05472399999999,
+        "total": 729.707
+      }
+    },
+    "windows": {
+      "alternatives": {
+        "16": {
+          "case_counts": [
+            8,
+            12,
+            15,
+            15,
+            14,
+            14,
+            16,
+            15,
+            16,
+            15,
+            16,
+            15,
+            15,
+            15,
+            16,
+            16
+          ],
+          "expected_cost_seconds": [
+            345.0,
+            345.0,
+            345.0,
+            345.0,
+            345.0,
+            345.0,
+            346.5,
+            344.25,
+            342.0,
+            345.0,
+            344.25,
+            345.0,
+            345.0,
+            345.0,
+            341.25,
+            340.5
+          ],
+          "max_cases": 16,
+          "projected_job_seconds": [
+            226.96656899999996,
+            263.786836,
+            233.69466799999998,
+            241.55066799999997,
+            204.14020499999998,
+            199.79641999999998,
+            199.77166799999998,
+            200.56875399999998,
+            157.03302499999998,
+            243.30438399999997,
+            206.561872,
+            216.86266799999999,
+            205.690668,
+            228.09466799999998,
+            273.783046,
+            156.64399999999998
+          ],
+          "projected_matrix_seconds_index_order": 515.333714,
+          "projected_matrix_seconds_longest_first": 443.07605199999995,
+          "projected_matrix_seconds_reverse_index_order": 507.09121999999996,
+          "projected_matrix_seconds_shortest_first": 480.344918,
+          "projected_runner_seconds": 3458.250119
+        },
+        "19": {
+          "case_counts": [
+            5,
+            9,
+            10,
+            10,
+            11,
+            11,
+            13,
+            13,
+            13,
+            15,
+            12,
+            12,
+            15,
+            15,
+            15,
+            15,
+            13,
+            13,
+            13
+          ],
+          "expected_cost_seconds": [
+            289.5,
+            289.5,
+            292.5,
+            292.5,
+            288.75,
+            288.0,
+            288.0,
+            292.5,
+            292.5,
+            286.5,
+            292.5,
+            292.5,
+            286.5,
+            285.0,
+            292.5,
+            292.5,
+            287.25,
+            287.25,
+            292.5
+          ],
+          "max_cases": 15,
+          "projected_job_seconds": [
+            225.21820499999998,
+            223.89641999999998,
+            196.18566799999996,
+            207.97366799999998,
+            202.78666299999998,
+            108.69859699999998,
+            213.01666799999998,
+            168.77248799999998,
+            151.936193,
+            200.44166799999996,
+            186.48666799999998,
+            173.399668,
+            233.64426699999999,
+            232.97131899999997,
+            178.0,
+            115.25401199999997,
+            199.614668,
+            184.79366799999997,
+            163.38661499999998
+          ],
+          "projected_matrix_seconds_index_order": 532.6007709999999,
+          "projected_matrix_seconds_longest_first": 546.396529,
+          "projected_matrix_seconds_reverse_index_order": 550.554066,
+          "projected_matrix_seconds_shortest_first": 585.195128,
+          "projected_runner_seconds": 3566.4771229999997
+        }
+      },
+      "assumptions": [
+        "Offline projection, not hosted qualification.",
+        "Use actual naturally completed per-case process plus independent readback durations; keep case costs unchanged under regrouping.",
+        "Add median observed per-job residual overhead (setup, import, teardown and inter-step gaps).",
+        "Eight identical slots, immediate list scheduling, no external runner wait; GitHub dispatch order is not guaranteed.",
+        "Increasing cases per process environment can change timings; single-run measurements do not establish a stable distribution."
+      ],
+      "observed_overhead_seconds": {
+        "count": 19,
+        "max": 56.857462999999996,
+        "median": 36.076,
+        "p95": 56.857462999999996,
+        "total": 690.961
+      }
+    }
+  },
+  "source": "9a01d782a6b93cb3878b12e50ee40ebfd502e31b",
+  "source_tree": "39b73e3bbbd33d4da983d194fd50bf3fa81b19f1"
+}

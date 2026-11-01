@@ -429,7 +429,9 @@ class SourceContractTests(unittest.TestCase):
 
     def test_mismatched_committed_lfs_pointer_is_rejected(self):
         path = self.root / self.native
-        path.write_text(path.read_text().replace("d" * 64, "9" * 64))
+        # LFS pointers are binary-attributed LF bytes even on Windows. Alter only
+        # the intended digest so this exercises identity, not newline rejection.
+        path.write_bytes(path.read_bytes().replace(b"d" * 64, b"9" * 64))
         self.git(self.root, "add", "."); self.git(self.root, "commit", "-qm", "mismatched pointer")
         self.sha = self.git(self.root, "rev-parse", "HEAD").decode().strip()
         with self.assertRaisesRegex(ValueError, "pointer differs"):
