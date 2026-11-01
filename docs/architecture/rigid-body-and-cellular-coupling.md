@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 ---
 
 # Rigid-body and cellular coupling
@@ -266,3 +266,7 @@ now targets high-speed entry under the existing bounded yielding response. A2
 measured accepted bearing before the first ejection, age zero throughout and no
 global20-cap saturation. No bearing, normal, search, material or rendering policy
 is changed by A2; live efficacy evidence remains the single Sand rectangle family.
+
+## Granular entry-response observer
+
+**Current diagnostic apparatus, 2026-11-01:** the [bearing measurement owner](../operations/granular-bearing-pre-overlap-investigation.md#height-arm-measurement-checkpoint) observes raw support before its velocity gate, shared-predicate rejection categories, fixed-law terms and actual correction/impulse API boundaries. Its observer is opt-in and bounded; production response, fallback, packed values, World authority and render publication are unchanged. Correction-induced velocity zeroing is recorded separately from impulses. The optional native support inspection preserves the predicate and requires rebuilding C++ consumers.

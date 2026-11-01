@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -1834,3 +1834,7 @@ acquisition and separate stream/legacy trajectories. It refuses unqualified
 inputs and verifies inherited B/C Git blobs against the reviewed parent. All
 outputs must be separate from frozen inputs. See the
 [A2 command/runtime receipts](../audits/2026-10-31-physical-detachment-a2.md).
+
+## Granular entry-response measurement
+
+After a source-matched isolated extension build, run `python tools/experiments/test_granular_bearing_analysis.py`. `run_granular_bearing.py --godot <engine> --project <isolated-project> --compiled-inputs <build-source-hashes.json> --arm drop1 --details on --output <new-directory>` records runtime/source/command custody and constructs A2 identities. Pair with `--details off`. Repeat for `drop4`; speed arms additionally require `--speed-registration` bound to committed admission. Replay every population with `test_granular_bearing_capture.gd -- --mode=replay --capsule-input=<population> --replay-report=<new.json>`, then reduce with `granular_bearing_analysis.py --input <acquisition-directory> --output <separate-summary.json>`. See the [finite protocol](../operations/granular-bearing-pre-overlap-investigation.md).

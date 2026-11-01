@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 ---
 
 # Interfaces and message contracts
@@ -1442,3 +1442,7 @@ mode, queue and counters; incarnation checks remain the same. The unchanged
 `diagnostic_replay_ejection()` still verifies original target/order/reasons/hash.
 The [A2 identity and sampling scope](../architecture/rigid-body-and-cellular-coupling.md#a2-topology-diversity-and-upstream-response)
 is an offline consumer contract, not an additional simulation authority.
+
+## Bearing measurement values
+
+The opt-in [bearing observer](../operations/granular-bearing-pre-overlap-investigation.md#height-arm-measurement-checkpoint) returns owned dictionaries and probe arrays for body1. Probe rows contain x/y, shared-predicate reason, stable-below/around and visited paused/fresh/unsupported/missing counts. Reasons0..4 mean accepted/material/centre/neighbourhood/side. It exposes no World storage or live Rapier object. Detailed bridge rows distinguish pre-application, post-correction and post-impulse server reads; accepted age-eligible rows only. Existing packed11/9 and six-field diagnostics retain their schema.

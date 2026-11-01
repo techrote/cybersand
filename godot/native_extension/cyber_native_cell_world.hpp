@@ -142,6 +142,8 @@ public:
     [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
                                                   bool include_histogram = false) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
+    // Opt-in single-body measurement fixture; fixed probe capacity, copied values.
+    [[nodiscard]] Dictionary diagnostic_bearing_state() const;
     // Explicit opt-in bounded investigation, called only by the exclusive owner.
     bool diagnostic_ejection_capture(std::int64_t maximum_failed, std::int64_t maximum_success);
     [[nodiscard]] Dictionary diagnostic_ejection_corpus() const;
@@ -192,6 +194,18 @@ private:
     using BodyDiagnostics =
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
+    struct BearingProbe {
+        std::int32_t x = 0, y = 0;
+        cybersand::World::GranularSupportInspection inspection{};
+    };
+    struct BearingTrace {
+        std::uint32_t mask_cells = 0, masked_below = 0, outside_below = 0;
+        std::uint32_t raw_support = 0, used = 0, dropped = 0;
+        bool previous_valid = false;
+        double downward_travel = 0;
+        std::array<BearingProbe, 256> probes{};
+    };
+    std::unique_ptr<BearingTrace> bearing_trace_;
     bool diagnostic_fixture_ = false;
     std::int64_t ejection_capture_failed_cap_ = 0, ejection_capture_success_cap_ = 0;
     std::int64_t ejection_capture_attempts_ = 0, ejection_capture_duplicates_ = 0;

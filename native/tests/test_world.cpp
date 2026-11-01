@@ -2597,6 +2597,23 @@ void test_granular_player_support_policy() {
             signed_support.set(x,y,Material::Sand);
     require(signed_support.granular_support_at(-64,-100,false,false),
             "negative-coordinate packed support failed");
+    const auto before = signed_support.state_hash();
+    for (int y = -104; y <= -94; ++y) for (int x = -68; x <= -60; ++x)
+        for (const bool side : {false, true}) for (const bool masks : {false, true}) {
+            World::GranularSupportInspection inspection;
+            const bool plain = signed_support.granular_support_at(x,y,side,masks);
+            const bool observed = signed_support.granular_support_at(x,y,side,masks,&inspection);
+            require(plain == observed && (inspection.reason == 0) == observed,
+                    "support inspection changed predicate result");
+        }
+    World::GranularSupportInspection packed, paused, loose;
+    require(signed_support.granular_support_at(-64,-100,false,false,&packed) && packed.stable_below == 9,
+            "inspection lost packed support");
+    require(!excluded.granular_support_at(64,100,false,false,&paused) && paused.reason == 2 && paused.paused > 0,
+            "inspection lost paused support reason");
+    require(!film.granular_support_at(64,100,false,false,&loose) && loose.reason == 3 && loose.stable_below == 3,
+            "inspection lost insufficient neighborhood reason");
+    require(before == signed_support.state_hash(), "support inspection mutated World");
 }
 
 void test_powder_pair_and_void_policy() {

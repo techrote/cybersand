@@ -93,6 +93,7 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
+    ClassDB::bind_method(D_METHOD("diagnostic_bearing_state"), &CyberNativeCellWorld::diagnostic_bearing_state);
     ClassDB::bind_method(D_METHOD("diagnostic_ejection_capture", "maximum_failed", "maximum_success"), &CyberNativeCellWorld::diagnostic_ejection_capture);
     ClassDB::bind_method(D_METHOD("diagnostic_ejection_stream"), &CyberNativeCellWorld::diagnostic_ejection_stream);
     ClassDB::bind_method(D_METHOD("diagnostic_take_ejection_events"), &CyberNativeCellWorld::diagnostic_take_ejection_events);
@@ -361,6 +362,7 @@ Dictionary CyberNativeCellWorld::get_default_demo_identity() const {
 void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     diagnostic_fixture_ = false;
     body_diagnostics_.reset();
+    bearing_trace_.reset();
     displacement_gain_ = kBodyDisplacementReactionImpulse;
     boundary_gain_ = kBodyBoundaryPressureImpulse;
     contact_gain_ = kBodyPixelContactImpulse;
@@ -467,6 +469,7 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
 void CyberNativeCellWorld::clear_observations() {
     observations_ = {};
     if (body_diagnostics_) *body_diagnostics_ = {};
+    if (bearing_trace_) *bearing_trace_ = {};
 }
 
 void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
@@ -777,11 +780,25 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
         const auto x = cell_index % kWorldWidth;
         const auto y = cell_index / kWorldWidth;
         const auto body_id = world_->transient_obstacle_at(x, y);
+        auto* trace = body_id == 1U ? bearing_trace_.get() : nullptr;
+        if (trace) {
+            ++trace->mask_cells;
+            if (!in_bounds(x, y + 1)) ++trace->outside_below;
+            else if (world_->transient_obstacle_at(x, y + 1) != 0U) ++trace->masked_below;
+        }
         if (body_id == 0U || body_id >= current_bodies_.size() ||
             !in_bounds(x, y + 1) || world_->transient_obstacle_at(x, y + 1) != 0U) {
             continue;
         }
-        if (world_->granular_support_at(x, y + 1, false, false)) {
+        cybersand::World::GranularSupportInspection inspection;
+        const bool supported = world_->granular_support_at(x, y + 1, false, false,
+                                                           trace ? &inspection : nullptr);
+        if (trace) {
+            trace->raw_support += supported;
+            if (trace->used < trace->probes.size()) trace->probes[trace->used++] = {x, y + 1, inspection};
+            else ++trace->dropped;
+        }
+        if (supported) {
             ++support_samples[body_id];
         }
     }
@@ -789,6 +806,12 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
         const auto samples = support_samples[body_id];
         const auto& body = current_bodies_[body_id];
+        if (body_id == 1U && bearing_trace_) {
+            const auto& previous = previous_bodies_[body_id];
+            bearing_trace_->previous_valid = previous.valid;
+            bearing_trace_->downward_travel = previous.valid
+                ? std::max(0.0, static_cast<double>(body.center.y - previous.center.y)) : 0.0;
+        }
         if (!body.valid || samples == 0U || body.velocity.y <= 0.0) continue;
 
         const auto gravity = kGravityImpulsePerMassTick * body.mass;
@@ -1459,11 +1482,14 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
+        auto bearing_trace = static_cast<bool>(options.get("bearing_trace", false))
+            ? std::make_unique<BearingTrace>() : nullptr;
         world_.swap(candidate);
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         clear_ejection_capture();
         body_diagnostics_ = std::move(diagnostics);
+        bearing_trace_ = std::move(bearing_trace);
         diagnostic_fixture_ = true;
         worker_threads_ = config.worker_threads;
         displacement_gain_ = displacement; boundary_gain_ = boundary;
@@ -2380,6 +2406,57 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
             result["histogram"] = histogram;
         }
     }
+    return result;
+}
+
+Dictionary CyberNativeCellWorld::diagnostic_bearing_state() const {
+    Dictionary result;
+    if (!bearing_trace_ || !diagnostic_fixture_ || !world_ || has_failed() || !current_bodies_[1].valid)
+        return result;
+    const auto& trace = *bearing_trace_;
+    const auto& body = current_bodies_[1];
+    result["schema"] = 1;
+    result["body_id"] = 1;
+    result["sample_serial"] = body.sample_serial;
+    result["owner"] = String::num_uint64(get_instance_id());
+    result["generation"] = String::num_uint64(liquid_policy_session_generation_);
+    result["revision"] = String::num_uint64(revision_);
+    result["attempted_tick"] = static_cast<std::int64_t>(world_->tick_index());
+    result["completed_tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
+    result["mask_cells"] = trace.mask_cells;
+    result["masked_below"] = trace.masked_below;
+    result["outside_below"] = trace.outside_below;
+    result["raw_support"] = trace.raw_support;
+    result["probe_capacity"] = 256;
+    result["probe_drops"] = trace.dropped;
+    Array probes;
+    for (std::size_t index = 0; index < trace.used; ++index) {
+        const auto& p = trace.probes[index];
+        const auto& i = p.inspection;
+        Array row;
+        for (const auto value : {p.x, p.y, int(i.reason), int(i.stable_below), int(i.stable_around),
+                                int(i.paused), int(i.fresh), int(i.unsupported), int(i.missing)}) row.append(value);
+        probes.append(row);
+    }
+    result["probes"] = probes;
+    const auto gravity = kGravityImpulsePerMassTick * body.mass;
+    const auto arrest = body.velocity.y * body.mass;
+    const auto yielding = gravity + std::max(0.0, body.velocity.y - kGravityImpulsePerMassTick) *
+        body.mass * kGranularYieldVelocityResponse;
+    const auto capacity = std::min(kMaximumGranularBearingImpulse,
+        static_cast<double>(trace.raw_support) * kGranularImpulseCapacityPerSample);
+    result["gravity_reference"] = gravity;
+    result["arrest"] = arrest;
+    result["yield"] = yielding;
+    result["sample_capacity"] = static_cast<double>(trace.raw_support) * kGranularImpulseCapacityPerSample;
+    result["capacity"] = capacity;
+    result["global_cap"] = kMaximumGranularBearingImpulse;
+    result["velocity_gate"] = body.velocity.y > 0.0;
+    result["correction_speed_gate"] = body.velocity.y <= kGranularSettleVelocity;
+    result["previous_valid"] = trace.previous_valid;
+    result["downward_travel"] = trace.downward_travel;
+    result["bearing_y"] = observations_[1].bearing.y;
+    result["correction_y"] = observations_[1].correction.y;
     return result;
 }
 

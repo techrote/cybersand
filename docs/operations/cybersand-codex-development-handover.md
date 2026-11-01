@@ -1527,3 +1527,7 @@ Use the [physical actor programme](physical-actor-programme.md) for the combined
 ## Reconstructed depth prototype — 2026-10-18
 
 PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.
+
+## Granular bearing measurement successor - 2026-11-01
+
+The owner-authorized [fixed-law measurement](../audits/2026-11-01-granular-bearing-pre-overlap.md) is isolated on A2 head61f0398e, without main/concurrent integration. Six arms separate spinning height effects from fixed-pose zero-spin initial velocity, qualify observer neutrality and retain failed instrumentation. The [canonical disposition and next candidates](granular-bearing-pre-overlap-investigation.md#measured-disposition-and-next-discriminating-intervention) separate finite braking/admission timing from unsupported support-collapse/global-cap/stale-delivery explanations. No bearing change, gameplay acceptance or merge follows.

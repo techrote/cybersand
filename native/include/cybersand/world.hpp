@@ -196,9 +196,17 @@ public:
     [[nodiscard]] std::uint64_t stored_cell_bits(std::int64_t x, std::int64_t y) const noexcept;
     // Serialized external-owner query. Never called from a rule kernel: its
     // bounded read neighbourhood extends beyond the kernel write domain.
+    // Optional copied observation of the SAME predicate. Counts cover only
+    // visited tests (including the centre), preserving its short circuits.
+    struct GranularSupportInspection {
+        std::uint8_t reason = 0; // accepted, material, centre, below, side
+        std::uint8_t stable_below = 0, stable_around = 0;
+        std::uint8_t paused = 0, fresh = 0, unsupported = 0, missing = 0;
+    };
     [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,
                                            bool side = false,
-                                           bool include_transient_obstacles = true) const noexcept;
+                                           bool include_transient_obstacles = true,
+                                           GranularSupportInspection* inspection = nullptr) const noexcept;
     [[nodiscard]] std::uint16_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint16_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;

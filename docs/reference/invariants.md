@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-01
 ---
 
 # Architectural and simulation invariants
@@ -441,3 +441,7 @@ materials after overrides. Native fixture feeds never paint their expected
 reaction products; every required helper must complete and no-op/aborted cases
 must fail. Counts, logical work, local timing, actual rendered pixels and visual
 quality judgments remain separately labelled evidence.
+
+## Bearing measurement invariants
+
+The [causal measurement protocol](../operations/granular-bearing-pre-overlap-investigation.md) requires exactly one packed sample per step, stored-material conservation including masks, zero observer drops and exact diagnostic on/off physical trajectories. Post-reconcile raw support is separate from earlier overlap/contour geometry. Correction velocity assignment is separate from applied net impulse. Age-zero synchronous observations do not qualify asynchronous cadence or broader granular acceptance.

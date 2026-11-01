@@ -1,10 +1,10 @@
 ---
 title: Granular bearing and pre-overlap response investigation
-status: Planned
+status: Current
 document-kind: guide
 scope: Measurement-first causal successor to the A2 finite-cohort local-rearrangement no-go; no bearing changes approved here
 canonical-for: [granular-bearing-pre-overlap-investigation]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 related-documents: [../audits/2026-10-31-physical-detachment-a2.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/granular-interaction-policy.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -18,7 +18,7 @@ push chains as the primary solution in its measured Sand/drop cohort. This
 successor investigates the upstream response, without treating a wider radius,
 longer chain, broad compaction or a bearing gain change as the assumed answer.
 Generic body/granular ownership remains the existing coupling contract and
-REM-004 / #83. This document specifies a future experiment, not runtime policy.
+REM-004 / #83. This document owns the registered measurement and its scoped disposition; it does not select runtime policy.
 
 ## Current measured premise
 
@@ -143,3 +143,42 @@ bounded traces, diagnostic-neutrality controls, material conservation and an
 independently reviewed causal account. A later owner-approved response experiment
 must be justified by that account. Neither this plan nor A2 admits a production
 bearing change, generalized granular compaction or broad gameplay acceptance.
+
+## Registered measurement run - 2026-11-01
+
+**Planned / registered:** the [finite protocol](../audits/granular-bearing-2026-11-01/protocol.json) starts from exact A2 head `61f0398e` on a separate branch. Current main `15b3a401` is drift metadata only. The owner authorized executing this measurement successor. Two matched spinning height arms precede a conditionally admitted, separately registered zero-spin speed series. All response laws remain fixed; diagnostics require exact on/off neutrality. Results and disposition remain unmeasured at registration.
+
+## Height-arm measurement checkpoint
+
+**Measured 2026-11-01:** fixed-law one-/four-height arms pass all600 physical-frame diagnostic on/off comparisons and220/1301 exact native/fallback replays. Four-height reproduces A2. First-support entry velocity45.907/91.905, maximum initial-surface entry4.324/8.965 and peak pre-ejection endpoint overlap13/45 admit the separately committed [zero-spin registration](../audits/granular-bearing-2026-11-01/speed-registration.json). Contact angles differ, so these height results remain descriptive. The [measurement audit](../audits/2026-11-01-granular-bearing-pre-overlap.md) owns identities, failures and subsequent disposition.
+
+Opt-in `diagnostic_reset({bearing_trace:true})` allocates a single-body fixed256-probe observer before World replacement. `diagnostic_bearing_state()` returns copied post-ejection/pre-velocity-gate support values for body1. It shares the actual granular predicate with an optional fixed-count inspection; reason counters cover only visited tests. Other body IDs are not observed by this fixture API. Bridge `enable_diagnostics(true)` adds at most64 copied application rows; ordinary six-field diagnostics and packed11/9 ABI remain unchanged.
+
+The fixture records600 complete frames,16 Rapier contacts with explicit at-cap metadata and the existing256-pending/8192-total event bounds. Its source-matched runner refuses changed compiled inputs, changed isolated scripts, overwritten output and uncommitted speed admission. No worker reads a live Rapier object. Contour rows are `[column,top_stored_Sand_y,polygon_lower_y,lower_minus_top]`: a signed column-envelope entry, not minimum cell/body distance. Loose grains above an exiting body can increase it. Persistent/new overlap tracks cell coordinates, not parcel identity. Backend values are copied after cellular API calls; contact buffers belong to the preceding Rapier step. Reported normal/impulse conventions are retained rather than treated as calibrated force.
+
+## Measured disposition and next discriminating intervention
+
+**Measured 2026-11-01:** the [six-arm audit](../audits/2026-11-01-granular-bearing-pre-overlap.md#fixed-pose-result-and-causal-disposition)
+qualifies3,117 attempts and six600-frame observer-neutral pairs. Fixed-pose achieved
+entry velocities17.93/34.20/62.55/92.31 produce peak reference entries1.07/2.59/4.72/
+8.09 and peak overlaps7/14/18/33. Momentum-dependent entry is strongly supported
+within this family. Raw support remains present during initial braking; globalcap20,
+stale delivery and missing accepted response are not supported explanations.
+Initial sample capacity and subsequent yielding limit braking, while the highest
+speed first acquires support on a sample that already overlaps material. Existing
+vy<=4 correction then acts near peak entry and zeroes residual downward momentum.
+
+**Planned / proposed, not implemented or selected:** distinguish stronger braking
+from earlier admission using the same zero-spin speed30/90 controls and fresh
+owners. First compare unchanged response against a yield-only diagnostic arm
+(velocity factor.18 versus1.0, retaining per-sample capacity2 and globalcap20).
+Separately compare unchanged post-step admission against one-step downward support
+lookahead bounded to2px, retaining the original law and one total response per
+sample. The latter must replace timing, never add a second support owner/impulse.
+Do not combine interventions initially. Record the existing causal channels,
+first-overlap/no-target, peak entry/overlap, accepted work and post-contact upward
+motion. Retain speed0 release/settling, excavation release, hard-wall and Water
+negative controls so improved braking cannot conceal artificial support or lift.
+These are concrete future causal candidates requiring their own preregistration,
+source/runtime qualification and owner decision; neither is a production fix.
+The measured unused global cap is not the next knob to raise.

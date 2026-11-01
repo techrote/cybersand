@@ -339,4 +339,6 @@ Physical detachment diagnostic replay: use the [coupling contract](../architectu
 For topology diversity hidden by production ejection deduplication, use the
 [coupling A2 contract](../architecture/rigid-body-and-cellular-coupling.md#a2-topology-diversity-and-upstream-response);
 for the next entry-momentum/support experiment use the separately
-[Planned bearing investigation](../operations/granular-bearing-pre-overlap-investigation.md).
+[bearing measurement protocol](../operations/granular-bearing-pre-overlap-investigation.md).
+
+Raw support versus published counts, entry momentum budgets, positional velocity zeroing and the fixed-pose speed controls route to the [granular-bearing measurement guide](../operations/granular-bearing-pre-overlap-investigation.md). The separate BEARING retrieval question retains the frozen32 suite.
