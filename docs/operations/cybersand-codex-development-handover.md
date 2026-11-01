@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Y1 finite post-arrest follow-up — 2026-11-01
+
+The isolated successor to reviewed PR #341 head064a3306 retains its executed
+candidate source39d91671 and adds copied accounting plus a preregistered finite
+observation at source121f0491. The [handoff record](granular-bearing-post-arrest-handoff-proposal.md)
+reports Y1 speed90 sustained clearance from706 through1799 and speed30 contact
+prevention. Correction/velocity variation continues; no production selection or
+response change. Reproduction uses the exact registered source and source-bound
+diagnostic runtime, with raw evidence retained locally by hash. The final PR
+remains draft/unmerged; REM-004/#83 broad coverage and owner acceptance stay open.
+
 ## Active manual PLAY continuation — 2026-10-31
 
 Fresh reconciliation began from accepted main

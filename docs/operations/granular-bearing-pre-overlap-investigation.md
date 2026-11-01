@@ -194,4 +194,24 @@ The [qualification addendum](../audits/granular-bearing-candidates-2026-11-01/qu
 
 **Measured, finite Windows fixture:** the [candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) records **partial/mechanistic result only**: Y1 meets both registered efficacy gates and controls; A2 has a real timing effect but misses speed30's required overlap gate. All18 observer pairs and complete native/fallback replay populations qualify. Ordinary/default response remains B0; neither mode is a production selection.
 
-Y1's smaller peak entry coexists with prolonged slow correction-associated withdrawal at speed90. This adverse evidence limits the H classification and must accompany it. The [proposed post-arrest follow-up](granular-bearing-post-arrest-handoff-proposal.md) owns the next finite question under REM-004/#83; it is not executed or authorized by this result. A2 is partial, so the registered H/H premise for combination testing is absent. The frozen radius/chain NO-GO and unused global cap are not reopened.
+Y1's smaller peak entry coexists with prolonged slow correction-associated withdrawal at speed90. This adverse evidence limits the H classification and must accompany it. The [post-arrest follow-up](granular-bearing-post-arrest-handoff-proposal.md) owns the separately authorized finite question under REM-004/#83. Its later execution below does not rewrite the original600-sample evidence. A2 is partial, so the registered H/H premise for combination testing is absent. The frozen radius/chain NO-GO and unused global cap are not reopened.
+
+## Completed post-arrest observation — 2026-11-01
+
+**Measured Windows diagnostic fixture, source121f0491 stacked on reviewed
+#341 head064a3306:** copied-value Stage A closes exactly after float32 accounting.
+The separately committed1800-sample B0/Y1 protocol passes all four exact600-frame
+prefix gates and complete event replay. Y1 speed90 first reaches zero at640,
+recurs at641/643/693/705, and begins sustained clearance at706, confirmed765.
+Both endpoint/post-tick overlap channels remain zero through1799. The longest
+initial overlap episode is639frames; contact-to-sustained latency is705samples
+(11.75s). This supports **finite withdrawal latency** in the registered fixture.
+It does not select Y1 or demonstrate acceptable rest: correction and velocity
+variation continue after clearance. Y1 speed30 remains contact prevented,
+without delayed overlap, registered unsupported hover/lift or new large cycles.
+
+The [dated audit](../audits/2026-11-01-y1-post-arrest-clearance.md) owns all
+source/runtime/archive identities, block totals, recurrence and tail accounting.
+The [post-arrest page](granular-bearing-post-arrest-handoff-proposal.md) preserves
+the proposal and scoped disposition. No response, coefficient, admission,
+material, correction ordering, velocity-zeroing or search/cap/chain law changes.

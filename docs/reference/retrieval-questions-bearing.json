@@ -28,11 +28,29 @@
       "facts": [
         "Y1 meets the registered causal efficacy and control gates; A2 misses speed30 overlap reduction and is partial.",
         "Y1 speed90 retains slow correction-associated overlapping withdrawal; a peak benefit is not production acceptance.",
-        "Ordinary B0 remains default. A copied-value handoff oracle and separately registered finite longer B0/Y1 observation are proposed; no combination is authorized."
+        "Ordinary B0 remains default. The separately authorized copied-value oracle and fixed1800-sample observation are completed; no combination or production model is selected."
       ],
       "sources": [
         "audits/2026-11-01-granular-bearing-candidate-discrimination.md",
         "operations/granular-bearing-post-arrest-handoff-proposal.md"
+      ]
+    },
+    {
+      "id": "BEARING-003",
+      "query": "Does the Y1 speed90 post-arrest overlap cycle clear by1800 samples, and does speed30 remain clean?",
+      "canonical": [
+        "operations/granular-bearing-post-arrest-handoff-proposal.md",
+        "operations/granular-bearing-pre-overlap-investigation.md"
+      ],
+      "facts": [
+        "Copied-value correction/zeroing/age/impulse accounting closes exactly after float32 rounding; Rapier forces are not inferred.",
+        "All four600-sample prefixes reproduce PR341. Y1 speed90 first zero640, recurrences641/643/693/705, sustained clearance706 confirmed765, no recurrence through1799.",
+        "Y1 speed30 prevents contact throughout1800. Clearance is finite fixture evidence; correction/velocity activity continues and no production model is selected."
+      ],
+      "sources": [
+        "audits/2026-11-01-y1-post-arrest-clearance.md",
+        "../tools/experiments/post_arrest_accounting.py",
+        "../tools/experiments/post_arrest_analysis.py"
       ]
     }
   ]

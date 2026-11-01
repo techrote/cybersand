@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Y1 finite clearance follow-up — 2026-11-01
+
+**Measured isolated diagnostic source121f0491, stacked on reviewed PR #341
+head064a3306:** the [post-arrest observation](../operations/granular-bearing-post-arrest-handoff-proposal.md)
+closes copied application accounting and all four exact600-sample prefixes.
+Y1 speed90 begins sustained clearance at706, confirmed765, with no recurrence
+through1799 after brief earlier recurrences. Speed30 remains contact prevented.
+The [audit](../audits/2026-11-01-y1-post-arrest-clearance.md) records finite latency,
+continued correction/velocity variation, local raw custody and qualification.
+No response law changes or production model selection; REM-004/#83 broader
+coverage and owner acceptance remain open. This branch remains draft/unmerged.
+
 ## PLAY desktop continuation — 2026-10-31
 
 The [INPUT010 correction](../audits/2026-10-31-play-input010-pause-transitions.md)

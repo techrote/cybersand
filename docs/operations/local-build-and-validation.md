@@ -10,6 +10,36 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Frozen Y1 finite observation reproduction
+
+Use exact source `121f04914a62ff9bb33682cac8ed7d53ad0fc0f4` in an isolated
+checkout for the registered acquisition. Its
+[protocol](../audits/y1-post-arrest-2026-11-01/protocol.json) seals every consumed
+input. Prepare a separate copy of `godot/`, import it with the pinned engine,
+and install the separately source-bound diagnostic DLL, preserving the tracked
+published DLL. The retained
+[build receipt](../audits/granular-bearing-candidates-2026-11-01/runtime-build-receipt.json)
+binds its native SHA3537a868 to all compiled inputs; rebuild with the existing
+pinned Windows extension path if that exact diagnostic artifact is unavailable.
+The runner refuses changed inputs or runtime bytes.
+
+For each of the four registered candidate/arm pairs run:
+
+```text
+python tools/experiments/run_post_arrest.py --project <isolated-godot> --build-receipt docs/audits/granular-bearing-candidates-2026-11-01/runtime-build-receipt.json --output <fresh-output>/<candidate>-<arm> --candidate <B0-or-Y1> --arm <speed90-or-speed30>
+python tools/experiments/post_arrest_analysis.py --input <fresh-output> --protocol docs/audits/y1-post-arrest-2026-11-01/protocol.json --output <new-result.json>
+```
+
+Never overwrite an existing acquisition. The fixed bounds are1800frames,
+30segments of60ticks,256pending/8192total events per segment and500capsules
+per replay part. The inherited fixture performs one pack/response per sample;
+segment resets affect capture metadata only. All600-prefix rows and complete
+event populations must match before interpretation. See the
+[audit and raw custody manifest](../audits/2026-11-01-y1-post-arrest-clearance.md).
+The final wrapper adds only a no-argument control route for ordinary discovery;
+that route performs no1800-sample acquisition. Registered hashes deliberately
+remain unchanged, so reacquisition uses the exact source above.
+
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 
 The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged
