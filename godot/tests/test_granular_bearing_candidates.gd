@@ -6,6 +6,10 @@ var _bank_material: int = CyberCellWorld.SAND
 const CANDIDATE_PROFILES = preload("res://scripts/transport_profiles.gd")
 
 
+func _capture_horizon() -> int:
+	return 600
+
+
 func _mask_geometry(world: Object, before: Dictionary, after: Dictionary,
 		input: PackedFloat32Array, previous: Dictionary) -> Dictionary:
 	# Normalize only copied observation bytes for the inherited bank geometry.
@@ -94,7 +98,7 @@ func _capture_case(name: String, world: Object, directory: String) -> Dictionary
 	var raw_unresolved: int = 0
 	var raw_displaced: int = 0
 	var peak_pending: int = 0
-	for tick: int in range(600):
+	for tick: int in range(_capture_horizon()):
 		_watchdog.publish("%s/%s tick=%d" % [_candidate,name,tick])
 		if tick > 0 and tick % 60 == 0:
 			segments.append(world.diagnostic_ejection_corpus())
@@ -176,6 +180,7 @@ func _capture_case(name: String, world: Object, directory: String) -> Dictionary
 			row["producer_usec"] = producer_usec
 			row["step_start_usec"] = step_start
 		frames.append(row)
+		_check(frames.size() <= _capture_horizon() and bridge.diagnostic_application_details.size() <= 1,"trace/application bound")
 		if tick % 60 == 59:
 			await process_frame
 	event_file.close()
@@ -194,7 +199,7 @@ func _capture_case(name: String, world: Object, directory: String) -> Dictionary
 	counters["maximum_pending_seen"] = peak_pending
 	counters["events_written"] = total_events
 	var fixture: Dictionary = {"name":name,"left":96,"surface":160,"width":32,"depth":48,
-		"body_size":[8,14],"mass":1,"ticks":600,"workers":1,"real_rapier":true,
+		"body_size":[8,14],"mass":1,"ticks":_capture_horizon(),"workers":1,"real_rapier":true,
 		"candidate":_candidate,"bank_material":_bank_material,"initial_position":[initial.x,initial.y],"initial_rotation":0.08,"initial_velocity":[velocity.x,velocity.y],
 		"initial_angular_velocity":angular_velocity,"raw_unresolved":raw_unresolved,"raw_displaced":raw_displaced}
 	counters["fixture"] = fixture
