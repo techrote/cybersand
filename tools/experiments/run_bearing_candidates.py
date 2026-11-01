@@ -9,6 +9,7 @@ from pathlib import Path
 import platform
 import subprocess
 import sys
+import time
 
 import ejection_a2 as a2
 
@@ -30,6 +31,7 @@ def git(*args):return subprocess.check_output(["git","-C",str(ROOT),*args],timeo
 def collect(directory,acquisition):
     """Streaming bounded parts, retaining every event, original ordinals and both identities."""
     counters=acquisition["native_counters"]
+    deadline=time.monotonic()+180
     if not acquisition["complete"] or counters["dropped"] or counters["relocation_refused"]:
         raise ValueError("loss/refusal/incomplete capture blocks interpretation")
     if len(acquisition["segments"])!=10 or acquisition["fixture"]["ticks"]!=600:
@@ -44,6 +46,7 @@ def collect(directory,acquisition):
         batch.clear()
     with (directory/"events.jsonl").open(encoding="utf-8") as stream:
         for ordinal,line in enumerate(stream,1):
+            if time.monotonic()>deadline:raise TimeoutError("registered180s collection guard")
             if ordinal>81920:raise ValueError("global event bound exceeded")
             c=json.loads(line)
             if c["candidate"]!=acquisition["candidate"] or c["event_ordinal"]!=ordinal:
