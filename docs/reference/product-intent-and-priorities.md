@@ -10,6 +10,11 @@ related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approxim
 
 # Product intent and priorities
 
+## Granular contact owner direction — 2026-11-01
+
+**Approved:** the owner uses “sands” for every supported powder/granular solid, and requested combined resistance, friction and torque while preserving the satisfying playground controls. Sleep is explicitly out of scope. **Current experiment:** [GCR-001 R2](../architecture/granular-contact-response.md) is NO-GO after broader physical qualification; this does not revise the owner preference for Y1 over B0 in the prior comparison. No GCR gameplay acceptance or merge is implied.
+
+
 This page carries forward owner direction recorded in the
 [pre-rewrite handover](../audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt)
 at checkpoint `126175c`. It preserves intent separately from source and dated

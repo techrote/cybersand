@@ -1,0 +1,7 @@
+{
+  "path": "build/gcr001-raw-evidence.zip",
+  "size": 228948608,
+  "sha256": "804e59e21f80979b501b8ca6a073d47ea2a5c1c5088005c25813c116cc11f1fc",
+  "scope": "Initial and portable-source raw physical captures, logs, original preflight/host failures and analytic reduction results; not tracked in Git.",
+  "reproduction": "Tracked protocol, runners, reducer and exporter; full commands in original campaign files."
+}

@@ -11,6 +11,11 @@ related-documents: [materials-and-rule-kernels.md, ../architecture/rigid-body-an
 
 # Granular interaction and sampled player policy
 
+## Experimental generic contact — 2026-11-01
+
+[GCR-001](../architecture/granular-contact-response.md) consumes the full existing nine-material powder capability and shared support predicates. It changes no default material law. Its side-contact surface sampling conflicts with the centered9/9 stored-cell witness after ejection; the current integration is NO-GO. The shared policy remains authoritative; a future bounded interior witness requires separate registration. Sleep remains deferred.
+
+
 ## Which powders support the player?
 
 **Current:** `MaterialRules::supports_granular_load` explicitly includes Sand,

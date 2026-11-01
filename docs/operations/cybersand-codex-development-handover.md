@@ -10,6 +10,11 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## GCR-001 development checkpoint — 2026-11-01
+
+Fresh main809fd30dfac0c5e127302997075be9c4b279e5aa underlies the isolated `codex/gcr001-category-contact-20261101` branch. Native/runtime checkpoint73f9b3e9fa2e01e51016ef20fad289c15ba69661 and subsequent scoped review/test fixes are recoverable in Git. The [dated qualification audit](../audits/2026-11-01-gcr001-qualification.md) owns exact commands, source/runtime identities and failures. R2 is NO-GO; the draft stays unmerged, B0 remains default and sleep is deferred. The unrelated dirty material checkout and archived investigation branches were preserved.
+
+
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
 
 ## Current owner policy and accepted baseline — 2026-10-31

@@ -11,6 +11,11 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+## Experimental GCR value boundary — 2026-11-01
+
+The [GCR contract](../architecture/granular-contact-response.md#what-crosses-the-versioned-value-boundary) owns the separate opt-in Float64 input17/result14 ABI, session fence, actual inertia/COM, atomic application and transported moment. The ordinary Float32 11/9 protocol is unchanged. This experimental interface is not production acceptance.
+
+
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:
 `kind = trial_body`, barrel/Ripper arm, one valid actual rectangle packet,

@@ -5,7 +5,7 @@ document-kind: runbook
 scope: GCR-001 generic rigid-body contact with the granular material category; proposed implementation and qualification, with sleep deferred
 canonical-for: [granular-contact-response-plan]
 last-reviewed: 2026-11-01
-related-documents: [y1-granular-bearing-qualification.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/granular-interaction-policy.md, ../systems/player-control-playground.md, ../reference/product-intent-and-priorities.md, development-claims-remediation-programme.md]
+related-documents: [../architecture/granular-contact-response.md, ../architecture/rigid-body-and-cellular-coupling.md, ../systems/granular-interaction-policy.md, ../systems/player-control-playground.md, ../reference/product-intent-and-priorities.md, development-claims-remediation-programme.md]
 ---
 
 # Combined granular resistance, friction and torque plan
@@ -47,7 +47,7 @@ compatibility limitation, not silently promoted to an exact contact shape.
 | [PR #23 reuse audit](../audits/2026-09-19-issue-12-phase0-reuse.md#material-findings-before-reuse) | Exact fenced payload transfer is useful evidence; externally imposed quarter-turns with free rotation disabled do not qualify contact torque. No independent barrel-to-terrain handoff follows. |
 | [Frozen #283 source](https://github.com/techrote/cybersand/blob/254235ec4c3d58782bba44b478caca86bf57c856/godot/scripts/solid_detachment_session.gd#L696-L715), [#282](https://github.com/techrote/cybersand/pull/282), [#281](https://github.com/techrote/cybersand/issues/281) | Six proxy-centred impulses already exercise coarse aggregate torque under a shared budget. Reuse the single-owner/budget lessons, not the branch or a claim of calibrated contact-point torque. Its rotating fixtures do not isolate cellular torque from hard contact. |
 | #283 wider-search NO-GO, [#336](https://github.com/techrote/cybersand/pull/336)/[#338](https://github.com/techrote/cybersand/pull/338) topology/displacement results | Nearby visible void is not a legal relocation route. Retain bounded ejection and its exact refusal outcomes; resistance must act upstream of deep overlap. |
-| [#339](https://github.com/techrote/cybersand/pull/339), [#341](https://github.com/techrote/cybersand/pull/341), [#342](https://github.com/techrote/cybersand/pull/342), [Y1 envelope and owner comparison](y1-granular-bearing-qualification.md) | Y1 is the preferred impact reference. Preserve its embedding improvement; do not optimize only the canonical8×14 mass1 fixture or relabel retained clearance/async/performance failures. |
+| [#339](https://github.com/techrote/cybersand/pull/339), [#341](https://github.com/techrote/cybersand/pull/341), [#342](https://github.com/techrote/cybersand/pull/342), [Y1 envelope and owner comparison](https://github.com/techrote/cybersand/blob/2aff460c60f36c0f209b67fe682d0f8b9e5e0f83/docs/operations/y1-granular-bearing-qualification.md) | Y1 is the preferred impact reference. Preserve its embedding improvement; do not optimize only the canonical8×14 mass1 fixture or relabel retained clearance/async/performance failures. |
 | [Generic-body owner clarification](https://github.com/techrote/cybersand/issues/83#issuecomment-5749978861) | No barrel-specific contact rule. One generic coupling owner, real current-source owner review, honest unsupported envelope. |
 
 The archived #282/#283/#23 heads remain read-only. Render-copy/ACK successes in
@@ -354,3 +354,7 @@ Record the actual verdict; automated trajectories cannot provide it.
 would be scoped progress under #83, not sleep/soliding completion or a production
 default decision. PR #343 remains draft and unmerged. No candidate advance or
 implementation success is claimed by this planning document.
+
+## Implementation and qualification checkpoint — 2026-11-01
+
+The prospective gates above remain the historical registration. The [current experimental contract](../architecture/granular-contact-response.md) owns implemented semantics; the [dated audit](../audits/2026-11-01-gcr001-qualification.md) owns results. Gate1 added an explicit session value (17/14 wire strides). The retained R1 centroid reduction failed the registered10% oracle gate; R2 added two spread-preserving numerical contacts per source bin before physical acquisition, raising the disclosed bound to16 nodes/body and8192 scalar updates/64 bodies. Coefficients/caps/gates were unchanged. R2 passed the scoped36-case oracle but failed registered physical qualification. No post-result coefficient, admission or controller tuning was performed. Sleep remains deferred and the PR stays draft/unmerged.

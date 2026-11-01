@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "purpose": "GCR-001 current experimental semantics; distinct from historical mechanics and owner acceptance.",
+  "questions": [
+    {
+      "id": "GCR-STATUS-01",
+      "query": "Does GCR change ordinary physics and did its R2 resistance friction torque qualification pass?",
+      "canonical": [
+        "architecture/granular-contact-response.md"
+      ],
+      "facts": [
+        "B0 remains ordinary default; GCR is explicit experimental construction.",
+        "R2 mechanics oracle passes but integrated physical qualification is NO-GO; no owner gameplay acceptance or merge.",
+        "Sleep is deferred."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "audits/2026-11-01-gcr001-qualification.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCR-ABI-01",
+      "query": "What does the GCR 17 14 protocol transmit and who applies contact torque to Rapier?",
+      "canonical": [
+        "architecture/granular-contact-response.md"
+      ],
+      "facts": [
+        "Native cells and main-thread Rapier retain authority; new Float64 17/14 is separate from legacy Float32 11/9.",
+        "Actual inertia/COM and nonwrapping session/serial are sampled; age1 and0.5cell pose fence atomically validate before translated angular impulse application."
+      ],
+      "sources": [
+        "../godot/scripts/rigid_body_coupling.gd",
+        "../godot/scripts/rapier_physics_bridge.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCR-REVIEW-01",
+      "query": "How do I compare GCR and Y1 with the actual rocket barrel playground controls?",
+      "canonical": [
+        "architecture/granular-contact-response.md"
+      ],
+      "facts": [
+        "Explicit nonpersistent development candidate and experiment token use unchanged controllers on a fresh review bed.",
+        "Sand Dust Rust are comparison materials; the mechanism covers all nine capable powders.",
+        "Automated host tests cannot establish human feel; R2 remains NO-GO."
+      ],
+      "sources": [
+        "../godot/scripts/player_playground.gd",
+        "../godot/tests/test_gcr_playground.gd"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

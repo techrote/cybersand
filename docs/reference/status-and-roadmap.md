@@ -10,6 +10,11 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## GCR-001 qualification checkpoint — 2026-11-01
+
+**Current experimental:** combined category-wide resistance, friction and contact torque implemented from fresh main809fd30; R2 failed registered physical gates. The [contract](../architecture/granular-contact-response.md) and [audit](../audits/2026-11-01-gcr001-qualification.md) distinguish passed mechanics/conservation from failed entry/preservation and delayed delivery. B0 remains default. REM-004/#83 stays open; no owner gameplay acceptance, sleep work, production promotion or merge follows. An admission-only successor and separate event/delivery investigation are recommendations, not implemented refinements.
+
+
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
 
 ## Current owner policy and accepted baseline — 2026-10-31

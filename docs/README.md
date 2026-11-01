@@ -10,6 +10,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Category contact: [experimental GCR-001 contract](architecture/granular-contact-response.md), [registered plan](operations/granular-contact-response-plan.md) and [qualification audit](audits/2026-11-01-gcr001-qualification.md). R2 is NO-GO; B0 remains default, sleep is deferred, and the draft remains unmerged.
+
+
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).
