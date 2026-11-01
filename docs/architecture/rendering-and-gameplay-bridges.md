@@ -48,6 +48,26 @@ observable. Snapshot capacities are explicit caller choices, not universal
 production defaults. Native ordinary dirty extraction likewise checks capacity
 before clearing dirty metadata.
 
+## How are RG8 regions copied?
+
+**Current candidate:** `World::copy_render_cells` resolves one chunk per
+contiguous row run and projects each stored material/state pair through the
+unchanged `project_visual_state`. Absent chunks remain Empty. Signed regions,
+stride padding and inclusive `INT64_MAX` endpoints retain their defined
+semantics; an unrepresentable final coordinate is refused before any write.
+The World remains unbounded and sparse: native extraction introduces no clipping.
+The finite desktop full snapshot explicitly selects the 1024-square window;
+Main rejects patches crossing its image bounds. The handoff regression accepts
+the final RG8 pixel and verifies that refused edge crossings leave the image
+unchanged.
+
+The production function comes from corrected #290/#301. A test-only literal
+per-cell oracle checks bytes, persistence, dirty metadata and subsequent
+simulation; ordinary runtime has no alternative copy mode. The
+[current-main qualification](../audits/2026-11-01-render-copy-production-reconciliation.md)
+separates historical evidence from new source-matched execution. This copy
+change leaves retention, overflow, publication and ACK policy unchanged.
+
 ## Does a small dirty patch mean a small GPU upload?
 
 No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)

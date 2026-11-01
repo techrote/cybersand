@@ -10,6 +10,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
+
 ## Current owner policy and accepted baseline — 2026-10-31
 
 The owner supersedes the earlier shader deferral and short immutable deadline
@@ -763,7 +765,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Human movement playground | Seven [player presets](../systems/player-control-playground.md), keyboard/gamepad sampler, acrobat chains and separate leased native Sand/Water fields; course checkpoints and focused tests are not human feel or route-completion acceptance |
 | Assisted physical free flight | Internal [4LY single-chassis family](../systems/physical-free-flight.md), strict two-output velocity profile, bounded goal-blind assistance and passive revocation; initial Trainer conformance numbers only, with normal selection and differentiated handling owned by 4LY-002 |
 | Actor control and battle experiments | Separate physical Thunderbowl v2 plus retained sampled [Thunderbowl v1](../systems/thunderbowl-control-reference.md); physical wire control does not silently inherit sampled metal/NCA/message semantics; trained policies and general actor damage remain Planned |
-| Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
+| Rendering | Immutable native snapshots, chunk-run RG8 copy candidate with unchanged dirty/ACK policy, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md), [current-main qualification](../audits/2026-11-01-render-copy-production-reconciliation.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
 

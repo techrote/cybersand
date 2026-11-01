@@ -1602,8 +1602,7 @@ func _ready() -> void:
 			latest_snapshot.render_patch_cells,
 			latest_snapshot.render_channels
 		)
-	texture = ImageTexture.create_from_image(image)
-	previous_texture = ImageTexture.create_from_image(image)
+	create_render_textures()
 	material_appearance_lut = CyberMaterialAppearanceLut.create_texture()
 	material_appearance_program = CyberMaterialAppearanceLut.create_program_texture()
 	world_view.texture = texture
@@ -2704,6 +2703,12 @@ func consume_worker_snapshot() -> void:
 		paused = true
 	if not player_uses_barrel():
 		character_position = snapshot.character_position
+	consume_render_snapshot(snapshot)
+	gameplay_recorder.ingest_snapshot(snapshot)
+
+
+func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
 		record_render_payload(snapshot)
 		var render_uploaded: bool = upload_texture_patches(
@@ -2724,7 +2729,6 @@ func consume_worker_snapshot() -> void:
 			)
 		else:
 			reject_render_snapshot(snapshot)
-	gameplay_recorder.ingest_snapshot(snapshot)
 
 
 func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
@@ -3928,6 +3932,11 @@ func view_content_rect() -> Rect2:
 	return Rect2((available_size - shown_size) * 0.5, shown_size)
 
 
+func create_render_textures() -> void:
+	texture = ImageTexture.create_from_image(image)
+	previous_texture = ImageTexture.create_from_image(image)
+
+
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:
 	if image == null or texture == null or previous_texture == null:
 		return
@@ -4132,7 +4141,7 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	var old_current_texture: ImageTexture = texture
 	texture = previous_texture
 	previous_texture = old_current_texture
-	texture.update(image)
+	update_render_texture()
 	world_view.texture = texture
 	world_shader.set_shader_parameter("current_world_texture", texture)
 	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
@@ -4141,6 +4150,10 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	last_uploaded_revision = world_revision
 	upload_time_ms = float(Time.get_ticks_usec() - start_usec) / 1000.0
+
+
+func update_render_texture() -> void:
+	texture.update(image)
 
 
 func update_shader_parameters() -> void:

@@ -36,8 +36,10 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: gdextension-${{ github.ref }}-${{ inputs.rapier_bvh_pair == true && github.run_id || (inputs.physical_actor_stress == true && 'physical-stress' || 'suite') }}
-  cancel-in-progress: false
+  # Superseded PR checks are disposable; each explicit qualification and main
+  # checkpoint keeps its own evidence and cannot block another same-ref run.
+  group: gdextension-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   CYBERSAND_CI_WATCHDOG_SCALE: "1"
@@ -150,9 +152,11 @@ jobs:
           python3 tools/ci/test_execution_telemetry.py
           python3 tools/ci/test_job_performance.py
           python3 tools/ci/test_godot_job_plan.py
+            python3 tools/ci/test_godot_scheduling.py
           python3 tools/ci/test_verify_linux_godot_shards.py
           python3 tools/ci/test_verify_retained_play_readback.py
           python3 tools/ci/test_performance_history.py
+          python3 tools/ci/test_prepare_linux_display.py
       - name: Derive complete platform matrices
         id: plan
         run: python3 tools/ci/godot_job_plan.py --output build/execution-plan.json
@@ -363,6 +367,7 @@ jobs:
     timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.windows_job_minutes) }}
     strategy:
       fail-fast: false
+      max-parallel: 8
       matrix: ${{ fromJSON(needs.execution-plan.outputs.windows_matrix) }}
     defaults:
       run:
@@ -393,6 +398,7 @@ jobs:
           git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
 
       - name: Validate Windows execution harness
+        if: matrix.shard == 0
         timeout-minutes: 10
         run: |
           set -euo pipefail
@@ -419,6 +425,7 @@ jobs:
           python tools/ci/run_windows_godot_regressions.py --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --output "build/godot-regressions/windows-${{ matrix.shard }}" --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} --shard-index ${{ matrix.shard }}
 
       - name: Prove internal watchdog observes a synchronously blocked Windows main thread
+        if: matrix.shard == 0
         timeout-minutes: 5
         run: |
           set -euo pipefail
@@ -497,6 +504,7 @@ jobs:
     timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.linux_job_minutes) }}
     strategy:
       fail-fast: false
+      max-parallel: 8
       matrix: ${{ fromJSON(needs.execution-plan.outputs.linux_matrix) }}
     steps:
       - name: Check out exact source
@@ -538,9 +546,7 @@ jobs:
 
       - name: Install software rendering display
         timeout-minutes: 15
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils
+        run: bash tools/ci/prepare_linux_display.sh
 
       - name: Run isolated regression shard with actual rendered-pixel tests
         timeout-minutes: ${{ fromJSON(needs.execution-plan.outputs.linux_execution_minutes) }}

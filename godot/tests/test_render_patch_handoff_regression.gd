@@ -73,6 +73,36 @@ func _test_render_payload_validation() -> void:
 		controller.apply_render_patches_to_image(valid_rect, valid_cells, 2),
 		"valid compact RG8 patch was rejected"
 	)
+	# Main accepts the final RG8 pixel and rejects patches crossing its image.
+	# Native World copies retain their separate signed, unbounded contract.
+	var last_x: int = CyberCellWorld.WORLD_WIDTH - 1
+	var last_y: int = CyberCellWorld.WORLD_HEIGHT - 1
+	var edge_rect := PackedInt32Array([last_x, last_y, 1, 1, 0, 2])
+	var edge_cells := PackedByteArray([CyberCellWorld.WATER, 255])
+	_expect(
+		controller.apply_render_patches_to_image(edge_rect, edge_cells, 2),
+		"last-pixel RG8 patch was rejected"
+	)
+	var accepted_image: PackedByteArray = controller.image.get_data()
+	var edge_offset: int = (last_y * CyberCellWorld.WORLD_WIDTH + last_x) * 2
+	_expect(
+		accepted_image.slice(edge_offset, edge_offset + 2) == edge_cells,
+		"last-pixel RG8 patch did not preserve both bytes"
+	)
+	for invalid_rect: PackedInt32Array in [
+		PackedInt32Array([-1, 0, 2, 1, 0, 4]),
+		PackedInt32Array([0, -1, 1, 2, 0, 2]),
+		PackedInt32Array([last_x, last_y, 2, 1, 0, 4]),
+		PackedInt32Array([last_x, last_y, 1, 2, 0, 2]),
+	]:
+		var reason: String = controller.validate_render_patch_payload(invalid_rect, valid_cells, 2)
+		_expect(reason.contains("exceeds the world"), "edge refusal reported the wrong reason")
+		_expect(
+			not controller.apply_render_patches_to_image(invalid_rect, valid_cells, 2),
+			"out-of-world patch was accepted: " + str(invalid_rect)
+		)
+		_expect(controller.image.get_data() == accepted_image,
+			"refused edge-crossing patch changed the destination image")
 	controller.free()
 
 

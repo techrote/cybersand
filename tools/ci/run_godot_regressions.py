@@ -6,6 +6,7 @@ from collections import Counter
 from dataclasses import dataclass
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -20,30 +21,50 @@ import godot_timeout_diagnostics as diagnostics
 import godot_process_monitor as process_monitor
 import execution_policy
 import execution_telemetry
+import godot_scheduling as scheduling
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_UNKNOWN_WEIGHT_SECONDS = 5.0
+DEFAULT_UNKNOWN_WEIGHT_SECONDS = scheduling.UNKNOWN_SECONDS
 
 # Approximate weights from the 2026-09-19 Linux CI run. They are scheduling hints,
 # not pass/fail thresholds. Unknown tests deliberately receive a conservative
 # weight so new fixtures are never omitted and are unlikely to overload one shard.
 CASE_WEIGHTS_SECONDS = {
+    # Provisional upper-platform hints from run 41250780110 (one sample per
+    # fixture, 2026-10-31). These correct severe underestimates; they are not a
+    # qualified rolling baseline. A separate 1.5x scheduling margin is applied.
+    "test_wex001_water_body_baseline": 160.0,
+    "test_rem003_player_granular": 105.0,
+    "test_material_appearance_lut": 80.0,
+    "test_exploratory_actor_selection": 75.0,
+    "test_play_pace002_trialsbike": 55.0,
+    "test_play_pace002_acrobat": 55.0,
+    "test_play_pace002_arcadelander": 55.0,
+    "test_play_pace002_jetbarrel": 55.0,
+    "test_play_pace002_stuntbuggy": 55.0,
+    "test_liquid_synchronous_water_reference_body": 50.0,
+    "test_gen007_qualification": 45.0,
+    "test_gen007_reactions": 40.0,
+    "test_microscenario_reference_contract": 45.0,
+    "test_gen007_workbench_render": 40.0,
+    "test_liquid_water_reference_body": 40.0,
+    "test_liquid_trial_body": 40.0,
     # Prospective 4LY-003 actual-host development cases; these are scheduling
     # estimates, not actual measured pass/fail thresholds or simulated work.
     "test_physical_flight_teacher_dev_free": 75.0,
     "test_physical_flight_teacher_dev_obstacle": 100.0,
-    "test_microscenarios": 54.0,
+    "test_microscenarios": 120.0,
     # LCB scenario catalogue: 27 installs plus 1/4-worker 30-tick prefixes
     # (32 s on a 2026-10-23 Windows workstation; CI hosts are slower).
     "test_lcb_scenario_catalogue": 60.0,
     # LCB physics contracts: 43 s on the same workstation (dam ladder to t240 at 1/4 workers).
-    "test_lcb_physics_contracts": 80.0,
+    "test_lcb_physics_contracts": 100.0,
     # LCB-001 pressure reference: 23 s on a 2026-10-24 Windows workstation
     # (1024² gas fixtures at 1/4 workers, two-limb, dam and default goldens).
     "test_lcb_pressure_reference": 45.0,
-    "test_interaction_policy": 37.0,
-    "profile_scheduler": 20.0,
-    "test_transport_probe": 14.0,
+    "test_interaction_policy": 105.0,
+    "profile_scheduler": 40.0,
+    "test_transport_probe": 55.0,
     "test_interaction_async": 13.0,
     "test_web_worker_parity": 11.0,
     "test_cell_world": 10.0,
@@ -83,18 +104,21 @@ class Case:
     requires_display: bool = False
 
 
-def _weight(name: str) -> float:
-    return CASE_WEIGHTS_SECONDS.get(name, DEFAULT_UNKNOWN_WEIGHT_SECONDS)
+def _weight(name: str, *, profile: dict | None = None, root: Path = ROOT) -> float:
+    fallback = (CASE_WEIGHTS_SECONDS[name] * scheduling.ESTIMATE_MARGIN
+                if name in CASE_WEIGHTS_SECONDS else DEFAULT_UNKNOWN_WEIGHT_SECONDS)
+    return scheduling.estimate(name, fallback, profile or scheduling.load_profile(), root=root)[0]
 
 
 def discover_cases(root: Path = ROOT) -> list[Case]:
+    profile = scheduling.load_profile(root / "tools/ci/godot_scheduling_profile.json")
     cases = [
         Case(
             p.stem,
             ("--script", "res://tests/" + p.name),
             execution_policy.case_seconds(p.stem, p.stem.endswith("_render"),
                 complex_fixture="support/ci_execution_policy.gd" in p.read_text(encoding="utf-8")),
-            _weight(p.stem),
+            _weight(p.stem, profile=profile, root=root),
             # Actual-pixel fixtures use this suffix so newly added render tests
             # cannot silently inherit the headless server's no-frame shortcut.
             requires_display=p.stem.endswith("_render"),
@@ -106,11 +130,11 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
             name,
             ("--script", "res://tests/" + name + ".gd"),
             execution_policy.case_seconds(name),
-            _weight(name),
+            _weight(name, profile=profile, root=root),
         )
         for name in ("profile_native_world", "profile_scheduler")
     ]
-    cases.append(Case("scene", ("--quit-after", "180"), execution_policy.watchdog_seconds("graphical_case_seconds"), _weight("scene")))
+    cases.append(Case("scene", ("--quit-after", "180"), execution_policy.watchdog_seconds("graphical_case_seconds"), _weight("scene", profile=profile, root=root)))
     names = [case.name for case in cases]
     if len(names) != len(set(names)):
         duplicates = sorted(name for name, count in Counter(names).items() if count > 1)
@@ -127,18 +151,18 @@ def build_shard_plan(cases: list[Case], shard_count: int) -> tuple[list[list[Cas
     canonical_order = {case.name: index for index, case in enumerate(cases)}
     shards: list[list[Case]] = [[] for _ in range(shard_count)]
     totals = [0.0] * shard_count
-    allowances = [0.0] * shard_count
-    policy = execution_policy.identity()["watchdogs"]
-    per_case_reserve = policy["operation_seconds"] + execution_policy.godot_process_cleanup_seconds()
-
-    # Assign historically expensive cases first, but balance complete execution
-    # allowances before advisory weights. Otherwise many fast-weighted cases
-    # could silently exhaust one parent's sequential watchdog budget.
+    # Hosted plans select enough bins for <=16 cases. Explicit smaller local
+    # plans retain complete coverage with a correspondingly larger capacity.
+    capacity = max(scheduling.MAX_CASES_PER_SHARD, math.ceil(len(cases) / shard_count))
+    if any(not scheduling.finite_positive(case.weight) for case in cases):
+        raise ValueError("Scheduling weights must be finite and positive")
+    # Longest-processing-time first balances expected cost. Watchdog admission
+    # happens at execution time; summing every rare ceiling caused 150+ jobs.
     for case in sorted(cases, key=lambda item: (-item.weight, item.name)):
-        index = min(range(shard_count), key=lambda i: (allowances[i], totals[i], i))
+        index = min((i for i in range(shard_count) if len(shards[i]) < capacity),
+                    key=lambda i: (totals[i], len(shards[i]), i))
         shards[index].append(case)
         totals[index] += case.weight
-        allowances[index] += case.timeout + per_case_reserve
 
     for shard in shards:
         shard.sort(key=lambda case: canonical_order[case.name])
@@ -178,6 +202,25 @@ def sha256(path: Path) -> str:
 
 def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def mark_incomplete(report: dict, remaining: list[Case], *, reason: str, admission: dict | None = None) -> None:
+    report.update(status="failed", completed=False, incomplete_cases=[case.name for case in remaining],
+                  incomplete_reason=reason)
+    if admission is not None:
+        report["aggregate_admission"] = admission
+
+
+def admit_case(budget: scheduling.ExecutionBudget, case: Case, report: dict,
+               remaining: list[Case], path: Path, *, readback: bool = True) -> bool:
+    admission = budget.admission(case.timeout, readback=readback)
+    if admission["admitted"]:
+        return True
+    mark_incomplete(report, remaining, reason="aggregate_execution_budget_exhausted", admission=admission)
+    write_json(path, report)
+    print(f"INCOMPLETE: cannot admit {case.name}'s full watchdog and evidence reserve; "
+          f"{len(remaining)} assigned cases remain; {admission}", flush=True)
+    return False
 
 
 def case_command(godot: str, case: Case, platform: str = sys.platform) -> list[str]:
@@ -695,6 +738,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument("--execution-seconds", type=float,
+                        help="Aggregate runner envelope, separate from every full case watchdog")
     parser.add_argument(
         "--keep-going", action="store_true",
         help="Run every assigned case after a test failure; import still fails immediately",
@@ -707,6 +752,38 @@ def main() -> int:
         parser.error("--shard-index must be in [0, shard-count)")
 
     args.output.mkdir(parents=True, exist_ok=True)
+    timing = {"identity": {}, "assigned_cases": [], "status": "running", "completed": False, "results": []}
+    write_json(args.output / "timings.json", timing)
+    try:
+        budget = scheduling.ExecutionBudget(args.execution_seconds)
+        return execute(args, timing, budget)
+    except (OSError, RuntimeError, ValueError, KeyError, subprocess.SubprocessError) as error:
+        timing.update(status="failed", completed=False, error=f"{type(error).__name__}: {error}")
+        observed = {row["name"] for row in timing["results"] if row.get("role") == "case"}
+        timing["incomplete_cases"] = [name for name in timing["assigned_cases"] if name not in observed]
+        write_json(args.output / "timings.json", timing)
+        print(timing["error"], flush=True)
+        return 1
+
+
+def execute(args, timing: dict, budget: scheduling.ExecutionBudget) -> int:
+    cases = discover_cases()
+    shards, totals = build_shard_plan(cases, args.shard_count)
+    assigned = shards[args.shard_index]
+    if not assigned:
+        raise RuntimeError("A regression shard must contain assigned cases")
+    plan = {
+        "shard_count": args.shard_count, "scheduling": scheduling.profile_identity(),
+        "default_unknown_weight_seconds": DEFAULT_UNKNOWN_WEIGHT_SECONDS,
+        "all_case_count": len(cases),
+        "shards": [{"index": index, "estimated_seconds": round(totals[index], 3),
+                    "cases": [case_dict(case) for case in shard]} for index, shard in enumerate(shards)],
+    }
+    write_json(args.output / "shard-plan.json", plan)
+    timing.update(assigned_cases=[case.name for case in assigned],
+                  execution_budget=budget.metadata(), scheduling=plan["scheduling"],
+                  shard_estimated_seconds=totals[args.shard_index])
+    write_json(args.output / "timings.json", timing)
     runtime, rapier = runtime_paths()
     if not runtime.is_file():
         raise RuntimeError(f"Missing CyberSand runtime: {runtime}")
@@ -751,23 +828,6 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    cases = discover_cases()
-    shards, totals = build_shard_plan(cases, args.shard_count)
-    plan = {
-        "shard_count": args.shard_count,
-        "default_unknown_weight_seconds": DEFAULT_UNKNOWN_WEIGHT_SECONDS,
-        "all_case_count": len(cases),
-        "shards": [
-            {
-                "index": index,
-                "estimated_seconds": round(totals[index], 3),
-                "cases": [case_dict(case) for case in shard],
-            }
-            for index, shard in enumerate(shards)
-        ],
-    }
-    write_json(args.output / "shard-plan.json", plan)
-    assigned = shards[args.shard_index]
     print(
         f"Shard {args.shard_index + 1}/{args.shard_count}: "
         f"{len(assigned)}/{len(cases)} cases, estimated {totals[args.shard_index]:.1f}s",
@@ -780,38 +840,42 @@ def main() -> int:
             flush=True,
         )
 
-    results: list[dict] = []
-    timing = {
-        "identity": identity,
-        "assigned_cases": [case.name for case in assigned],
-        "status": "running",
-        "completed": False,
-        "results": results,
-    }
+    results = timing["results"]
+    timing["identity"] = identity
+    write_json(args.output / "timings.json", timing)
 
     # Every isolated shard performs a clean import preflight. In unsharded mode
     # this is the same single import that the legacy runner performed.
     import_case = Case("import", ("--editor", "--quit"), execution_policy.watchdog_seconds("godot_import_seconds"), 3.0)
+    if not admit_case(budget, import_case, timing, assigned, args.output / "timings.json", readback=False):
+        return 1
     record, failed = run_case(args.godot, import_case, args.output, "preflight")
     results.append(record)
     write_json(args.output / "timings.json", timing)
     if failed:
-        timing["status"] = "failed"
+        mark_incomplete(timing, assigned, reason="import_failed")
         write_json(args.output / "timings.json", timing)
         return 1
 
     suite_failed = False
-    for case in assigned:
+    for index, case in enumerate(assigned):
+        if not admit_case(budget, case, timing, assigned[index:], args.output / "timings.json"):
+            return 1
         record, failed = run_case(args.godot, case, args.output, "case")
         results.append(record)
         write_json(args.output / "timings.json", timing)
         if failed:
             suite_failed = True
             if not args.keep_going:
-                timing["status"] = "failed"
+                mark_incomplete(timing, assigned[index + 1:], reason="stopped_after_case_failure")
                 timing["completed"] = len(results) == len(assigned) + 1
                 write_json(args.output / "timings.json", timing)
                 return 1
+
+    if budget.remaining() < budget.terminal_reserve:
+        mark_incomplete(timing, [], reason="aggregate_terminal_reserve_exhausted")
+        write_json(args.output / "timings.json", timing)
+        return 1
 
     timing["status"] = "failed" if suite_failed else "passed"
     timing["completed"] = True

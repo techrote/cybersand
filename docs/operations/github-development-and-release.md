@@ -75,11 +75,16 @@ a hand-edited hash.
 The [shared execution policy](ci-execution-and-performance.md) now supersedes
 historical short command limits. Six Native families preserve every original
 command and scientific input, with complete derived parent budgets. Godot uses
-source-derived Linux/Windows matrices that contain all child watchdogs and
-independent exact-coverage readers. Historical elapsed-time weights and rolling
+source-derived Linux/Windows matrices balanced by expected execution cost,
+full-watchdog admission within a hosted safety boundary, and independent
+exact-coverage readers. Historical elapsed-time weights and rolling
 performance warnings are advisory; assertions, crashes, incomplete readbacks and
 cleanup failures remain failures. Independent matrices continue after failures,
-and new commits retain earlier attempts.
+and superseded automatic PR runs are cancelled. Main and explicit manual runs
+have unique concurrency groups to preserve qualification evidence without
+same-reference blocking. See the [scheduling audit](../audits/2026-11-01-ci-scheduling-qualification.md)
+for the measured baseline and the [complete workflow audit](../audits/2026-11-01-ci-workflow-audit.md)
+for matrix caps, remaining limitations and reproduction commands.
 
 The stable `native`, `linux x86_64`, Windows cross-build and complete Windows
 execution/coverage gates remain required. A failed ready-scope classifier cannot
@@ -142,7 +147,7 @@ Rulesets** (or the equivalent branch-protection UI):
    leave unrelated PRs permanently pending.
 6. For implementation/behavior PRs, the procedural final gate remains the
    exact-head Native `native` aggregate, GDExtension `windows x86_64` cross-build,
-   all four applicable Windows execution shards, `windows sharded execution
+   all source-planned Windows execution shards, `windows sharded execution
    coverage`, the aggregate `linux x86_64` job, and any applicable path-scoped
    apparatus workflow.
 7. Keep only repository-owner/administrator emergency bypass. Any bypass is an

@@ -1,0 +1,7 @@
+{
+  "schema": "godot-scheduling-history-v1",
+  "as_of_utc": "2026-11-01T00:00:00Z",
+  "platform_cohorts": {},
+  "observations": [],
+  "note": "No three-run source-comparable platform cohort is qualified at registration. The planner uses conservative committed hints. Refresh this source-controlled snapshot only with original successful source-bound telemetry; supply source_input_sha256 and per-platform cohort identities."
+}

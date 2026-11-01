@@ -16,9 +16,10 @@ on:
 permissions:
   contents: read
 
+# Supersede ordinary PR checks; preserve every manual and main-source run.
 concurrency:
-  group: native-scope-advisory-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: native-scope-advisory-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   classification:

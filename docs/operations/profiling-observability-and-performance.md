@@ -69,6 +69,16 @@ inspection have their own recorded boundary.
 
 ## Current benchmark entry points
 
+`make build/render_copy_benchmark` builds the isolated RG8 copy comparison.
+`build/render_copy_benchmark 41 --implementation R` retains paired literal
+oracle and production samples, p50/p95/p99/max, and explicitly source-derived
+address/lookup/run counts. A separately compiled frozen-main Control measures
+the original production loop; an external oracle's call overhead must not be
+reported as the production speedup. The
+[R qualification record](../audits/2026-11-01-render-copy-production-reconciliation.md)
+binds both builds and the separate real-Main N/W graphical campaign. Texture
+submission timings cover CPU API calls, not GPU completion or human feel.
+
 [native/bench/benchmark.cpp](../../native/bench/benchmark.cpp) accepts dimensions,
 ticks, chunk size, dense/sparse scenario, backend, worker count and preallocated/
 lazy mode. It reports aggregate means/work/memory and state/content hashes.
