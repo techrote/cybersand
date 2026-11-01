@@ -120,7 +120,7 @@ def main():
     if args.mode == 'review':
         env = os.environ.copy()
         env['CYBERSAND_SOURCE_REVISION'] = identity['source']
-        return subprocess.call([str(args.godot), '--path', str(ROOT / 'godot'), '--resolution', '1200x760',
+        return subprocess.call([str(args.godot), '--path', str(args.project), '--resolution', '1200x760',
                                 'res://y1_envelope_review.tscn', '--', f'--protocol={PROTOCOL}'], env=env)
     valid = {spec['id'] for spec in protocol['cases'] + protocol.get('controls', [])}
     cases = args.case or (protocol['async_cases'] if args.mode == 'async' else [spec['id'] for spec in protocol['cases']])
