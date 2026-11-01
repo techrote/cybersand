@@ -14,7 +14,7 @@ related-documents: [architecture-programme.md, ../architecture/soliding-lifecycl
 
 **Current experimental source / broader Approved direction:** the bounded
 [structural detachment runtime](../systems/solid-detachment.md) now ports the real
-native-tree ownership proof onto main809fd30d and adds conservative local
+native-tree ownership proof onto accepted main `a8f08a67` and adds conservative local
 Sand/Water relocation. Its [dated qualification](../audits/2026-11-01-sol281-current-main.md)
 keeps partial source/host gates distinct from complete #281/#12 acceptance.
 The owner prioritizes native support loss → genuine Rapier toppling/rolling.

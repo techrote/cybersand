@@ -1,0 +1,192 @@
+[
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13094096259/zip",
+    "created_at": "2026-11-01T17:35:18Z",
+    "digest": "sha256:8c1fd10feeec9c7e3875def90f4dcda9c7b5820e976357bff9c702098d6276a3",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13094096259,
+    "name": "sol281-host-windows-contact-w1-41331369142-1",
+    "size_in_bytes": 233068,
+    "updated_at": "2026-11-01T17:35:18Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13094096259",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093847583/zip",
+    "created_at": "2026-11-01T17:34:44Z",
+    "digest": "sha256:40bdc171f59eb5be56d247bae20c345d4ce2bfc7de2a4dcf3d40507065ad1e6b",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093847583,
+    "name": "sol281-host-linux-core-41331369142-1",
+    "size_in_bytes": 3485999,
+    "updated_at": "2026-11-01T17:34:44Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093847583",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093817701/zip",
+    "created_at": "2026-11-01T17:35:01Z",
+    "digest": "sha256:bc4e0cde0d78452cd704afbaa6bd18132b0d8c2f8a642c92c9ac4c91a18ceda2",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093817701,
+    "name": "sol281-host-windows-core-41331369142-1",
+    "size_in_bytes": 217889,
+    "updated_at": "2026-11-01T17:35:01Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093817701",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093736693/zip",
+    "created_at": "2026-11-01T17:33:29Z",
+    "digest": "sha256:8bd75b14777511fc37eaf27c21e44169a1ca9e380de111166d94d78eaae67c70",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093736693,
+    "name": "sol281-build-linux-41331369142-1",
+    "size_in_bytes": 79281349,
+    "updated_at": "2026-11-01T17:33:29Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093736693",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093597331/zip",
+    "created_at": "2026-11-01T17:36:08Z",
+    "digest": "sha256:aa48a9ed97eeb64b1dbfc201c4b9a0c9dd65ba24599a0f87a98f3829ec0b79ca",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093597331,
+    "name": "sol281-publication-41331369142-1",
+    "size_in_bytes": 20598,
+    "updated_at": "2026-11-01T17:36:08Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093597331",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093583380/zip",
+    "created_at": "2026-11-01T17:35:39Z",
+    "digest": "sha256:64369fd4dcc7f89703a5a6ef10fba39f5f3e2d5b9311ce09084d94a644e293b6",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093583380,
+    "name": "sol281-qualified-41331369142-1",
+    "size_in_bytes": 892,
+    "updated_at": "2026-11-01T17:35:39Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093583380",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093458061/zip",
+    "created_at": "2026-11-01T17:31:54Z",
+    "digest": "sha256:ccf2cb9a8f7e65db5f5a9038898df670e1c8b2b5e8e0ac79a5e9ceb16f4f12c1",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093458061,
+    "name": "sol281-build-windows-41331369142-1",
+    "size_in_bytes": 2022738,
+    "updated_at": "2026-11-01T17:31:54Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093458061",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093423586/zip",
+    "created_at": "2026-11-01T17:35:05Z",
+    "digest": "sha256:5ac3082571a5f5433e642174104f8f57515d264cf6e4e55402a606b52f687cb4",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093423586,
+    "name": "sol281-host-linux-contact-w4-41331369142-1",
+    "size_in_bytes": 3505163,
+    "updated_at": "2026-11-01T17:35:05Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093423586",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093403810/zip",
+    "created_at": "2026-11-01T17:35:07Z",
+    "digest": "sha256:4303ea4e345ce089cb6ebf199cfbff2573f546513b90655aa5be3695954bd00c",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093403810,
+    "name": "sol281-host-linux-contact-w1-41331369142-1",
+    "size_in_bytes": 3505053,
+    "updated_at": "2026-11-01T17:35:07Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093403810",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  },
+  {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093358854/zip",
+    "created_at": "2026-11-01T17:35:25Z",
+    "digest": "sha256:57fe7c18f57d998c9c827756a19b2e15f7932f14f5de22dc0f449adeca347aca",
+    "expired": false,
+    "expires_at": "2027-01-30T17:25:14Z",
+    "id": 13093358854,
+    "name": "sol281-host-windows-contact-w4-41331369142-1",
+    "size_in_bytes": 233005,
+    "updated_at": "2026-11-01T17:35:25Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13093358854",
+    "workflow_run": {
+      "head_branch": "sol-detach-001-current-main",
+      "head_repository_id": 1350077435,
+      "head_sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+      "id": 41331369142,
+      "repository_id": 1350077435
+    }
+  }
+]

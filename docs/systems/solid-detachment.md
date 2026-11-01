@@ -13,8 +13,9 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 ## Implemented scope and source authority
 
 **Current experimental source:** the `sol-detach-001-current-main` branch starts
-at accepted main `809fd30dfac0c5e127302997075be9c4b279e5aa`, including production
-render-copy #344. It recovers the finite native ownership kernel and compound
+from accepted main and fast-forwarded to `a8f08a67fea3c58f6df7473cbae1831334fcc04e`
+before its first implementation commit, retaining production render-copy #344
+and accepted PLAY #331. It recovers the finite native ownership kernel and compound
 host from frozen #283, then adds a local conservative displacement transaction.
 The [dated qualification record](../audits/2026-11-01-sol281-current-main.md)
 owns exact executed sources, runtime hashes, failures and platform outcomes.
@@ -169,11 +170,22 @@ consume/publish segments, manual Rapier stepping and collider refresh. Sampled
 worker totals do not represent every native tick. These headless metrics cannot
 establish graphical frame pacing or target-GPU acceptance.
 
+The complete source-matched Linux/Windows matrix at `8e86ffd4` passed on
+GitHub-hosted runners, including workers 1 and 4. Its qualified development
+runtimes and original six-cohort evidence were published in `bdd751dc`.
+The dated audit records exact identities and preserves the earlier failed
+Windows checkout attempt. Passing populated cases establish material quantities,
+aggregate payload, ownership and actual interaction; they do not establish
+acceptable dense resistance. Live penetration depth/overlap area and calibrated
+contact work are not measured. Dry impact produces real rotation and horizontal
+displacement; a calibrated no-slip rolling criterion is not qualified.
+
 Focused native ownership and displacement tests, deterministic frozen contacts,
 actual Rapier motion/failure/worker-replacement cases, populated environments,
 excavation and shared response tests are distinct gates. Frozen #338 contacts
 retain their original source metadata and negative outcomes; four new shallow
-boundary controls demonstrate real multi-parcel movement. No historical result
+boundary controls demonstrate accepted relocation, including three multi-parcel
+paths. No historical result
 is relabelled as a current execution.
 
 The scoped GitHub-hosted workflow authenticates build inputs and all six actual

@@ -1,0 +1,9 @@
+{
+  "schema": "sol281-original-artifact-staging-review-v1",
+  "scope": "Temporary Git index only; no repository source or publication manifest writes",
+  "actual_original_files": 89,
+  "exact_byte_mismatches": [],
+  "git_diff_cached_check_exit": 0,
+  "git_diff_cached_check_output": "",
+  "git_attributes_sha256": "9716be2f85daeacc7e6f4a4f6bbce5e450756a3dac2b898cc8cce97d3d3022ac"
+}
