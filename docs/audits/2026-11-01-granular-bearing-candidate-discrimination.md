@@ -258,7 +258,7 @@ are not a throughput acceptance claim.
 
 ## Qualification, limitations and next step
 
-The [qualification record](granular-bearing-candidates-2026-11-01/qualification-source 39d.json) and
+The [qualification record](granular-bearing-candidates-2026-11-01/qualification-source39d.json) and
 [preserved failures](granular-bearing-candidates-2026-11-01/failures.json) distinguish source-matched passes
 from failures. Windows and optimized Linux core suites pass 164 tests each;
 candidate units pass 32,548 checks on both compilers; Linux soliding, generation,
