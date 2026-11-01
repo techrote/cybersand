@@ -27,7 +27,7 @@ HISTORICAL_APPARATUS = "902fc5b518855911c1b6761a7165573843e567ed"
 GODOT_VERSION = "4.7.stable.official.5b4e0cb0f"
 NATIVE_SUFFIXES = {".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".inc", ".inl", ".tpp"}
 sys.path.insert(0, str(ROOT / "tools" / "ci"))
-from execution_policy import watchdog_seconds
+from execution_policy import identity as execution_policy_identity, watchdog_seconds
 import render_copy_runtime_publication as publication
 
 # The publisher remains unchanged and still requires an armed request. Only
@@ -479,6 +479,50 @@ def cohort_summaries(rows):
     return output
 
 
+class CampaignBudgetExhausted(RuntimeError):
+    """A fresh process cannot receive its complete unchanged allowance."""
+
+
+def campaign_plan(repeats):
+    """Keep the registered candidate/ACK order explicit in incomplete receipts."""
+    cells = []
+    for repeat in range(repeats):
+        candidates = ["control", "R"] if repeat % 2 == 0 else ["R", "control"]
+        arms = ["N", "W"] if repeat % 2 == 0 else ["W", "N"]
+        for arm in arms:
+            for candidate in candidates:
+                cells.append({"candidate": candidate, "arm": arm, "repeat": repeat,
+                              "campaign_sequence": len(cells)+1})
+    return cells
+
+
+def process_admission(execution_seconds, elapsed_seconds, policy):
+    """Reserve a complete process, its two actual waits, readback and final evidence.
+
+    This is admission accounting only. No remaining-budget value is passed into
+    run_process, and an admitted process retains its full policy watchdog.
+    Explicit elapsed inputs make the boundary testable without fake engine runs.
+    """
+    require(math.isfinite(elapsed_seconds) and elapsed_seconds >= 0, "invalid campaign elapsed time")
+    require(execution_seconds is None or (math.isfinite(execution_seconds) and execution_seconds > 0),
+            "execution seconds must be finite and positive")
+    values = policy["watchdogs"]
+    reserved = {
+        "case_watchdog_seconds": values["graphical_case_seconds"],
+        "terminate_wait_seconds": values["terminate_grace_seconds"],
+        "kill_wait_seconds": values["terminate_grace_seconds"],
+        "readback_seconds": values["operation_seconds"],
+        "final_evidence_seconds": values["aggregate_headroom_seconds"],
+    }
+    required = sum(reserved.values())
+    remaining = None if execution_seconds is None else execution_seconds-elapsed_seconds
+    admitted = remaining is None or remaining >= required
+    return {"admitted": admitted, "execution_seconds": execution_seconds,
+            "elapsed_seconds": elapsed_seconds, "remaining_seconds": remaining,
+            "required_seconds": required, "reserved_seconds": reserved,
+            "reason": "complete_case_allowance_available" if admitted else "aggregate_allowance_exhausted"}
+
+
 def run_process(engine, receipt, candidate, arm, runtime_identity, engine_args):
     installed = ROOT/platform_paths()["artifact"]
     argv = [str(engine), "--audio-driver", "Dummy", "--path", str(ROOT/"godot"),
@@ -542,11 +586,17 @@ def main():
     parser.add_argument("--r-runtime", required=True, type=Path)
     parser.add_argument("--r-manifest", required=True, type=Path)
     parser.add_argument("--repeats", type=int, default=5)
+    parser.add_argument("--execution-seconds", type=float,
+                        help="Optional aggregate admission budget, including source checks and evidence; admitted case watchdogs are never shortened.")
     parser.add_argument("--engine-arg", action="append", default=[],
                         help="Extra actual graphical engine argument; use --engine-arg=--display-driver syntax.")
     args = parser.parse_args()
     require(3 <= args.repeats <= 10, "require 3–10 fresh processes per candidate/cohort")
     require("--headless" not in args.engine_arg, "headless execution is not graphical qualification")
+    campaign_started = time.monotonic()
+    budget_policy = execution_policy_identity()
+    initial_allowance = process_admission(args.execution_seconds, 0, budget_policy)
+    plan = campaign_plan(args.repeats)
     args.engine = args.engine.resolve()
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)
@@ -568,42 +618,66 @@ def main():
     original_hash = digest(original)
     inputs = {"identity": identity, "runtimes": runtimes, "original_installed_runtime_sha256": original_hash,
               "native_source_delta": delta, "comparable_builds": build_comparison, "repeats": args.repeats,
+              "planned_processes": plan, "execution_allowance": initial_allowance,
+              "execution_policy": budget_policy,
               "ordering": "Each repeat alternates candidate and ACK order; candidates run sequentially on the same host.",
               "scope": "Real Main graphical submission/readback; CPU frame intervals, not GPU completion or human pacing."}
     (args.output/"inputs.json").write_text(json.dumps(inputs, indent=2)+"\n", encoding="utf-8")
     rows, fatal_error = [], None
+    admissions, unstarted = [], []
+    final_source_verified = False
     try:
-        for repeat in range(args.repeats):
-            candidates = ["control", "R"] if repeat % 2 == 0 else ["R", "control"]
-            arms = ["N", "W"] if repeat % 2 == 0 else ["W", "N"]
-            for arm in arms:
-                for candidate in candidates:
-                    runtime = runtimes[candidate]
-                    require(digest(runtime["runtime_path"]) == runtime["runtime_sha256"], "candidate runtime changed during campaign")
-                    shutil.copyfile(runtime["runtime_path"], installed)
-                    require(digest(installed) == runtime["runtime_sha256"], "runtime installation hash mismatch")
-                    receipt = args.output/f"{repeat:02d}-{candidate}-{arm}.json"
-                    row = run_process(args.engine, receipt, candidate, arm, runtime, args.engine_arg)
-                    row.update(repeat=repeat, campaign_sequence=len(rows)+1)
-                    rows.append(row)
-                    (args.output/"processes.json").write_text(json.dumps(rows, indent=2)+"\n", encoding="utf-8")
-                    print(candidate, arm, repeat, row["exit"], row.get("summary", {}).get("counts", {}), flush=True)
-                    require(digest(installed) == runtime["runtime_sha256"], "installed runtime changed during process")
+        for index, cell in enumerate(plan):
+            candidate, arm, repeat = cell["candidate"], cell["arm"], cell["repeat"]
+            runtime = runtimes[candidate]
+            require(digest(runtime["runtime_path"]) == runtime["runtime_sha256"], "candidate runtime changed during campaign")
+            shutil.copyfile(runtime["runtime_path"], installed)
+            require(digest(installed) == runtime["runtime_sha256"], "runtime installation hash mismatch")
+            receipt = args.output/f"{repeat:02d}-{candidate}-{arm}.json"
+            # Account for source checks and installation before admitting this
+            # fresh engine process; no remaining-budget value alters its waits.
+            allowance = process_admission(args.execution_seconds, time.monotonic()-campaign_started, budget_policy)
+            admissions.append({**cell, **allowance})
+            if not allowance["admitted"]:
+                unstarted = [{**pending, "status": "not_started", "reason": allowance["reason"]}
+                             for pending in plan[index:]]
+                raise CampaignBudgetExhausted(
+                    f"Cannot start {candidate}/{arm}/repeat{repeat}: "
+                    f"{allowance['remaining_seconds']:.3f}s remain, "
+                    f"{allowance['required_seconds']:.3f}s required for the complete case, "
+                    f"cleanup, readback and final evidence; {len(unstarted)} named cells were not started")
+            row = run_process(args.engine, receipt, candidate, arm, runtime, args.engine_arg)
+            row.update(repeat=repeat, campaign_sequence=cell["campaign_sequence"])
+            rows.append(row)
+            (args.output/"processes.json").write_text(json.dumps(rows, indent=2)+"\n", encoding="utf-8")
+            print(candidate, arm, repeat, row["exit"], row.get("summary", {}).get("counts", {}), flush=True)
+            require(digest(installed) == runtime["runtime_sha256"], "installed runtime changed during process")
         require(source_identity(args.engine, args.expected_candidate_sha) == identity, "host/harness source changed during campaign")
         for candidate, runtime in runtimes.items():
             checked = authenticate_runtime(Path(runtime["manifest_path"]), Path(runtime["runtime_path"]), candidate, identity["head"])
             require(checked == runtime, "runtime source manifest changed during campaign")
+        final_source_verified = True
     except Exception as error:
         fatal_error = f"{type(error).__name__}: {error}"
         raise
     finally:
         shutil.copyfile(original, installed)
         restored = digest(installed) == original_hash
+        elapsed = time.monotonic()-campaign_started
+        if args.execution_seconds is not None and elapsed > args.execution_seconds and fatal_error is None:
+            fatal_error = "CampaignBudgetExhausted: aggregate allowance exceeded during readback/final evidence"
+        matrix_complete = len(rows) == len(plan) and not unstarted
+        passed = (restored and final_source_verified and matrix_complete and fatal_error is None
+                  and all(row["exit"] == 0 and "summary" in row and "reader_failure" not in row for row in rows))
         report = {**inputs, "processes": rows, "cohorts": cohort_summaries(rows),
+                  "admissions": admissions, "unstarted_processes": unstarted,
+                  "elapsed_seconds": elapsed, "process_matrix_complete": matrix_complete,
+                  "final_source_verified": final_source_verified, "status": "passed" if passed else "failed",
                   "original_runtime_restored": restored, "fatal_error": fatal_error}
         (args.output/"report.json").write_text(json.dumps(report, indent=2)+"\n", encoding="utf-8")
         require(restored, "original installed runtime was not restored")
     require(len(rows) == args.repeats*4, "campaign process matrix incomplete")
+    require(report["status"] == "passed", "campaign source/evidence/aggregate allowance qualification failed")
     require(all(row["exit"] == 0 and "summary" in row and "reader_failure" not in row for row in rows),
             "graphical campaign contains failed processes; originals remain retained")
 
