@@ -73,7 +73,11 @@ func clean_bank() -> void:
 
 func post_ejection_and_slip() -> void:
 	var world: Object = construct("GCR-A1")
-	check(world.diagnostic_fill_rect(Vector2i(106,80),Vector2i(14,40),2),"overlap bank fill")
+	check(world.diagnostic_fill_rect(Vector2i(108,80),Vector2i(12,40),2),"post-ejection bank fill")
+	# A small left-edge overlap has real Empty targets along the unchanged
+	# bounded ejection route. The independently packed right bank stays intact.
+	# A deep right overlap into a solid bank is not a successful-ejection premise.
+	check(world.diagnostic_fill_rect(Vector2i(100,98),Vector2i(2,4),2),"legal left overlap with free ejection volume")
 	var before: Dictionary = snapshot(world)
 	check(world.prepare_gcr_coupling(states(),true),"real ejection followed by A1 admission")
 	check(interior_empty(world),"successful ejection left no stored interior overlap")
