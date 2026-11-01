@@ -108,6 +108,9 @@ func _run() -> void:
 	failed = failed or not conserved
 	for row: Dictionary in rows: row["conserved"] = conserved
 	var report: Dictionary = {"schema":1,"ok":not failed,"mode":"desktop-asynchronous",
+		"protocol_version":CyberRigidBodyCoupling.GCR_POLICY_VERSION if fixture.is_gcr() else 0,
+		"abi":{"input_stride":CyberRigidBodyCoupling.GCR_INPUT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.INPUT_STRIDE,
+			"result_stride":CyberRigidBodyCoupling.GCR_RESULT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.RESULT_STRIDE},
 		"experiment":Fixture.GCR_TOKEN,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"input_identity":OS.get_environment("CYBERSAND_INPUT_IDENTITY"),
 		"protocol_sha256":FileAccess.get_sha256(str(args.protocol)),"candidate":arm,"case":spec,

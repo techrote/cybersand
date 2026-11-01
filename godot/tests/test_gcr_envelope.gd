@@ -57,6 +57,9 @@ func _run() -> void:
 	for row: Dictionary in rows: conservation = conservation and bool(row.conserved)
 	if not conservation: fail("exact closed-fixture material or Water quantity changed")
 	var report: Dictionary = {"schema":1,"ok":not failed,"mode":"synchronous","experiment":Fixture.GCR_TOKEN,
+		"protocol_version":CyberRigidBodyCoupling.GCR_POLICY_VERSION if fixture.is_gcr() else 0,
+		"abi":{"input_stride":CyberRigidBodyCoupling.GCR_INPUT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.INPUT_STRIDE,
+			"result_stride":CyberRigidBodyCoupling.GCR_RESULT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.RESULT_STRIDE},
 		"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"input_identity":OS.get_environment("CYBERSAND_INPUT_IDENTITY"),
 		"runtime":runtime_identity(),"godot":Engine.get_version_info().string,
 		"backend":ProjectSettings.get_setting("physics/2d/physics_engine"),"platform":OS.get_name(),
