@@ -89,9 +89,11 @@ owner remains [granular policy](../systems/granular-interaction-policy.md);
 non-kinetic reactions remain #29/INT-000 authority. There is no blanket #12
 Stage-3B dependency, nor permission to duplicate its aggregate owner.
 
-## What combined contact response will be prototyped?
+## How will sideways granular resistance, friction and contact torque work together?
 
 **Candidate design, to be frozen at Gate0 before result acquisition:**
+
+### Contact geometry and material admission
 
 1. **Current material and actual geometry define contacts.** Reuse the bounded
    body-boundary traversal. Admit packed contacts through stored material and
@@ -108,6 +110,8 @@ Stage-3B dependency, nor permission to duplicate its aggregate owner.
    Retain their counts, material/state, support weights and moments. Compare
    reduction against an unreduced test-only oracle; do not silently drop excess
    samples or assign every force to a proxy centre.
+### Coupled normal resistance, friction and contact torque
+
 3. **Use contact-point velocity and real inertia.** For body COM `c`, contact
    offset `r`, velocity `v`, angular velocity `omega`, normal `n` and tangent `t`:
 
@@ -147,6 +151,8 @@ Stage-3B dependency, nor permission to duplicate its aggregate owner.
    free-air drag or independent “make it topple” impulse is added. The zero-mu
    ablation retains normal-contact torque; a flat sliding body need not topple
    where its contact distribution balances the turning effect.
+### One granular response owner and shared impulse budget
+
 6. **One contribution per physical mechanism.** Inventory current granular
    boundary-pressure, displacement, kernel-contact and bearing contributions.
    In the GCR arm, route/replace their overlapping normal reaction through one
