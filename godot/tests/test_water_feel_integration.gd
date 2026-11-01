@@ -1,5 +1,9 @@
 extends SceneTree
 
+const Context = preload("res://tests/palette_qualification_context.gd")
+
+const Watchdogs=preload("res://tests/support/ci_execution_policy.gd")
+
 const Profiles=preload("res://scripts/water_experiment_profiles.gd")
 const Scenarios=preload("res://scripts/water_feel_scenarios.gd")
 
@@ -146,7 +150,7 @@ func _run() -> void:
 	owner.queue_lab({"water_reset":true,"water_policy":worker_policy.policy,
 		"water_policy_hash":worker_policy.hash,"water_policy_provenance":worker_policy.provenance})
 	_expect(owner.start_worker(Vector2(24,222))==OK,"desktop Water owner did not start")
-	var deadline: int=Time.get_ticks_msec()+15_000
+	var deadline: int=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	var owner_snapshot: CyberSimulationSnapshot
 	while Time.get_ticks_msec()<deadline:
 		await process_frame
@@ -160,7 +164,7 @@ func _run() -> void:
 		_expect(owner_snapshot.lab_context.water_accounting.has(
 			"initial_quantization_error_numerator_255"),"initial quantization error is absent")
 	owner.queue_lab({"step":true})
-	deadline=Time.get_ticks_msec()+15_000
+	deadline=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec()<deadline:
 		await process_frame
 		owner_snapshot=owner.take_latest_snapshot(-1)
@@ -178,7 +182,8 @@ func _run() -> void:
 	var authoritative_before: Dictionary=world.water_experiment_observation(Vector2i.ZERO,
 		Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT))
 	var material:=ShaderMaterial.new()
-	material.shader=load("res://shaders/material_palette.gdshader")
+	material.shader=CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
+	Context.emit(get_script().resource_path, material.shader)
 	material.set_shader_parameter("water_presentation_mode",1.0)
 	material.set_shader_parameter("water_presentation_mode",2.0)
 	var authoritative_after: Dictionary=world.water_experiment_observation(Vector2i.ZERO,

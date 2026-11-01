@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Context = preload("res://tests/palette_qualification_context.gd")
+
 # Actual framebuffer checks of main.gd's production ping-pong owner. The small
 # isolated harness supplies immutable world textures and moves the real trail
 # SubViewports into the tree without starting a simulation or physics owner.
@@ -72,7 +74,8 @@ func _run() -> void:
 		return
 	var controller: Control = MAIN_SCRIPT.new()
 	controller.world_shader = ShaderMaterial.new()
-	controller.world_shader.shader = load("res://shaders/material_palette.gdshader")
+	controller.world_shader.shader = CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
+	Context.emit(get_script().resource_path, controller.world_shader.shader)
 	controller.world_view = TextureRect.new()
 	controller.current_view_size = VIEW
 	controller.camera_origin = Vector2.ZERO
