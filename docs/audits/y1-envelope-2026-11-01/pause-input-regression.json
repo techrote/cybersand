@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "baseline_source": "ac3839ec645a2fc3ec622eb33d72a4ab18b114ba",
+  "scope": "Review-only UI; reproduction adds a new test to baseline without changing scene code.",
+  "command": [
+    "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+    "--headless",
+    "--path",
+    "build/godot",
+    "--script",
+    "res://tests/test_y1_envelope_review.gd",
+    "--",
+    "--protocol=C:\\Users\\_\\.codex\\worktrees\\y1-production-envelope\\khybersand\\docs\\audits\\y1-envelope-2026-11-01\\protocol.json"
+  ],
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "timeout_seconds": 1200,
+  "test_sha256": "476f3c6c334fa4765db69c64815d5176795937383e2193fd72aab6c3c75a05aa",
+  "baseline_review_blob": "bc15b03a23e5a255e17c9ec368cdfeca7c5450ce",
+  "results": [
+    {
+      "phase": "before",
+      "exit": 1,
+      "local_log": "build/owner-recordings/pause-before.log",
+      "log_sha256": "31ef44f3bea2d0b41094dd96f3c501581e46e6b524316038b93302c95d450237",
+      "output": [
+        "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+        "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+        "",
+        "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+        "ERROR: Space release activated a focused control or toggled pause",
+        "   at: push_error (core/variant/variant_utility.cpp:1023)",
+        "   GDScript backtrace (most recent call first):",
+        "       [0] _test_pause_input (res://tests/test_y1_envelope_review.gd:35)",
+        "       [1] _space_event (res://tests/test_y1_envelope_review.gd:10)"
+      ]
+    },
+    {
+      "phase": "after",
+      "exit": 0,
+      "local_log": "build/owner-recordings/pause-after.log",
+      "log_sha256": "b758910a9a1ececcc5f7b9119ebcb0e70a8cb23409c50803b8c7c1df9a4ca12c",
+      "output": [
+        "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+        "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+        "",
+        "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+        "Y1 review fresh-owner selection, focused Space press/hold/release and hard excavation passed; no human gameplay verdict"
+      ]
+    }
+  ]
+}

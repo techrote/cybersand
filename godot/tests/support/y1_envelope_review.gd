@@ -95,9 +95,16 @@ func excavate_now() -> void:
 	fixture.bridge.rebuild_hard_surface_colliders_from_rectangles(fixture.world.get_hard_surface_rectangles())
 	refresh_view()
 
+func _input(event: InputEvent) -> void:
+	# Space is a scene shortcut even when Reset/Pause/OptionButton has focus.
+	# Consume press, auto-repeat and release before GUI ui_accept can activate
+	# a focused button on release and undo the scene's first toggle.
+	if event is InputEventKey and (event.keycode == KEY_SPACE or event.physical_keycode == KEY_SPACE):
+		get_viewport().set_input_as_handled()
+		if event.pressed and not event.echo: toggle_pause()
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event.is_pressed() or event.is_echo(): return
-	if event.keycode == KEY_SPACE: toggle_pause()
 	if event.keycode == KEY_R: reset_case()
 	if event.keycode == KEY_E: excavate_now()
 

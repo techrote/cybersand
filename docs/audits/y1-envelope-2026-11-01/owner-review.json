@@ -1,0 +1,248 @@
+{
+  "schema": 1,
+  "date": "2026-11-01",
+  "reviewed_source": "ac3839ec645a2fc3ec622eb33d72a4ab18b114ba",
+  "reviewed_tree": "8eb7e17bc42cd4f1688cfd69f7abf66da43090f2",
+  "native_source": "43eadc3c259f6c4b623e09327dc175a7600ce1cb",
+  "windows_native_sha256": "4b4139446ef81e09c98ffa385e717a7a552e6ee636ae964401272108b579388e",
+  "runtime_identity_basis": "Source overlay in owner frames and previously authenticated launched package; Godot 4.7.stable.official.5b4e0cb0f / Rapier2D 0.35.2. The crop does not expose the selector or a new runtime receipt per recording.",
+  "candidate": "Y1",
+  "candidate_basis": "Owner explicitly answered Y1 throughout for all nine recordings.",
+  "recording_fps": 30,
+  "frame_number_convention": "Original filename _frame########_, one-based. Capture frames are not solver sample indices; pauses, reset, pre-roll and duplicate frames prevent a fixed mapping.",
+  "owner_gameplay_acceptance": false,
+  "acceptance_basis": "Owner praises impact response and identifies undesirable settling/rotation/lateral behavior; no overall production acceptance or merge authorization supplied.",
+  "disposition": {
+    "vertical_impact_research": "ADVANCE WITH REFINEMENT REQUIRED",
+    "torque_asymmetry_lateral": "DISTINCT MECHANISM GAP",
+    "full_production_envelope": "UNQUALIFIED; no default promotion",
+    "pr": "draft and unmerged; REM-004/#83 remains open"
+  },
+  "archive_custody": "Original archives unchanged; byte-identical copies retained locally in build/owner-recordings/archives. Raw PNG populations are not committed.",
+  "archives": [
+    {
+      "name": "anchor-30.zip",
+      "sha256": "c136696634a9e78b6f3b196bdd0f2e97b01b2e1a001814aaf8fe2846d41bb596",
+      "bytes": 275750,
+      "frames": 80,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        80
+      ],
+      "last_frame_dimensions": [
+        239,
+        579
+      ],
+      "owner_report": "Barely bounces; no strong objection reported for this short recording."
+    },
+    {
+      "name": "anchor-90.zip",
+      "sha256": "4496f64b5ac757f91d06867dd90f2bf7f2c07ebf306502010b6e7b9b9fee3a13",
+      "bytes": 3407778,
+      "frames": 957,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        957
+      ],
+      "last_frame_dimensions": [
+        239,
+        579
+      ],
+      "owner_report": "Satisfying, realistic impact embedding; slow squeeze-out and side-to-side oscillation are undesirable."
+    },
+    {
+      "name": "angle-45-30.zip",
+      "sha256": "f1a11798fd69d6cd909291bddd4d9bf74ca3fa443915098adc37389c9fa6b8a2",
+      "bytes": 4471046,
+      "frames": 931,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        931
+      ],
+      "last_frame_dimensions": [
+        239,
+        579
+      ],
+      "owner_report": "Corner embedding is praised; subpixel wandering/snapping for 30 seconds is undesirable."
+    },
+    {
+      "name": "edge-30.zip",
+      "sha256": "9343df39a66482155555fd6176e2e0ed225878e0e1f4c98ba814ac9ab0a0c9a8",
+      "bytes": 1470873,
+      "frames": 369,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        369
+      ],
+      "last_frame_dimensions": [
+        239,
+        579
+      ],
+      "owner_report": "Expected clockwise rotation is absent at first bounce f35. Right-corner second contact f85, anticlockwise rotation f87 and left-corner bounce f90 feel like an implausible physics ping."
+    },
+    {
+      "name": "excavate.zip",
+      "sha256": "9365559c83b7a630a07e9366ea07ee254c85facdcb0820701d51191fd3b70f71",
+      "bytes": 475397,
+      "frames": 102,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        102
+      ],
+      "last_frame_dimensions": [
+        239,
+        579
+      ],
+      "owner_report": "Wonky supported angle, falling without rotation, then abrupt leveling on hard floor are undesirable."
+    },
+    {
+      "name": "mass-05-90.zip",
+      "sha256": "09f58e31b541f02e9eb74b5573b09d199bebc180bb964d52efe9c8fee9c5e8a5",
+      "bytes": 3085083,
+      "frames": 962,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        962
+      ],
+      "last_frame_dimensions": [
+        239,
+        579
+      ],
+      "owner_report": "Satisfying, realistic shallow impact embedding; slow push-out and wiggling are undesirable."
+    },
+    {
+      "name": "mass-2-90.zip",
+      "sha256": "3afc99b40c3e27af62ed1c7f2000cf49c2a7a891810bac18b1b15efd5402a6eb",
+      "bytes": 4706483,
+      "frames": 984,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        984
+      ],
+      "last_frame_dimensions": [
+        239,
+        579
+      ],
+      "owner_report": "Powerful heavy impact is praised; deepest embedding sloshes/wiggles free until about 30 seconds."
+    },
+    {
+      "name": "slide-slope.zip",
+      "sha256": "88db7b4f737835f3313c5ac437330cec0775e11a49f01ec64cad6046c85cd04d",
+      "bytes": 3293091,
+      "frames": 339,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        339
+      ],
+      "last_frame_dimensions": [
+        560,
+        589
+      ],
+      "owner_report": "Glide/bounce over slope steps lacks expected bottom-left corner catch and clockwise topple."
+    },
+    {
+      "name": "slide.zip",
+      "sha256": "e56b62445bc3cc419953d981651aa393fa552f04daf1566031abb56ee6764b61",
+      "bytes": 8670088,
+      "frames": 950,
+      "crc_valid": true,
+      "frame_numbers": [
+        1,
+        950
+      ],
+      "last_frame_dimensions": [
+        560,
+        589
+      ],
+      "owner_report": "Nearly frictionless glide to wall, then residual rebound momentum/rotation and several-seconds-per-pixel creep are undesirable."
+    }
+  ],
+  "visual_assessment": {
+    "edge-30": {
+      "frames": [
+        35,
+        85,
+        87,
+        90
+      ],
+      "observation": "First contact is at the Sand edge; second contact sequence reaches the hard bottom. Strong angular response begins near that bottom contact.",
+      "limitation": "Images establish pose and environment, not solver force/jerk, exact collision manifold or a solver-tick alignment."
+    },
+    "other_cases": "Selected original frames spanning early impact, mid-settling and recording end inspected for all nine archives. This supports the reported displacement/withdrawal and missing rotation; perceived feel remains the owner judgement."
+  },
+  "pause_defect": {
+    "cause": "Space in _unhandled_key_input competes with focused BaseButton ui_accept on key release.",
+    "reproduction": "SceneTree-dispatched press, repeated echo, release after focusing Pause fails before fix: Space release activated a focused control or toggled pause.",
+    "repair": "Review Control consumes Space key events in _input before GUI; only non-echo pressed events toggle.",
+    "scope": "Development review UI only; no native input, physical law, default or ownership changes."
+  },
+  "next_work": "Separately preregister response/settling characterization across mass/scale, then the smallest justified refinement. Treat support torque, granular tangential response and transition to hard contact as separate mechanisms. Do not tune the vertical multiplier to imitate torque/friction.",
+  "independent_existing_edge_trace": {
+    "source": "5d1450b3ef4de0ae20a3138de160dfe2b7f86ecd",
+    "case": {
+      "angle": 0.08,
+      "body_count": 1.0,
+      "depth": 96.0,
+      "gap": 2.0,
+      "group": "terrain",
+      "horizontal": 0.0,
+      "id": "edge-30",
+      "layout": "edge",
+      "mass": 1.0,
+      "material": 2.0,
+      "size": 1.0,
+      "speed": 30.0,
+      "spin": 0.0,
+      "ticks": 1800.0,
+      "width": 64.0,
+      "workers": 1.0
+    },
+    "raw_sha256": "730d3e0605a6ccb811945a45f203ac9be9bcc3ad2b58308e66465166c22626dd",
+    "first_nonzero_omega_tick": 118,
+    "prior_out": [
+      145.269256591797,
+      279.791534423828,
+      0.0799999907612801,
+      13.7333040237427,
+      98.8461074829102,
+      0.0
+    ],
+    "incoming": [
+      145.118988037109,
+      280.665771484375,
+      0.0908132120966911,
+      -23.8897380828857,
+      -4.47787570953369,
+      -3.02615737915039
+    ],
+    "outgoing": [
+      145.118988037109,
+      280.665771484375,
+      0.0908132120966911,
+      -21.7343406677246,
+      -6.1714825630188,
+      -3.02615737915039
+    ],
+    "bearing_y": 0.0,
+    "result": [
+      1.0,
+      2.15539693832397,
+      -1.6936069726944,
+      0.0,
+      0.0,
+      30.0,
+      1.0,
+      10.0,
+      119.0
+    ],
+    "interpretation": "Angular velocity is already nonzero in the incoming pose after bridge.step, before cellular result application, and remains unchanged by that application. This independent trace supports the hard-contact mechanism distinction; it is not a frame-to-tick alignment of the owner capture."
+  }
+}

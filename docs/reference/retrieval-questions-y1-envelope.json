@@ -30,7 +30,8 @@
       "facts": [
         "run_y1_review.py authenticates source, runtime, Godot and scenario configuration.",
         "Explicit experimental selection then fresh reset; Space pause, arrows lateral, E excavation.",
-        "Owner judgement on sinking, rigidity, latency, mass, lateral, rotation and release must be actual and source-bound; awaiting owner acceptance."
+        "Owner confirms all nine recordings are Y1 at ac3839e: impact praised, settling/rotation/lateral behavior unaccepted; awaiting gameplay acceptance.",
+        "Space consumes press/repeat/release before GUI focus handlers and toggles only on non-echo press; relaunch loads the review-only fix."
       ],
       "sources": [
         "../tools/experiments/run_y1_review.py",

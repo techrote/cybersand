@@ -2,7 +2,7 @@
 title: Y1 production envelope qualification
 status: Current
 document-kind: evidence
-scope: Fresh-main B0/Y1 qualification registration, bounded physical envelope and pending owner gameplay acceptance
+scope: Fresh-main B0/Y1 qualification, bounded physical envelope, actual owner feedback and withheld gameplay acceptance
 canonical-for: []
 last-reviewed: 2026-11-01
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../operations/development-claims-remediation-programme.md, ../reference/status-and-roadmap.md]
@@ -300,7 +300,8 @@ granular torque and target-device gameplay remain unqualified. Ordinary default
 behavior stays B0.
 
 The [source-authenticated review instructions](../operations/y1-granular-bearing-qualification.md#how-does-the-owner-compare-the-playable-cases)
-cover the actual shared fixture scene. The owner's verdict is **not supplied**.
+cover the actual shared fixture scene. At the pre-review handoff, the owner's
+verdict had **not yet been supplied**; the subsequent review is recorded below.
 Technical promotion is blocked by the measured envelope deficiencies even before
 subjective review. A future separately registered response/latency refinement
 should first characterize capacity-per-supported-sample and withdrawal behavior
@@ -310,3 +311,90 @@ such implementation is selected here.
 **AWAITING OWNER GAMEPLAY ACCEPTANCE.** Keep the focused PR draft and unmerged.
 No REM-004/#83 closure or production/default promotion is claimed. Explicit owner
 gameplay acceptance and explicit later mergedown authorization remain required.
+
+## Actual owner review and pause repair — 2026-11-01
+
+The owner supplied nine lossless30FPS PNG archives containing5,674 frames and
+explicitly confirmed **Y1 throughout**. Source shown in the captures is
+`ac3839ec645a2fc3ec622eb33d72a4ab18b114ba`, tree
+`8eb7e17bc42cd4f1688cfd69f7abf66da43090f2`. This binds the judgement to the
+previously authenticated Windows review package: Godot
+`4.7.stable.official.5b4e0cb0f`, Rapier2D0.35.2, native source
+`43eadc3c259f6c4b623e09327dc175a7600ce1cb`, DLL SHA-256
+`4b4139446ef81e09c98ffa385e717a7a552e6ee636ae964401272108b579388e`.
+The cropped recording itself omits the selector and does not supply a new
+runtime receipt per archive. Candidate attribution comes from the owner's
+explicit answer, not inference from motion.
+
+[Owner review registration](y1-envelope-2026-11-01/owner-review.json) records each
+archive's bytes, SHA-256, frame count, CRC verification and actual report. The
+original archives remain unchanged. Byte-identical local copies are retained
+under `build/owner-recordings/archives`; the full PNG populations are not
+committed. Selected original frames spanning each recording and the cited edge
+frames were inspected. Frame references below use the original one-based
+`_frame########_` filename, not the archive index or a simulation sample.
+Thirty recorded frames per second does not establish a fixed2:1 mapping to
+60Hz solver samples: pauses, resets, pre-roll and duplicate frames matter.
+
+| Recording | Actual owner assessment |
+|---|---|
+| anchor-30 | Barely bounces. No strong objection reported for this short recording. |
+| anchor-90 | Satisfying, realistic embedding; slow squeeze-out and side-to-side oscillation are undesirable. |
+| mass-05-90 | Satisfying, realistic shallow embedding; slow push-out and wiggling are undesirable. |
+| mass-2-90 | Powerful heavy impact is praised; deepest embedding sloshes and wiggles free until about30seconds. |
+| angle-45-30 | Corner embedding is praised;30seconds of subpixel wandering/snapping is undesirable. |
+| edge-30 | f35 lacks the expected clockwise response; f85 right-corner contact, f87 anticlockwise rotation and f90 left-corner bounce feel like an implausible physics ping. |
+| excavate | Wonky supported angle, falling without rotation, then abrupt leveling on the floor are undesirable. |
+| slide | Nearly frictionless travel to the wall, residual rebound momentum/rotation and several-seconds-per-pixel creep are undesirable. |
+| slide-slope | Gliding/bouncing across steps lacks the expected corner catch and clockwise topple. |
+
+**Owner gameplay acceptance has not been granted.** Praise for impact embedding
+does not accept the rest, lateral or rotation envelope. Engineering disposition
+is **ADVANCE WITH REFINEMENT REQUIRED** for vertical impact-response research
+and **DISTINCT MECHANISM GAP** for torque/asymmetry and granular tangential
+response. This is no recommendation to advance Y1 as the production default;
+the full envelope remains unqualified. REM-004/#83 remains open, B0 stays
+default and PR #343 stays draft and unmerged.
+
+The illustrative edge sequence separates mechanisms. At f35 the barrel is at
+the Sand edge; f85–f90 reaches the hard bottom, where its angular response
+changes sharply. The existing independent `edge-30-Y1` qualification trace first
+has nonzero angular velocity at sample118: incoming omega is
+`-3.02615737915039`rad/s after `bridge.step()`, and outgoing omega is identical
+after cellular result application, with zero bearing impulse on that sample.
+The preceding outgoing omega is zero. The registration retains these states
+and the raw trace hash. This supports Rapier hard contact as the source of that
+angular onset; it does not align sample118 to an exact recording frame or
+prove the entire visible ping has only one cause. Cellular displacement impulses
+can still affect the subsequent trajectory. Images alone cannot measure solver
+jerk or identify the exact contact manifold.
+
+The bridge applies granular response as central impulses and translational
+correction; it has no granular support torque. The fixture starts these cases
+with zero spin. Free falling without new rotation is therefore expected from
+the current model, while the missing torque during asymmetric Sand contact is
+the mechanism deficiency. Rapier hard contacts can then rotate/level the body.
+Likewise neutral lateral control deliberately adds no braking; the present
+fixture has damping and cellular reaction but no new granular contact-friction
+law. Passing the registered travel/sticking check did not establish adequate
+friction or credible corner catching. These are gameplay failures retained
+alongside the earlier technical results, not defects concealed by tuning Y1.
+
+The pause report exposed a separate review-tool bug. A SceneTree-dispatched
+Space press, three echo events and release reproduces a second focused-button
+activation before the repair. The pre-fix test exits1 with
+`Space release activated a focused control or toggled pause`. The scene now
+consumes Space press/echo/release in `_input` before GUI `ui_accept`, toggling
+only on a non-echo press. The regression checks Pause, Reset, scenario and
+candidate focus, stable press/hold/release/second-press behavior, unchanged
+owners/selections, and the existing button activation path. R/E retain their
+existing handling. No bearing law, native input, runtime, selector default or
+simulation ownership changes in this repair. Existing running processes need
+a relaunch to load the repaired script.
+
+Next physical work requires a separate registration: characterize impact versus
+withdrawal/rest response across the mass/scale strata before selecting the
+smallest justified refinement. Support torque, tangential contact and the
+transition to hard terrain need distinct accounting. No new coefficient,
+friction law, angular law, search expansion or production promotion is selected
+by this feedback checkpoint.

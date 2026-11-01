@@ -128,7 +128,17 @@ Record the owner's actual answers to these questions with the printed identity:
 - Does excavation/support loss look natural?
 - Is there an obvious new gameplay regression?
 
-**AWAITING OWNER GAMEPLAY ACCEPTANCE.** No automated observation supplies a human
-preference or acceptance. #83/REM-004 remains open. A passing technical subset
-cannot promote Y1 to production default; that is a separate owner decision.
-The qualification PR stays draft and unmerged until explicit owner direction.
+The [actual owner review](../audits/2026-11-01-y1-production-envelope.md#actual-owner-review-and-pause-repair--2026-11-01)
+is now recorded against `ac3839e`: all nine recordings are explicitly confirmed
+Y1. The owner praises impact embedding but objects to withdrawal/wiggle, missing
+edge rotation/corner catch, lateral glide/creep and abrupt hard-floor response.
+The full envelope has **not** received gameplay acceptance. Engineering
+disposition is **ADVANCE WITH REFINEMENT REQUIRED** for impact response, with
+**DISTINCT MECHANISM GAP** for granular torque and tangential contact.
+
+The review-only Space shortcut consumes press, repeat and release before GUI
+controls; only the initial press toggles. This fixes the observed focused-button
+release conflict. Relaunch an existing review process to load the repair.
+
+**AWAITING OWNER GAMEPLAY ACCEPTANCE.** #83/REM-004 remains open; no production
+default promotion is justified. The qualification PR stays draft and unmerged.
