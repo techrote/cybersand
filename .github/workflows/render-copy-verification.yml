@@ -1,0 +1,408 @@
+name: R frozen-source qualification and graphical Control comparison
+
+# EPHEMERAL: only verify/render-copy-production-20261101. This workflow is the
+# sole added file in a one-parent child of TARGET_SOURCE_SHA; it never belongs
+# to the production PR. Replace TARGET_SOURCE_SHA after runtime publication.
+on:
+  push:
+    branches: [verify/render-copy-production-20261101]
+    paths: ['.github/workflows/render-copy-verification.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-copy-verification-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  TARGET_SOURCE_SHA: 6fff6cf6b75ecfa224bb4e9c0cd341d2453f79e1
+  CANDIDATE_BRANCH: codex/render-copy-production-20261101
+  BASE_SOURCE_SHA: 25ce0731d89b9540c2d95cfa8bae321c37e6e118
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  dispatch-current-gates:
+    name: dispatch unchanged gates at the frozen candidate
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/verify/render-copy-production-20261101'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: write
+    defaults:
+      run:
+        shell: bash
+        working-directory: workspace/source
+    steps:
+      - name: Check out the exact production candidate
+        timeout-minutes: 10
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.TARGET_SOURCE_SHA }}
+          path: workspace/source
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - name: Verify source lease and dispatch the six unchanged workflows
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DISPATCH_EVIDENCE: ${{ github.workspace }}/evidence-dispatch
+        run: |
+          set -euo pipefail
+          python3 - <<'PYCODE'
+          import datetime, hashlib, json, os, pathlib, re, subprocess, time, urllib.error, urllib.parse, urllib.request
+          repository = 'techrote/cybersand'
+          source, base = os.environ['TARGET_SOURCE_SHA'], os.environ['BASE_SOURCE_SHA']
+          branch = os.environ['CANDIDATE_BRANCH']
+          evidence = pathlib.Path(os.environ['DISPATCH_EVIDENCE'])
+          evidence.mkdir(parents=True, exist_ok=False)
+          receipt = {'schema': 'render-copy-frozen-dispatch-v1', 'source_sha': source,
+                     'base_sha': base, 'branch': branch, 'verification_workflow_sha': os.environ['GITHUB_SHA'],
+                     'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+                     'dispatches': [], 'status': 'started', 'gate_passes_claimed': False}
+          def save():
+              (evidence/'dispatch-receipt.json').write_text(json.dumps(receipt, indent=2)+'\n')
+          def git(*args):
+              return subprocess.check_output(['git', *args], timeout=60).decode().strip()
+          def api(path, data=None):
+              request = urllib.request.Request('https://api.github.com/repos/'+repository+path,
+                  data=None if data is None else json.dumps(data).encode(),
+                  headers={'Authorization': 'Bearer '+os.environ['GH_TOKEN'],
+                           'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28',
+                           'Content-Type': 'application/json'})
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  raw = response.read()
+                  return response.status, response.headers.get('X-GitHub-Request-Id'), json.loads(raw) if raw else None
+          def lease():
+              _, _, value = api('/git/ref/heads/'+urllib.parse.quote(branch, safe='/'))
+              if value['object']['type'] != 'commit' or value['object']['sha'] != source:
+                  raise RuntimeError('Candidate branch advanced: refusing source-ambiguous dispatch')
+              return value['object']['sha']
+          def runs(workflow):
+              query = urllib.parse.urlencode({'event':'workflow_dispatch','branch':branch,'head_sha':source,'per_page':100})
+              return api('/actions/workflows/'+workflow+'/runs?'+query)[2]['workflow_runs']
+          try:
+              if not re.fullmatch(r'[0-9a-f]{40}', source):
+                  raise RuntimeError('Replace TARGET_SOURCE_SHA with the exact final candidate SHA')
+              if git('rev-parse','HEAD') != source:
+                  raise RuntimeError('Wrong target checkout')
+              receipt['source_tree'] = git('rev-parse','HEAD^{tree}')
+              verification = os.environ['GITHUB_SHA']
+              parents = git('rev-list','--parents','-n','1',verification).split()
+              if parents != [verification,source]:
+                  raise RuntimeError('Verification workflow must be a direct single-parent child of candidate')
+              changed = git('diff-tree','--no-commit-id','--name-only','-r',verification).splitlines()
+              if changed != ['.github/workflows/render-copy-verification.yml']:
+                  raise RuntimeError('Verification child contains changes beyond its ephemeral workflow')
+              workflow_bytes = subprocess.check_output(['git','show',verification+':'+changed[0]], timeout=60)
+              (evidence/'executed-verification-workflow.yml').write_bytes(workflow_bytes)
+              receipt['verification_workflow_sha256'] = hashlib.sha256(workflow_bytes).hexdigest()
+              workflows = ['native.yml','gdextension.yml','documentation.yml',
+                           'issue49-water-apparatus.yml','play-desktop-packet.yml','native-scope-advisory.yml']
+              for workflow in workflows:
+                  path = '.github/workflows/'+workflow
+                  if git('rev-parse',source+':'+path) != git('rev-parse',base+':'+path):
+                      raise RuntimeError('Existing qualification workflow changed: '+workflow)
+              receipt['initial_branch_lease'] = lease()
+              save()
+              for workflow in workflows:
+                  lease()
+                  previous = {row['id'] for row in runs(workflow)}
+                  payload = {'ref':branch}
+                  if workflow == 'native-scope-advisory.yml':
+                      payload['inputs'] = {'base_sha':base}
+                  row = {'workflow':workflow,'workflow_blob':git('rev-parse',source+':.github/workflows/'+workflow),
+                         'request':payload,'previous_run_ids':sorted(previous),
+                         'requested_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                         'status':'requesting','registered_runs':[]}
+                  receipt['dispatches'].append(row)
+                  save()
+                  # Never automatically repeat a POST whose response was lost.
+                  status, request_id, _ = api('/actions/workflows/'+workflow+'/dispatches',payload)
+                  row.update(status='accepted' if status==204 else 'unexpected_response',
+                             http_status=status,github_request_id=request_id)
+                  save()
+                  if status != 204:
+                      raise RuntimeError('Unexpected dispatch response')
+              deadline = time.monotonic()+60
+              while True:
+                  for row in receipt['dispatches']:
+                      if row['registered_runs']:
+                          continue
+                      new = [run for run in runs(row['workflow']) if run['id'] not in row['previous_run_ids']]
+                      if any(run['head_sha'] != source or run['event'] != 'workflow_dispatch' for run in new):
+                          raise RuntimeError('Dispatched run does not match frozen source/event')
+                      row['registered_runs'] = [{'id':run['id'],'url':run['html_url'],
+                                                'head_sha':run['head_sha'],'event':run['event']} for run in new]
+                      row['registration'] = 'unique' if len(new)==1 else ('ambiguous' if len(new)>1 else 'pending')
+                  save()
+                  if all(row['registered_runs'] for row in receipt['dispatches']) or time.monotonic()>=deadline:
+                      break
+                  time.sleep(5)
+              receipt['final_branch_lease'] = lease()
+              if any(row['registration']=='ambiguous' for row in receipt['dispatches']):
+                  raise RuntimeError('More than one new matching dispatch; retain evidence for explicit identification')
+              receipt['status'] = 'dispatches_accepted'
+          except Exception as error:
+              receipt.update(status='failed',error=type(error).__name__+': '+str(error))
+              raise
+          finally:
+              save()
+          PYCODE
+
+      - name: Retain dispatch custody including failures
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy-dispatch-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-dispatch/
+          if-no-files-found: error
+          retention-days: 90
+
+  graphical-control-r:
+    name: source-matched real-Main graphical Control versus R
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/verify/render-copy-production-20261101'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+        working-directory: workspace/source
+    env:
+      EVIDENCE: ${{ github.workspace }}/evidence-graphical
+      SCONS_JOBS: '2'
+      CYBERSAND_REAL_CXX: /usr/bin/g++-13
+      LINUX_CXX: /usr/bin/g++-13
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+      GALLIVM_PERF: 'nopt'
+    steps:
+      - name: Check out exact candidate without materializing unrelated platforms
+        timeout-minutes: 10
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.TARGET_SOURCE_SHA }}
+          path: workspace/source
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - name: Record exact source and materialize Linux runtime inputs
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SOURCE_SHA"
+          export CONTROL_ROOT="$RUNNER_TEMP/render-copy-control-source"
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp"
+          export SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python"
+          {
+            echo "CONTROL_ROOT=$CONTROL_ROOT"
+            echo "GODOT_CPP_ROOT=$GODOT_CPP_ROOT"
+            echo "SCONS_PYTHON=$SCONS_PYTHON"
+          } >> "$GITHUB_ENV"
+          mkdir -p "$EVIDENCE/control" "$EVIDENCE/R" "$EVIDENCE/import" "$EVIDENCE/readback"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/candidate-source.txt"
+          git status --porcelain=v2 > "$EVIDENCE/initial-source-status.txt"
+          test ! -s "$EVIDENCE/initial-source-status.txt"
+          git show "$GITHUB_SHA:.github/workflows/render-copy-verification.yml" > "$EVIDENCE/executed-verification-workflow.yml"
+          git lfs install --local
+          timeout 15m git lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          cp godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so "$EVIDENCE/R/"
+          cp godot/addons/cybersand_native/runtime-provenance.linux.json "$EVIDENCE/R/"
+          cp godot/addons/godot-rapier2d/runtime-provenance.linux.json "$EVIDENCE/rapier-runtime-provenance.linux.json"
+          git lfs ls-files --long > "$EVIDENCE/lfs-pointer-identities.txt"
+          timeout 5m git fetch --no-tags origin "$BASE_SOURCE_SHA"
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$CONTROL_ROOT" "$BASE_SOURCE_SHA"
+          test "$(git -C "$CONTROL_ROOT" rev-parse HEAD)" = "$BASE_SOURCE_SHA"
+          git -C "$CONTROL_ROOT" rev-parse HEAD HEAD^{tree} > "$EVIDENCE/control/source.txt"
+
+      - name: Prepare pinned SCons and identical godot-cpp source
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$SCONS_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt 2>&1 | tee "$EVIDENCE/scons-install.log"
+          "$SCONS_PYTHON" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$GODOT_CPP_ROOT"
+          git -C "$GODOT_CPP_ROOT" init
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build Control from frozen main with the pinned ordinary build scripts
+        timeout-minutes: 60
+        env:
+          CYBERSAND_NATIVE_OUTPUT: ${{ github.workspace }}/evidence-graphical/control/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          # The native source and the build scripts both come from frozen main.
+          timeout 35m "$CONTROL_ROOT/tools/build_pinned_godot_cpp.sh" linux 2>&1 | tee "$EVIDENCE/control/godot-cpp-build.log"
+          timeout 20m "$CONTROL_ROOT/tools/build_native_extension.sh" 2>&1 | tee "$EVIDENCE/control/native-build.log"
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Linux x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a"
+          } > "$EVIDENCE/control/toolchain.txt"
+          # Retain the actual dependency archive, not just its asserted digest.
+          cp "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a" "$EVIDENCE/control/"
+          git -C "$CONTROL_ROOT" diff --exit-code
+          python3 - <<'PYCODE'
+          import json, os, pathlib, sys
+          sys.path.insert(0,'tools/render_copy')
+          import run_graphical_campaign as campaign
+          evidence = pathlib.Path(os.environ['EVIDENCE'])
+          source = os.environ['BASE_SOURCE_SHA']
+          runtime = evidence/'control/libcybersand_native.linux.x86_64.so'
+          manifest = {'schema_version':1,'platform':'linux','artifact':campaign.platform_paths()['artifact'],
+              'source_commit':source,'source_tree':campaign.git_value(source+'^{tree}'),
+              'sha256':campaign.digest(runtime),'size':runtime.stat().st_size,
+              'toolchain':(evidence/'control/toolchain.txt').read_text().strip(),
+              'status':'built-for-graphical-comparison',
+              'workflow_run':'https://github.com/techrote/cybersand/actions/runs/'+os.environ['GITHUB_RUN_ID'],
+              'workflow_attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+              **campaign.canonical_input_ledgers(source,'control')}
+          path = evidence/'control/runtime-provenance.linux.json'
+          path.write_text(json.dumps(manifest,sort_keys=True,indent=2)+'\n')
+          head = os.environ['TARGET_SOURCE_SHA']
+          campaign.authenticate_runtime(path,runtime,'control',head)
+          r_path = evidence/'R/runtime-provenance.linux.json'
+          r_runtime = evidence/'R/libcybersand_native.linux.x86_64.so'
+          campaign.authenticate_runtime(r_path,r_runtime,'R',head)
+          paired = campaign.comparable_builds(manifest,campaign.read_json(r_path))
+          (evidence/'comparable-builds.json').write_text(json.dumps(paired,indent=2)+'\n')
+          PYCODE
+
+      - name: Verify pinned graphical engine and prepare the current display stack
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          {
+            "$GODOT_BIN" --version
+            sha256sum "$RUNNER_TEMP/godot.zip" "$GODOT_BIN"
+            uname -a
+            python3 --version
+          } > "$EVIDENCE/engine-host-identity.txt"
+          timeout 15m bash tools/ci/prepare_linux_display.sh 2>&1 | tee "$EVIDENCE/display-setup.log"
+
+      - name: Import the exact candidate with retained R and reject parser errors
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          python3 - <<'PYCODE'
+          import json, os, pathlib, sys
+          sys.path.insert(0,'tools/ci')
+          import run_godot_regressions as runner
+          from execution_policy import watchdog_seconds
+          output = pathlib.Path(os.environ['EVIDENCE'])/'import'
+          case = runner.Case('import',('--editor','--quit'),watchdog_seconds('godot_import_seconds'),3.0)
+          result, failed = runner.run_case(os.environ['GODOT_BIN'],case,output,'preflight')
+          (output/'import-result.json').write_text(json.dumps(result,indent=2)+'\n')
+          if failed:
+              raise SystemExit('Exact candidate project import failed; retain original log')
+          PYCODE
+
+      - name: Run twenty fresh real graphical processes across Control/R and N/W
+        timeout-minutes: 180
+        run: |
+          set -euo pipefail
+          # The driver's 165-minute admission budget reserves an unchanged case,
+          # both termination waits, readback and 600s for final evidence before
+          # each launch. A further 600s separates it from this 175-minute outer
+          # ceiling. An unstarted matrix cell remains an explicit failure.
+          set +e
+          timeout --signal=INT --kill-after=30s 175m \
+            xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+            python3 tools/render_copy/run_graphical_campaign.py \
+              --engine "$GODOT_BIN" --output "$EVIDENCE/campaign" \
+              --expected-candidate-sha "$TARGET_SOURCE_SHA" \
+              --control-runtime "$EVIDENCE/control/libcybersand_native.linux.x86_64.so" \
+              --control-manifest "$EVIDENCE/control/runtime-provenance.linux.json" \
+              --r-runtime "$EVIDENCE/R/libcybersand_native.linux.x86_64.so" \
+              --r-manifest "$EVIDENCE/R/runtime-provenance.linux.json" \
+              --repeats 5 --execution-seconds 9900 \
+              --engine-arg=--rendering-method --engine-arg=gl_compatibility \
+              --engine-arg=--display-driver --engine-arg=x11 \
+            2>&1 | tee "$EVIDENCE/graphical-campaign-console.log"
+          campaign_status=${PIPESTATUS[0]}
+          set -e
+          printf '%s\n' "$campaign_status" > "$EVIDENCE/graphical-campaign-exit.txt"
+          exit "$campaign_status"
+
+      - name: Independently exercise real-manifest and trace refusal controls
+        if: always()
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE/readback"
+          failed=0
+          control() {
+            local name="$1" status
+            shift
+            if "$@" > "$EVIDENCE/readback/$name.json" 2> "$EVIDENCE/readback/$name.stderr.log"; then
+              status=0
+            else
+              status=$?
+              failed=1
+            fi
+            printf '%s %s\n' "$name" "$status" >> "$EVIDENCE/readback/statuses.txt"
+          }
+          control control-manifest-controls python3 tools/render_copy/test_graphical_runtime_manifest.py \
+            --manifest "$EVIDENCE/control/runtime-provenance.linux.json" \
+            --runtime "$EVIDENCE/control/libcybersand_native.linux.x86_64.so" --candidate control
+          control r-manifest-controls python3 tools/render_copy/test_graphical_runtime_manifest.py \
+            --manifest "$EVIDENCE/R/runtime-provenance.linux.json" \
+            --runtime "$EVIDENCE/R/libcybersand_native.linux.x86_64.so" --candidate R
+          control trace-refusal-controls python3 tools/render_copy/test_graphical_reader.py "$EVIDENCE/campaign/"[0-9][0-9]-*.json
+          git diff --exit-code > "$EVIDENCE/readback/final-source-diff.txt"
+          test "$(git rev-parse HEAD)" = "$TARGET_SOURCE_SHA"
+          test "$failed" = 0
+
+      - name: Seal raw graphical, source, build and readback evidence
+        if: always()
+        timeout-minutes: 5
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['EVIDENCE'])
+          root.mkdir(parents=True,exist_ok=True)
+          files = {str(p.relative_to(root)):{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
+                   for p in sorted(root.rglob('*')) if p.is_file() and p.name!='evidence-seal.json'}
+          seal = {'schema':'render-copy-verification-evidence-seal-v1',
+                  'target_source_sha':os.environ['TARGET_SOURCE_SHA'],
+                  'verification_workflow_sha':os.environ['GITHUB_SHA'],
+                  'run_id':os.environ['GITHUB_RUN_ID'],'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+                  'files':files,'qualification_requires_complete_passing_campaign':True}
+          (root/'evidence-seal.json').write_text(json.dumps(seal,sort_keys=True,indent=2)+'\n')
+          PYCODE
+
+      - name: Retain original graphical evidence including failures
+        if: always()
+        timeout-minutes: 10
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy-graphical-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-graphical/
+          if-no-files-found: error
+          retention-days: 90
