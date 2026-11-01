@@ -3,9 +3,11 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from types import SimpleNamespace
 
 from run_gcr_admission import PROTOCOL, schedule, validate_mechanical_receipt, validate_registration
 from analyze_gcr_admission import admission_summary, reduce_reports
+import run_gcr_qualification as legacy
 
 
 class AdmissionTests(unittest.TestCase):
@@ -21,6 +23,10 @@ class AdmissionTests(unittest.TestCase):
             self.assertEqual([a for c,a,r,_ in t if c=='sand-vertical' and r==repeat],order)
 
     def test_frozen_registration_integrity(self):validate_registration(self.protocol)
+
+    def test_legacy_authentication_does_not_silently_admit_new_registration(self):
+        with self.assertRaisesRegex(RuntimeError,'Expected the frozen 66-case GCR-001 registration'):
+            legacy.authenticate(SimpleNamespace(),protocol_path=PROTOCOL)
 
     def test_mechanical_receipt_cannot_be_missing_stale_or_partial(self):
         identity=dict(source='s',protocol_sha256='p',native_sha256='n',input_identity='i')

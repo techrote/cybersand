@@ -4,7 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from analyze_gcr_qualification import summarize, compare_pair
+from analyze_gcr_qualification import summarize, compare_pair, timings
 
 REGISTRATION='GCR-ADMISSION-001-2026-11-01'
 
@@ -22,12 +22,12 @@ def admission_summary(report):
     keys=['source_candidates','geometry_mask_checks','mask_checks','path_checks','shared_witness_calls','admitted']
     totals={key:sum(r.get(key,0) for r in records) for key in keys}
     limits={'geometry_mask_checks':24,'mask_checks':31,'path_checks':7,'shared_witness_calls':1}
-    violations={key:sum(r.get(key,0)>multiple*r.get('source_candidates',0) for r in records) for key,multiple in limits.items()}
-    depths=[sum(r.get('selected_depth_counts',[0,0,0])[i] for r in records) for i in range(3)]
-    refusals={key:sum(r.get('refusal_counts',{}).get(key,0) for r in records) for key in sorted({k for r in records for k in r.get('refusal_counts',{})})}
+    violations={key:sum(r[key]>multiple*r['source_candidates'] for r in records) if all(key in r and 'source_candidates' in r for r in records) else None for key,multiple in limits.items()}
+    depths=[sum(r['selected_depth_counts'][i] for r in records) for i in range(3)] if all('selected_depth_counts' in r for r in records) else None
+    refusals={key:sum(r['refusal_counts'].get(key,0) for r in records) for key in sorted({k for r in records for k in r.get('refusal_counts',{})})} if all('refusal_counts' in r for r in records) else None
     return {'observed_native_boundaries':len(records),'totals':totals,'selected_depth_counts':depths,
             'refusal_counts':refusals,'bound_violation_boundaries':violations,
-            'all_observed_probe_bounds_satisfied':not any(violations.values()),
+            'all_observed_probe_bounds_satisfied':not any(violations.values()) if all(v is not None for v in violations.values()) else None,
             'limit':'Counters describe observed admission work; the independent mechanical oracle owns validity. Different evolving trajectories are not a same-state causal comparison.'}
 
 
@@ -38,6 +38,8 @@ def reduce_reports(reports):
         if report.get('registration')!=REGISTRATION or report.get('granular_identity',{}).get('admission_variant')!=wanted:
             raise RuntimeError('Actual admission identity differs from arm')
         receipt=summarize(report)
+        observations=report.get('worker_trace',[]) if report['mode']=='desktop-asynchronous' else report['rows']
+        receipt['timing_us']['admission_counter_copy_us']=timings([r['admission_counter_copy_us'] for r in observations if isinstance(r,dict) and r.get('tick',0)>=120 and 'admission_counter_copy_us' in r])
         receipt.update(repeat=repeat,raw_sha256=raw_hash,granular_identity=report['granular_identity'],admission=admission_summary(report))
         receipts.append(receipt)
     grouped={(r['case'],r['candidate'],r['repeat']):r for r in receipts};physical=[];attribution=[]
