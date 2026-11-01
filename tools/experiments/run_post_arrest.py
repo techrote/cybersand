@@ -151,6 +151,11 @@ def main():
     protocol = read(ROOT / PROTOCOL)
     if git("show", "HEAD:"+PROTOCOL) != (ROOT/PROTOCOL).read_text().strip():
         p.error("committed protocol required")
+    for path, expected in protocol["registered_inputs"].items():
+        if sha(ROOT/path) != expected:
+            p.error("registered input changed: "+path)
+    if not (ROOT/"docs/audits/y1-post-arrest-2026-11-01/stage-a.json").is_file():
+        p.error("committed StageA receipt required")
     if not read(ROOT / "docs/audits/y1-post-arrest-2026-11-01/stage-a.json")["pass"]:
         p.error("StageA must close first")
     built = read(args.build_receipt)
