@@ -90,6 +90,9 @@ func excavate_now() -> void:
 	if fixture == null or resetting: return
 	fixture.fill(fixture.left,Fixture.SURFACE,fixture.width,fixture.floor_y-Fixture.SURFACE,0)
 	fixture.expected = fixture.observation()
+	# Manual review can also erase the hard negative-control bed. Rapier owns
+	# hard contact, so retire its old shapes at this same main-thread boundary.
+	fixture.bridge.rebuild_hard_surface_colliders_from_rectangles(fixture.world.get_hard_surface_rectangles())
 	refresh_view()
 
 func _unhandled_key_input(event: InputEvent) -> void:

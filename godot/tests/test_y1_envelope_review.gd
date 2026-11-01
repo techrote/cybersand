@@ -27,6 +27,20 @@ func _run() -> void:
 		push_error("Review UI and native selector disagree")
 		quit(1)
 		return
+	# The E tool must retire hard colliders as well as native material.
+	for arm_index: int in [0,1]:
+		for i: int in range(review.cases.size()):
+			if review.cases[i].id == "hard": review.chooser.select(i)
+		review.arm.select(arm_index)
+		await review.reset_case()
+		review.paused = true
+		var before_y: float = review.fixture.pose(0)[1]
+		review.excavate_now()
+		for _step: int in range(60): review.fixture.step()
+		if float(review.fixture.pose(0)[1])-before_y < 4.0:
+			push_error("Review hard excavation retained a stale Rapier collider")
+			quit(1)
+			return
 	review.fixture.close()
 	review.fixture = null
 	review.queue_free()
