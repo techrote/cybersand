@@ -156,3 +156,18 @@ run docs/repository/M11/retrieval/LFS/floor checks and independently review the
 combined source. Open a focused draft integration PR. PR#346/#347/#348 and the new
 draft remain unmerged. No playable-room expansion, fleet tuning, arbitrary fracture,
 restoration, #12/#281/#83 closure or default promotion is authorized here.
+
+## Pre-execution interface clarification
+
+The explicit API is `prepare_gcr_compound_coupling(states17, resolve_overlaps)`
+and `gcr_compound_results()` returning one14-value record, physical ID1 and
+version2. Independent methods remain version1 and refuse output misrouting.
+The common repeated physical values are body COM velocity (not proxy-point
+velocity), omega, total mass, serial, actual inertia, COM, mu, dt and session;
+IDs remain contiguous geometry proxies. Validate exact active aggregate lease,
+source rectangle membership and common rotation/rigid offsets before mutation.
+The event radius is maximum actual proxy-corner distance from true COM plus2.
+The crown pixel hole and AABB concavity are distinct empty geometric regions,
+not a claim of two enclosed topological holes. The physical population remains
+56 maximum across both OS; extra lifecycle/mechanical assertions are not new
+efficacy captures. This clarification precedes new code execution/acquisition.
