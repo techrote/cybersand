@@ -1,0 +1,599 @@
+# Source-sealed paired graphical-v2 qualification; only its exact-branch push
+# launches this workload. Prior unexecuted protocols remain retained separately.
+# This sole added workflow belongs on the named verification branch as a direct
+# child of CANDIDATE_SHA. No existing CI workflow or production source is edited.
+# Three independent Windows VMs; R and ER run on the same VM within each repeat.
+name: Conditional E paired Windows graphical qualification
+'on':
+  push:
+    branches:
+    - verify/render-retention-paired-windows-20261101
+    paths:
+    - .github/workflows/render-retention-paired-windows-20261101.yml
+permissions:
+  contents: read
+concurrency:
+  group: render-retention-paired-windows-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  CONTROL_SHA: 809fd30dfac0c5e127302997075be9c4b279e5aa
+  CANDIDATE_SHA: c0875748fc59c896b3461b5836105250a597229a
+  HARNESS_SHA: 215a023290d40160792769ab4da0b28183178374
+  HARNESS_TREE: 6e12633bbdcb8f7f3cd59ef48b180fe7d3f70a87
+  HARNESS_FILES_JSON: '{"godot/tests/bench_render_production.gd":"85b4ddc04c91180ee4da802efb57f36da724a53e3d19f7b9872626d519a2e16f","godot/tests/support/render_production_consumer.gd":"cc38ac2481566e4bc05ac130a77733c28325adcd77c9a6c7cc0870dfc24c2cfb","godot/tests/support/render_production_worker.gd":"2b02616ec468e326c0169bf49d2b8f4de1e66103b87546c17c2a604f21d9a5e9","tools/render_copy/run_production_campaign.py":"7d699946b74be2566a5ec9d7b66db7ed164ba4e34efa4336b022a2b48b3a4102","tools/render_copy/test_production_reader.py":"5d406224ea145bf5135298b573d62d709c8be9c7c3727bf63db8b079201c6b24"}'
+  PYTHONUTF8: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  EVIDENCE_DIR: ${{ github.workspace }}/evidence-render-retention-paired-windows
+jobs:
+  paired-windows:
+    name: paired R and ER Windows repeat ${{ matrix.repeat }}
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/verify/render-retention-paired-windows-20261101'
+    runs-on: windows-2022
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        repeat:
+        - 0
+        - 1
+        - 2
+    env:
+      PAIRED_REPEAT: ${{ matrix.repeat }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: workspace/control
+    steps:
+    - name: Start original paired run custody; refuse an unsealed harness
+      timeout-minutes: 5
+      shell: pwsh
+      working-directory: ${{ github.workspace }}
+      run: |
+        New-Item -ItemType Directory -Path $env:EVIDENCE_DIR | Out-Null
+        $started = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+        "QUALIFICATION_STARTED=$started" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        @{
+          schema = 'render-retention-paired-windows-hosted-v2'; status = 'started';
+          run_id = $env:GITHUB_RUN_ID; run_attempt = $env:GITHUB_RUN_ATTEMPT;
+          repeat = $env:PAIRED_REPEAT; verification_sha = $env:GITHUB_SHA;
+          control_sha = $env:CONTROL_SHA; candidate_sha = $env:CANDIDATE_SHA;
+          harness_sha = $env:HARNESS_SHA; started_epoch = $started;
+          hardware_gpu_completion_qualified = $false; human_pacing_qualified = $false
+        } | ConvertTo-Json | Out-File -FilePath "$env:EVIDENCE_DIR/hosted-run.json" -Encoding utf8
+        if ($env:HARNESS_SHA -notmatch '^[0-9a-f]{40}$' -or $env:HARNESS_TREE -notmatch '^[0-9a-f]{40}$') {
+          throw 'Unsealed draft protocol: exact new harness SHA/tree are required before execution.'
+        }
+    - name: Check out exact verification commit
+      timeout-minutes: 5
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: ${{ github.sha }}
+        path: workspace/verification
+        fetch-depth: 2
+        lfs: false
+        persist-credentials: false
+    - name: Check out exact R control with retained LFS bytes
+      timeout-minutes: 20
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: ${{ env.CONTROL_SHA }}
+        path: workspace/control
+        fetch-depth: 0
+        lfs: true
+        persist-credentials: false
+    - name: Check out exact E+R candidate with retained LFS bytes
+      timeout-minutes: 20
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: ${{ env.CANDIDATE_SHA }}
+        path: workspace/candidate
+        fetch-depth: 0
+        lfs: true
+        persist-credentials: false
+    - name: Check out sealed five-file qualification separately
+      timeout-minutes: 5
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: ${{ env.HARNESS_SHA }}
+        path: workspace/qualification
+        fetch-depth: 0
+        lfs: false
+        persist-credentials: false
+    - name: Select Python 3.12
+      timeout-minutes: 5
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: '3.12'
+    - name: Verify paired native identity and declare both five-file overlays
+      timeout-minutes: 15
+      id: plan
+      run: |
+        set -euo pipefail
+        python - <<'PYCODE'
+        import hashlib, json, math, os, re, subprocess, sys, time
+        from pathlib import Path
+        sys.path.insert(0, 'tools/ci')
+        import execution_policy as policy
+        import run_windows_godot_regressions as windows
+        root = Path.cwd()
+        evidence = Path(os.environ['EVIDENCE_DIR'])
+        roots = {'R':root, 'ER':root.parent/'candidate'}
+        heads = {'R':os.environ['CONTROL_SHA'], 'ER':os.environ['CANDIDATE_SHA']}
+        trees = {'R':'863db60c767bf00a215b9e4064d6bccb71eb69ab', 'ER':'bf35826babe5b5e33a5497df2a50588522f3ac79'}
+        harness, verification = root.parent/'qualification', root.parent/'verification'
+        harness_sha, verification_sha = os.environ['HARNESS_SHA'], os.environ['GITHUB_SHA']
+        files = ('godot/tests/bench_render_production.gd','godot/tests/support/render_production_consumer.gd',
+            'godot/tests/support/render_production_worker.gd','tools/render_copy/run_production_campaign.py',
+            'tools/render_copy/test_production_reader.py')
+        sealed_hashes = json.loads(os.environ['HARNESS_FILES_JSON'])
+        def require(value, message):
+            if not value:
+                raise RuntimeError(message)
+        def git(directory, *args):
+            return subprocess.check_output(['git','-C',str(directory),*args],timeout=windows.metadata_remaining())
+        def value(directory,*args):
+            return git(directory,*args).decode().strip()
+        def save(name,document):
+            (evidence/name).write_text(json.dumps(document,indent=2)+'\n',encoding='utf-8')
+        require(set(sealed_hashes)==set(files) and all(re.fullmatch(r'[0-9a-f]{64}',h) for h in sealed_hashes.values()),
+            'All five new harness files require sealed SHA-256 identities')
+        require(all(re.fullmatch(r'[0-9a-f]{40}',s) for s in [*heads.values(),harness_sha,verification_sha]), 'Exact commits required')
+        workflow_path = '.github/workflows/render-retention-paired-windows-20261101.yml'
+        identities = {'sources':{},'harness_sha':harness_sha,'harness_tree':os.environ['HARNESS_TREE'],
+            'verification_sha':verification_sha,'copied_test_files':{}}
+        with windows.metadata_budget():
+            require(value(verification,'rev-parse','HEAD')==verification_sha, 'Wrong verification checkout')
+            require(value(verification,'rev-list','--parents','-n','1',verification_sha).split()==[verification_sha,heads['ER']],
+                'Verification commit must have the exact candidate as sole parent')
+            require(value(verification,'diff-tree','--no-commit-id','--name-status','-r',verification_sha)=='A\t'+workflow_path,
+                'Verification commit must add only its isolated workflow')
+            workflow = git(verification,'show',verification_sha+':'+workflow_path)
+            (evidence/'executed-workflow.yml').write_bytes(workflow)
+            identities['workflow_sha256'] = hashlib.sha256(workflow).hexdigest()
+            require(value(harness,'rev-parse','HEAD')==harness_sha and value(harness,'rev-parse','HEAD^{tree}')==os.environ['HARNESS_TREE'],
+                'Wrong sealed qualification commit/tree')
+            require(value(harness,'rev-list','--parents','-n','1',harness_sha).split()==[harness_sha,heads['R']],
+                'Qualification commit must have the exact accepted control as sole parent')
+            require(value(harness,'diff','--name-status',heads['R'],harness_sha).splitlines()==['A\t'+p for p in sorted(files)],
+                'Sealed harness must differ from R by exactly five new opt-in files')
+            data_by_path = {}
+            for relative in files:
+                entry = value(harness,'ls-tree',harness_sha,'--',relative)
+                require(entry.startswith('100644 blob ') and entry.endswith('\t'+relative), 'Harness file must be a regular blob')
+                data = git(harness,'show',harness_sha+':'+relative)
+                require(hashlib.sha256(data).hexdigest()==sealed_hashes[relative], 'Harness differs from registered hash: '+relative)
+                require((harness/relative).read_bytes().replace(b'\r\n',b'\n')==data,'Changed qualification checkout: '+relative)
+                data_by_path[relative] = data
+                identities['copied_test_files'][relative] = {'sha256':sealed_hashes[relative],'git_blob':entry.split()[2],'size':len(data)}
+            for arm,source in roots.items():
+                require(value(source,'rev-parse','HEAD')==heads[arm] and value(source,'rev-parse','HEAD^{tree}')==trees[arm], 'Wrong '+arm+' source')
+                require(value(source,'status','--porcelain=v1','--untracked-files=all')=='', 'Initially dirty '+arm+' source')
+                runtime = windows.verify_retained_runtime(source)
+                require(len(runtime['native_source_inputs'])==80, 'Expected complete 80-input published native roster')
+                require(runtime['cybersand_runtime']['sha256']=='ee09f7ab485f817b5f58e767ddb26f2e430439bb3dd4f185019eda028f47199a',
+                    'Selected published R native library changed')
+                identities['sources'][arm] = {'head':heads[arm],'tree':trees[arm],'runtime':runtime}
+                tracked = set(filter(None,git(source,'ls-tree','-rz','--name-only',heads[arm]).decode().split('\0')))
+                require('renderer/rendering_method="gl_compatibility"' in (source/'godot/project.godot').read_text(), 'Ordinary renderer changed')
+                for relative,data in data_by_path.items():
+                    require(relative not in tracked and not (source/relative).exists(), 'Overlay must only add new harness files')
+                    destination = source/relative
+                    destination.parent.mkdir(parents=True,exist_ok=True)
+                    destination.write_bytes(data)
+                for relative in ('godot/scripts/main.gd','godot/scripts/simulation_worker.gd',
+                        'godot/tests/support/render_copy_consumer.gd','godot/tests/support/render_copy_worker.gd','godot/tests/support/render_copy_trace.gd'):
+                    require((source/relative).read_bytes().replace(b'\r\n',b'\n')==git(source,'show',heads[arm]+':'+relative),
+                        'Undeclared production seam/helper change: '+relative)
+                save('overlay-'+arm+'.json',{'schema':'render-production-harness-overlay-v1','source_sha':heads[arm],
+                    'qualification_commit':harness_sha,'qualification_tree':os.environ['HARNESS_TREE'],
+                    'files':sealed_hashes,'reviewed_scope':'Five identical new opt-in v2 test files; production source and existing R observation helpers remain exact in each source arm.'})
+            r,er = [identities['sources'][arm]['runtime'] for arm in ('R','ER')]
+            for field in ('native_source_inputs','cybersand_runtime','rapier_runtime','runtime_provenance','runtime_source_commit','runtime_build_commit'):
+                require(r[field]==er[field], 'Paired runtime/provenance differs: '+field)
+            for relative in ('godot/tests/support/ci_execution_policy.json','tools/ci/execution_policy.py',
+                    'tools/ci/run_windows_godot_regressions.py','third_party/native-toolchain.lock.json','third_party/godot-runtime.lock.json'):
+                require(git(roots['R'],'show',heads['R']+':'+relative)==git(roots['ER'],'show',heads['ER']+':'+relative),
+                    'Paired policy/toolchain pin differs: '+relative)
+        save('paired-source-identities.json',identities)
+        selected = policy.identity()
+        w = selected['watchdogs']
+        require(selected['scale']==1 and w['godot_job_minutes']==360,'Unexpected source policy envelope')
+        repeat = int(os.environ['PAIRED_REPEAT'])
+        require(repeat in (0,1,2),'Unknown paired repeat')
+        order = ['R','ER'] if repeat%2==0 else ['ER','R']
+        cohorts = ['paused:N:0','play:N:0','play:D:0','play:W:0','play:N:50000']
+        cleanup = 4*w['terminate_grace_seconds']
+        admission_driver = w['graphical_case_seconds']+cleanup+w['godot_metadata_seconds']
+        arm_driver = 5*(w['graphical_case_seconds']+cleanup)+w['godot_metadata_seconds']
+        paired = 2*(arm_driver+cleanup)+w['aggregate_headroom_seconds']
+        terminal = 3*w['operation_seconds']
+        require(w['godot_setup_seconds']+60*math.ceil(paired/60)+terminal<=60*w['godot_job_minutes'],
+            'Ten complete graphical watchdogs and evidence do not fit the hosted policy')
+        plan = {'schema':'render-retention-paired-windows-plan-v2','matrix_repeat':repeat,'source_heads':heads,
+            'source_trees':trees,'source_roots':{a:str(p) for a,p in roots.items()},'harness_sha':harness_sha,
+            'execution_policy':selected,'arm_order':order,'cohorts':cohorts,'native_workers':'auto',
+            'delayed_ack_usec':100000,'measured_frames':240,'admission_frames':120,
+            'ordering':'Two five-cohort arm batches; reverse R/ER order for the middle independent repeat.',
+            'setup_seconds':w['godot_setup_seconds'],'admission_driver_seconds':admission_driver,
+            'admission_total_seconds':admission_driver+cleanup,'arm_driver_seconds':arm_driver,'arm_total_seconds':arm_driver+cleanup,
+            'paired_campaign_seconds':paired,'campaign_headroom_seconds':w['aggregate_headroom_seconds'],'terminal_workflow_seconds':terminal,
+            'admission_budget_policy':'Each complete admission is admitted sequentially from actual remaining setup. Two worst-case admission envelopes alone exceed setup; insufficient remainder fails explicitly without launching measured work.',
+            'cache_scope':'Each source project is clean imported. Two separately retained first graphical admissions may populate project and shared driver caches; later fresh processes are not all cold starts.',
+            'planned_measured_processes':[{'variant':arm,'cohort':cohort,'frames':240,'native_workers':'auto'} for arm in order for cohort in cohorts],
+            'gpu_completion_latency_measured':False,'human_pacing_qualified':False}
+        save('execution-plan.json',plan)
+        with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as output:
+            output.write('campaign_minutes='+str(math.ceil(paired/60))+'\n')
+        print(json.dumps(plan,indent=2))
+        PYCODE
+    - name: Preserve actual Windows processor and display inventory
+      timeout-minutes: 5
+      shell: pwsh
+      run: |
+        Get-CimInstance Win32_VideoController |
+          Select-Object Name, AdapterCompatibility, DriverVersion, VideoProcessor, PNPDeviceID, Status |
+          ConvertTo-Json -Depth 4 | Out-File -FilePath "$env:EVIDENCE_DIR/windows-video-controllers.json" -Encoding utf8
+        Get-CimInstance Win32_Processor |
+          Select-Object Name, NumberOfCores, NumberOfLogicalProcessors |
+          ConvertTo-Json | Out-File -FilePath "$env:EVIDENCE_DIR/windows-processors.json" -Encoding utf8
+        Get-ComputerInfo -Property OsName, OsVersion, WindowsVersion, OsArchitecture |
+          ConvertTo-Json | Out-File -FilePath "$env:EVIDENCE_DIR/windows-host.json" -Encoding utf8
+    - name: Download canonical pinned Windows engine archive
+      timeout-minutes: 20
+      run: |
+        set -euo pipefail
+        download_seconds="$(python tools/ci/execution_policy.py seconds dependency_prepare_seconds)"
+        curl --fail --location --connect-timeout 60 --max-time "$download_seconds" \
+          --output "$RUNNER_TEMP/render-retention-paired-godot.zip" \
+          'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip' \
+          2>&1 | tee "$EVIDENCE_DIR/engine-download.log"
+    - name: Authenticate engine and clean-import both exact source projects
+      timeout-minutes: 60
+      run: |
+        set -euo pipefail
+        python - <<'PYCODE'
+        import hashlib,json,os,shutil,sys
+        from pathlib import Path
+        sys.path.insert(0,'tools/ci')
+        import execution_policy as policy
+        import run_windows_godot_regressions as windows
+        import run_godot_regressions as runner
+        evidence = Path(os.environ['EVIDENCE_DIR'])
+        plan = json.loads((evidence/'execution-plan.json').read_text())
+        archive = Path(os.environ['RUNNER_TEMP'])/'render-retention-paired-godot.zip'
+        download = {'path':str(archive),'size':archive.stat().st_size,'actual_sha512':hashlib.sha512(archive.read_bytes()).hexdigest(),
+            'canonical_sha512':windows.GODOT_SHA512}
+        (evidence/'engine-download-identity.json').write_text(json.dumps(download,indent=2)+'\n')
+        with windows.metadata_budget():
+            console,identity = windows.prepare_godot(archive)
+        engine = console.with_name('Godot_v4.7-stable_win64.exe')
+        sys.path.insert(0,'tools/render_copy')
+        import run_production_campaign as campaign
+        identity.update(direct_engine_path=str(engine),direct_engine_authentication='started',
+            launch_choice='Authenticated runtime EXE directly; strict receipt/Popen PID equality and taskkill tree cleanup remain enabled.')
+        try:
+            identity['direct_engine'] = campaign.authenticate_engine(engine,archive)
+            identity['direct_engine_authentication'] = 'passed'
+        except Exception as error:
+            identity.update(direct_engine_authentication='failed',error=type(error).__name__+': '+str(error))
+            raise
+        finally:
+            (evidence/'engine-identities.json').write_text(json.dumps(identity,indent=2)+'\n')
+        for arm in plan['arm_order']:
+            source = Path(plan['source_roots'][arm])
+            cache = source/'godot/.godot'
+            if cache.exists():
+                shutil.rmtree(cache)
+            output = evidence/('clean-import-'+arm)
+            output.mkdir()
+            # The canonical helper resolves each case's explicit source through ROOT;
+            # this sequential selection changes no tracked source or application path.
+            runner.ROOT = source
+            case = runner.Case('import',('--editor','--import'),policy.watchdog_seconds('godot_import_seconds'),1)
+            record, failed = runner.run_case(str(console),case,output,'paired-render-production-'+arm)
+            record.update(source_sha=plan['source_heads'][arm],source_root=str(source))
+            (output/'result.json').write_text(json.dumps(record,indent=2)+'\n')
+            if failed:
+                raise RuntimeError('Original clean import failed for '+arm+'; preserve its record/log/timeout diagnostics')
+        with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as stream:
+            stream.write('QUALIFICATION_GODOT='+str(engine)+'\n')
+            stream.write('QUALIFICATION_ARCHIVE='+str(archive)+'\n')
+        PYCODE
+    - name: Write authenticated paired coordinator outside source
+      timeout-minutes: 5
+      run: |
+        set -euo pipefail
+        cat > "$EVIDENCE_DIR/paired-windows-coordinator.py" <<'PYCOORDINATOR'
+        """Generated outside source by the frozen paired Windows verification workflow.
+
+        The workflow embeds these exact bytes. This is CI orchestration, not a sixth
+        production-tree overlay file. Each child remains the sealed ordinary-path driver.
+        """
+        from __future__ import annotations
+
+        import argparse
+        import hashlib
+        import json
+        import math
+        import os
+        from pathlib import Path
+        import subprocess
+        import sys
+        import time
+
+        EVIDENCE = Path(os.environ["EVIDENCE_DIR"])
+        PLAN = json.loads((EVIDENCE / "execution-plan.json").read_text())
+        ROOTS = {arm: Path(path) for arm, path in PLAN["source_roots"].items()}
+        sys.path.insert(0, str(ROOTS["R"] / "tools/ci"))
+        sys.path.insert(0, str(ROOTS["R"] / "tools/render_copy"))
+        import execution_policy as policy
+        import execution_telemetry as telemetry
+        import run_production_campaign as driver
+        import test_production_reader as reader
+
+
+        def require(condition, message):
+            if not condition:
+                raise RuntimeError(message)
+
+
+        def save(name, document):
+            (EVIDENCE / name).write_text(json.dumps(document, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+
+
+        def sha(path):
+            return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+        def child_arguments(arm, phase):
+            admission = phase == "admission"
+            output = EVIDENCE / ("admission-" + arm if admission else "measured-" + arm)
+            arguments = [sys.executable, str(ROOTS[arm] / "tools/render_copy/run_production_campaign.py"),
+                "--engine", os.environ["QUALIFICATION_GODOT"], "--engine-archive", os.environ["QUALIFICATION_ARCHIVE"],
+                "--expected-source", PLAN["source_heads"][arm], "--variant", arm,
+                "--native-workers", "auto", "--overlay-manifest", str(EVIDENCE / ("overlay-" + arm + ".json")),
+                "--output", str(output), "--repeats", "1", "--frames", "120" if admission else "240",
+                "--engine-arg=--rendering-method", "--engine-arg=gl_compatibility"]
+            for cohort in (["paused:N:0"] if admission else PLAN["cohorts"]):
+                arguments.extend(["--cohort", cohort])
+            return arguments, output
+
+
+        def run_driver(arm, phase, allowance):
+            argv, output = child_arguments(arm, phase)
+            label = phase + "-" + arm
+            log_path = EVIDENCE / (label + "-driver.log")
+            row = {"arm": arm, "phase": phase, "argv": argv, "cwd": str(ROOTS[arm]),
+                "log_path": str(log_path), "output": str(output), "status": "starting",
+                "process_started": False, "allowance_seconds": allowance, "cleanup": {"required": False}}
+            save(label + "-process.json", row)
+            process = None
+            started = time.monotonic()
+            with log_path.open("xb") as log:
+                try:
+                    process = subprocess.Popen(argv, cwd=ROOTS[arm], stdout=log, stderr=subprocess.STDOUT,
+                        creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
+                    row.update(process_started=True, process_id=process.pid, status="running")
+                    save(label + "-process.json", row)
+                    try:
+                        row["exit"] = process.wait(timeout=allowance)
+                        row["status"] = "completed"
+                    except subprocess.TimeoutExpired:
+                        row.update(exit="timeout", status="incomplete_driver_timeout")
+                        row["cleanup"] = driver.terminate_process_tree(process)
+                    except BaseException as error:
+                        row.update(exit="interrupted", status="interrupted", error=type(error).__name__ + ": " + str(error))
+                        row["cleanup"] = driver.terminate_process_tree(process)
+                        raise
+                except BaseException as error:
+                    row.setdefault("error", type(error).__name__ + ": " + str(error))
+                    if not row["process_started"]:
+                        row["status"] = "launch_failed"
+                    raise
+                finally:
+                    if process is not None and process.poll() is None:
+                        row["cleanup"] = driver.terminate_process_tree(process)
+                    row.update(seconds=time.monotonic() - started, log_sha256=sha(log_path))
+                    save(label + "-process.json", row)
+            return row
+
+
+        def verify_actual_report(arm, phase, row):
+            expected = 1 if phase == "admission" else 5
+            report_path = Path(row["output"]) / "report.json"
+            result = {"arm": arm, "phase": phase, "status": "failed", "process_row": row,
+                "report_path": str(report_path), "failures": [], "actual_graphics": [], "adverse_controls": []}
+            try:
+                require(report_path.is_file(), "Started driver did not finish its report; original partial evidence retained")
+                report = json.loads(report_path.read_text())
+                result.update(report_sha256=sha(report_path), report_status=report.get("status"),
+                    completed_processes=len(report.get("processes", [])), unstarted_processes=report.get("unstarted_processes", []))
+                for process in report.get("processes", []):
+                    try:
+                        log_path = Path(process["log_path"])
+                        log = log_path.read_text(encoding="utf-8", errors="replace")
+                        backend, _, _ = telemetry.runtime_observations(log)
+                        graphics = {"sequence": process["sequence"], "workload": process["workload"],
+                            "arm": process["arm"], "consumer_usec": process["consumer_usec"],
+                            "graphics": process.get("graphics"), "log_backend_observation": backend,
+                            "adapter_classification": process.get("summary", {}).get("graphics_classification"),
+                            "log_sha256": sha(log_path), "gpu_completion_latency_measured": False,
+                            "human_pacing_qualified": False}
+                        result["actual_graphics"].append(graphics)
+                        require(process.get("exit") == 0 and not process.get("reader_failure"), "Original child failed or reader refused it")
+                        require(backend["backend"] != "unknown" and "Godot Engine v4.7.stable" in log,
+                            "Direct runtime stdout lacks actual engine/backend custody")
+                        receipt_path = Path(process["receipt_path"])
+                        raw = json.loads(receipt_path.read_text())
+                        require(raw.get("schema") == "render-production-graphical-v2" and raw.get("schema_version") == 2,
+                            "Wrong qualification protocol version")
+                        require(raw.get("native_workers_mode") == "auto" and raw.get("native_worker_request") == 0,
+                            "Native Auto selection was not the registered workload")
+                        require(type(raw.get("actual_native_workers")) is int and raw["actual_native_workers"] > 0,
+                            "Actual native worker count missing")
+                        graphics["actual_native_workers"] = raw["actual_native_workers"]
+                        if process["arm"] == "D":
+                            require(raw.get("ack_mode") == "delayed" and raw.get("ack_delay_usec") == 100000,
+                                "Delayed ACK cohort differs from registered 100ms control")
+                        result["adverse_controls"].append(reader.verify(receipt_path))
+                    except Exception as error:
+                        result["failures"].append({"sequence": process.get("sequence"), "error": type(error).__name__ + ": " + str(error)})
+                require(row.get("exit") == 0 and report.get("status") == "passed", "Original campaign is incomplete or failed")
+                require(result["completed_processes"] == expected and not result["unstarted_processes"], "Incomplete registered process inventory")
+                require(not result["failures"], "Actual backend, configuration or adverse readback verification failed")
+                result["status"] = "passed"
+            except Exception as error:
+                result["fatal_error"] = type(error).__name__ + ": " + str(error)
+            save(phase + "-" + arm + "-readback.json", result)
+            return result
+
+
+        def admission():
+            report = {"status": "incomplete", "scope": "Two separate first graphical processes, excluded from measured repeats.",
+                "arm_order": PLAN["arm_order"], "processes": [], "unstarted_arms": list(PLAN["arm_order"]),
+                "cache_effect": "Both source projects were clean imported. These admission processes can warm per-project and shared driver caches reused by later fresh measurements."}
+            try:
+                for arm in PLAN["arm_order"]:
+                    elapsed = time.time() - int(os.environ["QUALIFICATION_STARTED"])
+                    allowed = elapsed + PLAN["admission_total_seconds"] <= PLAN["setup_seconds"]
+                    gate = {"arm": arm, "setup_elapsed_seconds": elapsed, "complete_child_seconds": PLAN["admission_total_seconds"],
+                        "setup_allowed_seconds": PLAN["setup_seconds"], "admitted": allowed}
+                    save("admission-" + arm + "-budget.json", gate)
+                    require(allowed, "Remaining setup cannot fit a full unchanged admission deadline; measured benchmark remains unstarted")
+                    row = run_driver(arm, "admission", PLAN["admission_driver_seconds"])
+                    report["unstarted_arms"].remove(arm)
+                    result = verify_actual_report(arm, "admission", row)
+                    report["processes"].append(result)
+                    save("paired-platform-admission.json", report)
+                    require(result["status"] == "passed", "A Windows platform admission failed; measured benchmark remains unstarted")
+                report["status"] = "passed"
+            except BaseException as error:
+                if "arm" in locals():
+                    original = EVIDENCE / ("admission-" + arm + "-process.json")
+                    if original.is_file():
+                        interrupted = json.loads(original.read_text())
+                        report["interrupted_or_failed_launch"] = interrupted
+                        if interrupted.get("process_started") and arm in report["unstarted_arms"]:
+                            report["unstarted_arms"].remove(arm)
+                report.update(status="failed_or_incomplete", error=type(error).__name__ + ": " + str(error))
+                raise
+            finally:
+                save("paired-platform-admission.json", report)
+
+
+        def measured():
+            admissions = json.loads((EVIDENCE / "paired-platform-admission.json").read_text())
+            require(admissions["status"] == "passed" and len(admissions["processes"]) == 2,
+                "Both original platform admissions must pass")
+            elapsed = time.time() - int(os.environ["QUALIFICATION_STARTED"])
+            require(elapsed <= PLAN["setup_seconds"], "Setup exceeded its unchanged policy allowance")
+            report = {"status": "incomplete", "matrix_repeat": PLAN["matrix_repeat"], "arm_order": PLAN["arm_order"],
+                "ordering": "Five-cohort arm batches; arm order reverses for the middle independent repeat.",
+                "planned_processes": PLAN["planned_measured_processes"], "arms": [], "unstarted_arms": list(PLAN["arm_order"]),
+                "cache_scope": PLAN["cache_scope"], "gpu_completion_latency_measured": False, "human_pacing_qualified": False}
+            started = time.monotonic()
+            try:
+                for arm in PLAN["arm_order"]:
+                    remaining = PLAN["paired_campaign_seconds"] - (time.monotonic() - started)
+                    required = PLAN["arm_total_seconds"] + PLAN["campaign_headroom_seconds"]
+                    require(remaining >= required, "Full arm watchdog/cleanup/evidence no longer fits; do not shorten or silently skip work")
+                    row = run_driver(arm, "measured", PLAN["arm_driver_seconds"])
+                    report["unstarted_arms"].remove(arm)
+                    report["arms"].append(verify_actual_report(arm, "measured", row))
+                    save("paired-measured-report.json", report)
+                require(len(report["arms"]) == 2 and all(row["status"] == "passed" for row in report["arms"]),
+                    "One or both original measured arms failed; all available evidence remains retained")
+                worker_sets = [{row["actual_native_workers"] for row in arm["actual_graphics"]} for arm in report["arms"]]
+                require(len(worker_sets[0]) == 1 and worker_sets[0] == worker_sets[1], "Auto selected different worker counts: causal paired comparison is unqualified")
+                report["status"] = "passed"
+            except BaseException as error:
+                if "arm" in locals():
+                    original = EVIDENCE / ("measured-" + arm + "-process.json")
+                    if original.is_file():
+                        interrupted = json.loads(original.read_text())
+                        report["interrupted_or_failed_launch"] = interrupted
+                        if interrupted.get("process_started") and arm in report["unstarted_arms"]:
+                            report["unstarted_arms"].remove(arm)
+                report.update(status="failed_or_incomplete", error=type(error).__name__ + ": " + str(error))
+                raise
+            finally:
+                report["seconds"] = time.monotonic() - started
+                save("paired-measured-report.json", report)
+
+
+        parser = argparse.ArgumentParser()
+        parser.add_argument("phase", choices=("admission", "measured"))
+        arguments = parser.parse_args()
+        require(os.name == "nt", "This registered coordinator requires actual Windows")
+        require(os.environ.get("CYBERSAND_CI_WATCHDOG_SCALE") == "1", "Hosted watchdog scale changed")
+        {"admission": admission, "measured": measured}[arguments.phase]()
+        PYCOORDINATOR
+        set -euo pipefail
+        python - <<'PYCODE'
+        import hashlib,json,os
+        from pathlib import Path
+        evidence=Path(os.environ['EVIDENCE_DIR'])
+        path=evidence/'paired-windows-coordinator.py'
+        digest=hashlib.sha256(path.read_bytes()).hexdigest()
+        if digest!='be9e8db814c9b0048f1545059526d27bcd56760e1ad2dd1fe73c28474e439d88':
+            raise RuntimeError('Embedded coordinator bytes changed')
+        (evidence/'coordinator-identity.json').write_text(json.dumps({'sha256':digest,'scope':'Frozen workflow orchestration outside both production checkouts; not a sixth overlay file.'},indent=2)+'\n')
+        PYCODE
+    - name: Run sealed reader admission and interruption controls
+      timeout-minutes: 5
+      run: |
+        set -euo pipefail
+        python tools/render_copy/test_production_reader.py 2>&1 | tee "$EVIDENCE_DIR/reader-controls.log"
+    - name: Run two separately retained cold graphical admissions
+      timeout-minutes: 70
+      run: |
+        set -euo pipefail
+        python "$EVIDENCE_DIR/paired-windows-coordinator.py" admission 2>&1 | tee "$EVIDENCE_DIR/admission-coordinator.log"
+    - name: Run paired ten-process measurement with counterbalanced arm order
+      timeout-minutes: ${{ fromJSON(steps.plan.outputs.campaign_minutes) }}
+      run: |
+        set -euo pipefail
+        python "$EVIDENCE_DIR/paired-windows-coordinator.py" measured 2>&1 | tee "$EVIDENCE_DIR/measured-coordinator.log"
+    - name: Retain final paired interpretation and both source observations
+      timeout-minutes: 10
+      if: always()
+      run: |
+        set -euo pipefail
+        python - <<'PYCODE'
+        import hashlib,json,os,subprocess,sys
+        from pathlib import Path
+        sys.path.insert(0,'tools/ci')
+        import execution_policy as policy
+        evidence=Path(os.environ['EVIDENCE_DIR'])
+        receipt=json.loads((evidence/'hosted-run.json').read_text(encoding='utf-8-sig'))
+        for field,name in (('platform_admissions','paired-platform-admission.json'),('paired_measurement','paired-measured-report.json')):
+            path=evidence/name
+            receipt[field]={'path':name,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+                'report':json.loads(path.read_text())} if path.is_file() else {'missing':True,'status':'unstarted_or_incomplete'}
+        receipt['status']='paired_graphical_passed' if receipt['paired_measurement'].get('report',{}).get('status')=='passed' else 'failed_or_incomplete'
+        receipt['interpretation']='Exact R versus E+R graphical correctness and CPU timings. Software or reported hardware adapters do not establish GPU completion or human pacing. The earlier R-only draft was not executed.'
+        plan_path=evidence/'execution-plan.json'
+        if plan_path.is_file():
+            plan=json.loads(plan_path.read_text())
+            receipt['ordering']=plan['ordering']
+            receipt['cache_scope']=plan['cache_scope']
+            for arm,path in plan['source_roots'].items():
+                try:
+                    status=subprocess.check_output(['git','-C',path,'status','--porcelain=v1','--untracked-files=all'],timeout=policy.watchdog_seconds('operation_seconds'))
+                    (evidence/('source-status-after-'+arm+'.txt')).write_bytes(status)
+                except Exception as error:
+                    receipt.setdefault('status_errors',[]).append(arm+': '+type(error).__name__+': '+str(error))
+        (evidence/'hosted-run.json').write_text(json.dumps(receipt,indent=2)+'\n')
+        print(json.dumps(receipt,indent=2))
+        PYCODE
+    - name: Upload original evidence including failures and unstarted work
+      if: always()
+      timeout-minutes: 5
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: render-retention-paired-windows-${{ matrix.repeat }}-${{ github.run_id }}-${{ github.run_attempt }}
+        path: evidence-render-retention-paired-windows/
+        if-no-files-found: error
+        retention-days: 90
