@@ -111,6 +111,7 @@ jobs:
     timeout-minutes: ${{ matrix.job_minutes }}
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix: ${{ fromJSON(needs.plan.outputs.linux_matrix) }}
     defaults:
       run:
@@ -176,6 +177,7 @@ jobs:
     timeout-minutes: ${{ matrix.job_minutes }}
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix: ${{ fromJSON(needs.plan.outputs.windows_matrix) }}
     defaults:
       run:
