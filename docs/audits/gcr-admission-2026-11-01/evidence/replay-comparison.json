@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "identity": {
+    "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+    "tree": "72f29fb292695685fa85ecb71d848edde6254b38",
+    "local_delta_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+    "native_sha256": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+    "native_manifest_sha256": "2366103b31a2df58dadf23290f2fc9c943dc23d5c615669e767731028a100e41",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd"
+  },
+  "scope": "Selected physical/material observations and actual application/refusal/age/translated wrench plus immutable admission counters; clocks and sample/session/snapshot identifiers excluded. Not full cell-state equality.",
+  "projection_script_sha256": "41e8389278134d488410515ef66bbcc6c60de1794f980f3f72f4e1d332bae0eb",
+  "base_projection_script_sha256": "13d5d0d24de2bc0579c5f5c706914e33fb661c8922d4cfe9fbcace5f9559804e",
+  "all_exact": true,
+  "records": [
+    {
+      "case": "sand-vertical",
+      "arm": "Y1",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "4b18e264d573820efe2a513ccd7b691b87d4bc123b820195b078c3512226fbd0",
+      "replay_raw_sha256": "94dc87315df2397a087e34dec5a06b40f7341a9c568c67257ea6a8e65d5b2a4e",
+      "reference_physical_sha256": "c9ad196a7b0815999d0da8a2a856e8a56c4835bce1b47dfaddd6b749e6c2ef13",
+      "replay_physical_sha256": "c9ad196a7b0815999d0da8a2a856e8a56c4835bce1b47dfaddd6b749e6c2ef13",
+      "first_difference": null
+    },
+    {
+      "case": "sand-vertical",
+      "arm": "GCR",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "2a7cdd01f55a8dcb178db25bbf9b97b567db569eefb32b78c4fb43a2d9b80e64",
+      "replay_raw_sha256": "06b9534fde8c8582780aeed998d249ab37aca9b4b977310ec525bdfc3d27c18b",
+      "reference_physical_sha256": "fd56a8bc64ecfbe0d46191c17b0a18f7f0a37fead6dc25821c8930003f704ed2",
+      "replay_physical_sha256": "fd56a8bc64ecfbe0d46191c17b0a18f7f0a37fead6dc25821c8930003f704ed2",
+      "first_difference": null
+    },
+    {
+      "case": "sand-vertical",
+      "arm": "GCR-A1",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "b5b6694ab23d7f0d3e58ae8a7f588d980bc2676a1e7bd01b4cadce7428f17ccf",
+      "replay_raw_sha256": "7342fab2e9dfa27e1754e319b4088b42bb34cbdc92cab580741fa5286fb0ba06",
+      "reference_physical_sha256": "59a2c4fc686198786174c237fa288c903e005d16d633beb0835e43021b6c3e04",
+      "replay_physical_sha256": "59a2c4fc686198786174c237fa288c903e005d16d633beb0835e43021b6c3e04",
+      "first_difference": null
+    },
+    {
+      "case": "sand-horizontal",
+      "arm": "GCR-A1",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "bd4d454b0fc090806619206002319f280593dadabd7d7c49adacafab473c1e0f",
+      "replay_raw_sha256": "3c1e77182a81e21dc6212fcd3d6a9288b54fa54f18d547dfe2079f12dcbe7364",
+      "reference_physical_sha256": "6d04eaa363177bd557e65de307316862327134469db0f42cb1c1580cbbd79c3a",
+      "replay_physical_sha256": "6d04eaa363177bd557e65de307316862327134469db0f42cb1c1580cbbd79c3a",
+      "first_difference": null
+    },
+    {
+      "case": "sand-horizontal",
+      "arm": "GCR",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "d0b98a287f28f5bacbf8a3cb1f19d5e5b2836827e03730de5443f0710584b0d1",
+      "replay_raw_sha256": "b490870e51dbfacb148f2e68f33ad57b1bb5c683d39518215e698a015823b2d3",
+      "reference_physical_sha256": "003f8a64ef567ebb5f24e811e12c1bc2e3406e5b1c0c25c1777daa06a9de04ec",
+      "replay_physical_sha256": "003f8a64ef567ebb5f24e811e12c1bc2e3406e5b1c0c25c1777daa06a9de04ec",
+      "first_difference": null
+    },
+    {
+      "case": "sand-horizontal",
+      "arm": "Y1",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "3bad3a4b70845827ccdbab0ef1e6e1b237d1699227be855473f09a3e582e4a19",
+      "replay_raw_sha256": "fafc8f5a9ee5e7d1936263a3105e2d8cedfe91fc24eefd291044fb4af9fd1bb0",
+      "reference_physical_sha256": "3a5f69caab6c7f9925402726fd99b653250171de2d42117086d38354db40c2d9",
+      "replay_physical_sha256": "3a5f69caab6c7f9925402726fd99b653250171de2d42117086d38354db40c2d9",
+      "first_difference": null
+    },
+    {
+      "case": "sand-glancing",
+      "arm": "Y1",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "1c7fceba3f737a50914a374246bcee83bdb6d48abb637621314190ec07397d06",
+      "replay_raw_sha256": "2e5f064a97140dce5f06ea11ada487d76886561c52cccc489455fca2ed94f15c",
+      "reference_physical_sha256": "1b767f6676e8b4c0bc095af24633ff4c0caa7a8adbedd69b17542e2c85228eb0",
+      "replay_physical_sha256": "1b767f6676e8b4c0bc095af24633ff4c0caa7a8adbedd69b17542e2c85228eb0",
+      "first_difference": null
+    },
+    {
+      "case": "sand-glancing",
+      "arm": "GCR",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "6e97ba5e6945b714e9d24ce04ef5b635b6449fd48ee159574179ca3cfeb1c946",
+      "replay_raw_sha256": "f2c9dfe74aa54ec82be946f2a3dd0b3e225aa83d0faf7468270b103de60e18aa",
+      "reference_physical_sha256": "2e9881dee3e559b09ff349c33b67b684c9ad558c9247e3754134b6709e73c0d8",
+      "replay_physical_sha256": "2e9881dee3e559b09ff349c33b67b684c9ad558c9247e3754134b6709e73c0d8",
+      "first_difference": null
+    },
+    {
+      "case": "sand-glancing",
+      "arm": "GCR-A1",
+      "exact_selected_physical_values": true,
+      "reference_raw_sha256": "f00bf4194990f5aae81740283ac5801f5a2e044c5bbc3fdcee0e0ba938d9a7c5",
+      "replay_raw_sha256": "bac4c9c8664087751679fe5a7fab43463fc09325757f8616841b9e41640bb68c",
+      "reference_physical_sha256": "0febf8ff02cd7271430b0f7f85c7dd9e8daf0254f4cd13be3acf93e186f62ea9",
+      "replay_physical_sha256": "0febf8ff02cd7271430b0f7f85c7dd9e8daf0254f4cd13be3acf93e186f62ea9",
+      "first_difference": null
+    }
+  ]
+}

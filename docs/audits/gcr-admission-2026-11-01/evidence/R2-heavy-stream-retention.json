@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "scope": "Explicit different native/source compositions; selected body/application/material-observation fields, not runtime identity or same-source telemetry equivalence. Retained R2 full bin ledger remains attributed to its original source.",
+  "records": [
+    {
+      "case": "heavy-90",
+      "repeat": 0,
+      "reference_source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+      "successor_source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+      "reference_native": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+      "successor_native": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+      "selected_physical_values_exact": true,
+      "reference_physical_sha256": "7dd75e6755daed835e084ca8abbcf0d4bbb598e28fa89c765c96c5e4b5a4ed55",
+      "successor_physical_sha256": "7dd75e6755daed835e084ca8abbcf0d4bbb598e28fa89c765c96c5e4b5a4ed55",
+      "first_difference": null
+    },
+    {
+      "case": "heavy-90",
+      "repeat": 1,
+      "reference_source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+      "successor_source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+      "reference_native": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+      "successor_native": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+      "selected_physical_values_exact": true,
+      "reference_physical_sha256": "7dd75e6755daed835e084ca8abbcf0d4bbb598e28fa89c765c96c5e4b5a4ed55",
+      "successor_physical_sha256": "7dd75e6755daed835e084ca8abbcf0d4bbb598e28fa89c765c96c5e4b5a4ed55",
+      "first_difference": null
+    },
+    {
+      "case": "heavy-90",
+      "repeat": 2,
+      "reference_source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+      "successor_source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+      "reference_native": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+      "successor_native": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+      "selected_physical_values_exact": true,
+      "reference_physical_sha256": "7dd75e6755daed835e084ca8abbcf0d4bbb598e28fa89c765c96c5e4b5a4ed55",
+      "successor_physical_sha256": "7dd75e6755daed835e084ca8abbcf0d4bbb598e28fa89c765c96c5e4b5a4ed55",
+      "first_difference": null
+    },
+    {
+      "case": "sand-stream",
+      "repeat": 0,
+      "reference_source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+      "successor_source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+      "reference_native": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+      "successor_native": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+      "selected_physical_values_exact": true,
+      "reference_physical_sha256": "84e7ed4dfb7f8be2b8b73fc801a01b148f25f711965e4aee5689f23025c5d52c",
+      "successor_physical_sha256": "84e7ed4dfb7f8be2b8b73fc801a01b148f25f711965e4aee5689f23025c5d52c",
+      "first_difference": null
+    },
+    {
+      "case": "sand-stream",
+      "repeat": 1,
+      "reference_source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+      "successor_source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+      "reference_native": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+      "successor_native": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+      "selected_physical_values_exact": true,
+      "reference_physical_sha256": "84e7ed4dfb7f8be2b8b73fc801a01b148f25f711965e4aee5689f23025c5d52c",
+      "successor_physical_sha256": "84e7ed4dfb7f8be2b8b73fc801a01b148f25f711965e4aee5689f23025c5d52c",
+      "first_difference": null
+    },
+    {
+      "case": "sand-stream",
+      "repeat": 2,
+      "reference_source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+      "successor_source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+      "reference_native": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+      "successor_native": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+      "selected_physical_values_exact": true,
+      "reference_physical_sha256": "84e7ed4dfb7f8be2b8b73fc801a01b148f25f711965e4aee5689f23025c5d52c",
+      "successor_physical_sha256": "84e7ed4dfb7f8be2b8b73fc801a01b148f25f711965e4aee5689f23025c5d52c",
+      "first_difference": null
+    }
+  ]
+}

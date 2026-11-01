@@ -1,0 +1,17 @@
+{
+  "platform": "Windows LLVM23.1",
+  "stage": "focused native mechanical",
+  "passed_groups": [
+    "interfaces",
+    "supercover",
+    "negatives"
+  ],
+  "failure": "A1 actual reaction retained capable source",
+  "interpretation_pending": "unconfined source relocation may have been mistaken for actual reaction; do not treat mere source-ID change as chemical evidence",
+  "test_source_sha256": "ed7b7c6415a516249ddd2262229a53b238e17b1c858d9935716187d303448eb6",
+  "platforms": [
+    "Windows LLVM23.1",
+    "Linux GCC13.3"
+  ],
+  "final_fixture": "Existing Dust hot-neighbour ignition with authored hard confinement; actual product Fire and admission SourceNonCapable required. Seed kernel stage0/state1->Plant separately checked."
+}

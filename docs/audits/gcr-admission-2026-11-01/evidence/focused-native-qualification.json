@@ -1,0 +1,56 @@
+{
+  "time_utc": "2026-11-01T18:08:59.681465+00:00",
+  "base": "be24013012242a4a8724227432d962df1035d148",
+  "preregistration": "8d3cecf2a61e10318f70c5f953cd8d54413ff977",
+  "source_head_before_native_commit": "1a111dd2235004df66daf846852331be606c0966",
+  "local_native_delta_sha256": {
+    "native/include/cybersand/world.hpp": "83b9adb5b27db42a399ddb5e7957712000a4f824c6d60d3691093b690407733f",
+    "native/src/world.cpp": "9651a28c3a8a337e6af13141280c1794ff4a0715742d2998d3ab9869106b817c",
+    "native/tests/test_world.cpp": "bfa4dd92a6c66576b9018b1dcd22547a0e17ed955fe2346319cbbf879c0a5ec4",
+    "native/tests/granular_admission_qualification.inc": "7552b59dbeeb2e922c21b04087c630604d9dd6fc5bdb5477a737e5bd761ef17f",
+    "godot/native_extension/cyber_native_cell_world.cpp": "0ad644a00e3c6032eeb276514eead9d72e715081dc946d058a577ef72a4ca4c7",
+    "godot/native_extension/cyber_native_cell_world.hpp": "9fc6cb556521ad9ce7ddf270023e109e5818bfec8f179e501298739dbbf4c4bd"
+  },
+  "compilers": {
+    "Windows": "LLVM-MinGW clang23.1.0 pinned path C:/Users/_/lcb-local-toolchain/llvm-mingw-20260826/bin/x86_64-w64-mingw32-g++.exe",
+    "Linux": "Ubuntu g++-13 13.3.0"
+  },
+  "optimization": "-std=c++20 -O2 -g -pthread -I native/include",
+  "linked_simulation_sources": [
+    "native/src/world.cpp",
+    "native/src/material_rules.cpp",
+    "native/src/scheduler_geometry.cpp",
+    "native/src/settled_world_discovery.cpp"
+  ],
+  "driver": "build/admission-native/driver.cpp",
+  "groups": [
+    "interfaces",
+    "supercover",
+    "negatives",
+    "lifecycle"
+  ],
+  "windows_exit": 0,
+  "linux_exit": 0,
+  "linux_build_and_run_bound_seconds": 600,
+  "windows_build_and_run_bound": "tool-owned process; completed without timeout; focused rerun below bounded600s",
+  "mechanical_scope": "All9 materials/states0/1, axes/diagonals, four signed source translations, workers1/4; all24 offsets +corner-touch mutations +rounding ties; negative films/path/capability/masks/no-deeperpacking; epochs/exclusion/actual Seed and Dust kernels/excavation/reset/failedWorld.",
+  "results": {
+    "windows-final-result.txt": "ddf17aeb238da989a48ba97de61ccb4fe7f585ed29b3af8d22f1cedef3f0e5f7",
+    "linux-final-result.txt": "ddf17aeb238da989a48ba97de61ccb4fe7f585ed29b3af8d22f1cedef3f0e5f7"
+  },
+  "native_runtime_builds": "not performed by this worker; root owns fresh source-matched extension builds",
+  "physical_efficacy_captures": false,
+  "committed_native_source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+  "R2_unchanged_oracle": {
+    "Windows_exit": 0,
+    "Linux_exit": 0,
+    "groups": 3,
+    "independent_cases": 36,
+    "maximum_normalized_error": 0.0450628,
+    "gate": 0.1,
+    "logs": {
+      "r2-windows-result.txt": "7114bb2021767e39586de17991c4cceb88ebc3e62fd9520744009a1d8ffb1db6",
+      "r2-linux-result.txt": "7114bb2021767e39586de17991c4cceb88ebc3e62fd9520744009a1d8ffb1db6"
+    }
+  }
+}

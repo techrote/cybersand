@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "path": "C:\\Users\\_\\.codex\\worktrees\\gcr-admission\\khybersand\\build\\gcr-admission-3d-original-evidence.zip",
+  "sha256": "6a4ce67266a358c210c5af86b9e78db3ec91d7d30eb898277191a5c702fd4fc3",
+  "size": 183945035,
+  "capture_count": 237,
+  "historical_reference_count": 26,
+  "member_count": 675,
+  "scope": "Local ignored archive; all237 original capture JSON/logs, qualification logs/failures/scripts, plus explicitly separate oldR2 references. No native binaries, caches or toolchains included."
+}

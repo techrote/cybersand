@@ -1,0 +1,3911 @@
+{
+  "schema": 1,
+  "source_mechanism": "The unchanged solve allocates capacity proportional to every bin source count before knowing which quadrature contacts are closing. Per-node capacities are not transferred from nonclosing contacts to closing contacts.",
+  "limits": [
+    "No alternate law/counterfactual is solved. This locates an available-capacity mechanism, not its dominant causal contribution.",
+    "Nominal local bottom can stop pointing upward as the body rotates; world-upward normal shares and full pose/normal vectors are retained.",
+    "Initial closing shares include the registered event wrench before passive solve; closing status can change over the four phases.",
+    "R2 ledger is retained original-source evidence. Same-build R2 telemetry-off timing provides physical trajectories but lacks this full bin ledger.",
+    "Geometry/stability, event budget/downward event feedback, evolving contacts, delivery, ejection and hard collisions remain separate explanations."
+  ],
+  "R2_retained": {
+    "source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+    "runtime": {
+      "engine": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "native": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+      "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "protocol_sha256": "df60c0461fcec358e68a0563771aac0cd053acd3a4540764a0efccffa80ae08f",
+    "input_identity": "a79e89171dd032422217f4d0d57bf883cf2c783ae4c0269e894dac54ee3daf00",
+    "candidate": "GCR",
+    "raw_path": "C:\\Users\\_\\.codex\\worktrees\\gcr001\\khybersand\\build\\gcr-final-primary\\sync-heavy-90-GCR-r0.json",
+    "raw_sha256": "06d67d15d3a2dd916c7813d91a331bd548319d8b22ba60c4a965ef8f5ac7577c",
+    "first_hard_floor_tick": null,
+    "selection": {
+      "first_depth_5": 4,
+      "first_depth_10": 10,
+      "first_depth_20": null,
+      "first_depth_40": null,
+      "first_depth_80": null
+    },
+    "selected_rows": [
+      {
+        "tick": 0,
+        "in": [
+          128.0,
+          184.218719482422,
+          0.0799999907612801,
+          0.0,
+          91.155517578125,
+          0.0
+        ],
+        "out": [
+          128.0,
+          184.218719482422,
+          0.0799999907612801,
+          0.0,
+          91.155517578125,
+          0.0
+        ],
+        "vertical_depth": 0.0,
+        "pre_overlap": 0,
+        "post_overlap": 0,
+        "total_source_count": 0,
+        "nominal_local_bottom_source_count": 0,
+        "nominal_local_bottom_share": null,
+        "world_upward_normal_source_share": null,
+        "initial_closing_quadrature_source_share": null,
+        "normal_capacity": 0.0,
+        "event_budget_cost": 0.0,
+        "event_y": 0.0,
+        "normal_accepted": 0.0,
+        "normal_impulse": [
+          0.0,
+          0.0
+        ],
+        "tangent_impulse": [
+          0.0,
+          0.0
+        ],
+        "computed_total_impulse": [
+          0.0,
+          0.0
+        ],
+        "actual_applied_impulse": [
+          0.0,
+          0.0
+        ],
+        "actual_applied_angular_impulse": 0.0,
+        "nominal_bottom_capacity": 0,
+        "bins": []
+      },
+      {
+        "tick": 1,
+        "in": [
+          128.0,
+          185.753967285156,
+          0.0799999907612801,
+          0.0,
+          92.3062438964844,
+          0.0
+        ],
+        "out": [
+          128.0,
+          185.753967285156,
+          0.0799999907612801,
+          -1.77054452896118,
+          85.1418380737305,
+          0.719885945320129
+        ],
+        "vertical_depth": 1.05123797348276,
+        "pre_overlap": 6,
+        "post_overlap": 6,
+        "total_source_count": 7,
+        "nominal_local_bottom_source_count": 7,
+        "nominal_local_bottom_share": 1.0,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 1.0,
+        "normal_capacity": 14.0,
+        "event_budget_cost": 0.0,
+        "event_y": 0.0,
+        "normal_accepted": 14.0,
+        "normal_impulse": [
+          1.11880552768707,
+          -13.9552240371704
+        ],
+        "tangent_impulse": [
+          -4.65989446640015,
+          -0.373588860034943
+        ],
+        "computed_total_impulse": [
+          -3.54108905792236,
+          -14.3288125991821
+        ],
+        "actual_applied_impulse": [
+          -3.54108905792236,
+          -14.3288125991821
+        ],
+        "actual_applied_angular_impulse": 31.1950601064363,
+        "nominal_bottom_capacity": 14.0,
+        "bins": [
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.0799146816134453,
+              -0.996801733970642
+            ],
+            "allocated_normal_capacity": 6.0,
+            "initial_quadrature_normal_speeds": [
+              -92.01102397233264,
+              -92.01102397233264
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.0799146816134453,
+              -0.996801733970642
+            ],
+            "allocated_normal_capacity": 8.0,
+            "initial_quadrature_normal_speeds": [
+              -92.01102397233264,
+              -92.01102397233264
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 2,
+        "in": [
+          127.970489501953,
+          187.188995361328,
+          0.0919980779290199,
+          -1.76319777965546,
+          86.317512512207,
+          0.704044938087463
+        ],
+        "out": [
+          127.970489501953,
+          187.188995361328,
+          0.0919980779290199,
+          -1.18592596054077,
+          78.4167938232422,
+          0.860444486141205
+        ],
+        "vertical_depth": 2.52686692482951,
+        "pre_overlap": 16,
+        "post_overlap": 11,
+        "total_source_count": 8,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 1.0,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 1.0,
+        "normal_capacity": 16.0,
+        "event_budget_cost": 0.159999996423721,
+        "event_y": 0.159999996423721,
+        "normal_accepted": 16.0,
+        "normal_impulse": [
+          1.46989381313324,
+          -15.9323387145996
+        ],
+        "tangent_impulse": [
+          -0.315350264310837,
+          -0.0290937442332506
+        ],
+        "computed_total_impulse": [
+          1.15454351902008,
+          -15.8014326095581
+        ],
+        "actual_applied_impulse": [
+          1.15454351902008,
+          -15.8014326095581
+        ],
+        "actual_applied_angular_impulse": 6.7773153822627,
+        "nominal_bottom_capacity": 16.0,
+        "bins": [
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.0918683633208275,
+              -0.995771169662476
+            ],
+            "allocated_normal_capacity": 8.0,
+            "initial_quadrature_normal_speeds": [
+              -83.81285347549249,
+              -85.37251358295205
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.0918683633208275,
+              -0.995771169662476
+            ],
+            "allocated_normal_capacity": 8.0,
+            "initial_quadrature_normal_speeds": [
+              -86.60285611680276,
+              -88.16251090276413
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 3,
+        "in": [
+          127.950714111328,
+          188.511932373047,
+          0.106338746845722,
+          -1.18100500106812,
+          79.6203765869141,
+          0.841510474681854
+        ],
+        "out": [
+          127.950714111328,
+          188.511932373047,
+          0.106338746845722,
+          -0.652668833732605,
+          71.7998657226563,
+          0.995963454246521
+        ],
+        "vertical_depth": 3.89694569558122,
+        "pre_overlap": 24,
+        "post_overlap": 16,
+        "total_source_count": 8,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 1.0,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 1.0,
+        "normal_capacity": 16.0,
+        "event_budget_cost": 0.35777086019516,
+        "event_y": 0.319999992847443,
+        "normal_accepted": 16.0,
+        "normal_impulse": [
+          1.69821512699127,
+          -15.9096221923828
+        ],
+        "tangent_impulse": [
+          -0.48154291510582,
+          -0.0514005608856678
+        ],
+        "computed_total_impulse": [
+          1.05667233467102,
+          -15.6410226821899
+        ],
+        "actual_applied_impulse": [
+          1.05667233467102,
+          -15.6410226821899
+        ],
+        "actual_applied_angular_impulse": 6.69296310880767,
+        "nominal_bottom_capacity": 16.0,
+        "bins": [
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.106138445436955,
+              -0.994351387023926
+            ],
+            "allocated_normal_capacity": 8.0,
+            "initial_quadrature_normal_speeds": [
+              -76.61501289244202,
+              -78.5319216555488
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.106138445436955,
+              -0.994351387023926
+            ],
+            "allocated_normal_capacity": 8.0,
+            "initial_quadrature_normal_speeds": [
+              -80.13559272200588,
+              -82.05249494467506
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 4,
+        "in": [
+          127.939849853516,
+          189.724594116211,
+          0.122938044369221,
+          -0.64996063709259,
+          73.0309066772461,
+          0.974047362804413
+        ],
+        "out": [
+          127.939849853516,
+          189.724594116211,
+          0.122938044369221,
+          -0.174851894378662,
+          65.151496887207,
+          1.11300897598267
+        ],
+        "vertical_depth": 5.16227694614105,
+        "pre_overlap": 26,
+        "post_overlap": 17,
+        "total_source_count": 9,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.8888888888888888,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 1.0,
+        "normal_capacity": 18.0,
+        "event_budget_cost": 0.561426758766174,
+        "event_y": 0.560000002384186,
+        "normal_accepted": 16.3939467452224,
+        "normal_impulse": [
+          1.57108414173126,
+          -15.9275512695313
+        ],
+        "tangent_impulse": [
+          -0.660866737365723,
+          -0.391272693872452
+        ],
+        "computed_total_impulse": [
+          0.950217485427856,
+          -15.7588243484497
+        ],
+        "actual_applied_impulse": [
+          0.950217485427856,
+          -15.7588243484497
+        ],
+        "actual_applied_angular_impulse": 6.02167168682971,
+        "nominal_bottom_capacity": 16.0,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 1,
+            "normal": [
+              -0.992452621459961,
+              -0.122628599405289
+            ],
+            "allocated_normal_capacity": 2.0,
+            "initial_quadrature_normal_speeds": [
+              -2.321159907018189
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.122628599405289,
+              -0.992452621459961
+            ],
+            "allocated_normal_capacity": 8.0,
+            "initial_quadrature_normal_speeds": [
+              -69.75197892167768,
+              -71.96504677086278
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.122628599405289,
+              -0.992452621459961
+            ],
+            "allocated_normal_capacity": 8.0,
+            "initial_quadrature_normal_speeds": [
+              -73.69611329619367,
+              -75.82917081740587
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 5,
+        "in": [
+          127.936950683594,
+          190.826446533203,
+          0.141488045454025,
+          -0.174126356840134,
+          66.4101257324219,
+          1.08851730823517
+        ],
+        "out": [
+          127.936950683594,
+          190.826446533203,
+          0.141488045454025,
+          0.105063885450363,
+          58.2590637207031,
+          1.17567038536072
+        ],
+        "vertical_depth": 6.32056309166981,
+        "pre_overlap": 26,
+        "post_overlap": 20,
+        "total_source_count": 10,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.8,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 1.0,
+        "normal_capacity": 19.4784638285637,
+        "event_budget_cost": 0.52153617143631,
+        "event_y": 0.519999980926514,
+        "normal_accepted": 17.0643571607798,
+        "normal_impulse": [
+          0.730646014213562,
+          -15.6359844207764
+        ],
+        "tangent_impulse": [
+          -0.132265523076057,
+          -1.18614149093628
+        ],
+        "computed_total_impulse": [
+          0.558380484580994,
+          -16.3021259307861
+        ],
+        "actual_applied_impulse": [
+          0.558380484580994,
+          -16.3021259307861
+        ],
+        "actual_applied_angular_impulse": 3.77663392188151,
+        "nominal_bottom_capacity": 15.582771062850961,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 2,
+            "normal": [
+              -0.990007281303406,
+              -0.141016438603401
+            ],
+            "allocated_normal_capacity": 3.8956927657127403,
+            "initial_quadrature_normal_speeds": [
+              -2.547768238842121,
+              -3.6281466346699096
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.141016438603401,
+              -0.990007281303406
+            ],
+            "allocated_normal_capacity": 7.7913855314254805,
+            "initial_quadrature_normal_speeds": [
+              -62.68502653027151,
+              -65.23938035192776
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.141016438603401,
+              -0.990007281303406
+            ],
+            "allocated_normal_capacity": 7.7913855314254805,
+            "initial_quadrature_normal_speeds": [
+              -67.15275549366179,
+              -69.5685437940348
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 6,
+        "in": [
+          127.938690185547,
+          191.813415527344,
+          0.161082401871681,
+          0.104627929627895,
+          59.5462913513184,
+          1.14979982376099
+        ],
+        "out": [
+          127.938690185547,
+          191.813415527344,
+          0.161082401871681,
+          -0.0869185701012611,
+          51.4707298278809,
+          1.14285457134247
+        ],
+        "vertical_depth": 7.36434209767836,
+        "pre_overlap": 29,
+        "post_overlap": 24,
+        "total_source_count": 11,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.7272727272727273,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 1.0,
+        "normal_capacity": 19.2788897156715,
+        "event_budget_cost": 0.721110284328461,
+        "event_y": 0.720000028610229,
+        "normal_accepted": 17.3079907992234,
+        "normal_impulse": [
+          -0.995644211769104,
+          -14.3666858673096
+        ],
+        "tangent_impulse": [
+          0.572551190853119,
+          -2.50443649291992
+        ],
+        "computed_total_impulse": [
+          -0.383092999458313,
+          -16.151123046875
+        ],
+        "actual_applied_impulse": [
+          -0.383092999458313,
+          -16.151123046875
+        ],
+        "actual_applied_angular_impulse": -0.300958747526939,
+        "nominal_bottom_capacity": 14.021010702306546,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 3,
+            "normal": [
+              -0.987054288387299,
+              -0.160386696457863
+            ],
+            "allocated_normal_capacity": 5.257879013364955,
+            "initial_quadrature_normal_speeds": [
+              -3.080822918703337,
+              -4.913905503782303
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.160386696457863,
+              -0.987054288387299
+            ],
+            "allocated_normal_capacity": 7.010505351153273,
+            "initial_quadrature_normal_speeds": [
+              -55.785590207933744,
+              -58.460057820643335
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.160386696457863,
+              -0.987054288387299
+            ],
+            "allocated_normal_capacity": 7.010505351153273,
+            "initial_quadrature_normal_speeds": [
+              -60.449144327384246,
+              -62.95921202688731
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 7,
+        "in": [
+          127.937255859375,
+          192.687255859375,
+          0.180129840970039,
+          -0.0865579098463058,
+          52.7861251831055,
+          1.11770617961884
+        ],
+        "out": [
+          127.937255859375,
+          192.687255859375,
+          0.180129840970039,
+          -0.637758374214172,
+          44.7809410095215,
+          1.0388822555542
+        ],
+        "vertical_depth": 8.29062819376909,
+        "pre_overlap": 32,
+        "post_overlap": 28,
+        "total_source_count": 12,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.6666666666666666,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 1.0,
+        "normal_capacity": 19.2358011007309,
+        "event_budget_cost": 0.764198899269104,
+        "event_y": 0.759999990463257,
+        "normal_accepted": 17.2640349803091,
+        "normal_impulse": [
+          -2.07083797454834,
+          -13.4118709564209
+        ],
+        "tangent_impulse": [
+          0.888437032699585,
+          -3.35849952697754
+        ],
+        "computed_total_impulse": [
+          -1.10240089893341,
+          -16.0103702545166
+        ],
+        "actual_applied_impulse": [
+          -1.10240089893341,
+          -16.0103702545166
+        ],
+        "actual_applied_angular_impulse": -3.41570558909902,
+        "nominal_bottom_capacity": 12.823867400487266,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 4,
+            "normal": [
+              -0.98382043838501,
+              -0.179157316684723
+            ],
+            "allocated_normal_capacity": 6.411933700243633,
+            "initial_quadrature_normal_speeds": [
+              -3.1997022099982457,
+              -5.628203973644533
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.179157316684723,
+              -0.98382043838501
+            ],
+            "allocated_normal_capacity": 6.411933700243633,
+            "initial_quadrature_normal_speeds": [
+              -49.23932706505054,
+              -51.802796229917305
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.179157316684723,
+              -0.98382043838501
+            ],
+            "allocated_normal_capacity": 6.411933700243633,
+            "initial_quadrature_normal_speeds": [
+              -53.799378341436494,
+              -56.227896677052286
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 8,
+        "in": [
+          127.926635742188,
+          193.449600219727,
+          0.197444438934326,
+          -0.635112047195435,
+          46.1240921020508,
+          1.01602172851563
+        ],
+        "out": [
+          127.926635742188,
+          193.449600219727,
+          0.197444438934326,
+          -1.32251739501953,
+          39.6059226989746,
+          0.919536948204041
+        ],
+        "vertical_depth": 9.09825409868159,
+        "pre_overlap": 37,
+        "post_overlap": 33,
+        "total_source_count": 14,
+        "nominal_local_bottom_source_count": 7,
+        "nominal_local_bottom_share": 0.5,
+        "world_upward_normal_source_share": 0.9285714285714286,
+        "initial_closing_quadrature_source_share": 0.9285714285714286,
+        "normal_capacity": 19.1190913915634,
+        "event_budget_cost": 0.880908608436584,
+        "event_y": 0.879999995231628,
+        "normal_accepted": 14.4427227703859,
+        "normal_impulse": [
+          -2.91306281089783,
+          -10.3317184448242
+        ],
+        "tangent_impulse": [
+          1.4982522726059,
+          -3.58461999893188
+        ],
+        "computed_total_impulse": [
+          -1.37481069564819,
+          -13.036337852478
+        ],
+        "actual_applied_impulse": [
+          -1.37481069564819,
+          -13.036337852478
+        ],
+        "actual_applied_angular_impulse": -4.18100828915238,
+        "nominal_bottom_capacity": 9.559545695781699,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.980571091175079,
+              -0.196164071559906
+            ],
+            "allocated_normal_capacity": 8.193896310670029,
+            "initial_quadrature_normal_speeds": [
+              -2.1702171448814243,
+              -5.4389332324246915
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.196164071559906,
+              -0.980571091175079
+            ],
+            "allocated_normal_capacity": 5.462597540446686,
+            "initial_quadrature_normal_speeds": [
+              -43.18766755647406,
+              -45.38822731927408
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.196164071559906,
+              -0.980571091175079
+            ],
+            "allocated_normal_capacity": 4.096948155335014,
+            "initial_quadrature_normal_speeds": [
+              -47.12570600523957,
+              -48.732769836836994
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 1,
+            "normal": [
+              0.980571091175079,
+              0.196164071559906
+            ],
+            "allocated_normal_capacity": 1.3656493851116716,
+            "initial_quadrature_normal_speeds": [
+              1.5083589828082085
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 9,
+        "in": [
+          127.904602050781,
+          194.125686645508,
+          0.212769970297813,
+          -1.31702971458435,
+          40.9705505371094,
+          0.89930260181427
+        ],
+        "out": [
+          127.904602050781,
+          194.125686645508,
+          0.212769970297813,
+          -2.08884692192078,
+          34.1860008239746,
+          0.730230212211609
+        ],
+        "vertical_depth": 9.81250764799293,
+        "pre_overlap": 38,
+        "post_overlap": 37,
+        "total_source_count": 14,
+        "nominal_local_bottom_source_count": 7,
+        "nominal_local_bottom_share": 0.5,
+        "world_upward_normal_source_share": 0.9285714285714286,
+        "initial_closing_quadrature_source_share": 0.9285714285714286,
+        "normal_capacity": 19.2389481067657,
+        "event_budget_cost": 0.761051893234253,
+        "event_y": 0.759999990463257,
+        "normal_accepted": 14.8361183417342,
+        "normal_impulse": [
+          -3.06768035888672,
+          -10.5041418075562
+        ],
+        "tangent_impulse": [
+          1.56404578685761,
+          -3.82495951652527
+        ],
+        "computed_total_impulse": [
+          -1.54363453388214,
+          -13.5691013336182
+        ],
+        "actual_applied_impulse": [
+          -1.54363453388214,
+          -13.5691013336182
+        ],
+        "actual_applied_angular_impulse": -7.32647196706472,
+        "nominal_bottom_capacity": 9.61947405338285,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.977449715137482,
+              -0.211168214678764
+            ],
+            "allocated_normal_capacity": 8.245263474328157,
+            "initial_quadrature_normal_speeds": [
+              -2.2553762676281046,
+              -5.344965143279344
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.211168214678764,
+              -0.977449715137482
+            ],
+            "allocated_normal_capacity": 4.122631737164078,
+            "initial_quadrature_normal_speeds": [
+              -38.254125222713014,
+              -39.84335104207334
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.211168214678764,
+              -0.977449715137482
+            ],
+            "allocated_normal_capacity": 5.496842316218772,
+            "initial_quadrature_normal_speeds": [
+              -41.18325339205174,
+              -43.273806223275905
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 1,
+            "normal": [
+              0.977449715137482,
+              0.211168214678764
+            ],
+            "allocated_normal_capacity": 1.374210579054693,
+            "initial_quadrature_normal_speeds": [
+              1.6881943276670013
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 10,
+        "in": [
+          127.869781494141,
+          194.711441040039,
+          0.224940434098244,
+          -2.08017945289612,
+          35.5731163024902,
+          0.714161574840546
+        ],
+        "out": [
+          127.869781494141,
+          194.711441040039,
+          0.224940434098244,
+          -2.60521554946899,
+          29.1054344177246,
+          0.551998734474182
+        ],
+        "vertical_depth": 10.4272859931217,
+        "pre_overlap": 43,
+        "post_overlap": 42,
+        "total_source_count": 16,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.5,
+        "world_upward_normal_source_share": 0.875,
+        "initial_closing_quadrature_source_share": 0.875,
+        "normal_capacity": 19.0791308283806,
+        "event_budget_cost": 0.920869171619415,
+        "event_y": 0.920000016689301,
+        "normal_accepted": 14.3134203229456,
+        "normal_impulse": [
+          -2.52580523490906,
+          -10.3640394210815
+        ],
+        "tangent_impulse": [
+          1.4357328414917,
+          -3.49132442474365
+        ],
+        "computed_total_impulse": [
+          -1.05007243156433,
+          -12.9353637695313
+        ],
+        "actual_applied_impulse": [
+          -1.05007243156433,
+          -12.9353637695313
+        ],
+        "actual_applied_angular_impulse": -7.02705850175833,
+        "nominal_bottom_capacity": 9.5395654141903,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.974807381629944,
+              -0.22304829955101
+            ],
+            "allocated_normal_capacity": 7.154674060642725,
+            "initial_quadrature_normal_speeds": [
+              -2.535820573750917,
+              -4.945570262019247
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.22304829955101,
+              -0.974807381629944
+            ],
+            "allocated_normal_capacity": 4.76978270709515,
+            "initial_quadrature_normal_speeds": [
+              -33.312212202575424,
+              -34.79184362631093
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.22304829955101,
+              -0.974807381629944
+            ],
+            "allocated_normal_capacity": 4.76978270709515,
+            "initial_quadrature_normal_speeds": [
+              -36.11046912834148,
+              -37.590100552077125
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 2,
+            "normal": [
+              0.974807381629944,
+              0.22304829955101
+            ],
+            "allocated_normal_capacity": 2.384891353547575,
+            "initial_quadrature_normal_speeds": [
+              2.047165504210211,
+              1.2771514541004105
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 11,
+        "in": [
+          127.826354980469,
+          195.212524414063,
+          0.234140381217003,
+          -2.59440541267395,
+          30.5136241912842,
+          0.53985208272934
+        ],
+        "out": [
+          127.826354980469,
+          195.212524414063,
+          0.234140381217003,
+          -3.22308111190796,
+          24.3642463684082,
+          0.337767839431763
+        ],
+        "vertical_depth": 10.9495510133935,
+        "pre_overlap": 47,
+        "post_overlap": 45,
+        "total_source_count": 17,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.47058823529411764,
+        "world_upward_normal_source_share": 0.8823529411764706,
+        "initial_closing_quadrature_source_share": 0.8823529411764706,
+        "normal_capacity": 18.9592310190201,
+        "event_budget_cost": 1.04076898097992,
+        "event_y": 1.03999996185303,
+        "normal_accepted": 13.7320060500229,
+        "normal_impulse": [
+          -2.60880613327026,
+          -9.7945032119751
+        ],
+        "tangent_impulse": [
+          1.31145465373993,
+          -3.54425311088562
+        ],
+        "computed_total_impulse": [
+          -1.25735139846802,
+          -12.2987565994263
+        ],
+        "actual_applied_impulse": [
+          -1.25735139846802,
+          -12.2987565994263
+        ],
+        "actual_applied_angular_impulse": -8.75698524848599,
+        "nominal_bottom_capacity": 8.921991067774163,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.972714126110077,
+              -0.232006907463074
+            ],
+            "allocated_normal_capacity": 7.806742184302393,
+            "initial_quadrature_normal_speeds": [
+              -1.918504945943555,
+              -4.045162157586037
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.232006907463074,
+              -0.972714126110077
+            ],
+            "allocated_normal_capacity": 4.460995533887082,
+            "initial_quadrature_normal_speeds": [
+              -29.076087265505333,
+              -30.29579931967729
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.232006907463074,
+              -0.972714126110077
+            ],
+            "allocated_normal_capacity": 4.460995533887082,
+            "initial_quadrature_normal_speeds": [
+              -31.184712969730878,
+              -32.404423213308306
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 2,
+            "normal": [
+              0.972714126110077,
+              0.232006907463074
+            ],
+            "allocated_normal_capacity": 2.230497766943541,
+            "initial_quadrature_normal_speeds": [
+              1.9308494598848904,
+              1.3147015204554284
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 21,
+        "in": [
+          127.403656005859,
+          197.403823852539,
+          0.24077981710434,
+          -0.805366039276123,
+          4.50393962860107,
+          -0.0367938578128815
+        ],
+        "out": [
+          127.403656005859,
+          197.403823852539,
+          0.24077981710434,
+          -0.370581924915314,
+          1.34551620483398,
+          -0.0238598752766848
+        ],
+        "vertical_depth": 13.1557301373889,
+        "pre_overlap": 62,
+        "post_overlap": 62,
+        "total_source_count": 20,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.4,
+        "world_upward_normal_source_share": 0.85,
+        "initial_closing_quadrature_source_share": 0.85,
+        "normal_capacity": 18.6775779724121,
+        "event_budget_cost": 1.32242202758789,
+        "event_y": 1.32000005245209,
+        "normal_accepted": 7.75403376958719,
+        "normal_impulse": [
+          1.02862691879272,
+          -7.03341102600098
+        ],
+        "tangent_impulse": [
+          -0.239058673381805,
+          -0.60343611240387
+        ],
+        "computed_total_impulse": [
+          0.869568228721619,
+          -6.31684684753418
+        ],
+        "actual_applied_impulse": [
+          0.869568228721619,
+          -6.31684684753418
+        ],
+        "actual_applied_angular_impulse": 0.560472685553438,
+        "nominal_bottom_capacity": 7.471031188964839,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 2,
+            "normal": [
+              -0.971152305603027,
+              -0.238460019230843
+            ],
+            "allocated_normal_capacity": 1.8677577972412098,
+            "initial_quadrature_normal_speeds": [
+              -0.4564070848348363,
+              -0.41300239349666423
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.971152305603027,
+              -0.238460019230843
+            ],
+            "allocated_normal_capacity": 6.537152290344234,
+            "initial_quadrature_normal_speeds": [
+              -0.6728573989215552,
+              -0.5260714225302593
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.238460019230843,
+              -0.971152305603027
+            ],
+            "allocated_normal_capacity": 3.7355155944824197,
+            "initial_quadrature_normal_speeds": [
+              -5.299406808957578,
+              -5.215614023473935
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.238460019230843,
+              -0.971152305603027
+            ],
+            "allocated_normal_capacity": 3.7355155944824197,
+            "initial_quadrature_normal_speeds": [
+              -5.151459663576877,
+              -5.067666878093261
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 3,
+            "normal": [
+              0.971152305603027,
+              0.238460019230843
+            ],
+            "allocated_normal_capacity": 2.801636695861815,
+            "initial_quadrature_normal_speeds": [
+              0.6465017289126523,
+              0.7105208349546784
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 23,
+        "in": [
+          127.395080566406,
+          197.382019042969,
+          0.240066975355148,
+          -0.14409039914608,
+          -0.752322673797607,
+          -0.0184934679418802
+        ],
+        "out": [
+          127.395080566406,
+          197.382019042969,
+          0.240066975355148,
+          -0.0964441150426865,
+          -0.0925268530845642,
+          -0.018576854839921
+        ],
+        "vertical_depth": 13.1323441365575,
+        "pre_overlap": 63,
+        "post_overlap": 63,
+        "total_source_count": 20,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.4,
+        "world_upward_normal_source_share": 0.85,
+        "initial_closing_quadrature_source_share": 0.15,
+        "normal_capacity": 18.6775779724121,
+        "event_budget_cost": 1.32242202758789,
+        "event_y": 1.32000005245209,
+        "normal_accepted": 0.0147569099228748,
+        "normal_impulse": [
+          0.0143337119370699,
+          0.00350871635600924
+        ],
+        "tangent_impulse": [
+          0.000958862830884755,
+          -0.00391712039709091
+        ],
+        "computed_total_impulse": [
+          0.0952925756573677,
+          1.31959164142609
+        ],
+        "actual_applied_impulse": [
+          0.0952925756573677,
+          1.31959164142609
+        ],
+        "actual_applied_angular_impulse": -0.00361346861378039,
+        "nominal_bottom_capacity": 7.471031188964839,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 2,
+            "normal": [
+              -0.971322059631348,
+              -0.237767681479454
+            ],
+            "allocated_normal_capacity": 1.8677577972412098,
+            "initial_quadrature_normal_speeds": [
+              0.1380121971874114,
+              0.15900362584186367
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.971322059631348,
+              -0.237767681479454
+            ],
+            "allocated_normal_capacity": 6.537152290344234,
+            "initial_quadrature_normal_speeds": [
+              0.03327781127352455,
+              0.10429959072195578
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.237767681479454,
+              -0.971322059631348
+            ],
+            "allocated_normal_capacity": 3.7355155944824197,
+            "initial_quadrature_normal_speeds": [
+              0.015753467539932883,
+              0.05629367900774735
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.237767681479454,
+              -0.971322059631348
+            ],
+            "allocated_normal_capacity": 3.7355155944824197,
+            "initial_quadrature_normal_speeds": [
+              0.0873355250484358,
+              0.12787567084575813
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 3,
+            "normal": [
+              0.971322059631348,
+              0.237767681479454
+            ],
+            "allocated_normal_capacity": 2.801636695861815,
+            "initial_quadrature_normal_speeds": [
+              -0.04613902710395695,
+              -0.015169335669393253
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 153,
+        "in": [
+          127.339996337891,
+          196.995483398438,
+          0.224661558866501,
+          -0.0108645772561431,
+          0.204773783683777,
+          -0.00648705149069428
+        ],
+        "out": [
+          127.339996337891,
+          196.995483398438,
+          0.224661558866501,
+          0.00513047073036432,
+          0.135485827922821,
+          0.000197929795831442
+        ],
+        "vertical_depth": 12.710676071459,
+        "pre_overlap": 60,
+        "post_overlap": 60,
+        "total_source_count": 20,
+        "nominal_local_bottom_source_count": 7,
+        "nominal_local_bottom_share": 0.35,
+        "world_upward_normal_source_share": 0.85,
+        "initial_closing_quadrature_source_share": 0.85,
+        "normal_capacity": 18.6347161531448,
+        "event_budget_cost": 1.36528384685516,
+        "event_y": 1.36000001430511,
+        "normal_accepted": 1.5229387914893,
+        "normal_impulse": [
+          -0.105102084577084,
+          -1.20560848712921
+        ],
+        "tangent_impulse": [
+          0.0170921795070171,
+          -0.292967408895493
+        ],
+        "computed_total_impulse": [
+          0.0319900959730148,
+          -0.138575911521912
+        ],
+        "actual_applied_impulse": [
+          0.0319900959730148,
+          -0.138575911521912
+        ],
+        "actual_applied_angular_impulse": 0.289682554135626,
+        "nominal_bottom_capacity": 6.52215065360068,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 2,
+            "normal": [
+              -0.974869549274445,
+              -0.22277644276619
+            ],
+            "allocated_normal_capacity": 1.8634716153144801,
+            "initial_quadrature_normal_speeds": [
+              -0.24456534687442175,
+              -0.2433481066090037
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 8,
+            "normal": [
+              -0.974869549274445,
+              -0.22277644276619
+            ],
+            "allocated_normal_capacity": 7.4538864612579205,
+            "initial_quadrature_normal_speeds": [
+              -0.251348452095756,
+              -0.24683360404870944
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.22277644276619,
+              -0.974869549274445
+            ],
+            "allocated_normal_capacity": 3.7269432306289603,
+            "initial_quadrature_normal_speeds": [
+              -0.8545262810218985,
+              -0.8521060930018884
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.22277644276619,
+              -0.974869549274445
+            ],
+            "allocated_normal_capacity": 2.7952074229717203,
+            "initial_quadrature_normal_speeds": [
+              -0.850544085632468,
+              -0.8489260822905035
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 3,
+            "normal": [
+              0.974869549274445,
+              0.22277644276619
+            ],
+            "allocated_normal_capacity": 2.7952074229717203,
+            "initial_quadrature_normal_speeds": [
+              0.24998388301048788,
+              0.25160188635245273
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 1799,
+        "in": [
+          130.956817626953,
+          191.172241210938,
+          0.666343212127686,
+          0.445668399333954,
+          0.225605115294456,
+          0.0647345259785652
+        ],
+        "out": [
+          130.956817626953,
+          191.172241210938,
+          0.666343212127686,
+          0.329661935567856,
+          0.0533238798379898,
+          0.053749106824398
+        ],
+        "vertical_depth": 7.14731413791154,
+        "pre_overlap": 13,
+        "post_overlap": 13,
+        "total_source_count": 8,
+        "nominal_local_bottom_source_count": 5,
+        "nominal_local_bottom_share": 0.625,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 0.625,
+        "normal_capacity": 16.0,
+        "event_budget_cost": 0.243310496211052,
+        "event_y": 0.239999994635582,
+        "normal_accepted": 0.625952454549332,
+        "normal_impulse": [
+          -0.442398339509964,
+          -0.392850697040558
+        ],
+        "tangent_impulse": [
+          0.170385435223579,
+          -0.191711783409119
+        ],
+        "computed_total_impulse": [
+          -0.232012927532196,
+          -0.344562470912933
+        ],
+        "actual_applied_impulse": [
+          -0.232012927532196,
+          -0.344562470912933
+        ],
+        "actual_applied_angular_impulse": -0.476034930714434,
+        "nominal_bottom_capacity": 10.0,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 3,
+            "normal": [
+              -0.786087214946747,
+              -0.618115544319153
+            ],
+            "allocated_normal_capacity": 6.0,
+            "initial_quadrature_normal_speeds": [
+              -0.38533489396498594,
+              -0.4870625654860451
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.618115544319153,
+              -0.786087214946747
+            ],
+            "allocated_normal_capacity": 6.0,
+            "initial_quadrature_normal_speeds": [
+              0.1735222724911032,
+              0.07179475332858196
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 2,
+            "normal": [
+              0.618115544319153,
+              -0.786087214946747
+            ],
+            "allocated_normal_capacity": 4.0,
+            "initial_quadrature_normal_speeds": [
+              -0.0019320145952569923,
+              -0.09910070711707
+            ]
+          }
+        ]
+      }
+    ],
+    "maximum_pre_floor_depth": 13.1557301373889
+  },
+  "A1": {
+    "source": "3d0b1ed72e55ba6a644b28f77e5fc2eae8ad67ba",
+    "runtime": {
+      "engine": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "native": "d7c6b1d80b187c855eda8dc6369ced6baf139d54d3b6ca80f4f22acf8f6b761b",
+      "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "protocol_sha256": "ca5bd07fc0390e73c4a7cb1b221e85a97adbeb395cea8dcb03314e74b79e9b5a",
+    "input_identity": "276564c81f6cd4410f324c0581fc7fd25a61b5c12cab8628b59790206a2b60dd",
+    "candidate": "GCR-A1",
+    "raw_path": "C:\\Users\\_\\.codex\\worktrees\\gcr-admission\\khybersand\\build\\admission-primary\\sync-heavy-90-GCR-A1-r0.json",
+    "raw_sha256": "0c32c47c3fb47199bfbbe6ef363be57309ac256556006cd622dd32e9a37050fe",
+    "first_hard_floor_tick": 98,
+    "selection": {
+      "first_depth_5": 4,
+      "first_depth_10": 9,
+      "first_depth_20": 21,
+      "first_depth_40": 45,
+      "first_depth_80": 85
+    },
+    "selected_rows": [
+      {
+        "tick": 0,
+        "in": [
+          128.0,
+          184.218719482422,
+          0.0799999907612801,
+          0.0,
+          91.155517578125,
+          0.0
+        ],
+        "out": [
+          128.0,
+          184.218719482422,
+          0.0799999907612801,
+          0.0,
+          91.155517578125,
+          0.0
+        ],
+        "vertical_depth": 0.0,
+        "pre_overlap": 0,
+        "post_overlap": 0,
+        "total_source_count": 0,
+        "nominal_local_bottom_source_count": 0,
+        "nominal_local_bottom_share": null,
+        "world_upward_normal_source_share": null,
+        "initial_closing_quadrature_source_share": null,
+        "normal_capacity": 0.0,
+        "event_budget_cost": 0.0,
+        "event_y": 0.0,
+        "normal_accepted": 0.0,
+        "normal_impulse": [
+          0.0,
+          0.0
+        ],
+        "tangent_impulse": [
+          0.0,
+          0.0
+        ],
+        "computed_total_impulse": [
+          0.0,
+          0.0
+        ],
+        "actual_applied_impulse": [
+          0.0,
+          0.0
+        ],
+        "actual_applied_angular_impulse": 0.0,
+        "nominal_bottom_capacity": 0,
+        "bins": []
+      },
+      {
+        "tick": 1,
+        "in": [
+          128.0,
+          185.753967285156,
+          0.0799999907612801,
+          0.0,
+          92.3062438964844,
+          0.0
+        ],
+        "out": [
+          128.0,
+          185.753967285156,
+          0.0799999907612801,
+          -1.77054452896118,
+          85.1418380737305,
+          0.719885945320129
+        ],
+        "vertical_depth": 1.05123797348276,
+        "pre_overlap": 6,
+        "post_overlap": 6,
+        "total_source_count": 7,
+        "nominal_local_bottom_source_count": 7,
+        "nominal_local_bottom_share": 1.0,
+        "world_upward_normal_source_share": 1.0,
+        "initial_closing_quadrature_source_share": 1.0,
+        "normal_capacity": 14.0,
+        "event_budget_cost": 0.0,
+        "event_y": 0.0,
+        "normal_accepted": 14.0,
+        "normal_impulse": [
+          1.11880552768707,
+          -13.9552240371704
+        ],
+        "tangent_impulse": [
+          -4.65989446640015,
+          -0.373588860034943
+        ],
+        "computed_total_impulse": [
+          -3.54108905792236,
+          -14.3288125991821
+        ],
+        "actual_applied_impulse": [
+          -3.54108905792236,
+          -14.3288125991821
+        ],
+        "actual_applied_angular_impulse": 31.1950601064363,
+        "nominal_bottom_capacity": 14.0,
+        "bins": [
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.0799146816134453,
+              -0.996801733970642
+            ],
+            "allocated_normal_capacity": 6.0,
+            "initial_quadrature_normal_speeds": [
+              -92.01102397233264,
+              -92.01102397233264
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.0799146816134453,
+              -0.996801733970642
+            ],
+            "allocated_normal_capacity": 8.0,
+            "initial_quadrature_normal_speeds": [
+              -92.01102397233264,
+              -92.01102397233264
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 2,
+        "in": [
+          127.970489501953,
+          187.188995361328,
+          0.0919980779290199,
+          -1.76319777965546,
+          86.317512512207,
+          0.704044938087463
+        ],
+        "out": [
+          127.970489501953,
+          187.188995361328,
+          0.0919980779290199,
+          -1.25005149841309,
+          78.3311538696289,
+          0.84745067358017
+        ],
+        "vertical_depth": 2.52686692482951,
+        "pre_overlap": 16,
+        "post_overlap": 11,
+        "total_source_count": 10,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.8,
+        "world_upward_normal_source_share": 0.9,
+        "initial_closing_quadrature_source_share": 0.9,
+        "normal_capacity": 19.8400000035763,
+        "event_budget_cost": 0.159999996423721,
+        "event_y": 0.159999996423721,
+        "normal_accepted": 16.2396621462775,
+        "normal_impulse": [
+          1.09202718734741,
+          -15.8386564254761
+        ],
+        "tangent_impulse": [
+          -0.0657348334789276,
+          -0.294058948755264
+        ],
+        "computed_total_impulse": [
+          1.02629244327545,
+          -15.9727153778076
+        ],
+        "actual_applied_impulse": [
+          1.02629244327545,
+          -15.9727153778076
+        ],
+        "actual_applied_angular_impulse": 6.21424856994137,
+        "nominal_bottom_capacity": 15.87200000286104,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 1,
+            "normal": [
+              -0.995771169662476,
+              -0.0918683633208275
+            ],
+            "allocated_normal_capacity": 1.98400000035763,
+            "initial_quadrature_normal_speeds": [
+              -2.006657786732826
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.0918683633208275,
+              -0.995771169662476
+            ],
+            "allocated_normal_capacity": 7.93600000143052,
+            "initial_quadrature_normal_speeds": [
+              -83.81285347549249,
+              -85.37251358295205
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.0918683633208275,
+              -0.995771169662476
+            ],
+            "allocated_normal_capacity": 7.93600000143052,
+            "initial_quadrature_normal_speeds": [
+              -86.60285611680276,
+              -88.16251090276413
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 1,
+            "normal": [
+              0.995771169662476,
+              0.0918683633208275
+            ],
+            "allocated_normal_capacity": 1.98400000035763,
+            "initial_quadrature_normal_speeds": [
+              1.4275110642691553
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 3,
+        "in": [
+          127.949645996094,
+          188.510498046875,
+          0.106122195720673,
+          -1.24486446380615,
+          79.5350952148438,
+          0.828802585601807
+        ],
+        "out": [
+          127.949645996094,
+          188.510498046875,
+          0.106122195720673,
+          -1.23917984962463,
+          73.0693283081055,
+          0.927096366882324
+        ],
+        "vertical_depth": 3.8948107754357,
+        "pre_overlap": 24,
+        "post_overlap": 16,
+        "total_source_count": 13,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.6153846153846154,
+        "world_upward_normal_source_share": 0.8461538461538461,
+        "initial_closing_quadrature_source_share": 0.8461538461538461,
+        "normal_capacity": 19.6422291398048,
+        "event_budget_cost": 0.35777086019516,
+        "event_y": 0.319999992847443,
+        "normal_accepted": 13.5075416869304,
+        "normal_impulse": [
+          -0.131679102778435,
+          -12.1699380874634
+        ],
+        "tangent_impulse": [
+          0.30304828286171,
+          -1.08159732818604
+        ],
+        "computed_total_impulse": [
+          0.0113691687583923,
+          -12.9315357208252
+        ],
+        "actual_applied_impulse": [
+          0.0113691687583923,
+          -12.9315357208252
+        ],
+        "actual_applied_angular_impulse": 4.2593989307522,
+        "nominal_bottom_capacity": 12.087525624495262,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 3,
+            "normal": [
+              -0.994374334812164,
+              -0.105923116207123
+            ],
+            "allocated_normal_capacity": 4.532822109185724,
+            "initial_quadrature_normal_speeds": [
+              -1.6948071900209065,
+              -3.074137284556561
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.105923116207123,
+              -0.994374334812164
+            ],
+            "allocated_normal_capacity": 6.043762812247631,
+            "initial_quadrature_normal_speeds": [
+              -76.58014829166181,
+              -78.46887878052497
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.105923116207123,
+              -0.994374334812164
+            ],
+            "allocated_normal_capacity": 6.043762812247631,
+            "initial_quadrature_normal_speeds": [
+              -80.04878318226466,
+              -81.9375136711277
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 2,
+            "normal": [
+              0.994374334812164,
+              0.105923116207123
+            ],
+            "allocated_normal_capacity": 3.0218814061238155,
+            "initial_quadrature_normal_speeds": [
+              2.4193440855443864,
+              1.5746888113312938
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 4,
+        "in": [
+          127.928985595703,
+          189.74430847168,
+          0.121573723852634,
+          -1.23403799533844,
+          74.2950973510742,
+          0.90669572353363
+        ],
+        "out": [
+          127.928985595703,
+          189.74430847168,
+          0.121573723852634,
+          -2.18514752388,
+          67.9776229858398,
+          0.861955642700195
+        ],
+        "vertical_depth": 5.17773941986383,
+        "pre_overlap": 25,
+        "post_overlap": 17,
+        "total_source_count": 16,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.5,
+        "world_upward_normal_source_share": 0.8125,
+        "initial_closing_quadrature_source_share": 0.8125,
+        "normal_capacity": 19.4800000190735,
+        "event_budget_cost": 0.519999980926514,
+        "event_y": 0.519999980926514,
+        "normal_accepted": 13.6979033621672,
+        "normal_impulse": [
+          -2.74747681617737,
+          -10.1481018066406
+        ],
+        "tangent_impulse": [
+          0.845257818698883,
+          -3.00684976577759
+        ],
+        "computed_total_impulse": [
+          -1.90221905708313,
+          -12.634952545166
+        ],
+        "actual_applied_impulse": [
+          -1.90221905708313,
+          -12.634952545166
+        ],
+        "actual_applied_angular_impulse": -1.93873671778454,
+        "nominal_bottom_capacity": 9.74000000953675,
+        "bins": [
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 5,
+            "normal": [
+              -0.992619037628174,
+              -0.121274463832378
+            ],
+            "allocated_normal_capacity": 6.087500005960469,
+            "initial_quadrature_normal_speeds": [
+              -2.6920921106414974,
+              -5.277844040563259
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.121274463832378,
+              -0.992619037628174
+            ],
+            "allocated_normal_capacity": 4.870000004768375,
+            "initial_quadrature_normal_speeds": [
+              -71.27056443092644,
+              -73.33943778020894
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.121274463832378,
+              -0.992619037628174
+            ],
+            "allocated_normal_capacity": 4.870000004768375,
+            "initial_quadrature_normal_speeds": [
+              -74.95787914072295,
+              -76.9527804956504
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 3,
+            "normal": [
+              0.992619037628174,
+              0.121274463832378
+            ],
+            "allocated_normal_capacity": 3.6525000035762814,
+            "initial_quadrature_normal_speeds": [
+              3.710615082878669,
+              2.2537465674033186
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 5,
+        "in": [
+          127.892578125,
+          190.893264770508,
+          0.135939583182335,
+          -2.17608046531677,
+          69.2245254516602,
+          0.84298837184906
+        ],
+        "out": [
+          127.892578125,
+          190.893264770508,
+          0.135939583182335,
+          -3.73923254013062,
+          63.4894180297852,
+          0.681508779525757
+        ],
+        "vertical_depth": 6.37077095852564,
+        "pre_overlap": 27,
+        "post_overlap": 20,
+        "total_source_count": 20,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.4,
+        "world_upward_normal_source_share": 0.75,
+        "initial_closing_quadrature_source_share": 0.75,
+        "normal_capacity": 19.3153102993965,
+        "event_budget_cost": 0.684689700603485,
+        "event_y": 0.680000007152557,
+        "normal_accepted": 12.697250445142,
+        "normal_impulse": [
+          -3.87821054458618,
+          -8.32853984832764
+        ],
+        "tangent_impulse": [
+          0.671906352043152,
+          -3.82167792320251
+        ],
+        "computed_total_impulse": [
+          -3.12630438804626,
+          -11.4702177047729
+        ],
+        "actual_applied_impulse": [
+          -3.12630438804626,
+          -11.4702177047729
+        ],
+        "actual_applied_angular_impulse": -6.99744973882554,
+        "nominal_bottom_capacity": 7.7261241197586,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 1,
+            "normal": [
+              -0.99077445268631,
+              -0.135521292686462
+            ],
+            "allocated_normal_capacity": 0.965765514969825,
+            "initial_quadrature_normal_speeds": [
+              -7.330398347910824
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.99077445268631,
+              -0.135521292686462
+            ],
+            "allocated_normal_capacity": 5.79459308981895,
+            "initial_quadrature_normal_speeds": [
+              -2.93257605553425,
+              -5.827201200871905
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.135521292686462,
+              -0.99077445268631
+            ],
+            "allocated_normal_capacity": 3.8630620598793,
+            "initial_quadrature_normal_speeds": [
+              -66.66520806198298,
+              -68.60352471881467
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.135521292686462,
+              -0.99077445268631
+            ],
+            "allocated_normal_capacity": 3.8630620598793,
+            "initial_quadrature_normal_speeds": [
+              -70.05837190258444,
+              -71.8955105438235
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 5,
+            "normal": [
+              0.99077445268631,
+              0.135521292686462
+            ],
+            "allocated_normal_capacity": 4.828827574849125,
+            "initial_quadrature_normal_speeds": [
+              4.95839162999833,
+              2.57015465330577
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 6,
+        "in": [
+          127.830261230469,
+          191.967407226563,
+          0.147298023104668,
+          -3.72371673583984,
+          64.7549438476563,
+          0.666512250900269
+        ],
+        "out": [
+          127.830261230469,
+          191.967407226563,
+          0.147298023104668,
+          -5.47572374343872,
+          59.3674392700195,
+          0.437933385372162
+        ],
+        "vertical_depth": 7.47866976637798,
+        "pre_overlap": 29,
+        "post_overlap": 26,
+        "total_source_count": 23,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.34782608695652173,
+        "world_upward_normal_source_share": 0.6956521739130435,
+        "initial_closing_quadrature_source_share": 0.6956521739130435,
+        "normal_capacity": 19.4343146085739,
+        "event_budget_cost": 0.565685391426086,
+        "event_y": 0.560000002384186,
+        "normal_accepted": 11.8238369913965,
+        "normal_impulse": [
+          -4.01713514328003,
+          -7.42979574203491
+        ],
+        "tangent_impulse": [
+          0.593120932579041,
+          -3.90521740913391
+        ],
+        "computed_total_impulse": [
+          -3.50401377677917,
+          -10.7750129699707
+        ],
+        "actual_applied_impulse": [
+          -3.50401377677917,
+          -10.7750129699707
+        ],
+        "actual_applied_angular_impulse": -9.90508534296646,
+        "nominal_bottom_capacity": 6.759761602982226,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 2,
+            "normal": [
+              -0.989171266555786,
+              -0.146765947341919
+            ],
+            "allocated_normal_capacity": 1.6899404007455565,
+            "initial_quadrature_normal_speeds": [
+              -5.928558250892083,
+              -6.593740920591891
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.989171266555786,
+              -0.146765947341919
+            ],
+            "allocated_normal_capacity": 5.069821202236669,
+            "initial_quadrature_normal_speeds": [
+              -2.357782342491827,
+              -4.678616048979299
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.146765947341919,
+              -0.989171266555786
+            ],
+            "allocated_normal_capacity": 3.379880801491113,
+            "initial_quadrature_normal_speeds": [
+              -62.94194734620288,
+              -64.49646900443454
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.146765947341919,
+              -0.989171266555786
+            ],
+            "allocated_normal_capacity": 3.379880801491113,
+            "initial_quadrature_normal_speeds": [
+              -65.66089609527376,
+              -67.14827604222324
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 1,
+            "normal": [
+              0.989171266555786,
+              0.146765947341919
+            ],
+            "allocated_normal_capacity": 0.8449702003727783,
+            "initial_quadrature_normal_speeds": [
+              6.370669022148142
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 6,
+            "normal": [
+              0.989171266555786,
+              0.146765947341919
+            ],
+            "allocated_normal_capacity": 5.069821202236669,
+            "initial_quadrature_normal_speeds": [
+              4.981631492120166,
+              2.084980131010232
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 7,
+        "in": [
+          127.739013671875,
+          192.972869873047,
+          0.154596924781799,
+          -5.45300245285034,
+          60.6500663757324,
+          0.428296715021133
+        ],
+        "out": [
+          127.739013671875,
+          192.972869873047,
+          0.154596924781799,
+          -7.41756105422974,
+          55.0294189453125,
+          0.0933440327644348
+        ],
+        "vertical_depth": 8.50531298936383,
+        "pre_overlap": 35,
+        "post_overlap": 31,
+        "total_source_count": 22,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.36363636363636365,
+        "world_upward_normal_source_share": 0.7727272727272727,
+        "initial_closing_quadrature_source_share": 0.7727272727272727,
+        "normal_capacity": 19.1990005970001,
+        "event_budget_cost": 0.800999402999878,
+        "event_y": 0.800000011920929,
+        "normal_accepted": 12.500757406659,
+        "normal_impulse": [
+          -4.37846040725708,
+          -7.7480640411377
+        ],
+        "tangent_impulse": [
+          0.409343153238297,
+          -4.29322671890259
+        ],
+        "computed_total_impulse": [
+          -3.92911720275879,
+          -11.2412910461426
+        ],
+        "actual_applied_impulse": [
+          -3.92911720275879,
+          -11.2412910461426
+        ],
+        "actual_applied_angular_impulse": -14.5146187046368,
+        "nominal_bottom_capacity": 6.981454762545491,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 3,
+            "normal": [
+              -0.988073706626892,
+              -0.153981849551201
+            ],
+            "allocated_normal_capacity": 2.6180455359545594,
+            "initial_quadrature_normal_speeds": [
+              -4.197578617456225,
+              -4.874784948773695
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.988073706626892,
+              -0.153981849551201
+            ],
+            "allocated_normal_capacity": 5.236091071909119,
+            "initial_quadrature_normal_speeds": [
+              -1.8919492451216477,
+              -3.34040815470852
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.153981849551201,
+              -0.988073706626892
+            ],
+            "allocated_normal_capacity": 3.4907273812727455,
+            "initial_quadrature_normal_speeds": [
+              -60.00733182991687,
+              -60.97862623592564
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.153981849551201,
+              -0.988073706626892
+            ],
+            "allocated_normal_capacity": 3.4907273812727455,
+            "initial_quadrature_normal_speeds": [
+              -61.70428717336263,
+              -62.631581876383734
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 5,
+            "normal": [
+              0.988073706626892,
+              0.153981849551201
+            ],
+            "allocated_normal_capacity": 4.363409226590932,
+            "initial_quadrature_normal_speeds": [
+              2.817585312094425,
+              1.644642307090768
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 8,
+        "in": [
+          127.615386962891,
+          193.906021118164,
+          0.156152680516243,
+          -7.38678216934204,
+          56.3300476074219,
+          0.0912900045514107
+        ],
+        "out": [
+          127.615386962891,
+          193.906021118164,
+          0.156152680516243,
+          -8.02703762054443,
+          53.4137382507324,
+          0.00286773592233658
+        ],
+        "vertical_depth": 9.44292701520965,
+        "pre_overlap": 39,
+        "post_overlap": 39,
+        "total_source_count": 28,
+        "nominal_local_bottom_source_count": 7,
+        "nominal_local_bottom_share": 0.25,
+        "world_upward_normal_source_share": 0.6428571428571429,
+        "initial_closing_quadrature_source_share": 0.6428571428571429,
+        "normal_capacity": 19.1190913915634,
+        "event_budget_cost": 0.880908608436584,
+        "event_y": 0.879999995231628,
+        "normal_accepted": 6.88978254196334,
+        "normal_impulse": [
+          -1.34099221229553,
+          -5.04976320266724
+        ],
+        "tangent_impulse": [
+          0.0204820930957794,
+          -1.66285419464111
+        ],
+        "computed_total_impulse": [
+          -1.28051018714905,
+          -5.83261728286743
+        ],
+        "actual_applied_impulse": [
+          -1.28051018714905,
+          -5.83261728286743
+        ],
+        "actual_applied_angular_impulse": -3.83163219422606,
+        "nominal_bottom_capacity": 4.779772847890849,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 4,
+            "normal": [
+              -0.987832903862,
+              -0.155518859624863
+            ],
+            "allocated_normal_capacity": 2.731298770223343,
+            "initial_quadrature_normal_speeds": [
+              -1.5987779009809788,
+              -1.787921518699366
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.987832903862,
+              -0.155518859624863
+            ],
+            "allocated_normal_capacity": 4.779772847890849,
+            "initial_quadrature_normal_speeds": [
+              -1.042473666039661,
+              -1.384620907101847
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.155518859624863,
+              -0.987832903862
+            ],
+            "allocated_normal_capacity": 2.048474077667507,
+            "initial_quadrature_normal_speeds": [
+              -56.98359404516424,
+              -57.132729540946805
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.155518859624863,
+              -0.987832903862
+            ],
+            "allocated_normal_capacity": 2.731298770223343,
+            "initial_quadrature_normal_speeds": [
+              -57.26408481509795,
+              -57.45322843281626
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 3,
+            "normal": [
+              0.987832903862,
+              0.155518859624863
+            ],
+            "allocated_normal_capacity": 2.048474077667507,
+            "initial_quadrature_normal_speeds": [
+              1.7694427067127494,
+              1.6313126819868105
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.987832903862,
+              0.155518859624863
+            ],
+            "allocated_normal_capacity": 4.779772847890849,
+            "initial_quadrature_normal_speeds": [
+              1.438093861974303,
+              1.0939585386584163
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 9,
+        "in": [
+          127.481597900391,
+          194.812240600586,
+          0.156200468540192,
+          -7.99373006820679,
+          54.7210693359375,
+          0.00280463160015643
+        ],
+        "out": [
+          127.481597900391,
+          194.812240600586,
+          0.156200468540192,
+          -8.15389251708984,
+          52.4392852783203,
+          -0.0274117439985275
+        ],
+        "vertical_depth": 10.3492832917867,
+        "pre_overlap": 45,
+        "post_overlap": 45,
+        "total_source_count": 29,
+        "nominal_local_bottom_source_count": 7,
+        "nominal_local_bottom_share": 0.2413793103448276,
+        "world_upward_normal_source_share": 0.6206896551724138,
+        "initial_closing_quadrature_source_share": 0.6206896551724138,
+        "normal_capacity": 19.0765283107758,
+        "event_budget_cost": 0.923471689224243,
+        "event_y": 0.920000016689301,
+        "normal_accepted": 5.56602462860434,
+        "normal_impulse": [
+          -0.233309641480446,
+          -4.69817209243774
+        ],
+        "tangent_impulse": [
+          -0.167015925049782,
+          -0.785393178462982
+        ],
+        "computed_total_impulse": [
+          -0.320325553417206,
+          -4.56356525421143
+        ],
+        "actual_applied_impulse": [
+          -0.320325553417206,
+          -4.56356525421143
+        ],
+        "actual_applied_angular_impulse": -1.30937644471521,
+        "nominal_bottom_capacity": 4.604679247428641,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 4,
+            "normal": [
+              -0.987825512886047,
+              -0.155566066503525
+            ],
+            "allocated_normal_capacity": 2.6312452842449376,
+            "initial_quadrature_normal_speeds": [
+              -0.7153381971756136,
+              -0.6971632372024112
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.987825512886047,
+              -0.155566066503525
+            ],
+            "allocated_normal_capacity": 4.604679247428641,
+            "initial_quadrature_normal_speeds": [
+              -0.768952123952551,
+              -0.735883699396477
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.155566066503525,
+              -0.987825512886047
+            ],
+            "allocated_normal_capacity": 1.9734339631837035,
+            "initial_quadrature_normal_speeds": [
+              -55.769011459769615,
+              -55.754680520902646
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.155566066503525,
+              -0.987825512886047
+            ],
+            "allocated_normal_capacity": 2.6312452842449376,
+            "initial_quadrature_normal_speeds": [
+              -55.74163189929983,
+              -55.72345693932664
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 4,
+            "normal": [
+              0.987825512886047,
+              0.155566066503525
+            ],
+            "allocated_normal_capacity": 2.6312452842449376,
+            "initial_quadrature_normal_speeds": [
+              0.7005554749569516,
+              0.7187304251642725
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.987825512886047,
+              0.155566066503525
+            ],
+            "allocated_normal_capacity": 4.604679247428641,
+            "initial_quadrature_normal_speeds": [
+              0.7393711263435261,
+              0.7718833631216784
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 10,
+        "in": [
+          127.345703125,
+          195.702224731445,
+          0.155743598937988,
+          -8.12005805969238,
+          53.750659942627,
+          -0.026808550581336
+        ],
+        "out": [
+          127.345703125,
+          195.702224731445,
+          0.155743598937988,
+          -8.04597282409668,
+          51.6709365844727,
+          -0.0180054176598787
+        ],
+        "vertical_depth": 11.2379589201754,
+        "pre_overlap": 52,
+        "post_overlap": 52,
+        "total_source_count": 32,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.25,
+        "world_upward_normal_source_share": 0.625,
+        "initial_closing_quadrature_source_share": 0.625,
+        "normal_capacity": 18.9133538007736,
+        "event_budget_cost": 1.08664619922638,
+        "event_y": 1.08000004291534,
+        "normal_accepted": 5.30790674058602,
+        "normal_impulse": [
+          0.160881534218788,
+          -4.76100826263428
+        ],
+        "tangent_impulse": [
+          -0.132710263133049,
+          -0.478439390659332
+        ],
+        "computed_total_impulse": [
+          0.14817126095295,
+          -4.15944766998291
+        ],
+        "actual_applied_impulse": [
+          0.14817126095295,
+          -4.15944766998291
+        ],
+        "actual_applied_angular_impulse": 0.381469167521058,
+        "nominal_bottom_capacity": 4.7283384501934,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 5,
+            "normal": [
+              -0.98789644241333,
+              -0.155114740133286
+            ],
+            "allocated_normal_capacity": 2.9552115313708747,
+            "initial_quadrature_normal_speeds": [
+              -0.38628879769021474,
+              -0.24717346093875925
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.98789644241333,
+              -0.155114740133286
+            ],
+            "allocated_normal_capacity": 4.137296143919225,
+            "initial_quadrature_normal_speeds": [
+              -0.708872668230776,
+              -0.5128221748360309
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.155114740133286,
+              -0.98789644241333
+            ],
+            "allocated_normal_capacity": 2.3641692250967,
+            "initial_quadrature_normal_speeds": [
+              -55.04567276471112,
+              -54.939090250674376
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.155114740133286,
+              -0.98789644241333
+            ],
+            "allocated_normal_capacity": 2.3641692250967,
+            "initial_quadrature_normal_speeds": [
+              -54.84752816124616,
+              -54.74094564720937
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 5,
+            "normal": [
+              0.98789644241333,
+              0.155114740133286
+            ],
+            "allocated_normal_capacity": 2.9552115313708747,
+            "initial_quadrature_normal_speeds": [
+              0.26686560355622113,
+              0.40598094030767307
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.98789644241333,
+              0.155114740133286
+            ],
+            "allocated_normal_capacity": 4.137296143919225,
+            "initial_quadrature_normal_speeds": [
+              0.5325143745530498,
+              0.7264267615455777
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 11,
+        "in": [
+          127.211608886719,
+          196.579391479492,
+          0.155443504452705,
+          -8.01258659362793,
+          52.9855003356934,
+          -0.0176092106848955
+        ],
+        "out": [
+          127.211608886719,
+          196.579391479492,
+          0.155443504452705,
+          -7.94300508499146,
+          51.1126136779785,
+          -0.0198214463889599
+        ],
+        "vertical_depth": 12.1142653233421,
+        "pre_overlap": 60,
+        "post_overlap": 60,
+        "total_source_count": 34,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.23529411764705882,
+        "world_upward_normal_source_share": 0.6176470588235294,
+        "initial_closing_quadrature_source_share": 0.6176470588235294,
+        "normal_capacity": 18.8338096141815,
+        "event_budget_cost": 1.16619038581848,
+        "event_y": 1.1599999666214,
+        "normal_accepted": 4.96751391921935,
+        "normal_impulse": [
+          0.156508415937424,
+          -4.46104097366333
+        ],
+        "tangent_impulse": [
+          -0.137345045804977,
+          -0.444728463888168
+        ],
+        "computed_total_impulse": [
+          0.139163359999657,
+          -3.74576997756958
+        ],
+        "actual_applied_impulse": [
+          0.139163359999657,
+          -3.74576997756958
+        ],
+        "actual_applied_angular_impulse": -0.0958636065356953,
+        "nominal_bottom_capacity": 4.43148461510153,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.9879429936409,
+              -0.154818266630173
+            ],
+            "allocated_normal_capacity": 3.323613461326147,
+            "initial_quadrature_normal_speeds": [
+              -0.3819997915887434,
+              -0.26105422214540575
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.9879429936409,
+              -0.154818266630173
+            ],
+            "allocated_normal_capacity": 3.877549038213839,
+            "initial_quadrature_normal_speeds": [
+              -0.6201905340259222,
+              -0.47887391961602876
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.154818266630173,
+              -0.9879429936409
+            ],
+            "allocated_normal_capacity": 2.215742307550765,
+            "initial_quadrature_normal_speeds": [
+              -54.26176983560932,
+              -54.18535144920777
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.154818266630173,
+              -0.9879429936409
+            ],
+            "allocated_normal_capacity": 2.215742307550765,
+            "initial_quadrature_normal_speeds": [
+              -54.11971298546723,
+              -54.04329433832851
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 6,
+            "normal": [
+              0.9879429936409,
+              0.154818266630173
+            ],
+            "allocated_normal_capacity": 3.323613461326147,
+            "initial_quadrature_normal_speeds": [
+              0.2750787280495395,
+              0.3960242974928434
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.9879429936409,
+              0.154818266630173
+            ],
+            "allocated_normal_capacity": 3.877549038213839,
+            "initial_quadrature_normal_speeds": [
+              0.4925126459343385,
+              0.6330705842925619
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 21,
+        "in": [
+          125.936004638672,
+          205.045639038086,
+          0.151964783668518,
+          -7.43169069290161,
+          50.3260498046875,
+          -0.0239684078842402
+        ],
+        "out": [
+          125.936004638672,
+          205.045639038086,
+          0.151964783668518,
+          -7.43002128601074,
+          48.9111709594727,
+          -0.0217015873640776
+        ],
+        "vertical_depth": 20.5704901863393,
+        "pre_overlap": 100,
+        "post_overlap": 95,
+        "total_source_count": 35,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.22857142857142856,
+        "world_upward_normal_source_share": 0.6285714285714286,
+        "initial_closing_quadrature_source_share": 0.6285714285714286,
+        "normal_capacity": 18.1995556354523,
+        "event_budget_cost": 1.80044436454773,
+        "event_y": 1.79999995231628,
+        "normal_accepted": 4.68676696929876,
+        "normal_impulse": [
+          0.114894822239876,
+          -4.19080209732056
+        ],
+        "tangent_impulse": [
+          -0.151556372642517,
+          -0.438958883285522
+        ],
+        "computed_total_impulse": [
+          0.00333844870328903,
+          -2.82976126670837
+        ],
+        "actual_applied_impulse": [
+          0.00333844870328903,
+          -2.82976126670837
+        ],
+        "actual_applied_angular_impulse": 0.0982288815122485,
+        "nominal_bottom_capacity": 4.159898430960525,
+        "bins": [
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.988475561141968,
+              -0.151380568742752
+            ],
+            "allocated_normal_capacity": 3.6399111270904596,
+            "initial_quadrature_normal_speeds": [
+              -0.40673687841852413,
+              -0.33495161580072264
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.988475561141968,
+              -0.151380568742752
+            ],
+            "allocated_normal_capacity": 3.6399111270904596,
+            "initial_quadrature_normal_speeds": [
+              -0.5312011969271495,
+              -0.45979306132142206
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.151380568742752,
+              -0.988475561141968
+            ],
+            "allocated_normal_capacity": 2.0799492154802626,
+            "initial_quadrature_normal_speeds": [
+              -51.80985303884486,
+              -51.76919457062618
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.151380568742752,
+              -0.988475561141968
+            ],
+            "allocated_normal_capacity": 2.0799492154802626,
+            "initial_quadrature_normal_speeds": [
+              -51.73903010675139,
+              -51.69837163853273
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 6,
+            "normal": [
+              0.988475561141968,
+              0.151380568742752
+            ],
+            "allocated_normal_capacity": 3.119923823220394,
+            "initial_quadrature_normal_speeds": [
+              0.3376948490210667,
+              0.3993854591308743
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.988475561141968,
+              0.151380568742752
+            ],
+            "allocated_normal_capacity": 3.6399111270904596,
+            "initial_quadrature_normal_speeds": [
+              0.44804367537719525,
+              0.5198289379949825
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 45,
+        "in": [
+          123.010070800781,
+          225.349990844727,
+          0.143164128065109,
+          -7.38323736190796,
+          53.4668502807617,
+          -0.0204906519502401
+        ],
+        "out": [
+          123.010070800781,
+          225.349990844727,
+          0.143164128065109,
+          -7.44813394546509,
+          52.4485778808594,
+          -0.0227873008698225
+        ],
+        "vertical_depth": 40.8490797237066,
+        "pre_overlap": 109,
+        "post_overlap": 106,
+        "total_source_count": 40,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.2,
+        "world_upward_normal_source_share": 0.55,
+        "initial_closing_quadrature_source_share": 0.55,
+        "normal_capacity": 17.9184620380402,
+        "event_budget_cost": 2.08153796195984,
+        "event_y": 2.07999992370605,
+        "normal_accepted": 4.17446373346657,
+        "normal_impulse": [
+          -0.0734220445156097,
+          -3.63131809234619
+        ],
+        "tangent_impulse": [
+          -0.136371478438377,
+          -0.485222548246384
+        ],
+        "computed_total_impulse": [
+          -0.129793524742126,
+          -2.03654098510742
+        ],
+        "actual_applied_impulse": [
+          -0.129793524742126,
+          -2.03654098510742
+        ],
+        "actual_applied_angular_impulse": -0.0995214727042147,
+        "nominal_bottom_capacity": 3.58369240760804,
+        "bins": [
+          {
+            "bin": 0,
+            "local_face": "top",
+            "source_count": 1,
+            "normal": [
+              -0.142675578594208,
+              0.989769518375397
+            ],
+            "allocated_normal_capacity": 0.447961550951005,
+            "initial_quadrature_normal_speeds": [
+              55.07351640863902
+            ]
+          },
+          {
+            "bin": 1,
+            "local_face": "top",
+            "source_count": 3,
+            "normal": [
+              -0.142675578594208,
+              0.989769518375397
+            ],
+            "allocated_normal_capacity": 1.3438846528530148,
+            "initial_quadrature_normal_speeds": [
+              54.924716822926236,
+              54.9798929191869
+            ]
+          },
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.989769518375397,
+              -0.142675578594208
+            ],
+            "allocated_normal_capacity": 3.1357308566570348,
+            "initial_quadrature_normal_speeds": [
+              -0.47719850186984125,
+              -0.39045232847984135
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.989769518375397,
+              -0.142675578594208
+            ],
+            "allocated_normal_capacity": 3.1357308566570348,
+            "initial_quadrature_normal_speeds": [
+              -0.6274654961183961,
+              -0.5407196436754118
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.142675578594208,
+              -0.989769518375397
+            ],
+            "allocated_normal_capacity": 1.79184620380402,
+            "initial_quadrature_normal_speeds": [
+              -55.06206953609008,
+              -55.01503698542112
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.142675578594208,
+              -0.989769518375397
+            ],
+            "allocated_normal_capacity": 1.79184620380402,
+            "initial_quadrature_normal_speeds": [
+              -54.977784421111046,
+              -54.92802148811135
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.989769518375397,
+              0.142675578594208
+            ],
+            "allocated_normal_capacity": 3.1357308566570348,
+            "initial_quadrature_normal_speeds": [
+              0.3962737595375092,
+              0.48301993292751
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.989769518375397,
+              0.142675578594208
+            ],
+            "allocated_normal_capacity": 3.1357308566570348,
+            "initial_quadrature_normal_speeds": [
+              0.5465407537860836,
+              0.6332869271760861
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 68,
+        "in": [
+          120.057952880859,
+          247.074737548828,
+          0.134939312934875,
+          -7.83346271514893,
+          59.7308349609375,
+          -0.0184649359434843
+        ],
+        "out": [
+          120.057952880859,
+          247.074737548828,
+          0.134939312934875,
+          -7.86632537841797,
+          58.8106803894043,
+          -0.0226838383823633
+        ],
+        "vertical_depth": 62.5492247331875,
+        "pre_overlap": 111,
+        "post_overlap": 111,
+        "total_source_count": 42,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.19047619047619047,
+        "world_upward_normal_source_share": 0.5,
+        "initial_closing_quadrature_source_share": 0.5,
+        "normal_capacity": 17.9564738273621,
+        "event_budget_cost": 2.04352617263794,
+        "event_y": 2.03999996185303,
+        "normal_accepted": 3.93280039155129,
+        "normal_impulse": [
+          -0.0477296337485313,
+          -3.45813798904419
+        ],
+        "tangent_impulse": [
+          -0.137995332479477,
+          -0.42216756939888
+        ],
+        "computed_total_impulse": [
+          -0.0657249763607979,
+          -1.84030556678772
+        ],
+        "actual_applied_impulse": [
+          -0.0657249763607979,
+          -1.84030556678772
+        ],
+        "actual_applied_angular_impulse": -0.182819147161539,
+        "nominal_bottom_capacity": 3.420280729021352,
+        "bins": [
+          {
+            "bin": 0,
+            "local_face": "top",
+            "source_count": 4,
+            "normal": [
+              -0.134530171751976,
+              0.990909516811371
+            ],
+            "allocated_normal_capacity": 1.710140364510676,
+            "initial_quadrature_normal_speeds": [
+              61.27422456005349,
+              61.34322272584644
+            ]
+          },
+          {
+            "bin": 1,
+            "local_face": "top",
+            "source_count": 3,
+            "normal": [
+              -0.134530171751976,
+              0.990909516811371
+            ],
+            "allocated_normal_capacity": 1.2826052733830071,
+            "initial_quadrature_normal_speeds": [
+              61.17552956144945,
+              61.22591885030531
+            ]
+          },
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.990909516811371,
+              -0.134530171751976
+            ],
+            "allocated_normal_capacity": 2.992745637893683,
+            "initial_quadrature_normal_speeds": [
+              -0.43368689064905297,
+              -0.30665137713610235
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.990909516811371,
+              -0.134530171751976
+            ],
+            "allocated_normal_capacity": 2.5652105467660142,
+            "initial_quadrature_normal_speeds": [
+              -0.6291765895820243,
+              -0.5200822585598619
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.134530171751976,
+              -0.990909516811371
+            ],
+            "allocated_normal_capacity": 1.710140364510676,
+            "initial_quadrature_normal_speeds": [
+              -61.342097550169534,
+              -61.27309938437655
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.134530171751976,
+              -0.990909516811371
+            ],
+            "allocated_normal_capacity": 1.710140364510676,
+            "initial_quadrature_normal_speeds": [
+              -61.218669732112794,
+              -61.14967126697646
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 6,
+            "normal": [
+              0.990909516811371,
+              0.134530171751976
+            ],
+            "allocated_normal_capacity": 2.5652105467660142,
+            "initial_quadrature_normal_speeds": [
+              0.306244545838787,
+              0.4149346393994593
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 8,
+            "normal": [
+              0.990909516811371,
+              0.134530171751976
+            ],
+            "allocated_normal_capacity": 3.420280729021352,
+            "initial_quadrature_normal_speeds": [
+              0.5087567782404712,
+              0.6522560638512198
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 72,
+        "in": [
+          119.530303955078,
+          251.096755981445,
+          0.133215755224228,
+          -7.94029188156128,
+          61.2078437805176,
+          -0.0286371409893036
+        ],
+        "out": [
+          119.530303955078,
+          251.096755981445,
+          0.133215755224228,
+          -8.0223503112793,
+          60.5579605102539,
+          -0.0209583528339863
+        ],
+        "vertical_depth": 66.5660236011743,
+        "pre_overlap": 113,
+        "post_overlap": 113,
+        "total_source_count": 43,
+        "nominal_local_bottom_source_count": 7,
+        "nominal_local_bottom_share": 0.16279069767441862,
+        "world_upward_normal_source_share": 0.5116279069767442,
+        "initial_closing_quadrature_source_share": 0.5116279069767442,
+        "normal_capacity": 17.960000038147,
+        "event_budget_cost": 2.03999996185303,
+        "event_y": 2.03999996185303,
+        "normal_accepted": 3.39122787524918,
+        "normal_impulse": [
+          -0.0747917518019676,
+          -2.95987987518311
+        ],
+        "tangent_impulse": [
+          -0.0893242359161377,
+          -0.379885464906693
+        ],
+        "computed_total_impulse": [
+          -0.164115995168686,
+          -1.29976534843445
+        ],
+        "actual_applied_impulse": [
+          -0.164115995168686,
+          -1.29976534843445
+        ],
+        "actual_applied_angular_impulse": 0.332747476905027,
+        "nominal_bottom_capacity": 2.923720936442535,
+        "bins": [
+          {
+            "bin": 0,
+            "local_face": "top",
+            "source_count": 4,
+            "normal": [
+              -0.132822081446648,
+              0.991139888763428
+            ],
+            "allocated_normal_capacity": 1.670697677967163,
+            "initial_quadrature_normal_speeds": [
+              62.74396618146663,
+              62.81059533306562
+            ]
+          },
+          {
+            "bin": 1,
+            "local_face": "top",
+            "source_count": 2,
+            "normal": [
+              -0.132822081446648,
+              0.991139888763428
+            ],
+            "allocated_normal_capacity": 0.8353488389835815,
+            "initial_quadrature_normal_speeds": [
+              62.672989811045944,
+              62.702787306613516
+            ]
+          },
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.991139888763428,
+              -0.132822081446648
+            ],
+            "allocated_normal_capacity": 2.923720936442535,
+            "initial_quadrature_normal_speeds": [
+              -0.3576651378383149,
+              -0.23847573210072603
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 8,
+            "normal": [
+              -0.991139888763428,
+              -0.132822081446648
+            ],
+            "allocated_normal_capacity": 3.341395355934326,
+            "initial_quadrature_normal_speeds": [
+              -0.5865372435375678,
+              -0.4585270811862161
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.132822081446648,
+              -0.991139888763428
+            ],
+            "allocated_normal_capacity": 1.670697677967163,
+            "initial_quadrature_normal_speeds": [
+              -62.810293153921535,
+              -62.74366400232251
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 3,
+            "normal": [
+              0.132822081446648,
+              -0.991139888763428
+            ],
+            "allocated_normal_capacity": 1.2530232584753722,
+            "initial_quadrature_normal_speeds": [
+              -62.697017178772754,
+              -62.648358206891636
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 8,
+            "normal": [
+              0.991139888763428,
+              0.132822081446648
+            ],
+            "allocated_normal_capacity": 3.341395355934326,
+            "initial_quadrature_normal_speeds": [
+              0.22098232936760098,
+              0.357598502805919
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.991139888763428,
+              0.132822081446648
+            ],
+            "allocated_normal_capacity": 2.923720936442535,
+            "initial_quadrature_normal_speeds": [
+              0.45722283994670754,
+              0.5762238734436904
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 85,
+        "in": [
+          117.747894287109,
+          265.012664794922,
+          0.128583833575249,
+          -8.37529468536377,
+          67.1693572998047,
+          -0.0181744191795588
+        ],
+        "out": [
+          117.747894287109,
+          265.012664794922,
+          0.128583833575249,
+          -8.44531917572021,
+          66.2145614624023,
+          -0.0278850868344307
+        ],
+        "vertical_depth": 80.4677953607622,
+        "pre_overlap": 111,
+        "post_overlap": 111,
+        "total_source_count": 42,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.19047619047619047,
+        "world_upward_normal_source_share": 0.5,
+        "initial_closing_quadrature_source_share": 0.5,
+        "normal_capacity": 17.9964032173157,
+        "event_budget_cost": 2.00359678268433,
+        "event_y": 2.0,
+        "normal_accepted": 3.96132836514481,
+        "normal_impulse": [
+          -0.0894810333848,
+          -3.46799039840698
+        ],
+        "tangent_impulse": [
+          -0.170567452907562,
+          -0.441602259874344
+        ],
+        "computed_total_impulse": [
+          -0.14004847407341,
+          -1.90959286689758
+        ],
+        "actual_applied_impulse": [
+          -0.14004847407341,
+          -1.90959286689758
+        ],
+        "actual_applied_angular_impulse": -0.42079565295295,
+        "nominal_bottom_capacity": 3.427886327107752,
+        "bins": [
+          {
+            "bin": 0,
+            "local_face": "top",
+            "source_count": 4,
+            "normal": [
+              -0.128229796886444,
+              0.991744458675385
+            ],
+            "allocated_normal_capacity": 1.713943163553876,
+            "initial_quadrature_normal_speeds": [
+              68.68526000862708,
+              68.73141155805172
+            ]
+          },
+          {
+            "bin": 1,
+            "local_face": "top",
+            "source_count": 3,
+            "normal": [
+              -0.128229796886444,
+              0.991744458675385
+            ],
+            "allocated_normal_capacity": 1.285457372665407,
+            "initial_quadrature_normal_speeds": [
+              68.61924496479827,
+              68.65294938517607
+            ]
+          },
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 7,
+            "normal": [
+              -0.991744458675385,
+              -0.128229796886444
+            ],
+            "allocated_normal_capacity": 2.999400536219283,
+            "initial_quadrature_normal_speeds": [
+              -0.471432660375509,
+              -0.38887421320326254
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.991744458675385,
+              -0.128229796886444
+            ],
+            "allocated_normal_capacity": 2.570914745330814,
+            "initial_quadrature_normal_speeds": [
+              -0.6024425068728316,
+              -0.5306267740987654
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.128229796886444,
+              -0.991744458675385
+            ],
+            "allocated_normal_capacity": 1.713943163553876,
+            "initial_quadrature_normal_speeds": [
+              -68.73266098421577,
+              -68.6865094347911
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.128229796886444,
+              -0.991744458675385
+            ],
+            "allocated_normal_capacity": 1.713943163553876,
+            "initial_quadrature_normal_speeds": [
+              -68.65010273523126,
+              -68.60395118580657
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 6,
+            "normal": [
+              0.991744458675385,
+              0.128229796886444
+            ],
+            "allocated_normal_capacity": 2.570914745330814,
+            "initial_quadrature_normal_speeds": [
+              0.3868593005442378,
+              0.4586750333183005
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 8,
+            "normal": [
+              0.991744458675385,
+              0.128229796886444
+            ],
+            "allocated_normal_capacity": 3.427886327107752,
+            "initial_quadrature_normal_speeds": [
+              0.5211076415705733,
+              0.6170510954408819
+            ]
+          }
+        ]
+      },
+      {
+        "tick": 97,
+        "in": [
+          116.021881103516,
+          278.949432373047,
+          0.124078065156937,
+          -8.74658966064453,
+          72.4262008666992,
+          -0.0156302731484175
+        ],
+        "out": [
+          116.021881103516,
+          278.949432373047,
+          0.124078065156937,
+          -8.78867244720459,
+          71.5391082763672,
+          -0.0140615608543158
+        ],
+        "vertical_depth": 94.3906574414599,
+        "pre_overlap": 111,
+        "post_overlap": 111,
+        "total_source_count": 43,
+        "nominal_local_bottom_source_count": 8,
+        "nominal_local_bottom_share": 0.18604651162790697,
+        "world_upward_normal_source_share": 0.5116279069767442,
+        "initial_closing_quadrature_source_share": 0.5116279069767442,
+        "normal_capacity": 17.9564738273621,
+        "event_budget_cost": 2.04352617263794,
+        "event_y": 2.03999996185303,
+        "normal_accepted": 3.87773538285559,
+        "normal_impulse": [
+          -0.119418047368526,
+          -3.38151502609253
+        ],
+        "tangent_impulse": [
+          -0.0847482085227966,
+          -0.432671636343002
+        ],
+        "computed_total_impulse": [
+          -0.0841662511229515,
+          -1.77418661117554
+        ],
+        "actual_applied_impulse": [
+          -0.0841662511229515,
+          -1.77418661117554
+        ],
+        "actual_applied_angular_impulse": 0.0679775308289898,
+        "nominal_bottom_capacity": 3.34073931671853,
+        "bins": [
+          {
+            "bin": 0,
+            "local_face": "top",
+            "source_count": 4,
+            "normal": [
+              -0.123759940266609,
+              0.99231219291687
+            ],
+            "allocated_normal_capacity": 1.670369658359265,
+            "initial_quadrature_normal_speeds": [
+              73.96210601667006,
+              73.97685388560505
+            ]
+          },
+          {
+            "bin": 1,
+            "local_face": "top",
+            "source_count": 4,
+            "normal": [
+              -0.123759940266609,
+              0.99231219291687
+            ],
+            "allocated_normal_capacity": 1.670369658359265,
+            "initial_quadrature_normal_speeds": [
+              73.9357241848037,
+              73.95047207895497
+            ]
+          },
+          {
+            "bin": 2,
+            "local_face": "right",
+            "source_count": 8,
+            "normal": [
+              -0.99231219291687,
+              -0.123759940266609
+            ],
+            "allocated_normal_capacity": 3.34073931671853,
+            "initial_quadrature_normal_speeds": [
+              -0.46186036338509595,
+              -0.4311563986758511
+            ]
+          },
+          {
+            "bin": 3,
+            "local_face": "right",
+            "source_count": 6,
+            "normal": [
+              -0.99231219291687,
+              -0.123759940266609
+            ],
+            "allocated_normal_capacity": 2.5055544875388973,
+            "initial_quadrature_normal_speeds": [
+              -0.5049584141339807,
+              -0.48170492958828603
+            ]
+          },
+          {
+            "bin": 4,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.123759940266609,
+              -0.99231219291687
+            ],
+            "allocated_normal_capacity": 1.670369658359265,
+            "initial_quadrature_normal_speeds": [
+              -73.97819098193835,
+              -73.96288468797874
+            ]
+          },
+          {
+            "bin": 5,
+            "local_face": "bottom",
+            "source_count": 4,
+            "normal": [
+              0.123759940266609,
+              -0.99231219291687
+            ],
+            "allocated_normal_capacity": 1.670369658359265,
+            "initial_quadrature_normal_speeds": [
+              -73.95132433978215,
+              -73.93657644563086
+            ]
+          },
+          {
+            "bin": 6,
+            "local_face": "left",
+            "source_count": 6,
+            "normal": [
+              0.99231219291687,
+              0.123759940266609
+            ],
+            "allocated_normal_capacity": 2.5055544875388973,
+            "initial_quadrature_normal_speeds": [
+              0.43552172845710757,
+              0.45877542055601594
+            ]
+          },
+          {
+            "bin": 7,
+            "local_face": "left",
+            "source_count": 7,
+            "normal": [
+              0.99231219291687,
+              0.123759940266609
+            ],
+            "allocated_normal_capacity": 2.923146902128714,
+            "initial_quadrature_normal_speeds": [
+              0.4771787076173979,
+              0.504152010531822
+            ]
+          }
+        ]
+      }
+    ],
+    "maximum_pre_floor_depth": 94.3906574414599
+  }
+}

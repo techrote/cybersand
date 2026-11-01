@@ -1,0 +1,1 @@
+{"status":"failed-before-receipt","reason":"Aggregator expected records/checks; actual native receipt schema uses calls. No tests or gates waived; schema corrected before capture.","physical_captures":false}
