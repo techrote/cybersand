@@ -1,5 +1,8 @@
 #pragma once
 
+#include "cybersand/solid_detachment.hpp"
+#include "cybersand/conservative_displacement.hpp"
+
 #include "cybersand/material.hpp"
 #include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/interaction_policy.hpp"
@@ -241,6 +244,10 @@ public:
                                                        std::int64_t y) const noexcept;
     [[nodiscard]] bool relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
                                             std::int64_t to_x, std::int64_t to_y);
+    // Fixed-capacity conservative contact displacement. Every validation and
+    // allocation-capacity check completes before any authoritative cell moves.
+    [[nodiscard]] ConservativeDisplacementResult conservative_displace_cells(
+        const ConservativeDisplacementRequest& request);
     // Exclusive external owner, between ticks. The caller fences input leases
     // and reset identity. Fixed scratch, resident destinations and preallocated
     // thermal fields keep this operation free of World-owned allocations.
@@ -253,6 +260,23 @@ public:
                                        std::int32_t radius,
                                        std::uint8_t collapse_strength = 255);
     void clear();
+
+    // SOL-DETACH-001/A1: experimental one-aggregate native ownership kernel.
+    // Exclusive owner only. Main-thread physics must remain separately fenced
+    // until a source/geometry-bound contact receipt has been finalized.
+    [[nodiscard]] soliding::SolidOutcome configure_solid_detachment(soliding::SolidLimits limits = {});
+    [[nodiscard]] soliding::SolidOutcome prepare_solid_detachment(const soliding::SolidRequest& request);
+    [[nodiscard]] soliding::SolidOutcome acknowledge_solid_detachment(const soliding::SolidBodyReservation& body);
+    [[nodiscard]] soliding::SolidOutcome commit_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome finalize_solid_detachment(const soliding::SolidCollisionReceipt& receipt);
+    [[nodiscard]] soliding::SolidOutcome cancel_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome rollback_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome complete_solid_rollback(const soliding::SolidCollisionReceipt& receipt);
+    [[nodiscard]] bool solid_detachment_fenced() const noexcept;
+    [[nodiscard]] soliding::SolidSnapshot inspect_solid_detachment() const noexcept;
+    [[nodiscard]] std::size_t solid_detachment_storage_bytes() const noexcept;
+    [[nodiscard]] std::size_t copy_solid_detachment_members(std::span<soliding::SolidMember> output) const noexcept;
+    [[nodiscard]] std::size_t copy_solid_detachment_shapes(std::span<soliding::SolidShape> output) const noexcept;
 
     [[nodiscard]] TickStats tick();
     // tick_index identifies attempts; only completed_tick_index is successful.
@@ -400,6 +424,8 @@ private:
         std::uint8_t collapse_strength = 0;
     };
 
+    std::unique_ptr<soliding::SolidStore> solid_detachment_;
+    void require_solid_mutation_allowed() const;
     WorldConfig config_;
     bool water_cellular_yield_ = false;
     WaterCellularYieldParameters water_cellular_yield_parameters_{};

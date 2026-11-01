@@ -1,0 +1,42 @@
+{
+  "cohorts": [
+    {
+      "cases": 11,
+      "cohort": "core",
+      "report": "docs/audits/sol281-20261101/hosted/8e86ffd4eb2eb769178808a1012701076e3a4d19/cohorts/linux/core/host/report.json",
+      "report_sha256": "9eb5e3c7bbfb5ae4c9a6361e143c74682ebcd5358ab24f200164f4e90dd3097c"
+    },
+    {
+      "cases": 9,
+      "cohort": "contact-w1",
+      "report": "docs/audits/sol281-20261101/hosted/8e86ffd4eb2eb769178808a1012701076e3a4d19/cohorts/linux/contact-w1/host/report.json",
+      "report_sha256": "e3918acd238f06f6ecc00798b54197a65b07e10bb83720867abcd86eeddc8583"
+    },
+    {
+      "cases": 9,
+      "cohort": "contact-w4",
+      "report": "docs/audits/sol281-20261101/hosted/8e86ffd4eb2eb769178808a1012701076e3a4d19/cohorts/linux/contact-w4/host/report.json",
+      "report_sha256": "e4ec5641a8e2b32ee51049df706e6bfb8ef6e681ed4ca56d5a8d25d06da222ab"
+    }
+  ],
+  "completed": true,
+  "platform": "linux",
+  "qualification": "docs/audits/sol281-20261101/hosted/8e86ffd4eb2eb769178808a1012701076e3a4d19/qualification.json",
+  "ref": "refs/heads/sol-detach-001-current-main",
+  "repository": "techrote/cybersand",
+  "run_attempt": "1",
+  "run_id": "41331369142",
+  "runtime": {
+    "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "sha256": "d556a9d615840761f5c0a4a6a14c39fa62e154c95a11ae16014cdca09bfb7a63",
+    "size": 4302552
+  },
+  "schema": "cybersand.sol281.platform-publication.v1",
+  "scope": "All three SOL-281 actual-host cohorts on this target OS, including workers 1 and 4, native structural ownership, lifecycle, compound response, conservative replay, populated material conservation and ordinary compatibility controls. Dense-contact physical quality, general restoration/fracture/gameplay, full repository CI and representative GPU pacing remain separate gates.",
+  "source": {
+    "sha": "8e86ffd4eb2eb769178808a1012701076e3a4d19",
+    "tree": "b1f965508b24f9b10658907fff26cf1165e2d520"
+  },
+  "status": "passed",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/41331369142"
+}

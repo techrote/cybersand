@@ -36,6 +36,13 @@ public:
     [[nodiscard]] static std::int64_t auto_worker_threads(std::int64_t logical_threads);
     [[nodiscard]] static std::int64_t logical_processor_count();
 
+    // SOL281 diagnostic-only value facade. Exclusive native owner, no RIDs.
+    [[nodiscard]] bool solid_detachment_fenced() const;
+    [[nodiscard]] Dictionary solid_detachment_command(const Dictionary& command);
+    // Frozen-contact regression facade. Calls the same native transaction and
+    // geometric admission as the opt-in detachment host, without advancing time.
+    [[nodiscard]] Dictionary diagnostic_replay_conservative_contact(const Dictionary& capsule);
+
     bool reset_demo_world();
     [[nodiscard]] Dictionary get_default_demo_identity() const;
     [[nodiscard]] bool simulation_tick();
@@ -173,6 +180,9 @@ private:
         std::uint64_t contacts = 0;
         std::uint64_t displaced = 0;
         std::uint64_t unresolved = 0;
+        std::uint64_t unresolved_immovable = 0;
+        std::uint64_t unresolved_no_target = 0;
+        std::uint64_t unresolved_relocation_refused = 0;
     };
     struct BodyDiagnostic {
         Vector2 displacement{};
@@ -186,6 +196,34 @@ private:
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
+    bool conservative_displacement_ = false;
+    enum class DisplacementOutcome : std::uint8_t {
+        Applied, InvalidNormal, UnsupportedMaterial, SourceEmpty, SourceOwnership,
+        GeometryBlocked, ForeignOccupancy, NoVacancy, Capacity, AlreadyTouched,
+        TransactionRefused, StaleSample, ThermalPolicy, Quarantined, Count
+    };
+    struct DisplacementAttempt {
+        DisplacementOutcome outcome{DisplacementOutcome::NoVacancy};
+        std::size_t moved_cells{};
+        std::size_t count{};
+        std::int32_t native_outcome{-1};
+        std::array<Vector2i, cybersand::kConservativeDisplacementCells> path{};
+    };
+    struct DisplacementAccounting {
+        std::uint64_t attempts{}, accepted{}, moved_cells{}, node_probes{};
+        std::uint64_t geometry_blockers{}, foreign_blockers{}, material_blockers{};
+        std::array<std::uint64_t, static_cast<std::size_t>(DisplacementOutcome::Count)> outcomes{};
+        std::array<std::uint64_t, 18> transaction_outcomes{};
+    } displacement_accounting_;
+    // At most 64 attempts and 4 parcel moves per compound sample. The ledger
+    // persists over repeated preparations of that sample, including every
+    // intermediate and terminal coordinate of each committed transaction.
+    static constexpr std::size_t kDisplacementAttemptsPerSample = 64;
+    std::array<std::int32_t, kDisplacementAttemptsPerSample * cybersand::kConservativeDisplacementCells> displacement_touched_{};
+    std::size_t displacement_touched_count_ = 0, displacement_attempts_this_sample_ = 0;
+    cybersand::soliding::SolidToken displacement_token_{};
+    std::int32_t displacement_sample_ = -1;
+    bool displacement_sample_valid_ = false;
     bool default_demo_recipe_active_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;
@@ -265,6 +303,13 @@ private:
                              double rotation, Vector2 half_size);
     void reconcile_swept_overlaps();
     void reconcile_overlap(std::int32_t cell_index, std::uint16_t body_id);
+    void prepare_conservative_sample();
+    [[nodiscard]] DisplacementAttempt conservative_displace(
+        std::int32_t x, std::int32_t y, std::uint16_t body_id, Vector2 outward);
+    [[nodiscard]] bool displacement_square_clear(std::int32_t x, std::int32_t y) const;
+    [[nodiscard]] static double displacement_square_gap(const BodyState& body, std::int32_t x, std::int32_t y);
+    [[nodiscard]] Dictionary conservative_displacement_metrics() const;
+    [[nodiscard]] static const char* displacement_outcome_name(DisplacementOutcome outcome);
     void accumulate_boundary_pressure();
     void accumulate_granular_bearing();
     [[nodiscard]] bool cell_inside_body(const BodyState& body,

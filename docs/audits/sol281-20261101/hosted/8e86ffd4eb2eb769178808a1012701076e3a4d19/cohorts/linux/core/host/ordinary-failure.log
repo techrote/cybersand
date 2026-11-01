@@ -1,0 +1,14 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+TICK_FAILURE_ADAPTER {"controller":false,"events":[false,true],"failures":[],"ok":true,"workers":1}
+INTEREST_REGION_ADAPTER {"controller":false,"excluded_ticks":8,"failures":[],"ok":true,"resumed_steps":1,"workers":1}
+TICK_FAILURE_ADAPTER {"controller":false,"events":[false,true],"failures":[],"ok":true,"workers":4}
+INTEREST_REGION_ADAPTER {"controller":false,"excluded_ticks":8,"failures":[],"ok":true,"resumed_steps":1,"workers":4}
+INTEREST_REGION_DESKTOP_OWNER workers=4 passed=true
+WEB_RAPIER_PROBE {"ok":true,"reason":"Manual-step/CCD probe passed","y":72.5059432983398}
+WEB_DEMO_READY CYBERSAND/NATIVE · THREADED · 1 WORKERS · RAPIER2D · AUTO (4 logical threads)
+TICK_FAILURE_WEB_OWNER {"controller":true,"events":[false,true],"failures":[],"ok":true,"workers":1}
+INTEREST_REGION_WEB_OWNER {"controller":true,"excluded_ticks":8,"failures":[],"ok":true,"resumed_steps":1,"workers":1}
+Tick failure regression: passed

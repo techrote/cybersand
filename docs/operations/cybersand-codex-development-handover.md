@@ -4,11 +4,28 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## SOL281 current-main branch — 2026-11-01
+
+The owner authorized implementation and a draft PR from current main for
+[structural detachment](../systems/solid-detachment.md), preserving archive #283
+at `254235ec` and leaving merge approval to the owner. Draft
+[PR #347](https://github.com/techrote/cybersand/pull/347) starts from accepted
+main `a8f08a67` with production R and PLAY #331 intact. Source `8e86ffd4`
+passed the scoped Linux/Windows host matrix; `bdd751dc` publishes its qualified
+development runtimes and original evidence.
+Its [qualification ledger](../audits/2026-11-01-sol281-current-main.md) records
+selective provenance, negative results, source/runtime gates and unresolved
+physics. Do not promote local conservative chains as a packed-bed solution or
+copy GCR/PLAY implementations into this branch. The 11/9 coupling ABI remains.
+Dense resistance/penetration and representative GPU pacing remain unpassed;
+active restoration, fracture and normal gameplay remain deferred.
+
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
 

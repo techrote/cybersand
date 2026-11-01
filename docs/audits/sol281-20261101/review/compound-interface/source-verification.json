@@ -1,0 +1,22 @@
+{
+  "schema": "sol281-independent-interface-source-verification-v1",
+  "isolated_commit": "02e8a09aa14646c168610438df965d2f3fb3ec7f",
+  "qualified_source": "c8c81a8b81677abd173de199a9d436f46de2268b",
+  "base": "a8f08a67fea3c58f6df7473cbae1831334fcc04e",
+  "changed_paths": [
+    "godot/scripts/rapier_physics_bridge.gd",
+    "godot/tests/test_solid_detachment_compound_response.gd"
+  ],
+  "blob_matches": {
+    "godot/scripts/rapier_physics_bridge.gd": {
+      "isolated_blob": "517c6ad0d3aee4b589837868e659cd490ace6919",
+      "qualified_blob": "517c6ad0d3aee4b589837868e659cd490ace6919",
+      "sha256": "d632171d2eb5144b4b3a0c22bf700cd082e2d913cecb585fa36bcc7978d9a2c8"
+    },
+    "godot/tests/test_solid_detachment_compound_response.gd": {
+      "isolated_blob": "8aa77c945d90df44939ffd25c1b513547b1fe7f1",
+      "qualified_blob": "8aa77c945d90df44939ffd25c1b513547b1fe7f1",
+      "sha256": "42b1441a03153d6af07ab0494b05565b342dcfa75aa9be0520d18f7b7634145d"
+    }
+  }
+}

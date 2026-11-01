@@ -6,6 +6,7 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+#include <godot_cpp/variant/rect2i.hpp>
 
 #include <algorithm>
 #include <array>
@@ -68,6 +69,9 @@ CyberNativeCellWorld::CyberNativeCellWorld() {
 CyberNativeCellWorld::~CyberNativeCellWorld() = default;
 
 void CyberNativeCellWorld::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("solid_detachment_fenced"), &CyberNativeCellWorld::solid_detachment_fenced);
+    ClassDB::bind_method(D_METHOD("solid_detachment_command", "command"), &CyberNativeCellWorld::solid_detachment_command);
+    ClassDB::bind_method(D_METHOD("diagnostic_replay_conservative_contact", "capsule"), &CyberNativeCellWorld::diagnostic_replay_conservative_contact);
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
@@ -335,6 +339,12 @@ Dictionary CyberNativeCellWorld::get_default_demo_identity() const {
 
 void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     diagnostic_fixture_ = false;
+    conservative_displacement_ = false;
+    displacement_accounting_ = {};
+    displacement_touched_count_ = displacement_attempts_this_sample_ = 0;
+    displacement_token_ = {};
+    displacement_sample_ = -1;
+    displacement_sample_valid_ = false;
     body_diagnostics_.reset();
     displacement_gain_ = kBodyDisplacementReactionImpulse;
     boundary_gain_ = kBodyBoundaryPressureImpulse;
@@ -416,6 +426,7 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
     world_->clear_transient_obstacles();
     clear_observations();
     parse_body_states(states);
+    if (conservative_displacement_) prepare_conservative_sample();
 
     raster_indices_.clear();
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
@@ -426,6 +437,16 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
         else rasterize_body(body);
     }
     if (resolve_overlaps) reconcile_swept_overlaps();
+    if (world_->has_failed()) {
+        // A conservative transaction quarantines unexpected partial progress.
+        // Do not call another mutating World API (including mask clearing), or
+        // publish forces from that incomplete preparation. simulation_tick()
+        // returns false and the existing worker publishes its stopped state.
+        ++tick_failure_count_;
+        last_tick_error_ = "conservative contact transaction quarantined the World";
+        clear_observations();
+        return;
+    }
 
     world_->clear_transient_obstacles();
     raster_indices_.clear();
@@ -577,6 +598,7 @@ void CyberNativeCellWorld::reconcile_swept_overlaps() {
         const auto body_id = world_->transient_obstacle_at(x, y);
         if (body_id != 0U && world_->stored_material(x, y) != cybersand::Material::Empty) {
             reconcile_overlap(cell_index, body_id);
+            if (world_->has_failed()) return;
         }
     }
 }
@@ -611,12 +633,40 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     }
     if (!cybersand::MaterialRules::descriptor(material).movable) {
         ++observation.unresolved;
+        ++observation.unresolved_immovable;
+        return;
+    }
+
+    // Only the explicitly admitted detachment host selects this path. Ordinary
+    // body coupling, forces, bearing and liquid/material rules retain main's
+    // policy. There is no permissive direct-ejection fallback in strict mode.
+    if (conservative_displacement_) {
+        const auto attempt = conservative_displace(x, y, body_id, outward);
+        if (attempt.outcome == DisplacementOutcome::Quarantined) return;
+        const bool moved = attempt.outcome == DisplacementOutcome::Applied;
+        if (moved) {
+            ++observation.displaced;
+            ++revision_;
+        } else {
+            ++observation.unresolved;
+            if (attempt.outcome == DisplacementOutcome::TransactionRefused)
+                ++observation.unresolved_relocation_refused;
+            else ++observation.unresolved_no_target;
+        }
+        // One existing reaction per original contact, never per chain parcel.
+        // The shared coupling owner (and GCR) retains force/torque policy.
+        const auto impulse = -outward * displacement_gain_ *
+            (moved ? density_scale(material) : 1.0);
+        if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
+        record_impulse(body_id, impulse);
         return;
     }
 
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
         ++observation.unresolved;
+        if (target.x < 0) ++observation.unresolved_no_target;
+        else ++observation.unresolved_relocation_refused;
         const auto impulse = -outward * displacement_gain_;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
         record_impulse(body_id, impulse);
@@ -1413,6 +1463,9 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto cap = gain("cap", 3.0);
         const auto density = gain("density_limit", 1.6);
         if (density < 0.05 || cap <= 0) return false;
+        if (options.has("conservative_displacement") &&
+            options["conservative_displacement"].get_type() != Variant::BOOL) return false;
+        const bool conservative = options.get("conservative_displacement", false);
         cybersand::WorldConfig config;
         config.worker_threads = static_cast<std::uint32_t>(workers);
         config.maximum_chunk_count = 128;
@@ -1447,6 +1500,12 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;
+        conservative_displacement_ = conservative;
+        displacement_accounting_ = {};
+        displacement_touched_count_ = displacement_attempts_this_sample_ = 0;
+        displacement_token_ = {};
+        displacement_sample_ = -1;
+        displacement_sample_valid_ = false;
         worker_threads_ = config.worker_threads;
         displacement_gain_ = displacement; boundary_gain_ = boundary;
         contact_gain_ = contact; impulse_cap_ = cap; density_limit_ = density;
@@ -2095,5 +2154,7 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 }
 
 #include "pressure_optimization_inspection.inc"
+#include "conservative_displacement_adapter.inc"
+#include "solid_detachment_adapter.inc"
 
 }  // namespace godot

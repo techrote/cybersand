@@ -1,0 +1,14 @@
+{
+  "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+    "sha256": "0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45",
+    "size": 4222424,
+    "source_path": "/workspace/scratch/be82eeed0828/cybersand/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "matches_isolated_HEAD_LFS": true
+  },
+  "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+    "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "size": 117275416,
+    "source_path": "/workspace/scratch/59ce0c87fdea/cybersand/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+    "matches_isolated_HEAD_LFS": true
+  }
+}

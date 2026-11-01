@@ -1,0 +1,44 @@
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_solid_detachment.cpp -o build/test_solid_detachment
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_solid_detachment.cpp -o build/test_solid_detachment_sanitized
+In file included from native/include/cybersand/world.hpp:18,
+                 from native/src/world.cpp:1:
+native/include/cybersand/water_experiment_policy.hpp: In static member function ‘static constexpr uint16_t cybersand::WaterExperimentPolicy::quantize_ratio(uint32_t, uint32_t, uint32_t)’:
+native/include/cybersand/water_experiment_policy.hpp:62:24: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   62 |         return d == 0U ? 0U : static_cast<std::uint16_t>((2U*n*maximum+d)/(2U*d));
+      |                ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:2854:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 2854 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:2854:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 2854 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+native/src/c_api.cpp: In function ‘uint8_t cybersand_world_liquid_mass(const cybersand_world*, int64_t, int64_t)’:
+native/src/c_api.cpp:418:29: warning: conversion from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} may change value [-Wconversion]
+  418 |     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);
+      |            ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from native/include/cybersand/world.hpp:18,
+                 from native/include/cybersand/render_snapshot.hpp:3,
+                 from native/src/render_snapshot.cpp:1:
+native/include/cybersand/water_experiment_policy.hpp: In static member function ‘static constexpr uint16_t cybersand::WaterExperimentPolicy::quantize_ratio(uint32_t, uint32_t, uint32_t)’:
+native/include/cybersand/water_experiment_policy.hpp:62:24: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   62 |         return d == 0U ? 0U : static_cast<std::uint16_t>((2U*n*maximum+d)/(2U*d));
+      |                ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from native/include/cybersand/world.hpp:18,
+                 from native/include/cybersand/render_snapshot.hpp:3,
+                 from native/src/c_api.cpp:5:
+native/include/cybersand/water_experiment_policy.hpp: In static member function ‘static constexpr uint16_t cybersand::WaterExperimentPolicy::quantize_ratio(uint32_t, uint32_t, uint32_t)’:
+native/include/cybersand/water_experiment_policy.hpp:62:24: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   62 |         return d == 0U ? 0U : static_cast<std::uint16_t>((2U*n*maximum+d)/(2U*d));
+      |                ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+native/src/c_api.cpp: In function ‘uint8_t cybersand_world_liquid_mass(const cybersand_world*, int64_t, int64_t)’:
+native/src/c_api.cpp:418:29: warning: conversion from ‘int’ to ‘uint8_t’ {aka ‘unsigned char’} may change value [-Wconversion]
+  418 |     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);
+      |            ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from native/include/cybersand/world.hpp:18,
+                 from native/tests/test_solid_detachment.cpp:1:
+native/include/cybersand/water_experiment_policy.hpp: In static member function ‘static constexpr uint16_t cybersand::WaterExperimentPolicy::quantize_ratio(uint32_t, uint32_t, uint32_t)’:
+native/include/cybersand/water_experiment_policy.hpp:62:24: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   62 |         return d == 0U ? 0U : static_cast<std::uint16_t>((2U*n*maximum+d)/(2U*d));
+      |                ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

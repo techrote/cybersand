@@ -1,0 +1,13 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+FAIL SOL281 DISPLACEMENT boundary_sand_one_hop: unique conservative path matches the independent fixture
+FAIL SOL281 DISPLACEMENT boundary_sand_one_hop: chain starts at the captured contact
+FAIL SOL281 DISPLACEMENT boundary_sand_three_parcels: unique conservative path matches the independent fixture
+FAIL SOL281 DISPLACEMENT boundary_sand_three_parcels: chain starts at the captured contact
+FAIL SOL281 DISPLACEMENT boundary_partial_water_three_parcels: unique conservative path matches the independent fixture
+FAIL SOL281 DISPLACEMENT boundary_partial_water_three_parcels: chain starts at the captured contact
+FAIL SOL281 DISPLACEMENT boundary_mixed_sand_water: unique conservative path matches the independent fixture
+FAIL SOL281 DISPLACEMENT boundary_mixed_sand_water: chain starts at the captured contact
+SOL281_CONSERVATIVE_DISPLACEMENT {"cases":17,"checks":292,"configured_workers":4,"failures":["boundary_sand_one_hop: unique conservative path matches the independent fixture","boundary_sand_one_hop: chain starts at the captured contact","boundary_sand_three_parcels: unique conservative path matches the independent fixture","boundary_sand_three_parcels: chain starts at the captured contact","boundary_partial_water_three_parcels: unique conservative path matches the independent fixture","boundary_partial_water_three_parcels: chain starts at the captured contact","boundary_mixed_sand_water: unique conservative path matches the independent fixture","boundary_mixed_sand_water: chain starts at the captured contact"],"platform":"Linux"}

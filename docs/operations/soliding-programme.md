@@ -10,6 +10,20 @@ related-documents: [architecture-programme.md, ../architecture/soliding-lifecycl
 
 # Scalable reversible soliding programme
 
+## Structural detachment track — 2026-11-01
+
+**Current experimental source / broader Approved direction:** the bounded
+[structural detachment runtime](../systems/solid-detachment.md) now ports the real
+native-tree ownership proof onto accepted main `a8f08a67` and adds conservative local
+Sand/Water relocation. Its [dated qualification](../audits/2026-11-01-sol281-current-main.md)
+keeps partial source/host gates distinct from complete #281/#12 acceptance.
+The owner prioritizes native support loss → genuine Rapier toppling/rolling.
+Track A does not wait for Stage3B #66–#70 or GCR completion. Track B retains its
+existing #66 → #67 → #68 → #70 and separate Stage4 gates. The frozen #283 archive
+and unmerged #282 specification retain their original identities. Reactive
+cohesion, fracture, active restoration and persistence remain deferred here.
+
+
 ## What does issue 12 now own?
 
 **Approved owner direction, implementation Planned:** [issue #12](https://github.com/techrote/cybersand/issues/12)
