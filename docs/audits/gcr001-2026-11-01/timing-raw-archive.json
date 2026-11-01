@@ -1,0 +1,6 @@
+{
+  "path": "build/gcr001-timing-raw.zip",
+  "size": 9037352,
+  "sha256": "c8a92470f935e06ee8aac9aee413e29439924e290ba543eef5944a48560279bb",
+  "scope": "Thirty sequential Windows timing captures, three fresh-process AB/BA repeats per arm on five registered scenarios; source dce2977b; archive local, not in Git."
+}

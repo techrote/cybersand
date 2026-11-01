@@ -47,8 +47,8 @@ def native_rows(report):
 
 def mechanism_counts(report):
     rows=report['rows']; native=native_rows(report); supported=[r for r in native if r.get('bins',0)>0]
-    result={'native_ledger_boundaries':len(native),'supported_native_boundaries':len(supported),
-            'positive_normal_native_boundaries':sum(r.get('normal_accepted',0)>0 for r in native),
+    result={'native_ledger_boundaries':len(native),'supported_native_boundaries':len(supported) if native else None,
+            'positive_normal_native_boundaries':sum(r.get('normal_accepted',0)>0 for r in native) if native else None,
             'maximum_bins':max((r.get('bins',0) for r in native),default=None),
             'maximum_nodes':max((r.get('nodes',0) for r in native),default=None),
             'maximum_updates':max((r.get('updates',0) for r in native),default=None),

@@ -2,7 +2,7 @@
 title: GCR-001 combined category contact qualification
 status: Current
 document-kind: evidence
-scope: Source-bound experimental R2 implementation, failed physical qualification, controls and explicitly pending gates; no production or owner acceptance
+scope: Source-bound experimental R2 implementation, failed physical qualification, platform controls and retained acceptance limits; no production or owner acceptance
 canonical-for: []
 last-reviewed: 2026-11-01
 related-documents: [../architecture/granular-contact-response.md, ../operations/granular-contact-response-plan.md, ../architecture/rigid-body-and-cellular-coupling.md]
@@ -250,9 +250,9 @@ These are bounded host checks, not the entire proposed topology or human-feel
 matrix. No GCR owner preference has been supplied.
 
 At73f9b3e9 the full native suites pass170/0 on Windows and170/0 on Linux;
-focused Godot imports plus16 scripts/OS pass. Native ASan/UBSan and final-head
-correction/docs/performance receipts are recorded in the checkpoint addendum
-below when complete. No passed claim is inferred from a draft CI skip.
+focused Godot imports plus16 scripts/OS pass. Native ASan/UBSan and subsequent
+correction/performance receipts are recorded in the checkpoint addendum below.
+No passed claim is inferred from a draft CI skip.
 
 Observed maximum is8 bins/15 nodes/120 scalar updates per body, within R2's
 8/16/128 bound. Concurrent functional coupling timings are deliberately not
@@ -298,3 +298,76 @@ Start with Sand horizontal entry, high anchor, angled entry, edge and excavation
 then compare Dust/Rust. These surfaces expose a failed experimental candidate,
 not an accepted production/default change. Space press/repeat/release and focused
 controls are covered by the review input regression.
+
+## Completed platform and performance checkpoint
+
+The [native gate receipt](gcr001-2026-11-01/native-qualification.json),
+[84-input manifest](gcr001-2026-11-01/native-input-manifest.json) and
+[compiler identities](gcr001-2026-11-01/native-tool-identities.json) retain full
+commands, bounds, source/input checks, binary hashes, log hashes and outcomes.
+Windows170/0 took77.49s; Linux170/0 took233.06s; Linux ASan/UBSan170/0 took517.19s.
+All exited0 without timeouts or sanitizer diagnostics. Build bounds were1800s;
+full execution bounds3600s plus outer WSL guards. This is the core suite defined
+by Makefile TEST_SOURCES, not standalone generation or soliding targets.
+
+The [initial scoped host receipt](gcr001-2026-11-01/host-qualification.json)
+contains both imports and16 scripts per platform, all exit0 with no ERROR output:
+GCR protocol, negative controls, actual playground, Y1 controls/review, manual
+Rapier stepping, REM-002, REM-003, instrumentation, physics async, cell World,
+failed-tick quarantine, prepared owner, interaction async, native edge regression
+and64-body capacity. The [corrected host receipt](gcr001-2026-11-01/corrected-host-qualification.json)
+at `b7d283dc` repeats imports, the actual three-arm review/controls/pause test and
+the no-case real-worker async test on Windows and Linux; all six processes pass.
+The earlier review test lacked the registered hard selector and is not used as
+proof of that corrected assertion. Original failed host assertions and relative
+capture-path failures remain in the local raw archive, with their scope retained.
+
+Sequential Windows timing used clean source
+`dce2977b3be7c5d556425832ede740789df36682`, identical native/Rapier/engine/protocol
+hashes, one functional process, telemetry off and120 warmup ticks removed.
+Three fresh-process AB/BA repetitions per arm on five registered cases completed
+30/30 and conserved measured quantities. No competing qualification jobs ran.
+All30 selected physical projections match the telemetry-on primary references;
+the [timing reducer](../../tools/experiments/analyze_gcr_timing.py) specifies that
+projection. It does not compare complete cell state.
+
+Pooled timing samples across the three processes give:
+
+| Case | Coupling p50/p95/p99/max µs, Y1 | GCR | Main application p95 µs, Y1→GCR |
+| --- | --- | --- | --- |
+| Vertical | 24/39/46/317 | 28/42/51/303 | 13→37 |
+| Horizontal | 27/40/49/195 | 90/129/156/261 | 12→47 |
+| Glancing | 28/41/48/168 | 70/214/274/618 | 12→49 |
+| Stream | 23/33/40/154 | 30/46/57/140 | 12→37 |
+| Heavy high | 35/66/92/217 | 83/138/166/291 | 13→43 |
+
+Horizontal/glancing/heavy coupling exceeds both registered p95 thresholds
+(>25% and >25µs) in all three individual repetitions. Their pooled main
+application also triggers. Across all measured components,25 component triggers
+occur in13/15 paired repetitions; stream's pooled measured-component total
+425→543µs also triggers. There is no Rapier p95 or scanned-work trigger in these
+five timing cases. The result getter is included and accounts for4.0–9.1% of
+GCR coupling time; preparation dominates the measured coupling cost. This
+locates cost components, not a causal decomposition of changed trajectories.
+No admitted performance budget or promotion follows.
+
+The [timing detail](gcr001-2026-11-01/timing-detail.json) retains every p50/p95/p99/
+max for coupling, Rapier, native tick, main application, preparation, packing,
+getter and work, plus per-repeat thresholds and telemetry comparisons. The
+[compact timing receipt](gcr001-2026-11-01/timing-final-summary.json) and
+[raw manifest](gcr001-2026-11-01/timing-raw-bundle-manifest.json) preserve source
+identity and original raw/log hashes. Support/event/passivity/slip ledgers were
+not acquired with telemetry off and stay null; measured overlap remains available.
+The measured-component total excludes diagnostic observations, overlap scans,
+report construction and serialization, so it is not end-to-end wall time.
+The [separate raw timing archive](gcr001-2026-11-01/timing-raw-archive.json) is local.
+
+Independent review verified81 native inputs per platform against actual Git
+bytes, artifact hashes/sizes, all166 primary/control receipts, the published
+physical/async numbers, ordinary B0 preservation and the sidewall-friction
+normal-load constraint. Its evidence corrections distinguish Windows physical
+scope, material observations from full state, and wrap-aware serials from the
+nonwrapping session. The replay projection executable is retained at
+[compare_gcr_replay.py](../../tools/experiments/compare_gcr_replay.py).
+Remaining acceptance limits listed above stay open; this checkpoint does not
+convert NO-GO into completion of REM-004 or owner gameplay acceptance.
