@@ -27,7 +27,7 @@
       ],
       "facts": [
         "Native cells and main-thread Rapier retain authority; new Float64 17/14 is separate from legacy Float32 11/9.",
-        "Actual inertia/COM and nonwrapping session/serial are sampled; age1 and0.5cell pose fence atomically validate before translated angular impulse application."
+        "Actual inertia/COM and nonwrapping session and wrap-aware sample serial are sampled; age1 and0.5cell pose fence atomically validate before translated angular impulse application."
       ],
       "sources": [
         "../godot/scripts/rigid_body_coupling.gd",

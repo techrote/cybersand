@@ -70,7 +70,7 @@ identify their executed head and unchanged native/script inputs.
 
 The [canonical experimental contract](../architecture/granular-contact-response.md)
 owns ABI17/14, main-thread application, actual inertia/COM and nonwrapping
-session/serial fences. The old11/9 path stays separate. GCR replaces overlapping
+session and wrap-aware sample-serial fences. The old11/9 path stays separate. GCR replaces overlapping
 granular displacement/boundary/bearing feedback with geometric normal response,
 Coulomb-limited tangent response and their contact moment. Non-granular feedback
 retains its old path. Native blocked granular moves carry an integer source
@@ -121,7 +121,7 @@ check passes: extension GLIBC2.32/GLIBCXX3.4.30/CXXABI1.3.9 and Rapier GLIBC2.34
 
 ## Registered physical results
 
-Portable-source campaigns completed166 captures:132 primary,12 real async,
+Portable-source Windows campaigns completed166 captures:132 primary,12 real async,
 six B0 controls, ten diagnostic ablations and six deterministic replays.
 All completed and conserved measured per-ID quantities and exact Water mass.
 The [compact primary summary](gcr001-2026-11-01/primary-final-summary.json)
@@ -161,7 +161,9 @@ slip and angular motion remain observations; no sleep/rest claim follows.
 
 All six synchronous replays match the corresponding physical projections
 exactly, including actual application/refusal/age, corrected/translated wrench,
-overlap, edits and final material state. Timings and identity fields are excluded.
+overlap, edits and final recorded material observations. Full cell contents and
+state hashes were not captured for this comparison; no full-cell/state replay
+claim follows. Timings and identity fields are excluded.
 The [replay projection receipt](gcr001-2026-11-01/replay-comparison.json) retains
 the definitions and hashes.
 

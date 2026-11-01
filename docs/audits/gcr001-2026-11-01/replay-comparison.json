@@ -1,1 +1,77 @@
-{"schema":1,"identity":{"source":"73f9b3e9fa2e01e51016ef20fad289c15ba69661","protocol_sha256":"df60c0461fcec358e68a0563771aac0cd053acd3a4540764a0efccffa80ae08f","native_sha256":"aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138","rapier_sha256":"b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7","input_identity":"a79e89171dd032422217f4d0d57bf883cf2c783ae4c0269e894dac54ee3daf00"},"comparison":"Exact physical values, including application/refusal/age/scaled and translated wrench, material state observations, edits and final snapshot. Only clocks, source receipts, sample/session/snapshot identifiers excluded.","all_exact":true,"results":[{"case":"sand-vertical","arm":"Y1","exact_physical_replay":true,"reference_raw_sha256":"29de7a93e46359d7f4bc5aaa931ecfe8d3677a0d55f6d0d14eac56bafb0f3acc","repeat_raw_sha256":"7af62decc6dc498ef8be862904bb22600ef5f6bb0f76848f6fc981110b24857a","reference_physical_sha256":"c9ad196a7b0815999d0da8a2a856e8a56c4835bce1b47dfaddd6b749e6c2ef13","repeat_physical_sha256":"c9ad196a7b0815999d0da8a2a856e8a56c4835bce1b47dfaddd6b749e6c2ef13","first_difference":null},{"case":"sand-vertical","arm":"GCR","exact_physical_replay":true,"reference_raw_sha256":"2cdcdde416d702c46a0ea88bdc8b0f1396d439421e449b4c5dff6970a10c4ecb","repeat_raw_sha256":"0eebf4dbd9ace423d069df2dc3ad8e968a0eb2b636e014fab2a6f31933538aa9","reference_physical_sha256":"b021773a82353ea3218c9dddd50c2dadab8688455e155d03c7bdfe00efb471ae","repeat_physical_sha256":"b021773a82353ea3218c9dddd50c2dadab8688455e155d03c7bdfe00efb471ae","first_difference":null},{"case":"sand-horizontal","arm":"Y1","exact_physical_replay":true,"reference_raw_sha256":"00cf394ae03a47d29e6bea41fb152d06c8bd5233170ea1f7da85423805315714","repeat_raw_sha256":"79dd93116307539f9b163e665fb0543f821c861dc1c49990044695cd49b9ec3d","reference_physical_sha256":"3a5f69caab6c7f9925402726fd99b653250171de2d42117086d38354db40c2d9","repeat_physical_sha256":"3a5f69caab6c7f9925402726fd99b653250171de2d42117086d38354db40c2d9","first_difference":null},{"case":"sand-horizontal","arm":"GCR","exact_physical_replay":true,"reference_raw_sha256":"13df01decce7fef3eff7a795c30887916c7089c6f1f1949085cd60220f546cd0","repeat_raw_sha256":"2f9c8e63acf11c5ed0bed37813263ae822692eee0014150bd794d9640e647a61","reference_physical_sha256":"c2af4d6678883e9a3e67a78c688ccf9d7c6147fc2dba5019aa6df8219cc5bb2b","repeat_physical_sha256":"c2af4d6678883e9a3e67a78c688ccf9d7c6147fc2dba5019aa6df8219cc5bb2b","first_difference":null},{"case":"sand-glancing","arm":"Y1","exact_physical_replay":true,"reference_raw_sha256":"135385b1385440a2cde397d354db55fc4226f26dfab8bcc279b604b7f941856b","repeat_raw_sha256":"8615bd02fd8f6ee5e3f015ed4f0f1c115e66098dada493070a86bc88bdff165d","reference_physical_sha256":"1b767f6676e8b4c0bc095af24633ff4c0caa7a8adbedd69b17542e2c85228eb0","repeat_physical_sha256":"1b767f6676e8b4c0bc095af24633ff4c0caa7a8adbedd69b17542e2c85228eb0","first_difference":null},{"case":"sand-glancing","arm":"GCR","exact_physical_replay":true,"reference_raw_sha256":"fc6da64741746deca35a0c94c6fa7b695783c67166cbb0879b46aae44a0291ae","repeat_raw_sha256":"bb208f940587721c54a7009fd3515e73112743e9bf42a9fb81c59e34c916a8d9","reference_physical_sha256":"03fb7306c8031e22ab0e120bf836d64dfb40599d561223745923d8446fe576c8","repeat_physical_sha256":"03fb7306c8031e22ab0e120bf836d64dfb40599d561223745923d8446fe576c8","first_difference":null}]}
+{
+  "schema": 1,
+  "identity": {
+    "source": "73f9b3e9fa2e01e51016ef20fad289c15ba69661",
+    "protocol_sha256": "df60c0461fcec358e68a0563771aac0cd053acd3a4540764a0efccffa80ae08f",
+    "native_sha256": "aa08dd4bafe5f44a762f85dccc809d5a2254b7587cf981bbbe43c83b50c49138",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "input_identity": "a79e89171dd032422217f4d0d57bf883cf2c783ae4c0269e894dac54ee3daf00"
+  },
+  "comparison": "Exact physical values, including application/refusal/age/scaled and translated wrench, recorded material observations, edits and final observations. Full cells/state hashes were not captured. Only clocks, source receipts, sample/session/snapshot identifiers excluded.",
+  "all_exact": true,
+  "results": [
+    {
+      "case": "sand-vertical",
+      "arm": "Y1",
+      "exact_physical_replay": true,
+      "reference_raw_sha256": "29de7a93e46359d7f4bc5aaa931ecfe8d3677a0d55f6d0d14eac56bafb0f3acc",
+      "repeat_raw_sha256": "7af62decc6dc498ef8be862904bb22600ef5f6bb0f76848f6fc981110b24857a",
+      "reference_physical_sha256": "c9ad196a7b0815999d0da8a2a856e8a56c4835bce1b47dfaddd6b749e6c2ef13",
+      "repeat_physical_sha256": "c9ad196a7b0815999d0da8a2a856e8a56c4835bce1b47dfaddd6b749e6c2ef13",
+      "first_difference": null
+    },
+    {
+      "case": "sand-vertical",
+      "arm": "GCR",
+      "exact_physical_replay": true,
+      "reference_raw_sha256": "2cdcdde416d702c46a0ea88bdc8b0f1396d439421e449b4c5dff6970a10c4ecb",
+      "repeat_raw_sha256": "0eebf4dbd9ace423d069df2dc3ad8e968a0eb2b636e014fab2a6f31933538aa9",
+      "reference_physical_sha256": "b021773a82353ea3218c9dddd50c2dadab8688455e155d03c7bdfe00efb471ae",
+      "repeat_physical_sha256": "b021773a82353ea3218c9dddd50c2dadab8688455e155d03c7bdfe00efb471ae",
+      "first_difference": null
+    },
+    {
+      "case": "sand-horizontal",
+      "arm": "Y1",
+      "exact_physical_replay": true,
+      "reference_raw_sha256": "00cf394ae03a47d29e6bea41fb152d06c8bd5233170ea1f7da85423805315714",
+      "repeat_raw_sha256": "79dd93116307539f9b163e665fb0543f821c861dc1c49990044695cd49b9ec3d",
+      "reference_physical_sha256": "3a5f69caab6c7f9925402726fd99b653250171de2d42117086d38354db40c2d9",
+      "repeat_physical_sha256": "3a5f69caab6c7f9925402726fd99b653250171de2d42117086d38354db40c2d9",
+      "first_difference": null
+    },
+    {
+      "case": "sand-horizontal",
+      "arm": "GCR",
+      "exact_physical_replay": true,
+      "reference_raw_sha256": "13df01decce7fef3eff7a795c30887916c7089c6f1f1949085cd60220f546cd0",
+      "repeat_raw_sha256": "2f9c8e63acf11c5ed0bed37813263ae822692eee0014150bd794d9640e647a61",
+      "reference_physical_sha256": "c2af4d6678883e9a3e67a78c688ccf9d7c6147fc2dba5019aa6df8219cc5bb2b",
+      "repeat_physical_sha256": "c2af4d6678883e9a3e67a78c688ccf9d7c6147fc2dba5019aa6df8219cc5bb2b",
+      "first_difference": null
+    },
+    {
+      "case": "sand-glancing",
+      "arm": "Y1",
+      "exact_physical_replay": true,
+      "reference_raw_sha256": "135385b1385440a2cde397d354db55fc4226f26dfab8bcc279b604b7f941856b",
+      "repeat_raw_sha256": "8615bd02fd8f6ee5e3f015ed4f0f1c115e66098dada493070a86bc88bdff165d",
+      "reference_physical_sha256": "1b767f6676e8b4c0bc095af24633ff4c0caa7a8adbedd69b17542e2c85228eb0",
+      "repeat_physical_sha256": "1b767f6676e8b4c0bc095af24633ff4c0caa7a8adbedd69b17542e2c85228eb0",
+      "first_difference": null
+    },
+    {
+      "case": "sand-glancing",
+      "arm": "GCR",
+      "exact_physical_replay": true,
+      "reference_raw_sha256": "fc6da64741746deca35a0c94c6fa7b695783c67166cbb0879b46aae44a0291ae",
+      "repeat_raw_sha256": "bb208f940587721c54a7009fd3515e73112743e9bf42a9fb81c59e34c916a8d9",
+      "reference_physical_sha256": "03fb7306c8031e22ab0e120bf836d64dfb40599d561223745923d8446fe576c8",
+      "repeat_physical_sha256": "03fb7306c8031e22ab0e120bf836d64dfb40599d561223745923d8446fe576c8",
+      "first_difference": null
+    }
+  ],
+  "projection_script_sha256": "188257d088bda5fd1bc876049b630651107271d4ebe0e4c59906191e1fcc1dce",
+  "projection_script": "tools/experiments/compare_gcr_replay.py",
+  "scope_note": "The PHYSICAL whitelist and result/application identity omissions define the exact projection; no complete cell/state replay claim."
+}
