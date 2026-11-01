@@ -1450,3 +1450,7 @@ The opt-in [bearing observer](../operations/granular-bearing-pre-overlap-investi
 ## Candidate-discrimination values
 
 Fresh diagnostic_reset accepts bearing_experiment=GBD-2026-11-01 plus one bearing_candidate string B0/Y1/A2. Unknown/combined selections or a missing experiment ID refuse before World replacement. There is no mutable candidate setter. diagnostic_bearing_candidate() reports immutable selection and compact per-sample work/support counters for body1. Detailed diagnostic_bearing_state() adds at most256 three-step admission records; raw current support remains separate from selected support. See the [candidate protocol](../operations/granular-bearing-pre-overlap-investigation.md#registered-candidate-discrimination---2026-11-01). Packed11/9 and existing six-field bridge arrays do not change.
+
+### Candidate retirement and qualification
+
+Selection survives only within its diagnostic World incarnation. Every successful ordinary install/prepared commit retires it to B0; refused replacements preserve existing authority. Candidate observations do not cache support across samples. The [completed audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) qualifies controlled Windows trajectories and ejection parity, not native/fallback equality of these native-only response candidates. No packed ABI or presentation owner changes.

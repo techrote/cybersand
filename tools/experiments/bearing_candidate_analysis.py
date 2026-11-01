@@ -225,12 +225,14 @@ def mechanism(base_dir,candidate_dir):
             "current_support":w["current_support"],"selected_support":w["selected_support"],"lookahead":w["lookahead"]}
 
 def campaign(root):
+    from bearing_candidate_qualification import qualify
+    qualification=qualify(root)
     root=Path(root)
     summaries={mode:{arm:describe(root/(mode+"-"+arm+"-on")) for arm in ("speed0","speed30","speed90","excavation","hard","water")}
                for mode in ("B0","Y1","A2")}
     identities={(s["source"],json.dumps(s["runtime"],sort_keys=True)) for group in summaries.values() for s in group.values()}
     if len(identities)!=1:raise ValueError("comparisons require exact common source/runtime")
-    result={"schema":1,"summaries":summaries,"candidates":{}}
+    result={"schema":1,"summaries":summaries,"candidates":{},"qualification":qualification}
     for mode in ("Y1","A2"):
         comparisons={arm:efficacy(summaries["B0"][arm],summaries[mode][arm]) for arm in ("speed30","speed90")}
         mechanisms={arm:mechanism(root/("B0-"+arm+"-on"),root/(mode+"-"+arm+"-on")) for arm in comparisons}

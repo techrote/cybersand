@@ -1,0 +1,318 @@
+{
+  "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+  "checks": [
+    {
+      "name": "windows-native",
+      "command": [
+        "build/tests.exe"
+      ],
+      "timeout": 300,
+      "exit": 0,
+      "start": "2026-11-01T02:57:41.905458+00:00"
+    },
+    {
+      "name": "windows-candidate",
+      "command": [
+        "build/test_granular_bearing_candidate.exe"
+      ],
+      "timeout": 300,
+      "exit": 0,
+      "start": "2026-11-01T02:58:28.069089+00:00"
+    },
+    {
+      "name": "linux-c-header-check",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand",
+        "--",
+        "bash",
+        "-lc",
+        "timeout 300 build/linux-tools/package/usr/bin/make -j2 BUILD_DIR=build/linux c-header-check build/linux/tests"
+      ],
+      "timeout": 310,
+      "exit": 0,
+      "start": "2026-11-01T02:58:28.101845+00:00"
+    },
+    {
+      "name": "linux-soliding-test",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand",
+        "--",
+        "bash",
+        "-lc",
+        "timeout 300 build/linux-tools/package/usr/bin/make -j2 BUILD_DIR=build/linux soliding-test"
+      ],
+      "timeout": 310,
+      "exit": 0,
+      "start": "2026-11-01T02:58:31.563642+00:00"
+    },
+    {
+      "name": "linux-worldgen-test",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand",
+        "--",
+        "bash",
+        "-lc",
+        "timeout 300 build/linux-tools/package/usr/bin/make -j2 BUILD_DIR=build/linux worldgen-test"
+      ],
+      "timeout": 310,
+      "exit": 0,
+      "start": "2026-11-01T02:58:33.050040+00:00"
+    },
+    {
+      "name": "linux-ejection-oracle-test",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand",
+        "--",
+        "bash",
+        "-lc",
+        "timeout 300 build/linux-tools/package/usr/bin/make -j2 BUILD_DIR=build/linux ejection-oracle-test bearing-candidate-test"
+      ],
+      "timeout": 310,
+      "exit": 0,
+      "start": "2026-11-01T02:58:39.235318+00:00"
+    },
+    {
+      "name": "linux-native",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand",
+        "--",
+        "timeout",
+        "300",
+        "build/linux/tests"
+      ],
+      "timeout": 310,
+      "exit": 124,
+      "start": "2026-11-01T02:58:57.087883+00:00"
+    },
+    {
+      "name": "test_rem002_body_granular",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_rem002_body_granular.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:04:07.105612+00:00"
+    },
+    {
+      "name": "test_rem003_player_granular",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_rem003_player_granular.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:04:10.828706+00:00"
+    },
+    {
+      "name": "test_physics_instrumentation",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_physics_instrumentation.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:26.104502+00:00"
+    },
+    {
+      "name": "test_physics_async",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_physics_async.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:27.418310+00:00"
+    },
+    {
+      "name": "test_ejection_capsules",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_ejection_capsules.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:30.760802+00:00"
+    },
+    {
+      "name": "test_ejection_topology_capture",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_ejection_topology_capture.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:33.085034+00:00"
+    },
+    {
+      "name": "test_granular_bearing_capture",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_granular_bearing_capture.gd",
+        "--",
+        "--mode=controls"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:37.169666+00:00"
+    },
+    {
+      "name": "test_granular_bearing_candidates",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_granular_bearing_candidates.gd",
+        "--",
+        "--mode=controls"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:37.650424+00:00"
+    },
+    {
+      "name": "test_liquid_default_demo_preparation",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_liquid_default_demo_preparation.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:38.586554+00:00"
+    },
+    {
+      "name": "test_liquid_level_preparation",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_liquid_level_preparation.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:44.519539+00:00"
+    },
+    {
+      "name": "test_prepared_physical_owner",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "build/godot",
+        "--script",
+        "res://tests/test_prepared_physical_owner.gd"
+      ],
+      "timeout": 150,
+      "exit": 0,
+      "start": "2026-11-01T03:05:57.674059+00:00"
+    },
+    {
+      "name": "check_docs",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "timeout": 300,
+      "exit": 1,
+      "start": "2026-11-01T03:05:58.798400+00:00"
+    },
+    {
+      "name": "check_m11_consistency",
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "timeout": 300,
+      "exit": 0,
+      "start": "2026-11-01T03:06:00.510853+00:00"
+    },
+    {
+      "name": "check_repository",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "timeout": 300,
+      "exit": 1,
+      "start": "2026-11-01T03:06:01.700147+00:00"
+    },
+    {
+      "name": "retrieval",
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "build/qualification/retrieval.json"
+      ],
+      "timeout": 300,
+      "exit": 0,
+      "start": "2026-11-01T03:06:04.375189+00:00"
+    },
+    {
+      "name": "python-reduction",
+      "command": [
+        "python",
+        "tools/experiments/test_bearing_candidate_analysis.py"
+      ],
+      "timeout": 300,
+      "exit": 0,
+      "start": "2026-11-01T03:06:04.879284+00:00"
+    }
+  ]
+}

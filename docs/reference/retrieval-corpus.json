@@ -119,7 +119,8 @@
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
-    "operations/granular-bearing-pre-overlap-investigation.md"
+    "operations/granular-bearing-pre-overlap-investigation.md",
+    "operations/granular-bearing-post-arrest-handoff-proposal.md"
   ],
   "navigation": [
     "README.md",

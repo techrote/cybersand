@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1764,3 +1764,7 @@ saturation. No response-law change or broad granular acceptance follows.
 ## Granular entry-response measurement - 2026-11-01
 
 **Measured:** the [fixed-law successor](../audits/2026-11-01-granular-bearing-pre-overlap.md) qualifies matched height controls and zero-spin velocity arms, with3117 replayed attempts and exact observer neutrality. Entry momentum monotonically increases penetration/overlap; raw support collapse, unused globalcap20 and stale/lost delivery do not explain entry here. **Planned:** separate yield-only braking and bounded pre-step-admission interventions require their own registration; no response or material law changes in this measurement.
+
+## Granular bearing candidate result - 2026-11-01
+
+**Measured / diagnostic only:** [B0/Y1/A2 discrimination](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) concludes **partial/mechanistic result only**, with Y1 individually H and A2 P. Peak intrusion improves, while Y1's high-speed slow overlapping tail remains adverse evidence. Ordinary B0 remains the default; broad REM-004/#83 acceptance is open. The [next handoff proposal](../operations/granular-bearing-post-arrest-handoff-proposal.md) is planned, not executed. No combination, wider search or new compaction policy is selected.

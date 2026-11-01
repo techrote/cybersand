@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-11-01T03:55:58.500538+00:00",
+  "parent_pr": 339,
+  "parent_head": "8b4e53d76881f15ad400a3f4137c69c28daf0571",
+  "parent_draft": true,
+  "parent_merged": false,
+  "main_start_metadata": "15b3a4012b9d5998e808fb371792dd7a71398507",
+  "main_end_metadata": "25ce0731d89b9540c2d95cfa8bae321c37e6e118",
+  "source_boundary": "main advancement observed only via ls-remote; no commit/source imported, rebase or merge",
+  "branch": "codex/granular-bearing-candidates-20261101",
+  "measured_source": "39d91671c1d0bb7978a29460f14419cd1b37a252"
+}

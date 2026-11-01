@@ -1,0 +1,369 @@
+{
+  "schema": 1,
+  "qualification_pass": true,
+  "cases": {
+    "B0-speed0-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 49,
+      "json_files": 6,
+      "json_bytes": 4537925,
+      "receipt_sha256": "d38b004dabf2690e31c1498aa99c5604fbf40d892a883164a5c2adfc4869aab3",
+      "original_native_jsonl_sha256": "cff19228422528be2fa66bee733dd21f3250e47501944fc5e8406b7765e0b7d6",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-speed0-on"
+    },
+    "B0-speed0-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 49,
+      "json_files": 6,
+      "json_bytes": 2845725,
+      "receipt_sha256": "254a1dab13d3d6c1566f026d13fcebc75c2256355979bd10f84d6651e46aebac",
+      "original_native_jsonl_sha256": "cff19228422528be2fa66bee733dd21f3250e47501944fc5e8406b7765e0b7d6",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-speed0-off"
+    },
+    "B0-speed30-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 257,
+      "json_files": 6,
+      "json_bytes": 6756810,
+      "receipt_sha256": "d8ed9b3abee60a560883ecd1bdf6f6cd08e2b7ad226767d72a1924d2816de486",
+      "original_native_jsonl_sha256": "4e9025a349676e29e9c28ea7a7e447b114a054ecd6ebc6d4669710be77a67ce8",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-speed30-on"
+    },
+    "B0-speed30-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 257,
+      "json_files": 6,
+      "json_bytes": 5062526,
+      "receipt_sha256": "cc345bc2da93d05a0d73a8d932c39aea08365fafe75d1f572a85cbc45477acce",
+      "original_native_jsonl_sha256": "4e9025a349676e29e9c28ea7a7e447b114a054ecd6ebc6d4669710be77a67ce8",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-speed30-off"
+    },
+    "B0-speed90-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 895,
+      "json_files": 8,
+      "json_bytes": 13764538,
+      "receipt_sha256": "fabe7c72125a65b452cf55badb2c104b76bdb961105766e59243e5c7a03bcf40",
+      "original_native_jsonl_sha256": "786450e2e0abc622d30a5d76d014417e8dfbdd260a1ccf7c14f6d851f9427307",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-speed90-on"
+    },
+    "B0-speed90-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 895,
+      "json_files": 8,
+      "json_bytes": 12060728,
+      "receipt_sha256": "f598bfffb4c5209542f1b242f1909805bbf16afbd912daf56aba5730b1be597a",
+      "original_native_jsonl_sha256": "786450e2e0abc622d30a5d76d014417e8dfbdd260a1ccf7c14f6d851f9427307",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-speed90-off"
+    },
+    "B0-excavation-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 49,
+      "json_files": 6,
+      "json_bytes": 4405686,
+      "receipt_sha256": "b7f8c55462433c89c21705a5b2c40ec3651d097251e28453b8fc3672877d2382",
+      "original_native_jsonl_sha256": "cff19228422528be2fa66bee733dd21f3250e47501944fc5e8406b7765e0b7d6",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-excavation-on"
+    },
+    "B0-excavation-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 49,
+      "json_files": 6,
+      "json_bytes": 2803183,
+      "receipt_sha256": "460e2f64fc9c86e3511db3e2d646e12853d8c50dfe7e78500869360eff062b34",
+      "original_native_jsonl_sha256": "cff19228422528be2fa66bee733dd21f3250e47501944fc5e8406b7765e0b7d6",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-excavation-off"
+    },
+    "B0-hard-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 3798468,
+      "receipt_sha256": "3257d3a2cc80bd1c8ea635a9909a6468103ca9305b2af3863e359c7e612705a0",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-hard-on"
+    },
+    "B0-hard-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 2201925,
+      "receipt_sha256": "4823331b59c75a730f828fd9ac4187ef45410345c1b83f720dd5731d009b92ea",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-hard-off"
+    },
+    "B0-water-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 66522,
+      "json_files": 272,
+      "json_bytes": 746226282,
+      "receipt_sha256": "025c71992f160560af9b2a8058b9fce3c89846cf37a475da2a003542ff5b16e2",
+      "original_native_jsonl_sha256": "22589edd4f6736a9d4eed0d069f6079ba951ab4ca15305d8598aa6c7f5e47985",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-water-on"
+    },
+    "B0-water-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 66522,
+      "json_files": 272,
+      "json_bytes": 744266722,
+      "receipt_sha256": "4ca7be25583a4327d4eed51b3a5390f277e6428cb5a0eac026b2eeb1e59dde64",
+      "original_native_jsonl_sha256": "22589edd4f6736a9d4eed0d069f6079ba951ab4ca15305d8598aa6c7f5e47985",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\B0-water-off"
+    },
+    "Y1-speed0-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 3925500,
+      "receipt_sha256": "2305d283abd4f090601fb2b92ddcc380e6c523302ef3042eaa4f7c3e7a5df319",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-speed0-on"
+    },
+    "Y1-speed0-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 2264883,
+      "receipt_sha256": "d274ce21f85968d30a2dd3385d95444ef0b88585074d19e55dc6c3095d8c30f6",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-speed0-off"
+    },
+    "Y1-speed30-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 3911722,
+      "receipt_sha256": "8938ff980531a13040413b238e062e6ea4b5c4a7cb623b7274761ad03bfc5805",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-speed30-on"
+    },
+    "Y1-speed30-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 2253251,
+      "receipt_sha256": "bad063ee7d81cf75e093fe22d675a23ca9ab042a8b014b769405d2d6c284c89a",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-speed30-off"
+    },
+    "Y1-speed90-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 4262,
+      "json_files": 22,
+      "json_bytes": 49608051,
+      "receipt_sha256": "69250612ade31dc7532f8db1f223850fdf02cf679a0ddb3ce04dd11a12de0679",
+      "original_native_jsonl_sha256": "feed695cca27d99e3120e24b665d960834d0cc5f497d34bcff591598ca4552a4",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-speed90-on"
+    },
+    "Y1-speed90-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 4262,
+      "json_files": 22,
+      "json_bytes": 47894418,
+      "receipt_sha256": "e9ab83b250a5c0788634c058c567b3339a26754d3ccd7064fc98e3f5f0ca9960",
+      "original_native_jsonl_sha256": "feed695cca27d99e3120e24b665d960834d0cc5f497d34bcff591598ca4552a4",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-speed90-off"
+    },
+    "Y1-excavation-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 3786926,
+      "receipt_sha256": "e2c13a1719fb28bfeb8899312fbab8acadf4f4656d1c4a5cc6f9da048280311c",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-excavation-on"
+    },
+    "Y1-excavation-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 2258061,
+      "receipt_sha256": "48809b5c0f2b9b6bdab15d61b02666600e521cf7b1d9978467a91d45fbae8e49",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-excavation-off"
+    },
+    "Y1-hard-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 3797858,
+      "receipt_sha256": "90060c13576ce3038828a054e46b941e929a54a844e6268b8615831d74ee1a78",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-hard-on"
+    },
+    "Y1-hard-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 2201325,
+      "receipt_sha256": "60a7e2855cacddc14aeaf00123a2a96cec85bd1dfe3176f7f413fc3871110ff4",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-hard-off"
+    },
+    "Y1-water-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 66522,
+      "json_files": 272,
+      "json_bytes": 746225638,
+      "receipt_sha256": "58584b45d1070121404b2ce18b06cb15adc64135c369758d6d6931d8febf761b",
+      "original_native_jsonl_sha256": "04a7e05771d6b971dfaaa12af0e0e89e2c7fc0024dc387a86d02060f65a2629b",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-water-on"
+    },
+    "Y1-water-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 66522,
+      "json_files": 272,
+      "json_bytes": 744266121,
+      "receipt_sha256": "6f5b9667753e34b9754753f5736dbf3ffbc733a9a3d520c48a1bc4a71275c369",
+      "original_native_jsonl_sha256": "04a7e05771d6b971dfaaa12af0e0e89e2c7fc0024dc387a86d02060f65a2629b",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\Y1-water-off"
+    },
+    "A2-speed0-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 2,
+      "json_files": 6,
+      "json_bytes": 4867344,
+      "receipt_sha256": "682ca93f3d7a11335e3010cb49fa1a667695ad39c8d55f090c6398a2a2f10f80",
+      "original_native_jsonl_sha256": "a604be4776d3635eef2dc67f4a9170913af310c43db94a34de41dbf79070eacc",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-speed0-on"
+    },
+    "A2-speed0-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 2,
+      "json_files": 6,
+      "json_bytes": 2362146,
+      "receipt_sha256": "bcfdd850d2c17765d08b984600d7e07e544f89c91b845b0cdd1103a1b9d0ecb0",
+      "original_native_jsonl_sha256": "a604be4776d3635eef2dc67f4a9170913af310c43db94a34de41dbf79070eacc",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-speed0-off"
+    },
+    "A2-speed30-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 149,
+      "json_files": 6,
+      "json_bytes": 6436904,
+      "receipt_sha256": "06ea4f06e3ec7a71c477030ee0932ab4a0a248ed44c69317f7b2206dd4499cd9",
+      "original_native_jsonl_sha256": "01fb4b4abaae67b0f023f5fc18afc25e7833cb43d6abdde0eedb840e820fbc2d",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-speed30-on"
+    },
+    "A2-speed30-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 149,
+      "json_files": 6,
+      "json_bytes": 3910489,
+      "receipt_sha256": "c30584e343bd022de8a97bfeb46726fdb3fa73e480a61c642938fc0b7da97731",
+      "original_native_jsonl_sha256": "01fb4b4abaae67b0f023f5fc18afc25e7833cb43d6abdde0eedb840e820fbc2d",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-speed30-off"
+    },
+    "A2-speed90-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 590,
+      "json_files": 8,
+      "json_bytes": 11521297,
+      "receipt_sha256": "b6f48420e78f921fa0f948c2eb6b40910a166af83cf90cf8180008d764867ba5",
+      "original_native_jsonl_sha256": "6ef5962f7d677738cdec2e4418c604dd3d2bb86f3cd4b3bbbd38c3bdb7593882",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-speed90-on"
+    },
+    "A2-speed90-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 590,
+      "json_files": 8,
+      "json_bytes": 8730899,
+      "receipt_sha256": "f37269b37d3175358888eebd585ac184b6db7e10de61bab42a9a8a87af720c59",
+      "original_native_jsonl_sha256": "6ef5962f7d677738cdec2e4418c604dd3d2bb86f3cd4b3bbbd38c3bdb7593882",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-speed90-off"
+    },
+    "A2-excavation-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 2,
+      "json_files": 6,
+      "json_bytes": 4526793,
+      "receipt_sha256": "a5d578daeaac40e407f48b61713f2ada2978895386489cbaa19fb3312abfe103",
+      "original_native_jsonl_sha256": "a604be4776d3635eef2dc67f4a9170913af310c43db94a34de41dbf79070eacc",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-excavation-on"
+    },
+    "A2-excavation-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 2,
+      "json_files": 6,
+      "json_bytes": 2323940,
+      "receipt_sha256": "f51a36e9bf6cd8df615f99010c248f70345f94e50f69a524010d0760e3b699cd",
+      "original_native_jsonl_sha256": "a604be4776d3635eef2dc67f4a9170913af310c43db94a34de41dbf79070eacc",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-excavation-off"
+    },
+    "A2-hard-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 3820677,
+      "receipt_sha256": "38731c2cc43f9f742432c1a17365b63186bb6d5fbbd14c5900b9b292f95c9170",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-hard-on"
+    },
+    "A2-hard-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 0,
+      "json_files": 4,
+      "json_bytes": 2202140,
+      "receipt_sha256": "5fda18aa46003eee7b40879c36c0583362abcd55deb7b298b8b6e87ea8722cd3",
+      "original_native_jsonl_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-hard-off"
+    },
+    "A2-water-on": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 66522,
+      "json_files": 272,
+      "json_bytes": 746608330,
+      "receipt_sha256": "47f374a4db7a418235016361f985114dd9d6ef4bf95d6965a3b6315e26304af6",
+      "original_native_jsonl_sha256": "47a0adf71e11fe3ff3b24a16122ddb99b924c3acfda50491358225b077547d61",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-water-on"
+    },
+    "A2-water-off": {
+      "source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+      "tree": "7835e2e253f50ef9822b91bebf345e81746757b0",
+      "attempts": 66522,
+      "json_files": 272,
+      "json_bytes": 744270003,
+      "receipt_sha256": "e724ac8da2e74644e25fb0a4b305e3fcbefcd7dd3a6e5669a0f0684a4972a604",
+      "original_native_jsonl_sha256": "47a0adf71e11fe3ff3b24a16122ddb99b924c3acfda50491358225b077547d61",
+      "original_acquisition_directory": "C:\\Users\\_\\.codex\\worktrees\\bearing-discrimination-owner\\khybersand\\build\\campaign\\A2-water-off"
+    }
+  },
+  "capsules": "Every attempt retained in original sealed <=500-capsule JSON parts; no deduplication/drop.",
+  "local_only": "Original native events.jsonl text and process logs remain at source. JSON parts preserve all parsed capsule values with additive identity/provenance fields.",
+  "ownership": "Successful immutable artifacts may be hard-linked locally; no input mutation or deletion. Git checkouts contain ordinary files."
+}

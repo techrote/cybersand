@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-01
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -342,3 +342,7 @@ for the next entry-momentum/support experiment use the separately
 [bearing measurement protocol](../operations/granular-bearing-pre-overlap-investigation.md).
 
 Raw support versus published counts, entry momentum budgets, positional velocity zeroing and the fixed-pose speed controls route to the [granular-bearing measurement guide](../operations/granular-bearing-pre-overlap-investigation.md). The separate BEARING retrieval question retains the frozen32 suite.
+
+### Bearing response candidates and post-arrest handoff
+
+For the completed B0/Y1/A2 causal comparison, exact thresholds, safety controls and the meaning of H/P, use the [canonical bearing guide](../operations/granular-bearing-pre-overlap-investigation.md#completed-candidate-comparison---2026-11-01) and its dated audit. The separately [planned handoff proposal](../operations/granular-bearing-post-arrest-handoff-proposal.md) covers slow correction-associated withdrawal, not an implemented correction law.

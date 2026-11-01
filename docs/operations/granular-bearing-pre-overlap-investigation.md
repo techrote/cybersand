@@ -168,7 +168,8 @@ Initial sample capacity and subsequent yielding limit braking, while the highest
 speed first acquires support on a sample that already overlaps material. Existing
 vy<=4 correction then acts near peak entry and zeroes residual downward momentum.
 
-**Planned / proposed, not implemented or selected:** distinguish stronger braking
+**Historical proposal at the #339 measurement checkpoint; diagnostic execution
+is completed below, with no production selection:** distinguish stronger braking
 from earlier admission using the same zero-spin speed30/90 controls and fresh
 owners. First compare unchanged response against a yield-only diagnostic arm
 (velocity factor.18 versus1.0, retaining per-sample capacity2 and globalcap20).
@@ -185,6 +186,12 @@ The measured unused global cap is not the next knob to raise.
 
 ## Registered candidate discrimination - 2026-11-01
 
-**Approved experiment / Planned execution:** the owner authorized isolated B0 versus Y1 (yield coefficient1.0) and B0 versus A2 (bounded2px admission), on exact PR339 head8b4e53d7. The [machine preregistration](../audits/granular-bearing-candidates-2026-11-01/protocol.json) freezes source lineage, subpixel lookahead geometry, thresholds, safety controls and order before interventions. The [candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) records execution and disposition. Ordinary/default behavior remains B0; no combined arm or production selection is authorized.
+**Registration checkpoint before execution:** the owner authorized isolated B0 versus Y1 (yield coefficient1.0) and B0 versus A2 (bounded2px admission), on exact PR339 head8b4e53d7. The [machine preregistration](../audits/granular-bearing-candidates-2026-11-01/protocol.json) freezes source lineage, subpixel lookahead geometry, thresholds, safety controls and order before interventions. The [candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) records the completed execution and disposition. Ordinary/default behavior remains B0; no combined arm or production selection is authorized.
 
 The [qualification addendum](../audits/granular-bearing-candidates-2026-11-01/qualification-addendum.json) preserves pre-result unit-oracle and native float-boundary corrections. Admission phase follows the native float membership envelope; ideal physical geometry remains separate for hover. All original efficacy/control thresholds, candidate coefficients and2px bound remain unchanged. Successful ordinary World adoption retires test mode to B0.
+
+## Completed candidate comparison - 2026-11-01
+
+**Measured, finite Windows fixture:** the [candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md) records **partial/mechanistic result only**: Y1 meets both registered efficacy gates and controls; A2 has a real timing effect but misses speed30's required overlap gate. All18 observer pairs and complete native/fallback replay populations qualify. Ordinary/default response remains B0; neither mode is a production selection.
+
+Y1's smaller peak entry coexists with prolonged slow correction-associated withdrawal at speed90. This adverse evidence limits the H classification and must accompany it. The [proposed post-arrest follow-up](granular-bearing-post-arrest-handoff-proposal.md) owns the next finite question under REM-004/#83; it is not executed or authorized by this result. A2 is partial, so the registered H/H premise for combination testing is absent. The frozen radius/chain NO-GO and unused global cap are not reopened.

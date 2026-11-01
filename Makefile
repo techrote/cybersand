@@ -305,6 +305,7 @@ ejection-a2-test: ejection-oracle-test
 bearing-candidate-test: $(BUILD_DIR)/test_granular_bearing_candidate
 	./$(BUILD_DIR)/test_granular_bearing_candidate
 	python3 tools/experiments/test_bearing_candidate_analysis.py
+	python3 tools/experiments/test_bearing_candidate_qualification.py
 
 $(BUILD_DIR)/test_granular_bearing_candidate: native/tests/test_granular_bearing_candidate.cpp native/include/cybersand/granular_bearing_candidate.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror native/tests/test_granular_bearing_candidate.cpp -o $@

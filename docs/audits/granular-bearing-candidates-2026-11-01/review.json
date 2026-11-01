@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "type": "independent AI engineering review; not human approval",
+  "measured_source": "39d91671c1d0bb7978a29460f14419cd1b37a252",
+  "reviewers": [
+    "bearing_semantics",
+    "bearing_fixture",
+    "causal_review"
+  ],
+  "source_findings": [
+    "ordinary/prepared mode retirement fixed before primary acquisition; both replacement routes tested",
+    "Y1 formula isolation, A2 single support set/single packet and release verified; no owner/thread/ejection change",
+    "positive-offset physical-gap completeness fails closed, including mixed sets"
+  ],
+  "postprocessing_findings": [
+    "Water other-material invariant and mandatory all36 on/off qualification enforced",
+    "all original metric helper ASTs and690 protocol bytes unchanged",
+    "raw capsule SHA equality is stronger descriptive evidence, not a universal physical-equivalence condition"
+  ],
+  "independent_result": {
+    "pairs": 18,
+    "captures": 36,
+    "frames": 21600,
+    "capsules_replayed": 411642,
+    "Y1": "H",
+    "A2": "P",
+    "disposition": "partial/mechanistic result only",
+    "all_controls_green": true
+  },
+  "adjudication": "Y1speed90 has slow correction-associated withdrawal, not observed static equilibrium; persistent overlap through599 remains adverse evidence. Speed0 control gates are not retroactively extended to primary90.",
+  "next_proposal": "Copied-value handoff accounting plus separately registered finite longer B0/Y1 observation. No new experiment executed here.",
+  "exact_final_head_review": "Recorded separately with final-head validation in draft PR; measured runtime source unchanged."
+}
