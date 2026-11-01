@@ -1446,3 +1446,7 @@ is an offline consumer contract, not an additional simulation authority.
 ## Bearing measurement values
 
 The opt-in [bearing observer](../operations/granular-bearing-pre-overlap-investigation.md#height-arm-measurement-checkpoint) returns owned dictionaries and probe arrays for body1. Probe rows contain x/y, shared-predicate reason, stable-below/around and visited paused/fresh/unsupported/missing counts. Reasons0..4 mean accepted/material/centre/neighbourhood/side. It exposes no World storage or live Rapier object. Detailed bridge rows distinguish pre-application, post-correction and post-impulse server reads; accepted age-eligible rows only. Existing packed11/9 and six-field diagnostics retain their schema.
+
+## Candidate-discrimination values
+
+Fresh diagnostic_reset accepts bearing_experiment=GBD-2026-11-01 plus one bearing_candidate string B0/Y1/A2. Unknown/combined selections or a missing experiment ID refuse before World replacement. There is no mutable candidate setter. diagnostic_bearing_candidate() reports immutable selection and compact per-sample work/support counters for body1. Detailed diagnostic_bearing_state() adds at most256 three-step admission records; raw current support remains separate from selected support. See the [candidate protocol](../operations/granular-bearing-pre-overlap-investigation.md#registered-candidate-discrimination---2026-11-01). Packed11/9 and existing six-field bridge arrays do not change.

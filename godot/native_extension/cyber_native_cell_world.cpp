@@ -94,6 +94,7 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
     ClassDB::bind_method(D_METHOD("diagnostic_bearing_state"), &CyberNativeCellWorld::diagnostic_bearing_state);
+    ClassDB::bind_method(D_METHOD("diagnostic_bearing_candidate"), &CyberNativeCellWorld::diagnostic_bearing_candidate);
     ClassDB::bind_method(D_METHOD("diagnostic_ejection_capture", "maximum_failed", "maximum_success"), &CyberNativeCellWorld::diagnostic_ejection_capture);
     ClassDB::bind_method(D_METHOD("diagnostic_ejection_stream"), &CyberNativeCellWorld::diagnostic_ejection_stream);
     ClassDB::bind_method(D_METHOD("diagnostic_take_ejection_events"), &CyberNativeCellWorld::diagnostic_take_ejection_events);
@@ -363,6 +364,8 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     diagnostic_fixture_ = false;
     body_diagnostics_.reset();
     bearing_trace_.reset();
+    bearing_candidate_ = cybersand::bearing_experiment::Mode::B0;
+    candidate_observations_ = {};
     displacement_gain_ = kBodyDisplacementReactionImpulse;
     boundary_gain_ = kBodyBoundaryPressureImpulse;
     contact_gain_ = kBodyPixelContactImpulse;
@@ -468,6 +471,7 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
 
 void CyberNativeCellWorld::clear_observations() {
     observations_ = {};
+    if (diagnostic_fixture_) candidate_observations_ = {};
     if (body_diagnostics_) *body_diagnostics_ = {};
     if (bearing_trace_) *bearing_trace_ = {};
 }
@@ -790,12 +794,72 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
             !in_bounds(x, y + 1) || world_->transient_obstacle_at(x, y + 1) != 0U) {
             continue;
         }
+        if (!diagnostic_fixture_) {
+            if (world_->granular_support_at(x,y+1,false,false)) ++support_samples[body_id];
+            continue;
+        }
         cybersand::World::GranularSupportInspection inspection;
-        const bool supported = world_->granular_support_at(x, y + 1, false, false,
-                                                           trace ? &inspection : nullptr);
+        auto& work = candidate_observations_[body_id];
+        ++work.boundaries;
+        bool supported = false;
+        std::int32_t selected_y = y + 1;
+        cybersand::bearing_experiment::Ray ray;
+        if (bearing_candidate_ == cybersand::bearing_experiment::Mode::A2 &&
+            current_bodies_[body_id].velocity.y > 0) {
+            const auto& body = current_bodies_[body_id];
+            work.lookahead = cybersand::bearing_experiment::lookahead(body.velocity.y);
+            const auto lower = cybersand::bearing_experiment::lower_edge(body.center.x, body.center.y,
+                body.rotation, body.half_size.x, body.half_size.y, static_cast<double>(x)+0.5);
+            std::array<cybersand::World::GranularSupportInspection,3> inspections{};
+            std::size_t visited=0;
+            ray = cybersand::bearing_experiment::admit(x,y+1,lower,work.lookahead,
+                [this,&work,&inspections,&visited](std::int32_t px,std::int32_t py) {
+                    auto& i=inspections[visited++];
+                    i.reason=1;
+                    cybersand::bearing_experiment::Cell cell;
+                    cell.in_bounds=in_bounds(px,py);
+                    if (!cell.in_bounds) return cell;
+                    cell.hard=cybersand::MaterialRules::is_hard_surface(world_->stored_material(px,py));
+                    cell.body=world_->transient_obstacle_at(px,py);
+                    if (!cell.hard && cell.body==0U) {
+                        ++work.predicate_queries;
+                        cell.supported=world_->granular_support_at(px,py,false,false,&i);
+                    } else i.reason=1;
+                    cell.reason=i.reason;cell.stable_below=i.stable_below;
+                    cell.paused=i.paused;cell.fresh=i.fresh;
+                    cell.unsupported=i.unsupported;cell.missing=i.missing;
+                    return cell;
+                });
+            work.cell_tests+=ray.used;
+            work.extra_cells+=ray.used>0 ? ray.used-1U : 0U;
+            work.maximum_ray_cells=std::max(work.maximum_ray_cells,ray.used);
+            work.invalid_geometry+=ray.stop==cybersand::bearing_experiment::Stop::InvalidGeometry;
+            const bool current=ray.used>0 && ray.steps[0].cell.supported;
+            work.current_support+=current;
+            supported=ray.selected>=0;
+            if (supported) {
+                selected_y=ray.steps[static_cast<std::size_t>(ray.selected)].y;
+                inspection=inspections[static_cast<std::size_t>(ray.selected)];
+                work.maximum_hit_distance=std::max(work.maximum_hit_distance,
+                    ray.steps[static_cast<std::size_t>(ray.selected)].distance);
+                work.predicted_only+=!current;
+            } else if (ray.used>0) {
+                inspection=inspections[ray.used-1U];selected_y=ray.steps[ray.used-1U].y;
+            } else inspection.reason=1;
+        } else {
+            // B0/Y1 and zero/rising A2 retain the exact original query path.
+            supported=world_->granular_support_at(x,y+1,false,false,trace ? &inspection : nullptr);
+            ++work.cell_tests; ++work.predicate_queries;
+            work.maximum_ray_cells=1;
+            work.current_support+=supported;
+        }
+        work.selected_support+=supported;
         if (trace) {
             trace->raw_support += supported;
-            if (trace->used < trace->probes.size()) trace->probes[trace->used++] = {x, y + 1, inspection};
+            if (trace->used < trace->probes.size()) {
+                trace->admissions[trace->used]=ray;
+                trace->probes[trace->used++] = {x, selected_y, inspection};
+            }
             else ++trace->dropped;
         }
         if (supported) {
@@ -818,7 +882,8 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
         const auto arrest = body.velocity.y * body.mass;
         const auto yielding = gravity + std::max(
             0.0, body.velocity.y - kGravityImpulsePerMassTick) *
-            body.mass * kGranularYieldVelocityResponse;
+            body.mass * (bearing_candidate_ == cybersand::bearing_experiment::Mode::Y1
+                ? 1.0 : kGranularYieldVelocityResponse);
         const auto capacity = std::min(
             kMaximumGranularBearingImpulse,
             static_cast<double>(samples) * kGranularImpulseCapacityPerSample);
@@ -1436,6 +1501,15 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
     // Explicit API, fresh construction, no live descriptor edits. A demo reset
     // restores production defaults. Validate before replacing existing authority.
     try {
+        auto selected = cybersand::bearing_experiment::Mode::B0;
+        if (options.has("bearing_candidate") || options.has("bearing_experiment")) {
+            if (options.get("bearing_candidate", Variant()).get_type()!=Variant::STRING ||
+                String(options.get("bearing_experiment", ""))!="GBD-2026-11-01") return false;
+            const String mode=options["bearing_candidate"];
+            const auto parsed=cybersand::bearing_experiment::parse(mode.utf8().get_data());
+            if (!parsed) return false;
+            selected=*parsed;
+        }
         const auto workers = static_cast<std::int64_t>(options.get("workers", 1));
         if (workers < 1 || workers > 32) return false;
 #if defined(__EMSCRIPTEN__) && !defined(__EMSCRIPTEN_PTHREADS__)
@@ -1490,6 +1564,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         clear_ejection_capture();
         body_diagnostics_ = std::move(diagnostics);
         bearing_trace_ = std::move(bearing_trace);
+        bearing_candidate_ = selected;
         diagnostic_fixture_ = true;
         worker_threads_ = config.worker_threads;
         displacement_gain_ = displacement; boundary_gain_ = boundary;
@@ -2416,6 +2491,7 @@ Dictionary CyberNativeCellWorld::diagnostic_bearing_state() const {
     const auto& trace = *bearing_trace_;
     const auto& body = current_bodies_[1];
     result["schema"] = 1;
+    result["candidate"] = cybersand::bearing_experiment::name(bearing_candidate_);
     result["body_id"] = 1;
     result["sample_serial"] = body.sample_serial;
     result["owner"] = String::num_uint64(get_instance_id());
@@ -2442,7 +2518,8 @@ Dictionary CyberNativeCellWorld::diagnostic_bearing_state() const {
     const auto gravity = kGravityImpulsePerMassTick * body.mass;
     const auto arrest = body.velocity.y * body.mass;
     const auto yielding = gravity + std::max(0.0, body.velocity.y - kGravityImpulsePerMassTick) *
-        body.mass * kGranularYieldVelocityResponse;
+        body.mass * (bearing_candidate_ == cybersand::bearing_experiment::Mode::Y1
+            ? 1.0 : kGranularYieldVelocityResponse);
     const auto capacity = std::min(kMaximumGranularBearingImpulse,
         static_cast<double>(trace.raw_support) * kGranularImpulseCapacityPerSample);
     result["gravity_reference"] = gravity;
@@ -2457,6 +2534,42 @@ Dictionary CyberNativeCellWorld::diagnostic_bearing_state() const {
     result["downward_travel"] = trace.downward_travel;
     result["bearing_y"] = observations_[1].bearing.y;
     result["correction_y"] = observations_[1].correction.y;
+    Array admissions;
+    if (bearing_candidate_ == cybersand::bearing_experiment::Mode::A2) {
+        for (std::size_t index=0;index<trace.used;++index) {
+            const auto& ray=trace.admissions[index];
+            if (ray.used==0) continue; // zero/rising uses the original path
+            Dictionary r;
+            r["lower"]=ray.lower; r["q"]=ray.q; r["length"]=ray.length;
+            r["selected"]=ray.selected; r["stop"]=static_cast<int>(ray.stop);
+            Array steps;
+            for (std::size_t j=0;j<ray.used;++j) {
+                const auto& s=ray.steps[j]; Array row;
+                row.append(s.x);row.append(s.y);row.append(s.distance);
+                row.append(s.cell.in_bounds);row.append(s.cell.hard);row.append(s.cell.body);row.append(s.cell.supported);
+                row.append(static_cast<int>(s.cell.reason));row.append(static_cast<int>(s.cell.stable_below));row.append(static_cast<int>(s.cell.paused));
+                row.append(static_cast<int>(s.cell.fresh));row.append(static_cast<int>(s.cell.unsupported));row.append(static_cast<int>(s.cell.missing));
+                steps.append(row);
+            }
+            r["steps"]=steps; admissions.append(r);
+        }
+    }
+    result["admissions"]=admissions;
+    return result;
+}
+
+Dictionary CyberNativeCellWorld::diagnostic_bearing_candidate() const {
+    Dictionary result;
+    result["candidate"]=cybersand::bearing_experiment::name(bearing_candidate_);
+    result["yield_factor"]=cybersand::bearing_experiment::factor(bearing_candidate_);
+    result["phase"]="post_Rapier_T_before_cell_tick; applied_before_Rapier_T_plus_1";
+    const auto& w=candidate_observations_[1];
+    result["boundaries"]=w.boundaries;result["current_support"]=w.current_support;
+    result["selected_support"]=w.selected_support;result["predicted_only"]=w.predicted_only;
+    result["cell_tests"]=w.cell_tests;result["predicate_queries"]=w.predicate_queries;
+    result["extra_cells"]=w.extra_cells;result["maximum_ray_cells"]=w.maximum_ray_cells;
+    result["lookahead"]=w.lookahead;result["maximum_hit_distance"]=w.maximum_hit_distance;
+    result["invalid_geometry"]=w.invalid_geometry;
     return result;
 }
 
