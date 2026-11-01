@@ -64,8 +64,8 @@ func _run() -> void:
 	worker._gcr_experiment = fixture.is_gcr()
 	worker.set_frame_state(0,false,false,Vector2i(fixture.left+fixture.width/2,Fixture.SURFACE),
 		Vector2i(fixture.left-4,0),Vector2i(fixture.width+8,fixture.floor_y+4),0,0,true,true,true)
-	if fixture.is_gcr(): worker.set_gcr_body_states(fixture.bridge.pack_gcr_body_states())
-	else: worker.set_rigid_body_states(fixture.bridge.pack_body_states())
+	if fixture.is_gcr(): worker.set_gcr_body_states(fixture.packed_boundary_states())
+	else: worker.set_rigid_body_states(fixture.packed_boundary_states())
 	if worker.start_worker(Vector2(fixture.left+16,Fixture.SURFACE-14)) != OK:
 		push_error("GCR async worker start failed")
 		fixture.close()
@@ -86,7 +86,7 @@ func _run() -> void:
 		# Hold every sixth physical delivery for one frame. The next mailbox
 		# value remains immutable; native and Rapier clocks keep their own pace.
 		if delivery % 6 != 0:
-			if fixture.is_gcr(): fixture.bridge.apply_gcr_results(snapshot.serial,snapshot.gcr_body_results)
+			if fixture.is_gcr(): fixture.bridge.apply_gcr_results(snapshot.serial,fixture.application_results(snapshot.gcr_body_results))
 			else: fixture.bridge.apply_cellular_results(snapshot.serial,snapshot.rigid_body_results)
 		var pose: Array = fixture.pose(0)
 		var applications: PackedFloat64Array = fixture.bridge.diagnostic_applications
@@ -95,13 +95,17 @@ func _run() -> void:
 			"vertical_depth":maxf(0.0,float(pose[1])+absf(cos(pose[2]))*fixture.body_size.y/2+absf(sin(pose[2]))*fixture.body_size.x/2-Fixture.SURFACE),
 			"horizontal_depth":maxf(0.0,float(pose[0])+absf(cos(pose[2]))*fixture.body_size.x/2+absf(sin(pose[2]))*fixture.body_size.y/2-fixture.bank_x) if not is_nan(fixture.bank_x) else 0.0,
 			"hard_floor_contact":float(pose[1])+absf(cos(pose[2]))*fixture.body_size.y/2+absf(sin(pose[2]))*fixture.body_size.x/2 >= fixture.floor_y-.5}
-		if fixture.is_gcr(): row["application"] = fixture.json_value(fixture.bridge.gcr_application_diagnostics())
+		if fixture.is_gcr():
+			row["application"] = fixture.json_value(fixture.bridge.gcr_application_diagnostics())
+			row["computed_result"] = Array(snapshot.gcr_body_results)
+			row["result"] = Array(fixture.application_results(snapshot.gcr_body_results))
+			row["ablation"] = fixture.ablation_receipt()
 		rows.append(row)
 		worker.acknowledge_render_snapshot(snapshot.render_snapshot_serial)
 		if snapshot.tick_index >= int(spec.ticks): break
 		fixture.bridge.step()
-		if fixture.is_gcr(): worker.set_gcr_body_states(fixture.bridge.pack_gcr_body_states())
-		else: worker.set_rigid_body_states(fixture.bridge.pack_body_states())
+		if fixture.is_gcr(): worker.set_gcr_body_states(fixture.packed_boundary_states())
+		else: worker.set_rigid_body_states(fixture.packed_boundary_states())
 	worker.stop_worker() # Only after join may main inspect native authority/trace.
 	var final: Dictionary = fixture.observation()
 	var conserved: bool = worker.conservation and fixture.conserved(final)
@@ -113,7 +117,7 @@ func _run() -> void:
 			"result_stride":CyberRigidBodyCoupling.GCR_RESULT_STRIDE if fixture.is_gcr() else CyberRigidBodyCoupling.RESULT_STRIDE},
 		"experiment":Fixture.GCR_TOKEN,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"input_identity":OS.get_environment("CYBERSAND_INPUT_IDENTITY"),
-		"protocol_sha256":FileAccess.get_sha256(str(args.protocol)),"candidate":arm,"case":spec,
+		"protocol_sha256":FileAccess.get_sha256(str(args.protocol)),"candidate":arm,"ablation":fixture.ablation_receipt(),"case":spec,
 		"runtime":{"engine":FileAccess.get_sha256(OS.get_executable_path()),"native":FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")},
 		"rows":rows,"worker_trace":worker.trace,"completed_ticks":worker.recorded,
 		"rapier_ticks":fixture.bridge.manual_step_count(),"conserved":conserved,"edits":fixture.edits,

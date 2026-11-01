@@ -25,6 +25,30 @@ var initial_poses: Array = []
 func is_gcr() -> bool:
 	return candidate.begins_with("GCR")
 
+func packed_boundary_states() -> Variant:
+	if not is_gcr(): return bridge.pack_body_states()
+	var states: PackedFloat64Array = bridge.pack_gcr_body_states()
+	return gcr_input_for_arm(states)
+
+func gcr_input_for_arm(computed: PackedFloat64Array) -> PackedFloat64Array:
+	var states: PackedFloat64Array = computed.duplicate()
+	if candidate == "GCR-MU0":
+		for offset: int in range(0,states.size(),CyberRigidBodyCoupling.GCR_INPUT_STRIDE):
+			states[offset+CyberRigidBodyCoupling.GCR_INPUT_FRICTION] = 0.0
+	return states
+
+func application_results(computed: PackedFloat64Array) -> PackedFloat64Array:
+	var values: PackedFloat64Array = computed.duplicate()
+	if candidate == "GCR-CENTRAL":
+		for offset: int in range(0,values.size(),CyberRigidBodyCoupling.GCR_RESULT_STRIDE):
+			values[offset+CyberRigidBodyCoupling.GCR_RESULT_ANGULAR_IMPULSE] = 0.0
+	return values
+
+func ablation_receipt() -> Dictionary:
+	return {"native_candidate":"GCR" if is_gcr() else candidate,"diagnostic_arm":candidate,
+		"zero_mu_input":candidate == "GCR-MU0","zero_packet_angular_impulse":candidate == "GCR-CENTRAL",
+		"central_reference":"sample COM; ordinary bridge wrench translation remains active"}
+
 func json_value(value: Variant) -> Variant:
 	if value is Vector2: return [value.x,value.y]
 	if value is Dictionary:
@@ -59,7 +83,7 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 		"bearing_candidate":arm,"bearing_experiment":TOKEN}
 	if is_gcr():
 		construction = {"workers":int(spec.get("workers",1)),"telemetry":telemetry,
-			"bearing_candidate":arm,"bearing_experiment":GCR_TOKEN}
+			"bearing_candidate":"GCR","bearing_experiment":GCR_TOKEN}
 	if world == null or not world.diagnostic_reset(construction):
 		error = "fresh candidate construction refused: " + arm
 		return false
@@ -202,7 +226,7 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 		bridge.apply_horizontal_control(i,horizontal_override if not is_nan(horizontal_override) else (float(spec.get("horizontal",0)) if tick >= 120 and tick < 480 else 0.0),24.0,80.0,3.0,1.0/60.0)
 	bridge.step()
 	var step_us: int = Time.get_ticks_usec()-start
-	var states: Variant = bridge.pack_gcr_body_states() if is_gcr() else bridge.pack_body_states() # exactly once per intended boundary
+	var states: Variant = packed_boundary_states() # exactly once per intended boundary
 	var incoming: Array = []
 	for i: int in range(bodies.size()): incoming.append(pose(i))
 	var before: Dictionary = observation(true)
@@ -223,6 +247,8 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 		error = "native result record capacity/stride mismatch"
 		return []
 	var gcr: Dictionary = world.gcr_diagnostics() if is_gcr() else {}
+	var computed_results: Variant = results.duplicate()
+	if is_gcr(): results = application_results(computed_results)
 	start = Time.get_ticks_usec()
 	if is_gcr(): bridge.apply_gcr_results(tick+1,results)
 	else: bridge.apply_cellular_results(tick+1,results)
@@ -245,6 +271,9 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 			row["support"] = diagnostics[i][20]
 			if is_gcr() and bridge.has_method("gcr_application_diagnostics"):
 				row["application"] = json_value(bridge.gcr_application_diagnostics())
+		if is_gcr():
+			row["computed_result"] = Array(computed_results.slice(i*CyberRigidBodyCoupling.GCR_RESULT_STRIDE,(i+1)*CyberRigidBodyCoupling.GCR_RESULT_STRIDE))
+			row["ablation"] = ablation_receipt()
 		if is_gcr() and i < gcr.get("bodies",[]).size():
 			var mechanics: Dictionary = gcr.bodies[i]
 			row["gcr"] = json_value(mechanics)
