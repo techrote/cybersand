@@ -33,6 +33,46 @@ const RESULT_UNRESOLVED_COUNT: int = 7
 const RESULT_SAMPLE_SERIAL: int = 8
 const RESULT_STRIDE: int = 9
 
+# GCR-001 is an opt-in versioned Float64 protocol. The old 11/9 Float32
+# records above retain their original meanings and consumer path.
+const GCR_POLICY_VERSION: int = 1
+const GCR_INPUT_INERTIA: int = 11
+const GCR_INPUT_COM_X: int = 12
+const GCR_INPUT_COM_Y: int = 13
+const GCR_INPUT_FRICTION: int = 14
+const GCR_INPUT_DELTA: int = 15
+const GCR_INPUT_SESSION: int = 16
+const GCR_INPUT_STRIDE: int = 17
+const GCR_RESULT_ANGULAR_IMPULSE: int = 9
+const GCR_RESULT_COM_X: int = 10
+const GCR_RESULT_COM_Y: int = 11
+const GCR_RESULT_VERSION: int = 12
+const GCR_RESULT_SESSION: int = 13
+const GCR_RESULT_STRIDE: int = 14
+const GCR_MAX_SESSION: int = 9007199254740991
+
+
+static func gcr_result_record_valid(results: PackedFloat64Array, offset: int) -> bool:
+	if offset < 0 or offset + GCR_RESULT_STRIDE > results.size():
+		return false
+	for field: int in range(GCR_RESULT_STRIDE):
+		if not is_finite(results[offset + field]):
+			return false
+	var body_id: float = results[offset + RESULT_BODY_ID]
+	var serial: float = results[offset + RESULT_SAMPLE_SERIAL]
+	var session: float = results[offset + GCR_RESULT_SESSION]
+	if body_id < 1.0 or body_id > MAX_BODIES or floorf(body_id) != body_id \
+		or serial < 0.0 or serial > MAX_SAMPLE_SERIAL or floorf(serial) != serial \
+		or results[offset + GCR_RESULT_VERSION] != GCR_POLICY_VERSION:
+		return false
+	if session < 1.0 or session > float(GCR_MAX_SESSION) or floorf(session) != session:
+		return false
+	for field: int in [RESULT_CONTACT_COUNT, RESULT_DISPLACED_COUNT, RESULT_UNRESOLVED_COUNT]:
+		var count: float = results[offset + field]
+		if count < 0.0 or floorf(count) != count:
+			return false
+	return true
+
 
 static func append_input(
 	states: PackedFloat32Array,

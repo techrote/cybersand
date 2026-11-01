@@ -618,11 +618,21 @@ struct World::TransientObstacleState {
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_x{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_y{};
 
+    bool granular_wrenches = false;
+    std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> granular_x{}, granular_y{}, granular_moment2{};
+    std::array<std::atomic<std::uint64_t>, kMaximumTransientBodies + 1U> granular_events{};
+    std::array<std::atomic<bool>, kMaximumTransientBodies + 1U> granular_refused{};
+
     void reset_contacts() noexcept {
         for (std::size_t index = 0; index < contacts.size(); ++index) {
             contacts[index].store(0, std::memory_order_relaxed);
             impulse_x[index].store(0, std::memory_order_relaxed);
             impulse_y[index].store(0, std::memory_order_relaxed);
+            granular_x[index].store(0, std::memory_order_relaxed);
+            granular_y[index].store(0, std::memory_order_relaxed);
+            granular_moment2[index].store(0, std::memory_order_relaxed);
+            granular_events[index].store(0, std::memory_order_relaxed);
+            granular_refused[index].store(false, std::memory_order_relaxed);
         }
     }
 };
@@ -2354,9 +2364,29 @@ std::int64_t World::transient_contact_impulse_y(std::uint16_t body_id) const noe
     return transient_obstacles_->impulse_y[body_id].load(std::memory_order_relaxed);
 }
 
+void World::clear_transient_contact_observations() noexcept {
+    transient_obstacles_->reset_contacts();
+}
+void World::enable_transient_granular_wrenches(bool enabled) noexcept {
+    transient_obstacles_->granular_wrenches = enabled;
+}
+std::int64_t World::transient_granular_impulse_x(std::uint16_t id) const noexcept {
+    return id <= kMaximumTransientBodies ? transient_obstacles_->granular_x[id].load(std::memory_order_relaxed) : 0;
+}
+std::int64_t World::transient_granular_impulse_y(std::uint16_t id) const noexcept {
+    return id <= kMaximumTransientBodies ? transient_obstacles_->granular_y[id].load(std::memory_order_relaxed) : 0;
+}
+std::int64_t World::transient_granular_moment2(std::uint16_t id) const noexcept {
+    return id <= kMaximumTransientBodies ? transient_obstacles_->granular_moment2[id].load(std::memory_order_relaxed) : 0;
+}
+bool World::transient_granular_wrench_refused(std::uint16_t id) const noexcept {
+    return id > kMaximumTransientBodies || transient_obstacles_->granular_refused[id].load(std::memory_order_relaxed);
+}
+
 void World::record_transient_contact(std::uint16_t body_id, Material material,
                                      std::int64_t delta_x,
-                                     std::int64_t delta_y) noexcept {
+                                     std::int64_t delta_y, std::int64_t source_x,
+                                     std::int64_t source_y) noexcept {
     if (body_id == 0U || body_id > kMaximumTransientBodies) return;
     const auto density = std::clamp<std::int64_t>(
         static_cast<std::int64_t>(MaterialRules::descriptor(material).density), 50, 1'600);
@@ -2367,6 +2397,21 @@ void World::record_transient_contact(std::uint16_t body_id, Material material,
                                                         std::memory_order_relaxed);
     transient_obstacles_->impulse_y[body_id].fetch_add(direction_y * density,
                                                         std::memory_order_relaxed);
+    if (transient_obstacles_->granular_wrenches && MaterialRules::supports_granular_load(material)) {
+        const auto events=transient_obstacles_->granular_events[body_id].fetch_add(1U,std::memory_order_relaxed);
+        // 1e8 * (2 * 2^20 + 1) * 3200 stays below int64. An unsupported
+        // coordinate/count refuses the new wrench atomically at consumption.
+        if (events>=100'000'000U || source_x < -1'048'576 || source_x > 1'048'576 ||
+            source_y < -1'048'576 || source_y > 1'048'576) {
+            transient_obstacles_->granular_refused[body_id].store(true,std::memory_order_relaxed);
+            return;
+        }
+        const auto jx=direction_x*density,jy=direction_y*density;
+        transient_obstacles_->granular_x[body_id].fetch_add(jx,std::memory_order_relaxed);
+        transient_obstacles_->granular_y[body_id].fetch_add(jy,std::memory_order_relaxed);
+        transient_obstacles_->granular_moment2[body_id].fetch_add(
+            (source_x*2+1)*jy-(source_y*2+1)*jx,std::memory_order_relaxed);
+    }
 }
 
 void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) {
@@ -2821,7 +2866,7 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
     if (obstacle != 0U) {
         record_physics(PhysicsEvent::BodyContact, material, Material::Empty,
                        target_x - x, target_y - y, effects);
-        record_transient_contact(obstacle, material, target_x - x, target_y - y);
+        record_transient_contact(obstacle, material, target_x - x, target_y - y, x, y);
         return false;
     }
     const auto target = get(target_x, target_y);
@@ -2858,7 +2903,7 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
         throw std::logic_error("FreeMass transfer reached a non-FreeMass Water family");
     const auto obstacle = transient_obstacle_at(to_x, to_y);
     if (obstacle != 0U) {
-        record_transient_contact(obstacle, Material::Water, to_x - from_x, to_y - from_y);
+        record_transient_contact(obstacle, Material::Water, to_x - from_x, to_y - from_y, from_x, from_y);
         return 0;
     }
     const auto source_address = address(from_x, from_y);

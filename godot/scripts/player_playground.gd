@@ -30,9 +30,17 @@ var _buttons: Array[Button] = []
 var _view := Course.VIEW
 var _last_draw_tick: int = -1
 var _last_packet_epoch: int = -1
+var _granular_experiment: String = ""
+var _granular_token: String = ""
+var _granular_material: int = 2
 
 
 func _ready() -> void:
+	# Explicit, nonpersistent engineering launch only. Ordinary entry keeps B0.
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--granular-experiment="): _granular_experiment = argument.trim_prefix("--granular-experiment=")
+		if argument.begins_with("--granular-token="): _granular_token = argument.trim_prefix("--granular-token=")
+		if argument.begins_with("--granular-review-material="): _granular_material = int(argument.trim_prefix("--granular-review-material="))
 	runtime = Runtime.new()
 	add_child(runtime)
 	_build_ui()
@@ -70,6 +78,8 @@ func _build_ui() -> void:
 	header.add_child(heading)
 	_label(heading, "CYBERSAND  /  PLAYER PLAYGROUND", 29, Color("e8f3fa"))
 	_label(heading, "Seven ways to get somewhere. Some of them sensible.", 16, Color("91a8ba"))
+	if not _granular_experiment.is_empty():
+		_label(heading, "EXPERIMENTAL %s / material %d / source %s — engineering comparison; no owner acceptance" % [_granular_experiment,_granular_material,OS.get_environment("CYBERSAND_SOURCE_REVISION").left(12)], 13, Color("f7c579"))
 	_button(header, "Reset  ·  R", _restart)
 	_pause_button = _button(header, "Pause  ·  P", _toggle_pause)
 	_button(header, "Camera  ·  F", _toggle_camera)
@@ -166,9 +176,25 @@ func select_preset(index: int) -> bool:
 	if runtime == null or index < 0 or index >= Course.PRESETS.size():
 		return false
 	_cancel_input()
-	if not runtime.configure(Course.PRESETS[index]):
+	var admitted: bool
+	if _granular_experiment.is_empty():
+		admitted = runtime.configure(Course.PRESETS[index])
+	else:
+		if _granular_material not in [2,14,29]:
+			_status.text = "Experimental review material must be Sand2, Dust14 or Rust29."
+			return false
+		admitted = runtime.configure_granular_experiment(Course.PRESETS[index],_granular_experiment,_granular_token,Vector2(0,-40))
+	if not admitted:
 		_status.text = "Could not start: " + runtime.last_error
 		return false
+	if not _granular_experiment.is_empty():
+		# Same construction-only patch as the actual-host comparison test.
+		# Runtime/controller commands never recreate or restore material.
+		var world: Object = runtime._arena._world
+		if not world.diagnostic_fill_rect(Vector2i(454,346),Vector2i(34,6),0) or not world.diagnostic_fill_rect(Vector2i(552,344),Vector2i(60,8),0) or not world.diagnostic_fill_rect(Vector2i(148,326),Vector2i(72,26),_granular_material):
+			runtime.close()
+			_status.text = "Experimental review patch refused."
+			return false
 	selected = index
 	_target = 0
 	_lap_ticks = 0

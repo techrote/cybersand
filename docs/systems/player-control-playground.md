@@ -10,6 +10,11 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 # Player control playground
 
+## Experimental contact comparison — 2026-11-01
+
+The [explicit GCR/Y1 development launch](../architecture/granular-contact-response.md#how-do-i-compare-gcr-and-y1-with-actual-rocket-barrel-controls) reuses the actual rocket-barrel/articulated host and unchanged controllers. Ordinary launch remains B0. Source-bound headless comparisons cannot supply owner gameplay preference; current GCR R2 is physically NO-GO and is not a production or feel acceptance. No sleep policy was added.
+
+
 ## Current PLAY acceptance boundary — 2026-10-30
 
 The [authoritative owner decision](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)

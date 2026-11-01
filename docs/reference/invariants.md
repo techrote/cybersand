@@ -11,6 +11,11 @@ last-reviewed: 2026-10-25
 
 # Architectural and simulation invariants
 
+## Experimental granular ownership — 2026-11-01
+
+[GCR-001](../architecture/granular-contact-response.md) preserves native cell authority, main-thread Rapier ownership and one granular response owner per accepted sample. Its separate session/serial/age/pose fences refuse a whole invalid batch. Mechanism tests and quantity conservation do not override the failed R2 physical qualification. Body-to-cell conversion and sleep are deferred.
+
+
 Use these stable IDs in reviews and fixtures. **Current** identifies inspected
 scope; **Approved** requires implementation where incomplete. **Planned**,
 **Deferred** and **Rejected** keep their normal meanings. Contract/source links

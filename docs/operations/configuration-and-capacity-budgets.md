@@ -10,6 +10,11 @@ related-documents: [../reference/configuration-reference.md, ../systems/world-st
 
 # Configuration and capacity budgets
 
+## Experimental granular evaluator — 2026-11-01
+
+[GCR-001 R2](../architecture/granular-contact-response.md#how-is-the-work-bounded) uses eight source bins, at most sixteen numerical contacts/body and four normal/tangent passes: at most8192 scalar updates per64-body boundary. Capacities are shared across passes/events. The failed R2 physical integration remains opt-in; these bounds do not establish acceptable performance or gameplay.
+
+
 The bounded [synchronous Water body constructor](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
 reuses one native pending World/token, one permanent three-body private graph,
 the existing terrain chunk/time budget, at least two frozen physics frames and

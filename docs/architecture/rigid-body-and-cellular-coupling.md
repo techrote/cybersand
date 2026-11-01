@@ -11,6 +11,11 @@ last-reviewed: 2026-10-22
 
 # Rigid-body and cellular coupling
 
+## Experimental category contact — 2026-11-01
+
+[The GCR-001 contract](granular-contact-response.md) owns the opt-in Float64 17/14 protocol and combined normal/friction/contact-moment experiment. Ordinary B0 and the existing Float32 11/9 path retain their semantics. The integrated R2 candidate failed physical qualification; passed native mechanics do not establish acceptable gameplay or REM-004 completion. See the [dated evidence](../audits/2026-11-01-gcr001-qualification.md).
+
+
 ## When a crate moves through sand, are its pixels erased and restored?
 
 **Current:** native World owns cellular materials; Rapier2D owns independent
