@@ -64,6 +64,10 @@ func _run() -> void:
 			var baseline: Dictionary = await _capture(rig,"Y1",material)
 			var candidate: Dictionary = await _capture(rig,"GCR",material)
 			if material == 0 and not baseline.is_empty() and not candidate.is_empty():
+				if baseline.poses.size() != 360 or candidate.poses.size() != 360:
+					check(false,"incomplete host comparison cannot qualify")
+					reports.append(baseline); reports.append(candidate)
+					continue
 				var maximum_difference: float = 0.0
 				for tick: int in range(360):
 					for body: int in range(baseline.poses[tick].size()):

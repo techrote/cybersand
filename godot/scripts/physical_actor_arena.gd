@@ -431,7 +431,9 @@ func step(commands: Variant = []) -> Dictionary:
 			_fail("gcr_application_refused")
 			return snapshot()
 		for body: Dictionary in _world.gcr_diagnostics().get("bodies",[]):
-			if float(body.get("normal_accepted",0))+float(body.get("event_accepted",0)) > 0:
+			var event_value: Variant = body.get("event_accepted",Vector2.ZERO)
+			var event_magnitude: float = event_value.length() if event_value is Vector2 else float(event_value)
+			if float(body.get("normal_accepted",0))+event_magnitude > 0:
 				gcr_stats.granular_frames += 1
 	else:
 		_coupling_results = _world.rigid_body_results()
