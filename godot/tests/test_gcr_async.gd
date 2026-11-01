@@ -59,7 +59,14 @@ func _run() -> void:
 		push_error("GCR async: only the registered every-sixth-delivery hold is supported")
 		quit(1)
 		return
-	var protocol: Variant = JSON.parse_string(FileAccess.get_file_as_string(str(args.get("protocol",""))))
+	# Ordinary repository test discovery supplies no capture arguments. Run one
+	# real registered GCR worker case without requiring an external output file.
+	if not args.has("protocol"):
+		args["protocol"] = ProjectSettings.globalize_path("res://../docs/audits/gcr001-2026-11-01/protocol.json")
+	if not args.has("case"):
+		args["case"] = "sand-vertical"
+		args["candidate"] = "GCR"
+	var protocol: Variant = JSON.parse_string(FileAccess.get_file_as_string(str(args.protocol)))
 	if not protocol is Dictionary or not str(args.get("case","")) in protocol.get("async_cases",[]):
 		push_error("GCR async: unknown registered delayed-worker case")
 		quit(1)
@@ -149,11 +156,12 @@ func _run() -> void:
 		"timing_contract":"worker_step_ms excludes publication; publication_wall includes result generation; observer measurements are separate apparatus overhead",
 		"rapier_ticks":fixture.bridge.manual_step_count(),"conserved":conserved,"edits":fixture.edits,
 		"final":final,"worker_overruns":snapshot.worker_overruns,"platform":OS.get_name()}
-	var file := FileAccess.open(str(args.get("output","")),FileAccess.WRITE)
-	if file == null: failed = true
-	else:
-		file.store_string(JSON.stringify(report))
-		file.close()
+	if args.has("output"):
+		var file := FileAccess.open(str(args.output),FileAccess.WRITE)
+		if file == null: failed = true
+		else:
+			file.store_string(JSON.stringify(report))
+			file.close()
 	fixture.close()
 	await process_frame
 	print("GCR_ASYNC ",spec.id," ",arm," native_ticks=",worker.recorded," conserved=",conserved)

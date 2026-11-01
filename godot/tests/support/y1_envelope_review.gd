@@ -28,7 +28,8 @@ func _ready() -> void:
 		last_error = "Registered protocol unavailable: " + protocol_path
 		push_error(last_error)
 		return
-	cases = parsed.cases
+	cases = parsed.cases.duplicate(true)
+	cases.append_array(parsed.get("controls",[]))
 	var panel := VBoxContainer.new()
 	panel.position = Vector2(20,12)
 	add_child(panel)

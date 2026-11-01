@@ -123,9 +123,21 @@ func _run() -> void:
 		quit(1)
 		return
 	# The E tool must retire hard colliders as well as native material.
-	for arm_index: int in [0,1]:
-		for i: int in range(review.cases.size()):
-			if review.cases[i].id == "hard": review.chooser.select(i)
+	var hard_index: int = -1
+	for i: int in range(review.cases.size()):
+		if review.cases[i].id == "hard": hard_index = i
+	if hard_index < 0 or review.arm.item_count != 3:
+		push_error("Review omitted registered controls or GCR selection")
+		quit(1)
+		return
+	review.arm.select(2)
+	await review.reset_case()
+	if review.fixture.candidate != "GCR" or not review.fixture.world.gcr_diagnostics().enabled:
+		push_error("GCR review selector did not construct the experimental native owner")
+		quit(1)
+		return
+	for arm_index: int in [0,1,2]:
+		review.chooser.select(hard_index)
 		review.arm.select(arm_index)
 		await review.reset_case()
 		review.paused = true
