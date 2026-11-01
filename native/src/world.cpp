@@ -1567,39 +1567,47 @@ Material World::get(std::int64_t x, std::int64_t y) const noexcept {
     return stored_material(x, y);
 }
 
+bool World::granular_sample_stable(std::int64_t sx, std::int64_t sy,
+                                    bool include_transient_obstacles) const noexcept {
+    const auto material_at = [this, include_transient_obstacles](std::int64_t x, std::int64_t y) {
+        return include_transient_obstacles ? get(x, y) : stored_material(x, y);
+    };
+    const auto material = material_at(sx, sy);
+    if (MaterialRules::is_hard_surface(material)) return true;
+    if (!MaterialRules::supports_granular_load(material)) return false;
+    const auto a = address(sx, sy);
+    const auto* chunk = find_chunk(a.chunk);
+    if (chunk && config_.backend == SimulationBackend::PhasedInPlace &&
+        selected_core_region_) {
+        const auto block_x = a.local_x / config_.activity_block_size;
+        const auto block_y = a.local_y / config_.activity_block_size;
+        const auto block_index = static_cast<std::size_t>(block_y) *
+            static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+            static_cast<std::size_t>(block_x);
+        const auto core = scheduler_geometry_.core_for_cell(sx, sy);
+        const auto& region = *selected_core_region_;
+        // Active work outside the selected region is paused work, not a
+        // settled structure. Sleeping blocks remain eligible support.
+        if (chunk->activity_blocks[block_index].active &&
+            (core.x < region.min_x || core.x > region.max_x ||
+             core.y < region.min_y || core.y > region.max_y)) {
+            return false;
+        }
+    }
+    // A transported/newly transformed grain cannot immediately bear a
+    // sampled owner. This reads the most recently completed tick.
+    return chunk && (tick_index_ == 0 ||
+        chunk->cells[a.index].epoch_value() != update_epoch_);
+}
+
 bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
                                 bool include_transient_obstacles) const noexcept {
     const auto material_at = [this, include_transient_obstacles](std::int64_t sx,
                                                                  std::int64_t sy) {
         return include_transient_obstacles ? get(sx, sy) : stored_material(sx, sy);
     };
-    const auto stable = [this, &material_at](std::int64_t sx, std::int64_t sy) {
-        const auto material = material_at(sx, sy);
-        if (MaterialRules::is_hard_surface(material)) return true;
-        if (!MaterialRules::supports_granular_load(material)) return false;
-        const auto a = address(sx, sy);
-        const auto* chunk = find_chunk(a.chunk);
-        if (chunk && config_.backend == SimulationBackend::PhasedInPlace &&
-            selected_core_region_) {
-            const auto block_x = a.local_x / config_.activity_block_size;
-            const auto block_y = a.local_y / config_.activity_block_size;
-            const auto block_index = static_cast<std::size_t>(block_y) *
-                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-                static_cast<std::size_t>(block_x);
-            const auto core = scheduler_geometry_.core_for_cell(sx, sy);
-            const auto& region = *selected_core_region_;
-            // Active work outside the selected region is paused work, not a
-            // settled structure. Sleeping blocks remain eligible support.
-            if (chunk->activity_blocks[block_index].active &&
-                (core.x < region.min_x || core.x > region.max_x ||
-                 core.y < region.min_y || core.y > region.max_y)) {
-                return false;
-            }
-        }
-        // A transported/newly transformed grain cannot immediately bear a
-        // sampled owner. This reads the most recently completed tick.
-        return chunk && (tick_index_ == 0 ||
-            chunk->cells[a.index].epoch_value() != update_epoch_);
+    const auto stable = [this, include_transient_obstacles](std::int64_t sx, std::int64_t sy) {
+        return granular_sample_stable(sx, sy, include_transient_obstacles);
     };
     if (!MaterialRules::supports_granular_load(material_at(x, y)) || !stable(x, y)) return false;
     int below = 0;
@@ -1611,6 +1619,69 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
     for (int dy = -1; dy <= 1; ++dy)
         for (int dx = -1; dx <= 1; ++dx) around += stable(x + dx, y + dy);
     return around >= config_.interaction_policy.side_support_cells;
+}
+
+World::GranularContactAdmission World::granular_contact_admission_at(
+    std::int64_t source_x, std::int64_t source_y,
+    double outward_x, double outward_y) const noexcept {
+    GranularContactAdmission result;
+    using Refusal = GranularAdmissionRefusal;
+    if (has_failed()) { result.refusal_reason=Refusal::FailedWorld; return result; }
+    constexpr auto minimum=std::numeric_limits<std::int64_t>::min()+4;
+    constexpr auto maximum=std::numeric_limits<std::int64_t>::max()-4;
+    const double extent=std::max(std::abs(outward_x),std::abs(outward_y));
+    if (!std::isfinite(outward_x) || !std::isfinite(outward_y) || extent==0 ||
+        source_x<minimum || source_x>maximum || source_y<minimum || source_y>maximum) {
+        result.refusal_reason=Refusal::Invalid; return result;
+    }
+    const double ray_x=outward_x/extent,ray_y=outward_y/extent;
+    for (std::uint8_t depth=1;depth<=2;++depth) {
+        const auto dx=static_cast<std::int8_t>(std::round(depth*ray_x));
+        const auto dy=static_cast<std::int8_t>(std::round(depth*ray_y));
+        bool free=true;
+        for (int y=-1;y<=2 && free;++y) for (int x=-1;x<=1;++x) {
+            ++result.geometry_mask_checks; ++result.mask_checks;
+            if (transient_obstacle_at(source_x+dx+x,source_y+dy+y)!=0) { free=false; break; }
+        }
+        if (free) { result.selected_depth=depth; result.witness_dx=dx; result.witness_dy=dy; break; }
+    }
+    if (!result.selected_depth) { result.refusal_reason=Refusal::NoMaskFreeWitness; return result; }
+    // Check one straight closed-square supercover, including corner-only
+    // touches. Integer crossing comparisons are exact for the bounded offsets.
+    const auto check=[&](int dx,int dy) {
+        ++result.path_checks; ++result.mask_checks;
+        const bool source=dx==0 && dy==0;
+        const auto x=source_x+dx,y=source_y+dy;
+        if (transient_obstacle_at(x,y)!=0) {
+            result.refusal_reason=source ? Refusal::SourceMasked:Refusal::PathMasked; return false;
+        }
+        if (!MaterialRules::supports_granular_load(stored_material(x,y))) {
+            result.refusal_reason=source ? Refusal::SourceNonCapable:Refusal::PathNonCapable; return false;
+        }
+        if (!granular_sample_stable(x,y,false)) {
+            result.refusal_reason=source ? Refusal::SourceUnstable:Refusal::PathUnstable; return false;
+        }
+        return true;
+    };
+    if (!check(0,0)) return result;
+    const int ax=std::abs(static_cast<int>(result.witness_dx)),ay=std::abs(static_cast<int>(result.witness_dy));
+    const int sx=result.witness_dx<0 ? -1:1,sy=result.witness_dy<0 ? -1:1;
+    int ix=0,iy=0,x=0,y=0;
+    while(ix<ax || iy<ay) {
+        const int tx=(2*ix+1)*ay,ty=(2*iy+1)*ax;
+        if (ix==ax || (iy<ay && tx>ty)) {
+            y+=sy; ++iy; if(!check(x,y)) return result;
+        } else if (iy==ay || tx<ty) {
+            x+=sx; ++ix; if(!check(x,y)) return result;
+        } else {
+            if (!check(x+sx,y) || !check(x,y+sy)) return result;
+            x+=sx; y+=sy; ++ix; ++iy; if(!check(x,y)) return result;
+        }
+    }
+    ++result.shared_witness_calls;
+    result.admitted=granular_support_at(source_x+result.witness_dx,source_y+result.witness_dy,true,false);
+    if (!result.admitted) result.refusal_reason=Refusal::Packing;
+    return result;
 }
 
 Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {
