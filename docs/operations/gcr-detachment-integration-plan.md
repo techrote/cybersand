@@ -179,3 +179,11 @@ before mutation. Outer mailbox fences remain necessary but do not substitute
 for this association. Non-granular compatibility uses one common scale from
 the sum of proxy impulse norms under legacy3; apply that scale to both net J
 and proxy-centred moment. It is not a point-resolved Water law.
+
+Before new execution, numeric transport is clarified: this pinned Godot host uses
+float Vector2/real_t for live transforms and mass properties. Preserve native520
+mass exactly; accept the native double inertia or its host-float representation
+(no physical rescaling). Geometry/COM admission may differ by at most
+`4*epsilon(real_t)*max(1,abs(COM.x),abs(COM.y),local_extent)` per component,
+using host-quantized local centres consistently. This transport tolerance is
+separate from the double solver oracle1e-8 and does not relax physical gates.
