@@ -11,6 +11,17 @@ last-reviewed: 2026-11-01
 
 # Rigid-body and cellular coupling
 
+## Copied post-arrest accounting and finite observation
+
+**Measured diagnostic fixture, 2026-11-01:** the
+[post-arrest record](../operations/granular-bearing-post-arrest-handoff-proposal.md)
+accounts for correction translation, opposing-component zeroing and subsequent
+age-scaled impulse using copied values only. Its mass-one application boundaries
+close exactly with float32 rounding. Y1 speed90 reaches sustained clearance from
+sample706 through1799 after brief earlier recurrences; continued correction and
+velocity variation remain. This is finite fixture evidence, not an ownership,
+response-law, production acceptance or general shape guarantee.
+
 ## When a crate moves through sand, are its pixels erased and restored?
 
 **Current:** native World owns cellular materials; Rapier2D owns independent

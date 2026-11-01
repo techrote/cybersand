@@ -1,8 +1,8 @@
 ---
 title: Granular bearing post-arrest handoff proposal
-status: Planned
+status: Current
 document-kind: design
-scope: Proposed finite observation and copied-value accounting after the B0/Y1/A2 candidate experiment; no response change or execution authorization
+scope: Original finite-observation proposal and authorized successor disposition; no response change or production selection
 canonical-for: [granular-bearing-post-arrest-follow-up-proposal]
 last-reviewed: 2026-11-01
 related-documents: [granular-bearing-pre-overlap-investigation.md, development-claims-remediation-programme.md, ../audits/2026-11-01-granular-bearing-candidate-discrimination.md]
@@ -12,17 +12,21 @@ related-documents: [granular-bearing-pre-overlap-investigation.md, development-c
 
 ## Authorized successor checkpoint — 2026-11-01
 
-**Current on the isolated successor branch:** Stage A's literal copied-value
+**Measured on the isolated successor branch:** Stage A's literal copied-value
 oracle closes exactly after float32 accounting over42 retained Y1 samples.
-The [successor audit](../audits/2026-11-01-y1-post-arrest-clearance.md) records
-source custody, residuals and the missing sample600 boundary. Stage B still
-requires its separate committed preregistration before execution. The proposal
-below preserves the original pre-execution rationale; it authorizes no response
-change, parameter tuning or production selection.
+Separately preregistered Stage B passes all four exact600-sample prefix gates.
+Y1 speed90 first reaches zero at640, has brief recurrences at641/643/693/705,
+then begins60-sample sustained clearance at706, confirmed765, with no recurrence
+through1799. Y1 speed30 prevents contact throughout1800. The
+[successor audit](../audits/2026-11-01-y1-post-arrest-clearance.md) records source
+custody, all controls and remaining velocity/correction activity. Y1 exchanges
+deeper initial penetration for finite withdrawal latency in this fixture;
+acceptable rest and production suitability are not established. The proposal
+below is the preserved historical #341 rationale, before successor execution.
 
-This is a proposed next question under REM-004 / issue #83, after the
+**Historical proposal at PR #341:** this was a proposed next question under REM-004 / issue #83, after the
 [candidate audit](../audits/2026-11-01-granular-bearing-candidate-discrimination.md).
-It is not an executed experiment, an approved production model, or permission
+At that checkpoint it was not an executed experiment, an approved production model, or permission
 to combine Y1 and A2. The measurement guide owns the programme and disposition;
 this page specifies a possible finite follow-up that still needs registration.
 

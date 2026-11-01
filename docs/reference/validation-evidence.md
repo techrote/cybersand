@@ -10,6 +10,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Y1 post-arrest finite observation — 2026-11-01
+
+The [source-bound audit](../audits/2026-11-01-y1-post-arrest-clearance.md) records
+42 copied Stage-A rows with zero float32 accounting residual and four1800-frame
+Windows diagnostic runs from121f0491. All600-sample prefixes match PR #341;
+5,472 complete events pass Python/native/fallback replay without loss or mutation.
+Y1 speed90 sustained clearance starts706; speed30 prevents contact. Native,
+Godot regression and documentation gates remain separately source/platform scoped
+in the audit and exact-final-head receipt. No published-runtime or release claim.
+
 ## CI parallelism evidence boundary — 2026-10-31
 
 The [dated production CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)

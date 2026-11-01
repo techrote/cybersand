@@ -1,0 +1,538 @@
+{
+  "schema": 1,
+  "archive_path": "C:\\Users\\_\\.codex\\worktrees\\y1-post-arrest-clearance\\khybersand\\build\\y1-post-arrest-1800-raw.zip",
+  "archive_sha256": "1f081961e97bf257688dc2cdbde6c9945b4a61f94347435ef0b5a78bbc74ccca",
+  "archive_bytes": 5544024,
+  "member_count": 68,
+  "members": [
+    {
+      "path": "B0-speed30/acquisition.json",
+      "bytes": 18782,
+      "sha256": "2f30018fe2cd36ff1ba3cc15007904141840d2ae0f89f4ef04b557e6a6a0828f"
+    },
+    {
+      "path": "B0-speed30/capsules-000.json",
+      "bytes": 2510826,
+      "sha256": "192e93227dd29ae353757b4f3da52f311ce0aa62918286d6e3af4cb8ce018800"
+    },
+    {
+      "path": "B0-speed30/capture.log",
+      "bytes": 358,
+      "sha256": "c0ef479465b2b4ed84275ed28af5b48836fb0e306f9131de0fe798945dc5741c"
+    },
+    {
+      "path": "B0-speed30/events.jsonl",
+      "bytes": 2510791,
+      "sha256": "79013f3bffe93eb36927f68cdf71148b7452d419387cc0fd83a71b29a49df9bb"
+    },
+    {
+      "path": "B0-speed30/population-manifest.json",
+      "bytes": 147705,
+      "sha256": "46d9ee4ab8272b64b4e4fe9b4b7b89af8fe23efc7556f56ef0c9964ff3105b33"
+    },
+    {
+      "path": "B0-speed30/pre-execution.json",
+      "bytes": 13949,
+      "sha256": "51bd73d50b11b696f7c1bf0bc4b6d234aca0bf54b0e3d67a0ba1d2d1770cf5fa"
+    },
+    {
+      "path": "B0-speed30/prefix.json",
+      "bytes": 654,
+      "sha256": "2029eea7ec6c33d0c047b83f2c24f55a2b9dee2225544bd8a102692b1621e5f9"
+    },
+    {
+      "path": "B0-speed30/receipt.json",
+      "bytes": 16302,
+      "sha256": "b4af42f867cf95db164f4ecd881366d63a59de5db4f827ba4c876085b049bf20"
+    },
+    {
+      "path": "B0-speed30/replay-000.json",
+      "bytes": 206,
+      "sha256": "4d50d02a6712a14082936a9600179415fee4b463da847ca99f1ce0dc9122d7cb"
+    },
+    {
+      "path": "B0-speed30/replay-000.log",
+      "bytes": 446,
+      "sha256": "18878627d5e7a1fa564fbdb7ad8cf2bb95ecf27b0d12afe69b4bb3fa20743049"
+    },
+    {
+      "path": "B0-speed30/trajectory.json",
+      "bytes": 12100822,
+      "sha256": "a1374678eed831f3519bfbe54311f871750e70870c93c5529e902fbe3f973adb"
+    },
+    {
+      "path": "B0-speed90/acquisition.json",
+      "bytes": 18783,
+      "sha256": "c0d40b5ec93412f0ced2dbdecd813e04df360d35371557e5cdc6e12c5a69d459"
+    },
+    {
+      "path": "B0-speed90/capsules-000.json",
+      "bytes": 5011959,
+      "sha256": "031d6e672ba9053e3b718d2f4730eda43f4f44cc451f779034862a8280eec1a1"
+    },
+    {
+      "path": "B0-speed90/capsules-001.json",
+      "bytes": 3909160,
+      "sha256": "dce845fa170d6e41974cd17fa9023345a94fd43be726e399a1bfa11b198e42f7"
+    },
+    {
+      "path": "B0-speed90/capture.log",
+      "bytes": 359,
+      "sha256": "5ecab29677cefa9c6e031ddf2a29a5cda7e29be598b7192b716c7d3ff06e4a00"
+    },
+    {
+      "path": "B0-speed90/events.jsonl",
+      "bytes": 8921049,
+      "sha256": "f1efff36186164c8c490c295ef4eaf447e14e422200ad667b73c9d0be189201c"
+    },
+    {
+      "path": "B0-speed90/population-manifest.json",
+      "bytes": 512435,
+      "sha256": "bcbc26a7873d91f1606f7c0bc812eb4bb2652341cacc36309f99a2c5894526d3"
+    },
+    {
+      "path": "B0-speed90/pre-execution.json",
+      "bytes": 13949,
+      "sha256": "f9b39bff262c67bda30b50fb89ad3cc1d96e434707986b88e18ef20fab082802"
+    },
+    {
+      "path": "B0-speed90/prefix.json",
+      "bytes": 654,
+      "sha256": "c532a963ae21d5a18bb2ec48238035ec7af046fb8021997b6ec173b6cb143923"
+    },
+    {
+      "path": "B0-speed90/receipt.json",
+      "bytes": 17372,
+      "sha256": "9162b13cb34276a72ac4c6842dd598c98ecf6d7ce8c887b6ba35445c5932886a"
+    },
+    {
+      "path": "B0-speed90/replay-000.json",
+      "bytes": 206,
+      "sha256": "0da899cac00e9f48e6b5656037648cdd223addac69e7e53339242cad818daeba"
+    },
+    {
+      "path": "B0-speed90/replay-000.log",
+      "bytes": 446,
+      "sha256": "da43172309407d93214686875c385cb77f5ae01ea573bc5ea42b59bf880de3d4"
+    },
+    {
+      "path": "B0-speed90/replay-001.json",
+      "bytes": 206,
+      "sha256": "5f97cc00a2158ed8566cbbfa6e07e85d7fcf11b5da1771c4a17b42c773b0c48f"
+    },
+    {
+      "path": "B0-speed90/replay-001.log",
+      "bytes": 446,
+      "sha256": "e39e2c9e669a7dc309e0bb96187106fd5dfa1a6e9262fc1649e39af828149b67"
+    },
+    {
+      "path": "B0-speed90/trajectory.json",
+      "bytes": 12488105,
+      "sha256": "3e46860d41724df82658e0a083ef82ba9b8c9d4745c9cbd6bb35ab7112bd10f5"
+    },
+    {
+      "path": "Y1-speed30/acquisition.json",
+      "bytes": 18760,
+      "sha256": "270bfbdb2852e91d8429a1c6af97dae2fd9c4c5b8404bdb6f68b22c7c1bd2833"
+    },
+    {
+      "path": "Y1-speed30/capture.log",
+      "bytes": 354,
+      "sha256": "521964d75357556089926a4d9b91dd941bd53ae7adeee6559b893ef010db8764"
+    },
+    {
+      "path": "Y1-speed30/events.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Y1-speed30/population-manifest.json",
+      "bytes": 255,
+      "sha256": "90300b6ef628e5a92fd330f16bcf29536a6bafccf74660fc1067f825713ced91"
+    },
+    {
+      "path": "Y1-speed30/pre-execution.json",
+      "bytes": 13949,
+      "sha256": "8f550aa9672214df335dca76feece499f3da0c33a80ccb1da0eb7fdde1637c45"
+    },
+    {
+      "path": "Y1-speed30/prefix.json",
+      "bytes": 652,
+      "sha256": "001610b25657393a188ad48dd4216800c6cc6b67fdd0e1b569ce38bd460ee5dc"
+    },
+    {
+      "path": "Y1-speed30/receipt.json",
+      "bytes": 15224,
+      "sha256": "493d0e93fb4363e347becfd8716698e1db792a28e6506691bc20125c7369f751"
+    },
+    {
+      "path": "Y1-speed30/trajectory.json",
+      "bytes": 11686743,
+      "sha256": "d69a137c2f0552a25764efb10814e74780211f4b655a4d88409012082b034377"
+    },
+    {
+      "path": "Y1-speed90/acquisition.json",
+      "bytes": 18848,
+      "sha256": "e80e87407e76119cb2c967448eb2b7b7f11fcf51d8293185e5eded532a4fb383"
+    },
+    {
+      "path": "Y1-speed90/capsules-000.json",
+      "bytes": 5028511,
+      "sha256": "a8b8f6ed56a710fc055ff98fd57671a83e34c2e55e2d00ee31d8dfb42749a663"
+    },
+    {
+      "path": "Y1-speed90/capsules-001.json",
+      "bytes": 5119257,
+      "sha256": "e096eae8a25baa3f7c57189da5847f2762928c9a0ee25662e774b24d593f23ec"
+    },
+    {
+      "path": "Y1-speed90/capsules-002.json",
+      "bytes": 5035763,
+      "sha256": "3d6610c1157af425441955baac534f895d36f952d14e118a53e096d4501ae0dd"
+    },
+    {
+      "path": "Y1-speed90/capsules-003.json",
+      "bytes": 4902378,
+      "sha256": "7949ed03b006d829cd30e7d65be03703231b6556374da8200ac0782a6f17a70a"
+    },
+    {
+      "path": "Y1-speed90/capsules-004.json",
+      "bytes": 4893846,
+      "sha256": "4fe23e2f5092464ed17f2543e812097b18acb93d4f0c8431c774af93a83a85ec"
+    },
+    {
+      "path": "Y1-speed90/capsules-005.json",
+      "bytes": 4977356,
+      "sha256": "24e869529589c009d5d5c6e36384b84f288d7255df1b32c04f711d60a08cf25b"
+    },
+    {
+      "path": "Y1-speed90/capsules-006.json",
+      "bytes": 4925820,
+      "sha256": "201c2fad9190250de632bb58dbc3d959ecffbd780ed06846e1b0dbc10e3dd40d"
+    },
+    {
+      "path": "Y1-speed90/capsules-007.json",
+      "bytes": 4784141,
+      "sha256": "f3cd948c08f5e8eb0867869a092df58647e8f9b317f95c4a3f2d43c708ee247f"
+    },
+    {
+      "path": "Y1-speed90/capsules-008.json",
+      "bytes": 3046397,
+      "sha256": "365b7e39d878ac5f61df375933691c245b94d7cd0f844b368dab8ab781371cef"
+    },
+    {
+      "path": "Y1-speed90/capture.log",
+      "bytes": 362,
+      "sha256": "b26e06825137a719b315dc9db9f4bf3d690b541749120b5a4cd88c6ac8c95568"
+    },
+    {
+      "path": "Y1-speed90/events.jsonl",
+      "bytes": 42713171,
+      "sha256": "4736c28025314e3ee1e1358501bd2da8687df12688be03f5144a238a9b24b3a1"
+    },
+    {
+      "path": "Y1-speed90/population-manifest.json",
+      "bytes": 2487854,
+      "sha256": "7370c220a16acec00fa04db611adab616ed3a335a6e5239a5e563af2102de08c"
+    },
+    {
+      "path": "Y1-speed90/pre-execution.json",
+      "bytes": 13949,
+      "sha256": "729d1c7e3cdafc4919f82ec29aa3c7d60aefb5c910daec02c958bade02a3f554"
+    },
+    {
+      "path": "Y1-speed90/prefix.json",
+      "bytes": 655,
+      "sha256": "46055664b947bb2fe7b8c9e6a8f58b0070cb103cd8600fbd5927e5d06c881b8a"
+    },
+    {
+      "path": "Y1-speed90/receipt.json",
+      "bytes": 24865,
+      "sha256": "25e8c64ca0bd036a4f73100ea8ac578f211a841712a3322c70a08e89fed09a84"
+    },
+    {
+      "path": "Y1-speed90/replay-000.json",
+      "bytes": 206,
+      "sha256": "3f774bfd9882f17e14a4e5f9a9bc52ef8a2885725e31f95a64e71d95936527c1"
+    },
+    {
+      "path": "Y1-speed90/replay-000.log",
+      "bytes": 446,
+      "sha256": "ff101b3704b3583a24bec08a3ab4674c88cf353a27fcd35bcac3eaa893c0ab01"
+    },
+    {
+      "path": "Y1-speed90/replay-001.json",
+      "bytes": 206,
+      "sha256": "ef1d02af3170330debe0308cc8321dd7864e85a1b6ac2d932958218ffa781e0e"
+    },
+    {
+      "path": "Y1-speed90/replay-001.log",
+      "bytes": 446,
+      "sha256": "3d40bbc45d537432ba63fb2b8304fa6c3fb135379a314388bb05871f135486aa"
+    },
+    {
+      "path": "Y1-speed90/replay-002.json",
+      "bytes": 206,
+      "sha256": "1652402663fcbd2e0f9905ee10d55ca9cf2b0aaeb6ba572dce192594fb5c5933"
+    },
+    {
+      "path": "Y1-speed90/replay-002.log",
+      "bytes": 446,
+      "sha256": "284acd0252d8f0d80b1b9dad7ce222750efe47feda50dd030c0ed67bee6e2bf7"
+    },
+    {
+      "path": "Y1-speed90/replay-003.json",
+      "bytes": 206,
+      "sha256": "81d9dcb73ff085e5b387cc4ead31ba54ef3665b3e1af63697d9bcadba51aed58"
+    },
+    {
+      "path": "Y1-speed90/replay-003.log",
+      "bytes": 446,
+      "sha256": "6cfb601848f692705bf48912562b6e41b37b6a41e2db63679ae0cf2e888f72d9"
+    },
+    {
+      "path": "Y1-speed90/replay-004.json",
+      "bytes": 206,
+      "sha256": "f2cfa6d2cb47ac1cdd43acbb67915c09d0e427cedb52f1467ae755d170c6c2ce"
+    },
+    {
+      "path": "Y1-speed90/replay-004.log",
+      "bytes": 446,
+      "sha256": "c8b9b3f9c34fc6689aee9bd25f95604a7dfc8b9a62b31664b3e325c7eb7edd06"
+    },
+    {
+      "path": "Y1-speed90/replay-005.json",
+      "bytes": 206,
+      "sha256": "4baff1f1b50e5e3b49db2a1cd28f69df44db8d47ccf74d5403c31a27f01ca28b"
+    },
+    {
+      "path": "Y1-speed90/replay-005.log",
+      "bytes": 446,
+      "sha256": "cdfdb096f8d588ff78e9dc41c2d01278ae0e3ffa87f36c296f1e3cf76c215ae7"
+    },
+    {
+      "path": "Y1-speed90/replay-006.json",
+      "bytes": 206,
+      "sha256": "9a7016f00ec0b604ce31b76eaf65bd807eacd68383b01774fdb64c8d6633a9a9"
+    },
+    {
+      "path": "Y1-speed90/replay-006.log",
+      "bytes": 446,
+      "sha256": "a1d1233fb13af743e1e4a7d430f34f37c144554251e4d920fe2be9935f497f64"
+    },
+    {
+      "path": "Y1-speed90/replay-007.json",
+      "bytes": 206,
+      "sha256": "84c8983c64708fab72d342bfc5a8f580ee24fd97498991e28d68ef72684930a8"
+    },
+    {
+      "path": "Y1-speed90/replay-007.log",
+      "bytes": 446,
+      "sha256": "a9155d8c2c90f32517eac4d97844e7917fdf27ce3ccf6db2f9b14747ec6c0e54"
+    },
+    {
+      "path": "Y1-speed90/replay-008.json",
+      "bytes": 206,
+      "sha256": "f533ca4e7dae48fbdac810a08a7caba14cf1f2d34ef9655b1f779f05260c045d"
+    },
+    {
+      "path": "Y1-speed90/replay-008.log",
+      "bytes": 446,
+      "sha256": "6847f18b29b5a2e11d0e8743b57c0a391a89b27b84ad97e35f5b815202c215a4"
+    },
+    {
+      "path": "Y1-speed90/trajectory.json",
+      "bytes": 12399668,
+      "sha256": "c2fb381edfe44d5081487d55ea0605f6aa046d25cb9339747e5b6b3442145029"
+    }
+  ],
+  "source": "121f04914a62ff9bb33682cac8ed7d53ad0fc0f4",
+  "tree": "d122a08b18c048a4d9cd6e9f2eb4e1d54fbec5cc",
+  "runtime": {
+    "console_launcher": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "engine": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "native": "3537a86852c6278f66706615e891ad116406e2a06a16f8c6b8148ba9bab4d30c",
+    "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "archive_roundtrip": "ZIP CRC plus SHA256 of every member after decompression; passed",
+  "reproduction": "At source121f0491 (or descendant with identical registered_inputs), prepare the isolated Godot project and source-bound native DLL as documented. For each registered arm run python tools/experiments/run_post_arrest.py --project <project> --build-receipt docs/audits/granular-bearing-candidates-2026-11-01/runtime-build-receipt.json --output <fresh-root>/<candidate>-<arm> --candidate <B0|Y1> --arm <speed90|speed30>. Then python tools/experiments/post_arrest_analysis.py --input <fresh-root> --protocol docs/audits/y1-post-arrest-2026-11-01/protocol.json --output <fresh-result.json>. All commands and exact receipt/artifact hashes are archived.",
+  "raw_retention": "Every original event JSONL line, complete1800frame trajectory, pre-execution/acquisition/prefix/population receipt, <=500event capsule part, native/fallback replay report and process log retained locally; none omitted.",
+  "cases": {
+    "B0-speed90": {
+      "receipt_sha256": "9162b13cb34276a72ac4c6842dd598c98ecf6d7ce8c887b6ba35445c5932886a",
+      "trajectory_sha256": "3e46860d41724df82658e0a083ef82ba9b8c9d4745c9cbd6bb35ab7112bd10f5",
+      "prefix_sha256": "c532a963ae21d5a18bb2ec48238035ec7af046fb8021997b6ec173b6cb143923",
+      "pre_execution_utc": "2026-11-01T07:31:22.733718+00:00",
+      "command": [
+        "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\y1-post-arrest-clearance\\khybersand\\build\\godot",
+        "--script",
+        "res://tests/test_post_arrest_clearance.gd",
+        "--",
+        "--candidate=B0",
+        "--arm=speed90",
+        "--details=on",
+        "--output=C:/Users/_/.codex/worktrees/y1-post-arrest-clearance/khybersand/build/campaign/B0-speed90"
+      ],
+      "attempts": 895,
+      "replay_matches": 895,
+      "high_water": {
+        "pending": 33,
+        "segment_events": 892,
+        "total_events": 895,
+        "frames": 1800,
+        "segments": 30,
+        "replay_part": 500
+      },
+      "probe_high_water": 10,
+      "application_high_water": 1,
+      "contact_high_water": 0,
+      "contact_at_capacity_frames": 0,
+      "block_cycles_above1px": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "drops": 0,
+      "relocation_refused": 0,
+      "mutation_failures": 0
+    },
+    "Y1-speed90": {
+      "receipt_sha256": "25e8c64ca0bd036a4f73100ea8ac578f211a841712a3322c70a08e89fed09a84",
+      "trajectory_sha256": "c2fb381edfe44d5081487d55ea0605f6aa046d25cb9339747e5b6b3442145029",
+      "prefix_sha256": "46055664b947bb2fe7b8c9e6a8f58b0070cb103cd8600fbd5927e5d06c881b8a",
+      "pre_execution_utc": "2026-11-01T07:32:21.684436+00:00",
+      "command": [
+        "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\y1-post-arrest-clearance\\khybersand\\build\\godot",
+        "--script",
+        "res://tests/test_post_arrest_clearance.gd",
+        "--",
+        "--candidate=Y1",
+        "--arm=speed90",
+        "--details=on",
+        "--output=C:/Users/_/.codex/worktrees/y1-post-arrest-clearance/khybersand/build/campaign/Y1-speed90"
+      ],
+      "attempts": 4320,
+      "replay_matches": 4320,
+      "high_water": {
+        "pending": 23,
+        "segment_events": 842,
+        "total_events": 4320,
+        "frames": 1800,
+        "segments": 30,
+        "replay_part": 500
+      },
+      "probe_high_water": 10,
+      "application_high_water": 1,
+      "contact_high_water": 0,
+      "contact_at_capacity_frames": 0,
+      "block_cycles_above1px": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "drops": 0,
+      "relocation_refused": 0,
+      "mutation_failures": 0
+    },
+    "B0-speed30": {
+      "receipt_sha256": "b4af42f867cf95db164f4ecd881366d63a59de5db4f827ba4c876085b049bf20",
+      "trajectory_sha256": "a1374678eed831f3519bfbe54311f871750e70870c93c5529e902fbe3f973adb",
+      "prefix_sha256": "2029eea7ec6c33d0c047b83f2c24f55a2b9dee2225544bd8a102692b1621e5f9",
+      "pre_execution_utc": "2026-11-01T07:33:51.536599+00:00",
+      "command": [
+        "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\y1-post-arrest-clearance\\khybersand\\build\\godot",
+        "--script",
+        "res://tests/test_post_arrest_clearance.gd",
+        "--",
+        "--candidate=B0",
+        "--arm=speed30",
+        "--details=on",
+        "--output=C:/Users/_/.codex/worktrees/y1-post-arrest-clearance/khybersand/build/campaign/B0-speed30"
+      ],
+      "attempts": 257,
+      "replay_matches": 257,
+      "high_water": {
+        "pending": 14,
+        "segment_events": 237,
+        "total_events": 257,
+        "frames": 1800,
+        "segments": 30,
+        "replay_part": 257
+      },
+      "probe_high_water": 10,
+      "application_high_water": 1,
+      "contact_high_water": 0,
+      "contact_at_capacity_frames": 0,
+      "block_cycles_above1px": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "drops": 0,
+      "relocation_refused": 0,
+      "mutation_failures": 0
+    },
+    "Y1-speed30": {
+      "receipt_sha256": "493d0e93fb4363e347becfd8716698e1db792a28e6506691bc20125c7369f751",
+      "trajectory_sha256": "d69a137c2f0552a25764efb10814e74780211f4b655a4d88409012082b034377",
+      "prefix_sha256": "001610b25657393a188ad48dd4216800c6cc6b67fdd0e1b569ce38bd460ee5dc",
+      "pre_execution_utc": "2026-11-01T07:35:07.604751+00:00",
+      "command": [
+        "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\y1-post-arrest-clearance\\khybersand\\build\\godot",
+        "--script",
+        "res://tests/test_post_arrest_clearance.gd",
+        "--",
+        "--candidate=Y1",
+        "--arm=speed30",
+        "--details=on",
+        "--output=C:/Users/_/.codex/worktrees/y1-post-arrest-clearance/khybersand/build/campaign/Y1-speed30"
+      ],
+      "attempts": 0,
+      "replay_matches": 0,
+      "high_water": {
+        "pending": 0,
+        "segment_events": 0,
+        "total_events": 0,
+        "frames": 1800,
+        "segments": 30,
+        "replay_part": 0
+      },
+      "probe_high_water": 10,
+      "application_high_water": 1,
+      "contact_high_water": 0,
+      "contact_at_capacity_frames": 0,
+      "block_cycles_above1px": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "drops": 0,
+      "relocation_refused": 0,
+      "mutation_failures": 0
+    }
+  }
+}

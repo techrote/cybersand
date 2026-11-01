@@ -539,4 +539,4 @@ and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconcilia
 
 - [Granular bearing candidate discrimination](audits/2026-11-01-granular-bearing-candidate-discrimination.md): completed source-matched B0/Y1/A2 comparisons, controls and preserved negative evidence; no production default.
 
-- [Proposed post-arrest bearing handoff](operations/granular-bearing-post-arrest-handoff-proposal.md): bounded future observation and copied-value accounting; not executed.
+- [Post-arrest bearing handoff](operations/granular-bearing-post-arrest-handoff-proposal.md): executed copied-value oracle and preregistered1800-sample observation; Y1 speed90 clears after finite withdrawal latency, without production selection.

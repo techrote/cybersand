@@ -1,0 +1,4255 @@
+{
+  "schema": 1,
+  "cases": {
+    "B0-speed90": {
+      "schema": 1,
+      "candidate": "B0",
+      "arm": "speed90",
+      "source": "121f04914a62ff9bb33682cac8ed7d53ad0fc0f4",
+      "tree": "d122a08b18c048a4d9cd6e9f2eb4e1d54fbec5cc",
+      "runtime": {
+        "console_launcher": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "engine": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "native": "3537a86852c6278f66706615e891ad116406e2a06a16f8c6b8148ba9bab4d30c",
+        "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "prefix": {
+        "pass": true,
+        "frames_exact": 600,
+        "capsules_exact": 895,
+        "segments_exact": 10,
+        "comparison": "All frame keys recursively and all parsed capsule values; exact numeric equality",
+        "excluded_volatile_fields": [
+          "capture_instance_id",
+          "consumer_usec",
+          "coupling_usec",
+          "instance_id",
+          "owner",
+          "producer_usec",
+          "step_start_usec"
+        ],
+        "excluded_added_event_hashes": [
+          "structural_hash",
+          "topology_hash"
+        ],
+        "reference_trajectory_sha256": "6f08a92893693786924ec5d9a14afa5fd730c6f944e21034dade7d8f29930bb1",
+        "reference_receipt_sha256": "fabe7c72125a65b452cf55badb2c104b76bdb961105766e59243e5c7a03bcf40"
+      },
+      "receipt_sha256": "9162b13cb34276a72ac4c6842dd598c98ecf6d7ce8c887b6ba35445c5932886a",
+      "clearance": {
+        "contact_prevented": false,
+        "first_observed_contact": 1,
+        "first_zero_any_sample": 0,
+        "first_zero_after_contact": 47,
+        "first_sustained_clearance": 47,
+        "clearance_confirmed_at": 106,
+        "clearance_time_seconds_from_sample0": 0.7833333333333333,
+        "clearance_latency_seconds_from_first_contact": 0.7666666666666667,
+        "preceding_consecutive_overlap_frames": 46,
+        "contact_to_sustained_samples": 46,
+        "zero_runs_after_contact": [
+          [
+            47,
+            1799
+          ]
+        ],
+        "recurrence_samples": [],
+        "recurrence_periods_samples": [],
+        "recurrence_after_sustained": [],
+        "right_censored_at": null,
+        "longest_overlap_episode": 46,
+        "longest_any_boundary_overlap_episode": 46
+      },
+      "classification": "clears after finite withdrawal latency",
+      "overlap_at_samples": {
+        "600": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "900": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1200": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1500": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1799": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        }
+      },
+      "blocks": [
+        {
+          "samples": [
+            0,
+            299
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 894,
+              "frames": 49,
+              "min": 0,
+              "max": 33
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 842,
+              "frames": 46,
+              "min": 0,
+              "max": 32
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 842,
+              "frames": 46,
+              "min": 0,
+              "max": 32
+            }
+          },
+          "motion": {
+            "center_y_span": 8.516754150390625,
+            "center_net_drift": 3.3874664306640625,
+            "full_cycles_above1px": 1,
+            "post_application_endpoint_drift": 1.8714752197265625,
+            "rapier_positional_increment": 5.327301025390625,
+            "actual_correction_translation": -1.9398345947265625,
+            "resulting_translation": 3.3874664306640625,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 17.123291015625,
+              "max": 91.155517578125,
+              "mean": 3.7982936483435332,
+              "negative": 0,
+              "zero": 102,
+              "positive": 198
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -16.94296646118164,
+              "p50": 0.6800820529460907,
+              "p95": 6.966701507568359,
+              "max": 92.30624389648438,
+              "mean": 1.6344857467742016,
+              "negative": 47,
+              "zero": 0,
+              "positive": 253
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -18.54889488220215,
+              "p50": -0.8524174988269806,
+              "p95": 4.5678815841674805,
+              "max": 91.155517578125,
+              "mean": -0.19403710377092162,
+              "negative": 158,
+              "zero": 102,
+              "positive": 40
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 111,
+            "total_requested_correction": [
+              0.0,
+              -1.9391075447201729
+            ],
+            "total_applied_correction": [
+              0.0,
+              -1.9391075447201729
+            ],
+            "total_actual_correction_translation_y": -1.9398345947265625,
+            "velocity_zeroing_frames": 111,
+            "total_accepted_impulse": [
+              4.129347495734692,
+              -367.86715962644666
+            ],
+            "total_nominal_bearing_y": -303.0473307585344,
+            "bearing_limiter_distribution": {
+              "inactive": 61,
+              "capacity": 8,
+              "unresolved": 26,
+              "arrest": 205
+            },
+            "raw_support_distribution": {
+              "0": 18,
+              "8": 18,
+              "9": 22,
+              "6": 3,
+              "5": 1,
+              "4": 1,
+              "1": 210,
+              "2": 27
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            300,
+            599
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.3835601806640625,
+            "center_net_drift": -0.2938995361328125,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.2940521240234375,
+            "rapier_positional_increment": 2.088897705078125,
+            "actual_correction_translation": -2.3827972412109375,
+            "resulting_translation": -0.2938995361328125,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 1.9087016582489014,
+              "max": 3.0578725337982178,
+              "mean": 0.8879163370964428,
+              "negative": 0,
+              "zero": 120,
+              "positive": 180
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.3718191981315613,
+              "p50": 1.52896249294281,
+              "p95": 3.0578725337982178,
+              "max": 4.574146747589111,
+              "mean": 0.989483631431746,
+              "negative": 9,
+              "zero": 0,
+              "positive": 291
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9087016582489014,
+              "p50": 0.0,
+              "p95": 1.5352803468704224,
+              "max": 3.0578725337982178,
+              "mean": -0.5417267263494432,
+              "negative": 147,
+              "zero": 120,
+              "positive": 33
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 138,
+            "total_requested_correction": [
+              0.0,
+              -2.381930726580322
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.381930726580322
+            ],
+            "total_actual_correction_translation_y": -2.3827972412109375,
+            "velocity_zeroing_frames": 138,
+            "total_accepted_impulse": [
+              -2.431999921798706,
+              -236.4647649335675
+            ],
+            "total_nominal_bearing_y": -234.64076499221846,
+            "bearing_limiter_distribution": {
+              "arrest": 245,
+              "inactive": 32,
+              "unresolved": 18,
+              "capacity": 5
+            },
+            "raw_support_distribution": {
+              "1": 272,
+              "2": 2,
+              "0": 26
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            600,
+            899
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.2065582275390625,
+            "center_net_drift": 0.0796356201171875,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 0.0794830322265625,
+            "rapier_positional_increment": 2.4140625,
+            "actual_correction_translation": -2.3344268798828125,
+            "resulting_translation": 0.0796356201171875,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 2.0984578132629395,
+              "max": 3.0578725337982178,
+              "mean": 0.9243553823418915,
+              "negative": 0,
+              "zero": 116,
+              "positive": 184
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.3718191981315613,
+              "p50": 1.52896249294281,
+              "p95": 3.618713140487671,
+              "max": 4.574146747589111,
+              "mean": 1.0542417836484188,
+              "negative": 8,
+              "zero": 0,
+              "positive": 292
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9087016582489014,
+              "p50": 0.0,
+              "p95": 2.0984578132629395,
+              "max": 3.0578725337982178,
+              "mean": -0.4817952892991404,
+              "negative": 144,
+              "zero": 116,
+              "positive": 40
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 136,
+            "total_requested_correction": [
+              0.0,
+              -2.333575777243823
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.333575777243823
+            ],
+            "total_actual_correction_translation_y": -2.3344268798828125,
+            "velocity_zeroing_frames": 136,
+            "total_accepted_impulse": [
+              -0.6079999804496765,
+              -241.97754106251523
+            ],
+            "total_nominal_bearing_y": -239.54554114071652,
+            "bearing_limiter_distribution": {
+              "arrest": 238,
+              "inactive": 34,
+              "capacity": 7,
+              "unresolved": 21
+            },
+            "raw_support_distribution": {
+              "1": 272,
+              "0": 26,
+              "2": 2
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            900,
+            1199
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.213470458984375,
+            "center_net_drift": -0.068450927734375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.0589599609375,
+            "rapier_positional_increment": 2.2958221435546875,
+            "actual_correction_translation": -2.3642730712890625,
+            "resulting_translation": -0.068450927734375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 2.0984578132629395,
+              "max": 3.0578725337982178,
+              "mean": 0.9103405564231798,
+              "negative": 0,
+              "zero": 111,
+              "positive": 189
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.3718191981315613,
+              "p50": 1.52896249294281,
+              "p95": 3.618713140487671,
+              "max": 4.574146747589111,
+              "mean": 1.0306870490902413,
+              "negative": 10,
+              "zero": 0,
+              "positive": 290
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9087016582489014,
+              "p50": 0.0,
+              "p95": 2.0984578132629395,
+              "max": 3.0578725337982178,
+              "mean": -0.5003516225811715,
+              "negative": 146,
+              "zero": 111,
+              "positive": 43
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 136,
+            "total_requested_correction": [
+              0.0,
+              -2.3634407413192093
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.3634407413192093
+            ],
+            "total_actual_correction_translation_y": -2.3642730712890625,
+            "velocity_zeroing_frames": 136,
+            "total_accepted_impulse": [
+              0.9119999706745148,
+              -238.67781394394115
+            ],
+            "total_nominal_bearing_y": -235.9418140319176,
+            "bearing_limiter_distribution": {
+              "arrest": 231,
+              "inactive": 41,
+              "capacity": 6,
+              "unresolved": 22
+            },
+            "raw_support_distribution": {
+              "1": 265,
+              "0": 32,
+              "2": 3
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            1200,
+            1499
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.504150390625,
+            "center_net_drift": -0.0262298583984375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.0167388916015625,
+            "rapier_positional_increment": 2.2774200439453125,
+            "actual_correction_translation": -2.30364990234375,
+            "resulting_translation": -0.0262298583984375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 2.0984578132629395,
+              "max": 4.5678815841674805,
+              "mean": 0.9154883261801054,
+              "negative": 0,
+              "zero": 128,
+              "positive": 172
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.37890884280204773,
+              "p50": 1.52896249294281,
+              "p95": 3.618713140487671,
+              "max": 6.077890396118164,
+              "mean": 1.027036039181985,
+              "negative": 5,
+              "zero": 0,
+              "positive": 295
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.915820837020874,
+              "p50": 0.0,
+              "p95": 2.0984578132629395,
+              "max": 4.5678815841674805,
+              "mean": -0.5040178517221162,
+              "negative": 143,
+              "zero": 128,
+              "positive": 29
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 138,
+            "total_requested_correction": [
+              0.0,
+              -2.302713810931891
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.302713810931891
+            ],
+            "total_actual_correction_translation_y": -2.30364990234375,
+            "velocity_zeroing_frames": 138,
+            "total_accepted_impulse": [
+              -2.7359999120235443,
+              -241.19727263459936
+            ],
+            "total_nominal_bearing_y": -239.67727268347517,
+            "bearing_limiter_distribution": {
+              "arrest": 259,
+              "inactive": 21,
+              "capacity": 9,
+              "unresolved": 11
+            },
+            "raw_support_distribution": {
+              "1": 281,
+              "0": 16,
+              "2": 3
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            1500,
+            1799
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.2169342041015625,
+            "center_net_drift": 0.1355743408203125,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 0.1450653076171875,
+            "rapier_positional_increment": 2.478607177734375,
+            "actual_correction_translation": -2.3430328369140625,
+            "resulting_translation": 0.1355743408203125,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 2.0984578132629395,
+              "max": 3.0578725337982178,
+              "mean": 0.9316371842116739,
+              "negative": 0,
+              "zero": 111,
+              "positive": 189
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.3718191981315613,
+              "p50": 1.52896249294281,
+              "p95": 3.618713140487671,
+              "max": 4.574146747589111,
+              "mean": 1.0670923441710571,
+              "negative": 11,
+              "zero": 0,
+              "positive": 289
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9087016582489014,
+              "p50": 0.0,
+              "p95": 2.0984578132629395,
+              "max": 3.0578725337982178,
+              "mean": -0.45170324127965916,
+              "negative": 144,
+              "zero": 111,
+              "positive": 45
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 133,
+            "total_requested_correction": [
+              0.0,
+              -2.3422165270894766
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.3422165270894766
+            ],
+            "total_actual_correction_translation_y": -2.3430328369140625,
+            "velocity_zeroing_frames": 133,
+            "total_accepted_impulse": [
+              -1.5199999511241913,
+              -238.00576940691099
+            ],
+            "total_nominal_bearing_y": -235.57376948511228,
+            "bearing_limiter_distribution": {
+              "arrest": 230,
+              "inactive": 42,
+              "capacity": 7,
+              "unresolved": 21
+            },
+            "raw_support_distribution": {
+              "1": 265,
+              "0": 34,
+              "2": 1
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        }
+      ],
+      "final300_motion": {
+        "center_y_span": 0.2169342041015625,
+        "center_net_drift": 0.1355743408203125,
+        "full_cycles_above1px": 0,
+        "post_application_endpoint_drift": 0.1450653076171875,
+        "rapier_positional_increment": 2.478607177734375,
+        "actual_correction_translation": -2.3430328369140625,
+        "resulting_translation": 0.1355743408203125,
+        "position_accounting_residual": 0.0,
+        "absolute_vertical_velocity": {
+          "count": 300,
+          "min": 0.0,
+          "p50": 1.52896249294281,
+          "p95": 2.0984578132629395,
+          "max": 3.0578725337982178,
+          "mean": 0.9316371842116739,
+          "negative": 0,
+          "zero": 111,
+          "positive": 189
+        },
+        "incoming_vertical_velocity": {
+          "count": 300,
+          "min": -0.3718191981315613,
+          "p50": 1.52896249294281,
+          "p95": 3.618713140487671,
+          "max": 4.574146747589111,
+          "mean": 1.0670923441710571,
+          "negative": 11,
+          "zero": 0,
+          "positive": 289
+        },
+        "outgoing_vertical_velocity": {
+          "count": 300,
+          "min": -1.9087016582489014,
+          "p50": 0.0,
+          "p95": 2.0984578132629395,
+          "max": 3.0578725337982178,
+          "mean": -0.45170324127965916,
+          "negative": 144,
+          "zero": 111,
+          "positive": 45
+        }
+      },
+      "response_all": {
+        "frames": 1800,
+        "correction_active_frames": 792,
+        "total_requested_correction": [
+          0.0,
+          -13.662985127884895
+        ],
+        "total_applied_correction": [
+          0.0,
+          -13.662985127884895
+        ],
+        "total_actual_correction_translation_y": -13.668014526367188,
+        "velocity_zeroing_frames": 792,
+        "total_accepted_impulse": [
+          -2.2546522989869118,
+          -1564.1903216079809
+        ],
+        "total_nominal_bearing_y": -1488.4264930919744,
+        "bearing_limiter_distribution": {
+          "inactive": 231,
+          "capacity": 42,
+          "unresolved": 119,
+          "arrest": 1408
+        },
+        "raw_support_distribution": {
+          "0": 152,
+          "8": 18,
+          "9": 22,
+          "6": 3,
+          "5": 1,
+          "4": 1,
+          "1": 1565,
+          "2": 38
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "response_final300": {
+        "frames": 300,
+        "correction_active_frames": 133,
+        "total_requested_correction": [
+          0.0,
+          -2.3422165270894766
+        ],
+        "total_applied_correction": [
+          0.0,
+          -2.3422165270894766
+        ],
+        "total_actual_correction_translation_y": -2.3430328369140625,
+        "velocity_zeroing_frames": 133,
+        "total_accepted_impulse": [
+          -1.5199999511241913,
+          -238.00576940691099
+        ],
+        "total_nominal_bearing_y": -235.57376948511228,
+        "bearing_limiter_distribution": {
+          "arrest": 230,
+          "inactive": 42,
+          "capacity": 7,
+          "unresolved": 21
+        },
+        "raw_support_distribution": {
+          "1": 265,
+          "0": 34,
+          "2": 1
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "response_before_clearance": {
+        "frames": 47,
+        "correction_active_frames": 1,
+        "total_requested_correction": [
+          0.0,
+          -0.05571167171001434
+        ],
+        "total_applied_correction": [
+          0.0,
+          -0.05571167171001434
+        ],
+        "total_actual_correction_translation_y": -0.0557098388671875,
+        "velocity_zeroing_frames": 1,
+        "total_accepted_impulse": [
+          3.0202377066016197,
+          -173.8447666168213
+        ],
+        "total_nominal_bearing_y": -116.17693734169006,
+        "bearing_limiter_distribution": {
+          "inactive": 28,
+          "capacity": 1,
+          "unresolved": 18
+        },
+        "raw_support_distribution": {
+          "0": 1,
+          "8": 18,
+          "9": 22,
+          "6": 3,
+          "5": 1,
+          "4": 1,
+          "1": 1
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "tail_after_clearance": {
+        "motion": {
+          "center_y_span": 2.2703704833984375,
+          "center_net_drift": -2.3164215087890625,
+          "full_cycles_above1px": 0,
+          "post_application_endpoint_drift": -2.047027587890625,
+          "rapier_positional_increment": 11.295883178710938,
+          "actual_correction_translation": -13.6123046875,
+          "resulting_translation": -2.3164215087890625,
+          "position_accounting_residual": 0.0,
+          "absolute_vertical_velocity": {
+            "count": 1753,
+            "min": 0.0,
+            "p50": 1.52896249294281,
+            "p95": 2.1381735801696777,
+            "max": 15.891278266906738,
+            "mean": 0.9704073895984507,
+            "negative": 0,
+            "zero": 688,
+            "positive": 1065
+          },
+          "incoming_vertical_velocity": {
+            "count": 1753,
+            "min": -15.52327823638916,
+            "p50": 1.52896249294281,
+            "p95": 3.618713140487671,
+            "max": 6.077890396118164,
+            "mean": 0.9584557195895347,
+            "negative": 63,
+            "zero": 0,
+            "positive": 1690
+          },
+          "outgoing_vertical_velocity": {
+            "count": 1753,
+            "min": -15.891278266906738,
+            "p50": 0.0,
+            "p95": 2.0984578132629395,
+            "max": 4.5678815841674805,
+            "mean": -0.5619188600888659,
+            "negative": 854,
+            "zero": 688,
+            "positive": 211
+          }
+        },
+        "response": {
+          "frames": 1753,
+          "correction_active_frames": 791,
+          "total_requested_correction": [
+            0.0,
+            -13.60727345617488
+          ],
+          "total_applied_correction": [
+            0.0,
+            -13.60727345617488
+          ],
+          "total_actual_correction_translation_y": -13.6123046875,
+          "velocity_zeroing_frames": 791,
+          "total_accepted_impulse": [
+            -5.2748900055885315,
+            -1390.3455549911596
+          ],
+          "total_nominal_bearing_y": -1372.2495557502843,
+          "bearing_limiter_distribution": {
+            "inactive": 203,
+            "arrest": 1408,
+            "unresolved": 101,
+            "capacity": 41
+          },
+          "raw_support_distribution": {
+            "1": 1564,
+            "0": 151,
+            "2": 38
+          },
+          "support_with_zero_count_response_frames": 0
+        }
+      },
+      "accounting_maximum_residuals": {
+        "post_rapier_to_application": 0,
+        "applied_correction": 0,
+        "correction_age_suppressed": 0,
+        "age_scale": 0,
+        "after_correction": 0,
+        "after_impulse": 0,
+        "post_application": 0,
+        "result_impulse": 0,
+        "result_correction": 0,
+        "next_pre_rapier": 0
+      },
+      "ejection": {
+        "attempts": 895,
+        "no_target_positive_incoming_vy": 411,
+        "no_target_nonpositive_incoming_vy": 432,
+        "note": "Descriptive deterministic attempts, not independent efficacy population"
+      },
+      "high_water": {
+        "pending": 33,
+        "segment_events": 892,
+        "total_events": 895,
+        "frames": 1800,
+        "segments": 30,
+        "replay_part": 500
+      },
+      "conservation_failures": 0,
+      "context_control": {
+        "delayed_overlap_after599": false,
+        "longest_unsupported_hover_frames": 0,
+        "longest_artificial_lift_frames": 0,
+        "unsupported_response_frames": 0,
+        "post_clearance_no_support_response_frames": 0,
+        "support_distribution_final300": {
+          "1": 265,
+          "0": 34,
+          "2": 1
+        }
+      },
+      "recurrence_handoff": []
+    },
+    "Y1-speed90": {
+      "schema": 1,
+      "candidate": "Y1",
+      "arm": "speed90",
+      "source": "121f04914a62ff9bb33682cac8ed7d53ad0fc0f4",
+      "tree": "d122a08b18c048a4d9cd6e9f2eb4e1d54fbec5cc",
+      "runtime": {
+        "console_launcher": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "engine": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "native": "3537a86852c6278f66706615e891ad116406e2a06a16f8c6b8148ba9bab4d30c",
+        "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "prefix": {
+        "pass": true,
+        "frames_exact": 600,
+        "capsules_exact": 4262,
+        "segments_exact": 10,
+        "comparison": "All frame keys recursively and all parsed capsule values; exact numeric equality",
+        "excluded_volatile_fields": [
+          "capture_instance_id",
+          "consumer_usec",
+          "coupling_usec",
+          "instance_id",
+          "owner",
+          "producer_usec",
+          "step_start_usec"
+        ],
+        "excluded_added_event_hashes": [
+          "structural_hash",
+          "topology_hash"
+        ],
+        "reference_trajectory_sha256": "c7dd93494b8914ed3bfb9a1e52d66707609382d8b675fcea8a14607aae1df61f",
+        "reference_receipt_sha256": "69250612ade31dc7532f8db1f223850fdf02cf679a0ddb3ce04dd11a12de0679"
+      },
+      "receipt_sha256": "25e8c64ca0bd036a4f73100ea8ac578f211a841712a3322c70a08e89fed09a84",
+      "clearance": {
+        "contact_prevented": false,
+        "first_observed_contact": 1,
+        "first_zero_any_sample": 0,
+        "first_zero_after_contact": 640,
+        "first_sustained_clearance": 706,
+        "clearance_confirmed_at": 765,
+        "clearance_time_seconds_from_sample0": 11.766666666666667,
+        "clearance_latency_seconds_from_first_contact": 11.75,
+        "preceding_consecutive_overlap_frames": 1,
+        "contact_to_sustained_samples": 705,
+        "zero_runs_after_contact": [
+          [
+            640,
+            640
+          ],
+          [
+            642,
+            642
+          ],
+          [
+            644,
+            692
+          ],
+          [
+            694,
+            704
+          ],
+          [
+            706,
+            1799
+          ]
+        ],
+        "recurrence_samples": [
+          641,
+          643,
+          693,
+          705
+        ],
+        "recurrence_periods_samples": [
+          2,
+          50,
+          12
+        ],
+        "recurrence_after_sustained": [],
+        "right_censored_at": null,
+        "longest_overlap_episode": 639,
+        "longest_any_boundary_overlap_episode": 639
+      },
+      "classification": "clears after finite withdrawal latency",
+      "overlap_at_samples": {
+        "600": {
+          "pre_overlap": 1,
+          "post_ejection_overlap": 1,
+          "post_tick_overlap_at_packed_pose": 1
+        },
+        "900": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1200": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1500": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1799": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        }
+      },
+      "blocks": [
+        {
+          "samples": [
+            0,
+            299
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 3208,
+              "frames": 299,
+              "min": 0,
+              "max": 23
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 3145,
+              "frames": 299,
+              "min": 0,
+              "max": 16
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 3145,
+              "frames": 299,
+              "min": 0,
+              "max": 16
+            }
+          },
+          "motion": {
+            "center_y_span": 5.25439453125,
+            "center_net_drift": 5.406982421875,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 3.8909912109375,
+            "rapier_positional_increment": 7.735260009765625,
+            "actual_correction_translation": -2.328277587890625,
+            "resulting_translation": 5.406982421875,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 1.52896249294281,
+              "max": 91.155517578125,
+              "mean": 1.7808482746283214,
+              "negative": 0,
+              "zero": 147,
+              "positive": 153
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": 0.006344288121908903,
+              "p50": 1.52896249294281,
+              "p95": 1.52896249294281,
+              "max": 92.30624389648438,
+              "mean": 2.1140860954641054,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.52896249294281,
+              "p50": 0.0,
+              "p95": 0.0,
+              "max": 91.155517578125,
+              "mean": 0.2824650315443675,
+              "negative": 147,
+              "zero": 147,
+              "positive": 6
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 147,
+            "total_requested_correction": [
+              0.0,
+              -2.327200971543789
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.327200971543789
+            ],
+            "total_actual_correction_translation_y": -2.328277587890625,
+            "velocity_zeroing_frames": 147,
+            "total_accepted_impulse": [
+              0.33127718418836594,
+              -324.7288327133283
+            ],
+            "total_nominal_bearing_y": -324.7288327133283,
+            "bearing_limiter_distribution": {
+              "inactive": 1,
+              "capacity": 5,
+              "arrest+yield": 1,
+              "arrest": 293
+            },
+            "raw_support_distribution": {
+              "0": 1,
+              "8": 284,
+              "9": 13,
+              "7": 2
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            300,
+            599
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 1053,
+              "frames": 300,
+              "min": 1,
+              "max": 7
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 1008,
+              "frames": 300,
+              "min": 1,
+              "max": 7
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 1008,
+              "frames": 300,
+              "min": 1,
+              "max": 7
+            }
+          },
+          "motion": {
+            "center_y_span": 1.391571044921875,
+            "center_net_drift": -1.4007568359375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -1.391265869140625,
+            "rapier_positional_increment": 0.97503662109375,
+            "actual_correction_translation": -2.37579345703125,
+            "resulting_translation": -1.4007568359375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 0.764481246471405,
+              "p95": 1.52896249294281,
+              "max": 1.52896249294281,
+              "mean": 0.764481246471405,
+              "negative": 0,
+              "zero": 150,
+              "positive": 150
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": 0.006344288121908903,
+              "p50": 0.7676533905323595,
+              "p95": 1.52896249294281,
+              "max": 1.52896249294281,
+              "mean": 0.7676533905323595,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.52896249294281,
+              "p50": -0.764481246471405,
+              "p95": 0.0,
+              "max": 0.0,
+              "mean": -0.764481246471405,
+              "negative": 150,
+              "zero": 150,
+              "positive": 0
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 150,
+            "total_requested_correction": [
+              0.0,
+              -2.3746948689222336
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.3746948689222336
+            ],
+            "total_actual_correction_translation_y": -2.37579345703125,
+            "velocity_zeroing_frames": 150,
+            "total_accepted_impulse": [
+              -0.4199725538492203,
+              -230.29601715970784
+            ],
+            "total_nominal_bearing_y": -230.29601715970784,
+            "bearing_limiter_distribution": {
+              "arrest": 300
+            },
+            "raw_support_distribution": {
+              "9": 68,
+              "8": 109,
+              "7": 93,
+              "6": 27,
+              "5": 3
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            600,
+            899
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 58,
+              "frames": 54,
+              "min": 0,
+              "max": 2
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 44,
+              "frames": 44,
+              "min": 0,
+              "max": 1
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 44,
+              "frames": 44,
+              "min": 0,
+              "max": 1
+            }
+          },
+          "motion": {
+            "center_y_span": 1.391571044921875,
+            "center_net_drift": -1.4007568359375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -1.391265869140625,
+            "rapier_positional_increment": 0.97503662109375,
+            "actual_correction_translation": -2.37579345703125,
+            "resulting_translation": -1.4007568359375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 0.764481246471405,
+              "p95": 1.52896249294281,
+              "max": 1.52896249294281,
+              "mean": 0.764481246471405,
+              "negative": 0,
+              "zero": 150,
+              "positive": 150
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": 0.006344288121908903,
+              "p50": 0.7676533905323595,
+              "p95": 1.52896249294281,
+              "max": 1.52896249294281,
+              "mean": 0.7676533905323595,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.52896249294281,
+              "p50": -0.764481246471405,
+              "p95": 0.0,
+              "max": 0.0,
+              "mean": -0.764481246471405,
+              "negative": 150,
+              "zero": 150,
+              "positive": 0
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 150,
+            "total_requested_correction": [
+              0.0,
+              -2.3746948689222336
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.3746948689222336
+            ],
+            "total_actual_correction_translation_y": -2.37579345703125,
+            "velocity_zeroing_frames": 150,
+            "total_accepted_impulse": [
+              4.748610384762287,
+              -230.29601715970784
+            ],
+            "total_nominal_bearing_y": -230.29601715970784,
+            "bearing_limiter_distribution": {
+              "arrest": 300
+            },
+            "raw_support_distribution": {
+              "9": 6,
+              "8": 6,
+              "7": 17,
+              "6": 23,
+              "5": 14,
+              "4": 113,
+              "3": 46,
+              "2": 73,
+              "1": 2
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            900,
+            1199
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 1.134674072265625,
+            "center_net_drift": -0.2679595947265625,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.2584686279296875,
+            "rapier_positional_increment": 2.1304931640625,
+            "actual_correction_translation": -2.3984527587890625,
+            "resulting_translation": -0.2679595947265625,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 2.0,
+              "max": 7.128415584564209,
+              "mean": 0.9405897427408976,
+              "negative": 0,
+              "zero": 125,
+              "positive": 175
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.4627387225627899,
+              "p50": 1.52896249294281,
+              "p95": 2.5926742553710938,
+              "max": 8.627799034118652,
+              "mean": 0.9978256248322335,
+              "negative": 9,
+              "zero": 0,
+              "positive": 291
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -2.0,
+              "p50": 0.0,
+              "p95": 1.0681438446044922,
+              "max": 7.128415584564209,
+              "mean": -0.5333499623528042,
+              "negative": 148,
+              "zero": 125,
+              "positive": 27
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 139,
+            "total_requested_correction": [
+              0.0,
+              -2.3975807634560624
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.397520338650793
+            ],
+            "total_actual_correction_translation_y": -2.3984527587890625,
+            "velocity_zeroing_frames": 139,
+            "total_accepted_impulse": [
+              -4.863999843597412,
+              -234.93605467909947
+            ],
+            "total_nominal_bearing_y": -234.02405470842496,
+            "bearing_limiter_distribution": {
+              "arrest": 253,
+              "inactive": 29,
+              "arrest+yield": 2,
+              "capacity": 16
+            },
+            "raw_support_distribution": {
+              "1": 249,
+              "2": 24,
+              "0": 27
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            1200,
+            1499
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.285125732421875,
+            "center_net_drift": -0.2067718505859375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.1972808837890625,
+            "rapier_positional_increment": 2.5301055908203125,
+            "actual_correction_translation": -2.73687744140625,
+            "resulting_translation": -0.2067718505859375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.0681438446044922,
+              "p95": 2.1108789443969727,
+              "max": 2.5926742553710938,
+              "mean": 1.0162469066293367,
+              "negative": 0,
+              "zero": 61,
+              "positive": 239
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.4627387225627899,
+              "p50": 1.0681438446044922,
+              "p95": 3.631082773208618,
+              "max": 4.110878944396973,
+              "mean": 1.0775698090874357,
+              "negative": 41,
+              "zero": 0,
+              "positive": 259
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -2.0,
+              "p50": -0.4627387225627899,
+              "p95": 2.1108789443969727,
+              "max": 2.5926742553710938,
+              "mean": -0.44817697374906856,
+              "negative": 162,
+              "zero": 61,
+              "positive": 77
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 121,
+            "total_requested_correction": [
+              0.0,
+              -2.736911368672736
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.7364279702305794
+            ],
+            "total_actual_correction_translation_y": -2.73687744140625,
+            "velocity_zeroing_frames": 121,
+            "total_accepted_impulse": [
+              0.0,
+              -223.16140705859289
+            ],
+            "total_nominal_bearing_y": -220.72940713679418,
+            "bearing_limiter_distribution": {
+              "arrest": 133,
+              "inactive": 110,
+              "arrest+yield": 8,
+              "capacity": 49
+            },
+            "raw_support_distribution": {
+              "1": 198,
+              "0": 102
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            1500,
+            1799
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.1171722412109375,
+            "center_net_drift": -0.063018798828125,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.06317138671875,
+            "rapier_positional_increment": 2.70758056640625,
+            "actual_correction_translation": -2.770599365234375,
+            "resulting_translation": -0.063018798828125,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.0681438446044922,
+              "p95": 2.1108789443969727,
+              "max": 2.5926742553710938,
+              "mean": 1.0419450261754537,
+              "negative": 0,
+              "zero": 49,
+              "positive": 251
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.4627387225627899,
+              "p50": 1.0681438446044922,
+              "p95": 3.631082773208618,
+              "max": 4.110878944396973,
+              "mean": 1.1129271911519512,
+              "negative": 44,
+              "zero": 0,
+              "positive": 256
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -2.0,
+              "p50": -0.4627387225627899,
+              "p95": 2.1108789443969727,
+              "max": 2.5926742553710938,
+              "mean": -0.41774766360096693,
+              "negative": 163,
+              "zero": 49,
+              "positive": 88
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 119,
+            "total_requested_correction": [
+              0.0,
+              -2.770749255330884
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.7702054320834577
+            ],
+            "total_actual_correction_translation_y": -2.770599365234375,
+            "velocity_zeroing_frames": 119,
+            "total_accepted_impulse": [
+              0.0,
+              -223.74776972457767
+            ],
+            "total_nominal_bearing_y": -221.01176981255412,
+            "bearing_limiter_distribution": {
+              "arrest": 115,
+              "inactive": 123,
+              "arrest+yield": 9,
+              "capacity": 53
+            },
+            "raw_support_distribution": {
+              "1": 186,
+              "0": 114
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        }
+      ],
+      "final300_motion": {
+        "center_y_span": 0.1171722412109375,
+        "center_net_drift": -0.063018798828125,
+        "full_cycles_above1px": 0,
+        "post_application_endpoint_drift": -0.06317138671875,
+        "rapier_positional_increment": 2.70758056640625,
+        "actual_correction_translation": -2.770599365234375,
+        "resulting_translation": -0.063018798828125,
+        "position_accounting_residual": 0.0,
+        "absolute_vertical_velocity": {
+          "count": 300,
+          "min": 0.0,
+          "p50": 1.0681438446044922,
+          "p95": 2.1108789443969727,
+          "max": 2.5926742553710938,
+          "mean": 1.0419450261754537,
+          "negative": 0,
+          "zero": 49,
+          "positive": 251
+        },
+        "incoming_vertical_velocity": {
+          "count": 300,
+          "min": -0.4627387225627899,
+          "p50": 1.0681438446044922,
+          "p95": 3.631082773208618,
+          "max": 4.110878944396973,
+          "mean": 1.1129271911519512,
+          "negative": 44,
+          "zero": 0,
+          "positive": 256
+        },
+        "outgoing_vertical_velocity": {
+          "count": 300,
+          "min": -2.0,
+          "p50": -0.4627387225627899,
+          "p95": 2.1108789443969727,
+          "max": 2.5926742553710938,
+          "mean": -0.41774766360096693,
+          "negative": 163,
+          "zero": 49,
+          "positive": 88
+        }
+      },
+      "response_all": {
+        "frames": 1800,
+        "correction_active_frames": 826,
+        "total_requested_correction": [
+          0.0,
+          -14.981832096847938
+        ],
+        "total_applied_correction": [
+          0.0,
+          -14.980744450353086
+        ],
+        "total_actual_correction_translation_y": -14.985794067382812,
+        "velocity_zeroing_frames": 826,
+        "total_accepted_impulse": [
+          -0.2040848284959793,
+          -1467.166098495014
+        ],
+        "total_nominal_bearing_y": -1461.0860986905172,
+        "bearing_limiter_distribution": {
+          "inactive": 263,
+          "capacity": 123,
+          "arrest+yield": 20,
+          "arrest": 1394
+        },
+        "raw_support_distribution": {
+          "0": 244,
+          "8": 399,
+          "9": 87,
+          "7": 112,
+          "6": 50,
+          "5": 17,
+          "4": 113,
+          "3": 46,
+          "2": 97,
+          "1": 635
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "response_final300": {
+        "frames": 300,
+        "correction_active_frames": 119,
+        "total_requested_correction": [
+          0.0,
+          -2.770749255330884
+        ],
+        "total_applied_correction": [
+          0.0,
+          -2.7702054320834577
+        ],
+        "total_actual_correction_translation_y": -2.770599365234375,
+        "velocity_zeroing_frames": 119,
+        "total_accepted_impulse": [
+          0.0,
+          -223.74776972457767
+        ],
+        "total_nominal_bearing_y": -221.01176981255412,
+        "bearing_limiter_distribution": {
+          "arrest": 115,
+          "inactive": 123,
+          "arrest+yield": 9,
+          "capacity": 53
+        },
+        "raw_support_distribution": {
+          "1": 186,
+          "0": 114
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "response_before_clearance": {
+        "frames": 706,
+        "correction_active_frames": 350,
+        "total_requested_correction": [
+          0.0,
+          -5.540954694151878
+        ],
+        "total_applied_correction": [
+          0.0,
+          -5.540954694151878
+        ],
+        "total_actual_correction_translation_y": -5.54351806640625,
+        "velocity_zeroing_frames": 350,
+        "total_accepted_impulse": [
+          1.9568360447883606,
+          -636.3961092694663
+        ],
+        "total_nominal_bearing_y": -636.3961092694663,
+        "bearing_limiter_distribution": {
+          "inactive": 1,
+          "capacity": 5,
+          "arrest+yield": 1,
+          "arrest": 699
+        },
+        "raw_support_distribution": {
+          "0": 1,
+          "8": 399,
+          "9": 87,
+          "7": 112,
+          "6": 50,
+          "5": 13,
+          "4": 16,
+          "3": 19,
+          "2": 8,
+          "1": 1
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "tail_after_clearance": {
+        "motion": {
+          "center_y_span": 2.040496826171875,
+          "center_net_drift": -1.443572998046875,
+          "full_cycles_above1px": 0,
+          "post_application_endpoint_drift": -1.43408203125,
+          "rapier_positional_increment": 7.9987030029296875,
+          "actual_correction_translation": -9.442276000976562,
+          "resulting_translation": -1.443572998046875,
+          "position_accounting_residual": 0.0,
+          "absolute_vertical_velocity": {
+            "count": 1094,
+            "min": 0.0,
+            "p50": 1.0681438446044922,
+            "p95": 2.0,
+            "max": 7.128415584564209,
+            "mean": 0.9579011558310411,
+            "negative": 0,
+            "zero": 332,
+            "positive": 762
+          },
+          "incoming_vertical_velocity": {
+            "count": 1094,
+            "min": -0.4627387225627899,
+            "p50": 1.0681438446044922,
+            "p95": 3.0578207969665527,
+            "max": 8.627799034118652,
+            "mean": 1.0104401693645009,
+            "negative": 94,
+            "zero": 0,
+            "positive": 1000
+          },
+          "outgoing_vertical_velocity": {
+            "count": 1094,
+            "min": -2.0,
+            "p50": -0.4627387225627899,
+            "p95": 1.5352284908294678,
+            "max": 7.128415584564209,
+            "mean": -0.519279471413441,
+            "negative": 570,
+            "zero": 332,
+            "positive": 192
+          }
+        },
+        "response": {
+          "frames": 1094,
+          "correction_active_frames": 476,
+          "total_requested_correction": [
+            0.0,
+            -9.44087740269606
+          ],
+          "total_applied_correction": [
+            0.0,
+            -9.439789756201208
+          ],
+          "total_actual_correction_translation_y": -9.442276000976562,
+          "velocity_zeroing_frames": 476,
+          "total_accepted_impulse": [
+            -2.16092087328434,
+            -830.7699892255478
+          ],
+          "total_nominal_bearing_y": -824.689989421051,
+          "bearing_limiter_distribution": {
+            "arrest": 695,
+            "inactive": 262,
+            "arrest+yield": 19,
+            "capacity": 118
+          },
+          "raw_support_distribution": {
+            "3": 27,
+            "4": 97,
+            "5": 4,
+            "2": 89,
+            "1": 634,
+            "0": 243
+          },
+          "support_with_zero_count_response_frames": 0
+        }
+      },
+      "accounting_maximum_residuals": {
+        "post_rapier_to_application": 0,
+        "applied_correction": 0,
+        "correction_age_suppressed": 0,
+        "age_scale": 0,
+        "after_correction": 0,
+        "after_impulse": 0,
+        "post_application": 0,
+        "result_impulse": 0,
+        "result_correction": 0,
+        "next_pre_rapier": 0
+      },
+      "ejection": {
+        "attempts": 4320,
+        "no_target_positive_incoming_vy": 4198,
+        "no_target_nonpositive_incoming_vy": 0,
+        "note": "Descriptive deterministic attempts, not independent efficacy population"
+      },
+      "high_water": {
+        "pending": 23,
+        "segment_events": 842,
+        "total_events": 4320,
+        "frames": 1800,
+        "segments": 30,
+        "replay_part": 500
+      },
+      "conservation_failures": 0,
+      "context_control": {
+        "delayed_overlap_after599": true,
+        "longest_unsupported_hover_frames": 1,
+        "longest_artificial_lift_frames": 0,
+        "unsupported_response_frames": 0,
+        "post_clearance_no_support_response_frames": 0,
+        "support_distribution_final300": {
+          "1": 186,
+          "0": 114
+        }
+      },
+      "recurrence_handoff": [
+        {
+          "tick": 641,
+          "candidate": "Y1",
+          "before_step": [
+            111.959716796875,
+            154.5126953125,
+            0.07999999076128006,
+            0.025575757026672363,
+            0.0,
+            0.0
+          ],
+          "after_step": [
+            111.96014404296875,
+            154.5286865234375,
+            0.07999999076128006,
+            0.02546963281929493,
+            1.52896249294281,
+            0.0
+          ],
+          "requested_correction": [
+            0.0,
+            -0.015831299126148224
+          ],
+          "applied_correction": [
+            0.0,
+            -0.015831299126148224
+          ],
+          "after_correction": [
+            111.96014404296875,
+            154.51284790039062,
+            0.07999999076128006,
+            0.02546963281929493,
+            0.0,
+            0.0
+          ],
+          "requested_impulse": [
+            0.054384686052799225,
+            -1.52896249294281
+          ],
+          "age": 0,
+          "age_scale": 1.0,
+          "after_impulse": [
+            111.96014404296875,
+            154.51284790039062,
+            0.07999999076128006,
+            0.079854317009449,
+            -1.52896249294281,
+            0.0
+          ],
+          "after_application": [
+            111.96014404296875,
+            154.51284790039062,
+            0.07999999076128006,
+            0.079854317009449,
+            -1.52896249294281,
+            0.0
+          ],
+          "next_before_step": [
+            111.96014404296875,
+            154.51284790039062,
+            0.07999999076128006,
+            0.079854317009449,
+            -1.52896249294281,
+            0.0
+          ],
+          "next_after_step": [
+            111.96148681640625,
+            154.50335693359375,
+            0.07999999076128006,
+            0.07952296733856201,
+            0.006344288121908903,
+            0.0
+          ],
+          "next_boundary_missing": false,
+          "pre_overlap": 1,
+          "post_ejection_overlap": 1,
+          "post_tick_overlap": 1,
+          "raw_support": 6,
+          "bearing": {
+            "arrest": 1.52896249294281,
+            "yield": 1.5333333333333334,
+            "capacity": 12.0,
+            "bearing_y": -1.52896249294281
+          },
+          "zeroed_components": [
+            1
+          ],
+          "unrounded_position_residual": 7.323920726776123e-06,
+          "residuals": {
+            "post_rapier_to_application": 0.0,
+            "applied_correction": 0.0,
+            "correction_age_suppressed": 0.0,
+            "age_scale": 0.0,
+            "after_correction": 0.0,
+            "after_impulse": 0.0,
+            "post_application": 0.0,
+            "result_impulse": 0.0,
+            "result_correction": 0.0,
+            "next_pre_rapier": 0.0
+          }
+        },
+        {
+          "tick": 643,
+          "candidate": "Y1",
+          "before_step": [
+            111.96148681640625,
+            154.50335693359375,
+            0.07999999076128006,
+            0.42352294921875,
+            0.0,
+            0.0
+          ],
+          "after_step": [
+            111.96853637695312,
+            154.51934814453125,
+            0.07999999076128006,
+            0.4217655658721924,
+            1.52896249294281,
+            0.0
+          ],
+          "requested_correction": [
+            0.0,
+            -0.015831299126148224
+          ],
+          "applied_correction": [
+            0.0,
+            -0.015831299126148224
+          ],
+          "after_correction": [
+            111.96853637695312,
+            154.50350952148438,
+            0.07999999076128006,
+            0.4217655658721924,
+            0.0,
+            0.0
+          ],
+          "requested_impulse": [
+            -0.5366942286491394,
+            -1.52896249294281
+          ],
+          "age": 0,
+          "age_scale": 1.0,
+          "after_impulse": [
+            111.96853637695312,
+            154.50350952148438,
+            0.07999999076128006,
+            -0.11492866277694702,
+            -1.52896249294281,
+            0.0
+          ],
+          "after_application": [
+            111.96853637695312,
+            154.50350952148438,
+            0.07999999076128006,
+            -0.11492866277694702,
+            -1.52896249294281,
+            0.0
+          ],
+          "next_before_step": [
+            111.96853637695312,
+            154.50350952148438,
+            0.07999999076128006,
+            -0.11492866277694702,
+            -1.52896249294281,
+            0.0
+          ],
+          "next_after_step": [
+            111.96661376953125,
+            154.4940185546875,
+            0.07999999076128006,
+            -0.11445177346467972,
+            0.006344288121908903,
+            0.0
+          ],
+          "next_boundary_missing": false,
+          "pre_overlap": 2,
+          "post_ejection_overlap": 1,
+          "post_tick_overlap": 1,
+          "raw_support": 7,
+          "bearing": {
+            "arrest": 1.52896249294281,
+            "yield": 1.5333333333333334,
+            "capacity": 14.0,
+            "bearing_y": -1.52896249294281
+          },
+          "zeroed_components": [
+            1
+          ],
+          "unrounded_position_residual": 7.323920726776123e-06,
+          "residuals": {
+            "post_rapier_to_application": 0.0,
+            "applied_correction": 0.0,
+            "correction_age_suppressed": 0.0,
+            "age_scale": 0.0,
+            "after_correction": 0.0,
+            "after_impulse": 0.0,
+            "post_application": 0.0,
+            "result_impulse": 0.0,
+            "result_correction": 0.0,
+            "next_pre_rapier": 0.0
+          }
+        },
+        {
+          "tick": 693,
+          "candidate": "Y1",
+          "before_step": [
+            111.95596313476562,
+            154.2698974609375,
+            0.07999999076128006,
+            0.2820461690425873,
+            0.0,
+            0.0
+          ],
+          "after_step": [
+            111.96066284179688,
+            154.285888671875,
+            0.07999999076128006,
+            0.2808758318424225,
+            1.52896249294281,
+            0.0
+          ],
+          "requested_correction": [
+            0.0,
+            -0.015831299126148224
+          ],
+          "applied_correction": [
+            0.0,
+            -0.015831299126148224
+          ],
+          "after_correction": [
+            111.96066284179688,
+            154.27005004882812,
+            0.07999999076128006,
+            0.2808758318424225,
+            0.0,
+            0.0
+          ],
+          "requested_impulse": [
+            0.398384690284729,
+            -1.52896249294281
+          ],
+          "age": 0,
+          "age_scale": 1.0,
+          "after_impulse": [
+            111.96066284179688,
+            154.27005004882812,
+            0.07999999076128006,
+            0.6792604923248291,
+            -1.52896249294281,
+            0.0
+          ],
+          "after_application": [
+            111.96066284179688,
+            154.27005004882812,
+            0.07999999076128006,
+            0.6792604923248291,
+            -1.52896249294281,
+            0.0
+          ],
+          "next_before_step": [
+            111.96066284179688,
+            154.27005004882812,
+            0.07999999076128006,
+            0.6792604923248291,
+            -1.52896249294281,
+            0.0
+          ],
+          "next_after_step": [
+            111.97198486328125,
+            154.26055908203125,
+            0.07999999076128006,
+            0.6764419674873352,
+            0.006344288121908903,
+            0.0
+          ],
+          "next_boundary_missing": false,
+          "pre_overlap": 1,
+          "post_ejection_overlap": 1,
+          "post_tick_overlap": 1,
+          "raw_support": 3,
+          "bearing": {
+            "arrest": 1.52896249294281,
+            "yield": 1.5333333333333334,
+            "capacity": 6.0,
+            "bearing_y": -1.52896249294281
+          },
+          "zeroed_components": [
+            1
+          ],
+          "unrounded_position_residual": 7.323920726776123e-06,
+          "residuals": {
+            "post_rapier_to_application": 0.0,
+            "applied_correction": 0.0,
+            "correction_age_suppressed": 0.0,
+            "age_scale": 0.0,
+            "after_correction": 0.0,
+            "after_impulse": 0.0,
+            "post_application": 0.0,
+            "result_impulse": 0.0,
+            "result_correction": 0.0,
+            "next_pre_rapier": 0.0
+          }
+        },
+        {
+          "tick": 705,
+          "candidate": "Y1",
+          "before_step": [
+            112.25442504882812,
+            154.2138671875,
+            0.07999999076128006,
+            1.5750454664230347,
+            0.0,
+            0.0
+          ],
+          "after_step": [
+            112.28067016601562,
+            154.2298583984375,
+            0.07999999076128006,
+            1.5685099363327026,
+            1.52896249294281,
+            0.0
+          ],
+          "requested_correction": [
+            0.0,
+            -0.015831299126148224
+          ],
+          "applied_correction": [
+            0.0,
+            -0.015831299126148224
+          ],
+          "after_correction": [
+            112.28067016601562,
+            154.21401977539062,
+            0.07999999076128006,
+            1.5685099363327026,
+            0.0,
+            0.0
+          ],
+          "requested_impulse": [
+            0.31838467717170715,
+            -1.52896249294281
+          ],
+          "age": 0,
+          "age_scale": 1.0,
+          "after_impulse": [
+            112.28067016601562,
+            154.21401977539062,
+            0.07999999076128006,
+            1.8868945837020874,
+            -1.52896249294281,
+            0.0
+          ],
+          "after_application": [
+            112.28067016601562,
+            154.21401977539062,
+            0.07999999076128006,
+            1.8868945837020874,
+            -1.52896249294281,
+            0.0
+          ],
+          "next_before_step": [
+            112.28067016601562,
+            154.21401977539062,
+            0.07999999076128006,
+            1.8868945837020874,
+            -1.52896249294281,
+            0.0
+          ],
+          "next_after_step": [
+            112.31210327148438,
+            154.20452880859375,
+            0.07999999076128006,
+            1.8790650367736816,
+            0.006344288121908903,
+            0.0
+          ],
+          "next_boundary_missing": false,
+          "pre_overlap": 1,
+          "post_ejection_overlap": 1,
+          "post_tick_overlap": 1,
+          "raw_support": 2,
+          "bearing": {
+            "arrest": 1.52896249294281,
+            "yield": 1.5333333333333334,
+            "capacity": 4.0,
+            "bearing_y": -1.52896249294281
+          },
+          "zeroed_components": [
+            1
+          ],
+          "unrounded_position_residual": 7.323920726776123e-06,
+          "residuals": {
+            "post_rapier_to_application": 0.0,
+            "applied_correction": 0.0,
+            "correction_age_suppressed": 0.0,
+            "age_scale": 0.0,
+            "after_correction": 0.0,
+            "after_impulse": 0.0,
+            "post_application": 0.0,
+            "result_impulse": 0.0,
+            "result_correction": 0.0,
+            "next_pre_rapier": 0.0
+          }
+        }
+      ]
+    },
+    "B0-speed30": {
+      "schema": 1,
+      "candidate": "B0",
+      "arm": "speed30",
+      "source": "121f04914a62ff9bb33682cac8ed7d53ad0fc0f4",
+      "tree": "d122a08b18c048a4d9cd6e9f2eb4e1d54fbec5cc",
+      "runtime": {
+        "console_launcher": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "engine": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "native": "3537a86852c6278f66706615e891ad116406e2a06a16f8c6b8148ba9bab4d30c",
+        "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "prefix": {
+        "pass": true,
+        "frames_exact": 600,
+        "capsules_exact": 257,
+        "segments_exact": 10,
+        "comparison": "All frame keys recursively and all parsed capsule values; exact numeric equality",
+        "excluded_volatile_fields": [
+          "capture_instance_id",
+          "consumer_usec",
+          "coupling_usec",
+          "instance_id",
+          "owner",
+          "producer_usec",
+          "step_start_usec"
+        ],
+        "excluded_added_event_hashes": [
+          "structural_hash",
+          "topology_hash"
+        ],
+        "reference_trajectory_sha256": "4a64281bf23e6015b5069095f3303ec6e811e0e8a14df5cc5c45ed07f4b944df",
+        "reference_receipt_sha256": "d8ed9b3abee60a560883ecd1bdf6f6cd08e2b7ad226767d72a1924d2816de486"
+      },
+      "receipt_sha256": "b4af42f867cf95db164f4ecd881366d63a59de5db4f827ba4c876085b049bf20",
+      "clearance": {
+        "contact_prevented": false,
+        "first_observed_contact": 4,
+        "first_zero_any_sample": 0,
+        "first_zero_after_contact": 30,
+        "first_sustained_clearance": 70,
+        "clearance_confirmed_at": 129,
+        "clearance_time_seconds_from_sample0": 1.1666666666666667,
+        "clearance_latency_seconds_from_first_contact": 1.1,
+        "preceding_consecutive_overlap_frames": 9,
+        "contact_to_sustained_samples": 66,
+        "zero_runs_after_contact": [
+          [
+            30,
+            60
+          ],
+          [
+            70,
+            1799
+          ]
+        ],
+        "recurrence_samples": [
+          61
+        ],
+        "recurrence_periods_samples": [],
+        "recurrence_after_sustained": [],
+        "right_censored_at": null,
+        "longest_overlap_episode": 26,
+        "longest_any_boundary_overlap_episode": 26
+      },
+      "classification": "clears after finite withdrawal latency",
+      "overlap_at_samples": {
+        "600": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "900": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1200": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1500": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1799": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        }
+      },
+      "blocks": [
+        {
+          "samples": [
+            0,
+            299
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 257,
+              "frames": 35,
+              "min": 0,
+              "max": 14
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 248,
+              "frames": 35,
+              "min": 0,
+              "max": 13
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 248,
+              "frames": 35,
+              "min": 0,
+              "max": 13
+            }
+          },
+          "motion": {
+            "center_y_span": 4.4799957275390625,
+            "center_net_drift": 1.6351318359375,
+            "full_cycles_above1px": 2,
+            "post_application_endpoint_drift": 1.119140625,
+            "rapier_positional_increment": 3.9467620849609375,
+            "actual_correction_translation": -2.3116302490234375,
+            "resulting_translation": 1.6351318359375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.52896249294281,
+              "p95": 14.892986297607422,
+              "max": 32.80313491821289,
+              "mean": 3.344779197067643,
+              "negative": 0,
+              "zero": 40,
+              "positive": 260
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -17.33416175842285,
+              "p50": 1.3005322217941284,
+              "p95": 11.13036060333252,
+              "max": 34.195987701416016,
+              "mean": 1.359429845046252,
+              "negative": 83,
+              "zero": 0,
+              "positive": 217
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -18.941720962524414,
+              "p50": -0.22938205301761627,
+              "p95": 9.532876014709473,
+              "max": 32.80313491821289,
+              "mean": -0.27023353955087565,
+              "negative": 168,
+              "zero": 40,
+              "positive": 92
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 85,
+            "total_requested_correction": [
+              0.0,
+              -2.3115207329392433
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.3115207329392433
+            ],
+            "total_actual_correction_translation_y": -2.3116302490234375,
+            "velocity_zeroing_frames": 85,
+            "total_accepted_impulse": [
+              -0.18146645231172442,
+              -300.65928466338664
+            ],
+            "total_nominal_bearing_y": -233.69025347847492,
+            "bearing_limiter_distribution": {
+              "inactive": 145,
+              "capacity": 4,
+              "unresolved": 70,
+              "arrest": 81
+            },
+            "raw_support_distribution": {
+              "0": 114,
+              "1": 97,
+              "8": 20,
+              "9": 7,
+              "7": 11,
+              "6": 9,
+              "3": 6,
+              "2": 32,
+              "4": 3,
+              "5": 1
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            300,
+            599
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.11346435546875,
+            "center_net_drift": -0.047210693359375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.04736328125,
+            "rapier_positional_increment": 3.5913238525390625,
+            "actual_correction_translation": -3.6385345458984375,
+            "resulting_translation": -0.047210693359375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.3005322217941284,
+              "p95": 1.7656711339950562,
+              "max": 2.824098587036133,
+              "mean": 1.0907940307585522,
+              "negative": 0,
+              "zero": 6,
+              "positive": 294
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.41517651081085205,
+              "p50": 1.3005322217941284,
+              "p95": 2.824098587036133,
+              "max": 4.341342926025391,
+              "mean": 1.2885826771706343,
+              "negative": 92,
+              "zero": 0,
+              "positive": 208
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9522396326065063,
+              "p50": -0.22938211262226105,
+              "p95": 1.3005322217941284,
+              "max": 2.824098587036133,
+              "mean": -0.24727251109201462,
+              "negative": 195,
+              "zero": 6,
+              "positive": 99
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 103,
+            "total_requested_correction": [
+              0.0,
+              -3.638887559995055
+            ],
+            "total_applied_correction": [
+              0.0,
+              -3.638887559995055
+            ],
+            "total_actual_correction_translation_y": -3.6385345458984375,
+            "velocity_zeroing_frames": 103,
+            "total_accepted_impulse": [
+              0.0,
+              -182.10165172582492
+            ],
+            "total_nominal_bearing_y": -181.79765173560008,
+            "bearing_limiter_distribution": {
+              "arrest": 15,
+              "inactive": 190,
+              "unresolved": 94,
+              "capacity": 1
+            },
+            "raw_support_distribution": {
+              "1": 110,
+              "0": 189,
+              "2": 1
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            600,
+            899
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.117950439453125,
+            "center_net_drift": -0.0208587646484375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.007415771484375,
+            "rapier_positional_increment": 3.4887237548828125,
+            "actual_correction_translation": -3.50958251953125,
+            "resulting_translation": -0.0208587646484375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.3005321621894836,
+              "p95": 1.7656711339950562,
+              "max": 2.824098587036133,
+              "mean": 1.0776614256358394,
+              "negative": 0,
+              "zero": 12,
+              "positive": 288
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.41517651081085205,
+              "p50": 1.3005321621894836,
+              "p95": 2.824098587036133,
+              "max": 4.341342926025391,
+              "mean": 1.268156894693772,
+              "negative": 87,
+              "zero": 0,
+              "positive": 213
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9522396326065063,
+              "p50": -0.22938205301761627,
+              "p95": 1.3005322217941284,
+              "max": 2.824098587036133,
+              "mean": -0.25167167458372813,
+              "negative": 191,
+              "zero": 12,
+              "positive": 97
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 104,
+            "total_requested_correction": [
+              0.0,
+              -3.509865488857031
+            ],
+            "total_applied_correction": [
+              0.0,
+              -3.509865488857031
+            ],
+            "total_actual_correction_translation_y": -3.50958251953125,
+            "velocity_zeroing_frames": 104,
+            "total_accepted_impulse": [
+              0.0,
+              -184.50403797160834
+            ],
+            "total_nominal_bearing_y": -183.89603799115866,
+            "bearing_limiter_distribution": {
+              "inactive": 182,
+              "unresolved": 88,
+              "capacity": 2,
+              "arrest": 28
+            },
+            "raw_support_distribution": {
+              "0": 180,
+              "1": 118,
+              "2": 2
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            900,
+            1199
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.11578369140625,
+            "center_net_drift": 0.0517425537109375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 0.051361083984375,
+            "rapier_positional_increment": 3.555328369140625,
+            "actual_correction_translation": -3.5035858154296875,
+            "resulting_translation": 0.0517425537109375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.3005322217941284,
+              "p95": 1.7656723260879517,
+              "max": 2.824098587036133,
+              "mean": 1.083694644412026,
+              "negative": 0,
+              "zero": 16,
+              "positive": 284
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.41517651081085205,
+              "p50": 1.3005322217941284,
+              "p95": 2.824098825454712,
+              "max": 4.341342926025391,
+              "mean": 1.2814273652636137,
+              "negative": 84,
+              "zero": 0,
+              "positive": 216
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9522396326065063,
+              "p50": -0.22938211262226105,
+              "p95": 1.3005324602127075,
+              "max": 2.824098587036133,
+              "mean": -0.2579982361787309,
+              "negative": 190,
+              "zero": 16,
+              "positive": 94
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 106,
+            "total_requested_correction": [
+              0.0,
+              -3.503838112577796
+            ],
+            "total_applied_correction": [
+              0.0,
+              -3.503838112577796
+            ],
+            "total_actual_correction_translation_y": -3.5035858154296875,
+            "velocity_zeroing_frames": 106,
+            "total_accepted_impulse": [
+              0.0,
+              -189.59941827645525
+            ],
+            "total_nominal_bearing_y": -188.68741830578074,
+            "bearing_limiter_distribution": {
+              "unresolved": 86,
+              "inactive": 175,
+              "capacity": 3,
+              "arrest": 36
+            },
+            "raw_support_distribution": {
+              "1": 125,
+              "0": 172,
+              "2": 3
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            1200,
+            1499
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.11395263671875,
+            "center_net_drift": -0.0289764404296875,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.0194854736328125,
+            "rapier_positional_increment": 3.4964141845703125,
+            "actual_correction_translation": -3.525390625,
+            "resulting_translation": -0.0289764404296875,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.3005322217941284,
+              "p95": 1.7656711339950562,
+              "max": 2.824098587036133,
+              "mean": 1.0776292844256385,
+              "negative": 0,
+              "zero": 14,
+              "positive": 286
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.41517651081085205,
+              "p50": 1.3005322217941284,
+              "p95": 2.824098587036133,
+              "max": 4.341342926025391,
+              "mean": 1.2696936225347841,
+              "negative": 86,
+              "zero": 0,
+              "positive": 214
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9522396326065063,
+              "p50": -0.22938205301761627,
+              "p95": 1.3005322217941284,
+              "max": 2.824098587036133,
+              "mean": -0.2603649616598462,
+              "negative": 191,
+              "zero": 14,
+              "positive": 95
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 105,
+            "total_requested_correction": [
+              0.0,
+              -3.525681681931019
+            ],
+            "total_applied_correction": [
+              0.0,
+              -3.525681681931019
+            ],
+            "total_actual_correction_translation_y": -3.525390625,
+            "velocity_zeroing_frames": 105,
+            "total_accepted_impulse": [
+              0.0,
+              -186.0462077204138
+            ],
+            "total_nominal_bearing_y": -185.43820773996413,
+            "bearing_limiter_distribution": {
+              "arrest": 30,
+              "inactive": 179,
+              "unresolved": 89,
+              "capacity": 2
+            },
+            "raw_support_distribution": {
+              "1": 121,
+              "0": 177,
+              "2": 2
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            1500,
+            1799
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.113861083984375,
+            "center_net_drift": 0.0038604736328125,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 0.013427734375,
+            "rapier_positional_increment": 3.559478759765625,
+            "actual_correction_translation": -3.5556182861328125,
+            "resulting_translation": 0.0038604736328125,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.0,
+              "p50": 1.3005322217941284,
+              "p95": 1.7656723260879517,
+              "max": 2.824098587036133,
+              "mean": 1.0843989365299542,
+              "negative": 0,
+              "zero": 12,
+              "positive": 288
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -0.41517651081085205,
+              "p50": 1.3005322217941284,
+              "p95": 2.824098825454712,
+              "max": 4.341342926025391,
+              "mean": 1.2822522062901407,
+              "negative": 87,
+              "zero": 0,
+              "positive": 213
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -1.9522396326065063,
+              "p50": -0.22938205301761627,
+              "p95": 1.3005324602127075,
+              "max": 2.824098587036133,
+              "mean": -0.2485159479578336,
+              "negative": 191,
+              "zero": 12,
+              "positive": 97
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 104,
+            "total_requested_correction": [
+              0.0,
+              -3.555909190326929
+            ],
+            "total_applied_correction": [
+              0.0,
+              -3.555909190326929
+            ],
+            "total_actual_correction_translation_y": -3.5556182861328125,
+            "velocity_zeroing_frames": 104,
+            "total_accepted_impulse": [
+              0.0,
+              -185.00846457015723
+            ],
+            "total_nominal_bearing_y": -184.40046458970755,
+            "bearing_limiter_distribution": {
+              "inactive": 182,
+              "unresolved": 90,
+              "capacity": 2,
+              "arrest": 26
+            },
+            "raw_support_distribution": {
+              "0": 180,
+              "1": 118,
+              "2": 2
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        }
+      ],
+      "final300_motion": {
+        "center_y_span": 0.113861083984375,
+        "center_net_drift": 0.0038604736328125,
+        "full_cycles_above1px": 0,
+        "post_application_endpoint_drift": 0.013427734375,
+        "rapier_positional_increment": 3.559478759765625,
+        "actual_correction_translation": -3.5556182861328125,
+        "resulting_translation": 0.0038604736328125,
+        "position_accounting_residual": 0.0,
+        "absolute_vertical_velocity": {
+          "count": 300,
+          "min": 0.0,
+          "p50": 1.3005322217941284,
+          "p95": 1.7656723260879517,
+          "max": 2.824098587036133,
+          "mean": 1.0843989365299542,
+          "negative": 0,
+          "zero": 12,
+          "positive": 288
+        },
+        "incoming_vertical_velocity": {
+          "count": 300,
+          "min": -0.41517651081085205,
+          "p50": 1.3005322217941284,
+          "p95": 2.824098825454712,
+          "max": 4.341342926025391,
+          "mean": 1.2822522062901407,
+          "negative": 87,
+          "zero": 0,
+          "positive": 213
+        },
+        "outgoing_vertical_velocity": {
+          "count": 300,
+          "min": -1.9522396326065063,
+          "p50": -0.22938205301761627,
+          "p95": 1.3005324602127075,
+          "max": 2.824098587036133,
+          "mean": -0.2485159479578336,
+          "negative": 191,
+          "zero": 12,
+          "positive": 97
+        }
+      },
+      "response_all": {
+        "frames": 1800,
+        "correction_active_frames": 607,
+        "total_requested_correction": [
+          0.0,
+          -20.045702766627073
+        ],
+        "total_applied_correction": [
+          0.0,
+          -20.045702766627073
+        ],
+        "total_actual_correction_translation_y": -20.044342041015625,
+        "velocity_zeroing_frames": 607,
+        "total_accepted_impulse": [
+          -0.18146645231172442,
+          -1227.9190649278462
+        ],
+        "total_nominal_bearing_y": -1157.910033840686,
+        "bearing_limiter_distribution": {
+          "inactive": 1053,
+          "capacity": 14,
+          "unresolved": 517,
+          "arrest": 216
+        },
+        "raw_support_distribution": {
+          "0": 1012,
+          "1": 689,
+          "8": 20,
+          "9": 7,
+          "7": 11,
+          "6": 9,
+          "3": 6,
+          "2": 42,
+          "4": 3,
+          "5": 1
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "response_final300": {
+        "frames": 300,
+        "correction_active_frames": 104,
+        "total_requested_correction": [
+          0.0,
+          -3.555909190326929
+        ],
+        "total_applied_correction": [
+          0.0,
+          -3.555909190326929
+        ],
+        "total_actual_correction_translation_y": -3.5556182861328125,
+        "velocity_zeroing_frames": 104,
+        "total_accepted_impulse": [
+          0.0,
+          -185.00846457015723
+        ],
+        "total_nominal_bearing_y": -184.40046458970755,
+        "bearing_limiter_distribution": {
+          "inactive": 182,
+          "unresolved": 90,
+          "capacity": 2,
+          "arrest": 26
+        },
+        "raw_support_distribution": {
+          "0": 180,
+          "1": 118,
+          "2": 2
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "response_before_clearance": {
+        "frames": 70,
+        "correction_active_frames": 2,
+        "total_requested_correction": [
+          0.0,
+          -0.1039457693696022
+        ],
+        "total_applied_correction": [
+          0.0,
+          -0.1039457693696022
+        ],
+        "total_actual_correction_translation_y": -0.10394287109375,
+        "velocity_zeroing_frames": 2,
+        "total_accepted_impulse": [
+          -0.18146645231172442,
+          -136.0868113040924
+        ],
+        "total_nominal_bearing_y": -83.4057799577713,
+        "bearing_limiter_distribution": {
+          "inactive": 44,
+          "capacity": 2,
+          "unresolved": 24
+        },
+        "raw_support_distribution": {
+          "0": 24,
+          "1": 1,
+          "8": 20,
+          "9": 7,
+          "7": 10,
+          "6": 5,
+          "3": 1,
+          "2": 1,
+          "4": 1
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "tail_after_clearance": {
+        "motion": {
+          "center_y_span": 1.078125,
+          "center_net_drift": -1.06817626953125,
+          "full_cycles_above1px": 0,
+          "post_application_endpoint_drift": -0.9693450927734375,
+          "rapier_positional_increment": 18.872222900390625,
+          "actual_correction_translation": -19.940399169921875,
+          "resulting_translation": -1.06817626953125,
+          "position_accounting_residual": 0.0,
+          "absolute_vertical_velocity": {
+            "count": 1730,
+            "min": 0.0,
+            "p50": 1.3005322217941284,
+            "p95": 1.7657122611999512,
+            "max": 8.50934886932373,
+            "mean": 1.11523870482847,
+            "negative": 0,
+            "zero": 100,
+            "positive": 1630
+          },
+          "incoming_vertical_velocity": {
+            "count": 1730,
+            "min": -6.945077419281006,
+            "p50": 1.3005322217941284,
+            "p95": 2.824098825454712,
+            "max": 5.852291584014893,
+            "mean": 1.2251255665135952,
+            "negative": 488,
+            "zero": 0,
+            "positive": 1242
+          },
+          "outgoing_vertical_velocity": {
+            "count": 1730,
+            "min": -8.50934886932373,
+            "p50": -0.22938205301761627,
+            "p95": 1.3005324602127075,
+            "max": 4.341342926025391,
+            "mean": -0.30214220523252827,
+            "negative": 1093,
+            "zero": 100,
+            "positive": 537
+          }
+        },
+        "response": {
+          "frames": 1730,
+          "correction_active_frames": 605,
+          "total_requested_correction": [
+            0.0,
+            -19.94175699725747
+          ],
+          "total_applied_correction": [
+            0.0,
+            -19.94175699725747
+          ],
+          "total_actual_correction_translation_y": -19.940399169921875,
+          "velocity_zeroing_frames": 605,
+          "total_accepted_impulse": [
+            0.0,
+            -1091.8322536237538
+          ],
+          "total_nominal_bearing_y": -1074.5042538829148,
+          "bearing_limiter_distribution": {
+            "inactive": 1009,
+            "capacity": 12,
+            "unresolved": 493,
+            "arrest": 216
+          },
+          "raw_support_distribution": {
+            "7": 1,
+            "6": 4,
+            "5": 1,
+            "3": 5,
+            "2": 41,
+            "1": 688,
+            "0": 988,
+            "4": 2
+          },
+          "support_with_zero_count_response_frames": 0
+        }
+      },
+      "accounting_maximum_residuals": {
+        "post_rapier_to_application": 0,
+        "applied_correction": 0,
+        "correction_age_suppressed": 0,
+        "age_scale": 0,
+        "after_correction": 0,
+        "after_impulse": 0,
+        "post_application": 0,
+        "result_impulse": 0,
+        "result_correction": 0,
+        "next_pre_rapier": 0
+      },
+      "ejection": {
+        "attempts": 257,
+        "no_target_positive_incoming_vy": 136,
+        "no_target_nonpositive_incoming_vy": 112,
+        "note": "Descriptive deterministic attempts, not independent efficacy population"
+      },
+      "high_water": {
+        "pending": 14,
+        "segment_events": 237,
+        "total_events": 257,
+        "frames": 1800,
+        "segments": 30,
+        "replay_part": 257
+      },
+      "conservation_failures": 0,
+      "context_control": {
+        "delayed_overlap_after599": false,
+        "longest_unsupported_hover_frames": 2,
+        "longest_artificial_lift_frames": 0,
+        "unsupported_response_frames": 0,
+        "post_clearance_no_support_response_frames": 0,
+        "support_distribution_final300": {
+          "0": 180,
+          "1": 118,
+          "2": 2
+        }
+      },
+      "recurrence_handoff": [
+        {
+          "tick": 61,
+          "candidate": "B0",
+          "before_step": [
+            113.00143432617188,
+            153.25950622558594,
+            0.07999999076128006,
+            1.5269782543182373,
+            4.716954708099365,
+            0.0
+          ],
+          "after_step": [
+            113.02688598632812,
+            153.35411071777344,
+            0.07999999076128006,
+            1.5206421613693237,
+            6.226345062255859,
+            0.0
+          ],
+          "requested_correction": [
+            0.0,
+            0.0
+          ],
+          "applied_correction": [
+            0.0,
+            0.0
+          ],
+          "after_correction": [
+            113.02688598632812,
+            153.35411071777344,
+            0.07999999076128006,
+            1.5206421613693237,
+            6.226345062255859,
+            0.0
+          ],
+          "requested_impulse": [
+            -0.5936152935028076,
+            -2.378075361251831
+          ],
+          "age": 0,
+          "age_scale": 1.0,
+          "after_impulse": [
+            113.02688598632812,
+            153.35411071777344,
+            0.07999999076128006,
+            0.9270268678665161,
+            3.8482697010040283,
+            0.0
+          ],
+          "after_application": [
+            113.02688598632812,
+            153.35411071777344,
+            0.07999999076128006,
+            0.9270268678665161,
+            3.8482697010040283,
+            0.0
+          ],
+          "next_before_step": [
+            113.02688598632812,
+            153.35411071777344,
+            0.07999999076128006,
+            0.9270268678665161,
+            3.8482697010040283,
+            0.0
+          ],
+          "next_after_step": [
+            113.04232788085938,
+            153.43423461914062,
+            0.07999999076128006,
+            0.9231802225112915,
+            5.361264228820801,
+            0.0
+          ],
+          "next_boundary_missing": false,
+          "pre_overlap": 1,
+          "post_ejection_overlap": 1,
+          "post_tick_overlap": 1,
+          "raw_support": 7,
+          "bearing": {
+            "arrest": 6.226345062255859,
+            "yield": 2.3780754445393884,
+            "capacity": 14.0,
+            "bearing_y": -2.378075361251831
+          },
+          "zeroed_components": [],
+          "unrounded_position_residual": 0.0,
+          "residuals": {
+            "post_rapier_to_application": 0.0,
+            "applied_correction": 0.0,
+            "correction_age_suppressed": 0.0,
+            "age_scale": 0.0,
+            "after_correction": 0.0,
+            "after_impulse": 0.0,
+            "post_application": 0.0,
+            "result_impulse": 0.0,
+            "result_correction": 0.0,
+            "next_pre_rapier": 0.0
+          }
+        }
+      ]
+    },
+    "Y1-speed30": {
+      "schema": 1,
+      "candidate": "Y1",
+      "arm": "speed30",
+      "source": "121f04914a62ff9bb33682cac8ed7d53ad0fc0f4",
+      "tree": "d122a08b18c048a4d9cd6e9f2eb4e1d54fbec5cc",
+      "runtime": {
+        "console_launcher": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "engine": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "native": "3537a86852c6278f66706615e891ad116406e2a06a16f8c6b8148ba9bab4d30c",
+        "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "prefix": {
+        "pass": true,
+        "frames_exact": 600,
+        "capsules_exact": 0,
+        "segments_exact": 10,
+        "comparison": "All frame keys recursively and all parsed capsule values; exact numeric equality",
+        "excluded_volatile_fields": [
+          "capture_instance_id",
+          "consumer_usec",
+          "coupling_usec",
+          "instance_id",
+          "owner",
+          "producer_usec",
+          "step_start_usec"
+        ],
+        "excluded_added_event_hashes": [
+          "structural_hash",
+          "topology_hash"
+        ],
+        "reference_trajectory_sha256": "5f12b77783183489d6414fa8e63d66d3f1d178a4f6430e2f793f99843c5bcb4c",
+        "reference_receipt_sha256": "8938ff980531a13040413b238e062e6ea4b5c4a7cb623b7274761ad03bfc5805"
+      },
+      "receipt_sha256": "493d0e93fb4363e347becfd8716698e1db792a28e6506691bc20125c7369f751",
+      "clearance": {
+        "contact_prevented": true,
+        "first_observed_contact": null,
+        "first_zero_any_sample": 0,
+        "first_zero_after_contact": null,
+        "first_sustained_clearance": null,
+        "clearance_confirmed_at": null,
+        "clearance_time_seconds_from_sample0": null,
+        "clearance_latency_seconds_from_first_contact": null,
+        "preceding_consecutive_overlap_frames": null,
+        "contact_to_sustained_samples": null,
+        "zero_runs_after_contact": [],
+        "recurrence_samples": [],
+        "recurrence_periods_samples": [],
+        "recurrence_after_sustained": [],
+        "right_censored_at": null,
+        "longest_overlap_episode": 0,
+        "longest_any_boundary_overlap_episode": 0
+      },
+      "classification": "contact prevented",
+      "overlap_at_samples": {
+        "600": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "900": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1200": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1500": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        },
+        "1799": {
+          "pre_overlap": 0,
+          "post_ejection_overlap": 0,
+          "post_tick_overlap_at_packed_pose": 0
+        }
+      },
+      "blocks": [
+        {
+          "samples": [
+            0,
+            299
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 1.964202880859375,
+            "center_net_drift": 1.5596771240234375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 1.0436859130859375,
+            "rapier_positional_increment": 4.307159423828125,
+            "actual_correction_translation": -2.7474822998046875,
+            "resulting_translation": 1.5596771240234375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.4627387225627899,
+              "p50": 1.0681438446044922,
+              "p95": 3.631082773208618,
+              "max": 32.80313491821289,
+              "mean": 2.0602809732158978,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -6.2980546951293945,
+              "p50": 1.0681438446044922,
+              "p95": 4.110878944396973,
+              "max": 34.195987701416016,
+              "mean": 1.4315064306060472,
+              "negative": 106,
+              "zero": 0,
+              "positive": 194
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -7.859630584716797,
+              "p50": -0.4627387225627899,
+              "p95": 2.5926742553710938,
+              "max": 32.80313491821289,
+              "mean": -0.1955945015947024,
+              "negative": 181,
+              "zero": 0,
+              "positive": 119
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 75,
+            "total_requested_correction": [
+              0.0,
+              -2.747561229392886
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.747561229392886
+            ],
+            "total_actual_correction_translation_y": -2.7474822998046875,
+            "velocity_zeroing_frames": 75,
+            "total_accepted_impulse": [
+              0.0,
+              -279.274517506361
+            ],
+            "total_nominal_bearing_y": -255.5625183582306,
+            "bearing_limiter_distribution": {
+              "inactive": 203,
+              "capacity": 77,
+              "arrest+yield": 20
+            },
+            "raw_support_distribution": {
+              "0": 175,
+              "1": 94,
+              "8": 4,
+              "9": 4,
+              "6": 1,
+              "5": 1,
+              "4": 1,
+              "2": 20
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            300,
+            599
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.1098785400390625,
+            "center_net_drift": 0.070648193359375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 0.07037353515625,
+            "rapier_positional_increment": 2.996246337890625,
+            "actual_correction_translation": -2.92559814453125,
+            "resulting_translation": 0.070648193359375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.4627387225627899,
+              "p50": 1.0681438446044922,
+              "p95": 3.631082773208618,
+              "max": 3.631082773208618,
+              "mean": 1.522080115179221,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -2.087053060531616,
+              "p50": 1.0681438446044922,
+              "p95": 4.110878944396973,
+              "max": 4.110878944396973,
+              "mean": 1.1704416917761167,
+              "negative": 99,
+              "zero": 0,
+              "positive": 201
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -3.631082773208618,
+              "p50": -0.4627387225627899,
+              "p95": 2.5926742553710938,
+              "max": 2.5926742553710938,
+              "mean": -0.37438610643148423,
+              "negative": 180,
+              "zero": 0,
+              "positive": 120
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 81,
+            "total_requested_correction": [
+              0.0,
+              -2.925678450614214
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.925678450614214
+            ],
+            "total_actual_correction_translation_y": -2.92559814453125,
+            "velocity_zeroing_frames": 81,
+            "total_accepted_impulse": [
+              0.0,
+              -240.3976552784443
+            ],
+            "total_nominal_bearing_y": -234.62165546417236,
+            "bearing_limiter_distribution": {
+              "capacity": 81,
+              "inactive": 199,
+              "arrest+yield": 20
+            },
+            "raw_support_distribution": {
+              "1": 100,
+              "0": 180,
+              "2": 20
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            600,
+            899
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.110107421875,
+            "center_net_drift": -0.0894317626953125,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.0449066162109375,
+            "rapier_positional_increment": 2.7855072021484375,
+            "actual_correction_translation": -2.87493896484375,
+            "resulting_translation": -0.0894317626953125,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.4627387225627899,
+              "p50": 1.0681438446044922,
+              "p95": 3.631082773208618,
+              "max": 3.631082773208618,
+              "mean": 1.5073765002687771,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -2.087053060531616,
+              "p50": 1.0681438446044922,
+              "p95": 4.110878944396973,
+              "max": 4.110878944396973,
+              "mean": 1.1284632640083632,
+              "negative": 101,
+              "zero": 0,
+              "positive": 199
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -3.631082773208618,
+              "p50": -0.4627387225627899,
+              "p95": 2.5926742553710938,
+              "max": 2.5926742553710938,
+              "mean": -0.38650398204723996,
+              "negative": 181,
+              "zero": 0,
+              "positive": 119
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 80,
+            "total_requested_correction": [
+              0.0,
+              -2.8750122524797916
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.8750122524797916
+            ],
+            "total_actual_correction_translation_y": -2.87493896484375,
+            "velocity_zeroing_frames": 80,
+            "total_accepted_impulse": [
+              0.0,
+              -235.0705724954605
+            ],
+            "total_nominal_bearing_y": -228.99057269096375,
+            "bearing_limiter_distribution": {
+              "inactive": 201,
+              "capacity": 80,
+              "arrest+yield": 19
+            },
+            "raw_support_distribution": {
+              "1": 100,
+              "0": 181,
+              "2": 19
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            900,
+            1199
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.110107421875,
+            "center_net_drift": 0.0128173828125,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 0.012481689453125,
+            "rapier_positional_increment": 2.90496826171875,
+            "actual_correction_translation": -2.89215087890625,
+            "resulting_translation": 0.0128173828125,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.4627387225627899,
+              "p50": 1.0681438446044922,
+              "p95": 3.631082773208618,
+              "max": 3.631082773208618,
+              "mean": 1.5233890116214752,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -2.087053060531616,
+              "p50": 1.0681438446044922,
+              "p95": 4.110878944396973,
+              "max": 4.110878944396973,
+              "mean": 1.1522517859935761,
+              "negative": 100,
+              "zero": 0,
+              "positive": 200
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -3.631082773208618,
+              "p50": -0.4627387225627899,
+              "p95": 2.5926742553710938,
+              "max": 2.5926742553710938,
+              "mean": -0.3782804310321808,
+              "negative": 180,
+              "zero": 0,
+              "positive": 120
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 80,
+            "total_requested_correction": [
+              0.0,
+              -2.892233319580555
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.892233319580555
+            ],
+            "total_actual_correction_translation_y": -2.89215087890625,
+            "velocity_zeroing_frames": 80,
+            "total_accepted_impulse": [
+              0.0,
+              -238.70165526866913
+            ],
+            "total_nominal_bearing_y": -232.62165546417236,
+            "bearing_limiter_distribution": {
+              "capacity": 80,
+              "inactive": 200,
+              "arrest+yield": 20
+            },
+            "raw_support_distribution": {
+              "1": 100,
+              "0": 180,
+              "2": 20
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            1200,
+            1499
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.1098785400390625,
+            "center_net_drift": 0.01287841796875,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": 0.012542724609375,
+            "rapier_positional_increment": 2.9114227294921875,
+            "actual_correction_translation": -2.8985443115234375,
+            "resulting_translation": 0.01287841796875,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.4627387225627899,
+              "p50": 1.0681438446044922,
+              "p95": 3.631082773208618,
+              "max": 3.631082773208618,
+              "mean": 1.5233890116214752,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -2.087053060531616,
+              "p50": 1.0681438446044922,
+              "p95": 4.110878944396973,
+              "max": 4.110878944396973,
+              "mean": 1.1535391358534495,
+              "negative": 100,
+              "zero": 0,
+              "positive": 200
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -3.631082773208618,
+              "p50": -0.4627387225627899,
+              "p95": 2.5926742553710938,
+              "max": 2.5926742553710938,
+              "mean": -0.3782804310321808,
+              "negative": 180,
+              "zero": 0,
+              "positive": 120
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 80,
+            "total_requested_correction": [
+              0.0,
+              -2.8986232448369265
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.8986232448369265
+            ],
+            "total_actual_correction_translation_y": -2.8985443115234375,
+            "velocity_zeroing_frames": 80,
+            "total_accepted_impulse": [
+              0.0,
+              -238.70165526866913
+            ],
+            "total_nominal_bearing_y": -232.62165546417236,
+            "bearing_limiter_distribution": {
+              "capacity": 80,
+              "inactive": 200,
+              "arrest+yield": 20
+            },
+            "raw_support_distribution": {
+              "1": 100,
+              "0": 180,
+              "2": 20
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        },
+        {
+          "samples": [
+            1500,
+            1799
+          ],
+          "overlap": {
+            "pre_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_ejection_overlap": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            },
+            "post_tick_overlap_at_packed_pose": {
+              "cell_ticks": 0,
+              "frames": 0,
+              "min": 0,
+              "max": 0
+            }
+          },
+          "motion": {
+            "center_y_span": 0.110107421875,
+            "center_net_drift": -0.0316009521484375,
+            "full_cycles_above1px": 0,
+            "post_application_endpoint_drift": -0.0318756103515625,
+            "rapier_positional_increment": 2.8767852783203125,
+            "actual_correction_translation": -2.90838623046875,
+            "resulting_translation": -0.0316009521484375,
+            "position_accounting_residual": 0.0,
+            "absolute_vertical_velocity": {
+              "count": 300,
+              "min": 0.4627387225627899,
+              "p50": 1.0681438446044922,
+              "p95": 3.631082773208618,
+              "max": 3.631082773208618,
+              "mean": 1.5060676038265228,
+              "negative": 0,
+              "zero": 0,
+              "positive": 300
+            },
+            "incoming_vertical_velocity": {
+              "count": 300,
+              "min": -2.087053060531616,
+              "p50": 1.0681438446044922,
+              "p95": 4.110878944396973,
+              "max": 4.110878944396973,
+              "mean": 1.1466531697909037,
+              "negative": 100,
+              "zero": 0,
+              "positive": 200
+            },
+            "outgoing_vertical_velocity": {
+              "count": 300,
+              "min": -3.631082773208618,
+              "p50": -0.4627387225627899,
+              "p95": 2.5926742553710938,
+              "max": 2.5926742553710938,
+              "mean": -0.38260965744654335,
+              "negative": 181,
+              "zero": 0,
+              "positive": 119
+            }
+          },
+          "response": {
+            "frames": 300,
+            "correction_active_frames": 81,
+            "total_requested_correction": [
+              0.0,
+              -2.9084573835134506
+            ],
+            "total_applied_correction": [
+              0.0,
+              -2.9084573835134506
+            ],
+            "total_actual_correction_translation_y": -2.90838623046875,
+            "velocity_zeroing_frames": 81,
+            "total_accepted_impulse": [
+              0.0,
+              -236.76657250523567
+            ],
+            "total_nominal_bearing_y": -230.99057269096375,
+            "bearing_limiter_distribution": {
+              "capacity": 81,
+              "inactive": 200,
+              "arrest+yield": 19
+            },
+            "raw_support_distribution": {
+              "1": 100,
+              "0": 181,
+              "2": 19
+            },
+            "support_with_zero_count_response_frames": 0
+          }
+        }
+      ],
+      "final300_motion": {
+        "center_y_span": 0.110107421875,
+        "center_net_drift": -0.0316009521484375,
+        "full_cycles_above1px": 0,
+        "post_application_endpoint_drift": -0.0318756103515625,
+        "rapier_positional_increment": 2.8767852783203125,
+        "actual_correction_translation": -2.90838623046875,
+        "resulting_translation": -0.0316009521484375,
+        "position_accounting_residual": 0.0,
+        "absolute_vertical_velocity": {
+          "count": 300,
+          "min": 0.4627387225627899,
+          "p50": 1.0681438446044922,
+          "p95": 3.631082773208618,
+          "max": 3.631082773208618,
+          "mean": 1.5060676038265228,
+          "negative": 0,
+          "zero": 0,
+          "positive": 300
+        },
+        "incoming_vertical_velocity": {
+          "count": 300,
+          "min": -2.087053060531616,
+          "p50": 1.0681438446044922,
+          "p95": 4.110878944396973,
+          "max": 4.110878944396973,
+          "mean": 1.1466531697909037,
+          "negative": 100,
+          "zero": 0,
+          "positive": 200
+        },
+        "outgoing_vertical_velocity": {
+          "count": 300,
+          "min": -3.631082773208618,
+          "p50": -0.4627387225627899,
+          "p95": 2.5926742553710938,
+          "max": 2.5926742553710938,
+          "mean": -0.38260965744654335,
+          "negative": 181,
+          "zero": 0,
+          "positive": 119
+        }
+      },
+      "response_all": {
+        "frames": 1800,
+        "correction_active_frames": 477,
+        "total_requested_correction": [
+          0.0,
+          -17.247565880417824
+        ],
+        "total_applied_correction": [
+          0.0,
+          -17.247565880417824
+        ],
+        "total_actual_correction_translation_y": -17.247100830078125,
+        "velocity_zeroing_frames": 477,
+        "total_accepted_impulse": [
+          0.0,
+          -1468.9126283228397
+        ],
+        "total_nominal_bearing_y": -1415.4086301326752,
+        "bearing_limiter_distribution": {
+          "inactive": 1203,
+          "capacity": 479,
+          "arrest+yield": 118
+        },
+        "raw_support_distribution": {
+          "0": 1077,
+          "1": 594,
+          "8": 4,
+          "9": 4,
+          "6": 1,
+          "5": 1,
+          "4": 1,
+          "2": 118
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "response_final300": {
+        "frames": 300,
+        "correction_active_frames": 81,
+        "total_requested_correction": [
+          0.0,
+          -2.9084573835134506
+        ],
+        "total_applied_correction": [
+          0.0,
+          -2.9084573835134506
+        ],
+        "total_actual_correction_translation_y": -2.90838623046875,
+        "velocity_zeroing_frames": 81,
+        "total_accepted_impulse": [
+          0.0,
+          -236.76657250523567
+        ],
+        "total_nominal_bearing_y": -230.99057269096375,
+        "bearing_limiter_distribution": {
+          "capacity": 81,
+          "inactive": 200,
+          "arrest+yield": 19
+        },
+        "raw_support_distribution": {
+          "1": 100,
+          "0": 181,
+          "2": 19
+        },
+        "support_with_zero_count_response_frames": 0
+      },
+      "response_before_clearance": null,
+      "tail_after_clearance": null,
+      "accounting_maximum_residuals": {
+        "post_rapier_to_application": 0,
+        "applied_correction": 0,
+        "correction_age_suppressed": 0,
+        "age_scale": 0,
+        "after_correction": 0,
+        "after_impulse": 0,
+        "post_application": 0,
+        "result_impulse": 0,
+        "result_correction": 0,
+        "next_pre_rapier": 0
+      },
+      "ejection": {
+        "attempts": 0,
+        "no_target_positive_incoming_vy": 0,
+        "no_target_nonpositive_incoming_vy": 0,
+        "note": "Descriptive deterministic attempts, not independent efficacy population"
+      },
+      "high_water": {
+        "pending": 0,
+        "segment_events": 0,
+        "total_events": 0,
+        "frames": 1800,
+        "segments": 30,
+        "replay_part": 0
+      },
+      "conservation_failures": 0,
+      "context_control": {
+        "delayed_overlap_after599": false,
+        "longest_unsupported_hover_frames": 2,
+        "longest_artificial_lift_frames": 0,
+        "unsupported_response_frames": 0,
+        "post_clearance_no_support_response_frames": 0,
+        "support_distribution_final300": {
+          "1": 100,
+          "0": 181,
+          "2": 19
+        }
+      },
+      "recurrence_handoff": []
+    }
+  },
+  "production_selection": false
+}
