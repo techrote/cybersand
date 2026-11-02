@@ -18,6 +18,10 @@ var contact_candidate: String = "legacy"
 const CONTACT_CANDIDATES: Array[String] = ["legacy", "R2", "A1", "LA"]
 var _parameter_inputs: Dictionary = {}
 var _parameters: Dictionary = {"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
+var _budget_input: SpinBox
+var _rest_mode_input: OptionButton
+const REST_MODES: Array[String] = ["control","P","R","C","PRC"]
+var _applied_rest: Dictionary = {"mode":"control","budget":20.0}
 var _parameter_receipt: Label
 var _captured: Dictionary = {}
 var _capture_prefix: String = ""
@@ -73,11 +77,20 @@ func _build_parameter_controls() -> void:
 		panel.add_child(caption)
 		var input := SpinBox.new()
 		input.min_value=0.01 if key in ["mass_multiplier","inertia_multiplier"] else 0.0
-		input.max_value=368.48 if key=="gravity" else 4.0
+		input.max_value=368.48 if key=="gravity" else (64.0 if key in ["mass_multiplier","inertia_multiplier"] else 4.0)
 		input.step=0.01
 		input.value=float(_parameters[key])
 		panel.add_child(input)
 		_parameter_inputs[key]=input
+	var budget_label := Label.new()
+	budget_label.text="Base impulse budget (LA/rest only)"
+	panel.add_child(budget_label)
+	_budget_input=SpinBox.new()
+	_budget_input.min_value=5.0; _budget_input.max_value=80.0; _budget_input.step=1.0; _budget_input.value=20.0
+	panel.add_child(_budget_input)
+	_rest_mode_input=OptionButton.new()
+	for mode: String in REST_MODES: _rest_mode_input.add_item({"control":"LA control","P":"Contact persistence","R":"Rest-aware correction","C":"Residual catch","PRC":"Persistence + correction + catch"}[mode])
+	panel.add_child(_rest_mode_input)
 	var apply := Button.new()
 	apply.text="Apply values and reset scene"
 	apply.focus_mode=Control.FOCUS_NONE
@@ -102,6 +115,11 @@ func _apply_parameters() -> void:
 	if contact_candidate=="legacy" and (staged.mass_multiplier!=1.0 or staged.inertia_multiplier!=1.0):
 		_status.text="Mass/inertia overrides require R2, A1 or LA; press C to choose"
 		return
+	_budget_input.apply(); _budget_input.get_line_edit().release_focus()
+	_applied_rest={"mode":REST_MODES[_rest_mode_input.selected],"budget":_budget_input.value}
+	if contact_candidate!="LA" and (_applied_rest.mode!="control" or _applied_rest.budget!=20.0):
+		_status.text="Budget/rest variants require LA; press C to select LA, then Apply"
+		return
 	_parameters=staged
 	_open()
 
@@ -110,6 +128,9 @@ func _restore_parameters() -> void:
 	_parameters={"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
 	for key: String in _parameter_inputs:
 		_parameter_inputs[key].value=float(_parameters[key])
+	_applied_rest={"mode":"control","budget":20.0}
+	_budget_input.value=20.0
+	_rest_mode_input.select(0)
 	_open()
 
 func _label(at: Vector2, size: int) -> Label:
@@ -123,7 +144,7 @@ func _label(at: Vector2, size: int) -> Label:
 func _arm_label() -> String:
 	if contact_candidate == "legacy":
 		return "legacy / conservative relocation" if conservative_displacement else "legacy / historical contact control"
-	return "experimental GCR " + contact_candidate
+	return "experimental GCR " + contact_candidate + (" / " + str(_applied_rest.mode) + " / B=" + str(_applied_rest.budget) if contact_candidate=="LA" else "")
 
 func _cycle_candidate() -> void:
 	if busy:
@@ -137,6 +158,7 @@ func _cycle_candidate() -> void:
 func _open() -> void:
 	busy = true
 	_parameter_receipt.text = "Applied: g=%.2f | mass=%.3f (payload 520)\nfriction=%.2f | inertia scale=%.3f%s" % [_parameters.gravity,520.0*float(_parameters.mass_multiplier),_parameters.friction,_parameters.inertia_multiplier,"\nEXPLORATORY OVERRIDE" if _parameters!={"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0} else "\nPayload mass/inertia defaults"]
+	_parameter_receipt.text += "\nEffective mass scale %.1f / 4096%s" % [minf(4096.0,maxf(1.0,520.0*float(_parameters.mass_multiplier)))," (SATURATED)" if 520.0*float(_parameters.mass_multiplier)>4096.0 else ""]
 	if session != null:
 		session.close()
 	session = Session.new()
@@ -151,7 +173,7 @@ func _open() -> void:
 		busy = false
 		queue_redraw()
 		return
-	if await session.open(self, workers, SURROUNDINGS[surroundings], conservative_displacement, contact_candidate, _parameters):
+	if await session.open(self, workers, SURROUNDINGS[surroundings], conservative_displacement, contact_candidate, _parameters, _applied_rest if contact_candidate=="LA" else {}):
 		var intact: Dictionary = await session.observe_intact()
 		_status.text = "%s / %s / %s / workers %d — SPACE cuts the actual native trunk" % [
 			_arm_label(), str(intact.get("outcome")), SURROUNDINGS_LABELS[surroundings], workers]
@@ -270,7 +292,7 @@ func _capture(suffix: String) -> void:
 
 func _draw() -> void:
 	const ORIGIN := Vector2(35, 104)
-	var SCALE := Vector2(4.5,4.5) if surroundings>=4 else Vector2(7,7)
+	var SCALE := Vector2(4.5,4.5) if surroundings>=4 else Vector2(5,5)
 	draw_set_transform(ORIGIN, 0, SCALE)
 	if cells.size() >= 1024 * 128 * channels:
 		for y: int in range(128 if surroundings>=4 else 88):
@@ -295,6 +317,7 @@ func _draw() -> void:
 	draw_set_transform(Vector2.ZERO)
 
 func _exit_tree() -> void:
+	_parameter_receipt.text += "\nEffective mass scale %.1f / 4096%s" % [minf(4096.0,maxf(1.0,520.0*float(_parameters.mass_multiplier)))," (SATURATED)" if 520.0*float(_parameters.mass_multiplier)>4096.0 else ""]
 	if session != null:
 		session.close()
 		session = null

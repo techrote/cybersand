@@ -94,6 +94,7 @@ var sparse_flight_moves_last_tick: int = 0
 var rigid_body_results: PackedFloat32Array = PackedFloat32Array()
 var gcr_body_results: PackedFloat64Array = PackedFloat64Array()
 var gcr_result_generation_usec: int = 0
+var gcr_rest_receipt: Dictionary = {} # Versioned immutable value authority; not diagnostics.
 var rigid_body_contacts_last_tick: int = 0
 var rigid_body_displaced_last_tick: int = 0
 var rigid_body_unresolved_last_tick: int = 0

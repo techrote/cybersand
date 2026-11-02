@@ -41,6 +41,9 @@ int main(){try{
     check(caught.rest_scans<=4&&caught.updates<=16,"bounded certificate scans");
     auto pivot=ground(1);const auto one=solve(b,pivot,20,1,20,&arrest);
     check(!one.catch_applied&&one.catch_refusal==CatchRefusal::NoContacts,"one-node pivot cannot freeze full body");
+    auto edge=ground(2);auto offcentre=b;offcentre.com={2,0};
+    const auto unbalanced=solve(offcentre,edge,20,1,20,&arrest);
+    check(!unbalanced.catch_applied&&!unbalanced.gravity_certified,"edge torque cannot be held by an unbalanced patch");
     arrest.gravity=1000;const auto weak=solve(b,bins,20,1,20,&arrest);
     check(!weak.catch_applied&&!weak.gravity_certified,"cannot arrest when gravity support infeasible");
     arrest.gravity=92.12;b.velocity={.01,.00001};const auto glide=solve(b,bins,20,1,20,&arrest);

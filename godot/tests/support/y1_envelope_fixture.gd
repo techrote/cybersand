@@ -27,10 +27,10 @@ func is_gcr() -> bool:
 	return candidate.begins_with("GCR")
 
 func runtime_identity() -> Dictionary:
-	return {"native_candidate":"GCR-LA" if candidate=="GCR-LA" else ("GCR-A1" if candidate == "GCR-A1" else ("GCR" if is_gcr() else candidate)),
+	return {"native_candidate":"GCR-REST" if candidate=="GCR-REST" else "GCR-LA" if candidate=="GCR-LA" else ("GCR-A1" if candidate == "GCR-A1" else ("GCR" if is_gcr() else candidate)),
 		"admission_variant":str(world.get_gcr_admission_variant()) if world.has_method("get_gcr_admission_variant") else ("unsupported" if is_gcr() else "disabled"),
 		"evaluator_variant":"R2-second-moment-quadrature" if is_gcr() else candidate,
-		"experiment":"GCR-LA-001-2026-11-02" if candidate=="GCR-LA" else (ADMISSION_TOKEN if candidate == "GCR-A1" else (GCR_TOKEN if is_gcr() else TOKEN))}
+		"experiment":"GCR-REST-001-2026-11-02" if candidate=="GCR-REST" else "GCR-LA-001-2026-11-02" if candidate=="GCR-LA" else (ADMISSION_TOKEN if candidate == "GCR-A1" else (GCR_TOKEN if is_gcr() else TOKEN))}
 
 func packed_boundary_states() -> Variant:
 	if not is_gcr(): return bridge.pack_body_states()
@@ -82,7 +82,7 @@ func observation(include_cells: bool = false) -> Dictionary:
 func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool = true) -> bool:
 	spec = configuration.duplicate(true)
 	candidate = arm
-	if arm not in ["B0", "Y1", "GCR", "GCR-A1", "GCR-LA", "GCR-MU0", "GCR-CENTRAL"] or int(spec.get("ticks",1800)) > 1800: return false
+	if arm not in ["B0", "Y1", "GCR", "GCR-A1", "GCR-LA", "GCR-REST", "GCR-MU0", "GCR-CENTRAL"] or int(spec.get("ticks",1800)) > 1800: return false
 	left = int(spec.get("left",96))
 	width = int(spec.width)
 	floor_y = SURFACE + int(spec.depth)
@@ -93,6 +93,12 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 	if is_gcr():
 		construction = {"workers":int(spec.get("workers",1)),"telemetry":telemetry,
 			"bearing_candidate":"GCR-LA" if arm=="GCR-LA" else ("GCR-A1" if arm == "GCR-A1" else "GCR"),"bearing_experiment":"GCR-LA-001-2026-11-02" if arm=="GCR-LA" else (ADMISSION_TOKEN if arm == "GCR-A1" else GCR_TOKEN)}
+	if arm=="GCR-REST":
+		construction["bearing_candidate"]="GCR-REST"
+		construction["bearing_experiment"]="GCR-REST-001-2026-11-02"
+		construction["gcr_rest_mode"]=str(spec.get("rest_mode","control"))
+		construction["gcr_base_budget"]=float(spec.get("base_budget",20.0))
+		construction["gcr_rest_gravity"]=float(spec.get("gravity",92.12))
 	if world == null or not world.diagnostic_reset(construction):
 		error = "fresh candidate construction refused: " + arm
 		return false
@@ -144,7 +150,9 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 	for index: int in range(int(spec.get("body_count",1))):
 		var body := RigidBody2D.new()
 		body.mass = float(spec.mass)
-		body.gravity_scale = 0.094
+		body.gravity_scale = float(spec.get("gravity",92.12))/980.0
+		if float(spec.get("inertia_multiplier",1.0))!=1.0:
+			body.inertia=body.mass*body_size.length_squared()/12.0*float(spec.inertia_multiplier)
 		body.linear_damp = 0.15
 		body.angular_damp = 0.35
 		body.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
@@ -166,10 +174,13 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 	await host.get_tree().process_frame
 	bridge = CyberRapierPhysicsBridge.new()
 	if bridge.initialize(viewport.world_2d.space,bodies,sizes) != OK: return false
+	if arm=="GCR-REST" and not bridge.configure_gcr_rest(str(spec.get("rest_mode","control")),float(spec.get("base_budget",20.0)),float(spec.get("gravity",92.12))):
+		error="rest bridge configuration refused"
+		return false
 	bridge.enable_diagnostics()
 	for i: int in range(bodies.size()):
 		bridge.reset_body(i,initial_centres[i],angle)
-		PhysicsServer2D.body_set_param(bodies[i].get_rid(),PhysicsServer2D.BODY_PARAM_FRICTION,0.78)
+		PhysicsServer2D.body_set_param(bodies[i].get_rid(),PhysicsServer2D.BODY_PARAM_FRICTION,float(spec.get("friction",0.78)))
 		var velocity := Vector2(0,float(spec.get("speed",30)))
 		if layout in ["horizontal-entry","bank"]: velocity = Vector2(float(spec.get("speed",30)),0)
 		if layout == "glancing": velocity = Vector2(float(spec.get("speed",30)),float(spec.get("vertical_speed",12)))
@@ -231,11 +242,23 @@ func conserved(value: Dictionary) -> bool:
 		if id != 3 and int(value.counts[id]) != int(expected.counts[id]): return false
 	return true
 
+func rest_hard_clearance() -> bool:
+	for i: int in range(bodies.size()):
+		var value: Array = pose(i)
+		var extent := Vector2(absf(cos(value[2]))*body_size.x+absf(sin(value[2]))*body_size.y,absf(sin(value[2]))*body_size.x+absf(cos(value[2]))*body_size.y)*.5
+		if float(value[0])-extent.x<=float(left)+2.0 or float(value[0])+extent.x>=float(left+width)-2.0 or float(value[1])-extent.y<=3.0 or float(value[1])+extent.y>=float(floor_y)-2.0: return false
+	return not bodies.is_empty()
+
 func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 	edit_at(tick)
 	var start: int = Time.get_ticks_usec()
+	var horizontal: float = horizontal_override if not is_nan(horizontal_override) else (float(spec.get("horizontal",0)) if tick >= 120 and tick < 480 else 0.0)
+	var authored_drive := Vector2.ZERO
+	for schedule: Array in spec.get("drive_impulse_schedule",[]):
+		if tick>=int(schedule[0]) and tick<int(schedule[1]): authored_drive.x+=float(schedule[2])
 	for i: int in range(bodies.size()):
-		bridge.apply_horizontal_control(i,horizontal_override if not is_nan(horizontal_override) else (float(spec.get("horizontal",0)) if tick >= 120 and tick < 480 else 0.0),24.0,80.0,3.0,1.0/60.0)
+		bridge.apply_horizontal_control(i,horizontal,24.0,80.0,3.0,1.0/60.0)
+		if authored_drive!=Vector2.ZERO: PhysicsServer2D.body_apply_central_impulse(bodies[i].get_rid(),authored_drive)
 	bridge.step()
 	var step_us: int = Time.get_ticks_usec()-start
 	start = Time.get_ticks_usec()
@@ -245,8 +268,9 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 	for i: int in range(bodies.size()): incoming.append(pose(i))
 	var before: Dictionary = observation(true)
 	start = Time.get_ticks_usec()
+	var rest_context: Dictionary = bridge.gcr_rest_context_for_states(states,horizontal!=0.0 or authored_drive!=Vector2.ZERO,rest_hard_clearance()) if candidate=="GCR-REST" else {}
 	if is_gcr():
-		if not world.prepare_gcr_coupling(states,true):
+		if not world.prepare_gcr_coupling(states,true,rest_context):
 			error = "native GCR sample protocol refused"
 			return []
 	else: world.prepare_rigid_body_coupling(states,true)
@@ -276,7 +300,8 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 	var admission_counter_copy_us: int = Time.get_ticks_usec()-admission_copy_start
 	var computed_results: Variant = results.duplicate()
 	if is_gcr(): results = application_results(computed_results)
-	if is_gcr(): bridge.apply_gcr_results(tick+1,results)
+	var rest_receipt: Dictionary = world.gcr_rest_receipt() if candidate=="GCR-REST" else {}
+	if is_gcr(): bridge.apply_gcr_results(tick+1,results,rest_receipt)
 	else: bridge.apply_cellular_results(tick+1,results)
 	var apply_us: int = Time.get_ticks_usec()-start
 	var post: Dictionary = observation(true)
@@ -285,7 +310,8 @@ func step(telemetry: bool = true, horizontal_override: float = NAN) -> Array:
 	for i: int in range(bodies.size()):
 		var outgoing: Array = pose(i)
 		var row: Dictionary = {"tick":tick,"body":i+1,"in":incoming[i],"out":outgoing,
-			"pre_overlap":overlap(before,incoming[i]),"post_overlap":overlap(after,incoming[i]),"tick_overlap":overlap(post,outgoing),
+			"rest_context":rest_context.duplicate(true),"rest_receipt":json_value(rest_receipt),"authored_drive_impulse":[authored_drive.x,authored_drive.y],"authored_horizontal_control":horizontal,
+		"pre_overlap":overlap(before,incoming[i]),"post_overlap":overlap(after,incoming[i]),"tick_overlap":overlap(post,outgoing),
 			"conserved":valid_conservation,"water":post.water_mass,"material_count":post.counts[int(spec.material)],
 			"times_us":[step_us,coupling_us,tick_us,apply_us],"work":[world.get_scanned_last_tick(),world.get_moves_last_tick(),world.get_active_blocks_last_tick()],
 			"coupling_prepare_us":coupling_prepare_us,"result_generation_us":result_generation_us,"diagnostic_copy_us":diagnostic_copy_us,"packing_us":packing_us,

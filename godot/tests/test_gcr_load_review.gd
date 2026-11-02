@@ -21,9 +21,9 @@ func _run() -> void:
 	current_scene=view
 	check(await wait_review(view),"source-matched barrel scene ready")
 	if view.fixture!=null:
-		check(view.fixture.candidate=="GCR-LA","explicit experimental LA selection")
+		check(view.fixture.candidate=="GCR-REST" and str(view.fixture.spec.get("rest_mode",""))=="control" and float(view.fixture.spec.get("base_budget",0))==20.0,"explicit experimental LA selection")
 		check(view.paused and view.fixture.tick==0,"owner starts paused without efficacy trajectory")
-		check(view.cases.size()==8,"registered barrel population exposed")
+		check(view.cases.size()>=11,"original references and registered rest mechanisms exposed")
 		check(is_equal_approx(view.fixture.bodies[0].mass,1.0),"registered mass1 default")
 		var old_fixture: RefCounted = view.fixture
 		view.parameters.mass.value=2.0

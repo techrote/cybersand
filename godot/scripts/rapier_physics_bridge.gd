@@ -18,7 +18,7 @@ const HARD_SURFACE_CHUNK_SIZE: int = 64
 const GCR_MAX_RESULT_AGE_TICKS: int = 1
 const GCR_MAX_CONTACT_DISPLACEMENT: float = 0.5
 const GCR_SAMPLE_HISTORY: int = MAX_CELLULAR_RESULT_AGE_TICKS + 2
-const GCR_SAMPLE_FIELDS: int = 5 # origin x/y, rotation, actual COM x/y
+const GCR_SAMPLE_FIELDS: int = 11 # pose/COM5, sampled velocity3, mass/inertia2, drive sequence
 
 var _space: RID
 var _bodies: Array[RigidBody2D] = []
@@ -59,6 +59,41 @@ var _gcr_compound_centers := PackedVector2Array()
 var _gcr_compound_sizes := PackedVector2Array()
 static var _next_gcr_session_id: int = 0
 var _gcr_session_id: int = 0
+var _gcr_rest_enabled: bool = false
+var _gcr_rest_mode: String = "control"
+var _gcr_rest_budget: float = 20.0
+var _gcr_rest_gravity: float = 92.12
+var _gcr_rest_drive_sequence: int = 0
+var _gcr_rest_drive_since_context: bool = false
+var _gcr_rest_context_samples: Array[Dictionary] = []
+
+
+func configure_gcr_rest(mode: String, budget: float = 20.0, gravity: float = 92.12) -> bool:
+	# Explicit comparison apparatus only. Reconfigure via a fresh bridge/session.
+	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or _gcr_rest_enabled or _body_rids.size()!=1 or _sample_serial!=0 or _last_result_snapshot_serial!=-1: return false
+	if mode not in CyberRigidBodyCoupling.GCR_REST_MODES or not is_finite(budget) or budget<5.0 or budget>80.0 or not is_finite(gravity) or gravity<0.0 or gravity>368.48: return false
+	_gcr_rest_enabled=true
+	_gcr_rest_mode=mode
+	_gcr_rest_budget=budget
+	_gcr_rest_gravity=gravity
+	_gcr_rest_context_samples.resize(GCR_SAMPLE_HISTORY)
+	_gcr_rest_context_samples.fill({})
+	return true
+
+
+func gcr_rest_context_for_states(states: PackedFloat64Array, external_drive: bool, hard_clearance: bool) -> Dictionary:
+	# Callers attest to the known laboratory drive and hard geometry. Generic
+	# actors with independent actuation paths do not acquire catch authority.
+	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _gcr_rest_enabled or _body_rids.size()!=1 or states.size()<17 or states.size()%17!=0: return {}
+	if not is_instance_valid(_bodies[0]) or int(states[10])!=_sample_serial or int(states[16])!=_gcr_session_id: return {}
+	var actual_gravity: float = float(ProjectSettings.get_setting("physics/2d/default_gravity",980.0))*_bodies[0].gravity_scale
+	if not is_finite(actual_gravity) or absf(actual_gravity-_gcr_rest_gravity)>1e-5*maxf(1.0,_gcr_rest_gravity): return {}
+	var result: Dictionary = {"version":CyberRigidBodyCoupling.GCR_REST_VERSION,"sample":_sample_serial,"session":_gcr_session_id,
+		"gravity":_gcr_rest_gravity,"external_drive":external_drive or _gcr_rest_drive_since_context,"hard_clearance":hard_clearance,
+		"last_applied_sample":_applied_sample_serials[0]}
+	_gcr_rest_drive_since_context=false
+	_gcr_rest_context_samples[_sample_serial%GCR_SAMPLE_HISTORY]=result.duplicate(true)
+	return result
 
 
 # Opt-in fixed storage: age, accepted x/y, duplicate, stale, received per body.
@@ -439,6 +474,9 @@ func _reset_gcr_history() -> void:
 	_gcr_application_diagnostics.clear()
 	_gcr_compound_centers.clear()
 	_gcr_compound_sizes.clear()
+	_gcr_rest_drive_sequence=0
+	_gcr_rest_drive_since_context=false
+	if not _gcr_rest_context_samples.is_empty(): _gcr_rest_context_samples.fill({})
 
 
 func pack_gcr_body_states() -> PackedFloat64Array:
@@ -483,6 +521,10 @@ func pack_gcr_body_states() -> PackedFloat64Array:
 			_gcr_sample_poses[history_offset + field] = states[offset + 1 + field]
 		_gcr_sample_poses[history_offset + 3] = states[offset + CyberRigidBodyCoupling.GCR_INPUT_COM_X]
 		_gcr_sample_poses[history_offset + 4] = states[offset + CyberRigidBodyCoupling.GCR_INPUT_COM_Y]
+		for field: int in range(3): _gcr_sample_poses[history_offset+5+field]=states[offset+6+field]
+		_gcr_sample_poses[history_offset+8]=states[offset+9]
+		_gcr_sample_poses[history_offset+9]=states[offset+11]
+		_gcr_sample_poses[history_offset+10]=float(_gcr_rest_drive_sequence)
 	return states
 
 
@@ -516,6 +558,10 @@ func pack_gcr_compound_states(local_centers: PackedVector2Array, sizes: PackedVe
 	_gcr_sample_poses[history+2]=pose.get_rotation()
 	_gcr_sample_poses[history+3]=com.x
 	_gcr_sample_poses[history+4]=com.y
+	for field: int in range(3): _gcr_sample_poses[history+5+field]=common[6+field]
+	_gcr_sample_poses[history+8]=mass
+	_gcr_sample_poses[history+9]=inertia
+	_gcr_sample_poses[history+10]=float(_gcr_rest_drive_sequence)
 	_gcr_compound_centers = local_centers.duplicate()
 	_gcr_compound_sizes = sizes.duplicate()
 	var transform: Transform2D = pose
@@ -531,8 +577,8 @@ func pack_gcr_compound_states(local_centers: PackedVector2Array, sizes: PackedVe
 		result.append_array(row)
 	return result
 
-func apply_gcr_compound_results(snapshot_serial: int, results: PackedFloat64Array) -> int:
-	return _apply_gcr_results(snapshot_serial,results,true)
+func apply_gcr_compound_results(snapshot_serial: int, results: PackedFloat64Array, rest_receipt: Dictionary = {}) -> int:
+	return _apply_gcr_results(snapshot_serial,results,true,rest_receipt)
 
 func gcr_application_diagnostics() -> Dictionary:
 	return _gcr_application_diagnostics.duplicate(true)
@@ -548,10 +594,45 @@ func _refuse_gcr(reason: String, received: int) -> int:
 	return 0
 
 
-func apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array) -> int:
-	return _apply_gcr_results(snapshot_serial,results,false)
+func apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, rest_receipt: Dictionary = {}) -> int:
+	return _apply_gcr_results(snapshot_serial,results,false,rest_receipt)
 
-func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compound: bool) -> int:
+
+static func _gcr_rest_number(value: Variant) -> bool:
+	return typeof(value) in [TYPE_INT,TYPE_FLOAT] and is_finite(float(value))
+
+
+static func _gcr_rest_integer(value: Variant) -> bool:
+	return _gcr_rest_number(value) and float(value)==floorf(float(value))
+
+
+func _gcr_rest_row_valid(row: Dictionary, index: int, serial: int, history: int) -> bool:
+	for key: String in ["id","sample","session","quiet_count","post_overlap"]:
+		if not _gcr_rest_integer(row.get(key)): return false
+	if row.id!=index+1 or row.sample!=serial or row.session!=_gcr_session_id: return false
+	for key: String in ["catch_applied","correction_mode","gravity_certified","overlap_measured"]:
+		if typeof(row.get(key))!=TYPE_BOOL: return false
+	if row.correction_mode!=(_gcr_rest_mode in ["R","PRC"]): return false
+	if row.quiet_count<0 or (row.overlap_measured and row.post_overlap<0): return false
+	for key: String in ["uncaught_impulse","catch_delta_impulse","sample_velocity"]:
+		if not row.get(key) is Vector2 or not row[key].is_finite(): return false
+	for key: String in ["uncaught_torque","catch_delta_torque","sample_omega","mass","inertia","gravity","dt"]:
+		if not _gcr_rest_number(row.get(key)): return false
+	if row.mass<=0 or row.inertia<=0 or row.dt<=0 or absf(float(row.dt)-fixed_delta())>1e-9: return false
+	if absf(float(row.gravity)-_gcr_rest_gravity)>1e-6*maxf(1.,_gcr_rest_gravity): return false
+	var sampled_velocity := Vector2(_gcr_sample_poses[history+5],_gcr_sample_poses[history+6])
+	if row.sample_velocity!=sampled_velocity or row.sample_omega!=_gcr_sample_poses[history+7]: return false
+	if absf(float(row.mass)-_gcr_sample_poses[history+8])>1e-6*maxf(1.,float(row.mass)) or absf(float(row.inertia)-_gcr_sample_poses[history+9])>1e-6*maxf(1.,float(row.inertia)): return false
+	if row.catch_applied and (_gcr_rest_mode not in ["C","PRC"] or not row.gravity_certified or not row.overlap_measured or row.post_overlap!=0 or row.quiet_count<30): return false
+	if not row.catch_applied and (row.catch_delta_impulse!=Vector2.ZERO or row.catch_delta_torque!=0.): return false
+	return true
+
+
+static func _gcr_kinetic(mass: float, inertia: float, velocity: Vector2, omega: float) -> float:
+	return .5*mass*velocity.length_squared()+.5*inertia*omega*omega
+
+
+func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compound: bool, rest_receipt: Dictionary = {}) -> int:
 	_last_results_applied = 0
 	_last_stale_results_rejected = 0
 	_gcr_application_diagnostics = {"accepted": false, "refusal": "", "snapshot": snapshot_serial, "bodies": []}
@@ -565,6 +646,11 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 	if results.is_empty() or results.size() % stride != 0 or results.size() > CyberRigidBodyCoupling.MAX_BODIES * stride:
 		return _refuse_gcr("layout", 0)
 	var count: int = results.size() / stride
+	if _gcr_rest_enabled:
+		if count!=1 or not _gcr_rest_integer(rest_receipt.get("version")) or not _gcr_rest_integer(rest_receipt.get("session")) or rest_receipt.version!=CyberRigidBodyCoupling.GCR_REST_VERSION or rest_receipt.get("mode","")!=_gcr_rest_mode or rest_receipt.session!=_gcr_session_id or not rest_receipt.get("bodies") is Array or rest_receipt.bodies.size()!=count:
+			return _refuse_gcr("rest_receipt",count)
+	elif not rest_receipt.is_empty():
+		return _refuse_gcr("rest_unconfigured",count)
 	if compound:
 		if count!=1 or _body_rids.size()!=1 or _gcr_compound_centers.is_empty() or results[0]!=1. or results[12]!=2.: return _refuse_gcr("compound_layout",count)
 		# Version2 is accepted only by this explicit physical-owner route.
@@ -606,6 +692,11 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 		var sampled_origin := Vector2(_gcr_sample_poses[history_offset], _gcr_sample_poses[history_offset + 1])
 		var sampled_rotation: float = _gcr_sample_poses[history_offset + 2]
 		var sampled_com := Vector2(_gcr_sample_poses[history_offset + 3], _gcr_sample_poses[history_offset + 4])
+		var rest: Dictionary = {}
+		if _gcr_rest_enabled:
+			if not rest_receipt.bodies[record] is Dictionary: return _refuse_gcr("rest_receipt",count)
+			rest=rest_receipt.bodies[record]
+			if not _gcr_rest_row_valid(rest,index,serial,history_offset): return _refuse_gcr("rest_receipt",count)
 		var echoed_com := Vector2(results[offset + CyberRigidBodyCoupling.GCR_RESULT_COM_X], results[offset + CyberRigidBodyCoupling.GCR_RESULT_COM_Y])
 		if sampled_com != echoed_com:
 			return _refuse_gcr("com", count)
@@ -616,6 +707,18 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 		var current_com: Vector2 = current * direct.center_of_mass_local
 		if not current.origin.is_finite() or not current_com.is_finite() or not is_finite(current.get_rotation()):
 			return _refuse_gcr("body", count)
+		if not rest.is_empty() and rest.catch_applied:
+			if age!=0: return _refuse_gcr("rest_catch_age",count)
+			var context: Dictionary = _gcr_rest_context_samples[slot]
+			if context.get("sample",-1)!=serial or context.get("session",0)!=_gcr_session_id or context.get("external_drive",true) or not context.get("hard_clearance",false): return _refuse_gcr("rest_catch_context",count)
+			if _gcr_rest_drive_sequence!=int(_gcr_sample_poses[history_offset+10]): return _refuse_gcr("rest_catch_drive",count)
+			var actual_mass: float = PhysicsServer2D.body_get_param(_body_rids[index],PhysicsServer2D.BODY_PARAM_MASS)
+			var actual_inertia: float = PhysicsServer2D.body_get_param(_body_rids[index],PhysicsServer2D.BODY_PARAM_INERTIA)
+			var velocity_tolerance: float = 1e-6*maxf(1.,rest.sample_velocity.length())
+			if direct.linear_velocity.distance_to(rest.sample_velocity)>velocity_tolerance or absf(direct.angular_velocity-float(rest.sample_omega))>1e-6*maxf(1.,absf(float(rest.sample_omega))): return _refuse_gcr("rest_catch_velocity",count)
+			if absf(actual_mass-float(rest.mass))>1e-6*maxf(1.,actual_mass) or absf(actual_inertia-float(rest.inertia))>1e-6*maxf(1.,actual_inertia): return _refuse_gcr("rest_catch_properties",count)
+			var actual_gravity: float = float(ProjectSettings.get_setting("physics/2d/default_gravity",980.0))*_bodies[index].gravity_scale
+			if absf(actual_gravity-_gcr_rest_gravity)>1e-5*maxf(1.,_gcr_rest_gravity): return _refuse_gcr("rest_catch_gravity",count)
 		observation.merge({"sampled_com":sampled_com, "current_com":current_com,
 			"sampled_origin":sampled_origin, "sampled_rotation":sampled_rotation,
 			"current_origin":current.origin, "current_rotation":current.get_rotation()})
@@ -634,6 +737,8 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 			return _refuse_gcr("age", count)
 		if contact_displacement > GCR_MAX_CONTACT_DISPLACEMENT:
 			return _refuse_gcr("geometry", count)
+		if not rest.is_empty() and rest.catch_applied and contact_displacement>1e-5:
+			return _refuse_gcr("rest_catch_geometry",count)
 		var correction := Vector2(results[offset + CyberRigidBodyCoupling.RESULT_CORRECTION_X], results[offset + CyberRigidBodyCoupling.RESULT_CORRECTION_Y])
 		if age > MAX_POSITIONAL_CORRECTION_AGE_TICKS:
 			correction = Vector2.ZERO
@@ -641,6 +746,9 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 			correction = Vector2.ZERO
 		var impulse := Vector2(results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_X], results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_Y])
 		var angular_sample: float = results[offset + CyberRigidBodyCoupling.GCR_RESULT_ANGULAR_IMPULSE]
+		if not rest.is_empty():
+			if (rest.uncaught_impulse+rest.catch_delta_impulse).distance_to(impulse)>1e-6*maxf(1.,impulse.length()) or absf(float(rest.uncaught_torque)+float(rest.catch_delta_torque)-angular_sample)>1e-6*maxf(1.,absf(angular_sample)): return _refuse_gcr("rest_wrench",count)
+			if rest.catch_applied and not rest.correction_mode and correction!=Vector2.ZERO: return _refuse_gcr("rest_catch_correction",count)
 		# Translate the world-space wrench to the COM at application, including
 		# separate positional correction; then apply one common age scale to J/L.
 		var angular_current: float = angular_sample + (sampled_com - current_com - correction).cross(impulse)
@@ -649,6 +757,11 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 			return _refuse_gcr("wrench", count)
 		observation.merge({"correction":correction, "impulse":impulse * scale, "sampled_angular_impulse":angular_sample,
 			"translated_angular_impulse":angular_current, "angular_impulse":angular_current * scale})
+		if not rest.is_empty():
+			var uncaught_angular: float = float(rest.uncaught_torque)+(sampled_com-current_com-correction).cross(rest.uncaught_impulse)
+			observation.merge({"rest_mode":_gcr_rest_mode,"rest_receipt_version":CyberRigidBodyCoupling.GCR_REST_VERSION,"rest_correction_mode":rest.correction_mode,"catch_applied":rest.catch_applied,
+				"uncaught_impulse":rest.uncaught_impulse*scale,"uncaught_angular_impulse":uncaught_angular*scale,
+				"catch_delta_impulse":rest.catch_delta_impulse*scale,"catch_delta_angular_impulse":(angular_current-uncaught_angular)*scale,"rest_gravity":float(rest.gravity)})
 		applications.append(observation)
 	_last_result_snapshot_serial = snapshot_serial
 	for application: Dictionary in applications:
@@ -659,25 +772,49 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 		var impulse: Vector2 = application.impulse
 		var angular: float = application.angular_impulse
 		var velocity_before: Vector2 = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+		var omega_before: float = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
+		var actual_mass: float = PhysicsServer2D.body_get_param(rid,PhysicsServer2D.BODY_PARAM_MASS)
+		var actual_inertia: float = PhysicsServer2D.body_get_param(rid,PhysicsServer2D.BODY_PARAM_INERTIA)
+		var gravity: float = float(ProjectSettings.get_setting("physics/2d/default_gravity",980.0))*_bodies[index].gravity_scale
+		var old_zeroing_velocity: Vector2 = velocity_before
+		if correction.x!=0.0 and old_zeroing_velocity.x*correction.x<0.0: old_zeroing_velocity.x=0.0
+		if correction.y!=0.0 and old_zeroing_velocity.y*correction.y<0.0: old_zeroing_velocity.y=0.0
 		if correction.length_squared() > MOTION_EPSILON_SQUARED:
 			var transform: Transform2D = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
 			transform.origin += correction
 			PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM, transform)
 			_transforms[index] = transform
 			var velocity: Vector2 = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
-			if correction.x != 0.0 and velocity.x * correction.x < 0.0: velocity.x = 0.0
-			if correction.y != 0.0 and velocity.y * correction.y < 0.0: velocity.y = 0.0
-			PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY, velocity)
-		if compound:
-			application["velocity_before_correction"] = velocity_before
-			application["velocity_after_zeroing"] = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
-			application["correction_applied"] = correction!=Vector2.ZERO
-			application["physical_wrench_applications"] = 1 if impulse!=Vector2.ZERO or angular!=0. else 0
+			if not application.get("rest_correction_mode",false):
+				if correction.x != 0.0 and velocity.x * correction.x < 0.0: velocity.x = 0.0
+				if correction.y != 0.0 and velocity.y * correction.y < 0.0: velocity.y = 0.0
+				PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY, velocity)
+		var velocity_after_zeroing: Vector2 = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+		var omega_after_zeroing: float = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
+		application.merge({"velocity_before_correction":velocity_before,"omega_before_correction":omega_before,
+			"velocity_after_zeroing":velocity_after_zeroing,"omega_after_zeroing":omega_after_zeroing,
+			"old_zeroing_counterfactual_velocity":old_zeroing_velocity,"correction_applied":correction!=Vector2.ZERO,
+			"physical_wrench_applications":1 if impulse!=Vector2.ZERO or angular!=0. else 0,"actual_mass":actual_mass,"actual_inertia":actual_inertia,
+			"kinetic_before_correction":_gcr_kinetic(actual_mass,actual_inertia,velocity_before,omega_before),
+			"kinetic_after_zeroing":_gcr_kinetic(actual_mass,actual_inertia,velocity_after_zeroing,omega_after_zeroing),
+			"correction_potential_delta":-actual_mass*gravity*correction.y})
+		application["zeroing_removed_energy"]=application.kinetic_before_correction-application.kinetic_after_zeroing
 		# One J/L pair. No second application through the central-only legacy law.
 		if impulse != Vector2.ZERO:
 			PhysicsServer2D.body_apply_central_impulse(rid, impulse)
 		if angular != 0.0:
 			PhysicsServer2D.body_apply_torque_impulse(rid, angular)
+		var velocity_after: Vector2 = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+		var omega_after: float = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
+		var kinetic_after: float = _gcr_kinetic(actual_mass,actual_inertia,velocity_after,omega_after)
+		application.merge({"velocity_after_wrench":velocity_after,"omega_after_wrench":omega_after,"kinetic_after_wrench":kinetic_after,"catch_removed_energy":0.0})
+		if application.get("catch_applied",false):
+			var uncaught_velocity: Vector2 = velocity_after_zeroing+application.uncaught_impulse/actual_mass
+			var uncaught_omega: float = omega_after_zeroing+float(application.uncaught_angular_impulse)/actual_inertia
+			var uncaught_energy: float = _gcr_kinetic(actual_mass,actual_inertia,uncaught_velocity,uncaught_omega)
+			application.merge({"uncaught_counterfactual_velocity":uncaught_velocity,"uncaught_counterfactual_omega":uncaught_omega,
+				"uncaught_counterfactual_kinetic":uncaught_energy})
+			application["catch_removed_energy"]=uncaught_energy-kinetic_after
 		if correction != Vector2.ZERO or impulse != Vector2.ZERO or angular != 0.0:
 			PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
 			_last_results_applied += 1
@@ -1195,6 +1332,8 @@ func apply_horizontal_control(
 		_body_rids[body_index],
 		Vector2(impulse_x, 0.0)
 	)
+	_gcr_rest_drive_sequence+=1
+	_gcr_rest_drive_since_context=true
 	PhysicsServer2D.body_set_state(
 		_body_rids[body_index],
 		PhysicsServer2D.BODY_STATE_SLEEPING,
@@ -1212,6 +1351,8 @@ func apply_trial_impulses(body_index: int, impulse: Vector2, angular_impulse: fl
 	PhysicsServer2D.body_apply_central_impulse(rid, impulse.limit_length(24.0))
 	PhysicsServer2D.body_apply_torque_impulse(rid, clampf(angular_impulse, -0.2, 0.2))
 	if impulse.length_squared() > 0.0 or angular_impulse != 0.0:
+		_gcr_rest_drive_sequence+=1
+		_gcr_rest_drive_since_context=true
 		PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
 	return true
 
@@ -1333,6 +1474,9 @@ func refresh_dynamic_states() -> void:
 
 func clear_state() -> void:
 	_reset_gcr_history()
+	_gcr_rest_enabled=false
+	_gcr_rest_mode="control"
+	_gcr_rest_context_samples.clear()
 	_initialized = false
 	_space = RID()
 	_bodies.clear()

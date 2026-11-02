@@ -65,6 +65,7 @@ var _gcr_experiment: bool = false
 var _gcr_compound_mode: bool = false
 var _gcr_compound_lease: Dictionary = {}
 var _gcr_compound_preparation: Dictionary = {}
+var _gcr_rest_context: Dictionary = {}
 var _gcr_world_generation: int = 1
 var _rigid_body_epoch: int = 0
 var _physical_effect_epoch: int = 0
@@ -1141,8 +1142,9 @@ func configure_granular_experiment(candidate: String) -> bool:
 	_gcr_world_generation = _world_generation
 	return true
 
-func set_gcr_compound_states(states: PackedFloat64Array, lease: Dictionary, body_epoch: int) -> bool:
+func set_gcr_compound_states(states: PackedFloat64Array, lease: Dictionary, body_epoch: int, rest_context: Dictionary = {}) -> bool:
 	if not _gcr_experiment or not _gcr_compound_mode or states.is_empty() or states.size()%17!=0 or states.size()>64*17: return false
+	if not CyberRigidBodyCoupling.gcr_rest_context_valid(rest_context,states): return false
 	for value: float in states:
 		if not is_finite(value): return false
 	if lease.size()!=4 or not lease.has("token") or not lease.has("body_id") or not lease.has("body_generation") or not lease.has("physics_epoch"): return false
@@ -1155,13 +1157,15 @@ func set_gcr_compound_states(states: PackedFloat64Array, lease: Dictionary, body
 		return false
 	_gcr_body_states=states.duplicate()
 	_gcr_compound_lease=lease.duplicate(true)
+	_gcr_rest_context=rest_context.duplicate(true)
 	_rigid_body_states=render
 	_rigid_body_epoch=body_epoch
 	_mutex.unlock()
 	return true
 
-func set_gcr_body_states(states: PackedFloat64Array, body_epoch: int = 0) -> bool:
+func set_gcr_body_states(states: PackedFloat64Array, body_epoch: int = 0, rest_context: Dictionary = {}) -> bool:
 	if not _gcr_experiment or states.size() % 17 != 0 or states.size() > 64*17: return false
+	if not CyberRigidBodyCoupling.gcr_rest_context_valid(rest_context,states): return false
 	for value: float in states:
 		if not is_finite(value): return false
 	var render_states := PackedFloat32Array()
@@ -1172,6 +1176,7 @@ func set_gcr_body_states(states: PackedFloat64Array, body_epoch: int = 0) -> boo
 		_mutex.unlock()
 		return false
 	_gcr_body_states = states.duplicate()
+	_gcr_rest_context=rest_context.duplicate(true)
 	_rigid_body_states = render_states
 	_rigid_body_epoch = body_epoch
 	_mutex.unlock()
@@ -1635,6 +1640,7 @@ func _worker_loop() -> void:
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 		var local_gcr_body_states: PackedFloat64Array = PackedFloat64Array()
 		var local_gcr_compound_lease: Dictionary = {}
+		var local_gcr_rest_context: Dictionary = {}
 		var local_rigid_body_epoch: int = 0
 		var local_physical_effects: Array = []
 		var local_physical_usables: Array = []
@@ -1671,6 +1677,7 @@ func _worker_loop() -> void:
 		local_rigid_body_states = _rigid_body_states
 		local_gcr_body_states = _gcr_body_states
 		local_gcr_compound_lease = _gcr_compound_lease.duplicate(true)
+		local_gcr_rest_context = _gcr_rest_context.duplicate(true)
 		local_rigid_body_epoch = _rigid_body_epoch
 		if not physical_wait:
 			local_physical_effects = _pending_physical_effects
@@ -1885,11 +1892,12 @@ func _worker_loop() -> void:
 				_gcr_experiment = false
 				_mutex.lock()
 				_gcr_body_states = PackedFloat64Array()
+				_gcr_rest_context = {}
 				_mutex.unlock()
 			_gcr_world_generation = _world_generation
 			if _gcr_experiment:
 				if _gcr_compound_mode:
-					var installed: bool = _world.prepare_gcr_compound_coupling(local_gcr_body_states,local_gcr_compound_lease,not local_paused)
+					var installed: bool = _world.prepare_gcr_compound_coupling(local_gcr_body_states,local_gcr_compound_lease,not local_paused) if local_gcr_rest_context.is_empty() else _world.prepare_gcr_compound_coupling(local_gcr_body_states,local_gcr_compound_lease,not local_paused,local_gcr_rest_context)
 					if installed and not local_gcr_body_states.is_empty():
 						_gcr_compound_preparation={"installed":true,"sample":int(local_gcr_body_states[10]),
 							"session":int(local_gcr_body_states[16]),"epoch":local_rigid_body_epoch,
@@ -1897,7 +1905,10 @@ func _worker_loop() -> void:
 							"world_generation":_world_generation,"native_tick":int(_world.get_tick_index())}
 					if _world.has_failed(): _gcr_compound_preparation.clear()
 				else:
-					_world.prepare_gcr_coupling(local_gcr_body_states, not local_paused)
+					if local_gcr_rest_context.is_empty():
+						_world.prepare_gcr_coupling(local_gcr_body_states, not local_paused)
+					else:
+						_world.prepare_gcr_coupling(local_gcr_body_states, not local_paused,local_gcr_rest_context)
 			else:
 				_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
 			if _world.has_method(&"has_failed") and bool(_world.has_failed()):
@@ -2188,6 +2199,8 @@ func _publish_snapshot(
 			snapshot.gcr_compound_diagnostics = _world.gcr_compound_diagnostics()
 		else:
 			snapshot.gcr_body_results = _world.gcr_body_results()
+		if _world.has_method(&"gcr_rest_receipt"):
+			snapshot.gcr_rest_receipt = _world.gcr_rest_receipt().duplicate(true)
 		snapshot.gcr_result_generation_usec = Time.get_ticks_usec()-result_started
 	snapshot.rigid_body_contacts_last_tick = _world.rigid_body_contacts_last_tick
 	snapshot.rigid_body_displaced_last_tick = _world.rigid_body_displaced_last_tick
@@ -2325,6 +2338,7 @@ func _publish_failure_snapshot() -> void:
 	snapshot.gcr_compound_results = PackedFloat64Array()
 	snapshot.gcr_compound_preparation = {}
 	snapshot.gcr_compound_diagnostics = {}
+	snapshot.gcr_rest_receipt = {}
 	snapshot.gcr_result_generation_usec = 0
 	snapshot.failed_tick_index = int(_world.get_attempted_tick_index())
 	snapshot.tick_failure_count = int(_world.get_tick_failure_count())
