@@ -14,6 +14,8 @@ var busy: bool = true
 var surroundings: int = 0
 var workers: int = 4
 var conservative_displacement: bool = true
+var contact_candidate: String = "legacy"
+const CONTACT_CANDIDATES: Array[String] = ["legacy", "R2", "A1"]
 var _captured: Dictionary = {}
 var _capture_prefix: String = ""
 var _title: Label
@@ -31,7 +33,7 @@ func _ready() -> void:
 	_stats = _label(Vector2(35, 730), 14)
 	_material_stats = _label(Vector2(35, 755), 14)
 	var help := _label(Vector2(35, 790), 13)
-	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nX excavate below body  |  I inspect conservation  |  ESC exit"
+	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nC fresh contact arm: legacy / experimental R2 / experimental A1\nX excavate below body  |  I inspect conservation  |  ESC exit"
 	var args := OS.get_cmdline_user_args()
 	for i: int in range(args.size()):
 		if args[i] == "--capture" and i + 1 < args.size():
@@ -40,13 +42,14 @@ func _ready() -> void:
 			var choice: int = SURROUNDINGS.find(args[i].trim_prefix("--surroundings="))
 			if choice >= 0:
 				surroundings = choice
+		elif args[i].begins_with("--candidate="):
+			contact_candidate = args[i].trim_prefix("--candidate=")
 		elif args[i] == "--baseline":
 			conservative_displacement = false
 		elif args[i] == "--workers=1":
 			workers = 1
-	_title.text += " / conservative relocation" if conservative_displacement else " / historical contact control"
 	await _open()
-	if not _capture_prefix.is_empty() and not busy:
+	if not _capture_prefix.is_empty() and not busy and session != null and session.worker != null:
 		await get_tree().process_frame
 		await RenderingServer.frame_post_draw
 		_capture("anchored")
@@ -60,6 +63,20 @@ func _label(at: Vector2, size: int) -> Label:
 	add_child(label)
 	return label
 
+func _arm_label() -> String:
+	if contact_candidate == "legacy":
+		return "legacy / conservative relocation" if conservative_displacement else "legacy / historical contact control"
+	return "experimental GCR " + contact_candidate
+
+func _cycle_candidate() -> void:
+	if busy:
+		return
+	if not conservative_displacement:
+		_status.text = "Experimental R2/A1 require conservative relocation; --baseline remains legacy"
+		return
+	contact_candidate = CONTACT_CANDIDATES[(CONTACT_CANDIDATES.find(contact_candidate) + 1) % CONTACT_CANDIDATES.size()]
+	await _open() # Existing close/new-session path; never mutate a live response arm.
+
 func _open() -> void:
 	busy = true
 	if session != null:
@@ -69,11 +86,17 @@ func _open() -> void:
 	cells.clear()
 	snapshot_serial = -1
 	_captured.clear()
-	_material_stats.text = "520-cell RedBrick tree; two exact holes; one aggregate; " + SURROUNDINGS_LABELS[surroundings]
-	if await session.open(self, workers, SURROUNDINGS[surroundings], conservative_displacement):
+	_title.text = "SOL-281 / NATIVE STRUCTURAL DETACHMENT / " + _arm_label()
+	_material_stats.text = "520-cell RedBrick tree; one pixel hole + open concavity; one aggregate; " + SURROUNDINGS_LABELS[surroundings]
+	if contact_candidate not in CONTACT_CANDIDATES or (not conservative_displacement and contact_candidate != "legacy"):
+		_status.text = "Refused contact configuration: --candidate=legacy|R2|A1; --baseline requires legacy"
+		busy = false
+		queue_redraw()
+		return
+	if await session.open(self, workers, SURROUNDINGS[surroundings], conservative_displacement, contact_candidate):
 		var intact: Dictionary = await session.observe_intact()
-		_status.text = "%s / %s / workers %d — SPACE cuts the actual native trunk" % [
-			str(intact.get("outcome")), SURROUNDINGS_LABELS[surroundings], workers]
+		_status.text = "%s / %s / %s / workers %d — SPACE cuts the actual native trunk" % [
+			_arm_label(), str(intact.get("outcome")), SURROUNDINGS_LABELS[surroundings], workers]
 		busy = false
 	else:
 		_status.text = session.last_error
@@ -87,7 +110,7 @@ func _release() -> void:
 	if not await session.cut_and_release():
 		_status.text = session.last_error
 	else:
-		_status.text = "Moving Rapier aggregate / 520 exact payload cells / 6 compound shapes / " + SURROUNDINGS_LABELS[surroundings]
+		_status.text = _arm_label() + " / Moving Rapier aggregate / 520 exact payload cells / 6 compound shapes / " + SURROUNDINGS_LABELS[surroundings]
 	busy = false
 
 func _inspect() -> void:
@@ -127,6 +150,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			if not busy:
 				workers = 1 if workers == 4 else 4
 				_open()
+		KEY_C:
+			_cycle_candidate()
 		KEY_X:
 			if not busy and session != null:
 				_status.text = "Excavation queued through the native owner" if session.excavate_support() else "Excavation refused"
