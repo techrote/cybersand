@@ -101,6 +101,8 @@ func native_protocol() -> void:
 		check(float(diagnostics.get("normal_capacity",INF))<=20.0,"one body normal budget")
 		check(int(diagnostics.get("nodes",9999))<=96 and int(diagnostics.get("updates",9999))<=768,"six rectangle work bound")
 		var retained_mask: PackedInt32Array = original_mask(native)
+		var retained_tick: int = int(native.get_tick_index())
+		var retained_cells: Dictionary = native.diagnostic_snapshot(Vector2i.ZERO,Vector2i(160,128),false,false)
 		for fault: String in ["empty","lease","mass","inertia","com","velocity","session","duplicate","rotation","angle-overflow","angle-maxdouble","angle-nan","angle-inf"]:
 			var broken: PackedFloat64Array = native_states(prepared,2)
 			var bad_lease: Dictionary = lease(prepared)
@@ -122,6 +124,9 @@ func native_protocol() -> void:
 			check(not native.prepare_gcr_compound_coupling(broken,bad_lease,true),"atomic refusal "+fault)
 			check(native.gcr_compound_results().is_empty(),"invalid publication empty "+fault)
 			check(original_mask(native)==retained_mask and int(native.rigid_body_id_at(777,777))==0,"invalid batch retains exact old mask "+fault)
+			var current_cells: Dictionary = native.diagnostic_snapshot(Vector2i.ZERO,Vector2i(160,128),false,false)
+			check(current_cells.cells==retained_cells.cells and current_cells.counts==retained_cells.counts and current_cells.water_mass==retained_cells.water_mass,"invalid batch retains stored material observations "+fault)
+			check(int(native.get_tick_index())==retained_tick,"invalid batch cannot tick native owner "+fault)
 			var after: Dictionary = native.solid_detachment_command({"action":"inspect"})
 			check(after.members==prepared.members and int(after.aggregate_owned)==520,"refusal retains tuples "+fault)
 		check(native.prepare_gcr_compound_coupling(native_states(prepared,3),lease(prepared),true),"fresh recovery")
