@@ -16,6 +16,7 @@ const COUPLING_SAMPLE_LIMIT: int = 1000000
 const COUPLING_IMPULSE_CAP: float = 3.0
 const COUPLING_CORRECTION_CAP: float = 0.5
 
+var _isolated_surroundings: bool = false
 var lab_parameters: Dictionary = {"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
 var worker: CyberSimulationWorker
 var bridge: CyberRapierPhysicsBridge
@@ -95,6 +96,7 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 	close()
 	contact_candidate = candidate
 	lab_parameters=requested.duplicate()
+	_isolated_surroundings=surroundings.begins_with("isolated_")
 	_parent = parent
 	_tree = parent.get_tree()
 	generation += 1
@@ -149,6 +151,20 @@ func _create_worker() -> CyberSimulationWorker:
 func _author_surroundings(native: Object, kind: String) -> bool:
 	# Fixture creation occurs before start_worker(), while this thread exclusively
 	# owns native. Existing solid payload is never overwritten by the bank.
+	if kind.begins_with("isolated_"):
+		if kind not in ["isolated_full","isolated_half","isolated_narrow","isolated_excavate","isolated_dry","isolated_water"]: return false
+		# Same native payload/cut/anchors; remove original floor before threading.
+		if not native.diagnostic_fill_rect(Vector2i(0,72),Vector2i(128,4),0): return false
+		if not native.diagnostic_fill_rect(Vector2i(0,118),Vector2i(128,4),WALL): return false
+		for x: int in [30,119]:
+			if not native.diagnostic_fill_rect(Vector2i(x,34),Vector2i(1,84),WALL): return false
+		var first: int = 57 if kind=="isolated_half" else (56 if kind=="isolated_narrow" else 31)
+		var last: int = 58 if kind=="isolated_narrow" else 119
+		if kind!="isolated_dry":
+			for y: int in range(70,118):
+				for x: int in range(first,last):
+					if int(native.material_at(x,y))==0 and not native.diagnostic_fill_rect(Vector2i(x,y),Vector2i.ONE,WATER if kind=="isolated_water" else SAND): return false
+		return true
 	if kind == "empty":
 		return true
 	if kind not in ["packed_sand", "embedded_sand", "mixed"]:
@@ -296,6 +312,25 @@ func cut_and_release() -> bool:
 		body.sleeping = true
 		active = false
 		return _fail("Compound native occupancy failed to publish; reset required")
+	if _isolated_surroundings:
+		var stump := PackedInt32Array()
+		for y: int in range(67,72):
+			for x: int in range(50,54):
+				stump.append(x); stump.append(y)
+		_release_in_progress=false
+		if not emit_cells(stump,0): return _fail("isolated stump edit refused")
+		set_paused(false)
+		if not await wait_native_ticks(2): return _fail("isolated stump retirement timed out")
+		set_paused(true)
+		var terrain: CyberSimulationSnapshot = owner_worker.take_latest_snapshot(-1)
+		if terrain==null or not terrain.hard_surface_chunk_rectangles_valid:
+			return _fail("isolated terrain retirement snapshot unavailable")
+		if not bridge.queue_hard_surface_chunk_snapshot(terrain.hard_surface_chunk_rectangles):
+			return _fail("isolated collider retirement refused")
+		_terrain_revision=terrain.hard_surface_revision
+		bridge.process_hard_surface_collider_budget(64,0)
+		# Re-prime geometry after material/collider revision while still frozen.
+		if not await _prime_compound_coupling(): return _fail("isolated re-prime refused")
 	body.freeze = false
 	body.sleeping = false
 	bridge.refresh_all_states()
@@ -599,8 +634,8 @@ func excavate_support() -> bool:
 	if not active:
 		return false
 	var points := PackedInt32Array()
-	for y: int in range(69, 76):
-		for x: int in range(40, 102):
+	for y: int in range(70 if _isolated_surroundings else 69, 118 if _isolated_surroundings else 76):
+		for x: int in range(31 if _isolated_surroundings else 40, 119 if _isolated_surroundings else 102):
 			points.append(x)
 			points.append(y)
 	return emit_cells(points, 0)

@@ -1223,7 +1223,7 @@ Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
     Dictionary result; result["enabled"]=gcr_enabled_; result["protocol_version"]=1;
     result["candidate"]=gcr_load_aware_ ? "GCR-LA" : gcr_admission_a1_ ? "GCR-A1":"GCR";
     result["load_aware"]=gcr_load_aware_;
-    result["experiment"]=gcr_admission_a1_ ? "GCR-ADMISSION-001-2026-11-01":"GCR-001-2026-11-01";
+    result["experiment"]=gcr_load_aware_ ? "GCR-LA-001-2026-11-02" : gcr_admission_a1_ ? "GCR-ADMISSION-001-2026-11-01":"GCR-001-2026-11-01";
     result["admission_variant"]=get_gcr_admission_variant();
     result["evaluator_variant"]="R2-second-moment-quadrature";
     result["fixed_bin_storage_bytes"]=static_cast<std::int64_t>(sizeof(gcr_bins_));

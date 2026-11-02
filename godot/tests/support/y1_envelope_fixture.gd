@@ -82,7 +82,7 @@ func observation(include_cells: bool = false) -> Dictionary:
 func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool = true) -> bool:
 	spec = configuration.duplicate(true)
 	candidate = arm
-	if arm not in ["B0", "Y1", "GCR", "GCR-A1", "GCR-MU0", "GCR-CENTRAL"] or int(spec.get("ticks",1800)) > 1800: return false
+	if arm not in ["B0", "Y1", "GCR", "GCR-A1", "GCR-LA", "GCR-MU0", "GCR-CENTRAL"] or int(spec.get("ticks",1800)) > 1800: return false
 	left = int(spec.get("left",96))
 	width = int(spec.width)
 	floor_y = SURFACE + int(spec.depth)
@@ -92,7 +92,7 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 		"bearing_candidate":arm,"bearing_experiment":TOKEN}
 	if is_gcr():
 		construction = {"workers":int(spec.get("workers",1)),"telemetry":telemetry,
-			"bearing_candidate":"GCR-A1" if arm == "GCR-A1" else "GCR","bearing_experiment":ADMISSION_TOKEN if arm == "GCR-A1" else GCR_TOKEN}
+			"bearing_candidate":"GCR-LA" if arm=="GCR-LA" else ("GCR-A1" if arm == "GCR-A1" else "GCR"),"bearing_experiment":"GCR-LA-001-2026-11-02" if arm=="GCR-LA" else (ADMISSION_TOKEN if arm == "GCR-A1" else GCR_TOKEN)}
 	if world == null or not world.diagnostic_reset(construction):
 		error = "fresh candidate construction refused: " + arm
 		return false

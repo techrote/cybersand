@@ -2,8 +2,8 @@ extends Node2D
 
 const Session = preload("res://scripts/solid_detachment_session.gd")
 const Consumer = preload("res://scripts/solid_detachment_render_consumer.gd")
-const SURROUNDINGS: Array[String] = ["empty", "packed_sand", "embedded_sand", "mixed"]
-const SURROUNDINGS_LABELS: Array[String] = ["dry control", "packed Sand", "partially embedded Sand", "mixed Sand / Water"]
+const SURROUNDINGS: Array[String] = ["empty", "packed_sand", "embedded_sand", "mixed", "isolated_full", "isolated_half", "isolated_narrow", "isolated_excavate", "isolated_dry", "isolated_water"]
+const SURROUNDINGS_LABELS: Array[String] = ["dry control", "packed Sand", "partially embedded Sand", "mixed Sand / Water", "isolated full support", "isolated half support", "isolated narrow support", "isolated excavation", "isolated dry", "isolated Water"]
 var session: RefCounted
 var consumer: RefCounted
 var cells := PackedByteArray()
@@ -36,7 +36,7 @@ func _ready() -> void:
 	_stats = _label(Vector2(35, 730), 14)
 	_material_stats = _label(Vector2(35, 755), 14)
 	var help := _label(Vector2(35, 790), 13)
-	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nC fresh arm: legacy / R2 / A1 / LA (load-aware)\nX excavate below body  |  I inspect conservation  |  ESC exit"
+	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nC fresh arm: legacy / R2 / A1 / LA (load-aware)\n5 full / 6 half / 7 narrow / 8 excavation / 9 dry / 0 Water (isolated)\nX excavate below body  |  I inspect conservation  |  ESC exit"
 	_build_parameter_controls()
 	var args := OS.get_cmdline_user_args()
 	for i: int in range(args.size()):
@@ -200,9 +200,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_R:
 			if not busy:
 				_open()
-		KEY_1, KEY_2, KEY_3, KEY_4:
+		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0:
 			if not busy:
-				surroundings = event.keycode - KEY_1
+				surroundings = 9 if event.keycode==KEY_0 else event.keycode - KEY_1
 				_open()
 		KEY_W:
 			if not busy:
@@ -267,10 +267,10 @@ func _capture(suffix: String) -> void:
 
 func _draw() -> void:
 	const ORIGIN := Vector2(35, 104)
-	const SCALE := Vector2(7, 7)
+	var SCALE := Vector2(4.5,4.5) if surroundings>=4 else Vector2(7,7)
 	draw_set_transform(ORIGIN, 0, SCALE)
 	if cells.size() >= 1024 * 128 * channels:
-		for y: int in range(88):
+		for y: int in range(128 if surroundings>=4 else 88):
 			for x: int in range(160):
 				var material: int = cells[(y * 1024 + x) * channels]
 				if material == 0:
