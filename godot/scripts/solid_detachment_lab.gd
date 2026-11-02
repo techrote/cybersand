@@ -65,11 +65,11 @@ func _build_parameter_controls() -> void:
 	panel.custom_minimum_size=Vector2(400,0)
 	add_child(panel)
 	var heading := Label.new()
-	heading.text="EXPERIMENTAL — staged controls"
+	heading.text="EXPERIMENTAL â€” staged controls"
 	panel.add_child(heading)
 	for key: String in _parameters:
 		var caption := Label.new()
-		caption.text={"gravity":"Gravity (cell/s²)","mass_multiplier":"Mass × payload (520)","friction":"Friction coefficient","inertia_multiplier":"Inertia × payload (independent)"}[key]
+		caption.text={"gravity":"Gravity (cell/sÂ²)","mass_multiplier":"Mass Ã— payload (520)","friction":"Friction coefficient","inertia_multiplier":"Inertia Ã— payload (independent)"}[key]
 		panel.add_child(caption)
 		var input := SpinBox.new()
 		input.min_value=0.01 if key in ["mass_multiplier","inertia_multiplier"] else 0.0
