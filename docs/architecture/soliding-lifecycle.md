@@ -4,7 +4,7 @@ status: Approved design
 document-kind: contract
 scope: Issue12 successor state machine, eligibility boundaries and bounded identity/ownership invariants; executable model is separate from production runtime
 canonical-for: [soliding-representation-lifecycle, soliding-eligibility-tiers]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-11-02
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/level-saves-and-replay.md, ../systems/granular-interaction-policy.md]
 ---
 

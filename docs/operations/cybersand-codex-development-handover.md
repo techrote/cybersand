@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-02
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1549,4 +1549,4 @@ Use the [physical actor programme](physical-actor-programme.md) for the combined
 
 PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.
 
-The isolated `codex/gcr-detachment-integration-20261101` starts at actual maina8f08a67 and selectively composes detachment5af50b3c with GCRbe184746. The [registration](gcr-detachment-integration-plan.md) precedes candidate execution; the [compound contract](../architecture/compound-granular-coupling.md) owns geometry/physical owner distinction and explicit mask acknowledgement. Existing PRs, evidence and the local fleet branch remain untouched. Fresh native runtimes and combined-source qualification are required before claims.
+The isolated `codex/gcr-detachment-integration-20261101` starts at actual maina8f08a67 and selectively composes detachment5af50b3c with GCRbe184746. The [registration](gcr-detachment-integration-plan.md) precedes execution; the [compound contract](../architecture/compound-granular-coupling.md) owns one physical response and explicit mask acknowledgement. Fresh Windows/Linux runtimes built at5d124667 passed native/sanitizer and scoped hosts; corrected acquisition86108a14 produced56 successful captures with exact registered conservation. One of eight COM-entry comparisons fails; all eight overlap comparisons are unsupported. Current UI9138bdaf offers fresh legacy/R2/A1 sessions; its six target-OS tests pass. Full native inputs retain their original source identity through independently checked equivalence. [Dated evidence](../audits/2026-11-02-compound-granular-detachment.md) preserves pre-fix/harness/parser failures, performance triggers and hard-support/mixed-owner limits. Existing PRs, evidence, local fleet and unrelated material work remain preserved. All drafts stay unmerged; no production physical or owner acceptance/default promotion is claimed.

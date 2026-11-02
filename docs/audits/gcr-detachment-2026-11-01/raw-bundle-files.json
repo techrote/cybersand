@@ -1,0 +1,2673 @@
+{
+  "schema": "cybersand.compound-detachment.local-owner-evidence-bundle.v1",
+  "created_utc": "2026-11-02T01:14:12.551859+00:00",
+  "observed_head": "b5c110a8b8b35854f1a9bfef399b1e41c1ac0aca",
+  "native_build_source": "5d124667a3058a335680048a7099e2bbabde8de3",
+  "physical_capture_source": "86108a148d6edf4d2c956a13f47a22ebe2cd0c7e",
+  "ui_execution_source": "9138bdaf2ea295b0e6ff84972dd909fefdf7a2f1",
+  "corrected_analyzer_method_source": "ec182afcaf64993ae342a3220e3342b3be925c7d",
+  "scope": "Local raw artifact/log/receipt/helper availability index; source cohorts remain separate. This is not a new qualification result.",
+  "availability": "Present in ignored local workspace only. Not archived, uploaded or remotely downloadable by this command. Retention/archive location must be recorded separately before local deletion.",
+  "git_disposition": "Do not commit trace corpus, binaries or raw logs. Root may commit compact engineering summary and dated audit only after source/evidence review.",
+  "runtime_dependency_disposition": "Pinned engines/toolchains/vendor products are referenced by qualification identity and repository locks; external machine-local installations are not bundled here.",
+  "file_count": 531,
+  "total_bytes": 703852212,
+  "files": [
+    {
+      "path": "build/build_extensions.py",
+      "bytes": 3034,
+      "sha256": "bbbc6c2ecd2e030356a8048f9dd2580a72a4e0cfdd1bfbfc242d23c40dabb49b"
+    },
+    {
+      "path": "build/check_docs-preflight.log",
+      "bytes": 733,
+      "sha256": "21cb522e3cba10f10a0864aa19f3f7f6f129de877eb405430c61a3cc9ee16106"
+    },
+    {
+      "path": "build/check_m11_consistency-preflight.log",
+      "bytes": 318,
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+    },
+    {
+      "path": "build/compound-analysis-861-corrected.json",
+      "bytes": 1073860,
+      "sha256": "07143d1e10cb74c97a93b7d9361ab1bb8f1896156192f16f40391bb8ebf76397"
+    },
+    {
+      "path": "build/compound-analysis-861-frozen.json",
+      "bytes": 793488,
+      "sha256": "f9c198a8297f97359224d609e6f1d4e7e94defea39a80779549cde129bf19e87"
+    },
+    {
+      "path": "build/compound-evidence/abi-floor-5d.json",
+      "bytes": 724,
+      "sha256": "550a9b131c244e2a901073fda8794fd2e8738be772be69bb98a44089c976a515"
+    },
+    {
+      "path": "build/compound-evidence/abi-floor-5d.log",
+      "bytes": 120,
+      "sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c"
+    },
+    {
+      "path": "build/compound-evidence/engineering-summary.json",
+      "bytes": 242811,
+      "sha256": "79bcd6b883b0d484173db01fad364eba4456e833ebecd5c569a58d4c8fd0557c"
+    },
+    {
+      "path": "build/compound-evidence/export_summary.py",
+      "bytes": 20861,
+      "sha256": "56135650587142896b9f6b531ecb06298e9aa9afbb3bac1aa9bd4a52766c5436"
+    },
+    {
+      "path": "build/compound-evidence/owner-review-manifest.json",
+      "bytes": 7316,
+      "sha256": "a930e7f51ed36f80eb9759850d4b33dfe196b6420e9fe72474687e3738e979b4"
+    },
+    {
+      "path": "build/compound-evidence/physical-disposition-receipt.json",
+      "bytes": 3071,
+      "sha256": "2eef9231f1ea19f8559bde6b62a3449f81d049e356450dbd30bd0604a9761cb3"
+    },
+    {
+      "path": "build/compound-evidence/prepare_lab_patch.py",
+      "bytes": 8277,
+      "sha256": "c5c317468881313c9ae2e39963c17a3c4bdd7a2c84d4099662dce63be7f9c07e"
+    },
+    {
+      "path": "build/compound-evidence/prepare_owner_review.py",
+      "bytes": 3924,
+      "sha256": "0b0dc65af0bbed3dfd7ab6c54d5f214f196a0c6c8256613b25108c0ee7aa229f"
+    },
+    {
+      "path": "build/compound-evidence/prepare_physical_disposition.py",
+      "bytes": 3376,
+      "sha256": "d56179e9326d97609f11abbb548806b9985e7c8b536957f6ccfa85ce1e46e780"
+    },
+    {
+      "path": "build/compound-evidence/run_final_lab_gates.py",
+      "bytes": 4766,
+      "sha256": "dadd286c7dfc062aa8e717452fb7ad4be5caa74cbce9dbede3c9e9bd677ab798"
+    },
+    {
+      "path": "build/compound-host/analyzer-before-corrections-861.py",
+      "bytes": 12397,
+      "sha256": "ea5cfa3c494cebffced821ebc3d60e6c522e7d1f2bb86487209daaddb2f7cb45"
+    },
+    {
+      "path": "build/compound-host/analyzer-frozen-method-861.json",
+      "bytes": 388,
+      "sha256": "4ac2efc78761a8df2dc7b714c7012e389b9f9ebc4c253d922b6cbbd2ff1a9dc8"
+    },
+    {
+      "path": "build/compound-host/angle-overflow-regression.patch",
+      "bytes": 450,
+      "sha256": "0ec3a2a04298f299e154c500e561cd6ab3aefaca55924778b833084971ca585c"
+    },
+    {
+      "path": "build/compound-host/check_registration_values.gd",
+      "bytes": 490,
+      "sha256": "682b0022ab72656f2ad8c26b536262770088fc6ee3dd8a89a583a61f8386eded"
+    },
+    {
+      "path": "build/compound-host/effective-coverage-5d.json",
+      "bytes": 411036,
+      "sha256": "f286bd11aacf209bc775d20df72c0166cb018065a37ae1707281230d64d10aea"
+    },
+    {
+      "path": "build/compound-host/export_physical_review.py",
+      "bytes": 7176,
+      "sha256": "888f39821e3547387f1ebfe408c05f1f06647af7a60bbb96afe3dafcb5226ff0"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/00.log",
+      "bytes": 793,
+      "sha256": "6d825fff96c9c38bd49d591cce0fd856265640a7db643d83e476d43d1b6c38b6"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/01.log",
+      "bytes": 789,
+      "sha256": "77b8bbb977c11c09889ac2b6f4939fc67a48cc773e2686019c1ee3e489fc8eb5"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/02.log",
+      "bytes": 789,
+      "sha256": "cb892f24cc7cbdae41a48ee6ce60fc10a874c40b9073065557d1633c4c0979ab"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/03.log",
+      "bytes": 793,
+      "sha256": "24927e6202b5ac1bbf042424ecbda21052a177151b2357d052dac4036646c37e"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/04.log",
+      "bytes": 789,
+      "sha256": "65ba9a8233ce86ca2ab816e88bd4dfac771ed026efcd48c680b706b176e03d39"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/05.log",
+      "bytes": 789,
+      "sha256": "171f6ec2be38c7d4c231a26c94af368a56a7a28b5ce2d24f9fd3dee27fe3da48"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/06.log",
+      "bytes": 795,
+      "sha256": "ebc56064949fa082e8a2875088ce3bca844c1c1ee915530367d41725132a07fe"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/07.log",
+      "bytes": 795,
+      "sha256": "b8b8be334c33e15b1612d72762185182fc18476567de045f2277e0d50f87684c"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/08.log",
+      "bytes": 799,
+      "sha256": "2768c730aa0423a7a4e9f5d2222c16bbaf57035754c62750cbc2725eb70f2e62"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/09.log",
+      "bytes": 795,
+      "sha256": "d23798825319176ddbf9f687958adff96bb09b428329e42ee71012ac9cd96848"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/10.log",
+      "bytes": 795,
+      "sha256": "347b1ae01643425ff6969e3e2f109dd7c5403c15031bdbb23e3893a0e375f62b"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/11.log",
+      "bytes": 799,
+      "sha256": "5464785f3840013e7a3815304ddda67c6be0ccfdfc6f15bdc17bb1982798c2b3"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/12.log",
+      "bytes": 801,
+      "sha256": "02a9f5d4abec8e8a7990d693808f22d4abae036c108f1fcd8210cf484037e226"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/13.log",
+      "bytes": 797,
+      "sha256": "ce745bcd73bc6e14d4c63a34dbd890ebdbd3b5e1b93e2b55bd41636548debfd1"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/14.log",
+      "bytes": 797,
+      "sha256": "d39fb263db77b374cac7514f7f82c32e4ab6e33b3f76469ca173601294eb00d3"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/15.log",
+      "bytes": 801,
+      "sha256": "946a3d3fb05f9c56d458009b0ac6d3cd15d0203c0f549294d96975f82f8a69d1"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/16.log",
+      "bytes": 797,
+      "sha256": "b8f6b0a09158f99dd644689070e678eb45ae313150622b9d05a7a3a02c275811"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/17.log",
+      "bytes": 797,
+      "sha256": "9d9703aea4664eaeb3f5a8d91494635dba6a0a71724ce2ecae2a85239f41b3b1"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/18.log",
+      "bytes": 789,
+      "sha256": "7e2ccef2bf3a839fc4e536d449f73d08c70af2530f12f26c58796c0f8082a456"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/19.log",
+      "bytes": 789,
+      "sha256": "a3333ab967da6693b46018c378d6b055533f8a53d013fcede164480f08c81ce3"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/20.log",
+      "bytes": 793,
+      "sha256": "231da1b7862ab948d4641989c2a88a107a588494ba4d6abc7fc48a2eaf2bf4b8"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/21.log",
+      "bytes": 789,
+      "sha256": "1509ac24b7228d00079d84c03a137148539b3a0b4000b39944b91c80a743f826"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/22.log",
+      "bytes": 789,
+      "sha256": "d32eaafe65c5931a4d52139f5d71e546668f719adbe6e85682e681f6429a9525"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/23.log",
+      "bytes": 793,
+      "sha256": "d38334160b6ae90dac1b01e12cb67d899be2b242fd9f66777c41e35b7aca360c"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/24.log",
+      "bytes": 789,
+      "sha256": "1709052f7d57723a6fdb041502b3b546d7944c6872b074b6f2b1aac980425641"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/25.log",
+      "bytes": 795,
+      "sha256": "1d030f1888be3ddb361f16301c1e79fe454e8395711e51619f1abcf243db53ab"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/26.log",
+      "bytes": 797,
+      "sha256": "78ceb170b99b94cdbe916d14613a57e0df31ac4b86e5a8b8fee012cad8048966"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/27.log",
+      "bytes": 789,
+      "sha256": "6d77530cd9d23cd318b5887d825d1b8639d7f4c5205d53da91707d8d0fb8f652"
+    },
+    {
+      "path": "build/compound-host/linux-argument-preflight-861/report.json",
+      "bytes": 179389,
+      "sha256": "ef2d7cd568ac2f87605da512639fb3c4265d7573463f80fbe21bebc8e6b8016a"
+    },
+    {
+      "path": "build/compound-host/linux-displacement-repair-5d/displacement-w1.json",
+      "bytes": 26071,
+      "sha256": "e29b3e02d698cb4e3033b2dd35f76718a04d09b92fb2caf6592b18b94edfcbab"
+    },
+    {
+      "path": "build/compound-host/linux-displacement-repair-5d/displacement-w1.log",
+      "bytes": 336,
+      "sha256": "81d5ceaa79a0e29bf0a7622dbdf8274b7b57516aa9b27a01e2a04310e830cdcc"
+    },
+    {
+      "path": "build/compound-host/linux-displacement-repair-5d/displacement-w4.json",
+      "bytes": 26071,
+      "sha256": "e7bb4d4a6638e4a6468dbab6a5557033d6324b524453ed1e42beab03e141dd1a"
+    },
+    {
+      "path": "build/compound-host/linux-displacement-repair-5d/displacement-w4.log",
+      "bytes": 336,
+      "sha256": "4431a88b4a9d15e849a50ca544a22fdac762f4820509024d073a6d93d0f213fd"
+    },
+    {
+      "path": "build/compound-host/linux-displacement-repair-5d/report.json",
+      "bytes": 155264,
+      "sha256": "d19811a0496427afad6ff78df756db2ecf8402203c975a109d5f66dbb1e9987d"
+    },
+    {
+      "path": "build/compound-host/linux-final-9138/developer-lab-selector.log",
+      "bytes": 378,
+      "sha256": "c0660dcd6db3b0e88b8c55884014bb2e55fd01989a3267bb77168b01c03b12b8"
+    },
+    {
+      "path": "build/compound-host/linux-final-9138/new-async-ack.log",
+      "bytes": 408,
+      "sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3"
+    },
+    {
+      "path": "build/compound-host/linux-final-9138/new-native-bridge.log",
+      "bytes": 378,
+      "sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60"
+    },
+    {
+      "path": "build/compound-host/linux-final-9138/report.json",
+      "bytes": 152612,
+      "sha256": "d7ad5e7c9ee0689043f275fb5108cdabcf93bc1fb82640a30c526b6a568e2428"
+    },
+    {
+      "path": "build/compound-host/linux-plan/report.json",
+      "bytes": 24646,
+      "sha256": "5cd1e8f582e27660e20be285f9a10e953a9937137a810732c64b3ae2a9996a8c"
+    },
+    {
+      "path": "build/compound-host/linux-post-campaign-identity-861.json",
+      "bytes": 65412,
+      "sha256": "9d921a50bb1412b34931fd4c73191d64d959804884f40135339028e013d42923"
+    },
+    {
+      "path": "build/compound-host/linux-quick-5d/import.log",
+      "bytes": 35076,
+      "sha256": "31939dededdfbac41085ff765db5f19be8aeba03b38eaccc717439530ce295b3"
+    },
+    {
+      "path": "build/compound-host/linux-quick-5d/new-async-ack.log",
+      "bytes": 408,
+      "sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3"
+    },
+    {
+      "path": "build/compound-host/linux-quick-5d/new-native-bridge.log",
+      "bytes": 378,
+      "sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60"
+    },
+    {
+      "path": "build/compound-host/linux-quick-5d/report.json",
+      "bytes": 151039,
+      "sha256": "b2a00521187017c6a7aa929af5e917d48400b16b6201b6df4a6aba78e19c36c8"
+    },
+    {
+      "path": "build/compound-host/linux-quick-861/import.log",
+      "bytes": 1165,
+      "sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51"
+    },
+    {
+      "path": "build/compound-host/linux-quick-861/new-async-ack.log",
+      "bytes": 408,
+      "sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3"
+    },
+    {
+      "path": "build/compound-host/linux-quick-861/new-native-bridge.log",
+      "bytes": 378,
+      "sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60"
+    },
+    {
+      "path": "build/compound-host/linux-quick-861/report.json",
+      "bytes": 151033,
+      "sha256": "95bc1bc298c699a3eb8df1dfe69ad263bdada54c8e88674d688f3da633690fd6"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/compound-response.log",
+      "bytes": 293,
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/coupling-w1.log",
+      "bytes": 2065,
+      "sha256": "82f770eda01b251136ae34a28a9a931ba9718808ca5c1a214bfc91c8ebdc8800"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/coupling-w4.log",
+      "bytes": 2424,
+      "sha256": "85471a09b1c58e94902406300259044fec5ee38d673b1e78a4a0dced35d9678d"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/displacement-w1.log",
+      "bytes": 336,
+      "sha256": "e63dedb2b7aa792248249b231cbd98bbe1d8e6b8bf569f4cfe159a1a7e1bba7b"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/displacement-w4.log",
+      "bytes": 336,
+      "sha256": "532ea9495e8ca2b1bb47105bb335dafc26af7b490ecee3f25a271b80c11ae240"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/embedded_sand-baseline-w1.log",
+      "bytes": 3179,
+      "sha256": "3ef72df0ea87f3203fc31f585f1cde1041150e8297a513ed3d70d20c6cc153aa"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/embedded_sand-baseline-w4.log",
+      "bytes": 2745,
+      "sha256": "e47b384b1f9fd0e5351ee0e2b7679954a917fc2e398e8593b971e017529a56da"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/embedded_sand-candidate-w1.log",
+      "bytes": 3083,
+      "sha256": "f00b8b23bc569638e71dfacc3e841503a7bdcf985b1a3fea9208a52d7db11152"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/embedded_sand-candidate-w4.log",
+      "bytes": 3185,
+      "sha256": "36ce58f1d85e6fc4c9cacb4340170ae90a10aee97438ff8b4fe389cd6f99cb54"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/failure-w1.log",
+      "bytes": 413,
+      "sha256": "203eb5ee1e2033e53dfe29a8a36d3fc0385b2298e9cec7e44c021e848d3646e8"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/failure-w4.log",
+      "bytes": 413,
+      "sha256": "1811a1728119844ac02ca975106e7e3ec309fa3315da37a4e35b6992c9d5ea9a"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/gcr-actual-gameplay-hosts.log",
+      "bytes": 276,
+      "sha256": "9d9a4f217ac898d2dc39f5a2c9a7444a170a6c7043da4a777a118521d2ccedca"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/gcr-admission.log",
+      "bytes": 323,
+      "sha256": "95bbce731bb2e5386969b8864c90ae7f9d4fbd0e94d8906786a9ff864f4a23e3"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/gcr-hard-water-empty.log",
+      "bytes": 301,
+      "sha256": "2e1a42475b3085183df0170b377d371a9c9e46299609e8422b964220372f717d"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/gcr-protocol.log",
+      "bytes": 260,
+      "sha256": "a2a783f1fba990078b34f4b4e7c1acf7f0f1d42b34d93a4178b6f3d04aa20b9d"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/gcr-single-body-async.log",
+      "bytes": 282,
+      "sha256": "fae727fe7bcee1619dc3e8e2a45450a50d69dcbf3866775f828d4bf6cbf47a9b"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/import.log",
+      "bytes": 1165,
+      "sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/lifecycle.log",
+      "bytes": 422,
+      "sha256": "d5e2dc240cd13633dc3a51459a218e19e1ecaf78f91d1c44e7038aef3533f79d"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/liquid-policy-worker.log",
+      "bytes": 379,
+      "sha256": "c07e6833ca4fb6aa90a64060e8aeb69f6fd8eded9168fb70fdacd6b0c24981d5"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/material-image.log",
+      "bytes": 435,
+      "sha256": "af1c47892862e3da708d7c0dad15a136e7ef9370e685ef3f34dca069bd2c3094"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/mixed-baseline-w1.log",
+      "bytes": 3102,
+      "sha256": "e8fc2b648a4f75cb75f7055e0d9f6a7dd03162d4964d3b3e67d3d678209a3028"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/mixed-baseline-w4.log",
+      "bytes": 3099,
+      "sha256": "4ea800c53bf490cb56cf797ee4fb896df8ebab7e2af9c6eb9b3dc0a6b4066063"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/mixed-candidate-w1.log",
+      "bytes": 3059,
+      "sha256": "a167b623da17ac086baf9d78a867598de7da1f2600d36df2514169d93141ade1"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/mixed-candidate-w4.log",
+      "bytes": 3148,
+      "sha256": "a13ec13de694275a41a001fc4361a3d9786adb674b42719e59488bd7da97ad0a"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/motion-w1.log",
+      "bytes": 1825,
+      "sha256": "227586deea522884e006e93a9727c0c5cb7008941e1dab795cdb0d6f32722a34"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/motion-w4.log",
+      "bytes": 1825,
+      "sha256": "3d5037ea8b21689df6679b6fe0320c6615578ce802e025a63f0096f65d130dae"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/ordinary-capacity.log",
+      "bytes": 411,
+      "sha256": "348967c9fdbcf3bfc500ff80a5969fc64894ce072aba2df18109af554f2bc867"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/ordinary-failure.log",
+      "bytes": 1149,
+      "sha256": "cb4967749e95bf420bf253a722dcf0d7ac1e39eba7f896acea944e559d6d2f6a"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/ordinary-observer.log",
+      "bytes": 296,
+      "sha256": "c8fb193284d1e4d14eef32071ba747b3fa991ef0c7f7f6f27948bfc683ebdc5e"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/ordinary-rapier.log",
+      "bytes": 266,
+      "sha256": "919623e3c65bf2262b30590338c66087a0522e311e93d6ed64f3c8faaebe9684"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/packed_sand-baseline-w1.log",
+      "bytes": 2981,
+      "sha256": "98bee7f02b137d1695e734ecb0b6aaad7a1d43e0322c514af9828647127e2831"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/packed_sand-baseline-w4.log",
+      "bytes": 3125,
+      "sha256": "fd7d30dc08d04e278bea031768fca333e581c282d9bfd28e69b1127dbd9f983f"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/packed_sand-candidate-w1.log",
+      "bytes": 3139,
+      "sha256": "60a787b9ab956bfeae9a09bd622aa2c1c8ecd7b2383641d264a7cf8d99a673ee"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/packed_sand-candidate-w4.log",
+      "bytes": 3070,
+      "sha256": "9a2f708c1acfcc443f5dc4fc1f51a700b0afe2563d934474163e5d280beea9f3"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/physics-async.log",
+      "bytes": 2599,
+      "sha256": "0c040ed05821c2d931f05d0938881c9c3cb7d03e15059f1d7060519e4a650796"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/physics-characterisation.log",
+      "bytes": 5541,
+      "sha256": "8101380cb1860395300af623de02c26e48b910cc845c3f5ac236410600f3ea5f"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/rem002.log",
+      "bytes": 511,
+      "sha256": "f8a4682de50aa128224ca2d907d0ce63524f1b82f5ec99b94c7b42e0a57ab55f"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/rem003.log",
+      "bytes": 70772,
+      "sha256": "fd3f00ca62e66b3e51ed82c68cb1bddb9535c49d73016fd039f8ba4af749d7b2"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/report.json",
+      "bytes": 311970,
+      "sha256": "f406a9cda4891a6618c3529add1ee4192d225c540e5d73f4ef5095f85fddf0b4"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/review-four-arm.log",
+      "bytes": 347,
+      "sha256": "a464c2d63280968b0f284f89636260f588e47e0f4f57ac306be8c40ada4e9106"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/review-three-arm.log",
+      "bytes": 347,
+      "sha256": "a464c2d63280968b0f284f89636260f588e47e0f4f57ac306be8c40ada4e9106"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/terrain-w1.log",
+      "bytes": 3537,
+      "sha256": "7a9400317b123c5ff868fd8473badcdf945c47383b000699c21f25a0bab7cfa2"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/terrain-w4.log",
+      "bytes": 3550,
+      "sha256": "a651375a0864219d7e7693983bdefdbc13473cc828d427b8fbcca6970cd1101a"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/water-reference-body.log",
+      "bytes": 3161,
+      "sha256": "dc475bf410c83f888951744569ab94d62dbaf48ea2a1d6999f7699a3596322ed"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/water-synchronous-reference-body.log",
+      "bytes": 6642,
+      "sha256": "bafa814548c62281171b10b22b015cdaebf89cff6b57cfbf9818985cc96ce29d"
+    },
+    {
+      "path": "build/compound-host/linux-remaining-5d/y1-controls.log",
+      "bytes": 276,
+      "sha256": "9a5ace7fa0b830fe7ecc6448e69e2401c365e1af6693cfc62adc4e3421626f35"
+    },
+    {
+      "path": "build/compound-host/liquid-footer-revalidation-5d.json",
+      "bytes": 2025,
+      "sha256": "e9d63f381060609d671ff120c7d9f0acd652174ead01763e75bb1298fd1611fc"
+    },
+    {
+      "path": "build/compound-host/nonphysical-prefix-5d.json",
+      "bytes": 24631,
+      "sha256": "8ac814831de9a556c7691c34410992eed6295dced2092983dcdc229cdac4356d"
+    },
+    {
+      "path": "build/compound-host/nonphysical-prefix-audit-861.json",
+      "bytes": 2133,
+      "sha256": "34f20e11cc6423404ea8505c4ac8f17f83a926945eb8d5f1662f34cef6344554"
+    },
+    {
+      "path": "build/compound-host/repair_displacement_reports.py",
+      "bytes": 7080,
+      "sha256": "e30056e220e7cf8e84025026663655a63b0dc2f6eab30c5ba84e4e6ea39f8c3c"
+    },
+    {
+      "path": "build/compound-host/revalidate_liquid_footer.py",
+      "bytes": 2977,
+      "sha256": "309a8d67e575bada8e286bd53cc95f892ee527624be7a234d44f67f4e8fe590a"
+    },
+    {
+      "path": "build/compound-host/run_host_gates.py",
+      "bytes": 13758,
+      "sha256": "d067990d5bc6050bc1952218e34c4479fae193685af467c0a93a0e8f31727100"
+    },
+    {
+      "path": "build/compound-host/summarize_host_gates.py",
+      "bytes": 4621,
+      "sha256": "4be4ea3753ba70eb5ec88ef1700c544cb6c2a952ca0be93baab5d3b3f9f050ca"
+    },
+    {
+      "path": "build/compound-host/summarize_host_repairs.py",
+      "bytes": 6832,
+      "sha256": "427f97188ccdcfab9d0b607eab24ea90007f1b9e7b1216326753f388b7bb9d14"
+    },
+    {
+      "path": "build/compound-host/supplement_physical.py",
+      "bytes": 7049,
+      "sha256": "d43824ff0a0474e03fe47e4d0097381cf4b281df3e6fb3cfb673857da0643e7c"
+    },
+    {
+      "path": "build/compound-host/validate_capture_arguments.py",
+      "bytes": 3622,
+      "sha256": "f1c0bb1cf7579b71f10b5a8afd249c6a76564acb9a63b93c6111173afd877641"
+    },
+    {
+      "path": "build/compound-host/verify_campaign_identity.py",
+      "bytes": 1137,
+      "sha256": "64cd9aa872cc9b828d3a9d3f97ab62dc93e9659dbd001efd56ccd8efe2e356dc"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/00.log",
+      "bytes": 799,
+      "sha256": "7c083afd762b0c45a2f6e448345b5f264dd56354127e967a23816b2a51c49718"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/01.log",
+      "bytes": 795,
+      "sha256": "66526c7972afa6adf8235e07397c7ffa69fcf45eb7ac7683e9a03b0a02d26ee3"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/02.log",
+      "bytes": 795,
+      "sha256": "fef26502a4dd09060d5b709dcd78f64c90282e597fb30aef46ce5ea16ab3992e"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/03.log",
+      "bytes": 799,
+      "sha256": "b341465fc980288d0903e1dfab1991e6600e51fe218ba86651216675c88ef7fb"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/04.log",
+      "bytes": 795,
+      "sha256": "f82e461f0d6dec7d1a2aec76d61b191bccd4b5b5f0ecae296ac0ad44da0bc035"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/05.log",
+      "bytes": 795,
+      "sha256": "5811f6834a67a8e39656c240d3ed6ce0c0a24211717e816b2f51c25856e63203"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/06.log",
+      "bytes": 801,
+      "sha256": "863d08bfc2b85ecfb93676c2e2d2ec82d311ef9c21e514d1531630014596e3ae"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/07.log",
+      "bytes": 801,
+      "sha256": "0d701d04950b55f9fcc1b405980a700eccea9ade5a26ffe886b3bb3692337f06"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/08.log",
+      "bytes": 805,
+      "sha256": "a61c325471e628336c797afc15d687b23f9fa5b4aee9ad37c9309dcc6cf42297"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/09.log",
+      "bytes": 801,
+      "sha256": "41a8d489524a977394c5a4b5a30bc43629cd3fb1d7bd4253376f4c138ef1c09b"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/10.log",
+      "bytes": 801,
+      "sha256": "49300c9881a8abf7ca84e1e12a77dde63a8cc1bd1c18c4a028948981508da517"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/11.log",
+      "bytes": 805,
+      "sha256": "3dc0e3a1e61395a39f468f5a2dbba9c10163891d19c9e25f4dc33f5062d2d406"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/12.log",
+      "bytes": 807,
+      "sha256": "3ea97a488a7a293f3fd345081b3c4879b4d0766d14fa0a856ead0e1156700d1f"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/13.log",
+      "bytes": 803,
+      "sha256": "b007fbc78be315778d2a01608ebe6e5ae0b2b7288d422a523a9e5544879ed9ed"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/14.log",
+      "bytes": 803,
+      "sha256": "65b05c104a8ea5f2f1dd4d519dcba097dfd670cfc2f4606b6b5597b9bc7b747a"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/15.log",
+      "bytes": 807,
+      "sha256": "d57730392aa33e7c0af0e19130bd734444c93892272d01951458dbd69458a971"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/16.log",
+      "bytes": 803,
+      "sha256": "ee4e03490d275180b21122b2da0a49ab01c30d178b81616a01326ebd3128fe8a"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/17.log",
+      "bytes": 803,
+      "sha256": "644896e7b4e1eddb093580856bb4553c36d66b6d91b7b85b0059e12b88ab824c"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/18.log",
+      "bytes": 795,
+      "sha256": "031fc0493d40f18b42ab62df5647607112fc65193d33577689a595bb2ccf9207"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/19.log",
+      "bytes": 795,
+      "sha256": "55dbb91da003befc0a90c7ce69e6aa72a3ff98d9e85c998f7400982316d134de"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/20.log",
+      "bytes": 799,
+      "sha256": "50aa0bde998a826657d3a4aea92424bd27c40efd539761cba9fad718b7cca357"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/21.log",
+      "bytes": 795,
+      "sha256": "70537471070bd677d8eda28614dc33058d6d6572d7c1e8dc703d9f48b73619c1"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/22.log",
+      "bytes": 795,
+      "sha256": "ea5fb679f0e62f37a48d17c21147cab8d8ef13b6a3c505573ed1cf107eaefaf5"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/23.log",
+      "bytes": 799,
+      "sha256": "d0b92e9db40fdb623a529d76678f312f23a43480e16b90456e36ff806ff25fa8"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/24.log",
+      "bytes": 795,
+      "sha256": "fd30cb233a0da963ccf2f79a38f11d2618bf334d223cd1079b24298c4760ffd1"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/25.log",
+      "bytes": 801,
+      "sha256": "a03c1f091dd19af4364ab0c1d502a053b772045fe17167f050bfd7484a97d343"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/26.log",
+      "bytes": 803,
+      "sha256": "b6e1dbe763e48bff11983e652d62c9dc9c2882ee70a10a7aec5e3b1e921bcf7d"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/27.log",
+      "bytes": 795,
+      "sha256": "1a46b23a963108fb175c7a4d9c6dde48387c353eb76e2d8a60eba71efdd555fd"
+    },
+    {
+      "path": "build/compound-host/windows-argument-preflight-861/report.json",
+      "bytes": 181680,
+      "sha256": "a8397f487c6c2c2071b41464670670cd09c9df41169806879211624f73735194"
+    },
+    {
+      "path": "build/compound-host/windows-displacement-repair-5d/displacement-w1.json",
+      "bytes": 26073,
+      "sha256": "085ae2e2e0e77022ef3923cad6cdbfe5b5d6055c62b0db87ca21093d6673279a"
+    },
+    {
+      "path": "build/compound-host/windows-displacement-repair-5d/displacement-w1.log",
+      "bytes": 342,
+      "sha256": "f1ab7e910fbd13e03b6d220c3e950e8f6a44d077beee8f00c6e8e6c53997fd85"
+    },
+    {
+      "path": "build/compound-host/windows-displacement-repair-5d/displacement-w4.json",
+      "bytes": 26073,
+      "sha256": "324e9f37e82b9c670dc8bee9fcc8d4636ebb3abaaf8b7c9e30d296593142dd5d"
+    },
+    {
+      "path": "build/compound-host/windows-displacement-repair-5d/displacement-w4.log",
+      "bytes": 342,
+      "sha256": "f63dc1ee0c12c019c3d4017ec51d1a507a102360e2a26b2a447ad3c1c64bdb1b"
+    },
+    {
+      "path": "build/compound-host/windows-displacement-repair-5d/report.json",
+      "bytes": 156792,
+      "sha256": "b57b82b51145e79a0b220bd7697e2c415368adaafd00a7c3bb5b0a67909e9121"
+    },
+    {
+      "path": "build/compound-host/windows-final-9138/developer-lab-selector.log",
+      "bytes": 382,
+      "sha256": "e1e3ee8fb2042375ea057a9bea8d1627cd94924399db9f711a91769f55478f4c"
+    },
+    {
+      "path": "build/compound-host/windows-final-9138/new-async-ack.log",
+      "bytes": 412,
+      "sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579"
+    },
+    {
+      "path": "build/compound-host/windows-final-9138/new-native-bridge.log",
+      "bytes": 384,
+      "sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7"
+    },
+    {
+      "path": "build/compound-host/windows-final-9138/report.json",
+      "bytes": 152553,
+      "sha256": "05a454f1fbb20930ec969035e7dc2b758db66d1a7983c7b184876aebde8b9604"
+    },
+    {
+      "path": "build/compound-host/windows-plan/report.json",
+      "bytes": 24648,
+      "sha256": "5f328c1704621fcead8ba0e59e65995c6693ee364a56edd9de6216cd9dbaabff"
+    },
+    {
+      "path": "build/compound-host/windows-post-campaign-identity-861.json",
+      "bytes": 65972,
+      "sha256": "4840b0c3499ac11e56590499be17480c0bc33b19255c8aad994001a2d828ad22"
+    },
+    {
+      "path": "build/compound-host/windows-quick-5d/import.log",
+      "bytes": 35630,
+      "sha256": "15d4c8f77a4f25669d90457e5514bb5df32065c3a8ad8d9249ec7b6151392c8a"
+    },
+    {
+      "path": "build/compound-host/windows-quick-5d/new-async-ack.log",
+      "bytes": 412,
+      "sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579"
+    },
+    {
+      "path": "build/compound-host/windows-quick-5d/new-native-bridge.log",
+      "bytes": 384,
+      "sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7"
+    },
+    {
+      "path": "build/compound-host/windows-quick-5d/report.json",
+      "bytes": 152383,
+      "sha256": "525bc85c3c2b406879b7c1d18dc7f47ece00328508b446d56c15cd43dd4dc01b"
+    },
+    {
+      "path": "build/compound-host/windows-quick-861/import.log",
+      "bytes": 1182,
+      "sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59"
+    },
+    {
+      "path": "build/compound-host/windows-quick-861/new-async-ack.log",
+      "bytes": 412,
+      "sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579"
+    },
+    {
+      "path": "build/compound-host/windows-quick-861/new-native-bridge.log",
+      "bytes": 384,
+      "sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7"
+    },
+    {
+      "path": "build/compound-host/windows-quick-861/report.json",
+      "bytes": 152382,
+      "sha256": "3252b8b5bfc866e8df23db8051bba9d246b47d2a8dbf377baccc6342d1d6f961"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/compound-response.log",
+      "bytes": 299,
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/coupling-w1.log",
+      "bytes": 2442,
+      "sha256": "0f653ca379ad3dbeeeefe7737af7d162b969a176a0e02a6d0644e9b198584fcb"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/coupling-w4.log",
+      "bytes": 2419,
+      "sha256": "8315dbf37248a4724d2e8d314f80040bcff42f37c7e3fab2e81d5bff630e2261"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/displacement-w1.log",
+      "bytes": 342,
+      "sha256": "eb8e5906e43929a45221654dabd7e71485d54dbac334bdab2f20cd7212354b91"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/displacement-w4.log",
+      "bytes": 342,
+      "sha256": "2389b13af5cfc040580cb35f8d5f28da0c79dcfb298f41b113ed214a59a0f468"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/embedded_sand-baseline-w1.log",
+      "bytes": 3147,
+      "sha256": "f9cfd7b96aa7bbdef86d679aea4db23c662e026897790663f9a181fdd0964192"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/embedded_sand-baseline-w4.log",
+      "bytes": 3074,
+      "sha256": "277b2f8727714b642a35bb980ba0f3cd906181d018a1db97361d67ebde13e88f"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/embedded_sand-candidate-w1.log",
+      "bytes": 3170,
+      "sha256": "010e87c59b940b0b28b4bd4552adaab230e69415406e8595a2bd79c3b4600e44"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/embedded_sand-candidate-w4.log",
+      "bytes": 3180,
+      "sha256": "81accd6cdebc708091cf77060bf43988563e25c6d44a53e341d176b8d28aa4a2"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/failure-w1.log",
+      "bytes": 419,
+      "sha256": "f72c1fa5ab5dd35e702dd5cea21cbf3002febe41ef6a806fca6e22d54e7a515b"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/failure-w4.log",
+      "bytes": 419,
+      "sha256": "db6114d84161a641db5ca2184e0b1ee6ccb6ec3e7affb77ec28959f778749cd8"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/gcr-actual-gameplay-hosts.log",
+      "bytes": 280,
+      "sha256": "7b386434d022d0f7ead0d75dfa28185558ee09b555a86eb61868323815829119"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/gcr-admission.log",
+      "bytes": 327,
+      "sha256": "6216b59567be6d89c907914a973e6f36bb4ab1da7115f864fbb92c2b9370a080"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/gcr-hard-water-empty.log",
+      "bytes": 306,
+      "sha256": "471c50dbc99d16bcfb2b213e5b422932d6b7652e659650d12d4836abe12b967a"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/gcr-protocol.log",
+      "bytes": 264,
+      "sha256": "a4a0499c90df41053877985a6aa85f7a87df5019504d8510f29226bf312d25f4"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/gcr-single-body-async.log",
+      "bytes": 286,
+      "sha256": "2107de52e8364fd1a50674d2e4b47975c28b99c3b50847d6454c4258417f7dbc"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/import.log",
+      "bytes": 1182,
+      "sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/lifecycle.log",
+      "bytes": 428,
+      "sha256": "72fbd55f39162519ad2bfb356210eaf2778965cfb67f7aa72e86ed3e5d99708b"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/liquid-policy-worker.log",
+      "bytes": 383,
+      "sha256": "f1f4764fa6f9c083e2cb073348e285f5e62a804bf4db8a6e1cf1e26ceda01033"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/material-image.log",
+      "bytes": 441,
+      "sha256": "e53e187224d88518c6f6fcd03a5e7ce66b163848e7822191203575708c5542ac"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/mixed-baseline-w1.log",
+      "bytes": 3096,
+      "sha256": "f57fd493ee5d279664b9aa3b1bb24a03093f66b3eda0add781848ab92f998bf3"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/mixed-baseline-w4.log",
+      "bytes": 3132,
+      "sha256": "8f663621ade58ecb860042f4c000fdb80ec2437888e48cb37a0256d6ef7790dc"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/mixed-candidate-w1.log",
+      "bytes": 3141,
+      "sha256": "d8b0cc540e52fb38ecd24e3810b7a0ee129e04898a218fd2a59111a0a57cdb2c"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/mixed-candidate-w4.log",
+      "bytes": 3135,
+      "sha256": "134183808433faa51018bfd655cee996c91c82d78a1d9b7320f5e09b08dc122f"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/motion-w1.log",
+      "bytes": 1831,
+      "sha256": "7b36fc2e06d0681c457ab5e165eccb16ae069d166e6989ace220e18c16752a6f"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/motion-w4.log",
+      "bytes": 1831,
+      "sha256": "6b106ebb4bad8b5c4be4c93d07bacc2a6eda9eeaf87bad1222519017294209c4"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/ordinary-capacity.log",
+      "bytes": 417,
+      "sha256": "bdc11569c0cd527546b01aa400703b2fde723f1a68e98810da0c1c0461cd231a"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/ordinary-failure.log",
+      "bytes": 1162,
+      "sha256": "8be2acf1f3a2793c3be97622537b4723d4f9dd0863dd993ed90445699878dc06"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/ordinary-observer.log",
+      "bytes": 300,
+      "sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/ordinary-rapier.log",
+      "bytes": 270,
+      "sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/packed_sand-baseline-w1.log",
+      "bytes": 3144,
+      "sha256": "27d242714471b0cbcb29462eb6c63e6e24affba8c47e9f98517617538a792d9b"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/packed_sand-baseline-w4.log",
+      "bytes": 3097,
+      "sha256": "bf0383ba7fca1d288875c63ad451ca74d49392ced95bd2f29ec60c20aea22e10"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/packed_sand-candidate-w1.log",
+      "bytes": 3075,
+      "sha256": "64b00bec55d022097ecd42018ae0d4f7ba0a8612de521121f5ef393da53f02e8"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/packed_sand-candidate-w4.log",
+      "bytes": 3123,
+      "sha256": "258019a7349451c4d422eb14245a27d9e9444d6f01e11feded9a31822a1e20bd"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/physics-async.log",
+      "bytes": 2595,
+      "sha256": "e8162eaf1828b515c6136256fdccc2199d8a7564980627159bbb8f8d2279d85f"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/physics-characterisation.log",
+      "bytes": 5547,
+      "sha256": "361b9f53cbd1d5fc1aba1d9f44088c7c4ffb89c1b88f306149a990894120cc9c"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/rem002.log",
+      "bytes": 516,
+      "sha256": "9679fb4f7e8478d7bf8a1218ac266b1396f09936a00efe5e8dda5debd8d93288"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/rem003.log",
+      "bytes": 70791,
+      "sha256": "91482007474a851d9c4ab7a9f0771d0f82ccd30866cdb7a0d062f7130a7023c2"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/report.json",
+      "bytes": 318903,
+      "sha256": "22dfe38ad2766f97bad0c1c38283c7f950a00dff6b9bcc74bcc74227b33e087e"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/review-four-arm.log",
+      "bytes": 351,
+      "sha256": "09ad268bfb05e5e96c45e92cca566b84bcd2c7cdfc9e75bf8efed68950c9a8e8"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/review-three-arm.log",
+      "bytes": 351,
+      "sha256": "09ad268bfb05e5e96c45e92cca566b84bcd2c7cdfc9e75bf8efed68950c9a8e8"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/terrain-w1.log",
+      "bytes": 3534,
+      "sha256": "634deb4d4b0d7c75dcdabd506a745e9fd04237a91f7515d1b020bf633a0a31df"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/terrain-w4.log",
+      "bytes": 3530,
+      "sha256": "d2265bbe179313aa4f9b9d85d7acfdaf3c82ee25aefdbf35b69dfa9fd7bcfa3a"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/water-reference-body.log",
+      "bytes": 3171,
+      "sha256": "477054521a3c1e575c5a55488a431af66f03fa569239804d6550051d6fd88df4"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/water-synchronous-reference-body.log",
+      "bytes": 6655,
+      "sha256": "90937f1bea807d10b997b50568c6c775f1026a49b83f99d3660c29f0f17bf512"
+    },
+    {
+      "path": "build/compound-host/windows-remaining-5d/y1-controls.log",
+      "bytes": 280,
+      "sha256": "aa0800b87c1bbbc77b60097e47ac18ea3ed7ef35d67064d745eb00af51f8b650"
+    },
+    {
+      "path": "build/compound-mechanical-linux-861.json",
+      "bytes": 2843,
+      "sha256": "4b24568387de61422db1e5172dc37835d39c1363e2a8ad77b6cca3a426b46b6c"
+    },
+    {
+      "path": "build/compound-mechanical-linux.json",
+      "bytes": 2480,
+      "sha256": "93cfb3fbeb31a80f12d5840d9b281ac6c5912153d587d411452cfdbc768879e7"
+    },
+    {
+      "path": "build/compound-mechanical-windows-861.json",
+      "bytes": 2851,
+      "sha256": "530c6aa9c8affc464528a5fb7dd6466c90a46cdc672644100c438e7446f5996d"
+    },
+    {
+      "path": "build/compound-mechanical-windows.json",
+      "bytes": 2482,
+      "sha256": "20276e74582e5ec631cef253a321668fe11ba16cffb757f44245d044c37a06e4"
+    },
+    {
+      "path": "build/compound-native/driver.cpp",
+      "bytes": 619,
+      "sha256": "8b08a5d13648c0f8e67944ef5d5aedbd5fd8c0eebf74f2cf8ba3fa56849cb9cf"
+    },
+    {
+      "path": "build/compound-native/frozen-source-review.md",
+      "bytes": 6091,
+      "sha256": "67f377281bc1fb9d173fb80ae3b0b348a20b5ed9b83964ddd74c5b507fc979ad"
+    },
+    {
+      "path": "build/compound-native/linux-result.txt",
+      "bytes": 3539,
+      "sha256": "eaa36b9142c9b214e816f60e0ae51d1c09cd381ada1992f88411beeca6b356d5"
+    },
+    {
+      "path": "build/compound-native/quarantine/linux-compile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/compound-native/quarantine/linux-run.log",
+      "bytes": 719,
+      "sha256": "306c418ee68c1ba8d410ca3397146f9bdc98182bd9889df4ece698cb5ba4e40e"
+    },
+    {
+      "path": "build/compound-native/quarantine/receipt.json",
+      "bytes": 10340,
+      "sha256": "2281e702669e25e710e8ed0e756bdac539d027d17251b9ffaa2c4f1f51990de8"
+    },
+    {
+      "path": "build/compound-native/quarantine/solid-linux",
+      "bytes": 774720,
+      "sha256": "30888df2bb47eb844f885ab42d9b3ffd236286ae6a470291a079437ca5161ef2"
+    },
+    {
+      "path": "build/compound-native/quarantine/solid-windows.exe",
+      "bytes": 901632,
+      "sha256": "44dddba35e7a59428fb842ad765b382d73af230968b2ef54bfd249beac5e327f"
+    },
+    {
+      "path": "build/compound-native/quarantine/windows-compile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/compound-native/quarantine/windows-run.log",
+      "bytes": 731,
+      "sha256": "5f4fb52d5d6f065a083320fcb416731f474a6e71a437cf64930a5e4a752ff68b"
+    },
+    {
+      "path": "build/compound-native/quarantine_qualification.py",
+      "bytes": 2960,
+      "sha256": "aaae1c50a1e2f60ef4d5e40efe9fc8ab8bb7bc339dad14a7590cf13c5265b12e"
+    },
+    {
+      "path": "build/compound-native/receipt.json",
+      "bytes": 1757,
+      "sha256": "4d6283e6c28ac7836843a1dbb2bbc3345e31e6fbaaaaa55e298b9ab053937fed"
+    },
+    {
+      "path": "build/compound-native/tests-linux",
+      "bytes": 81072,
+      "sha256": "660ce8481715c77a42d461107e19cf1962d0fd5acdf7efa892d32820d64e29ba"
+    },
+    {
+      "path": "build/compound-native/tests-windows.exe",
+      "bytes": 113152,
+      "sha256": "1fd6deb5c93c378cd2266bd3d4102dfd7ca75456daa853fbc39a29e0ab315fe2"
+    },
+    {
+      "path": "build/compound-native/windows-result.txt",
+      "bytes": 3539,
+      "sha256": "eaa36b9142c9b214e816f60e0ae51d1c09cd381ada1992f88411beeca6b356d5"
+    },
+    {
+      "path": "build/compound-physical-linux/campaign.json",
+      "bytes": 75083,
+      "sha256": "e39e778ee1e96957889e6d9166270c86d5621bcdfe1c62623946802349172c2c"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-A1-w1-r0.json",
+      "bytes": 896,
+      "sha256": "2c7a167bdf6effddf8f2d7e6067937b52329ed3902d3852cc952de7d32757186"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-A1-w1-r0.log",
+      "bytes": 496,
+      "sha256": "0743e314cbecf0b8a89f24ffc38d912b4a3021aff5fe4c598f41e986b19e5051"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-legacy-w1-r0.json",
+      "bytes": 900,
+      "sha256": "ac9ecd3f77656e2d195cbb17011e37f0c67b8a8f1fcded45ed8167b61d7284b2"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-legacy-w1-r0.log",
+      "bytes": 500,
+      "sha256": "2ba1579aab62a9ad2868e3aea2f578298ea8bd519e9576ae86ab1eb4ebca7704"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-legacy-w4-r0.json",
+      "bytes": 900,
+      "sha256": "ce52d79265d43399556bbe350641d2aa78c26485c8e39d535d107ac426bc751c"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-legacy-w4-r0.log",
+      "bytes": 500,
+      "sha256": "ab4ab5463a743a22572a51241575c51cbd7a55535b783adcaac42681265ad855"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-R2-w1-r0.json",
+      "bytes": 896,
+      "sha256": "6802a27cee41920c8662fb029cef814fd64b9043eba2108fa691d8cc20bb6c95"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-R2-w1-r0.log",
+      "bytes": 496,
+      "sha256": "c8586d8135ac3f7765af473895f01a5b1f92104da3d93cdc7683f7f8b4ae4904"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-R2-w4-r0.json",
+      "bytes": 896,
+      "sha256": "351970ff60b9c4b9bc58991ac23fe879ebe32f09e95f8d316de11d18b22bd20c"
+    },
+    {
+      "path": "build/compound-physical-linux/Linux-empty-R2-w4-r0.log",
+      "bytes": 496,
+      "sha256": "1da4176f2d2e2df3820bde4b6b7489a8e8a4a700074e0511500278a9ac66a3c5"
+    },
+    {
+      "path": "build/compound-physical-linux-861/campaign.json",
+      "bytes": 102980,
+      "sha256": "30cd5e353764855065c78b6d49c200ac64ea099b8f371c4abe5e79b59815c408"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-A1-w1-r0.json",
+      "bytes": 5170331,
+      "sha256": "fab1e413e46d84fe41cf01aa969f9b8eef643dea2a81d3991822f0cd0e520a13"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-A1-w1-r0.log",
+      "bytes": 375,
+      "sha256": "e8f4c98cf7fb1b7bc67673cd4d36beb537a23fd86ac414a294374b9243ab7467"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-A1-w4-r0.json",
+      "bytes": 4383196,
+      "sha256": "abc4d41fb562170d04e1e35e833d6b2062755b07b2fcf852ba8e68c8f0bbd71b"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-A1-w4-r0.log",
+      "bytes": 375,
+      "sha256": "c466ae92a9c4eab2db632c25fc7f9caccf76a2e9663d415fc54f12774a13c7f0"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-legacy-w1-r0.json",
+      "bytes": 3262508,
+      "sha256": "022b38db5005b4324eb645882ab021ca3a94989bd0b42735070dad69425d82a2"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-legacy-w1-r0.log",
+      "bytes": 379,
+      "sha256": "367d8a6bf1e126326f153df1618e198b41178ba27f9aff427299172f967f1184"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-legacy-w4-r0.json",
+      "bytes": 3223566,
+      "sha256": "683e623cce848a5b2631e09057cd055979801358b048f47d5d44aba72bfd0c9d"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-legacy-w4-r0.log",
+      "bytes": 379,
+      "sha256": "2b8cad4db49768e8b8e06e1389ff3e19b0ef8ba9435f1a7c6c0e686f86c18627"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-R2-w1-r0.json",
+      "bytes": 4820696,
+      "sha256": "3f4552eed0abf8c0cd8761f2f8d128eebf67299fc693429231dbb7a27ca2ce80"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-R2-w1-r0.log",
+      "bytes": 375,
+      "sha256": "7bb59c0f6ab0eb9ecffbfc374c95ebcf444219870273cb45cbefa27dfeeeb7e2"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-R2-w1-r1.json",
+      "bytes": 4772559,
+      "sha256": "9b4c12f21bf2e1ef50e1b685deca0d23b1d676f96766dcf54acec3807a88704f"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-R2-w1-r1.log",
+      "bytes": 375,
+      "sha256": "4dee42de804fcb286fdf1ecc7909cef5c6a8ed75e3ab7797ada58533afa7a388"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-R2-w4-r0.json",
+      "bytes": 4285576,
+      "sha256": "95fdebae3c4cd17efacb4ab776bebc45a937c63eb6e0256f1672223cc651dc4f"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-embedded_sand-R2-w4-r0.log",
+      "bytes": 375,
+      "sha256": "75d46dd744dd9fe33e01be684d43b5b924a51865d0394acfb1bd4e209969219c"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-A1-w1-r0.json",
+      "bytes": 4371767,
+      "sha256": "7c9bb2a951810ef6bcb9fc68598cd5b46da799a1bbec579bdbe1cc1c73d0f6e2"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-A1-w1-r0.log",
+      "bytes": 367,
+      "sha256": "ba70e531147870d502d30a0aee723b114ec60600ac3af988a84cf10ccab45770"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-A1-w4-r0.json",
+      "bytes": 4147321,
+      "sha256": "501113c0672924c49baf11448c21b73e4f2a9defc4ace618886e0f47e12d2158"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-A1-w4-r0.log",
+      "bytes": 367,
+      "sha256": "d7172669763c8b943c0cb46203bdb41368863361caebf40efbaedb67ece1a8f4"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-legacy-w1-r0.json",
+      "bytes": 2746246,
+      "sha256": "087d753650034e38871fe77be1bf3dd00acdf6380c1de3944459a4dea2b6883d"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-legacy-w1-r0.log",
+      "bytes": 371,
+      "sha256": "34f777293ab8257ae24d05ef3e43dd9bc1c7090c20794ad8a5650014823902a6"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-legacy-w4-r0.json",
+      "bytes": 2728508,
+      "sha256": "2ba8f8efe5c5a865bed1e441f626f5345c7648db204f8b32e5b0e40c43c4851b"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-legacy-w4-r0.log",
+      "bytes": 371,
+      "sha256": "d0fa7c637735e21580b0a6f726d48ff9c1370c05c5165ffc73a0ce6b629fdb3d"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-R2-w1-r0.json",
+      "bytes": 3659169,
+      "sha256": "44b5fd1849560b2caa7404cfc6d4c082cb8978b1fadc321872baf78c958301cd"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-R2-w1-r0.log",
+      "bytes": 367,
+      "sha256": "af28c5e59be5eb12d060f00e58e1b904370470d7f4e1021b06c62176c1da8aec"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-R2-w1-r1.json",
+      "bytes": 4012013,
+      "sha256": "bdf423737d851b954f2c6b2a947d1163a0134376f8a91207485d935944299a22"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-R2-w1-r1.log",
+      "bytes": 367,
+      "sha256": "67f40e33e1bd51f3071ece99c4cbaacec448afd78205a367fe933c320f818d0d"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-R2-w4-r0.json",
+      "bytes": 4314543,
+      "sha256": "e63d86ca1813f28925cce4befa470716b53c622bdf89832a755a876507951403"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-empty-R2-w4-r0.log",
+      "bytes": 367,
+      "sha256": "f99ef933d6c7f6aa2233baab2470e5b6f607f706c6516b6d3d41c4267e44b55d"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-A1-w1-r0.json",
+      "bytes": 4394658,
+      "sha256": "947cde2656b1f2212f0d1190a4c7f1a8dbca6e33eeb2ed0148c9da85e2af4fe5"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-A1-w1-r0.log",
+      "bytes": 367,
+      "sha256": "e2392ae694e7cae53da0660a4dbdd7ba3c1aa4ec04b98cddd278706e607d30ed"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-A1-w4-r0.json",
+      "bytes": 5173444,
+      "sha256": "b6bec83e751080a8125dc37726451bd52dfdd3871394f13450a344ceb03dc1fc"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-A1-w4-r0.log",
+      "bytes": 367,
+      "sha256": "6c65a5764ec9b67ab7aab6f393deca38675d1dcbdbfc6a3d91162950d40319f6"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-legacy-w1-r0.json",
+      "bytes": 3184483,
+      "sha256": "bc35df5d4c76b8f611bc4acf60fd57a0e02f709ba376c7f34cc9af28e539fa6f"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-legacy-w1-r0.log",
+      "bytes": 371,
+      "sha256": "19b5dfa5dfe605df09d8776ba7e8954c65cabd8cab5f3b23e01fd5258de26163"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-legacy-w4-r0.json",
+      "bytes": 3183605,
+      "sha256": "88608c65204aa86047998ab3a0d94959f1860f1ce1b35f9d2d73337fa5d4cabe"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-legacy-w4-r0.log",
+      "bytes": 371,
+      "sha256": "f46b4fd77101a39fe69c62b8e275ddfd692e20a6c9085356e9f0cf4d47e07160"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-R2-w1-r0.json",
+      "bytes": 4405707,
+      "sha256": "767882176e9ec825d0f71b8e6c0e2b240f5b5f9fa6c38f7af7957318d864ab80"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-R2-w1-r0.log",
+      "bytes": 367,
+      "sha256": "16f3319d8da4b794044034ac29865be9dbbb6126d5f7821700b8a89373827559"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-R2-w1-r1.json",
+      "bytes": 4438381,
+      "sha256": "6512c9a2aa3640774069b0bb31a21b23d23c2dd668dd95b7cccc8b89e2899028"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-R2-w1-r1.log",
+      "bytes": 367,
+      "sha256": "0833ae5fbb9642bbf20077c9f23ae5cec798cad0c4311986987ec2f1ccd9929d"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-R2-w4-r0.json",
+      "bytes": 5222663,
+      "sha256": "1cf30b4c5ce536ac35e6885ce024e84054ca94ff75037bfcc16d5f9606a72794"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-mixed-R2-w4-r0.log",
+      "bytes": 367,
+      "sha256": "54b45f89a2f7e10c18b5aa32b304a86fdf2773e253ba3562141da16834d87426"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-A1-w1-r0.json",
+      "bytes": 5117248,
+      "sha256": "a6028004295ba0072889bd8b4e3a6a25f72633cd32beaf0e347445a93611fd17"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-A1-w1-r0.log",
+      "bytes": 373,
+      "sha256": "d42887e6515e203a07a124105e24094716a053ae8c03d9f0761f6c9c11bb6c3a"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-A1-w4-r0.json",
+      "bytes": 4177118,
+      "sha256": "ac9c7461dc2a9cabe5b1145c860bcb87f37b7da8da807a16920c878c98484e98"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-A1-w4-r0.log",
+      "bytes": 373,
+      "sha256": "96ce8e69f2ea3b45ddf99d9461cb6fc16ac98e7ccb42e51046e030eef66f7a1b"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-legacy-w1-r0.json",
+      "bytes": 3269845,
+      "sha256": "6e801e2385f98dbdf4689b8356cbb52eacd70f2c63a7671f378ec02197ab1a4d"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-legacy-w1-r0.log",
+      "bytes": 377,
+      "sha256": "0f652985e9b6060edfa16d567d4745336d9795a4e7f089d02dc240495392bf0b"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-legacy-w4-r0.json",
+      "bytes": 3224821,
+      "sha256": "6280faeda570150ebff825559a0e0113cefcb9a2e95c4d66206ced86d926ac0e"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-legacy-w4-r0.log",
+      "bytes": 377,
+      "sha256": "0698f32874da538ebc0c80090a4880b3e033d1acaa130539bdfb5ea1ae466401"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-R2-w1-r0.json",
+      "bytes": 4764929,
+      "sha256": "559c3d0bf4dfffd971df68d7b9ff026a96d3e3248e8f2cfa43ac92b2d2d0c083"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-R2-w1-r0.log",
+      "bytes": 373,
+      "sha256": "7efa3ee3bec1f44a267518cd0abddb5e0a695d45faad73d364f7b6f69586ea2d"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-R2-w1-r1.json",
+      "bytes": 5129443,
+      "sha256": "9efaabe503deb03d0cd73581c84deaf7b713b46ed1516b6b2792e468b1badb7e"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-R2-w1-r1.log",
+      "bytes": 373,
+      "sha256": "832b208904019b3eefabda2969cfecea28b99e83e133b23ad4de8b3882049fe4"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-R2-w4-r0.json",
+      "bytes": 4220500,
+      "sha256": "3088fc21efd681bf952bbc7545df30a1bd38c0b8df35e4a26978f6e7aa4ccfa4"
+    },
+    {
+      "path": "build/compound-physical-linux-861/Linux-packed_sand-R2-w4-r0.log",
+      "bytes": 373,
+      "sha256": "4195310d24134d42994f4e5c8513f5a65919a89e95f4ed6b453a13e6cf680ac9"
+    },
+    {
+      "path": "build/compound-physical-windows/campaign.json",
+      "bytes": 104485,
+      "sha256": "007fae6eb66396c6aac2c006dddddcfc3fe8d7a1bd0384007563da83728fe235"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-A1-w1-r0.json",
+      "bytes": 906,
+      "sha256": "4ae397ddda09401288536e6f97eac181e5aec055de82d5873d2f91934d4d50bb"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-A1-w1-r0.log",
+      "bytes": 512,
+      "sha256": "58ef98cb1125f0b7ccc3c732a4cf5137c95c6d6ffc7b73be9aa3f984dfe14074"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-A1-w4-r0.json",
+      "bytes": 906,
+      "sha256": "7de6c0f2b0cae1c483292fe7d30b97b2a42ca7e7227fb27279f6e4631209452c"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-A1-w4-r0.log",
+      "bytes": 512,
+      "sha256": "07f6e06232f5efc9571195f928f2a257afe1985a20814bebdf66f97227052861"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-legacy-w1-r0.json",
+      "bytes": 910,
+      "sha256": "c0bc22cd90f1ac10c2ad0c61c65b3d6fafc5c3b1d7a2b29f1a3a4b0a8f4dfc92"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-legacy-w1-r0.log",
+      "bytes": 516,
+      "sha256": "ed40d41963ded0997d2d8fdf3cf6f22fea0312eaa561c04589e6ba47449e64a3"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-legacy-w4-r0.json",
+      "bytes": 910,
+      "sha256": "79dcd008e0124e1cca7c39a53e80bc2f441b02b10f6dc4948e512265f27bb198"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-legacy-w4-r0.log",
+      "bytes": 516,
+      "sha256": "eb9e8b68e947e72ec38abb48a51d3bd775d6b9e58e98fe3fda0371f42ab75fb9"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-R2-w1-r0.json",
+      "bytes": 906,
+      "sha256": "233184f0aea84f3e5d7c728acced1bd44792bc57d7c47b48bf2b9885c922c844"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-R2-w1-r0.log",
+      "bytes": 512,
+      "sha256": "2f0f96c3dd9dbcd3b0fbdbdc4701620f73c1970ac99b86d27d92e51ad30480d4"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-R2-w1-r1.json",
+      "bytes": 906,
+      "sha256": "9bdb629183b7475fe9062e67f2dbff5d375d5f632ce592056feed1769bc2a404"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-R2-w1-r1.log",
+      "bytes": 512,
+      "sha256": "727c2181817389e492dac5ef143990232f6bbf4ae41904ac8d935c364b702084"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-R2-w4-r0.json",
+      "bytes": 906,
+      "sha256": "ce94d8193fb38106a11cd8b901b10f8d0c80cbe40b309d7d41d0970f1cca52aa"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-embedded_sand-R2-w4-r0.log",
+      "bytes": 512,
+      "sha256": "51d3f0b02418f976993e572f779d93dcc91b6671f21dba471fdf92aaa8c887cd"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-A1-w1-r0.json",
+      "bytes": 898,
+      "sha256": "0f0c289b4e23deddfad5602f09702f732130e641e0b88b9e6034adbfb35f7c73"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-A1-w1-r0.log",
+      "bytes": 504,
+      "sha256": "71855d4a679827ac488c29a2bec517ddfd3a16950d479431b64a8a49b92a6de3"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-A1-w4-r0.json",
+      "bytes": 898,
+      "sha256": "cbc3345cf71d17f446e6a9dac3190b643ed1a73d769ad6f1f70abb518a1b8c94"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-A1-w4-r0.log",
+      "bytes": 504,
+      "sha256": "38c83e2e78ae5df97fbcb725fccb2523d4448e6a112988f73527a8906c7bd7a9"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-legacy-w1-r0.json",
+      "bytes": 902,
+      "sha256": "07b903d10ebcf724fa998d6150f94f86cf044a7417e2295764a91cc60d8e15e6"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-legacy-w1-r0.log",
+      "bytes": 508,
+      "sha256": "0b7285079ca977ef354d62dbb953643b4838451b481c8c0f79abe1686f802c33"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-legacy-w4-r0.json",
+      "bytes": 902,
+      "sha256": "325da727f121ce716dd0adaef46527775c5420a2b285be2dab5c2ed9d32eed8d"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-legacy-w4-r0.log",
+      "bytes": 508,
+      "sha256": "ff391d0edb2aeeff1652e1116e3e5de9d2434c42ed16a7f5df22fc7008c0ada3"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-R2-w1-r0.json",
+      "bytes": 898,
+      "sha256": "154a1159e62950d27841df7143a39047e6640008d510cba6a5b4946613f5b283"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-R2-w1-r0.log",
+      "bytes": 504,
+      "sha256": "04c626b2d473ff6805d676595d1dec5916218ead10988c3489564f91a5576c48"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-R2-w1-r1.json",
+      "bytes": 898,
+      "sha256": "2b0712106f809e9aa4191ae31ed078233c5b664f852a7e80c9f6ce8b749f6104"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-R2-w1-r1.log",
+      "bytes": 504,
+      "sha256": "9661b75445f519afdb3afa3cbc1bd71154890926d0c9117b11289a4eedee080d"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-R2-w4-r0.json",
+      "bytes": 898,
+      "sha256": "eb10e6545c65eaa22df26ca9d9e7790720977187b00572e0c96497f4b7475b20"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-empty-R2-w4-r0.log",
+      "bytes": 504,
+      "sha256": "f36adaa555289b39f05fad641ea7f54ef9938f224657b0bb75a8bf92746d25d5"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-A1-w1-r0.json",
+      "bytes": 898,
+      "sha256": "eca0a99ec9d4cc2744d101c5d33aff6af0d5ca04e3d7166b7665eb0d633b79c4"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-A1-w1-r0.log",
+      "bytes": 504,
+      "sha256": "4b9819322f3ec1f35e5ea4885badae153f1d1a62e303f9282452c09105246ff4"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-A1-w4-r0.json",
+      "bytes": 898,
+      "sha256": "b5c3265f86c804362ac4a110530a2e3b34838c1834fdc7c41c873af9fca22ab7"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-A1-w4-r0.log",
+      "bytes": 504,
+      "sha256": "d9b831d0c1c773f6ce6149f045fe7087ca3bfc154cce28020615f4b6e2d3075a"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-legacy-w1-r0.json",
+      "bytes": 902,
+      "sha256": "6614ba01e0854cd5d869cae772d81698adc68c836f6c5d62230e1f6dbc855b04"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-legacy-w1-r0.log",
+      "bytes": 508,
+      "sha256": "b941611fcd1b3349b10a854b89e691393449a2e485b58f2a372e36e4c2430606"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-legacy-w4-r0.json",
+      "bytes": 902,
+      "sha256": "11899e46a9ffadf98e284428f74c47ab72fe7d498e0d3d5bf5128912a14bd783"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-legacy-w4-r0.log",
+      "bytes": 508,
+      "sha256": "b7e5d5f832cb6031b7addf9daa9f416e658f4a57dd7bf0c909d58392c43fbb76"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-R2-w1-r0.json",
+      "bytes": 898,
+      "sha256": "3ae4f7ff1d6cc01421a90f814e8fed6295a81299d27c2d9ff4e38384a2fc4cac"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-R2-w1-r0.log",
+      "bytes": 504,
+      "sha256": "11d79b2e9cafe6f145d908eb552f95f45792844d0a4fe9e3792a2b6a6af79ac5"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-R2-w1-r1.json",
+      "bytes": 898,
+      "sha256": "e552319ee24ef3a60f785ae232554b5cbdd165a0a1c1616b7a4c87a31700dcde"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-R2-w1-r1.log",
+      "bytes": 504,
+      "sha256": "40a813e6d9389eed603a63be7ea2532bb6346d64ca88691368e9cb64b67996f5"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-R2-w4-r0.json",
+      "bytes": 898,
+      "sha256": "d33dfaf147bde1ed37a03a5fc2b8840e33b715719213770f518a9aa229be1e97"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-mixed-R2-w4-r0.log",
+      "bytes": 504,
+      "sha256": "3f05f472de7ee407bcdb403b9052a4b5d47eb30bbaf1734c4a5d906360356c82"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-A1-w1-r0.json",
+      "bytes": 904,
+      "sha256": "18f254dd6fe0230f820dec66686bb1a89fb18f812fe76790e076c5ff7ef2c91d"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-A1-w1-r0.log",
+      "bytes": 510,
+      "sha256": "875aee7439d09884ba39604c21e88a84414ad493ac92be74dedba5a49e45ba6d"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-A1-w4-r0.json",
+      "bytes": 904,
+      "sha256": "5cf1a75dd99dc607830c57db158ad740395843ad4a59d66673bb1c217246296a"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-A1-w4-r0.log",
+      "bytes": 510,
+      "sha256": "264d31679e592f8c8199010c77a5ec97c60b4ffbe27a496bcba953b0aed88b29"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-legacy-w1-r0.json",
+      "bytes": 908,
+      "sha256": "6099e46eff17633c4a7d32334354da4d878420f1cb853be526de2e22a097f748"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-legacy-w1-r0.log",
+      "bytes": 514,
+      "sha256": "bf892066b5571c2cc2b7f4745a2769849442f358cc0b36101c19d6721fc5edaf"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-legacy-w4-r0.json",
+      "bytes": 908,
+      "sha256": "24193bcc898d4990e7a43202134043ba7899d6e7f13c6bd8ff0432cbec71d204"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-legacy-w4-r0.log",
+      "bytes": 514,
+      "sha256": "dc941ab95c338b68d06e35ca51e0b1379a659ad5554ad434a2851fee1ec43c60"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-R2-w1-r0.json",
+      "bytes": 904,
+      "sha256": "e8f7294f31b07c4b55cacd7123a24766d1386d8c3794e681886b942dfd7f6dcf"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-R2-w1-r0.log",
+      "bytes": 510,
+      "sha256": "71fac145641ee96db5bcf5180e31aa063140735a4a121cbf42f4dccccfdd81de"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-R2-w1-r1.json",
+      "bytes": 904,
+      "sha256": "611a2d05d00b5253594cb07ceec38473b93a45d76516d8e2bf58ca510a76be12"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-R2-w1-r1.log",
+      "bytes": 510,
+      "sha256": "5a8e08a993ea5f8704a2054afb37cb37d2604968143d0a7ebfb64be3cdd9289b"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-R2-w4-r0.json",
+      "bytes": 904,
+      "sha256": "2969e1940aabc182422fcf4d42b4c511fb7554511faa13ecf9bb81eeb5ab1181"
+    },
+    {
+      "path": "build/compound-physical-windows/Windows-packed_sand-R2-w4-r0.log",
+      "bytes": 510,
+      "sha256": "cdbc9194920b54fd9460b87f0c6a26b0336a59712f52a9f2593a4a51afefaa7f"
+    },
+    {
+      "path": "build/compound-physical-windows-861/campaign.json",
+      "bytes": 104649,
+      "sha256": "2c2e75480ab42ded05412e9fb713ab890b2791dec5a472351b5dd17283076a6c"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-A1-w1-r0.json",
+      "bytes": 4921747,
+      "sha256": "85d9ae5b912deb1624687adea7ff0786da8caf65d4d9edef8c48371684a1802d"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-A1-w1-r0.log",
+      "bytes": 381,
+      "sha256": "3087ced156b8bae72c77e8236103ae4a80d2c7baccbe6ac523fb00268630bb9e"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-A1-w4-r0.json",
+      "bytes": 4853649,
+      "sha256": "699eafd87ef224a57fd9c3726e411fd5bb431d2db8d1f2bf94c477a2f67aa363"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-A1-w4-r0.log",
+      "bytes": 381,
+      "sha256": "6ce12e6edb25408b639bc967f7950461b3e775ec932c4478a2b6d93d97cc7f42"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-legacy-w1-r0.json",
+      "bytes": 3178926,
+      "sha256": "20d61f6b8b3f7a4c715192cbbf0844a9fbb738a7cf0dcf607dc837719ee138eb"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-legacy-w1-r0.log",
+      "bytes": 385,
+      "sha256": "cc7924191de3160b31344acbef2dcf0393e88cd0f41eb21f951acd720da6f881"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-legacy-w4-r0.json",
+      "bytes": 3238797,
+      "sha256": "723fd724fe510258e8085ab25912a7f0a95ef89c333efd5ac4667ba8963c9e3e"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-legacy-w4-r0.log",
+      "bytes": 385,
+      "sha256": "cd9fd6e9854141dbc4a3527084a54b73599a89b6cff2d08bf2deeb7dcaaab249"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-R2-w1-r0.json",
+      "bytes": 4955035,
+      "sha256": "9000f166ea7d6e4a928c1342b75a0d33abb08b8d591b1abf2c77fcc5a1128449"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-R2-w1-r0.log",
+      "bytes": 381,
+      "sha256": "6fc760f277ec7d40c524fd7fb9fa1de6f8b669ddb000fbb2fe9e5ce44be9e126"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-R2-w1-r1.json",
+      "bytes": 4920420,
+      "sha256": "bd127cbb20acdaab4a642fa3faad64fc784c7a8c84d68767829c28f70c09b418"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-R2-w1-r1.log",
+      "bytes": 381,
+      "sha256": "920e49cef76d71989b3b752f55072ecf03c0affee5927ffb2057f19758aab6be"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-R2-w4-r0.json",
+      "bytes": 4814243,
+      "sha256": "7e82803c962dde7c7012c7624ce900fb2ba6c3283e84552a90c1ca331e6d4747"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-embedded_sand-R2-w4-r0.log",
+      "bytes": 381,
+      "sha256": "484020ffff57a28fca738d89ddd194eb53a88b8ce4c82393d18b0cf896db5911"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-A1-w1-r0.json",
+      "bytes": 4197173,
+      "sha256": "ab6f75590ccebae8a2043416d94e4ef3d8b809e680849c034e08cd13f3db583c"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-A1-w1-r0.log",
+      "bytes": 373,
+      "sha256": "3472e07da570ace552fa6ab62700f569c14d447001b39d2948e0d842ee8a559c"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-A1-w4-r0.json",
+      "bytes": 4327932,
+      "sha256": "5aec3443c0c32b82ff8c9346a4f99c384accd9fc0911d083d8d20635226caf7e"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-A1-w4-r0.log",
+      "bytes": 373,
+      "sha256": "d563c7e5419107ab84c7b57d8f2b8bff9cf97225d59ec95abb6228b454670e31"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-legacy-w1-r0.json",
+      "bytes": 2708962,
+      "sha256": "1561de7331743b26addfe9cac4353960cde8d9c773e44247d25fda07c7f31e71"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-legacy-w1-r0.log",
+      "bytes": 377,
+      "sha256": "7d067a08488370ac3bf28d62bc61d223ac0d4a831255b5fc82c5452da0de7040"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-legacy-w4-r0.json",
+      "bytes": 2711954,
+      "sha256": "13adc6d9982b1757ffa295741e4cee106556ae6a94f6a5756884eea93b99ce45"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-legacy-w4-r0.log",
+      "bytes": 377,
+      "sha256": "ab84d335a15d1951f890a61312b4151d7015fe72050f63c11d5cdc291b12703a"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-R2-w1-r0.json",
+      "bytes": 4193721,
+      "sha256": "cff1716301a7cf6f9d933ee96f0cb062ef2e024d2e3ea17d9cf31cee7b7d705f"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-R2-w1-r0.log",
+      "bytes": 373,
+      "sha256": "2199d23916a887711c8ea182f115a134c6b356d6a65bf3c385be2ee643fb2bfd"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-R2-w1-r1.json",
+      "bytes": 3960983,
+      "sha256": "a0a1c634d6927110e65201bc8f028ddab30cc10a81d82b931fd7c96b17a9c145"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-R2-w1-r1.log",
+      "bytes": 373,
+      "sha256": "9deb04a39c4a7e648f4302f71413922d4d9e20708cbcf79f7a714120db029ba8"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-R2-w4-r0.json",
+      "bytes": 4192128,
+      "sha256": "8bbef2edc978f1502801becf46792e07127c90de266c81b7e7615c306895b3fd"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-empty-R2-w4-r0.log",
+      "bytes": 373,
+      "sha256": "326c969d47ac71dff1a4d295806fed602579bb2d7b76f52b92ecaf5adcc247c2"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-A1-w1-r0.json",
+      "bytes": 5020901,
+      "sha256": "c21e1051b2d3cb5621fdb633029678ab464c42178844ac6feea09ecd0187c31f"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-A1-w1-r0.log",
+      "bytes": 373,
+      "sha256": "c4e3a442fd02f42dc4b9726497d96a5484d1c793711a46dcb8c9948574ff4ded"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-A1-w4-r0.json",
+      "bytes": 4823317,
+      "sha256": "3d58a08de140825fe4e64ba5b44b7f547ee0ff698f9eea9fd1d1c0e7398989c6"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-A1-w4-r0.log",
+      "bytes": 373,
+      "sha256": "25c849c803a3ada20fb6671875feeaf1b4a8f84263a6b1c5b607053ec0dd3f16"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-legacy-w1-r0.json",
+      "bytes": 3141265,
+      "sha256": "da198a23212a0345dbd8f2bd4344fdcc334dd3abbc7cd528e4f41cbc8fade516"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-legacy-w1-r0.log",
+      "bytes": 377,
+      "sha256": "47bb011e4dd6e7cfe5ded161086a804276b06fbec1041ea599b5e28333cc7e7e"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-legacy-w4-r0.json",
+      "bytes": 3158245,
+      "sha256": "9e0155f805126ceeceb1b46d62efddfd8c927830b8e9142a1fe7ec2c19854929"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-legacy-w4-r0.log",
+      "bytes": 377,
+      "sha256": "42a50e6997892361e37fbfcc656ea560958f5699bbfc2d24d25db5e43118819a"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-R2-w1-r0.json",
+      "bytes": 5004484,
+      "sha256": "d6f3aee14b86586264a1b4a562e619a0c23dd34372009c5d848bddfb2d28b874"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-R2-w1-r0.log",
+      "bytes": 373,
+      "sha256": "451ff6bd5297e867a34109565a1941fe202231fea2e4b34aa52087a1c91fefc7"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-R2-w1-r1.json",
+      "bytes": 4971563,
+      "sha256": "23a1e8389b31c12fe34fddbd1f67bf8ae70f40abbe6a685d6e3ec162f4003243"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-R2-w1-r1.log",
+      "bytes": 373,
+      "sha256": "cf7c1c49fad3bc975f1d11931e3d9002058494f0abfc2fe372e0e12d6449119d"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-R2-w4-r0.json",
+      "bytes": 4975387,
+      "sha256": "050378b64720b2e1a3cba085910aa2750607fa3920cf424d83c24693cc154384"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-mixed-R2-w4-r0.log",
+      "bytes": 373,
+      "sha256": "56b661108706947bdb3be68e9c1c3d55559aba13bb98d55ca7d8d09e0878b5a2"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-A1-w1-r0.json",
+      "bytes": 4887083,
+      "sha256": "244005a57b14b0e14210e5b6f38532e57c8908a6dc2dca63db55ae6ebdfbac30"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-A1-w1-r0.log",
+      "bytes": 379,
+      "sha256": "396f5c860de0cd03076b8947340b19b3b8c23b78965d4def32babc4944cd9b87"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-A1-w4-r0.json",
+      "bytes": 4841367,
+      "sha256": "feef3613997f043104fae247253becdb95172448ea5abc9eaa42020baed6fe26"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-A1-w4-r0.log",
+      "bytes": 379,
+      "sha256": "668abbe449f6c26fc947001f4848e1105b1d4245b663c92afdddab2b460ce075"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-legacy-w1-r0.json",
+      "bytes": 3247317,
+      "sha256": "705c06a922e133df1aa92582214789ebccb161923b38e45fe6e2d4923e2052f4"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-legacy-w1-r0.log",
+      "bytes": 383,
+      "sha256": "f4c0fc0868fa3d3e9611089fba748784bfaf677c33cde91b452a353963d7d6cb"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-legacy-w4-r0.json",
+      "bytes": 3176805,
+      "sha256": "df2202d400ffdccc5127e48d96e012a3a927f1393a74197ef4b0e4468e661c28"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-legacy-w4-r0.log",
+      "bytes": 383,
+      "sha256": "af0039c0ba85e8846fca7d4ef8fce9727426a93a1bae836c5a76f421dace6b55"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-R2-w1-r0.json",
+      "bytes": 4932582,
+      "sha256": "541381a1515062ed451ad73d9d81ca8827c3ed9b0899ada4084beafd5503f15c"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-R2-w1-r0.log",
+      "bytes": 379,
+      "sha256": "28d08d5f9936155868cad998d88223707c30532e71374723e98518f54a46f900"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-R2-w1-r1.json",
+      "bytes": 4737898,
+      "sha256": "5e4c324d9ca51a7e888343f82748f196c29c87a1f91be2db91c0e13286e9f151"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-R2-w1-r1.log",
+      "bytes": 379,
+      "sha256": "30013ed659e51f9136d39a34d5c4353e5aa1486fa531417480983afbc243138f"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-R2-w4-r0.json",
+      "bytes": 4806739,
+      "sha256": "cbe35a4716961477648b860c6d36f6bcd27093e33d2281b2efd323452711a25a"
+    },
+    {
+      "path": "build/compound-physical-windows-861/Windows-packed_sand-R2-w4-r0.log",
+      "bytes": 379,
+      "sha256": "659fe870697d20bebf6f14ab95d14fdbe87b50b7d93c65022dfe385de159d5e4"
+    },
+    {
+      "path": "build/compound-publication/fill_qualification_draft.py",
+      "bytes": 6786,
+      "sha256": "80a349f890efa6a377aebdbd0959f55430065d9dab70e2bea181cf2d8cc22a2a"
+    },
+    {
+      "path": "build/compound-publication/publish_exact.py",
+      "bytes": 15731,
+      "sha256": "9e05ba6e0c364ce3a84e355eea9c690a843f9636e46e9b124ba8784a81b78f60"
+    },
+    {
+      "path": "build/compound-publication/qualification.template.json",
+      "bytes": 13430,
+      "sha256": "bc3f779a6e5a86b0c9cd39325872c72e1d388b4c63f150848a7ce4f4b710f474"
+    },
+    {
+      "path": "build/compound-publication/toolchain-postbuild.json",
+      "bytes": 3880,
+      "sha256": "8504832e0926da571f752285bf965ed16f5d73b47a22e0a92da7094946df7899"
+    },
+    {
+      "path": "build/compound-render-gates/linux-5d/report.json",
+      "bytes": 79273,
+      "sha256": "ceb3c1e9e197c07744d6193bbcab8d19fca082c93bba1e86d18b8458fbd6c525"
+    },
+    {
+      "path": "build/compound-render-gates/linux-5d/test_liquid_solver_policy.log",
+      "bytes": 4680,
+      "sha256": "8058faf919d2b9e9edfbc95bf67155da2b4754d3367c35797355eb919afc90c5"
+    },
+    {
+      "path": "build/compound-render-gates/linux-5d/test_native_render_bridge_regression.log",
+      "bytes": 305,
+      "sha256": "b6bd1c7536364ed768cf529f9a831d4d4db3fb79c2e3141d1828e926f04815a8"
+    },
+    {
+      "path": "build/compound-render-gates/linux-5d/test_render_patch_handoff_regression.log",
+      "bytes": 260,
+      "sha256": "08263aedb595ff899a3fe56ccdf61b3337c034a5b930b1214bc9b8d008a7a51a"
+    },
+    {
+      "path": "build/compound-render-gates/linux-5d/test_render_world_generation.log",
+      "bytes": 272,
+      "sha256": "b75505bfd0cb9c5dc461db528c2691042070620afbac3ebfec49845947cd8255"
+    },
+    {
+      "path": "build/compound-render-gates/linux-5d/test_water_feel_integration.log",
+      "bytes": 2050,
+      "sha256": "420c0e20ea47ec620cf3ea1d26eb1af3e6464a49667dc2a9a7f461acf7cf7601"
+    },
+    {
+      "path": "build/compound-render-gates/linux-bootstrap-failure.txt",
+      "bytes": 1216,
+      "sha256": "9bd99c3a25642e0846532e9c07fa59b4d957ddb11f29fbe3f021741f1c54e68e"
+    },
+    {
+      "path": "build/compound-render-gates/run_controls.py",
+      "bytes": 6509,
+      "sha256": "d3b9d23f0a96f2af8ea5a313586ea66cef326eef28159fabaf305aeb60c5867f"
+    },
+    {
+      "path": "build/compound-render-gates/summarize.py",
+      "bytes": 2696,
+      "sha256": "4b1d9c4914dba410b1de934e44f66e1ca933b61ee931fee4ca351b1e4cd9cd94"
+    },
+    {
+      "path": "build/compound-render-gates/summary.json",
+      "bytes": 8067,
+      "sha256": "a884650273a446430ee10371f805291cea12ccb3c64cc9ece67f1a0e91982714"
+    },
+    {
+      "path": "build/compound-render-gates/windows-5d/report.json",
+      "bytes": 79165,
+      "sha256": "b2013d3a525cca54b83df06a68af50c3c38f3571f975c7670e0056356d7edf8c"
+    },
+    {
+      "path": "build/compound-render-gates/windows-5d/test_liquid_solver_policy.log",
+      "bytes": 4685,
+      "sha256": "424b3d33c4989b8515a2c63d68637605a74062a259273e69b6773e7f9920aef7"
+    },
+    {
+      "path": "build/compound-render-gates/windows-5d/test_native_render_bridge_regression.log",
+      "bytes": 309,
+      "sha256": "3aa010763f460fa28f433d21b46f21dccba132c0bdc15a3c4136d8e7aa992a0e"
+    },
+    {
+      "path": "build/compound-render-gates/windows-5d/test_render_patch_handoff_regression.log",
+      "bytes": 264,
+      "sha256": "325147e1b802ac53e9980a91624e4d3ec2cce2b806c26e44559d9979be49ec75"
+    },
+    {
+      "path": "build/compound-render-gates/windows-5d/test_render_world_generation.log",
+      "bytes": 276,
+      "sha256": "8a87bff211be78b0627bc0b32c86afa4c99236d8cf96245653c4c025d39e0efd"
+    },
+    {
+      "path": "build/compound-render-gates/windows-5d/test_water_feel_integration.log",
+      "bytes": 2035,
+      "sha256": "39f4e3c510dca651542ec35f0eb2f0cfe6eb297b8c0bb906600cd89b10cd3e9b"
+    },
+    {
+      "path": "build/compound-review-861/corrected-supplement.json",
+      "bytes": 473059,
+      "sha256": "6e4561e336be50723eed97ee6e8226b3b5d6aefb8dd169e20c8aeb3511099a10"
+    },
+    {
+      "path": "build/compound-review-861/raw-and-derived-hash-manifest.json",
+      "bytes": 17162,
+      "sha256": "f2e156ed02e5a30067510f50d4d7016d939c501b21b48d4fe14ac666082cd824"
+    },
+    {
+      "path": "build/compound-review-861/selected-physical-traces.json",
+      "bytes": 488163,
+      "sha256": "d6bcf6a073129e5affbb9071ba9e4ed1c3e275611271aa09031b27f8fc8bddca"
+    },
+    {
+      "path": "build/compound-runtime-linux.json",
+      "bytes": 11913,
+      "sha256": "58db2a34ce6f61c24f76f2375e03e0b95eb78dc4119a74b83fdec4abb3fea0d7"
+    },
+    {
+      "path": "build/compound-runtime-windows.json",
+      "bytes": 11481,
+      "sha256": "5f217d57525ee865830842a5eab65fcd3afe418454b13eca70b0dddf6bb46004"
+    },
+    {
+      "path": "build/compound-supplement-861.json",
+      "bytes": 317938,
+      "sha256": "7ae6725920ee40560ac4b5e185c8a678005756b77684bd119af8ed35f01f8091"
+    },
+    {
+      "path": "build/extension-builds.json",
+      "bytes": 1219,
+      "sha256": "11e3a38366b2848bc4d60e6b5b6e2a988b90d23cf0b37baa786ee308d2256fd0"
+    },
+    {
+      "path": "build/extension-linux.log",
+      "bytes": 43439,
+      "sha256": "ab23b0eeae06de9460f355307b0b538f5a59af9d4ba90f5d3fad5bc08d833782"
+    },
+    {
+      "path": "build/extension-windows.log",
+      "bytes": 2380,
+      "sha256": "ddc689eaade3811211c7c228b8097ff79a42e17d8f5541341531aa9fc1cf01bd"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/completion.json",
+      "bytes": 592,
+      "sha256": "8e686b4879a09608fc5ae61c817327baefc127154a4a5968800579831180359b"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/independent-integrity.json",
+      "bytes": 417,
+      "sha256": "ace8b23f3ce59c80a4193643164a6d65a6df68c96c3376e30a381329f7e4931d"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/input-manifest.json",
+      "bytes": 43349,
+      "sha256": "caaf6d0c3600b40ac85b4da2620f3b797173b0943649772cfb7ecbb2acb05d5a"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-conservative-displacement",
+      "bytes": 49520160,
+      "sha256": "7427daf8d084ee9156692dfe402f48aa0b0a5e1c2186b7ccdeb42ceecc79fe45"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-conservative-displacement-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-conservative-displacement.log",
+      "bytes": 521,
+      "sha256": "25c5a792ddb922715e83ef2d0900a70ba92d22b89bb47f497ac1f9351ebbfd3c"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-core",
+      "bytes": 114121336,
+      "sha256": "da25b04748efb05626e1bffa0380055e7cb3d9185e1d25d3ff0269c5a912637b"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-core-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-core.log",
+      "bytes": 16608,
+      "sha256": "8dcafae5ba7dd5e1f63013a7786aa32307e7f194a4680e398d453962a7feafa9"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-solid-detachment",
+      "bytes": 48161880,
+      "sha256": "f3a25b18f527fc0cd4bb815a17240b6378a00e6ef0e468b036a43a7c75e43b4b"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-solid-detachment-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-asan-solid-detachment.log",
+      "bytes": 719,
+      "sha256": "306c418ee68c1ba8d410ca3397146f9bdc98182bd9889df4ece698cb5ba4e40e"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-conservative-displacement",
+      "bytes": 10853256,
+      "sha256": "ec81269dfd6592373a3e9f98a77cea8bc0f1204053a5ecd6d883133c5d7d8333"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-conservative-displacement-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-conservative-displacement.log",
+      "bytes": 521,
+      "sha256": "25c5a792ddb922715e83ef2d0900a70ba92d22b89bb47f497ac1f9351ebbfd3c"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-core",
+      "bytes": 34151512,
+      "sha256": "e38e0d2468bf8b9b503b11136c592d5b3a93e6b9bf7d5bd558aea7a3e64bf6fe"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-core-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-core.log",
+      "bytes": 16608,
+      "sha256": "935fd34ff59f1b48bdf4bb00c3bb4f6bbe63cb6b15b92729b4f9122b3f28b2fa"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-solid-detachment",
+      "bytes": 10415656,
+      "sha256": "e74ace1837ecda717d076ca9dd1aafdae3d9eb7a013f5a41acf0c6c10c7dc3e2"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-solid-detachment-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/linux-solid-detachment.log",
+      "bytes": 719,
+      "sha256": "306c418ee68c1ba8d410ca3397146f9bdc98182bd9889df4ece698cb5ba4e40e"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/receipt.json",
+      "bytes": 75375,
+      "sha256": "98a690a4177e237b0241dd66c80bfd96d1656908aa452ba095abfef9e26d69e8"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/tool-identities.json",
+      "bytes": 2125,
+      "sha256": "e6a4b6a8a7a99b1eab65310c37256e8dbd30287c326e769d6722366a68685314"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-conservative-displacement-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-conservative-displacement.exe",
+      "bytes": 10110976,
+      "sha256": "cca6d0b21e31d305fc20db2919b529a6eb5fc02b0b9b9a3ed3de16637e914b43"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-conservative-displacement.log",
+      "bytes": 529,
+      "sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-core-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-core.exe",
+      "bytes": 36262912,
+      "sha256": "ee3caef0c22065210d44fde255c2c6fa94f81d60042ae2f600742f872eabd16b"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-core.log",
+      "bytes": 16876,
+      "sha256": "c6bdfa1083fbf443e3ce9e784008334fb402f2858141cbe566b365f5661b6f02"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-solid-detachment-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-solid-detachment.exe",
+      "bytes": 9699328,
+      "sha256": "8081732e8ef1b31136882e3f0a2c31e692a668cbea6dcbb5d45f63d96b9b6b39"
+    },
+    {
+      "path": "build/full-native-composition/attempt-2/windows-solid-detachment.log",
+      "bytes": 731,
+      "sha256": "5f4fb52d5d6f065a083320fcb416731f474a6e71a437cf64930a5e4a752ff68b"
+    },
+    {
+      "path": "build/full-native-composition/capture-parser-current-gates.json",
+      "bytes": 21763,
+      "sha256": "c2ba186ae2d04b6e66d0b2afee2e2044762fbea4d1681a4520a5214a7cb47f3a"
+    },
+    {
+      "path": "build/full-native-composition/capture-parser-equivalence.json",
+      "bytes": 600009,
+      "sha256": "5324edea6a21c4fc4a0c620c79d88e70222083dc99b5cd2abb0af6dc9eb9596e"
+    },
+    {
+      "path": "build/full-native-composition/driver-e648-pre-fix.py",
+      "bytes": 13166,
+      "sha256": "df45b2815a78c543186636d485949a480016f1bab1fb44eaa88fe0625d14e5eb"
+    },
+    {
+      "path": "build/full-native-composition/driver.py",
+      "bytes": 14497,
+      "sha256": "fa91076e7b66f24987f7e7bae105b14f9fd6db9a6f5a5696f1ba35b619bce6bc"
+    },
+    {
+      "path": "build/full-native-composition/input-manifest.json",
+      "bytes": 43261,
+      "sha256": "0df2511a5d997e7589f690d5b5bc6a765374018628e2693e5faa9343111da3e9"
+    },
+    {
+      "path": "build/full-native-composition/linux-core",
+      "bytes": 34145784,
+      "sha256": "31fdf1a1a058509540dd9890081dc8c5d0f00fe972e38a3f2b6fdcc82b80007a"
+    },
+    {
+      "path": "build/full-native-composition/linux-core-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/linux-solid-detachment",
+      "bytes": 10374256,
+      "sha256": "eefd2cd22ca9991756f3c9caf50766cbd503424245ce7528d31c0690efaa2b0c"
+    },
+    {
+      "path": "build/full-native-composition/linux-solid-detachment-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/physical-861-analysis-correction-addendum.json",
+      "bytes": 4153,
+      "sha256": "fbfc48afcfb4b62dbda551a1c0332590c84117e0dc2c2557af5c955012a48819"
+    },
+    {
+      "path": "build/full-native-composition/physical-861-disposition-review.md",
+      "bytes": 6594,
+      "sha256": "fbf0bac710d9e0edd389d18a34c6d97e1cc9d36f1d1432c2f924a7148334a435"
+    },
+    {
+      "path": "build/full-native-composition/physical-861-independent-verification.json",
+      "bytes": 64157,
+      "sha256": "f72621035f2e178c9b7e6182e88468b27b2ae14c3c16fa82b04af4f93053ae3b"
+    },
+    {
+      "path": "build/full-native-composition/physical-analysis-review-before-results.md",
+      "bytes": 7979,
+      "sha256": "c04c1028cf73cf3cb346f3a27a8623ae72493d82346d5fada96d0ae884e18e18"
+    },
+    {
+      "path": "build/full-native-composition/pre-fix-stop.json",
+      "bytes": 2909,
+      "sha256": "4fa8670f914489131a00ca4261c98db3019d59f3cb2282499de65588b30f231c"
+    },
+    {
+      "path": "build/full-native-composition/README.md",
+      "bytes": 2386,
+      "sha256": "52e36b575a47186c9644df671a8688fc3d7676141af24a25ac507aca6b34431b"
+    },
+    {
+      "path": "build/full-native-composition/receipt.json",
+      "bytes": 54040,
+      "sha256": "41e7c7f256bf32acf50260559ebe3f145b2242037f528574bf2c4e3654219517"
+    },
+    {
+      "path": "build/full-native-composition/stop-after-current.ps1",
+      "bytes": 3419,
+      "sha256": "c1dc96e729669cf932f2df8039c68495f7d5501d435906f4e37f0cad1d0eb03a"
+    },
+    {
+      "path": "build/full-native-composition/tool-identities.json",
+      "bytes": 2125,
+      "sha256": "e6a4b6a8a7a99b1eab65310c37256e8dbd30287c326e769d6722366a68685314"
+    },
+    {
+      "path": "build/full-native-composition/verify_capture_current_gates.py",
+      "bytes": 5228,
+      "sha256": "aa3db218b01af5a48c4fb711506ec3db1d2cfa9945d334f470d7d24b5e82acd8"
+    },
+    {
+      "path": "build/full-native-composition/verify_capture_equivalence.py",
+      "bytes": 9221,
+      "sha256": "aa6f76a54735df586aac49920bc9bea37bef89944ed09c90d18b06439f591e63"
+    },
+    {
+      "path": "build/full-native-composition/verify_physical_861.py",
+      "bytes": 9840,
+      "sha256": "23009812d3201c8c80d6a7d52f4e7240b4af8729782173a2387d648c92eb544d"
+    },
+    {
+      "path": "build/full-native-composition/windows-conservative-displacement-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/windows-conservative-displacement.exe",
+      "bytes": 10110464,
+      "sha256": "72037370f423b1fb06b97908201ecaeeff1e394f1410ab303e5335a79c1a6130"
+    },
+    {
+      "path": "build/full-native-composition/windows-conservative-displacement.log",
+      "bytes": 529,
+      "sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+    },
+    {
+      "path": "build/full-native-composition/windows-core-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/windows-core.exe",
+      "bytes": 36262912,
+      "sha256": "ae6fc2090ee0ac5f08b71789f87ba113c6c09d2df7744d99de4c30bb5a73a3f1"
+    },
+    {
+      "path": "build/full-native-composition/windows-core.log",
+      "bytes": 16875,
+      "sha256": "6d8b021dcde43b55c7565c92ee33c071e3a79c4afb313a776cc58473c4608e4d"
+    },
+    {
+      "path": "build/full-native-composition/windows-solid-detachment-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/full-native-composition/windows-solid-detachment.exe",
+      "bytes": 9674240,
+      "sha256": "a038427bdae06715b893ccbf543bfc8ae4907446fbe78e066f38d050def63521"
+    },
+    {
+      "path": "build/full-native-composition/windows-solid-detachment.log",
+      "bytes": 652,
+      "sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306"
+    },
+    {
+      "path": "build/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "bytes": 4986880,
+      "sha256": "2922792e238f45be1f4188472071f8d629bcdecb5345f7bd3716ae2a43eb1603"
+    },
+    {
+      "path": "build/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "bytes": 4412328,
+      "sha256": "3b69072af379f8f71dcff19d941c5d4cfa7a13387b70a0eeba3d20f865366dbd"
+    },
+    {
+      "path": "build/godot-linux/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "bytes": 4412328,
+      "sha256": "3b69072af379f8f71dcff19d941c5d4cfa7a13387b70a0eeba3d20f865366dbd"
+    },
+    {
+      "path": "build/pre-fix-e648/compound-runtime-linux.json",
+      "bytes": 11913,
+      "sha256": "1cc4cbd6ee94e50be6769db3e3c7f978f22d54cc21bafb1807a5a19f5bd183a0"
+    },
+    {
+      "path": "build/pre-fix-e648/compound-runtime-windows.json",
+      "bytes": 11481,
+      "sha256": "6e002bd3d303599d71c32540388d4a60e14702a70b5e3bf17bef8d79e80dbda5"
+    },
+    {
+      "path": "build/pre-fix-e648/cybersand_native.windows.x86_64.dll",
+      "bytes": 4986880,
+      "sha256": "f56eae07802cb2ccb9d66261189922a44edc28e3e8dd2f6ac1ad429d414f0183"
+    },
+    {
+      "path": "build/pre-fix-e648/extension-builds.json",
+      "bytes": 1219,
+      "sha256": "d924a133c63165058072eac53ed4d0d29309e559cffa120e3572a4d030e9e5be"
+    },
+    {
+      "path": "build/pre-fix-e648/extension-linux.log",
+      "bytes": 43439,
+      "sha256": "b301834b639bcbe3b2f483ddce1efc70bc4d59cf0d27be6f047aac82e0a99253"
+    },
+    {
+      "path": "build/pre-fix-e648/extension-windows.log",
+      "bytes": 2380,
+      "sha256": "357f588ebcfd3cadebe673d5134ca72bd7fc5163c7e2aaa94acf50ca2c391b30"
+    },
+    {
+      "path": "build/pre-fix-e648/libcybersand_native.linux.x86_64.so",
+      "bytes": 4412240,
+      "sha256": "ea8054cb0134790f9e2dcf8d4aef1e725e57ac71b270982d67dda70bc67c1970"
+    },
+    {
+      "path": "build/pre-fix-e648/retention.json",
+      "bytes": 899,
+      "sha256": "c6b755b5cd1430a62461e39c1ab55792abd9e8db7fe1c9f143f3d34e1156f025"
+    },
+    {
+      "path": "build/retrieval-challenges.contexts.md",
+      "bytes": 2329358,
+      "sha256": "fd85b37a2d840e870803d368ea9d9083a344f0eb8c0bffb50c9829c8b1154b62"
+    },
+    {
+      "path": "build/retrieval-challenges.json",
+      "bytes": 2587610,
+      "sha256": "3f10f9628a6750b31e27c1e06f8beb1ab010917cd9274749f42e7b5a0b9aad3b"
+    },
+    {
+      "path": "build/retrieval-final-challenges.contexts.md",
+      "bytes": 2332192,
+      "sha256": "f6d2b11c089f7187cbbb9748ef7bc3212682ce313fb2c0855e9c61cdc69c877d"
+    },
+    {
+      "path": "build/retrieval-final-challenges.json",
+      "bytes": 2590477,
+      "sha256": "8f7e04871950193083ab6bd56d095fe1a59434ee3b3dcdc29f08f1fe17e2f830"
+    },
+    {
+      "path": "build/retrieval-final-frozen.contexts.md",
+      "bytes": 349662,
+      "sha256": "95b8add5cd90ec78d3436faf18bf4fd3e08be86c60271d92e8e7029b3f1941c5"
+    },
+    {
+      "path": "build/retrieval-final-frozen.json",
+      "bytes": 418248,
+      "sha256": "b486a0eee0bdabc682a735a736c9feeb00844085e9c24f6145c3af18d9ba500a"
+    },
+    {
+      "path": "build/retrieval-frozen.contexts.md",
+      "bytes": 349662,
+      "sha256": "05983f55d1ee956bb3a7113a5bddaa8bff23762e98211959aaf124a3e598205f"
+    },
+    {
+      "path": "build/retrieval-frozen.json",
+      "bytes": 418253,
+      "sha256": "da6b1f2dd8255144eb08e091e78ce87a2b6636daa8f5a8ce0f32c681a79cec46"
+    }
+  ],
+  "files_changed_while_hashing": []
+}

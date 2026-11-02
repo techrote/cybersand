@@ -1,10 +1,10 @@
 ---
 title: Compound granular response and native detachment
-status: Planned
+status: Current
 document-kind: contract
-scope: Opt-in reconciliation of native single-aggregate detachment with one GCR physical response owner; qualification pending
+scope: Experimental branch composition for one native aggregate and one GCR response owner; mechanically qualified, production physical quality unaccepted
 canonical-for: [compound-granular-detachment-coupling]
-last-reviewed: 2026-11-01
+last-reviewed: 2026-11-02
 related-documents: [rigid-body-and-cellular-coupling.md, soliding-lifecycle.md, ../operations/gcr-detachment-integration-plan.md, ../systems/granular-interaction-policy.md]
 ---
 
@@ -21,6 +21,13 @@ and [GCR#348](https://github.com/techrote/cybersand/pull/348). Their earlier evi
 retains its exact source/runtime scope; no combined-source pass follows from it.
 The lightweight fleet is not an input. Ordinary defaults remain legacy/B0.
 
+**Current on this experimental branch:** native and target-OS mechanical gates
+pass. All56 registered physical captures completed, with exact registered
+conservation, but one of eight COM-entry comparisons fails and all eight
+comparative overlap gates remain unsupported. This is not production physical
+acceptance. The [dated evidence](../audits/2026-11-02-compound-granular-detachment.md)
+retains source/build/capture/UI identities, failures and measured limits.
+
 The opt-in detachment session admits one homogeneous ambient Wall/RedBrick
 component, at most1024 members in an included resident64x64 domain. It transfers
 exact native material/state/temperature tuples into the native aggregate store;
@@ -29,6 +36,13 @@ The registered fixture has520 members and six shapes with a crown pixel hole
 and an AABB concavity. Native unit-square mass/COM/inertia remain authoritative.
 No density rescaling, actor controller force, sleep, restoration, generalized
 fracture or ordinary-playground expansion is introduced.
+
+This bounded interface admits exactly one physical owner. Simultaneous player,
+flyer or other independent Rapier bodies in the same native World are not
+implemented by this compound route. Separate independent-body playground tests
+do not qualify that coexistence. The source response uses the existing granular
+material policy, not a special yellow-Sand law; this compound physical cohort
+covers Sand and mixed Sand/Water, not every admitted powder.
 
 ## Who owns each transition and response?
 
@@ -113,6 +127,29 @@ establish credible support or impact resistance. Report dense penetration,
 correction, passivity, hard contact, async delivery and unresolved measurements
 separately. Preserve known R2/A1 failures; do not make the structure lighter or
 retune the law to pass this registration.
+
+Observed maximum work in the56 captures is42 nodes/336 updates. The normal plus
+event budget reaches20.00000000000005 from floating-point roundoff; registered
+tolerances apply. Sampled passive energy never increases, which excludes event,
+correction/zeroing, gravity and hard-contact energy. Largest observed native
+post-ejection overlap is470 cells, with incomplete copied-observation coverage.
+Legacy has no comparable overlap ledger. Those values neither close the
+comparative gate nor establish independent granular support: the authored cut
+leaves a hard stump and floor that can carry or rotate the body.
+
+## How can the owner compare the experimental arms?
+
+Open the development scene `res://solid_detachment_lab.tscn` with a matching
+Windows/Linux runtime. Default contact is `legacy`; `--candidate=R2` or
+`--candidate=A1` selects an explicitly experimental fresh session. C cycles
+legacy/R2/A1 by closing the old owner and constructing a new one. R resets the
+selected arm; Space cuts/releases the native structure; P pauses; 1–4 select
+dry/packed/embedded/mixed surroundings; W selects requested workers1/4; X
+excavates through the native owner; I inspects copied conservation values.
+`--baseline` is legacy conservative-displacement-off evidence and refuses an
+experimental arm. No live response law is switched. The exact launch commands
+and source/runtime distinctions are in the dated audit. Owner acceptance of
+this combined path has not been recorded.
 
 ## Qualification and completion boundary
 
