@@ -1,0 +1,40 @@
+{
+  "schema": "cybersand.gcr-rest.independent-archive-verification.v1",
+  "verified_utc": "2026-11-02T22:04:01.943800+00:00",
+  "observed_head": "e4e53309883a2c72ddc1cb1ccf0289b3b47b196c",
+  "archive": "build/rest-evidence-bundles/gcr-rest-a920abf1d424ac53.zip",
+  "archive_sha256": "7dfadf5833e936530053f72e628931cc56506a21d30735600ef531e5a02756f9",
+  "archive_bytes": 70392039,
+  "manifest": "build/rest-evidence-final/evidence-manifest.json",
+  "manifest_sha256": "a920abf1d424ac536b90d29e30cbd7110581ab3497d1611c3557aebffcd11b43",
+  "inventory_exact": true,
+  "decompressed_members_hashed": 362,
+  "decompressed_bytes": 899462830,
+  "mechanical_references_covered": 48,
+  "strict_failed_host_receipt_preserved": true,
+  "scoped_disposition_preserved": true,
+  "compact_summary_comparison": [
+    {
+      "name": "physical-summary.json",
+      "working_document_sha256": "ffd6a2bc8a3e1df6ffa1ebb58ce8c5066e696bbdd4873ed95330df895b1e22d0",
+      "final_export_sha256": "c1e0c269dbd96e2bdcc0f9db184676c567e9ed86cde32c4defe7ad23be5e3ff6",
+      "parsed_values_equal_working_committed_final": true
+    },
+    {
+      "name": "engineering-summary.json",
+      "working_document_sha256": "9b29cfdeb2fcfcb643db7ae06298922ce03030bb3ddc0d9fdc7373426561d6c5",
+      "final_export_sha256": "4622403d96e18d474dab0b8a721ba38ee22ea469a70006e4633e16000eaf0d06",
+      "parsed_values_equal_working_committed_final": true
+    },
+    {
+      "name": "selected-traces.json",
+      "working_document_sha256": "28d2e21a4389d0d5150185124ed69624f8d8b7ab2d60c230bdb09e907e1f3ede",
+      "final_export_sha256": "1683483473d54c61168e1da9274706e9167d21ca368cd4efe62f3b9ae0bb1758",
+      "parsed_values_equal_working_committed_final": true
+    }
+  ],
+  "document_manifest_and_archive_receipt_copies_match": true,
+  "failures": [],
+  "ok": true,
+  "scope": "Independent byte/decompression/parsed-value evidence verification only; preserves strict staged-seal failure and does not change registered physical or gameplay qualification."
+}

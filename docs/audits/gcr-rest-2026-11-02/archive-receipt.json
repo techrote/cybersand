@@ -1,0 +1,17 @@
+{
+  "schema": "cybersand.gcr-rest.local-archive.v1",
+  "archive": "build/rest-evidence-bundles/gcr-rest-a920abf1d424ac53.zip",
+  "bytes": 70392039,
+  "sha256": "7dfadf5833e936530053f72e628931cc56506a21d30735600ef531e5a02756f9",
+  "file_manifest": "build/rest-evidence-bundles/manifest-a920abf1d424ac536b90d29e30cbd7110581ab3497d1611c3557aebffcd11b43.json",
+  "file_manifest_sha256": "a920abf1d424ac536b90d29e30cbd7110581ab3497d1611c3557aebffcd11b43",
+  "files": 362,
+  "uncompressed_bytes": 899462830,
+  "every_file_hash_verified_during_stream": true,
+  "every_decompressed_file_hash_verified": true,
+  "inventory_verified": true,
+  "archive_outside_own_manifest": true,
+  "availability": "Local ignored artifact only; neither committed nor uploaded. Retain archive and external manifest before deleting workspace.",
+  "metadata": "Sorted relative paths, fixed2026-11-02 ZIP timestamps, POSIX0600 file mode",
+  "canonical_publication": false
+}

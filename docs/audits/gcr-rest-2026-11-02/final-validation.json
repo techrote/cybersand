@@ -1,0 +1,164 @@
+{
+  "schema": "cybersand.gcr-rest.final-validation.v1",
+  "tested_published_source": "e4e53309883a2c72ddc1cb1ccf0289b3b47b196c",
+  "native_build_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+  "physical_capture_source": "594a1a732f477aef6a7aec783251e7a784315722",
+  "host_controls_per_OS": 20,
+  "fresh_import_per_OS": 1,
+  "all42_individual_host_process_cases_pass": true,
+  "original_strict_staged_byte_seal_pass": false,
+  "canonical_code_runtime_protocol_and_asset_identity_preserved": true,
+  "staged_byte_seal_disposition": "Four existing image-import sidecars per OS normalize CRLF to LF. Their canonical Git content is identical; all other761 staged inputs and all2001 root entries are unchanged. Original failed receipt remains immutable.",
+  "original_host_receipt": {
+    "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/receipt.json",
+    "sha256": "36616c302159c4e5403b7723f072349344340ddf1a8d0c5c491700e28a539170"
+  },
+  "independently_reviewed_sidecar_disposition": {
+    "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/staged-sidecar-disposition.json",
+    "sha256": "a26fe8b2bb1f36a8ca19fe66a8e5b06b998f4885d8700cdac014a88aea9f245c"
+  },
+  "repository_gates": {
+    "source": "e4e53309883a2c72ddc1cb1ccf0289b3b47b196c",
+    "end_source": "e4e53309883a2c72ddc1cb1ccf0289b3b47b196c",
+    "ok": true,
+    "records": [
+      {
+        "case": "docs",
+        "command": [
+          "python",
+          "tools/ci/check_docs.py"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 2.0574417114257812,
+        "log_sha256": "1860b68fb453f1175026cf7c4b6c6d482414418a30c94492a3f6e98f86e1d2e2"
+      },
+      {
+        "case": "m11",
+        "command": [
+          "python",
+          "tools/ci/check_m11_consistency.py"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 1.2558717727661133,
+        "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+      },
+      {
+        "case": "repository",
+        "command": [
+          "python",
+          "tools/ci/check_repository.py",
+          "--require-materialized",
+          "--json",
+          "C:\\Users\\_\\.codex\\worktrees\\gcr-rest\\khybersand\\build\\rest-final-repository-gates\\repository.json"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 3.171344757080078,
+        "log_sha256": "85dd85e3af185e3959cbaaae284cd91119cf41bce7eb448bd7c0ca2aa4d38220"
+      },
+      {
+        "case": "retrieval-frozen",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\gcr-rest\\khybersand\\build\\rest-final-repository-gates\\retrieval-frozen.json"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.5950717926025391,
+        "log_sha256": "73b338dc9f580d65003b7164cd81fe04b4fbcec194f712b77794025aab819f27"
+      },
+      {
+        "case": "retrieval-challenges",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-challenges.json",
+          "--output",
+          "C:\\Users\\_\\.codex\\worktrees\\gcr-rest\\khybersand\\build\\rest-final-repository-gates\\retrieval-challenges.json"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 1.790306568145752,
+        "log_sha256": "26f004ae9f7ed7e57281bc99d9e68e568b4b6e48036ffe5878be166d9c01bf4b"
+      },
+      {
+        "case": "rest-tools",
+        "command": [
+          "python",
+          "tools/experiments/test_gcr_rest_tools.py"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.27440500259399414,
+        "log_sha256": "1ad5048e732b00531f8df9bcfc42e2dfb68b025eebbeddefbbbdf24be140a938"
+      },
+      {
+        "case": "load-tools",
+        "command": [
+          "python",
+          "tools/experiments/test_gcr_load_tools.py"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.20273113250732422,
+        "log_sha256": "72f5595d3b7def0aedf14601dce26d3ce3ed29eee815fe930e26ed611dc705ec"
+      },
+      {
+        "case": "linux-abi",
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--",
+          "bash",
+          "tools/check_linux_runtime_floor.sh",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64.so"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.16252541542053223,
+        "log_sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c"
+      },
+      {
+        "case": "diff",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.0445561408996582,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "case": "lfs",
+        "command": [
+          "git",
+          "lfs",
+          "fsck"
+        ],
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.7831935882568359,
+        "log_sha256": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9"
+      }
+    ],
+    "scope": "Repository identity/docs, historical integrity, exact published runtime bytes, retrieval quality reports and reducer regressions. Lexical retrieval hits do not establish answer sufficiency."
+  },
+  "repository_gate_receipt": {
+    "path": "build/rest-final-repository-gates/receipt.json",
+    "sha256": "98055241305b437963d3965faeb952c9ba2aad72886a9def0b4036a3d2d9e8cc"
+  },
+  "preflight_refusal": {
+    "path": "build/rest-final-host-preflight-refusal.json",
+    "sha256": "5fe6d8f5e72c1ecfc5d851455015e6f04a3219d1e2a986097041862dd9e9d869"
+  },
+  "qualification": "Source-matched development/runtime and scoped host mechanics only. Registered physical gates NOT MET; no owner/default/sleep/merge acceptance."
+}

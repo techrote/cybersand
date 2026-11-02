@@ -257,3 +257,52 @@ No new owner verdict is recorded, no response/default is promoted, sleep is
 unchanged and no REM-004/issue83 completion or merge is claimed. PR349/350/351
 remain unmerged. Source-matched development runtime publication/final host gates
 are recorded separately from this physical decision.
+
+## Published runtime, final controls and recoverability
+
+Required Windows/Linux libraries and provenance are published at
+e4e53309883a2c72ddc1cb1ccf0289b3b47b196c, using native build181a8257 and
+qualification/input-equivalence checkpoint9b9b1640. They are validated development
+runtimes with explicit failed physical gates, not production-accepted response
+laws. Every captured application/native input remains unchanged; subsequent
+tracked edits are evidence/documentation only. The current manual Windows
+launcher is `build/launch-gcr-rest-review.cmd`, opening the tested barrel room
+with the captured actual Godot engine binary and source label e4e53309. It leaves
+older review sessions untouched.
+
+At published sourcee4e53309 both OSes complete a fresh import and20 host controls,
+including Rest freshness/census/bridge/controls, load/UI/native compound controls,
+async acknowledgement, GCR protocol/admission, REM002/003, real delayed hold6,
+conservative displacement replay at workers1/4, legacy compound and physics
+instrumentation/async. All42 individual process cases pass. The
+[final validation](gcr-rest-2026-11-02/final-validation.json) separately preserves
+the strict staged-byte seal failure: Godot normalizes CRLF to LF in four existing
+Rapier image-import sidecars per OS. Complete canonical contents are identical;
+the other761 staged inputs and all2,001 root inputs retain identity. Independent
+review confirms no importer setting, asset, protocol, runtime or code changes.
+The original `ok:false` receipt remains immutable; the narrower canonical input
+disposition does not relabel that raw-byte gate. A mistyped full-SHA preflight
+argument was also refused before host execution and remains recorded.
+
+Local documentation, materialized repository/provenance, historical M11, Linux
+ABI floor, LFS, whitespace and16 new/4 retained reducer tests pass. Linux bundle
+floor remains GLIBC2.34, extension GLIBC2.32/GLIBCXX3.4.30/CXXABI1.3.9.
+Frozen lexical retrieval hits32/32 canonical routes at5; challenges158/159 with
+LCB03 still absent and GCR-REST-01 at rank2. These are retrieval quality reports,
+not answer-sufficiency proofs. GitHub draft Documentation/advisory checks pass;
+expensive Native/Godot/Water/palette execution and the source-sensitive runtime
+provenance step are draft-skipped, not executed green gates. Local executed
+evidence remains separate.
+
+The committed [file manifest](gcr-rest-2026-11-02/evidence-manifest.json),
+[archive receipt](gcr-rest-2026-11-02/archive-receipt.json) and independent
+[archive review](gcr-rest-2026-11-02/archive-review.json) retain362 files including
+all48 mechanical-summary references, preliminary failures, physical raw/logs,
+full reductions, final host/repository receipts and ignored drivers. Local-only
+`build/rest-evidence-bundles/gcr-rest-a920abf1d424ac53.zip` is70,392,039bytes,
+SHA2567dfadf5833e936530053f72e628931cc56506a21d30735600ef531e5a02756f9,
+with899,462,830 uncompressed bytes. Every decompressed member was independently
+rehashed. The archive and post-archive review are outside their own inventory.
+Retain this ignored archive and external manifest before removing the workspace;
+it is not committed or uploaded. Compact committed JSON changes serialization
+only and preserves all exported parsed metrics/gates/nulls.
