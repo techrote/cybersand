@@ -152,3 +152,20 @@ Standalone C additionally refuses when the old positional correction is nonzero;
 otherwise old zeroing would change the velocity for which arrest was certified.
 This does not silently add R to C. PRC may use its explicit R policy to remove
 unnecessary correction and then qualify the constrained catch independently.
+
+## Pre-acquisition safety review corrections
+
+Read-only review found that source sampling precedes queued edits and the native
+tick. Rest-only source predicates/signature and endpoint overlap must therefore
+be revalidated at result generation; changed material vetoes catch/persistence
+and clears quiet/cache state, without rerunning relocation or changing baseline
+prepared force. Meter the extra bounded raster/source queries separately from
+the six node scans. Cached getters cannot retain authority across same-tick edits.
+Current measured overlap also governs R suppression. No candidate captures
+preceded this correction.
+
+Bridge admission additionally binds receipt base budget to configured budget and
+rejects every caught response with nonzero correction, including PRC. Reduction
+must enforce the same configuration identity and measure delivered-wrench velocity/
+angular change, not just recompute an energy subtraction. Preserve preliminary
+mechanical failures and explicitly distinguish arithmetic from delivered closure.

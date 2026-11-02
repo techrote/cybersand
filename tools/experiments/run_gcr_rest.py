@@ -2,6 +2,7 @@
 from concurrent.futures import ThreadPoolExecutor
 import argparse,hashlib,json,os,subprocess,time
 from pathlib import Path
+from analyze_gcr_rest import configuration_receipts
 ROOT=Path(__file__).resolve().parents[2]
 PROTOCOL=ROOT/'docs/audits/gcr-rest-2026-11-02/protocol.json'
 def sha(path,canonical=False):
@@ -62,7 +63,8 @@ def main():
                 except subprocess.TimeoutExpired:code=124
             data=read(raw) if raw.exists() else {};text=log.read_text(encoding='utf-8',errors='replace')
             actual=data.get('identity',{});bound=actual.get('source')==head and actual.get('native_sha256')==identity['platforms'][platform]['native']['sha256'] and actual.get('protocol_sha256')==sha(PROTOCOL)
-            row={'case':case['id'],'source':head,'exit':code,'elapsed':time.time()-started,'identity_ok':bound,'ok':code==0 and data.get('ok',False) and bound and not any(v in text for v in ['ERROR:','SCRIPT ERROR']),
+            configuration=configuration_receipts(data,case)
+            row={'case':case['id'],'source':head,'exit':code,'elapsed':time.time()-started,'identity_ok':bound,'native_configuration':configuration,'ok':code==0 and data.get('ok',False) and bound and configuration['ok'] and not any(v in text for v in ['ERROR:','SCRIPT ERROR']),
                  'outcome':data.get('outcome'),'log_sha256':sha(log),'raw_sha256':sha(raw) if raw.exists() else None}
             records.append(row);write(args.output/(platform+'-campaign.json'),records);print(name,row['ok'],row['outcome'],flush=True)
             if not row['ok']:return False

@@ -649,6 +649,8 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 	if _gcr_rest_enabled:
 		if count!=1 or not _gcr_rest_integer(rest_receipt.get("version")) or not _gcr_rest_integer(rest_receipt.get("session")) or rest_receipt.version!=CyberRigidBodyCoupling.GCR_REST_VERSION or rest_receipt.get("mode","")!=_gcr_rest_mode or rest_receipt.session!=_gcr_session_id or not rest_receipt.get("bodies") is Array or rest_receipt.bodies.size()!=count:
 			return _refuse_gcr("rest_receipt",count)
+		if not _gcr_rest_number(rest_receipt.get("base_budget")) or float(rest_receipt.base_budget)!=_gcr_rest_budget:
+			return _refuse_gcr("rest_budget",count)
 	elif not rest_receipt.is_empty():
 		return _refuse_gcr("rest_unconfigured",count)
 	if compound:
@@ -748,7 +750,7 @@ func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compo
 		var angular_sample: float = results[offset + CyberRigidBodyCoupling.GCR_RESULT_ANGULAR_IMPULSE]
 		if not rest.is_empty():
 			if (rest.uncaught_impulse+rest.catch_delta_impulse).distance_to(impulse)>1e-6*maxf(1.,impulse.length()) or absf(float(rest.uncaught_torque)+float(rest.catch_delta_torque)-angular_sample)>1e-6*maxf(1.,absf(angular_sample)): return _refuse_gcr("rest_wrench",count)
-			if rest.catch_applied and not rest.correction_mode and correction!=Vector2.ZERO: return _refuse_gcr("rest_catch_correction",count)
+			if rest.catch_applied and correction!=Vector2.ZERO: return _refuse_gcr("rest_catch_correction",count)
 		# Translate the world-space wrench to the COM at application, including
 		# separate positional correction; then apply one common age scale to J/L.
 		var angular_current: float = angular_sample + (sampled_com - current_com - correction).cross(impulse)

@@ -505,6 +505,9 @@ void CyberNativeCellWorld::clear_observations() {
     gcr_compound_overlap_pre_ = gcr_compound_overlap_post_ = gcr_compound_overlap_geometry_tests_ = 0;
     gcr_compound_overlap_measured_ = false;
     gcr_rest_overlap_measured_=false;gcr_rest_overlap_post_={};gcr_rest_signatures_={};
+    gcr_rest_material_validated_=false;gcr_rest_material_changed_=false;
+    gcr_rest_current_overlap_={};gcr_rest_current_signatures_={};
+    gcr_rest_validation_raster_=gcr_rest_validation_boundaries_=gcr_rest_validation_queries_=0;
     if (body_diagnostics_) *body_diagnostics_ = {};
 }
 
@@ -1060,6 +1063,45 @@ bool CyberNativeCellWorld::prepare_gcr_coupling(const PackedFloat64Array& states
     return true;
 }
 
+CyberNativeCellWorld::GcrSource CyberNativeCellWorld::gcr_contact_source(
+    std::int32_t x,std::int32_t y,std::size_t id,Vector2i direction) const {
+    static constexpr std::array<Vector2i,4> directions{{{0,-1},{1,0},{0,1},{-1,0}}};
+    GcrSource source;source.x=x+direction.x;source.y=y+direction.y;
+    if(!in_bounds(source.x,source.y) || world_->transient_obstacle_at(source.x,source.y)!=0)return source;
+    source.boundary=true;source.material=world_->stored_material(source.x,source.y);
+    if(!cybersand::MaterialRules::supports_granular_load(source.material))return source;
+    // Exactly the preparation ownership rule, shared with read-only publication
+    // validation. Witnesses and packing are re-read from CURRENT native cells.
+    bool owner=false;
+    for(const auto neighbour:directions){
+        const auto adjacent=world_->transient_obstacle_at(source.x+neighbour.x,source.y+neighbour.y);
+        if(adjacent==id || (gcr_compound_mode_ && adjacent>=1 && adjacent<=gcr_compound_count_)){
+            owner=adjacent==id && source.x+neighbour.x==x && source.y+neighbour.y==y;break;
+        }
+    }
+    if(!owner)return source;
+    const auto& body=current_bodies_[id];
+    source.contact=cybersand::gcr::project({body.center.x,body.center.y},{body.half_size.x,body.half_size.y},
+        body.rotation,{static_cast<double>(source.x)+.5,static_cast<double>(source.y)+.5});
+    source.side=source.contact.inward.y>=-std::sqrt(.5);
+    source.support_checked=true;
+    if(gcr_admission_a1_ && source.side){
+        source.admission_checked=true;
+        source.admission=world_->granular_contact_admission_at(source.x,source.y,-source.contact.inward.x,-source.contact.inward.y);
+        source.admitted=source.admission.admitted;
+    }else source.admitted=world_->granular_support_at(source.x,source.y,source.side,false);
+    if(source.admitted){source.state_a=world_->stored_state_a(source.x,source.y);source.state_b=world_->stored_state_b(source.x,source.y);}
+    return source;
+}
+
+void CyberNativeCellWorld::append_gcr_signature(std::uint64_t& signature,const GcrSource& source) {
+    if(!signature)signature=1469598103934665603ULL;
+    for(const std::uint64_t part:{static_cast<std::uint64_t>(source.x),static_cast<std::uint64_t>(source.y),
+        static_cast<std::uint64_t>(source.material),static_cast<std::uint64_t>(source.state_a),
+        static_cast<std::uint64_t>(source.state_b),static_cast<std::uint64_t>(source.contact.bin)})
+        {signature^=part;signature*=1099511628211ULL;}
+}
+
 void CyberNativeCellWorld::accumulate_gcr_contacts() {
     static constexpr std::array<Vector2i,4> directions{{{0,-1},{1,0},{0,1},{-1,0}}};
     for (const auto cell_index:raster_indices_) {
@@ -1068,29 +1110,10 @@ void CyberNativeCellWorld::accumulate_gcr_contacts() {
         if (id==0 || id>=current_bodies_.size()) continue;
         const auto& body=current_bodies_[id];
         for (const auto direction:directions) {
-            const auto tx=x+direction.x,ty=y+direction.y;
-            if (!in_bounds(tx,ty) || world_->transient_obstacle_at(tx,ty)!=0) continue;
-            if (body_diagnostics_) ++(*body_diagnostics_)[id].boundaries;
-            const auto material=world_->stored_material(tx,ty);
-            if (!cybersand::MaterialRules::supports_granular_load(material)) continue;
-            // A stored cell can neighbour multiple raster pixels. Admit exactly
-            // one, using the first neighbour of that cell in cardinal order.
-            bool owner=false;
-            for (const auto neighbour:directions) {
-                const auto adjacent=world_->transient_obstacle_at(tx+neighbour.x,ty+neighbour.y);
-                if (adjacent==id || (gcr_compound_mode_ && adjacent>=1 && adjacent<=gcr_compound_count_)) {
-                    owner=adjacent==id && tx+neighbour.x==x && ty+neighbour.y==y; break;
-                }
-            }
-            if (!owner) continue;
-            const auto contact=cybersand::gcr::project(
-                {body.center.x,body.center.y},{body.half_size.x,body.half_size.y},
-                body.rotation,{static_cast<double>(tx)+.5,static_cast<double>(ty)+.5});
-            // Downward support uses existing8/9. Every other orientation uses
-            // the stricter side/up9/9 predicate. No new material/state law.
-            const bool side=contact.inward.y>=-std::sqrt(.5);
-            if (gcr_admission_a1_ && side) {
-                const auto admission=world_->granular_contact_admission_at(tx,ty,-contact.inward.x,-contact.inward.y);
+            const auto source=gcr_contact_source(x,y,id,direction);
+            if(source.boundary && body_diagnostics_)++(*body_diagnostics_)[id].boundaries;
+            if (source.admission_checked) {
+                const auto& admission=source.admission;
                 {
                     auto& a=admission_observations_[id];
                     a.source_candidates+=admission.source_candidates;
@@ -1103,20 +1126,16 @@ void CyberNativeCellWorld::accumulate_gcr_contacts() {
                     ++a.refusal_counts[static_cast<std::size_t>(admission.refusal_reason)];
                     a.last=admission;
                 }
-                if (!admission.admitted) continue;
-            } else if (!world_->granular_support_at(tx,ty,side,false)) continue;
+            }
+            if(!source.admitted)continue;
+            const auto& contact=source.contact;const auto material=source.material;
             auto& bin=gcr_bins_[id][contact.bin];
             bin.add(contact.point,contact.inward,{body.com.x,body.com.y});
             bin.material_mask|=std::uint64_t{1}<<static_cast<unsigned>(material);
-            const auto state_b=world_->stored_state_b(tx,ty);
+            const auto state_b=source.state_b;
             bin.state_b_min=std::min(bin.state_b_min,state_b);
             bin.state_b_max=std::max(bin.state_b_max,state_b);
-            if(gcr_rest_enabled_){
-                auto& signature=gcr_rest_signatures_[id];if(!signature)signature=1469598103934665603ULL;
-                for(const std::uint64_t part:{static_cast<std::uint64_t>(tx),static_cast<std::uint64_t>(ty),
-                    static_cast<std::uint64_t>(material),static_cast<std::uint64_t>(state_b),static_cast<std::uint64_t>(contact.bin)})
-                    {signature^=part;signature*=1099511628211ULL;}
-            }
+            if(gcr_rest_enabled_)append_gcr_signature(gcr_rest_signatures_[id],source);
             ++observations_[id].contacts;
             if (body_diagnostics_) {
                 auto& d=(*body_diagnostics_)[id]; ++d.support_samples; ++d.raw_support;
@@ -1127,7 +1146,7 @@ void CyberNativeCellWorld::accumulate_gcr_contacts() {
             const auto& previous=previous_bodies_[id];
             const double correction_speed=gcr_compound_mode_
                 ? body.velocity.y+body.angular_velocity*(body.center.x-body.com.x) : body.velocity.y;
-            if (!side && previous.valid && correction_speed>0 && correction_speed<=kGranularSettleVelocity) {
+            if (!source.side && previous.valid && correction_speed>0 && correction_speed<=kGranularSettleVelocity) {
                 const double travel=std::max(0.,static_cast<double>(body.center.y-previous.center.y));
                 observations_[id].correction.y=-std::min(kMaximumGranularBearingCorrection,
                     travel*kGranularBearingCorrectionFraction);
@@ -1138,6 +1157,43 @@ void CyberNativeCellWorld::accumulate_gcr_contacts() {
 
 bool CyberNativeCellWorld::rest_correction_mode() const {
     return gcr_rest_enabled_ && (gcr_rest_mode_=="R" || gcr_rest_mode_=="PRC");
+}
+
+void CyberNativeCellWorld::revalidate_rest_material() const {
+    if(!gcr_rest_enabled_ || !gcr_response_valid_ || !world_ || world_->has_failed() || world_->solid_detachment_fenced())return;
+    static constexpr std::array<Vector2i,4> directions{{{0,-1},{1,0},{0,1},{-1,0}}};
+    std::array<std::uint64_t,cybersand::World::kMaximumTransientBodies+1U> signatures{},overlap{};
+    gcr_rest_validation_raster_=gcr_rest_validation_boundaries_=gcr_rest_validation_queries_=0;
+    // One read-only pass over the already bounded endpoint raster per public
+    // owner query. Never move cells, rebuild masks, or retry relocation here.
+    for(const auto cell_index:raster_indices_){
+        ++gcr_rest_validation_raster_;
+        const auto x=cell_index%kWorldWidth,y=cell_index/kWorldWidth;
+        const auto id=world_->transient_obstacle_at(x,y);
+        if(id==0 || id>=current_bodies_.size())continue;
+        const auto material=world_->stored_material(x,y);
+        if(material!=cybersand::Material::Empty && !cybersand::MaterialRules::is_hard_surface(material) &&
+            cybersand::MaterialRules::descriptor(material).movable)++overlap[id];
+        for(const auto direction:directions){
+            ++gcr_rest_validation_boundaries_;
+            const auto source=gcr_contact_source(x,y,id,direction);
+            if(source.support_checked)++gcr_rest_validation_queries_;
+            if(source.admitted)append_gcr_signature(signatures[id],source);
+        }
+    }
+    const bool current_changed=gcr_rest_material_validated_ &&
+        (signatures!=gcr_rest_current_signatures_ || overlap!=gcr_rest_current_overlap_);
+    const bool differs_from_prepared=signatures!=gcr_rest_signatures_ || overlap!=gcr_rest_overlap_post_;
+    const bool newly_invalid=differs_from_prepared && !gcr_rest_material_changed_;
+    gcr_rest_current_signatures_=signatures;gcr_rest_current_overlap_=overlap;
+    gcr_rest_material_validated_=true;gcr_rest_material_changed_|=differs_from_prepared;
+    if(current_changed || newly_invalid){
+        // Even a cached result read earlier in this same native tick loses its
+        // Rest certificate after a paint/excavation edit. Returning to the old
+        // arrangement cannot revive that sample's cache or quiet admission.
+        gcr_rest_history_={};if(gcr_rest_cache_)gcr_rest_cache_->count=0;
+        gcr_rest_evaluation_valid_={};gcr_compound_last_valid_=false;
+    }
 }
 
 bool CyberNativeCellWorld::validate_rest_context(const Dictionary& context,
@@ -1166,16 +1222,16 @@ bool CyberNativeCellWorld::validate_rest_context(const Dictionary& context,
 }
 
 std::uint64_t CyberNativeCellWorld::rest_overlap(std::size_t id) const {
-    if(!gcr_compound_mode_)return gcr_rest_overlap_post_[id];
-    std::uint64_t count=0;for(std::size_t i=1;i<=gcr_compound_count_;++i)count+=gcr_rest_overlap_post_[i];return count;
+    if(!gcr_compound_mode_)return gcr_rest_current_overlap_[id];
+    std::uint64_t count=0;for(std::size_t i=1;i<=gcr_compound_count_;++i)count+=gcr_rest_current_overlap_[i];return count;
 }
 
 std::uint64_t CyberNativeCellWorld::rest_signature(std::size_t id) const {
-    if(!gcr_compound_mode_)return gcr_rest_signatures_[id];
+    if(!gcr_compound_mode_)return gcr_rest_current_signatures_[id];
     std::uint64_t hash=0;
-    for(std::size_t i=1;i<=gcr_compound_count_;++i)if(gcr_rest_signatures_[i]){
+    for(std::size_t i=1;i<=gcr_compound_count_;++i)if(gcr_rest_current_signatures_[i]){
         if(!hash)hash=1469598103934665603ULL;hash^=i;hash*=1099511628211ULL;
-        hash^=gcr_rest_signatures_[i];hash*=1099511628211ULL;
+        hash^=gcr_rest_current_signatures_[i];hash*=1099511628211ULL;
     }
     return hash;
 }
@@ -1185,13 +1241,15 @@ cybersand::gcr::RestOptions CyberNativeCellWorld::rest_options(std::size_t id,
     cybersand::gcr::RestOptions options;options.gravity=gcr_rest_gravity_;options.dt=current_bodies_[id].dt;
     auto& info=value.rest;info.correction_mode=rest_correction_mode();
     if(!gcr_rest_enabled_)return options;
-    info.overlap_measured=gcr_rest_overlap_measured_;info.post_overlap=rest_overlap(id);info.signature=rest_signature(id);
+    info.overlap_measured=gcr_rest_overlap_measured_ && gcr_rest_material_validated_;
+    info.post_overlap=rest_overlap(id);info.signature=rest_signature(id);
     std::size_t population=0;for(std::size_t i=1;i<current_bodies_.size();++i)population+=current_bodies_[i].valid;
     info.refusal=RestRefusal::Population;
     if((!gcr_compound_mode_ && population!=1) || (gcr_compound_mode_ && id!=1))return options;
     const auto& b=current_bodies_[id];auto& h=gcr_rest_history_;
     info.refusal=RestRefusal::UnknownContext;
     bool eligible=gcr_rest_context_.known && gcr_rest_context_.hard_clearance;
+    if(eligible && gcr_rest_material_changed_){eligible=false;info.refusal=RestRefusal::SupportChanged;}
     std::uint64_t unresolved=observations_[id].unresolved;
     if(gcr_compound_mode_){unresolved=0;for(std::size_t i=1;i<=gcr_compound_count_;++i)unresolved+=observations_[i].unresolved;}
     if(eligible && (!info.overlap_measured || info.post_overlap || unresolved))
@@ -1252,9 +1310,15 @@ Dictionary CyberNativeCellWorld::gcr_rest_receipt() const {
     Dictionary receipt;
     if(!gcr_rest_enabled_ || !gcr_response_valid_ || !world_ || world_->has_failed() ||
         world_->completed_tick_index()>gcr_sample_tick_+1)return receipt;
+    revalidate_rest_material();
     receipt["version"]=1;receipt["mode"]=gcr_rest_mode_;receipt["session"]=gcr_session_id_;
     receipt["sample_native_tick"]=static_cast<std::int64_t>(gcr_sample_tick_);
     receipt["base_budget"]=gcr_base_budget_;receipt["cache_bytes"]=static_cast<std::int64_t>(sizeof(cybersand::gcr::RestCache));
+    receipt["material_revalidated"]=gcr_rest_material_validated_;
+    receipt["material_changed_since_prepare"]=gcr_rest_material_changed_;
+    receipt["revalidation_raster_cells"]=static_cast<std::int64_t>(gcr_rest_validation_raster_);
+    receipt["revalidation_boundary_checks"]=static_cast<std::int64_t>(gcr_rest_validation_boundaries_);
+    receipt["revalidation_support_queries"]=static_cast<std::int64_t>(gcr_rest_validation_queries_);
     static constexpr const char* names[]{"Disabled","UnknownContext","Population","Overlap","NoSupport","SupportChanged","Unacknowledged","PoseMotion","ResidualMotion","Event","Drive","Correction","Dwell","Ready"};
     static constexpr const char* catch_names[]{"NotRequested","NoContacts","Singular","GravityInfeasible","ArrestInfeasible","EnergyIncrease"};
     Array bodies;
@@ -1340,6 +1404,7 @@ PackedFloat64Array CyberNativeCellWorld::gcr_body_results() const {
     PackedFloat64Array result;
     if (gcr_compound_mode_ || !gcr_enabled_ || !gcr_response_valid_ || world_==nullptr || world_->has_failed() ||
         world_->completed_tick_index()>gcr_sample_tick_+1) return result;
+    revalidate_rest_material();
     // An accumulator overflow refuses the whole batch. No partial publication
     // or central-only fallback can be mistaken for the registered mechanism.
     for (std::size_t id=1;id<current_bodies_.size();++id)
@@ -1401,6 +1466,7 @@ Array CyberNativeCellWorld::get_gcr_admission_counters() const {
 
 Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
     if(gcr_compound_mode_) return gcr_compound_diagnostics();
+    revalidate_rest_material();
     Dictionary result; result["enabled"]=gcr_enabled_; result["protocol_version"]=1;
     result["candidate"]=gcr_load_aware_ ? "GCR-LA" : gcr_admission_a1_ ? "GCR-A1":"GCR";
     result["load_aware"]=gcr_load_aware_;result["base_budget"]=gcr_base_budget_;result["rest_mode"]=gcr_rest_mode_;
@@ -2736,6 +2802,7 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
     Array result;
     if (!body_diagnostics_ || has_failed() || (gcr_enabled_ && (!gcr_response_valid_ ||
         world_->completed_tick_index()>gcr_sample_tick_+1))) return result;
+    revalidate_rest_material();
     for (std::size_t id = 1; id < current_bodies_.size(); ++id) {
         if (!current_bodies_[id].valid) continue;
         const auto& d = (*body_diagnostics_)[id];

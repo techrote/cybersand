@@ -18,7 +18,7 @@ func check(ok: bool, message: String) -> void:
 func near(a: float,b: float,message: String) -> void:
 	check(absf(a-b)<1e-5*maxf(1.,absf(b)),message+" actual="+str(a)+" expected="+str(b))
 
-func fresh(mode: String = "", velocity: Vector2 = Vector2(1,2), omega: float = .25) -> Dictionary:
+func fresh(mode: String = "", velocity: Vector2 = Vector2(1,2), omega: float = .25, budget: float = 20.) -> Dictionary:
 	var viewport := SubViewport.new()
 	viewport.world_2d=World2D.new()
 	root.add_child(viewport)
@@ -39,13 +39,13 @@ func fresh(mode: String = "", velocity: Vector2 = Vector2(1,2), omega: float = .
 	var bridge := CyberRapierPhysicsBridge.new()
 	var bodies: Array[RigidBody2D] = [body]
 	check(bridge.initialize(viewport.world_2d.space,bodies,PackedVector2Array([Vector2(2,2)]))==OK,"real Rapier bridge initializes")
-	if not mode.is_empty(): check(bridge.configure_gcr_rest(mode,20.,0.),"fresh explicit rest configuration")
+	if not mode.is_empty(): check(bridge.configure_gcr_rest(mode,budget,0.),"fresh explicit rest configuration")
 	PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,velocity)
 	PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,omega)
 	var states: PackedFloat64Array = bridge.pack_gcr_body_states()
 	check(states.size()==17,"one intended packed sample")
 	var context: Dictionary = bridge.gcr_rest_context_for_states(states,false,true) if not mode.is_empty() else {}
-	var value: Dictionary = {"body":body,"viewport":viewport,"bridge":bridge,"states":states,"context":context}
+	var value: Dictionary = {"body":body,"viewport":viewport,"bridge":bridge,"states":states,"context":context,"budget":budget}
 	held.append(value)
 	return value
 
@@ -55,11 +55,21 @@ func result(value: Dictionary, impulse: Vector2, torque: float, correction: Vect
 
 func receipt(value: Dictionary, mode: String, impulse: Vector2, torque: float, caught: bool = false) -> Dictionary:
 	var s: PackedFloat64Array = value.states
-	return {"version":1,"mode":mode,"session":int(s[16]),"bodies":[{"id":1,"sample":int(s[10]),"session":int(s[16]),
+	return {"version":1,"mode":mode,"session":int(s[16]),"base_budget":value.budget,"bodies":[{"id":1,"sample":int(s[10]),"session":int(s[16]),
 		"catch_applied":caught,"correction_mode":mode in ["R","PRC"],"gravity_certified":caught,"overlap_measured":true,"post_overlap":0 if caught else 1,"quiet_count":30 if caught else 0,
 		"uncaught_impulse":Vector2.ZERO if caught else impulse,"uncaught_torque":0.0 if caught else torque,
 		"catch_delta_impulse":impulse if caught else Vector2.ZERO,"catch_delta_torque":torque if caught else 0.,
 		"sample_velocity":Vector2(s[6],s[7]),"sample_omega":s[8],"mass":s[9],"inertia":s[11],"gravity":0.,"dt":s[15]}]}
+
+func wrench_closure(value: Dictionary, before_velocity: Vector2, before_omega: float, impulse: Vector2, torque: float, message: String) -> void:
+	var rid: RID = value.body.get_rid()
+	var measured_velocity: Vector2 = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+	var measured_omega: float = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
+	var measured_mass: float = PhysicsServer2D.body_get_param(rid,PhysicsServer2D.BODY_PARAM_MASS)
+	var measured_inertia: float = PhysicsServer2D.body_get_param(rid,PhysicsServer2D.BODY_PARAM_INERTIA)
+	near(measured_velocity.x-before_velocity.x,impulse.x/measured_mass,message+" actual delta vx equals Jx/m")
+	near(measured_velocity.y-before_velocity.y,impulse.y/measured_mass,message+" actual delta vy equals Jy/m")
+	near(measured_omega-before_omega,torque/measured_inertia,message+" actual delta omega equals L/I")
 
 func _run() -> void:
 	var baseline: Dictionary = await fresh()
@@ -73,6 +83,7 @@ func _run() -> void:
 	check(corrected.bridge.apply_gcr_results(1,result(corrected,impulse,.1,correction))==0,"configured rest cannot use missing receipt")
 	check(PhysicsServer2D.body_get_state(corrected.body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)==before,"missing receipt makes no partial velocity mutation")
 	check(corrected.bridge.apply_gcr_results(1,result(corrected,impulse,.1,correction),r)==1,"R receipt accepted")
+	wrench_closure(corrected,before,.25,impulse,.1,"R one-wrench closure")
 	var actual: Dictionary = corrected.bridge.gcr_application_diagnostics().bodies[0]
 	near(actual.velocity_after_wrench.y,1.875,"R retains sampled velocity before original impulse")
 	near(actual.zeroing_removed_energy,0.,"R removes no energy by velocity zeroing")
@@ -84,12 +95,36 @@ func _run() -> void:
 	var arrest := Vector2(-.02,-.1)
 	var c: Dictionary = receipt(caught,"C",arrest,-.01,true)
 	check(caught.bridge.apply_gcr_results(1,result(caught,arrest,-.01),c)==1,"valid synthetic catch uses one native total wrench")
+	wrench_closure(caught,Vector2(.01,.05),.005,arrest,-.01,"catch one-wrench closure")
 	actual=caught.bridge.gcr_application_diagnostics().bodies[0]
 	if absf(float(actual.catch_removed_energy)-.002625)>.00001: print("REST_CATCH_LEDGER_DETAIL ",actual)
 	check(actual.velocity_after_wrench.is_zero_approx(),"actual linear arrest measured")
 	near(actual.omega_after_wrench,0.,"actual angular arrest measured")
 	near(actual.catch_removed_energy,.002625,"catch energy removed equals same-state uncaught counterfactual")
 	check(actual.physical_wrench_applications==1,"catch is not a second application path")
+	var caught_prc: Dictionary = await fresh("PRC",Vector2(.01,.05),.005)
+	c=receipt(caught_prc,"PRC",arrest,-.01,true)
+	var prc_transform: Transform2D = PhysicsServer2D.body_get_state(caught_prc.body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM)
+	check(caught_prc.bridge.apply_gcr_results(1,result(caught_prc,arrest,-.01,correction),c)==0,"PRC caught receipt cannot translate even when correction mode is enabled")
+	check(caught_prc.bridge.gcr_application_diagnostics().refusal=="rest_catch_correction","PRC caught correction refusal is explicit")
+	check(PhysicsServer2D.body_get_state(caught_prc.body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM)==prc_transform,"PRC caught correction refusal makes no pose mutation")
+	check(PhysicsServer2D.body_get_state(caught_prc.body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)==Vector2(.01,.05),"PRC caught correction refusal makes no linear mutation")
+	near(PhysicsServer2D.body_get_state(caught_prc.body.get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY),.005,"PRC caught correction refusal makes no angular mutation")
+	var budget_bound: Dictionary = await fresh("R",Vector2(1,2),.25,5.)
+	var budget_receipt: Dictionary = receipt(budget_bound,"R",impulse,.1)
+	budget_receipt.erase("base_budget")
+	check(budget_bound.bridge.apply_gcr_results(1,result(budget_bound,impulse,.1),budget_receipt)==0,"missing configured budget binding refuses")
+	check(budget_bound.bridge.gcr_application_diagnostics().refusal=="rest_budget","missing budget refusal is explicit")
+	budget_receipt["base_budget"]=80.
+	check(budget_bound.bridge.apply_gcr_results(1,result(budget_bound,impulse,.1),budget_receipt)==0,"budget80 receipt cannot enter configured budget5 bridge")
+	budget_receipt["base_budget"]=NAN
+	check(budget_bound.bridge.apply_gcr_results(1,result(budget_bound,impulse,.1),budget_receipt)==0,"nonfinite budget binding refuses")
+	budget_receipt["base_budget"]="5"
+	check(budget_bound.bridge.apply_gcr_results(1,result(budget_bound,impulse,.1),budget_receipt)==0,"nonnumeric budget binding refuses")
+	check(PhysicsServer2D.body_get_state(budget_bound.body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)==Vector2(1,2),"refused budget receipts make no partial velocity mutation")
+	budget_receipt["base_budget"]=5
+	check(budget_bound.bridge.apply_gcr_results(1,result(budget_bound,impulse,.1),budget_receipt)==1,"numeric budget matching configured budget5 is accepted")
+	wrench_closure(budget_bound,Vector2(1,2),.25,impulse,.1,"budget-bound one-wrench closure")
 	var stale: Dictionary = await fresh("C",Vector2(.01,.05),.005)
 	c=receipt(stale,"C",arrest,-.01,true)
 	stale.bridge.pack_gcr_body_states()

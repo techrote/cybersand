@@ -169,6 +169,7 @@ PackedFloat64Array CyberNativeCellWorld::gcr_compound_results() const {
     PackedFloat64Array result;
     if(!gcr_compound_mode_ || !gcr_response_valid_ || !compound_lease_current() ||
         world_->completed_tick_index()>gcr_sample_tick_+1 || !current_bodies_[1].valid) return result;
+    revalidate_rest_material();
     if(!gcr_compound_last_valid_ || gcr_compound_last_tick_!=world_->completed_tick_index()) {
         gcr_compound_last_=evaluate_gcr_compound();gcr_compound_last_valid_=true;
         gcr_compound_last_tick_=world_->completed_tick_index();
@@ -183,6 +184,7 @@ PackedFloat64Array CyberNativeCellWorld::gcr_compound_results() const {
 }
 
 Dictionary CyberNativeCellWorld::gcr_compound_diagnostics() const {
+    revalidate_rest_material();
     Dictionary d;d["enabled"]=gcr_compound_mode_;d["protocol_version"]=2;d["physical_body_id"]=1;
     d["candidate"]=gcr_load_aware_ ? "LA":get_gcr_admission_variant();
     d["load_aware"]=gcr_load_aware_;d["base_budget"]=gcr_base_budget_;d["rest_mode"]=gcr_rest_mode_;

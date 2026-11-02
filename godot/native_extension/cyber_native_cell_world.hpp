@@ -270,6 +270,11 @@ private:
     mutable RestHistory gcr_rest_history_{};
     std::array<std::uint64_t,cybersand::World::kMaximumTransientBodies+1U> gcr_rest_overlap_post_{},gcr_rest_signatures_{};
     bool gcr_rest_overlap_measured_=false;
+    // Prepared bins remain the baseline response. Rest authority is revalidated
+    // from current cells at every serialized publication, including same-tick edits.
+    mutable std::array<std::uint64_t,cybersand::World::kMaximumTransientBodies+1U> gcr_rest_current_overlap_{},gcr_rest_current_signatures_{};
+    mutable bool gcr_rest_material_validated_=false,gcr_rest_material_changed_=false;
+    mutable std::uint64_t gcr_rest_validation_raster_=0,gcr_rest_validation_boundaries_=0,gcr_rest_validation_queries_=0;
     enum class RestRefusal {Disabled,UnknownContext,Population,Overlap,NoSupport,SupportChanged,Unacknowledged,PoseMotion,ResidualMotion,Event,Drive,Correction,Dwell,Ready};
     struct RestInfo {bool eligible=false,correction_mode=false;std::uint32_t quiet=0;RestRefusal refusal=RestRefusal::Disabled;
         std::uint64_t signature=0,post_overlap=0;double pose_speed=0,residual_speed=0;bool overlap_measured=false;};
@@ -277,6 +282,18 @@ private:
     [[nodiscard]] bool rest_correction_mode() const;
     [[nodiscard]] std::uint64_t rest_signature(std::size_t id) const;
     [[nodiscard]] std::uint64_t rest_overlap(std::size_t id) const;
+    struct GcrSource {
+        bool boundary=false,support_checked=false,admission_checked=false,admitted=false,side=false;
+        std::int32_t x=0,y=0;
+        cybersand::Material material=cybersand::Material::Empty;
+        std::uint16_t state_a=0;std::uint8_t state_b=0;
+        cybersand::gcr::Projection contact{};
+        cybersand::World::GranularContactAdmission admission{};
+    };
+    [[nodiscard]] GcrSource gcr_contact_source(std::int32_t x,std::int32_t y,
+        std::size_t id,Vector2i direction) const;
+    static void append_gcr_signature(std::uint64_t& signature,const GcrSource& source);
+    void revalidate_rest_material() const;
     double gcr_mass_multiplier_ = 1., gcr_inertia_multiplier_ = 1.;
     bool gcr_compound_mode_ = false, gcr_preparing_compound_ = false;
     std::size_t gcr_compound_count_ = 0;

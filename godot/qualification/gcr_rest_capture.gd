@@ -74,6 +74,7 @@ func _run() -> void:
 				var start_tick: int = int(session.coupling_metrics().native_tick)
 				var target: int = start_tick+int(spec.ticks)
 				report.release_tick=start_tick
+				report.target_native_tick=target
 				var started: int = Time.get_ticks_msec()
 				var step: int = 0
 				var excavated: bool = false
@@ -104,6 +105,8 @@ func _run() -> void:
 					if Time.get_ticks_msec()-started>int(protocol.wall_timeout_seconds)*1000: report.errors.append("wall timeout"); break
 					step+=1
 				if bool(spec.get("conditional_excavation",false)) and not excavated: report.outcome="NO_VALID_REST_ADMISSION"
+				report.stop_native_tick=int(session.coupling_metrics().native_tick)
+				report.observed_native_cutoff_overshoot=maxi(0,int(report.stop_native_tick)-target)
 				report.after=portable(await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128)))
 			else: report.errors.append("handoff: "+session.last_error)
 		else: report.errors.append("session: "+session.last_error)
