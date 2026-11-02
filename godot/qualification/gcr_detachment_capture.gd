@@ -59,7 +59,9 @@ func lowest_union_y(session: RefCounted, pose: Transform2D) -> float:
 func _run() -> void:
 	var arguments: Dictionary = {}
 	for argument: String in OS.get_cmdline_user_args():
-		if argument.begins_with("--") and "=" in argument:
+		if argument == "--validate-only":
+			arguments["validate-only"] = true
+		elif argument.begins_with("--") and "=" in argument:
 			var pair: PackedStringArray = argument.trim_prefix("--").split("=", true, 1)
 			arguments[pair[0]] = pair[1]
 	var protocol_path: String = arguments.get("protocol", "")
@@ -71,17 +73,31 @@ func _run() -> void:
 	var surroundings: String = arguments.get("surroundings", "")
 	var workers: int = int(arguments.get("workers", "0"))
 	var repeat: int = int(arguments.get("repeat", "0"))
-	check(arm in protocol.arms and surroundings in protocol.surroundings and workers in protocol.workers, "registered case")
+	# JSON numbers are FLOAT Variants, while the command argument is an INT.
+	# Array membership is type-sensitive; compare supported numeric values.
+	var registered_worker: bool = false
+	for value: Variant in protocol.workers:
+		if (value is int or value is float) and is_finite(float(value)) and float(value) == float(workers):
+			registered_worker = true
+	check(arm in protocol.arms and surroundings in protocol.surroundings and registered_worker, "registered case")
 	check(repeat == 0 or (repeat == 1 and arm == "R2" and workers == 1), "registered repeat")
 	var identity: Dictionary = {}
 	for key: String in ["source", "input_identity", "native_sha256", "protocol_sha256"]:
 		identity[key] = OS.get_environment("CYBERSAND_" + key.to_upper())
 		check(not str(identity[key]).is_empty(), "authenticated identity " + key)
 	check(identity.protocol_sha256 == FileAccess.get_sha256(protocol_path), "protocol bytes match runner")
+	var case_value: Dictionary = {"arm":arm,"surroundings":surroundings,"workers":workers,"repeat":repeat,"platform":OS.get_name()}
+	if arguments.has("validate-only"):
+		# This branch deliberately precedes Session.new/open and all edit calls.
+		print("GCR_DETACHMENT_ARGUMENT_VALIDATION ",JSON.stringify({"ok":failures.is_empty(),"case":case_value,"identity":identity,
+			"world_constructed":false,"body_constructed":false,"native_ticks":0,"rapier_steps":0,"external_edits":[],"failures":failures}))
+		quit(0 if failures.is_empty() else 1)
+		return
 	var session = Session.new()
+	var planned_cut: Dictionary = {"action":"cut_prepare","origin":[50,65],"size":[4,2],"removed_material":43,"removed_cells":8}
 	var report: Dictionary = {"schema":"cybersand.gcr-detachment.capture.v1", "identity":identity,
-		"case":{"arm":arm,"surroundings":surroundings,"workers":workers,"repeat":repeat,"platform":OS.get_name()},
-		"rows":[],"selected_observations":[],"external_edits":[{"action":"cut_prepare","origin":[50,65],"size":[4,2],"removed_material":43,"removed_cells":8}],"failures":failures,
+		"case":case_value,"rows":[],"selected_observations":[],"external_edits":[],"planned_edits":[planned_cut],
+		"cut_attempted":false,"cut_effect":null,"external_edits_complete":true,"failures":failures,
 		"timing_scope":"functional asynchronous; observer and pause/inspect costs are recorded separately",
 		"unsupported": ["pre_overlap", "post_overlap", "local_slip", "full_energy_calibration"],
 		"cutoff_derivative":null}
@@ -90,7 +106,18 @@ func _run() -> void:
 		var before: Dictionary = await session.inspect_coupling(PackedInt32Array(), Rect2i(0,0,160,128))
 		report["before"] = portable(before)
 		check(before.get("ok", false), "pre-cut native census")
+		report["cut_attempted"] = true
+		report["external_edits_complete"] = false
 		if await session.cut_and_release():
+			var confirmed_cut: bool = bool(session.source_receipt.get("cut_applied",false))
+			check(confirmed_cut,"native receipt confirms ordinary cut")
+			if confirmed_cut:
+				var actual_cut: Dictionary = planned_cut.duplicate(true)
+				actual_cut["receipt_token"] = session.source_receipt.get("token")
+				actual_cut["evidence"] = "successful cut_and_release and native cut_applied receipt for unchanged authored8-cell trunk cut"
+				report.external_edits.append(actual_cut)
+				report["cut_effect"] = {"known":true,"removed_cells":8}
+				report["external_edits_complete"] = true
 			session.set_paused(true)
 			var release: Dictionary = await session.inspect_coupling(PackedInt32Array(), Rect2i(0,0,160,128))
 			report["release"] = portable(release)
@@ -155,6 +182,7 @@ func _run() -> void:
 			report["final_coupling"] = portable(session.coupling_metrics())
 			check(last_tick >= target, "native horizon reached")
 		else:
+			report["cut_effect"] = {"known":false,"removed_cells":null,"native_receipt":portable(session.source_receipt)}
 			check(false, "actual handoff: " + session.last_error)
 	else:
 		check(false, "actual owner construction: " + session.last_error)
