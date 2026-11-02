@@ -1439,3 +1439,15 @@ uses copied origin/qualified observation slots and exact request/settings/native
 guards for owner adoption. Actual initial pressure-capacity excess produces a
 native typed refusal before capture/token/swap, with actual attempt readback.
 Complete host binding and final platform publication remain separate.
+
+## Experimental LA reset values
+
+The [compound response contract](../architecture/compound-granular-coupling.md#load-aware-successor-experiment--2026-11-02)
+adds reset-only GCR-LA / GCR-LA-001-2026-11-02 selection and optional finite
+`gcr_lab_mass_multiplier`, `gcr_lab_inertia_multiplier` values0.01–4. They require
+GCR construction and change expected physical transport values only; native
+payload mass/COM/inertia remain authoritative provenance. Omitted values are1.
+Complete compound admission compares actual state with the explicitly configured
+expectation; all existing lease/generation/shape and pre-mutation checks remain.
+Strides17/14, ownership, sample lifetimes and one-wrench delivery do not change.
+Diagnostics copy candidate, load-aware flag, scale and override values.

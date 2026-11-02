@@ -1550,3 +1550,11 @@ Use the [physical actor programme](physical-actor-programme.md) for the combined
 PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.
 
 The isolated `codex/gcr-detachment-integration-20261101` starts at actual maina8f08a67 and selectively composes detachment5af50b3c with GCRbe184746. The [registration](gcr-detachment-integration-plan.md) precedes execution; the [compound contract](../architecture/compound-granular-coupling.md) owns one physical response and explicit mask acknowledgement. Fresh Windows/Linux runtimes built at5d124667 passed native/sanitizer and scoped hosts; corrected acquisition86108a14 produced56 successful captures with exact registered conservation. One of eight COM-entry comparisons fails; all eight overlap comparisons are unsupported. Current UI9138bdaf offers fresh legacy/R2/A1 sessions; its six target-OS tests pass. Full native inputs retain their original source identity through independently checked equivalence. [Dated evidence](../audits/2026-11-02-compound-granular-detachment.md) preserves pre-fix/harness/parser failures, performance triggers and hard-support/mixed-owner limits. Existing PRs, evidence, local fleet and unrelated material work remain preserved. All drafts stay unmerged; no production physical or owner acceptance/default promotion is claimed.
+
+## Load-aware granular experiment — 2026-11-02
+
+The [preregistered LA successor](gcr-load-aware-registration.md) preserves PR349 unmerged and adds a separate
+experimental mass-capacity hypothesis, original building comparison, barrel
+preservation gates, partial support and staged developer controls. Sleep and
+production promotion remain excluded. Source implementation is not gameplay
+acceptance; consult the registration for the frozen population and limitations.

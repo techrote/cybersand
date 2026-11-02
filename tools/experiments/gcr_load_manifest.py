@@ -9,7 +9,7 @@ def manifest():
         for speed in [30,90]:
             cases.append({'id':f'barrel-m{mass}-v{speed}','kind':'barrel',
                           'spec':{'layout':'deep','material':2,'width':64,'depth':96,
-                                  'mass':mass,'speed':speed,'angle':.08,'gap':14,'ticks':1200,'workers':1}})
+                                  'mass':mass,'speed':speed,'angle':.08,'gap':2,'ticks':1200,'workers':1}})
     for surroundings in ['packed_sand','embedded_sand','mixed','isolated_full','isolated_half',
                          'isolated_narrow','isolated_excavate','isolated_dry','isolated_water']:
         cases.append({'id':surroundings,'kind':'compound','surroundings':surroundings})
@@ -33,5 +33,5 @@ def manifest():
 if __name__=='__main__':
     path=ROOT/'docs/audits/gcr-load-2026-11-02/protocol.json'
     path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(json.dumps(manifest(),indent=2)+'\n',encoding='utf-8')
+    path.write_text(json.dumps(manifest(),indent=2)+'\n',encoding='utf-8',newline='\n')
     print(path)

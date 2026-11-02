@@ -23,7 +23,7 @@
         "mass": 0.5,
         "speed": 30,
         "angle": 0.08,
-        "gap": 14,
+        "gap": 2,
         "ticks": 1200,
         "workers": 1
       }
@@ -39,7 +39,7 @@
         "mass": 0.5,
         "speed": 90,
         "angle": 0.08,
-        "gap": 14,
+        "gap": 2,
         "ticks": 1200,
         "workers": 1
       }
@@ -55,7 +55,7 @@
         "mass": 1,
         "speed": 30,
         "angle": 0.08,
-        "gap": 14,
+        "gap": 2,
         "ticks": 1200,
         "workers": 1
       }
@@ -71,7 +71,7 @@
         "mass": 1,
         "speed": 90,
         "angle": 0.08,
-        "gap": 14,
+        "gap": 2,
         "ticks": 1200,
         "workers": 1
       }
@@ -87,7 +87,7 @@
         "mass": 2,
         "speed": 30,
         "angle": 0.08,
-        "gap": 14,
+        "gap": 2,
         "ticks": 1200,
         "workers": 1
       }
@@ -103,7 +103,7 @@
         "mass": 2,
         "speed": 90,
         "angle": 0.08,
-        "gap": 14,
+        "gap": 2,
         "ticks": 1200,
         "workers": 1
       }
@@ -119,7 +119,7 @@
         "mass": 8,
         "speed": 30,
         "angle": 0.08,
-        "gap": 14,
+        "gap": 2,
         "ticks": 1200,
         "workers": 1
       }
@@ -135,7 +135,7 @@
         "mass": 8,
         "speed": 90,
         "angle": 0.08,
-        "gap": 14,
+        "gap": 2,
         "ticks": 1200,
         "workers": 1
       }

@@ -1253,3 +1253,13 @@ memory/work limits. A conservative maximum local candidate charge bounds each
 raster sample. Real geometry/mask checks and canonical ordering still select
 materials. Measured index checks and local chunk durations are distinct from
 these declared logical charges.
+
+## Experimental load-aware developer controls
+
+The [registered LA successor](../operations/gcr-load-aware-registration.md) owns
+the frozen candidate law and test population. `solid_detachment_lab.tscn` exposes
+staged gravity0–368.48 cell/s², mass multiplier0.01–4, friction0–4 and independent
+inertia multiplier0.01–4. Apply resets the complete scene. Defaults preserve the
+520-cell building's actual mass/inertia; changed mass or inertia is visibly an
+exploratory override, not payload-mass qualification. Ordinary defaults and
+original legacy/R2/A1 response constants are unchanged.

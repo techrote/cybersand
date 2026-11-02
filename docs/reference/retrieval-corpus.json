@@ -121,7 +121,8 @@
     "architecture/pressure-optimization.md",
     "operations/ci-execution-and-performance.md",
     "operations/gcr-detachment-integration-plan.md",
-    "architecture/compound-granular-coupling.md"
+    "architecture/compound-granular-coupling.md",
+    "operations/gcr-load-aware-registration.md"
   ],
   "navigation": [
     "README.md",

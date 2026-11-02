@@ -17,6 +17,9 @@ def main():
     parser.add_argument('--mechanical',type=Path,required=True)
     parser.add_argument('--native-core',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--godot-windows',type=Path,required=True)
+    parser.add_argument('--godot-linux',required=True,help='Pinned Linux engine path inside WSL')
+    parser.add_argument('--wsl-distro',default='Ubuntu-24.04')
     args=parser.parse_args()
     if not args.run: parser.error('No runtime execution without --run')
     if args.output.exists(): raise RuntimeError('Never overwrite retained acquisition')
@@ -27,7 +30,11 @@ def main():
     if not mechanical.get('ok') or not native.get('accepted'): raise RuntimeError('Required mechanical/native gate incomplete')
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     args.output.mkdir(parents=True)
-    identity={'source':head,'protocol_sha256':sha(PROTOCOL),'mechanical_sha256':sha(args.mechanical),'native_gate_sha256':sha(args.native_core),'platforms':{}}
+    identity={'source':head,'protocol_sha256':sha(PROTOCOL),'mechanical_sha256':sha(args.mechanical),'native_gate_sha256':sha(args.native_core),'platforms':{},
+              'windows_engine_sha256':sha(args.godot_windows),
+              'linux_engine_sha256':subprocess.check_output(['wsl','-d',args.wsl_distro,'--','sha256sum',args.godot_linux],text=True).split()[0]}
+    for command in [[str(args.godot_windows),'--version'],['wsl','-d',args.wsl_distro,'--',args.godot_linux,'--version']]:
+        if subprocess.check_output(command,text=True).strip()!='4.7.stable.official.5b4e0cb0f':raise RuntimeError('Pinned Godot4.7 runtime required')
     for platform in ['windows','linux']:
         build=json.loads((ROOT/f'build/compound-runtime-{platform}.json').read_text())
         for path,h in build['source_inputs'].items():
@@ -44,7 +51,7 @@ def main():
     env=os.environ.copy();env['GCR_LA_SOURCE']=head
     def lane(platform):
         project=Path(identity['platforms'][platform]['project'])
-        engine=['C:/Godot47/Godot_v4.7-stable_win64_console.exe'] if platform=='windows' else ['wsl','-d','Ubuntu-24.04','--','/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64']
+        engine=[str(args.godot_windows)] if platform=='windows' else ['wsl','-d',args.wsl_distro,'--','env','GCR_LA_SOURCE='+head,args.godot_linux]
         convert=lambda p:str(Path(p).resolve()) if platform=='windows' else linux(p)
         rows=[]
         for index,case in enumerate(protocol['cases']):
@@ -56,7 +63,9 @@ def main():
                     try: code=subprocess.run(command,cwd=ROOT,env=env,stdout=stream,stderr=subprocess.STDOUT,timeout=protocol['wall_timeout_seconds']+30).returncode
                     except subprocess.TimeoutExpired: code=124
                 raw=json.loads(output.read_text(encoding='utf-8')) if output.exists() else {}
-                record={'case':case['id'],'arm':arm,'exit':code,'ok':code==0 and raw.get('ok',False),'elapsed':time.time()-start,'log_sha256':sha(log),'raw_sha256':sha(output) if output.exists() else None}
+                text=log.read_text(encoding='utf-8',errors='replace')
+                identity_ok=raw.get('identity',{}).get('source')==head and raw.get('identity',{}).get('native_sha256')==identity['platforms'][platform]['native']['sha256'] and raw.get('identity',{}).get('protocol_sha256')==sha(PROTOCOL)
+                record={'case':case['id'],'arm':arm,'exit':code,'ok':code==0 and raw.get('ok',False) and identity_ok and not any(v in text for v in ['SCRIPT ERROR','ERROR:']),'identity_ok':identity_ok,'elapsed':time.time()-start,'log_sha256':sha(log),'raw_sha256':sha(output) if output.exists() else None}
                 rows.append(record);print(name,record['ok'],flush=True)
                 (args.output/(platform+'-campaign.json')).write_text(json.dumps(rows,indent=2)+'\n')
                 if not record['ok']: return False

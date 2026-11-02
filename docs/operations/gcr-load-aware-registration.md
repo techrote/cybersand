@@ -101,5 +101,12 @@ is frozen, floor118 and excavation at observation600. The two-cell-width column
 is free to disperse under the ordinary cellular law; measure actual admitted
 support instead of assuming its authored width persists.
 
+Pre-acquisition barrel reconciliation: retained GCR `sand-vertical` uses width64,
+depth96 and gap2. Correct the draft manifest's gap14 to2 before any acquisition;
+otherwise free-fall would change the actual impact speed. Body8x14, angle0.08,
+speed30 and the retained helper now match that reference; mass and speed are the
+registered stratification variables. Duration1200 is deliberately shorter than
+the historical1800 and does not inherit its late-tail acceptance.
+
 Pre-acquisition inspection correction: original bridge friction is0.78, not0.5;
 all default controls preserve0.78. No candidate results preceded this correction.
