@@ -50,8 +50,14 @@ post-ejection overlap, known hard clearance>2cells, and small actual same-phase
 contact-point displacement plus small proposed residual contact velocity,
 including angular motion. Enter after30 fresh accepted sample observations at
 speed<=0.1cell/s; exit at>0.25 or immediately on changed support/overlap/event.
-Use static friction1.25*authored mu only while admitted; sliding retains mu.
-No saved blocked impulses or unbounded history. False/no admission is reportable,
+Use validated cached node impulses to warm-start the same four-pass solver only
+while admitted; preserve authored mu for both sticking and sliding. Re-clamp
+cached values to current node capacities/cones, seed provisional velocity once,
+and serialize the final total once. Cache at most1024 normal/tangent pairs
+(16KiB plus fixed metadata); source coordinates/material/state/face, geometry,
+mass/inertia/mu/dt and session/sample compatibility bind reuse. Clear on any
+invalidating support/event/context change. No saved blocked external impulses
+or unbounded history. False/no admission is reportable,
 not permission to relax thresholds after outcomes. Gentle driving may be resisted
 within the cone; it vetoes catch and cannot be smoothed away.
 
@@ -120,3 +126,19 @@ amplification; investigate both>25% and>25us p95 increases, without treating loc
 functional timing as uncontended performance acceptance. Owner feel is separate.
 All failures remain. Build fresh Windows/Linux runtimes, retain compact summaries
 and hashes, open a focused draft successor and keep all PRs unmerged.
+
+## Pre-implementation design clarification
+
+Read-only review distinguishes persistence from a larger friction coefficient.
+Replace the draft1.25 static-mu multiplier by same-mu cached-impulse warm starting
+before any implementation/result; the frozen source coefficient remains unchanged.
+The copied rest context also binds the last actually applied sample; repeated or
+unacknowledged preparations cannot advance quiet dwell. Rest receipts are explicit
+versioned copied values, not actionable fields smuggled through generic diagnostics.
+
+The C arm deliberately tests full residual arrest at the existing application
+phase. Post-step zero velocity does not guarantee same-phase position rest under
+the following gravity integration; gravity-compensating velocity can be valid.
+Record those phase boundaries and allow NO_ADMISSION/NO_REST rather than adding
+an unregistered pre-step impulse, changing gravity, or claiming a velocity snap
+proves rest. Any timing-law successor requires separate evidence/registration.
