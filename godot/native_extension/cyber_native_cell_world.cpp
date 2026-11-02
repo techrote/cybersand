@@ -358,6 +358,7 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     granular_yield_response_ = kGranularYieldVelocityResponse;
     gcr_enabled_ = false;
     gcr_admission_a1_ = false;
+    gcr_load_aware_ = false; gcr_mass_multiplier_=1.; gcr_inertia_multiplier_=1.;
     gcr_compound_mode_ = gcr_preparing_compound_ = false; gcr_compound_count_ = 0;
     gcr_compound_token_ = {}; gcr_compound_generation_ = gcr_compound_physics_epoch_ = 0;
     gcr_compound_workspace_.reset();
@@ -1142,7 +1143,8 @@ CyberNativeCellWorld::GcrEvaluation CyberNativeCellWorld::evaluate_gcr(std::size
     state.velocity={body.velocity.x+out.event.x/body.mass,body.velocity.y+out.event.y/body.mass};
     state.omega=body.angular_velocity+out.event_torque/body.inertia;
     state.com={body.com.x,body.com.y}; state.mass=body.mass; state.inertia=body.inertia; state.mu=body.friction;
-    out.passive=cybersand::gcr::solve(state,gcr_bins_[id],20-out.event_cost);
+    const double scale=gcr_load_aware_ ? cybersand::gcr::load_scale(body.mass):1.;
+    out.passive=cybersand::gcr::solve(state,gcr_bins_[id],20*scale-out.event_cost,scale);
     // Non-granular legacy mechanisms keep their old central cap. The granular
     // kernel channel has already entered the new ledger, so subtract it here.
     out.legacy=observations_[id].impulse+Vector2{
@@ -1219,8 +1221,9 @@ Array CyberNativeCellWorld::get_gcr_admission_counters() const {
 Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
     if(gcr_compound_mode_) return gcr_compound_diagnostics();
     Dictionary result; result["enabled"]=gcr_enabled_; result["protocol_version"]=1;
-    result["candidate"]=gcr_admission_a1_ ? "GCR-A1":"GCR";
-    result["experiment"]=gcr_admission_a1_ ? "GCR-ADMISSION-001-2026-11-01":"GCR-001-2026-11-01";
+    result["candidate"]=gcr_load_aware_ ? "GCR-LA" : gcr_admission_a1_ ? "GCR-A1":"GCR";
+    result["load_aware"]=gcr_load_aware_;
+    result["experiment"]=gcr_load_aware_ ? "GCR-LA-001-2026-11-02" : gcr_admission_a1_ ? "GCR-ADMISSION-001-2026-11-01":"GCR-001-2026-11-01";
     result["admission_variant"]=get_gcr_admission_variant();
     result["evaluator_variant"]="R2-second-moment-quadrature";
     result["fixed_bin_storage_bytes"]=static_cast<std::int64_t>(sizeof(gcr_bins_));
@@ -1244,6 +1247,7 @@ Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
         row["passive_raw_impulse"]=Vector2{p.raw_impulse.x,p.raw_impulse.y};
         row["passive_raw_torque"]=p.raw_torque;
         row["passive_rejected_torque"]=p.raw_torque-p.torque;
+        row["capacity_scale"]=gcr_load_aware_ ? cybersand::gcr::load_scale(body.mass):1.;
         row["normal_cap_hits"]=p.normal_cap_hits; row["tangent_cap_hits"]=p.tangent_cap_hits;
         row["probes"]=body_diagnostics_ ? static_cast<std::int64_t>((*body_diagnostics_)[id].boundaries) : 0;
         row["event_raw"]=evaluation.event_raw; row["event_accepted"]=evaluation.event;
@@ -1820,17 +1824,28 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         double yield_response = kGranularYieldVelocityResponse;
         bool gcr = false;
         bool admission_a1 = false;
+        bool load_aware = false;
         if (options.has("bearing_candidate") || options.has("bearing_experiment")) {
             if (options.get("bearing_candidate", Variant()).get_type() != Variant::STRING ||
                 options.get("bearing_experiment", Variant()).get_type() != Variant::STRING ||
                 !options.has("bearing_candidate") || !options.has("bearing_experiment")) return false;
             const String selected = options["bearing_candidate"];
             const String experiment = options["bearing_experiment"];
-            admission_a1 = selected == "GCR-A1" && experiment == "GCR-ADMISSION-001-2026-11-01";
+            load_aware = selected == "GCR-LA" && experiment == "GCR-LA-001-2026-11-02";
+            admission_a1 = load_aware || (selected == "GCR-A1" && experiment == "GCR-ADMISSION-001-2026-11-01");
             gcr = admission_a1 || (selected == "GCR" && experiment == "GCR-001-2026-11-01");
             if (!gcr && (experiment != "Y1-ENVELOPE-2026-11-01" ||
                 (selected != "B0" && selected != "Y1"))) return false;
             if (selected == "Y1") yield_response = 1.0;
+        }
+        double mass_multiplier=1., inertia_multiplier=1.;
+        for(const char* key:{"gcr_lab_mass_multiplier","gcr_lab_inertia_multiplier"}) {
+            if(!options.has(key)) continue;
+            const Variant v=options[key];
+            if(!gcr || (v.get_type()!=Variant::FLOAT && v.get_type()!=Variant::INT)) return false;
+            const double value=v;
+            if(!std::isfinite(value) || value<.01 || value>4.) return false;
+            if(String(key)=="gcr_lab_mass_multiplier") mass_multiplier=value; else inertia_multiplier=value;
         }
         const auto workers = static_cast<std::int64_t>(options.get("workers", 1));
         if (workers < 1 || workers > 32) return false;
@@ -1892,6 +1907,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         granular_yield_response_ = yield_response;
         gcr_enabled_ = gcr;
         gcr_admission_a1_ = admission_a1;
+        gcr_load_aware_ = load_aware; gcr_mass_multiplier_=mass_multiplier; gcr_inertia_multiplier_=inertia_multiplier;
         gcr_compound_mode_ = gcr_preparing_compound_ = false; gcr_compound_count_ = 0;
         gcr_compound_token_ = {}; gcr_compound_generation_ = gcr_compound_physics_epoch_ = 0;
         gcr_compound_workspace_ = std::move(compound_workspace);

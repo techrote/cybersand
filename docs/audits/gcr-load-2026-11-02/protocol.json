@@ -1,0 +1,264 @@
+{
+  "registration": "GCR-LA-001-2026-11-02",
+  "arms": [
+    "A1",
+    "LA"
+  ],
+  "platforms": [
+    "Windows",
+    "Linux"
+  ],
+  "workers": [
+    1
+  ],
+  "cases": [
+    {
+      "id": "barrel-m0.5-v30",
+      "kind": "barrel",
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 0.5,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "barrel-m0.5-v90",
+      "kind": "barrel",
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 0.5,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "barrel-m1-v30",
+      "kind": "barrel",
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "barrel-m1-v90",
+      "kind": "barrel",
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "barrel-m2-v30",
+      "kind": "barrel",
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 2,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "barrel-m2-v90",
+      "kind": "barrel",
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 2,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "barrel-m8-v30",
+      "kind": "barrel",
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 8,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "barrel-m8-v90",
+      "kind": "barrel",
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 8,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "packed_sand",
+      "kind": "compound",
+      "surroundings": "packed_sand"
+    },
+    {
+      "id": "embedded_sand",
+      "kind": "compound",
+      "surroundings": "embedded_sand"
+    },
+    {
+      "id": "mixed",
+      "kind": "compound",
+      "surroundings": "mixed"
+    },
+    {
+      "id": "isolated_full",
+      "kind": "compound",
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "isolated_half",
+      "kind": "compound",
+      "surroundings": "isolated_half"
+    },
+    {
+      "id": "isolated_narrow",
+      "kind": "compound",
+      "surroundings": "isolated_narrow"
+    },
+    {
+      "id": "isolated_excavate",
+      "kind": "compound",
+      "surroundings": "isolated_excavate"
+    },
+    {
+      "id": "isolated_dry",
+      "kind": "compound",
+      "surroundings": "isolated_dry"
+    },
+    {
+      "id": "isolated_water",
+      "kind": "compound",
+      "surroundings": "isolated_water"
+    }
+  ],
+  "captures_per_platform": 34,
+  "maximum_captures": 70,
+  "primary_captures": 68,
+  "ticks": 1200,
+  "tail_samples": 300,
+  "apparatus_amendment": {
+    "failed_attempts": 2,
+    "retained_valid": 56,
+    "replacement_attempts": 2,
+    "unattempted": 10,
+    "reason": "4224-cell excavation exceeded4096-cell brush footprint; split into two bounded existing commands; no law change"
+  },
+  "wall_timeout_seconds": 240,
+  "compound_recipe": {
+    "source": "godot/scripts/solid_detachment_session.gd",
+    "payload_members": 520,
+    "mass": 520,
+    "shapes": 6,
+    "inertia": 70453.64935897436,
+    "original_floor_y": 72,
+    "isolated_floor_y": 118,
+    "isolated_bed_y": [
+      70,
+      118
+    ],
+    "isolated_full_x": [
+      31,
+      119
+    ],
+    "isolated_half_x": [
+      57,
+      119
+    ],
+    "isolated_narrow_x": [
+      56,
+      58
+    ],
+    "retired_stump": [
+      50,
+      67,
+      4,
+      5
+    ],
+    "excavation_at_observation": 600,
+    "excavation_rect": [
+      31,
+      70,
+      88,
+      48
+    ]
+  },
+  "pacing": {
+    "barrel": "retained synchronous single-worker source-matched feel fixture",
+    "compound": "actual asynchronous native worker and main-thread Rapier"
+  },
+  "controls": {
+    "gravity": 92.12,
+    "mass_multiplier": 1,
+    "friction": 0.78,
+    "inertia_multiplier": 1
+  },
+  "unsupported": [
+    "whole-system energy calibration",
+    "owner gameplay acceptance",
+    "uncontended performance"
+  ],
+  "gates": {
+    "entry_abs": 0.5,
+    "entry_relative": 0.1,
+    "overlap_abs": 1,
+    "overlap_relative": 0.1,
+    "rebound_delta": 2,
+    "tail_span_delta": 0.5,
+    "mass_le_one": "exact native equality"
+  }
+}

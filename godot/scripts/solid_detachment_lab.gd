@@ -2,8 +2,8 @@ extends Node2D
 
 const Session = preload("res://scripts/solid_detachment_session.gd")
 const Consumer = preload("res://scripts/solid_detachment_render_consumer.gd")
-const SURROUNDINGS: Array[String] = ["empty", "packed_sand", "embedded_sand", "mixed"]
-const SURROUNDINGS_LABELS: Array[String] = ["dry control", "packed Sand", "partially embedded Sand", "mixed Sand / Water"]
+const SURROUNDINGS: Array[String] = ["empty", "packed_sand", "embedded_sand", "mixed", "isolated_full", "isolated_half", "isolated_narrow", "isolated_excavate", "isolated_dry", "isolated_water"]
+const SURROUNDINGS_LABELS: Array[String] = ["dry control", "packed Sand", "partially embedded Sand", "mixed Sand / Water", "isolated full support", "isolated half support", "isolated narrow support", "isolated excavation", "isolated dry", "isolated Water"]
 var session: RefCounted
 var consumer: RefCounted
 var cells := PackedByteArray()
@@ -15,7 +15,10 @@ var surroundings: int = 0
 var workers: int = 4
 var conservative_displacement: bool = true
 var contact_candidate: String = "legacy"
-const CONTACT_CANDIDATES: Array[String] = ["legacy", "R2", "A1"]
+const CONTACT_CANDIDATES: Array[String] = ["legacy", "R2", "A1", "LA"]
+var _parameter_inputs: Dictionary = {}
+var _parameters: Dictionary = {"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
+var _parameter_receipt: Label
 var _captured: Dictionary = {}
 var _capture_prefix: String = ""
 var _title: Label
@@ -33,7 +36,8 @@ func _ready() -> void:
 	_stats = _label(Vector2(35, 730), 14)
 	_material_stats = _label(Vector2(35, 755), 14)
 	var help := _label(Vector2(35, 790), 13)
-	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nC fresh contact arm: legacy / experimental R2 / experimental A1\nX excavate below body  |  I inspect conservation  |  ESC exit"
+	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nC fresh arm: legacy / R2 / A1 / LA (load-aware)\n5 full / 6 half / 7 narrow / 8 excavation / 9 dry / 0 Water (isolated)\nX excavate below body  |  I inspect conservation  |  F6 barrels  |  ESC exit"
+	_build_parameter_controls()
 	var args := OS.get_cmdline_user_args()
 	for i: int in range(args.size()):
 		if args[i] == "--capture" and i + 1 < args.size():
@@ -54,6 +58,59 @@ func _ready() -> void:
 		await RenderingServer.frame_post_draw
 		_capture("anchored")
 		await _release()
+
+func _build_parameter_controls() -> void:
+	var panel := VBoxContainer.new()
+	panel.position=Vector2(760,110)
+	panel.custom_minimum_size=Vector2(400,0)
+	add_child(panel)
+	var heading := Label.new()
+	heading.text="EXPERIMENTAL — staged controls"
+	panel.add_child(heading)
+	for key: String in _parameters:
+		var caption := Label.new()
+		caption.text={"gravity":"Gravity (cell/s²)","mass_multiplier":"Mass × payload (520)","friction":"Friction coefficient","inertia_multiplier":"Inertia × payload (independent)"}[key]
+		panel.add_child(caption)
+		var input := SpinBox.new()
+		input.min_value=0.01 if key in ["mass_multiplier","inertia_multiplier"] else 0.0
+		input.max_value=368.48 if key=="gravity" else 4.0
+		input.step=0.01
+		input.value=float(_parameters[key])
+		panel.add_child(input)
+		_parameter_inputs[key]=input
+	var apply := Button.new()
+	apply.text="Apply values and reset scene"
+	apply.focus_mode=Control.FOCUS_NONE
+	apply.pressed.connect(_apply_parameters)
+	panel.add_child(apply)
+	var defaults := Button.new()
+	defaults.text="Restore payload defaults and reset"
+	defaults.focus_mode=Control.FOCUS_NONE
+	defaults.pressed.connect(_restore_parameters)
+	panel.add_child(defaults)
+	_parameter_receipt=Label.new()
+	panel.add_child(_parameter_receipt)
+
+func _apply_parameters() -> void:
+	if busy: return
+	var staged: Dictionary = {}
+	for key: String in _parameter_inputs:
+		var input: SpinBox = _parameter_inputs[key]
+		input.apply()
+		input.get_line_edit().release_focus()
+		staged[key]=input.value
+	if contact_candidate=="legacy" and (staged.mass_multiplier!=1.0 or staged.inertia_multiplier!=1.0):
+		_status.text="Mass/inertia overrides require R2, A1 or LA; press C to choose"
+		return
+	_parameters=staged
+	_open()
+
+func _restore_parameters() -> void:
+	if busy: return
+	_parameters={"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
+	for key: String in _parameter_inputs:
+		_parameter_inputs[key].value=float(_parameters[key])
+	_open()
 
 func _label(at: Vector2, size: int) -> Label:
 	var label := Label.new()
@@ -79,6 +136,7 @@ func _cycle_candidate() -> void:
 
 func _open() -> void:
 	busy = true
+	_parameter_receipt.text = "Applied: g=%.2f | mass=%.3f (payload 520)\nfriction=%.2f | inertia scale=%.3f%s" % [_parameters.gravity,520.0*float(_parameters.mass_multiplier),_parameters.friction,_parameters.inertia_multiplier,"\nEXPLORATORY OVERRIDE" if _parameters!={"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0} else "\nPayload mass/inertia defaults"]
 	if session != null:
 		session.close()
 	session = Session.new()
@@ -93,7 +151,7 @@ func _open() -> void:
 		busy = false
 		queue_redraw()
 		return
-	if await session.open(self, workers, SURROUNDINGS[surroundings], conservative_displacement, contact_candidate):
+	if await session.open(self, workers, SURROUNDINGS[surroundings], conservative_displacement, contact_candidate, _parameters):
 		var intact: Dictionary = await session.observe_intact()
 		_status.text = "%s / %s / %s / workers %d — SPACE cuts the actual native trunk" % [
 			_arm_label(), str(intact.get("outcome")), SURROUNDINGS_LABELS[surroundings], workers]
@@ -142,9 +200,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_R:
 			if not busy:
 				_open()
-		KEY_1, KEY_2, KEY_3, KEY_4:
+		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0:
 			if not busy:
-				surroundings = event.keycode - KEY_1
+				surroundings = 9 if event.keycode==KEY_0 else event.keycode - KEY_1
 				_open()
 		KEY_W:
 			if not busy:
@@ -159,6 +217,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_inspect()
 		KEY_ESCAPE:
 			get_tree().quit()
+		KEY_F6:
+			if not busy:
+				get_tree().change_scene_to_file("res://gcr_load_review.tscn")
 
 func _physics_process(_delta: float) -> void:
 	if session != null:
@@ -209,10 +270,10 @@ func _capture(suffix: String) -> void:
 
 func _draw() -> void:
 	const ORIGIN := Vector2(35, 104)
-	const SCALE := Vector2(7, 7)
+	var SCALE := Vector2(4.5,4.5) if surroundings>=4 else Vector2(7,7)
 	draw_set_transform(ORIGIN, 0, SCALE)
 	if cells.size() >= 1024 * 128 * channels:
-		for y: int in range(88):
+		for y: int in range(128 if surroundings>=4 else 88):
 			for x: int in range(160):
 				var material: int = cells[(y * 1024 + x) * channels]
 				if material == 0:

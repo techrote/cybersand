@@ -55,8 +55,10 @@ bool CyberNativeCellWorld::prepare_gcr_compound_coupling(const PackedFloat64Arra
         // records are not a valid representation of this physical owner.
         for(const int field:{3,6,7,8,9,10,11,12,13,14,15,16})
             if(states[offset+field]!=states[field]) return refuse();
-        if(states[offset+9]!=solid.mass ||
-            (states[offset+11]!=solid.inertia && states[offset+11]!=static_cast<double>(static_cast<real_t>(solid.inertia)))) return refuse();
+        const double expected_mass=solid.mass*gcr_mass_multiplier_;
+        const double expected_inertia=solid.inertia*gcr_inertia_multiplier_;
+        if((states[offset+9]!=expected_mass && states[offset+9]!=static_cast<double>(static_cast<real_t>(expected_mass))) ||
+            (states[offset+11]!=expected_inertia && states[offset+11]!=static_cast<double>(static_cast<real_t>(expected_inertia)))) return refuse();
         const auto& shape=shapes[id-1];
         if(states[offset+4]!=shape.width || states[offset+5]!=shape.height) return refuse();
         const Vector2 initial_com{static_cast<real_t>(static_cast<double>(solid.domain.x)+solid.com_x),
@@ -140,7 +142,8 @@ CyberNativeCellWorld::CompoundEvaluation CyberNativeCellWorld::evaluate_gcr_comp
     state.velocity={body.velocity.x+event.x/body.mass,body.velocity.y+event.y/body.mass};
     state.omega=body.angular_velocity+response.event_torque/body.inertia;state.mass=body.mass;state.inertia=body.inertia;
     state.com={body.com.x,body.com.y};state.mu=body.friction;
-    response.passive=cybersand::gcr::solve_compound(state,{bins.data(),count},*gcr_compound_workspace_,20-response.event_cost);
+    const double scale=gcr_load_aware_ ? cybersand::gcr::load_scale(body.mass):1.;
+    response.passive=cybersand::gcr::solve_compound(state,{bins.data(),count},*gcr_compound_workspace_,20*scale-response.event_cost,scale);
     out.legacy_scale=out.legacy_budget>impulse_cap_ ? impulse_cap_/out.legacy_budget:1.;
     const auto legacy=raw_legacy*out.legacy_scale;
     response.legacy={legacy.x,legacy.y};out.legacy_raw_torque=legacy_moment;out.legacy_torque=legacy_moment*out.legacy_scale;
@@ -175,6 +178,9 @@ PackedFloat64Array CyberNativeCellWorld::gcr_compound_results() const {
 
 Dictionary CyberNativeCellWorld::gcr_compound_diagnostics() const {
     Dictionary d;d["enabled"]=gcr_compound_mode_;d["protocol_version"]=2;d["physical_body_id"]=1;
+    d["candidate"]=gcr_load_aware_ ? "LA":get_gcr_admission_variant();
+    d["load_aware"]=gcr_load_aware_;
+    d["lab_mass_multiplier"]=gcr_mass_multiplier_; d["lab_inertia_multiplier"]=gcr_inertia_multiplier_;
     d["admission_variant"]=get_gcr_admission_variant();d["proxy_count"]=static_cast<std::int64_t>(gcr_compound_count_);
     d["source_bins"]=static_cast<std::int64_t>(gcr_compound_count_*8);
     d["scratch_bytes"]=static_cast<std::int64_t>(sizeof(cybersand::gcr::CompoundWorkspace));
@@ -191,6 +197,8 @@ Dictionary CyberNativeCellWorld::gcr_compound_diagnostics() const {
     d["sample_serial"]=b.sample_serial;d["session_id"]=gcr_session_id_;
     if(!gcr_compound_last_valid_) return d;
     const auto& e=gcr_compound_last_;const auto& r=e.response;const auto& p=r.passive;
+    d["capacity_scale"]=gcr_load_aware_ ? cybersand::gcr::load_scale(b.mass):1.;
+    d["normal_cap_hits"]=p.normal_cap_hits; d["tangent_cap_hits"]=p.tangent_cap_hits;
     d["nodes"]=p.nodes;d["updates"]=p.updates;d["normal_capacity"]=p.capacity;d["normal_accepted"]=p.normal;
     d["tangent_accepted"]=p.tangent;d["event_budget_cost"]=r.event_cost;d["event_scale"]=r.event_scale;
     d["event_raw"]=r.event_raw;d["event_accepted"]=r.event;d["event_raw_torque"]=r.event_raw_torque;d["event_torque"]=r.event_torque;

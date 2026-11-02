@@ -454,3 +454,13 @@ materials after overrides. Native fixture feeds never paint their expected
 reaction products; every required helper must complete and no-op/aborted cases
 must fail. Counts, logical work, local timing, actual rendered pixels and visual
 quality judgments remain separately labelled evidence.
+
+## Experimental load-aware preservation boundary
+
+LA follows the [registered mass-capacity experiment](../operations/gcr-load-aware-registration.md).
+One physical object still owns one budget and COM wrench. Actual mass/inertia
+remain payload-derived by default; explicit developer transport overrides are
+labelled and excluded from that qualification claim. Increased impulse magnitude
+does not increase contact count, solver passes or8192-update bound. Exact
+mass<=1 native equality, partial-support credibility and owner barrel feel are
+distinct gates; implementation alone establishes none of their physical outcomes.

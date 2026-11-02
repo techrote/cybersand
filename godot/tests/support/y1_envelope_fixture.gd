@@ -27,10 +27,10 @@ func is_gcr() -> bool:
 	return candidate.begins_with("GCR")
 
 func runtime_identity() -> Dictionary:
-	return {"native_candidate":"GCR-A1" if candidate == "GCR-A1" else ("GCR" if is_gcr() else candidate),
+	return {"native_candidate":"GCR-LA" if candidate=="GCR-LA" else ("GCR-A1" if candidate == "GCR-A1" else ("GCR" if is_gcr() else candidate)),
 		"admission_variant":str(world.get_gcr_admission_variant()) if world.has_method("get_gcr_admission_variant") else ("unsupported" if is_gcr() else "disabled"),
 		"evaluator_variant":"R2-second-moment-quadrature" if is_gcr() else candidate,
-		"experiment":ADMISSION_TOKEN if candidate == "GCR-A1" else (GCR_TOKEN if is_gcr() else TOKEN)}
+		"experiment":"GCR-LA-001-2026-11-02" if candidate=="GCR-LA" else (ADMISSION_TOKEN if candidate == "GCR-A1" else (GCR_TOKEN if is_gcr() else TOKEN))}
 
 func packed_boundary_states() -> Variant:
 	if not is_gcr(): return bridge.pack_body_states()
@@ -82,7 +82,7 @@ func observation(include_cells: bool = false) -> Dictionary:
 func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool = true) -> bool:
 	spec = configuration.duplicate(true)
 	candidate = arm
-	if arm not in ["B0", "Y1", "GCR", "GCR-A1", "GCR-MU0", "GCR-CENTRAL"] or int(spec.get("ticks",1800)) > 1800: return false
+	if arm not in ["B0", "Y1", "GCR", "GCR-A1", "GCR-LA", "GCR-MU0", "GCR-CENTRAL"] or int(spec.get("ticks",1800)) > 1800: return false
 	left = int(spec.get("left",96))
 	width = int(spec.width)
 	floor_y = SURFACE + int(spec.depth)
@@ -92,7 +92,7 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 		"bearing_candidate":arm,"bearing_experiment":TOKEN}
 	if is_gcr():
 		construction = {"workers":int(spec.get("workers",1)),"telemetry":telemetry,
-			"bearing_candidate":"GCR-A1" if arm == "GCR-A1" else "GCR","bearing_experiment":ADMISSION_TOKEN if arm == "GCR-A1" else GCR_TOKEN}
+			"bearing_candidate":"GCR-LA" if arm=="GCR-LA" else ("GCR-A1" if arm == "GCR-A1" else "GCR"),"bearing_experiment":"GCR-LA-001-2026-11-02" if arm=="GCR-LA" else (ADMISSION_TOKEN if arm == "GCR-A1" else GCR_TOKEN)}
 	if world == null or not world.diagnostic_reset(construction):
 		error = "fresh candidate construction refused: " + arm
 		return false

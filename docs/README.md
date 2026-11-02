@@ -554,3 +554,11 @@ the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
 
 Native detachment plus granular response: [compound owner contract](architecture/compound-granular-coupling.md) and [preregistration](operations/gcr-detachment-integration-plan.md). Experimental composition requires fresh qualification; no merge/default or gameplay expansion.
+
+## Load-aware granular experiment — 2026-11-02
+
+The [preregistered LA successor](operations/gcr-load-aware-registration.md) preserves PR349 unmerged and adds a separate
+experimental mass-capacity hypothesis, original building comparison, barrel
+preservation gates, partial support and staged developer controls. Sleep and
+production promotion remain excluded. Source implementation is not gameplay
+acceptance; consult the registration for the frozen population and limitations.

@@ -161,3 +161,42 @@ results to exact source/project/runtime/protocol identities. The machine
 stays null, not zero. A mechanical pass cannot close a physical-quality gate.
 No owner gameplay acceptance, normal default promotion or issue#12/#281/#83
 completion follows. All drafts remain unmerged.
+
+## Load-aware successor experiment — 2026-11-02
+
+The owner separately authorizes [GCR-LA-001](../operations/gcr-load-aware-registration.md).
+The fixed20 ceiling originated in the September13
+[issue11 bearing implementation](https://github.com/techrote/cybersand/commit/d22ad88d621a9c0c58736ecac5a8a91bd21c23af),
+with per-source2 capacity. The inspected introduction supplies no physical
+derivation for20. Prior experiments deliberately retained it for causal isolation;
+fixed solver work does not require a mass-independent impulse magnitude.
+Current experimental source adds opt-in LA with A1 admission and mass-normalized
+passive capacity. Original legacy/R2/A1 laws remain controls; all earlier results
+above retain their source and status. No production default changes. LA preserves
+the native520 payload mass and COM/inertia unless explicitly selecting a labelled
+developer override. Exploratory overrides never qualify original building mass.
+
+`diagnostic_reset` requires candidate GCR-LA plus GCR-LA-001-2026-11-02.
+Native `gcr::load_scale` clamps positive finite mass to [1,4096]. Passive global
+capacity is20*scale minus accepted event cost, limited additionally by
+2*unique-source-count*scale; the existing event cap stays20. Mu, friction cone,
+effective inertia, admission, quadrature, passivity and work/storage bounds stay
+unchanged. This is a bounded hypothesis, not calibrated granular strength.
+Single/tiny-patch over-support is a registered failure possibility.
+
+The developer scene retains exact original tests1–4, adds isolated5–0 and cycles
+legacy/R2/A1/LA with C. Staged controls expose gravity, independent payload mass
+and inertia multipliers and friction. Apply creates a fresh session; defaults
+restore92.12,1,1,0.78 respectively. Legacy refuses mass/inertia overrides.
+Native reset-only lab multipliers must match the one actual physical state before
+any compound mutation; native payload properties are not rewritten. Unsupported
+mixed compound/player ownership and sleep remain out of scope. Technical and
+owner gameplay qualification of LA are separate from its implementation.
+
+Current LA [qualification](../audits/2026-11-02-gcr-load-aware-response.md) retains
+68 primary captures and two apparatus failures. Small-body motion/results match
+exactly at mass<=1 and heavy impact improves, but rebound/tail gates fail and all
+18 compound overlap comparisons remain unsupported. LA has not passed its
+registered technical gate; owner acceptance is pending. F6 switches between
+barrel and structure review rooms, closing the previous owner; manual barrel
+review extends to1800 ticks while registered capture remains1200.

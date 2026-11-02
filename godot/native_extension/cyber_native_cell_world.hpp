@@ -257,6 +257,8 @@ private:
     double granular_yield_response_ = 0.18;
     bool gcr_enabled_ = false;
     bool gcr_admission_a1_ = false;
+    bool gcr_load_aware_ = false;
+    double gcr_mass_multiplier_ = 1., gcr_inertia_multiplier_ = 1.;
     bool gcr_compound_mode_ = false, gcr_preparing_compound_ = false;
     std::size_t gcr_compound_count_ = 0;
     cybersand::soliding::SolidToken gcr_compound_token_{};

@@ -1,0 +1,4520 @@
+{
+  "registration": "GCR-LA-001-2026-11-02",
+  "captures": {
+    "windows-barrel-m0.5-v30-A1": {
+      "status": "captured",
+      "raw_sha256": "57a1c830e3a4a3caed280bd7522cf328bb258702fc91bd2c252d62599273d1be",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.220851775695991,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 0,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 3.63406705856323,
+      "tail_x_span": 0.2612609863279971,
+      "tail_y_span": 0.16639709472599407,
+      "tail_abs_vy_p95": 3.1275897026062,
+      "material_conserved": true,
+      "normal_max": 14.0,
+      "tangent_max": 1.0421303419902,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 0.5,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 66,
+          "p95": 83,
+          "p99": 102,
+          "max": 190
+        },
+        "coupling_us": {
+          "p50": 38,
+          "p95": 58,
+          "p99": 74,
+          "max": 156
+        },
+        "native_tick_us": {
+          "p50": 350,
+          "p95": 536,
+          "p99": 674,
+          "max": 1143
+        },
+        "apply_us": {
+          "p50": 39,
+          "p95": 58,
+          "p99": 82,
+          "max": 257
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 2.43937151229687,
+      "tail_tangent_max": 0.560040228237076
+    },
+    "windows-barrel-m0.5-v30-LA": {
+      "status": "captured",
+      "raw_sha256": "bcd7ebf40848d315de308093d07ee4a3d36d6575cc576cb809b94d1fa01bb420",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.220851775695991,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 0,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 3.63406705856323,
+      "tail_x_span": 0.2612609863279971,
+      "tail_y_span": 0.16639709472599407,
+      "tail_abs_vy_p95": 3.1275897026062,
+      "material_conserved": true,
+      "normal_max": 14.0,
+      "tangent_max": 1.0421303419902,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 0.5,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 68,
+          "p95": 89,
+          "p99": 115,
+          "max": 228
+        },
+        "coupling_us": {
+          "p50": 40,
+          "p95": 64,
+          "p99": 78,
+          "max": 152
+        },
+        "native_tick_us": {
+          "p50": 357,
+          "p95": 603,
+          "p99": 768,
+          "max": 811
+        },
+        "apply_us": {
+          "p50": 40,
+          "p95": 62,
+          "p99": 112,
+          "max": 221
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 2.43937151229687,
+      "tail_tangent_max": 0.560040228237076
+    },
+    "windows-barrel-m0.5-v90-A1": {
+      "status": "captured",
+      "raw_sha256": "e7bd584423d5f2e609fe9ef0e03236fbdf47fc508ace01db7ff5c7f4b63f087d",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 3.22248483786561,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 14,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 3.45806121826172,
+      "tail_x_span": 0.11584472656301159,
+      "tail_y_span": 0.1506958007809942,
+      "tail_abs_vy_p95": 3.03203797340393,
+      "material_conserved": true,
+      "normal_max": 16.0612857779313,
+      "tangent_max": 1.38273956036215,
+      "max_nodes": 7,
+      "max_updates": 56,
+      "passive_rejections": 0,
+      "mass": 0.5,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 71,
+          "p95": 91,
+          "p99": 132,
+          "max": 263
+        },
+        "coupling_us": {
+          "p50": 45,
+          "p95": 79,
+          "p99": 104,
+          "max": 202
+        },
+        "native_tick_us": {
+          "p50": 382,
+          "p95": 600,
+          "p99": 714,
+          "max": 1410
+        },
+        "apply_us": {
+          "p50": 43,
+          "p95": 66,
+          "p99": 97,
+          "max": 199
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 1.99417462199737,
+      "tail_tangent_max": 1.35532080947239
+    },
+    "windows-barrel-m0.5-v90-LA": {
+      "status": "captured",
+      "raw_sha256": "6837a63b0b4ef6bfcd2cbc7387e2133b78110672923fb9882752a8b41d6bb6a4",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 3.22248483786561,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 14,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 3.45806121826172,
+      "tail_x_span": 0.11584472656301159,
+      "tail_y_span": 0.1506958007809942,
+      "tail_abs_vy_p95": 3.03203797340393,
+      "material_conserved": true,
+      "normal_max": 16.0612857779313,
+      "tangent_max": 1.38273956036215,
+      "max_nodes": 7,
+      "max_updates": 56,
+      "passive_rejections": 0,
+      "mass": 0.5,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 69,
+          "p95": 86,
+          "p99": 110,
+          "max": 207
+        },
+        "coupling_us": {
+          "p50": 42,
+          "p95": 67,
+          "p99": 86,
+          "max": 114
+        },
+        "native_tick_us": {
+          "p50": 355,
+          "p95": 619,
+          "p99": 821,
+          "max": 882
+        },
+        "apply_us": {
+          "p50": 39,
+          "p95": 59,
+          "p99": 81,
+          "max": 239
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 1.99417462199737,
+      "tail_tangent_max": 1.35532080947239
+    },
+    "windows-barrel-m1-v30-A1": {
+      "status": "captured",
+      "raw_sha256": "5daa70c363f396bccccb93fbbf851e13501a89dac23c36490e8d3d85c415026e",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.72935723375582,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 1,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 4.25284290313721,
+      "tail_x_span": 0.2095336914059942,
+      "tail_y_span": 0.16687011718701683,
+      "tail_abs_vy_p95": 3.06852054595947,
+      "material_conserved": true,
+      "normal_max": 16.0,
+      "tangent_max": 1.46106789055165,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 1.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 68,
+          "p95": 84,
+          "p99": 109,
+          "max": 288
+        },
+        "coupling_us": {
+          "p50": 38,
+          "p95": 60,
+          "p99": 76,
+          "max": 94
+        },
+        "native_tick_us": {
+          "p50": 346,
+          "p95": 539,
+          "p99": 752,
+          "max": 1109
+        },
+        "apply_us": {
+          "p50": 38,
+          "p95": 57,
+          "p99": 89,
+          "max": 135
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 4.93523120048405,
+      "tail_tangent_max": 0.942581219764237
+    },
+    "windows-barrel-m1-v30-LA": {
+      "status": "captured",
+      "raw_sha256": "34af07c1480b7879ed1dbf86b64e4162d3bcf742ca122521134854fe3f5fd948",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.72935723375582,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 1,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 4.25284290313721,
+      "tail_x_span": 0.2095336914059942,
+      "tail_y_span": 0.16687011718701683,
+      "tail_abs_vy_p95": 3.06852054595947,
+      "material_conserved": true,
+      "normal_max": 16.0,
+      "tangent_max": 1.46106789055165,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 1.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 74,
+          "p95": 113,
+          "p99": 148,
+          "max": 276
+        },
+        "coupling_us": {
+          "p50": 44,
+          "p95": 70,
+          "p99": 88,
+          "max": 346
+        },
+        "native_tick_us": {
+          "p50": 374,
+          "p95": 601,
+          "p99": 665,
+          "max": 1173
+        },
+        "apply_us": {
+          "p50": 47,
+          "p95": 73,
+          "p99": 106,
+          "max": 291
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 4.93523120048405,
+      "tail_tangent_max": 0.942581219764237
+    },
+    "windows-barrel-m1-v90-A1": {
+      "status": "captured",
+      "raw_sha256": "93b2477a15e626afd0b5053b575b4a2d28ce15781ffffe2cc5d05d3ba65faa5b",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 6.69016327843201,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 22,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 1.94122815132141,
+      "tail_x_span": 0.4720458984380116,
+      "tail_y_span": 0.8892974853509941,
+      "tail_abs_vy_p95": 1.38293528556824,
+      "material_conserved": true,
+      "normal_max": 16.0610858013416,
+      "tangent_max": 2.71025321379621,
+      "max_nodes": 9,
+      "max_updates": 72,
+      "passive_rejections": 0,
+      "mass": 1.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 69,
+          "p95": 88,
+          "p99": 116,
+          "max": 325
+        },
+        "coupling_us": {
+          "p50": 65,
+          "p95": 103,
+          "p99": 121,
+          "max": 189
+        },
+        "native_tick_us": {
+          "p50": 376,
+          "p95": 612,
+          "p99": 752,
+          "max": 1020
+        },
+        "apply_us": {
+          "p50": 43,
+          "p95": 61,
+          "p99": 78,
+          "max": 212
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 1.90947502476565,
+      "tail_tangent_max": 0.277755009004592
+    },
+    "windows-barrel-m1-v90-LA": {
+      "status": "captured",
+      "raw_sha256": "fa02e3096bbe9475381ed639585110630cd2bea88576bfd9dccd47cea67d7143",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 6.69016327843201,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 22,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 1.94122815132141,
+      "tail_x_span": 0.4720458984380116,
+      "tail_y_span": 0.8892974853509941,
+      "tail_abs_vy_p95": 1.38293528556824,
+      "material_conserved": true,
+      "normal_max": 16.0610858013416,
+      "tangent_max": 2.71025321379621,
+      "max_nodes": 9,
+      "max_updates": 72,
+      "passive_rejections": 0,
+      "mass": 1.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 71,
+          "p95": 101,
+          "p99": 156,
+          "max": 369
+        },
+        "coupling_us": {
+          "p50": 68,
+          "p95": 121,
+          "p99": 147,
+          "max": 290
+        },
+        "native_tick_us": {
+          "p50": 384,
+          "p95": 626,
+          "p99": 784,
+          "max": 1172
+        },
+        "apply_us": {
+          "p50": 45,
+          "p95": 71,
+          "p99": 109,
+          "max": 219
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 1.90947502476565,
+      "tail_tangent_max": 0.277755009004592
+    },
+    "windows-barrel-m2-v30-A1": {
+      "status": "captured",
+      "raw_sha256": "e4115bf8e109656a216ceb911f01550fbc75efe6ac316b270dc997c75ba3614b",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 1.82254022546169,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 8,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 2.9609215259552,
+      "tail_x_span": 0.512451171875,
+      "tail_y_span": 0.087646484375,
+      "tail_abs_vy_p95": 1.89856040477753,
+      "material_conserved": true,
+      "normal_max": 16.0,
+      "tangent_max": 5.1791943114486,
+      "max_nodes": 6,
+      "max_updates": 48,
+      "passive_rejections": 0,
+      "mass": 2.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 70,
+          "p95": 91,
+          "p99": 123,
+          "max": 286
+        },
+        "coupling_us": {
+          "p50": 39,
+          "p95": 65,
+          "p99": 84,
+          "max": 214
+        },
+        "native_tick_us": {
+          "p50": 190,
+          "p95": 416,
+          "p99": 713,
+          "max": 1193
+        },
+        "apply_us": {
+          "p50": 42,
+          "p95": 64,
+          "p99": 107,
+          "max": 312
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 4.0,
+      "tail_tangent_max": 1.55999994277954
+    },
+    "windows-barrel-m2-v30-LA": {
+      "status": "captured",
+      "raw_sha256": "ef670ddf7f4dbd4b74a0e3a957a68d9d18f3892ddd9552e8decaacc0751a106e",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.72935723375582,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 1,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 4.25284290313721,
+      "tail_x_span": 0.2095336914059942,
+      "tail_y_span": 0.16687011718701683,
+      "tail_abs_vy_p95": 3.06852054595947,
+      "material_conserved": true,
+      "normal_max": 32.0,
+      "tangent_max": 2.9221357811033,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 2.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 73,
+          "p95": 147,
+          "p99": 202,
+          "max": 619
+        },
+        "coupling_us": {
+          "p50": 45,
+          "p95": 87,
+          "p99": 123,
+          "max": 387
+        },
+        "native_tick_us": {
+          "p50": 374,
+          "p95": 672,
+          "p99": 826,
+          "max": 954
+        },
+        "apply_us": {
+          "p50": 47,
+          "p95": 88,
+          "p99": 144,
+          "max": 318
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 9.8704624009681,
+      "tail_tangent_max": 1.88516243952847
+    },
+    "windows-barrel-m2-v90-A1": {
+      "status": "captured",
+      "raw_sha256": "6b054d6ea8dac03b8b986c5d31ccacc91ae581d28dcb53f0551f4ff04acb0a5b",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 96.0008248224539,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 113,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 0,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.99884569644928,
+      "material_conserved": true,
+      "normal_max": 16.2396621462775,
+      "tangent_max": 6.45498838967232,
+      "max_nodes": 16,
+      "max_updates": 128,
+      "passive_rejections": 0,
+      "mass": 2.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 72,
+          "p95": 100,
+          "p99": 128,
+          "max": 166
+        },
+        "coupling_us": {
+          "p50": 243,
+          "p95": 380,
+          "p99": 464,
+          "max": 572
+        },
+        "native_tick_us": {
+          "p50": 91,
+          "p95": 322,
+          "p99": 606,
+          "max": 1242
+        },
+        "apply_us": {
+          "p50": 43,
+          "p95": 66,
+          "p99": 99,
+          "max": 248
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 0.00295994496431684,
+      "tail_tangent_max": 0.00230875698748243
+    },
+    "windows-barrel-m2-v90-LA": {
+      "status": "captured",
+      "raw_sha256": "63cb0ccf1a1f84269ab99391e721762163acd1e37d9906fd1510d58ee0808e5a",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 6.50421224202768,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 21,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 2.39337372779846,
+      "tail_x_span": 0.35559082031298317,
+      "tail_y_span": 0.9359283447270172,
+      "tail_abs_vy_p95": 1.39943313598633,
+      "material_conserved": true,
+      "normal_max": 32.2148987936782,
+      "tangent_max": 5.38913586084329,
+      "max_nodes": 9,
+      "max_updates": 72,
+      "passive_rejections": 0,
+      "mass": 2.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 78,
+          "p95": 156,
+          "p99": 244,
+          "max": 432
+        },
+        "coupling_us": {
+          "p50": 73,
+          "p95": 135,
+          "p99": 194,
+          "max": 369
+        },
+        "native_tick_us": {
+          "p50": 407,
+          "p95": 643,
+          "p99": 769,
+          "max": 1184
+        },
+        "apply_us": {
+          "p50": 50,
+          "p95": 103,
+          "p99": 163,
+          "max": 278
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 3.23062749261039,
+      "tail_tangent_max": 0.731393689075691
+    },
+    "windows-barrel-m8-v30-A1": {
+      "status": "captured",
+      "raw_sha256": "971229ed6b860a68833c9af392a27eb5776986e3be1aee5d829ee638430b263f",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 96.0007348679592,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 116,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 14.6988067626953,
+      "tail_x_span": 0.9835128784179972,
+      "tail_y_span": 0.4572448730469887,
+      "tail_abs_vy_p95": 0.25778391957283,
+      "material_conserved": true,
+      "normal_max": 16.5073662034641,
+      "tangent_max": 8.258089424609,
+      "max_nodes": 16,
+      "max_updates": 128,
+      "passive_rejections": 0,
+      "mass": 8.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 74,
+          "p95": 115,
+          "p99": 164,
+          "max": 265
+        },
+        "coupling_us": {
+          "p50": 301,
+          "p95": 468,
+          "p99": 531,
+          "max": 709
+        },
+        "native_tick_us": {
+          "p50": 94,
+          "p95": 347,
+          "p99": 543,
+          "max": 862
+        },
+        "apply_us": {
+          "p50": 44,
+          "p95": 71,
+          "p99": 104,
+          "max": 186
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 3.90008672071423,
+      "tail_tangent_max": 2.98777538947443
+    },
+    "windows-barrel-m8-v30-LA": {
+      "status": "captured",
+      "raw_sha256": "8bf9d9ca5c5ad4d780426556194701eb00de66b523bd1c23f9d90c845265e653",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.72935723375582,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 1,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 4.25284290313721,
+      "tail_x_span": 0.2095336914059942,
+      "tail_y_span": 0.16687011718701683,
+      "tail_abs_vy_p95": 3.06852054595947,
+      "material_conserved": true,
+      "normal_max": 128.0,
+      "tangent_max": 11.6885431244132,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 8.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 80,
+          "p95": 130,
+          "p99": 190,
+          "max": 383
+        },
+        "coupling_us": {
+          "p50": 53,
+          "p95": 85,
+          "p99": 123,
+          "max": 304
+        },
+        "native_tick_us": {
+          "p50": 420,
+          "p95": 665,
+          "p99": 852,
+          "max": 1281
+        },
+        "apply_us": {
+          "p50": 53,
+          "p95": 84,
+          "p99": 130,
+          "max": 266
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 39.4818496038724,
+      "tail_tangent_max": 7.5406497581139
+    },
+    "windows-barrel-m8-v90-A1": {
+      "status": "captured",
+      "raw_sha256": "4d161ca8e212503f7d85e510ed9a5fb6ed721882d231d46cf314c7a92d83295f",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 96.0006586396794,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 116,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 2.17197370529175,
+      "tail_x_span": 1.5258789005656581e-05,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.179943814873695,
+      "material_conserved": true,
+      "normal_max": 17.4218383249138,
+      "tangent_max": 11.1145317936115,
+      "max_nodes": 16,
+      "max_updates": 128,
+      "passive_rejections": 0,
+      "mass": 8.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 73,
+          "p95": 102,
+          "p99": 153,
+          "max": 269
+        },
+        "coupling_us": {
+          "p50": 436,
+          "p95": 663,
+          "p99": 737,
+          "max": 1019
+        },
+        "native_tick_us": {
+          "p50": 92,
+          "p95": 225,
+          "p99": 569,
+          "max": 1125
+        },
+        "apply_us": {
+          "p50": 43,
+          "p95": 67,
+          "p99": 112,
+          "max": 189
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0
+    },
+    "windows-barrel-m8-v90-LA": {
+      "status": "captured",
+      "raw_sha256": "a87eac6dfdade6aac20ca2a46f5b2fa61fe6d0c696624c8ab7a85b5805a6b303",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 6.41419346068466,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 21,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 2.12556505203247,
+      "tail_x_span": 0.7369384765619884,
+      "tail_y_span": 0.7401428222659945,
+      "tail_abs_vy_p95": 1.40146863460541,
+      "material_conserved": true,
+      "normal_max": 129.137776747698,
+      "tangent_max": 21.4506785007203,
+      "max_nodes": 9,
+      "max_updates": 72,
+      "passive_rejections": 0,
+      "mass": 8.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 69,
+          "p95": 121,
+          "p99": 189,
+          "max": 934
+        },
+        "coupling_us": {
+          "p50": 71,
+          "p95": 130,
+          "p99": 159,
+          "max": 489
+        },
+        "native_tick_us": {
+          "p50": 365,
+          "p95": 754,
+          "p99": 834,
+          "max": 1064
+        },
+        "apply_us": {
+          "p50": 42,
+          "p95": 79,
+          "p99": 122,
+          "max": 217
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 17.6307358503047,
+      "tail_tangent_max": 6.55072419382941
+    },
+    "windows-packed_sand-A1": {
+      "status": "captured",
+      "raw_sha256": "450d0f94a617273b9ee2d2a766b717e83b73fcd60f82cd8317c6873a3106614d",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1201,
+      "entry_peak": 19.9299964904785,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 281,
+      "overlap_coverage": 0.9941715237302248,
+      "rebound_upward": 5.68294668197632,
+      "tail_x_span": 0.0,
+      "tail_y_span": 4.196166990055872e-05,
+      "tail_abs_vy_p95": 1.43762572406558e-05,
+      "material_conserved": true,
+      "normal_max": 19.9434314575051,
+      "tangent_max": 15.5558759662678,
+      "max_nodes": 28,
+      "max_updates": 224,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.508,
+          "p95": 0.734,
+          "p99": 0.853,
+          "max": 1.35
+        },
+        "native_tick_ms": {
+          "p50": 0.18,
+          "p95": 0.2658,
+          "p99": 0.3408,
+          "max": 0.7016
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09150000000000347,
+          "p95": 0.1299999999999999,
+          "p99": 0.1664999999999992,
+          "max": 0.25050000000000017
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.13600000000000012,
+          "p95": 0.19499999999999318,
+          "p99": 0.2459999999999951,
+          "max": 0.504999999999999
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 2.06312709821525,
+      "tail_tangent_max": 0.933998288470036
+    },
+    "windows-packed_sand-LA": {
+      "status": "captured",
+      "raw_sha256": "cf51f6d54e4f6f65b193d2e3c31a15205c3b0d4dfc77870fea7ec571f6ad65bb",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 19.2998466491699,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 253,
+      "overlap_coverage": 0.65,
+      "rebound_upward": 5.11610317230225,
+      "tail_x_span": 0.15331268310551138,
+      "tail_y_span": 0.19272613525389914,
+      "tail_abs_vy_p95": 0.196269944310188,
+      "material_conserved": true,
+      "normal_max": 3497.74372239655,
+      "tangent_max": 1748.52931523426,
+      "max_nodes": 28,
+      "max_updates": 224,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.431,
+          "p95": 0.694,
+          "p99": 0.867,
+          "max": 1.129
+        },
+        "native_tick_ms": {
+          "p50": 0.1914,
+          "p95": 0.2905,
+          "p99": 0.3529,
+          "max": 0.6677
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08650000000000091,
+          "p95": 0.1355000000000075,
+          "p99": 0.17949999999999022,
+          "max": 0.2995000000000019
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.1460000000000008,
+          "p95": 0.20000000000000284,
+          "p99": 0.29300000000000637,
+          "max": 0.5130000000000052
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 482.766864602941,
+      "tail_tangent_max": 237.189151827395
+    },
+    "windows-embedded_sand-A1": {
+      "status": "captured",
+      "raw_sha256": "4a44477af17273b20af7bf10d77b5d0608b08074187e4fca0fc443274a868cac",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1201,
+      "entry_peak": 17.7887268066406,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 428,
+      "overlap_coverage": 0.9991673605328892,
+      "rebound_upward": 0.333235919475555,
+      "tail_x_span": 1.0152587890625,
+      "tail_y_span": 2.6078071594237997,
+      "tail_abs_vy_p95": 3.02394032478333,
+      "material_conserved": true,
+      "normal_max": 18.9992003197443,
+      "tangent_max": 14.819375705829,
+      "max_nodes": 37,
+      "max_updates": 296,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.583,
+          "p95": 0.809,
+          "p99": 0.965,
+          "max": 1.298
+        },
+        "native_tick_ms": {
+          "p50": 0.2442,
+          "p95": 0.3518,
+          "p99": 0.4316,
+          "max": 0.995
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09299999999999997,
+          "p95": 0.13449999999999562,
+          "p99": 0.17799999999999727,
+          "max": 0.24350000000000094
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.1419999999999959,
+          "p95": 0.20199999999999818,
+          "p99": 0.28200000000000003,
+          "max": 0.5359999999999996
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 11.338388640261,
+      "tail_tangent_max": 8.84394281500969
+    },
+    "windows-embedded_sand-LA": {
+      "status": "captured",
+      "raw_sha256": "dc0a0ffde721f4e991fce499b588c1dce4523d0dec0a0816fa3dba72de27b576",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1201,
+      "entry_peak": 9.79462051391602,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 247,
+      "overlap_coverage": 0.8542880932556203,
+      "rebound_upward": 3.15619611740112,
+      "tail_x_span": 4.226257324218693,
+      "tail_y_span": 3.4177932739258026,
+      "tail_abs_vy_p95": 4.21880769729614,
+      "material_conserved": true,
+      "normal_max": 2865.00706023768,
+      "tangent_max": 1354.60993618028,
+      "max_nodes": 28,
+      "max_updates": 224,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.501,
+          "p95": 0.696,
+          "p99": 0.825,
+          "max": 1.635
+        },
+        "native_tick_ms": {
+          "p50": 0.2236,
+          "p95": 0.3266,
+          "p99": 0.4272,
+          "max": 1.3084
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.10350000000001103,
+          "p95": 0.14999999999999858,
+          "p99": 0.19149999999999068,
+          "max": 0.2560000000000002
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.15500000000000114,
+          "p95": 0.22299999999999898,
+          "p99": 0.30800000000000693,
+          "max": 1.0840000000000032
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 2865.00706023768,
+      "tail_tangent_max": 1354.60993618028
+    },
+    "windows-mixed-A1": {
+      "status": "captured",
+      "raw_sha256": "650ebd1c12d168a2af4b1458911c058ec36df8593a5731c1beafdb572d6cb43b",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1201,
+      "entry_peak": 19.8709449768066,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 280,
+      "overlap_coverage": 0.5611990008326395,
+      "rebound_upward": 5.54732751846313,
+      "tail_x_span": 0.00011444091799717171,
+      "tail_y_span": 5.3405761704539145e-05,
+      "tail_abs_vy_p95": 1.40684314828832e-05,
+      "material_conserved": true,
+      "normal_max": 19.96,
+      "tangent_max": 15.5687994289398,
+      "max_nodes": 18,
+      "max_updates": 144,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.537,
+          "p95": 0.836,
+          "p99": 0.946,
+          "max": 1.521
+        },
+        "native_tick_ms": {
+          "p50": 0.2973,
+          "p95": 0.4368,
+          "p99": 0.5052,
+          "max": 0.9456
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08100000000000307,
+          "p95": 0.12549999999999883,
+          "p99": 0.15749999999999886,
+          "max": 0.21099999999999852
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.13400000000000034,
+          "p95": 0.1739999999999995,
+          "p99": 0.22199999999999953,
+          "max": 0.3810000000000002
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 2.06292102471041,
+      "tail_tangent_max": 0.784300227416344
+    },
+    "windows-mixed-LA": {
+      "status": "captured",
+      "raw_sha256": "df0731b0facc506048740fba9681fb3aa3e151498c35a834380a30f99d009183",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 19.2998313903809,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 256,
+      "overlap_coverage": 0.7016666666666667,
+      "rebound_upward": 2.68339562416077,
+      "tail_x_span": 0.020935058593806843,
+      "tail_y_span": 0.01984786987310372,
+      "tail_abs_vy_p95": 0.00043388968333602,
+      "material_conserved": true,
+      "normal_max": 3902.54140590879,
+      "tangent_max": 1675.13847543099,
+      "max_nodes": 20,
+      "max_updates": 160,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.592,
+          "p95": 0.853,
+          "p99": 0.972,
+          "max": 1.209
+        },
+        "native_tick_ms": {
+          "p50": 0.3464,
+          "p95": 0.4818,
+          "p99": 0.5363,
+          "max": 0.8387
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08800000000000097,
+          "p95": 0.13400000000000034,
+          "p99": 0.17600000000000193,
+          "max": 0.3434999999999988
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.1419999999999959,
+          "p95": 0.20199999999999818,
+          "p99": 0.3249999999999993,
+          "max": 0.5300000000000011
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 1051.60303824926,
+      "tail_tangent_max": 376.601339207904
+    },
+    "windows-isolated_full-A1": {
+      "status": "captured",
+      "raw_sha256": "01e30cb654b317e0e182370fb71dbbd5c863223890344b83742240dfca99e162",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 57.2066802978516,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 526,
+      "overlap_coverage": 0.9775,
+      "rebound_upward": 4.88746023178101,
+      "tail_x_span": 4.577636700275889e-05,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 8.46428156364709e-05,
+      "material_conserved": true,
+      "normal_max": 9.50233743048164,
+      "tangent_max": 7.0768086931222,
+      "max_nodes": 51,
+      "max_updates": 408,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.627,
+          "p95": 0.915,
+          "p99": 1.05,
+          "max": 1.635
+        },
+        "native_tick_ms": {
+          "p50": 0.218,
+          "p95": 0.435,
+          "p99": 0.5517,
+          "max": 1.0704
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.10300000000000864,
+          "p95": 0.1419999999999959,
+          "p99": 0.18599999999999994,
+          "max": 0.28349999999999653
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.14799999999999613,
+          "p95": 0.19499999999999318,
+          "p99": 0.26200000000000045,
+          "max": 0.374
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": true,
+      "tail_normal_max": 3.76410651007412,
+      "tail_tangent_max": 2.19986789669681
+    },
+    "windows-isolated_full-LA": {
+      "status": "captured",
+      "raw_sha256": "b36ef211a168f9d8fb74a51e71327af47ed1027a494723b0ff70cc4d66bec79f",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1201,
+      "entry_peak": 23.218147277832,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 42,
+      "overlap_coverage": 0.9167360532889259,
+      "rebound_upward": 4.94145965576172,
+      "tail_x_span": 0.19729614257809658,
+      "tail_y_span": 0.6116943359375,
+      "tail_abs_vy_p95": 3.0750572681427,
+      "material_conserved": true,
+      "normal_max": 5127.51658029863,
+      "tangent_max": 3999.4627859335,
+      "max_nodes": 17,
+      "max_updates": 136,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.681,
+          "p95": 0.971,
+          "p99": 1.076,
+          "max": 1.39
+        },
+        "native_tick_ms": {
+          "p50": 0.4199,
+          "p95": 0.6292,
+          "p99": 0.6675,
+          "max": 1.0702
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08599999999999852,
+          "p95": 0.12400000000000944,
+          "p99": 0.14750000000000085,
+          "max": 0.2510000000000012
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.13299999999999557,
+          "p95": 0.17799999999999727,
+          "p99": 0.22399999999999665,
+          "max": 0.51
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 2895.21913954003,
+      "tail_tangent_max": 1202.40373613285
+    },
+    "windows-isolated_half-A1": {
+      "status": "captured",
+      "raw_sha256": "08d19f78db44da9028a8a7121f7f6b2f41548e642a3869e1267d9bd4ccf42f4b",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 60.8905563354492,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 527,
+      "overlap_coverage": 0.8766666666666667,
+      "rebound_upward": 3.08064007759094,
+      "tail_x_span": 1.8569107055664062,
+      "tail_y_span": 1.0592498779297017,
+      "tail_abs_vy_p95": 3.05154037475586,
+      "material_conserved": true,
+      "normal_max": 13.9272815707801,
+      "tangent_max": 10.8632792267458,
+      "max_nodes": 50,
+      "max_updates": 400,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.608,
+          "p95": 0.906,
+          "p99": 1.094,
+          "max": 1.462
+        },
+        "native_tick_ms": {
+          "p50": 0.2396,
+          "p95": 0.4336,
+          "p99": 0.5258,
+          "max": 0.998
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.11149999999999238,
+          "p95": 0.15300000000000225,
+          "p99": 0.19250000000000966,
+          "max": 0.5469999999999997
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.16400000000000148,
+          "p95": 0.22999999999998977,
+          "p99": 0.3260000000000076,
+          "max": 0.602
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": true,
+      "tail_normal_max": 7.59230185818177,
+      "tail_tangent_max": 5.92199523216429
+    },
+    "windows-isolated_half-LA": {
+      "status": "captured",
+      "raw_sha256": "77515bb1da9fbded6614332932a189d7d9bc2c718472251d940fc77820641623",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1202,
+      "entry_peak": 52.9052963256836,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 61,
+      "overlap_coverage": 0.6422628951747088,
+      "rebound_upward": 0.435475140810013,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 9.11628085304983e-05,
+      "material_conserved": true,
+      "normal_max": 6346.41246305442,
+      "tangent_max": 4618.3704424613,
+      "max_nodes": 19,
+      "max_updates": 152,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.456,
+          "p95": 0.745,
+          "p99": 0.85,
+          "max": 1.13
+        },
+        "native_tick_ms": {
+          "p50": 0.1265,
+          "p95": 0.4357,
+          "p99": 0.5276,
+          "max": 1.0274
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09600000000000364,
+          "p95": 0.14450000000000074,
+          "p99": 0.18899999999999295,
+          "max": 0.41899999999999693
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.15000000000000568,
+          "p95": 0.2079999999999984,
+          "p99": 0.33399999999997476,
+          "max": 0.4890000000000043
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": true,
+      "tail_normal_max": 1.28777150141074,
+      "tail_tangent_max": 0.513110513244167
+    },
+    "windows-isolated_narrow-A1": {
+      "status": "captured",
+      "raw_sha256": "502ef0ffd5392b1a60bde10bc85726b62939140c7ab9babfaaa703878493323f",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.364631652832,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 21,
+      "overlap_coverage": 0.8676103247293921,
+      "rebound_upward": 2.64486360549927,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 6.43251987639815e-05,
+      "material_conserved": true,
+      "normal_max": 19.6559069893183,
+      "tangent_max": 15.3316068893083,
+      "max_nodes": 6,
+      "max_updates": 48,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.316,
+          "p95": 0.478,
+          "p99": 0.696,
+          "max": 1.218
+        },
+        "native_tick_ms": {
+          "p50": 0.0757,
+          "p95": 0.1465,
+          "p99": 0.2153,
+          "max": 0.6285
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09799999999999898,
+          "p95": 0.13450000000000273,
+          "p99": 0.17599999999999838,
+          "max": 0.29499999999999993
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.13700000000000045,
+          "p95": 0.18099999999999739,
+          "p99": 0.23600000000000065,
+          "max": 0.479
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.395434628392868,
+      "tail_tangent_max": 0.0695904598807675
+    },
+    "windows-isolated_narrow-LA": {
+      "status": "captured",
+      "raw_sha256": "05c4792c1f872c0c5f58afa49154de823174dc2a31c649abfc4ea1dc0852fef2",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 66.3646240234375,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 18,
+      "overlap_coverage": 0.665,
+      "rebound_upward": 3.4339234828949,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 4.80680719192605e-05,
+      "material_conserved": true,
+      "normal_max": 4160.0,
+      "tangent_max": 665.745506815169,
+      "max_nodes": 6,
+      "max_updates": 48,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.283,
+          "p95": 0.409,
+          "p99": 0.555,
+          "max": 1.04
+        },
+        "native_tick_ms": {
+          "p50": 0.0759,
+          "p95": 0.1276,
+          "p99": 0.1734,
+          "max": 0.923
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.07750000000000057,
+          "p95": 0.13049999999999784,
+          "p99": 0.1679999999999997,
+          "max": 0.24849999999999994
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.13300000000000978,
+          "p95": 0.19299999999999784,
+          "p99": 0.2469999999999999,
+          "max": 0.464
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0767488123918181,
+      "tail_tangent_max": 0.0507993933869536
+    },
+    "windows-isolated_excavate-A1": {
+      "status": "captured",
+      "raw_sha256": "2df430ed689522508ad1f5a62a15db72ae4b67abada795be364c62b018d7a403",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1199,
+      "entry_peak": 66.3646621704102,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 526,
+      "overlap_coverage": 0.664720600500417,
+      "rebound_upward": 4.21983242034912,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.0,
+      "material_conserved": true,
+      "normal_max": 8.10218483941571,
+      "tangent_max": 6.10168252206225,
+      "max_nodes": 52,
+      "max_updates": 416,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.341,
+          "p95": 0.862,
+          "p99": 1.034,
+          "max": 1.3
+        },
+        "native_tick_ms": {
+          "p50": 0.1047,
+          "p95": 0.45,
+          "p99": 0.5866,
+          "max": 0.9051
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.07450000000000045,
+          "p95": 0.11950000000000216,
+          "p99": 0.1385000000000005,
+          "max": 0.16999999999999993
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.1039999999999992,
+          "p95": 0.1670000000000016,
+          "p99": 0.19399999999999995,
+          "max": 0.312
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0,
+      "tail_tangent_max": 0
+    },
+    "windows-isolated_excavate-LA": {
+      "status": "captured",
+      "raw_sha256": "cf2d83ad3e6d493a2be8ebd7356d9a83737917b45855cdb020b3adbcdcea57fe",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1198,
+      "entry_peak": 66.3645935058594,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 527,
+      "overlap_coverage": 0.5525876460767947,
+      "rebound_upward": 7.86280584335327,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 4.37351918662898e-05,
+      "material_conserved": true,
+      "normal_max": 4213.66416114131,
+      "tangent_max": 1458.03428345882,
+      "max_nodes": 49,
+      "max_updates": 392,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.391,
+          "p95": 1.095,
+          "p99": 1.553,
+          "max": 1.959
+        },
+        "native_tick_ms": {
+          "p50": 0.1185,
+          "p95": 0.6202,
+          "p99": 0.8181,
+          "max": 1.3945
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.06499999999999773,
+          "p95": 0.1319999999999979,
+          "p99": 0.1695000000000011,
+          "max": 0.23850000000000193
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.14300000000000068,
+          "p95": 0.21300000000000807,
+          "p99": 0.32500000000000284,
+          "max": 4.811000000000007
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0
+    },
+    "windows-isolated_dry-A1": {
+      "status": "captured",
+      "raw_sha256": "585d4916ab59202ed53d926c35d33cbcda7f1356b89304b08a838ed807bacd0c",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.3646087646484,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 0,
+      "overlap_coverage": 0.974188176519567,
+      "rebound_upward": 8.89743995666504,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.0,
+      "material_conserved": true,
+      "normal_max": 0,
+      "tangent_max": 0,
+      "max_nodes": 0,
+      "max_updates": 0,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.289,
+          "p95": 0.405,
+          "p99": 0.495,
+          "max": 1.043
+        },
+        "native_tick_ms": {
+          "p50": 0.0585,
+          "p95": 0.0949,
+          "p99": 0.1427,
+          "max": 0.6999
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09100000000000108,
+          "p95": 0.12650000000000006,
+          "p99": 0.15550000000000352,
+          "max": 0.2494999999999976
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.09099999999999397,
+          "p95": 0.14999999999999858,
+          "p99": 0.1850000000000005,
+          "max": 0.486
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0,
+      "negative_control_zero_granular": true,
+      "negative_control_observation_coverage": 0.974188176519567
+    },
+    "windows-isolated_dry-LA": {
+      "status": "captured",
+      "raw_sha256": "f6c69d88069917cbe2a0dd726c72346be13b1452fabc9d10e3f821ddc6267b04",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.3646087646484,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 0,
+      "overlap_coverage": 0.9650291423813488,
+      "rebound_upward": 8.89743995666504,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.0,
+      "material_conserved": true,
+      "normal_max": 0,
+      "tangent_max": 0,
+      "max_nodes": 0,
+      "max_updates": 0,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.31,
+          "p95": 0.513,
+          "p99": 0.71,
+          "max": 1.181
+        },
+        "native_tick_ms": {
+          "p50": 0.0629,
+          "p95": 0.1087,
+          "p99": 0.2026,
+          "max": 0.8557
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09649999999999892,
+          "p95": 0.13250000000000028,
+          "p99": 0.1745000000000001,
+          "max": 0.22999999999998977
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.09199999999999875,
+          "p95": 0.15399999999999991,
+          "p99": 0.1999999999999993,
+          "max": 0.38700000000000045
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0,
+      "negative_control_zero_granular": true,
+      "negative_control_observation_coverage": 0.9650291423813488
+    },
+    "windows-isolated_water-A1": {
+      "status": "captured",
+      "raw_sha256": "fb2ceda3feff34e1143ee1393173bd91c135e383971c5fd58388d75e9ac2cc81",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.3646469116211,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 524,
+      "overlap_coverage": 0.97751873438801,
+      "rebound_upward": 9.57885360717773,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 4.03964186261874e-05,
+      "material_conserved": true,
+      "normal_max": 0,
+      "tangent_max": 0,
+      "max_nodes": 0,
+      "max_updates": 0,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 2.061,
+          "p95": 2.765,
+          "p99": 2.858,
+          "max": 3.124
+        },
+        "native_tick_ms": {
+          "p50": 1.7375,
+          "p95": 2.3301,
+          "p99": 2.3942,
+          "max": 2.6417
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08450000000000557,
+          "p95": 0.1269999999999989,
+          "p99": 0.15749999999999886,
+          "max": 0.22399999999999665
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.12699999999999978,
+          "p95": 0.17200000000001125,
+          "p99": 0.2289999999999992,
+          "max": 0.533
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0,
+      "negative_control_zero_granular": true,
+      "negative_control_observation_coverage": 0.97751873438801
+    },
+    "windows-isolated_water-LA": {
+      "status": "captured",
+      "raw_sha256": "75ef95189a4a10d2f5586108d3e72ae7bfb948dec7ff834e44a801d7337e7be8",
+      "capture_identity": {
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.3646469116211,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 531,
+      "overlap_coverage": 0.8576186511240633,
+      "rebound_upward": 9.38425827026367,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 8.10714936960721e-06,
+      "material_conserved": true,
+      "normal_max": 0,
+      "tangent_max": 0,
+      "max_nodes": 0,
+      "max_updates": 0,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 2.015,
+          "p95": 2.742,
+          "p99": 2.919,
+          "max": 3.165
+        },
+        "native_tick_ms": {
+          "p50": 1.701,
+          "p95": 2.3213,
+          "p99": 2.4356,
+          "max": 2.6677
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08050000000000068,
+          "p95": 0.1255000000000024,
+          "p99": 0.17199999999999704,
+          "max": 0.2585000000000015
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.13100000000000023,
+          "p95": 0.18099999999999739,
+          "p99": 0.2459999999999951,
+          "max": 0.372
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0,
+      "negative_control_zero_granular": true,
+      "negative_control_observation_coverage": 0.8576186511240633
+    },
+    "linux-barrel-m0.5-v30-A1": {
+      "status": "captured",
+      "raw_sha256": "992c384ddb5ed42fbece1875ff120bb01fed927702ddc39db65feec1e123af66",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.220851775695991,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 0,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 3.63406705856323,
+      "tail_x_span": 0.2612609863279971,
+      "tail_y_span": 0.16639709472599407,
+      "tail_abs_vy_p95": 3.1275897026062,
+      "material_conserved": true,
+      "normal_max": 14.0,
+      "tangent_max": 1.04213039266295,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 0.5,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 119,
+          "p95": 177,
+          "p99": 246,
+          "max": 821
+        },
+        "coupling_us": {
+          "p50": 46,
+          "p95": 72,
+          "p99": 91,
+          "max": 202
+        },
+        "native_tick_us": {
+          "p50": 577,
+          "p95": 975,
+          "p99": 1049,
+          "max": 1770
+        },
+        "apply_us": {
+          "p50": 38,
+          "p95": 59,
+          "p99": 81,
+          "max": 125
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 2.43937151229687,
+      "tail_tangent_max": 0.560040228237076
+    },
+    "linux-barrel-m0.5-v30-LA": {
+      "status": "captured",
+      "raw_sha256": "d08541aaf617f667968725e468a1ed084edd4e8f987fcc30dacaeef8e00766e4",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.220851775695991,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 0,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 3.63406705856323,
+      "tail_x_span": 0.2612609863279971,
+      "tail_y_span": 0.16639709472599407,
+      "tail_abs_vy_p95": 3.1275897026062,
+      "material_conserved": true,
+      "normal_max": 14.0,
+      "tangent_max": 1.04213039266295,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 0.5,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 119,
+          "p95": 179,
+          "p99": 237,
+          "max": 704
+        },
+        "coupling_us": {
+          "p50": 48,
+          "p95": 77,
+          "p99": 105,
+          "max": 1424
+        },
+        "native_tick_us": {
+          "p50": 577,
+          "p95": 976,
+          "p99": 1074,
+          "max": 3097
+        },
+        "apply_us": {
+          "p50": 38,
+          "p95": 66,
+          "p99": 92,
+          "max": 208
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 2.43937151229687,
+      "tail_tangent_max": 0.560040228237076
+    },
+    "linux-barrel-m0.5-v90-A1": {
+      "status": "captured",
+      "raw_sha256": "2b14288cf40df7ccab542fc61d221c8ad3687ae897ea61bb545c2f95bb323f57",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 3.22248487291893,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 14,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 3.45806121826172,
+      "tail_x_span": 0.11584472656301159,
+      "tail_y_span": 0.1506958007809942,
+      "tail_abs_vy_p95": 3.03203797340393,
+      "material_conserved": true,
+      "normal_max": 16.0612857654649,
+      "tangent_max": 1.38273956036215,
+      "max_nodes": 7,
+      "max_updates": 56,
+      "passive_rejections": 0,
+      "mass": 0.5,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 127,
+          "p95": 205,
+          "p99": 292,
+          "max": 944
+        },
+        "coupling_us": {
+          "p50": 54,
+          "p95": 96,
+          "p99": 131,
+          "max": 287
+        },
+        "native_tick_us": {
+          "p50": 600,
+          "p95": 1002,
+          "p99": 1221,
+          "max": 1690
+        },
+        "apply_us": {
+          "p50": 41,
+          "p95": 75,
+          "p99": 117,
+          "max": 263
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 1.99417483949397,
+      "tail_tangent_max": 1.35532080947239
+    },
+    "linux-barrel-m0.5-v90-LA": {
+      "status": "captured",
+      "raw_sha256": "14a6c3134014e7943c0ad013532d13302907d7309ed816290c6d70a9a69b2d74",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 3.22248487291893,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 14,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 3.45806121826172,
+      "tail_x_span": 0.11584472656301159,
+      "tail_y_span": 0.1506958007809942,
+      "tail_abs_vy_p95": 3.03203797340393,
+      "material_conserved": true,
+      "normal_max": 16.0612857654649,
+      "tangent_max": 1.38273956036215,
+      "max_nodes": 7,
+      "max_updates": 56,
+      "passive_rejections": 0,
+      "mass": 0.5,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 118,
+          "p95": 170,
+          "p99": 225,
+          "max": 834
+        },
+        "coupling_us": {
+          "p50": 46,
+          "p95": 89,
+          "p99": 115,
+          "max": 301
+        },
+        "native_tick_us": {
+          "p50": 583,
+          "p95": 980,
+          "p99": 1025,
+          "max": 1912
+        },
+        "apply_us": {
+          "p50": 38,
+          "p95": 59,
+          "p99": 76,
+          "max": 258
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 1.99417483949397,
+      "tail_tangent_max": 1.35532080947239
+    },
+    "linux-barrel-m1-v30-A1": {
+      "status": "captured",
+      "raw_sha256": "d3144013391a9cea8d87ad2ab0713433c43ef1f72ab1eb403c4081c8119f606f",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.729357273124975,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 1,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 4.25284242630005,
+      "tail_x_span": 0.2095336914059942,
+      "tail_y_span": 0.16687011718701683,
+      "tail_abs_vy_p95": 3.06852054595947,
+      "material_conserved": true,
+      "normal_max": 16.0,
+      "tangent_max": 1.46106798015773,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 1.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 124,
+          "p95": 190,
+          "p99": 265,
+          "max": 831
+        },
+        "coupling_us": {
+          "p50": 49,
+          "p95": 77,
+          "p99": 100,
+          "max": 194
+        },
+        "native_tick_us": {
+          "p50": 576,
+          "p95": 975,
+          "p99": 1027,
+          "max": 2103
+        },
+        "apply_us": {
+          "p50": 40,
+          "p95": 64,
+          "p99": 94,
+          "max": 508
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 4.93523120060158,
+      "tail_tangent_max": 0.942581225426329
+    },
+    "linux-barrel-m1-v30-LA": {
+      "status": "captured",
+      "raw_sha256": "01ead621899626c99d22bfc1ad7f165eb5ecad044740fae3c5552403e4f83658",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.729357273124975,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 1,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 4.25284242630005,
+      "tail_x_span": 0.2095336914059942,
+      "tail_y_span": 0.16687011718701683,
+      "tail_abs_vy_p95": 3.06852054595947,
+      "material_conserved": true,
+      "normal_max": 16.0,
+      "tangent_max": 1.46106798015773,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 1.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 137,
+          "p95": 293,
+          "p99": 395,
+          "max": 923
+        },
+        "coupling_us": {
+          "p50": 55,
+          "p95": 109,
+          "p99": 184,
+          "max": 357
+        },
+        "native_tick_us": {
+          "p50": 587,
+          "p95": 1026,
+          "p99": 1237,
+          "max": 5552
+        },
+        "apply_us": {
+          "p50": 45,
+          "p95": 110,
+          "p99": 159,
+          "max": 628
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 4.93523120060158,
+      "tail_tangent_max": 0.942581225426329
+    },
+    "linux-barrel-m1-v90-A1": {
+      "status": "captured",
+      "raw_sha256": "fa2626695c4c6c3a08b754ca4c2dd358ab29b3b65fd2ee5c53fe3e2fe29dc7fe",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 6.69016327843201,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 22,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 1.94122815132141,
+      "tail_x_span": 0.4720458984380116,
+      "tail_y_span": 0.8892974853509941,
+      "tail_abs_vy_p95": 1.38293528556824,
+      "material_conserved": true,
+      "normal_max": 16.0610858118374,
+      "tangent_max": 2.71025307270711,
+      "max_nodes": 9,
+      "max_updates": 72,
+      "passive_rejections": 0,
+      "mass": 1.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 154,
+          "p95": 260,
+          "p99": 379,
+          "max": 1047
+        },
+        "coupling_us": {
+          "p50": 97,
+          "p95": 145,
+          "p99": 198,
+          "max": 425
+        },
+        "native_tick_us": {
+          "p50": 647,
+          "p95": 1029,
+          "p99": 1190,
+          "max": 1983
+        },
+        "apply_us": {
+          "p50": 53,
+          "p95": 94,
+          "p99": 140,
+          "max": 401
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 1.90947503817573,
+      "tail_tangent_max": 0.277755007311253
+    },
+    "linux-barrel-m1-v90-LA": {
+      "status": "captured",
+      "raw_sha256": "c256050d32ae5261345591a1b35a3f1e308e90ca829049ac40604ffd6bcf1627",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 6.69016327843201,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 22,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 1.94122815132141,
+      "tail_x_span": 0.4720458984380116,
+      "tail_y_span": 0.8892974853509941,
+      "tail_abs_vy_p95": 1.38293528556824,
+      "material_conserved": true,
+      "normal_max": 16.0610858118374,
+      "tangent_max": 2.71025307270711,
+      "max_nodes": 9,
+      "max_updates": 72,
+      "passive_rejections": 0,
+      "mass": 1.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 127,
+          "p95": 189,
+          "p99": 245,
+          "max": 756
+        },
+        "coupling_us": {
+          "p50": 88,
+          "p95": 136,
+          "p99": 157,
+          "max": 223
+        },
+        "native_tick_us": {
+          "p50": 596,
+          "p95": 983,
+          "p99": 1057,
+          "max": 1543
+        },
+        "apply_us": {
+          "p50": 42,
+          "p95": 70,
+          "p99": 87,
+          "max": 156
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 1.90947503817573,
+      "tail_tangent_max": 0.277755007311253
+    },
+    "linux-barrel-m2-v30-A1": {
+      "status": "captured",
+      "raw_sha256": "25cc37eae8ba82bbfe4a1db0e818bece7ca506eefcdccc8b9809bd66a9a10c24",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 1.82254022546169,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 8,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 2.96092200279236,
+      "tail_x_span": 0.5123901367179826,
+      "tail_y_span": 0.087646484375,
+      "tail_abs_vy_p95": 1.89859676361084,
+      "material_conserved": true,
+      "normal_max": 16.0,
+      "tangent_max": 5.17919173627931,
+      "max_nodes": 6,
+      "max_updates": 48,
+      "passive_rejections": 0,
+      "mass": 2.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 117,
+          "p95": 168,
+          "p99": 235,
+          "max": 1041
+        },
+        "coupling_us": {
+          "p50": 38,
+          "p95": 72,
+          "p99": 99,
+          "max": 217
+        },
+        "native_tick_us": {
+          "p50": 273,
+          "p95": 669,
+          "p99": 986,
+          "max": 2186
+        },
+        "apply_us": {
+          "p50": 37,
+          "p95": 61,
+          "p99": 88,
+          "max": 2564
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 4.0,
+      "tail_tangent_max": 1.55999994277954
+    },
+    "linux-barrel-m2-v30-LA": {
+      "status": "captured",
+      "raw_sha256": "fbd2138fbb0ac34037520f8207f4eed4e432c72a4800c0e253f3f86aac50e20b",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.729357273124975,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 1,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 4.25284242630005,
+      "tail_x_span": 0.2095336914059942,
+      "tail_y_span": 0.16687011718701683,
+      "tail_abs_vy_p95": 3.06852054595947,
+      "material_conserved": true,
+      "normal_max": 32.0,
+      "tangent_max": 2.92213596031547,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 2.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 133,
+          "p95": 207,
+          "p99": 290,
+          "max": 918
+        },
+        "coupling_us": {
+          "p50": 55,
+          "p95": 86,
+          "p99": 116,
+          "max": 506
+        },
+        "native_tick_us": {
+          "p50": 584,
+          "p95": 978,
+          "p99": 1082,
+          "max": 1641
+        },
+        "apply_us": {
+          "p50": 44,
+          "p95": 74,
+          "p99": 107,
+          "max": 360
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 9.87046240120316,
+      "tail_tangent_max": 1.88516245085266
+    },
+    "linux-barrel-m2-v90-A1": {
+      "status": "captured",
+      "raw_sha256": "41c1fc92cbdbe487ea67c52ba8d37df30af7d81f837cd676a232032b6befa918",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 96.0008248224539,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 113,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 0,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.99884569644928,
+      "material_conserved": true,
+      "normal_max": 16.2396621184342,
+      "tangent_max": 6.45498838967232,
+      "max_nodes": 16,
+      "max_updates": 128,
+      "passive_rejections": 0,
+      "mass": 2.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 124,
+          "p95": 199,
+          "p99": 297,
+          "max": 995
+        },
+        "coupling_us": {
+          "p50": 446,
+          "p95": 676,
+          "p99": 864,
+          "max": 1754
+        },
+        "native_tick_us": {
+          "p50": 164,
+          "p95": 527,
+          "p99": 695,
+          "max": 1562
+        },
+        "apply_us": {
+          "p50": 38,
+          "p95": 70,
+          "p99": 90,
+          "max": 282
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 0.00295994496431684,
+      "tail_tangent_max": 0.00230875698748243
+    },
+    "linux-barrel-m2-v90-LA": {
+      "status": "captured",
+      "raw_sha256": "aa0031f5cbfb6515d0d52c6480387dd2a18e797530077bfbc241ad282f88c2a5",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 6.50421228339425,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 21,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 2.39337372779846,
+      "tail_x_span": 0.35559082031298317,
+      "tail_y_span": 0.9359283447259941,
+      "tail_abs_vy_p95": 1.39943313598633,
+      "material_conserved": true,
+      "normal_max": 32.2148988146142,
+      "tangent_max": 5.38913622846256,
+      "max_nodes": 9,
+      "max_updates": 72,
+      "passive_rejections": 0,
+      "mass": 2.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 117,
+          "p95": 157,
+          "p99": 192,
+          "max": 825
+        },
+        "coupling_us": {
+          "p50": 78,
+          "p95": 124,
+          "p99": 155,
+          "max": 317
+        },
+        "native_tick_us": {
+          "p50": 579,
+          "p95": 874,
+          "p99": 998,
+          "max": 1736
+        },
+        "apply_us": {
+          "p50": 37,
+          "p95": 53,
+          "p99": 68,
+          "max": 128
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 3.2306274966945,
+      "tail_tangent_max": 0.731393695927282
+    },
+    "linux-barrel-m8-v30-A1": {
+      "status": "captured",
+      "raw_sha256": "1c41a6371274b93f33a02bdbca4196bdab1ac0009b977ae827768bad7a927280",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 96.0007202070769,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 116,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 14.6954488754272,
+      "tail_x_span": 0.9853973388680117,
+      "tail_y_span": 0.4585571289059658,
+      "tail_abs_vy_p95": 0.257722645998001,
+      "material_conserved": true,
+      "normal_max": 16.5073661896602,
+      "tangent_max": 8.258089424609,
+      "max_nodes": 16,
+      "max_updates": 128,
+      "passive_rejections": 0,
+      "mass": 8.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 119,
+          "p95": 164,
+          "p99": 234,
+          "max": 1072
+        },
+        "coupling_us": {
+          "p50": 545,
+          "p95": 738,
+          "p99": 833,
+          "max": 942
+        },
+        "native_tick_us": {
+          "p50": 159,
+          "p95": 563,
+          "p99": 955,
+          "max": 1665
+        },
+        "apply_us": {
+          "p50": 37,
+          "p95": 61,
+          "p99": 81,
+          "max": 329
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 3.80141671436693,
+      "tail_tangent_max": 2.91743638743138
+    },
+    "linux-barrel-m8-v30-LA": {
+      "status": "captured",
+      "raw_sha256": "5d1037f28296cb372c93ff6b1d9636ccf715de033175b2595b35a7584ee90459",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 0.729357273124975,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 1,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 4.25284242630005,
+      "tail_x_span": 0.2095336914059942,
+      "tail_y_span": 0.16687011718701683,
+      "tail_abs_vy_p95": 3.06852054595947,
+      "material_conserved": true,
+      "normal_max": 128.0,
+      "tangent_max": 11.6885438412619,
+      "max_nodes": 4,
+      "max_updates": 32,
+      "passive_rejections": 0,
+      "mass": 8.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 117,
+          "p95": 168,
+          "p99": 243,
+          "max": 998
+        },
+        "coupling_us": {
+          "p50": 47,
+          "p95": 75,
+          "p99": 96,
+          "max": 280
+        },
+        "native_tick_us": {
+          "p50": 573,
+          "p95": 830,
+          "p99": 989,
+          "max": 1758
+        },
+        "apply_us": {
+          "p50": 37,
+          "p95": 58,
+          "p99": 84,
+          "max": 125
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 39.4818496048127,
+      "tail_tangent_max": 7.54064980341063
+    },
+    "linux-barrel-m8-v90-A1": {
+      "status": "captured",
+      "raw_sha256": "be9d9953f02f6d809338aef9e9f3c4a98e45e3d95e4624a769b16ae4372a599c",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 96.0006586396794,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 116,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 2.17197370529175,
+      "tail_x_span": 1.5258789005656581e-05,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.179943814873695,
+      "material_conserved": true,
+      "normal_max": 17.4218383249138,
+      "tangent_max": 11.1145317936115,
+      "max_nodes": 16,
+      "max_updates": 128,
+      "passive_rejections": 0,
+      "mass": 8.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 121,
+          "p95": 176,
+          "p99": 239,
+          "max": 1119
+        },
+        "coupling_us": {
+          "p50": 796,
+          "p95": 1126,
+          "p99": 1220,
+          "max": 1536
+        },
+        "native_tick_us": {
+          "p50": 167,
+          "p95": 319,
+          "p99": 624,
+          "max": 2246
+        },
+        "apply_us": {
+          "p50": 40,
+          "p95": 65,
+          "p99": 92,
+          "max": 204
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0
+    },
+    "linux-barrel-m8-v90-LA": {
+      "status": "captured",
+      "raw_sha256": "29d06b2d941774252546484f8ec0251d5beb20ca2d885f1665d2061833b006bc",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 6.41419354323835,
+      "entry_definition": "union bottom relative to bed surface",
+      "overlap_peak_observed": 21,
+      "overlap_coverage": 1.0,
+      "rebound_upward": 2.12556505203247,
+      "tail_x_span": 0.7369384765619884,
+      "tail_y_span": 0.7401428222659945,
+      "tail_abs_vy_p95": 1.40146863460541,
+      "material_conserved": true,
+      "normal_max": 129.137776831275,
+      "tangent_max": 21.4506780492051,
+      "max_nodes": 9,
+      "max_updates": 72,
+      "passive_rejections": 0,
+      "mass": 8.0,
+      "inertia": null,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "rapier_us": {
+          "p50": 128,
+          "p95": 203,
+          "p99": 270,
+          "max": 835
+        },
+        "coupling_us": {
+          "p50": 83,
+          "p95": 132,
+          "p99": 159,
+          "max": 292
+        },
+        "native_tick_us": {
+          "p50": 594,
+          "p95": 962,
+          "p99": 1084,
+          "max": 1515
+        },
+        "apply_us": {
+          "p50": 42,
+          "p95": 75,
+          "p99": 104,
+          "max": 249
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": null,
+      "tail_normal_max": 17.6307357807175,
+      "tail_tangent_max": 6.55072419382941
+    },
+    "linux-packed_sand-A1": {
+      "status": "captured",
+      "raw_sha256": "0ced9f62f050b55df33236998891b5401d3d0ec1d48db3a16978ba4273a05261",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 19.8963165283203,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 280,
+      "overlap_coverage": 0.9858333333333333,
+      "rebound_upward": 6.84531354904175,
+      "tail_x_span": 0.0,
+      "tail_y_span": 3.433227539773043e-05,
+      "tail_abs_vy_p95": 1.53425353346393e-05,
+      "material_conserved": true,
+      "normal_max": 20.0,
+      "tangent_max": 15.5999994277954,
+      "max_nodes": 28,
+      "max_updates": 224,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.711,
+          "p95": 1.048,
+          "p99": 1.168,
+          "max": 1.665
+        },
+        "native_tick_ms": {
+          "p50": 0.297761,
+          "p95": 0.426062,
+          "p99": 0.544833,
+          "max": 0.980178
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09199999999999875,
+          "p95": 0.13949999999999996,
+          "p99": 0.1800000000000006,
+          "max": 0.31750000000000256
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.20400000000000063,
+          "p95": 0.37700000000000244,
+          "p99": 0.45700000000000074,
+          "max": 0.5910000000000011
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 2.07680147884455,
+      "tail_tangent_max": 0.937738145929622
+    },
+    "linux-packed_sand-LA": {
+      "status": "captured",
+      "raw_sha256": "cab174481f61e836ada45df7d953f0f6d5b10457b85d5c54e5eb4cfe6ec71ad6",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 19.7077980041504,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 271,
+      "overlap_coverage": 0.5583333333333333,
+      "rebound_upward": 0.360238999128342,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 4.47526099378592e-06,
+      "material_conserved": true,
+      "normal_max": 6995.36090781807,
+      "tangent_max": 5030.94079063554,
+      "max_nodes": 25,
+      "max_updates": 200,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.638,
+          "p95": 0.841,
+          "p99": 1.082,
+          "max": 1.399
+        },
+        "native_tick_ms": {
+          "p50": 0.255866,
+          "p95": 0.408517,
+          "p99": 0.547262,
+          "max": 1.030083
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.06350000000000477,
+          "p95": 0.11399999999999899,
+          "p99": 0.13799999999999812,
+          "max": 0.1944999999999999
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.19300000000000495,
+          "p95": 0.28000000000000114,
+          "p99": 0.3830000000000098,
+          "max": 0.6509999999999998
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 2.09918274126169,
+      "tail_tangent_max": 0.914008033932033
+    },
+    "linux-embedded_sand-A1": {
+      "status": "captured",
+      "raw_sha256": "fc53432c9dc05a0ecb9502ea98c687567ec8c0a256a2e485d2c9bc3862c58dc3",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 20.364673614502,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 470,
+      "overlap_coverage": 0.9125,
+      "rebound_upward": 3.12268304824829,
+      "tail_x_span": 2.475860595703111,
+      "tail_y_span": 9.874031066894602,
+      "tail_abs_vy_p95": 16.4355239868164,
+      "material_conserved": true,
+      "normal_max": 18.1630676465007,
+      "tangent_max": 14.167192244621,
+      "max_nodes": 38,
+      "max_updates": 304,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.678,
+          "p95": 0.936,
+          "p99": 1.038,
+          "max": 1.672
+        },
+        "native_tick_ms": {
+          "p50": 0.289288,
+          "p95": 0.412669,
+          "p99": 0.492657,
+          "max": 0.821617
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08549999999999969,
+          "p95": 0.12000000000000455,
+          "p99": 0.15149999999999864,
+          "max": 0.2444999999999986
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.26900000000000546,
+          "p95": 0.3850000000000051,
+          "p99": 0.45300000000000296,
+          "max": 0.6299999999999999
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 15.0360997303008,
+      "tail_tangent_max": 11.7281573594483
+    },
+    "linux-embedded_sand-LA": {
+      "status": "captured",
+      "raw_sha256": "d46e53daad3f5c5734392ee1121959d43d747588a9db198f1c8a997d3d8b9791",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 11.9216918945312,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 312,
+      "overlap_coverage": 0.7983333333333333,
+      "rebound_upward": 2.94614958763123,
+      "tail_x_span": 6.0143508911132955,
+      "tail_y_span": 5.422222137451101,
+      "tail_abs_vy_p95": 4.30987787246704,
+      "material_conserved": true,
+      "normal_max": 2624.96383442858,
+      "tangent_max": 1384.15280036124,
+      "max_nodes": 28,
+      "max_updates": 224,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.712,
+          "p95": 1.006,
+          "p99": 1.149,
+          "max": 1.876
+        },
+        "native_tick_ms": {
+          "p50": 0.326489,
+          "p95": 0.500909,
+          "p99": 0.605235,
+          "max": 1.309234
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09600000000000364,
+          "p95": 0.14100000000000534,
+          "p99": 0.17450000000000188,
+          "max": 0.32200000000000273
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.26500000000000057,
+          "p95": 0.4410000000000025,
+          "p99": 0.5570000000000164,
+          "max": 0.7270000000000039
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 2624.96383442858,
+      "tail_tangent_max": 1384.15280036124
+    },
+    "linux-mixed-A1": {
+      "status": "captured",
+      "raw_sha256": "84d6662f48b7ed256377cc21ab6fedf145a995323565fc2c96d2aae439ae0480",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1199,
+      "entry_peak": 20.3646583557129,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 289,
+      "overlap_coverage": 0.6305254378648875,
+      "rebound_upward": 4.38989877700806,
+      "tail_x_span": 0.001220703125,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.00024398670939263,
+      "material_conserved": true,
+      "normal_max": 19.8868629150102,
+      "tangent_max": 15.5117525047402,
+      "max_nodes": 17,
+      "max_updates": 136,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 1.094,
+          "p95": 1.432,
+          "p99": 1.781,
+          "max": 2.015
+        },
+        "native_tick_ms": {
+          "p50": 0.688923,
+          "p95": 1.04419,
+          "p99": 1.415817,
+          "max": 1.662697
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.0764999999999958,
+          "p95": 0.11649999999999494,
+          "p99": 0.14749999999999375,
+          "max": 0.19950000000000045
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.19899999999998386,
+          "p95": 0.30400000000000205,
+          "p99": 0.4089999999999989,
+          "max": 0.565
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 1.94870106103039,
+      "tail_tangent_max": 0.612734039062314
+    },
+    "linux-mixed-LA": {
+      "status": "captured",
+      "raw_sha256": "0a36c4f7d1ad2d5345d5d13bd1b8f752f2f9cacffa8a1db1e96407864420724a",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 19.2998504638672,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 257,
+      "overlap_coverage": 0.7783333333333333,
+      "rebound_upward": 3.21546173095703,
+      "tail_x_span": 1.7843475341796875,
+      "tail_y_span": 1.8437728881836009,
+      "tail_abs_vy_p95": 3.05035281181335,
+      "material_conserved": true,
+      "normal_max": 4486.159899523,
+      "tangent_max": 2215.2741186878,
+      "max_nodes": 20,
+      "max_updates": 160,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 1.225,
+          "p95": 1.769,
+          "p99": 1.95,
+          "max": 2.371
+        },
+        "native_tick_ms": {
+          "p50": 0.845356,
+          "p95": 1.263848,
+          "p99": 1.429855,
+          "max": 1.865991
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.10150000000000148,
+          "p95": 0.1509999999999998,
+          "p99": 0.19300000000000006,
+          "max": 0.27
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.2599999999999909,
+          "p95": 0.42600000000001614,
+          "p99": 0.5199999999999818,
+          "max": 0.9080000000000155
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 4486.159899523,
+      "tail_tangent_max": 1809.14433227766
+    },
+    "linux-isolated_full-A1": {
+      "status": "captured",
+      "raw_sha256": "cec6fe54b78634b52c73a1457e9462172388a182e190d40705d64b18dd629f38",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.3646545410156,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 527,
+      "overlap_coverage": 0.9766860949208993,
+      "rebound_upward": 4.88746118545532,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 5.44776121387258e-05,
+      "material_conserved": true,
+      "normal_max": 9.50233743048164,
+      "tangent_max": 7.0768086931222,
+      "max_nodes": 51,
+      "max_updates": 408,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.898,
+          "p95": 1.37,
+          "p99": 1.719,
+          "max": 2.453
+        },
+        "native_tick_ms": {
+          "p50": 0.338878,
+          "p95": 0.648195,
+          "p99": 0.870374,
+          "max": 1.705778
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.07850000000000534,
+          "p95": 0.12299999999999045,
+          "p99": 0.16599999999999682,
+          "max": 0.2845000000000084
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.2220000000000084,
+          "p95": 0.38000000000000256,
+          "p99": 0.49099999999998545,
+          "max": 3.113
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": true,
+      "tail_normal_max": 4.04815232084279,
+      "tail_tangent_max": 2.11651762878972
+    },
+    "linux-isolated_full-LA": {
+      "status": "captured",
+      "raw_sha256": "b845ea84ea18bcccf94505c2ac67a5321b15db879fdb89492600ad60a4619b91",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 20.5916404724121,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 7,
+      "overlap_coverage": 0.9766666666666667,
+      "rebound_upward": 5.36588764190674,
+      "tail_x_span": 0.08160400390629263,
+      "tail_y_span": 0.19527053833009944,
+      "tail_abs_vy_p95": 1.57545554637909,
+      "material_conserved": true,
+      "normal_max": 4714.5011340662,
+      "tangent_max": 3099.23922715761,
+      "max_nodes": 8,
+      "max_updates": 64,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 1.079,
+          "p95": 1.552,
+          "p99": 1.731,
+          "max": 2.105
+        },
+        "native_tick_ms": {
+          "p50": 0.690105,
+          "p95": 1.035014,
+          "p99": 1.160715,
+          "max": 1.543895
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09499999999999886,
+          "p95": 0.13249999999999318,
+          "p99": 0.16750000000000398,
+          "max": 0.2820000000000107
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.2599999999999998,
+          "p95": 0.42099999999999227,
+          "p99": 0.4840000000000373,
+          "max": 3.875
+        }
+      },
+      "hard_floor_plane_reached": false,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 733.986191268922,
+      "tail_tangent_max": 294.338490030542
+    },
+    "linux-isolated_half-A1": {
+      "status": "captured",
+      "raw_sha256": "8f9eaf7d0c363b818055908c80bb15ca8993e4811cd6609787fc0403d56e29dd",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 62.5017166137695,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 525,
+      "overlap_coverage": 0.9775,
+      "rebound_upward": 3.10315442085266,
+      "tail_x_span": 0.16815185546899158,
+      "tail_y_span": 1.880630493164503,
+      "tail_abs_vy_p95": 0.944033026695251,
+      "material_conserved": true,
+      "normal_max": 13.9272815707801,
+      "tangent_max": 10.8632792267458,
+      "max_nodes": 51,
+      "max_updates": 408,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.854,
+          "p95": 1.094,
+          "p99": 1.275,
+          "max": 1.653
+        },
+        "native_tick_ms": {
+          "p50": 0.325946,
+          "p95": 0.549627,
+          "p99": 0.683798,
+          "max": 0.973699
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08550000000000324,
+          "p95": 0.12949999999999307,
+          "p99": 0.15649999999999942,
+          "max": 0.2259999999999991
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.2750000000000057,
+          "p95": 0.4269999999999996,
+          "p99": 0.512999999999991,
+          "max": 4.518
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 7.2133785785709,
+      "tail_tangent_max": 5.62643508490888
+    },
+    "linux-isolated_half-LA": {
+      "status": "captured",
+      "raw_sha256": "de1037ad6bb1680d7cd641f70853ac61dc08763df8e51978a46f48f5d23e5be6",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 53.6230621337891,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 75,
+      "overlap_coverage": 0.8591666666666666,
+      "rebound_upward": 0.543721616268158,
+      "tail_x_span": 7.806636810302699,
+      "tail_y_span": 9.668357849121108,
+      "tail_abs_vy_p95": 8.73944664001465,
+      "material_conserved": true,
+      "normal_max": 6833.45871484582,
+      "tangent_max": 3546.99898721369,
+      "max_nodes": 22,
+      "max_updates": 176,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.808,
+          "p95": 1.044,
+          "p99": 1.302,
+          "max": 1.484
+        },
+        "native_tick_ms": {
+          "p50": 0.451802,
+          "p95": 0.657612,
+          "p99": 0.805283,
+          "max": 1.017113
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.08549999999999969,
+          "p95": 0.1354999999999933,
+          "p99": 0.17600000000000193,
+          "max": 0.29399999999999693
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.26900000000000546,
+          "p95": 0.4159999999999968,
+          "p99": 0.5390000000000441,
+          "max": 3.517
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": true,
+      "tail_normal_max": 2748.37816026626,
+      "tail_tangent_max": 1656.22089446185
+    },
+    "linux-isolated_narrow-A1": {
+      "status": "captured",
+      "raw_sha256": "aac8b27cb14a2916f9cd934a89d2d444a571b55b8440cb124c44dc45a2b21711",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1200,
+      "entry_peak": 66.3646240234375,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 22,
+      "overlap_coverage": 0.865,
+      "rebound_upward": 2.60552096366882,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 2.02626542886719e-05,
+      "material_conserved": true,
+      "normal_max": 14.0,
+      "tangent_max": 10.9199995994568,
+      "max_nodes": 6,
+      "max_updates": 48,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.391,
+          "p95": 0.587,
+          "p99": 0.696,
+          "max": 1.346
+        },
+        "native_tick_ms": {
+          "p50": 0.09305,
+          "p95": 0.16663,
+          "p99": 0.225736,
+          "max": 0.952102
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.07,
+          "p95": 0.1039999999999992,
+          "p99": 0.132000000000005,
+          "max": 0.1849999999999996
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.17800000000001148,
+          "p95": 0.25200000000000955,
+          "p99": 0.33899999999999864,
+          "max": 3.651
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.255777843723073,
+      "tail_tangent_max": 0.0578207662762099
+    },
+    "linux-isolated_narrow-LA": {
+      "status": "captured",
+      "raw_sha256": "bd42573a1c3b677ecca0633d1beea951ad5ca52ae2255ffba60a693b8b6ecb14",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "819f6ddd9808617a2b3aa17f1ededca18672a0503de8be42481907d048bf2b5a",
+        "source": "1b5d6ef79c3a2d561baa703ff0b0baec42faefcd"
+      },
+      "rows": 1199,
+      "entry_peak": 66.3646392822266,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 18,
+      "overlap_coverage": 0.8798999165971643,
+      "rebound_upward": 2.24924087524414,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 4.71752100565936e-05,
+      "material_conserved": true,
+      "normal_max": 4160.0,
+      "tangent_max": 665.745505693391,
+      "max_nodes": 6,
+      "max_updates": 48,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.4,
+          "p95": 0.62,
+          "p99": 0.753,
+          "max": 1.068
+        },
+        "native_tick_ms": {
+          "p50": 0.094901,
+          "p95": 0.156436,
+          "p99": 0.214323,
+          "max": 0.662019
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.09499999999999886,
+          "p95": 0.1509999999999998,
+          "p99": 0.2014999999999958,
+          "max": 0.30600000000000005
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.20699999999999363,
+          "p95": 0.4210000000000065,
+          "p99": 0.5300000000000011,
+          "max": 4.443
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0123432733236277,
+      "tail_tangent_max": 0.00962775283928571
+    },
+    "linux-isolated_excavate-A1": {
+      "status": "captured",
+      "raw_sha256": "ff5389a8b2f94ceedf5c0eb41749094848b37a00e66d6955ba9906f2c16821a8",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1199,
+      "entry_peak": 66.3646545410156,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 525,
+      "overlap_coverage": 0.5020850708924104,
+      "rebound_upward": 8.27432918548584,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.0,
+      "material_conserved": true,
+      "normal_max": 8.46035227402133,
+      "tangent_max": 5.96178946896017,
+      "max_nodes": 50,
+      "max_updates": 400,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.519,
+          "p95": 1.151,
+          "p99": 1.244,
+          "max": 1.591
+        },
+        "native_tick_ms": {
+          "p50": 0.159379,
+          "p95": 0.702682,
+          "p99": 0.817951,
+          "max": 1.027348
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.058000000000006935,
+          "p95": 0.10549999999999926,
+          "p99": 0.13400000000000034,
+          "max": 0.18900000000000716
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.16600000000001103,
+          "p95": 0.2540000000000049,
+          "p99": 0.35800000000000054,
+          "max": 3.816
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0
+    },
+    "linux-isolated_excavate-LA": {
+      "status": "captured",
+      "raw_sha256": "d404cb6163b31baea616ac3c8c872d12d17ee9a66fa3a1a0fed367a9edc5bfa1",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1198,
+      "entry_peak": 66.368034362793,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 528,
+      "overlap_coverage": 0.6585976627712855,
+      "rebound_upward": 4.5150990486145,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 9.09270383999683e-05,
+      "material_conserved": true,
+      "normal_max": 4398.27624993633,
+      "tangent_max": 1819.24537001659,
+      "max_nodes": 50,
+      "max_updates": 400,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.476,
+          "p95": 1.507,
+          "p99": 1.888,
+          "max": 2.486
+        },
+        "native_tick_ms": {
+          "p50": 0.137141,
+          "p95": 0.894995,
+          "p99": 1.097517,
+          "max": 1.275252
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.0694999999999979,
+          "p95": 0.12899999999999068,
+          "p99": 0.17399999999999238,
+          "max": 0.29949999999999477
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.2039999999999793,
+          "p95": 0.3580000000000041,
+          "p99": 0.46300000000000807,
+          "max": 3.518
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0
+    },
+    "linux-isolated_dry-A1": {
+      "status": "captured",
+      "raw_sha256": "260249f70742cb5d823d0877711ca9ad8552d20a483d842838de88c18524d3ce",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.3646087646484,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 0,
+      "overlap_coverage": 0.9250624479600333,
+      "rebound_upward": 8.89743995666504,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.0,
+      "material_conserved": true,
+      "normal_max": 0,
+      "tangent_max": 0,
+      "max_nodes": 0,
+      "max_updates": 0,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.347,
+          "p95": 0.47,
+          "p99": 0.603,
+          "max": 1.447
+        },
+        "native_tick_ms": {
+          "p50": 0.075468,
+          "p95": 0.127525,
+          "p99": 0.159296,
+          "max": 1.187145
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.0800000000000125,
+          "p95": 0.13100000000000023,
+          "p99": 0.16449999999999676,
+          "max": 0.1869999999999976
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.15500000000000114,
+          "p95": 0.25200000000000955,
+          "p99": 0.3289999999999971,
+          "max": 4.394
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0,
+      "negative_control_zero_granular": true,
+      "negative_control_observation_coverage": 0.9250624479600333
+    },
+    "linux-isolated_dry-LA": {
+      "status": "captured",
+      "raw_sha256": "319318aa1b999227cc0df0371c4f82f3ff0e76e8ec3f99137b00428c52305554",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1200,
+      "entry_peak": 66.3646087646484,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 0,
+      "overlap_coverage": 0.5191666666666667,
+      "rebound_upward": 8.89743995666504,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 0.0,
+      "material_conserved": true,
+      "normal_max": 0,
+      "tangent_max": 0,
+      "max_nodes": 0,
+      "max_updates": 0,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 0.329,
+          "p95": 0.493,
+          "p99": 0.594,
+          "max": 1.02
+        },
+        "native_tick_ms": {
+          "p50": 0.082316,
+          "p95": 0.146087,
+          "p99": 0.227716,
+          "max": 0.683624
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.06349999999999945,
+          "p95": 0.1039999999999992,
+          "p99": 0.12600000000000122,
+          "max": 0.1664999999999992
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.16100000000000136,
+          "p95": 0.2330000000000041,
+          "p99": 0.3269999999999982,
+          "max": 4.423
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0,
+      "negative_control_zero_granular": true,
+      "negative_control_observation_coverage": 0.5191666666666667
+    },
+    "linux-isolated_water-A1": {
+      "status": "captured",
+      "raw_sha256": "ed1f83f06b931c4bdd1b5f78f976c43c7c43be63cd9c20c8a85ec8f5338a0bb8",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.3646240234375,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 525,
+      "overlap_coverage": 0.8667776852622814,
+      "rebound_upward": 9.72215175628662,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 6.00414750806522e-05,
+      "material_conserved": true,
+      "normal_max": 0,
+      "tangent_max": 0,
+      "max_nodes": 0,
+      "max_updates": 0,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 6.422,
+          "p95": 7.35,
+          "p99": 8.629,
+          "max": 10.346
+        },
+        "native_tick_ms": {
+          "p50": 5.627589,
+          "p95": 6.542246,
+          "p99": 7.721075,
+          "max": 9.637762
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.07550000000000523,
+          "p95": 0.10600000000000165,
+          "p99": 0.13349999999999795,
+          "max": 0.19599999999999795
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.17900000000000205,
+          "p95": 0.25199999999998113,
+          "p99": 0.29599999999999227,
+          "max": 3.157
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0,
+      "tail_tangent_max": 0,
+      "negative_control_zero_granular": true,
+      "negative_control_observation_coverage": 0.8667776852622814
+    },
+    "linux-isolated_water-LA": {
+      "status": "captured",
+      "raw_sha256": "031ba77fddbd054f2f81dc8e190fe91872fbf5f4bc59b34565baee487003b2d5",
+      "capture_identity": {
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "engine_version": "4.7-stable (official)",
+        "native_sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+        "physics_backend": "Rapier2D",
+        "protocol_sha256": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+        "source": "dd4e68c7fa439f5cbcab4c3421d840a7caace6dd"
+      },
+      "rows": 1201,
+      "entry_peak": 66.364616394043,
+      "entry_definition": "COM relative to release; not cellular penetration",
+      "overlap_peak_observed": 524,
+      "overlap_coverage": 0.7635303913405496,
+      "rebound_upward": 9.2817325592041,
+      "tail_x_span": 0.0,
+      "tail_y_span": 0.0,
+      "tail_abs_vy_p95": 5.57591774850152e-05,
+      "material_conserved": true,
+      "normal_max": 0,
+      "tangent_max": 0,
+      "max_nodes": 0,
+      "max_updates": 0,
+      "passive_rejections": 0,
+      "mass": 520.0,
+      "inertia": 70453.6484375,
+      "timing_scope": "functional instrumented concurrent OS captures; not uncontended",
+      "timing": {
+        "worker_step_ms": {
+          "p50": 6.417,
+          "p95": 7.469,
+          "p99": 9.349,
+          "max": 10.266
+        },
+        "native_tick_ms": {
+          "p50": 5.585938,
+          "p95": 6.605003,
+          "p99": 8.190564,
+          "max": 8.958014
+        },
+        "main_sync_ms_per_observation_mean": {
+          "p50": 0.07450000000000045,
+          "p95": 0.10650000000000048,
+          "p99": 0.13400000000000034,
+          "max": 0.18299999999999983
+        },
+        "rapier_step_ms_per_observation_mean": {
+          "p50": 0.17899999999999494,
+          "p95": 0.23699999999999477,
+          "p99": 0.30100000000001614,
+          "max": 3.022
+        }
+      },
+      "hard_floor_plane_reached": true,
+      "hard_wall_plane_reached": false,
+      "tail_normal_max": 0.0,
+      "tail_tangent_max": 0.0,
+      "negative_control_zero_granular": true,
+      "negative_control_observation_coverage": 0.7635303913405496
+    }
+  },
+  "pairs": [
+    {
+      "platform": "windows",
+      "case": "barrel-m0.5-v30",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "barrel-m0.5-v90",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "barrel-m1-v30",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "barrel-m1-v90",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "barrel-m2-v30",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "barrel-m2-v90",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": false,
+        "tail_y_span": false,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "barrel-m8-v30",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "barrel-m8-v90",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": false,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "packed_sand",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "embedded_sand",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": false,
+        "tail_y_span": false,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "mixed",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "isolated_full",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": false,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "isolated_half",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "isolated_narrow",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "isolated_excavate",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": false,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "isolated_dry",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "windows",
+      "case": "isolated_water",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "barrel-m0.5-v30",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "barrel-m0.5-v90",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "barrel-m1-v30",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "barrel-m1-v90",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "barrel-m2-v30",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "barrel-m2-v90",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": false,
+        "tail_y_span": false,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "barrel-m8-v30",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "barrel-m8-v90",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": true,
+        "rebound_upward": true,
+        "tail_y_span": false,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "packed_sand",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "embedded_sand",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "mixed",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": false,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "isolated_full",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "isolated_half",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": false,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "isolated_narrow",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "isolated_excavate",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "isolated_dry",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    },
+    {
+      "platform": "linux",
+      "case": "isolated_water",
+      "gates": {
+        "entry_peak": true,
+        "overlap_peak_observed": null,
+        "rebound_upward": true,
+        "tail_y_span": true,
+        "conservation": true
+      },
+      "interpretation": "registered numerical gates; owner feel and partial-support plausibility require separate review"
+    }
+  ],
+  "complete": true,
+  "owner_acceptance": null,
+  "production_accepted": false,
+  "unsupported": [
+    "whole-system energy",
+    "uncontended performance",
+    "human feel judgement",
+    "hard-contact wrench isolation"
+  ]
+}

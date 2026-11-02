@@ -336,3 +336,8 @@ For authored checkpoint visibility, Return to launcher, sampled task participant
 coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).
 
 - How do detached native structures share granular torque and response budgets without duplicate physics ownership? [Compound response contract](../architecture/compound-granular-coupling.md).
+
+Load-aware capacity, preserved barrel feel, actual building mass and partial
+support route through the [LA registration](../operations/gcr-load-aware-registration.md)
+and [compound contract](../architecture/compound-granular-coupling.md#load-aware-successor-experiment--2026-11-02).
+These experimental routes do not promote an ordinary default or imply owner acceptance.

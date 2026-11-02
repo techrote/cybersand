@@ -41,7 +41,7 @@ func inspect_arm(lab: Node, expected: String) -> void:
 	if expected == "legacy":
 		check(snapshot.gcr_compound_diagnostics.is_empty(), "legacy has no GCR publication")
 	else:
-		check(snapshot.gcr_compound_diagnostics.get("admission_variant", "") == expected,
+		check(snapshot.gcr_compound_diagnostics.get("admission_variant", "") == ("A1" if expected=="LA" else expected),
 			"actual native admission identity: " + expected)
 		check(snapshot.gcr_compound_results.is_empty(), "anchored arm has no physical response")
 	check(expected in lab._title.text, "visible current arm")
@@ -52,7 +52,7 @@ func _run() -> void:
 	root.add_child(lab)
 	await ready_lab(lab)
 	await inspect_arm(lab, "legacy")
-	for expected: String in ["R2", "A1", "legacy"]:
+	for expected: String in ["R2", "A1", "LA", "legacy"]:
 		var old_session: RefCounted = lab.session
 		var old_worker: RefCounted = old_session.worker
 		var old_generation: int = old_session.generation

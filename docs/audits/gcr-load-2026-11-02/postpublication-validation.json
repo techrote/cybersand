@@ -1,0 +1,197 @@
+{
+  "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+  "scope": "Exact runtime-publication head local checks; later audit/record metadata changes do not alter native, Godot, test or runtime inputs.",
+  "actual_postpublication_host_processes": 10,
+  "host": {
+    "windows": [
+      {
+        "case": "test_gcr_load_review",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 1.811891794204712,
+        "ok": true,
+        "log_sha256": "80f52de1cabc7571cc6e048f7a9290cf81b656658d525ecff6e2570f51a35a70"
+      },
+      {
+        "case": "test_gcr_load_controls",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 2.00600528717041,
+        "ok": true,
+        "log_sha256": "b7f0676d1670525b32adb4fe18db7cde1878f0b4eda3ba1d32a9e00d625d0faf"
+      },
+      {
+        "case": "test_gcr_detachment_lab",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 1.6764183044433594,
+        "ok": true,
+        "log_sha256": "282feae2347d467695be21cb8bb908146487d387438cf15746a341e4230f3bbc"
+      },
+      {
+        "case": "test_gcr_detachment",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 1.4031784534454346,
+        "ok": true,
+        "log_sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7"
+      },
+      {
+        "case": "test_gcr_detachment_async",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 2.615870714187622,
+        "ok": true,
+        "log_sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579"
+      }
+    ],
+    "linux": [
+      {
+        "case": "test_gcr_load_review",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 7.675209045410156,
+        "ok": true,
+        "log_sha256": "bc5beca9d9c32705d263d67ade785bb294e3c9bc258803727fb82294e5830fd5"
+      },
+      {
+        "case": "test_gcr_load_controls",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 4.035625696182251,
+        "ok": true,
+        "log_sha256": "387a70a56a3fb4dbbd1de44f0ed0f5c81a234244ee6030a7934b67125b313fbe"
+      },
+      {
+        "case": "test_gcr_detachment_lab",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 3.848517417907715,
+        "ok": true,
+        "log_sha256": "800d1bbdad34d8056a7178f493eb568712c85acb716e823557d1e391976adb64"
+      },
+      {
+        "case": "test_gcr_detachment",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 3.550748109817505,
+        "ok": true,
+        "log_sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60"
+      },
+      {
+        "case": "test_gcr_detachment_async",
+        "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+        "exit": 0,
+        "elapsed": 4.763385534286499,
+        "ok": true,
+        "log_sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3"
+      }
+    ]
+  },
+  "local_gates": {
+    "source": "d6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb",
+    "gates": [
+      {
+        "gate": "docs",
+        "exit": 0,
+        "ok": true,
+        "elapsed": 1.6144044399261475,
+        "log_sha256": "d3d55c6b6ea9a68645cc5d70491544058b2b1efc8c95fbda76ee27331e29ffd4"
+      },
+      {
+        "gate": "m11",
+        "exit": 0,
+        "ok": true,
+        "elapsed": 1.0102133750915527,
+        "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+      },
+      {
+        "gate": "repository",
+        "exit": 0,
+        "ok": true,
+        "elapsed": 2.501826286315918,
+        "log_sha256": "5d7f62b1fcd4c1bd9ec0da7f2eb52119e3bb55b2410702f27ed8985ee92fafcf"
+      },
+      {
+        "gate": "retrieval-frozen",
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.46616387367248535,
+        "log_sha256": "d9992a0d9061aade42b928f866e9964b572cfaa6e63d68f0cbca38057275920c"
+      },
+      {
+        "gate": "retrieval-challenges",
+        "exit": 0,
+        "ok": true,
+        "elapsed": 1.2262942790985107,
+        "log_sha256": "fa885d19f410672246ef15b53e3a3ab1e5dcfe3ded526ab98aacc7fd6d84af5d"
+      },
+      {
+        "gate": "tools",
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.1634213924407959,
+        "log_sha256": "a8b891365bbb435bd7bed6c642219e70496046a553384837ec9931abce59a9b1"
+      },
+      {
+        "gate": "lfs",
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.9956645965576172,
+        "log_sha256": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9"
+      },
+      {
+        "gate": "diff",
+        "exit": 0,
+        "ok": true,
+        "elapsed": 0.036249399185180664,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "ok": true
+  },
+  "runtime_artifacts": {
+    "windows": {
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+      "size": 4990464,
+      "native_build_commit": "c29395a356ca4d02860f06b646234c14275edcb4",
+      "validation_source_commit": "f1e9571c682d0fdaecf233680f6c459361cfa811",
+      "validated_platform": "Windows x86_64 actual Godot4.7 headless, plus paused interactive visual apparatus QA"
+    },
+    "linux": {
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+      "size": 4416520,
+      "native_build_commit": "c29395a356ca4d02860f06b646234c14275edcb4",
+      "validation_source_commit": "f1e9571c682d0fdaecf233680f6c459361cfa811",
+      "validated_platform": "Linux x86_64 Godot4.7 actual headless under WSL Ubuntu24.04"
+    }
+  },
+  "retrieval": {
+    "frozen": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "sha256": "2dba07dde0c1ca9cbebf8993004650bc2bd8a76a4a9daa5f59e72c32fb6fee28"
+    },
+    "challenges": {
+      "summary": {
+        "questions": 158,
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 157,
+        "mrr_at_k": 0.8705,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "sha256": "cb352c8fd59580e51e4a5f000d8f56a2fd32e13c18bec0dbd24259a5ec926ce1"
+    },
+    "manual_new_question_fact_review": "GCR-LA-01 rank1 routes opt-in hypothesis, actual payload defaults, separate partial-support/barrel/owner gates and sleep/merge exclusions; retrieval rank is not independent answer proof."
+  },
+  "late_logs_in_earlier_archive": false,
+  "owner_verdict": null,
+  "pr349_merged": false
+}

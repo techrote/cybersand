@@ -1,0 +1,128 @@
+---
+title: GCR load-aware capacity experiment registration
+status: Planned
+document-kind: design
+scope: Preregistered mass-capacity hypothesis, preserved barrel controls and payload-mass compound qualification; no production promotion
+canonical-for: [gcr-load-aware-experiment]
+last-reviewed: 2026-11-02
+related-documents: [gcr-detachment-integration-plan.md, ../architecture/compound-granular-coupling.md]
+---
+
+# GCR-LA-001 registration
+
+## Inputs and authorization
+
+Owner authorizes a load-aware response experiment, partial support and developer
+gravity/mass/friction/inertia controls; sleep and merge remain excluded.
+Base is PR349 head d1978c14e40cc037f03c6a661e92e15aa0537415, isolated branch
+codex/gcr-load-aware-20261102. Fresh fetched main is
+a8f08a67fea3c58f6df7473cbae1831334fcc04e. PR349 stays unchanged/unmerged.
+Open PR346/348 own the retained independent GCR evidence; PR347/349 own
+detachment/composition. No second contact owner or material-policy change.
+
+## Frozen candidate before results
+
+Control arms legacy, R2 and A1 retain their exact equations. New opt-in LA uses
+A1 admission and the same effective-mass normal/friction/torque solve, contact
+weights, four passes, passivity guard, correction, displacement and async rules.
+Only passive capacity changes: scale = max(1, min(actual mass, 4096));
+capacity = min(20 * scale - accepted event cost, 2 * source count * scale).
+Events retain their original maximum20; they spend the same physical budget
+before passive response. Friction remains abs(Jt)<=mu*Jn at each contact.
+This is a deliberately simple mass-normalization hypothesis, not a derived
+granular strength model. Gravity does not directly grant support. Tiny-contact
+over-support is an explicit rejection condition. No tuning after results.
+LA equals A1 for mass<=1; actual inertia still determines rotational response.
+One compound shares one physical budget, independent of constituent shape count.
+
+## Controls and identities
+
+Retain the exact current 520-cell/six-shape stump/floor fixture as an explicitly
+confounded comparison. Its default mass520 and payload COM/inertia remain intact.
+Development-only controls rebuild a fresh session: gravity0..368.48 cell/s2,
+mass multiplier0.01..4, friction0..4, inertia multiplier0.01..4. Multipliers are
+independent (inertia is relative to original payload inertia). Overrides must be
+labelled, recorded and matched by native batch admission. They are exploratory,
+never evidence that a lightweight building passes the payload-mass gate.
+Default reset restores gravity92.12, mass/inertia multipliers1, friction0.78.
+The original friction transport value must be checked before freezing UI default;
+if it differs, retain original value and record the correction before acquisition.
+
+## Registered populations and gates
+
+First require native math/ownership controls, exact mass<=1 equivalence, one
+compound budget, finite refusal, no-support zero, friction cone, passivity and
+unchanged iteration/storage bounds. Native current controls and sanitizer plus
+source-matched Windows/Linux host tests precede physical interpretation.
+
+Physical population per OS, workers1, 1200 native ticks, tail300 observations:
+A1/LA pairs for the same barrel8x14 at masses0.5,1,2,8 with moderate30/high90
+entry (16 captures); detached actual mass520 exact fixture packed/embedded/mixed
+(6); isolated deep bed full/half/narrow support and excavation (8); dry and
+Water-only negative controls (4). Total34 captures per OS, maximum68; no repeats
+or efficacy-driven fixture additions without a dated preregistered amendment.
+Use real current asynchronous worker semantics, never fabricated sample ages.
+Barrel scripts must be source-matched to earlier feel apparatus; no actor thrust.
+Partial geometry and isolated fixture coordinates must be fixed in a committed
+machine manifest before physical acquisition. Acquisition is forbidden until then.
+
+Mass<=1 requires exact native response equality and no new host-path difference.
+At mass2 require impact penetration and overlap no worse than max(0.5cell,10%)
+and max(1cell,10%) respectively; upward rebound no more than control+2cell/s;
+tail vertical span no more than control+0.5cell. Heavy cases require meaningful
+improvement in sliding deceleration or supported descent without violating these
+bounds, and actual520-mass preservation. Undefined/incomplete overlap is null.
+Partial support must lose response after removal, fall naturally, and not acquire
+capacity from sibling shapes or absent material. Report tiny-patch hovering as
+failure, not successful friction. Hard collision cannot establish granular support.
+Exact registered material/Water conservation, no through-wall relocation, one
+main-thread wrench and bounded stale refusals remain mandatory. Sleep unchanged.
+Investigate timing increases both>25% and>25us; max work remains8192 updates.
+
+## Decision and evidence
+
+Reject/revise if partial support is implausibly strong, barrel feel regresses,
+conservation/ownership/passivity fails, or high-mass improvement is unsupported.
+Technical results cannot establish owner feel acceptance. Keep compact summaries,
+manifests and selected traces; preserve failures and hash large ignored raw data.
+Fresh native inputs require Windows/Linux rebuild/provenance before playable
+qualification. Ordinary default remains legacy; no merges or issue completion.
+
+## Apparatus correction before physical acquisition
+
+Inspection confirms the retained barrel feel fixture uses synchronous native
+stepping on one worker. Preserve that established apparatus for barrel comparisons;
+the compound population supplies the real asynchronous arm. Do not describe the
+barrel results as async qualification. This corrects the earlier blanket async
+wording before any physical candidate acquisition. The committed machine manifest
+is generated by `tools/experiments/gcr_load_manifest.py`; its coordinates freeze
+the full/half/two-cell-width isolated beds, removal of20 stump cells while Rapier
+is frozen, floor118 and excavation at observation600. The two-cell-width column
+is free to disperse under the ordinary cellular law; measure actual admitted
+support instead of assuming its authored width persists.
+
+Pre-acquisition barrel reconciliation: retained GCR `sand-vertical` uses width64,
+depth96 and gap2. Correct the draft manifest's gap14 to2 before any acquisition;
+otherwise free-fall would change the actual impact speed. Body8x14, angle0.08,
+speed30 and the retained helper now match that reference; mass and speed are the
+registered stratification variables. Duration1200 is deliberately shorter than
+the historical1800 and does not inherit its late-tail acceptance.
+
+## Excavation apparatus amendment after first acquisition
+
+First source1b5d6ef7 produced56 successful registered captures and two refused
+A1 excavation captures (one per OS). Each requested4224 cells in a single brush
+command, exceeding the existing4096-cell limit; neither request was applied.
+Preserve these failures. Split only this excavation request into at most two
+existing bounded brush commands; retain native ownership and all response laws.
+Run a held-body owner regression before further physical acquisition.
+
+Retain the56 valid trajectories unchanged. Permit exactly two apparatus
+replacement captures plus the ten previously unattempted registered captures.
+Maximum total attempts becomes70, yielding the original68-case primary population
+if all replacements complete. No efficacy-driven repeats or parameter tuning.
+Original protocol/source hashes remain attached to retained trajectories;
+replacement source and the narrowed source-equivalence disposition are separate.
+
+Pre-acquisition inspection correction: original bridge friction is0.78, not0.5;
+all default controls preserve0.78. No candidate results preceded this correction.

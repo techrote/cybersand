@@ -1752,3 +1752,11 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
 
 **Current experimental branch, 2026-11-02:** [native detachment and GCR](../architecture/compound-granular-coupling.md) now share one physical mass/COM/inertia, response budget and wrench. Native/sanitizer and target-OS mechanical gates pass; all56 registered captures conserve their measured quantities, but one of eight COM-entry gates fails and all comparative overlap gates remain unsupported. Hard stump/floor support is not isolated; true heavy granular bearing and mixed actor/aggregate coexistence remain unqualified. The fresh-session lab selector is developer-only. Actual520-unit payload mass is retained; no law/sleep/default change or owner acceptance is inferred. All drafts remain unmerged; see [dated evidence](../audits/2026-11-02-compound-granular-detachment.md).
+
+## Load-aware granular experiment — 2026-11-02
+
+The [preregistered LA successor](../operations/gcr-load-aware-registration.md) preserves PR349 unmerged and adds a separate
+experimental mass-capacity hypothesis, original building comparison, barrel
+preservation gates, partial support and staged developer controls. Sleep and
+production promotion remain excluded. Source implementation is not gameplay
+acceptance; consult the registration for the frozen population and limitations.
