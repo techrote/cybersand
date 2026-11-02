@@ -165,6 +165,11 @@ completion follows. All drafts remain unmerged.
 ## Load-aware successor experiment — 2026-11-02
 
 The owner separately authorizes [GCR-LA-001](../operations/gcr-load-aware-registration.md).
+The fixed20 ceiling originated in the September13
+[issue11 bearing implementation](https://github.com/techrote/cybersand/commit/d22ad88d621a9c0c58736ecac5a8a91bd21c23af),
+with per-source2 capacity. The inspected introduction supplies no physical
+derivation for20. Prior experiments deliberately retained it for causal isolation;
+fixed solver work does not require a mass-independent impulse magnitude.
 Current experimental source adds opt-in LA with A1 admission and mass-normalized
 passive capacity. Original legacy/R2/A1 laws remain controls; all earlier results
 above retain their source and status. No production default changes. LA preserves
@@ -187,3 +192,11 @@ Native reset-only lab multipliers must match the one actual physical state befor
 any compound mutation; native payload properties are not rewritten. Unsupported
 mixed compound/player ownership and sleep remain out of scope. Technical and
 owner gameplay qualification of LA are separate from its implementation.
+
+Current LA [qualification](../audits/2026-11-02-gcr-load-aware-response.md) retains
+68 primary captures and two apparatus failures. Small-body motion/results match
+exactly at mass<=1 and heavy impact improves, but rebound/tail gates fail and all
+18 compound overlap comparisons remain unsupported. LA has not passed its
+registered technical gate; owner acceptance is pending. F6 switches between
+barrel and structure review rooms, closing the previous owner; manual barrel
+review extends to1800 ticks while registered capture remains1200.

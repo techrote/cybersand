@@ -1,0 +1,488 @@
+{
+  "ok": true,
+  "scope": "mechanical and retained controls, no physical efficacy acceptance",
+  "host_cases": [
+    {
+      "name": "import",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 8.735883712768555,
+      "log_sha256": "84d36ec1e6014259f2b6d7449847cf19cabc440716a732e41a313b5a68b87cdd",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_load_controls",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--script",
+        "res://tests/test_gcr_load_controls.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 2.0780067443847656,
+      "log_sha256": "b2e38d50a1eef47464f8398a5f6cfdd21e647de9fad2cc83513899c0878a1c79",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_detachment_lab",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--script",
+        "res://tests/test_gcr_detachment_lab.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 2.0903258323669434,
+      "log_sha256": "282feae2347d467695be21cb8bb908146487d387438cf15746a341e4230f3bbc",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_detachment",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--script",
+        "res://tests/test_gcr_detachment.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 1.8262758255004883,
+      "log_sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_detachment_async",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--script",
+        "res://tests/test_gcr_detachment_async.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 3.109614610671997,
+      "log_sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579",
+      "ok": true
+    },
+    {
+      "name": "test_solid_detachment_compound_response",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--script",
+        "res://tests/test_solid_detachment_compound_response.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 0.40792131423950195,
+      "log_sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_protocol",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--script",
+        "res://tests/test_gcr_protocol.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 0.5125226974487305,
+      "log_sha256": "a4a0499c90df41053877985a6aa85f7a87df5019504d8510f29226bf312d25f4",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_admission",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--script",
+        "res://tests/test_gcr_admission.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 1.0581212043762207,
+      "log_sha256": "6216b59567be6d89c907914a973e6f36bb4ab1da7115f864fbb92c2b9370a080",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_async",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot",
+        "--script",
+        "res://tests/test_gcr_async.gd",
+        "--",
+        "--protocol=C:/Users/_/.codex/worktrees/gcr-load/khybersand/docs/audits/gcr001-2026-11-01/protocol.json"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 32.34621524810791,
+      "log_sha256": "2107de52e8364fd1a50674d2e4b47975c28b99c3b50847d6454c4258417f7dbc",
+      "ok": true
+    },
+    {
+      "name": "import",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 18.9659161567688,
+      "log_sha256": "a4ad62de6ebd38f54ae3c81587f233cc5de96e88c0160650a7ea1b83b91fc342",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_load_controls",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--script",
+        "res://tests/test_gcr_load_controls.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 4.843456983566284,
+      "log_sha256": "bd1dd9a7a3d029a93be48eb2ced8fcd3597f343c4a420dd015ac31b462e365a8",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_detachment_lab",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--script",
+        "res://tests/test_gcr_detachment_lab.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 4.645284414291382,
+      "log_sha256": "800d1bbdad34d8056a7178f493eb568712c85acb716e823557d1e391976adb64",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_detachment",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--script",
+        "res://tests/test_gcr_detachment.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 4.2295823097229,
+      "log_sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_detachment_async",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--script",
+        "res://tests/test_gcr_detachment_async.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 5.345830678939819,
+      "log_sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3",
+      "ok": true
+    },
+    {
+      "name": "test_solid_detachment_compound_response",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--script",
+        "res://tests/test_solid_detachment_compound_response.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 0.7039978504180908,
+      "log_sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_protocol",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--script",
+        "res://tests/test_gcr_protocol.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 0.6813714504241943,
+      "log_sha256": "a2a783f1fba990078b34f4b4e7c1acf7f0f1d42b34d93a4178b6f3d04aa20b9d",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_admission",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--script",
+        "res://tests/test_gcr_admission.gd"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 1.4950957298278809,
+      "log_sha256": "95bbce731bb2e5386969b8864c90ae7f9d4fbd0e94d8906786a9ff864f4a23e3",
+      "ok": true
+    },
+    {
+      "name": "test_gcr_async",
+      "source": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--",
+        "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot-linux",
+        "--script",
+        "res://tests/test_gcr_async.gd",
+        "--",
+        "--protocol=/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/docs/audits/gcr001-2026-11-01/protocol.json"
+      ],
+      "exit": 0,
+      "errors": false,
+      "elapsed": 34.68532681465149,
+      "log_sha256": "fae727fe7bcee1619dc3e8e2a45450a50d69dcbf3866775f828d4bf6cbf47a9b",
+      "ok": true
+    }
+  ],
+  "extra_controls": [
+    {
+      "platform": "windows",
+      "case": "test_rem002_body_granular",
+      "exit": 0,
+      "ok": true,
+      "elapsed": 3.6330137252807617,
+      "log_sha256": "9679fb4f7e8478d7bf8a1218ac266b1396f09936a00efe5e8dda5debd8d93288"
+    },
+    {
+      "platform": "windows",
+      "case": "test_rem003_player_granular",
+      "exit": 0,
+      "ok": true,
+      "elapsed": 83.32079720497131,
+      "log_sha256": "990ad5ae6c3e3c891855072d98fe4a8aea8624be897c00ddc667aa75f6f7dbb9"
+    },
+    {
+      "platform": "windows",
+      "case": "test_physics_instrumentation",
+      "exit": 0,
+      "ok": true,
+      "elapsed": 1.322465181350708,
+      "log_sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738"
+    },
+    {
+      "platform": "linux",
+      "case": "test_rem002_body_granular",
+      "exit": 0,
+      "ok": true,
+      "elapsed": 4.931058168411255,
+      "log_sha256": "f8a4682de50aa128224ca2d907d0ce63524f1b82f5ec99b94c7b42e0a57ab55f"
+    },
+    {
+      "platform": "linux",
+      "case": "test_rem003_player_granular",
+      "exit": 0,
+      "ok": true,
+      "elapsed": 61.42313075065613,
+      "log_sha256": "e55453cf36e6ef8723645e70af5d9bf0fabd09fd67d9d0c424883f3a747d9230"
+    },
+    {
+      "platform": "linux",
+      "case": "test_physics_instrumentation",
+      "exit": 0,
+      "ok": true,
+      "elapsed": 1.8434689044952393,
+      "log_sha256": "c8fb193284d1e4d14eef32071ba747b3fa991ef0c7f7f6f27948bfc683ebdc5e"
+    }
+  ],
+  "native_builds": [
+    {
+      "platform": "windows",
+      "source": "c29395a356ca4d02860f06b646234c14275edcb4",
+      "command": [
+        "C:/Program Files/Git/bin/bash.exe",
+        "tools/build_native_extension_windows.sh"
+      ],
+      "start": "2026-11-02T19:04:48.087992+00:00",
+      "timeout": 1200,
+      "exit": 0,
+      "log_sha256": "1c26d634c3e0294c82fde52639b62df50926b248b87f23d3b282e3578a320a26"
+    },
+    {
+      "platform": "linux",
+      "source": "c29395a356ca4d02860f06b646234c14275edcb4",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-load\\khybersand",
+        "--",
+        "env",
+        "LINUX_CXX=/usr/bin/g++-13",
+        "GODOT_CPP_ROOT=/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496",
+        "CYBERSAND_NATIVE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "bash",
+        "tools/build_native_extension.sh"
+      ],
+      "start": "2026-11-02T19:04:48.088249+00:00",
+      "timeout": 1200,
+      "exit": 0,
+      "log_sha256": "ed2c36d01029fcdcb60e1620d5be5709c9fb41c76f3ad1833fb864958b0627f1"
+    }
+  ],
+  "math_sanitized_sha256": "11d22233f85799e1ae521f8af913dfa3fcbda3a9245f27d37c7789adc886a57a",
+  "capture_parse_sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198",
+  "prior_failures": {
+    "host-load": "async invocation omitted external protocol path; both platforms refused; other cases passed",
+    "load-controls-windows": "started before rebuilt runtime became available; preserved six construction/handoff failures; corrected source-matched28-check rerun passed",
+    "la-first": "abbreviated expected HEAD refused before build",
+    "la-compile": "HEAD changed during build; two compilation outputs, no accepted matrix; retained logs; no executable test qualification"
+  },
+  "retained_original_receipt_sha256": "c1dd3e918da405ecb8d85bd944cad465bab913e7b3640efe3613d1e474da2d15",
+  "apparatus_amendment_controls": [
+    {
+      "platform": "windows",
+      "checks": 31,
+      "ok": true,
+      "log_sha256": "86a3581c981f041d662a3d6f64bbb00d69947d9ed1a4282457a7abb6c18cc8b4"
+    },
+    {
+      "platform": "linux",
+      "checks": 31,
+      "ok": true,
+      "log_sha256": "86a3581c981f041d662a3d6f64bbb00d69947d9ed1a4282457a7abb6c18cc8b4"
+    }
+  ],
+  "full_native_completion": {
+    "completed_utc": "2026-11-02T19:29:37.919264+00:00",
+    "source_head": "cb3fd2155e2c4de7c7aa176a9b5098625a585b16",
+    "raw_inputs_sha256": "c6f03022900f9d7a529a237caca4d836bbc8b4ec9d639d3f1993f71009c1c300",
+    "input_manifest_sha256": "875c68ac776fec23f729f17ed3e3cfd9370719b00b5ef145b70c737493c6f0cc",
+    "receipt_sha256": "6adf873b46d65c538511c6dec6258a84d64cdae88a7761c32c2de383b22dedfe",
+    "driver_sha256": "fa91076e7b66f24987f7e7bae105b14f9fd6db9a6f5a5696f1ba35b619bce6bc",
+    "all_native_inputs_unchanged": true,
+    "all_18_planned_calls_completed": true,
+    "accepted": true
+  },
+  "ui_current": {
+    "windows": {
+      "checks": 17,
+      "source": "34a5ac934e52aebd8778aecc14269b02bb38a1b0",
+      "log_sha256": "6b378124311a7b0a92f8b22e6cddca0d165a95a0eb44f05fedec2a6dc3773731",
+      "scope": "actual fresh parameter transport and room retirement; zero barrel physics steps"
+    },
+    "linux": {
+      "checks": 17,
+      "source": "34a5ac934e52aebd8778aecc14269b02bb38a1b0",
+      "log_sha256": "6b378124311a7b0a92f8b22e6cddca0d165a95a0eb44f05fedec2a6dc3773731",
+      "scope": "actual fresh parameter transport and room retirement; zero barrel physics steps"
+    }
+  }
+}

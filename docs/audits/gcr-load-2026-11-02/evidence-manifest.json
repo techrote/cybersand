@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "registration": "GCR-LA-001-2026-11-02",
+  "created_utc": "2026-11-02T19:52:46.433701+00:00",
+  "raw_archive": {
+    "path": "build/la-evidence/gcr-la-raw-20261102.zip",
+    "sha256": "8fa477fe43813592f06026b8a3c63a23ea9828f3f108c7ca9ab733ed768bed19",
+    "size": 28656004,
+    "entries": 246,
+    "all_entries_decompressed_and_hashed": true,
+    "availability": "local ignored only; not uploaded or remotely recoverable"
+  },
+  "committed_summaries": {
+    "engineering-summary.json": "ba0a74b7ea710337d62556ccbc9f49415e0e63279d3f7edabb014ed0799bfaad",
+    "mechanical-summary.json": "d1692a3a45187cb7a4b9acc1b5a446529100b770ab64c110463bae677829d5a1",
+    "physical-summary.json": "0d405acf23d7e7edae1b7be58c907a84c9701116f4b630a4947b863d6e3c195e",
+    "protocol.json": "60d17f6cf32b38442c57e8ca2fe8c161b6e6f174348895e4a52ef1de2da5270f",
+    "raw-files.json": "0c994ebf5093ad4f20e5cb39e2119c6aeaa9187bb8b92900cfc4abe525db00ad",
+    "selected-traces.json": "6117040b9801738937b21a5fb5e7b15cf8c4696d9eb9618da1bb989d0e7b256d"
+  },
+  "late_publication_checks": "Recorded separately after archive creation; not included in this earlier raw bundle",
+  "acceptance": "Registered technical gates not met; owner gameplay acceptance pending; no production/default promotion or merge"
+}

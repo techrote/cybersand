@@ -49,7 +49,7 @@ def reduce_capture(path):
                 if n>0:values.append((current[total]-previous[total])/n)
                 previous=current
             timing[name+'_per_observation_mean']=distribution(values)
-    out={'status':'captured','raw_sha256':digest(path),'rows':len(rows),'entry_peak':max(entries),
+    out={'status':'captured','raw_sha256':digest(path),'capture_identity':raw.get('identity',{}),'rows':len(rows),'entry_peak':max(entries),
          'entry_definition':'union bottom relative to bed surface' if barrel else 'COM relative to release; not cellular penetration',
          'overlap_peak_observed':max(overlap_values) if overlap_values else None,'overlap_coverage':len(overlap_values)/len(rows),
          'rebound_upward':max(0,-min(v[1] for v in velocities)),
