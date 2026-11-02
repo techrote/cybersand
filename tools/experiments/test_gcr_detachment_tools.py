@@ -148,6 +148,16 @@ class QualificationTests(unittest.TestCase):
         self.assertEqual(value['passivity_rejected'],1)
         self.assertIsNone(analyze.native_observed_ledger([missing])['passivity_rejected'])
 
+    def test_tiny_offered_legacy_correction_is_not_an_application(self):
+        app={'accepted':True,'actual_impulse':[0.,0.],'actual_angular_impulse':0.,'correction':[-1e-8,0.],
+             'correction_applications':0,'velocity_before_correction':[2.,3.],'velocity_after_zeroing':[2.,3.]}
+        row={'metrics':{'last_compound_observation':{'snapshot_serial':1,'application':app}}}
+        value=analyze.application_ledger([row,row])
+        self.assertEqual(value['correction_count'],0)
+        self.assertIsNone(value['correction_norm']['max'])
+        self.assertEqual(value['zeroing_count'],0)
+        self.assertEqual(value['actually_applied_impulse'],[0.,0.])
+
 
 if __name__=='__main__':
     unittest.main()
