@@ -28,16 +28,14 @@ bool CyberNativeCellWorld::prepare_gcr_compound_coupling(const PackedFloat64Arra
         !integer("body_generation",solid.body_generation) || !integer("physics_epoch",solid.physics_epoch)) return refuse();
     if (gcr_compound_mode_ && (gcr_compound_token_!=solid.token ||
         gcr_compound_generation_!=solid.body_generation || gcr_compound_physics_epoch_!=solid.physics_epoch)) return refuse();
-    if (states.is_empty()) {
-        current_bodies_={}; prepare_body_coupling(false); gcr_response_valid_=false;
-        return !world_->has_failed();
-    }
+    if (states.is_empty()) return refuse();
     if (states.size()!=static_cast<std::int64_t>(solid.shape_count*17)) return refuse();
     std::array<cybersand::soliding::SolidShape,cybersand::soliding::kSolidShapes> shapes{};
     if (world_->copy_solid_detachment_shapes(shapes)!=solid.shape_count) return refuse();
     std::array<bool,cybersand::World::kMaximumTransientBodies+1U> seen{};
     for(std::int64_t offset=0;offset<states.size();offset+=17) {
         for(int field=0;field<17;++field) if(!std::isfinite(states[offset+field])) return refuse();
+        if(std::abs(states[offset+3])>static_cast<double>(std::numeric_limits<real_t>::max())) return refuse();
         const double identity=states[offset];
         if(identity<1 || identity>static_cast<double>(solid.shape_count) || std::trunc(identity)!=identity) return refuse();
         const auto id=static_cast<std::size_t>(identity);if(seen[id]) return refuse();seen[id]=true;
@@ -72,15 +70,23 @@ bool CyberNativeCellWorld::prepare_gcr_compound_coupling(const PackedFloat64Arra
             std::abs(static_cast<double>(local.x))+shape.width*.5,
             std::abs(static_cast<double>(local.y))+shape.height*.5});
         const double tolerance=4.*std::numeric_limits<real_t>::epsilon()*scale;
+        if(!expected.is_finite() || !std::isfinite(tolerance)) return refuse();
         if(std::abs(states[offset+1]-expected.x)>tolerance || std::abs(states[offset+2]-expected.y)>tolerance) return refuse();
     }
     // All lease/shape/physical checks precede masks, serials and material work.
-    gcr_compound_mode_=true;gcr_compound_count_=solid.shape_count;
-    gcr_compound_token_=solid.token;gcr_compound_generation_=solid.body_generation;
-    gcr_compound_physics_epoch_=solid.physics_epoch;gcr_preparing_compound_=true;
-    struct FlagGuard {bool& flag;~FlagGuard(){flag=false;}} guard{gcr_preparing_compound_};
-    const bool accepted=prepare_gcr_coupling(states,resolve_overlaps);
-    return accepted && compound_lease_current();
+    gcr_response_valid_=false;
+    try {
+        gcr_compound_mode_=true;gcr_compound_count_=solid.shape_count;
+        gcr_compound_token_=solid.token;gcr_compound_generation_=solid.body_generation;
+        gcr_compound_physics_epoch_=solid.physics_epoch;gcr_preparing_compound_=true;
+        struct FlagGuard {bool& flag;~FlagGuard(){flag=false;}} guard{gcr_preparing_compound_};
+        const bool accepted=prepare_gcr_coupling(states,resolve_overlaps);
+        return accepted && compound_lease_current();
+    } catch (...) {
+        world_->quarantine_external_coupling();
+        invalidate_gcr_response(); ++tick_failure_count_;
+        return false;
+    }
 }
 
 CyberNativeCellWorld::CompoundEvaluation CyberNativeCellWorld::evaluate_gcr_compound() const {

@@ -380,6 +380,52 @@ void generation_and_failed_world_safety() {
     expect(failed.world.inspect_solid_detachment().aggregate_owned_count == owned, "failure retains aggregate-owned material");
 }
 
+void external_coupling_quarantine_retains_authority() {
+    Fixture f; f.enable(); f.cut(); f.prepare(); f.acknowledge();
+    const auto token = f.world.inspect_solid_detachment().token;
+    expect(f.world.commit_solid_detachment(token) == SolidOutcome::Accepted, "commit before coupling quarantine");
+    expect(f.world.finalize_solid_detachment(f.synthetic_contact_receipt()) == SolidOutcome::Accepted,
+        "active before coupling quarantine");
+    f.world.configure_transient_obstacles({0, 0, 128, 128});
+    f.world.set(5, 5, Material::Sand);
+    expect(f.world.set_transient_obstacle(5, 5, 1), "retain partial contact mask");
+    const auto before = f.world.inspect_solid_detachment();
+    const auto members = f.members();
+    const auto content = f.world.content_hash();
+    const auto tick = f.world.tick_index(), completed = f.world.completed_tick_index();
+    static_assert(noexcept(f.world.quarantine_external_coupling()));
+    {
+        struct Guard { Guard() { forbid_allocation = true; } ~Guard() { forbid_allocation = false; } } guard;
+        f.world.quarantine_external_coupling();
+        f.world.quarantine_external_coupling(); // Repeated quarantine never restores or mutates payload.
+    }
+    const auto after = f.world.inspect_solid_detachment();
+    expect(f.world.has_failed() && f.world.solid_detachment_fenced() && after.phase == SolidPhase::Quarantined,
+        "coupling failure quarantines active aggregate and World");
+    expect(after.token == before.token && after.body_generation == before.body_generation &&
+        after.physics_epoch == before.physics_epoch && after.payload_digest == before.payload_digest &&
+        after.shape_digest == before.shape_digest && after.aggregate_owned_count == before.aggregate_owned_count,
+        "quarantine retains exact aggregate identity and ownership");
+    expect(f.members() == members && f.world.content_hash() == content &&
+        f.world.transient_obstacle_at(5, 5) == 1, "quarantine preserves payload, actual cells and partial masks");
+    expect(f.world.tick_index() == tick && f.world.completed_tick_index() == completed, "quarantine invents no tick");
+    throws([&] { (void)f.world.tick(); }, "quarantined coupling cannot tick");
+    throws([&] { f.world.set(5, 5, Material::Empty); }, "quarantined coupling cannot edit");
+    expect(f.world.rollback_solid_detachment(token) == SolidOutcome::WorldFailed,
+        "quarantined active aggregate cannot restore cells");
+    expect(!f.world.set_transient_obstacle(6, 5, 1) && !f.world.relocate_stored_cell(5, 5, 6, 5),
+        "quarantine refuses mask and relocation mutation");
+
+    auto c = config(1); c.settled_discovery_enabled = true;
+    World discovery(c);
+    {
+        struct Guard { Guard() { forbid_allocation = true; } ~Guard() { forbid_allocation = false; } } guard;
+        discovery.quarantine_external_coupling();
+    }
+    expect(discovery.has_failed() && discovery.settled_discovery_halted() == DiscoveryHalt::ProducerFailure,
+        "external coupling quarantine fails enabled discovery without allocation");
+}
+
 int main() {
     try {
         const auto run = [](const char* name, auto test) { test(); ++cases; std::cout << "PASS " << name << '\n'; };
@@ -392,6 +438,7 @@ int main() {
         run("allocation-free prepare/commit/rollback", no_heap_allocation_during_handoff);
         run("signed chunk seams/configured workers1/4 parity", signed_seams_and_worker_configuration_parity);
         run("revision exhaustion/rollback headroom/failed World", generation_and_failed_world_safety);
+        run("allocation-free external coupling quarantine preserves actual authority", external_coupling_quarantine_retains_authority);
         std::cout << "SOL-DETACH-001 A1 native precursor: " << cases << " groups, " << checks << " checks passed.\n"
                   << "Actual native World exercised; bridge receipts are synthetic. Rapier motion and async host NOT qualified.\n";
         return 0;

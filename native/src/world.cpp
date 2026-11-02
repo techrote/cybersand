@@ -4802,6 +4802,12 @@ void World::require_healthy() const {
 }
 
 bool World::has_failed() const noexcept { return tick_failed_; }
+void World::quarantine_external_coupling() noexcept {
+    tick_failed_ = true;
+    if (settled_discovery_) settled_discovery_->fail();
+    if (solid_detachment_ && solid_detachment_->snapshot.phase == soliding::SolidPhase::Active)
+        solid_detachment_->snapshot.phase = soliding::SolidPhase::Quarantined;
+}
 std::uint64_t World::completed_tick_index() const noexcept { return completed_tick_index_; }
 std::uint64_t World::tick_index() const noexcept { return tick_index_; }
 std::size_t World::chunk_count() const noexcept { return chunks_.size(); }
