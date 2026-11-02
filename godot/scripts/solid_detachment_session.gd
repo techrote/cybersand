@@ -638,7 +638,12 @@ func excavate_support() -> bool:
 		for x: int in range(31 if _isolated_surroundings else 40, 119 if _isolated_surroundings else 102):
 			points.append(x)
 			points.append(y)
-	return emit_cells(points, 0)
+	# The isolated4224-cell edit exceeds one4096-cell brush footprint. Use at
+	# most two ordinary owner commands; never expand the shared paint capacity.
+	for offset: int in range(0,points.size(),CyberSimulationWorker.MAX_BRUSH_FOOTPRINT_CELLS*2):
+		if not emit_cells(points.slice(offset,mini(points.size(),offset+CyberSimulationWorker.MAX_BRUSH_FOOTPRINT_CELLS*2)),0):
+			return false
+	return true
 
 func wait_native_ticks(ticks: int, timeout_ms: int = 0) -> bool:
 	if worker == null or ticks < 1 or active == false or _failed:

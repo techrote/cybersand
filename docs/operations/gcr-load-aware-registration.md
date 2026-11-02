@@ -108,5 +108,21 @@ speed30 and the retained helper now match that reference; mass and speed are the
 registered stratification variables. Duration1200 is deliberately shorter than
 the historical1800 and does not inherit its late-tail acceptance.
 
+## Excavation apparatus amendment after first acquisition
+
+First source1b5d6ef7 produced56 successful registered captures and two refused
+A1 excavation captures (one per OS). Each requested4224 cells in a single brush
+command, exceeding the existing4096-cell limit; neither request was applied.
+Preserve these failures. Split only this excavation request into at most two
+existing bounded brush commands; retain native ownership and all response laws.
+Run a held-body owner regression before further physical acquisition.
+
+Retain the56 valid trajectories unchanged. Permit exactly two apparatus
+replacement captures plus the ten previously unattempted registered captures.
+Maximum total attempts becomes70, yielding the original68-case primary population
+if all replacements complete. No efficacy-driven repeats or parameter tuning.
+Original protocol/source hashes remain attached to retained trajectories;
+replacement source and the narrowed source-equivalence disposition are separate.
+
 Pre-acquisition inspection correction: original bridge friction is0.78, not0.5;
 all default controls preserve0.78. No candidate results preceded this correction.

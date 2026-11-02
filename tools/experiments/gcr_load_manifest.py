@@ -15,7 +15,8 @@ def manifest():
         cases.append({'id':surroundings,'kind':'compound','surroundings':surroundings})
     return {'registration':'GCR-LA-001-2026-11-02','arms':['A1','LA'],
             'platforms':['Windows','Linux'],'workers':[1],'cases':cases,
-            'captures_per_platform':34,'maximum_captures':68,'ticks':1200,'tail_samples':300,
+            'captures_per_platform':34,'maximum_captures':70,'primary_captures':68,'ticks':1200,'tail_samples':300,
+            'apparatus_amendment':{'failed_attempts':2,'retained_valid':56,'replacement_attempts':2,'unattempted':10,'reason':'4224-cell excavation exceeded4096-cell brush footprint; split into two bounded existing commands; no law change'},
             'wall_timeout_seconds':240,
             'compound_recipe':{'source':'godot/scripts/solid_detachment_session.gd',
                 'payload_members':520,'mass':520,'shapes':6,'inertia':109907693/1560,

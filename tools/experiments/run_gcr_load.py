@@ -1,6 +1,6 @@
 """Acquire only GCR-LA-001's committed population, after mechanical gates."""
 from concurrent.futures import ThreadPoolExecutor
-import argparse,hashlib,json,os,subprocess,time
+import argparse,hashlib,json,os,subprocess,time,shutil
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -20,6 +20,7 @@ def main():
     parser.add_argument('--godot-windows',type=Path,required=True)
     parser.add_argument('--godot-linux',required=True,help='Pinned Linux engine path inside WSL')
     parser.add_argument('--wsl-distro',default='Ubuntu-24.04')
+    parser.add_argument('--resume-from',type=Path,help='Only the registered two-failure apparatus amendment')
     args=parser.parse_args()
     if not args.run: parser.error('No runtime execution without --run')
     if args.output.exists(): raise RuntimeError('Never overwrite retained acquisition')
@@ -33,6 +34,17 @@ def main():
     identity={'source':head,'protocol_sha256':sha(PROTOCOL),'mechanical_sha256':sha(args.mechanical),'native_gate_sha256':sha(args.native_core),'platforms':{},
               'windows_engine_sha256':sha(args.godot_windows),
               'linux_engine_sha256':subprocess.check_output(['wsl','-d',args.wsl_distro,'--','sha256sum',args.godot_linux],text=True).split()[0]}
+    retained={}
+    if args.resume_from:
+        previous=json.loads((args.resume_from/'identity.json').read_text())
+        all_previous=[]
+        for platform in ['windows','linux']:
+            data=json.loads((args.resume_from/(platform+'-campaign.json')).read_text())
+            retained[platform]={(r['case'],r['arm']):r for r in data if r['ok']}
+            all_previous+=data
+        if len(all_previous)!=58 or sum(bool(r['ok']) for r in all_previous)!=56:raise RuntimeError('Unregistered restart population')
+        if any(r['case']!='isolated_excavate' or r['arm']!='A1' for r in all_previous if not r['ok']):raise RuntimeError('Wrong apparatus failures')
+        identity['retained_from']={'source':previous['source'],'protocol_sha256':previous['protocol_sha256'],'identity_sha256':sha(args.resume_from/'identity.json'),'valid_captures':56,'failed_attempts_preserved':2,'scope':'only excavation owner-command batching changes; no efficacy tuning or valid trajectory repeats'}
     for command in [[str(args.godot_windows),'--version'],['wsl','-d',args.wsl_distro,'--',args.godot_linux,'--version']]:
         if subprocess.check_output(command,text=True).strip()!='4.7.stable.official.5b4e0cb0f':raise RuntimeError('Pinned Godot4.7 runtime required')
     for platform in ['windows','linux']:
@@ -57,6 +69,16 @@ def main():
         for index,case in enumerate(protocol['cases']):
             for arm in (protocol['arms'] if index%2==0 else list(reversed(protocol['arms']))):
                 name=f'{platform}-{case["id"]}-{arm}';output=args.output/(name+'.json');log=args.output/(name+'.log')
+                prior=retained.get(platform,{}).get((case['id'],arm))
+                if prior:
+                    for suffix,key in [('.json','raw_sha256'),('.log','log_sha256')]:
+                        original=args.resume_from/(name+suffix)
+                        if sha(original)!=prior[key]:raise RuntimeError('Retained evidence changed')
+                        shutil.copyfile(original,args.output/(name+suffix))
+                    record={**prior,'retained_from':str(args.resume_from/name),'source':identity['retained_from']['source']}
+                    rows.append(record)
+                    (args.output/(platform+'-campaign.json')).write_text(json.dumps(rows,indent=2)+'\n')
+                    continue
                 command=engine+['--headless','--path',convert(project),'--script','res://qualification/gcr_load_capture.gd','--','--protocol='+convert(PROTOCOL),'--case='+case['id'],'--candidate='+arm,'--output='+convert(output)]
                 start=time.time()
                 with log.open('xb') as stream:
@@ -71,7 +93,7 @@ def main():
                 if not record['ok']: return False
         return len(rows)==protocol['captures_per_platform']
     with ThreadPoolExecutor(2) as pool: results=list(pool.map(lane,['windows','linux']))
-    summary={'ok':all(results),'identity_sha256':sha(args.output/'identity.json'),'maximum_captures':68,'source':head}
+    summary={'ok':all(results),'identity_sha256':sha(args.output/'identity.json'),'maximum_attempts':protocol['maximum_captures'],'primary_captures':68,'source':head}
     (args.output/'completion.json').write_text(json.dumps(summary,indent=2)+'\n')
     return 0 if all(results) else 1
 if __name__=='__main__':raise SystemExit(main())
