@@ -1,0 +1,57 @@
+{
+  "schema": "cybersand.owner-burrowing-observation.v1",
+  "archive_name": "2026-11-02_23-04-23-895_batch0031_31.038s_931frames.zip",
+  "archive_sha256": "cd865ec82aa58f9d6ea5e0a39eafe0a1529d7ca4b9500a97fb60671fca9c24ac",
+  "frames": 931,
+  "target_fps": 30,
+  "capture_duration_seconds": 31.038,
+  "scope": "Owner recording; crop lacks source/control readout. Selected frame bytes/timestamps are observations, not physics/input receipts. Original images remain local.",
+  "owner_report": "defaults",
+  "interpreted_settings": {
+    "response": "LA",
+    "budget": 20,
+    "mass_multiplier": 1,
+    "inertia_multiplier": 1
+  },
+  "settings_status": "Owner reported; not independently verified from crop",
+  "craft_identity": "unconfirmed",
+  "observations": "Predominantly slow leftward burrowing and rotation into a gray bank. Hull circle stays near the same vertical level; bank reshapes. Exhaust-like graphic is visible but does not prove actual applied force.",
+  "selected_frames": [
+    {
+      "frame": 1,
+      "file": "batch0031_frame00000001_00-00-00-00.png",
+      "elapsed_ms": 0.456,
+      "sha256": "a195b4f0bb6f7e962fa78cd27ed26f23cccdc72b33ac9efde6e47e3b696e896a",
+      "visual_observation": "Hull near-vertical, outside/right of gray bank; no visible exhaust."
+    },
+    {
+      "frame": 91,
+      "file": "batch0031_frame00000091_00-00-03-00.png",
+      "elapsed_ms": 3008.064,
+      "sha256": "1be73843c7806699d85710515e1769f000d3ab25377df2c5617a33fe2f94eaa0",
+      "visual_observation": "Hull slightly tilted; bright exhaust/drive graphic visible on right."
+    },
+    {
+      "frame": 301,
+      "file": "batch0031_frame00000301_00-00-10-00.png",
+      "elapsed_ms": 10019.266,
+      "sha256": "dc7e16c22bdb6a4a33eca243751985ffd88539dec805178e3ec98e634b503613",
+      "visual_observation": "Hull farther left into bank, with visible exhaust; circle marking near same vertical level."
+    },
+    {
+      "frame": 601,
+      "file": "batch0031_frame00000601_00-00-20-00.png",
+      "elapsed_ms": 20024.867,
+      "sha256": "7393ebf80f54bd105af1693a082858adb1f62bef6f42fbb3b3cbf008d8cd0aa2",
+      "visual_observation": "Hull roughly diagonal, deeper left into bank; exhaust graphic visible."
+    },
+    {
+      "frame": 931,
+      "file": "batch0031_frame00000931_00-00-31-00.png",
+      "elapsed_ms": 31028.62,
+      "sha256": "c0578e4a451905fbf8448d2c342553e37caf3763d413398d4b858ca7427da2b3",
+      "visual_observation": "Final hull substantially left of start, diagonal and partly surrounded by bank; exhaust graphic remains visible."
+    }
+  ],
+  "causal_limit": "Cannot isolate jitter, presentation sampling, passive creep, commanded drive, correction, displacement or sample delivery. No material-law tuning or physical-envelope claim follows."
+}

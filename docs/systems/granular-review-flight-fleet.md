@@ -13,6 +13,8 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 The [dated host qualification](../audits/2026-11-02-flyer-budget-playground.md)
 records the current tested application checkpoint, retained failures and native
 SDK reuse separately from earlier physical qualification.
+The [actuator/navigation follow-up](../audits/2026-11-02-flyer-actuator-limits-and-navigation.md)
+records thrust/torque controls, F2 return routes and the cropped burrowing evidence.
 
 ## Which craft and materials are available?
 
