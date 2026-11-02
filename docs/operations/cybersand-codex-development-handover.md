@@ -1558,3 +1558,11 @@ experimental mass-capacity hypothesis, original building comparison, barrel
 preservation gates, partial support and staged developer controls. Sleep and
 production promotion remain excluded. Source implementation is not gameplay
 acceptance; consult the registration for the frozen population and limitations.
+
+## Budget and contact-rest comparisons — 2026-11-02
+
+The owner authorizes [GCR-REST-001](gcr-rest-registration.md): budget5/10/20/40/80, contact persistence,
+rest-aware correction and constrained residual catch, plus payload mass/inertia
+controls through64. PR349/350 stay unmerged and their source/evidence remain
+controls. Sleep and material-law changes stay excluded. The88-case bounded
+registration precedes results; no production acceptance follows from implementation.

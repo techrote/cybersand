@@ -341,3 +341,8 @@ Load-aware capacity, preserved barrel feel, actual building mass and partial
 support route through the [LA registration](../operations/gcr-load-aware-registration.md)
 and [compound contract](../architecture/compound-granular-coupling.md#load-aware-successor-experiment--2026-11-02).
 These experimental routes do not promote an ordinary default or imply owner acceptance.
+
+Budget sweeps,64× payload overrides, persistent contact and residual-catch
+authority route through [granular contact rest](../architecture/granular-contact-rest.md)
+and its [registration](../operations/gcr-rest-registration.md). These experimental
+routes preserve unknown/failed qualification and do not authorize sleep or merge.

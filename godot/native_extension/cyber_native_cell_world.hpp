@@ -64,10 +64,11 @@ public:
     void prepare_rigid_body_coupling(const PackedFloat32Array& states,
                                      bool resolve_overlaps = true);
     [[nodiscard]] PackedFloat32Array rigid_body_results() const;
-    bool prepare_gcr_coupling(const PackedFloat64Array& states, bool resolve_overlaps = true);
+    bool prepare_gcr_coupling(const PackedFloat64Array& states, bool resolve_overlaps = true, const Dictionary& rest_context = Dictionary());
+    [[nodiscard]] Dictionary gcr_rest_receipt() const;
     [[nodiscard]] PackedFloat64Array gcr_body_results() const;
     bool prepare_gcr_compound_coupling(const PackedFloat64Array& states,
-        const Dictionary& lease, bool resolve_overlaps = true);
+        const Dictionary& lease, bool resolve_overlaps = true, const Dictionary& rest_context = Dictionary());
     [[nodiscard]] PackedFloat64Array gcr_compound_results() const;
     [[nodiscard]] Dictionary gcr_compound_diagnostics() const;
     [[nodiscard]] Dictionary gcr_diagnostics() const;
@@ -258,6 +259,24 @@ private:
     bool gcr_enabled_ = false;
     bool gcr_admission_a1_ = false;
     bool gcr_load_aware_ = false;
+    bool gcr_rest_enabled_ = false;
+    String gcr_rest_mode_ = "control";
+    double gcr_base_budget_ = 20., gcr_rest_gravity_ = 92.12;
+    struct RestContext {bool known=false,external_drive=false,hard_clearance=false;std::int32_t last_applied_sample=-1;};
+    RestContext gcr_rest_context_{};
+    mutable std::unique_ptr<cybersand::gcr::RestCache> gcr_rest_cache_;
+    struct RestHistory {bool valid=false;std::int32_t sample=-1;std::uint32_t quiet=0;std::uint64_t signature=0;
+        Vector2 com{};double rotation=0,mass=0,inertia=0,mu=0,dt=0;};
+    mutable RestHistory gcr_rest_history_{};
+    std::array<std::uint64_t,cybersand::World::kMaximumTransientBodies+1U> gcr_rest_overlap_post_{},gcr_rest_signatures_{};
+    bool gcr_rest_overlap_measured_=false;
+    enum class RestRefusal {Disabled,UnknownContext,Population,Overlap,NoSupport,SupportChanged,Unacknowledged,PoseMotion,ResidualMotion,Event,Drive,Correction,Dwell,Ready};
+    struct RestInfo {bool eligible=false,correction_mode=false;std::uint32_t quiet=0;RestRefusal refusal=RestRefusal::Disabled;
+        std::uint64_t signature=0,post_overlap=0;double pose_speed=0,residual_speed=0;bool overlap_measured=false;};
+    bool validate_rest_context(const Dictionary& context,const PackedFloat64Array& states,RestContext& value) const;
+    [[nodiscard]] bool rest_correction_mode() const;
+    [[nodiscard]] std::uint64_t rest_signature(std::size_t id) const;
+    [[nodiscard]] std::uint64_t rest_overlap(std::size_t id) const;
     double gcr_mass_multiplier_ = 1., gcr_inertia_multiplier_ = 1.;
     bool gcr_compound_mode_ = false, gcr_preparing_compound_ = false;
     std::size_t gcr_compound_count_ = 0;
@@ -276,11 +295,17 @@ private:
         Vector2 event_raw{}, event{}, legacy{}, impulse{};
         double event_raw_torque=0,event_torque=0,event_scale=1,event_cost=0,torque=0;
         bool refused=false;
+        RestInfo rest;
     };
     [[nodiscard]] GcrEvaluation evaluate_gcr(std::size_t body_id) const;
+    [[nodiscard]] cybersand::gcr::RestOptions rest_options(std::size_t id,GcrEvaluation& value,double radius,bool correction) const;
+    void finish_rest(std::size_t id,GcrEvaluation& value,double radius) const;
+    mutable std::array<GcrEvaluation,cybersand::World::kMaximumTransientBodies+1U> gcr_rest_evaluations_{};
+    mutable std::array<bool,cybersand::World::kMaximumTransientBodies+1U> gcr_rest_evaluation_valid_{};
+    mutable std::array<std::uint64_t,cybersand::World::kMaximumTransientBodies+1U> gcr_rest_evaluation_tick_{};
     struct CompoundEvaluation {
         GcrEvaluation response;
-        Vector2 correction{};
+        Vector2 correction{},requested_correction{};
         cybersand::gcr::Vec precise_impulse{},precise_correction{};
         double legacy_raw_torque=0,legacy_torque=0,legacy_scale=1,legacy_budget=0;
         double radius=0;

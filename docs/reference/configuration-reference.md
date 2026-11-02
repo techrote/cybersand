@@ -1263,3 +1263,13 @@ inertia multiplier0.01–4. Apply resets the complete scene. Defaults preserve t
 520-cell building's actual mass/inertia; changed mass or inertia is visibly an
 exploratory override, not payload-mass qualification. Ordinary defaults and
 original legacy/R2/A1 response constants are unchanged.
+
+## Registered GCR budget/rest controls
+
+The [rest comparison contract](../architecture/granular-contact-rest.md) owns the
+experimental source/configuration distinction. Planned/reset-only base budget is
+5..80, default20; prescribed sweeps are5/10/20/40/80. Per-source2 and effective
+mass-scale ceiling4096 remain separate. Mass and inertia multipliers extend to64;
+friction remains4 maximum and gravity368.48. An actual mass33280 from520×64 is
+not an effective scale33280. Rest comparisons stay at20 independent of the sweep.
+All settings are explicitly experimental and rebuild a fresh developer session.

@@ -101,6 +101,12 @@ structure LA/PRC (2), original mass1/high barrel LA/PRC (2), Salt23 gentle LA/PR
 tuning. Budget captures1200 ticks; rest captures1800; tail300 observations.
 Machine coordinates, drive schedule, modes and output fields must be committed
 before acquisition. Source-matched mechanics and native/sanitizer controls first.
+The reused isolated_full LA20 control captures1800 ticks: budget comparisons use
+only its first1200; rest comparisons use its1800 horizon and final300. Preserve
+both window definitions instead of comparing mismatched tail periods.
+Gentle-drive barrel uses explicit main-thread Jx0.02 each tick600..659, then
+Jx2.0 each tick900..905, before the Rapier step. Record actual commanded impulses
+and veto catch during those intervals; never store blocked input for later release.
 
 Excavation is conditional on a genuinely admitted quiet-contact window before
 hard contact; otherwise report NO_VALID_REST and do not claim support-loss
@@ -142,3 +148,7 @@ the following gravity integration; gravity-compensating velocity can be valid.
 Record those phase boundaries and allow NO_ADMISSION/NO_REST rather than adding
 an unregistered pre-step impulse, changing gravity, or claiming a velocity snap
 proves rest. Any timing-law successor requires separate evidence/registration.
+Standalone C additionally refuses when the old positional correction is nonzero;
+otherwise old zeroing would change the velocity for which arrest was certified.
+This does not silently add R to C. PRC may use its explicit R policy to remove
+unnecessary correction and then qualify the constrained catch independently.

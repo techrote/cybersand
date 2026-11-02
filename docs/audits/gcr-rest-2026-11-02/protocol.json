@@ -1,0 +1,772 @@
+{
+  "registration": "GCR-REST-001-2026-11-02",
+  "schema": 1,
+  "platforms": [
+    "Windows",
+    "Linux"
+  ],
+  "workers": [
+    1
+  ],
+  "cases": [
+    {
+      "id": "budget-barrel-m2-v90-control-b5",
+      "comparison": "budget-barrel-m2-v90",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 5,
+      "ticks": 1200,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 2,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "full520-control-b5",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 5,
+      "ticks": 1200,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "budget-barrel-m2-v90-control-b10",
+      "comparison": "budget-barrel-m2-v90",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 10,
+      "ticks": 1200,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 2,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "full520-control-b10",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 10,
+      "ticks": 1200,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "budget-barrel-m2-v90-control-b20",
+      "comparison": "budget-barrel-m2-v90",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1200,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 2,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "full520-control-b20",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "budget-barrel-m2-v90-control-b40",
+      "comparison": "budget-barrel-m2-v90",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 40,
+      "ticks": 1200,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 2,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "full520-control-b40",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 40,
+      "ticks": 1200,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "budget-barrel-m2-v90-control-b80",
+      "comparison": "budget-barrel-m2-v90",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 80,
+      "ticks": 1200,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 2,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1200,
+        "workers": 1
+      }
+    },
+    {
+      "id": "full520-control-b80",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 80,
+      "ticks": 1200,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "partial-half-control-b20",
+      "comparison": "partial-half",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1200,
+      "surroundings": "isolated_half"
+    },
+    {
+      "id": "partial-half-control-b80",
+      "comparison": "partial-half",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 80,
+      "ticks": 1200,
+      "surroundings": "isolated_half"
+    },
+    {
+      "id": "partial-narrow-control-b20",
+      "comparison": "partial-narrow",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1200,
+      "surroundings": "isolated_narrow"
+    },
+    {
+      "id": "partial-narrow-control-b80",
+      "comparison": "partial-narrow",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 80,
+      "ticks": 1200,
+      "surroundings": "isolated_narrow"
+    },
+    {
+      "id": "gentle-drive-control-b20",
+      "comparison": "gentle-drive",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 5,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1,
+        "drive_impulse_schedule": [
+          [
+            600,
+            660,
+            0.02
+          ],
+          [
+            900,
+            906,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "id": "gentle-drive-P-b20",
+      "comparison": "gentle-drive",
+      "kind": "barrel",
+      "mode": "P",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 5,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1,
+        "drive_impulse_schedule": [
+          [
+            600,
+            660,
+            0.02
+          ],
+          [
+            900,
+            906,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "id": "gentle-drive-R-b20",
+      "comparison": "gentle-drive",
+      "kind": "barrel",
+      "mode": "R",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 5,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1,
+        "drive_impulse_schedule": [
+          [
+            600,
+            660,
+            0.02
+          ],
+          [
+            900,
+            906,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "id": "gentle-drive-C-b20",
+      "comparison": "gentle-drive",
+      "kind": "barrel",
+      "mode": "C",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 5,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1,
+        "drive_impulse_schedule": [
+          [
+            600,
+            660,
+            0.02
+          ],
+          [
+            900,
+            906,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "id": "gentle-drive-PRC-b20",
+      "comparison": "gentle-drive",
+      "kind": "barrel",
+      "mode": "PRC",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 5,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1,
+        "drive_impulse_schedule": [
+          [
+            600,
+            660,
+            0.02
+          ],
+          [
+            900,
+            906,
+            2.0
+          ]
+        ]
+      }
+    },
+    {
+      "id": "edge-control-b20",
+      "comparison": "edge",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "edge",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    },
+    {
+      "id": "edge-P-b20",
+      "comparison": "edge",
+      "kind": "barrel",
+      "mode": "P",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "edge",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    },
+    {
+      "id": "edge-R-b20",
+      "comparison": "edge",
+      "kind": "barrel",
+      "mode": "R",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "edge",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    },
+    {
+      "id": "edge-C-b20",
+      "comparison": "edge",
+      "kind": "barrel",
+      "mode": "C",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "edge",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    },
+    {
+      "id": "edge-PRC-b20",
+      "comparison": "edge",
+      "kind": "barrel",
+      "mode": "PRC",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "edge",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 30,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    },
+    {
+      "id": "full520-P-b20",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "P",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "full520-R-b20",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "R",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "full520-C-b20",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "C",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "full520-PRC-b20",
+      "comparison": "full520",
+      "kind": "compound",
+      "mode": "PRC",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_full"
+    },
+    {
+      "id": "excavation520-control-b20",
+      "comparison": "excavation520",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_excavate",
+      "conditional_excavation": true
+    },
+    {
+      "id": "excavation520-P-b20",
+      "comparison": "excavation520",
+      "kind": "compound",
+      "mode": "P",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_excavate",
+      "conditional_excavation": true
+    },
+    {
+      "id": "excavation520-R-b20",
+      "comparison": "excavation520",
+      "kind": "compound",
+      "mode": "R",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_excavate",
+      "conditional_excavation": true
+    },
+    {
+      "id": "excavation520-C-b20",
+      "comparison": "excavation520",
+      "kind": "compound",
+      "mode": "C",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_excavate",
+      "conditional_excavation": true
+    },
+    {
+      "id": "excavation520-PRC-b20",
+      "comparison": "excavation520",
+      "kind": "compound",
+      "mode": "PRC",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_excavate",
+      "conditional_excavation": true
+    },
+    {
+      "id": "water-only-control-b20",
+      "comparison": "water-only",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_water"
+    },
+    {
+      "id": "water-only-P-b20",
+      "comparison": "water-only",
+      "kind": "compound",
+      "mode": "P",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_water"
+    },
+    {
+      "id": "water-only-R-b20",
+      "comparison": "water-only",
+      "kind": "compound",
+      "mode": "R",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_water"
+    },
+    {
+      "id": "water-only-C-b20",
+      "comparison": "water-only",
+      "kind": "compound",
+      "mode": "C",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_water"
+    },
+    {
+      "id": "water-only-PRC-b20",
+      "comparison": "water-only",
+      "kind": "compound",
+      "mode": "PRC",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "isolated_water"
+    },
+    {
+      "id": "original-packed520-control-b20",
+      "comparison": "original-packed520",
+      "kind": "compound",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "packed_sand"
+    },
+    {
+      "id": "original-packed520-PRC-b20",
+      "comparison": "original-packed520",
+      "kind": "compound",
+      "mode": "PRC",
+      "budget": 20,
+      "ticks": 1800,
+      "surroundings": "packed_sand"
+    },
+    {
+      "id": "original-barrel-m1-v90-control-b20",
+      "comparison": "original-barrel-m1-v90",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    },
+    {
+      "id": "original-barrel-m1-v90-PRC-b20",
+      "comparison": "original-barrel-m1-v90",
+      "kind": "barrel",
+      "mode": "PRC",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 2,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 90,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    },
+    {
+      "id": "salt-gentle-control-b20",
+      "comparison": "salt-gentle",
+      "kind": "barrel",
+      "mode": "control",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 23,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 5,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    },
+    {
+      "id": "salt-gentle-PRC-b20",
+      "comparison": "salt-gentle",
+      "kind": "barrel",
+      "mode": "PRC",
+      "budget": 20,
+      "ticks": 1800,
+      "spec": {
+        "layout": "deep",
+        "material": 23,
+        "width": 64,
+        "depth": 96,
+        "mass": 1,
+        "speed": 5,
+        "angle": 0.08,
+        "gap": 2,
+        "ticks": 1800,
+        "workers": 1
+      }
+    }
+  ],
+  "captures_per_platform": 44,
+  "maximum_captures": 88,
+  "tail_observations": 300,
+  "wall_timeout_seconds": 300,
+  "budget_values": [
+    5,
+    10,
+    20,
+    40,
+    80
+  ],
+  "modes": [
+    "control",
+    "P",
+    "R",
+    "C",
+    "PRC"
+  ],
+  "rest_comparison_budget": 20,
+  "per_source_capacity": 2,
+  "material_policy_check": {
+    "salt_id": 23,
+    "native_policy": "MaterialRules::supports_granular_load includes Material::Salt"
+  },
+  "drive": {
+    "applied_before_rapier_step": true,
+    "schedule": [
+      [
+        600,
+        660,
+        0.02
+      ],
+      [
+        900,
+        906,
+        2.0
+      ]
+    ],
+    "units": "central impulse x per tick",
+    "catch_veto_while_driven": true,
+    "stored_blocked_impulses": false
+  },
+  "conditional_excavation": {
+    "minimum_row": 600,
+    "requires_quiet_admitted": true,
+    "requires_hard_clearance_cells": 2,
+    "otherwise": "NO_VALID_REST_ADMISSION",
+    "retries": false
+  },
+  "rest": {
+    "quiet_samples": 30,
+    "enter_speed": 0.1,
+    "exit_speed": 0.25,
+    "friction_multiplier": 1,
+    "sleep_change": false
+  },
+  "payload": {
+    "members": 520,
+    "mass": 520,
+    "inertia": 70453.64935897436,
+    "shapes": 6,
+    "normalization_ceiling": 4096,
+    "mass_multiplier_limit": 64,
+    "inertia_multiplier_limit": 64
+  },
+  "hard_geometry": {
+    "original_floor": 72,
+    "original_stump": [
+      50,
+      67,
+      4,
+      5
+    ],
+    "isolated_floor": 118,
+    "isolated_interior_x": [
+      31,
+      119
+    ]
+  },
+  "windows": {
+    "budget": "first1200 native ticks/steps only",
+    "rest": "full1800 and final300 observations",
+    "shared_full520_control": "one1800 capture; first1200 for budget, final300 for rest"
+  },
+  "limitations": [
+    "No budget winner selection before rest comparison",
+    "Repeated observations are not independent efficacy samples",
+    "No untouched generic actor admission or owner acceptance inferred"
+  ]
+}

@@ -200,3 +200,13 @@ exactly at mass<=1 and heavy impact improves, but rebound/tail gates fail and al
 registered technical gate; owner acceptance is pending. F6 switches between
 barrel and structure review rooms, closing the previous owner; manual barrel
 review extends to1800 ticks while registered capture remains1200.
+
+## Registered budget and rest successor — 2026-11-02
+
+The owner authorizes the [budget/rest registration](../operations/gcr-rest-registration.md).
+Its [focused contract](granular-contact-rest.md) separates base-budget5/10/20/40/80,
+same-mu contact persistence, measured-overlap correction and a constrained residual
+catch. Mass/inertia payload controls extend to64 while the separate4096 load-scale
+ceiling remains. Prior LA results are controls; implementation and tests do not
+waive their registered failures. No sleep, material law, default promotion or
+merge is authorized by this successor.

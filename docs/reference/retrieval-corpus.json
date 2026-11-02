@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-31",
+  "reviewed": "2026-11-02",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -122,7 +122,9 @@
     "operations/ci-execution-and-performance.md",
     "operations/gcr-detachment-integration-plan.md",
     "architecture/compound-granular-coupling.md",
-    "operations/gcr-load-aware-registration.md"
+    "operations/gcr-load-aware-registration.md",
+    "architecture/granular-contact-rest.md",
+    "operations/gcr-rest-registration.md"
   ],
   "navigation": [
     "README.md",

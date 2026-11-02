@@ -1451,3 +1451,13 @@ Complete compound admission compares actual state with the explicitly configured
 expectation; all existing lease/generation/shape and pre-mutation checks remain.
 Strides17/14, ownership, sample lifetimes and one-wrench delivery do not change.
 Diagnostics copy candidate, load-aware flag, scale and override values.
+
+## Registered rest value envelope
+
+The [rest contract](../architecture/granular-contact-rest.md) specifies a version1
+copied rest context/receipt alongside the unchanged17-value input and14-value
+result. Session/sample, current physical gravity, known drive, hard clearance and
+last applied sample bind rest eligibility. Generic diagnostics never authorize
+catch. Original callers with no rest context retain original response semantics;
+unknown context cannot grant a catch. Current implementation/qualification scope
+must be read separately from this preregistered interface direction.
