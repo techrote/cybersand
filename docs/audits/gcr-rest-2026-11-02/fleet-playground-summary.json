@@ -1,0 +1,371 @@
+{
+  "schema": "cybersand.flyer-budget-playground.v1",
+  "source": "6ebc3b0290320dd2f595b807799f5887f45bc8d2",
+  "ok": true,
+  "date": "2026-11-02",
+  "scope": "New reset-only controls and retained fleet/playground actual-owner tests. No new physical campaign, closed-painting conservation, nonzero catch, Web or subjective acceptance.",
+  "platforms": [
+    {
+      "platform": "windows",
+      "ok": true,
+      "native_sha256": "65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e",
+      "native_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "native_inputs": 88,
+      "executed_source_inputs_unchanged": true,
+      "source_input_ledger_sha256": "023de6af02f217f9f9e68d1bb31bcbbd5807f792ce89dea7765058413b29aaaf",
+      "records": [
+        {
+          "case": "import",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 14.02510118484497,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--editor",
+            "--import",
+            "--quit"
+          ],
+          "log_sha256": "45cbf9d909a8bd12bbd71bc241a965f0bdfa2733f82ffbdae053bb82391d744a",
+          "log": "build/fleet-review-hosts/windows/import.log"
+        },
+        {
+          "case": "test_gcr_fleet_controls",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 2.0805790424346924,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_controls.gd"
+          ],
+          "log_sha256": "a25ace1e1af4a013b31458f4e9d54876a3db4eca8fb3971050390f6ca217d502",
+          "log": "build/fleet-review-hosts/windows/test_gcr_fleet_controls.log"
+        },
+        {
+          "case": "test_gcr_crash_playground",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 2.5283703804016113,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--script",
+            "res://tests/test_gcr_crash_playground.gd"
+          ],
+          "log_sha256": "61d4d54fa1a65429994e5640ab8623bed2b250e964dd3d4e5d0b6def642a4988",
+          "log": "build/fleet-review-hosts/windows/test_gcr_crash_playground.log"
+        },
+        {
+          "case": "test_gcr_review_fleet",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 14.362975835800171,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--script",
+            "res://tests/test_gcr_review_fleet.gd"
+          ],
+          "log_sha256": "75ca0030dfe974f59ed9190c9747a1bd0a1af5d5b1c254d61332f6ce37e5f3b3",
+          "log": "build/fleet-review-hosts/windows/test_gcr_review_fleet.log"
+        },
+        {
+          "case": "test_player_vehicle_controls",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 1.1406822204589844,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--script",
+            "res://tests/test_player_vehicle_controls.gd"
+          ],
+          "log_sha256": "8e0395d5e807c1b9adac0e8fdc162d79436673fa6932ab5a1adae1edd4cd2ea3",
+          "log": "build/fleet-review-hosts/windows/test_player_vehicle_controls.log"
+        },
+        {
+          "case": "test_player_playground_runtime",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 4.241732358932495,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--script",
+            "res://tests/test_player_playground_runtime.gd"
+          ],
+          "log_sha256": "8017a09045ae29d1d10872a15c1d908861582362d160aa1a024356adace0aed1",
+          "log": "build/fleet-review-hosts/windows/test_player_playground_runtime.log"
+        },
+        {
+          "case": "test_physical_actor_arena",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 17.64299511909485,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--script",
+            "res://tests/test_physical_actor_arena.gd"
+          ],
+          "log_sha256": "d04b48f9583de3eefda5a2baec28a52c78fcbc4b5712fb7bf0ab229fc690d440",
+          "log": "build/fleet-review-hosts/windows/test_physical_actor_arena.log"
+        },
+        {
+          "case": "test_physical_actor_session",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 0.7718698978424072,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--script",
+            "res://tests/test_physical_actor_session.gd"
+          ],
+          "log_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72",
+          "log": "build/fleet-review-hosts/windows/test_physical_actor_session.log"
+        },
+        {
+          "case": "test_physical_actor_rigs",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 24.623198986053467,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/windows/godot",
+            "--script",
+            "res://tests/test_physical_actor_rigs.gd"
+          ],
+          "log_sha256": "4c95ab976d1c340afd8d7ec5b900a1c7b14de4108e0e63965cd2a0f1109f4f85",
+          "log": "build/fleet-review-hosts/windows/test_physical_actor_rigs.log"
+        }
+      ]
+    },
+    {
+      "platform": "linux",
+      "ok": true,
+      "native_sha256": "8bfe51214643c626dd5800f66ecff86f3348a166b55551e0674d1b4f762cfbf5",
+      "native_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "native_inputs": 88,
+      "executed_source_inputs_unchanged": true,
+      "source_input_ledger_sha256": "023de6af02f217f9f9e68d1bb31bcbbd5807f792ce89dea7765058413b29aaaf",
+      "records": [
+        {
+          "case": "import",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 54.67854070663452,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--editor",
+            "--import",
+            "--quit"
+          ],
+          "log_sha256": "7fb161d0c0cf6df1eb7a37e0c72b495d8b510251b17805696709e97d390ad993",
+          "log": "build/fleet-review-hosts/linux/import.log"
+        },
+        {
+          "case": "test_gcr_fleet_controls",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 3.1805362701416016,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_controls.gd"
+          ],
+          "log_sha256": "f3cf09b4f2298265e8b3c056e0cfa571b41ef484ea9cbc15b809569e442c3c79",
+          "log": "build/fleet-review-hosts/linux/test_gcr_fleet_controls.log"
+        },
+        {
+          "case": "test_gcr_crash_playground",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 6.122136116027832,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--script",
+            "res://tests/test_gcr_crash_playground.gd"
+          ],
+          "log_sha256": "eeffde73b8fcd859e3922de2eb798ff803f8b3993725bc356853f0d3145f5b9b",
+          "log": "build/fleet-review-hosts/linux/test_gcr_crash_playground.log"
+        },
+        {
+          "case": "test_gcr_review_fleet",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 32.20529913902283,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--script",
+            "res://tests/test_gcr_review_fleet.gd"
+          ],
+          "log_sha256": "3ca533df1f02205a548a72b8b9b0bd8945f073957c26534439543c00d39f453e",
+          "log": "build/fleet-review-hosts/linux/test_gcr_review_fleet.log"
+        },
+        {
+          "case": "test_player_vehicle_controls",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 1.959768295288086,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--script",
+            "res://tests/test_player_vehicle_controls.gd"
+          ],
+          "log_sha256": "b4a82fe8c933ab9cbe4e3410d2d7ee515ab3afe55814b0d9c200d35463da6358",
+          "log": "build/fleet-review-hosts/linux/test_player_vehicle_controls.log"
+        },
+        {
+          "case": "test_player_playground_runtime",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 5.626405239105225,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--script",
+            "res://tests/test_player_playground_runtime.gd"
+          ],
+          "log_sha256": "70ed2f66f56bfc50b27eb032823dcdc7185533afd0e091fc741cf97115b7a26d",
+          "log": "build/fleet-review-hosts/linux/test_player_playground_runtime.log"
+        },
+        {
+          "case": "test_physical_actor_arena",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 16.961402654647827,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--script",
+            "res://tests/test_physical_actor_arena.gd"
+          ],
+          "log_sha256": "48e3a4bf951314f048c235c381f6a4a52116847103e6f3df29cce15d91851cfe",
+          "log": "build/fleet-review-hosts/linux/test_physical_actor_arena.log"
+        },
+        {
+          "case": "test_physical_actor_session",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 1.5514473915100098,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--script",
+            "res://tests/test_physical_actor_session.gd"
+          ],
+          "log_sha256": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84",
+          "log": "build/fleet-review-hosts/linux/test_physical_actor_session.log"
+        },
+        {
+          "case": "test_physical_actor_rigs",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 23.061047554016113,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-review-hosts/linux/godot",
+            "--script",
+            "res://tests/test_physical_actor_rigs.gd"
+          ],
+          "log_sha256": "12c494e3e415336da4f48dcc887460aa87675e14ba5add53b3c64ec1828c1235",
+          "log": "build/fleet-review-hosts/linux/test_physical_actor_rigs.log"
+        }
+      ]
+    }
+  ],
+  "native_changed": false,
+  "prior_physical_campaign": {
+    "source": "594a1a73",
+    "native": "181a8257",
+    "requalified": false,
+    "note": "Four actor host files and new scene inputs differ from the old complete project ledger; retain original88-capture status and identities."
+  },
+  "preserved_failure": {
+    "path": "build/fleet-host-controls",
+    "reason": "Vector2(.01,.01) fixture inputs round below exact.01 admission minimum; refusal was correct. Use double-array literals. Original failed/timeout logs retained; no threshold relaxation."
+  },
+  "owner_acceptance": null,
+  "production_accepted": false,
+  "merge_authorized": false
+}

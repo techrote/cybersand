@@ -1274,6 +1274,11 @@ mass-scale ceiling4096 remain separate. Mass and inertia multipliers extend to64
 friction remains4 maximum and gravity368.48. An actual mass33280 from520×64 is
 not an effective scale33280. Rest comparisons stay at20 independent of the sweep.
 All settings are explicitly experimental and rebuild a fresh developer session.
+The [editable seven-flyer room](../systems/granular-review-flight-fleet.md) also
+exposes budget5..80 and mass/inertia multipliers0.01..64 in its LA/control route.
+The retained RFT/R2 reference stays at20; no rest variants are enabled there.
+Its inertia factor multiplies shape inertia at the actual scaled mass. Apply
+rebuilds the room and clears paint; selecting a craft retains applied values.
 Select LA before using the budget or rest-mode controls. Modes are LA control,
 Contact persistence(P), Rest-aware correction(R), Residual catch(C) and combined
 PRC. The structure room and retained barrel room expose the same staged variants;
