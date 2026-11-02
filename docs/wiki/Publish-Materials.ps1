@@ -5,7 +5,7 @@ param([switch] $AllowOverwrite)
 
 $ErrorActionPreference = 'Stop'
 $wikiRemote = 'https://github.com/techrote/cybersand.wiki.git'
-$sourceUrl = 'https://raw.githubusercontent.com/techrote/cybersand/032e41f160b37beb1d8d9e06f92213207bf90f43/docs/wiki/Materials.md'
+$sourceUrl = 'https://raw.githubusercontent.com/techrote/cybersand/1ca66809fab4b86475b0a1f2464f20aca6e68e1d/docs/wiki/Materials.md'
 $tempWiki = Join-Path ([System.IO.Path]::GetTempPath()) ('cybersand-wiki-' + [guid]::NewGuid().ToString('N'))
 
 try {
