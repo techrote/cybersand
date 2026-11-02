@@ -44,7 +44,7 @@ mass multiplier0.01..4, friction0..4, inertia multiplier0.01..4. Multipliers are
 independent (inertia is relative to original payload inertia). Overrides must be
 labelled, recorded and matched by native batch admission. They are exploratory,
 never evidence that a lightweight building passes the payload-mass gate.
-Default reset restores gravity92.12, mass/inertia multipliers1, friction0.5.
+Default reset restores gravity92.12, mass/inertia multipliers1, friction0.78.
 The original friction transport value must be checked before freezing UI default;
 if it differs, retain original value and record the correction before acquisition.
 
@@ -87,3 +87,6 @@ Technical results cannot establish owner feel acceptance. Keep compact summaries
 manifests and selected traces; preserve failures and hash large ignored raw data.
 Fresh native inputs require Windows/Linux rebuild/provenance before playable
 qualification. Ordinary default remains legacy; no merges or issue completion.
+
+Pre-acquisition inspection correction: original bridge friction is0.78, not0.5;
+all default controls preserve0.78. No candidate results preceded this correction.
