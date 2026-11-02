@@ -36,7 +36,7 @@ func _ready() -> void:
 	_stats = _label(Vector2(35, 730), 14)
 	_material_stats = _label(Vector2(35, 755), 14)
 	var help := _label(Vector2(35, 790), 13)
-	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nC fresh arm: legacy / R2 / A1 / LA (load-aware)\n5 full / 6 half / 7 narrow / 8 excavation / 9 dry / 0 Water (isolated)\nX excavate below body  |  I inspect conservation  |  ESC exit"
+	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nC fresh arm: legacy / R2 / A1 / LA (load-aware)\n5 full / 6 half / 7 narrow / 8 excavation / 9 dry / 0 Water (isolated)\nX excavate below body  |  I inspect conservation  |  F6 barrels  |  ESC exit"
 	_build_parameter_controls()
 	var args := OS.get_cmdline_user_args()
 	for i: int in range(args.size()):
@@ -217,6 +217,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			_inspect()
 		KEY_ESCAPE:
 			get_tree().quit()
+		KEY_F6:
+			if not busy:
+				get_tree().change_scene_to_file("res://gcr_load_review.tscn")
 
 func _physics_process(_delta: float) -> void:
 	if session != null:
