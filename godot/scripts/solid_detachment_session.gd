@@ -708,7 +708,7 @@ func wait_native_ticks(ticks: int, timeout_ms: int = 0) -> bool:
 	return false
 
 func inspect_coupling(points: PackedInt32Array = PackedInt32Array(),
-		region: Rect2i = Rect2i(0, 0, 128, 80)) -> Dictionary:
+		region: Rect2i = Rect2i(0, 0, 128, 80), include_global_census: bool = false) -> Dictionary:
 	if worker == null or _opening or _release_in_progress or transaction_busy:
 		return {"ok":false,"outcome":"SessionBusyOrClosed"}
 	var owner_generation: int = generation
@@ -717,7 +717,7 @@ func inspect_coupling(points: PackedInt32Array = PackedInt32Array(),
 	set_paused(true)
 	var request: Dictionary = {"action":"inspect", "probe_points":points,
 		"snapshot_origin":region.position, "snapshot_size":region.size,
-		"include_body_metrics":true}
+		"include_body_metrics":true,"include_global_census":include_global_census}
 	var result: Dictionary = await command(request)
 	if not _owns(owner_generation, owner_worker):
 		return {"ok":false,"outcome":"SessionRetired"}

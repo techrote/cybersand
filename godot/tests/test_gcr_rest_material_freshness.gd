@@ -157,6 +157,11 @@ func compound_world(mode: String) -> Dictionary:
 	check(world.diagnostic_fill_rect(Vector2i(0,65),Vector2i(128,20),0),"retire stump and hard floor for mechanical witness")
 	check(world.diagnostic_fill_rect(Vector2i(46,65),Vector2i(12,20),2),"compound synthetic packed support")
 	check(world.diagnostic_fill_rect(Vector2i(46,85),Vector2i(12,2),1),"distant synthetic bed floor")
+	# Contain lateral leakage so the setup tick leaves the source grains still,
+	# rather than merely translating new-epoch grains into a touching row. The
+	# nearest hard sidewall stays five cells from the held stem (>2 clearance).
+	check(world.diagnostic_fill_rect(Vector2i(45,65),Vector2i(1,22),1),"left distant bed container")
+	check(world.diagnostic_fill_rect(Vector2i(58,65),Vector2i(1,22),1),"right distant bed container")
 	check(world.simulation_tick(),"native settling tick retires newly painted source epoch")
 	return {"world":world,"source":source,"lease":{"token":source.token,"body_id":1,"body_generation":7,"physics_epoch":1}}
 

@@ -46,20 +46,70 @@ def configuration_receipts(raw,expected_case=None):
             'native_receipt_observations':receipt_count,'native_receipt_coverage':receipt_count/len(rows) if rows else None,'nonactionable_no_result_observations':no_result,
             'observed_native_mode_budget':observed,'refusals':reasons,'selected_failures':examples,
             'scope':'Every copied explicit native version1 receipt; requested case fields alone supply no execution proof'}
+
+def current_application_step(raw,row,previous_snapshot=None,previous_call=None):
+    """Verify new delivery in this physics call, not a held age0 observation."""
+    marker=row.get('application_step',{})
+    _,_,application=parts(raw,row)
+    observation=row.get('metrics',{}).get('last_compound_observation',{})
+    actual_snapshot=application.get('snapshot') if raw['case']['kind']=='barrel' else observation.get('snapshot_serial')
+    call=row.get('tick') if raw['case']['kind']=='barrel' else row.get('row')
+    integers=['version','physics_call','snapshot_before','snapshot_after']
+    if not isinstance(marker,dict) or not all(type(marker.get(k)) is int for k in integers):return False,actual_snapshot,call
+    valid=type(actual_snapshot) is int and type(call) is int and marker['version']==1 and marker['physics_call']==call and marker['snapshot_after']==actual_snapshot and marker['snapshot_after']==application.get('snapshot')
+    valid=valid and marker['snapshot_after']>marker['snapshot_before'] and marker.get('delivered_this_step') is True and application.get('accepted') is True
+    if previous_snapshot is not None:valid=valid and marker['snapshot_before']==previous_snapshot
+    if previous_call is not None:valid=valid and type(call) is int and type(previous_call) is int and call>previous_call
+    return valid,actual_snapshot,call
+
+def compound_conservation(raw,global_scope=True):
+    """Account explicit native-to-body transfer and recorded authoritative edits."""
+    field='global_census' if global_scope else 'diagnostic_snapshot'
+    expected_scope='global authoritative cells' if global_scope else 'regional160x128 authoritative cells'
+    inspections=[raw.get('before',{}),raw.get('after',{})]
+    for edit in raw.get('edits',[]):inspections.extend([edit.get('before',{}),edit.get('after',{})])
+    censuses=[inspection.get(field) for inspection in inspections]
+    result={'conserved':None,'scope':expected_scope,'census_field':field,'inspections':len(inspections),
+            'native_payload_transfer':520,'confirmed_cut':8,'isolated_stump_retirement':20 if raw['case']['surroundings'].startswith('isolated_') else 0,
+            'count_exclusions':{'0':'Empty occupancy changes with motion','3':'Water occupancy is not quantity; exact water_mass is separately mandatory'}}
+    if not all(isinstance(census,dict) and (not global_scope or census.get('ok') is True) for census in censuses):
+        result['refusal']='MISSING_OR_REFUSED_CENSUS';return result
+    counts=[census.get('counts') for census in censuses];water=[census.get('water_mass') for census in censuses]
+    if not counts or not all(isinstance(c,list) and len(c)>43 and all(type(n) is int and n>=0 for n in c) for c in counts) or len({len(c) for c in counts})!=1 or not all(type(n) is int and n>=0 for n in water):
+        result.update(conserved=False,refusal='MALFORMED_COUNTS_OR_NONINTEGER_WATER_QUANTITY');return result
+    if global_scope and not all(census.get('domain')==[0,0,1024,1024] and census.get('tiles')==4 and type(census.get('completed_ticks')) is int and census['completed_ticks']>=0 and sum(census['counts'])==1048576 for census in censuses):
+        result.update(conserved=False,refusal='INCOMPLETE_GLOBAL_DOMAIN_OR_TILING');return result
+    expected=counts[0][:];expected[43]-=result['native_payload_transfer']+result['confirmed_cut']+result['isolated_stump_retirement']
+    expected_water=water[0]
+    for index in range(2,len(censuses),2):
+        expected=[v+y-x for v,x,y in zip(expected,counts[index],counts[index+1])]
+        expected_water+=water[index+1]-water[index]
+    mismatches=[{'material':i,'expected':x,'actual':y} for i,(x,y) in enumerate(zip(expected,counts[1])) if i not in [0,3] and x!=y]
+    balance=not mismatches and expected_water==water[1]
+    result.update(conserved=None if raw.get('edits') else balance,observed_edit_adjusted_balance=balance if raw.get('edits') else None,count_mismatches=mismatches,
+                  expected_water_mass=expected_water,actual_water_mass=water[1],water_quantity_exact=expected_water==water[1],
+                  measured_scopes=sorted({str(c.get('scope',expected_scope)) for c in censuses}),refusal=None)
+    if raw.get('edits'):
+        result['refusal']='EDIT_REMOVAL_QUANTITY_NOT_INDEPENDENTLY_MEASURED'
+        result['edit_delta_scope']='Observed edit inspection deltas span native ticks and may include unrelated changes; adjusted balance cannot establish strict conservation'
+    return result
 def summarize(raw,rows):
     if not raw.get('ok') or not rows:return None
     barrel=raw['case']['kind']=='barrel';positions=[r['out'][:2] if barrel else r['position'] for r in rows]
     velocities=[r['out'][3:5] if barrel else r['velocity'] for r in rows];tail=positions[-300:];tail_v=velocities[-300:]
-    mechanics=[];overlap=[];quiet=[];caught=[];signatures=set();application_keys=set();applications=[];refusals={};limiters={};rest_scans=[]
+    mechanics=[];overlap=[];quiet=[];caught=[];fresh_applications=[];signatures=set();application_keys=set();applications=[];refusals={};limiters={};rest_scans=[]
+    previous_snapshot=None;previous_call=None
     for row in rows:
         m,receipt,application=parts(raw,row);mechanics.append(m)
+        fresh,previous_snapshot,previous_call=current_application_step(raw,row,previous_snapshot,previous_call)
+        fresh_applications.append(fresh)
         overlap.append(row.get('post_overlap') if barrel else m.get('cellular_overlap_post'))
         bodies=rest_bodies(receipt);body=bodies[0] if len(bodies)==1 else {}
-        matching=[]
-        for applied in application.get('bodies',[]) if application.get('accepted',False) else []:
+        matching=[];applied_bodies=application.get('bodies',[])
+        for applied in applied_bodies if application.get('accepted',False) and len(bodies)==1 and len(applied_bodies)==1 else []:
             if body.get('sample') is not None and body.get('session',receipt.get('session')) is not None and applied.get('sample')==body.get('sample') and applied.get('session')==body.get('session',receipt.get('session')):
-                matching.append(applied)
-        quiet.append(bool(body.get('quiet_admitted',False)) and len(matching)==1)
+                if type(applied.get('age')) is int and applied['age']==0:matching.append(applied)
+        quiet.append(bool(body.get('quiet_admitted',False)) and len(matching)==1 and fresh)
         caught.append(bool(body.get('catch_admitted',body.get('catch_applied',False))))
         if body.get('support_signature') is not None:signatures.add(str(body['support_signature']))
         refusal=str(body.get('refusal','missing_receipt'));refusals[refusal]=refusals.get(refusal,0)+1
@@ -75,7 +125,7 @@ def summarize(raw,rows):
     result={'samples':len(rows),'entry_peak':max(entry),'entry_definition':'body bottom relative to initial bed surface' if barrel else 'COM relative to release; not penetration volume',
             'observed_overlap_max':max(values) if values else None,'overlap_coverage':len(values)/len(rows),'rebound_upward':max(0,-min(v[1] for v in velocities)),
             'tail_x_span':max(p[0] for p in tail)-min(p[0] for p in tail),'tail_y_span':max(p[1] for p in tail)-min(p[1] for p in tail),'tail_abs_vy_p95':percentile([abs(v[1]) for v in tail_v],.95),
-            'quiet_admitted_observations':sum(quiet),'catch_proposed_observations':sum(caught),'hard_clear_observations':sum(hard_clear),'support_signatures':len(signatures),'refusal_observations':refusals,
+            'quiet_admitted_observations':sum(quiet),'fresh_application_observations':sum(fresh_applications),'catch_proposed_observations':sum(caught),'hard_clear_observations':sum(hard_clear),'support_signatures':len(signatures),'refusal_observations':refusals,
             'unique_accepted_applications':len(applications),'application_observation_deduplication':'session/body/sample; repeated snapshots not independent events',
             'maximum_nodes':max(m.get('nodes',0) for m in mechanics),'maximum_updates':max(m.get('updates',0) for m in mechanics),
             'normal_max':max(m.get('normal_accepted',0) for m in mechanics),'tangent_max':max(m.get('tangent_accepted',0) for m in mechanics),
@@ -176,17 +226,12 @@ def reduce_capture(path,expected_case=None):
     if not configuration['ok']:return {'status':'failed','metrics':None,'raw_sha256':sha(path),'native_configuration':configuration,'qualification_failure':'NATIVE_CONFIGURATION_NOT_PROVEN'}
     barrel=raw['case']['kind']=='barrel'
     budget_rows=[r for r in raw['rows'] if (int(r['tick'])<1200 if barrel else int(r.get('native_relative_tick',0))<=1200)]
-    conserved=all(r.get('conserved',False) for r in raw['rows']) if barrel else None
-    if not barrel:
-        before=raw.get('before',{}).get('diagnostic_snapshot',{});after=raw.get('after',{}).get('diagnostic_snapshot',{})
-        b=list(before.get('counts',[]));a=list(after.get('counts',[]));expected=b[:]
-        if len(expected)>43:expected[43]-=528+(20 if raw['case']['surroundings'].startswith('isolated_') else 0)
-        for edit in raw.get('edits',[]):
-            eb=edit.get('before',{}).get('diagnostic_snapshot',{}).get('counts',[]);ea=edit.get('after',{}).get('diagnostic_snapshot',{}).get('counts',[])
-            if len(eb)==len(ea)==len(expected):expected=[v+y-x for v,x,y in zip(expected,eb,ea)]
-        conserved=bool(b) and len(expected)==len(a) and all(x==y for i,(x,y) in enumerate(zip(a,expected)) if i not in [0,3]) and before.get('water_mass')==after.get('water_mass')
+    global_conservation=compound_conservation(raw) if not barrel else None
+    regional_conservation=compound_conservation(raw,False) if not barrel else None
+    conserved=all(r.get('conserved',False) for r in raw['rows']) if barrel else global_conservation['conserved']
     return {'status':'captured','capture_identity':raw.get('identity',{}),'raw_sha256':sha(path),'case':raw['case'],'outcome':raw.get('outcome'),'native_configuration':configuration,
-            'material_conserved':conserved,'support_loss_qualified':raw.get('support_loss_qualified'), 'support_loss_triggered_under_admitted_rest':raw.get('support_loss_triggered_under_admitted_rest',False),'full_window':summarize(raw,raw['rows']),
+            'material_conserved':conserved,'global_conservation':global_conservation,'regional_conservation':regional_conservation,
+            'support_loss_qualified':raw.get('support_loss_qualified'), 'support_loss_triggered_under_admitted_rest':raw.get('support_loss_triggered_under_admitted_rest',False),'full_window':summarize(raw,raw['rows']),
             'budget_first1200':summarize(raw,budget_rows),'support_loss_event':raw.get('edits',[])}
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('campaign',type=Path);parser.add_argument('--output',type=Path,required=True);args=parser.parse_args()
@@ -205,9 +250,11 @@ def main():
                 for metric,absolute,relative in [('entry_peak',.5,.1),('observed_overlap_max',1,.1),('rebound_upward',2,0)]:
                     gates[metric]=None if x.get(metric) is None or y.get(metric) is None else y[metric]<=x[metric]+max(absolute,relative*x[metric])
                 if x['overlap_coverage']<1 or y['overlap_coverage']<1:gates['observed_overlap_max']=None
-                gates['conservation']=a['material_conserved'] and b['material_conserved'];gates['qualified_rest']=y['rest_gate']
+                conservation=[a['material_conserved'],b['material_conserved']]
+                gates['conservation']=False if any(v is False for v in conservation) else (None if any(v is None for v in conservation) else all(v is True for v in conservation))
+                gates['qualified_rest']=y['rest_gate']
             pairs.append({'platform':platform,'case':case['id'],'control':control['id'],'gates':gates})
     result={'registration':protocol['registration'],'captures':captures,'pairs':pairs,'complete':all(v['status']=='captured' for v in captures.values()),'owner_acceptance':None,'production_accepted':False,
-            'unsupported':['Whole-system energy beyond explicit kinetic/application ledger','Uncontended performance','Unreported generic actor drive','Owner gameplay acceptance']}
+            'unsupported':['Whole-system energy beyond explicit kinetic/application ledger','Uncontended performance','Unreported generic actor drive','Independent actual edit-removal quantities (edited capture conservation stays null)','Owner gameplay acceptance']}
     args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8',newline='\n')
 if __name__=='__main__':main()

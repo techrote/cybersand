@@ -1,6 +1,6 @@
 ---
 title: Experimental granular budgets and contact rest
-status: Planned
+status: Current
 document-kind: contract
 scope: Branch-scoped budget sweep, persistent contact, correction and constrained-catch comparisons; no production acceptance
 canonical-for: [granular-contact-rest]
@@ -74,3 +74,28 @@ never acquires valid rest is NO_VALID_REST, not successful support-release proof
 Preserve incomplete overlap as null, hard-contact confounds and failed gates.
 Separate sampled passive energy from correction/gravity/event/hard-contact work.
 No owner acceptance, issue completion or merge follows from implementing the modes.
+
+## What is implemented on this experimental branch?
+
+**Current opt-in prototype, 2026-11-02:** native source181a8257 implements the
+registered budget and P/R/C/PRC modes. This status describes source availability;
+physical qualification and production acceptance remain separate. The original
+LA/default paths do not enable rest history. `GCR-REST` requires the explicit
+`GCR-REST-001-2026-11-02` fresh-session token. The comparison panels stage changes
+until reset, display actual mass/inertia and effective scale, and keep control/20
+as their initial experimental selection.
+
+Native revalidates admitted source predicates/signatures and current endpoint
+overlap before publishing any rest result, including cached getters. Observed
+material mismatch or changed hard-surface revision retires rest authority until
+fresh preparation. A byte-identical erase/restore entirely between queries is
+not parcel-history tracking. Rest refusal leaves the prepared baseline response
+available; it does not rerun relocation. Current overlap also controls R.
+
+The main-thread bridge binds version, mode, budget, session and sample before
+application. Catch additionally requires age0, unchanged sampled velocity and
+zero correction in every mode. It applies one accumulated wrench and measures
+pre-correction, post-zeroing and post-wrench velocities, angular velocities and
+kinetic energies. Correction potential, old-zeroing removal, constrained-catch
+counterfactual removal and measured impulse delivery remain separate quantities.
+Native context, results and receipts cross the exclusive worker as copied values.

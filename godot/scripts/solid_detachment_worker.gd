@@ -83,12 +83,50 @@ func _apply_lab(command: Dictionary) -> bool:
 				snapshot_origin, snapshot_size, false)
 		if bool(input.get("include_body_metrics", false)):
 			_solid_pending_reply["body_metrics"] = _world.diagnostic_body_metrics()
+		if bool(input.get("include_global_census", false)):
+			_solid_pending_reply["global_census"] = _global_census()
 	_solid_pending_reply["request_id"] = _solid_last_request
 	_lab_status = "Solid detachment: " + str(_solid_pending_reply.get("outcome", "Invalid"))
 	# Prevent the sampled character from adding unrelated material mutations in
 	# the explicitly actor-free diagnostic lane. This does not change defaults.
 	_sampled_character_enabled = false
 	return true
+
+func _global_census() -> Dictionary:
+	# Explicit paused diagnostic only: one exclusive command observes the complete
+	# fixed native domain. Tile limits are the existing diagnostic API limits.
+	# Discard pixel arrays here; immutable publication carries only compact totals.
+	var result: Dictionary = {"ok":false,"scope":"authoritative stored cells, full1024x1024 domain",
+		"domain":[0,0,1024,1024],"tiles":4,"counts":[],"water_mass":0,"completed_ticks":-1}
+	var counts: Array = []
+	var water_mass: int = 0
+	var completed: int = -1
+	for tile: Rect2i in [Rect2i(0,0,512,768),Rect2i(512,0,512,768),
+			Rect2i(0,768,512,256),Rect2i(512,768,512,256)]:
+		var snapshot: Dictionary = _world.diagnostic_snapshot(tile.position,tile.size,false,false)
+		var values: Variant = snapshot.get("counts",[])
+		if not values is Array or values.is_empty() or bool(snapshot.get("failed",true)):
+			return result
+		if counts.is_empty():
+			counts.resize(values.size())
+			counts.fill(0)
+			completed=int(snapshot.get("completed_ticks",-1))
+		if values.size()!=counts.size() or int(snapshot.get("completed_ticks",-2))!=completed:
+			return result
+		var tile_cells: int = 0
+		for index: int in range(values.size()):
+			if not values[index] is int or int(values[index])<0:
+				return result
+			counts[index]+=int(values[index])
+			tile_cells+=int(values[index])
+		if tile_cells!=tile.size.x*tile.size.y or not snapshot.get("water_mass") is int:
+			return result
+		water_mass+=int(snapshot.water_mass)
+	result["ok"]=completed>=0 and water_mass>=0
+	result["counts"]=counts
+	result["water_mass"]=water_mass
+	result["completed_ticks"]=completed
+	return result
 
 func _publish_snapshot(step_ms: float, paused: bool, interval: int,
 		force_full: bool = false, body_states: PackedFloat32Array = PackedFloat32Array(),

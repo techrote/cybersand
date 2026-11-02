@@ -209,3 +209,20 @@ acknowledgement. A/B retains two bounded definitions and one capture per slot.
 work-counter aggregation has a fixed key set. No recurring native timer or new
 material operation is added. Failed/absent native owners reject read queries;
 reported capacities are actual runtime limits, not UI guesses or raised defaults.
+
+## Experimental granular rest and budget controls
+
+The branch-scoped [rest contract](../architecture/granular-contact-rest.md) admits
+reset-only base budget5..80, default20; the preregistered sweep is5/10/20/40/80.
+Per-source capacity2, four solver passes and8192 ordinary scalar updates remain
+unchanged. Effective mass normalization still saturates at4096, independently of
+actual physical mass. Explicit mass/inertia payload multipliers extend to64;
+friction remains0..4. This is developer comparison capacity, not a default law.
+
+P stores at most1024 normal/tangent load pairs per physical body, 16KiB plus fixed
+metadata. C adds at most six bounded node scans and constant3x3 work. Current
+material revalidation adds separately metered bounded source/raster queries; it
+does not rerun ejection. The bridge's fixed64-body application history expands
+from five to eleven doubles per record:25,600 to56,320 bytes. No unbounded history,
+tick-time heap storage or per-cell physics objects are introduced by rest memory.
+Qualification must report this work separately from ordinary solver updates.

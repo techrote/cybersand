@@ -173,3 +173,24 @@ Late hard-terrain edits additionally retire rest authority through the native
 hard-surface revision fence. Revalidation latches observed source/overlap changes;
 an erase-and-restore completed entirely between queries with identical current
 cells is not parcel-history tracking. Current support is still revalidated.
+
+Pre-acquisition evidence review additionally requires exactly one physical-body
+receipt and one accepted matching session/sample application at age0 for a current
+quiet observation. A compound observation copied from an earlier physics call
+cannot count again merely because its stored application age was0. Acquisition
+records delivery within the current physics call; reduction verifies that marker
+and the snapshot transition. Startup gaps, delayed samples and repeated stored
+observations remain visible without qualifying current rest or triggering
+conditional excavation. No physical candidate results preceded this correction.
+
+Global conservation uses four existing bounded native diagnostic tiles covering
+the complete1024x1024 stored-cell domain in one paused exclusive-owner inspection.
+Only compact counts and exact stored Water quantity cross to the capture; pixel
+arrays are discarded by that owner. Regional160x128 balances remain descriptive.
+The native payload/cut and isolated stump removals are independently known setup
+changes. A triggered brush excavation spans native ticks between observations;
+without an independent brush-removal ledger, its observed edit-adjusted balance
+is descriptive and strict conservation for that edited trajectory stays null.
+Do not absorb arbitrary intervening loss as intentional removal or call that
+mandatory gate passed. Admission and motion-target gates also remain separate
+from overall physical acceptance, overlap coverage and delivered-energy closure.

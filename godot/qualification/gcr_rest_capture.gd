@@ -24,8 +24,12 @@ func bounds(session: RefCounted, pose: Transform2D) -> Rect2:
 			var point: Vector2 = pose*(Vector2(rectangles[offset],rectangles[offset+1])+corner-session.source_center)
 			minimum=minimum.min(point); maximum=maximum.max(point)
 	return Rect2(minimum,maximum-minimum)
-func admitted_current(receipt: Dictionary, application: Dictionary) -> bool:
-	if not application.get("accepted",false): return false
+func application_step(before: int, after: int, physics_call: int, application: Dictionary) -> Dictionary:
+	return {"version":1,"physics_call":physics_call,"snapshot_before":before,"snapshot_after":after,
+		"delivered_this_step":after>before and application.get("accepted",false) and int(application.get("snapshot",-1))==after}
+func admitted_current(receipt: Dictionary, application: Dictionary, step_receipt: Dictionary) -> bool:
+	if not step_receipt.get("delivered_this_step",false) or not application.get("accepted",false): return false
+	if int(step_receipt.get("snapshot_after",-1))<=int(step_receipt.get("snapshot_before",-1)) or int(application.get("snapshot",-1))!=int(step_receipt.get("snapshot_after",-2)): return false
 	var native: Array = receipt.get("bodies",[])
 	var applied: Array = application.get("bodies",[])
 	if native.size()!=1 or applied.size()!=1: return false
@@ -50,9 +54,14 @@ func _run() -> void:
 		configuration.base_budget=spec.budget
 		configuration.ticks=spec.ticks
 		if await fixture.setup(root,configuration,"GCR-REST"):
+			var previous_snapshot: int = -1
 			for step: int in range(int(spec.ticks)):
 				var rows: Array = fixture.step()
 				for row: Dictionary in rows:
+					var application: Dictionary = row.get("application",{})
+					var current_snapshot: int = int(application.get("snapshot",-1))
+					row["application_step"]=application_step(previous_snapshot,current_snapshot,step,application)
+					previous_snapshot=current_snapshot
 					row.erase("ablation")
 					report.rows.append(portable(row))
 					if not row.conserved: report.errors.append("material conservation at "+str(step))
@@ -62,7 +71,7 @@ func _run() -> void:
 	else:
 		var session = Session.new()
 		if await session.open(root,1,str(spec.surroundings),true,"LA",{}, {"mode":str(spec.mode),"budget":float(spec.budget)}):
-			report.before=portable(await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128)))
+			report.before=portable(await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128),true))
 			if await session.cut_and_release():
 				report.mass=session.body.mass
 				report.inertia=session.body.inertia
@@ -80,6 +89,7 @@ func _run() -> void:
 				var excavated: bool = false
 				while int(session.coupling_metrics().native_tick)<target:
 					await physics_frame
+					var snapshot_before: int = int(session.coupling_metrics().get("last_compound_observation",{}).get("snapshot_serial",-1))
 					session.physics_step()
 					var pose: Transform2D = session.body_transform()
 					var velocity: Vector2 = PhysicsServer2D.body_get_state(session.body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
@@ -90,13 +100,14 @@ func _run() -> void:
 					var observation: Dictionary = metrics.get("last_compound_observation",{})
 					var receipt: Dictionary = observation.get("rest_receipt",{})
 					var application: Dictionary = observation.get("application",{})
+					var delivery: Dictionary = application_step(snapshot_before,int(observation.get("snapshot_serial",-1)),step,application)
 					var hard_clear: bool = session.rest_hard_clearance()
-					report.rows.append({"row":step,"tick":metrics.native_tick,"native_relative_tick":int(metrics.native_tick)-start_tick,"rapier_steps":session.bridge.manual_step_count(),"position":portable(pose.origin),"rotation":pose.get_rotation(),"velocity":portable(velocity),"omega":session.angular_velocity(),"entry_com":maxf(0,pose.origin.y-initial.y),"union_bounds":[extent.position.x,extent.position.y,extent.end.x,extent.end.y],"floor_plane_flag":extent.end.y>=floor_y,"wall_plane_flag":extent.position.x<=31.0 or extent.end.x>=119.0,"hard_clearance":hard_clear,"quiet_admitted_current":admitted_current(receipt,application),"metrics":portable(metrics)})
-					if bool(spec.get("conditional_excavation",false)) and not excavated and step>=600 and hard_clear and admitted_current(receipt,application):
-						var before: Dictionary = await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128))
+					report.rows.append({"row":step,"tick":metrics.native_tick,"native_relative_tick":int(metrics.native_tick)-start_tick,"rapier_steps":session.bridge.manual_step_count(),"position":portable(pose.origin),"rotation":pose.get_rotation(),"velocity":portable(velocity),"omega":session.angular_velocity(),"entry_com":maxf(0,pose.origin.y-initial.y),"union_bounds":[extent.position.x,extent.position.y,extent.end.x,extent.end.y],"floor_plane_flag":extent.end.y>=floor_y,"wall_plane_flag":extent.position.x<=31.0 or extent.end.x>=119.0,"hard_clearance":hard_clear,"application_step":delivery,"quiet_admitted_current":admitted_current(receipt,application,delivery),"metrics":portable(metrics)})
+					if bool(spec.get("conditional_excavation",false)) and not excavated and step>=600 and hard_clear and admitted_current(receipt,application,delivery):
+						var before: Dictionary = await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128),true)
 						if not session.excavate_support(): report.errors.append("excavation refused")
 						if not await session.wait_native_ticks(2): report.errors.append("excavation owner wait failed")
-						var after: Dictionary = await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128))
+						var after: Dictionary = await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128),true)
 						report.edits.append({"step":step,"receipt_sample":receipt.get("bodies",[{}])[0].get("sample"),"before":portable(before),"after":portable(after)})
 						report.support_loss_triggered_under_admitted_rest=true
 						excavated=true
@@ -107,7 +118,7 @@ func _run() -> void:
 				if bool(spec.get("conditional_excavation",false)) and not excavated: report.outcome="NO_VALID_REST_ADMISSION"
 				report.stop_native_tick=int(session.coupling_metrics().native_tick)
 				report.observed_native_cutoff_overshoot=maxi(0,int(report.stop_native_tick)-target)
-				report.after=portable(await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128)))
+				report.after=portable(await session.inspect_coupling(PackedInt32Array(),Rect2i(0,0,160,128),true))
 			else: report.errors.append("handoff: "+session.last_error)
 		else: report.errors.append("session: "+session.last_error)
 		session.close()
