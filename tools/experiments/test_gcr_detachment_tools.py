@@ -78,6 +78,76 @@ class QualificationTests(unittest.TestCase):
         self.assertEqual(analyze.actual_application(app),([.1,.2],.3))
         self.assertEqual(analyze.actual_application({'accepted':True,'bodies':[]}),(None,None))
 
+    def test_failed_partial_cannot_pass_gate_with_better_entry(self):
+        reference={'capture':{'status':'captured'},'summary':{'capture_ok':True,'reference_entry_com_cells':10.,'post_overlap_max':4.}}
+        partial={'capture':{'status':'failed'},'summary':{'capture_ok':True,'reference_entry_com_cells':0.,'post_overlap_max':0.}}
+        gates=analyze.pair_gates(reference,partial)
+        self.assertIsNone(gates['entry_gate']);self.assertIsNone(gates['overlap_gate'])
+        self.assertEqual(partial['summary']['reference_entry_com_cells'],0.,'partial diagnostic remains available')
+        partial['capture']['status']='captured';partial['summary']['capture_ok']=False
+        self.assertIsNone(analyze.pair_gates(reference,partial)['entry_gate'])
+        partial['summary']['capture_ok']=True
+        self.assertTrue(analyze.pair_gates(reference,partial)['entry_gate'])
+
+    def test_observed_overlap_dedups_and_does_not_fill_primary_gap(self):
+        def row(serial,measured,pre=None,post=None):
+            return {'metrics':{'last_compound_observation':{'snapshot_serial':serial,'native_diagnostics':
+                {'overlap_measured':measured,'cellular_overlap_pre':pre,'cellular_overlap_post':post,'overlap_scope':'cell centers in union'}}}}
+        first=row(1,True,5,2)
+        rows=[first,first,row(2,False,999,999),row(3,True,7,0)]
+        value=analyze.native_observed_ledger(rows)
+        self.assertEqual(value['observed_snapshot_count'],3)
+        self.assertEqual(value['overlap']['measured_snapshots'],2)
+        self.assertEqual(value['overlap']['coverage'],2/3)
+        self.assertEqual(value['overlap']['observed_pre_peak'],7)
+        self.assertEqual(value['overlap']['observed_post_peak'],2)
+        self.assertIsNone(analyze.summary({'case':{},'rows':rows})['post_overlap_max'])
+        unsupported=analyze.native_observed_ledger([{'metrics':{'last_compound_observation':{'snapshot_serial':1}}}])
+        self.assertIsNone(unsupported['overlap']['coverage'])
+        self.assertIsNone(unsupported['overlap']['observed_post_peak'])
+
+    def test_confirmed_cut_material_balance_and_unknown_effect(self):
+        before=[0]*44;after=[0]*44
+        before[43]=548;after[43]=20;before[1]=after[1]=100;before[2]=after[2]=10
+        members=[0,0,43,0,0,200]*520
+        raw={'before':{'diagnostic_snapshot':{'counts':before,'water_mass':255}},
+             'after':{'diagnostic_snapshot':{'counts':after,'water_mass':255},'aggregate_owned':520,'native_source_members':0,'members':members},
+             'source_receipt':{'members':members},'external_edits_complete':True,'cut_effect':{'known':True},
+             'external_edits':[{'removed_material':43,'removed_cells':8}]}
+        value=analyze.conservation(raw)
+        self.assertTrue(value['brick_balance']);self.assertTrue(value['wall_unchanged']);self.assertTrue(value['all_registered_observed_exact'])
+        after[43]=21
+        self.assertFalse(analyze.conservation(raw)['brick_balance'])
+        raw['external_edits_complete']=False
+        self.assertIsNone(analyze.conservation(raw)['brick_balance'])
+        raw['source_receipt']['members']=[];raw['after']['members']=[]
+        self.assertFalse(analyze.conservation(raw)['member_tuples'],'equal empty payloads do not prove520 tuples retained')
+
+    def test_refusal_and_correction_zeroing_are_snapshot_ledgers(self):
+        accepted={'metrics':{'last_compound_observation':{'snapshot_serial':1,'application':{'snapshot':1,'accepted':True,'bodies':[
+            {'impulse':[0.,0.],'angular_impulse':0.,'correction':[0.,-.5],'correction_applied':True,
+             'velocity_before_correction':[0.,3.],'velocity_after_zeroing':[0.,0.]}]}}}}
+        refused={'metrics':{'last_compound_observation':{'snapshot_serial':2,'computed_result':[],
+            'application':{'snapshot':2,'accepted':False,'refusal':'layout','bodies':[]}}}}
+        value=analyze.application_ledger([accepted,accepted,refused,refused])
+        self.assertEqual(value['correction_count'],1);self.assertEqual(value['zeroing_count'],1)
+        self.assertEqual(value['refusal_reasons'],{'layout':1});self.assertEqual(value['empty_result_refusals'],1)
+        self.assertEqual(value['actually_applied_impulse'],[0.,0.])
+
+    def test_native_energy_work_requires_actual_computed_copy(self):
+        def row(serial,values):
+            return {'metrics':{'last_compound_observation':{'snapshot_serial':serial,'native_diagnostics':values}}}
+        missing=row(1,{'computed':False,'nodes':999,'energy_before':0,'energy_after':999})
+        valid=row(2,{'computed':True,'nodes':4,'updates':32,'energy_before':10,'energy_after':9,
+                     'normal_accepted':3,'event_budget_cost':4,'passivity_rejected':True})
+        value=analyze.native_observed_ledger([missing,valid,valid])
+        self.assertEqual(value['computed_snapshots'],1)
+        self.assertEqual(value['budget_work_energy']['nodes']['max'],4)
+        self.assertEqual(value['passive_energy_delta']['max'],-1)
+        self.assertEqual(value['normal_accepted_plus_event_cost']['max'],7)
+        self.assertEqual(value['passivity_rejected'],1)
+        self.assertIsNone(analyze.native_observed_ledger([missing])['passivity_rejected'])
+
 
 if __name__=='__main__':
     unittest.main()

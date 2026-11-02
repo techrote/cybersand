@@ -1,5 +1,6 @@
 """Reduce registered compound captures; absent observations remain unsupported."""
 import argparse
+from collections import Counter
 import hashlib
 import json
 import math
@@ -62,6 +63,9 @@ def application_ledger(rows):
     seen, total_j, total_l, supported_j, supported_l = set(), [0.,0.], 0., True, True
     accepted, refused, ages, corners = 0,0,[],[]
     receipts = 0
+    refusal_reasons=Counter()
+    empty_result_refusals=correction_count=zeroing_count=0
+    correction_norms=[]
     for row in rows:
         value = observation(row)
         app = value.get('application',{})
@@ -81,14 +85,65 @@ def application_ledger(rows):
             total_l += torque
         accepted += app.get('accepted') is True
         refused += app.get('accepted') is False
+        if app.get('accepted') is False:
+            refusal_reasons[str(app.get('refusal') or app.get('outcome') or 'unspecified')]+=1
+            empty_result_refusals += value.get('computed_result')==[]
         for body in app.get('bodies',[app]):
             if isinstance(body,dict):
                 ages.append(body.get('age'))
                 corners.append(body.get('contact_displacement'))
+                correction=body.get('correction')
+                applied=body.get('correction_applied')
+                if applied is None:
+                    count=body.get('correction_applications')
+                    applied=numeric(count) and count>0
+                if applied:
+                    correction_count+=1
+                    if vector(correction):correction_norms.append(math.hypot(*correction))
+                before,after=body.get('velocity_before_correction'),body.get('velocity_after_zeroing')
+                if vector(before) and vector(after) and before!=after:zeroing_count+=1
     return {'receipts':receipts, 'accepted':accepted,'refused':refused,
             'actually_applied_impulse':total_j if receipts and supported_j else None,
             'actually_applied_angular_impulse':total_l if receipts and supported_l else None,
-            'age':stats(ages),'corner_displacement':stats(corners)}
+            'age':stats(ages),'corner_displacement':stats(corners),
+            'refusal_reasons':dict(refusal_reasons),'empty_result_refusals':empty_result_refusals,
+            'correction_count':correction_count,'correction_norm':stats(correction_norms),'zeroing_count':zeroing_count,
+            'provenance':'unique observed snapshot application receipts; cached frame echoes are deduplicated; J/L are API-requested values, not body momentum changes under gravity/hard contacts; legacy L is the reducer sum of rotated proxy offset cross actual RPC J'}
+
+
+def numeric(value):
+    return isinstance(value,(int,float)) and not isinstance(value,bool) and math.isfinite(value)
+
+
+def native_observed_ledger(rows):
+    """Copied native measurements, distinct from the unsupported primary overlap."""
+    seen=set();observed=0;native=[];overlaps=[];instrumented=False;scopes=set()
+    for row in rows:
+        value=observation(row);serial=value.get('snapshot_serial')
+        if serial is None or serial in seen:continue
+        seen.add(serial);observed+=1
+        diagnostic=value.get('native_diagnostics') or {}
+        instrumented |= 'overlap_measured' in diagnostic
+        if (diagnostic.get('overlap_measured') is True
+                and numeric(diagnostic.get('cellular_overlap_pre')) and numeric(diagnostic.get('cellular_overlap_post'))):
+            overlaps.append((diagnostic['cellular_overlap_pre'],diagnostic['cellular_overlap_post']))
+            scopes.add(str(diagnostic.get('overlap_scope','unspecified')))
+        if diagnostic.get('computed') is True:native.append(diagnostic)
+    fields=['normal_capacity','normal_accepted','tangent_accepted','event_budget_cost','legacy_budget','legacy_scale',
+            'proxy_count','source_bins','nodes','updates','scratch_bytes','energy_before','energy_after']
+    scalar={key:stats([d.get(key) for d in native]) for key in fields}
+    energy=[d['energy_after']-d['energy_before'] for d in native if numeric(d.get('energy_before')) and numeric(d.get('energy_after'))]
+    accepted_plus_event=[d['normal_accepted']+d['event_budget_cost'] for d in native if numeric(d.get('normal_accepted')) and numeric(d.get('event_budget_cost'))]
+    return {'observed_snapshot_count':observed,'computed_snapshots':len(native),
+            'overlap':{'instrumentation_present':instrumented,'measured_snapshots':len(overlaps),
+                       'coverage':len(overlaps)/observed if instrumented and observed else None,
+                       'observed_pre_peak':max((v[0] for v in overlaps),default=None),
+                       'observed_post_peak':max((v[1] for v in overlaps),default=None),'native_scope':sorted(scopes),
+                       'provenance':'rows[].metrics.last_compound_observation.native_diagnostics.cellular_overlap_pre/post, only when overlap_measured=true; unique observed snapshot_serial denominator; sampled native cell centers in rectangle union before/after conservative displacement, not full-square SAT; partial coverage is not a full-window peak and does not replace legacy comparative overlap gate'},
+            'budget_work_energy':scalar,'normal_accepted_plus_event_cost':stats(accepted_plus_event),
+            'passive_energy_delta':stats(energy),'passivity_rejected':sum(d.get('passivity_rejected') is True for d in native) if native else None,
+            'refused':sum(d.get('refused') is True for d in native) if native else None,
+            'provenance':'copied native_diagnostics only when computed=true; no getter/refetch or solver reevaluation during reduction; energy is sampled passive-solver bookkeeping and excludes whole-system event/legacy/correction/zeroing/gravity/hard-contact calibration'}
 
 
 def component_metrics(rows):
@@ -131,10 +186,18 @@ def conservation(report):
     sand = count_before[2] == count_after[2] if len(count_before)>2 and len(count_after)>2 else None
     water = before['water_mass'] == after['water_mass'] if 'water_mass' in before and 'water_mass' in after else None
     source,final = report.get('source_receipt',{}),report.get('after',{})
-    tuples = source['members'] == final['members'] if 'members' in source and 'members' in final else None
+    tuples = (source['members'] == final['members'] and len(source['members'])==520*6) if 'members' in source and 'members' in final else None
     owner = final['aggregate_owned']==520 and final.get('native_source_members')==0 if 'aggregate_owned' in final and 'native_source_members' in final else None
+    known_cut=report.get('external_edits_complete') is True and (report.get('cut_effect') or {}).get('known') is True
+    cut=sum(edit['removed_cells'] for edit in report.get('external_edits',[]) if edit.get('removed_material')==43) if known_cut else None
+    brick=(count_before[43]-cut==count_after[43]+final['aggregate_owned']) if cut is not None and len(count_before)>43 and len(count_after)>43 and numeric(final.get('aggregate_owned')) else None
+    wall=count_before[1]==count_after[1] if len(count_before)>1 and len(count_after)>1 else None
+    original=[sand,water,tuples,owner];extended=[*original,brick,wall]
     return {'sand':sand,'water_mass':water,'member_tuples':tuples,'sole_520_owner':owner,
-            'all_supported_exact': all(x is True for x in [sand,water,tuples,owner]) if all(x is not None for x in [sand,water,tuples,owner]) else None}
+            'all_supported_exact':all(x is True for x in original) if all(x is not None for x in original) else None,
+            'brick_balance':brick,'wall_unchanged':wall,'confirmed_brick_cut':cut,
+            'all_registered_observed_exact':all(x is True for x in extended) if all(x is not None for x in extended) else None,
+            'provenance':'before/after.diagnostic_snapshot regional160x128 counts: before[43]-receipt-confirmedcut == after[43]+after.aggregate_owned; Wall[1] unchanged; Sand[2] unchanged, integer Water mass exact, original member tuples retained; no unmeasured full-world census claim'}
 
 
 def summary(report):
@@ -156,6 +219,7 @@ def summary(report):
             'reference_union_bottom_entry_max':supported_max([r.get('reference_union_bottom_entry') for r in rows]),
             'first_lowest_union_floor_plane_step':next((r.get('step') for r in rows if r.get('lowest_union_at_or_below_floor_y') is True),None),
             'conservation':conservation(report),'application':application_ledger(rows),
+            'native_observed':native_observed_ledger(rows),
             'tail':{'samples':len(tail),'position_span_cells':span,
                     'abs_vy':stats([abs(r['velocity'][1]) for r in tail if vector(r.get('velocity'))]),
                     'abs_omega':stats([abs(r['omega']) for r in tail if isinstance(r.get('omega'),(int,float))])},
@@ -169,6 +233,21 @@ def regression(reference,candidate,relative,absolute):
     if reference is None or candidate is None:
         return None
     return candidate <= reference + max(absolute,relative*abs(reference))
+
+
+def gate_eligible(row):
+    return (row is not None and row.get('capture',{}).get('status')=='captured'
+            and row.get('summary',{}).get('capture_ok') is True)
+
+
+def pair_gates(reference,candidate):
+    eligible=gate_eligible(reference) and gate_eligible(candidate)
+    ref=reference.get('summary',{}) if reference else {}
+    current=candidate.get('summary',{}) if candidate else {}
+    return {'entry_gate':regression(ref.get('reference_entry_com_cells'),current.get('reference_entry_com_cells'),.1,.5) if eligible else None,
+            'overlap_gate':regression(ref.get('post_overlap_max'),current.get('post_overlap_max'),.1,1.) if eligible else None,
+            'gate_eligibility':{'reference':gate_eligible(reference),'candidate':gate_eligible(candidate),
+                                'rule':'both outer capture.status=captured AND raw capture_ok=true; otherwise gates null and diagnostic metrics retained'}}
 
 
 def reduce_campaign(path):
@@ -196,27 +275,38 @@ def main():
         campaigns.append({'path':str(path),'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
                           'identity':campaign['identity'],'complete':campaign['complete']})
         rows.extend(reduced)
-    keyed={tuple(row['summary']['case'][k] for k in ['platform','workers','surroundings','arm','repeat']):row['summary'] for row in rows if 'summary' in row}
+    keyed={}
+    for row in rows:
+        if 'summary' not in row:continue
+        key=tuple(row['summary']['case'][k] for k in ['platform','workers','surroundings','arm','repeat'])
+        if key in keyed:raise RuntimeError('Duplicate case would hide an earlier result: '+str(key))
+        keyed[key]=row
     pairs=[]
-    for key,candidate in keyed.items():
+    for key,candidate_row in keyed.items():
         platform,workers,surroundings,arm,repeat=key
         if arm!='R2' or repeat!=0 or surroundings not in ['packed_sand','embedded_sand']:
             continue
-        reference=keyed.get((platform,workers,surroundings,'legacy',0))
+        reference_row=keyed.get((platform,workers,surroundings,'legacy',0))
+        candidate=candidate_row['summary'];reference=reference_row['summary'] if reference_row else None
+        eligible=gate_eligible(reference_row) and gate_eligible(candidate_row)
         pairs.append({'platform':platform,'workers':workers,'surroundings':surroundings,
-                      'entry_gate':regression(reference.get('reference_entry_com_cells') if reference else None,candidate['reference_entry_com_cells'],.1,.5),
-                      'overlap_gate':regression(reference.get('post_overlap_max') if reference else None,candidate['post_overlap_max'],.1,1.),
+                      **pair_gates(reference_row,candidate_row),
                       'reference_entry':reference.get('reference_entry_com_cells') if reference else None,'candidate_entry':candidate['reference_entry_com_cells'],
                       'scope':'COM downward reference entry is a fixture-relative proxy; missing overlap does not pass its gate'})
         pairs[-1]['functional_timing_investigation']={}
         for component,values in candidate['components']['timing'].items():
             base=reference['components']['timing'][component]['p95'] if reference else None
             current=values['p95']
-            pairs[-1]['functional_timing_investigation'][component]=(current>1.25*base and current-base>25.) if base is not None and current is not None else None
+            pairs[-1]['functional_timing_investigation'][component]=(current>1.25*base and current-base>25.) if eligible and base is not None and current is not None else None
         base=reference['components']['work']['updates']['max'] if reference else None
         current=candidate['components']['work']['updates']['max']
-        pairs[-1]['work_over_2x']=(current>2.*base) if base is not None and current is not None else None
-    result={'schema':'cybersand.gcr-detachment.analysis.v1','campaigns':campaigns,'captures':rows,'primary_pairs':pairs,
+        pairs[-1]['work_over_2x']=(current>2.*base) if eligible and base is not None and current is not None else None
+    method=Path(__file__).read_bytes()
+    result={'schema':'cybersand.gcr-detachment.analysis.v2',
+            'analysis_method':{'path':'tools/experiments/analyze_gcr_detachment.py',
+                               'sha256':hashlib.sha256(method).hexdigest(),
+                               'canonical_lf_sha256':hashlib.sha256(method.replace(b'\r\n',b'\n')).hexdigest()},
+            'campaigns':campaigns,'captures':rows,'primary_pairs':pairs,
             'limits':['functional asynchronous timing only','A1 diagnostic only','cutoff derivatives are null',
                       'no cross-platform or full physical replay equality inferred','no penetration or owner-feel acceptance inferred']}
     args.output.parent.mkdir(parents=True,exist_ok=True)
