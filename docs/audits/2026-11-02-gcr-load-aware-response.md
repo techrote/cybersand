@@ -154,7 +154,8 @@ without stepping barrel trajectories. A deferred SpinBox-text test issue and an
 actual default-reset reparse defect were preserved and fixed before launch.
 An actual Windows window was observed paused at tick0 with source34a5ac9, native
 aac6c6b8c6ec5f87, Godot4.7 and Rapier2D. This is visual apparatus QA, not feel
-acceptance. The owner verdict remains null.
+acceptance. The launch packet originally recorded a null owner verdict; later
+feedback below records provisional preference without production acceptance.
 
 The structure scene preserves tests1–4 and adds isolated5–0. C cycles
 legacy/R2/A1/LA; Space cuts/releases, P pauses, X excavates, R resets and F6 opens
@@ -219,6 +220,30 @@ $env:CYBERSAND_SOURCE_REVISION='34a5ac934e52aebd8778aecc14269b02bb38a1b0'
 Runtime publication and later audit metadata preserve those tested Godot/native
 inputs; the displayed source identifies the UI implementation checkpoint rather
 than relabelling the earlier physical captures.
+
+## Subsequent owner feedback — 2026-11-02
+
+The owner calls experimental GCR LA the best version so far and very close,
+then requests catch/stiction to address squeeze-out, residual glide and forced
+tunnelling. This is recorded as actual provisional preference in the owner
+packet, not a waiver of failed registered gates or permission to merge.
+
+A rest successor must distinguish existing friction limits, admission/load
+continuity, positional correction and any deliberate kinetic-energy removal.
+The current solver already targets zero tangential slip within mu*normal impulse;
+adding a generic minimum impulse threshold would not by itself establish a new
+valid static-contact law. Current low-speed upward correction is a separate
+path and can continue even if velocity is zeroed. In retained full-support LA
+tails it is active in144/300 Windows and150/300 Linux observations (snapshots may
+repeat); this is mechanism evidence, not independent efficacy counts.
+
+Contact-relative motion, angular motion, load/torque balance, current support,
+unresolved overlap, external drive and immediate support-change release belong
+in any preregistered catch/stiction admission. Low jerk alone does not prove rest.
+Short history may classify quiet contact but must not average away real impacts.
+No catch, sleep, friction coefficient or response-law refinement is implemented
+in this LA checkpoint. Native cells remain material authority; a resting body is
+not rasterized back into authoritative cells.
 
 ## Documentation and scope mapping
 
