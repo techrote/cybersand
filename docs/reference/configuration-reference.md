@@ -4,11 +4,23 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-02
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
+
+## Experimental detached-terrain contact selection
+
+The development-only `solid_detachment_lab.tscn` defaults to legacy/B0.
+`--candidate=R2` or `--candidate=A1`, and C in that scene, reconstruct fresh
+experimental sessions; they do not switch a live law. `--baseline` is a separate
+legacy displacement control and refuses an experimental arm. Payload-derived
+terrain mass is retained. The [compound contract](../architecture/compound-granular-coupling.md)
+owns response/correction/work bounds and the single-aggregate capacity. These
+selectors do not enable detachment in ordinary Play or certify other platforms.
+
+## Existing application settings
 
 The bounded [desktop trial-body constructor](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 has exactly one existing barrel8×14 or Ripper18×8 rectangle and uses the shared

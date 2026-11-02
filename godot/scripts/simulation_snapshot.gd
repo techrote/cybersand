@@ -92,6 +92,8 @@ var native_worker_participation: Dictionary = {}
 var backend_name: String = "unknown"
 var sparse_flight_moves_last_tick: int = 0
 var rigid_body_results: PackedFloat32Array = PackedFloat32Array()
+var gcr_body_results: PackedFloat64Array = PackedFloat64Array()
+var gcr_result_generation_usec: int = 0
 var rigid_body_contacts_last_tick: int = 0
 var rigid_body_displaced_last_tick: int = 0
 var rigid_body_unresolved_last_tick: int = 0
@@ -104,3 +106,7 @@ var last_tick_error: String = ""
 var simulation_failed: bool = false
 var failed_tick_index: int = 0
 var paused: bool = false
+
+var gcr_compound_results := PackedFloat64Array()
+var gcr_compound_diagnostics: Dictionary = {}
+var gcr_compound_preparation: Dictionary = {}

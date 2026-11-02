@@ -4,11 +4,48 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-02
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Experimental compound granular detachment
+
+The unmerged [compound contract](../architecture/compound-granular-coupling.md)
+and [dated qualification](../audits/2026-11-02-compound-granular-detachment.md)
+retain separate native build5d, acquisition861 and UI9138 checkpoints. Native
+input changes require rebuilt source-matched Windows/Linux libraries; a later
+capture/UI/docs commit is not a relabelled native build. Verify materialized
+runtime provenance and use the pinned Godot4.7/Rapier runtime before execution.
+
+```text
+godot --headless --editor --path godot --quit
+godot --headless --path godot --script res://tests/test_gcr_detachment.gd
+godot --headless --path godot --script res://tests/test_gcr_detachment_async.gd
+godot --headless --path godot --script res://tests/test_gcr_detachment_lab.gd
+godot --path godot res://solid_detachment_lab.tscn -- --candidate=R2 --surroundings=packed_sand --workers=1
+python -m unittest discover -s tools/experiments -p test_gcr_detachment_tools.py
+```
+
+The lab test checks fresh owner/arm selection while anchored, with no body
+release or efficacy trajectory. The other two controls exercise actual compound
+lease/geometry/wrench and asynchronous acknowledgement/publication. C in the
+developer scene cycles fresh legacy/R2/A1 sessions; ordinary defaults stay legacy.
+`--baseline` refuses an experimental arm. The existing native `test`/`sanitize`,
+`solid-detachment-test`/`solid-detachment-sanitize` and
+`conservative-displacement-test`/`conservative-displacement-sanitize` targets own
+the corresponding native checks. Earlier failures remain in the dated record.
+
+`tools/experiments/run_gcr_detachment.py` authenticates the committed protocol,
+complete project/runtime identity and a source-bound passing mechanical receipt
+before the registered48+8 physical population. Use a fresh receipt/output;
+an old source receipt refuses. `res://qualification/gcr_detachment_capture.gd`
+has a validation-only mode before owner construction and is deliberately outside
+automatic `test_*.gd` discovery. The reducer retains failed/partial diagnostics
+but gives them null efficacy gates. Largest observed native overlap, regional
+conservation and functional asynchronous timings do not establish complete
+penetration, full-world accounting, uncontended performance or owner acceptance.
 
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 

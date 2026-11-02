@@ -60,6 +60,12 @@ var _cadence_lod_enabled: bool = true
 var _liquid_surface_adhesion_enabled: bool = true
 var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+var _gcr_body_states: PackedFloat64Array = PackedFloat64Array()
+var _gcr_experiment: bool = false
+var _gcr_compound_mode: bool = false
+var _gcr_compound_lease: Dictionary = {}
+var _gcr_compound_preparation: Dictionary = {}
+var _gcr_world_generation: int = 1
 var _rigid_body_epoch: int = 0
 var _physical_effect_epoch: int = 0
 var _physical_effect_generations := PackedInt64Array([0, 0, 0, 0, 0, 0, 0, 0])
@@ -155,7 +161,7 @@ func queue_lab(command: Dictionary) -> void:
 	_lab_request["_owner_request_revision"] = _lab_request_revision
 	_pending_physical_effects.clear()
 	_cancel_physical_usables_locked()
-	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
+	if command.has("solid_detachment") or command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
 static func prepared_owner_execution(definition: Dictionary, settings: Dictionary) -> Dictionary:
@@ -1125,6 +1131,52 @@ func set_frame_state(
 	_mutex.unlock()
 
 
+func configure_granular_experiment(candidate: String) -> bool:
+	# Test/developer construction only, before ownership moves to the thread.
+	if _thread.is_started() or candidate not in ["Y1", "GCR", "GCR-A1"] or not _world.has_method(&"diagnostic_reset"):
+		return false
+	var token: String = "GCR-ADMISSION-001-2026-11-01" if candidate == "GCR-A1" else ("GCR-001-2026-11-01" if candidate == "GCR" else "Y1-ENVELOPE-2026-11-01")
+	if not _world.diagnostic_reset({"workers":1,"bearing_candidate":candidate,"bearing_experiment":token}): return false
+	_gcr_experiment = candidate in ["GCR", "GCR-A1"]
+	_gcr_world_generation = _world_generation
+	return true
+
+func set_gcr_compound_states(states: PackedFloat64Array, lease: Dictionary, body_epoch: int) -> bool:
+	if not _gcr_experiment or not _gcr_compound_mode or states.is_empty() or states.size()%17!=0 or states.size()>64*17: return false
+	for value: float in states:
+		if not is_finite(value): return false
+	if lease.size()!=4 or not lease.has("token") or not lease.has("body_id") or not lease.has("body_generation") or not lease.has("physics_epoch"): return false
+	var render := PackedFloat32Array()
+	for offset: int in range(0,states.size(),17):
+		for field: int in range(11): render.append(float(states[offset+field]))
+	_mutex.lock()
+	if _reset_requested or not _prepared_physical_frame_hold.is_empty():
+		_mutex.unlock()
+		return false
+	_gcr_body_states=states.duplicate()
+	_gcr_compound_lease=lease.duplicate(true)
+	_rigid_body_states=render
+	_rigid_body_epoch=body_epoch
+	_mutex.unlock()
+	return true
+
+func set_gcr_body_states(states: PackedFloat64Array, body_epoch: int = 0) -> bool:
+	if not _gcr_experiment or states.size() % 17 != 0 or states.size() > 64*17: return false
+	for value: float in states:
+		if not is_finite(value): return false
+	var render_states := PackedFloat32Array()
+	for offset: int in range(0,states.size(),17):
+		for index: int in range(11): render_states.append(float(states[offset+index]))
+	_mutex.lock()
+	if not _prepared_physical_frame_hold.is_empty() or _reset_requested:
+		_mutex.unlock()
+		return false
+	_gcr_body_states = states.duplicate()
+	_rigid_body_states = render_states
+	_rigid_body_epoch = body_epoch
+	_mutex.unlock()
+	return true
+
 func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effects: Array = []) -> Dictionary:
 	# Packed value data is copied at the bridge; scene-tree nodes and Physics RIDs
 	# remain exclusively on the main/physics thread. Body publication is independent
@@ -1559,6 +1611,11 @@ func request_render_full_refresh() -> void:
 	_mutex.unlock()
 
 
+func _native_representation_fenced() -> bool:
+	# Called only by the exclusive native owner, never the UI/main thread.
+	return _world.has_method(&"solid_detachment_fenced") and bool(_world.solid_detachment_fenced())
+
+
 func _worker_loop() -> void:
 	var next_tick_usec: int = Time.get_ticks_usec()
 	while true:
@@ -1576,6 +1633,8 @@ func _worker_loop() -> void:
 		var local_liquid_adhesion_enabled: bool = true
 		var local_render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
+		var local_gcr_body_states: PackedFloat64Array = PackedFloat64Array()
+		var local_gcr_compound_lease: Dictionary = {}
 		var local_rigid_body_epoch: int = 0
 		var local_physical_effects: Array = []
 		var local_physical_usables: Array = []
@@ -1606,9 +1665,12 @@ func _worker_loop() -> void:
 		local_cadence_enabled = _cadence_lod_enabled
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
-		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
+		var physical_wait: bool = _native_representation_fenced() or _lab_request.has("solid_detachment") \
+			or not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
+		local_gcr_body_states = _gcr_body_states
+		local_gcr_compound_lease = _gcr_compound_lease.duplicate(true)
 		local_rigid_body_epoch = _rigid_body_epoch
 		if not physical_wait:
 			local_physical_effects = _pending_physical_effects
@@ -1700,6 +1762,21 @@ func _worker_loop() -> void:
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if not _pending_physical_liquid.is_empty():
 			OS.delay_usec(1000)
+			next_tick_usec = Time.get_ticks_usec()
+			continue
+		if _native_representation_fenced():
+			# Paused ordinary loops still refresh configuration and clear body
+			# masks below. A representation transaction must fence those writes
+			# as well as ticks, while continuing copied publication and commands.
+			# A staged live body cannot be discarded by an unrelated UI reset.
+			if local_reset_requested:
+				_lab_status = "Reset refused: finish/cancel the native representation transaction"
+				_actor_prototype_result_serial = local_actor_prototype_serial
+				_actor_prototype_reset_applied = false
+				_actor_prototype_status = _lab_status
+			_publish_snapshot(0.0, true, local_render_snapshot_interval_usec, false,
+				local_rigid_body_states, local_rigid_body_epoch)
+			OS.delay_usec(TICK_INTERVAL_USEC)
 			next_tick_usec = Time.get_ticks_usec()
 			continue
 		if not local_player_environment_profile.is_empty():
@@ -1802,7 +1879,36 @@ func _worker_loop() -> void:
 		else:
 			_usable_session.clear()
 		if not _simulation_failed:
-			_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
+			if _gcr_experiment and _gcr_world_generation != _world_generation and not bool(_world.gcr_diagnostics().get("enabled",false)):
+				# An admitted ordinary World replacement retires experiment mode.
+				# This is not a fallback for stale/refused GCR response samples.
+				_gcr_experiment = false
+				_mutex.lock()
+				_gcr_body_states = PackedFloat64Array()
+				_mutex.unlock()
+			_gcr_world_generation = _world_generation
+			if _gcr_experiment:
+				if _gcr_compound_mode:
+					var installed: bool = _world.prepare_gcr_compound_coupling(local_gcr_body_states,local_gcr_compound_lease,not local_paused)
+					if installed and not local_gcr_body_states.is_empty():
+						_gcr_compound_preparation={"installed":true,"sample":int(local_gcr_body_states[10]),
+							"session":int(local_gcr_body_states[16]),"epoch":local_rigid_body_epoch,
+							"lease":local_gcr_compound_lease.duplicate(true),"record_count":local_gcr_body_states.size()/17,
+							"world_generation":_world_generation,"native_tick":int(_world.get_tick_index())}
+					if _world.has_failed(): _gcr_compound_preparation.clear()
+				else:
+					_world.prepare_gcr_coupling(local_gcr_body_states, not local_paused)
+			else:
+				_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
+			if _world.has_method(&"has_failed") and bool(_world.has_failed()):
+				# Preparation can quarantine before the next native tick. Stop
+				# before effects, emissions, sampled actors or healthy publication.
+				_simulation_failed = true
+				_gcr_compound_preparation.clear()
+				_publish_snapshot(0.,true,local_render_snapshot_interval_usec,false,local_rigid_body_states,local_rigid_body_epoch)
+				OS.delay_usec(TICK_INTERVAL_USEC)
+				next_tick_usec=Time.get_ticks_usec()
+				continue
 			# Admission is rechecked at the exclusive owner's consume boundary.
 			var physical_effects_allowed: bool = (not local_paused
 				and not _sampled_character_enabled and not _water_lab_active
@@ -2074,6 +2180,15 @@ func _publish_snapshot(
 	snapshot.backend_name = _backend_name
 	snapshot.sparse_flight_moves_last_tick = _world.sparse_flight_moves_last_tick
 	snapshot.rigid_body_results = _world.rigid_body_results()
+	if _gcr_experiment:
+		var result_started: int = Time.get_ticks_usec()
+		if _gcr_compound_mode:
+			snapshot.gcr_compound_results = _world.gcr_compound_results()
+			snapshot.gcr_compound_preparation = _gcr_compound_preparation.duplicate(true)
+			snapshot.gcr_compound_diagnostics = _world.gcr_compound_diagnostics()
+		else:
+			snapshot.gcr_body_results = _world.gcr_body_results()
+		snapshot.gcr_result_generation_usec = Time.get_ticks_usec()-result_started
 	snapshot.rigid_body_contacts_last_tick = _world.rigid_body_contacts_last_tick
 	snapshot.rigid_body_displaced_last_tick = _world.rigid_body_displaced_last_tick
 	snapshot.rigid_body_unresolved_last_tick = _world.rigid_body_unresolved_last_tick
@@ -2206,6 +2321,11 @@ func _publish_failure_snapshot() -> void:
 	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied
 	snapshot.paused = true
 	snapshot.rigid_body_results = PackedFloat32Array()
+	snapshot.gcr_body_results = PackedFloat64Array()
+	snapshot.gcr_compound_results = PackedFloat64Array()
+	snapshot.gcr_compound_preparation = {}
+	snapshot.gcr_compound_diagnostics = {}
+	snapshot.gcr_result_generation_usec = 0
 	snapshot.failed_tick_index = int(_world.get_attempted_tick_index())
 	snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 	snapshot.last_tick_error = str(_world.get_last_tick_error())

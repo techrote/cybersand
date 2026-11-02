@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-02
 ---
 
 # Architectural and simulation invariants
@@ -151,6 +151,19 @@ Fixtures: [native bridge](../../godot/tests/test_native_render_bridge_regression
 | BRIDGE-005 | Current: live body Nodes/RIDs remain on main-thread adapter; workers receive complete value samples |
 | BRIDGE-006 | Current: LUT variation, temporal blending and glow do not write derived colour/frame noise into cells |
 
+## Experimental compound granular detachment
+
+The [focused contract](../architecture/compound-granular-coupling.md) owns the
+unmerged one-aggregate developer route and its qualified limits.
+
+| ID | Branch-scoped invariant |
+|---|---|
+| GCR-CMP-001 | Current opt-in: all constituent geometry shares actual native mass, COM and inertia, one response budget and one COM wrench application |
+| GCR-CMP-002 | Current opt-in: native payload/cells retain sole material authority; Rapier remains the main-thread motion owner; body masks remain transient |
+| GCR-CMP-003 | Current opt-in: complete lease/geometry admission precedes mutation; explicit installed-mask acknowledgement precedes release; every actual corner participates in stale rejection |
+| GCR-CMP-004 | Current opt-in: failure invalidates actionable output and quarantines actual state; no implicit active-payload restoration |
+| GCR-CMP-005 | Qualification limit: relocation success, hard-supported rest, partial overlap observations and passive-only energy accounting do not establish production granular support |
+
 ## Rigid-body coupling invariants
 
 Contract: [coupling](../architecture/rigid-body-and-cellular-coupling.md).
@@ -162,7 +175,7 @@ Source/tests: [native adapter](../../godot/native_extension/cyber_native_cell_wo
 | BODY-001 | Current rectangles: body occupancy and material identity remain separate |
 | BODY-002 | Current: movement/non-empty painting cannot target occupied body-mask cells |
 | BODY-003 | Current: native ascending body IDs, fallback input order; bounded ejection retains/counts unresolved material |
-| BODY-004 | Current bounded impulse/correction; Planned torque: observations cross through values rather than live worker physics access |
+| BODY-004 | Current ordinary legacy uses bounded central impulse/correction; experimental [compound GCR](../architecture/compound-granular-coupling.md) adds a COM wrench. Both cross as values rather than live worker physics access |
 | BODY-005 | Current capped sweep and per-body cast-shape CCD; generalized selective substeps/CCD policy is Planned |
 | BODY-006 | Current configuration: Rapier2D is the sole backend; no production toggle |
 | BODY-007 | Current manual owner: automatic space stepping is disabled while the bridge owns explicit steps |

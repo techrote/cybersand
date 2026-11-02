@@ -1,5 +1,8 @@
 #pragma once
 
+#include "cybersand/solid_detachment.hpp"
+#include "cybersand/conservative_displacement.hpp"
+
 #include "cybersand/material.hpp"
 #include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/interaction_policy.hpp"
@@ -196,6 +199,24 @@ public:
     [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,
                                            bool side = false,
                                            bool include_transient_obstacles = true) const noexcept;
+    enum class GranularAdmissionRefusal : std::uint8_t {
+        None, Invalid, FailedWorld, NoMaskFreeWitness, SourceMasked,
+        SourceNonCapable, SourceUnstable, PathMasked, PathNonCapable,
+        PathUnstable, Packing, Count
+    };
+    struct GranularContactAdmission {
+        bool admitted = false;
+        std::uint8_t selected_depth = 0;
+        std::int8_t witness_dx = 0, witness_dy = 0;
+        std::uint32_t source_candidates = 1, geometry_mask_checks = 0;
+        std::uint32_t mask_checks = 0, path_checks = 0, shared_witness_calls = 0;
+        GranularAdmissionRefusal refusal_reason = GranularAdmissionRefusal::None;
+    };
+    // GCR-A1 side/up-only serialized-owner query. Source/force geometry stays
+    // external; this copied witness carries no material or response ownership.
+    [[nodiscard]] GranularContactAdmission granular_contact_admission_at(
+        std::int64_t source_x, std::int64_t source_y,
+        double outward_x, double outward_y) const noexcept;
     [[nodiscard]] std::uint16_t stored_state_a(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint16_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
@@ -241,6 +262,10 @@ public:
                                                        std::int64_t y) const noexcept;
     [[nodiscard]] bool relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
                                             std::int64_t to_x, std::int64_t to_y);
+    // Fixed-capacity conservative contact displacement. Every validation and
+    // allocation-capacity check completes before any authoritative cell moves.
+    [[nodiscard]] ConservativeDisplacementResult conservative_displace_cells(
+        const ConservativeDisplacementRequest& request);
     // Exclusive external owner, between ticks. The caller fences input leases
     // and reset identity. Fixed scratch, resident destinations and preallocated
     // thermal fields keep this operation free of World-owned allocations.
@@ -249,16 +274,45 @@ public:
     [[nodiscard]] std::uint64_t transient_contact_count(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_x(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_contact_impulse_y(std::uint16_t body_id) const noexcept;
+    // GCR-001 value-only moving-grain wrench. Moments use doubled world cell
+    // centres and integer density weights; the consumer translates to its COM.
+    void enable_transient_granular_wrenches(bool enabled) noexcept;
+    void clear_transient_contact_observations() noexcept;
+    [[nodiscard]] std::int64_t transient_granular_impulse_x(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_granular_impulse_y(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_granular_moment2(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] bool transient_granular_wrench_refused(std::uint16_t body_id) const noexcept;
     [[nodiscard]] bool queue_explosion(std::int64_t x, std::int64_t y,
                                        std::int32_t radius,
                                        std::uint8_t collapse_strength = 255);
     void clear();
+
+    // SOL-DETACH-001/A1: experimental one-aggregate native ownership kernel.
+    // Exclusive owner only. Main-thread physics must remain separately fenced
+    // until a source/geometry-bound contact receipt has been finalized.
+    [[nodiscard]] soliding::SolidOutcome configure_solid_detachment(soliding::SolidLimits limits = {});
+    [[nodiscard]] soliding::SolidOutcome prepare_solid_detachment(const soliding::SolidRequest& request);
+    [[nodiscard]] soliding::SolidOutcome acknowledge_solid_detachment(const soliding::SolidBodyReservation& body);
+    [[nodiscard]] soliding::SolidOutcome commit_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome finalize_solid_detachment(const soliding::SolidCollisionReceipt& receipt);
+    [[nodiscard]] soliding::SolidOutcome cancel_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome rollback_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome complete_solid_rollback(const soliding::SolidCollisionReceipt& receipt);
+    [[nodiscard]] bool solid_detachment_fenced() const noexcept;
+    [[nodiscard]] soliding::SolidSnapshot inspect_solid_detachment() const noexcept;
+    [[nodiscard]] std::size_t solid_detachment_storage_bytes() const noexcept;
+    [[nodiscard]] std::size_t copy_solid_detachment_members(std::span<soliding::SolidMember> output) const noexcept;
+    [[nodiscard]] std::size_t copy_solid_detachment_shapes(std::span<soliding::SolidShape> output) const noexcept;
 
     [[nodiscard]] TickStats tick();
     // tick_index identifies attempts; only completed_tick_index is successful.
     // A thrown tick quarantines this World until clear() or replacement. No
     // rollback, in-place retry, or replay of pending/partially applied events.
     [[nodiscard]] bool has_failed() const noexcept;
+    // Exclusive external owner only, outside tick(): retain actual partial
+    // state after an unexpected coupling exception and forbid in-place retry.
+    // Allocation-free; active aggregate payload remains owned and quarantined.
+    void quarantine_external_coupling() noexcept;
     [[nodiscard]] std::uint64_t completed_tick_index() const noexcept;
     [[nodiscard]] std::uint64_t tick_index() const noexcept;
     [[nodiscard]] std::size_t chunk_count() const noexcept;
@@ -400,6 +454,8 @@ private:
         std::uint8_t collapse_strength = 0;
     };
 
+    std::unique_ptr<soliding::SolidStore> solid_detachment_;
+    void require_solid_mutation_allowed() const;
     WorldConfig config_;
     bool water_cellular_yield_ = false;
     WaterCellularYieldParameters water_cellular_yield_parameters_{};
@@ -531,8 +587,11 @@ private:
                                           JobEffects* effects);
     [[nodiscard]] std::uint8_t deterministic_random(std::int64_t x, std::int64_t y,
                                                     std::uint32_t stream) const noexcept;
+    [[nodiscard]] bool granular_sample_stable(std::int64_t x, std::int64_t y,
+                                               bool include_transient_obstacles) const noexcept;
     void record_transient_contact(std::uint16_t body_id, Material material,
-                                  std::int64_t delta_x, std::int64_t delta_y) noexcept;
+                                  std::int64_t delta_x, std::int64_t delta_y, std::int64_t source_x,
+                                  std::int64_t source_y) noexcept;
     [[nodiscard]] std::int32_t deterministic_direction(std::int64_t x, std::int64_t y) const noexcept;
     void begin_tick(TickStats& stats);
     void require_healthy() const;

@@ -1,0 +1,100 @@
+{
+  "schema": "cybersand.compound-detachment.compact-evidence-index.v1",
+  "archive": {
+    "schema": "cybersand.compound-detachment.local-raw-archive.v1",
+    "created_utc": "2026-11-02T01:14:29.957653+00:00",
+    "archive": "build/compound-evidence-bundles/compound-raw-861-9138-9f3c1b9a1bca3e68.zip",
+    "bytes": 139847809,
+    "sha256": "93dd44203871053397128352e252bdb62bbe184dc8d6ff4c790826ea0b0496d6",
+    "file_manifest": "build/compound-evidence-bundles/file-manifest-9f3c1b9a1bca3e680987fb81baf5966cd95ee61ef67554d7dd7c89b032b2f8fc.json",
+    "file_manifest_sha256": "9f3c1b9a1bca3e680987fb81baf5966cd95ee61ef67554d7dd7c89b032b2f8fc",
+    "source_file_manifest": "build/compound-evidence/owner-bundle-manifest.json",
+    "file_count": 531,
+    "uncompressed_bytes": 703852212,
+    "every_source_file_hash_verified_during_stream": true,
+    "zip_inventory_verified": true,
+    "reproducible_metadata": "Sorted manifest order, fixed2026-11-02T00:00:00 ZIP timestamps, POSIX0600 file mode; paths relative to workspace.",
+    "availability": "Local ignored artifact only; not committed, uploaded, or remotely downloadable. Retain archive and external file manifest before deleting workspace.",
+    "source_identities": {
+      "observed_head": "b5c110a8b8b35854f1a9bfef399b1e41c1ac0aca",
+      "native_build_source": "5d124667a3058a335680048a7099e2bbabde8de3",
+      "physical_capture_source": "86108a148d6edf4d2c956a13f47a22ebe2cd0c7e",
+      "ui_execution_source": "9138bdaf2ea295b0e6ff84972dd909fefdf7a2f1",
+      "corrected_analyzer_method_source": "ec182afcaf64993ae342a3220e3342b3be925c7d"
+    },
+    "git_or_runtime_publication": false,
+    "archive_outside_own_file_manifest": true
+  },
+  "archive_entry_verification": {
+    "path": "build/compound-evidence-bundles/compound-raw-861-9138-9f3c1b9a1bca3e68.zip.verification.json",
+    "sha256": "c6d9bdbab2be899ce3fd18afefddef7730ba7cfc48aa437e0fd87885ca1e4702",
+    "bytes": 820
+  },
+  "engineering_summary": {
+    "path": "build/compound-evidence/engineering-summary.json",
+    "sha256": "79bcd6b883b0d484173db01fad364eba4456e833ebecd5c569a58d4c8fd0557c",
+    "bytes": 242811
+  },
+  "physical_disposition": {
+    "status": "registered_physical_gate_not_met",
+    "acquisition_complete": true,
+    "captures": 56,
+    "receipt": {
+      "path": "build/compound-evidence/physical-disposition-receipt.json",
+      "sha256": "2eef9231f1ea19f8559bde6b62a3449f81d049e356450dbd30bd0604a9761cb3",
+      "bytes": 3071
+    }
+  },
+  "owner_review": {
+    "path": "build/compound-evidence/owner-review-manifest.json",
+    "sha256": "a930e7f51ed36f80eb9759850d4b33dfe196b6420e9fe72474687e3738e979b4",
+    "bytes": 7316
+  },
+  "publication_authorized": false,
+  "scope": "Compact commit candidate only; raw trace corpus, ZIP, binaries and logs stay outside Git. Actual source/runtime lanes retained. Root owns final tracked placement and publication authorization.",
+  "repository_compact_projections": [
+    {
+      "path": "docs/audits/gcr-detachment-2026-11-01/engineering-summary.json",
+      "bytes": 242811,
+      "sha256": "79bcd6b883b0d484173db01fad364eba4456e833ebecd5c569a58d4c8fd0557c"
+    },
+    {
+      "path": "docs/audits/gcr-detachment-2026-11-01/owner-review.json",
+      "bytes": 7177,
+      "sha256": "6596b19b02accdfc69f49c31380abc7bdeafe047cd52d8a202a1ba8f63bed801"
+    },
+    {
+      "path": "docs/audits/gcr-detachment-2026-11-01/physical-summary.json",
+      "bytes": 431294,
+      "sha256": "c71c1e0ae08e355f713d5d2e170a50dbe07e738a1cbd720334e4c54c6087ee2f"
+    },
+    {
+      "path": "docs/audits/gcr-detachment-2026-11-01/postpublication-validation.json",
+      "bytes": 28909,
+      "sha256": "da188e78cdefe815dbd11b5c0bca74fc52a72e6ec134db07e714ee26bbb3e80c"
+    },
+    {
+      "path": "docs/audits/gcr-detachment-2026-11-01/protocol.json",
+      "bytes": 6316,
+      "sha256": "bd399ba4f89b63d2c020ea5dc1965fc7f896a7db0721e0a16e2bbf7c30efde5e"
+    },
+    {
+      "path": "docs/audits/gcr-detachment-2026-11-01/raw-and-derived-hashes.json",
+      "bytes": 16304,
+      "sha256": "06943fd32caee30cfc7c6193b5f8fffcb5b15d3018d337fc8b3c0131a022f5f2"
+    },
+    {
+      "path": "docs/audits/gcr-detachment-2026-11-01/raw-bundle-files.json",
+      "bytes": 104069,
+      "sha256": "9f3c1b9a1bca3e680987fb81baf5966cd95ee61ef67554d7dd7c89b032b2f8fc"
+    },
+    {
+      "path": "docs/audits/gcr-detachment-2026-11-01/selected-traces.json",
+      "bytes": 253851,
+      "sha256": "0fcb6054b1653ba41115d5e866e471500cbc63692eead883cb0ff080a0eee389"
+    }
+  ],
+  "repository_projection_scope": "Selected116 timeline observations from12 captures and all56 case summaries; no raw event corpus/archive committed. Full raw/corrected analysis and failure logs are local in the verified bundle.",
+  "repository_hash_kind": "SHA-256 of LF repository bytes; raw archive/evidence hashes retain their recorded original byte identity.",
+  "publication_authorization_scope": "Frozen raw-evidence packaging was not authorization to merge/promote or publish runtimes; runtime publication is a separate later technical checkpoint."
+}

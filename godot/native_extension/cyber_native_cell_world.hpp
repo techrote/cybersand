@@ -3,12 +3,14 @@
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/world.hpp"
 #include "cybersand/prepared_world.hpp"
+#include "cybersand/granular_contact_response.hpp"
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
 #include <godot_cpp/variant/packed_float32_array.hpp>
+#include <godot_cpp/variant/packed_float64_array.hpp>
 #include <godot_cpp/variant/packed_int32_array.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/vector2.hpp>
@@ -36,6 +38,13 @@ public:
     [[nodiscard]] static std::int64_t auto_worker_threads(std::int64_t logical_threads);
     [[nodiscard]] static std::int64_t logical_processor_count();
 
+    // SOL281 diagnostic-only value facade. Exclusive native owner, no RIDs.
+    [[nodiscard]] bool solid_detachment_fenced() const;
+    [[nodiscard]] Dictionary solid_detachment_command(const Dictionary& command);
+    // Frozen-contact regression facade. Calls the same native transaction and
+    // geometric admission as the opt-in detachment host, without advancing time.
+    [[nodiscard]] Dictionary diagnostic_replay_conservative_contact(const Dictionary& capsule);
+
     bool reset_demo_world();
     [[nodiscard]] Dictionary get_default_demo_identity() const;
     [[nodiscard]] bool simulation_tick();
@@ -55,6 +64,15 @@ public:
     void prepare_rigid_body_coupling(const PackedFloat32Array& states,
                                      bool resolve_overlaps = true);
     [[nodiscard]] PackedFloat32Array rigid_body_results() const;
+    bool prepare_gcr_coupling(const PackedFloat64Array& states, bool resolve_overlaps = true);
+    [[nodiscard]] PackedFloat64Array gcr_body_results() const;
+    bool prepare_gcr_compound_coupling(const PackedFloat64Array& states,
+        const Dictionary& lease, bool resolve_overlaps = true);
+    [[nodiscard]] PackedFloat64Array gcr_compound_results() const;
+    [[nodiscard]] Dictionary gcr_compound_diagnostics() const;
+    [[nodiscard]] Dictionary gcr_diagnostics() const;
+    [[nodiscard]] String get_gcr_admission_variant() const;
+    [[nodiscard]] Array get_gcr_admission_counters() const;
 
     [[nodiscard]] std::int64_t material_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] std::int64_t rigid_body_id_at(std::int64_t x, std::int64_t y) const;
@@ -140,7 +158,7 @@ public:
     // Hard-surface sources are rejected so this helper cannot bypass collider ownership.
     bool diagnostic_relocate_cell(Vector2i from, Vector2i to);
     [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
-                                                  bool include_histogram = false) const;
+                                                  bool include_histogram = false, bool include_hash = true) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
@@ -161,6 +179,8 @@ private:
         double angular_velocity = 0.0;
         double mass = 1.0;
         std::int32_t sample_serial = 0;
+        double inertia = 1.0, friction = 0.0, dt = 1.0 / 60.0;
+        Vector2 com{};
         bool valid = false;
     };
 
@@ -173,8 +193,26 @@ private:
         std::uint64_t contacts = 0;
         std::uint64_t displaced = 0;
         std::uint64_t unresolved = 0;
+        std::uint64_t unresolved_immovable = 0;
+        std::uint64_t unresolved_no_target = 0;
+        std::uint64_t unresolved_relocation_refused = 0;
     };
+    struct AdmissionObservation {
+        std::uint64_t source_candidates=0,geometry_mask_checks=0,mask_checks=0;
+        std::uint64_t path_checks=0,shared_witness_calls=0,admitted=0;
+        std::array<std::uint64_t,3> selected_depth_counts{};
+        std::array<std::uint64_t,25> witness_offset_counts{};
+        std::array<std::uint64_t,static_cast<std::size_t>(cybersand::World::GranularAdmissionRefusal::Count)> refusal_counts{};
+        cybersand::World::GranularContactAdmission last{};
+    };
+
+    std::array<AdmissionObservation,cybersand::World::kMaximumTransientBodies+1U> admission_observations_{};
+    [[nodiscard]] Dictionary admission_counters_for(std::size_t id) const;
     struct BodyDiagnostic {
+        std::uint64_t boundaries = 0, raw_support = 0, left_support = 0, right_support = 0;
+        std::uint64_t attempts = 0, no_target = 0, relocation_refused = 0;
+        // First rejection category per endpoint: outside, masked, occupied, path, accepted.
+        std::array<std::uint64_t, 5> endpoints{};
         Vector2 displacement{};
         Vector2 boundary{};
         Vector2 bearing{};
@@ -186,7 +224,74 @@ private:
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
+    bool conservative_displacement_ = false;
+    enum class DisplacementOutcome : std::uint8_t {
+        Applied, InvalidNormal, UnsupportedMaterial, SourceEmpty, SourceOwnership,
+        GeometryBlocked, ForeignOccupancy, NoVacancy, Capacity, AlreadyTouched,
+        TransactionRefused, StaleSample, ThermalPolicy, Quarantined, Count
+    };
+    struct DisplacementAttempt {
+        DisplacementOutcome outcome{DisplacementOutcome::NoVacancy};
+        std::size_t moved_cells{};
+        std::size_t count{};
+        std::int32_t native_outcome{-1};
+        std::array<Vector2i, cybersand::kConservativeDisplacementCells> path{};
+    };
+    struct DisplacementAccounting {
+        std::uint64_t attempts{}, accepted{}, moved_cells{}, node_probes{};
+        std::uint64_t geometry_blockers{}, foreign_blockers{}, material_blockers{};
+        std::array<std::uint64_t, static_cast<std::size_t>(DisplacementOutcome::Count)> outcomes{};
+        std::array<std::uint64_t, 18> transaction_outcomes{};
+    } displacement_accounting_;
+    // At most 64 attempts and 4 parcel moves per compound sample. The ledger
+    // persists over repeated preparations of that sample, including every
+    // intermediate and terminal coordinate of each committed transaction.
+    static constexpr std::size_t kDisplacementAttemptsPerSample = 64;
+    std::array<std::int32_t, kDisplacementAttemptsPerSample * cybersand::kConservativeDisplacementCells> displacement_touched_{};
+    std::size_t displacement_touched_count_ = 0, displacement_attempts_this_sample_ = 0;
+    cybersand::soliding::SolidToken displacement_token_{};
+    std::int32_t displacement_sample_ = -1;
+    bool displacement_sample_valid_ = false;
     bool default_demo_recipe_active_ = false;
+    // Fresh diagnostic construction only; demo/default reset always restores B0.
+    double granular_yield_response_ = 0.18;
+    bool gcr_enabled_ = false;
+    bool gcr_admission_a1_ = false;
+    bool gcr_compound_mode_ = false, gcr_preparing_compound_ = false;
+    std::size_t gcr_compound_count_ = 0;
+    cybersand::soliding::SolidToken gcr_compound_token_{};
+    std::uint64_t gcr_compound_generation_ = 0, gcr_compound_physics_epoch_ = 0;
+    std::unique_ptr<cybersand::gcr::CompoundWorkspace> gcr_compound_workspace_;
+
+    double gcr_session_id_ = 0;
+    bool gcr_response_valid_ = false;
+    std::uint64_t gcr_sample_tick_ = 0;
+    void invalidate_gcr_response();
+    std::array<std::array<cybersand::gcr::Bin,8>, cybersand::World::kMaximumTransientBodies + 1U> gcr_bins_{};
+    std::array<std::int32_t, cybersand::World::kMaximumTransientBodies + 1U> gcr_last_serials_{};
+    struct GcrEvaluation {
+        cybersand::gcr::Result passive;
+        Vector2 event_raw{}, event{}, legacy{}, impulse{};
+        double event_raw_torque=0,event_torque=0,event_scale=1,event_cost=0,torque=0;
+        bool refused=false;
+    };
+    [[nodiscard]] GcrEvaluation evaluate_gcr(std::size_t body_id) const;
+    struct CompoundEvaluation {
+        GcrEvaluation response;
+        Vector2 correction{};
+        cybersand::gcr::Vec precise_impulse{},precise_correction{};
+        double legacy_raw_torque=0,legacy_torque=0,legacy_scale=1,legacy_budget=0;
+        double radius=0;
+        std::uint64_t contacts=0,displaced=0,unresolved=0;
+    };
+    [[nodiscard]] bool compound_lease_current() const;
+    [[nodiscard]] CompoundEvaluation evaluate_gcr_compound() const;
+    mutable CompoundEvaluation gcr_compound_last_{};
+    mutable bool gcr_compound_last_valid_ = false;
+    mutable std::uint64_t gcr_compound_last_tick_ = 0;
+    std::uint64_t gcr_compound_overlap_pre_ = 0, gcr_compound_overlap_post_ = 0;
+    std::uint64_t gcr_compound_overlap_geometry_tests_ = 0;
+    bool gcr_compound_overlap_measured_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;
     double contact_gain_ = 0.025;
@@ -265,8 +370,17 @@ private:
                              double rotation, Vector2 half_size);
     void reconcile_swept_overlaps();
     void reconcile_overlap(std::int32_t cell_index, std::uint16_t body_id);
+    void prepare_conservative_sample();
+    [[nodiscard]] DisplacementAttempt conservative_displace(
+        std::int32_t x, std::int32_t y, std::uint16_t body_id, Vector2 outward);
+    [[nodiscard]] bool displacement_square_clear(std::int32_t x, std::int32_t y) const;
+    [[nodiscard]] static double displacement_square_gap(const BodyState& body, std::int32_t x, std::int32_t y);
+    [[nodiscard]] Dictionary conservative_displacement_metrics() const;
+    [[nodiscard]] static const char* displacement_outcome_name(DisplacementOutcome outcome);
     void accumulate_boundary_pressure();
     void accumulate_granular_bearing();
+    void accumulate_gcr_contacts();
+    void prepare_body_coupling(bool resolve_overlaps);
     [[nodiscard]] bool cell_inside_body(const BodyState& body,
                                         std::int32_t x, std::int32_t y) const;
     [[nodiscard]] Vector2 overlap_normal(const BodyState& body,

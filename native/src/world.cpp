@@ -618,11 +618,21 @@ struct World::TransientObstacleState {
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_x{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_y{};
 
+    bool granular_wrenches = false;
+    std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> granular_x{}, granular_y{}, granular_moment2{};
+    std::array<std::atomic<std::uint64_t>, kMaximumTransientBodies + 1U> granular_events{};
+    std::array<std::atomic<bool>, kMaximumTransientBodies + 1U> granular_refused{};
+
     void reset_contacts() noexcept {
         for (std::size_t index = 0; index < contacts.size(); ++index) {
             contacts[index].store(0, std::memory_order_relaxed);
             impulse_x[index].store(0, std::memory_order_relaxed);
             impulse_y[index].store(0, std::memory_order_relaxed);
+            granular_x[index].store(0, std::memory_order_relaxed);
+            granular_y[index].store(0, std::memory_order_relaxed);
+            granular_moment2[index].store(0, std::memory_order_relaxed);
+            granular_events[index].store(0, std::memory_order_relaxed);
+            granular_refused[index].store(false, std::memory_order_relaxed);
         }
     }
 };
@@ -1557,39 +1567,47 @@ Material World::get(std::int64_t x, std::int64_t y) const noexcept {
     return stored_material(x, y);
 }
 
+bool World::granular_sample_stable(std::int64_t sx, std::int64_t sy,
+                                    bool include_transient_obstacles) const noexcept {
+    const auto material_at = [this, include_transient_obstacles](std::int64_t x, std::int64_t y) {
+        return include_transient_obstacles ? get(x, y) : stored_material(x, y);
+    };
+    const auto material = material_at(sx, sy);
+    if (MaterialRules::is_hard_surface(material)) return true;
+    if (!MaterialRules::supports_granular_load(material)) return false;
+    const auto a = address(sx, sy);
+    const auto* chunk = find_chunk(a.chunk);
+    if (chunk && config_.backend == SimulationBackend::PhasedInPlace &&
+        selected_core_region_) {
+        const auto block_x = a.local_x / config_.activity_block_size;
+        const auto block_y = a.local_y / config_.activity_block_size;
+        const auto block_index = static_cast<std::size_t>(block_y) *
+            static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+            static_cast<std::size_t>(block_x);
+        const auto core = scheduler_geometry_.core_for_cell(sx, sy);
+        const auto& region = *selected_core_region_;
+        // Active work outside the selected region is paused work, not a
+        // settled structure. Sleeping blocks remain eligible support.
+        if (chunk->activity_blocks[block_index].active &&
+            (core.x < region.min_x || core.x > region.max_x ||
+             core.y < region.min_y || core.y > region.max_y)) {
+            return false;
+        }
+    }
+    // A transported/newly transformed grain cannot immediately bear a
+    // sampled owner. This reads the most recently completed tick.
+    return chunk && (tick_index_ == 0 ||
+        chunk->cells[a.index].epoch_value() != update_epoch_);
+}
+
 bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
                                 bool include_transient_obstacles) const noexcept {
     const auto material_at = [this, include_transient_obstacles](std::int64_t sx,
                                                                  std::int64_t sy) {
         return include_transient_obstacles ? get(sx, sy) : stored_material(sx, sy);
     };
-    const auto stable = [this, &material_at](std::int64_t sx, std::int64_t sy) {
-        const auto material = material_at(sx, sy);
-        if (MaterialRules::is_hard_surface(material)) return true;
-        if (!MaterialRules::supports_granular_load(material)) return false;
-        const auto a = address(sx, sy);
-        const auto* chunk = find_chunk(a.chunk);
-        if (chunk && config_.backend == SimulationBackend::PhasedInPlace &&
-            selected_core_region_) {
-            const auto block_x = a.local_x / config_.activity_block_size;
-            const auto block_y = a.local_y / config_.activity_block_size;
-            const auto block_index = static_cast<std::size_t>(block_y) *
-                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
-                static_cast<std::size_t>(block_x);
-            const auto core = scheduler_geometry_.core_for_cell(sx, sy);
-            const auto& region = *selected_core_region_;
-            // Active work outside the selected region is paused work, not a
-            // settled structure. Sleeping blocks remain eligible support.
-            if (chunk->activity_blocks[block_index].active &&
-                (core.x < region.min_x || core.x > region.max_x ||
-                 core.y < region.min_y || core.y > region.max_y)) {
-                return false;
-            }
-        }
-        // A transported/newly transformed grain cannot immediately bear a
-        // sampled owner. This reads the most recently completed tick.
-        return chunk && (tick_index_ == 0 ||
-            chunk->cells[a.index].epoch_value() != update_epoch_);
+    const auto stable = [this, include_transient_obstacles](std::int64_t sx, std::int64_t sy) {
+        return granular_sample_stable(sx, sy, include_transient_obstacles);
     };
     if (!MaterialRules::supports_granular_load(material_at(x, y)) || !stable(x, y)) return false;
     int below = 0;
@@ -1601,6 +1619,69 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
     for (int dy = -1; dy <= 1; ++dy)
         for (int dx = -1; dx <= 1; ++dx) around += stable(x + dx, y + dy);
     return around >= config_.interaction_policy.side_support_cells;
+}
+
+World::GranularContactAdmission World::granular_contact_admission_at(
+    std::int64_t source_x, std::int64_t source_y,
+    double outward_x, double outward_y) const noexcept {
+    GranularContactAdmission result;
+    using Refusal = GranularAdmissionRefusal;
+    if (has_failed()) { result.refusal_reason=Refusal::FailedWorld; return result; }
+    constexpr auto minimum=std::numeric_limits<std::int64_t>::min()+4;
+    constexpr auto maximum=std::numeric_limits<std::int64_t>::max()-4;
+    const double extent=std::max(std::abs(outward_x),std::abs(outward_y));
+    if (!std::isfinite(outward_x) || !std::isfinite(outward_y) || extent==0 ||
+        source_x<minimum || source_x>maximum || source_y<minimum || source_y>maximum) {
+        result.refusal_reason=Refusal::Invalid; return result;
+    }
+    const double ray_x=outward_x/extent,ray_y=outward_y/extent;
+    for (std::uint8_t depth=1;depth<=2;++depth) {
+        const auto dx=static_cast<std::int8_t>(std::round(depth*ray_x));
+        const auto dy=static_cast<std::int8_t>(std::round(depth*ray_y));
+        bool free=true;
+        for (int y=-1;y<=2 && free;++y) for (int x=-1;x<=1;++x) {
+            ++result.geometry_mask_checks; ++result.mask_checks;
+            if (transient_obstacle_at(source_x+dx+x,source_y+dy+y)!=0) { free=false; break; }
+        }
+        if (free) { result.selected_depth=depth; result.witness_dx=dx; result.witness_dy=dy; break; }
+    }
+    if (!result.selected_depth) { result.refusal_reason=Refusal::NoMaskFreeWitness; return result; }
+    // Check one straight closed-square supercover, including corner-only
+    // touches. Integer crossing comparisons are exact for the bounded offsets.
+    const auto check=[&](int dx,int dy) {
+        ++result.path_checks; ++result.mask_checks;
+        const bool source=dx==0 && dy==0;
+        const auto x=source_x+dx,y=source_y+dy;
+        if (transient_obstacle_at(x,y)!=0) {
+            result.refusal_reason=source ? Refusal::SourceMasked:Refusal::PathMasked; return false;
+        }
+        if (!MaterialRules::supports_granular_load(stored_material(x,y))) {
+            result.refusal_reason=source ? Refusal::SourceNonCapable:Refusal::PathNonCapable; return false;
+        }
+        if (!granular_sample_stable(x,y,false)) {
+            result.refusal_reason=source ? Refusal::SourceUnstable:Refusal::PathUnstable; return false;
+        }
+        return true;
+    };
+    if (!check(0,0)) return result;
+    const int ax=std::abs(static_cast<int>(result.witness_dx)),ay=std::abs(static_cast<int>(result.witness_dy));
+    const int sx=result.witness_dx<0 ? -1:1,sy=result.witness_dy<0 ? -1:1;
+    int ix=0,iy=0,x=0,y=0;
+    while(ix<ax || iy<ay) {
+        const int tx=(2*ix+1)*ay,ty=(2*iy+1)*ax;
+        if (ix==ax || (iy<ay && tx>ty)) {
+            y+=sy; ++iy; if(!check(x,y)) return result;
+        } else if (iy==ay || tx<ty) {
+            x+=sx; ++ix; if(!check(x,y)) return result;
+        } else {
+            if (!check(x+sx,y) || !check(x,y+sy)) return result;
+            x+=sx; y+=sy; ++ix; ++iy; if(!check(x,y)) return result;
+        }
+    }
+    ++result.shared_witness_calls;
+    result.admitted=granular_support_at(source_x+result.witness_dx,source_y+result.witness_dy,true,false);
+    if (!result.admitted) result.refusal_reason=Refusal::Packing;
+    return result;
 }
 
 Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {
@@ -1934,6 +2015,7 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
 
 void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material material,
                                     QuantityKind kind) {
+    require_solid_mutation_allowed();
     require_healthy();
     if (!valid_material(static_cast<std::uint16_t>(material))) {
         throw std::invalid_argument("invalid material identifier");
@@ -1997,6 +2079,7 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
 bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
                            std::uint16_t state_a_value,
                            std::uint8_t state_b_value) {
+    if (solid_detachment_fenced()) return false;
     // Setup normalization is an explicit pre-construction operation. A live
     // partial write never rounds, allocates a chunk or mutates the prior cell.
     if (material == Material::Water && whole_cell_water_enabled() && state_a_value != 0U &&
@@ -2020,6 +2103,7 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
 }
 
 void World::set_simulation_region(std::optional<RectI64> region) {
+    require_solid_mutation_allowed();
     if (region.has_value() && (region->width <= 0 || region->height <= 0)) {
         throw std::invalid_argument("simulation region dimensions must be positive");
     }
@@ -2047,6 +2131,7 @@ void World::set_simulation_region(std::optional<RectI64> region) {
 }
 
 void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
+    if (solid_detachment_fenced()) return;
     if (liquid_surface_adhesion_enabled_ == enabled) return;
     liquid_surface_adhesion_enabled_ = enabled;
     if (pressure_ != nullptr && pressure_->cache != nullptr) pressure_->cache->cold();
@@ -2060,6 +2145,7 @@ bool World::liquid_surface_adhesion_enabled() const noexcept {
 }
 
 void World::configure_transient_obstacles(RectI64 region) {
+    require_solid_mutation_allowed();
     require_healthy();
     if (region.width <= 0 || region.height <= 0) {
         throw std::invalid_argument("transient obstacle dimensions must be positive");
@@ -2084,6 +2170,7 @@ void World::configure_transient_obstacles(RectI64 region) {
 }
 
 void World::clear_transient_obstacles() {
+    require_solid_mutation_allowed();
     require_healthy();
     auto& state = *transient_obstacles_;
     const auto width = state.region.width;
@@ -2126,6 +2213,7 @@ std::uint16_t World::transient_obstacle_at(std::int64_t x, std::int64_t y) const
 
 bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
                                    std::uint16_t body_id) {
+    if (solid_detachment_fenced()) return false;
     if (tick_failed_) return false;
     auto& state = *transient_obstacles_;
     if (body_id == 0U || body_id > kMaximumTransientBodies ||
@@ -2154,6 +2242,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
 
 bool World::relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
                                  std::int64_t to_x, std::int64_t to_y) {
+    if (solid_detachment_fenced()) return false;
     if (tick_failed_) return false;
     if (stored_material(from_x, from_y) == Material::Empty ||
         stored_material(to_x, to_y) != Material::Empty ||
@@ -2166,6 +2255,7 @@ bool World::relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
 
 PlayerMaterialFieldResult World::apply_player_material_field(
     const PlayerMaterialFieldCommand& command) {
+    if (solid_detachment_fenced()) return {};
     PlayerMaterialFieldResult result;
     if (tick_failed_) {
         result.outcome = PlayerMaterialFieldOutcome::WorldFailed;
@@ -2354,9 +2444,31 @@ std::int64_t World::transient_contact_impulse_y(std::uint16_t body_id) const noe
     return transient_obstacles_->impulse_y[body_id].load(std::memory_order_relaxed);
 }
 
+void World::clear_transient_contact_observations() noexcept {
+    if (solid_detachment_fenced() || has_failed()) return;
+    transient_obstacles_->reset_contacts();
+}
+void World::enable_transient_granular_wrenches(bool enabled) noexcept {
+    if (solid_detachment_fenced() || has_failed()) return;
+    transient_obstacles_->granular_wrenches = enabled;
+}
+std::int64_t World::transient_granular_impulse_x(std::uint16_t id) const noexcept {
+    return id <= kMaximumTransientBodies ? transient_obstacles_->granular_x[id].load(std::memory_order_relaxed) : 0;
+}
+std::int64_t World::transient_granular_impulse_y(std::uint16_t id) const noexcept {
+    return id <= kMaximumTransientBodies ? transient_obstacles_->granular_y[id].load(std::memory_order_relaxed) : 0;
+}
+std::int64_t World::transient_granular_moment2(std::uint16_t id) const noexcept {
+    return id <= kMaximumTransientBodies ? transient_obstacles_->granular_moment2[id].load(std::memory_order_relaxed) : 0;
+}
+bool World::transient_granular_wrench_refused(std::uint16_t id) const noexcept {
+    return id > kMaximumTransientBodies || transient_obstacles_->granular_refused[id].load(std::memory_order_relaxed);
+}
+
 void World::record_transient_contact(std::uint16_t body_id, Material material,
                                      std::int64_t delta_x,
-                                     std::int64_t delta_y) noexcept {
+                                     std::int64_t delta_y, std::int64_t source_x,
+                                     std::int64_t source_y) noexcept {
     if (body_id == 0U || body_id > kMaximumTransientBodies) return;
     const auto density = std::clamp<std::int64_t>(
         static_cast<std::int64_t>(MaterialRules::descriptor(material).density), 50, 1'600);
@@ -2367,9 +2479,25 @@ void World::record_transient_contact(std::uint16_t body_id, Material material,
                                                         std::memory_order_relaxed);
     transient_obstacles_->impulse_y[body_id].fetch_add(direction_y * density,
                                                         std::memory_order_relaxed);
+    if (transient_obstacles_->granular_wrenches && MaterialRules::supports_granular_load(material)) {
+        const auto events=transient_obstacles_->granular_events[body_id].fetch_add(1U,std::memory_order_relaxed);
+        // 1e8 * (2 * 2^20 + 1) * 3200 stays below int64. An unsupported
+        // coordinate/count refuses the new wrench atomically at consumption.
+        if (events>=100'000'000U || source_x < -1'048'576 || source_x > 1'048'576 ||
+            source_y < -1'048'576 || source_y > 1'048'576) {
+            transient_obstacles_->granular_refused[body_id].store(true,std::memory_order_relaxed);
+            return;
+        }
+        const auto jx=direction_x*density,jy=direction_y*density;
+        transient_obstacles_->granular_x[body_id].fetch_add(jx,std::memory_order_relaxed);
+        transient_obstacles_->granular_y[body_id].fetch_add(jy,std::memory_order_relaxed);
+        transient_obstacles_->granular_moment2[body_id].fetch_add(
+            (source_x*2+1)*jy-(source_y*2+1)*jx,std::memory_order_relaxed);
+    }
 }
 
 void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) {
+    require_solid_mutation_allowed();
     require_healthy();
     const auto target = address(x, y);
     if (value == config_.ambient_temperature) {
@@ -2392,6 +2520,7 @@ void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value) 
 }
 
 void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_t radius, Material material) {
+    require_solid_mutation_allowed();
     require_healthy();
     if (radius < 0) {
         throw std::invalid_argument("radius must not be negative");
@@ -2409,6 +2538,7 @@ void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_
 }
 
 void World::reserve_region(RectI64 region) {
+    require_solid_mutation_allowed();
     require_healthy();
     if (region.width <= 0 || region.height <= 0) {
         throw std::invalid_argument("reserve region dimensions must be positive");
@@ -2448,6 +2578,7 @@ void World::reserve_region(RectI64 region) {
 }
 
 void World::reserve_temperature_region(RectI64 region) {
+    require_solid_mutation_allowed();
     require_healthy();
     reserve_region(region);
     const auto minimum_address = address(region.x, region.y);
@@ -2462,6 +2593,7 @@ void World::reserve_temperature_region(RectI64 region) {
 
 ChunkInstallOutcome World::install_generated_chunk(
     ChunkCoord coord, std::span<const Material> row_major_materials) {
+    require_solid_mutation_allowed();
     if (tick_failed_) return ChunkInstallOutcome::WorldFailed;
     if (tick_in_progress_) return ChunkInstallOutcome::TickInProgress;
     const auto size = static_cast<std::int64_t>(config_.chunk_size);
@@ -2519,6 +2651,7 @@ ChunkInstallOutcome World::install_generated_chunk(
 
 bool World::queue_explosion(std::int64_t x, std::int64_t y, std::int32_t radius,
                             std::uint8_t collapse_strength) {
+    if (solid_detachment_fenced()) return false;
     if (tick_failed_) return false;
     if (radius <= 0 || radius > config_.maximum_explosion_radius ||
         pending_explosions_.size() >= config_.deferred_event_capacity) {
@@ -2609,6 +2742,7 @@ void World::apply_pending_explosions(TickStats& stats) {
 void World::clear() {
     if (physics_totals_ != nullptr) *physics_totals_ = {};
     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
+    solid_detachment_.reset();
 
     // Retire every observation before destructive World reset begins. reset() is
     // allocation-free; if replacement construction later throws, discovery stays
@@ -2821,7 +2955,7 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
     if (obstacle != 0U) {
         record_physics(PhysicsEvent::BodyContact, material, Material::Empty,
                        target_x - x, target_y - y, effects);
-        record_transient_contact(obstacle, material, target_x - x, target_y - y);
+        record_transient_contact(obstacle, material, target_x - x, target_y - y, x, y);
         return false;
     }
     const auto target = get(target_x, target_y);
@@ -2858,7 +2992,7 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
         throw std::logic_error("FreeMass transfer reached a non-FreeMass Water family");
     const auto obstacle = transient_obstacle_at(to_x, to_y);
     if (obstacle != 0U) {
-        record_transient_contact(obstacle, Material::Water, to_x - from_x, to_y - from_y);
+        record_transient_contact(obstacle, Material::Water, to_x - from_x, to_y - from_y, from_x, from_y);
         return 0;
     }
     const auto source_address = address(from_x, from_y);
@@ -4625,6 +4759,7 @@ TickStats World::tick_phased() {
 }
 
 TickStats World::tick() {
+    require_solid_mutation_allowed();
     require_healthy();
     if (tick_in_progress_) throw std::logic_error("world tick is not reentrant");
     tick_in_progress_ = true;
@@ -4667,6 +4802,12 @@ void World::require_healthy() const {
 }
 
 bool World::has_failed() const noexcept { return tick_failed_; }
+void World::quarantine_external_coupling() noexcept {
+    tick_failed_ = true;
+    if (settled_discovery_) settled_discovery_->fail();
+    if (solid_detachment_ && solid_detachment_->snapshot.phase == soliding::SolidPhase::Active)
+        solid_detachment_->snapshot.phase = soliding::SolidPhase::Quarantined;
+}
 std::uint64_t World::completed_tick_index() const noexcept { return completed_tick_index_; }
 std::uint64_t World::tick_index() const noexcept { return tick_index_; }
 std::size_t World::chunk_count() const noexcept { return chunks_.size(); }
@@ -4967,5 +5108,8 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 #include "world_pressure_gas_cache.inc"
 #include "world_pressure.inc"
 #include "world_inertial.inc"
+
+#include "world_solid_detachment.inc"
+#include "world_conservative_displacement.inc"
 
 }  // namespace cybersand

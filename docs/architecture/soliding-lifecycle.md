@@ -4,7 +4,7 @@ status: Approved design
 document-kind: contract
 scope: Issue12 successor state machine, eligibility boundaries and bounded identity/ownership invariants; executable model is separate from production runtime
 canonical-for: [soliding-representation-lifecycle, soliding-eligibility-tiers]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-11-02
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/level-saves-and-replay.md, ../systems/granular-interaction-policy.md]
 ---
 
@@ -278,3 +278,5 @@ performs no export. Future schema must version representation policy, identities
 sole payload and required motion/state, validate loads before replacement, and
 record source/config/profile provenance. Struct-byte dumps and implied exact
 replay are rejected. Stage 8 owns production persistence implementation.
+
+The bounded [detachment/GCR composition](compound-granular-coupling.md) retains prepare/ack/commit/finalize, native payload and failure fences while qualifying one compound response owner. It does not admit general fracture, restoration or Stage-3B acceleration.

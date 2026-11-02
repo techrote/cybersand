@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-02
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1750,3 +1750,5 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+**Current experimental branch, 2026-11-02:** [native detachment and GCR](../architecture/compound-granular-coupling.md) now share one physical mass/COM/inertia, response budget and wrench. Native/sanitizer and target-OS mechanical gates pass; all56 registered captures conserve their measured quantities, but one of eight COM-entry gates fails and all comparative overlap gates remain unsupported. Hard stump/floor support is not isolated; true heavy granular bearing and mixed actor/aggregate coexistence remain unqualified. The fresh-session lab selector is developer-only. Actual520-unit payload mass is retained; no law/sleep/default change or owner acceptance is inferred. All drafts remain unmerged; see [dated evidence](../audits/2026-11-02-compound-granular-detachment.md).

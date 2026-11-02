@@ -15,6 +15,10 @@ const MAX_POSITIONAL_CORRECTION_AGE_TICKS: int = 1
 const HARD_SURFACE_FRICTION: float = 0.78
 const HARD_SURFACE_BOUNCE: float = 0.0
 const HARD_SURFACE_CHUNK_SIZE: int = 64
+const GCR_MAX_RESULT_AGE_TICKS: int = 1
+const GCR_MAX_CONTACT_DISPLACEMENT: float = 0.5
+const GCR_SAMPLE_HISTORY: int = MAX_CELLULAR_RESULT_AGE_TICKS + 2
+const GCR_SAMPLE_FIELDS: int = 5 # origin x/y, rotation, actual COM x/y
 
 var _space: RID
 var _bodies: Array[RigidBody2D] = []
@@ -48,6 +52,13 @@ var _last_stale_results_rejected: int = 0
 var _hard_surface_shape_count: int = 0
 var _last_hard_surface_build_time_ms: float = 0.0
 var diagnostic_applications: PackedFloat64Array = PackedFloat64Array()
+var _gcr_sample_serials: PackedInt32Array = PackedInt32Array()
+var _gcr_sample_poses: PackedFloat64Array = PackedFloat64Array()
+var _gcr_application_diagnostics: Dictionary = {}
+var _gcr_compound_centers := PackedVector2Array()
+var _gcr_compound_sizes := PackedVector2Array()
+static var _next_gcr_session_id: int = 0
+var _gcr_session_id: int = 0
 
 
 # Opt-in fixed storage: age, accepted x/y, duplicate, stale, received per body.
@@ -134,6 +145,7 @@ func initialize(
 	# then publish authoritative physics-server state to the cellular worker.
 	PhysicsServer2D.space_set_active(_space, false)
 	_initialized = true
+	_reset_gcr_history()
 	refresh_all_states()
 	return OK
 
@@ -211,32 +223,7 @@ func apply_cellular_results(
 		if sample_age > MAX_POSITIONAL_CORRECTION_AGE_TICKS:
 			correction = Vector2.ZERO
 
-		if correction.length_squared() > MOTION_EPSILON_SQUARED:
-			var transform: Transform2D = PhysicsServer2D.body_get_state(
-				body_rid,
-				PhysicsServer2D.BODY_STATE_TRANSFORM
-			)
-			transform.origin += correction
-			PhysicsServer2D.body_set_state(
-				body_rid,
-				PhysicsServer2D.BODY_STATE_TRANSFORM,
-				transform
-			)
-			_transforms[body_index] = transform
-
-			var corrected_velocity: Vector2 = PhysicsServer2D.body_get_state(
-				body_rid,
-				PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY
-			)
-			if correction.x != 0.0 and corrected_velocity.x * correction.x < 0.0:
-				corrected_velocity.x = 0.0
-			if correction.y != 0.0 and corrected_velocity.y * correction.y < 0.0:
-				corrected_velocity.y = 0.0
-			PhysicsServer2D.body_set_state(
-				body_rid,
-				PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,
-				corrected_velocity
-			)
+		_apply_cellular_correction(body_index, correction)
 
 		# A bounded age falloff preserves two-way fluid/particle coupling without
 		# injecting a full-strength impulse computed from a several-frame-old pose.
@@ -246,7 +233,7 @@ func apply_cellular_results(
 			if not diagnostic_applications.is_empty():
 				diagnostic_applications[body_index * 6 + 1] = impulse.x
 				diagnostic_applications[body_index * 6 + 2] = impulse.y
-			PhysicsServer2D.body_apply_central_impulse(body_rid, impulse)
+			_apply_cellular_impulse(body_index, impulse)
 		if (
 			correction.length_squared() > MOTION_EPSILON_SQUARED
 			or impulse.length_squared() > MOTION_EPSILON_SQUARED
@@ -261,11 +248,445 @@ func apply_cellular_results(
 	return _last_results_applied
 
 
+# Current-main correction and impulse primitives are shared by ordinary bodies
+# and one-body compound consumers. They do not calculate a second force law.
+func _apply_cellular_correction(body_index: int, correction: Vector2) -> bool:
+	if not correction.length_squared() > MOTION_EPSILON_SQUARED:
+		return false
+	var body_rid: RID = _body_rids[body_index]
+	var transform: Transform2D = PhysicsServer2D.body_get_state(
+		body_rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+	transform.origin += correction
+	PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_TRANSFORM, transform)
+	_transforms[body_index] = transform
+	var corrected_velocity: Vector2 = PhysicsServer2D.body_get_state(
+		body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+	if correction.x != 0.0 and corrected_velocity.x * correction.x < 0.0:
+		corrected_velocity.x = 0.0
+	if correction.y != 0.0 and corrected_velocity.y * correction.y < 0.0:
+		corrected_velocity.y = 0.0
+	PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,
+		corrected_velocity)
+	return true
+
+
+func _apply_cellular_impulse(body_index: int, impulse: Vector2,
+		world_offset: Vector2 = Vector2.ZERO) -> bool:
+	if not impulse.length_squared() > MOTION_EPSILON_SQUARED:
+		return false
+	if world_offset == Vector2.ZERO:
+		PhysicsServer2D.body_apply_central_impulse(_body_rids[body_index], impulse)
+	else:
+		PhysicsServer2D.body_apply_impulse(_body_rids[body_index], impulse, world_offset)
+	return true
+
+
+func retire_held_cellular_sample(body_index: int, sample_serial: int) -> void:
+	# The explicit lab can run native material ticks while Rapier is held. That
+	# copied result is retired without applying it when the hold ends.
+	if _initialized and body_index >= 0 and body_index < _body_rids.size() \
+		and sample_serial >= 0 and sample_serial < SAMPLE_SERIAL_LIMIT:
+		_applied_sample_serials[body_index] = sample_serial
+
+
+func apply_compound_cellular_results(snapshot_serial: int, results: PackedFloat32Array,
+		body_index: int, current_sample_serial: int, local_centers: PackedVector2Array,
+		proxy_masses: PackedFloat32Array, impulse_cap: float, correction_cap: float) -> Dictionary:
+	var refused := {"accepted":false, "outcome":"Invalid", "stale_records":0}
+	if not _initialized or body_index < 0 or body_index >= _body_rids.size():
+		return refused
+	var count: int = local_centers.size()
+	if count < 1 or count > CyberRigidBodyCoupling.MAX_BODIES or proxy_masses.size() != count \
+		or results.size() != count * CyberRigidBodyCoupling.RESULT_STRIDE \
+		or current_sample_serial < 0 or current_sample_serial >= SAMPLE_SERIAL_LIMIT \
+		or not is_finite(impulse_cap) or impulse_cap < 0.0 \
+		or not is_finite(correction_cap) or correction_cap < 0.0:
+		return refused
+	if snapshot_serial <= _last_result_snapshot_serial:
+		refused.outcome = "DuplicateOrOldSnapshot"
+		return refused
+	var total_mass: float = 0.0
+	for proxy: int in range(count):
+		if not local_centers[proxy].is_finite() or not is_finite(proxy_masses[proxy]) \
+			or proxy_masses[proxy] <= 0.0:
+			return refused
+		total_mass += proxy_masses[proxy]
+	if not is_finite(total_mass) or total_mass <= 0.0:
+		return refused
+	var impulses := PackedVector2Array()
+	impulses.resize(count)
+	var seen := PackedByteArray()
+	seen.resize(count)
+	var correction := Vector2.ZERO
+	var accepted_sample: int = -1
+	var contacts: int = 0
+	var displaced: int = 0
+	var unresolved: int = 0
+	# Validate the complete immutable record set before touching any Rapier state.
+	# A duplicate/missing proxy or mixed sample cannot amplify force or torque.
+	for record: int in range(count):
+		var offset: int = record * CyberRigidBodyCoupling.RESULT_STRIDE
+		for field: int in range(CyberRigidBodyCoupling.RESULT_STRIDE):
+			if not is_finite(results[offset + field]):
+				return refused
+		var id_value: float = results[offset + CyberRigidBodyCoupling.RESULT_BODY_ID]
+		var sample_value: float = results[offset + CyberRigidBodyCoupling.RESULT_SAMPLE_SERIAL]
+		if floorf(id_value) != id_value or id_value < 1.0 or id_value > float(count) \
+			or floorf(sample_value) != sample_value or sample_value < 0.0 \
+			or sample_value >= float(SAMPLE_SERIAL_LIMIT):
+			return refused
+		var proxy: int = int(id_value) - 1
+		var sample: int = int(sample_value)
+		if seen[proxy] != 0 or (accepted_sample >= 0 and sample != accepted_sample):
+			refused.outcome = "DuplicateProxyOrMixedSample"
+			return refused
+		seen[proxy] = 1
+		accepted_sample = sample
+		for field: int in [CyberRigidBodyCoupling.RESULT_CONTACT_COUNT,
+			CyberRigidBodyCoupling.RESULT_DISPLACED_COUNT, CyberRigidBodyCoupling.RESULT_UNRESOLVED_COUNT]:
+			var value: float = results[offset + field]
+			if value < 0.0 or value != floorf(value):
+				return refused
+		impulses[proxy] = Vector2(results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_X],
+			results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_Y])
+		correction += Vector2(results[offset + CyberRigidBodyCoupling.RESULT_CORRECTION_X],
+			results[offset + CyberRigidBodyCoupling.RESULT_CORRECTION_Y]) * (proxy_masses[proxy] / total_mass)
+		contacts += int(results[offset + CyberRigidBodyCoupling.RESULT_CONTACT_COUNT])
+		displaced += int(results[offset + CyberRigidBodyCoupling.RESULT_DISPLACED_COUNT])
+		unresolved += int(results[offset + CyberRigidBodyCoupling.RESULT_UNRESOLVED_COUNT])
+	var last_sample: int = _applied_sample_serials[body_index]
+	if last_sample >= 0:
+		var delta: int = (accepted_sample - last_sample + SAMPLE_SERIAL_LIMIT) % SAMPLE_SERIAL_LIMIT
+		if delta == 0 or delta > SAMPLE_SERIAL_LIMIT / 2:
+			refused.outcome = "DuplicateOrOldSample"
+			return refused
+	var age: int = (current_sample_serial - accepted_sample + SAMPLE_SERIAL_LIMIT) % SAMPLE_SERIAL_LIMIT
+	if age > MAX_CELLULAR_RESULT_AGE_TICKS:
+		refused.outcome = "StaleSample"
+		refused.stale_records = count
+		return refused
+	if not correction.is_finite():
+		return refused
+	correction = correction.limit_length(correction_cap) \
+		if age <= MAX_POSITIONAL_CORRECTION_AGE_TICKS else Vector2.ZERO
+	if not correction.is_finite():
+		return refused
+	var impulse_scale: float = 1.0 / (1.0 + float(age) * 0.25)
+	var budget: float = 0.0
+	for impulse: Vector2 in impulses:
+		budget += impulse.length() * impulse_scale
+	if not is_finite(budget):
+		return refused
+	if budget > impulse_cap:
+		impulse_scale *= impulse_cap / budget
+	var transform: Transform2D = PhysicsServer2D.body_get_state(
+		_body_rids[body_index], PhysicsServer2D.BODY_STATE_TRANSFORM)
+	if not transform.is_finite() or not (transform.origin + correction).is_finite():
+		return refused
+	for center: Vector2 in local_centers:
+		if not (transform * center - transform.origin).is_finite():
+			return refused
+	_last_result_snapshot_serial = snapshot_serial
+	_applied_sample_serials[body_index] = accepted_sample
+	var velocity_before: Vector2 = body_linear_velocity(body_index)
+	var correction_applied: bool = _apply_cellular_correction(body_index, correction)
+	var velocity_after_zeroing: Vector2 = body_linear_velocity(body_index)
+	transform.origin += correction if correction_applied else Vector2.ZERO
+	var total_impulse := Vector2.ZERO
+	var actual_impulse := Vector2.ZERO
+	var actual_angular_impulse: float = 0.
+	var applications: int = 0
+	for proxy: int in range(count):
+		var impulse: Vector2 = impulses[proxy] * impulse_scale
+		total_impulse += impulse
+		# Offset is the rectangle's actual rotated centre, relative to the one
+		# body's COM. Rapier derives off-centre torque; no scripted angular motion.
+		var offset: Vector2 = transform * local_centers[proxy] - transform.origin
+		if _apply_cellular_impulse(body_index, impulse, offset):
+			applications += 1
+			actual_impulse += impulse
+			actual_angular_impulse += offset.cross(impulse)
+	if correction_applied or applications > 0:
+		PhysicsServer2D.body_set_state(_body_rids[body_index], PhysicsServer2D.BODY_STATE_SLEEPING, false)
+		refresh_all_states()
+	return {"accepted":true, "outcome":"Accepted", "sample_serial":accepted_sample,
+		"records":count, "contacts":contacts, "displaced":displaced, "unresolved":unresolved,
+		"impulse_applications":applications, "correction_applications":int(correction_applied),
+		"impulse":total_impulse, "correction":correction, "stale_records":0,
+		"actual_impulse":actual_impulse,"actual_angular_impulse":actual_angular_impulse,"age":age,
+		"velocity_before_correction":velocity_before,"velocity_after_zeroing":velocity_after_zeroing}
+
+
 func _sample_age(sample_serial: int) -> int:
 	var age: int = _sample_serial - sample_serial
 	if age < 0:
 		age += SAMPLE_SERIAL_LIMIT
 	return age
+
+
+func _reset_gcr_history() -> void:
+	# Process-scoped, exact Float64 integers, never wrap. Outer worker epochs
+	# still fence mailbox lifetime; this additionally fences fresh bridge objects.
+	if _next_gcr_session_id >= CyberRigidBodyCoupling.GCR_MAX_SESSION:
+		_gcr_session_id = 0
+	else:
+		_next_gcr_session_id += 1
+		_gcr_session_id = _next_gcr_session_id
+	if _gcr_sample_serials.is_empty():
+		_gcr_sample_serials.resize(GCR_SAMPLE_HISTORY)
+		_gcr_sample_poses.resize(GCR_SAMPLE_HISTORY * CyberRigidBodyCoupling.MAX_BODIES * GCR_SAMPLE_FIELDS)
+	_gcr_sample_serials.fill(-1)
+	_gcr_application_diagnostics.clear()
+	_gcr_compound_centers.clear()
+	_gcr_compound_sizes.clear()
+
+
+func pack_gcr_body_states() -> PackedFloat64Array:
+	# This is the one sample boundary for a GCR step. Callers choose this OR
+	# pack_body_states(), never both. All backend reads remain on the main thread.
+	var states := PackedFloat64Array()
+	if OS.get_thread_caller_id() != OS.get_main_thread_id() or not _initialized or _gcr_session_id == 0:
+		return states
+	states.resize(_body_rids.size() * CyberRigidBodyCoupling.GCR_INPUT_STRIDE)
+	var next_serial: int = (_sample_serial + 1) % SAMPLE_SERIAL_LIMIT
+	for index: int in range(_body_rids.size()):
+		var direct: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(_body_rids[index])
+		var inertia: float = float(PhysicsServer2D.body_get_param(_body_rids[index], PhysicsServer2D.BODY_PARAM_INERTIA))
+		# Rapier v0.35.2 stores actual inertia in BODY_PARAM_INERTIA. Its direct
+		# inverse-inertia cache can remain zero when both inertia and COM are
+		# authored (mass_properties_changed skips the derived-cache update).
+		if direct == null or inertia <= 0.0 or direct.inverse_mass <= 0.0 \
+			or PhysicsServer2D.body_get_mode(_body_rids[index]) != PhysicsServer2D.BODY_MODE_RIGID:
+			return PackedFloat64Array() # Locked/unknown inertia is explicitly unsupported.
+		var transform: Transform2D = direct.transform
+		var com: Vector2 = transform * direct.center_of_mass_local
+		var fields: Array = [float(index + 1), transform.origin.x, transform.origin.y,
+			transform.get_rotation(), _body_sizes[index].x, _body_sizes[index].y,
+			direct.linear_velocity.x, direct.linear_velocity.y, direct.angular_velocity,
+			1.0 / direct.inverse_mass, float(next_serial), inertia,
+			com.x, com.y, float(PhysicsServer2D.body_get_param(_body_rids[index], PhysicsServer2D.BODY_PARAM_FRICTION)), fixed_delta(), float(_gcr_session_id)]
+		for field: int in range(CyberRigidBodyCoupling.GCR_INPUT_STRIDE):
+			if not is_finite(float(fields[field])):
+				return PackedFloat64Array()
+			states[index * CyberRigidBodyCoupling.GCR_INPUT_STRIDE + field] = float(fields[field])
+		if float(fields[CyberRigidBodyCoupling.GCR_INPUT_FRICTION]) < 0.0:
+			return PackedFloat64Array()
+	if _gcr_sample_serials.is_empty():
+		_reset_gcr_history()
+	_sample_serial = next_serial
+	var slot: int = next_serial % GCR_SAMPLE_HISTORY
+	_gcr_sample_serials[slot] = next_serial
+	for index: int in range(_body_rids.size()):
+		var offset: int = index * CyberRigidBodyCoupling.GCR_INPUT_STRIDE
+		var history_offset: int = (slot * CyberRigidBodyCoupling.MAX_BODIES + index) * GCR_SAMPLE_FIELDS
+		for field: int in range(3):
+			_gcr_sample_poses[history_offset + field] = states[offset + 1 + field]
+		_gcr_sample_poses[history_offset + 3] = states[offset + CyberRigidBodyCoupling.GCR_INPUT_COM_X]
+		_gcr_sample_poses[history_offset + 4] = states[offset + CyberRigidBodyCoupling.GCR_INPUT_COM_Y]
+	return states
+
+
+func pack_gcr_compound_states(local_centers: PackedVector2Array, sizes: PackedVector2Array) -> PackedFloat64Array:
+	if _body_rids.size()!=1 or local_centers.is_empty() or local_centers.size()>64 or sizes.size()!=local_centers.size(): return PackedFloat64Array()
+	for i: int in range(sizes.size()):
+		if not local_centers[i].is_finite() or not sizes[i].is_finite() or sizes[i].x<=0. or sizes[i].y<=0.: return PackedFloat64Array()
+	if not _gcr_compound_centers.is_empty() and (local_centers!=_gcr_compound_centers or sizes!=_gcr_compound_sizes): return PackedFloat64Array()
+	# Mask priming samples the finalized but still frozen body. Its authored
+	# mass/inertia remain real; inverse_mass is zero while staging is static.
+	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or _gcr_session_id==0: return PackedFloat64Array()
+	var rid: RID = _body_rids[0]
+	var direct: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(rid)
+	if direct==null: return PackedFloat64Array()
+	var pose: Transform2D = direct.transform
+	var com: Vector2 = pose*direct.center_of_mass_local
+	var mass: float = PhysicsServer2D.body_get_param(rid,PhysicsServer2D.BODY_PARAM_MASS)
+	var inertia: float = PhysicsServer2D.body_get_param(rid,PhysicsServer2D.BODY_PARAM_INERTIA)
+	if mass<=0. or inertia<=0.: return PackedFloat64Array()
+	_sample_serial=(_sample_serial+1)%SAMPLE_SERIAL_LIMIT
+	var common := PackedFloat64Array([1.,pose.origin.x,pose.origin.y,pose.get_rotation(),1.,1.,
+		direct.linear_velocity.x,direct.linear_velocity.y,direct.angular_velocity,mass,float(_sample_serial),inertia,
+		com.x,com.y,PhysicsServer2D.body_get_param(rid,PhysicsServer2D.BODY_PARAM_FRICTION),fixed_delta(),float(_gcr_session_id)])
+	for value: float in common:
+		if not is_finite(value): return PackedFloat64Array()
+	var slot: int = _sample_serial%GCR_SAMPLE_HISTORY
+	_gcr_sample_serials[slot]=_sample_serial
+	var history: int = slot*CyberRigidBodyCoupling.MAX_BODIES*GCR_SAMPLE_FIELDS
+	_gcr_sample_poses[history]=pose.origin.x
+	_gcr_sample_poses[history+1]=pose.origin.y
+	_gcr_sample_poses[history+2]=pose.get_rotation()
+	_gcr_sample_poses[history+3]=com.x
+	_gcr_sample_poses[history+4]=com.y
+	_gcr_compound_centers = local_centers.duplicate()
+	_gcr_compound_sizes = sizes.duplicate()
+	var transform: Transform2D = pose
+	var result := PackedFloat64Array()
+	for i: int in range(sizes.size()):
+		var row := common.duplicate()
+		var centre: Vector2 = transform*local_centers[i]
+		row[0]=i+1
+		row[1]=centre.x
+		row[2]=centre.y
+		row[4]=sizes[i].x
+		row[5]=sizes[i].y
+		result.append_array(row)
+	return result
+
+func apply_gcr_compound_results(snapshot_serial: int, results: PackedFloat64Array) -> int:
+	return _apply_gcr_results(snapshot_serial,results,true)
+
+func gcr_application_diagnostics() -> Dictionary:
+	return _gcr_application_diagnostics.duplicate(true)
+
+
+func _refuse_gcr(reason: String, received: int) -> int:
+	_last_stale_results_rejected = received
+	_gcr_application_diagnostics["accepted"] = false
+	_gcr_application_diagnostics["refusal"] = reason
+	if not diagnostic_applications.is_empty():
+		for index: int in range(_body_rids.size()):
+			diagnostic_applications[index * 6 + (3 if reason == "duplicate" else 4)] = 1.0
+	return 0
+
+
+func apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array) -> int:
+	return _apply_gcr_results(snapshot_serial,results,false)
+
+func _apply_gcr_results(snapshot_serial: int, results: PackedFloat64Array, compound: bool) -> int:
+	_last_results_applied = 0
+	_last_stale_results_rejected = 0
+	_gcr_application_diagnostics = {"accepted": false, "refusal": "", "snapshot": snapshot_serial, "bodies": []}
+	if not diagnostic_applications.is_empty():
+		diagnostic_applications.fill(0.0)
+	if OS.get_thread_caller_id() != OS.get_main_thread_id() or not _initialized:
+		return _refuse_gcr("owner", 0)
+	if snapshot_serial < 0 or snapshot_serial <= _last_result_snapshot_serial:
+		return _refuse_gcr("duplicate", 0)
+	var stride: int = CyberRigidBodyCoupling.GCR_RESULT_STRIDE
+	if results.is_empty() or results.size() % stride != 0 or results.size() > CyberRigidBodyCoupling.MAX_BODIES * stride:
+		return _refuse_gcr("layout", 0)
+	var count: int = results.size() / stride
+	if compound:
+		if count!=1 or _body_rids.size()!=1 or _gcr_compound_centers.is_empty() or results[0]!=1. or results[12]!=2.: return _refuse_gcr("compound_layout",count)
+		# Version2 is accepted only by this explicit physical-owner route.
+		results = results.duplicate()
+		results[12] = 1.
+	var seen: Dictionary = {}
+	var applications: Array[Dictionary] = []
+	# Prevalidate the complete batch before correction, velocity changes, impulse,
+	# wake or serial tracking. A malformed last row cannot partially apply it.
+	for record: int in range(count):
+		var offset: int = record * stride
+		if not CyberRigidBodyCoupling.gcr_result_record_valid(results, offset):
+			return _refuse_gcr("record", count)
+		if _gcr_session_id == 0 or int(results[offset + CyberRigidBodyCoupling.GCR_RESULT_SESSION]) != _gcr_session_id:
+			return _refuse_gcr("session", count)
+		var index: int = int(results[offset + CyberRigidBodyCoupling.RESULT_BODY_ID]) - 1
+		if index >= _body_rids.size() or seen.has(index):
+			return _refuse_gcr("body", count)
+		seen[index] = true
+		var serial: int = int(results[offset + CyberRigidBodyCoupling.RESULT_SAMPLE_SERIAL])
+		if serial >= SAMPLE_SERIAL_LIMIT:
+			return _refuse_gcr("sample", count)
+		var previous: int = _applied_sample_serials[index]
+		var forward: int = (serial - previous + SAMPLE_SERIAL_LIMIT) % SAMPLE_SERIAL_LIMIT
+		if previous >= 0 and (forward == 0 or forward > SAMPLE_SERIAL_LIMIT / 2):
+			return _refuse_gcr("duplicate", count)
+		var age: int = _sample_age(serial)
+		var observation: Dictionary = {"index":index, "sample":serial, "session":_gcr_session_id, "age":age}
+		_gcr_application_diagnostics.bodies.append(observation)
+		if not diagnostic_applications.is_empty():
+			diagnostic_applications[index * 6] = age
+			diagnostic_applications[index * 6 + 5] = 1.0
+		if age > MAX_CELLULAR_RESULT_AGE_TICKS:
+			return _refuse_gcr("age", count)
+		var slot: int = serial % GCR_SAMPLE_HISTORY
+		if _gcr_sample_serials.is_empty() or _gcr_sample_serials[slot] != serial:
+			return _refuse_gcr("sample", count)
+		var history_offset: int = (slot * CyberRigidBodyCoupling.MAX_BODIES + index) * GCR_SAMPLE_FIELDS
+		var sampled_origin := Vector2(_gcr_sample_poses[history_offset], _gcr_sample_poses[history_offset + 1])
+		var sampled_rotation: float = _gcr_sample_poses[history_offset + 2]
+		var sampled_com := Vector2(_gcr_sample_poses[history_offset + 3], _gcr_sample_poses[history_offset + 4])
+		var echoed_com := Vector2(results[offset + CyberRigidBodyCoupling.GCR_RESULT_COM_X], results[offset + CyberRigidBodyCoupling.GCR_RESULT_COM_Y])
+		if sampled_com != echoed_com:
+			return _refuse_gcr("com", count)
+		var direct: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(_body_rids[index])
+		if direct == null:
+			return _refuse_gcr("body", count)
+		var current: Transform2D = direct.transform
+		var current_com: Vector2 = current * direct.center_of_mass_local
+		if not current.origin.is_finite() or not current_com.is_finite() or not is_finite(current.get_rotation()):
+			return _refuse_gcr("body", count)
+		observation.merge({"sampled_com":sampled_com, "current_com":current_com,
+			"sampled_origin":sampled_origin, "sampled_rotation":sampled_rotation,
+			"current_origin":current.origin, "current_rotation":current.get_rotation()})
+		# Maximum displacement of the actual rectangle's four corners includes
+		# rotation and COM offsets. Convexity bounds every face contact between them.
+		var contact_displacement: float = 0.0
+		for proxy: int in range(_gcr_compound_centers.size() if compound else 1):
+			var centre: Vector2 = _gcr_compound_centers[proxy] if compound else Vector2.ZERO
+			var size: Vector2 = _gcr_compound_sizes[proxy] if compound else _body_sizes[index]
+			for sign_x: float in [-1.0,1.0]:
+				for sign_y: float in [-1.0,1.0]:
+					var corner: Vector2 = centre+size*Vector2(sign_x,sign_y)*.5
+					contact_displacement=maxf(contact_displacement,(current*corner).distance_to(sampled_origin+corner.rotated(sampled_rotation)))
+		observation["contact_displacement"] = contact_displacement
+		if age > GCR_MAX_RESULT_AGE_TICKS:
+			return _refuse_gcr("age", count)
+		if contact_displacement > GCR_MAX_CONTACT_DISPLACEMENT:
+			return _refuse_gcr("geometry", count)
+		var correction := Vector2(results[offset + CyberRigidBodyCoupling.RESULT_CORRECTION_X], results[offset + CyberRigidBodyCoupling.RESULT_CORRECTION_Y])
+		if age > MAX_POSITIONAL_CORRECTION_AGE_TICKS:
+			correction = Vector2.ZERO
+		if correction.length_squared() <= MOTION_EPSILON_SQUARED:
+			correction = Vector2.ZERO
+		var impulse := Vector2(results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_X], results[offset + CyberRigidBodyCoupling.RESULT_IMPULSE_Y])
+		var angular_sample: float = results[offset + CyberRigidBodyCoupling.GCR_RESULT_ANGULAR_IMPULSE]
+		# Translate the world-space wrench to the COM at application, including
+		# separate positional correction; then apply one common age scale to J/L.
+		var angular_current: float = angular_sample + (sampled_com - current_com - correction).cross(impulse)
+		var scale: float = 1.0 / (1.0 + float(age) * 0.25)
+		if not is_finite(angular_current) or not (impulse * scale).is_finite():
+			return _refuse_gcr("wrench", count)
+		observation.merge({"correction":correction, "impulse":impulse * scale, "sampled_angular_impulse":angular_sample,
+			"translated_angular_impulse":angular_current, "angular_impulse":angular_current * scale})
+		applications.append(observation)
+	_last_result_snapshot_serial = snapshot_serial
+	for application: Dictionary in applications:
+		var index: int = application.index
+		var rid: RID = _body_rids[index]
+		_applied_sample_serials[index] = int(application.sample)
+		var correction: Vector2 = application.correction
+		var impulse: Vector2 = application.impulse
+		var angular: float = application.angular_impulse
+		var velocity_before: Vector2 = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+		if correction.length_squared() > MOTION_EPSILON_SQUARED:
+			var transform: Transform2D = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+			transform.origin += correction
+			PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM, transform)
+			_transforms[index] = transform
+			var velocity: Vector2 = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+			if correction.x != 0.0 and velocity.x * correction.x < 0.0: velocity.x = 0.0
+			if correction.y != 0.0 and velocity.y * correction.y < 0.0: velocity.y = 0.0
+			PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY, velocity)
+		if compound:
+			application["velocity_before_correction"] = velocity_before
+			application["velocity_after_zeroing"] = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+			application["correction_applied"] = correction!=Vector2.ZERO
+			application["physical_wrench_applications"] = 1 if impulse!=Vector2.ZERO or angular!=0. else 0
+		# One J/L pair. No second application through the central-only legacy law.
+		if impulse != Vector2.ZERO:
+			PhysicsServer2D.body_apply_central_impulse(rid, impulse)
+		if angular != 0.0:
+			PhysicsServer2D.body_apply_torque_impulse(rid, angular)
+		if correction != Vector2.ZERO or impulse != Vector2.ZERO or angular != 0.0:
+			PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
+			_last_results_applied += 1
+		if not diagnostic_applications.is_empty():
+			diagnostic_applications[index * 6 + 1] = impulse.x
+			diagnostic_applications[index * 6 + 2] = impulse.y
+	_gcr_application_diagnostics["accepted"] = true
+	_gcr_application_diagnostics["bodies"] = applications
+	return _last_results_applied
 
 
 func rebuild_hard_surface_colliders(
@@ -802,6 +1223,7 @@ func reset_body(
 ) -> void:
 	if not _initialized or body_index < 0 or body_index >= _body_rids.size():
 		return
+	_reset_gcr_history()
 	var body_rid: RID = _body_rids[body_index]
 	var transform: Transform2D = Transform2D(rotation, position)
 	PhysicsServer2D.body_set_state(
@@ -833,6 +1255,7 @@ func reset_body(
 func reset_result_tracking() -> void:
 	_last_result_snapshot_serial = -1
 	_applied_sample_serials.fill(-1)
+	_reset_gcr_history()
 
 
 func body_transform(body_index: int) -> Transform2D:
@@ -909,6 +1332,7 @@ func refresh_dynamic_states() -> void:
 
 
 func clear_state() -> void:
+	_reset_gcr_history()
 	_initialized = false
 	_space = RID()
 	_bodies.clear()

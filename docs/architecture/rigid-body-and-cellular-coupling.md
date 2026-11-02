@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-02
 ---
 
 # Rigid-body and cellular coupling
@@ -213,3 +213,5 @@ and bounded enclosure recovery. REM-002 reuses the same support predicate for a
 separate bounded body-coupling observation against stored material; it does not
 make the sampled character a Rapier collider and does not add a second material
 owner.
+
+The separately opt-in [compound granular/detachment composition](compound-granular-coupling.md) retains exact proxy geometry while assigning one physical mass/COM/inertia and one response budget to a native detached aggregate. Qualification is separate from ordinary rectangles and earlier experimental sources.

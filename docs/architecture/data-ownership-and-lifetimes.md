@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-02
 ---
 
 # Data ownership and lifetimes
@@ -34,6 +34,18 @@ source generation/semantic identity, serial/lifetime and native fences precede
 adoption. Refusal retains old World/player/graph/receipt/record/cursors; successful
 body-free change closes the old graph after commit. No duplicate live World,
 physics rebind or Godot API crosses a native worker boundary.
+
+## Experimental compound detachment owner
+
+**Current on the unmerged integration branch:** one native aggregate retains its
+payload-derived mass/COM/inertia and sole material ownership while one main-thread
+Rapier body owns motion. Geometry proxies share one contact-response owner;
+immutable copied samples/lease receipts cross the existing exclusive worker seam.
+Native mask-installation acknowledgement precedes release; preparation exceptions
+quarantine actual state. The [compound contract](compound-granular-coupling.md)
+owns the complete interface, bounds and restricted single-aggregate scope. Its
+mechanical qualification does not establish heavy granular bearing or owner
+acceptance, and it does not admit concurrent independent actors in that World.
 
 ## Explicit imported-level ownership
 

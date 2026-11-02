@@ -22,6 +22,7 @@ const SCHEDULE: String = "synchronous-mask-actuation-effects-material-feedback-t
 
 var last_error: String = ""
 var session: CyberPhysicalActorSession
+var gcr_stats: Dictionary = {}
 var config: Dictionary = {}
 var _world: Object
 var _viewport: SubViewport
@@ -121,10 +122,24 @@ func _validated_config(value: Variant) -> Dictionary:
 
 
 func configure(value: Variant) -> bool:
+	return _configure_granular(value,"B0")
+
+func configure_granular_experiment(value: Variant, candidate: String, token: String, spawn_offset: Vector2 = Vector2.ZERO) -> bool:
+	var expected_token: String = "GCR-ADMISSION-001-2026-11-01" if candidate == "GCR-A1" else "GCR-001-2026-11-01"
+	if candidate not in ["Y1","GCR","GCR-A1"] or token != expected_token:
+		last_error = "granular_experiment_refused"
+		return false
+	if not spawn_offset.is_finite() or spawn_offset.length() > 64.0: return false
+	return _configure_granular(value,candidate,spawn_offset)
+
+func _configure_granular(value: Variant, granular_candidate: String, spawn_offset: Vector2 = Vector2.ZERO) -> bool:
 	var validated: Dictionary = _validated_config(value)
 	if validated.is_empty() or not is_inside_tree():
 		last_error = "invalid_config_or_owner"
 		return false
+	for actor: Dictionary in validated.actors:
+		actor.position += spawn_offset
+	if not Session.valid_definitions(validated.actors): return false
 	if not ClassDB.class_exists(&"CyberNativeCellWorld") or not ClassDB.class_exists(&"RapierPhysicsServer2D"):
 		last_error = "native_or_rapier_unavailable"
 		return false
@@ -132,7 +147,11 @@ func configure(value: Variant) -> bool:
 		last_error = "physical_arena_requires_60_hz"
 		return false
 	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
-	if not world.diagnostic_reset({"workers": 1, "telemetry": false}):
+	var native_options: Dictionary = {"workers":1,"telemetry":false}
+	if granular_candidate != "B0":
+		native_options["bearing_candidate"] = granular_candidate
+		native_options["bearing_experiment"] = "GCR-ADMISSION-001-2026-11-01" if granular_candidate == "GCR-A1" else ("GCR-001-2026-11-01" if granular_candidate == "GCR" else "Y1-ENVELOPE-2026-11-01")
+	if not world.diagnostic_reset(native_options):
 		last_error = "native_reset"
 		return false
 	world.set_simulation_window_enabled(false)
@@ -168,6 +187,8 @@ func configure(value: Variant) -> bool:
 	_viewport = viewport
 	session = candidate
 	config = validated.duplicate(true)
+	config["granular_experiment"] = granular_candidate
+	gcr_stats = {"prepared":0,"responses":0,"applications":0,"granular_frames":0}
 	_epoch_counter += 1
 	_effects.reset(_epoch_counter)
 	_usables.reset(_epoch_counter)
@@ -190,7 +211,10 @@ func configure(value: Variant) -> bool:
 	_sync_terrain()
 	if _failed:
 		return false
-	_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), false)
+	if granular_candidate in ["GCR","GCR-A1"]:
+		if not _prepare_gcr_frame(false): return false
+	else:
+		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), false)
 	return true
 
 
@@ -338,6 +362,14 @@ func set_paused(paused: bool) -> void:
 	if session != null:
 		session.set_suspended(paused)
 
+func _prepare_gcr_frame(resolve: bool) -> bool:
+	var states: PackedFloat64Array = session.bridge.pack_gcr_body_states()
+	if states.size() != session.bodies().size()*CyberRigidBodyCoupling.GCR_INPUT_STRIDE or states.is_empty() or not _world.prepare_gcr_coupling(states,resolve):
+		_fail("gcr_input_refused")
+		return false
+	gcr_stats.prepared += 1
+	return true
+
 
 func step(commands: Variant = []) -> Dictionary:
 	if session == null or _finished or _paused:
@@ -356,7 +388,10 @@ func step(commands: Variant = []) -> Dictionary:
 			seen[actor] = true
 	# A mask is copied from the current actual pose. Actuation adds forces but
 	# does not integrate: usable source positions match this mask exactly.
-	_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), true)
+	if config.get("granular_experiment","B0") in ["GCR","GCR-A1"]:
+		if not _prepare_gcr_frame(true): return snapshot()
+	else:
+		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), true)
 	for command: Variant in commands:
 		var accepted: bool = submit(command, &"policy")
 		_command_receipts.append({"accepted": accepted,
@@ -385,8 +420,25 @@ func step(commands: Variant = []) -> Dictionary:
 	if not bool(_world.simulation_tick()):
 		_fail("native_tick")
 		return snapshot()
-	_coupling_results = _world.rigid_body_results()
-	session.bridge.apply_cellular_results(session.tick + 1, _coupling_results)
+	if config.get("granular_experiment","B0") in ["GCR","GCR-A1"]:
+		_coupling_results = PackedFloat32Array()
+		var results: PackedFloat64Array = _world.gcr_body_results()
+		if results.size() != session.bodies().size()*CyberRigidBodyCoupling.GCR_RESULT_STRIDE:
+			_fail("gcr_response_refused")
+			return snapshot()
+		gcr_stats.responses += results.size()/CyberRigidBodyCoupling.GCR_RESULT_STRIDE
+		gcr_stats.applications += session.bridge.apply_gcr_results(session.tick+1,results)
+		if not bool(session.bridge.gcr_application_diagnostics().get("accepted",false)):
+			_fail("gcr_application_refused")
+			return snapshot()
+		for body: Dictionary in _world.gcr_diagnostics().get("bodies",[]):
+			var event_value: Variant = body.get("event_accepted",Vector2.ZERO)
+			var event_magnitude: float = event_value.length() if event_value is Vector2 else float(event_value)
+			if float(body.get("normal_accepted",0))+event_magnitude > 0:
+				gcr_stats.granular_frames += 1
+	else:
+		_coupling_results = _world.rigid_body_results()
+		session.bridge.apply_cellular_results(session.tick + 1, _coupling_results)
 	_sync_terrain()
 	if _failed:
 		return snapshot()
@@ -555,7 +607,10 @@ func presentation_cells(view: Rect2i = ARENA_RECT) -> PackedByteArray:
 
 func close() -> void:
 	if _world != null and not bool(_world.has_failed()):
-		_world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
+		if config.get("granular_experiment","B0") in ["GCR","GCR-A1"]:
+			_world.prepare_gcr_coupling(PackedFloat64Array())
+		else:
+			_world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
 	if session != null:
 		session.close()
 		session = null

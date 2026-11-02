@@ -6,10 +6,24 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-02
 ---
 
 # Interfaces and message contracts
+
+## Experimental compound granular value route
+
+The unmerged [compound contract](../architecture/compound-granular-coupling.md)
+owns `prepare_gcr_compound_coupling(states17, lease, resolve_overlaps)` and its
+single physical-owner version2 result. Per-proxy geometry repeats the actual
+aggregate COM state and native payload mass/inertia; it is not an independent
+body batch. Legacy11/9 and independent17/14 version1 routes remain separate.
+The lease, immutable native installation acknowledgement and all-corner stale
+check preserve native/material and main-thread/Rapier ownership. Malformed input
+refuses before masks/material mutation; unexpected preparation failure quarantines
+actual state. See the dated qualification for executed versus unsupported gates.
+
+## Existing prepared-body interfaces
 
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:

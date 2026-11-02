@@ -378,7 +378,7 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     // this fence. All final native facts and copied receipts were prepared.
     adapter->world_.swap(pending->world);
     adapter->default_demo_recipe_active_ = pending->reset_demo_coupling;
-    if (pending->reset_demo_coupling) adapter->reset_demo_coupling_parameters();
+    if (pending->reset_demo_coupling || adapter->gcr_enabled_) adapter->reset_demo_coupling_parameters();
     adapter->render_exchange_.swap(pending->exchange);
     adapter->applied_liquid_setup_ = pending->setup;
     std::swap(adapter->applied_liquid_construction_receipt_, pending->receipt);
