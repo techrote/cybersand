@@ -184,6 +184,42 @@ publication checks are recorded separately from that earlier archive.
 
 **AWAITING OWNER GAMEPLAY ACCEPTANCE. PR349 remains unmerged.**
 
+## Development runtime publication and final local checks
+
+Publicationd6f9a95ffb705be0aedba75f5b4f9f2d1de5eabb installs the actually tested
+Windows4990464-byte runtime SHA256
+`aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e`
+and Linux4416520-byte runtime
+`d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707`.
+Both use LFS and fresh source/build/validation provenance. The manifests accept
+engineering development execution only and explicitly retain failed physical
+gates. Earlier prepublication repository checks correctly rejected stale source
+provenance and then uncommitted LFS identity; the committed publication passes
+the materialized repository check. Linux ABI check passes GLIBC2.34 bundle,
+extension GLIBC2.32/GLIBCXX3.4.30/CXXABI1.3.9.
+
+At exact publication head, ten actual Windows/Linux host processes pass:
+review17, controls31, lab50, compound415 and async63 checks per OS. Documentation,
+historical M11, materialized repository/provenance, both retrieval sets, four
+reducer regressions, LFS integrity and diff checks pass. The
+[postpublication record](gcr-load-2026-11-02/postpublication-validation.json)
+keeps source, log hashes and actual execution scope. These late checks are not
+inside the earlier28,656,004-byte/246-entry raw archive SHA256
+`8fa477fe43813592f06026b8a3c63a23ea9828f3f108c7ca9ab733ed768bed19`.
+No ready-for-review, hosted Native/Godot execution or merge claim follows.
+
+The [owner packet](gcr-load-2026-11-02/owner-review.json) records the launched
+paused comparison and null owner verdict. Manual restart on this workspace:
+
+```powershell
+$env:CYBERSAND_SOURCE_REVISION='34a5ac934e52aebd8778aecc14269b02bb38a1b0'
+& 'C:/Godot47/Godot_v4.7-stable_win64_console.exe' --path 'C:/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot' 'res://gcr_load_review.tscn' -- --candidate=LA --surroundings=packed_sand --workers=1
+```
+
+Runtime publication and later audit metadata preserve those tested Godot/native
+inputs; the displayed source identifies the UI implementation checkpoint rather
+than relabelling the earlier physical captures.
+
 ## Documentation and scope mapping
 
 Canonical compound ownership, reset interfaces, configuration, invariants,

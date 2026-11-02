@@ -1,0 +1,18 @@
+{
+  "source": "34a5ac934e52aebd8778aecc14269b02bb38a1b0",
+  "launched_windows": true,
+  "observed_state": "paused tick0, mass1/speed90, LA selected",
+  "engine": "Godot4.7.stable.official.5b4e0cb0f",
+  "physics_backend": "Rapier2D v0.35.2",
+  "native_sha256": "aac6c6b8c6ec5f87726ac4a1a620170234ea1bc9abacd4b6a5facfed7383b94e",
+  "owner_verdict": null,
+  "status": "AWAITING OWNER GAMEPLAY ACCEPTANCE; registered technical gates not met",
+  "controls": {
+    "barrel": "Choose case and A1/LA; Reset restores registered case; Space runs/pauses; Apply parameter overrides retains staged values; R restores defaults; E excavates; arrows existing bounded lateral input; F6 structures",
+    "structure": "C legacy/R2/A1/LA fresh session; Space cut/release; P pause; R reset;1\u20134 original tests;5\u20130 isolated full/half/narrow/excavation/dry/Water;X excavate;F6 barrels"
+  },
+  "default_building_mass": 520,
+  "override_status": "Exploratory; does not qualify payload mass",
+  "sleep": "unchanged",
+  "merge_authorized": false
+}
