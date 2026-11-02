@@ -2321,6 +2321,11 @@ func _publish_failure_snapshot() -> void:
 	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied
 	snapshot.paused = true
 	snapshot.rigid_body_results = PackedFloat32Array()
+	snapshot.gcr_body_results = PackedFloat64Array()
+	snapshot.gcr_compound_results = PackedFloat64Array()
+	snapshot.gcr_compound_preparation = {}
+	snapshot.gcr_compound_diagnostics = {}
+	snapshot.gcr_result_generation_usec = 0
 	snapshot.failed_tick_index = int(_world.get_attempted_tick_index())
 	snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 	snapshot.last_tick_error = str(_world.get_last_tick_error())

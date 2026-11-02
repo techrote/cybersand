@@ -86,7 +86,10 @@ planes and gaps are never collapsed into an AABB or eight aggregate bins. At mos
 one event-first normal/passive capacity20, globally normalized unique-source
 weights and one passive-energy guard. At most8192 scalar axis updates occur per
 boundary, matching the earlier64-body ceiling. Scratch size/capacity is explicit
-in source diagnostics and registration. Mu, per-source2 capacity, material policy
+in source diagnostics and registration: the fixed solver workspace occupies
+73,728 bytes, plus bounded pointer/shape stack storage. This is a solver bound,
+not a claim that the adapter, copied arrays/dictionaries or all World mask
+maintenance are allocation-free. Mu, per-source2 capacity, material policy
 and response equations are not tuned by composition.
 
 Unique source and physical ownership are separate from geometry proxy IDs.
@@ -94,6 +97,15 @@ Sibling seams cannot count a source twice or manufacture extra capacity. Events
 sum their force/moment before one budget charge; non-granular compatibility shares
 one norm-based legacy3 scale and proxy-centred moment. Area-weighted correction
 is bounded0.5 once for the physical body. No new pressure or friction owner exists.
+
+Malformed input refuses before mask or material mutation. Angle admission checks
+the host scalar range before conversion and requires finite derived geometry.
+Unexpected exceptions during compound mask preparation invalidate the response
+and quarantine native World and its active aggregate, retaining the actual
+payload/cell/mask state for inspection and whole-session recovery. The failure
+path does not attempt an implicit restore. Testing the explicit native quarantine
+with allocation forbidden is separate from fault-injecting the adapter catch;
+the latter requires its own evidence before being described as executed.
 
 At mass520 and fixture gravity92.12, maximum normal20 per fresh60Hz response is
 small relative to gravity impulse798.373. Qualifying protocol/ownership does not
@@ -108,7 +120,7 @@ Build source-matched Windows/Linux modules, run native/sanitizer and actual host
 mechanical/failure controls before registered physical acquisition, and bind all
 results to exact source/project/runtime/protocol identities. The machine
 [population](../audits/gcr-detachment-2026-11-01/protocol.json) and dated compact
-evidence own actual counts/outcomes. Unsupported overlap or performance evidence
+[evidence](../audits/2026-11-02-compound-granular-detachment.md) own actual counts/outcomes. Unsupported overlap or performance evidence
 stays null, not zero. A mechanical pass cannot close a physical-quality gate.
 No owner gameplay acceptance, normal default promotion or issue#12/#281/#83
 completion follows. All drafts remain unmerged.
