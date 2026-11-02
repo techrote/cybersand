@@ -110,7 +110,7 @@ def capture(args, identity, spec):
     stem = '{platform}-{surroundings}-{arm}-w{workers}-r{repeat}'.format(**spec)
     output, log = args.output / (stem + '.json'), args.output / (stem + '.log')
     command = [str(args.godot), '--headless', '--path', str(args.project), '--script',
-               'res://tests/test_gcr_detachment_capture.gd', '--', '--protocol=' + str(PROTOCOL),
+               'res://qualification/gcr_detachment_capture.gd', '--', '--protocol=' + str(PROTOCOL),
                '--surroundings=' + spec['surroundings'], '--candidate=' + spec['arm'],
                '--workers=' + str(spec['workers']), '--repeat=' + str(spec['repeat']), '--output=' + str(output)]
     env = os.environ.copy()

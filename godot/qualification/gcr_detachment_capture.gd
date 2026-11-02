@@ -1,6 +1,7 @@
 extends SceneTree
 
-# Registered physical capture only. Every live native access goes through the
+# Explicit registered capture; deliberately outside automatic test discovery.
+# Every live native access goes through the
 # real session owner. This script does not choose the force law or move the body.
 const Session = preload("res://scripts/solid_detachment_session.gd")
 var failures: Array[String] = []

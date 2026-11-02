@@ -71,6 +71,13 @@ func native_states(prepared: Dictionary, serial: int = 1) -> PackedFloat64Array:
 func lease(prepared: Dictionary) -> Dictionary:
 	return {"token":prepared.token,"body_id":1,"body_generation":7,"physics_epoch":1}
 
+func original_mask(native: Object) -> PackedInt32Array:
+	var result := PackedInt32Array()
+	for y: int in range(25,68):
+		for x: int in range(42,76):
+			result.append(int(native.rigid_body_id_at(x,y)))
+	return result
+
 func native_protocol() -> void:
 	for arm: String in ["R2","A1"]:
 		var native: Object = world(arm)
@@ -93,7 +100,8 @@ func native_protocol() -> void:
 		check(int(diagnostics.get("proxy_count",-1))==6,"six geometric proxies")
 		check(float(diagnostics.get("normal_capacity",INF))<=20.0,"one body normal budget")
 		check(int(diagnostics.get("nodes",9999))<=96 and int(diagnostics.get("updates",9999))<=768,"six rectangle work bound")
-		for fault: String in ["lease","mass","inertia","com","velocity","session","duplicate","rotation"]:
+		var retained_mask: PackedInt32Array = original_mask(native)
+		for fault: String in ["lease","mass","inertia","com","velocity","session","duplicate","rotation","angle-overflow","angle-maxdouble","angle-nan","angle-inf"]:
 			var broken: PackedFloat64Array = native_states(prepared,2)
 			var bad_lease: Dictionary = lease(prepared)
 			match fault:
@@ -105,8 +113,14 @@ func native_protocol() -> void:
 				"session": broken[17+16] = 74
 				"duplicate": broken[17] = 1
 				"rotation": broken[17+3] = .1
+				"angle-overflow", "angle-maxdouble", "angle-nan", "angle-inf":
+					var angle: float = {"angle-overflow":1e40,"angle-maxdouble":1.7976931348623157e308,"angle-nan":NAN,"angle-inf":INF}[fault]
+					for offset: int in range(0,broken.size(),17):
+						broken[offset+3]=angle
+						broken[offset+1]=777.0; broken[offset+2]=777.0
 			check(not native.prepare_gcr_compound_coupling(broken,bad_lease,true),"atomic refusal "+fault)
 			check(native.gcr_compound_results().is_empty(),"invalid publication empty "+fault)
+			check(original_mask(native)==retained_mask and int(native.rigid_body_id_at(777,777))==0,"invalid batch retains exact old mask "+fault)
 			var after: Dictionary = native.solid_detachment_command({"action":"inspect"})
 			check(after.members==prepared.members and int(after.aggregate_owned)==520,"refusal retains tuples "+fault)
 		check(native.prepare_gcr_compound_coupling(native_states(prepared,3),lease(prepared),true),"fresh recovery")

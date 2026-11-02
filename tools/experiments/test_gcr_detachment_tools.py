@@ -23,6 +23,8 @@ class QualificationTests(unittest.TestCase):
         self.assertEqual(sum(row['repeat']==1 for row in population),8)
         self.assertTrue(all(row['arm']=='R2' and row['workers']==1 for row in population if row['repeat']))
         self.assertEqual(len({tuple(sorted(row.items())) for row in population}),56)
+        self.assertTrue((run.ROOT/protocol['capture']['script']).is_file())
+        self.assertFalse((run.ROOT/'godot/tests/test_gcr_detachment_capture.gd').exists())
 
     def test_mechanical_receipt_all_identity_and_gates_required(self):
         protocol=json.loads(run.PROTOCOL.read_text(encoding='utf-8'))

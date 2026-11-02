@@ -39,6 +39,7 @@
     "post_release_pose_assignment": false
   },
   "capture": {
+    "script": "godot/qualification/gcr_detachment_capture.gd",
     "native_tick_horizon": 1200,
     "tail_samples": 300,
     "wall_timeout_seconds": 240,
