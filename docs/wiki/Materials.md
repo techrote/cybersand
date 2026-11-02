@@ -512,7 +512,7 @@ These are exact values for the **default native kernels at this source commit**,
 | Water lateral transfer | `floor(3×positive_mass_difference/4)`, capped by source amount and destination capacity, no move if `source≤target+1` | Before further per-mode/policy restrictions |
 | Reference discrete lateral rate | `1 + floor(((255−ν)×(max_rate−1)+127)/255)`; default `max_rate=24`; none→0 | Not a native kernel radius or pressure law |
 | Lateral viscosity transfer | `max(1, floor((requested×(256−ν)+255)/256))` for positive requested transfer and active lateral mode | Viscosity affects lateral transfer, not gravity |
-| FreeMass vs CellularYield | Water=`FM`, nine other nonzero-viscosity liquids=`CY` and Brine=`CY` (10 `CY` total) | No universal unified liquid model |
+| FreeMass vs CellularYield | Water=`FM`; all **10** other liquids (including Brine)=`CY` | No universal unified liquid model |
 
 ### Construction-time transport profile schema v1 (ordinary Baseline)
 | Control | Baseline | Permitted range / constraint |
