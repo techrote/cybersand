@@ -108,7 +108,39 @@ func persistent_ack() -> void:
 	check(session.bridge.manual_step_count()==0,"ack persistence does not step Rapier")
 	session.close()
 
+func failed_publication() -> void:
+	# Exclusive pre-thread value-publication seam. This is not an injected native
+	# failure or evidence of World quarantine; those have independent gates.
+	var owner := SolidWorker.new()
+	var previous := CyberSimulationSnapshot.new()
+	previous.serial=5
+	previous.rigid_body_results=PackedFloat32Array([1,3,4,0,0,0,0,0,1])
+	previous.gcr_body_results=PackedFloat64Array([1,3,4,0,0,0,0,0,1,7,0,0,1,73])
+	previous.gcr_compound_results=PackedFloat64Array([1,3,4,0,0,0,0,0,1,7,0,0,2,73])
+	previous.gcr_compound_preparation={"installed":true,"sample":1,"lease":{"token":"1:1","body_id":1,"body_generation":7,"physics_epoch":1}}
+	previous.gcr_compound_diagnostics={"computed":true,"impulse":Vector2(3,4)}
+	previous.gcr_result_generation_usec=13
+	previous.current_rigid_body_states=PackedFloat32Array([1,50,50,0,2,2,0,0,0,520,1])
+	var old_ack: Dictionary = previous.gcr_compound_preparation.duplicate(true)
+	var old_diag: Dictionary = previous.gcr_compound_diagnostics.duplicate(true)
+	var native_tick: int = int(owner._world.get_tick_index())
+	var native_attempted: int = int(owner._world.get_attempted_tick_index())
+	var native_failures: int = int(owner._world.get_tick_failure_count())
+	owner._snapshot_serial=5;owner._published_snapshot=previous;owner._simulation_failed=true
+	owner._publish_failure_snapshot()
+	var failed: CyberSimulationSnapshot = owner.take_latest_snapshot(-1)
+	check(failed!=null and failed!=previous and failed.simulation_failed and failed.paused,"failed publication is distinct and held")
+	if failed!=null:
+		check(failed.rigid_body_results.is_empty() and failed.gcr_body_results.is_empty() and failed.gcr_compound_results.is_empty(),"failed publication clears every actionable wrench")
+		check(failed.gcr_compound_preparation.is_empty() and failed.gcr_compound_diagnostics.is_empty() and failed.gcr_result_generation_usec==0,"failed publication clears ack/diagnostics/generation cost")
+		check(failed.current_rigid_body_states==previous.current_rigid_body_states,"failed publication retains last mask observation")
+		check(failed.failed_tick_index==native_attempted and failed.tick_failure_count==native_failures,"failed publication copies actual native counters")
+	check(previous.rigid_body_results.size()==9 and previous.gcr_body_results.size()==14 and previous.gcr_compound_results.size()==14,"previous wrench payload immutable")
+	check(previous.gcr_compound_preparation==old_ack and previous.gcr_compound_diagnostics==old_diag and previous.gcr_result_generation_usec==13 and not previous.simulation_failed,"previous ack/diagnostics/status immutable")
+	check(int(owner._world.get_tick_index())==native_tick and int(owner._world.get_attempted_tick_index())==native_attempted and int(owner._world.get_tick_failure_count())==native_failures,"value failure publication cannot tick or fail World")
+
 func _run() -> void:
+	failed_publication()
 	for fault: String in ["refused-first","sample","session","epoch","token","body-generation","physics-epoch","count"]:
 		await adverse(fault)
 	await persistent_ack()
