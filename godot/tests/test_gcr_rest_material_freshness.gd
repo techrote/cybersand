@@ -1,7 +1,8 @@
 extends SceneTree
 
 # Direct native API mechanics only. Held, identical poses and authored gravity0
-# establish an explicit synthetic quiet witness; no Rapier/gameplay rest claim.
+# establish exact-zero synthetic quiet witnesses. They exercise admission/cache
+# retirement, never nonzero-catch efficacy or Rapier/gameplay rest.
 const Session = preload("res://scripts/solid_detachment_session.gd")
 var checks: int = 0
 var failures: Array[String] = []
@@ -27,7 +28,7 @@ func context(serial: int) -> Dictionary:
 	return {"version":1,"sample":serial,"session":73,"last_applied_sample":serial-1,
 		"gravity":0.,"external_drive":false,"hard_clearance":true}
 
-func states(serial: int, y: float = 100., velocity: Vector2 = Vector2(.01,.04)) -> PackedFloat64Array:
+func states(serial: int, y: float = 100., velocity: Vector2 = Vector2.ZERO) -> PackedFloat64Array:
 	return PackedFloat64Array([1,104,y,0,8,14,velocity.x,velocity.y,0,1,serial,13,104,y,.78,1./60.,73])
 
 func row(world: Object) -> Dictionary:
@@ -58,6 +59,20 @@ func retired(world: Object, label: String) -> void:
 	var first: PackedFloat64Array = world.gcr_body_results()
 	var again: Dictionary = row(world)
 	check(world.gcr_body_results()==first and int(again.get("quiet_count",-1))==0,label+" repeated getters cannot restore authority")
+
+func nonzero_prepared_force() -> void:
+	# One copied descending state, with no simulated trajectory, isolates the
+	# requirement that safety revalidation preserves the prepared baseline law.
+	for mode: String in ["P","C","PRC"]:
+		var world: Object = fresh(mode)
+		check(world.diagnostic_fill_rect(Vector2i(96,107),Vector2i(24,20),2),"nonquiet packed source")
+		check(world.prepare_gcr_coupling(states(1,100.,Vector2(3,30)),true,context(1)),"nonquiet descending sample")
+		var prepared: PackedFloat64Array = world.gcr_body_results()
+		check(prepared.size()==14 and Vector2(prepared[1],prepared[2]).length()>1.,"nonzero baseline witness "+mode)
+		check(world.diagnostic_fill_rect(Vector2i(96,107),Vector2i(24,20),0),"nonquiet source erase")
+		var current: PackedFloat64Array = world.gcr_body_results()
+		check(current.size()==14 and prepared.size()==14 and current[1]==prepared[1] and current[2]==prepared[2] and current[9]==prepared[9],"nonzero prepared J/L exactly preserved "+mode)
+		retired(world,"nonquiet "+mode)
 
 func independent_edits() -> void:
 	var control: Object = fresh("control")
@@ -94,23 +109,34 @@ func independent_edits() -> void:
 		changed.gcr_body_results()
 		retired(changed,mode+" capable source replacement")
 		check(str(row(changed).get("support_signature","0"))!="0","current replacement remains support capable")
+		var hard: Object = fresh(mode)
+		serial=prime(hard,mode)
+		check(hard.prepare_gcr_coupling(states(serial),true,context(serial)),"hard-revision sample")
+		hard.gcr_body_results()
+		var signature: String = str(row(hard).get("support_signature","0"))
+		check(hard.diagnostic_fill_rect(Vector2i(140,100),Vector2i.ONE,1),"late hard edit away from sources")
+		hard.gcr_body_results()
+		retired(hard,mode+" hard revision fence")
+		check(str(row(hard).get("support_signature",""))==signature,"hard fence is independent of source signature")
 
 func current_overlap_correction() -> void:
 	for mode: String in ["R","PRC"]:
 		var world: Object = fresh(mode)
-		check(world.diagnostic_fill_rect(Vector2i(96,107),Vector2i(24,20),2),"correction support")
+		# This overlap exists before body masks, rather than bypassing native
+		# authority by trying to paint nonempty material into a live mask.
+		check(world.diagnostic_fill_rect(Vector2i(64,64),Vector2i(80,80),2),"packed unresolved correction fixture")
 		check(world.prepare_gcr_coupling(states(1,100.,Vector2(0,.1)),true,context(1)),"previous correction pose")
 		world.gcr_body_results()
 		check(world.prepare_gcr_coupling(states(2,100.01,Vector2(0,.1)),true,context(2)),"nonzero legacy correction sample")
-		var zero: PackedFloat64Array = world.gcr_body_results()
+		var packed: PackedFloat64Array = world.gcr_body_results()
 		var before: Dictionary = row(world)
 		check(float(before.get("requested_correction",Vector2.ZERO).y)<0.,"old correction is measurable")
-		check(zero.size()==14 and zero[4]==0. and int(before.get("post_overlap",-1))==0,"current zero overlap suppresses correction")
-		check(world.diagnostic_fill_rect(Vector2i(103,100),Vector2i.ONE,3),"paint Water inside endpoint after cached result")
-		var painted: PackedFloat64Array = world.gcr_body_results()
+		check(packed.size()==14 and packed[4]<0. and int(before.get("post_overlap",0))>0,"current positive overlap retains correction")
+		check(world.diagnostic_fill_rect(Vector2i(100,93),Vector2i(8,14),0),"erase stored interior after cached result")
+		var cleared: PackedFloat64Array = world.gcr_body_results()
 		var after: Dictionary = row(world)
-		check(int(after.get("post_overlap",-1))==1,"current overlap replaces stale zero certificate")
-		check(painted.size()==14 and painted[4]<0. and is_equal_approx(painted[4],float(after.requested_correction.y)),"positive current overlap retains bounded correction")
+		check(int(after.get("post_overlap",-1))==0,"current zero overlap replaces stale positive certificate")
+		check(cleared.size()==14 and cleared[4]==0. and float(after.requested_correction.y)<0.,"current zero overlap suppresses previously retained correction")
 		check(not after.get("catch_applied",true) and not after.get("warm_started",true),"overlap vetoes rest mechanisms")
 
 func compound_world(mode: String) -> Dictionary:
@@ -130,6 +156,8 @@ func compound_world(mode: String) -> Dictionary:
 		"terrain_revision":committed.commit_revision,"physics_epoch":1}).get("ok",false),"native compound finalize")
 	check(world.diagnostic_fill_rect(Vector2i(0,65),Vector2i(128,20),0),"retire stump and hard floor for mechanical witness")
 	check(world.diagnostic_fill_rect(Vector2i(46,65),Vector2i(12,20),2),"compound synthetic packed support")
+	check(world.diagnostic_fill_rect(Vector2i(46,85),Vector2i(12,2),1),"distant synthetic bed floor")
+	check(world.simulation_tick(),"native settling tick retires newly painted source epoch")
 	return {"world":world,"source":source,"lease":{"token":source.token,"body_id":1,"body_generation":7,"physics_epoch":1}}
 
 func compound_states(source: Dictionary,serial: int) -> PackedFloat64Array:
@@ -165,9 +193,10 @@ func compound_edits() -> void:
 			check(world.gcr_compound_results()==packet and int(row(world).get("quiet_count",-1))==0,"compound repeated getters cannot rebuild dwell")
 
 func _run() -> void:
+	nonzero_prepared_force()
 	independent_edits()
 	current_overlap_correction()
 	compound_edits()
 	print("GCR_REST_MATERIAL_FRESHNESS ",JSON.stringify({"checks":checks,"failures":failures,"ok":failures.is_empty(),
-		"scope":"actual native direct API; synthetic held gravity0 quiet witnesses and edit retirement; no gameplay efficacy or rest claim"}))
+		"scope":"actual native direct API; exact-zero held gravity0 admission/retirement witnesses plus a separate nonquiet nonzero prepared-wrench comparison; no nonzero-catch efficacy or gameplay rest claim"}))
 	quit(0 if failures.is_empty() else 1)

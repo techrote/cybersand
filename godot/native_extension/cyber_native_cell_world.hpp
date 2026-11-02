@@ -274,6 +274,7 @@ private:
     // from current cells at every serialized publication, including same-tick edits.
     mutable std::array<std::uint64_t,cybersand::World::kMaximumTransientBodies+1U> gcr_rest_current_overlap_{},gcr_rest_current_signatures_{};
     mutable bool gcr_rest_material_validated_=false,gcr_rest_material_changed_=false;
+    std::uint64_t gcr_rest_prepared_hard_revision_=0;
     mutable std::uint64_t gcr_rest_validation_raster_=0,gcr_rest_validation_boundaries_=0,gcr_rest_validation_queries_=0;
     enum class RestRefusal {Disabled,UnknownContext,Population,Overlap,NoSupport,SupportChanged,Unacknowledged,PoseMotion,ResidualMotion,Event,Drive,Correction,Dwell,Ready};
     struct RestInfo {bool eligible=false,correction_mode=false;std::uint32_t quiet=0;RestRefusal refusal=RestRefusal::Disabled;

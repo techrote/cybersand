@@ -1056,6 +1056,7 @@ bool CyberNativeCellWorld::prepare_gcr_coupling(const PackedFloat64Array& states
     gcr_session_id_=session;
     prepare_body_coupling(resolve_overlaps);
     if (world_->has_failed()) { gcr_response_valid_=false; return false; }
+    if(gcr_rest_enabled_)gcr_rest_prepared_hard_revision_=world_->hard_surface_revision();
     gcr_sample_tick_=world_->completed_tick_index();
     gcr_response_valid_=true;
     for (std::size_t i=1;i<next.size();++i)
@@ -1183,7 +1184,10 @@ void CyberNativeCellWorld::revalidate_rest_material() const {
     }
     const bool current_changed=gcr_rest_material_validated_ &&
         (signatures!=gcr_rest_current_signatures_ || overlap!=gcr_rest_current_overlap_);
-    const bool differs_from_prepared=signatures!=gcr_rest_signatures_ || overlap!=gcr_rest_overlap_post_;
+    // A copied clearance proof cannot survive any subsequent hard edit. This
+    // deliberately conservative global revision fence adds no geometry owner.
+    const bool differs_from_prepared=signatures!=gcr_rest_signatures_ || overlap!=gcr_rest_overlap_post_ ||
+        world_->hard_surface_revision()!=gcr_rest_prepared_hard_revision_;
     const bool newly_invalid=differs_from_prepared && !gcr_rest_material_changed_;
     gcr_rest_current_signatures_=signatures;gcr_rest_current_overlap_=overlap;
     gcr_rest_material_validated_=true;gcr_rest_material_changed_|=differs_from_prepared;
@@ -1316,6 +1320,8 @@ Dictionary CyberNativeCellWorld::gcr_rest_receipt() const {
     receipt["base_budget"]=gcr_base_budget_;receipt["cache_bytes"]=static_cast<std::int64_t>(sizeof(cybersand::gcr::RestCache));
     receipt["material_revalidated"]=gcr_rest_material_validated_;
     receipt["material_changed_since_prepare"]=gcr_rest_material_changed_;
+    receipt["prepared_hard_revision"]=static_cast<std::int64_t>(gcr_rest_prepared_hard_revision_);
+    receipt["current_hard_revision"]=static_cast<std::int64_t>(world_->hard_surface_revision());
     receipt["revalidation_raster_cells"]=static_cast<std::int64_t>(gcr_rest_validation_raster_);
     receipt["revalidation_boundary_checks"]=static_cast<std::int64_t>(gcr_rest_validation_boundaries_);
     receipt["revalidation_support_queries"]=static_cast<std::int64_t>(gcr_rest_validation_queries_);

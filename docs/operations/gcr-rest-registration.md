@@ -169,3 +169,7 @@ rejects every caught response with nonzero correction, including PRC. Reduction
 must enforce the same configuration identity and measure delivered-wrench velocity/
 angular change, not just recompute an energy subtraction. Preserve preliminary
 mechanical failures and explicitly distinguish arithmetic from delivered closure.
+Late hard-terrain edits additionally retire rest authority through the native
+hard-surface revision fence. Revalidation latches observed source/overlap changes;
+an erase-and-restore completed entirely between queries with identical current
+cells is not parcel-history tracking. Current support is still revalidated.
