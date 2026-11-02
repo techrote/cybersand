@@ -1,7 +1,7 @@
 {
-  "acceptance": "Engineering-only development runtime:177 core tests plus native detachment10groups/19355checks and conservative displacement6groups/281checks passed on Windows and Linux; Linux ASAN/UBSAN with leak detection also passed.46 scoped host cases perOS,5 current-main render controls perOS, current capture eligibility/mechanical gates, and final UI lab41/bridge415/async63 checks perOS passed under their recorded source identities. R2/A1 efficacy is not accepted; original failures, negative/unsupported physical gates and source/runtime distinctions remain in the dated audit. Publication is a development checkpoint only; exact published-head repository/materialized checks and draft Documentation/provenance remain a separate subsequent gate.",
+  "acceptance": "Experimental development runtime only: native177 core groups plus detachment10groups/19355checks and conservative6groups/281checks pass across Windows/Linux and Linux ASAN/UBSAN. Standalone LA math, scoped actual Godot controls, amended31-check parameter/edit tests and17-check UI/room tests pass per recorded OS/source.68 primary physical captures complete; candidate registered physical gates NOT MET, owner acceptance pending. No default promotion or merge.",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
-  "build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+  "build_commit": "c29395a356ca4d02860f06b646234c14275edcb4",
   "build_inputs": {
     ".gitattributes": "05c9fbe5f823c51aec0ae542d0c7641a117fb0b95cd1d7fb511fffe9f8cbdbaa",
     "godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
@@ -13,75 +13,34 @@
     "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
     "tools/verify_pinned_source_tree.py": "a0524839c9a2857906013c9cef6327dfd3fd1878372da05ca16c34a497eaea97"
   },
-  "build_receipt_sha256": "58db2a34ce6f61c24f76f2375e03e0b95eb78dc4119a74b83fdec4abb3fea0d7",
+  "build_receipt_sha256": "5de507144b8989f1ed313ce02199d92bc0323c5567ad39597128fa38373bf3d6",
   "build_record": {
     "command": [
       "wsl",
       "-d",
       "Ubuntu-24.04",
       "--cd",
-      "C:\\Users\\_\\.codex\\worktrees\\gcr-detach\\khybersand",
+      "C:\\Users\\_\\.codex\\worktrees\\gcr-load\\khybersand",
       "--",
       "env",
       "LINUX_CXX=/usr/bin/g++-13",
       "GODOT_CPP_ROOT=/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496",
-      "CYBERSAND_NATIVE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/gcr-detach/khybersand/build/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "CYBERSAND_NATIVE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/gcr-load/khybersand/build/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
       "bash",
       "tools/build_native_extension.sh"
     ],
     "exit": 0,
-    "log_sha256": "ab23b0eeae06de9460f355307b0b538f5a59af9d4ba90f5d3fad5bc08d833782",
+    "log_sha256": "ed2c36d01029fcdcb60e1620d5be5709c9fb41c76f3ad1833fb864958b0627f1",
     "platform": "linux",
-    "source": "5d124667a3058a335680048a7099e2bbabde8de3",
-    "start": "2026-11-02T00:06:03.967649+00:00",
+    "source": "c29395a356ca4d02860f06b646234c14275edcb4",
+    "start": "2026-11-02T19:04:48.088249+00:00",
     "timeout": 1200
   },
   "code_input_dispositions": [
-    {
-      "eligibility_join": {
-        "path": "build/full-native-composition/capture-parser-equivalence.json",
-        "sha256": "5324edea6a21c4fc4a0c620c79d88e70222083dc99b5cd2abb0af6dc9eb9596e"
-      },
-      "executed_source_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
-      "lane": "retained full native and46 scoped host cases perOS plus5 render controls perOS",
-      "native_build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
-      "scope": "Retained source identity, not a rerun at capture/UI/final source."
-    },
-    {
-      "executed_source_commit": "86108a148d6edf4d2c956a13f47a22ebe2cd0c7e",
-      "lane": "56 metadata-only argument preflights,2 current compound mechanicals perOS and56 physical captures",
-      "native_build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
-      "scope": "Physical negative/unsupported results remain separate from engineering acceptance."
-    },
-    {
-      "changed_paths_since_capture": [
-        "godot/scripts/solid_detachment_lab.gd",
-        "godot/tests/test_gcr_detachment_lab.gd"
-      ],
-      "executed_source_commit": "9138bdaf2ea295b0e6ff84972dd909fefdf7a2f1",
-      "lane": "developer lab and2 actual compound mechanicals perOS",
-      "native_build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
-      "scope": "Lab41/bridge415/async63 checks perOS. No new efficacy trajectories. Native/build/production-physics inputs unchanged."
-    },
-    {
-      "evidence": {
-        "path": "build/compound-analysis-861-corrected.json",
-        "sha256": "07143d1e10cb74c97a93b7d9361ab1bb8f1896156192f16f40391bb8ebf76397"
-      },
-      "lane": "corrected descriptive analysis only",
-      "physical_capture_source_commit": "86108a148d6edf4d2c956a13f47a22ebe2cd0c7e",
-      "recoverable_method_source_commit": "ec182afcaf64993ae342a3220e3342b3be925c7d",
-      "scope": "Analyzer method authenticated by its recorded SHA; all8 original entry/overlap outcomes unchanged. No new physical acquisition or efficacy gate replacement."
-    },
-    {
-      "evidence": {
-        "path": "build/final-qualification/prepublication-gates.json",
-        "sha256": "bb8dea3503055c0097869544303fc3aef08391a56f43a4154973a4022984537b"
-      },
-      "executed_source_commit": "263ef69bfb5edf0ad8d8a9cd3bbc8277f0ab4638",
-      "lane": "pre-publication documentation/history/retrieval/checker/reducer gates",
-      "scope": "All six checks pass. Final published-head repository/materialized identity and exact-head Documentation/provenance CI follow publication; no gameplay or physical acceptance."
-    }
+    "Complete88 native code inputs and recorded build/dependency blobs match c293 through current HEAD.",
+    "All92 full-native raw inputs match tested cb3; all18 planned build/run calls pass.",
+    "Physical1b5 supplies56 retained successful captures; dd4 supplies12 new after only bounded excavation command repair; two original apparatus failures preserved.",
+    "UI34a adds barrel presentation/parameter controls and room retirement only; captured response/helper semantics unchanged. Both OS actual17-check UI tests pass."
   ],
   "dependency_inputs": {
     "LICENSE_STATUS.md": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70",
@@ -93,40 +52,36 @@
     "third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
     "third_party/rapier-bvh-build.lock.json": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b"
   },
-  "evidence": "docs/audits/2026-11-02-compound-granular-detachment.md",
-  "input_equivalence_checked_at_commit": "263ef69bfb5edf0ad8d8a9cd3bbc8277f0ab4638",
+  "evidence": "docs/audits/2026-11-02-gcr-load-aware-response.md",
+  "input_equivalence_checked_at_commit": "f1e9571c682d0fdaecf233680f6c459361cfa811",
   "input_equivalence_scope": "Complete native code and recorded build/dependency input blobs only; application GDScript, capture entrypoint and developer UI may differ and require separately identified validation.",
   "limitations": [
-    "Development engineering qualification does not accept compound granular efficacy.",
-    "Frozen physical8primarypairs have7entry passes/1failure and8unsupported overlap gates; reduction repair must retain original negative source/results.",
-    "All56 registered160x128-region Brick/Wall/Sand/Water/payload conservation controls passed; no full-world census claim. Supplementary native passive-energy and overlap statistics cover observed samples only.",
-    "Historical supplement7ae legacy correction_count overcounted tiny offered corrections; corrected analyzer v2 actual application counters/flags are authoritative, with historical bytes retained.",
-    "33 old typed-membership failures had no worker World/body; original raw planned-cut metadata error is retained and explained.",
-    "Adapter exception catch not fault-injected; noalloc World quarantine tested explicitly.",
-    "Toolchain verification hashes are post-build, not contemporaneous build tracing.",
-    "Repository/materialized runtime identity is checked after the four publication files are committed. Native execution remains source5d; no final-head native rerun is inferred. All PRs remain draft/unmerged."
+    "Registered physical gates NOT MET: four rebound and eight tail-span failures,18 unsupported compound overlap comparisons. No production/default promotion or merge.",
+    "Large raw evidence archive is local ignored storage only; source/tools, compact summaries and hashes are committed.",
+    "Sampled passive accounting excludes events/correction/zeroing/gravity/hard collisions; no whole-system energy closure.",
+    "Functional instrumented concurrent-platform timing is not uncontended performance acceptance."
   ],
-  "local_build_driver_sha256": "bbbc6c2ecd2e030356a8048f9dd2580a72a4e0cfdd1bfbfc242d23c40dabb49b",
-  "native_build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
-  "other_platforms": "No browser/Web, graphical pixel/GPU, target-PC or human owner acceptance. Headless actual Windows/Linux only.",
+  "local_build_driver_sha256": "ceabcee9c07afb437bf1234e930efcbe67756d528ece9fdd82620afe3bce4fbd",
+  "native_build_commit": "c29395a356ca4d02860f06b646234c14275edcb4",
+  "other_platforms": "No Web, target-device or owner gameplay acceptance; Linux actual headless through WSL Ubuntu24.04.",
   "platform": "linux",
-  "qualification_receipt": "build\\compound-publication\\qualification.json",
+  "qualification_receipt": "C:\\Users\\_\\.codex\\worktrees\\gcr-load\\khybersand\\build\\compound-publication\\qualification.json",
   "schema_version": 1,
-  "sha256": "3b69072af379f8f71dcff19d941c5d4cfa7a13387b70a0eeba3d20f865366dbd",
-  "size": 4412328,
-  "source_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+  "sha256": "d3cd85636f9f3fe882950104fbdd746ce5ad55e0c54e746fa9faeea848941707",
+  "size": 4416520,
+  "source_commit": "c29395a356ca4d02860f06b646234c14275edcb4",
   "source_input_hash_kind": "SHA-256 of complete canonical Git native code blobs; CRLF working bytes normalize to LF",
   "source_inputs": {
     "godot/native_extension/conservative_displacement_adapter.inc": "91b06a2c4e273aad56af883525dc2466e4caac64a1b0660aeb1201d625b85b30",
     "godot/native_extension/cyber_demo_bridge.hpp": "c0614af94edb4c004e83e2ae6579d780201ebe3713ff66120b59606b06405565",
-    "godot/native_extension/cyber_native_cell_world.cpp": "3645c359964d2950c5932c33b3ba3a0ec3e3ddbf60c9480f3676d81357449057",
-    "godot/native_extension/cyber_native_cell_world.hpp": "c94f9ca62f19eb7dec9d9d1c40905d5449468cf384be3f0d28807fa430268ae9",
+    "godot/native_extension/cyber_native_cell_world.cpp": "c9176ad6a69592e616c96c3a5b659c7b5266aa89caad391fea9faeb8af7e4d1f",
+    "godot/native_extension/cyber_native_cell_world.hpp": "85bd68c22556570fee60d51edf67f3d7c306ea7079d418b29cd5b87e83405548",
     "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
     "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
     "godot/native_extension/cyber_prepared_liquid_world.hpp": "6a1f3b8b1d096b177dba8c70fafe167707db91714994d3539d7ab08a0aee7ccf",
     "godot/native_extension/cyber_world_generator.cpp": "c819ab654d8bc53a04a3362b2dc8f44415238f0b58753882ae993c0ac6dfd64b",
     "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
-    "godot/native_extension/gcr_compound_adapter.inc": "e31e4415b6bd03ce3e04f5a150e1ee338dcd9d1fd7707e2258b3496c45bf8370",
+    "godot/native_extension/gcr_compound_adapter.inc": "7739ba37a10be2300028166bbd120da81a3541d984cad325cdf780c0df6b4e1a",
     "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
     "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
     "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
@@ -148,7 +103,7 @@
     "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
     "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
     "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
-    "native/include/cybersand/granular_contact_response.hpp": "20be62fd6d618e53b3cf926fc5b8f27c828712035e5d3ecb1810450ba293a252",
+    "native/include/cybersand/granular_contact_response.hpp": "68f798b91a1cc8cf206431300272bc63453bb9b2a722a0b22d416bb180c12ca3",
     "native/include/cybersand/inertial_cellular.hpp": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
     "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
     "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
@@ -206,7 +161,7 @@
     "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
     "native/src/world_solid_detachment.inc": "68499bf17ebb836c87fe45fa81262eef6bffa4cf3f3da33bf5fa774d93fc7c17"
   },
-  "source_tree": "ac042fa57fd6ca35d87df21ae0b24ecb69be7702",
+  "source_tree": "5947f06671109c0127d8bb9771cab03d8d414a3a",
   "status": "validated-development-runtime",
   "toolchain": "Actual local Windows-hosted LLVM-MinGW23.1 UCRT Windows-target build and WSL Ubuntu24.04 GCC13.3/ld2.42 Linux build. See toolchain_record for post-build measured versions/hashes. No GitHub-hosted build or M11 exact-artifact claim.",
   "toolchain_record": {
@@ -242,7 +197,7 @@
         "/usr/bin/ld": "GNU ld (GNU Binutils for Ubuntu) 2.42"
       }
     },
-    "measured_utc": "2026-11-02T00:41:19.711637+00:00",
+    "measured_utc": "2026-11-02T19:18:15.835350+00:00",
     "scope": "Post-build identity verification of compiler/linker/static-library paths named by actual build recipe/log; not build-time tracing or proof of historical M11 binary equality.",
     "windows_files": {
       "C:\\Users\\_\\lcb-local-toolchain\\env\\godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496\\bin\\libgodot-cpp.windows.template_debug.x86_64.a": {
@@ -280,105 +235,65 @@
       "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\x86_64-w64-mingw32-g++.exe": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)"
     }
   },
-  "validated_platform": "Linux x86_64 Godot4.7 actual local headless execution; source scopes5d/861/9138 stated separately",
+  "validated_platform": "Linux x86_64 Godot4.7 actual headless under WSL Ubuntu24.04",
   "validation_records": [
     {
-      "path": "build/full-native-composition/attempt-2/completion.json",
-      "sha256": "8e686b4879a09608fc5ae61c817327baefc127154a4a5968800579831180359b"
+      "path": "build/la-mechanical-amendment.json",
+      "sha256": "3e264df89a72bf082a621aebfca2a8ab0880e45cc270aa3623fb8fbd64d4a60e"
     },
     {
-      "path": "build/full-native-composition/attempt-2/input-manifest.json",
-      "sha256": "caaf6d0c3600b40ac85b4da2620f3b797173b0943649772cfb7ecbb2acb05d5a"
+      "path": "build/full-native-composition/la-frozen/completion.json",
+      "sha256": "ae32be57b0d30e6b7e5dea5b28dd7f74af4b1116274ef5f7b7035c1eb8338713"
     },
     {
-      "path": "build/compound-host/effective-coverage-5d.json",
-      "sha256": "f286bd11aacf209bc775d20df72c0166cb018065a37ae1707281230d64d10aea"
+      "path": "build/full-native-composition/la-frozen/receipt.json",
+      "sha256": "6adf873b46d65c538511c6dec6258a84d64cdae88a7761c32c2de383b22dedfe"
     },
     {
-      "path": "build/full-native-composition/capture-parser-equivalence.json",
-      "sha256": "5324edea6a21c4fc4a0c620c79d88e70222083dc99b5cd2abb0af6dc9eb9596e"
+      "path": "build/full-native-composition/la-frozen/input-manifest.json",
+      "sha256": "875c68ac776fec23f729f17ed3e3cfd9370719b00b5ef145b70c737493c6f0cc"
     },
     {
-      "path": "build/compound-analysis-861-frozen.json",
-      "sha256": "f9c198a8297f97359224d609e6f1d4e7e94defea39a80779549cde129bf19e87"
+      "path": "build/la-physical-amended/completion.json",
+      "sha256": "688ed4031fe36d2fc82f39eea92fe11a5b58bce7405955352db90f5044256476"
     },
     {
-      "path": "build/compound-supplement-861.json",
-      "sha256": "7ae6725920ee40560ac4b5e185c8a678005756b77684bd119af8ed35f01f8091"
+      "path": "build/ui-test-windows-v3.log",
+      "sha256": "6b378124311a7b0a92f8b22e6cddca0d165a95a0eb44f05fedec2a6dc3773731"
     },
     {
-      "path": "build/compound-analysis-861-corrected.json",
-      "sha256": "07143d1e10cb74c97a93b7d9361ab1bb8f1896156192f16f40391bb8ebf76397"
+      "path": "build/ui-test-linux-v2.log",
+      "sha256": "6b378124311a7b0a92f8b22e6cddca0d165a95a0eb44f05fedec2a6dc3773731"
     },
     {
-      "path": "build/compound-host/analyzer-frozen-method-861.json",
-      "sha256": "4ac2efc78761a8df2dc7b714c7012e389b9f9ebc4c253d922b6cbbd2ff1a9dc8"
+      "path": "build/load-math-windows.log",
+      "sha256": "11d22233f85799e1ae521f8af913dfa3fcbda3a9245f27d37c7789adc886a57a"
     },
     {
-      "path": "build/compound-review-861/corrected-supplement.json",
-      "sha256": "6e4561e336be50723eed97ee6e8226b3b5d6aefb8dd169e20c8aeb3511099a10"
+      "path": "build/load-math-sanitized.log",
+      "sha256": "11d22233f85799e1ae521f8af913dfa3fcbda3a9245f27d37c7789adc886a57a"
     },
     {
-      "path": "build/compound-review-861/raw-and-derived-hash-manifest.json",
-      "sha256": "f2e156ed02e5a30067510f50d4d7016d939c501b21b48d4fe14ac666082cd824"
+      "path": "docs/audits/gcr-load-2026-11-02/physical-summary.json",
+      "sha256": "0d405acf23d7e7edae1b7be58c907a84c9701116f4b630a4947b863d6e3c195e"
     },
     {
-      "path": "build/compound-evidence/physical-disposition-receipt.json",
-      "sha256": "2eef9231f1ea19f8559bde6b62a3449f81d049e356450dbd30bd0604a9761cb3"
+      "path": "docs/audits/gcr-load-2026-11-02/mechanical-summary.json",
+      "sha256": "d1692a3a45187cb7a4b9acc1b5a446529100b770ab64c110463bae677829d5a1"
     },
     {
-      "path": "build/compound-host/nonphysical-prefix-audit-861.json",
-      "sha256": "34f20e11cc6423404ea8505c4ac8f17f83a926945eb8d5f1662f34cef6344554"
+      "path": "docs/audits/gcr-load-2026-11-02/engineering-summary.json",
+      "sha256": "ba0a74b7ea710337d62556ccbc9f49415e0e63279d3f7edabb014ed0799bfaad"
     },
     {
-      "path": "build/compound-publication/toolchain-postbuild.json",
-      "sha256": "8504832e0926da571f752285bf965ed16f5d73b47a22e0a92da7094946df7899"
-    },
-    {
-      "path": "build/compound-host/linux-final-9138/report.json",
-      "sha256": "d7ad5e7c9ee0689043f275fb5108cdabcf93bc1fb82640a30c526b6a568e2428"
-    },
-    {
-      "path": "build/compound-host/linux-quick-861/report.json",
-      "sha256": "95bc1bc298c699a3eb8df1dfe69ad263bdada54c8e88674d688f3da633690fd6"
-    },
-    {
-      "path": "build/compound-host/linux-argument-preflight-861/report.json",
-      "sha256": "ef2d7cd568ac2f87605da512639fb3c4265d7573463f80fbe21bebc8e6b8016a"
-    },
-    {
-      "path": "build/compound-mechanical-linux-861.json",
-      "sha256": "4b24568387de61422db1e5172dc37835d39c1363e2a8ad77b6cca3a426b46b6c"
-    },
-    {
-      "path": "build/compound-render-gates/linux-5d/report.json",
-      "sha256": "ceb3c1e9e197c07744d6193bbcab8d19fca082c93bba1e86d18b8458fbd6c525"
+      "path": "docs/audits/gcr-load-2026-11-02/evidence-manifest.json",
+      "sha256": "6c07398be3f72ee9b46b843de14ed3b5b847d170f659d784161193b4aafd3a4c"
     },
     {
       "path": "build/compound-runtime-linux.json",
-      "sha256": "58db2a34ce6f61c24f76f2375e03e0b95eb78dc4119a74b83fdec4abb3fea0d7"
-    },
-    {
-      "path": "build/compound-evidence/abi-floor-5d.json",
-      "sha256": "550a9b131c244e2a901073fda8794fd2e8738be772be69bb98a44089c976a515"
-    },
-    {
-      "path": "build/final-qualification/prepublication-gates.json",
-      "sha256": "bb8dea3503055c0097869544303fc3aef08391a56f43a4154973a4022984537b"
-    },
-    {
-      "path": "docs/audits/gcr-detachment-2026-11-01/engineering-summary.json",
-      "sha256": "79bcd6b883b0d484173db01fad364eba4456e833ebecd5c569a58d4c8fd0557c"
-    },
-    {
-      "path": "docs/audits/gcr-detachment-2026-11-01/physical-summary.json",
-      "sha256": "c71c1e0ae08e355f713d5d2e170a50dbe07e738a1cbd720334e4c54c6087ee2f"
-    },
-    {
-      "path": "docs/audits/gcr-detachment-2026-11-01/evidence-manifest.json",
-      "sha256": "8b2a52e9d9e49dbd98bf55197536b0458e02d478695627079ea089d32b67c15f"
+      "sha256": "5de507144b8989f1ed313ce02199d92bc0323c5567ad39597128fa38373bf3d6"
     }
   ],
-  "validation_sha256": "9c6ca46d1e51ced6aaeaa374ded9763b39f3b55e6622cae6b66611085155646b",
-  "validation_source_commit": "263ef69bfb5edf0ad8d8a9cd3bbc8277f0ab4638"
+  "validation_sha256": "ea7a1670b4c62bc9ef9e8e43453205df901e3dba2a29024b8d4c84cb725b805d",
+  "validation_source_commit": "f1e9571c682d0fdaecf233680f6c459361cfa811"
 }
