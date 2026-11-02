@@ -67,6 +67,10 @@ inline Quadrature quadrature(const Bin& bin) {
     return {center-t*distance,center+t*distance,distance==0 ? 1U:2U,sigma>extent+1e-12};
 }
 struct Body { Vec velocity{}, com{}; double omega=0,mass=1,inertia=1,mu=0; };
+// LA is opt-in. Preserve old arithmetic at scale1; no support is fabricated.
+inline double load_scale(double mass) {
+    return std::isfinite(mass) && mass>0 ? std::max(1.,std::min(mass,4096.)) : 0.;
+}
 struct Result {
     Vec impulse{}, normal_impulse{}, tangent_impulse{}, raw_impulse{};
     double torque=0, raw_torque=0, normal=0, tangent=0, raw_normal=0, raw_tangent=0;
@@ -81,7 +85,7 @@ inline double kinetic(const Body& b, Vec v, double w) {
 // contacts. Each node represents copied values, never a per-cell physics object.
 // Accumulated nonnegative loads share one capacity across all four passes.
 inline Result solve(const Body& b, const std::array<Bin,8>& bins,
-                    double available=20) {
+                    double available=20, double capacity_scale=1) {
     Result out;
     struct Contact {
         Vec position{},normal{};
@@ -90,7 +94,8 @@ inline Result solve(const Body& b, const std::array<Bin,8>& bins,
     std::array<Contact,16> contacts{};
     std::uint64_t samples=0;
     for(const auto& bin:bins) samples+=bin.count;
-    out.capacity=std::min(std::clamp(available,0.,20.),2.*static_cast<double>(samples));
+    if(!std::isfinite(capacity_scale) || capacity_scale<1 || capacity_scale>4096 || !std::isfinite(available)) { out.passive_rejected=true; return out; }
+    out.capacity=std::min(std::clamp(available,0.,20.*capacity_scale),2.*static_cast<double>(samples)*capacity_scale);
     for(const auto& bin:bins) {
         if(!bin.count) continue;
         ++out.bins; out.max_radius=std::max(out.max_radius,bin.maximum_radius);
@@ -161,13 +166,14 @@ struct CompoundWorkspace {
 // Same R2 arithmetic, with per-rectangle bins retained and one physical state,
 // normalized source distribution, budget, provisional velocity and energy test.
 inline Result solve_compound(const Body& b, std::span<const Bin* const> bins,
-                             CompoundWorkspace& workspace, double available=20) {
+                             CompoundWorkspace& workspace, double available=20, double capacity_scale=1) {
     Result out;
     if(bins.size()>kCompoundBins) { out.passive_rejected=true; out.scale=0; return out; }
     auto& contacts=workspace.contacts;
     std::uint64_t samples=0;
     for(const auto* bin:bins) { if(!bin) { out.passive_rejected=true; out.scale=0; return out; } samples+=bin->count; }
-    out.capacity=std::min(std::clamp(available,0.,20.),2.*static_cast<double>(samples));
+    if(!std::isfinite(capacity_scale) || capacity_scale<1 || capacity_scale>4096 || !std::isfinite(available)) { out.passive_rejected=true; return out; }
+    out.capacity=std::min(std::clamp(available,0.,20.*capacity_scale),2.*static_cast<double>(samples)*capacity_scale);
     for(const auto* entry:bins) {
         const auto& bin=*entry;
         if(!bin.count) continue;

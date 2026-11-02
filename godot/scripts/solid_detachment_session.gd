@@ -16,6 +16,7 @@ const COUPLING_SAMPLE_LIMIT: int = 1000000
 const COUPLING_IMPULSE_CAP: float = 3.0
 const COUPLING_CORRECTION_CAP: float = 0.5
 
+var lab_parameters: Dictionary = {"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
 var worker: CyberSimulationWorker
 var bridge: CyberRapierPhysicsBridge
 var viewport: SubViewport
@@ -80,10 +81,20 @@ var _coupling_last_impulse: Vector2 = Vector2.ZERO
 var _coupling_last_correction: Vector2 = Vector2.ZERO
 
 func open(parent: Node, workers: int = 4, surroundings: String = "empty",
-		conservative_displacement: bool = true, candidate: String = "legacy") -> bool:
-	if candidate not in ["legacy","R2","A1"]: return false
+		conservative_displacement: bool = true, candidate: String = "legacy", parameters: Dictionary = {}) -> bool:
+	if candidate not in ["legacy","R2","A1","LA"]: return false
+	var requested: Dictionary = {"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
+	for key: String in parameters:
+		if not requested.has(key) or typeof(parameters[key]) not in [TYPE_FLOAT,TYPE_INT]: return false
+		var value: float = float(parameters[key])
+		var minimum: float = 0.01 if key in ["mass_multiplier","inertia_multiplier"] else 0.0
+		var maximum: float = 368.48 if key=="gravity" else 4.0
+		if not is_finite(value) or value<minimum or value>maximum: return false
+		requested[key]=value
+	if candidate=="legacy" and (requested.mass_multiplier!=1.0 or requested.inertia_multiplier!=1.0): return false
 	close()
 	contact_candidate = candidate
+	lab_parameters=requested.duplicate()
 	_parent = parent
 	_tree = parent.get_tree()
 	generation += 1
@@ -99,8 +110,10 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 		return _fail("Source-matched native detachment and Rapier runtime required; no fallback")
 	var native_options: Dictionary = {"workers":workers,"telemetry":false,"conservative_displacement":conservative_displacement}
 	if contact_candidate != "legacy":
-		native_options["bearing_candidate"] = "GCR" if contact_candidate=="R2" else "GCR-A1"
-		native_options["bearing_experiment"] = "GCR-001-2026-11-01" if contact_candidate=="R2" else "GCR-ADMISSION-001-2026-11-01"
+		native_options["bearing_candidate"] = "GCR-LA" if contact_candidate=="LA" else ("GCR" if contact_candidate=="R2" else "GCR-A1")
+		native_options["gcr_lab_mass_multiplier"]=lab_parameters.mass_multiplier
+		native_options["gcr_lab_inertia_multiplier"]=lab_parameters.inertia_multiplier
+		native_options["bearing_experiment"] = "GCR-LA-001-2026-11-02" if contact_candidate=="LA" else ("GCR-001-2026-11-01" if contact_candidate=="R2" else "GCR-ADMISSION-001-2026-11-01")
 	if not native.diagnostic_reset(native_options):
 		return _fail("Native diagnostic setup refused")
 	# Exclusive pre-thread initialization: no second reset after authoring.
@@ -306,11 +319,15 @@ func _prepare_body(prepared: Dictionary) -> bool:
 	body.freeze = true
 	body.collision_layer = 0
 	body.collision_mask = 0
-	body.mass = float(prepared.mass)
-	body.inertia = float(prepared.inertia)
+	body.mass = float(prepared.mass)*float(lab_parameters.mass_multiplier)
+	body.inertia = float(prepared.inertia)*float(lab_parameters.inertia_multiplier)
 	body.center_of_mass_mode = RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM
 	body.center_of_mass = Vector2.ZERO
-	body.gravity_scale = 0.094
+	body.gravity_scale = float(lab_parameters.gravity)/float(ProjectSettings.get_setting("physics/2d/default_gravity",980.0))
+	var material := PhysicsMaterial.new()
+	material.friction=float(lab_parameters.friction)
+	material.bounce=0.0
+	body.physics_material_override=material
 	body.linear_damp = 0.04
 	body.angular_damp = 0.04
 	body.position = source_center # Initial placement only; never animated.
@@ -506,7 +523,7 @@ func _consume_compound_results() -> void:
 	if contact_candidate!="legacy":
 		bridge.apply_gcr_compound_results(snapshot.serial,snapshot.gcr_compound_results)
 		var application: Dictionary = bridge.gcr_application_diagnostics()
-		last_compound_observation = {"candidate":contact_candidate,"snapshot_serial":snapshot.serial,"native_tick":snapshot.tick_index,
+		last_compound_observation = {"candidate":contact_candidate,"lab_parameters":lab_parameters.duplicate(),"snapshot_serial":snapshot.serial,"native_tick":snapshot.tick_index,
 			"computed_result":snapshot.gcr_compound_results.duplicate(),"application":application,
 			"native_diagnostics":snapshot.gcr_compound_diagnostics.duplicate(true),"result_generation_usec":snapshot.gcr_result_generation_usec}
 		if not application.get("accepted",false):
@@ -526,7 +543,7 @@ func _consume_compound_results() -> void:
 	var applied: Dictionary = bridge.apply_compound_cellular_results(
 		snapshot.serial, snapshot.rigid_body_results, 0, _coupling_sample_serial,
 		_coupling_local_centers, _coupling_masses, COUPLING_IMPULSE_CAP, COUPLING_CORRECTION_CAP)
-	last_compound_observation={"candidate":contact_candidate,"snapshot_serial":snapshot.serial,"native_tick":snapshot.tick_index,
+	last_compound_observation={"candidate":contact_candidate,"lab_parameters":lab_parameters.duplicate(),"snapshot_serial":snapshot.serial,"native_tick":snapshot.tick_index,
 		"computed_result":snapshot.rigid_body_results.duplicate(),"application":applied.duplicate(true),"native_diagnostics":{},"result_generation_usec":null}
 	_coupling_stale_results += int(applied.get("stale_records", 0))
 	if not applied.get("accepted", false):
