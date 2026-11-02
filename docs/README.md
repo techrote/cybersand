@@ -572,3 +572,11 @@ controls. Sleep and material-law changes stay excluded. The88-case bounded
 registration precedes results; no production acceptance follows from implementation.
 Use the [source-bound qualification record](audits/2026-11-02-gcr-rest-contact-comparison.md)
 for mechanics, physical outcomes, retained failures and the owner-review boundary.
+
+## Editable flyer budget playground — 2026-11-02
+
+The [lightweight fleet contract](systems/granular-review-flight-fleet.md) owns the
+seven-craft painting room, staged LA budgets and mass/inertia multipliers, retained
+fixed-20 RFT reference and reset/input semantics. This developer comparison reuses
+the existing response owner; it does not enable rest modes or qualify production
+physics. PR #351 stays unmerged.

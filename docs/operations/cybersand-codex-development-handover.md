@@ -1575,3 +1575,15 @@ The88-capture campaign is complete: R/PRC fails, P/C has zero physical admission
 and the budget sweep has no general winner. Investigate correction/zeroing
 separately and compound response delivery before attributing inactive-mode
 trajectory changes to a law. Do not tune from these results or promote defaults.
+
+## Editable flyer budget playground — 2026-11-02
+
+The owner requests the [seven-flyer painting room](../systems/granular-review-flight-fleet.md)
+with staged LA budgets 20/40/80 and mass/inertia multipliers through64. Current
+source restores the retained f7d61150 fleet authoring on the existing SDK181
+runtime, with a fixed-20 GCR/R2 reference. Apply/reset rebuilds terrain and craft;
+numeric entry suppresses gameplay shortcuts and flight input. Native compiled
+inputs, ordinary defaults and building payload properties remain unchanged.
+P/R/C and sleep are excluded; current host execution and owner judgement require
+separate source-matched evidence, not inherited fleet or88-case acceptance.
+Keep PR #351 draft and unmerged.

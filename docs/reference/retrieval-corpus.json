@@ -124,7 +124,8 @@
     "architecture/compound-granular-coupling.md",
     "operations/gcr-load-aware-registration.md",
     "architecture/granular-contact-rest.md",
-    "operations/gcr-rest-registration.md"
+    "operations/gcr-rest-registration.md",
+    "systems/granular-review-flight-fleet.md"
   ],
   "navigation": [
     "README.md",

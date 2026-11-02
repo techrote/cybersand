@@ -2945,6 +2945,26 @@
       ]
     },
     {
+      "id": "GCR-FLEET-01",
+      "query": "How can I fly the seven lightweight craft through varied materials, paint the room, and compare impulse budgets and mass/inertia without changing ordinary actor or building properties?",
+      "canonical": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "facts": [
+        "The explicit seven-flyer room is992x480 with nine granular banks plus Water/hard/erase painting. P pauses; Space thrusts. Numeric editing suppresses craft shortcuts and leased flight input.",
+        "LA/control defaults to budget20 and mass/inertia multipliers1; budget5..80 and multipliers0.01..64 apply only through fresh room/craft reset, which discards paint. RFT reference retains GCR/R2 at fixed20.",
+        "Actual flyer mass is authored mass times its multiplier, and geometric inertia uses that actual mass before the independent inertia multiplier. Rig caches and bridge see the same properties; authored force/torque ceilings stay unchanged, so heavy overrides may not lift.",
+        "Native material and main-thread Rapier authority stay separate. No P/R/C, sleeping, detached-building rescaling or ordinary default promotion is enabled; source-matched host checks and owner acceptance remain distinct from the earlier88-case physical qualification."
+      ],
+      "sources": [
+        "../godot/scripts/gcr_fleet_playground.gd",
+        "../godot/scripts/gcr_review_fleet.gd",
+        "../godot/scripts/physical_actor_arena.gd",
+        "../godot/scripts/physical_actor_rig.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
       "id": "GCR-REST-01",
       "query": "How do the budget sweep, contact persistence, rest-aware correction and residual catch avoid sleeping or holding unsupported granular bodies?",
       "canonical": [

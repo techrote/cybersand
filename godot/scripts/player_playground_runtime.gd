@@ -44,7 +44,16 @@ func configure_granular_experiment(id: StringName, candidate: String, token: Str
 		return false
 	return _configure_granular(id,candidate,token,spawn_offset)
 
-func _configure_granular(id: StringName, granular_candidate: String, token: String, spawn_offset: Vector2 = Vector2.ZERO) -> bool:
+func configure_review_fleet(index: int, options: Dictionary = {}) -> bool:
+	if not Arena.Rig.valid_review_options(options) or not preload("res://scripts/gcr_review_fleet.gd").valid_index(index):
+		last_error="review_options_refused"
+		return false
+	var load_aware: bool = options.get("response","")=="LA"
+	return _configure_granular(&"arcadelander","GCR-REST" if load_aware else "GCR",
+		"GCR-REST-001-2026-11-02" if load_aware else "GCR-001-2026-11-01",Vector2.ZERO,index,options)
+
+func _configure_granular(id: StringName, granular_candidate: String, token: String, spawn_offset: Vector2 = Vector2.ZERO,
+		review_fleet_index: int = -1, review_options: Dictionary = {}) -> bool:
 	if id not in Course.PRESETS or not is_inside_tree():
 		last_error = "Unknown player preset or missing scene owner."
 		return false
@@ -83,7 +92,11 @@ func _configure_granular(id: StringName, granular_candidate: String, token: Stri
 		var config: Dictionary = {"version": Arena.VERSION, "seed": 0, "max_ticks": Arena.MAX_TICKS,
 			"local_patch_radius": 0, "course": Course.ID,
 			"actors": [{"model": str(id), "producer": "human", "position": spawn}]}
-		var admitted: bool = candidate_arena.configure(config) if granular_candidate == "B0" else candidate_arena.configure_granular_experiment(config,granular_candidate,token,spawn_offset)
+		var admitted: bool
+		if review_fleet_index != -1:
+			admitted = candidate_arena.configure_review_fleet(config,granular_candidate,token,review_fleet_index,review_options)
+		else:
+			admitted = candidate_arena.configure(config) if granular_candidate == "B0" else candidate_arena.configure_granular_experiment(config,granular_candidate,token,spawn_offset)
 		if not admitted:
 			last_error = candidate_arena.last_error
 			candidate_arena.free()

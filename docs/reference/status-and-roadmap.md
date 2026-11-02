@@ -1775,3 +1775,14 @@ All88 captures completed. R/PRC fails synchronous penetration/overlap gates;
 P/C and admitted support loss remain unqualified. Strong asynchronous delivery
 variation and partial-support failures prevent a general budget recommendation.
 Keep20 as the control and all three drafts unmerged.
+
+## Editable flyer budget playground — 2026-11-02
+
+**Current developer source:** the [seven-flyer room](../systems/granular-review-flight-fleet.md)
+combines material painting with staged LA budget5..80 and mass/inertia0.01..64
+controls. Defaults are LA/20 and multipliers1/1; fixed-20 RFT remains a reference.
+Actual flyer properties/caches change during fresh construction, with unchanged
+actuator ceilings and no rescaling of detached terrain. Native SDK181 inputs are
+unchanged. This is a playable comparison extension, not a new accepted physical
+population: prior rest failures remain, P/R/C and sleep stay excluded, and PR #351
+remains draft/unmerged pending separate host and owner evidence.
