@@ -69,6 +69,11 @@
       "sha256": "c71c1e0ae08e355f713d5d2e170a50dbe07e738a1cbd720334e4c54c6087ee2f"
     },
     {
+      "path": "docs/audits/gcr-detachment-2026-11-01/postpublication-validation.json",
+      "bytes": 28909,
+      "sha256": "da188e78cdefe815dbd11b5c0bca74fc52a72e6ec134db07e714ee26bbb3e80c"
+    },
+    {
       "path": "docs/audits/gcr-detachment-2026-11-01/protocol.json",
       "bytes": 6316,
       "sha256": "bd399ba4f89b63d2c020ea5dc1965fc7f896a7db0721e0a16e2bbf7c30efde5e"

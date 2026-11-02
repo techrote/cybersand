@@ -213,3 +213,21 @@ invariants, configuration and build/test routes link the focused owner; roadmap,
 handover, corpus/index and the added GCR-DETACHMENT retrieval challenge agree.
 ADR-007 and the material programme retain their existing ownership semantics.
 No dependency pin, provider policy, historical M11 evidence or material law changes.
+
+## Publication-head validation
+
+At`af9fd933c9a6b89be871226c8366cc840c68d148`, both committed LFS runtimes
+and manifests matched the tested bytes. All88 native inputs and538 project
+inputs matched committed source and tested copies. Windows and Linux each passed
+the lab41, native/bridge415 and async63 controls again with natural completion.
+Exact-head docs, materialized repository provenance, retained M11, both retrieval
+sets,17 checker and13 reducer regressions, LFS integrity, diff whitespace and
+Linux ABI floor passed. The [postpublication record](gcr-detachment-2026-11-01/postpublication-validation.json)
+preserves commands, bounds, source/runtime identity and log/report hashes.
+Frozen retrieval is19/32@1 and32/32@5 (MRR0.7536); supplementary retrieval is
+124/157@1 and156/157@5 (MRR0.8728). The new compound question ranks1 with
+source facts reviewed; LCB03 remains a miss. This lexical result is not answer
+correctness or unseen-query proof. The later evidence-index/audit-only commit
+does not change these code inputs or runtime bytes; final draft-head hosted
+Documentation/provenance remains a separate exact-head check. No physical gate,
+owner acceptance or merge follows from publication validation.

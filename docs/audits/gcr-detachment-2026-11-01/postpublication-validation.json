@@ -1,0 +1,691 @@
+{
+  "schema": "cybersand.compound-detachment.postpublication-gates.v1",
+  "executed_source": "af9fd933c9a6b89be871226c8366cc840c68d148",
+  "native_build_source": "5d124667a3058a335680048a7099e2bbabde8de3",
+  "ok": true,
+  "repository_gates": {
+    "source": "af9fd933c9a6b89be871226c8366cc840c68d148",
+    "records": [
+      {
+        "name": "docs",
+        "command": [
+          "python",
+          "tools/ci/check_docs.py"
+        ],
+        "exit": 0,
+        "elapsed_s": 2.0576810000056867,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\docs.log",
+        "log_sha256": "7d752ce96435f5a0a93ec61aafe9283ea42f5ed2a89ca13067e8d6224380ee5a"
+      },
+      {
+        "name": "repository-materialized",
+        "command": [
+          "python",
+          "tools/ci/check_repository.py",
+          "--require-materialized"
+        ],
+        "exit": 0,
+        "elapsed_s": 3.537656500004232,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\repository-materialized.log",
+        "log_sha256": "07c873c28b0d3a29aff707e88fe9b5efaefedc9fdb20820ff8c14d4a666a082c"
+      },
+      {
+        "name": "m11",
+        "command": [
+          "python",
+          "tools/ci/check_m11_consistency.py"
+        ],
+        "exit": 0,
+        "elapsed_s": 1.2673685000045225,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\m11.log",
+        "log_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+      },
+      {
+        "name": "retrieval-frozen",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "build/final-qualification/postpublication-af9/retrieval-frozen.json"
+        ],
+        "exit": 0,
+        "elapsed_s": 0.6184566000010818,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\retrieval-frozen.log",
+        "log_sha256": "f160ac47679a3b33fbc78c300c3450a2c291fc88fb316249cd1bbab02fb48e14"
+      },
+      {
+        "name": "retrieval-challenges",
+        "command": [
+          "python",
+          "tools/docs/retrieval_eval.py",
+          "--queries",
+          "docs/reference/retrieval-challenges.json",
+          "--output",
+          "build/final-qualification/postpublication-af9/retrieval-challenges.json"
+        ],
+        "exit": 0,
+        "elapsed_s": 1.7050750000053085,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\retrieval-challenges.log",
+        "log_sha256": "1a760ce0bb52b1a7c9c1a0efe1a183573647745f5c23baff17274bcfc8c6a7b0"
+      },
+      {
+        "name": "validation-contracts",
+        "command": [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/ci",
+          "-p",
+          "test_validation_contracts.py"
+        ],
+        "exit": 0,
+        "elapsed_s": 2.1622135000070557,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\validation-contracts.log",
+        "log_sha256": "65194c8d3aa43fc66b23b05a055c2c910c5b43a0ae6b483effd7857b7f334853"
+      },
+      {
+        "name": "apparatus-units",
+        "command": [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tools/experiments",
+          "-p",
+          "test_gcr_detachment_tools.py"
+        ],
+        "exit": 0,
+        "elapsed_s": 0.23830560001078993,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\apparatus-units.log",
+        "log_sha256": "51b31099f891f9244e26a3b71328f915a6539958fa6c48f1b155954a45fe6551"
+      },
+      {
+        "name": "lfs-fsck",
+        "command": [
+          "git",
+          "lfs",
+          "fsck"
+        ],
+        "exit": 0,
+        "elapsed_s": 0.8757334999972954,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\lfs-fsck.log",
+        "log_sha256": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9"
+      },
+      {
+        "name": "diff-check",
+        "command": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit": 0,
+        "elapsed_s": 0.04282969998894259,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\diff-check.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "runtime-floor",
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "C:\\Users\\_\\.codex\\worktrees\\gcr-detach\\khybersand",
+          "--",
+          "bash",
+          "build/tools/check_linux_runtime_floor.sh"
+        ],
+        "exit": 0,
+        "elapsed_s": 3.7813489000254776,
+        "timeout_s": 1200,
+        "log": "build\\final-qualification\\postpublication-af9\\runtime-floor.log",
+        "log_sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c"
+      }
+    ],
+    "ok": true,
+    "scope": "Exact publication-head documentation/materialized runtime/history/retrieval/checker/reducer/LFS/floor gates; physical and owner acceptance remain separate."
+  },
+  "runtime_input_identity": {
+    "schema": "cybersand.compound-detachment.postpublication-identity.v1",
+    "status": "passed",
+    "execution_source_commit": "af9fd933c9a6b89be871226c8366cc840c68d148",
+    "native_build_source_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+    "platforms": {
+      "Windows": {
+        "report": "build/compound-host/postpublication-af9-Windows/report.json",
+        "report_sha256": "0e4712adee0054d7889ca4ee42dbcf633bd3fe87b3a92a66edab073a5402aae6",
+        "canonical_provenance": "godot/addons/cybersand_native/runtime-provenance.json",
+        "canonical_provenance_sha256": "7ea198ac52a3df1623fae22bb3f1a0d0505b987af7de09ec1f77f76735c4eb74",
+        "published_provenance_identity": {
+          "schema_version": 1,
+          "source_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+          "build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+          "validation_source_commit": "263ef69bfb5edf0ad8d8a9cd3bbc8277f0ab4638",
+          "input_equivalence_checked_at_commit": "263ef69bfb5edf0ad8d8a9cd3bbc8277f0ab4638"
+        },
+        "native_input_count": 88,
+        "project_input_count": 538,
+        "all_canonical_HEAD_and_working_inputs_match": true,
+        "committed_LFS_pointer_matches": true,
+        "canonical_and_tested_runtime_sha256": "2922792e238f45be1f4188472071f8d629bcdecb5345f7bd3716ae2a43eb1603",
+        "runtime_size": 4986880,
+        "godot": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "project_input_identity": "0869be0af4a89c93f532cb0fc6a00b4b14d8943b69bd9d73adf3d204fbdeb29c",
+        "logs": [
+          {
+            "name": "developer-lab-selector",
+            "log": "developer-lab-selector.log",
+            "log_sha256": "e1e3ee8fb2042375ea057a9bea8d1627cd94924399db9f711a91769f55478f4c",
+            "timeout_s": 3940.0,
+            "elapsed_s": 1.6974492000008468,
+            "command": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\gcr-detach\\khybersand\\build\\godot",
+              "--script",
+              "res://tests/test_gcr_detachment_lab.gd"
+            ],
+            "readback": {
+              "checks": 41,
+              "failures": [],
+              "ok": true,
+              "scope": "fresh lab arm identity and session retirement; zero body releases or physics trajectories"
+            }
+          },
+          {
+            "name": "new-native-bridge",
+            "log": "new-native-bridge.log",
+            "log_sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7",
+            "timeout_s": 3940.0,
+            "elapsed_s": 1.513582600018708,
+            "command": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\gcr-detach\\khybersand\\build\\godot",
+              "--script",
+              "res://tests/test_gcr_detachment.gd"
+            ],
+            "readback": {
+              "checks": 415,
+              "failures": [],
+              "ok": true,
+              "platform": "Windows",
+              "scope": "lease/geometry/actual application only; no efficacy trajectory"
+            }
+          },
+          {
+            "name": "new-async-ack",
+            "log": "new-async-ack.log",
+            "log_sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579",
+            "timeout_s": 3940.0,
+            "elapsed_s": 2.616626200004248,
+            "command": [
+              "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:\\Users\\_\\.codex\\worktrees\\gcr-detach\\khybersand\\build\\godot",
+              "--script",
+              "res://tests/test_gcr_detachment_async.gd"
+            ],
+            "readback": {
+              "checks": 63,
+              "failures": [],
+              "ok": true,
+              "scope": "real owner/echo/ack controls; zero physics steps; publication corruptions are not native quarantine faults"
+            }
+          }
+        ]
+      },
+      "Linux": {
+        "report": "build/compound-host/postpublication-af9-Linux/report.json",
+        "report_sha256": "99064df1c45aa20c1f9b2ef09fe88eb9602d2c7638118b7ebbb3ceae39ac4196",
+        "canonical_provenance": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "canonical_provenance_sha256": "d7cec99b62af569deccfbc7f4593ba70164c93a11638a76be3866ac04a4ecbc7",
+        "published_provenance_identity": {
+          "schema_version": 1,
+          "source_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+          "build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+          "validation_source_commit": "263ef69bfb5edf0ad8d8a9cd3bbc8277f0ab4638",
+          "input_equivalence_checked_at_commit": "263ef69bfb5edf0ad8d8a9cd3bbc8277f0ab4638"
+        },
+        "native_input_count": 88,
+        "project_input_count": 538,
+        "all_canonical_HEAD_and_working_inputs_match": true,
+        "committed_LFS_pointer_matches": true,
+        "canonical_and_tested_runtime_sha256": "3b69072af379f8f71dcff19d941c5d4cfa7a13387b70a0eeba3d20f865366dbd",
+        "runtime_size": 4412328,
+        "godot": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "project_input_identity": "0869be0af4a89c93f532cb0fc6a00b4b14d8943b69bd9d73adf3d204fbdeb29c",
+        "logs": [
+          {
+            "name": "developer-lab-selector",
+            "log": "developer-lab-selector.log",
+            "log_sha256": "c0660dcd6db3b0e88b8c55884014bb2e55fd01989a3267bb77168b01c03b12b8",
+            "timeout_s": 3940.0,
+            "elapsed_s": 4.126567232999999,
+            "command": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/gcr-detach/khybersand/build/godot-linux",
+              "--script",
+              "res://tests/test_gcr_detachment_lab.gd"
+            ],
+            "readback": {
+              "checks": 41,
+              "failures": [],
+              "ok": true,
+              "scope": "fresh lab arm identity and session retirement; zero body releases or physics trajectories"
+            }
+          },
+          {
+            "name": "new-native-bridge",
+            "log": "new-native-bridge.log",
+            "log_sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60",
+            "timeout_s": 3940.0,
+            "elapsed_s": 3.725149167999998,
+            "command": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/gcr-detach/khybersand/build/godot-linux",
+              "--script",
+              "res://tests/test_gcr_detachment.gd"
+            ],
+            "readback": {
+              "checks": 415,
+              "failures": [],
+              "ok": true,
+              "platform": "Linux",
+              "scope": "lease/geometry/actual application only; no efficacy trajectory"
+            }
+          },
+          {
+            "name": "new-async-ack",
+            "log": "new-async-ack.log",
+            "log_sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3",
+            "timeout_s": 3940.0,
+            "elapsed_s": 4.9282053200000036,
+            "command": [
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/gcr-detach/khybersand/build/godot-linux",
+              "--script",
+              "res://tests/test_gcr_detachment_async.gd"
+            ],
+            "readback": {
+              "checks": 63,
+              "failures": [],
+              "ok": true,
+              "scope": "real owner/echo/ack controls; zero physics steps; publication corruptions are not native quarantine faults"
+            }
+          }
+        ]
+      }
+    },
+    "scope": "Three actual postpublication headless lab/compound controls perOS; all88 native and538 project input blobs match exact HEAD and tested copies. No new physical efficacy acquisition."
+  },
+  "target_os_controls": [
+    {
+      "platform": "Windows",
+      "source": "af9fd933c9a6b89be871226c8366cc840c68d148",
+      "status": "passed",
+      "identity": {
+        "source": "af9fd933c9a6b89be871226c8366cc840c68d148",
+        "tree": "4af19078f736dd1c742fe0381cea0e0ae4342438",
+        "local_delta_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "protocol_sha256": "bd399ba4f89b63d2c020ea5dc1965fc7f896a7db0721e0a16e2bbf7c30efde5e",
+        "native_sha256": "2922792e238f45be1f4188472071f8d629bcdecb5345f7bd3716ae2a43eb1603",
+        "native_manifest_sha256": "7ea198ac52a3df1623fae22bb3f1a0d0505b987af7de09ec1f77f76735c4eb74",
+        "native_build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot": "4.7.stable.official.5b4e0cb0f",
+        "project_inputs": {
+          "entry_count": 538,
+          "canonical_map_sha256": "01515f3c8b8292623eed30eac770d1afe6ddd8ec9b092bd247799237aa1a6320"
+        },
+        "input_identity": "0869be0af4a89c93f532cb0fc6a00b4b14d8943b69bd9d73adf3d204fbdeb29c",
+        "host_fixture_inputs": {
+          "entry_count": 47,
+          "canonical_map_sha256": "af443ba7e9f5dc377e723c9040f1d1d1fdbc8b38f0620e911aa342110ce79a4e"
+        },
+        "driver_sha256": "d067990d5bc6050bc1952218e34c4479fae193685af467c0a93a0e8f31727100",
+        "execution_policy": {
+          "schema_version": 1,
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "watchdogs": {
+            "main_ack_seconds": 600.0,
+            "graphical_case_seconds": 1200.0,
+            "godot_import_seconds": 1200.0,
+            "operation_seconds": 300.0,
+            "complex_fixture_seconds": 3600.0,
+            "hosted_job_minutes": 180.0,
+            "diagnostic_capture_seconds": 30.0,
+            "terminate_grace_seconds": 10.0,
+            "native_suite_seconds": 7200.0,
+            "native_compile_seconds": 3600.0,
+            "native_case_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "aggregate_headroom_seconds": 600.0,
+            "ordinary_case_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_setup_seconds": 4200.0,
+            "godot_metadata_seconds": 900.0
+          },
+          "advisories": {
+            "warning_ratio": 1.5,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "minimum_baseline_samples": 3,
+            "drift_window": 5,
+            "drift_ratio": 1.2
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+        }
+      },
+      "records": [
+        {
+          "name": "developer-lab-selector",
+          "script": "test_gcr_detachment_lab",
+          "footer": "GCR_DETACHMENT_LAB",
+          "flags": [],
+          "checks": null,
+          "group": "final-lab",
+          "structured": true,
+          "script_sha256": "0b955b0ea19cfd236d53595f6ab77cffa633aab400fb601b0d2d46168328ff13",
+          "script_canonical_sha256": "0b955b0ea19cfd236d53595f6ab77cffa633aab400fb601b0d2d46168328ff13",
+          "timeout_s": 3940.0,
+          "command": [
+            "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\Users\\_\\.codex\\worktrees\\gcr-detach\\khybersand\\build\\godot",
+            "--script",
+            "res://tests/test_gcr_detachment_lab.gd"
+          ],
+          "log": "developer-lab-selector.log",
+          "status": "passed",
+          "returncode": 0,
+          "natural_completion": true,
+          "elapsed_s": 1.6974492000008468,
+          "log_sha256": "e1e3ee8fb2042375ea057a9bea8d1627cd94924399db9f711a91769f55478f4c",
+          "skip_messages": [],
+          "error_messages": [],
+          "readback": {
+            "checks": 41,
+            "failures": [],
+            "ok": true,
+            "scope": "fresh lab arm identity and session retirement; zero body releases or physics trajectories"
+          }
+        },
+        {
+          "name": "new-native-bridge",
+          "script": "test_gcr_detachment",
+          "footer": "GCR_DETACHMENT_MECHANICAL",
+          "flags": [],
+          "checks": null,
+          "group": "new",
+          "structured": true,
+          "script_sha256": "acf17dcc06990c45ea640ed5eec90764791fa0c5663228c954be0bb26d50f6b4",
+          "script_canonical_sha256": "acf17dcc06990c45ea640ed5eec90764791fa0c5663228c954be0bb26d50f6b4",
+          "timeout_s": 3940.0,
+          "command": [
+            "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\Users\\_\\.codex\\worktrees\\gcr-detach\\khybersand\\build\\godot",
+            "--script",
+            "res://tests/test_gcr_detachment.gd"
+          ],
+          "log": "new-native-bridge.log",
+          "status": "passed",
+          "returncode": 0,
+          "natural_completion": true,
+          "elapsed_s": 1.513582600018708,
+          "log_sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7",
+          "skip_messages": [],
+          "error_messages": [],
+          "readback": {
+            "checks": 415,
+            "failures": [],
+            "ok": true,
+            "platform": "Windows",
+            "scope": "lease/geometry/actual application only; no efficacy trajectory"
+          }
+        },
+        {
+          "name": "new-async-ack",
+          "script": "test_gcr_detachment_async",
+          "footer": "GCR_DETACHMENT_ASYNC_MECHANICAL",
+          "flags": [],
+          "checks": null,
+          "group": "new",
+          "structured": true,
+          "script_sha256": "1035af9d195967aac419ace86f9f997539c2a6d44d15fbf4e6bad5de8f7a068a",
+          "script_canonical_sha256": "1035af9d195967aac419ace86f9f997539c2a6d44d15fbf4e6bad5de8f7a068a",
+          "timeout_s": 3940.0,
+          "command": [
+            "C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:\\Users\\_\\.codex\\worktrees\\gcr-detach\\khybersand\\build\\godot",
+            "--script",
+            "res://tests/test_gcr_detachment_async.gd"
+          ],
+          "log": "new-async-ack.log",
+          "status": "passed",
+          "returncode": 0,
+          "natural_completion": true,
+          "elapsed_s": 2.616626200004248,
+          "log_sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579",
+          "skip_messages": [],
+          "error_messages": [],
+          "readback": {
+            "checks": 63,
+            "failures": [],
+            "ok": true,
+            "scope": "real owner/echo/ack controls; zero physics steps; publication corruptions are not native quarantine faults"
+          }
+        }
+      ],
+      "raw_report": {
+        "local_path": "build/compound-host/postpublication-af9-Windows/report.json",
+        "sha256": "0e4712adee0054d7889ca4ee42dbcf633bd3fe87b3a92a66edab073a5402aae6"
+      }
+    },
+    {
+      "platform": "Linux",
+      "source": "af9fd933c9a6b89be871226c8366cc840c68d148",
+      "status": "passed",
+      "identity": {
+        "source": "af9fd933c9a6b89be871226c8366cc840c68d148",
+        "tree": "4af19078f736dd1c742fe0381cea0e0ae4342438",
+        "local_delta_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "protocol_sha256": "bd399ba4f89b63d2c020ea5dc1965fc7f896a7db0721e0a16e2bbf7c30efde5e",
+        "native_sha256": "3b69072af379f8f71dcff19d941c5d4cfa7a13387b70a0eeba3d20f865366dbd",
+        "native_manifest_sha256": "d7cec99b62af569deccfbc7f4593ba70164c93a11638a76be3866ac04a4ecbc7",
+        "native_build_commit": "5d124667a3058a335680048a7099e2bbabde8de3",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot": "4.7.stable.official.5b4e0cb0f",
+        "project_inputs": {
+          "entry_count": 538,
+          "canonical_map_sha256": "01515f3c8b8292623eed30eac770d1afe6ddd8ec9b092bd247799237aa1a6320"
+        },
+        "input_identity": "0869be0af4a89c93f532cb0fc6a00b4b14d8943b69bd9d73adf3d204fbdeb29c",
+        "host_fixture_inputs": {
+          "entry_count": 47,
+          "canonical_map_sha256": "af443ba7e9f5dc377e723c9040f1d1d1fdbc8b38f0620e911aa342110ce79a4e"
+        },
+        "driver_sha256": "d067990d5bc6050bc1952218e34c4479fae193685af467c0a93a0e8f31727100",
+        "execution_policy": {
+          "schema_version": 1,
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "watchdogs": {
+            "main_ack_seconds": 600.0,
+            "graphical_case_seconds": 1200.0,
+            "godot_import_seconds": 1200.0,
+            "operation_seconds": 300.0,
+            "complex_fixture_seconds": 3600.0,
+            "hosted_job_minutes": 180.0,
+            "diagnostic_capture_seconds": 30.0,
+            "terminate_grace_seconds": 10.0,
+            "native_suite_seconds": 7200.0,
+            "native_compile_seconds": 3600.0,
+            "native_case_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "aggregate_headroom_seconds": 600.0,
+            "ordinary_case_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_setup_seconds": 4200.0,
+            "godot_metadata_seconds": 900.0
+          },
+          "advisories": {
+            "warning_ratio": 1.5,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "minimum_baseline_samples": 3,
+            "drift_window": 5,
+            "drift_ratio": 1.2
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+        }
+      },
+      "records": [
+        {
+          "name": "developer-lab-selector",
+          "script": "test_gcr_detachment_lab",
+          "footer": "GCR_DETACHMENT_LAB",
+          "flags": [],
+          "checks": null,
+          "group": "final-lab",
+          "structured": true,
+          "script_sha256": "0b955b0ea19cfd236d53595f6ab77cffa633aab400fb601b0d2d46168328ff13",
+          "script_canonical_sha256": "0b955b0ea19cfd236d53595f6ab77cffa633aab400fb601b0d2d46168328ff13",
+          "timeout_s": 3940.0,
+          "command": [
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-detach/khybersand/build/godot-linux",
+            "--script",
+            "res://tests/test_gcr_detachment_lab.gd"
+          ],
+          "log": "developer-lab-selector.log",
+          "status": "passed",
+          "returncode": 0,
+          "natural_completion": true,
+          "elapsed_s": 4.126567232999999,
+          "log_sha256": "c0660dcd6db3b0e88b8c55884014bb2e55fd01989a3267bb77168b01c03b12b8",
+          "skip_messages": [],
+          "error_messages": [],
+          "readback": {
+            "checks": 41,
+            "failures": [],
+            "ok": true,
+            "scope": "fresh lab arm identity and session retirement; zero body releases or physics trajectories"
+          }
+        },
+        {
+          "name": "new-native-bridge",
+          "script": "test_gcr_detachment",
+          "footer": "GCR_DETACHMENT_MECHANICAL",
+          "flags": [],
+          "checks": null,
+          "group": "new",
+          "structured": true,
+          "script_sha256": "acf17dcc06990c45ea640ed5eec90764791fa0c5663228c954be0bb26d50f6b4",
+          "script_canonical_sha256": "acf17dcc06990c45ea640ed5eec90764791fa0c5663228c954be0bb26d50f6b4",
+          "timeout_s": 3940.0,
+          "command": [
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-detach/khybersand/build/godot-linux",
+            "--script",
+            "res://tests/test_gcr_detachment.gd"
+          ],
+          "log": "new-native-bridge.log",
+          "status": "passed",
+          "returncode": 0,
+          "natural_completion": true,
+          "elapsed_s": 3.725149167999998,
+          "log_sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60",
+          "skip_messages": [],
+          "error_messages": [],
+          "readback": {
+            "checks": 415,
+            "failures": [],
+            "ok": true,
+            "platform": "Linux",
+            "scope": "lease/geometry/actual application only; no efficacy trajectory"
+          }
+        },
+        {
+          "name": "new-async-ack",
+          "script": "test_gcr_detachment_async",
+          "footer": "GCR_DETACHMENT_ASYNC_MECHANICAL",
+          "flags": [],
+          "checks": null,
+          "group": "new",
+          "structured": true,
+          "script_sha256": "1035af9d195967aac419ace86f9f997539c2a6d44d15fbf4e6bad5de8f7a068a",
+          "script_canonical_sha256": "1035af9d195967aac419ace86f9f997539c2a6d44d15fbf4e6bad5de8f7a068a",
+          "timeout_s": 3940.0,
+          "command": [
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-detach/khybersand/build/godot-linux",
+            "--script",
+            "res://tests/test_gcr_detachment_async.gd"
+          ],
+          "log": "new-async-ack.log",
+          "status": "passed",
+          "returncode": 0,
+          "natural_completion": true,
+          "elapsed_s": 4.9282053200000036,
+          "log_sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3",
+          "skip_messages": [],
+          "error_messages": [],
+          "readback": {
+            "checks": 63,
+            "failures": [],
+            "ok": true,
+            "scope": "real owner/echo/ack controls; zero physics steps; publication corruptions are not native quarantine faults"
+          }
+        }
+      ],
+      "raw_report": {
+        "local_path": "build/compound-host/postpublication-af9-Linux/report.json",
+        "sha256": "99064df1c45aa20c1f9b2ef09fe88eb9602d2c7638118b7ebbb3ceae39ac4196"
+      }
+    }
+  ],
+  "availability": "Postpublication raw logs/reports remain local under their recorded paths; separate from the previously sealed861/9138raw bundle. Source summary is committed here.",
+  "scope": "Exact publication-head checks. Subsequent commit changes only this validation record, evidence index and audit text; production/native/Godot code and runtime bytes remain identical. Physical gate not met; owner acceptance not recorded; drafts unmerged."
+}
