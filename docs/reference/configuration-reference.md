@@ -1279,6 +1279,10 @@ exposes budget5..80 and mass/inertia multipliers0.01..64 in its LA/control route
 The retained RFT/R2 reference stays at20; no rest variants are enabled there.
 Its inertia factor multiplies shape inertia at the actual scaled mass. Apply
 rebuilds the room and clears paint; selecting a craft retains applied values.
+Optional flyer `thrust_multiplier` and `torque_multiplier` values0..64 (default1)
+scale the copied controller force/torque ceilings only. Four-key callers remain
+valid. Actual mass/inertia, native granular laws and existing rig safety guards
+retain their separate owners; these limits do not raise authored movement targets.
 Select LA before using the budget or rest-mode controls. Modes are LA control,
 Contact persistence(P), Rest-aware correction(R), Residual catch(C) and combined
 PRC. The structure room and retained barrel room expose the same staged variants;

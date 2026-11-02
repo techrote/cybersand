@@ -2,10 +2,11 @@ extends "res://scripts/gcr_crash_playground.gd"
 
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const FleetOverlay = preload("res://scripts/gcr_review_fleet_overlay.gd")
-var applied_controls: Dictionary = {"response":"LA","budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0}
+var applied_controls: Dictionary = {"response":"LA","budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,"thrust_multiplier":1.0,"torque_multiplier":1.0}
 var control_fields: Dictionary = {}
 var response_select: OptionButton
 var control_status: Label
+var control_error: String = ""
 
 func _ready() -> void:
 	super._ready()
@@ -48,6 +49,24 @@ func _build_comparison_controls() -> void:
 		control_fields[key]=input
 	_button(row,"Apply + reset room",apply_controls)
 	_button(row,"Restore flyer defaults",restore_controls)
+	var actuator_row := HBoxContainer.new()
+	actuator_row.add_theme_constant_override("separation",12)
+	panel.add_child(actuator_row)
+	for key: String in ["thrust_multiplier","torque_multiplier"]:
+		var field := VBoxContainer.new()
+		actuator_row.add_child(field)
+		_label(field,"Thrust limit × authored" if key=="thrust_multiplier" else "Torque limit × authored",12,Color("adc0ce"))
+		var input := SpinBox.new()
+		input.min_value=0.0
+		input.max_value=64.0
+		input.step=0.01
+		input.value=float(applied_controls.get(key,1.0))
+		input.custom_minimum_size.x=190
+		field.add_child(input)
+		control_fields[key]=input
+	var explanation := _label(actuator_row,"0 disables that actuator. Limits change; acceleration/speed targets stay authored.",13,Color("adc0ce"))
+	explanation.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	explanation.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	control_status=_label(panel,"",14,Color("f7c579"))
 	control_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 
@@ -57,15 +76,18 @@ func _release_edit_focus() -> void:
 
 func apply_controls() -> bool:
 	_release_edit_focus()
+	control_error=""
 	var staged: Dictionary = {"response":"LA" if response_select.selected==0 else "RFT"}
 	for key: String in control_fields: staged[key]=control_fields[key].value
 	if staged.response=="RFT" and staged.budget!=20.0:
-		control_status.text="RFT reference uses budget 20. Select LA to compare budgets 20 / 40 / 80."
+		control_error="RFT reference uses budget 20. Select LA to compare budgets 20 / 40 / 80."
+		control_status.text=control_error
 		return false
 	var previous: Dictionary = applied_controls
 	applied_controls=staged
 	if not select_preset(selected):
 		applied_controls=previous
+		control_error=runtime.last_error
 		return false
 	return true
 
@@ -74,6 +96,8 @@ func restore_controls() -> void:
 	control_fields.budget.value=20.0
 	control_fields.mass_multiplier.value=1.0
 	control_fields.inertia_multiplier.value=1.0
+	control_fields.thrust_multiplier.value=1.0
+	control_fields.torque_multiplier.value=1.0
 	apply_controls()
 
 func _input(event: InputEvent) -> void:
@@ -118,4 +142,6 @@ func _present(state: Dictionary, force: bool = false) -> void:
 	_timing.text = "FLIGHT FLEET  ·  %s  ·  F overview / follow" % Fleet.NAMES[selected]
 	if control_status != null and runtime._arena != null:
 		var body: RigidBody2D = runtime._arena.session.bodies()[0]
-		control_status.text="Applied: %s · budget %.0f · mass %.5f (×%.2f) · inertia %.5f (×%.2f)\nApply/reset rebuilds terrain and craft. Thrust limits stay unchanged; heavier craft may not lift. Sleep unchanged." % [applied_controls.response,applied_controls.budget,body.mass,applied_controls.mass_multiplier,body.inertia,applied_controls.inertia_multiplier]
+		var profile: Dictionary = runtime._arena.session._rigs[0]._profile
+		control_status.text="Applied: %s · budget %.0f · mass %.5f (×%.2f) · inertia %.5f (×%.2f) · thrust cap %.3f · torque cap %.3f\nApply/reset rebuilds terrain and craft. Settings persist across craft; material laws and sleep unchanged." % [applied_controls.response,applied_controls.budget,body.mass,applied_controls.mass_multiplier,body.inertia,applied_controls.inertia_multiplier,profile.fleet_force,profile.fleet_torque]
+		if not control_error.is_empty(): control_status.text+="\n"+control_error

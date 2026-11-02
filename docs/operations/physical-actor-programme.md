@@ -107,6 +107,12 @@ sampled or physical Thunderbowl, the separate generation workbench, Strata
 Theatre or the [Deepworks exhibition](deepworks-exhibition.md). F2 closes the current session
 and returns to the launcher; unsaved edits are discarded. Explicit `main.tscn`,
 `-- --blacksite-nine` and `-- --showcase` entry points remain available.
+The desktop **GRANULAR OWNER REVIEW / experimental** section near the top adds
+**Granular barrel comparison**, **Structural cut / support tests**, and **Flyer
+playground + painting**. These open the existing experimental scenes and use the
+same F2 teardown/return path; Web demo policy hides/refuses them. The
+[flyer guide](../systems/granular-review-flight-fleet.md) explains staged controls
+and painting. Previously running builds need reopening to show the new entries.
 The native generation workbench remains an isolated authoring preview, without
 live material simulation or attachment to the sandbox's World.
 Deepworks uses its own four-world native material owner and camera/painting

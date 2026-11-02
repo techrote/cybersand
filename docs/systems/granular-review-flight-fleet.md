@@ -63,17 +63,34 @@ or rewrite their payload-derived properties.
 Values remain staged until **Apply + reset room**. Applying rebuilds both the
 current craft and terrain, discarding painted edits. Keys 1–7, Tab and R also
 rebuild the room while retaining the applied comparison values. **Restore flyer
-defaults** selects LA/20 and multipliers 1/1. The applied receipt displays actual
-mass, inertia, response and budget. Numeric text editing suppresses craft-selection
+defaults** selects LA/20 and all multipliers 1. The applied receipt displays actual
+mass, inertia, response, budget and controller caps. Numeric text editing suppresses craft-selection
 shortcuts and leased flight input, so typing 40 or 64 cannot select another flyer.
 Enter/Escape leaves text editing.
 
-Authored force ceilings 8..28 and torque ceilings 3..82 remain unchanged. The
-controller uses the actual physical mass/inertia when forming requests, then
-clamps them through those existing limits. Increasing mass can therefore prevent
-lift; the panel does not silently increase propulsion to compensate. Neutral
+The **Thrust limit × authored** and **Torque limit × authored** fields independently
+admit 0..64, default1. They multiply each selected craft's authored force ceiling
+8..28 and torque ceiling3..82; omitted options retain1 for API compatibility.
+Zero thrust disables the controller's combined linear request, including braking
+and hoverboard gravity compensation. Zero torque disables its turning/leveling
+request. Gravity, material reactions and existing extreme-motion safeguards remain.
+The controller uses actual mass/inertia to form requests before applying these
+caps. Acceleration, angular acceleration, speed and effort targets stay authored;
+raising a ceiling alone does not raise those targets. The rig's existing per-call
+impulse guards remain `mass*100` and `inertia*4`, with separate extreme-motion
+safety braking above speed300 or angular speed24. These are not material laws.
+Increasing mass can prevent lift until sufficient propulsion is available. Neutral
 steering still permits passive contact rotation. No collision-only effective mass,
 velocity assignment, pose latch or sleeping policy is introduced.
+
+## How do I return after F2?
+
+In the updated desktop launcher, choose **GRANULAR OWNER REVIEW / experimental**
+near the top, then **Granular barrel comparison**, **Structural cut / support
+tests**, or **Flyer playground + painting**. Each replaces the old scene through
+the existing owner teardown path. These source-matched developer routes are
+hidden/refused in Web demo policy. Older running builds must be reopened to gain
+the new menu entries.
 
 ## Who owns the response and reset?
 

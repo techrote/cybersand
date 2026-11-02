@@ -14,6 +14,52 @@ func check(value: bool, reason: String) -> void:
 		push_error("Fleet controls: "+reason)
 func options(budget: float=20.0, mass: float=1.0, inertia: float=1.0, response: String="LA") -> Dictionary:
 	return {"response":response,"budget":budget,"mass_multiplier":mass,"inertia_multiplier":inertia}
+func limits(thrust: Variant, torque: Variant, response: String="LA") -> Dictionary:
+	var result: Dictionary = options(20,1,1,response)
+	result["thrust_multiplier"]=thrust
+	result["torque_multiplier"]=torque
+	return result
+func _check_actuator_limits(runtime) -> void:
+	var previous = runtime._arena
+	for key: String in ["thrust_multiplier","torque_multiplier"]:
+		for value: Variant in [-.01,64.01,NAN,INF,true,"1"]:
+			var invalid: Dictionary = limits(1.0,1.0)
+			invalid[key]=value
+			check(not runtime.configure_review_fleet(0,invalid),"invalid actuator limit refused: "+key)
+			check(runtime._arena==previous and runtime.active(),"invalid actuator limit preserves live owner")
+	for index: int in range(7):
+		for factor: float in [0.0,.01,64.0]:
+			var requested: Dictionary = limits(factor,factor)
+			check(runtime.configure_review_fleet(index,requested),"fresh actuator ceiling controls")
+			var arena = runtime._arena
+			var rig = arena.session._rigs[0]
+			var body: RigidBody2D = arena.session.bodies()[0]
+			var force_cap: float = float(Fleet.ROWS[index][8])*factor
+			var torque_cap: float = float(Fleet.ROWS[index][9])*factor
+			check(is_equal_approx(float(rig._profile.fleet_force),force_cap) and is_equal_approx(float(rig._profile.fleet_torque),torque_cap),"actual copied profile ceilings scale")
+			check(is_equal_approx(body.mass,float(Fleet.ROWS[index][1])) and is_equal_approx(body.inertia,body.mass*Vector2(Fleet.ROWS[index][0]).length_squared()/12.0),"actuator settings do not rewrite actual mass/inertia")
+			# Moderate real backend motion exercises both braking and hoverboard
+			# compensation, below the retained extreme-motion safety guards. No
+			# world/Rapier step occurs here, isolating actual controller delivery
+			# from gravity and the independent native contact wrench.
+			PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM,Transform2D(.4,Vector2(178,304)))
+			PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY,Vector2(5,2))
+			PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,1.0)
+			var before_v: Vector2 = PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+			var before_w: float = float(PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
+			rig.advance({"move":Vector2(.7,-1),"aim":Vector2.UP,"trim":.8,"primary":true,"secondary":true,"auxiliary":true},1.0/60.0,true)
+			var observation: Dictionary = rig._player_controller.observation()
+			check(Vector2(observation.applied_force).length()<=force_cap+.00001 and absf(float(observation.applied_torque))<=torque_cap+.00001,"combined controller request respects actual ceilings")
+			if factor==0.0:
+				check(observation.applied_force==Vector2.ZERO and observation.applied_torque==0.0,"zero limits remove thrust, brake and hover/level requests")
+				check(rig._last_impulse==Vector2.ZERO and rig._last_torque_impulse==0.0,"zero limits issue no actuator impulse")
+				check(PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)==before_v and float(PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))==before_w,"zero limits preserve real backend velocity during actuator delivery")
+			else:
+				check(Vector2(observation.applied_force).length()>0.0 and absf(float(observation.applied_torque))>0.0,"nonzero ceiling exercises actual controller requests")
+			check(arena.reset() and arena.config.review_options==requested,"fresh reset preserves actuator ceilings")
+			check(is_equal_approx(float(arena.session._rigs[0]._profile.fleet_force),force_cap) and is_equal_approx(float(arena.session._rigs[0]._profile.fleet_torque),torque_cap),"reset reconstructs actual actuator ceilings")
+	check(runtime.configure_review_fleet(3,limits(0.0,0.0,"RFT")),"zero limits also accepted by retained reference")
+	check(runtime._arena._world.get_gcr_admission_variant()=="R2","actuator limits do not change RFT material response")
 func _run() -> void:
 	var runtime = Runtime.new()
 	root.add_child(runtime)
@@ -35,6 +81,7 @@ func _run() -> void:
 	root.add_child(malformed_session)
 	check(not malformed_session.configure([42],RID(),1,0,options()),"malformed review definition refuses without a script exception")
 	malformed_session.free()
+	_check_actuator_limits(runtime)
 	for fleet_index: int in range(7):
 		for multipliers: Array in [[.01,.01],[1.0,1.0],[64.0,64.0]]:
 			var admitted: bool = runtime.configure_review_fleet(fleet_index,options(40,multipliers[0],multipliers[1]))

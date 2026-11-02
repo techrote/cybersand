@@ -1,6 +1,11 @@
 extends Control
 
 const Trial = preload("res://scripts/physical_actor_trial.gd")
+const GRANULAR_REVIEW_SCENES: Dictionary = {
+	"granular_barrels":"res://gcr_load_review.tscn",
+	"granular_cut":"res://solid_detachment_lab.tscn",
+	"granular_flyers":"res://gcr_fleet_playground.tscn",
+}
 
 func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
@@ -42,6 +47,12 @@ func _ready() -> void:
 	scroll.add_child(column)
 	_label(column, "CYBERSAND / PLAY & EXPERIMENT", 30)
 	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 46 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
+	if _granular_review_available():
+		_label(column, "GRANULAR OWNER REVIEW / experimental", 22)
+		_button(column, "Granular barrel comparison", "granular_barrels")
+		_button(column, "Structural cut / support tests", "granular_cut")
+		_button(column, "Flyer playground + painting", "granular_flyers")
+	_label(column, "PLAYGROUNDS & FEATURES", 22)
 	_button(column, "Play session — shared desktop course, five mechanical players and solver choices", "play_session")
 	_button(column, "Player playground — stunt buggy, trials bike, acrobat, spacecraft, material swarms and jet barrel", "player_playground")
 	_button(column, "Deepworks — 1024 × 1024 multilayer material exhibition", "deepworks")
@@ -76,9 +87,15 @@ func _button(parent: Node, text: String, destination: String) -> void:
 	button.pressed.connect(func() -> void: launch(destination))
 	parent.add_child(button)
 
+func _granular_review_available() -> bool:
+	return not OS.has_feature("web") and not bool(ProjectSettings.get_setting("cybersand/web_demo", false))
+
 func launch(destination: String) -> void:
+	if destination in GRANULAR_REVIEW_SCENES and not _granular_review_available():
+		return
 	var scene: String = "res://main.tscn"
-	if destination == "flight_lab": scene = "res://flight_lab.tscn"
+	if destination in GRANULAR_REVIEW_SCENES: scene = GRANULAR_REVIEW_SCENES[destination]
+	elif destination == "flight_lab": scene = "res://flight_lab.tscn"
 	elif destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
 	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"

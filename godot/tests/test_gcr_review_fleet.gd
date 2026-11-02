@@ -60,6 +60,16 @@ func run() -> void:
 	scene.restore_controls()
 	check(scene.applied_controls.response=="LA" and scene.applied_controls.mass_multiplier==1.0,"restore defaults rebuilds explicit LA control")
 	check(scene.runtime._arena._world.get_gcr_admission_variant()=="A1","new default uses current LA admission")
+	check(scene.control_fields.thrust_multiplier.min_value==0 and scene.control_fields.thrust_multiplier.max_value==64,"thrust limit field bounds")
+	check(scene.control_fields.torque_multiplier.min_value==0 and scene.control_fields.torque_multiplier.max_value==64,"torque limit field bounds")
+	scene.control_fields.thrust_multiplier.value=0.5
+	scene.control_fields.torque_multiplier.value=0.25
+	check(scene.apply_controls(),"actuator fields rebuild actual fleet owner")
+	var applied_profile: Dictionary = scene.runtime._arena.session._rigs[0]._profile
+	check(is_equal_approx(applied_profile.fleet_force,float(Fleet.ROWS[scene.selected][8])*.5),"UI thrust reaches controller cap")
+	check(is_equal_approx(applied_profile.fleet_torque,float(Fleet.ROWS[scene.selected][9])*.25),"UI torque reaches controller cap")
+	scene.restore_controls()
+	check(scene.applied_controls.thrust_multiplier==1 and scene.applied_controls.torque_multiplier==1,"restore resets actuator multipliers")
 	scene.queue_free()
 	await process_frame
 	var output := FileAccess.open("res://../fleet-test-report.json",FileAccess.WRITE)

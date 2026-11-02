@@ -10,6 +10,13 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+Current flyer-review follow-up: staged thrust/torque ceiling multipliers0..64
+(default1) supplement mass/inertia and native budget controls. Material laws and
+sleep stay unchanged. F2 now exposes the three desktop granular review rooms near
+the top of the launcher; see the [fleet guide](../systems/granular-review-flight-fleet.md).
+Keep PR351 unmerged. The owner's cropped burrowing recording is observational,
+with unknown source/settings; visible exhaust is not an input/force receipt.
+
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
 
 ## Current owner policy and accepted baseline — 2026-10-31
