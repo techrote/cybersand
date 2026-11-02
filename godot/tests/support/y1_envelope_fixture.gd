@@ -27,10 +27,10 @@ func is_gcr() -> bool:
 	return candidate.begins_with("GCR")
 
 func runtime_identity() -> Dictionary:
-	return {"native_candidate":"GCR-A1" if candidate == "GCR-A1" else ("GCR" if is_gcr() else candidate),
+	return {"native_candidate":"GCR-LA" if candidate=="GCR-LA" else ("GCR-A1" if candidate == "GCR-A1" else ("GCR" if is_gcr() else candidate)),
 		"admission_variant":str(world.get_gcr_admission_variant()) if world.has_method("get_gcr_admission_variant") else ("unsupported" if is_gcr() else "disabled"),
 		"evaluator_variant":"R2-second-moment-quadrature" if is_gcr() else candidate,
-		"experiment":ADMISSION_TOKEN if candidate == "GCR-A1" else (GCR_TOKEN if is_gcr() else TOKEN)}
+		"experiment":"GCR-LA-001-2026-11-02" if candidate=="GCR-LA" else (ADMISSION_TOKEN if candidate == "GCR-A1" else (GCR_TOKEN if is_gcr() else TOKEN))}
 
 func packed_boundary_states() -> Variant:
 	if not is_gcr(): return bridge.pack_body_states()
