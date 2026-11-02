@@ -1768,3 +1768,10 @@ rest-aware correction and constrained residual catch, plus payload mass/inertia
 controls through64. PR349/350 stay unmerged and their source/evidence remain
 controls. Sleep and material-law changes stay excluded. The88-case bounded
 registration precedes results; no production acceptance follows from implementation.
+The [source-bound qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md)
+records native181a8257 and capture594a1a73 separately. PR351 is a focused draft
+against frozen PR350; no rest/default or gameplay acceptance is implied.
+All88 captures completed. R/PRC fails synchronous penetration/overlap gates;
+P/C and admitted support loss remain unqualified. Strong asynchronous delivery
+variation and partial-support failures prevent a general budget recommendation.
+Keep20 as the control and all three drafts unmerged.

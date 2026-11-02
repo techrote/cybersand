@@ -194,3 +194,12 @@ is descriptive and strict conservation for that edited trajectory stays null.
 Do not absorb arbitrary intervening loss as intentional removal or call that
 mandatory gate passed. Admission and motion-target gates also remain separate
 from overall physical acceptance, overlap coverage and delivered-energy closure.
+
+## Post-acquisition disposition
+
+The frozen population completed88 captures at594a1a73. The
+[qualification record](../audits/2026-11-02-gcr-rest-contact-comparison.md) preserves
+all failed/null gates: R/PRC is NO-GO as implemented, P/C never admits physical
+quiet contact, conditional excavation stays unqualified, and the sweep does not
+calibrate a general production budget. This dated disposition does not amend
+registered thresholds, retune the response or replace any primary trajectory.

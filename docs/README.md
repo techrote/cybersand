@@ -570,3 +570,5 @@ rest-aware correction and constrained residual catch, plus payload mass/inertia
 controls through64. PR349/350 stay unmerged and their source/evidence remain
 controls. Sleep and material-law changes stay excluded. The88-case bounded
 registration precedes results; no production acceptance follows from implementation.
+Use the [source-bound qualification record](audits/2026-11-02-gcr-rest-contact-comparison.md)
+for mechanics, physical outcomes, retained failures and the owner-review boundary.

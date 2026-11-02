@@ -99,3 +99,15 @@ pre-correction, post-zeroing and post-wrench velocities, angular velocities and
 kinetic energies. Correction potential, old-zeroing removal, constrained-catch
 counterfactual removal and measured impulse delivery remain separate quantities.
 Native context, results and receipts cross the exclusive worker as copied values.
+
+## What did qualification establish?
+
+The [dated qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md) records
+all88 captures at594a1a73. R/PRC fails the synchronous entry/overlap gates; its
+two constituent changes remain combined. No physical quiet admission, warm start
+or catch occurred, so P/C and support release from admitted rest are unqualified.
+Inactive P/C synchronous outcomes match control; asynchronous compound delivery
+varies strongly and cannot establish their causal effect. Budget40 improves the
+mass2 barrel,80 adds no benefit there, and partial-support/async results do not
+calibrate a universal ceiling. Retain20 as the experimental control. No sleep,
+default promotion or owner acceptance follows; PR351 stays draft and unmerged.

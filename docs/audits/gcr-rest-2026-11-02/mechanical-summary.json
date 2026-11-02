@@ -1,0 +1,524 @@
+{
+  "schema": "cybersand.gcr-rest.mechanical-summary.v1",
+  "registration": "GCR-REST-001-2026-11-02",
+  "date": "2026-11-02",
+  "status": "Scoped mechanical qualification passes; no physical/gameplay acceptance inferred",
+  "source_identities": {
+    "native_sdk_build": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+    "full_core_frozen_source": "2f38e931d65c49972d2df59c342a1e96cd0cc5fc",
+    "final_committed_acquisition_controls": "594a1a732f477aef6a7aec783251e7a784315722",
+    "summary_observed_head": "594a1a732f477aef6a7aec783251e7a784315722"
+  },
+  "runtimes": {
+    "windows": {
+      "native_build_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "sha256": "65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e",
+      "bytes": 5029376,
+      "build_receipt": {
+        "path": "build/compound-runtime-windows.json",
+        "sha256": "bd7d5b8742f82accbee79d2170227ab3679c93020e3ac737608329fd58ffe888"
+      },
+      "native_source_input_count": 88,
+      "native_source_input_dictionary_sha256": "53e696b88305edca3471a70eeff2ab4cdd11fc449dccc83f62ebbaf48736fafd",
+      "input_scope": "Complete canonical-LF native/include, native/src and godot/native_extension inputs in the referenced build ledger; no duplicated input array",
+      "git181_and_current_inputs_equal": true
+    },
+    "linux": {
+      "native_build_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "sha256": "8bfe51214643c626dd5800f66ecff86f3348a166b55551e0674d1b4f762cfbf5",
+      "bytes": 4463968,
+      "build_receipt": {
+        "path": "build/compound-runtime-linux.json",
+        "sha256": "e8640960ee75312bfc8df1070792d7639875d5e96f452d3ba8b3f436b26a89de"
+      },
+      "native_source_input_count": 88,
+      "native_source_input_dictionary_sha256": "53e696b88305edca3471a70eeff2ab4cdd11fc449dccc83f62ebbaf48736fafd",
+      "input_scope": "Complete canonical-LF native/include, native/src and godot/native_extension inputs in the referenced build ledger; no duplicated input array",
+      "git181_and_current_inputs_equal": true
+    }
+  },
+  "full_native": {
+    "source": "2f38e931d65c49972d2df59c342a1e96cd0cc5fc",
+    "configurations": [
+      "Windows optimized",
+      "Linux optimized",
+      "Linux ASAN+UBSAN"
+    ],
+    "all_18_build_and_run_calls_pass": true,
+    "core_groups_per_configuration": 177,
+    "detachment_groups_per_configuration": 10,
+    "detachment_checks_per_configuration": 19355,
+    "conservative_groups_per_configuration": 6,
+    "conservative_checks_per_configuration": 281,
+    "frozen_raw_input_count": 92,
+    "frozen_raw_inputs_sha256": "60b5436174a0fe78a3ad37b20898212d173bead48cb9d9f984177f75c26b5a24",
+    "all92_raw_inputs_equal_current_working_files": true,
+    "input_equivalence_scope": "Exact raw native/core-test/Makefile inputs remain unchanged from2f38e931; adapter safety changes are covered by separate181 SDK builds and actual host controls, not retroactively attributed to the old core execution.",
+    "input_ledger": {
+      "path": "build/full-native-composition/rest-freeze/input-manifest.json",
+      "sha256": "a6509b96c1f0cdcfcbc18db0bbde59a39d451e57e6fc48dc700fdcf0622535c7"
+    },
+    "completion": {
+      "path": "build/full-native-composition/rest-freeze/completion.json",
+      "sha256": "e9ffe76d506e349da2f98ea7f60c6d81da97ba7fd881698176d1adc135038c2f"
+    },
+    "full_command_receipt": {
+      "path": "build/full-native-composition/rest-freeze/receipt.json",
+      "sha256": "fef89c9a327eb986b0d1fb3100129191aaf8b7c896a8d3f10729ce0053419a40"
+    },
+    "runs": [
+      {
+        "configuration": "windows-solid-detachment",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": null,
+        "standalone_groups_and_checks": [
+          [
+            "SOL-DETACH-001 A1 native precursor",
+            "10",
+            "19355"
+          ]
+        ],
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/windows-solid-detachment.log",
+          "sha256": "5f4fb52d5d6f065a083320fcb416731f474a6e71a437cf64930a5e4a752ff68b"
+        }
+      },
+      {
+        "configuration": "windows-conservative-displacement",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": null,
+        "standalone_groups_and_checks": [
+          [
+            "CONSERVATIVE-DISPLACEMENT native",
+            "6",
+            "281"
+          ]
+        ],
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/windows-conservative-displacement.log",
+          "sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+        }
+      },
+      {
+        "configuration": "windows-core",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": 177,
+        "standalone_groups_and_checks": null,
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/windows-core.log",
+          "sha256": "22000bedd0ec378227fc3622034ac8c630228923684350c41bf2dc79f9d67567"
+        }
+      },
+      {
+        "configuration": "linux-solid-detachment",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": null,
+        "standalone_groups_and_checks": [
+          [
+            "SOL-DETACH-001 A1 native precursor",
+            "10",
+            "19355"
+          ]
+        ],
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/linux-solid-detachment.log",
+          "sha256": "306c418ee68c1ba8d410ca3397146f9bdc98182bd9889df4ece698cb5ba4e40e"
+        }
+      },
+      {
+        "configuration": "linux-conservative-displacement",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": null,
+        "standalone_groups_and_checks": [
+          [
+            "CONSERVATIVE-DISPLACEMENT native",
+            "6",
+            "281"
+          ]
+        ],
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/linux-conservative-displacement.log",
+          "sha256": "25c5a792ddb922715e83ef2d0900a70ba92d22b89bb47f497ac1f9351ebbfd3c"
+        }
+      },
+      {
+        "configuration": "linux-core",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": 177,
+        "standalone_groups_and_checks": null,
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/linux-core.log",
+          "sha256": "e8aa5fe887ac9c264965ae9fb1d02b5d507f271777b640c23c54269e5be775dc"
+        }
+      },
+      {
+        "configuration": "linux-asan-solid-detachment",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": null,
+        "standalone_groups_and_checks": [
+          [
+            "SOL-DETACH-001 A1 native precursor",
+            "10",
+            "19355"
+          ]
+        ],
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/linux-asan-solid-detachment.log",
+          "sha256": "306c418ee68c1ba8d410ca3397146f9bdc98182bd9889df4ece698cb5ba4e40e"
+        }
+      },
+      {
+        "configuration": "linux-asan-conservative-displacement",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": null,
+        "standalone_groups_and_checks": [
+          [
+            "CONSERVATIVE-DISPLACEMENT native",
+            "6",
+            "281"
+          ]
+        ],
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/linux-asan-conservative-displacement.log",
+          "sha256": "25c5a792ddb922715e83ef2d0900a70ba92d22b89bb47f497ac1f9351ebbfd3c"
+        }
+      },
+      {
+        "configuration": "linux-asan-core",
+        "accepted": true,
+        "exit": 0,
+        "core_groups": 177,
+        "standalone_groups_and_checks": null,
+        "log": {
+          "path": "build/full-native-composition/rest-freeze/linux-asan-core.log",
+          "sha256": "24d3af986e9512cf7cea6bb89662daebd5a0d46e8a0c15355ba24776f452f74e"
+        }
+      }
+    ]
+  },
+  "native_rest_math": {
+    "source_label": "2f38e931d65c49972d2df59c342a1e96cd0cc5fc",
+    "assertions_per_configuration": 90,
+    "configurations": 3,
+    "ok": true,
+    "inputs_equal_current": true,
+    "receipt": {
+      "path": "build/rest-math/receipt.json",
+      "sha256": "998ca20921f4841a84e4a8e304439d44ad0c2ef1d8e4ca9b959890f1dc63db36"
+    },
+    "runs": [
+      {
+        "configuration": "windows",
+        "assertions": 90,
+        "ok": true,
+        "binary_sha256": "dd537f654feed0b373f9acfb583e51ea533debdda3f5c983253ee61a045e7a82",
+        "log": {
+          "path": "build/rest-math/windows-run.log",
+          "sha256": "5f35020f41a57746d8646cde8315da58f0505b39a15048cea350292c4b2c8a0d"
+        }
+      },
+      {
+        "configuration": "linux",
+        "assertions": 90,
+        "ok": true,
+        "binary_sha256": "06097a5c4ba15cb7c7174a9aa6612efc6bf34da8b1ae9bb1fb14257fd23ce289",
+        "log": {
+          "path": "build/rest-math/linux-run.log",
+          "sha256": "49f45d0eee237935e9afd9562b803a66819cd366b7d33467e74458a9abc73043"
+        }
+      },
+      {
+        "configuration": "linux-asan",
+        "assertions": 90,
+        "ok": true,
+        "binary_sha256": "a6c140961ecfcfe7d7735fdb8e56b74efe632d28089671f9ec2eb0a9af1399b1",
+        "log": {
+          "path": "build/rest-math/linux-asan-run.log",
+          "sha256": "49f45d0eee237935e9afd9562b803a66819cd366b7d33467e74458a9abc73043"
+        }
+      }
+    ],
+    "scope": "Bounded standalone Gram/contact solver: nonzero constrained arrest, gravity certificates, friction cones/caps, singular/infeasible refusals, mass33280 with scale4096, passivity and unchanged disabled behavior. Not an end-to-end native-to-Rapier gameplay rest test."
+  },
+  "actual_host_controls": {
+    "windows": {
+      "source_checkpoint": "594a1a732f477aef6a7aec783251e7a784315722",
+      "runtime_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "runtime_sha256": "65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e",
+      "import_and_all_five_controls_pass": true,
+      "records": [
+        {
+          "test": "test_gcr_rest_material_freshness",
+          "checks": 2196,
+          "ok": true,
+          "scope": "actual native direct API; exact-zero held gravity0 admission/retirement witnesses plus a separate nonquiet nonzero prepared-wrench comparison; no nonzero-catch efficacy or gameplay rest claim",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/windows-test_gcr_rest_material_freshness.log",
+            "sha256": "4a9afa015268c3f6b7764a874514facacceb1b00b6290b415f9c18af7e6c2905"
+          }
+        },
+        {
+          "test": "test_gcr_rest_census",
+          "checks": 2359,
+          "ok": true,
+          "scope": "actual paused exclusive worker; exact global stored-cell/Water census, tile coverage, immutable copied replies and detached-payload accounting; zero Rapier steps or efficacy trajectory",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/windows-test_gcr_rest_census.log",
+            "sha256": "6e4fda23742fd9a218aa2984689ed143a51001b05719b973c6cfb943cd8dabbd"
+          }
+        },
+        {
+          "test": "test_gcr_rest_bridge",
+          "checks": 70,
+          "ok": true,
+          "scope": "synthetic versioned receipts; actual Rapier correction/wrench/energy only; zero native candidate trajectories",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/windows-test_gcr_rest_bridge.log",
+            "sha256": "c355595d0e224bc36fe039385e903bec14be040f4eac284345fbe1ba04f6d8bb"
+          }
+        },
+        {
+          "test": "test_gcr_rest_controls",
+          "checks": 29,
+          "ok": true,
+          "scope": "parameter bounds/native handoff/UI controls; no candidate efficacy trajectory",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/windows-test_gcr_rest_controls.log",
+            "sha256": "a15c6d0e79cae2e6df608ad7c21239b44619e1cbfc164f93315ec12ddce1e4a3"
+          }
+        },
+        {
+          "test": "test_gcr_detachment_async",
+          "checks": 63,
+          "ok": true,
+          "scope": "real owner/echo/ack controls; zero physics steps; publication corruptions are not native quarantine faults",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/windows-test_gcr_detachment_async.log",
+            "sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579"
+          }
+        }
+      ],
+      "execution_receipt": {
+        "path": "build/rest-acquisition-mechanics/windows.json",
+        "sha256": "2da3e9b5ee128309e09fb7e1bdcf09bf69578a4a6fd8e33b3510adc5efbaf226"
+      }
+    },
+    "linux": {
+      "source_checkpoint": "594a1a732f477aef6a7aec783251e7a784315722",
+      "runtime_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "runtime_sha256": "8bfe51214643c626dd5800f66ecff86f3348a166b55551e0674d1b4f762cfbf5",
+      "import_and_all_five_controls_pass": true,
+      "records": [
+        {
+          "test": "test_gcr_rest_material_freshness",
+          "checks": 2196,
+          "ok": true,
+          "scope": "actual native direct API; exact-zero held gravity0 admission/retirement witnesses plus a separate nonquiet nonzero prepared-wrench comparison; no nonzero-catch efficacy or gameplay rest claim",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/linux-test_gcr_rest_material_freshness.log",
+            "sha256": "bd4a4594d06260392c1f3fa71aabe59b684861d621e556d13a9fee80e0bd6889"
+          }
+        },
+        {
+          "test": "test_gcr_rest_census",
+          "checks": 2359,
+          "ok": true,
+          "scope": "actual paused exclusive worker; exact global stored-cell/Water census, tile coverage, immutable copied replies and detached-payload accounting; zero Rapier steps or efficacy trajectory",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/linux-test_gcr_rest_census.log",
+            "sha256": "27c064e4fb7c2c36052a32cb65761c5a4819f48eaef29ed82c9098e7a1d01153"
+          }
+        },
+        {
+          "test": "test_gcr_rest_bridge",
+          "checks": 70,
+          "ok": true,
+          "scope": "synthetic versioned receipts; actual Rapier correction/wrench/energy only; zero native candidate trajectories",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/linux-test_gcr_rest_bridge.log",
+            "sha256": "9df33ab436965d9593f56acc9b167886f2dfd4933931b5137282d76b9b595f19"
+          }
+        },
+        {
+          "test": "test_gcr_rest_controls",
+          "checks": 29,
+          "ok": true,
+          "scope": "parameter bounds/native handoff/UI controls; no candidate efficacy trajectory",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/linux-test_gcr_rest_controls.log",
+            "sha256": "29224b050a0132fdaea50070383c0eced4defbb1b24ecfd6519f8d42dcd4e23b"
+          }
+        },
+        {
+          "test": "test_gcr_detachment_async",
+          "checks": 63,
+          "ok": true,
+          "scope": "real owner/echo/ack controls; zero physics steps; publication corruptions are not native quarantine faults",
+          "log": {
+            "path": "build/rest-acquisition-mechanics/linux-test_gcr_detachment_async.log",
+            "sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3"
+          }
+        }
+      ],
+      "execution_receipt": {
+        "path": "build/rest-acquisition-mechanics/linux.json",
+        "sha256": "1df0a753eceeead6e96566465f88a7d2e43e5b6294e93d599bfa3f7c95f19581"
+      }
+    }
+  },
+  "final_acquisition_mechanical_receipt": {
+    "path": "build/rest-acquisition-mechanics/receipt.json",
+    "sha256": "df273b6e2003edec53d569f2e1c5dc388648c1a4f9361720bc9e6b115f292b66"
+  },
+  "prior_successful_receipts": [
+    {
+      "path": "build/rest-mechanical-final/receipt.json",
+      "sha256": "078d3488b3e33131aa948fca51e19e367c52fa71b28c80aec801dc7498cd90c8"
+    },
+    {
+      "path": "build/rest-census/receipt.json",
+      "sha256": "59ff9497a324ec2c63c32c02543a1aac7f70d0728bd944dfac7ea655137f4b89"
+    },
+    {
+      "path": "build/rest-freshness/receipt.json",
+      "sha256": "ce5f59ab52e50d6d6fb4acc618350681cbe1fdb8c836808f9af05dbf71867706"
+    }
+  ],
+  "script_input_ledger_references": [
+    {
+      "path": "build/rest-mechanical-final/windows-script-inputs.json",
+      "sha256": "d6c6b4959d01caac86090f6af21617c8e7f1bda29aee7936c29fcca6275e1372"
+    },
+    {
+      "path": "build/rest-mechanical-final/linux-script-inputs.json",
+      "sha256": "c764ed49876bdbeea5aaa8f2970e7ae3245e0329cefcdd41f8d3e2a310dae064"
+    }
+  ],
+  "scope_boundaries": [
+    "Native positive admission/retirement witnesses are exact-zero held poses at authored gravity0 in valid packed stable material. They retain compound six-shape payload mass520/native inertia; they do not demonstrate nonzero-catch efficacy or production rest.",
+    "Native nonquiet nonzero prepared-wrench preservation is a separate direct-API control.",
+    "Actual Rapier tests apply synthetic versioned receipts and measure correction/zeroing, one delivered J/L pair, delta-v=J/m, delta-omega=L/I and kinetic boundaries. They do not imply that native catch was admitted during gameplay.",
+    "Whole-world census tests use the actual paused exclusive owner, four same-tick tiles, immutable copied replies, native/detached payload accounting and integer Water quantity; zero Rapier steps.",
+    "Bounds/UI tests cover64 acceptance,64.01 and friction4.01 refusal, staged controls and fresh ownership; async tests use real publication/echo/ack with zero physics steps.",
+    "Early181-labelled fixture checks had explicitly recorded GDScript fixture deltas; final594 acquisition-project reruns verify the committed final scripts with the unchanged181 runtimes.",
+    "Mechanical counts are assertions within their scopes, not independent efficacy populations. No whole-system energy, sleep change, production default, subjective acceptance or merge is established."
+  ],
+  "preserved_preliminary_failures": [
+    {
+      "receipt": {
+        "path": "build/rest-freshness/preliminary-103e54ea/receipt.json",
+        "sha256": "c1a0cb48788f8eb4a89c7e63350c5779a1b427a52e8e0d0e2741ba2d7e1a8821"
+      },
+      "source_label": "103e54ead81edd670c1d2a23ffeba63f0e7f556c",
+      "test_sha256": "d7bee1a464ce078bfc2e1de34647ab796280349e608b683d8877283d082d6669",
+      "disposition": "Nonzero tiny-residual catch and compound quiet fixture premises did not supply valid positive witnesses; retained28 failed checks per OS, not candidate efficacy results.",
+      "logs": [
+        {
+          "path": "build/rest-freshness/preliminary-103e54ea/windows-test_gcr_rest_material_freshness.log",
+          "sha256": "eaeb10a9ab8128f8c28ee5d2b46f73692a01c0a8b69fe16578e1d5f043e75db9",
+          "checks": 1830,
+          "failed_checks": 28,
+          "ok": false
+        },
+        {
+          "path": "build/rest-freshness/preliminary-103e54ea/linux-test_gcr_rest_material_freshness.log",
+          "sha256": "34d83aead0323c93085b5e3b08e671c3af7148cb4ad4b5bbbaff5c4f0172b7d9",
+          "checks": 1830,
+          "failed_checks": 28,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "receipt": {
+        "path": "build/rest-freshness/preliminary-181a8257/receipt.json",
+        "sha256": "13324146ec88f2aa73a9177e45702474e57b164c426300177b424a3433685b86"
+      },
+      "source_label": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "test_sha256": "bbd28b370e3e3e073eb3746fb26933c87b217ed04853027288c17b518da08b17",
+      "disposition": "Retained20 compound quiet/persistence/catch/mismatch fixture failures per recorded OS, including unstable-grain/clearance placement attempts; did not qualify admission.",
+      "logs": [
+        {
+          "path": "build/rest-freshness/preliminary-181a8257/windows-test_gcr_rest_material_freshness.log",
+          "sha256": "ef71f6a43f5b3af0fa1d817d54d463f7577fc4b4904022b406367633a6c351ca",
+          "checks": 2184,
+          "failed_checks": 20,
+          "ok": false
+        },
+        {
+          "path": "build/rest-freshness/preliminary-181a8257/linux-test_gcr_rest_material_freshness.log",
+          "sha256": "3290fa8db3dff5963063d9a87c9a2f90c77fdfa00f3a9d5c8e094ee110065e41",
+          "checks": 2184,
+          "failed_checks": 20,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "receipt": {
+        "path": "build/rest-freshness/preliminary-181a8257-translated/receipt.json",
+        "sha256": "90b0ac9520918ba89ec33179c2a4854ddb4362af2488e4468749e83b0a438ede"
+      },
+      "source_label": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "test_sha256": "bd30e104c123b6490b04cca1490300d0d31d60aeb75669e2a00fc2ecdfe7a0b8",
+      "disposition": "Translated compound fixture still retained20 failed checks per recorded OS; stable packed distant-container fixture supersedes this premise without relaxing admission.",
+      "logs": [
+        {
+          "path": "build/rest-freshness/preliminary-181a8257-translated/windows-test_gcr_rest_material_freshness.log",
+          "sha256": "ef71f6a43f5b3af0fa1d817d54d463f7577fc4b4904022b406367633a6c351ca",
+          "checks": 2184,
+          "failed_checks": 20,
+          "ok": false
+        },
+        {
+          "path": "build/rest-freshness/preliminary-181a8257-translated/linux-test_gcr_rest_material_freshness.log",
+          "sha256": "3290fa8db3dff5963063d9a87c9a2f90c77fdfa00f3a9d5c8e094ee110065e41",
+          "checks": 2184,
+          "failed_checks": 20,
+          "ok": false
+        }
+      ]
+    },
+    {
+      "receipt": {
+        "path": "build/rest-mechanical-final/preliminary-protocol-layout/receipt.json",
+        "sha256": "ea2f333daf54caf5dd711d1654abfe7728ac0623da8c9e971cda7a2193fd0805"
+      },
+      "source_label": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "test_sha256": null,
+      "disposition": "Isolated test-project relative protocol path was absent; controls did not complete. Bridge70 and async63 passed there; final actual-project rerun includes the protocol and all controls pass.",
+      "logs": [
+        {
+          "path": "build/rest-mechanical-final/preliminary-protocol-layout/windows-test_gcr_rest_controls.log",
+          "sha256": "e521249cdf99690fce8b4ee825af46fc5942047ad20ea2af3739692297022388",
+          "ok": false,
+          "checks": null,
+          "reason": "Project protocol path refusal before controls summary"
+        },
+        {
+          "path": "build/rest-mechanical-final/preliminary-protocol-layout/linux-test_gcr_rest_controls.log",
+          "sha256": "43100dde32960e646cfdcac04d25d588cda325e4120d9c2336b3b4688eff1c13",
+          "ok": false,
+          "checks": null,
+          "reason": "Project protocol path refusal before controls summary"
+        }
+      ]
+    }
+  ],
+  "additional_retained_failure_context": [
+    "Initial old async override signature and energy-ledger assignment failures were repaired before acquisition; original rest-hosts and bridge logs remain local.",
+    "Measured one-cell gap/unstable-grain and translated compound debug logs remain in rest-freshness folders; no failed attempts were converted into passes."
+  ],
+  "retention": "Referenced build JSON/logs and full input ledgers are ignored local artifacts. The later evidence manifest/archive must retain them; this compact summary deliberately duplicates neither large input arrays nor logs.",
+  "owner_acceptance": null,
+  "production_accepted": false,
+  "merge_authorized": false
+}

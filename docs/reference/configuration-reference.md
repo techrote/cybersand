@@ -1259,7 +1259,8 @@ these declared logical charges.
 The [registered LA successor](../operations/gcr-load-aware-registration.md) owns
 the frozen candidate law and test population. `solid_detachment_lab.tscn` exposes
 staged gravity0–368.48 cell/s², mass multiplier0.01–4, friction0–4 and independent
-inertia multiplier0.01–4. Apply resets the complete scene. Defaults preserve the
+inertia multiplier0.01–4 at the retained LA checkpoint; the GCR-REST branch
+extends both multiplier maxima to64. Apply resets the complete scene. Defaults preserve the
 520-cell building's actual mass/inertia; changed mass or inertia is visibly an
 exploratory override, not payload-mass qualification. Ordinary defaults and
 original legacy/R2/A1 response constants are unchanged.
@@ -1267,9 +1268,14 @@ original legacy/R2/A1 response constants are unchanged.
 ## Registered GCR budget/rest controls
 
 The [rest comparison contract](../architecture/granular-contact-rest.md) owns the
-experimental source/configuration distinction. Planned/reset-only base budget is
+experimental source/configuration distinction. Current opt-in/reset-only base budget is
 5..80, default20; prescribed sweeps are5/10/20/40/80. Per-source2 and effective
 mass-scale ceiling4096 remain separate. Mass and inertia multipliers extend to64;
 friction remains4 maximum and gravity368.48. An actual mass33280 from520×64 is
 not an effective scale33280. Rest comparisons stay at20 independent of the sweep.
 All settings are explicitly experimental and rebuild a fresh developer session.
+Select LA before using the budget or rest-mode controls. Modes are LA control,
+Contact persistence(P), Rest-aware correction(R), Residual catch(C) and combined
+PRC. The structure room and retained barrel room expose the same staged variants;
+Apply rebuilds instead of changing a live response law. Physical outcomes and
+unqualified scope are recorded in the [dated qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md).

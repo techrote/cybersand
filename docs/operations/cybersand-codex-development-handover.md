@@ -1566,3 +1566,12 @@ rest-aware correction and constrained residual catch, plus payload mass/inertia
 controls through64. PR349/350 stay unmerged and their source/evidence remain
 controls. Sleep and material-law changes stay excluded. The88-case bounded
 registration precedes results; no production acceptance follows from implementation.
+The recoverable capture checkpoint is594a1a732f477aef6a7aec783251e7a784315722,
+with native runtimes built from181a8257a93f82d64fbeb97e9c413ef52d44f13d. Read the
+[dated qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md) before
+continuing; it preserves preliminary failures and separates mechanical gates from
+physical and owner acceptance. PR351 is draft against the frozen350 branch.
+The88-capture campaign is complete: R/PRC fails, P/C has zero physical admission,
+and the budget sweep has no general winner. Investigate correction/zeroing
+separately and compound response delivery before attributing inactive-mode
+trajectory changes to a law. Do not tune from these results or promote defaults.

@@ -223,6 +223,8 @@ P stores at most1024 normal/tangent load pairs per physical body, 16KiB plus fix
 metadata. C adds at most six bounded node scans and constant3x3 work. Current
 material revalidation adds separately metered bounded source/raster queries; it
 does not rerun ejection. The bridge's fixed64-body application history expands
-from five to eleven doubles per record:25,600 to56,320 bytes. No unbounded history,
-tick-time heap storage or per-cell physics objects are introduced by rest memory.
-Qualification must report this work separately from ordinary solver updates.
+from five to eleven doubles per record:25,600 to56,320 bytes. Persistent native
+history/cache uses fixed storage; copied Godot receipt/context Dictionaries still
+use adapter/publication allocations. This is not whole-path no-allocation proof.
+No unbounded history or per-cell physics objects are introduced by rest memory.
+Qualification reports this work separately from ordinary solver updates.
