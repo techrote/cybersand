@@ -101,10 +101,11 @@ func native_protocol() -> void:
 		check(float(diagnostics.get("normal_capacity",INF))<=20.0,"one body normal budget")
 		check(int(diagnostics.get("nodes",9999))<=96 and int(diagnostics.get("updates",9999))<=768,"six rectangle work bound")
 		var retained_mask: PackedInt32Array = original_mask(native)
-		for fault: String in ["lease","mass","inertia","com","velocity","session","duplicate","rotation","angle-overflow","angle-maxdouble","angle-nan","angle-inf"]:
+		for fault: String in ["empty","lease","mass","inertia","com","velocity","session","duplicate","rotation","angle-overflow","angle-maxdouble","angle-nan","angle-inf"]:
 			var broken: PackedFloat64Array = native_states(prepared,2)
 			var bad_lease: Dictionary = lease(prepared)
 			match fault:
+				"empty": broken=PackedFloat64Array()
 				"lease": bad_lease.body_generation = 8
 				"mass": broken[17+9] = 1
 				"inertia": broken[11] = 0
