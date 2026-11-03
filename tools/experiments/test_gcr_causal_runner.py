@@ -17,7 +17,7 @@ class RetainedControls(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
-        self.folder = self.root / 'evidence'
+        self.folder = self.root / 'build/evidence'
         (self.folder / 'windows').mkdir(parents=True)
         self.old = {'godot/scripts/physical_actor_arena.gd': 'unchanged', 'godot/project.godot': 'unchanged'}
         self.inputs = dict(self.old, **{'godot/qualification/gcr_causal_arena.gd': 'new'})
@@ -79,6 +79,11 @@ class RetainedControls(unittest.TestCase):
     def test_new_causal_gate_is_never_inherited(self):
         runner.write(self.folder / 'windows/gates.json', [dict(self.row, test='test_gcr_causal_arena')])
         self.assertEqual(self.reuse(), {})
+
+    def test_relative_inherited_log_resolves_in_original_source_workspace(self):
+        self.row['inherited_from'] = 'build/evidence/windows/test_gcr_rest_bridge.log'
+        runner.write(self.folder / 'windows/gates.json', [self.row])
+        self.assertEqual(self.reuse()['test_gcr_rest_bridge']['inherited_from'], str(self.log.resolve()))
 
 
 class OwnedProcess(unittest.TestCase):

@@ -79,6 +79,10 @@ def retained_controls(folder, platform, inputs, runtime):
         if host not in EXISTING or row.get('ok') is not True or row.get('exit') != 0:
             continue
         log = Path(row.get('inherited_from', folder / platform / (host + '.log')))
+        if not log.is_absolute():
+            if folder.parent.name != 'build':
+                raise RuntimeError('Relative retained log requires its original build directory')
+            log = (folder.parent.parent / log).resolve()
         if sha(log) != row['log_sha256']:
             raise RuntimeError('Original successful host log differs')
         result[host] = dict(row, inherited_from=str(log), executed_source=row.get('executed_source', identity['source']),

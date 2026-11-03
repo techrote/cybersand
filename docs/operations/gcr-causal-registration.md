@@ -151,3 +151,15 @@ raw/log/runtime evidence stays local with a manifest. New diagnostic costs do
 not establish production FPS. Update canonical routes and dated outcomes, run
 appropriate host/tests plus docs/M11/repository/retrieval checks, and open a
 focused draft successor. Preserve owner acceptance and full production gates.
+
+## Acquisition continuation1 — before primary results
+
+Attempt `build/causal-primary-01` at source850b4d51 passed its Windows import,
+then stopped before any causal capture. The retained controls used paths relative
+to their original source root; the new runner looked for one in the new worktree.
+The resulting missing-log error is a harness failure, not a failed physical arm.
+Retain that directory and its import/input receipts. Resolve relative inherited
+logs against their original `build` parent, still requiring the original hash;
+add a regression for this location rule. The frozen physical protocols, all
+producer bytes, thresholds and populations remain unchanged. Commit this
+continuation before complete successor `build/causal-primary-02`.
