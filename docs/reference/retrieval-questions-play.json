@@ -158,6 +158,21 @@
         "../godot/scripts/playable_course_gamepad_events.gd",
         "../godot/tests/play_input010_pause_controls_case.gd"
       ]
+    },
+    {
+      "id": "GCRCREEP01",
+      "query": "How do we distinguish GCR-LA passive creep from powered flyer burrowing while structural detachment is developed independently?",
+      "canonical": [
+        "operations/gcr-creep-registration.md"
+      ],
+      "facts": [
+        "No command and no actuator force are distinct: default flyer coast still applies drag; the zero-ceiling arm retains gravity and backend damping.",
+        "The registered independent-body apparatus changes no shared coupling code, sleep or material laws; phase association is not proof of correction causation."
+      ],
+      "sources": [
+        "operations/gcr-creep-registration.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }
