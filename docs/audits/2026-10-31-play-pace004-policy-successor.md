@@ -521,7 +521,7 @@ production comparison against the supplied baseline is unaffected.
 
 | Evidence | Source | Status at the reconciled head |
 | --- | --- | --- |
-| [Run 41247752557](https://github.com/techrote/cybersand/actions/runs/41247752557) complete readback, 72 cases / 7,684 assertions | `d08e6101`, baseline `02454f3a` | Historical older-source pass; not exact-head |
+| [Run 41247752557](https://github.com/techrote/cybersand/actions/runs/41247752557) complete readback, 72 cases / 36 shards (7,684 assertions per the independent readback recorded on #334) | `d08e6101`, baseline `02454f3a` | Historical older-source pass; not exact-head |
 | [Run 41251140367](https://github.com/techrote/cybersand/actions/runs/41251140367), 38/38 jobs; suite reduction 72 cases / 36 shards passed | `4f3decc2`, baseline `4752aac3` | Historical older-source pass; not exact-head |
 | Local six-graphical receipt | `d08e6101`, baseline `02454f3a` | Historical; retained byte-for-byte |
 | Apparatus bytes and registered inventory | `4f3decc2` | Unchanged and applicable |
@@ -530,7 +530,8 @@ The protected production inputs differ between `4f3decc2` and the reconciled
 source: both native runtime libraries and their provenance, `native/src/world.cpp`,
 `godot/scripts/main.gd` and `godot/scripts/simulation_worker.gd` (render-copy
 production and reconciled recovery). The campaign binds those bytes, so neither
-older hosted pass can be relabeled. One complete exact-head 60-headless plus
+older hosted pass can be relabeled. The earlier "partial completed shards" statement about run
+41247752557 predates that run's completion and is retained as written. One complete exact-head 60-headless plus
 12-graphical campaign is the minimum genuinely required new PACE004 execution;
 sampling is not permitted by the registered inventory.
 
