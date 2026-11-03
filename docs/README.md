@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Material authoring: the [corrected Planned catalogue proposal](architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+and [independent current-main review](audits/2026-11-03-mat-auth-000-architecture-review.md)
+recommend a shadow compiler before production cutover. PR #357 remains draft;
+architecture adoption and #353–#356 implementation require an owner decision.
+
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),
 [ordinary application comparison paths](operations/lcb-manual-comparison-ux.md)

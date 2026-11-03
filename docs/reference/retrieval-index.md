@@ -10,6 +10,16 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Material-authoring proposal and admission — 2026-11-03
+
+Use the [corrected Planned admission contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+for #353's shadow-first scope, header-byte identity, backend distinctions,
+endpoint effects, experimental IDs and successor gates. The original proposal
+sections retain their dated intake; this is not a Current runtime catalogue or
+owner approval. The [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+is dated evidence outside the default corpus. [Supplementary questions](retrieval-questions-mat-auth.json)
+exercise these distinctions separately from frozen32 and challenge157.
+
 ## LCB current-main reassessment routes — 2026-11-03
 
 | Question | Canonical route |

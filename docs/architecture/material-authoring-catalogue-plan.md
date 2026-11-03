@@ -3,12 +3,21 @@ title: Canonical material catalogue and interaction authoring — proposed progr
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Proposed source-of-truth registry, explicit material capabilities, sparse interaction authoring, kernel liveness proof, safe effective-parameter inspection and finite implementation chain
-last-reviewed: 2026-11-02
+scope: Planned material-authoring programme; sections 1–10 retain the 2026-11-02 intake and section 11 owns the corrected 2026-11-03 proposed admission; no implementation approval
+last-reviewed: 2026-11-03
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
 
 # Canonical material catalogue and interaction authoring — proposed programme
+
+**Independent review, 2026-11-03: ACCEPT WITH CORRECTIONS, awaiting owner adoption.**
+The [current-main admission correction](#11-current-main-review-and-implementation-admission--2026-11-03)
+and [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+qualify this proposal. Sections 1–10 below retain the original 2 November text
+from PR #357 at `fc7f74768bb3d24fb7e913615f6774dbff321f91`; their numerical
+intake remains historical even where reverified. Section 11 corrects the
+proposed migration and endpoint shorthand; it does not promote any design to
+Current or authorize #353–#356. The PR remains draft and unmerged.
 
 **Status: Planned, not implemented or gameplay-qualified.** The owner requested a documented short implementation chain on 2026-11-02. This document captures the proposed architectural disposition; it does **not** activate a new material inheritance system, reinterpret historical evidence, or authorise default material rebalancing.
 
@@ -28,6 +37,7 @@ related-documents: [../systems/materials-and-rule-kernels.md, ../systems/interma
 8. [Materials Lab authoring workflow](#8-materials-lab-authoring-workflow) — usable editing without fake live sliders or fallback claims.
 9. [Issue dependency and acceptance plan](#9-issue-dependency-and-acceptance-plan) — finite steps, qualification, rollback and write-set separation.
 10. [Decisions held for explicit disposition](#10-decisions-held-for-explicit-disposition) — questions to resolve with evidence rather than guesswork.
+11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions.
 
 ## 1. Authority and preserved substrate
 
@@ -274,3 +284,224 @@ No dynamic runtime material creation is implied: v1 can add source-level materia
 - Does any new material require widening beyond a byte? The current registry does not: IDs 132–255 are still unallocated, subject to further reservations. Any future widening belongs to an explicit storage/save/adapters decision, not this chain.
 
 **This page is the planning contract, not the Current runtime catalogue.** Exact ongoing material numbers and behaviour remain owned by [materials-and-rule-kernels](../systems/materials-and-rule-kernels.md), [intermaterial-interactions](../systems/intermaterial-interactions.md), and their source files. Do not add a second competing Current source of truth.
+
+## 11. Current-main review and implementation admission — 2026-11-03
+
+**Planned correction; owner decision pending.** Review of accepted main
+`0fd4af5987e77db4da3e37c757cf2c0917ae9e15` confirms the original material counts
+and supports the six orthogonal classifications. It also establishes compatibility
+hazards that the first proposal did not specify sufficiently. This section
+governs the *recommended* next implementation scope; it does not itself grant it.
+The [dated review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+records source identities, consumer inventory, evidence and independent review.
+
+### Accepted direction and explicit field ownership
+
+Retain stable IDs, presentation-only categories/tags, explicit physical
+capabilities, named native behaviour/state contracts, explicit semantic family
+memberships and independent appearance programmes. Construction, metal, wood,
+glass or liquid labels never imply conduction, hardness, combustion, biological
+substrate, quantity semantics or solver eligibility. Membership can overlap;
+membership itself supplies **no physical parameter defaults in the first slice**.
+
+An effective field has a qualified owner: native descriptor, selected solver
+policy, transport pair policy, fallback-specific implementation or presentation.
+Record its actual consumer, units, integer/encoding limits, applicability,
+origin, change boundary and state effects. Material density is a comparison rank;
+native `uint16_t` storage does not turn it into calibrated physical density.
+World Water-CY viscosity, Mercury's diagnostic override and IN's radius-3
+admission cannot be inferred from the base descriptor alone.
+
+### Conflicting material families and behaviour presets
+
+For future preset defaults, use one versioned behaviour preset plus explicit
+material overrides with declared ownership. Reject overlapping owners unless
+the schema names a unique authorized override. No mixin traversal, file order,
+array order or display category resolves a conflict. Semantic interaction layers
+retain the existing fixed precedence and conflict validation; #353 authors no
+new active layers. Transport keeps its own directed-source, grain-target and
+liquid-owned parameter rules and refusal checks. A universal per-material
+effective-value merge must not replace those distinct resolvers.
+
+Validate finite selector intersections as well as duplicate selector text:
+overlapping families, orientations or contexts with unresolved equal-precedence
+assignments fail with both origins. Overlapping membership alone remains valid.
+
+### Identity compatibility is stronger than descriptor equality
+
+**Current:** [`catalogue_digest`](../../tools/lcb/policy_contract.py) hashes
+LF-normalized paths and complete bytes of `material.hpp` and
+`interaction_rules.hpp`. [`derive_capability_matrix.py`](../../tools/lcb/derive_capability_matrix.py)
+also parses their literal enum/table shapes. Formatting, generated banners,
+includes or row reordering can change admitted policy/receipt identities or
+break derivation while preserving C++ values. CYPS restoration re-admits its
+stored policy against the running catalogue; a mismatch is an actual refusal
+boundary. Preserve these guards and the existing generation order in the
+[policy contract](liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit).
+
+Preserve both pair and specialized-record indices. The
+[`quantity ledger`](../../native/include/cybersand/quantity_ledger.hpp) has
+schema 1, 56 pair slots and 19 kernel slots; `quantity_kernel_rule` selects the
+first matching specialized-record slot and the codec serializes arrays in that
+order. Stable names alone do not preserve positional accounting. Explicit
+`legacy_slot` values may preserve that order without making input-file order a
+hidden semantic rule.
+
+**Required:** freeze each consumer's existing output independently. Native Slush
+density is 1080; the GDScript fallback uses 1100. This is a source-level difference,
+not a newly reproduced physics defect. Preserve it as an explicit backend
+override or leave that fallback consumer hand-maintained. Shared IDs/names and
+the verified common RGBA tuples may share authorship; shared metadata is not
+fallback movement/chemistry parity. Never silently normalize either backend.
+
+### Minimum #353 slice: compile metadata alongside unchanged runtime authority
+
+**Proposed #353-A admission** is a small JSON/Python-stdlib compiler and independent
+frozen source oracle. It does not need the entire illustrative directory tree.
+Start with an identity registry, material records, explicit capability/family
+records and one consumer/provenance manifest; split files only for reviewability.
+Represent all 15 descriptor fields, alias identity, existing capability results,
+ordered pair/specialized records, backend exceptions and supported appearance
+facts. The short Wood example in section 4 is illustrative, not a complete
+lossless record or a schema acceptance fixture.
+
+Generate a deterministic inspection manifest and shadow C++/GDScript metadata
+in a separate candidate output directory. Compare them against independent
+source-derived facts and existing consumers. Production includes, kernels,
+fallback functions, policies, receipts, saves, shader algorithms and current
+generated artifacts remain untouched in this first checkpoint. Canonical
+authorship is *proposed/shadow* until a consumer switches; do not create two
+simultaneously authoritative catalogues.
+
+**Conditional #353-B cutover:** migrate one constant consumer at a time only after
+exact parity and file ownership are reviewed. Digest-bound headers must retain
+their complete LF bytes and the current parser-compatible literal form. If that
+is impractical, stop at A and request a separately specified identity transition;
+do not regenerate away stale-policy refusals or relax comparisons. #353 remains
+open until its full accepted scope is delivered or the owner explicitly accepts
+the narrower checkpoint. A shadow demonstrator does not silently complete the
+original broad generator issue.
+
+The generator contract must include:
+
+- Explicit source schema, generator and output-manifest versions; immutable
+  numeric IDs and namespaced keys; stable aliases such as `Gas` → `Smoke` at ID4.
+  Display labels are non-authoritative. Alias/key collisions are errors; a label
+  collision must be disambiguated by key, never resolve material identity.
+- Unknown-field, duplicate-object-key, invalid-reference, alias-cycle and
+  out-of-range rejection. Integer fields reject booleans and lossy numeric
+  coercion. Existing byte values, enum numbers, `uint16_t` density and state
+  register widths remain exact; future non-integer fields need their own
+  canonical encoding contract before admission.
+- Errors identify file plus JSON pointer and both origins of a conflict;
+  syntax errors additionally include parser line/column. Unsupported schema
+  versions, non-finite numbers and invalid optional-state contracts fail before
+  any output swap. Keep existing Godot appearance expressions/float calculations
+  unchanged until their literal/precision contract and parity are reviewed.
+- Stable ordering by identity and explicit legacy slot, deterministic escaping,
+  UTF-8/LF bytes and final newline; no timestamps, absolute paths, locale or
+  directory-enumeration order in generated content. Two clean output roots and
+  permuted authoring-file discovery must produce byte-identical outputs.
+- Complete validation before replacing output files, no partial publication on
+  failure, and `--check` that does not write. Retain last accepted outputs,
+  source/schema/compiler identities and actionable drift diagnostics. Do not
+  rewrite unchanged output files and thereby force unnecessary rebuilds.
+- Compile-time fixed arrays/bitsets and initialization-time policy validation;
+  no tick-time JSON, strings, family search, maps, allocation, per-cell objects
+  or added state. Keep the existing partner-bitset fast rejection and bounded
+  sparse resolver. Treat host-side authoring source maps separately from native
+  hot-path metadata. No performance benefit is claimed without measurement.
+
+IDs 0–131 and invalid10 stay unchanged. Draft #358 has experimental claims on
+132–137; these are **not production Current reservations or accepted materials**.
+Record those branch-qualified claims so a source author does not reuse them
+accidentally. The ID132 non-hard-powder test in the original issues is valid only
+inside an explicitly isolated synthetic registry, with no generated production
+output, save, receipt or experiment export. It must not overwrite #358's
+experimental StoneWall132 identity. New production ID allocation still requires
+an explicit integration decision.
+
+### Legacy endpoints and scheduling must remain executable contracts
+
+For #355, section 5's `replace_with_defaults` is only shorthand for the actual
+legacy World path, **not** a generic reset of every field. Freeze:
+
+- Four-tick contact cadence, neighbour/random-stream order, one shared roll,
+  `roll <= threshold` and target-then-source writes; threshold0 means 1/256,
+  while a disabled rule is a distinct future declaration.
+- Water product quantity from the active World policy maximum, other products'
+  descriptor-initialized state and the existing pressure/IN state retirement.
+  Same-ID products do not automatically preserve quantity or solver state.
+- Existing optional temperature retention, body-mask/refusal behavior, no-op
+  epoch/dirty semantics and gross produced/consumed plus pair-event accounting.
+  A selected event can be recorded even when the write returns unchanged.
+- Existing specialized thermal, Acid, ignition, electrical and lifecycle paths
+  remain hand-coded; their catalogue records describe them without replacing
+  execution. #160/#162 retain ownership of their unmerged quantity correction.
+
+New `keep_existing`, `set_state` or quantity-aware effects require explicit field,
+sidecar, temperature, event, mutation and quantity-ledger contracts plus separate
+owner admission before use in production. Their design or synthetic tests do
+not authorize applying them to legacy same-material products.
+
+For #354, static metadata describes a kernel's obligations, not whether a cell
+is due, masked, active or waiting now. Preserve inert `RuleKernel::None` reaction
+targets: 26 of the 41 pair participants use that kernel and can be acted on by an
+active partner. A compiler must not reject or activate them merely for being
+inert. Reproduce MoltenGlass quiet-block cooling and yielding-liquid failed-roll
+retry hypotheses against fixed source before proposing any scheduler repair.
+Mutual MoltenGlass heating and desired viscous rest are separate gameplay-law
+decisions. Section 6's `KernelOutcome` is illustrative; first prefer the smallest
+repair using existing coalesced activity wakes. No blanket always-awake policy.
+
+### Materials Lab effective inspection and editing
+
+**Planned #356:** catalogue descriptors alone cannot supply effective viscosity
+controls or runtime reaction status. Reuse the material-info v1–v4 native C API,
+the native bridge's interaction catalogue/inspection, and the applied liquid
+policy readback. Report the selected backend and solver beside each value.
+Lava, Acid and Oil bypass descriptor viscosity in specialized movement, so that
+declared field is read-only or explicitly unused there. Water-CY consumes its
+versioned material-block viscosity; generic yielding liquids use descriptor
+viscosity except for Mercury's diagnostic override. A descriptor-only radius
+display must also distinguish IN's applied radius-3 geometry.
+
+An interaction resolver sees matches and rolls, not the live World's sleep,
+mask or due-opportunity state. Existing specialized inspection explicitly marks
+records `evaluated=false`. Show unsupported/unobserved status rather than
+inventing reasons. A future World observation must be produced by its real owner
+and preserve the bounded copied-observation contract.
+
+Source-edit-required fields can be exported as validated authoring changes for
+rebuild; existing construction-policy fields can be edited only through their
+actual validated restart/preparation API. A slider is enabled only when a
+consumer, owner and applied readback exist. Failed validation or reconstruction
+preserves the old source/profile/World, and a successful preview does not claim
+that a production policy was changed. Read-only inspection can precede new
+reaction semantics; editing cannot bypass #355 or relevant #354 dispositions.
+
+### Successor gates and owner decisions
+
+| Stage | Admission and required proof | Stop/rollback boundary |
+|---|---|---|
+| #353-A | Owner adopts this narrowed scope; freeze source and per-consumer oracle, validate all IDs/descriptors/families/indices/capabilities, synthetic conflicts and deterministic outputs; preserve current LCB derivation/wire/receipt checks | Shadow outputs only; a mismatch is evidence, not a reason to update the oracle |
+| #353-B | Separate cutover review; exact consumer bytes/values, both orientations and all 256 rolls over the byte-ID pair domain, capability/invalid-ID checks, backend-qualified mirrors, source-matched native/adapter gates when runtime inputs change | Revert one consumer and its generated route as a unit; identity transition held if old envelopes would be refused |
+| #354 | Admitted reproducible liveness case, quiet3/1024 and active-neighbour controls, phase/translation/boundary/mask/region/restart coverage and actual one/four-worker comparison | Preserve historical failures; no-go/defer is valid; gameplay-law change requires separate approval |
+| #355 | Legacy endpoint/ledger/state/no-op/precedence parity; Acid priority controls; explicit conflict diagnostics; new effects isolated and separately admitted | Serialize shared World/quantity edits after #354 or its explicit disposition; no implicit same-ID preservation |
+| #356 | Read-only browser/inspector can follow accepted #353 metadata; effect editing waits for #355 and any relevant #354 disposition; show actual backend/solver/parameter consumer and compile/restart boundary | Failed import/apply retains old source/profile/World; resolver-only inspection never invents live sleep/mask/eligibility reasons |
+
+Assign one integration writer for `world.cpp`, `world_quantity.inc`, material
+headers and their generated identities; #354/#355 writes must serialize when
+they overlap. Coordinate affected files with #358, SOL-DETACH #347, generic GCR
+#83/#343 and LCB-FEEL #370. Inspector work reuses #131 and existing native
+material/interaction APIs. A read-only inspector need not wait for an unrelated
+liveness repair, and it must not advertise editing support before a real consumer
+exists. Revalidate all active branch heads before implementation.
+
+**Decisions for the owner:** adopt the corrected architecture and explicitly
+admit only #353-A; choose whether a later byte-identical cutover is sufficient or
+authorize a separately reviewed identity migration; disposition the Spark family
+scope, same-ID/quantity exceptions, MoltenGlass thermal law and viscous retry/rest
+law only if their bounded successors present evidence. Preserve current behavior
+and backend differences until each such decision. This review grants none of
+those semantic changes and does not merge #357.

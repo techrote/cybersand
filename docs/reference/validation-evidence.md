@@ -10,6 +10,15 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-AUTH architecture review — 2026-11-03
+
+The [#357 review record](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+separates static source/metadata inspection, documentation/retrieval checks and
+independent design review from physics execution. The original `a8f08a67` intake
+and `fc7f7476` proposal remain distinct from reviewed main `0fd4af59`.
+No native movement, reaction, scheduling, state layout or generated material
+data changes are part of this checkpoint. Architecture adoption remains pending.
+
 ## LCB reassessment evidence boundary — 2026-11-03
 
 [#359's dated inventory](../audits/2026-11-03-lcb-reassessment.md#existing-evidence-inventory)

@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-03",
+  "scope": "Supplementary MAT-AUTH architecture/admission questions; frozen32 and challenge157 remain unchanged. Planned status and owner decision boundaries are required answer facts.",
+  "questions": [
+    {
+      "id": "MAT-AUTH-01",
+      "query": "Does the material authoring architecture review approve implementation, and what should be the first bounded compiler checkpoint?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "The design remains Planned and PR357 draft/unmerged; ACCEPT WITH CORRECTIONS is a recommendation awaiting owner adoption.",
+        "Proposed353-A compiles shadow metadata against independent old-source and backend-qualified oracles without changing runtime authority.",
+        "The broad353 issue remains open after a narrow checkpoint unless the owner explicitly changes its completion scope."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-02",
+      "query": "Would reformatting material headers into generated includes preserve old liquid policies, receipts and CYPS saves?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Catalogue identity hashes complete LF-normalized paths and header bytes; capability derivation also parses literal header shapes.",
+        "A formatting-only rewrite can change policy, receipt and physical-hash identity and cause CYPS admission refusal.",
+        "Initial shadow generation must preserve those inputs; a later non-byte-identical cutover needs separate identity-transition admission."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-03",
+      "query": "Can one generated native density table replace the GDScript fallback table without changing behaviour?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Native Slush density is1080 and fallback1100; native and fallback behavior are not interchangeable.",
+        "Preserve per-backend values or leave fallback physical code hand-maintained; share only verified common facts.",
+        "The discrepancy is source-level evidence, not an independently reproduced physics defect."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-04",
+      "query": "Does a same-material reaction product keep its Water amount, temperature, solver state and mutation state?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Legacy same-ID products do not automatically preserve quantity or solver state; Water defaults come from the active World policy maximum.",
+        "Pressure and IN state retirement, optional coordinate temperature retention and existing no-op epoch/dirty behavior must all remain explicit.",
+        "Gross produced/consumed quantities and selected pair-event accounting are preserved; keep_existing requires separate admission."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-05",
+      "query": "Is material ID132 available for a new production powder during the catalogue compiler work?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Draft358 experimentally uses132–137, including StoneWall132; these remain unmerged candidate identities, not production Current data.",
+        "The proposed non-hard132 test is allowed only in a private synthetic registry with no production output, save or receipt export.",
+        "An owner integration decision is required before allocating new production IDs."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-06",
+      "query": "Can construction, metal, wood or glass categories automatically give a new material physical or chemical behaviour?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "The six dimensions are stable identity, browsing, explicit physical capabilities, native behavior/state contracts, semantic memberships and appearance.",
+        "Browse labels and visual similarity never assign physics, conduction, combustion, biological substrate, solver eligibility or interaction inheritance.",
+        "Overlapping semantic membership is explicit and gives no physical defaults in the first compiler slice."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-07",
+      "query": "How should overlapping material families and presets resolve conflicting effective parameters?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Use explicit field ownership and authorized overrides; reject unresolved overlaps with both source origins.",
+        "No file order, array order or mixin traversal decides precedence; finite selector intersections must be checked.",
+        "Existing transport directed-source, grain-target and liquid-owned semantics remain in their own resolver;353 adds no new active generic layers."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-08",
+      "query": "Has the architecture review proved MoltenGlass cooling or yielding-liquid retry failures and approved an always-awake fix?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "These are source-supported hypotheses requiring source-matched reproduction; this review runs no new physics qualification.",
+        "354 uses quiet3/1024, active-neighbor and boundary/phase/worker controls while preserving existing MAT001 and Water-CY behavior.",
+        "Mutual MoltenGlass heating and viscous rest are separate law decisions; no blanket always-awake policy is admitted."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-09",
+      "query": "What does exact catalogue migration parity need beyond stable material names and pair products?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Freeze every descriptor, byte ID and capability result, backend distinction, aliases and shared appearance facts against independent old-source consumers.",
+        "Preserve pair and specialized-record legacy indices because quantity accounting is positional.",
+        "Protect complete digest-bound header bytes and parser form, deterministic outputs, explicit validation errors, rollback and source-matched gates for any later runtime cutover."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT-AUTH-10",
+      "query": "Can the Materials Lab offer viscosity and runtime reaction status controls from catalogue descriptors alone?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Effective fields require the selected native consumer and applied policy; Water-CY and Mercury overrides differ from base descriptors.",
+        "Lava/Acid/Oil descriptor viscosity is not an effective generic slider; unsupported edits are disabled or source-edit-required.",
+        "Resolver-only inspection cannot invent World activity, mask or due-opportunity observations; editing requires validated owner reconstruction and preservation on refusal."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

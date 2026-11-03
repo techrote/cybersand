@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-AUTH architecture decision hold — 2026-11-03
+
+[PR #357](https://github.com/techrote/cybersand/pull/357) remains draft and
+unmerged after a documentation-only current-main architecture review. Read the
+[corrected proposed admission](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+and [dated evidence](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+before assigning #353–#356. Recommendation is **ACCEPT WITH CORRECTIONS**;
+owner adoption and implementation permission remain pending. Initial #353 work
+is proposed as shadow generation with independent per-consumer oracles, not a
+header/policy/physics migration. Revalidate active #358/#347/#370 and #162/GCR
+heads before overlapping edits. Experimental IDs132–137 are not production data.
+
 ## LCB reassessment and bounded successors — 2026-11-03
 
 [#359's audit](../audits/2026-11-03-lcb-reassessment.md) inspects live main

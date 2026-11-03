@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Material authoring review — 2026-11-03
+
+The [MAT-AUTH proposal](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+has a source-qualified **ACCEPT WITH CORRECTIONS** recommendation, not owner
+adoption. #357 stays draft/unmerged. The recommended first #353 checkpoint
+generates shadow metadata while preserving native/fallback behavior, header-byte
+LCB identities and positional quantity ledgers. Production cutover and new
+semantics remain separately gated. #354/#355 serialize shared kernel writes;
+#356 exposes only real consumers. The [review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+preserves #162/#358/#347/#370 and GCR ownership and the original intake.
+
 ## LCB current-main reassessment — 2026-11-03
 
 The [#359 source-qualified audit](../audits/2026-11-03-lcb-reassessment.md)
