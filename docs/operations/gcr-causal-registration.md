@@ -102,6 +102,9 @@ unchanged material bytes, no passive nodes or legacy, event scale1, and
 `event_raw.y*1000/(N*1600)` equals the selected gain. Compare full native hashes
 after the same one tick across the two gains; do not compare a World's tick0
 hash with its advanced state. No Rapier stepping occurs in this calibration.
+N is the public contact-counter increase across the fresh witness's first tick,
+excluding the unchanged adapter contact observations. That first-tick subtraction
+is not a general live-contact-count formula for an already advancing World.
 
 Compare descent at tick900 only while both arms are hard-clear. Otherwise mark
 that metric unsupported and retain a common pre-hard interval plus censored
