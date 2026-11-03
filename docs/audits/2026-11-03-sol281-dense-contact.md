@@ -207,8 +207,8 @@ attempts, not unique material contacts or simulation ticks.
 All 24 platform/worker/environment/arm cost groups pass the proposed mean-work
 criterion. The worst individual run is Windows, four workers, embedded Sand:
 **1.854552529 ms per complete consumed observation**, below the registered 2 ms.
-The denominator includes all native observation/freezing attempts and every
-main response attempt, including refused and unconsumed work. This is provisional
+The numerator includes the time spent in all native observation/freezing attempts
+and every main response attempt, including refused and unconsumed work. This is provisional
 CPU feasibility on the recorded hosted machines, not GPU or interactive timing.
 
 Candidate penetration remains nonzero: the largest is **3.772003 cells in
