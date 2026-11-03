@@ -1,0 +1,13 @@
+Tool-output transcript reconstructed from this reviewer's tool history.
+This is not an original byte-for-byte process log. The output below is a
+faithfully transcribed process-output excerpt, without tool-envelope metadata.
+No command was rerun to manufacture this transcript.
+
+Command(s):
+ASAN_OPTIONS=detect_leaks=0 /tmp/sol281-independent-native-geometry-sanitized
+
+Observed output:
+SOL281_CONTACT_GEOMETRY 6 groups / 6817 checks passed
+
+Disposition:
+Separate run of the same unchanged binary exited 0 with address/undefined sanitization active and leak detection disabled. No local LeakSanitizer pass is claimed.

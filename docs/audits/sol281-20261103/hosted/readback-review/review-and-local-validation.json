@@ -1,0 +1,345 @@
+{
+  "artifacts": [
+    {
+      "custody": "byte-for-byte copy of retained original local stdout/stderr log",
+      "path": "logs/sol281-readback-fences.log",
+      "sha256": "75258fcc3883fb9219c2f25402ffad078a1d9e94101f1f3c89eb8b4ccdb1f3c0",
+      "size": 721
+    },
+    {
+      "custody": "byte-for-byte copy of retained original local stdout/stderr log",
+      "path": "logs/sol281-readback-mechanism.log",
+      "sha256": "7efeb47dd55d06c276300898e78dc82270c1daab1a6973d403992e2c870ecb51",
+      "size": 5464
+    },
+    {
+      "custody": "byte-for-byte copy of retained original local stdout/stderr log",
+      "path": "logs/sol281-readback-recovery-parse.log",
+      "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "size": 221
+    },
+    {
+      "custody": "byte-for-byte copy of retained original local stdout/stderr log",
+      "path": "logs/sol281-readback-import.log",
+      "sha256": "82a265e8d8395148566f66f51856a85eb323fdeb587fc7caaf930f1ff347f1dc",
+      "size": 34786
+    },
+    {
+      "custody": "faithful transcript of tool-visible test-runner output; original raw console bytes were not saved",
+      "path": "logs/qualification-reader.tool-output-transcript.txt",
+      "sha256": "5b030cf3a32a5e801f60824581f96b3123aad12005f8afacd9cae3246ccdd02a",
+      "size": 110
+    }
+  ],
+  "author_agent": "/root/implementation_review",
+  "independent_patch_review": {
+    "corrected_findings": [
+      {
+        "correction": "Both are now in intended function scope and actual Godot parse check passes",
+        "finding": "Recovery test check and failed-response accumulator were initially misindented",
+        "id": "REV-READBACK-TEST-001"
+      },
+      {
+        "correction": "Require exact DuplicateOrOldContact, failed=false, unchanged RID state, and unchanged readback-seam call count",
+        "finding": "Unchanged motion alone could falsely pass duplicate negative after first impulse already arrested the body",
+        "id": "REV-READBACK-TEST-002"
+      }
+    ],
+    "disposition": "No remaining implementation blocker after test corrections; suitable for source freeze and fresh exact-source qualification",
+    "independent_executions": [
+      "python3 tools/sol281/test_qualification.py: eleven passed",
+      "git diff --check: passed",
+      "native/native-extension source diff: empty"
+    ],
+    "inspected_execution": "135-check pinned Linux Godot/Rapier fence log; reviewer did not claim a second engine execution",
+    "native_review_location": "native-review/",
+    "reviewer": "/root/implementation_review/native_review",
+    "source_binding": "same seven SHA-256 file inventory above"
+  },
+  "limits": [
+    "No backend-generated NaN/Inf fault is claimed; copied readback injection exercises failure handling after genuine finite impulses",
+    "No current-source hosted Linux/Windows qualification is claimed by these local results",
+    "No new sustained-clearance, restoration, human gameplay or GPU acceptance",
+    "No merge authorization, default promotion or issue closure"
+  ],
+  "local_validation": {
+    "commands": [
+      {
+        "argv": [
+          "/workspace/scratch/fc488e61157a/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "godot",
+          "--script",
+          "res://tests/test_solid_contact_fences.gd"
+        ],
+        "checks": 135,
+        "exit_code": 0,
+        "failures": [],
+        "log": "logs/sol281-readback-fences.log"
+      },
+      {
+        "argv": [
+          "/workspace/scratch/fc488e61157a/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "godot",
+          "--script",
+          "res://tests/test_solid_contact_response.gd"
+        ],
+        "checks": 90,
+        "exit_code": 0,
+        "failures": [],
+        "log": "logs/sol281-readback-mechanism.log"
+      },
+      {
+        "argv": [
+          "/workspace/scratch/fc488e61157a/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "godot",
+          "--check-only",
+          "--script",
+          "res://tests/test_solid_detachment_contact_recovery.gd"
+        ],
+        "exit_code": 0,
+        "log": "logs/sol281-readback-recovery-parse.log",
+        "scope": "parse/load check only, not execution of populated recovery trials"
+      },
+      {
+        "argv": [
+          "python3",
+          "tools/sol281/test_qualification.py"
+        ],
+        "log": "logs/qualification-reader.tool-output-transcript.txt",
+        "log_scope": "transcribed tool-visible output, not retained raw stdout/stderr",
+        "result": "OK",
+        "tests": 11
+      },
+      {
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "exit_code": 0
+      },
+      {
+        "argv": [
+          "/workspace/scratch/fc488e61157a/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "godot",
+          "--editor",
+          "--import"
+        ],
+        "exit_code": null,
+        "log": "logs/sol281-readback-import.log",
+        "scope": "preparation only; original shell command did not separately retain engine exit status; no import error lines observed"
+      }
+    ],
+    "engine": "4.7.stable.official.5b4e0cb0f",
+    "execution_policy": "Bounded direct local subprocess runs with 180-second limits. Shared process-ownership monitor is unavailable in this sandbox; no repository watchdog, runner or monitor policy was changed. Hosted exact-source qualification remains required.",
+    "fault_cases": [
+      "velocity_x_nan",
+      "velocity_y_inf",
+      "velocity_negative_inf",
+      "omega_nan",
+      "omega_inf",
+      "omega_negative_inf",
+      "energy_nan",
+      "energy_inf",
+      "energy_negative_inf",
+      "momentum_nan",
+      "angular_momentum_inf",
+      "finite_energy_increase"
+    ],
+    "fault_scope": "copied readback injection after finite real Rapier impulses; actual session fail-stop, not backend fault generation",
+    "mechanism": {
+      "checks": 90,
+      "flat_reduction": 1.0,
+      "off_center_reduction": 0.911883194468342,
+      "scope": "unchanged narrow twelve-step actual-Rapier control; no new whole-session or GPU acceptance"
+    },
+    "platform": "Linux x86_64",
+    "rapier_version": "0.35.2",
+    "runtimes": {
+      "godot": {
+        "filename": "Godot_v4.7-stable_linux.x86_64",
+        "hash_capture_scope": "post-execution unchanged local file; parent had verified these identities before copying into isolated worktree",
+        "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "size": 144186224
+      },
+      "native": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "hash_capture_scope": "post-execution unchanged local file; parent had verified these identities before copying into isolated worktree",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "rapier": {
+        "filename": "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "hash_capture_scope": "post-execution unchanged local file; parent had verified these identities before copying into isolated worktree",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      }
+    },
+    "session_fault_scope": "Actual session latch and physics_step entry with actual body/bridge; native worker is not started in these injected cases."
+  },
+  "original_review": {
+    "corrections_rechecked": [
+      "approaching segment subsets recomputed each of four sweeps",
+      "exact observation revision equality with enclosing snapshot",
+      "recursively frozen publication before mutex-protected handoff",
+      "cumulative owner/refused/overwritten contact-work accounting",
+      "candidate-arm accepted response and nonzero impulse coverage",
+      "separate source and current pose identity in trace"
+    ],
+    "finding": {
+      "classification": "source-level failure-handling gap; no assertion that old finite physics results are invalid",
+      "condition": "Nonfinite post-impulse backend readback",
+      "defect": "NaN actual_energy_after makes the old greater-than energy comparison false; actual velocity and omega were not independently finite-checked. Invalid results could enter accepted metrics without latching session failure.",
+      "id": "REV-READBACK-006",
+      "observed_in_old_hosted_results": false
+    },
+    "matching_publication_files": [
+      {
+        "path": "godot/native_extension/solid_contact_adapter.inc",
+        "sha256": "fbdfa5c16ff66445161de708079e4f624b4180613a498c16ff92712936a54c2d"
+      },
+      {
+        "path": "native/include/cybersand/solid_contact_geometry.hpp",
+        "sha256": "53f8852cfe658fa37bb419ef4380e2c2bb4ebdf66af02e77e952813664a44c54"
+      },
+      {
+        "path": "native/include/cybersand/world.hpp",
+        "sha256": "a9aa6e51cd8c432526376b49ae15e02e4a7838aa296287bf3db6f1b10de99d31"
+      },
+      {
+        "path": "native/src/world.cpp",
+        "sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6"
+      },
+      {
+        "path": "godot/scripts/solid_contact_response.gd",
+        "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d"
+      },
+      {
+        "path": "godot/scripts/solid_detachment_worker.gd",
+        "sha256": "f607fad0d6b6c89af3b8738489f956c73e8f64148e17d34c1fd3ede0718cba51"
+      },
+      {
+        "path": "godot/scripts/rapier_physics_bridge.gd",
+        "sha256": "996d912f7cfe6f8bd4c276bb8ee966da1bf6affbb1579413a69f9ef4b9a401e7"
+      },
+      {
+        "path": "godot/scripts/solid_detachment_session.gd",
+        "sha256": "7bfc35d89e6942022a9d80453b587bfbfedfdc6072bd8d2e65f9dadbf290845b"
+      },
+      {
+        "path": "godot/scripts/simulation_snapshot.gd",
+        "sha256": "d7cc8f2cdafc421e48dfa9ceea69aca2a6534248d55b3bdeeb2fe3f83a46a210"
+      },
+      {
+        "path": "godot/scripts/simulation_worker.gd",
+        "sha256": "92d8966df1c4638157323a078713b0dc25504b3c1d2b87af5118c34649eca2d2"
+      },
+      {
+        "path": "godot/tests/test_solid_contact_fences.gd",
+        "sha256": "211551bc38bb3b0db21938a630f0f0926829ffa75687408306c8f4410aa1afaf"
+      },
+      {
+        "path": "godot/tests/test_solid_detachment_contact_recovery.gd",
+        "sha256": "9a7fa0c7ce6ca2dd75c7c4ff60d3722ad671a441427829965f20506babb76656"
+      },
+      {
+        "path": "tools/sol281/analyze_contact_recovery.py",
+        "sha256": "0c6b6a223ba7b17c610d8659dec811f4d904c6c65d7291ee9290cad0814f9b54"
+      }
+    ],
+    "prior_receipt": "docs/audits/sol281-20261103/independent-review.json"
+  },
+  "repair": {
+    "energy_limit": "actual_energy_after <= energy_before + 1e-4 * max(1, energy_before)",
+    "outcomes": [
+      "NonFiniteContactReadback",
+      "NonDissipativeContactReadback"
+    ],
+    "semantics": [
+      "readback vectors and scalars must be finite before acceptance",
+      "consumed sample lease remains after possible impulse application",
+      "failed=true and accepted=false preserve post-application failure distinction",
+      "applied impulse count and possible-mutation flag retained",
+      "response_failures separate from response_accepts and mutation-free response_refusals",
+      "existing _fail/set_paused latch prevents next main-thread Rapier step and cannot be bypassed by unpause",
+      "all-attempt timing remains recorded before disposition",
+      "strict reader requires complete twelve-case fault inventory and rejects failed live response reports"
+    ],
+    "unchanged": [
+      "native algorithm and all native source",
+      "geometry kernel and capacities",
+      "four-sweep planner and physical thresholds",
+      "ordinary contact/Water/material defaults",
+      "conservative ownership and transfer paths"
+    ]
+  },
+  "roles": {
+    "final_patch_reviewer": "/root/implementation_review/native_review",
+    "new_guard": "implementer; not self-asserted independent approval",
+    "original_candidate_review": "independent source reviewer"
+  },
+  "schema": "cybersand.sol281.readback-recovery-review.v1",
+  "source": {
+    "base_publication": "3ac7701f013452c94a8c08b0746e1b13523e7234",
+    "files": [
+      {
+        "matches_integrated_commit": true,
+        "matches_tested_worktree": true,
+        "path": "docs/systems/solid-detachment.md",
+        "sha256": "f9b4685409849e6a9badc8161dd6dbf8c483a9d7b254f52e6bb3cb1cd0d09fc7"
+      },
+      {
+        "matches_integrated_commit": true,
+        "matches_tested_worktree": true,
+        "path": "godot/scripts/rapier_physics_bridge.gd",
+        "sha256": "9ea0736c16db5089b817728388c88be2ef8e5fc6db8545992608473cf526851d"
+      },
+      {
+        "matches_integrated_commit": true,
+        "matches_tested_worktree": true,
+        "path": "godot/scripts/solid_detachment_session.gd",
+        "sha256": "9edd54f21013a2bcd30d1e332496248dc9da38d319ad96342bafecefd6f91310"
+      },
+      {
+        "matches_integrated_commit": true,
+        "matches_tested_worktree": true,
+        "path": "godot/tests/test_solid_contact_fences.gd",
+        "sha256": "fce75140e61fb7826d18e2596a39a4ac6486a48a02c75ec4434f24f675eb54cb"
+      },
+      {
+        "matches_integrated_commit": true,
+        "matches_tested_worktree": true,
+        "path": "godot/tests/test_solid_detachment_contact_recovery.gd",
+        "sha256": "e5967594fa5a4315f265e5a69762a107b839f32bd9ac062304d8f35c11fdfc99"
+      },
+      {
+        "matches_integrated_commit": true,
+        "matches_tested_worktree": true,
+        "path": "tools/sol281/run_qualification.py",
+        "sha256": "bebc2a959504dc565735d04e340f9d7252aae1efd9afe5c9cea0d7361f4828a1"
+      },
+      {
+        "matches_integrated_commit": true,
+        "matches_tested_worktree": true,
+        "path": "tools/sol281/test_qualification.py",
+        "sha256": "5d3d3c98b6fb92298edb2ae2aedf597e750fb4d19e582f5a06026f89b78d5fdd"
+      }
+    ],
+    "historical_executed_source": "5944c13079356fedf96da78c78e83b3898379fee",
+    "historical_executed_tree": "ff889678e5ef24cf7185561aa60b696f95df98d5",
+    "integrated_cherry_pick": "4b9dbf80826f24c7bea7381c18c06046ef9656d5",
+    "local_commit": "d673a5c2550088287a1187952ea7d0535fe261c4",
+    "local_execution_binding": "Tests ran on base publication plus the working-tree delta subsequently committed byte-for-byte as the local commit. The seven reviewed file blobs also match the integrated cherry-pick. This is not a claim of hosted execution of either whole commit.",
+    "local_tree": "a0feecd6904c04c45944c57efda3275a75e5eb9c",
+    "native_source_changed": false,
+    "repository": "techrote/cybersand"
+  }
+}

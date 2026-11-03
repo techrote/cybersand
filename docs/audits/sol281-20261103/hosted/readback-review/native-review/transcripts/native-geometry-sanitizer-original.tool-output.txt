@@ -1,0 +1,17 @@
+Tool-output transcript reconstructed from this reviewer's tool history.
+This is not an original byte-for-byte process log. The output below is a
+faithfully transcribed process-output excerpt, without tool-envelope metadata.
+No command was rerun to manufacture this transcript.
+
+Command(s):
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Inative/include native/tests/test_solid_contact_geometry.cpp -o /tmp/sol281-independent-native-geometry-sanitized
+/tmp/sol281-independent-native-geometry-sanitized
+
+Observed output:
+==10==Can't open /proc/2/task for reading.
+==2==LeakSanitizer has encountered a fatal error.
+==2==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==2==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+Disposition:
+Original run exited 1. Environment failure; not a sanitizer pass. No original log file was retained.
