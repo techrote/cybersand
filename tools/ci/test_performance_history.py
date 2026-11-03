@@ -44,7 +44,13 @@ def archive(files: dict[str, bytes]) -> bytes:
     result = io.BytesIO()
     with zipfile.ZipFile(result, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
         for name, contents in files.items():
-            bundle.writestr(name, contents)
+            # ZipInfo's constructor normalizes backslashes on Windows. Keep
+            # deliberately unsafe fixture names intact for the archive reader.
+            member = zipfile.ZipInfo()
+            member.filename = name
+            member.orig_filename = name
+            member.compress_type = zipfile.ZIP_DEFLATED
+            bundle.writestr(member, contents)
     return result.getvalue()
 
 
@@ -214,8 +220,12 @@ class ArchiveControls(unittest.TestCase):
 
     def test_unsafe_paths_symlinks_and_duplicate_members_refuse(self):
         for name in ("../current.jsonl", "/current.jsonl", "C:/current.jsonl", "a\\current.jsonl", "a/./current.jsonl", "a//current.jsonl", "bad\nname.jsonl"):
-            with self.subTest(name=name), self.assertRaises(ValueError):
-                subject.read_archive(archive({name: b"{}"}), {})
+            with self.subTest(name=name):
+                data = archive({name: b"{}"})
+                with zipfile.ZipFile(io.BytesIO(data)) as bundle:
+                    self.assertEqual(bundle.infolist()[0].orig_filename, name)
+                with self.assertRaises(ValueError):
+                    subject.read_archive(data, {})
         target = io.BytesIO()
         with zipfile.ZipFile(target, "w") as bundle:
             member = zipfile.ZipInfo("symlink.jsonl")

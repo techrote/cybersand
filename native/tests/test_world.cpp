@@ -21,6 +21,8 @@
 #include <utility>
 #include <vector>
 
+#include "render_copy_qualification.inc"
+
 namespace cybersand {
 class PrecisionProbe {
 public:
@@ -3884,6 +3886,7 @@ int main(int argc, char** argv) {
         {"issues #1/#2 failed re-entry and recovery", test_interest_failed_tick_recovery},
         {"dirty rectangles", test_dirty_rectangles},
         {"immutable render snapshots", test_immutable_render_snapshot_exchange},
+        {"render copy production qualification", test_render_copy_production_qualification},
         {"concurrent render leases", test_render_snapshot_concurrent_leases},
         {"C API and RGBA", test_rgba_copy_and_c_api},
         {"extended material families", test_extended_material_families},

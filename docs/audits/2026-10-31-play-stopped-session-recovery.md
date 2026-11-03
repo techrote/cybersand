@@ -219,3 +219,122 @@ reconnect, OS focus delivery, displayed pacing and human feel remain separate
 qualification. No local process duration in this audit is an FPS or gameplay
 latency claim. The original failed run, the held #308 campaign and this local
 correction cohort remain distinct evidence.
+
+## Current-main reconciliation — 2026-11-02
+
+The owner authorizes completion and a guarded merge of #332 only after all
+resulting-source gates pass. Live source authority was refreshed before edits:
+
+| Role | Commit | Tree |
+|---|---|---|
+| Accepted main | `a8f08a67fea3c58f6df7473cbae1831334fcc04e` | `4bfc2fbdda3704dfbf386235e54d2fe525ca32bc` |
+| Final accepted shader #331 | `c24e69ad6310a8c3153c1ab9b680f7c84eb84b20` | `4bfc2fbdda3704dfbf386235e54d2fe525ca32bc` |
+| Original recovery #332 | `4752aac3a300ae65da1c578609283c875b8448f8` | `41c0d18589ec5cc8911edcbdc73434556c99dc89` |
+| Shared historical base | `6f8f13f0b3c41d156cbb04f5715e5c2651986dfc` | `3d945d358827adeb2600afda4ab7313a291d4c23` |
+| Preserved downstream #334 | `4f3decc242633fb621d76b7529ef87b420dbd87a` | `667522c3acb72fcf5b3e40b85a68761c60949ddf` |
+
+The main/recovery and shader/recovery merge bases both equal `6f8f13f0`.
+The downstream/recovery merge base is `4752aac3`. The original recovery-only
+seven-file patch is 906 additions and 11 deletions; it applies cleanly to current
+main, with the same stable patch ID
+`a8c32c78593f939cbe8bd637ae7de35c6df4cf7d`. The retained original patch SHA-256 is
+`7482e22472ca89d1e0984b18005343bab3529ebff1f7db0b75543034a5797807`.
+Its production and fixture hunks are preserved; this new audit section and
+canonical documentation are additive. Main's later R rendering seams, worker,
+native runtimes, accepted palette initialization, shader and all current
+workflow files are retained from accepted main.
+
+Independent source review found no recovery ownership defect. It checked copied
+accepted state, pending-mode exclusion, accepted/pending graph retirement,
+exclusive worker join, repeated Restart, PopupPanel/root F2, visible launcher
+navigation and the pending-scene boundary. SceneTree can instantiate a pending
+replacement before removing old Main; the required boundary is retirement of
+the old owner before the replacement starts its simulation worker.
+
+### Windows helper-control failure and correction
+
+Original shader run
+[41250780073](https://github.com/techrote/cybersand/actions/runs/41250780073)
+has six successful jobs and two failed jobs. Windows visual shard 1's portable
+preparation runs the 13 helper controls normally successfully, then fails its
+optimized-Python run only at `elapsed_seconds >= 0.03`, observing
+`0.017978699999957826`. The preceding termination, joined, nonnatural-completion
+and nonzero-return assertions passed. Actual ANGLE execution is skipped;
+missing `manifest.json` and the final complete-cohort rejection are downstream
+consequences. This is not evidence of a shader-pixel regression.
+
+The runner used CPython 3.12.10. Its pinned
+[subprocess implementation](https://github.com/python/cpython/blob/v3.12.10/Lib/subprocess.py)
+derives Windows pipe-reader thread join time from `monotonic` after reader-thread
+startup. Its [clock implementation](https://github.com/python/cpython/blob/v3.12.10/Python/pytime.c)
+uses `GetTickCount64` for Windows monotonic and `QueryPerformanceCounter` for
+`perf_counter`. Crossing a coarse monotonic tick can reduce the requested join
+wait relative to the separate elapsed clock. The exact original tick phase was
+not recorded, so this scheduling explanation is an inference. The
+[Windows lock implementation](https://github.com/python/cpython/blob/v3.12.10/Python/thread_nt.h)
+does not justify attributing the observation specifically to an early kernel wait.
+
+Only `tools/play/test_palette_windows_compiler.py` changes. The real-child
+control verifies one actual Popen command/PID, a live owned child at kill,
+observed timeout/kill/completed-communicate ordering, a nonzero matching return
+code and closed streams before test cleanup. A spawn-budget-exhaustion path is
+checked against the same elapsed clock. Elapsed time remains finite nonnegative
+telemetry; the 30-ms capture and one-second cleanup allowances are unchanged.
+No production helper, shader, policy or workflow change is needed.
+
+Independent review identified and rejected a first-revision weakness: a mutant
+passing `min(remaining, 0.001)` could satisfy lifecycle observations. A separate
+deterministic early-expiry control now requires the exact remaining requested
+capture allowance and cleanup grace. The mutant fails. Existing identity,
+malformed-reply, helper-failure, cleanup-error, natural-completion and unobserved-
+join controls remain. All 14 controls pass normally and with Python `-O` in
+independent Linux execution. Final test-file SHA-256 is
+`fce0fcf964206dda438d5ca3f9fd22dd3ce4b61024d9ec18d919c69e3f9108ce`.
+These local portable controls are not actual Windows/ANGLE qualification.
+
+### Complete applicable qualification and evidence boundaries
+
+Historical Godot run
+[41250780110](https://github.com/techrote/cybersand/actions/runs/41250780110)
+has 162 fully paginated job records: 155 success, five failure and two expected
+skips. Linux shards 18, 30, 56 and 75 fail their 15-minute software-display
+installation step after mirror retries, before regressions start. The fifth
+failure is the strict Linux coverage reducer's missing-original-shard rejection.
+Actual checkout source is merge `6f5e48883f476041ef5beb71870b86956bd35e01`,
+distinct from the API's PR head `4752aac3`. Both original failures are retained.
+
+Current main's reduced scheduler and display preparation are inherited unchanged.
+The recovery candidate discovers 250 Linux cases in 20 shards and 236 Windows
+cases in 19 shards. It adds only LIFE007 and LIFE008, without changing old case
+flags, watchdogs, weights or display eligibility. Both OSes retain five cases
+each of LIFE009/LIFE010/LIFE011, all six INPUT011 cases including legacy Pause,
+UI005 and the default desktop host. Full coverage should account for 486 cases,
+39 imports, 525 sealed logs and 30 protected PLAY readbacks.
+
+Five workflows apply: Documentation/provenance, Native C++ (six families,
+165 current source-derived primary cases), GDExtension/Godot, actual-backend
+palette qualification (six cohorts, 19 processes and eight Main lifetimes), and
+the informational Native scope advisory. Water apparatus and manual desktop
+packet paths are unchanged. The old frozen standalone LIFE009 campaign is not a
+current-main gate; its five ordinary cases remain mandatory on both platforms.
+
+The published candidate SHA/tree, actual merge-checkout SHA/tree, exact-head
+workflow links/counts, original-artifact independent readback, guarded merge and
+post-merge identities are recorded in the
+[PR #332 completion ledger](https://github.com/techrote/cybersand/pull/332).
+At this source checkpoint those execution gates remain required, not presumed
+passed. A passing predecessor cannot qualify a new commit. The original failure,
+historical successful cohorts, portable control results and resulting-head runs
+retain separate source identities.
+
+Documentation changes update the canonical player-control contract and its index,
+roadmap, handover and supplementary retrieval question. Existing native/thread
+ownership, typed message layouts, capacity constants and ADRs do not change.
+All 156 earlier supplementary question objects and the frozen 32-question set
+remain intact. The new recovery question is reported separately.
+
+Downstream #334's head, test apparatus and evidence remain untouched. Its next
+agent must reconcile its own delta from historical recovery `4752aac3` onto the
+accepted #332 merge; ancestry must not be inferred from tree equality or a
+squash merge. Physical display cadence, hardware/gamepad reconnection, OS focus
+and subjective responsiveness remain separate acceptance areas.

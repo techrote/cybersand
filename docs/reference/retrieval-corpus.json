@@ -133,6 +133,10 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-11-01-render-copy-production-reconciliation.md",
+      "reason": "Dated current-main R source selection, differential, runtime and graphical qualification. Retrieve through the bridge contract and validation ledger; historical stack results and new execution retain distinct identities."
+    },
+    {
       "path": "audits/2026-10-18-act002-actor-rigs.md",
       "reason": "Dated ACT-002 source/runtime, preserved failure and scoped rig validation evidence; retrieve explicitly through the rig contract or validation ledger, not as a default Current runtime contract"
     },

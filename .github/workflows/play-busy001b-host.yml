@@ -9,8 +9,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: play-busy001b-${{ github.ref }}
-  cancel-in-progress: true
+  group: play-busy001b-${{ github.run_id }}
+  cancel-in-progress: false
 
 env:
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
@@ -25,7 +25,8 @@ env:
 jobs:
   linux-real-host:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    # Existing 35m + 20m child builds, exact-source setup and evidence.
+    timeout-minutes: 90
     steps:
       - name: Check out exact qualification source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -139,7 +140,8 @@ jobs:
 
   windows-build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    # Existing 35m + 20m child builds, exact-source setup and evidence.
+    timeout-minutes: 90
     steps:
       - name: Check out exact qualification source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683

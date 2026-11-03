@@ -1902,6 +1902,7 @@ func _publish_snapshot(
 	render_full_refresh_requested = _render_full_refresh_requested
 	_render_full_refresh_requested = false
 	_mutex.unlock()
+	_observe_render_acknowledgement(acknowledged_render_serial)
 	force_render_full_refresh = (
 		force_render_full_refresh or render_full_refresh_requested
 		or _world_generation != _pending_render_world_generation
@@ -1919,7 +1920,7 @@ func _publish_snapshot(
 		)
 	):
 		if _world.has_method(&"take_render_snapshot"):
-			var render_packet: Dictionary = _world.take_render_snapshot(
+			var render_packet: Dictionary = _take_native_render_snapshot(
 				force_render_full_refresh
 			)
 			_append_native_render_packet(render_packet)
@@ -1929,7 +1930,7 @@ func _publish_snapshot(
 				or _pending_render_patch_rectangles.size()
 				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
 			):
-				_append_native_render_packet(_world.take_render_snapshot(true))
+				_append_native_render_packet(_take_native_render_snapshot(true))
 			if _pending_render_full_refresh:
 				_snapshot_cells = _pending_render_patch_cells.duplicate()
 		else:
@@ -2212,6 +2213,15 @@ func _publish_failure_snapshot() -> void:
 	_pending_emissions.clear()
 	_published_snapshot = snapshot
 	_mutex.unlock()
+
+
+func _take_native_render_snapshot(force_full: bool) -> Dictionary:
+	# Value-only observation seam; ordinary native and publication policy is unchanged.
+	return _world.take_render_snapshot(force_full)
+
+
+func _observe_render_acknowledgement(_serial: int) -> void:
+	pass # Test subclasses observe the exact mutex-latched ACK.
 
 
 func _clear_pending_render_patches() -> void:

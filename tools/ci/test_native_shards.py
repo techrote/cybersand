@@ -410,7 +410,7 @@ class NativeEvidenceTests(unittest.TestCase):
         output = self.root / "recorded"
         folder = output / "tsan"
         folder.mkdir(parents=True)
-        (folder / "run.log").write_text("Original timeout after15m\n")
+        (folder / "run.log").write_bytes(b"Original timeout after15m\n")
         (folder / gate.EXIT_FILES["family"]).write_bytes(b"124\n")
         (folder / gate.EXIT_FILES["log_capture"]).write_bytes(b"0\n")
         with mock.patch.object(gate, "source_identity", return_value=self.identity), \

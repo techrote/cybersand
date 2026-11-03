@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: play-life009-${{ github.event.pull_request.head.sha || github.sha }}
+  group: play-life009-${{ github.run_id }}
   cancel-in-progress: false
 
 env:

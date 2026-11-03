@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-02
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -130,6 +130,39 @@ Only the OS-focus predicate and device enumeration are synthetic; they do not
 qualify real hardware, OS focus delivery, natural course traversal or human feel.
 The [dated audit](../audits/2026-10-30-play-ui005-integrated-session.md) owns local
 source hashes, commands, original failures and final-head hosted-gate status.
+
+## Stopped composed-session recovery
+
+**Current implementation; exact-source qualification is recorded in
+[PR #332](https://github.com/techrote/cybersand/pull/332):** when a composed
+Play session's native World fails, **Restart applied session** retires the whole
+failed Main scene before the replacement starts its exclusive simulation worker. The existing
+[`main.gd`](../../godot/scripts/main.gd) exit path disposes accepted and pending
+Rapier graphs and joins its exclusive simulation worker. Recovery then uses ordinary
+session admission, with the accepted recipe, rig, solver policy/setup, options
+and owner settings copied by `_queue_failed_playable_restart`. Pending selector
+edits, failed cells, snapshots, native pointers, commands and lap state are not
+recovery inputs. The replacement starts paused at simulation tick zero.
+
+Main consumes its recovery envelope once, before startup's early returns.
+Repeated Restart requests latch one deferred replacement. F2 and the visible
+**Return to launcher** action use
+[`FeatureNavigation`](../../godot/scripts/feature_navigation.gd) to cancel both
+a queued request and an envelope between old-scene exit and replacement entry.
+The selector's separate PopupPanel viewport forwards F2 to that same owner.
+Failure and reload-error text stay visible; retries require explicit input.
+Native failed-World quarantine and main-thread Rapier ownership are unchanged.
+
+The [dated recovery audit](../audits/2026-10-31-play-stopped-session-recovery.md)
+preserves the original failure and earlier local results. LIFE007 exercises all
+five mechanical rigs with real capacity faults, accepted/pending graph disposal,
+stale-command refusal and fresh paused owners. LIFE008 covers three navigation
+orderings, including the no-current-scene boundary. The injected construction
+limit is removed before replacement; this is not a remedy for a persistently
+invalid configuration. Reload-error presentation includes a synthetic control.
+Resulting-head Linux/Windows, complete native and actual-backend shader gates
+remain source-specific; physical devices, OS focus, display cadence and human
+feel require separate acceptance. Downstream PACE004 #334 is a separate task.
 
 ## Immediate shared-course pause transitions
 
@@ -509,8 +542,10 @@ The [accepted receipt](../audits/2026-10-29-play-life005-native-failure-recovery
 preserves original CI-checkout ancestry and all source-specific cohorts.
 This exercises actual Main failure
 and ordinary default-policy recovery, not the five SetP course rigs. Prepared
-liquid construction still requires a healthy World; no prepared recovery or live
-solver replacement is admitted. Source/platform qualification is separate from
+liquid construction still requires a healthy World; this LIFE005 route admits no
+prepared recovery or live solver replacement. The separate
+[stopped composed-session recovery](#stopped-composed-session-recovery) route
+retires the failed owner before ordinary fresh construction. Source/platform qualification is separate from
 slow-native/outstanding-job shutdown, arbitrary cancellation races, general
 leak/race freedom, gameplay performance, physical devices and human feel.
 #269/#270 remain open.
