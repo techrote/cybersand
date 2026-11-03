@@ -1,0 +1,4650 @@
+{
+  "schema": "cybersand.gcr-causal.compact.v1",
+  "source": "9a0434915821256d34347d9115961ba4f26d4136",
+  "tree": "a25c37b0e976f678be27ea9432151f14e6b11f08",
+  "input_identity": "4a1dc9d7f71e03c7cd763d865f74afb10362cb5e37b908a388f2151462cb8b73",
+  "protocols": {
+    "timing": {
+      "sha256": "b3200ca2ec54b8ae638fdcd4fb61dbb345e09893c5871ecbcdd9469e9a3ac405",
+      "registration": "GCR-CAUSAL-TC-001-2026-11-03"
+    },
+    "event": {
+      "sha256": "030afa785b1d203004ac3f25b32c453dfbf20b1294a95952738e104ee4e0c3b8",
+      "registration": "GCR-CAUSAL-EVENT-001-2026-11-03"
+    }
+  },
+  "platforms": {
+    "windows": {
+      "native_sha256": "65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "engine_version": "4.7.stable.official.5b4e0cb0f",
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+    },
+    "linux": {
+      "native_sha256": "8bfe51214643c626dd5800f66ecff86f3348a166b55551e0674d1b4f762cfbf5",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "engine_version": "4.7.stable.official.5b4e0cb0f",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+    }
+  },
+  "complete_captures": 40,
+  "observations": 72000,
+  "reduction_sha256": {
+    "timing": "a142aba5b0d72c3d06e140aaf2514eff534e9fe7edf37517dd35fa6045f2cd7e",
+    "event": "7a2c7f35f301eede7a76d2096755f3b24547686c7f74b703f4ee3ff39cf17793"
+  },
+  "reader_sha256": "768219cac43bebc4a6ac075aa4064dc1680baeac8d75e650fe24bed54a39c2cb",
+  "production_selection": null,
+  "owner_gameplay_acceptance": null,
+  "scope": "Operational causal effects in the registered independent-body population; no production or whole-system energy acceptance",
+  "captures": [
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "flat-sand-unactuated-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289060226
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "flat-sand-unactuated-T",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289060226
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "flat-sand-unactuated-S",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289060226
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 81,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "flat-sand-unactuated-X",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 15.234755277634008,
+      "peak_effective_overlap": 39,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 0.123029485344887,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        2.0399999469518666,
+        500.4799949079746
+      ],
+      "event_budget_cost_sum": 500.76636923849594,
+      "applications": 1800,
+      "delivered_relative_error": [
+        4.708118198097272e-07,
+        1.214207150102009e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.07946777343698841,
+          11.819427490233977
+        ],
+        "position_span": [
+          0.25,
+          11.819427490233977
+        ],
+        "sampled_path_length": 11.859133465669023,
+        "net_rotation_unwrapped": 0.07585927844047549,
+        "sampled_angular_travel": 0.15642048418521903,
+        "speed_p50": 2.0680481130133996,
+        "speed_p95": 7.711259383919436,
+        "speed_max": 9.60333062771433,
+        "abs_omega_p95": 0.119858078658581,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 39,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -7.378080111928285
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -7.377105712890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          7.377105712890625
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 264,
+        "observed_bridge_active": 264,
+        "effective_translation_active": 0,
+        "setter_calls": 264,
+        "retained_proposed_c_cross_J_sum": -0.0009911035967888884,
+        "nominal_bridge_potential_sum": 28.03670548077031,
+        "observed_bridge_potential_sum": 28.033002126708652,
+        "post_delivery_potential_sum": -28.033002126708652,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "flat-sand-sustained-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.14296412467957,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        6.533041576067942e-08,
+        5.979657724530796e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.12744140625,
+          0.008728027344034217
+        ],
+        "position_span": [
+          0.173095703125,
+          0.12728881835903394
+        ],
+        "sampled_path_length": 7.009136906073149,
+        "net_rotation_unwrapped": 0.0377109767869115,
+        "sampled_angular_travel": 0.7145721351262182,
+        "speed_p50": 1.1097348719060607,
+        "speed_p95": 2.4562898217136344,
+        "speed_max": 2.7174529099297264,
+        "abs_omega_p95": 0.325270622968674,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.22666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.525575252017006
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.525482177734375
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.525482177727838
+        ],
+        "offered_active": 59,
+        "observed_bridge_active": 59,
+        "effective_translation_active": 59,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -0.009419598922249894,
+        "nominal_bridge_potential_sum": 5.797186175899917,
+        "observed_bridge_potential_sum": 5.796832361770156,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "flat-sand-sustained-T",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.30835294723511,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        7.635169487526267e-08,
+        9.019283331301864e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.01647949218698841,
+          -0.10177612304704553
+        ],
+        "position_span": [
+          0.078369140625,
+          0.2708129882820458
+        ],
+        "sampled_path_length": 7.168836372016215,
+        "net_rotation_unwrapped": -0.002203069161623719,
+        "sampled_angular_travel": 0.27774590963963397,
+        "speed_p50": 0.9499349946331112,
+        "speed_p95": 3.014647301149286,
+        "speed_max": 4.354197090605372,
+        "abs_omega_p95": 0.182620465755463,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.27666666666666667,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.3162637376226485
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.316436767578125
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.316436767575965
+        ],
+        "offered_active": 60,
+        "observed_bridge_active": 60,
+        "effective_translation_active": 60,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -0.0009491885053876044,
+        "nominal_bridge_potential_sum": 5.001802391259105,
+        "observed_bridge_potential_sum": 5.0024597913393345,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "flat-sand-sustained-S",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.14296412467957,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        6.533041576067942e-08,
+        5.979657724530796e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.12744140625,
+          0.008728027344034217
+        ],
+        "position_span": [
+          0.173095703125,
+          0.12728881835903394
+        ],
+        "sampled_path_length": 7.009136906073149,
+        "net_rotation_unwrapped": 0.0377109730616212,
+        "sampled_angular_travel": 0.7145721360575407,
+        "speed_p50": 1.1097348719060607,
+        "speed_p95": 2.4562898217136344,
+        "speed_max": 2.7174529099297264,
+        "abs_omega_p95": 0.325270622968674,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.22666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.525575252017006
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.525482177734375
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.525482177727838
+        ],
+        "offered_active": 59,
+        "observed_bridge_active": 59,
+        "effective_translation_active": 59,
+        "setter_calls": 59,
+        "retained_proposed_c_cross_J_sum": -0.009419598922249894,
+        "nominal_bridge_potential_sum": 5.797186175899917,
+        "observed_bridge_potential_sum": 5.796832361770156,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "flat-sand-sustained-X",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 4.799042701721021,
+      "peak_effective_overlap": 14,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 0.0595114529132843,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        -31.999999284744245,
+        31.999999284744245
+      ],
+      "event_budget_cost_sum": 45.254832506179845,
+      "applications": 1800,
+      "delivered_relative_error": [
+        7.160078451067876e-08,
+        1.6854492357332163e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.138671875,
+          0.5840148925780113
+        ],
+        "position_span": [
+          0.142822265625,
+          0.5840148925780113
+        ],
+        "sampled_path_length": 1.5490108811084038,
+        "net_rotation_unwrapped": 0.05910426378250111,
+        "sampled_angular_travel": 0.05983060598373491,
+        "speed_p50": 0.094768098239652,
+        "speed_p95": 0.685973285087077,
+        "speed_max": 0.6890746786632048,
+        "abs_omega_p95": 0.0322149097919464,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 14,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.0484610050916676
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.049896240234375
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          1.049896240234375
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 150,
+        "observed_bridge_active": 150,
+        "effective_translation_active": 0,
+        "setter_calls": 150,
+        "retained_proposed_c_cross_J_sum": -0.0013346640885174565,
+        "nominal_bridge_potential_sum": 3.9841519693318856,
+        "observed_bridge_potential_sum": 3.989605772340382,
+        "post_delivery_potential_sum": -3.989605772340382,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "barrel-gentle-C",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0.0279799309113002,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.54037261009216,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0596687083364031e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.003662109375,
+          0.014755249023011174
+        ],
+        "position_span": [
+          0.1301879882809942,
+          0.16001892089801117
+        ],
+        "sampled_path_length": 4.055675341581633,
+        "net_rotation_unwrapped": 0.0001378853339701933,
+        "sampled_angular_travel": 0.16127589833922676,
+        "speed_p50": 1.4882414475858388,
+        "speed_p95": 3.063587803653771,
+        "speed_max": 3.4150152255284385,
+        "abs_omega_p95": 0.0851333364844322,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.61,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.3663260014727716
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.36639404296875
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -2.3663940429750028
+        ],
+        "offered_active": 110,
+        "observed_bridge_active": 110,
+        "effective_translation_active": 110,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.02126598862651005,
+        "nominal_bridge_potential_sum": 217.98594379162216,
+        "observed_bridge_potential_sum": 217.9922192382814,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "barrel-gentle-X",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 7.51958592370815,
+      "peak_effective_overlap": 51,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 1.76866817474365,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        115.11999802291386,
+        145.31999823451042
+      ],
+      "event_budget_cost_sum": 194.28226799517884,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.1920929263858904e-07,
+        1.4746305825735773e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.0659790039059942,
+          1.2797088623040054
+        ],
+        "position_span": [
+          0.06970214843698841,
+          1.2797088623040054
+        ],
+        "sampled_path_length": 3.64755030957346,
+        "net_rotation_unwrapped": -0.02646553516388006,
+        "sampled_angular_travel": 0.02653896808623979,
+        "speed_p50": 0.08496344913224596,
+        "speed_p95": 1.4395795372639477,
+        "speed_max": 1.4506233381863698,
+        "abs_omega_p95": 0.0114006642252207,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 51,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.43815598450601
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.4376068115234375
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          2.4376068115234375
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 150,
+        "observed_bridge_active": 150,
+        "effective_translation_active": 0,
+        "setter_calls": 150,
+        "retained_proposed_c_cross_J_sum": 0.05603954239995801,
+        "nominal_bridge_potential_sum": 224.60292160207237,
+        "observed_bridge_potential_sum": 224.5523394775391,
+        "post_delivery_potential_sum": -224.5523394775391,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "barrel-high-C",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 6.69016327843201,
+      "peak_effective_overlap": 22,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 2.92296004295349,
+      "zero_overlap_suffix_start": 1432,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        59.159998729825006,
+        677.4400075376034
+      ],
+      "event_budget_cost_sum": 691.6020601317291,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.4493945428736774e-07,
+        3.934860426380027e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.5376586914059942,
+          -0.3484802246090055
+        ],
+        "position_span": [
+          0.8306884765630116,
+          0.47578430175801145
+        ],
+        "sampled_path_length": 2.486421519012241,
+        "net_rotation_unwrapped": 0.028534740209579967,
+        "sampled_angular_travel": 0.3130900561809598,
+        "speed_p50": 1.0669607747436336,
+        "speed_p95": 1.8253597456167043,
+        "speed_max": 3.6758259676898333,
+        "abs_omega_p95": 0.26938670873642,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.9933333333333333,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.6819398477673535
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.682037353515625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -2.6820373535182966
+        ],
+        "offered_active": 143,
+        "observed_bridge_active": 143,
+        "effective_translation_active": 143,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.1372927135239479,
+        "nominal_bridge_potential_sum": 247.06029031674527,
+        "observed_bridge_potential_sum": 247.06928100585952,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "windows",
+      "case": "barrel-high-X",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 32.5526244376829,
+      "peak_effective_overlap": 113,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 1.94122815132141,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        70.95999841392042,
+        2786.0799721106905
+      ],
+      "event_budget_cost_sum": 2787.74509394169,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.4493945428736774e-07,
+        3.934860426380027e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.1592712402339913,
+          5.657989501953011
+        ],
+        "position_span": [
+          0.1604614257809942,
+          5.657989501953011
+        ],
+        "sampled_path_length": 5.66203919076867,
+        "net_rotation_unwrapped": -0.0239193160086871,
+        "sampled_angular_travel": 0.02748324908316149,
+        "speed_p50": 0.18164997119305462,
+        "speed_p95": 0.2002060588177992,
+        "speed_max": 0.26697981716874997,
+        "abs_omega_p95": 0.0130053656175733,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 113,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -5.619990170001986
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -5.6200714111328125
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          5.6200714111328125
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 300,
+        "observed_bridge_active": 300,
+        "effective_translation_active": 0,
+        "setter_calls": 300,
+        "retained_proposed_c_cross_J_sum": -0.0018322905471848117,
+        "nominal_bridge_potential_sum": 517.7134767335727,
+        "observed_bridge_potential_sum": 517.7209783935555,
+        "post_delivery_potential_sum": -517.7209783935555,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "flat-sand-unactuated-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289049994
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "flat-sand-unactuated-T",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289049994
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "flat-sand-unactuated-S",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289049994
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 81,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "flat-sand-unactuated-X",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 15.234755277634008,
+      "peak_effective_overlap": 39,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 0.123029485344887,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        2.0399999469518666,
+        500.4799949079746
+      ],
+      "event_budget_cost_sum": 500.76636923849594,
+      "applications": 1800,
+      "delivered_relative_error": [
+        4.7081181980972776e-07,
+        1.0459878699298208e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.07946777343801159,
+          11.819427490233977
+        ],
+        "position_span": [
+          0.25,
+          11.819427490233977
+        ],
+        "sampled_path_length": 11.859133465667822,
+        "net_rotation_unwrapped": 0.07585927844047549,
+        "sampled_angular_travel": 0.15642040967941315,
+        "speed_p50": 2.068048116441634,
+        "speed_p95": 7.711259384476863,
+        "speed_max": 9.603330627714119,
+        "abs_omega_p95": 0.119858086109161,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 39,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -7.378080111928285
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -7.377105712890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          7.377105712890625
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 264,
+        "observed_bridge_active": 264,
+        "effective_translation_active": 0,
+        "setter_calls": 264,
+        "retained_proposed_c_cross_J_sum": -0.0009911032112768278,
+        "nominal_bridge_potential_sum": 28.03670548077031,
+        "observed_bridge_potential_sum": 28.033002126708652,
+        "post_delivery_potential_sum": -28.033002126708652,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "flat-sand-sustained-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.14296412467957,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        6.662004104205554e-08,
+        5.979657724530796e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.12744140625,
+          0.008728027344034217
+        ],
+        "position_span": [
+          0.17309570312602318,
+          0.12728881835903394
+        ],
+        "sampled_path_length": 7.0091369060748425,
+        "net_rotation_unwrapped": 0.037710947915911605,
+        "sampled_angular_travel": 0.7145721579436213,
+        "speed_p50": 1.1097348225349524,
+        "speed_p95": 2.456289823599363,
+        "speed_max": 2.7174529099297264,
+        "abs_omega_p95": 0.325270622968674,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.22666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.525575252017006
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.525482177734375
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.5254821777288612
+        ],
+        "offered_active": 59,
+        "observed_bridge_active": 59,
+        "effective_translation_active": 59,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -0.009419599133252611,
+        "nominal_bridge_potential_sum": 5.797186175899917,
+        "observed_bridge_potential_sum": 5.796832361770156,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "flat-sand-sustained-T",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.30835294723511,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        8.34753749263795e-08,
+        5.570390415599036e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.04052734375,
+          -0.0070800781260231815
+        ],
+        "position_span": [
+          0.20947265625,
+          0.26708984375
+        ],
+        "sampled_path_length": 8.365338509999944,
+        "net_rotation_unwrapped": 0.015352921793237342,
+        "sampled_angular_travel": 0.49294020072557043,
+        "speed_p50": 1.2676576263895165,
+        "speed_p95": 3.1893384996596543,
+        "speed_max": 4.312444999232045,
+        "abs_omega_p95": 0.346181809902191,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.2,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.4762686158064755
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.47625732421875
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.4762573242156236
+        ],
+        "offered_active": 49,
+        "observed_bridge_active": 49,
+        "effective_translation_active": 49,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.007896146348770115,
+        "nominal_bridge_potential_sum": 5.609820951246527,
+        "observed_bridge_potential_sum": 5.609777915623454,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "flat-sand-sustained-S",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.14296412467957,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        6.662004104205554e-08,
+        5.979657724530796e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.12744140625,
+          0.008728027344034217
+        ],
+        "position_span": [
+          0.17309570312602318,
+          0.12728881835903394
+        ],
+        "sampled_path_length": 7.0091369060748425,
+        "net_rotation_unwrapped": 0.037710947915911605,
+        "sampled_angular_travel": 0.7145721579436213,
+        "speed_p50": 1.1097348225349524,
+        "speed_p95": 2.456289823599363,
+        "speed_max": 2.7174529099297264,
+        "abs_omega_p95": 0.325270622968674,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.22666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.525575252017006
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.525482177734375
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.5254821777288612
+        ],
+        "offered_active": 59,
+        "observed_bridge_active": 59,
+        "effective_translation_active": 59,
+        "setter_calls": 59,
+        "retained_proposed_c_cross_J_sum": -0.009419599133252611,
+        "nominal_bridge_potential_sum": 5.797186175899917,
+        "observed_bridge_potential_sum": 5.796832361770156,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "flat-sand-sustained-X",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 4.799042701721021,
+      "peak_effective_overlap": 14,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 0.0595114529132843,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        -31.999999284744245,
+        31.999999284744245
+      ],
+      "event_budget_cost_sum": 45.254832506179845,
+      "applications": 1800,
+      "delivered_relative_error": [
+        7.160078451067876e-08,
+        1.7295028874320106e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.138671875,
+          0.5840148925780113
+        ],
+        "position_span": [
+          0.142822265625,
+          0.5840148925780113
+        ],
+        "sampled_path_length": 1.5490108811043248,
+        "net_rotation_unwrapped": 0.05910426378250111,
+        "sampled_angular_travel": 0.05983060598373491,
+        "speed_p50": 0.09476803233416889,
+        "speed_p95": 0.685973285087077,
+        "speed_max": 0.6890746786632048,
+        "abs_omega_p95": 0.0322149097919464,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 14,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.0484610050916676
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.049896240234375
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          1.049896240234375
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 150,
+        "observed_bridge_active": 150,
+        "effective_translation_active": 0,
+        "setter_calls": 150,
+        "retained_proposed_c_cross_J_sum": -0.001334664059413626,
+        "nominal_bridge_potential_sum": 3.9841519693318856,
+        "observed_bridge_potential_sum": 3.989605772340382,
+        "post_delivery_potential_sum": -3.989605772340382,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "barrel-gentle-C",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0.0279799309113002,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.54037261009216,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0588633692076854e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.003662109375,
+          0.014755249023011174
+        ],
+        "position_span": [
+          0.1301879882809942,
+          0.16001892089801117
+        ],
+        "sampled_path_length": 4.05567534158088,
+        "net_rotation_unwrapped": 0.0001378853339701918,
+        "sampled_angular_travel": 0.16127589647658164,
+        "speed_p50": 1.4882414475858388,
+        "speed_p95": 3.063587803653771,
+        "speed_max": 3.4150152255284385,
+        "abs_omega_p95": 0.0851333364844322,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.61,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.3663260014727716
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.36639404296875
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -2.366394042976026
+        ],
+        "offered_active": 110,
+        "observed_bridge_active": 110,
+        "effective_translation_active": 110,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.021265988355480627,
+        "nominal_bridge_potential_sum": 217.9859437916221,
+        "observed_bridge_potential_sum": 217.99221923828136,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "barrel-gentle-X",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 7.51958592370815,
+      "peak_effective_overlap": 51,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 1.76866817474365,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        115.11999802291386,
+        145.31999823451042
+      ],
+      "event_budget_cost_sum": 194.28226799517884,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.1920929263858904e-07,
+        1.4746305825735773e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.0659790039059942,
+          1.2797088623040054
+        ],
+        "position_span": [
+          0.06970214843698841,
+          1.2797088623040054
+        ],
+        "sampled_path_length": 3.647550309575515,
+        "net_rotation_unwrapped": -0.026465654373170056,
+        "sampled_angular_travel": 0.026539087295529784,
+        "speed_p50": 0.08496344913224596,
+        "speed_p95": 1.4395795372639477,
+        "speed_max": 1.4506233385463827,
+        "abs_omega_p95": 0.0114006642252207,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 51,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.43815598450601
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.4376068115234375
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          2.4376068115234375
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 150,
+        "observed_bridge_active": 150,
+        "effective_translation_active": 0,
+        "setter_calls": 150,
+        "retained_proposed_c_cross_J_sum": 0.05603954263278865,
+        "nominal_bridge_potential_sum": 224.60292160207237,
+        "observed_bridge_potential_sum": 224.55233947753905,
+        "post_delivery_potential_sum": -224.55233947753905,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "barrel-high-C",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 6.69016327843201,
+      "peak_effective_overlap": 22,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 2.92296004295349,
+      "zero_overlap_suffix_start": 1432,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        59.159998729825006,
+        677.4400075376034
+      ],
+      "event_budget_cost_sum": 691.6020601317291,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.44939454289344e-07,
+        3.357758765476504e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.5376586914059942,
+          -0.3484802246090055
+        ],
+        "position_span": [
+          0.8306884765630116,
+          0.47578430175801145
+        ],
+        "sampled_path_length": 2.486421519017708,
+        "net_rotation_unwrapped": 0.028534740209579967,
+        "sampled_angular_travel": 0.3130901157856019,
+        "speed_p50": 1.0669608943417481,
+        "speed_p95": 1.8253597456167043,
+        "speed_max": 3.675826211554577,
+        "abs_omega_p95": 0.26938670873642,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.9933333333333333,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.6819398477673535
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.682037353515625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -2.6820373535172735
+        ],
+        "offered_active": 143,
+        "observed_bridge_active": 143,
+        "effective_translation_active": 143,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.13729270883959543,
+        "nominal_bridge_potential_sum": 247.06029031674524,
+        "observed_bridge_potential_sum": 247.06928100585944,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "timing",
+      "platform": "linux",
+      "case": "barrel-high-X",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": null,
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 32.5526244376829,
+      "peak_effective_overlap": 113,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 1.94122815132141,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        70.95999841392042,
+        2786.0799721106905
+      ],
+      "event_budget_cost_sum": 2787.74509394169,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.44939454289344e-07,
+        3.357758765476504e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.1592712402339913,
+          5.657989501953011
+        ],
+        "position_span": [
+          0.1604614257809942,
+          5.657989501953011
+        ],
+        "sampled_path_length": 5.66203919076867,
+        "net_rotation_unwrapped": -0.023919316008687002,
+        "sampled_angular_travel": 0.02748325653374199,
+        "speed_p50": 0.18164997119305462,
+        "speed_p95": 0.20020605942028044,
+        "speed_max": 0.26697981716874997,
+        "abs_omega_p95": 0.0130053665488958,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 113,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -5.619990170001986
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -5.6200714111328125
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          5.6200714111328125
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 300,
+        "observed_bridge_active": 300,
+        "effective_translation_active": 0,
+        "setter_calls": 300,
+        "retained_proposed_c_cross_J_sum": -0.0018322910160861751,
+        "nominal_bridge_potential_sum": 517.7134767335727,
+        "observed_bridge_potential_sum": 517.7209783935554,
+        "post_delivery_potential_sum": -517.7209783935554,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "windows",
+      "case": "bank-sand-unactuated-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "first_hard": 1123,
+      "first_floor": 1127,
+      "first_rig_guard": null,
+      "peak_reference_entry": 191.009032726288,
+      "peak_effective_overlap": 55,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 4.59863376617432,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 65824,
+      "event_impulse_sum": [
+        -13.43999980390072,
+        2632.960031881935
+      ],
+      "event_budget_cost_sum": 2634.5736109167397,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.913182528078762e-07,
+        2.4523594688297123e-07
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 5.80919731873992e-07,
+        "sampled_angular_travel": 0.00010092413140228089,
+        "speed_p50": 0.024889126420038942,
+        "speed_p95": 0.02489017136395426,
+        "speed_max": 0.0248902756720781,
+        "abs_omega_p95": 0.00708563532680273,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          0.0
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 0,
+        "observed_bridge_active": 0,
+        "effective_translation_active": 0,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.0,
+        "nominal_bridge_potential_sum": 0.0,
+        "observed_bridge_potential_sum": 0.0,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "windows",
+      "case": "bank-sand-unactuated-E0",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 6,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 0.172422960400581,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 61207,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.5247646279390437,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921773910507806,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.253542825579643
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.252471923828125
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.2524719238271018
+        ],
+        "offered_active": 150,
+        "observed_bridge_active": 150,
+        "effective_translation_active": 150,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.00010658070834779203,
+        "nominal_bridge_potential_sum": 4.763462916523387,
+        "observed_bridge_potential_sum": 4.759393381467361,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "windows",
+      "case": "bank-salt-unactuated-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "2729b8b9b85724cc",
+      "first_hard": 1123,
+      "first_floor": 1127,
+      "first_rig_guard": null,
+      "peak_reference_entry": 191.009032726288,
+      "peak_effective_overlap": 55,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 4.59863376617432,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 65824,
+      "event_impulse_sum": [
+        -13.43999980390072,
+        2632.960031881935
+      ],
+      "event_budget_cost_sum": 2634.5736109167397,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.913182528078762e-07,
+        2.4523594688297123e-07
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 5.80919731873992e-07,
+        "sampled_angular_travel": 0.00010092413140228089,
+        "speed_p50": 0.024889126420038942,
+        "speed_p95": 0.02489017136395426,
+        "speed_max": 0.0248902756720781,
+        "abs_omega_p95": 0.00708563532680273,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          0.0
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 0,
+        "observed_bridge_active": 0,
+        "effective_translation_active": 0,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.0,
+        "nominal_bridge_potential_sum": 0.0,
+        "observed_bridge_potential_sum": 0.0,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "windows",
+      "case": "bank-salt-unactuated-E0",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "2729b8b9b85724cc",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 6,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 0.172422960400581,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 61207,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.5247646279390437,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921773910507806,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.253542825579643
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.252471923828125
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.2524719238271018
+        ],
+        "offered_active": 150,
+        "observed_bridge_active": 150,
+        "effective_translation_active": 150,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.00010658070834779203,
+        "nominal_bridge_potential_sum": 4.763462916523387,
+        "observed_bridge_potential_sum": 4.759393381467361,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "windows",
+      "case": "flat-sand-unactuated-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "3d7570047af9bf7f",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 0,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289060226
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "windows",
+      "case": "flat-sand-unactuated-E0",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "3d7570047af9bf7f",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 0,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289060226
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "windows",
+      "case": "barrel-high-C",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 6.69016327843201,
+      "peak_effective_overlap": 22,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 2.92296004295349,
+      "zero_overlap_suffix_start": 1432,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        59.159998729825006,
+        677.4400075376034
+      ],
+      "event_budget_cost_sum": 691.6020601317291,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.4493945428736774e-07,
+        3.934860426380027e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.5376586914059942,
+          -0.3484802246090055
+        ],
+        "position_span": [
+          0.8306884765630116,
+          0.47578430175801145
+        ],
+        "sampled_path_length": 2.486421519012241,
+        "net_rotation_unwrapped": 0.028534740209579967,
+        "sampled_angular_travel": 0.3130900561809598,
+        "speed_p50": 1.0669607747436336,
+        "speed_p95": 1.8253597456167043,
+        "speed_max": 3.6758259676898333,
+        "abs_omega_p95": 0.26938670873642,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.9933333333333333,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.6819398477673535
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.6820373535182966
+        ],
+        "post_delivery_offset_sum": [
+          0,
+          0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -2.6820373535182966
+        ],
+        "offered_active": 143,
+        "observed_bridge_active": 143,
+        "effective_translation_active": 143,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.13729271006372853,
+        "nominal_bridge_potential_sum": 247.06029031674527,
+        "observed_bridge_potential_sum": null,
+        "post_delivery_potential_sum": null,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "windows",
+      "case": "barrel-high-E0",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 6.38551027650695,
+      "peak_effective_overlap": 20,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.36067461967468,
+      "zero_overlap_suffix_start": 1370,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.3425932647148078e-07,
+        4.1982430476483756e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          1.279113769531989,
+          0.7886810302740059
+        ],
+        "position_span": [
+          1.71533203125,
+          0.918411254882983
+        ],
+        "sampled_path_length": 5.354990710439716,
+        "net_rotation_unwrapped": 0.429875761270523,
+        "sampled_angular_travel": 0.5647381246089946,
+        "speed_p50": 1.4396641124627716,
+        "speed_p95": 3.0395898980767413,
+        "speed_max": 3.9200174329695776,
+        "abs_omega_p95": 0.406891673803329,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.7766666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.8433647132478654
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.8432464599578395
+        ],
+        "post_delivery_offset_sum": [
+          0,
+          0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -2.8432464599578395
+        ],
+        "offered_active": 108,
+        "observed_bridge_active": 108,
+        "effective_translation_active": 108,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.16894152504151996,
+        "nominal_bridge_potential_sum": 261.9307484156312,
+        "observed_bridge_potential_sum": null,
+        "post_delivery_potential_sum": null,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "linux",
+      "case": "bank-sand-unactuated-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "first_hard": 1123,
+      "first_floor": 1127,
+      "first_rig_guard": null,
+      "peak_reference_entry": 191.009032726288,
+      "peak_effective_overlap": 55,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 4.59863376617432,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 65824,
+      "event_impulse_sum": [
+        -13.43999980390072,
+        2632.960031881935
+      ],
+      "event_budget_cost_sum": 2634.5736109167397,
+      "applications": 1800,
+      "delivered_relative_error": [
+        4.911793449548041e-07,
+        2.4523594688297123e-07
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 5.80919731873992e-07,
+        "sampled_angular_travel": 0.00010092413140228089,
+        "speed_p50": 0.024889126420038942,
+        "speed_p95": 0.02489017136395426,
+        "speed_max": 0.0248902756720781,
+        "abs_omega_p95": 0.00708563532680273,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          0.0
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 0,
+        "observed_bridge_active": 0,
+        "effective_translation_active": 0,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.0,
+        "nominal_bridge_potential_sum": 0.0,
+        "observed_bridge_potential_sum": 0.0,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "linux",
+      "case": "bank-sand-unactuated-E0",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 6,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 0.172422960400581,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 61207,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.524764627930883,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921726226791808,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.253542825579643
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.252471923828125
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.252471923821986
+        ],
+        "offered_active": 150,
+        "observed_bridge_active": 150,
+        "effective_translation_active": 150,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.0001065807317672806,
+        "nominal_bridge_potential_sum": 4.763462916523387,
+        "observed_bridge_potential_sum": 4.759393381467361,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "linux",
+      "case": "bank-salt-unactuated-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "2729b8b9b85724cc",
+      "first_hard": 1123,
+      "first_floor": 1127,
+      "first_rig_guard": null,
+      "peak_reference_entry": 191.009032726288,
+      "peak_effective_overlap": 55,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 4.59863376617432,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 65824,
+      "event_impulse_sum": [
+        -13.43999980390072,
+        2632.960031881935
+      ],
+      "event_budget_cost_sum": 2634.5736109167397,
+      "applications": 1800,
+      "delivered_relative_error": [
+        4.911793449548041e-07,
+        2.4523594688297123e-07
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 5.80919731873992e-07,
+        "sampled_angular_travel": 0.00010092413140228089,
+        "speed_p50": 0.024889126420038942,
+        "speed_p95": 0.02489017136395426,
+        "speed_max": 0.0248902756720781,
+        "abs_omega_p95": 0.00708563532680273,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          0.0
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          0.0
+        ],
+        "offered_active": 0,
+        "observed_bridge_active": 0,
+        "effective_translation_active": 0,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.0,
+        "nominal_bridge_potential_sum": 0.0,
+        "observed_bridge_potential_sum": 0.0,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "linux",
+      "case": "bank-salt-unactuated-E0",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "2729b8b9b85724cc",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 6,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 0.172422960400581,
+      "zero_overlap_suffix_start": null,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 61207,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.524764627930883,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921726226791808,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_contact_node_duty": 1.0,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.253542825579643
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.252471923828125
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.252471923821986
+        ],
+        "offered_active": 150,
+        "observed_bridge_active": 150,
+        "effective_translation_active": 150,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.0001065807317672806,
+        "nominal_bridge_potential_sum": 4.763462916523387,
+        "observed_bridge_potential_sum": 4.759393381467361,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "linux",
+      "case": "flat-sand-unactuated-C",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "3d7570047af9bf7f",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 0,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289049994
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "linux",
+      "case": "flat-sand-unactuated-E0",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "initial_native_hash": "3d7570047af9bf7f",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 0,
+      "peak_effective_overlap": 0,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.15772747993469,
+      "zero_overlap_suffix_start": 0,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 31,
+      "raw_censuses": 33,
+      "native_blocked_contacts": 0,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        5.264844078534454e-08,
+        1.0733431715174761e-23
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.06430053710903394
+        ],
+        "position_span": [
+          0.0,
+          0.27844238281295475
+        ],
+        "sampled_path_length": 6.0888366699171,
+        "net_rotation_unwrapped": -6.1666486719396e-17,
+        "sampled_angular_travel": 9.8846997939124e-17,
+        "speed_p50": 0.633362054824829,
+        "speed_p95": 3.17950820922852,
+        "speed_max": 4.44621086120605,
+        "abs_omega_p95": 6.50725650189828e-17,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.44666666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -1.1380709605291488
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -1.13824462890625
+        ],
+        "post_delivery_offset_sum": [
+          0.0,
+          0.0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -1.1382446289049994
+        ],
+        "offered_active": 81,
+        "observed_bridge_active": 81,
+        "effective_translation_active": 81,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": -6.438805854208e-19,
+        "nominal_bridge_potential_sum": 4.324669812813124,
+        "observed_bridge_potential_sum": 4.325329654296179,
+        "post_delivery_potential_sum": 0.0,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "linux",
+      "case": "barrel-high-C",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 6.69016327843201,
+      "peak_effective_overlap": 22,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 2.92296004295349,
+      "zero_overlap_suffix_start": 1432,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        59.159998729825006,
+        677.4400075376034
+      ],
+      "event_budget_cost_sum": 691.6020601317291,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.44939454289344e-07,
+        3.357758765476504e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.5376586914059942,
+          -0.3484802246090055
+        ],
+        "position_span": [
+          0.8306884765630116,
+          0.47578430175801145
+        ],
+        "sampled_path_length": 2.486421519017708,
+        "net_rotation_unwrapped": 0.028534740209579967,
+        "sampled_angular_travel": 0.3130901157856019,
+        "speed_p50": 1.0669608943417481,
+        "speed_p95": 1.8253597456167043,
+        "speed_max": 3.675826211554577,
+        "abs_omega_p95": 0.26938670873642,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.9933333333333333,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.6819398477673535
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.6820373535172735
+        ],
+        "post_delivery_offset_sum": [
+          0,
+          0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -2.6820373535172735
+        ],
+        "offered_active": 143,
+        "observed_bridge_active": 143,
+        "effective_translation_active": 143,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.13729270581024025,
+        "nominal_bridge_potential_sum": 247.06029031674524,
+        "observed_bridge_potential_sum": null,
+        "post_delivery_potential_sum": null,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    },
+    {
+      "lane": "event",
+      "platform": "linux",
+      "case": "barrel-high-E0",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "first_hard": null,
+      "first_floor": null,
+      "first_rig_guard": null,
+      "peak_reference_entry": 6.38551027650695,
+      "peak_effective_overlap": 20,
+      "overlap_coverage": 1.0,
+      "peak_upward_velocity": 3.36067461967468,
+      "zero_overlap_suffix_start": 1370,
+      "exact_conservation": true,
+      "sampled_conservation_checks": 1800,
+      "raw_censuses": 2,
+      "native_blocked_contacts": null,
+      "event_impulse_sum": [
+        0.0,
+        0.0
+      ],
+      "event_budget_cost_sum": 0.0,
+      "applications": 1800,
+      "delivered_relative_error": [
+        1.3425932626741783e-07,
+        4.895232735835364e-08
+      ],
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          1.279113769531989,
+          0.7886810302740059
+        ],
+        "position_span": [
+          1.71533203125,
+          0.918411254882983
+        ],
+        "sampled_path_length": 5.354990710441124,
+        "net_rotation_unwrapped": 0.429875731468201,
+        "sampled_angular_travel": 0.5647382736206047,
+        "speed_p50": 1.4396641165972544,
+        "speed_p95": 3.0395898980767413,
+        "speed_max": 3.9200172928951273,
+        "abs_omega_p95": 0.406891614198685,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_contact_node_duty": 0.7766666666666666,
+      "tail_correction": {
+        "offered_correction_sum": [
+          0.0,
+          -2.843364713247865
+        ],
+        "observed_bridge_translation_sum": [
+          0.0,
+          -2.843246459953747
+        ],
+        "post_delivery_offset_sum": [
+          0,
+          0
+        ],
+        "effective_translation_sum": [
+          0.0,
+          -2.843246459953747
+        ],
+        "offered_active": 108,
+        "observed_bridge_active": 108,
+        "effective_translation_active": 108,
+        "setter_calls": 0,
+        "retained_proposed_c_cross_J_sum": 0.1689415199511796,
+        "nominal_bridge_potential_sum": 261.9307484156312,
+        "observed_bridge_potential_sum": null,
+        "post_delivery_potential_sum": null,
+        "scope": "X cancels observed withdrawal after original wrench delivery; offered correction and corrected-COM torque remain in original receipt"
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "lane": "timing",
+      "control": "flat-sand-unactuated-C",
+      "candidate": "flat-sand-unactuated-T",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 0.0,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "registered_null_comparison": true,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": false,
+      "registered_late_reporting_effect": false,
+      "correction_operation_exercised": null,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-unactuated-C",
+      "candidate": "flat-sand-unactuated-S",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 0.0,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "registered_null_comparison": true,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": false,
+      "registered_late_reporting_effect": false,
+      "correction_operation_exercised": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-unactuated-S",
+      "candidate": "flat-sand-unactuated-X",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 15.492818555637434,
+        "maximum_velocity_error": 10.36885622966727,
+        "maximum_rotation_error": 0.07977440953254718,
+        "maximum_omega_error": 0.157148465514183,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": true,
+      "registered_late_reporting_effect": true,
+      "correction_operation_exercised": true,
+      "sham_vs_control_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 0.0,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "translation_only_attribution_qualified": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.5966666666666667,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 18,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": -0.07946777343698841,
+          "horizontal_travel_difference": -0.07946777343698841,
+          "contact_duty_difference": 0.5533333333333333,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 39,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-sustained-C",
+      "candidate": "flat-sand-sustained-T",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 2.5401250833100657,
+        "maximum_velocity_error": 5.589426806037776,
+        "maximum_rotation_error": 0.0693627567961812,
+        "maximum_omega_error": 0.712394461035728,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 1.1441650390625,
+      "late_operational_reporting_effect": false,
+      "registered_late_reporting_effect": false,
+      "correction_operation_exercised": null,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 4.57666015625,
+          "horizontal_travel_candidate": 4.89404296875,
+          "horizontal_travel_difference": 0.3173828125,
+          "contact_duty_difference": -0.08666666666666667,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.12744140625,
+          "horizontal_travel_candidate": -0.01647949218698841,
+          "horizontal_travel_difference": -0.1439208984369884,
+          "contact_duty_difference": 0.05000000000000002,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-sustained-C",
+      "candidate": "flat-sand-sustained-S",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 3.958120939947379e-09,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "registered_null_comparison": true,
+      "registered_late_effect_threshold": 1.1441650390625,
+      "late_operational_reporting_effect": false,
+      "registered_late_reporting_effect": false,
+      "correction_operation_exercised": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 4.57666015625,
+          "horizontal_travel_candidate": 4.57666015625,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.12744140625,
+          "horizontal_travel_candidate": 0.12744140625,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-sustained-S",
+      "candidate": "flat-sand-sustained-X",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 14.164383348069727,
+        "maximum_velocity_error": 4.192324769390321,
+        "maximum_rotation_error": 0.7929589189589019,
+        "maximum_omega_error": 0.634261548519135,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 1.1441650390625,
+      "late_operational_reporting_effect": true,
+      "registered_late_reporting_effect": true,
+      "correction_operation_exercised": true,
+      "sham_vs_control_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 3.958120939947379e-09,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "translation_only_attribution_qualified": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 4.57666015625,
+          "horizontal_travel_candidate": 0.7652587890619884,
+          "horizontal_travel_difference": -3.8114013671880116,
+          "contact_duty_difference": 0.7633333333333333,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.12744140625,
+          "horizontal_travel_candidate": 0.138671875,
+          "horizontal_travel_difference": 0.01123046875,
+          "contact_duty_difference": 0.7733333333333333,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 14,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "barrel-gentle-C",
+      "candidate": "barrel-gentle-X",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 10.742225824808216,
+        "maximum_velocity_error": 4.85520347653046,
+        "maximum_rotation_error": 1.1391697609797116,
+        "maximum_omega_error": 0.404195018112659,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": true,
+      "registered_late_reporting_effect": true,
+      "correction_operation_exercised": true,
+      "barrel_guards": {
+        "entry_control": 0.0279799309113002,
+        "entry_candidate": 7.51958592370815,
+        "entry_pass": false,
+        "overlap_control": 0,
+        "overlap_candidate": 51,
+        "overlap_pass": false,
+        "upward_velocity_control": 3.54037261009216,
+        "upward_velocity_candidate": 1.76866817474365,
+        "rebound_pass": true
+      },
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.044982910155994205,
+          "horizontal_travel_candidate": -0.0911254882809942,
+          "horizontal_travel_difference": -0.1361083984369884,
+          "contact_duty_difference": 0.3966666666666666,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 20,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.003662109375,
+          "horizontal_travel_candidate": -0.0659790039059942,
+          "horizontal_travel_difference": -0.0696411132809942,
+          "contact_duty_difference": 0.39,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 51,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "barrel-high-C",
+      "candidate": "barrel-high-X",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 30.739497992876807,
+        "maximum_velocity_error": 3.5964039205392733,
+        "maximum_rotation_error": 0.4734426923096177,
+        "maximum_omega_error": 0.5768729811534288,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": true,
+      "registered_late_reporting_effect": true,
+      "correction_operation_exercised": true,
+      "barrel_guards": {
+        "entry_control": 6.69016327843201,
+        "entry_candidate": 32.5526244376829,
+        "entry_pass": false,
+        "overlap_control": 22,
+        "overlap_candidate": 113,
+        "overlap_pass": false,
+        "upward_velocity_control": 2.92296004295349,
+        "upward_velocity_candidate": 1.94122815132141,
+        "rebound_pass": true
+      },
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.4720458984380116,
+          "horizontal_travel_candidate": -0.019073486329006073,
+          "horizontal_travel_difference": -0.49111938476701766,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 4,
+          "effective_overlap_candidate": 97,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": -0.5376586914059942,
+          "horizontal_travel_candidate": -0.1592712402339913,
+          "horizontal_travel_difference": 0.3783874511720029,
+          "contact_duty_difference": 0.00666666666666671,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 113,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-unactuated-C",
+      "candidate": "flat-sand-unactuated-T",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 0.0,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "registered_null_comparison": true,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": false,
+      "registered_late_reporting_effect": false,
+      "correction_operation_exercised": null,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-unactuated-C",
+      "candidate": "flat-sand-unactuated-S",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 0.0,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "registered_null_comparison": true,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": false,
+      "registered_late_reporting_effect": false,
+      "correction_operation_exercised": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-unactuated-S",
+      "candidate": "flat-sand-unactuated-X",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 15.49281855563744,
+        "maximum_velocity_error": 10.368856232462294,
+        "maximum_rotation_error": 0.07977441698312779,
+        "maximum_omega_error": 0.157148465514183,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": true,
+      "registered_late_reporting_effect": true,
+      "correction_operation_exercised": true,
+      "sham_vs_control_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 0.0,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "translation_only_attribution_qualified": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.5966666666666667,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 18,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": -0.07946777343801159,
+          "horizontal_travel_difference": -0.07946777343801159,
+          "contact_duty_difference": 0.5533333333333333,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 39,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-sustained-C",
+      "candidate": "flat-sand-sustained-T",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 2.5401250833100657,
+        "maximum_velocity_error": 5.589428865465838,
+        "maximum_rotation_error": 0.0693624773994088,
+        "maximum_omega_error": 0.794658184051514,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 1.1441650390625,
+      "late_operational_reporting_effect": false,
+      "registered_late_reporting_effect": false,
+      "correction_operation_exercised": null,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 4.57666015625,
+          "horizontal_travel_candidate": 4.893676757813012,
+          "horizontal_travel_difference": 0.3170166015630116,
+          "contact_duty_difference": -0.08666666666666667,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.12744140625,
+          "horizontal_travel_candidate": 0.04052734375,
+          "horizontal_travel_difference": -0.0869140625,
+          "contact_duty_difference": -0.026666666666666644,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-sustained-C",
+      "candidate": "flat-sand-sustained-S",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 1.862645199537938e-09,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "registered_null_comparison": true,
+      "registered_late_effect_threshold": 1.1441650390625,
+      "late_operational_reporting_effect": false,
+      "registered_late_reporting_effect": false,
+      "correction_operation_exercised": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 4.57666015625,
+          "horizontal_travel_candidate": 4.57666015625,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.12744140625,
+          "horizontal_travel_candidate": 0.12744140625,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "flat-sand-sustained-S",
+      "candidate": "flat-sand-sustained-X",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 14.164383348070732,
+        "maximum_velocity_error": 4.192324786178436,
+        "maximum_rotation_error": 0.7929588407278056,
+        "maximum_omega_error": 0.634261548519135,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 1.1441650390625,
+      "late_operational_reporting_effect": true,
+      "registered_late_reporting_effect": true,
+      "correction_operation_exercised": true,
+      "sham_vs_control_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 1.862645199537938e-09,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "translation_only_attribution_qualified": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 4.57666015625,
+          "horizontal_travel_candidate": 0.7652587890630116,
+          "horizontal_travel_difference": -3.8114013671869884,
+          "contact_duty_difference": 0.7633333333333333,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.12744140625,
+          "horizontal_travel_candidate": 0.138671875,
+          "horizontal_travel_difference": 0.01123046875,
+          "contact_duty_difference": 0.7733333333333333,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 14,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "barrel-gentle-C",
+      "candidate": "barrel-gentle-X",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 10.742225824808216,
+        "maximum_velocity_error": 4.855203477405396,
+        "maximum_rotation_error": 1.1391697609797116,
+        "maximum_omega_error": 0.404194988310337,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": true,
+      "registered_late_reporting_effect": true,
+      "correction_operation_exercised": true,
+      "barrel_guards": {
+        "entry_control": 0.0279799309113002,
+        "entry_candidate": 7.51958592370815,
+        "entry_pass": false,
+        "overlap_control": 0,
+        "overlap_candidate": 51,
+        "overlap_pass": false,
+        "upward_velocity_control": 3.54037261009216,
+        "upward_velocity_candidate": 1.76866817474365,
+        "rebound_pass": true
+      },
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.044982910155994205,
+          "horizontal_travel_candidate": -0.0911254882809942,
+          "horizontal_travel_difference": -0.1361083984369884,
+          "contact_duty_difference": 0.3966666666666666,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 20,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.003662109375,
+          "horizontal_travel_candidate": -0.0659790039059942,
+          "horizontal_travel_difference": -0.0696411132809942,
+          "contact_duty_difference": 0.39,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 51,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "timing",
+      "control": "barrel-high-C",
+      "candidate": "barrel-high-X",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 30.739497992876807,
+        "maximum_velocity_error": 3.5964041646572795,
+        "maximum_rotation_error": 0.4734426327049728,
+        "maximum_omega_error": 0.5768730407580738,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "registered_late_effect_threshold": 0.25,
+      "late_operational_reporting_effect": true,
+      "registered_late_reporting_effect": true,
+      "correction_operation_exercised": true,
+      "barrel_guards": {
+        "entry_control": 6.69016327843201,
+        "entry_candidate": 32.5526244376829,
+        "entry_pass": false,
+        "overlap_control": 22,
+        "overlap_candidate": 113,
+        "overlap_pass": false,
+        "upward_velocity_control": 2.92296004295349,
+        "upward_velocity_candidate": 1.94122815132141,
+        "rebound_pass": true
+      },
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.4720458984380116,
+          "horizontal_travel_candidate": -0.019073486329006073,
+          "horizontal_travel_difference": -0.49111938476701766,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 4,
+          "effective_overlap_candidate": 97,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": -0.5376586914059942,
+          "horizontal_travel_candidate": -0.1592712402339913,
+          "horizontal_travel_difference": 0.3783874511720029,
+          "contact_duty_difference": 0.00666666666666671,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 113,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "event",
+      "control": "bank-sand-unactuated-C",
+      "candidate": "bank-sand-unactuated-E0",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1123,
+      "censoring": {
+        "control_first_hard": 1123,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1123,
+        "maximum_position_error": 193.13718002059557,
+        "maximum_velocity_error": 29.407628400903935,
+        "maximum_rotation_error": 1.5356449037790314,
+        "maximum_omega_error": 7.714471071958545,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "descent_comparison": {
+        "tick": 900,
+        "registered_tick900_supported": true,
+        "control": 154.26651000976602,
+        "candidate": 1.072906494141023,
+        "decrease": 153.193603515625,
+        "threshold": 38.566627502441506,
+        "common_prefix_reporting_effect": true,
+        "registered_channel_effect": true
+      },
+      "initial_native_hash_match": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": -0.18682861328198896,
+          "horizontal_travel_candidate": 0.01611328125,
+          "horizontal_travel_difference": 0.20294189453198896,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 223,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 54,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": false
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.01452636718698841,
+          "horizontal_travel_difference": 0.01452636718698841,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 0,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 54,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": false
+        }
+      }
+    },
+    {
+      "lane": "event",
+      "control": "bank-salt-unactuated-C",
+      "candidate": "bank-salt-unactuated-E0",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1123,
+      "censoring": {
+        "control_first_hard": 1123,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1123,
+        "maximum_position_error": 193.13718002059557,
+        "maximum_velocity_error": 29.407628400903935,
+        "maximum_rotation_error": 1.5356449037790314,
+        "maximum_omega_error": 7.714471071958545,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "descent_comparison": {
+        "tick": 900,
+        "registered_tick900_supported": true,
+        "control": 154.26651000976602,
+        "candidate": 1.072906494141023,
+        "decrease": 153.193603515625,
+        "threshold": 38.566627502441506,
+        "common_prefix_reporting_effect": true,
+        "registered_channel_effect": true
+      },
+      "initial_native_hash_match": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": -0.18682861328198896,
+          "horizontal_travel_candidate": 0.01611328125,
+          "horizontal_travel_difference": 0.20294189453198896,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 223,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 54,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": false
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.01452636718698841,
+          "horizontal_travel_difference": 0.01452636718698841,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 0,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 54,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": false
+        }
+      }
+    },
+    {
+      "lane": "event",
+      "control": "flat-sand-unactuated-C",
+      "candidate": "flat-sand-unactuated-E0",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 0.0,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "registered_null_comparison": true,
+      "descent_comparison": {
+        "tick": 900,
+        "registered_tick900_supported": true,
+        "control": 4.536254882813012,
+        "candidate": 4.536254882813012,
+        "decrease": 0.0,
+        "threshold": 2,
+        "common_prefix_reporting_effect": false,
+        "registered_channel_effect": false
+      },
+      "initial_native_hash_match": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "event",
+      "control": "barrel-high-C",
+      "candidate": "barrel-high-E0",
+      "platform": "windows",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 2.150540228211337,
+        "maximum_velocity_error": 6.8854490827423565,
+        "maximum_rotation_error": 0.507924258708954,
+        "maximum_omega_error": 0.679384380578995,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "descent_comparison": {
+        "tick": 900,
+        "registered_tick900_supported": true,
+        "control": 6.190017700195995,
+        "candidate": 5.399917602539006,
+        "decrease": 0.790100097656989,
+        "threshold": 2,
+        "common_prefix_reporting_effect": false,
+        "registered_channel_effect": false
+      },
+      "initial_native_hash_match": true,
+      "barrel_guards": {
+        "entry_control": 6.69016327843201,
+        "entry_candidate": 6.38551027650695,
+        "entry_pass": true,
+        "overlap_control": 22,
+        "overlap_candidate": 20,
+        "overlap_pass": true,
+        "upward_velocity_control": 2.92296004295349,
+        "upward_velocity_candidate": 3.36067461967468,
+        "rebound_pass": true
+      },
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.4720458984380116,
+          "horizontal_travel_candidate": 0.762023925781989,
+          "horizontal_travel_difference": 0.2899780273439774,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 4,
+          "effective_overlap_candidate": 2,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": -0.5376586914059942,
+          "horizontal_travel_candidate": 1.279113769531989,
+          "horizontal_travel_difference": 1.8167724609379832,
+          "contact_duty_difference": -0.21666666666666667,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "event",
+      "control": "bank-sand-unactuated-C",
+      "candidate": "bank-sand-unactuated-E0",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1123,
+      "censoring": {
+        "control_first_hard": 1123,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1123,
+        "maximum_position_error": 193.13718002059554,
+        "maximum_velocity_error": 29.40763026391381,
+        "maximum_rotation_error": 1.5356449051760153,
+        "maximum_omega_error": 7.714471563696856,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "descent_comparison": {
+        "tick": 900,
+        "registered_tick900_supported": true,
+        "control": 154.26651000976602,
+        "candidate": 1.072906494141023,
+        "decrease": 153.193603515625,
+        "threshold": 38.566627502441506,
+        "common_prefix_reporting_effect": true,
+        "registered_channel_effect": true
+      },
+      "initial_native_hash_match": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": -0.18682861328096578,
+          "horizontal_travel_candidate": 0.01611328125,
+          "horizontal_travel_difference": 0.20294189453096578,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 223,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 54,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": false
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.01452636718698841,
+          "horizontal_travel_difference": 0.01452636718698841,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 0,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 54,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": false
+        }
+      }
+    },
+    {
+      "lane": "event",
+      "control": "bank-salt-unactuated-C",
+      "candidate": "bank-salt-unactuated-E0",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1123,
+      "censoring": {
+        "control_first_hard": 1123,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1123,
+        "maximum_position_error": 193.13718002059554,
+        "maximum_velocity_error": 29.40763026391381,
+        "maximum_rotation_error": 1.5356449051760153,
+        "maximum_omega_error": 7.714471563696856,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "descent_comparison": {
+        "tick": 900,
+        "registered_tick900_supported": true,
+        "control": 154.26651000976602,
+        "candidate": 1.072906494141023,
+        "decrease": 153.193603515625,
+        "threshold": 38.566627502441506,
+        "common_prefix_reporting_effect": true,
+        "registered_channel_effect": true
+      },
+      "initial_native_hash_match": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": -0.18682861328096578,
+          "horizontal_travel_candidate": 0.01611328125,
+          "horizontal_travel_difference": 0.20294189453096578,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 223,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 54,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": false
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.01452636718698841,
+          "horizontal_travel_difference": 0.01452636718698841,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 0,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 54,
+          "effective_overlap_candidate": 6,
+          "direct_granular_comparison_supported": false
+        }
+      }
+    },
+    {
+      "lane": "event",
+      "control": "flat-sand-unactuated-C",
+      "candidate": "flat-sand-unactuated-E0",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 0.0,
+        "maximum_velocity_error": 0.0,
+        "maximum_rotation_error": 0.0,
+        "maximum_omega_error": 0.0,
+        "within_registered_tolerance": true
+      },
+      "registered_null_comparison": true,
+      "descent_comparison": {
+        "tick": 900,
+        "registered_tick900_supported": true,
+        "control": 4.536254882811988,
+        "candidate": 4.536254882811988,
+        "decrease": 0.0,
+        "threshold": 2,
+        "common_prefix_reporting_effect": false,
+        "registered_channel_effect": false
+      },
+      "initial_native_hash_match": true,
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": 0.0,
+          "horizontal_travel_candidate": 0.0,
+          "horizontal_travel_difference": 0.0,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    },
+    {
+      "lane": "event",
+      "control": "barrel-high-C",
+      "candidate": "barrel-high-E0",
+      "platform": "linux",
+      "initial_body_and_counts_match": true,
+      "common_uncensored_end_exclusive": 1800,
+      "censoring": {
+        "control_first_hard": null,
+        "candidate_first_hard": null,
+        "control_first_rig_guard": null,
+        "candidate_first_rig_guard": null,
+        "scope": "Direct granular attribution only before first hard contact or rig safety/movement guard; later rows remain operational outcomes"
+      },
+      "common_uncensored_physical_parity": {
+        "observations": 1800,
+        "maximum_position_error": 2.1505402282122827,
+        "maximum_velocity_error": 6.885449322416934,
+        "maximum_rotation_error": 0.507924288511276,
+        "maximum_omega_error": 0.679384410381317,
+        "within_registered_tolerance": false
+      },
+      "registered_null_comparison": false,
+      "descent_comparison": {
+        "tick": 900,
+        "registered_tick900_supported": true,
+        "control": 6.190017700195995,
+        "candidate": 5.399917602539006,
+        "decrease": 0.790100097656989,
+        "threshold": 2,
+        "common_prefix_reporting_effect": false,
+        "registered_channel_effect": false
+      },
+      "initial_native_hash_match": true,
+      "barrel_guards": {
+        "entry_control": 6.69016327843201,
+        "entry_candidate": 6.38551027650695,
+        "entry_pass": true,
+        "overlap_control": 22,
+        "overlap_candidate": 20,
+        "overlap_pass": true,
+        "upward_velocity_control": 2.92296004295349,
+        "upward_velocity_candidate": 3.36067461967468,
+        "rebound_pass": true
+      },
+      "windows": {
+        "drive_late": {
+          "horizontal_travel_control": 0.4720458984380116,
+          "horizontal_travel_candidate": 0.762023925781989,
+          "horizontal_travel_difference": 0.2899780273439774,
+          "contact_duty_difference": 0.0,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 4,
+          "effective_overlap_candidate": 2,
+          "direct_granular_comparison_supported": true
+        },
+        "tail": {
+          "horizontal_travel_control": -0.5376586914059942,
+          "horizontal_travel_candidate": 1.279113769531989,
+          "horizontal_travel_difference": 1.8167724609379832,
+          "contact_duty_difference": -0.21666666666666667,
+          "hard_clear_control": 300,
+          "hard_clear_candidate": 300,
+          "effective_overlap_control": 0,
+          "effective_overlap_candidate": 0,
+          "direct_granular_comparison_supported": true
+        }
+      }
+    }
+  ]
+}

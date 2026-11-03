@@ -189,6 +189,22 @@
         "operations/gcr-causal-registration.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GCRCAUSAL02",
+      "query": "What did separate GCR-LA timing withdrawal cancellation and blocked-event removal tests establish about burial and rest?",
+      "canonical": [
+        "operations/gcr-causal-registration.md"
+      ],
+      "facts": [
+        "Timing missed its registered late-motion threshold and withdrawal cancellation failed barrel penetration and overlap guards.",
+        "Event removal reduced tick900 unactuated Sand/Salt bank descent from about154 to1cell on both OSes, with native blocked attempts retained and exact flat null.",
+        "Late barrel motion increased and bank overlap/correction persisted; no general rest, production law, sleep or gameplay acceptance follows."
+      ],
+      "sources": [
+        "operations/gcr-causal-registration.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }

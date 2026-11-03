@@ -4,17 +4,26 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-03
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
-**Experimental GCR-LA, November3:** [the focused independent-body investigation](../audits/2026-11-03-gcr-la-creep-and-burrowing.md)
+**Experimental GCR-LA causal tests, November 3:** the
+[separate timing/contact and event lanes](../operations/gcr-causal-registration.md)
+completed 40 Windows/Linux captures. Withdrawal cancellation fails barrel guards;
+the tested timing change misses its registered late-motion threshold. Removing
+blocked-move event response sharply reduces unactuated bank burial but retains
+overlap and late-motion deficiencies. This identifies the next mechanism to
+qualify; it does not select an event-free production law, change material/friction
+or sleep, supersede Astra's #281 ownership, or authorize any merge.
+
+**Retained GCR-LA observation, before the causal successor above:** [the focused independent-body investigation](../audits/2026-11-03-gcr-la-creep-and-burrowing.md)
 completed40 Windows/Linux captures. It separates a dynamic collapsing-bank load
 case from quiet-bed vertical cycling and gentle powered sliding. Blocked-move
-event loading and contact/sample phase are next causal questions, not accepted
-law changes. Barrel response and native material laws remain unchanged; sleep,
+event loading and contact/sample phase were its next causal questions, now tested
+in the successor above without an accepted law change. Barrel response and native material laws remain unchanged; sleep,
 structural integration and REM-004 closure are not implied. PRs remain unmerged.
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.

@@ -154,6 +154,10 @@ def validate_setter(row, spec, registration, gravity, tolerance):
 
 
 def validate_event_capture(raw, spec):
+    native_hash = raw.get("initial_native_hash")
+    require(isinstance(native_hash, str) and len(native_hash) == 16
+            and all(character in "0123456789abcdefABCDEF" for character in native_hash),
+            "Missing/malformed initial native physical hash")
     reconstruction = raw.get("native_reconstruction", {})
     require(isinstance(reconstruction, dict) and reconstruction.get("accepted") is True, "Fresh native reconstruction did not qualify")
     options = reconstruction.get("requested_options", {})
@@ -304,6 +308,9 @@ def reduce_capture(raw, spec, identity, protocol_hash, platform, protocol):
     for row in rows:
         if spec["kind"] == "flyer":
             require(type(row["controller"].get("movement_limited")) is bool, "Missing explicit rig guard observation")
+        else:
+            require(integer(row.get("effective_overlap")) and row["effective_overlap"] >= 0,
+                    "Missing complete effective-pose barrel overlap measurement")
         require(row["application_step"]["delivered_this_step"] is True and row["application"].get("accepted") is True
                 and row["application"]["bodies"][0].get("age") == 0, "Causal capture lacks one fresh age0 application")
         receipt = row.get("rest_receipt", {})
@@ -393,6 +400,8 @@ def compare_pair(control, candidate, control_raw, candidate_raw, protocol):
         result["initial_native_hash_match"] = control["initial_native_hash"] == candidate["initial_native_hash"]
         require(result["initial_native_hash_match"], "Fresh event arms begin from different native physical states")
     if control["case"]["kind"] == "barrel":
+        require(control["full_window"].get("effective_overlap_coverage") == candidate["full_window"].get("effective_overlap_coverage") == 1,
+                "Barrel guard lacks complete effective-pose overlap coverage")
         a_entry, b_entry = control["reference_entry_peak"], candidate["reference_entry_peak"]
         a_overlap, b_overlap = control["full_window"]["effective_overlap_max"], candidate["full_window"]["effective_overlap_max"]
         require(number(a_entry) and number(b_entry) and integer(a_overlap) and integer(b_overlap), "Missing barrel impact guard measurements")

@@ -237,7 +237,7 @@ class CausalTools(unittest.TestCase):
         reconstruction = dict(accepted=True, requested_options=dict(contact=0, bearing_candidate="GCR-REST", gcr_rest_mode="control",
             gcr_base_budget=20, workers=1), native_tick_after=0, body_before=[0], body_after=[0], session_before=2,
             session_after=2, upright_prime=True)
-        return dict(native_reconstruction=reconstruction,initial_authoring=dict(accepted=True),
+        return dict(initial_native_hash="0123456789abcdef", native_reconstruction=reconstruction,initial_authoring=dict(accepted=True),
                     before=dict(counts=[10, 2, 100, 0]),rows=[row]), spec
 
     def test_E0_retains_positive_native_attempts_without_event_response(self):
@@ -251,6 +251,22 @@ class CausalTools(unittest.TestCase):
             raw["rows"][0]["gcr"][key] = value
             with self.subTest(key=key), self.assertRaises(causal.EvidenceError):
                 causal.validate_event_capture(raw,spec)
+
+    def test_event_initial_native_hash_must_be_present_and_valid(self):
+        for value in (None, "", "same", "g"*16, "1"*15, True):
+            raw, spec = self.event_raw()
+            raw["initial_native_hash"] = value
+            with self.subTest(value=value), self.assertRaisesRegex(causal.EvidenceError, "native physical hash"):
+                causal.validate_event_capture(raw, spec)
+
+    def test_barrel_guard_cannot_pass_partial_effective_overlap(self):
+        args = self.pair(arm="X")
+        for capture in args[:2]:
+            capture["case"]["kind"] = "barrel"
+            capture["full_window"]["effective_overlap_coverage"] = 1
+        args[1]["full_window"]["effective_overlap_coverage"] = .999
+        with self.assertRaisesRegex(causal.EvidenceError, "complete effective-pose overlap"):
+            causal.compare_pair(*args)
 
 
 if __name__ == "__main__":
