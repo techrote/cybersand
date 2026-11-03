@@ -1,0 +1,13 @@
+{
+  "registration":"PAIR-CURE-001/A1",
+  "date":"2026-11-03",
+  "reason":"Independent source review found Activated Binder density1800 could exchange down through Dry Binder1600 during its180-update cure, so quantity-only A0 fixtures did not establish the intended exposed rim.",
+  "a0_status":"Quantity and isolated curing evidence is retained; surface-crust location was not qualified.",
+  "change_scope":"Only new ActivatedBinder136 descriptor density-exchange admission",
+  "retained":{"density":1800,"movable":true,"state":"Powder","kernel":"FiniteBinder","countdown":180,"bound_quantity":"state_b","fall_into_empty":true},
+  "new":{"density_motion":"None","accepts_density_exchange":false},
+  "unchanged":"All existing0..131 material descriptors and movement/chemistry, Dry Binder135, Cement, contact response, sleep, forces and Water transport",
+  "new_gate":{"fixture":"Closed flat24-cell-deep Dry Binder bed with one16-cell full-Water dose above its center","ticks":360,"crust_depth_maximum_cells_from_initial_surface":2,"checks":["actual crust positions","exact free-plus-bound Water","binder parcel count","no bottom crust","no-agent and cured-neighbor negatives","worker1/4"]},
+  "decision":"Register before A1 candidate execution. A failed depth gate blocks a surface-crust gameplay claim; do not compensate by retuning old materials.",
+  "merge_authorized":false
+}

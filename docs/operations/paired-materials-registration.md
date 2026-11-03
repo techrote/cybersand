@@ -66,6 +66,13 @@ does not transfer its source or acceptance claims into this branch.
 
 ## Registered population and decisions
 
+The [A1 admission amendment](../audits/paired-materials-2026-11-03/admission-a1.json)
+adds a surface-depth gate after independent source review identified that the
+new wet powder's higher density could bury it before cure. Only Activated
+Binder opts out of density exchange; it still falls into empty space. Existing
+materials and their movement remain unchanged. A0 quantity evidence does not
+establish crust location and is retained with that limit.
+
 The accompanying [protocol](../audits/paired-materials-2026-11-03/protocol.json)
 freezes parameters and run limits. Candidate execution starts after this
 registration is committed. Use native one-worker controls first, then4workers
