@@ -16,6 +16,9 @@ and a separate finite-curing binder family. It starts from main
 [registration](../operations/paired-materials-registration.md). This page states
 the source contract; a playable scene or source inspection does not establish
 platform qualification or owner gameplay acceptance. The feature stays unmerged.
+The [dated qualification record](../audits/2026-11-03-paired-materials-and-finite-curing.md)
+retains actual source/runtime identities, the inherited graphics failure and
+the active-curing performance investigation separately from owner acceptance.
 
 ## Which materials are paired, and what does the wall form change?
 

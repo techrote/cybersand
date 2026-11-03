@@ -136,6 +136,10 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-11-03-paired-materials-and-finite-curing.md",
+      "reason": "Dated source-bound native/desktop implementation evidence with retained failures, inherited graphics and bounded-work investigation. Retrieve through the paired-material contract; no production, Web, rest or owner acceptance is inferred."
+    },
+    {
       "path": "audits/2026-11-01-render-copy-production-reconciliation.md",
       "reason": "Dated current-main R source selection, differential, runtime and graphical qualification. Retrieve through the bridge contract and validation ledger; historical stack results and new execution retain distinct identities."
     },

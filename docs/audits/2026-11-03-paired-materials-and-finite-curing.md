@@ -71,13 +71,18 @@ source fingerprints without changing physical defaults or historical archives.
 
 ## Executed evidence and boundaries
 
-The compact qualification summary records source/input maps by hash, commands,
+The [compact qualification summary](paired-materials-2026-11-03/qualification-summary.json)
+records source/input maps by hash, commands,
 watchdogs, runtime identities and raw-log hashes. Large logs, raw images and
 traces remain local under `build/paired-*`; they are not an event corpus in Git.
 
 - Focused native suite:38,019 checks, zero failures; four Water families,
   3/8-bit quantities,1/4 workers, closed dose accounting, masks, seams, bounded
   storage, actual pressure overfill, liveness and persistence.
+- Full current native suite:166 tests pass normally and166 pass with ASan/UBSan
+  at `664f720c`, with unchanged source inputs before/after. This includes the
+  candidate suite and all retained native core tests. Standalone C header
+  compatibility also passes.
 - Starting-main/candidate descriptor and Cement cell-state differential:
   3,020 rows match exactly. Eight Air/Water/Brine/Concrete traces cover360 ticks
   at1/4 workers. The comparison hashes material, stateA/stateB and temperature,
@@ -108,10 +113,51 @@ traces remain local under `build/paired-*`; they are not an event corpus in Git.
   cross-backend finished-image diagnostic fails six pixels/max0.15547; the
   existing semantic comparison passes. No shader/tolerance was changed.
 
-Full native/sanitizer, final publication, bounded-work and documentation records
-are finalized in the source-bound summary at the evidence checkpoint. A pending
-record is not an execution pass. No full hosted CI or Web gate is inferred from
-these local target executions.
+Both rebuilt libraries are published as scoped development runtimes in
+`cb6479ea`: Windows SHA256
+`2b80fcacd9f79c7e0753aeae51d617931a7f0a3464152527cdac6144aaac59f3`
+(4,831,744bytes), Linux
+`fcdf97b8d3623074b018f489e202f6b9d307f2ef8ac160a25434d0e4e5a74211`
+(4,226,480bytes). Actual compiler/linker/static-library measurements and source
+maps are in their manifests. Linux passes the existing bundle floor:
+GLIBC2.34, native GLIBC2.32/GLIBCXX3.4.30/CXXABI1.3.9. Godot4.7 official5b4e0cb0f,
+Rapier addon0.35.2/core0.35.1, godot-cpp101ae380 and toolchain pins are unchanged.
+After publication, fresh import plus17 host tests pass on each target OS,
+including the38-assertion source/runtime host-evidence control. All code and JSON
+inputs are held before/after in both isolated projects. No full hosted CI or Web
+gate is inferred from local target executions.
+
+## Bounded-work observation
+
+The registered64×32 native timing population uses60 warmup/300 measured ticks.
+Idle Sand p95 is0.000100ms on main,0.000140ms on the candidate; idle Dry Binder
+is0.000140ms. Wet Binder p95 is0.481004ms/max0.615713ms, exceeding the registered
+0.250125ms investigation threshold. This trigger is retained, not called a pass.
+
+An untimed deterministic replay explains the work difference:63 active curing
+cells keep2,054 cells visited per tick in the coarse activity blocks through
+ticks61..180, then convert at181; work drops to zero from211 onward. Total
+visited254,507/max2,054 and reported moves7,623 reproduce exactly. Reported moves
+include changing state and are not evidence of physical translation. Free plus
+bound Water stays16,320. This is active finite chemistry compared with sleeping
+controls, not an isolated coefficient-cost population. It exposes a bounded
+activity/polling amplification worth future workload qualification; no old
+material, lifecycle or scheduler law was tuned to hide it.
+
+Three post-trigger diagnostics use only public200/201 temperature edits to
+awaken the same2,048 cells before each measured tick; authoring cost is excluded.
+All nine series have614,400 visits, zero moves and zero material changes. Main
+Sand p50/p95 ranges0.197..0.199/0.314..0.342ms; current Sand
+0.198..0.200/0.269..0.340ms; Dry Binder0.336..0.341/0.515..0.545ms. These
+characterize added binding probes at matched activity; they do not replace the
+registered primary population or erase its investigation trigger.
+
+Separate actual Linux Lab.step observations give no-dose p50/p95/p99/max
+1.195/1.744/3.024/13.465ms and dose1.462/2.134/5.102/9.057ms. One observed hard
+revision change step costs5.102ms; the other359 dose steps have p95=2.134ms.
+Those local observations include native/coupling/Rapier ownership but are not
+complete rendered frame acceptance or a general terrain-rebuild bound. Existing
+owner-review windows were preserved; ambient desktop load was not isolated.
 
 ## Preserved failures and rejected interpretations
 
@@ -122,6 +168,10 @@ an initial direct-build source-list omission, a quiet-Acid apparatus that also
 failed the old control, pressure fixtures that prevented compression or allowed
 ordinary exchange, and persistence tests that first hit outer integrity/public
 error wrapping rather than the intended nested schema guard.
+Full-suite current fixtures also exposed stale IN catalogue fingerprint words
+and an old negative test that used the now-current quantity version2 as its
+unknown version. Generated identity-only fixtures were refreshed and the
+negative now uses the next version. No production input changed for those fixes.
 
 The proposed [A1 movement change](paired-materials-2026-11-03/admission-a1.json)
 is **retracted**. Review missed the existing early powder-to-powder exchange
