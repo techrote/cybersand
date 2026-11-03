@@ -44,8 +44,11 @@ func roof_release(x: int) -> void:
 	check(world.diagnostic_fill_rect(Vector2i(x-40,272),Vector2i(80,24),13),"powder below12cell airgap")
 	check(world.diagnostic_fill_rect(Vector2i(x-40,296),Vector2i(80,4),1),"deep measured floor")
 	arena._sync_terrain()
-	check(not ray(arena,x+.5).is_empty(),"actual Rapier roof ray hits intact patch")
+	# Shape submission is followed by the real owner's Rapier step/flush.
+	# Query the positive fixture after its existing settling window, when
+	# Rapier's spatial-query index has consumed the newly authored statics.
 	for _tick: int in range(120): arena.step()
+	check(not ray(arena,x+.5).is_empty(),"actual Rapier roof ray hits intact patch")
 	var before: float = body_y(arena)
 	check(not arena.snapshot().failed and before<256,"intact hard roof supports actual body")
 	var revision: int = int(world.get_hard_surface_revision())
@@ -73,6 +76,9 @@ func chemical_retirement() -> void:
 	check(world.diagnostic_fill_rect(Vector2i.ZERO,Vector2i(1024,512),0),"clear chemical control")
 	check(world.diagnostic_fill_rect(Vector2i(320,256),Vector2i.ONE,133),"single Salt wall at chunk seam")
 	arena._sync_terrain()
+	# As for the roof control, use the normal owner step to publish the new
+	# static shape to Rapier queries before the positive collision readback.
+	arena.step()
 	check(not ray(arena,320.5).is_empty(),"Salt wall initially hard")
 	check(world.diagnostic_fill_rect(Vector2i(320,255),Vector2i.ONE,3),"one finite Water chemical dose")
 	for _tick: int in range(60):
