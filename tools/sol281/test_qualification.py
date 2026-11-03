@@ -34,6 +34,13 @@ def payload(spec, platform="Linux"):
         result["mechanical"] = {**gate, "steps": 12, "mass": 520, "trajectory": [{}] * 12, "off_center": gate.copy()}
     if spec.script == "test_solid_contact_observation":
         result["cases"] = [{"id": x} for x in ("partial_shared_edge", "float32_seam", "refusals")]
+    if spec.script == "test_solid_contact_fences":
+        result["readback_failure_cases"] = [
+            "velocity_x_nan", "velocity_y_inf", "velocity_negative_inf",
+            "omega_nan", "omega_inf", "omega_negative_inf",
+            "energy_nan", "energy_inf", "energy_negative_inf",
+            "momentum_nan", "angular_momentum_inf", "finite_energy_increase",
+        ]
     if spec.script == "test_solid_detachment_contact_recovery":
         result["cases"] = [{"surroundings": kind, "candidate": arm, "repeat": repeat, "steps": 360,
                             "sand_before": 100, "sand_after": 100, "water_before": 0, "water_after": 0,
@@ -103,6 +110,8 @@ class QualificationReader(unittest.TestCase):
                        lambda d: d["cases"].append(d["cases"][0]),
                        lambda d: d["cases"][0].update(sand_after=99),
                        lambda d: d["cases"][0]["metrics"]["physical_contact"].update(energy_violations=1),
+                       lambda d: d["cases"][1]["metrics"]["physical_contact"].update(
+                           response_failures={"NonFiniteContactReadback": 1}),
                        lambda d: d["cases"][1]["metrics"]["physical_contact"].update(response_accepts=0),
                        lambda d: d["cases"][1]["metrics"]["physical_contact"].update(impulse_magnitude_sum=0),
                        lambda d: d["cases"][0]["metrics"]["physical_contact"].update(response_accepts=1),
@@ -114,6 +123,17 @@ class QualificationReader(unittest.TestCase):
             mutate(value)
             with self.assertRaises(RuntimeError):
                 q.verify_footer(recovery, recovery.footer + " " + json.dumps(value), "Linux")
+
+    def test_post_application_readback_failure_inventory_is_complete(self):
+        spec = next(x for x in q.inventory("mechanism") if x.script == "test_solid_contact_fences")
+        for mutate in (lambda d: d["readback_failure_cases"].pop(),
+                       lambda d: d["readback_failure_cases"].append(d["readback_failure_cases"][0]),
+                       lambda d: d["readback_failure_cases"].reverse(),
+                       lambda d: d.update(checks=38)):
+            value = payload(spec)
+            mutate(value)
+            with self.assertRaises(RuntimeError):
+                q.verify_footer(spec, spec.footer + " " + json.dumps(value), "Linux")
 
     def test_all_declared_footers_and_worker_policies(self):
         for cohort in q.COHORTS:

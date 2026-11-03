@@ -98,7 +98,7 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 	_contact_metrics = {"observations":0, "refused_observations":0, "overlap_cell_samples":0,
 		"area_samples":0.0, "sand_area_samples":0.0, "max_penetration":0.0,
 		"max_sand_penetration":0.0, "geometry_ms_total":0.0, "geometry_ms_max":0.0,
-		"geometry_probes":0, "response_accepts":0, "response_refusals":{},
+		"geometry_probes":0, "response_accepts":0, "response_refusals":{}, "response_failures":{},
 		"impulse_magnitude_sum":0.0, "torque_impulse_sum":0.0, "energy_change_sum":0.0,
 		"impulse_x_sum":0.0, "impulse_y_sum":0.0, "max_impulse_magnitude":0.0,
 		"angular_momentum_change_sum":0.0,
@@ -551,6 +551,15 @@ func _record_contact_observation(observation: Dictionary, work: Dictionary) -> v
 	_contact_metrics.geometry_probes += int(observation.geometry_probes)
 
 func _record_contact_response(response: Dictionary) -> void:
+	if response.get("failed", false):
+		# Post-application readback failure may follow real impulses. Do not count
+		# it as an accepted response or a harmless preflight refusal. Latch the
+		# existing session/worker pause before another main-thread Rapier step.
+		var key: String = str(response.get("outcome", "Unknown"))
+		_contact_metrics.response_failures[key] = int(_contact_metrics.response_failures.get(key, 0)) + 1
+		_contact_metrics.energy_violations += 1
+		_fail("Sand contact readback failed after possible Rapier mutation: " + key + "; reset required")
+		return
 	if not response.get("accepted", false):
 		var key: String = str(response.get("outcome", "Unknown"))
 		_contact_metrics.response_refusals[key] = int(_contact_metrics.response_refusals.get(key, 0)) + 1
@@ -566,9 +575,6 @@ func _record_contact_response(response: Dictionary) -> void:
 	_contact_metrics.energy_change_sum += float(response.actual_energy_after) - float(response.energy_before)
 	_contact_metrics.response_ms_total += float(response.application_ms)
 	_contact_metrics.latency_ms_total += float(response.publication_latency_ms)
-	if float(response.actual_energy_after) > float(response.energy_before) + 1e-4 * maxf(1.0, float(response.energy_before)):
-		_contact_metrics.energy_violations += 1
-		_fail("Sand contact energy readback violated its registered bound; reset required")
 
 func physics_step() -> void:
 	if active and not physics_paused and not transaction_busy and bridge != null:

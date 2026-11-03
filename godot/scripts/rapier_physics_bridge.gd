@@ -453,17 +453,51 @@ func apply_solid_sand_contact(observation: Dictionary, body_index: int,
 	if not plan.impulses.is_empty():
 		PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
 		refresh_all_states()
-	var after_v: Vector2 = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
-	var after_w: float = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
-	plan["actual_energy_after"] = 0.5 * mass * after_v.length_squared() + 0.5 * inertia * after_w * after_w
-	plan["actual_velocity_after"] = after_v
-	plan["actual_omega_after"] = after_w
-	plan["actual_momentum_change"] = (after_v - velocity) * mass
-	plan["actual_angular_momentum_change"] = (after_w - omega) * inertia
+	var readback: Dictionary = _read_solid_contact_result(body_rid, velocity, omega, mass, inertia)
+	plan.merge(readback, true)
 	plan["sample_age"] = age
 	plan["publication_latency_ms"] = float(Time.get_ticks_usec() - int(observation.published_usec)) / 1000.0
 	plan["application_ms"] = float(Time.get_ticks_usec() - started) / 1000.0
+	plan["impulse_applications"] = plan.impulses.size()
+	plan["mutation_may_have_occurred"] = not plan.impulses.is_empty()
+	# The impulses may already have changed Rapier. A failed readback is a
+	# terminal application failure, never a mutation-free refusal or a retry.
+	# Keep the consumed sample lease even when the backend values are invalid.
+	var failure: String = ""
+	if not _solid_contact_readback_is_finite(readback):
+		failure = "NonFiniteContactReadback"
+	elif float(readback.actual_energy_after) > float(plan.energy_before) \
+			+ 1e-4 * maxf(1.0, float(plan.energy_before)):
+		failure = "NonDissipativeContactReadback"
+	plan["readback_valid"] = failure.is_empty()
+	if not failure.is_empty():
+		plan["accepted"] = false
+		plan["failed"] = true
+		plan["outcome"] = failure
 	return plan
+
+
+func _read_solid_contact_result(body_rid: RID, velocity: Vector2, omega: float,
+		mass: float, inertia: float) -> Dictionary:
+	# Value-only readback seam. Adverse tests replace the copied values after
+	# genuine finite Rapier impulses; production reads the actual backend here.
+	var after_v: Vector2 = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+	var after_w: float = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
+	return {"actual_velocity_after":after_v, "actual_omega_after":after_w,
+		"actual_energy_after":0.5 * mass * after_v.length_squared() + 0.5 * inertia * after_w * after_w,
+		"actual_momentum_change":(after_v - velocity) * mass,
+		"actual_angular_momentum_change":(after_w - omega) * inertia}
+
+
+static func _solid_contact_readback_is_finite(readback: Dictionary) -> bool:
+	for key: String in ["actual_velocity_after", "actual_momentum_change"]:
+		if not readback.get(key) is Vector2 or not (readback[key] as Vector2).is_finite():
+			return false
+	for key: String in ["actual_omega_after", "actual_energy_after", "actual_angular_momentum_change"]:
+		var value: Variant = readback.get(key)
+		if (typeof(value) != TYPE_FLOAT and typeof(value) != TYPE_INT) or not is_finite(float(value)):
+			return false
+	return true
 
 
 func _sample_age(sample_serial: int) -> int:

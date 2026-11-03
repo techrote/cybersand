@@ -99,7 +99,8 @@ func _case(kind: String, candidate: bool, repeat: int) -> void:
 	check(int(metrics.get("proxy_count", 0)) == 6, label + ": six original proxies retain holes")
 	check(int(metrics.get("timed_rapier_steps", 0)) == STEPS, label + ": all registered physics steps execute")
 	check(int(physical.get("observations", 0)) > 0 and not trace.is_empty(), label + ": exact geometry observations captured")
-	check(int(physical.get("energy_violations", -1)) == 0, label + ": no new response energy increase")
+	check(int(physical.get("energy_violations", -1)) == 0 and physical.get("response_failures", {}) == {},
+		label + ": finite, dissipative actual response readback")
 	check(bool(metrics.get("sand_resistance_enabled", not candidate)) == candidate, label + ": explicit response arm")
 	check((int(physical.get("response_accepts", 0)) > 0 and float(physical.get("impulse_magnitude_sum", 0.0)) > 0.0)
 		if candidate else (int(physical.get("response_accepts", 0)) == 0),
@@ -107,9 +108,12 @@ func _case(kind: String, candidate: bool, repeat: int) -> void:
 	var refused_responses: int = 0
 	for count: int in physical.get("response_refusals", {}).values():
 		refused_responses += count
+	var failed_responses: int = 0
+	for count: int in physical.get("response_failures", {}).values():
+		failed_responses += count
 	check(int(physical.get("worker_observation_attempts", 0)) >= int(physical.get("observations", 0)) + int(physical.get("refused_observations", 0))
 		and float(physical.get("worker_contact_ms_total", 0.0)) >= float(physical.get("geometry_ms_total", 0.0))
-		and int(physical.get("response_attempts", -1)) == int(physical.get("response_accepts", 0)) + refused_responses
+		and int(physical.get("response_attempts", -1)) == int(physical.get("response_accepts", 0)) + refused_responses + failed_responses
 		and float(physical.get("response_ms_all_attempts", 0.0)) >= float(physical.get("response_ms_total", 0.0)),
 		label + ": cost includes every owner attempt and response refusal")
 	records.append({"id":label, "surroundings":kind, "candidate":candidate, "repeat":repeat,

@@ -230,8 +230,15 @@ sweeps; full multi-contact convergence is not guaranteed.
 Each planned impulse must satisfy the registered kinetic-energy nonincrease
 bound, `1e-8 * max(1, energy before that impulse)`. The bridge alone applies the
 plan through Rapier, then reads back velocity, angular velocity, energy, impulse
-and angular momentum change. A readback energy increase beyond the registered
-`1e-4` relative bound stops the session. The candidate adds no positional
+and angular momentum change. Every readback value must be finite; an invalid
+value or an energy increase beyond the registered `1e-4` relative bound stops
+the session before another Rapier step. Such a post-application failure retains
+the consumed sample lease and records that impulses may already have mutated
+the body. It is counted separately from accepted responses and mutation-free
+refusals; it cannot be retried or bypassed by unpausing. The dedicated negative
+fixture injects copied NaN/infinite readbacks after real finite Rapier impulses
+and exercises the session latch; it does not claim to induce a backend failure.
+The candidate adds no positional
 correction, friction gain, restitution, ejection search or Sand mutation.
 Supported Sand acts as a dissipative contact reservoir here; exact two-way
 granular momentum or calibrated mechanical-energy conservation is not claimed.

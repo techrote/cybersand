@@ -171,7 +171,7 @@ def inventory(cohort):
     if cohort == "mechanism":
         return [
             Spec("sand-contact-response", "test_solid_contact_response", "SOL281_CONTACT_RESPONSE", 90),
-            Spec("sand-contact-fences", "test_solid_contact_fences", "SOL281_CONTACT_FENCES", 38),
+            Spec("sand-contact-fences", "test_solid_contact_fences", "SOL281_CONTACT_FENCES", 135),
         ]
     workers = int(cohort[-1])
     return [
@@ -230,6 +230,13 @@ def verify_footer(spec, text, expected_platform):
     if spec.script == "test_solid_contact_observation":
         require([x.get("id") for x in result.get("cases", [])] ==
                 ["partial_shared_edge", "float32_seam", "refusals"], "Incomplete native contact replay")
+    if spec.script == "test_solid_contact_fences":
+        require(result.get("readback_failure_cases") == [
+            "velocity_x_nan", "velocity_y_inf", "velocity_negative_inf",
+            "omega_nan", "omega_inf", "omega_negative_inf",
+            "energy_nan", "energy_inf", "energy_negative_inf",
+            "momentum_nan", "angular_momentum_inf", "finite_energy_increase",
+        ], "Incomplete, duplicated or reordered post-application readback failures")
     if spec.script == "test_solid_detachment_contact_recovery":
         expected = [(kind, arm, repeat) for kind in ("packed_sand", "embedded_sand", "mixed")
                     for repeat in range(3) for arm in ((False, True) if repeat % 2 == 0 else (True, False))]
@@ -243,14 +250,16 @@ def verify_footer(spec, text, expected_platform):
                     "Incomplete steps or failed quantity conservation")
             physical = case.get("metrics", {}).get("physical_contact", {})
             require(physical.get("observations", 0) > 0 and physical.get("energy_violations") == 0
-                    and bool(case.get("trace")), "Missing complete geometry or failed energy readback")
+                    and physical.get("response_failures", {}) == {} and bool(case.get("trace")),
+                    "Missing complete geometry or failed physical readback")
             require((physical.get("response_accepts", 0) > 0 and physical.get("impulse_magnitude_sum", 0) > 0)
                     if case["candidate"] else physical.get("response_accepts", 0) == 0,
                     "Candidate resistance was unexercised or baseline policy changed")
             require(physical.get("worker_observation_attempts", 0) >=
                     physical["observations"] + physical.get("refused_observations", 0)
                     and physical.get("response_attempts", -1) ==
-                    physical.get("response_accepts", 0) + sum(physical.get("response_refusals", {}).values()),
+                    physical.get("response_accepts", 0) + sum(physical.get("response_refusals", {}).values())
+                    + sum(physical.get("response_failures", {}).values()),
                     "Contact work attempt inventory is incomplete")
             for total, accepted in (("worker_contact_ms_total", "geometry_ms_total"),
                                     ("response_ms_all_attempts", "response_ms_total")):
