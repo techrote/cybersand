@@ -4,7 +4,7 @@ status: Planned
 document-kind: audit
 scope: Source-bound PACE004 successor apparatus; preserved original Windows and Linux evidence; new hosted qualification pending
 canonical-for: []
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-03
 related-documents: [../systems/player-control-playground.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/current-and-historical-validation.md, ../operations/github-development-and-release.md]
 ---
 
@@ -492,3 +492,94 @@ The six local d08 cases retain their actual source identity; they are not
 relabeled as successor executions. Fresh complete 60-headless/12-graphical
 hosted qualification and applicable full source-matched regressions remain
 required for the successor before guarded acceptance.
+
+
+## Current-main reconciliation and bounded CI recovery (2026-11-03)
+
+After [#332](https://github.com/techrote/cybersand/pull/332) merged, the stacked
+base `codex/play-recovery-qualified-20261031` was superseded by accepted main
+`89020b9eb6d540383a5bb64b58dcd29a87592c32`, tree `79de02472a653a4315149bc5e1970a512e6d74b6`. #334 is now
+reconciled onto main by the ancestry-preserving merge `a9fc8f83`, tree
+`3bf135dc04717c0afc0e82faa60fb95d2cc5dafa`. The add/add conflict in the
+stopped-session recovery audit takes main's accepted text. The historical
+recovery commit `ef9611de` and its stack merges contribute no bytes: the delta
+against main is exactly the 14 apparatus/audit files of `d08e6101` plus the
+`4f3decc2` audit addendum and local six-graphical summary, all byte-identical to
+`4f3decc2`. There is no production, solver, renderer, structural-ownership or
+default-configuration delta. #331 shader v3, #332 recovery, #340 CI scheduling
+and #344 render-copy production code are preserved exactly as accepted.
+
+Main's [CI scheduling checker](../../tools/ci/check_ci_scheduling_policy.py)
+from #340 rejected the reconciled PACE004 workflow because its Linux and Windows
+evidence matrices had no explicit `max-parallel`. Commit `983b18b7` sets each to
+4 hosted slots. The 72-case inventory, two-case shards, per-job budgets,
+independent readbacks and complete-inventory gate are unchanged; only queue
+order changes. The workflow is a registered apparatus input, so the protected
+production comparison against the supplied baseline is unaffected.
+
+### Evidence applicability
+
+| Evidence | Source | Status at the reconciled head |
+| --- | --- | --- |
+| [Run 41247752557](https://github.com/techrote/cybersand/actions/runs/41247752557) complete readback, 72 cases / 7,684 assertions | `d08e6101`, baseline `02454f3a` | Historical older-source pass; not exact-head |
+| [Run 41251140367](https://github.com/techrote/cybersand/actions/runs/41251140367), 38/38 jobs; suite reduction 72 cases / 36 shards passed | `4f3decc2`, baseline `4752aac3` | Historical older-source pass; not exact-head |
+| Local six-graphical receipt | `d08e6101`, baseline `02454f3a` | Historical; retained byte-for-byte |
+| Apparatus bytes and registered inventory | `4f3decc2` | Unchanged and applicable |
+
+The protected production inputs differ between `4f3decc2` and the reconciled
+source: both native runtime libraries and their provenance, `native/src/world.cpp`,
+`godot/scripts/main.gd` and `godot/scripts/simulation_worker.gd` (render-copy
+production and reconciled recovery). The campaign binds those bytes, so neither
+older hosted pass can be relabeled. One complete exact-head 60-headless plus
+12-graphical campaign is the minimum genuinely required new PACE004 execution;
+sampling is not permitted by the registered inventory.
+
+Local controls at reconciled tree `3bf135dc` (apparatus identical at `983b18b7`)
+pass 61 input/source/pixel, 50 execution/custody and 30 active-workload tests,
+each normally and with Python `-O`, on WSL Ubuntu 24.04 Python 3.12.3. On
+Windows Python 3.13.16 the 61 and 30 suites pass; one execution test,
+`test_linked_ancestor_cannot_alias_an_original_file`, cannot create a symlink
+without the Windows privilege (`WinError 1314`). That is a local platform
+limitation, not a defect. `check_ci_provider_policy.py`,
+`check_ci_scheduling_policy.py` and `check_m11_consistency.py` pass. Locally,
+`check_docs.py`/`check_repository.py` report only the companion-workspace
+expected-fact sources absent from this checkout and the unmaterialized LFS
+runtimes; the hosted Documentation gate is authoritative for those.
+
+### GDExtension run 41251140343 failure classification
+
+[Run 41251140343](https://github.com/techrote/cybersand/actions/runs/41251140343)
+at `4f3decc2` used the pre-#340 workflow. Linux shards 18, 34, 38, 57 and 65
+(jobs 124698333564, 124698333571, 124698333565, 124698333572, 124698335788)
+each hit the 15-minute watchdog of `Install software rendering display` during
+the inline `sudo apt-get update`. Every log has the same signature: the
+`azure.archive.ubuntu.com` InRelease requests are ignored after about 15 seconds,
+apt falls back to `archive.ubuntu.com`, receives the security InRelease, then
+produces no output until the watchdog. The regression step was skipped, so no
+Godot test executed in those shards. The source-bound reducer
+`linux x86_64` (job 124708874949) then failed correctly on the incomplete
+inventory. The other 73 Linux shards completed the same step in 8–222 seconds
+(median 26). These remain preserved **infrastructure/setup failures**, not
+Godot regression failures and not passes.
+
+Current main already carries the bounded correction from #340 (`9a01d782`):
+[`prepare_linux_display.sh`](../../tools/ci/prepare_linux_display.sh) skips the
+mirror when the packages are installed, applies `Acquire::Retries=3` and 30-second
+HTTP/HTTPS timeouts, and fails `apt-get update` on any fetch error instead of
+continuing with stale indexes; Linux fan-out is 20 shards at `max-parallel: 8`.
+Main push [run 41533671574](https://github.com/techrote/cybersand/actions/runs/41533671574)
+completed that step in all 20 Linux shards in 9–41 seconds. The reconciliation
+imports this correction unchanged, so #334 adds no further workflow change.
+
+That run still performs one `apt-get update` per shard because `mesa-utils`
+(with seven dependencies including `libegl1` and `libgles2`) is absent from the
+ubuntu-24.04 image, whereas `xvfb`, `xauth` and `libgl1-mesa-dri` are present.
+No repository source invokes a `mesa-utils` program, and the PACE004 graphical
+cohort runs on the unmodified image. Removing that package would nevertheless
+change the GDExtension graphics library set and needs its own owner-reviewed
+qualification; it is recorded as a candidate follow-up, not changed here.
+
+Before guarded merge the reconciled head still needs exact-head Documentation,
+Native, GDExtension and the complete PACE004 campaign with strict suite
+reduction, plus independent review. All 51 physical/human entries remain
+**UNTESTED**.
