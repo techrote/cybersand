@@ -158,7 +158,10 @@ def main():
         if not gates[-1]['ok']:
             return 1
         for host in HOSTS:
-            row = process(prefix + ['--script', 'res://tests/' + host + '.gd'], project.parent / (host + '.log'), 300, env)
+            host_args = ['--script', 'res://tests/' + host + '.gd']
+            if host == 'test_gcr_envelope':
+                host_args += ['--', '--protocol=' + convert(ROOT / 'docs/audits/gcr001-2026-11-01/protocol.json')]
+            row = process(prefix + host_args, project.parent / (host + '.log'), 300, env)
             gates.append(dict(row, test=host))
             write(project.parent / 'gates.json', gates)
             print(platform, host, row['ok'], flush=True)
