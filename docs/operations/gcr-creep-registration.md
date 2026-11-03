@@ -135,3 +135,39 @@ tuned from the six barrel outcomes, and no failed/partial attempt is relabelled
 as a passing complete campaign. Authenticate unchanged retained control inputs
 and original logs before reuse; always execute import and the changed apparatus
 test. Record the original executed source for inherited controls explicitly.
+
+## Flat-bed follow-up registered after attempt04
+
+Attempt04 completed all32 captures with exact conserved quantities and unchanged
+inputs. Its flyer bank is a dynamic loading case: the tall loose bank collapses
+before commanded drive, and the free body rotates so later forward thrust is
+mostly upward. Its zero-actuator descent does not establish creep on a quiet bed
+or an isolated powered-side-entry comparison. Retain those results as measured.
+
+The separate [flat-bed protocol](../audits/gcr-creep-2026-11-03/flat-protocol.json)
+registers four Sand/Kestrel arms per OS, eight new full-length captures. Remove
+only the tall bank, retain the same191-deep base and closed room, and use the
+constructor's default angle0 at(296,312). Native/bridge priming already matches
+that initial pose; no pose-reset or new owner is needed. Before the measured
+baseline, the existing arena's normal terrain revision consumer installs the
+authored hard borders. All body authoring, laws and numerical thresholds remain.
+
+Compare coast, zero actuator ceilings, pulse and sustained drive. Drive uses the
+existing Q/E side jet via `trim=+0.15` with `move=0`, the original120/180/1200
+schedule and effort0.7. Rotation remains free; actual world force projection is
+measured rather than assuming body-local side thrust stays horizontal. Sand/Salt
+agree in the dynamic fixture; this bounded follow-up isolates its geometry and
+input premise rather than creating another material Cartesian matrix.
+
+The initial capture's field `controller.actual_impulse` is a rig-reported bounded
+request: the existing per-part tiny-impulse guard can suppress it before backend
+delivery. Keep original raw bytes and correct its interpretation in the reducer.
+Both sample velocity and pre-correction velocity were independently recorded;
+their same-phase difference measures delivered actuator/rig-guard impulse before
+the native wrench and before Rapier integration. The new flat producer records
+reported and measured impulses separately. Mark movement-guard activation and
+missing phase evidence explicitly; do not infer whole-system energy or work.
+
+No event-channel, correction, friction or sleep intervention is selected. If the
+quiet support and commanded-motion premises are satisfied, report their motion
+separately and nominate the next causal comparison from the actual ledgers.
