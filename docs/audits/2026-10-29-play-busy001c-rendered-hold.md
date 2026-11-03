@@ -899,7 +899,7 @@ of another). Locally on Windows 11 / Python 3.13: 18 Win32 cleanup controls, 6
 receipt, 14 custody, 39 reader controls pass normal and `-O`; the runner-session
 Linux real-process case is skipped locally. `test_play_busy001c_gdb.py` fails
 locally on Windows (`WinError 193`, a Linux-only harness) and is not in the
-Windows job. Hosted confirmation of this follow-up is pending.
+Windows job. Hosted confirmation for follow-up commit `f6d960798d3a6c2190867ae8a56e23f583286952`: push run `windows-cleanup-controls` ran 14 custody, 18 Win32 cleanup and 6 receipt controls in normal and `-O` modes, all passing on GitHub-hosted Windows; PR Documentation/provenance passed (the local `check_docs.py` in this partial worktree reports missing external-source paths unrelated to this change). Graphical, Native and GDExtension jobs remained skipped by draft/gating.
 
 **Assessment.** The 45-second idle bound cannot yet be called either lost progress
 or legitimate cold compilation: the only evidence is the single #331 cohort
