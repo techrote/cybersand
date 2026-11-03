@@ -122,7 +122,7 @@
       "facts": [
         "Reconcile #258 unique copied IN ledger/availability and #259 Godot-prepared CYPS/native full-resident scientific consumer, rather than duplicating them. Both remain unmerged.",
         "Existing PLAY can provide the common host; #260 actor retention is optional and #261 historical pending statuses are not current CI truth.",
-        "One owner integrates shared Main/worker/readback changes; coordinate structural/contact work with #347 and pacing/recovery/diagnostics with #334/#304. #363 consumes evidence without automatic defaults or merges."
+        "One owner integrates shared Main/worker/readback changes; coordinate structural/contact work with #347 and pacing/recovery/diagnostics with #304 and the PACE004 apparatus merged by #334. #363 consumes evidence without automatic defaults or merges."
       ],
       "sources": [
         "audits/2026-11-03-lcb-reassessment.md",

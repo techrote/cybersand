@@ -32,8 +32,10 @@ pending-CI truth. The live PR ledger confirms all four remain unmerged.
 Assign one integration owner for shared Main/worker/host-readback changes.
 Scenario registration and analysis can proceed independently from native
 structural/contact changes. Coordinate with active #347 before changing overlap
-ejection, occupancy masks, detachment or Rapier contacts, and with PLAY #334/#304
-before modifying pacing, recovery or diagnostics. Keep historical failures,
+ejection, occupancy masks, detachment or Rapier contacts, and with PLAY #304 and
+the PACE004 apparatus merged by #334 (apparatus-only, no LCB-relevant delta) before
+modifying pacing, recovery or diagnostics. The audit's post-audit section records
+the open GCR/material/parked-PR file-overlap register. Keep historical failures,
 configured-versus-actual worker counts and untested human/Web gates explicit.
 
 ## Stopped PLAY recovery reconciliation — 2026-11-02

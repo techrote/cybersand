@@ -48,7 +48,7 @@ paused tick-zero reconstruction and launcher cancellation. Its
 preserves original failures and identifies the necessary Windows helper-control
 oracle correction. The PR ledger owns exact-head CI, independent review and
 guarded-merge status; this source description alone is not a qualification pass.
-PACE004 #334 and the physical/device/display/human acceptance areas remain separate.
+PACE004 (#334 merged as apparatus-only main `070c7a22`; its exact-head hosted campaign remains Planned) and the physical/device/display/human acceptance areas remain separate.
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
 

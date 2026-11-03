@@ -37,6 +37,7 @@ is selected by this audit.
 - [Reuse map](#feature-and-infrastructure-reuse-map): preserve, reconcile, extend or defer each component.
 - [Comparison registration](#minimal-comparison-registration): seven scenarios, fairness, metrics, provenance and stop conditions.
 - [Risks and successors](#engineering-risks-and-successor-handover): dependency-ordered tasks and explicit source ownership.
+- [Post-audit status update](#post-audit-current-main-status-update-2026-11-03): main `070c7a22` (#334 merged), live ownership recheck, file-overlap register and count clarifications; **not** a re-inspection of source.
 - [Audit validation](#documentation-validation-and-review): checks of this documentation change and their limits.
 
 ## Source authority and live work
@@ -105,7 +106,7 @@ broader than the original two-preset lifecycle checks.
 | [#260](https://github.com/techrote/cybersand/pull/260) `86f95617d2966f9071e9fe8bdd334ea3888fa5cd` | Open draft, unmerged | Native-default single actor/equipment retention and local IN/skimmer play. Shared PLAY on main can be used without importing this entire delta. Main/worker/prepared-owner edits collide with it. |
 | [#261](https://github.com/techrote/cybersand/pull/261) `7880635dae4b1229d286c66df123f102b8f3423a` | Open documentation handover, unmerged | Preserve accepted/parked source and failure history plus historical desktop guide. Its October stop snapshot is not current integration authority. |
 | [#347](https://github.com/techrote/cybersand/pull/347) `3ac7701f013452c94a8c08b0746e1b13523e7234` | Active draft structural-detachment work; updated during this audit | Owns structural transfer, contact and conservative displacement; #362 must coordinate before touching those paths. No unmerged behavior is attributed to inspected main. |
-| [#334](https://github.com/techrote/cybersand/pull/334) `4f3decc242633fb621d76b7529ef87b420dbd87a` | Open, ready, unmerged PLAY pacing qualification | Preserve actual graphical/startup failures and source boundaries. #360 does not change shaders, workflows or its fixtures. |
+| [#334](https://github.com/techrote/cybersand/pull/334) `4f3decc242633fb621d76b7529ef87b420dbd87a` | Open, ready, unmerged PLAY pacing qualification (**superseded after this audit: merged, see [post-audit update](#post-audit-current-main-status-update-2026-11-03)**) | Preserve actual graphical/startup failures and source boundaries. #360 does not change shaders, workflows or its fixtures. |
 | [#304](https://github.com/techrote/cybersand/pull/304) `f4f1e3374c89222cb446a77d0cdd0c09c4c1ddc3` | Optional draft; current owner records partial qualification, unmerged | The live PR records authoritative Linux graphical success and Windows failure before native-gate/framebuffer capture; combined workflow remains failed. This is an owner/status record, not a fresh artifact review here. It is not a dependency for #360 or the ordinary PLAY acceptance lanes. |
 
 Live API readback supersedes the old “still running” snapshot: #258 final
@@ -799,6 +800,79 @@ fixture/source/runtime and, for feel claims, owner observation. An insufficient-
 or defer disposition is valid. Any future default, fluid law, Web release, #45
 pressure or #20 flight change needs a separately authorized implementation.
 No parent LCB issue closes automatically.
+
+## Post-audit current-main status update (2026-11-03)
+
+**Added after the audit above; everything above still describes main
+`89020b9e…`.** This section records a later documentation review. It did not
+re-inspect, rebuild or rerun native, Godot, browser or human evidence, and it
+does not turn any original observation into a result at the newer main.
+
+### Newer main and #334
+
+| Item | Observation |
+|---|---|
+| Current main | `070c7a22ad51ea9206931cd9d56fd1e7cfe212aa`, tree `2c10df4c03c0495051d8d7c9e48d580803b185fe` |
+| Change since audit source | Only [#334](https://github.com/techrote/cybersand/pull/334) (merged 2026-11-03T21:55:12Z; head `9c90fb5dd1e9cd2903daec7fd87c39d25ead911d`). The 15 added files are the PACE004 workflow, its `godot/tests/*pace004*` fixtures, `tools/play/*pace004*` helpers/tests, one PACE004 audit and one local six-graphical receipt. |
+| LCB-relevant delta | **None.** No change to native sources, solver policy, materials, `godot/scripts`, the native extension, runtime libraries/provenance, LCB tooling or the fourteen paths of this review. The capability, mechanism and cost analysis above is unaffected. |
+| Ownership consequence | The #334 row in the live-work table is historical: PACE004 is no longer an open PR. Its merged audit remains `Planned` for one complete exact-head hosted campaign, so PACE004 is still a PLAY pacing qualification lane, not an LCB input. #360 still does not change shaders, workflows or PACE004 fixtures. #304 remains the separate optional draft. |
+| Reusable instrumentation | `godot/tests/play_pace004_worker_probe.gd` is a fixture-only copied-native-row observer of the production owner. It adds no production participation counter, so the gap noted for #360 (exporting existing task-participant observations outside the PLAY-only HUD) is unchanged. |
+| Integration | The audit branch and main change disjoint paths; a trial merge needs no resolution. The hosted result recorded for the branch head predates the merge and does not cover the merged result. |
+
+### Live ownership recheck
+
+The exact heads of #258 `fec2c73a`, #259 `513bf479`, #260 `86f95617`, #261
+`7880635d` and #347 `3ac7701f` were unchanged at this recheck; all remain open
+and unmerged. #304 was `f4f1e337` at the recheck but advanced to
+`f6d960798d3a6c2190867ae8a56e23f583286952` (pushed 22:41 UTC, after the #334
+merge); the audit table's #304 head is therefore historical. A local trial merge
+of each parked head with main `070c7a22` reports conflicts, a **broader** result
+than the audit's “#258 conflicts reported”; GitHub's own mergeability, `UNKNOWN`
+at the recheck, later reported `CONFLICTING` for all four:
+
+| Head | Conflicted paths |
+|---|---|
+| #258 | `cyber_observation_values.hpp`, both runtime libraries and both provenance manifests, plus five documentation paths |
+| #259 | `Makefile` plus eight documentation/retrieval paths |
+| #260 | Six documentation/retrieval paths only; `main.gd` and `simulation_worker.gd` combine textually, which is not behavioral compatibility |
+| #261 | Three documentation/retrieval paths (handover, retrieval corpus and index); the audit's documentation-only handover is not a source dependency |
+
+Binary runtimes and provenance must never be resolved from an old head. Every
+reconciliation of #258/#259/#260 starts from a fresh current-main branch and
+selects the unique functions listed in the entry-point table. This changes
+no disposition: none is merged by this audit.
+
+### Open-PR file-overlap register
+
+Observed from the PR file lists on 3 November; unmerged behavior is not
+attributed to main.
+
+| PR / area | Shared paths relevant to #360–#362 |
+|---|---|
+| [#347](https://github.com/techrote/cybersand/pull/347) SOL-DETACH | `cyber_native_cell_world.cpp/.hpp`, `rapier_physics_bridge.gd`, `simulation_snapshot.gd`, `simulation_worker.gd`, runtime libraries/provenance, and shared status/handover/retrieval documents. Owns structural contact and conservative displacement. |
+| [#349](https://github.com/techrote/cybersand/pull/349), [#350](https://github.com/techrote/cybersand/pull/350), [#351](https://github.com/techrote/cybersand/pull/351) GCR | Native adapter, `world.hpp`/`world.cpp` (#349), `rapier_physics_bridge.gd`, `simulation_snapshot.gd`, `simulation_worker.gd`; #350 stacks on #349. Granular-response lane, not an input to liquid decisions. |
+| [#358](https://github.com/techrote/cybersand/pull/358) materials | Native adapter, `world.cpp`, `rapier_physics_bridge.gd`, `material.hpp`, `liquid_run_receipt_contract.py` and the capability-matrix source hashes. It appends IDs 132–137; its matrix change is non-liquid only (descriptors 138, non-liquid 126; **liquid rows remain 11**). If it merges first, #360 must regenerate/check the matrix and receipt contract rather than quote 132. |
+| [#162](https://github.com/techrote/cybersand/pull/162) WAT-002 | Native adapter, `world.hpp`, `world.cpp`; Water quantity semantics, already named by the policy page as unmerged. Do not compare quantities across it without source identity. |
+| [#260](https://github.com/techrote/cybersand/pull/260), [#308](https://github.com/techrote/cybersand/pull/308) | `main.gd`, `simulation_worker.gd` (#260); `main.gd`, `playable_session_panel.gd` (#308). |
+| [#258](https://github.com/techrote/cybersand/pull/258), [#259](https://github.com/techrote/cybersand/pull/259) | Adapter/observation values (#258); `native/bench/lcb_science.cpp`, `tools/lcb/*science*`, `Makefile`, preparation script (#259). |
+
+The shared native adapter, worker, snapshot and Rapier bridge therefore have
+several concurrent owners. #360 should own the common comparison recorder and
+only the smallest observation seam it needs; #361 should add tool behavior and
+fixtures; #362 should start read-only. A required edit to a path above is a
+sequencing decision against the named owner before implementation, not a reason
+to create another planning issue. No missing prerequisite was demonstrated.
+
+### Count clarifications
+
+The bounded row counts in the comparison registration are matched-radius counts
+(all four families at radius 3). The **preferred-radius control** is additional:
+FM, CY and PF at radius 2; IN has no radius-2 candidate, so its row is identical
+to the matched row. If registered, it adds three families to each cohort: 24
+preflight rows, up to 84 correctness rows, and 36 rows per OS for the two cost
+profiles. The 32-row preflight remains the matched-radius admission gate, and
+the control must be named and bounded in the #360 manifest before collection.
+These are ceilings, not required totals.
 
 ## Documentation validation and review
 
