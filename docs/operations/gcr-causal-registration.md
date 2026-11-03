@@ -59,6 +59,10 @@ post-response velocity/omega and rotation. Record both potential-energy changes.
 The extra backend setter may affect contact caches/wake; S controls its presence.
 If S differs from C, retain that outcome and qualify translation-only attribution.
 No pose hold, support memory, velocity snap or cell restoration is added.
+The backend transform roundtrip can change reconstructed angle by Float32
+precision. Use the already registered1e-5 parity tolerance for that rotation
+readback, recording its actual delta; do not snap rotation back or relax exact
+origin restoration and velocity/omega preservation. S controls this operation.
 
 Flat arms cover zero actuators and sustained drive. Gentle and canonical speed90
 barrels add C/X guards: these test regression of the full X operation, including
@@ -125,6 +129,11 @@ proofs, S/X setter/velocity/torque tests, effective gain calibration, fresh
 response/duplicate guards, hard/Water mechanical negatives and strict adversarial
 reader tests. Retain source-identical existing body/fleet/REM controls. Record
 actual one-step/sample/application counts rather than inferring from API presence.
+Clock/sample counts derive from before/after native tick, Rapier manual step,
+bridge sample serial and session tick. Instrument actual actuator-stage calls
+and independently measure its velocity change. An assigned literal count is
+not an observed clock witness. Hard/Water negatives execute through the new
+driver as well as retaining the historical owner controls.
 
 Conservation is exact. All phase states must be finite. Granular outcomes after
 hard contact are separate. Barrel guards use matched-control allowances:
