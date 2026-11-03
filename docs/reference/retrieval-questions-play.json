@@ -173,6 +173,22 @@
         "operations/gcr-creep-registration.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GCRCAUSAL01",
+      "query": "How are GCR-LA actuation timing contact withdrawal and blocked-move event causes tested separately without editing shared coupling?",
+      "canonical": [
+        "operations/gcr-causal-registration.md"
+      ],
+      "facts": [
+        "Separate registered timing/contact and event lanes preserve existing production owners and sleep; no combined treatment or default promotion.",
+        "Timing uses actual clock and actuation phase witnesses; S controls the extra setter in post-delivery cancellation X; event0 uses existing fresh native contact option before passive recomputation.",
+        "Powder-only event causal comparisons require zero legacy non-granular response, with a native behavioral gain witness; Water remains a separate mechanical control."
+      ],
+      "sources": [
+        "operations/gcr-causal-registration.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }

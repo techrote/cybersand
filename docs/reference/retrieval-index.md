@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [How are actuation timing, contact withdrawal and blocked-move events tested causally?](../operations/gcr-causal-registration.md)
+  Separate lanes, actual clock/phase witnesses, a setter sham and native gain
+  calibration preserve attribution; existing production and sleep stay unchanged.
+
 - [How do we separate passive creep from powered flyer burrowing?](../operations/gcr-creep-registration.md)
   Use actual actuator output and fresh application ledgers; quiet input can still
   request drag. This investigation does not change structural detachment or sleep.
