@@ -214,6 +214,13 @@ class Registration(unittest.TestCase):
             path = fp.ROOT / "godot" / scenario["fixture"].removeprefix("res://")
             self.assertEqual(fp.git("hash-object", str(path)), scenario["fixture_git_blob"], scenario["id"])
 
+    def test_materialized_lfs_runtime_is_committed_content(self):
+        native = fp.RUNTIMES["windows"][0]
+        data = (fp.ROOT / native).read_bytes()
+        materialized = not data.startswith(b"version https://git-lfs.github.com/spec/v1")
+        self.assertEqual(fp.materialized_lfs_matches_head(native), materialized)
+        self.assertFalse(fp.materialized_lfs_matches_head("tools/lcb/feel_preflight.py"))
+
     def test_independent_normalization_rule(self):
         self.assertEqual(fp.normalized_water(128, 255), 255)
         self.assertEqual(fp.normalized_water(127, 255), 0)

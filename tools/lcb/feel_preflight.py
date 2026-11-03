@@ -75,12 +75,32 @@ def host_platform() -> str:
     raise SystemExit("unsupported host platform " + sys.platform)
 
 
+LFS_POINTER = re.compile(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n")
+
+
+def materialized_lfs_matches_head(path: str) -> bool:
+    """True when HEAD stores an LFS pointer and the working bytes are exactly its object."""
+    committed = subprocess.run(["git", "-C", str(ROOT), "show", "HEAD:" + path], capture_output=True).stdout
+    match = LFS_POINTER.fullmatch(committed)
+    working = ROOT / path
+    if match is None or not working.is_file():
+        return False
+    return working.stat().st_size == int(match[2]) and sha256_file(working) == match[1].decode()
+
+
 def source_identity() -> dict:
-    dirty = [line[3:] for line in git("status", "--porcelain", "--untracked-files=all").splitlines() if line]
+    status = subprocess.run(["git", "-C", str(ROOT), "status", "--porcelain=v1", "-z", "--untracked-files=all"],
+                            check=True, capture_output=True).stdout.decode("utf-8")
+    dirty = [entry[3:] for entry in status.split("\0") if len(entry) > 3]
     material = [path for path in dirty if not GENERATED_DIRTY.search(path)]
+    # A status-dirty LFS runtime whose bytes are exactly the committed object is
+    # the committed content (pointer-only clones report it as modified).
+    lfs = [path for path in material if materialized_lfs_matches_head(path)]
+    material = [path for path in material if path not in lfs]
     return {"head": git("rev-parse", "HEAD"), "tree": git("rev-parse", "HEAD^{tree}"),
             "branch": git("rev-parse", "--abbrev-ref", "HEAD"),
-            "dirty_generated_paths": len(dirty) - len(material), "dirty_source_paths": material,
+            "dirty_generated_paths": len(dirty) - len(material) - len(lfs),
+            "materialized_lfs_matching_head": lfs, "dirty_source_paths": material,
             "executed_tree_matches_head": not material}
 
 
