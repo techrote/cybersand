@@ -66,12 +66,13 @@ does not transfer its source or acceptance claims into this branch.
 
 ## Registered population and decisions
 
-The [A1 admission amendment](../audits/paired-materials-2026-11-03/admission-a1.json)
-adds a surface-depth gate after independent source review identified that the
-new wet powder's higher density could bury it before cure. Only Activated
-Binder opts out of density exchange; it still falls into empty space. Existing
-materials and their movement remain unchanged. A0 quantity evidence does not
-establish crust location and is retained with that limit.
+The [A1 proposal](../audits/paired-materials-2026-11-03/admission-a1.json) was
+**retracted**: review missed the existing Powder-to-Powder exchange rejection.
+Verified A0 depth observations show surface-only crust. The original descriptor
+is retained; no new movement opt-out is justified. Keep the additional
+[depth gate](../audits/paired-materials-2026-11-03/depth-gate.json), because
+quantity-only evidence alone does not establish crust location. The unsuccessful
+review hypothesis and a mixed-header probe remain explicit historical evidence.
 
 The accompanying [protocol](../audits/paired-materials-2026-11-03/protocol.json)
 freezes parameters and run limits. Candidate execution starts after this

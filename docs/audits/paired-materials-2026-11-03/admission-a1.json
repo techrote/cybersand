@@ -1,5 +1,7 @@
 {
   "registration":"PAIR-CURE-001/A1",
+  "status":"RETRACTED",
+  "correction":"The review hypothesis below missed MaterialRules::can_density_exchange's earlier Powder-to-Powder rejection. A verified A0 depth capture forms only surface crust with exact free-plus-bound quantity. The proposed descriptor opt-out is unjustified and was reverted before runtime publication. Preserve this proposal as a failed review hypothesis; only its added depth gate is retained.",
   "date":"2026-11-03",
   "reason":"Independent source review found Activated Binder density1800 could exchange down through Dry Binder1600 during its180-update cure, so quantity-only A0 fixtures did not establish the intended exposed rim.",
   "a0_status":"Quantity and isolated curing evidence is retained; surface-crust location was not qualified.",
