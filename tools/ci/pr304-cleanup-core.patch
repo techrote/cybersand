@@ -1,0 +1,104 @@
+--- a/tools/ci/play_busy001c_process.py
++++ b/tools/ci/play_busy001c_process.py
+@@ -172,14 +172,24 @@
+         if identity is None or identity["creation_time"] != row["creation_time"]:
+             return False
+         state = self.kernel.WaitForSingleObject(self.handles[row["pid"]], 0)
++        if state == 0xFFFFFFFF:  # WAIT_FAILED; preserve error before another API.
++            error = C.get_last_error()
++            raise CustodyError(
++                f"Cannot observe process {row['pid']} retirement: WAIT_FAILED, error={error}")
+         if state not in (0, 258):
+             raise CustodyError(f"Cannot observe process {row['pid']} retirement: {state}")
+         return state == 258
+ 
+     def terminate(self, row):
+-        if self.alive(row) and not self.kernel.TerminateProcess(self.handles[row["pid"]], 1):
+-            if self.alive(row):
+-                raise CustodyError(f"Cannot terminate owned process {row['pid']}: {C.get_last_error()}")
++        # Request once on the retained creation-bound handle. TerminateProcess
++        # is asynchronous; ERROR_ACCESS_DENIED can also mean already exited.
++        # Neither success nor refusal establishes retirement: stop_remaining
++        # must observe that same handle signaled within its existing deadline.
++        if self.alive(row):
++            if not self.kernel.TerminateProcess(self.handles[row["pid"]], 1):
++                error = C.get_last_error()  # Before GetProcessTimes/Wait/Close.
++                return error
++        return None
+ 
+     def reap(self, row, launcher_pid):
+         pass
+@@ -203,6 +213,7 @@
+         self.launcher_pid = None
+         self._observed = {}
+         self.observation_errors = []
++        self.cleanup_termination_errors = {}
+         self._closed = False
+         try:
+             table = self.backend.table()
+@@ -333,12 +344,22 @@
+                 if observation_error is not None:
+                     raise observation_error
+                 return attempted
++            if time.monotonic() >= deadline:
++                raise CustodyError(
++                    "Owned processes remain after bounded failure cleanup; "
++                    f"termination_errors={self.cleanup_termination_errors}")
+             for key, row in live.items():
+-                self.backend.terminate(row)
+-                attempted[key] = row
+-            if time.monotonic() >= deadline:
+-                raise CustodyError("Owned processes remain after bounded failure cleanup")
+-            time.sleep(0.01)
++                if key not in attempted:
++                    attempted[key] = row
++                    error = self.backend.terminate(row)
++                    if error is not None:
++                        self.cleanup_termination_errors[key] = {
++                            "creation_time": row["creation_time"], "error": error}
++            # Do not extend a deadline or repeatedly terminate a retiring object.
++            # The next iteration performs the final same-handle observation.
++            remaining_seconds = deadline - time.monotonic()
++            if remaining_seconds > 0:
++                time.sleep(min(0.01, remaining_seconds))
+ 
+     def close(self):
+         if not self._closed:
+--- a/tools/ci/run_play_busy001c_render.py
++++ b/tools/ci/run_play_busy001c_render.py
+@@ -199,23 +199,30 @@
+             receipt["forced_cleanup"] = True
+             diagnostics.stop_process_tree(child)
+         if custody is not None:
++            cleanup_attempted = False
+             try:
+                 remaining = custody.remaining()
+                 if remaining:
+                     receipt["surviving_processes"] = remaining
+                     receipt["forced_cleanup"] = True
++                    cleanup_attempted = True
+                     custody.stop_remaining()
+                 receipt["cleanup_complete"] = child is not None and child.poll() is not None and not custody.remaining()
+                 receipt["observed_processes"] = custody.observed_processes
+             except Exception as caught:
+                 receipt["cleanup_complete"] = False
+                 error = error or f"cleanup: {type(caught).__name__}: {caught}"
+-                try:
+-                    receipt["forced_cleanup"] = True
+-                    custody.stop_remaining()
+-                except Exception as cleanup_error:
+-                    receipt["cleanup_error"] = f"{type(cleanup_error).__name__}: {cleanup_error}"
++                # An observation failure may still need its one bounded cleanup.
++                # A failed cleanup must not restart the three-second allowance.
++                if not cleanup_attempted:
++                    try:
++                        receipt["forced_cleanup"] = True
++                        cleanup_attempted = True
++                        custody.stop_remaining()
++                    except Exception as cleanup_error:
++                        receipt["cleanup_error"] = f"{type(cleanup_error).__name__}: {cleanup_error}"
+             finally:
++                receipt["cleanup_termination_errors"] = dict(custody.cleanup_termination_errors)
+                 receipt["observation_errors"] = list(custody.observation_errors)
+                 if custody.observation_errors:
+                     error = error or "process custody observation failed: " + "; ".join(custody.observation_errors)

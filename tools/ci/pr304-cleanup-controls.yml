@@ -1,0 +1,64 @@
+
+  windows-cleanup-controls:
+    # #304 pushes run only these process/receipt controls, not the old campaign.
+    # This job does not constitute graphical 001C acceptance.
+    if: ${{ github.ref_name == 'codex/play-busy001c-rendered-20261029' || github.event_name == 'workflow_dispatch' }}
+    runs-on: windows-2022
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - name: Check out exact repair source without runtime downloads
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Record source and test scope
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python tools/ci/check_ci_provider_policy.py
+          mkdir -p build/play-busy001c-cleanup-controls
+          git rev-parse HEAD > build/play-busy001c-cleanup-controls/source-sha.txt
+          git rev-parse 'HEAD^{tree}' > build/play-busy001c-cleanup-controls/source-tree.txt
+          sha256sum tools/ci/play_busy001c_process.py tools/ci/run_play_busy001c_render.py \
+            tools/ci/test_play_busy001c_process.py tools/ci/test_play_busy001c_windows_cleanup.py \
+            tools/ci/test_play_busy001c_cleanup_receipt.py \
+            godot/tests/play_busy001c_render.gd .github/workflows/play-busy001b-host.yml \
+            > build/play-busy001c-cleanup-controls/source-inputs.sha256
+          printf '%s\n' 'Process/receipt controls only; NOT graphical 001C qualification.' \
+            > build/play-busy001c-cleanup-controls/SCOPE.txt
+      - name: Run unchanged custody and repaired Win32/receipt controls
+        run: |
+          set -euo pipefail
+          python tools/ci/test_play_busy001c_process.py 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/custody.log
+          python tools/ci/test_play_busy001c_windows_cleanup.py --require-windows 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/windows.log
+          python tools/ci/test_play_busy001c_cleanup_receipt.py 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/receipt.log
+      - name: Repeat controls with Python assertions disabled
+        run: |
+          set -euo pipefail
+          python -O tools/ci/test_play_busy001c_process.py 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/custody-optimized.log
+          python -O tools/ci/test_play_busy001c_windows_cleanup.py --require-windows 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/windows-optimized.log
+          python -O tools/ci/test_play_busy001c_cleanup_receipt.py 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/receipt-optimized.log
+      - name: Retain original process-control evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-busy001c-cleanup-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-busy001c-cleanup-controls/
+          if-no-files-found: error
+          retention-days: 90

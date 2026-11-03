@@ -1,0 +1,82 @@
+name: PR304 isolated cleanup preparation
+
+on:
+  push:
+    branches: [work/pr304-cleanup-prepare-20261103]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr304-cleanup-preparation
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - name: Check out pinned companion documentation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Check out preparation source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: preparation
+          persist-credentials: false
+      - name: Check out the frozen original PR source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 4f21f97c97c7dc344e026c85900d820006cdb308
+          path: workspace/source
+          fetch-depth: 0
+          lfs: false
+      - name: Apply exact guarded eight-path candidate
+        run: python3 ../../preparation/tools/ci/pr304_cleanup_prepare.py apply
+      - name: Run focused portable controls in both Python modes
+        run: |
+          set -euo pipefail
+          for mode in normal optimized; do
+            OPT=()
+            if [ "$mode" = optimized ]; then OPT=(-O); fi
+            for case in test_play_busy001c_process test_play_busy001c_windows_cleanup test_play_busy001c_cleanup_receipt test_readback_play_busy001c test_play_busy001c_runner_session test_physical_progress_watchdog test_godot_process_monitor test_play_busy001c_gdb; do
+              timeout 120s python3 "${OPT[@]}" "tools/ci/${case}.py" 2>&1 | tee "$RUNNER_TEMP/pr304-preparation/${case}-${mode}.log"
+            done
+          done
+      - name: Validate source policy and documentation
+        run: |
+          set -euo pipefail
+          for check in check_ci_provider_policy check_docs check_repository check_m11_consistency; do
+            timeout 180s python3 "tools/ci/${check}.py" 2>&1 | tee "$RUNNER_TEMP/pr304-preparation/${check}.log"
+          done
+          git diff --cached --check
+      - name: Validate complete workflow syntax and scheduling policy
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 2 --connect-timeout 30 --max-time 180 -o "$RUNNER_TEMP/actionlint.tar.gz" https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/actionlint"
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP/actionlint" actionlint
+          "$RUNNER_TEMP/actionlint/actionlint" -shellcheck='' -pyflakes='' 2>&1 | tee "$RUNNER_TEMP/pr304-preparation/actionlint.log"
+          python3 -m venv "$RUNNER_TEMP/ci-audit"
+          "$RUNNER_TEMP/ci-audit/bin/python" -m pip install --require-hashes -r tools/requirements-ci-audit.txt
+          "$RUNNER_TEMP/ci-audit/bin/python" tools/ci/check_ci_scheduling_policy.py --output "$RUNNER_TEMP/pr304-preparation/workflow-inventory.json"
+      - name: Preserve seven-path source objects on an isolated candidate branch
+        run: python3 ../../preparation/tools/ci/pr304_cleanup_prepare.py publish-source-only
+      - name: Retain source-bound preparation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr304-cleanup-preparation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pr304-preparation/
+          if-no-files-found: error
+          retention-days: 90

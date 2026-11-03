@@ -1,0 +1,17 @@
+	# Passive copies from Main's already-selected shader, before this existing
+	# process_frame yield. Never reselect/create a shader or draw/prewarm here.
+	var startup_palette: Dictionary = {"available":false,
+		"driver":RenderingServer.get_current_rendering_driver_name(),
+		"sampling_scope":"after Main ready, before fixture process_frame yield"}
+	if desktop.world_shader != null and desktop.world_shader.shader != null:
+		var selected_palette_shader: Shader = desktop.world_shader.shader
+		startup_palette.merge(CyberPaletteShader.provenance(selected_palette_shader), true)
+		startup_palette["available"] = true
+		startup_palette["bounded_define_count"] = selected_palette_shader.code.count(
+			CyberPaletteShader.BOUNDED_CROSSFADE_DEFINE)
+		startup_palette["accepted_angle_variant_sha256"] = "7e5650cb807825e8febebd402dcba262d0df10baf02d478ee3c30f99ca3d460d"
+		startup_palette["matches_accepted_angle_variant"] = (
+			startup_palette["variant_sha256"] == startup_palette["accepted_angle_variant_sha256"]
+			and startup_palette["bounded_define_count"] == 1
+		) if startup_palette["driver"] == "opengl3_angle" else null
+	startup_palette["observed_usec"] = Time.get_ticks_usec()
