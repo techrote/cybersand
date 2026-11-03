@@ -158,6 +158,41 @@ class CaseEvaluation(unittest.TestCase):
         self.assertIn("normalization", self.stops(lambda r: r["construction"]["normalization"].update(positive_delta=5)))
 
 
+class LedgerRule(unittest.TestCase):
+    """host_ledger scenarios: Water changes only by re-summed scheduled edits."""
+
+    def setUp(self):
+        self.scenario = copy.deepcopy(SCENARIO)
+        self.scenario["expected"]["quantity_rule"] = "host_ledger"
+        self.case = arm_case("cellular_yield_v1", 4)
+        self.receipt = receipt(self.case)
+        self.receipt["host_ledger"].update(source=255 * 16, sink=0, action_history=[
+            {"tick": 10, "before_water_integer": 0, "after_water_integer": 255 * 16}])
+        for tick in self.receipt["ticks"]:
+            if tick["tick"] > 10:
+                tick["water_quantity"] = QUANTITY + 255 * 16
+        self.receipt["final"]["water"].update(quantity=QUANTITY + 255 * 16, visible=QUANTITY + 255 * 16)
+
+    def test_consistent_scheduled_source_passes(self):
+        result = fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION)
+        self.assertEqual(result["final_water_quantity"], QUANTITY + 255 * 16)
+
+    def test_change_before_the_edit_applies_stops(self):
+        self.receipt["ticks"][9]["water_quantity"] = QUANTITY + 255 * 16
+        with self.assertRaises(fp.StopCondition):
+            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION)
+
+    def test_ledger_that_disagrees_with_edits_stops(self):
+        self.receipt["host_ledger"]["source"] = 255 * 15
+        with self.assertRaises(fp.StopCondition):
+            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION)
+
+    def test_constant_rule_rejects_water_changing_edit(self):
+        self.scenario["expected"]["quantity_rule"] = "constant"
+        with self.assertRaises(fp.StopCondition):
+            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION)
+
+
 class NegativeControls(unittest.TestCase):
     def test_expected_controls_pass(self):
         self.assertEqual(len(fp.evaluate_negative(negative())), 7)

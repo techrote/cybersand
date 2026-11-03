@@ -356,12 +356,34 @@ def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict)
     initial_quantity = expected["initial_water_quantity"]
     if strict_int(normalization["water_after"], label + " normalized water") != initial_quantity:
         raise StopCondition(f"{label}: normalized Water {normalization['water_after']} != {initial_quantity}")
-    horizon = registration["horizon_ticks"]
-    for census_name in ("initial", "final"):
+    horizon = scenario.get("horizon_ticks", registration["horizon_ticks"])
+    rule = expected.get("quantity_rule", "constant")
+    ledger = receipt["host_ledger"]
+    # Scheduled-edit deltas, independently re-summed from the owner's action
+    # history: an edit recorded at tick k is applied before tick k + 1 completes.
+    edits = [(strict_int(entry["tick"], label + " edit tick"),
+              strict_int(entry["after_water_integer"], label) - strict_int(entry["before_water_integer"], label))
+             for entry in ledger.get("action_history", [])]
+    if rule == "constant":
+        if strict_int(ledger["source"], label) != expected["water_sources"] or strict_int(ledger["sink"], label) != expected["water_sinks"]:
+            raise StopCondition(f"{label}: explicit Water source/sink differ from registration")
+        if any(delta != 0 for _, delta in edits):
+            raise StopCondition(f"{label}: a scheduled edit changed Water in a constant-quantity scenario")
+    elif rule == "host_ledger":
+        source, sink = strict_int(ledger["source"], label), strict_int(ledger["sink"], label)
+        if source < 0 or sink < 0 or source - sink != sum(delta for _, delta in edits):
+            raise StopCondition(f"{label}: explicit source/sink do not equal the scheduled edit deltas")
+    else:
+        raise StopCondition(f"{label}: unknown quantity rule {rule!r}")
+
+    def expected_after(tick: int) -> int:
+        return initial_quantity + sum(delta for applied, delta in edits if applied < tick)
+    final_quantity = expected_after(horizon + 1)
+    for census_name, wanted in (("initial", initial_quantity), ("final", final_quantity)):
         census = receipt[census_name]
         water = census["water"]
-        if strict_int(water["quantity"], f"{label} {census_name} quantity") != initial_quantity:
-            raise StopCondition(f"{label}: {census_name} Water {water['quantity']} != {initial_quantity}")
+        if strict_int(water["quantity"], f"{label} {census_name} quantity") != wanted:
+            raise StopCondition(f"{label}: {census_name} Water {water['quantity']} != {wanted}")
         if strict_int(water["visible"], label) + strict_int(water["overfill"], label) != water["quantity"]:
             raise StopCondition(f"{label}: visible+overfill differs from quantity")
         inventory = census["inventory"]
@@ -399,14 +421,16 @@ def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict)
     if len(ticks) != horizon or [strict_int(t["tick"], label) for t in ticks] != list(range(1, horizon + 1)):
         raise StopCondition(f"{label}: completed tick sequence differs from horizon {horizon}")
     for tick in ticks:
-        if strict_int(tick["water_quantity"], label) != initial_quantity or strict_bool(tick["failed"], label):
-            raise StopCondition(f"{label}: tick {tick['tick']} Water {tick['water_quantity']} or failure")
+        if strict_int(tick["water_quantity"], label) != expected_after(tick["tick"]) or strict_bool(tick["failed"], label):
+            raise StopCondition(f"{label}: tick {tick['tick']} Water {tick['water_quantity']} != {expected_after(tick['tick'])} or failure")
     final_health = receipt["final"]["health"]
     if strict_int(final_health["attempted_tick"], label) != horizon or strict_int(final_health["tick_index"], label) != horizon:
         raise StopCondition(f"{label}: attempted/completed ticks differ from horizon")
-    ledger = receipt["host_ledger"]
-    if strict_int(ledger["source"], label) != expected["water_sources"] or strict_int(ledger["sink"], label) != expected["water_sinks"]:
-        raise StopCondition(f"{label}: explicit Water source/sink differ from registration")
+    hash_interval = registration.get("hash_interval_ticks", 1)
+    for tick in ticks:
+        hashed = bool(tick["physical_state_hash"])
+        if hashed != (tick["tick"] % hash_interval == 0 or tick["tick"] == horizon):
+            raise StopCondition(f"{label}: tick {tick['tick']} hash presence differs from the registered interval")
     if not strict_bool(receipt["retirement"]["world_released"], label):
         raise StopCondition(f"{label}: World owner not retired")
     observed = [strict_int(t["worker_threads_observed"], label) for t in ticks]
@@ -423,7 +447,10 @@ def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict)
         "initial_physical_hash": receipt["initial"]["physical_state_hash"],
         "final_physical_hash": receipt["final"]["physical_state_hash"],
         "tick_hashes": [t["physical_state_hash"] for t in ticks],
-        "water_quantity": initial_quantity, "final_water_cells": receipt["final"]["water"]["water_cells"],
+        "water_quantity": initial_quantity, "final_water_quantity": final_quantity,
+        "explicit_source": ledger["source"], "explicit_sink": ledger["sink"],
+        "final_water_cells": receipt["final"]["water"]["water_cells"],
+        "voids": receipt.get("voids", []), "declared_observations": receipt.get("declared_observations", []),
         "final_inventory": receipt["final"]["inventory"]["counts"],
         "inertial": {key: receipt["final"]["inertial"].get(key) for key in
                      ("moving_cells", "nonzero_accumulator_cells", "sum_abs_vx", "sum_vy", "max_abs_vx", "max_vy", "tuple_sha256")}

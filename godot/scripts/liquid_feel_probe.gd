@@ -114,6 +114,35 @@ static func pressure(world: Variant) -> Dictionary:
 		"history":(gas.get("history", []) as Array).size(), "gas_ledger":book.duplicate(true),
 		"gas_ledger_closes":bool(book.get("closes", false))}
 
+# Apparent-bubble classification inside a region. An Empty cell with stored
+# Water above it in the same column is "submerged". Under PressureFlow each
+# submerged Empty cell is further classified by its native gas label; other
+# families have no gas state, so their submerged Empty cells are plain voids.
+static func voids(world: Variant, region: Rect2i) -> Dictionary:
+	var pressure_enabled: bool = bool(world.get_pressure_flow_ledger().get("available", false))
+	var water_cells: int = 0
+	var submerged: int = 0
+	var labels: Dictionary = {}
+	var deepest: int = -1
+	for x: int in range(region.position.x, region.end.x):
+		var seen_water: bool = false
+		for y: int in range(region.position.y, region.end.y):
+			var material: int = int(world.material_at(x, y))
+			if material == WATER:
+				water_cells += 1
+				seen_water = true
+			elif material == EMPTY and seen_water:
+				submerged += 1
+				deepest = maxi(deepest, y)
+				if pressure_enabled:
+					var label: String = str(world.inspect_pressure_cell(Vector2i(x, y)).get("gas", "unavailable"))
+					labels[label] = int(labels.get(label, 0)) + 1
+	return {"completed_tick":int(world.get_tick_index()),
+		"region":[region.position.x, region.position.y, region.size.x, region.size.y], "water_cells":water_cells,
+		"submerged_empty_cells":submerged, "deepest_submerged_row":deepest,
+		"pressure_gas_labels":labels if pressure_enabled else null,
+		"scope":"Empty cells below stored Water in the same column; PF labels only when PressureFlow is enabled"}
+
 static func census(world: Variant, region: Rect2i) -> Dictionary:
 	var water_value: Dictionary = water(world)
 	return {"schema":SCHEMA, "completed_tick":int(world.get_tick_index()), "health":health(world),
@@ -125,7 +154,7 @@ static func census(world: Variant, region: Rect2i) -> Dictionary:
 		"pressure":pressure(world)}
 
 # One completed native tick. Timing is the native World::tick() duration only.
-static func tick_sample(world: Variant, bridge: Variant, wall_us: int) -> Dictionary:
+static func tick_sample(world: Variant, bridge: Variant, wall_us: int, with_hash: bool = true) -> Dictionary:
 	var statistics: Dictionary = bridge.inspect_statistics(world)
 	var values: Dictionary = statistics.get("values", {})
 	var observed: Dictionary = world.water_experiment_observation(Vector2i.ZERO, Vector2i(WORLD_SIDE, WORLD_SIDE))
@@ -141,4 +170,5 @@ static func tick_sample(world: Variant, bridge: Variant, wall_us: int) -> Dictio
 		"temperature_field_allocations":int(values.get("temperature_field_allocations", -1)),
 		"water_quantity":int(observed.get("water_integer", -1)),
 		"water_overfill":int(observed.get("water_overfill", -1)),
-		"physical_state_hash":str(world.get_physical_state_hash()), "failed":bool(world.has_failed())}
+		"physical_state_hash":str(world.get_physical_state_hash()) if with_hash else "",
+		"failed":bool(world.has_failed())}

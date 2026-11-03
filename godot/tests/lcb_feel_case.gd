@@ -91,6 +91,17 @@ func _arm(registration: Dictionary) -> Dictionary:
 	var scenario: Dictionary = _scenario(registration, str(_options.scenario))
 	if scenario.is_empty():
 		receipt.outcome = "refused"; receipt.error = "scenario not registered"; return receipt
+	# Campaign scenarios keep each reused fixture's own registered horizon.
+	if not str(_options.horizon).is_valid_int():
+		horizon = int(scenario.get("horizon_ticks", registration.horizon_ticks))
+		receipt.requested.horizon = horizon
+	var hash_interval: int = maxi(1, int(registration.get("hash_interval_ticks", 1)))
+	# JSON numbers parse as floats; compare checkpoints as exact integers.
+	var checkpoints: Array[int] = []
+	for value: Variant in scenario.get("checkpoint_ticks", []): checkpoints.append(int(value))
+	var void_values: Array = scenario.get("void_region", [])
+	var void_region := Rect2i()
+	if void_values.size() == 4: void_region = Rect2i(int(void_values[0]), int(void_values[1]), int(void_values[2]), int(void_values[3]))
 	var parsed: Dictionary = _definition(scenario)
 	if not parsed.ok:
 		receipt.outcome = "refused"; receipt.error = parsed.error; return receipt
@@ -138,18 +149,24 @@ func _arm(registration: Dictionary) -> Dictionary:
 	var region_values: Array = scenario.census_region
 	var region := Rect2i(int(region_values[0]), int(region_values[1]), int(region_values[2]), int(region_values[3]))
 	receipt.initial = Probe.census(world, region)
+	var void_samples: Array = []
+	if void_values.size() == 4: void_samples.append(Probe.voids(world, void_region))
 	var ticks: Array = []
 	var outcome: String = "completed"
 	for index: int in horizon:
 		var started: int = Time.get_ticks_usec()
 		var advanced: bool = host.advance()
 		var wall: int = Time.get_ticks_usec() - started
-		ticks.append(Probe.tick_sample(world, bridge, wall))
+		var completed: int = index + 1
+		ticks.append(Probe.tick_sample(world, bridge, wall, completed % hash_interval == 0 or completed == horizon))
+		if void_values.size() == 4 and completed in checkpoints: void_samples.append(Probe.voids(world, void_region))
 		if not advanced:
 			outcome = "faulted"
 			receipt.error = host.last_error
 			break
 	receipt.ticks = ticks
+	receipt.hash_interval_ticks = hash_interval
+	receipt.voids = void_samples
 	receipt.final = Probe.census(world, region)
 	var captured: Dictionary = host.capture()
 	var ledger: Dictionary = captured.get("water_ledger", {})
@@ -158,6 +175,8 @@ func _arm(registration: Dictionary) -> Dictionary:
 		"events_applied":int(captured.get("events_applied", -1)), "action_history":captured.get("action_history", []),
 		"host_outcome":str(captured.get("outcome", "")), "budget_outcome":str(captured.get("budget_outcome", "")),
 		"scope":str(ledger.get("scope", ""))}
+	receipt.declared_observations = captured.get("observations", [])
+	receipt.native_timing = captured.get("timing", {})
 	receipt.outcome = outcome
 	# Retirement: release the exclusive owner and confirm no reference remains.
 	host.clear()
@@ -171,7 +190,12 @@ func _arm(registration: Dictionary) -> Dictionary:
 func _negative(registration: Dictionary) -> Dictionary:
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 	var defaults: PackedInt32Array = bridge.default_liquid_policy()
-	var scenario: Dictionary = registration.scenarios[0]
+	# The controls are defined over the dam fixture's 192x96 reservoir fill; every
+	# registration that runs them registers that unchanged fixture.
+	var scenario: Dictionary = {}
+	for candidate: Dictionary in registration.scenarios:
+		if candidate.fixture_id == "lcb.dam.water.freemass.depth-96.v1": scenario = candidate
+	if scenario.is_empty(): return {"kind":"negative", "outcome":"refused", "error":"negative controls require the registered dam fixture"}
 	var parsed: Dictionary = _definition(scenario)
 	var controls: Array = []
 	if not parsed.ok: return {"kind":"negative", "outcome":"refused", "error":parsed.error}
