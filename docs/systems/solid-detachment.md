@@ -177,6 +177,10 @@ The AABB only bounds traversal; cell centers do not decide overlap. Recorded
 depth is minimum separating translation, while area is the exact polygon
 intersection. Area sums across disjoint proxies; unique overlapping cells are
 deduplicated across the compound. The six-shape tree and both holes remain intact.
+The observer omits intersection areas at or below `1e-9` cell² and support
+segments at or below `1e-7` cells. These explicit numerical tolerances qualify
+the geometry measurements; arbitrarily small positive intersections are not
+claimed to survive the observation filter.
 
 All nonempty native materials contribute geometry measurements. Only ambient
 Sand with the existing native support predicate supplies response segments;
@@ -327,7 +331,15 @@ continues to name the original build/execution commit and tree. Raw Windows
 evidence retains its original line endings. A later metadata commit does not
 become a newly executed physics source by relabelling the records.
 
-The new focused gates cover exact native geometry, source-pose observation,
+Source `5944c130` completed the new eight-cohort Linux/Windows matrix and
+qualified runtime publication `3ac7701`; the [3 November ledger](../audits/2026-11-03-sol281-dense-contact.md)
+now retains its original platform, compiler, cost and physical measurements.
+The [recovery handover](../audits/2026-11-03-sol281-takeover.md) owns the later
+current-main reconciliation and nonfinite-readback repair's separate
+resulting-source qualification. Neither record promotes this candidate to
+accepted gameplay physics.
+
+The focused gates cover exact native geometry, source-pose observation,
 pure response planning, actual Rapier readback, publication/revision refusal and
 repeated packed/embedded/mixed sessions. The controlled 12-step mechanism test
 compares identical loads with the prior three-unit aggregate impulse ceiling

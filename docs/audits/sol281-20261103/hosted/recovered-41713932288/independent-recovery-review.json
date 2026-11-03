@@ -1,0 +1,273 @@
+{
+  "canonical_reducer": {
+    "cohorts": 8,
+    "imports": 8,
+    "numbered_assertions": 4604,
+    "ordinary_controls": 8,
+    "receipt_byte_identical": true,
+    "receipt_sha256": "f3d614a81989d031e0adb9857afa8752671aa0bc33206c06478a848fedda567b",
+    "status": "passed",
+    "test_processes": 70
+  },
+  "denominators": {
+    "contact_cost": "All worker geometry/freeze attempts, including refused and unconsumed publications, plus every main candidate-response attempt, divided by complete consumed observations.",
+    "duration": "Span between consecutive positive sampled publications; it does not establish continuity between unobserved native steps.",
+    "impulse_energy": "New response only; ordinary coupling, gravity, hard contacts and damping are separate.",
+    "live_design": "2 platforms x 2 worker settings x 3 surroundings x 2 arms x 3 repeats x 360 actual Rapier steps",
+    "other_costs": "Native and worker means use consumed timed snapshots; Rapier uses actual steps; main synchronization uses its measured segments.",
+    "overlap": "Complete unique consumed native-publication geometry observations, not simulation ticks. Report area-samples and cell-samples."
+  },
+  "derived_outputs": {
+    "contact-recovery-case-summary.json": "b8e6cae0677d0123ebf181ab68766017ab46c5ac850a412ffc95558f18fdc353",
+    "contact-recovery-original-analysis.json": "f97ebc2b55a8d189ee921ca6acf2ac7ecf68524f46f8c48c6e83ff23fea7a896",
+    "qualification-original-artifacts.json": "f3d614a81989d031e0adb9857afa8752671aa0bc33206c06478a848fedda567b"
+  },
+  "deterministic_comparisons": {
+    "conservative_complete_case_dictionaries_equal": true,
+    "conservative_replay_cases": 17,
+    "frozen_response_numeric_case_dictionaries_equal": true,
+    "mechanical_trajectory_differences": [
+      {
+        "absolute_difference": 9.992007221626409e-16,
+        "float32_ulp_distance": 0,
+        "linux": 0.449905395507812,
+        "path": "/trajectory/0/baseline_depth",
+        "windows": 0.449905395507813
+      },
+      {
+        "absolute_difference": 9.992007221626409e-16,
+        "float32_ulp_distance": 0,
+        "linux": 0.449905395507812,
+        "path": "/trajectory/0/off_center_baseline_area",
+        "windows": 0.449905395507813
+      },
+      {
+        "absolute_difference": 2.9802321999117254e-08,
+        "float32_ulp_distance": 1,
+        "linux": -0.299964874982834,
+        "path": "/trajectory/3/off_center_candidate_rotation",
+        "windows": -0.299964904785156
+      },
+      {
+        "absolute_difference": 1.1102230246251565e-15,
+        "float32_ulp_distance": 0,
+        "linux": -0.599929809570312,
+        "path": "/trajectory/7/off_center_candidate_rotation",
+        "windows": -0.599929809570313
+      }
+    ],
+    "native_observation_complete_case_dictionaries_equal": true
+  },
+  "disposition": "Source-bound experimental mechanism and retained evidence confirmed. Broad physical/lifecycle acceptance and merge remain NO-GO.",
+  "execution_inputs": 1077,
+  "findings_for_completion": [
+    "Current dated ledger and PR description still omit completed exact-source qualification and live metric reduction.",
+    "Retain and identify GCC/ASan/MSVC and failed first-publication artifacts separately; final published host tree alone does not preserve their full original bundles.",
+    "3.772002958-cell worst candidate penetration occurs in Linux worker1 packed Sand; embedded-Sand candidate maximum is 2.640236319 cells.",
+    "The eight registered experiment gates do not define a general live penetration-clearance threshold; do not invent one or call broad dense-contact acceptance passed.",
+    "Original source qualification applies to 5944c130 and its publication-only child, not a later reconciliation with advanced main."
+  ],
+  "live_totals": {
+    "actual_rapier_steps": 25920,
+    "candidate_cases": 36,
+    "energy_violations": 0,
+    "live_cases": 72,
+    "observations": 23240,
+    "refused_observations": 0,
+    "response_accepts": 10101,
+    "response_attempts": 10896,
+    "response_refusal_ClearedContact": 441,
+    "response_refusal_InvalidGeometryWitness": 5,
+    "response_refusal_NonDissipativeResponse": 337,
+    "response_refusal_PoseDrift": 12,
+    "worker_observation_attempts": 26554
+  },
+  "original_host_archives": [
+    {
+      "artifact_id": 13270765670,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-contact-w1-41713932288-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.28.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.35.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.42.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.50.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "published_bytes_match_original": true,
+      "published_files_verified": 34,
+      "sha256": "200e67b6039ffaa36aeac4f2698fd0a64733b03a768aeab676ff8908caf40f5b",
+      "size": 7194892
+    },
+    {
+      "artifact_id": 13269084903,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-contact-w4-41713932288-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.34.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.41.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.48.log",
+        "host/host-state/data/godot/keystores/debug.keystore",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.55.log"
+      ],
+      "published_bytes_match_original": true,
+      "published_files_verified": 34,
+      "sha256": "ce276d1d3938998b04b0fa6bd458d3825e24465906a4ff0eb6dd3289ee37100b",
+      "size": 7081006
+    },
+    {
+      "artifact_id": 13269324608,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-core-41713932288-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.20.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.21.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.23.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.50.26.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "published_bytes_match_original": true,
+      "published_files_verified": 26,
+      "sha256": "4657114aee6a165f765aaf6b83bb48de33eb50666005f6e3c7e85e21715a9292",
+      "size": 3488592
+    },
+    {
+      "artifact_id": 13270540908,
+      "github_digest_matched": true,
+      "name": "sol281-host-linux-mechanism-41713932288-1",
+      "omitted_ephemeral_host_state_files": [
+        "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+        "host/host-state/config/godot/editor_settings-4.7.tres",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+        "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-03T20.52.11.log",
+        "host/host-state/data/godot/keystores/debug.keystore"
+      ],
+      "published_bytes_match_original": true,
+      "published_files_verified": 16,
+      "sha256": "1884a233d3fba87d14edbde1c71f1956ddf39bc459f77d43a91c06bab0e94359",
+      "size": 3483825
+    },
+    {
+      "artifact_id": 13269223208,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-contact-w1-41713932288-1",
+      "omitted_ephemeral_host_state_files": [],
+      "published_bytes_match_original": true,
+      "published_files_verified": 28,
+      "sha256": "37a5740ad5ffd37a76b12a8734c0c9fe5ee9c431316dc46a7c7eea0168ee8888",
+      "size": 2853206
+    },
+    {
+      "artifact_id": 13268814828,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-contact-w4-41713932288-1",
+      "omitted_ephemeral_host_state_files": [],
+      "published_bytes_match_original": true,
+      "published_files_verified": 28,
+      "sha256": "8841435d49627a79c3980aa0be75c2efa1de355c757f69f06fd11e3c4c91170a",
+      "size": 2965110
+    },
+    {
+      "artifact_id": 13269024879,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-core-41713932288-1",
+      "omitted_ephemeral_host_state_files": [],
+      "published_bytes_match_original": true,
+      "published_files_verified": 20,
+      "sha256": "3e3f8972035e84144b9e705ddb82c1309ea035b0c8a74461df3be99fc67c2721",
+      "size": 220449
+    },
+    {
+      "artifact_id": 13269299992,
+      "github_digest_matched": true,
+      "name": "sol281-host-windows-mechanism-41713932288-1",
+      "omitted_ephemeral_host_state_files": [],
+      "published_bytes_match_original": true,
+      "published_files_verified": 10,
+      "sha256": "223d2ba964bfeffb967384bfcf039cd144e85cf72e8c9370e589c3a885558df6",
+      "size": 216067
+    }
+  ],
+  "publication_commit": "3ac7701f013452c94a8c08b0746e1b13523e7234",
+  "published_host_bytes_verified": 118884659,
+  "published_host_files_verified": 196,
+  "reader_regressions": [
+    {
+      "count": 10,
+      "log": "independent-test_qualification.log",
+      "log_sha256": "096b183aa6c40fba1dd8649fdc90beb17069c2ebd49ce0fef83bd003a6cc12ef",
+      "returncode": 0,
+      "script": "tools/sol281/test_qualification.py"
+    },
+    {
+      "count": 9,
+      "log": "independent-test_publish_runtime.log",
+      "log_sha256": "d98cd43471782f72684954be2216ce125ab9352d556284d39c415c097358ebe4",
+      "returncode": 0,
+      "script": "tools/sol281/test_publish_runtime.py"
+    }
+  ],
+  "registered_mechanism_gates": {
+    "all_24_live_arm_group_cost_gates": true,
+    "conservation": "All 72 live cases preserve Sand quantity, Water mass and exact 520-cell aggregate tuple ownership assertions; 24 earlier populated controls and 17-case replay remain separately qualified.",
+    "controlled_off_centre_overlap_reduction": {
+      "measured": 0.911883194468342,
+      "passed": true,
+      "threshold": 0.25
+    },
+    "controlled_plane_overlap_reduction": {
+      "measured": 1.0,
+      "passed": true,
+      "threshold": 0.25
+    },
+    "cost_threshold_ms": 2.0,
+    "geometry_and_supported_contact_fences": "Retained native/Godot cases passed; original host inputs and before/after bytes authenticate exact source.",
+    "live_matrix_complete": true,
+    "response_energy": "PASS within registered planner/readback tolerances; zero recorded live response-energy violations. Full two-way granular momentum and whole-session mechanical energy are not qualified.",
+    "single_contact_and_separating_control": "PASS on both actual hosts; pure frozen response numeric case dictionaries agree."
+  },
+  "remaining_gates": [
+    "Sustained embedding and unresolved penetration",
+    "Dense-material resistance calibration and rotation/rolling feel",
+    "Human graphical acceptance and representative GPU pacing",
+    "Safe restoration and later structural lifecycle features",
+    "Latest-main source reconciliation and applicable ready-for-review CI",
+    "Explicit owner merge approval"
+  ],
+  "reviewer": {
+    "human_gameplay_acceptance": false,
+    "identity": "/root/evidence_audit",
+    "kind": "independent AI subagent",
+    "source_edits": false
+  },
+  "run_attempt": "1",
+  "run_id": "41713932288",
+  "schema": "cybersand.sol281.independent-recovery-review.v1",
+  "scope": "Independent source-bound replay of retained original host evidence; no new Godot execution and no gameplay/default/merge approval.",
+  "source": {
+    "sha": "5944c13079356fedf96da78c78e83b3898379fee",
+    "tree": "ff889678e5ef24cf7185561aa60b696f95df98d5"
+  },
+  "source_review": {
+    "all_13_file_hashes_match_executed_source": true,
+    "receipt": "docs/audits/sol281-20261103/independent-review.json",
+    "receipt_sha256": "ed25f24e57f9fc9bf483b24db089dfaca3ee3ce95c915048602a1b3f970c2e08"
+  },
+  "tool_hashes": {
+    "tools/sol281/analyze_contact_recovery.py": "0c6b6a223ba7b17c610d8659dec811f4d904c6c65d7291ee9290cad0814f9b54",
+    "tools/sol281/publish_runtime.py": "fd1d2f1480ed32fc4051ebade6a15ea9840c664e4ec53ce8bb3b2f58535220e6",
+    "tools/sol281/run_qualification.py": "3a7c173d5e39d5d571d480f485603b97ed670a427722b10af258c5a5edcc3204",
+    "tools/sol281/test_publish_runtime.py": "356236999fc3840051a01bb472b0cbbe7e38d53bf05784926f0832a4b59454b1",
+    "tools/sol281/test_qualification.py": "9af6ab8ee4e1d6b5aebee0d5056672b563987e5dc4fcce1a0360c452495e06fc"
+  },
+  "worst_candidate_mean_contact_ms_per_complete_observation": 1.8545525291828795
+}

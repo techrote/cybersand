@@ -10,6 +10,23 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL281 stalled-session recovery — 2026-11-03
+
+The [recovery handover](../audits/2026-11-03-sol281-takeover.md) resumes existing
+draft #347 from publication `3ac7701`, authenticates executed `5944c130` and its
+eight hosted cohorts, and completes the formerly pending contact ledger. The
+preserved repeated trials pass conservation and the proposed CPU-cost gate but
+retain unresolved packed/embedded penetration. Existing #364 owns that next
+bounded contact repair; #365 restoration remains conditional and blocked.
+
+Ordinary merge `d96e3e95` consumes accepted main `0fd4af59`, preserving PLAY,
+LCB, runtime/evidence ancestry and all incoming files. Independent review adds a
+narrow fail-stop guard for invalid post-impulse backend readbacks; its actual
+finite policy and all registered thresholds remain unchanged. That new source
+requires its own targeted host qualification. Consult the recovery ledger for
+the final source/runtime/run identities and gate disposition. #347 remains draft,
+#281/#12 open and #283 frozen; no owner merge approval is inferred.
+
 ## SOL281 dense-contact continuation — 2026-11-03
 
 Draft #347 now reconciles accepted main `89020b9e` through ordinary merge

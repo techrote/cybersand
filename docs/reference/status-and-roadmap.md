@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL281 recovered completion and remaining physics — 2026-11-03
+
+The [recovered contact ledger](../audits/2026-11-03-sol281-dense-contact.md)
+authenticates source `5944c130`: eight actual Linux/Windows cohorts, exact
+conservation, controlled overlap reduction and the proposed mean CPU-cost gate
+pass. Sustained clearance, resistance calibration and graphical/human feel remain
+unpassed. Existing #364 contact recovery precedes conditional #365 restoration.
+The [takeover record](../audits/2026-11-03-sol281-takeover.md) preserves that
+evidence, reconciles accepted main `0fd4af59` and qualifies a separate narrow
+invalid-readback fail-stop repair. Full ready-PR CI and owner merge approval are
+still required. #347 stays draft and #281/#12 stay open.
+
 ## Dense-contact recovery experiment — 2026-11-03
 
 The [new SOL281 checkpoint](../audits/2026-11-03-sol281-dense-contact.md) advances

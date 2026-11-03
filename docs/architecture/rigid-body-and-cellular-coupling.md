@@ -49,11 +49,15 @@ This is a bounded dissipative resistance experiment, not a calibrated granular
 momentum law or completed penetration recovery. Deep embedding, residual contact
 after the fixed sweeps, rejected stale geometry and asynchronous contact latency
 remain measurable limitations. Geometry work is bounded by 8,192 cell/proxy
-probes and 256 contact segments; unsupported/capacity/unknown-residency input
-refuses. The [canonical detachment contract](../systems/solid-detachment.md#opt-in-supported-sand-resistance)
+probes and 256 contact segments. Capacity, malformed compound geometry or
+unknown residency refuse the observation. Hot or unsupported native materials
+remain in the geometric measurement but supply no new supported-Sand response
+segment; their presence does not necessarily refuse the entire observation.
+The [canonical detachment contract](../systems/solid-detachment.md#opt-in-supported-sand-resistance)
 owns the full algorithm, capacity, controls, metric denominators and lifecycle
 limits. The [dated ledger](../audits/2026-11-03-sol281-dense-contact.md) separates
-iteration results from required exact-source Linux/Windows qualification.
+local iterations from completed source-qualified Linux/Windows evidence and
+the [later recovery qualification](../audits/2026-11-03-sol281-takeover.md).
 
 
 ## When a crate moves through sand, are its pixels erased and restored?

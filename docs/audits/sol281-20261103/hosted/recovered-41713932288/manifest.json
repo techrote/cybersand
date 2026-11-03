@@ -1,0 +1,152 @@
+{
+  "schema": "cybersand.sol281.recovered-evidence.v1",
+  "source": {
+    "sha": "5944c13079356fedf96da78c78e83b3898379fee",
+    "tree": "ff889678e5ef24cf7185561aa60b696f95df98d5"
+  },
+  "run_id": 41713932288,
+  "publication_commit": "3ac7701f013452c94a8c08b0746e1b13523e7234",
+  "failed_publication_source": "3e9749854a9bf52a0efd7e017dad901bdfae5b6d",
+  "failed_run_id": 41710177371,
+  "msvc_gcc_manifest_inputs_identical": true,
+  "msvc_raw_checkout_unchanged": true,
+  "source_inputs": 1077,
+  "files": [
+    {
+      "path": "artifact-inventory.json",
+      "bytes": 21886,
+      "sha256": "9988907361a940853f6f1dcff8940d32b71278f4c5b0eb6283a56682243e4cf3"
+    },
+    {
+      "path": "independent-recovery-review.json",
+      "bytes": 13627,
+      "sha256": "32098991f39cc9008bf9cbd6c6acf0dae9da1f9aac31c4ec71a42c819f986d14"
+    },
+    {
+      "path": "host-artifact-member-verification.json",
+      "bytes": 90022,
+      "sha256": "2b20316a4f806c6885700175a726b0ce9defc21ac96cee797a330634c0ebc3c4"
+    },
+    {
+      "path": "contact-recovery-analysis.json",
+      "bytes": 107820,
+      "sha256": "f97ebc2b55a8d189ee921ca6acf2ac7ecf68524f46f8c48c6e83ff23fea7a896"
+    },
+    {
+      "path": "contact-recovery-case-summary.json",
+      "bytes": 248518,
+      "sha256": "b8e6cae0677d0123ebf181ab68766017ab46c5ac850a412ffc95558f18fdc353"
+    },
+    {
+      "path": "main-reconciliation-inputs.json",
+      "bytes": 1091,
+      "sha256": "42416a8baf6f4389e975ca870e9035d208e2efc08e8a47176f0b1c61642ee7c5"
+    },
+    {
+      "path": "originals/msvc/after.json",
+      "bytes": 257656,
+      "sha256": "fe6774072c76a66378a4b5501f8c778a59c59404e449741b5dc11dfa7d040d32"
+    },
+    {
+      "path": "originals/msvc/before.json",
+      "bytes": 257559,
+      "sha256": "1357f3495ba9316aac03c99975be887a010007acb406fd62a6d7dd9dba48f5f4"
+    },
+    {
+      "path": "originals/msvc/binary-identities.json",
+      "bytes": 632,
+      "sha256": "bed17d4a0e027818364541098e2bc6970afdc5260d271cd57fc21e48b1119334"
+    },
+    {
+      "path": "originals/msvc/command.log",
+      "bytes": 63,
+      "sha256": "1e28e6d725963ac13c6bf0a0930bb1c11779a1f677fca47071768f26e21494e1"
+    },
+    {
+      "path": "originals/msvc/command.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "originals/msvc/compile-conservative_displacement.log",
+      "bytes": 6572,
+      "sha256": "966283fcc9da128326ba647c7ed0b7e6b72ce928a1572fc5dc487c7673482c0d"
+    },
+    {
+      "path": "originals/msvc/compile-solid_contact_geometry.log",
+      "bytes": 1532,
+      "sha256": "fa0439efa425ba950f2160a4a0232e2d2671eee21cb9cfe5457d4d8bff75a2f7"
+    },
+    {
+      "path": "originals/msvc/compile-solid_detachment.log",
+      "bytes": 6545,
+      "sha256": "68c90f633796120e903da48390549364ca0557cb2c04bea42c2e11d71cab5c82"
+    },
+    {
+      "path": "originals/msvc/compiler-locations.txt",
+      "bytes": 107,
+      "sha256": "ffe24ae01684abcfcb0816bd4ff464f54d7f6065395ca7248a11e465816ec1ff"
+    },
+    {
+      "path": "originals/msvc/receipt.json",
+      "bytes": 844,
+      "sha256": "bfb1490e592529817b1b0f983b1faf9dae32cb0915dca5a567b82665a89d884b"
+    },
+    {
+      "path": "originals/msvc/run-conservative_displacement.log",
+      "bytes": 529,
+      "sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+    },
+    {
+      "path": "originals/msvc/run-solid_contact_geometry.log",
+      "bytes": 55,
+      "sha256": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86"
+    },
+    {
+      "path": "originals/msvc/run-solid_detachment.log",
+      "bytes": 652,
+      "sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306"
+    },
+    {
+      "path": "originals/msvc/vs-environment.log",
+      "bytes": 247,
+      "sha256": "d6bfbc767c2943f689888809d689d9e86e531471386d4b13a628d192b3c8343d"
+    },
+    {
+      "path": "originals/publication/publication.json",
+      "bytes": 132985,
+      "sha256": "21a46d23c03d199d0394d094f149e9ad09abc10cca56f34b1dbed42d001debb4"
+    },
+    {
+      "path": "originals/failed-publication/job-126183856133.log",
+      "bytes": 106898,
+      "sha256": "5b3ba78b7103e25ce868d63d7fd246b74fc678de2550eb327174aed4dafc17bc"
+    },
+    {
+      "path": "originals/failed-publication/publication.json",
+      "bytes": 132985,
+      "sha256": "dcda283b4f5668f1abfcda2aa0da17ddf31552c3d991320dc4280a1149e4404c"
+    },
+    {
+      "path": "originals/linux-native/command.log",
+      "bytes": 13913,
+      "sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7"
+    },
+    {
+      "path": "originals/linux-native/performance.jsonl",
+      "bytes": 2728,
+      "sha256": "4d84084ee8e3db22b813c60d66789ca2c60184f18a89d4b55c0d54625eef2f1c"
+    },
+    {
+      "path": "originals/linux-native/receipt.json",
+      "bytes": 2316,
+      "sha256": "be75423d7f224fc44207e8741c0c4a676d6142f149f3692faad208f177c5c6ec"
+    },
+    {
+      "path": "independent-main-reconciliation-review.json",
+      "bytes": 14768,
+      "sha256": "4da0a8fe590c7e1998c556518e4d226596503b825b9d00cf03f39f4e7534ea77"
+    }
+  ],
+  "scope": "Supplemental preserved compiler/publication receipts and independent reduction of the original successful source. No new runtime execution or physical/default/merge approval."
+}

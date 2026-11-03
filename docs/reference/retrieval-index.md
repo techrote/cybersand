@@ -18,6 +18,9 @@ Sand/Water displacement or the diagnostic controls, retrieve
 #281 gates, original failed experiments and tested identities, explicitly
 retrieve the [3 November contact ledger](../audits/2026-11-03-sol281-dense-contact.md)
 and the [earlier SOL281 qualification](../audits/2026-11-01-sol281-current-main.md).
+For the recovered completed receipts, latest-main reconciliation and terminal
+post-impulse readback failure guard, also retrieve the
+[recovery handover](../audits/2026-11-03-sol281-takeover.md).
 Global acceleration and Stage3B ordering remain in the
 [soliding programme](../operations/soliding-programme.md).
 

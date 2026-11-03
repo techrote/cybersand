@@ -273,7 +273,7 @@ def make_manifest(target, ctx, inputs, native, identity, build, build_bytes, bas
                 "build_inputs": {path: value for path, value in inputs.items() if path not in native},
                 "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; checkout bytes independently authenticated",
                 **identity, "build_attempt": ctx["run_attempt"], "workflow_attempt": ctx["run_attempt"],
-                "workflow_run": ctx["workflow_run"], "evidence": "docs/audits/2026-11-01-sol281-current-main.md",
+                "workflow_run": ctx["workflow_run"], "evidence": "docs/audits/2026-11-03-sol281-dense-contact.md",
                 "toolchain": "GitHub-hosted Linux build; target " + target + "; godot-cpp=" + BINDINGS_REVISION
                     + "; bindings SHA-256=" + build["bindings"]["sha256"] + "\n" + build["compiler"],
                 "bindings": build["bindings"], "compiler": build["compiler"],

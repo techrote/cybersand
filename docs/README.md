@@ -24,9 +24,15 @@ adds exact rotated overlap observations and a bounded, revision-fenced Rapier
 normal response. **V** or `--sand-resistance` selects it in the lab. Its
 [3 November ledger](audits/2026-11-03-sol281-dense-contact.md) and
 [prospective gates](audits/2026-11-03-sol281-dense-contact-registration.md)
-preserve the earlier evidence and distinguish controlled mechanism gains from
-unresolved embedding, live cost, graphical/human acceptance and restoration.
+preserve the earlier evidence and distinguish controlled mechanism gains and
+measured CPU cost from unresolved embedding, graphical/human acceptance and restoration.
 PR #347 remains draft; ordinary defaults and Y1 #343 are unchanged.
+
+The [stalled-session recovery](audits/2026-11-03-sol281-takeover.md) completes the
+original host evidence, preserves compiler/failure receipts, reconciles current
+main and records the narrow nonfinite-readback failure repair and its own
+qualification boundary. Existing #364 contact recovery precedes conditional
+#365 restoration; neither issue is replaced by another investigation chain.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),
