@@ -140,6 +140,10 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-11-03-paired-material-plan-and-fleet-emissions.md",
+      "reason": "Dated app-only source-matched flyer source/actuator and input-lifetime checks. Retrieve through the fleet contract; paired materials and finite curing remain Planned, native SDK reuse is explicit, and no rest or owner acceptance is inferred."
+    },
+    {
       "path": "audits/2026-11-01-render-copy-production-reconciliation.md",
       "reason": "Dated current-main R source selection, differential, runtime and graphical qualification. Retrieve through the bridge contract and validation ledger; historical stack results and new execution retain distinct identities."
     },

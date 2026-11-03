@@ -15,6 +15,8 @@ records the current tested application checkpoint, retained failures and native
 SDK reuse separately from earlier physical qualification.
 The [actuator/navigation follow-up](../audits/2026-11-02-flyer-actuator-limits-and-navigation.md)
 records thrust/torque controls, F2 return routes and the cropped burrowing evidence.
+The [November3 host record](../audits/2026-11-03-paired-material-plan-and-fleet-emissions.md)
+binds side-thruster, dispenser and Fire controls to the tested application source.
 
 ## Which craft and materials are available?
 

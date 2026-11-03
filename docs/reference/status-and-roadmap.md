@@ -1778,11 +1778,25 @@ Keep20 as the control and all three drafts unmerged.
 
 ## Editable flyer budget playground — 2026-11-02
 
+**Current developer extension, 2026-11-03:** the same room adds bounded native
+material dispensers, body-local side jets and a live default-off thruster Fire
+toggle. [Source-matched desktop host checks](../audits/2026-11-03-paired-material-plan-and-fleet-emissions.md)
+cover input lifetime and the existing force ceiling; they do not qualify rest,
+burrowing or new material laws. PR351 remains draft and unmerged.
+
+**Planned:** the [paired wall/loose implementation](../operations/paired-wall-loose-materials-plan.md)
+will give explicitly admitted forms shared chemistry and ordinary hard-terrain
+support until destruction exposes powder. A separate finite-dose binder/crust
+prototype must not propagate activation through cured neighbors. The shell
+playground annex and material/collider-release qualification are part of that
+future work; existing Cement and all current material laws remain unchanged.
+
 **Current developer source:** the [seven-flyer room](../systems/granular-review-flight-fleet.md)
 combines material painting with staged LA budget5..80 and mass/inertia0.01..64
 controls. Defaults are LA/20 and multipliers1/1; fixed-20 RFT remains a reference.
-Actual flyer properties/caches change during fresh construction, with unchanged
-actuator ceilings and no rescaling of detached terrain. Native SDK181 inputs are
+Actual flyer properties/caches change during fresh construction, with default
+authored actuator ceilings and no rescaling of detached terrain. Native SDK181 inputs are
 unchanged. This is a playable comparison extension, not a new accepted physical
 population: prior rest failures remain, P/R/C and sleep stay excluded, and PR #351
-remains draft/unmerged pending separate host and owner evidence.
+remains draft/unmerged; host mechanics and owner gameplay acceptance remain
+separate gates.
