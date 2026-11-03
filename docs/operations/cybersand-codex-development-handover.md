@@ -38,6 +38,34 @@ copy GCR/PLAY implementations into this branch. The 11/9 coupling ABI remains.
 Dense resistance/penetration and representative GPU pacing remain unpassed;
 active restoration, fracture and normal gameplay remain deferred.
 
+## LCB reassessment and bounded successors — 2026-11-03
+
+[#359's audit](../audits/2026-11-03-lcb-reassessment.md) inspects live main
+`89020b9eb6d540383a5bb64b58dcd29a87592c32` (tree
+`79de02472a653a4315149bc5e1970a512e6d74b6`), including merged stopped-session
+recovery #332. All four liquid families, application selection, shared PLAY
+construction and native worker observation already exist. This checkpoint is
+documentation only; it does not resume the original LCB implementation programme,
+merge parked PRs, select a preferred solver or change production defaults.
+
+Start successors from the audit's exact reuse map and dependency-ordered
+instructions: #360 owns fair playable comparison and actual multithreaded
+profiling, #361 owns bounded leaks/drains/material tools, #362 owns comparative
+body impacts and investigation of upward spray, #363 consumes their evidence for
+retention/profile decisions. Reconcile existing #258/#259 observation/scientific
+work before extending it. #260 is optional actor-retention work; existing PLAY
+can provide the common host. #261 retains old handover evidence, not current
+pending-CI truth. The live PR ledger confirms all four remain unmerged.
+
+Assign one integration owner for shared Main/worker/host-readback changes.
+Scenario registration and analysis can proceed independently from native
+structural/contact changes. Coordinate with active #347 before changing overlap
+ejection, occupancy masks, detachment or Rapier contacts, and with PLAY #304 and
+the PACE004 apparatus merged by #334 (apparatus-only, no LCB-relevant delta) before
+modifying pacing, recovery or diagnostics. The audit's post-audit section records
+the open GCR/material/parked-PR file-overlap register. Keep historical failures,
+configured-versus-actual worker counts and untested human/Web gates explicit.
+
 ## Stopped PLAY recovery reconciliation — 2026-11-02
 
 The owner authorizes focused completion and guarded merge of

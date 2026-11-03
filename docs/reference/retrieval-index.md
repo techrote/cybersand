@@ -29,6 +29,21 @@ exercise those new claims separately from the unchanged 1 November questions.
 Passing a narrow mechanism gate does not establish buried-body clearance,
 native restoration, GPU pacing, human feel or #281 completion.
 
+## LCB current-main reassessment routes — 2026-11-03
+
+| Question | Canonical route |
+|---|---|
+| Which of the four liquid families and material/variant combinations are actually selectable? | [Current policy and admission](../architecture/liquid-solver-family-policy.md#status) |
+| Do inertial bubbles mean gas pressure, does Rapier inject momentum, and is upward ballistic spray possible? | [IN physical limits and current availability](../architecture/inertial-cellular-v1.md#current-main-availability-and-physical-limits--2026-11-03) |
+| Can ordinary PLAY select all four laws, and what does an observed worker count prove? | [Current application, owner layers and observation](../operations/lcb-manual-comparison-ux.md#current-application-and-comparison-readiness--2026-11-03) |
+| How are radius, normalization, hidden quantity and protected fixtures compared fairly? | [Current catalogue reuse and comparison registration](../operations/lcb-scenario-catalogue.md#current-main-reuse-and-fair-comparison--2026-11-03) |
+| Which evidence, parked PRs and ownership boundaries should successors preserve? | [Development handover](../operations/cybersand-codex-development-handover.md#lcb-reassessment-and-bounded-successors--2026-11-03), [validation ledger](validation-evidence.md#lcb-reassessment-evidence-boundary--2026-11-03) |
+
+The dated [#359 report](../audits/2026-11-03-lcb-reassessment.md) supplies the
+complete inventory and executable #360–#363 handovers. It is explicitly excluded
+from the default current-answer corpus; the focused contracts above own answers.
+[Eight supplementary questions](retrieval-questions-lcb-reassess.json) exercise
+these distinctions without modifying the frozen32 or existing157 challenges.
 
 - [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
   #302 satisfies mandatory native-busy lifecycle qualification; #304 is optional

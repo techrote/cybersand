@@ -36,6 +36,33 @@ persistence, normal gameplay and hardware physical acceptance remain incomplete.
 No automatic Stage3B or GCR dependency is added; frozen #283 and other PLAY/GCR
 branches remain separate.
 
+## LCB current-main reassessment — 2026-11-03
+
+The [#359 source-qualified audit](../audits/2026-11-03-lcb-reassessment.md)
+verifies main `89020b9eb6d540383a5bb64b58dcd29a87592c32`, including merged #332.
+Four liquid families are implemented: FreeMass, CellularYield, PressureFlow and
+InertialCellular. Water admits all four; Brine admits CY/IN; the other nine
+liquids admit CY. Pressure reference/cached/cached+dormant are one family.
+Ordinary application presets and shared PLAY exercise real native/Rapier owners;
+actual native task participation is observable. This is execution capability,
+not a completed fair four-family performance or human-feel comparison.
+
+IN retains momentum but constrains downward-positive vertical velocity to
+nonnegative values; apparent bubbles do not establish gas pressure, and body
+overlap relocation preserves existing liquid motion without injecting impact
+velocity. Source-qualified worker, pressure timing, memory, Windows/Linux and
+historical Web evidence is inventoried without rerunning expensive campaigns.
+The [canonical policy](../architecture/liquid-solver-family-policy.md) and
+[comparison runbook](../operations/lcb-manual-comparison-ux.md) now describe
+landed work separately from dated pre-merge checkpoints.
+
+Minimum remaining work is #360's bounded fixture/receipt integration and actual
+playable comparison, reusing parked #258/#259; #361 supplies narrowly scoped
+gameplay tools; #362 investigates impacts/upward spray after baseline reuse;
+#363 makes the evidence-based decision. No kernel/default/runtime/CI change or
+implementation merge is part of #359. Original LCB issues stay open. Coordinate
+shared host changes with PLAY and native contact changes with #347.
+
 ## Stopped PLAY recovery — 2026-11-02
 
 [PR #332](https://github.com/techrote/cybersand/pull/332) preserves the reviewed
@@ -47,7 +74,7 @@ paused tick-zero reconstruction and launcher cancellation. Its
 preserves original failures and identifies the necessary Windows helper-control
 oracle correction. The PR ledger owns exact-head CI, independent review and
 guarded-merge status; this source description alone is not a qualification pass.
-PACE004 #334 and the physical/device/display/human acceptance areas remain separate.
+PACE004 (#334 merged as apparatus-only main `070c7a22`; its exact-head hosted campaign remains Planned) and the physical/device/display/human acceptance areas remain separate.
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
 
