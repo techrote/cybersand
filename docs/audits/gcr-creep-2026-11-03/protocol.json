@@ -1,0 +1,251 @@
+{
+  "schema": 1,
+  "registration": "GCR-CREEP-001-2026-11-03",
+  "registered_date": "2026-11-03",
+  "control_source": "8ce36b0e41c9292ab0b1f02cf7789450082a67b5",
+  "observed_main": "89020b9eb6d540383a5bb64b58dcd29a87592c32",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "maximum_primary_captures": 32,
+  "wall_timeout_seconds": 300,
+  "native_build_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+  "law": {
+    "candidate": "GCR-REST",
+    "mode": "control",
+    "admission": "A1",
+    "base_budget": 20,
+    "material_laws": "unchanged",
+    "sleep": "unchanged; no sleep experiment"
+  },
+  "pulse_start": 120,
+  "pulse_end": 180,
+  "drive_end": 1200,
+  "drive_fraction": 0.15,
+  "effort": 0.7,
+  "fixture_barrel": {
+    "layout": "packed",
+    "left": 96,
+    "width": 96,
+    "depth": 160,
+    "size": 1,
+    "mass": 1,
+    "angle": 0.08,
+    "gap": 2,
+    "speed": 0,
+    "gravity": 92.12,
+    "friction": 0.78,
+    "workers": 1,
+    "drive_impulse": 0.02
+  },
+  "fixture_flyer": {
+    "fleet_index": 2,
+    "name": "Kestrel",
+    "position": [
+      296,
+      312
+    ],
+    "angle": 1.5707963267948966,
+    "region": [
+      128,
+      128,
+      512,
+      384
+    ],
+    "base": [
+      129,
+      320,
+      510,
+      191
+    ],
+    "bank": [
+      300,
+      192,
+      339,
+      128
+    ],
+    "border_material": 1,
+    "gravity": 38,
+    "mass": 0.1,
+    "inertia": 0.975,
+    "mass_multiplier": 1,
+    "inertia_multiplier": 1,
+    "thrust_multiplier": 1,
+    "torque_multiplier": 1,
+    "census_interval": 60,
+    "fire": false,
+    "dispensers": false
+  },
+  "windows": {
+    "before_drive": [
+      0,
+      120
+    ],
+    "drive_early": [
+      120,
+      180
+    ],
+    "drive_late": [
+      900,
+      1200
+    ],
+    "after_release": [
+      1200,
+      1500
+    ],
+    "tail": [
+      1500,
+      1800
+    ]
+  },
+  "thresholds": {
+    "displacement_reporting_cells": 0.5,
+    "velocity_reporting_cells_per_second": 0.1,
+    "force_zero_tolerance": 1e-12,
+    "kinematic_delivery_relative_tolerance": 1e-05
+  },
+  "required_gates": [
+    "source/runtime/protocol identity before and after",
+    "complete sequential rows per case",
+    "zero unexplained closed material or Water quantity change",
+    "actual inputs and actuator outputs recorded separately",
+    "hard-contact-confounded windows labelled",
+    "distinct accepted applications, no repeated snapshot efficacy population"
+  ],
+  "decisions": {
+    "passive": "Report displacement and correction cycles with zero authored drive; distinguish neutral controller drag from zero actuator ceilings.",
+    "powered": "Compare matched pulse/held drive with corresponding coast and zero-ceiling captures. Classify dependence on drive, without asserting correction causation.",
+    "causality": "Correction/zero/wrench ledgers localize sequences; observational association alone cannot isolate correction or zeroing. No law change follows without a separately registered intervention.",
+    "failure": "Keep every failed gate, partial capture and floor-confounded window. Do not rerun as though a replacement was the primary.",
+    "feel": "No response-law, material, mass/inertia or authored actuator tuning. Retain source-identical barrel impact controls and actual owner judgement separately."
+  },
+  "write_boundary": {
+    "allowed": [
+      "new qualification fixture/capture",
+      "new Python runner/reducer/tests",
+      "focused registration/audit and documentation routes"
+    ],
+    "excluded": [
+      "native production inputs",
+      "existing bridge/worker/actor/controller/session code",
+      "Astra #281/PR347 source and branch",
+      "new catch/sleep/friction/load law",
+      "production default or merge"
+    ]
+  },
+  "cases": [
+    {
+      "id": "barrel-sand-passive",
+      "kind": "barrel",
+      "material": 2,
+      "drive": "passive",
+      "ticks": 1800
+    },
+    {
+      "id": "barrel-sand-pulse",
+      "kind": "barrel",
+      "material": 2,
+      "drive": "pulse",
+      "ticks": 1800
+    },
+    {
+      "id": "barrel-sand-sustained",
+      "kind": "barrel",
+      "material": 2,
+      "drive": "sustained",
+      "ticks": 1800
+    },
+    {
+      "id": "barrel-salt-passive",
+      "kind": "barrel",
+      "material": 23,
+      "drive": "passive",
+      "ticks": 1800
+    },
+    {
+      "id": "barrel-salt-pulse",
+      "kind": "barrel",
+      "material": 23,
+      "drive": "pulse",
+      "ticks": 1800
+    },
+    {
+      "id": "barrel-salt-sustained",
+      "kind": "barrel",
+      "material": 23,
+      "drive": "sustained",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-sand-coast",
+      "kind": "flyer",
+      "material": 2,
+      "drive": "coast",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-sand-unactuated",
+      "kind": "flyer",
+      "material": 2,
+      "drive": "unactuated",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-sand-pulse",
+      "kind": "flyer",
+      "material": 2,
+      "drive": "pulse",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-sand-sustained",
+      "kind": "flyer",
+      "material": 2,
+      "drive": "sustained",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-salt-coast",
+      "kind": "flyer",
+      "material": 23,
+      "drive": "coast",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-salt-unactuated",
+      "kind": "flyer",
+      "material": 23,
+      "drive": "unactuated",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-salt-pulse",
+      "kind": "flyer",
+      "material": 23,
+      "drive": "pulse",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-salt-sustained",
+      "kind": "flyer",
+      "material": 23,
+      "drive": "sustained",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-hard-sustained",
+      "kind": "flyer",
+      "material": 1,
+      "drive": "sustained",
+      "ticks": 1800
+    },
+    {
+      "id": "flyer-water-sustained",
+      "kind": "flyer",
+      "material": 3,
+      "drive": "sustained",
+      "ticks": 1800
+    }
+  ]
+}

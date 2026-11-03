@@ -1,0 +1,107 @@
+---
+title: GCR-LA passive creep and powered burrowing investigation
+status: Planned
+document-kind: design
+scope: Frozen apparatus-only independent-body investigation; unchanged response laws, no structural-detachment edits or sleep
+canonical-for: [gcr-creep-investigation]
+last-reviewed: 2026-11-03
+related-documents: [gcr-rest-registration.md, ../architecture/granular-contact-rest.md, ../systems/granular-review-flight-fleet.md]
+---
+
+# GCR-LA passive creep and powered burrowing investigation
+
+## Source, ownership and purpose
+
+Owner authorizes this focused investigation while Astra independently progresses
+#281/PR347. The isolated branch `codex/gcr-creep-investigation-20261103` starts
+from the exact preferred-review control PR351 source
+`8ce36b0e41c9292ab0b1f02cf7789450082a67b5`. Freshly fetched main is
+`89020b9eb6d540383a5bb64b58dcd29a87592c32`, tree
+`79de02472a653a4315149bc5e1970a512e6d74b6`. This is a deliberate same-source
+apparatus successor, not a claim that unmerged GCR-LA is current main.
+
+Only new capture/fixture, runner/reducer/test files and focused documentation
+change. Existing World, native adapter, worker, Rapier bridge, actor, controller
+and detachment/session source remain byte-identical to the control. PR347's
+branch is read-only; no independently competing handoff or mixed-body owner is
+created. All PRs remain unmerged. Sleep, catch, material laws, response tuning,
+default promotion and body-to-cell representation are outside this experiment.
+
+The existing Windows/Linux native modules were built at181a8257. Reuse requires
+exact complete production input maps and actual runtime hashes, plus current
+application input hashes before/after execution. Changed apparatus does not
+relabel the earlier native build. The standalone synchronous fixture is useful
+for attribution; it does not qualify asynchronous PLAY or compound delivery.
+
+## Preregistered population
+
+Commit this document and the [machine protocol](../audits/gcr-creep-2026-11-03/protocol.json)
+before new physical acquisition. Sixteen cases per OS,32 primary captures total,
+1800 ticks at60Hz each,300-second external watchdog. Preserve failed attempts;
+any apparatus repair gets a separately identified successor, not a replacement
+primary result. Smoke/parse and mechanical gates are distinct from acquisition.
+
+| Fixture | Materials | Input arms |
+|---|---|---|
+| Barrel8x14, mass1, near-upright, gentle placement on160-deep bed | Sand2, Salt23 | No drive; pulse; sustained gentle impulse |
+| Default Kestrel9x6, mass0.1, inertia0.975, horizontal body axis against a bank over a deep base | Sand2, Salt23 | Neutral controller/coast; zero actuator ceilings; pulse; sustained gentle drive |
+| Identical Kestrel geometry | Hard Wall1, Water3 | Sustained drive, separate negative controls |
+
+The barrel retains existing friction0.78, gravity92.12 and current correction/
+zeroing/response. Its authored horizontal impulse is0.02 per tick during the
+selected interval. Kestrel retains all default mass, inertia, force and torque
+authoring. Input fraction0.15 and effort0.7 are registered gentle commands, not
+changes to material law or actuator ceilings. Its gravity remains38.
+Pulse runs ticks120..179; sustained drive runs120..1199; all then release.
+
+The flyer room is closed at(128,128), size512x384. The base occupies
+(129,320,510,191); the connected bank occupies(300,192,339,128). The initial
+centre is(296,312), rotationpi/2. Wall contact is reported explicitly so late
+hard-floor arrest cannot be called granular rest. This bounded geometry is an
+experimental choice, not a permanent engine limit.
+
+## What does passive mean?
+
+Neutral input is not necessarily zero actuation: the actual flyer controller
+continues velocity drag. The unactuated arm sets existing developer thrust and
+torque ceilings to zero, retaining gravity/contact and existing backend damping.
+It is a diagnostic control, not a proposed flyer default. Record commanded
+actions and actual controller force/torque/impulse separately. Finite throttle
+slew after release belongs in the actual actuation ledger.
+
+No presentation/exhaust inference supplies force evidence. The owner's defaults
+recording remains observational and its craft/source uncertainty is retained.
+
+## Measurements and decisions
+
+First independently re-reduce existing synchronous control captures, retaining
+their original594a1a73 identity and input schedules. Their copied ledgers can
+localize correction/zeroing/wrench sequences but do not qualify this successor.
+
+New captures record exact schedule, native configuration, actual physical mass/
+inertia, pose/velocity/omega, actual actuation, fresh response IDs/age, correction
+translation, pre/post-zeroing/wrench velocities and energies where available,
+overlap, granular limiter/refusal and displacement counters. Missing fields stay
+null. Closed material counts and exact Water quantity are sampled at declared
+census boundaries. Free painting, emissions and chemical source edits are absent.
+Diagnostic census, copying and per-event observation work is not production
+performance; measure its timing separately where available.
+
+Compare before-drive[0,120), early-drive[120,180), late-drive[900,1200),
+after-release[1200,1500) and tail[1500,1800). Report signed displacement,
+span, velocity percentiles, summed correction, fresh application counts and
+actual actuator work.0.5cell displacement and0.1cell/s velocity are reporting
+thresholds, not a production acceptance claim. Numerical delivery closure uses
+relative1e-5; conservation is exact. Hard-contact windows remain separate.
+
+Classify motion as observed with no command, with zero actuators, during drive,
+or persisting after actual actuator output stops. Report matched differences
+without treating ticks/repeated events as independent efficacy populations.
+Ledger association alone does not prove that correction causes creep. The old
+R/PRC failure combined two operations; P/C never activated in its physical
+population. No friction/load/catch change is selected from those facts.
+
+The deliverable is a reduced reproduction, compact machine summary, selected
+traces and hashed raw evidence, followed by the smallest justified next causal
+experiment. Keep the barrel feel and actual structural mass as retained controls.
+Gameplay acceptance and the remaining REM-004 envelope stay separate.
