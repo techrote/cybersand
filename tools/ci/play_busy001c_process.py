@@ -338,8 +338,18 @@ class ProcessCustody:
                 live = self.remaining()
             except CustodyError as error:
                 observation_error = error
-                live = {str(pid): dict(row) for pid, row in self._observed.items()
-                        if self.backend.alive(row)}
+                # One unobservable object must not stop cleanup of the others.
+                # Retirement stays unproved for it, so keep it in the live set.
+                live = {}
+                for pid, row in self._observed.items():
+                    try:
+                        if self.backend.alive(row):
+                            live[str(pid)] = dict(row)
+                    except CustodyError as alive_error:
+                        live[str(pid)] = dict(row)
+                        self.cleanup_termination_errors.setdefault(str(pid), {
+                            "creation_time": row["creation_time"],
+                            "error": f"observation: {alive_error}"})
             if not live:
                 if observation_error is not None:
                     raise observation_error
@@ -347,11 +357,17 @@ class ProcessCustody:
             if time.monotonic() >= deadline:
                 raise CustodyError(
                     "Owned processes remain after bounded failure cleanup; "
-                    f"termination_errors={self.cleanup_termination_errors}")
+                    f"termination_errors={self.cleanup_termination_errors}; "
+                    f"last_observation_error={observation_error}")
             for key, row in live.items():
                 if key not in attempted:
                     attempted[key] = row
-                    error = self.backend.terminate(row)
+                    try:
+                        error = self.backend.terminate(row)
+                    except CustodyError as terminate_error:
+                        # Retain it and continue with remaining owned rows; the
+                        # deadline still fails closed while this one is unproved.
+                        error = f"termination: {terminate_error}"
                     if error is not None:
                         self.cleanup_termination_errors[key] = {
                             "creation_time": row["creation_time"], "error": error}

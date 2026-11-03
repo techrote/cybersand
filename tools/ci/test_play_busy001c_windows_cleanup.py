@@ -171,6 +171,71 @@ class WindowsCleanupTests(unittest.TestCase):
         self.assertAlmostEqual(clock.now, 0.025)
         self.assertEqual(sum(call[0] == 'terminate' for call in kernel.calls), 1)
 
+    def test_persistent_non5_refusal_is_retained_and_not_clean(self):
+        for code in (6, 31, 1460):
+            with self.subTest(error=code):
+                custody, _, kernel, clock = self.setup_kernel(error=code, retire_at=float('inf'))
+                with self.assertRaisesRegex(CustodyError, f"'error': {code}"):
+                    custody.stop_remaining(timeout_seconds=0.05)
+                self.assertAlmostEqual(clock.now, 0.05)
+                self.assertEqual(sum(c[0] == 'terminate' for c in kernel.calls), 1)
+                self.assertEqual(custody.cleanup_termination_errors[str(kernel.pid)]['error'], code)
+
+    def test_wait_failure_after_termination_request_fails_closed_and_keeps_error(self):
+        custody, backend, kernel, _ = self.setup_kernel(retire_at=float('inf'))
+        real_wait = kernel.WaitForSingleObject
+        state = {'after_request': False}
+
+        def wait(handle, timeout):
+            state['after_request'] = state['after_request'] or any(c[0] == 'terminate' for c in kernel.calls)
+            kernel.wait_failure = state['after_request']
+            return real_wait(handle, timeout)
+
+        kernel.WaitForSingleObject = wait
+        with self.assertRaisesRegex(CustodyError, 'WAIT_FAILED, error=77'):
+            custody.stop_remaining()
+        self.assertEqual(sum(c[0] == 'terminate' for c in kernel.calls), 1)
+        self.assertEqual(custody.cleanup_termination_errors[str(kernel.pid)]['error'], 5)
+
+    def test_zero_wait_cannot_be_mistaken_for_retirement_when_identity_changes(self):
+        custody, backend, kernel, _ = self.setup_kernel(retire_at=float('inf'))
+        kernel.created = 300  # Handle now names a different creation identity.
+        self.assertFalse(backend.alive(custody._observed[kernel.pid]))
+        self.assertFalse(any(c[0] == 'terminate' for c in kernel.calls))
+
+    def test_unobservable_row_does_not_block_cleanup_of_other_rows(self):
+        clock = Clock()
+        terminated = []
+        class Backend:
+            rows = {1: 11, 2: 22}
+            dead = set()
+            def table(self):
+                return {pid: {'pid': pid, 'parent_pid': os.getpid()} for pid in self.rows}
+            def identity(self, pid):
+                return {'pid': pid, 'creation_time': self.rows[pid]}
+            def alive(self, row):
+                if row['pid'] == 1:
+                    raise CustodyError('Cannot observe process 1 retirement: WAIT_FAILED, error=6')
+                return row['pid'] not in self.dead
+            def terminate(self, row):
+                terminated.append(row['pid'])
+                self.dead.add(row['pid'])
+            def reap(self, row, launcher_pid): pass
+            def close(self): pass
+        self.enterContext(patch.object(custody_module.time, 'monotonic', lambda: clock.now))
+        self.enterContext(patch.object(custody_module.time, 'sleep', clock.sleep))
+        backend = Backend()
+        custody = ProcessCustody('windows', _backend=backend)
+        custody._observed = {pid: {'pid': pid, 'creation_time': ct, 'parent_pid': os.getpid(),
+                                   'role': 'host', 'popen_owner': True}
+                             for pid, ct in backend.rows.items()}
+        custody.launcher_pid = 2
+        with patch.object(custody, 'observe', side_effect=CustodyError('observe refused')):
+            with self.assertRaisesRegex(CustodyError, 'Owned processes remain.*WAIT_FAILED'):
+                custody.stop_remaining(timeout_seconds=0.05)
+        self.assertIn(2, terminated)  # The healthy row was still terminated.
+        self.assertAlmostEqual(clock.now, 0.05)
+
     def test_observation_failure_remains_recorded_after_cleanup(self):
         custody, backend, kernel, _ = self.setup_kernel(retire_at=0.03)
         with patch.object(backend, 'table', side_effect=CustodyError('inventory refused')):

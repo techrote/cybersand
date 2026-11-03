@@ -863,3 +863,51 @@ from three independent startup cohorts or choose a new deadline from them.
 Only the separate measurement can support a later reviewed startup-policy
 proposal. Until then, no deadline increase, shader-causality conclusion, cold
 startup success, physical-display cadence or human-feel claim is made.
+
+### Hosted controls result, independent review and follow-up hardening — 2026-11-03
+
+**Hosted evidence for `f4f1e3374c89222cb446a77d0cdd0c09c4c1ddc3` (controls only).**
+Push run `41713673151` ran only `windows-cleanup-controls` on GitHub-hosted
+Windows (full build/render jobs skipped by design): the 14 Win32 cleanup controls,
+including the two native handle tests (exited-handle error 5 with signaled wait;
+live owned process retired through the same retained handle), plus the receipt
+and custody controls passed in normal and Python `-O` modes. Pull-request
+Documentation/provenance run `41713684413` passed; Native/GDExtension/palette
+jobs were skipped because the PR is draft. This is apparatus evidence, not a
+graphical 001C pass. No GDScript/Godot execution, hosted Windows graphical run or
+cold/warm measurement was performed; the `worker_started` palette record is
+therefore source-reviewed but not yet runtime-observed.
+
+**Independent read-only review of `f4f1e337`** (Win32 semantics, runner pass logic,
+passive provenance, workflow gating) found no path where a timed-out, forced or
+failed-cleanup run reports pass, no Win32 misuse (`use_last_error` capture
+immediately after `TerminateProcess`/`WaitForSingleObject`; wait results 0/258/
+`WAIT_FAILED`/other distinguished; retained creation-bound handle only), a passive
+GDScript observation, and intact full-job gating. It reported one low-severity
+robustness gap: a `WAIT_FAILED` on one owned object could escape
+`stop_remaining` before the other recorded objects were signalled.
+
+**Follow-up (local, unhosted).** `stop_remaining` now records a termination or
+observation exception per object, keeps that object in the unproved-live set, and
+continues to terminate the remaining recorded objects within the unchanged
+three-second allowance. The deadline error also carries the last observation
+error. Each identity is still terminated at most once, and an unobservable object
+still fails cleanup at the deadline. Four controls were added (persistent
+non-5 refusals 6/31/1460; `WAIT_FAILED` after a termination request; a reused
+handle identity is never terminated; an unobservable row does not block cleanup
+of another). Locally on Windows 11 / Python 3.13: 18 Win32 cleanup controls, 6
+receipt, 14 custody, 39 reader controls pass normal and `-O`; the runner-session
+Linux real-process case is skipped locally. `test_play_busy001c_gdb.py` fails
+locally on Windows (`WinError 193`, a Linux-only harness) and is not in the
+Windows job. Hosted confirmation of this follow-up is pending.
+
+**Assessment.** The 45-second idle bound cannot yet be called either lost progress
+or legitimate cold compilation: the only evidence is the single #331 cohort
+(89.3 s cold vs ~4.6 s warm whole-Main) plus a minidump inside `d3dcompiler_47`,
+which does not prove a native deadlock. Separating these needs the registered
+(not executed) 12-acknowledgement cold/warm measurement above; no deadline
+change is proposed. The `worker_started` palette record will show whether the
+selected variant is the accepted ANGLE hash when a graphical host next runs.
+Further graphical 001C investigation is optional and low priority; it is not
+worth a full rerun until that measurement or the palette record exists. No
+product defect was established.
