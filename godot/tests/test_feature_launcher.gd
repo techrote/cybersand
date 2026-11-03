@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Launcher = preload("res://feature_launcher.tscn")
 var failures: int = 0
 var assertions: int = 0
@@ -25,7 +27,7 @@ func run() -> void:
 		var scene: Node = current_scene
 		expect(scene != null and scene != menu, "Launcher must replace the menu: " + destination)
 		if destination in ["blacksite", "showcase", "experimental/blacksite/ripper"]:
-			var deadline: int = Time.get_ticks_msec() + 60000
+			var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("main_ack_seconds")
 			while scene.pending_microscenario_apply.is_empty() and scene.microscenario_definition.is_empty() and Time.get_ticks_msec() < deadline: await process_frame
 			while not scene.pending_microscenario_apply.is_empty() and Time.get_ticks_msec() < deadline: await process_frame
 			expect(not scene.microscenario_definition.is_empty(), "Scene must acknowledge selected world: " + destination)

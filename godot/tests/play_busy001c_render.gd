@@ -17,6 +17,7 @@ const COURSE_DIAGNOSTIC_SAMPLE_MS: int = 5000
 var desktop: Control
 var frame_post_draw_seen: bool = false
 var progress_serial: int = 0
+var retirement: Dictionary = {}
 
 
 # Test-only, bounded course-stage source probing. These markers are NOT
@@ -265,18 +266,21 @@ func captured() -> Image:
 	# force_draw is main-thread only and still produces the ordinary
 	# RenderingServer frame_post_draw signal. The bounded loop prevents a
 	# graphical-driver stall from consuming the 120 s outer process deadline.
-	RenderingServer.force_draw()
 	var deadline: int = Time.get_ticks_msec() + FRAME_DRAW_TIMEOUT_MS
+	RenderingServer.force_draw()
 	while not frame_post_draw_seen and Time.get_ticks_msec() < deadline:
 		await process_frame
 	if RenderingServer.frame_post_draw.is_connected(callback):
 		RenderingServer.frame_post_draw.disconnect(callback)
-	if not frame_post_draw_seen:
+	if not frame_post_draw_seen or Time.get_ticks_msec() > deadline:
 		progress("frame_post_draw_timeout", {"timeout_ms":FRAME_DRAW_TIMEOUT_MS})
 		return null
 	var image: Image = desktop.get_viewport().get_texture().get_image()
 	if image != null:
 		image.convert(Image.FORMAT_RGBA8)
+	if Time.get_ticks_msec() > deadline:
+		progress("frame_post_draw_timeout", {"timeout_ms":FRAME_DRAW_TIMEOUT_MS})
+		return null
 	return image
 
 
@@ -329,6 +333,11 @@ func finish(worker: CyberSimulationWorker, session: Variant) -> void:
 	await process_frame
 	await process_frame
 	await process_frame
+	retirement = {
+		"worker_joined": worker != null and not worker._thread.is_started(),
+		"session_retired": session == null or not is_instance_valid(session),
+		"main_freed": not is_instance_valid(desktop),
+	}
 	expect(worker != null and not worker._thread.is_started(),
 		"scene exit joins the exclusive simulation worker")
 	expect(session == null or not is_instance_valid(session),
@@ -376,6 +385,9 @@ func run() -> void:
 		quit(1)
 		return
 	progress("display_ready", {"display_server":DisplayServer.get_name(),
+		"process_pid":OS.get_process_id(),
+		"process_nonce":OS.get_environment("CYBERSAND_PLAY_BUSY_NONCE"),
+		"source_sha":OS.get_environment("CYBERSAND_PLAY_BUSY_SOURCE_SHA"),
 		"driver":RenderingServer.get_current_rendering_driver_name(),
 		"window_pixels":[DisplayServer.window_get_size().x, DisplayServer.window_get_size().y],
 		"original_content_scale_pixels":[initial_content_scale.x, initial_content_scale.y],
@@ -469,16 +481,16 @@ func run() -> void:
 		"ordinary authored-course brush route admits all four bounded Water wake commands")
 
 	var held: bool = await wait_for(Callable(self, "gate_held").bind(gate, generation), 5000)
+	var held_start: Dictionary = gate.status()
 	expect(held, "at least two distinct real World phase jobs are held before rendering")
 	if held:
-		progress("native_phase_held", gate.status())
+		progress("native_phase_held", held_start)
 	if not held:
 		gate.release(generation)
 		await finish(worker, desktop.physical_actor_session)
 		quit(1)
 		return
 
-	var held_start: Dictionary = gate.status()
 	var retained_snapshot: CyberSimulationSnapshot = desktop.latest_snapshot
 	var retained_serial: int = retained_snapshot.serial
 	var retained_tick: int = retained_snapshot.tick_index
@@ -494,7 +506,7 @@ func run() -> void:
 	progress("first_capture_begin")
 	var first: Image = await captured()
 	var first_gate: Dictionary = gate.status()
-	progress("first_capture_end", {"ok":first != null and not first.is_empty()})
+	progress("first_capture_end", {"ok":first != null and not first.is_empty(), "gate":first_gate})
 	expect(first != null and first.get_width() >= 640 and first.get_height() >= 360,
 		"frame_post_draw yields a sizable actual gameplay framebuffer while native jobs are held")
 	if first == null or first.is_empty():
@@ -517,7 +529,7 @@ func run() -> void:
 	progress("second_capture_begin")
 	var second: Image = await captured()
 	var second_gate: Dictionary = gate.status()
-	progress("second_capture_end", {"ok":second != null and not second.is_empty()})
+	progress("second_capture_end", {"ok":second != null and not second.is_empty(), "gate":second_gate})
 	var actor_after: Vector2 = Vector2(session.observation(0).get("position", Vector2.ZERO))
 	var changed: int = changed_samples(first, second)
 	var main_delta: int = desktop.completed_main_callbacks - main_before
@@ -548,10 +560,14 @@ func run() -> void:
 		and not bool(second_gate.released) and not bool(second_gate.timed_out)
 		and int(second_gate.dispatch_return_sequence) == 0,
 		"both rendered frames are bracketed by the same genuinely outstanding native dispatch")
-	expect(desktop.latest_snapshot == retained_snapshot
+	# Observe this while the dispatch is still held. Once manually released,
+	# a fresh valid native publication may arrive during the drain await.
+	var snapshot_unchanged: bool = (
+		desktop.latest_snapshot == retained_snapshot
 		and desktop.latest_snapshot.serial == retained_serial
 		and desktop.latest_snapshot.tick_index == retained_tick
-		and desktop.latest_snapshot.render_world_generation == retained_world_generation,
+		and desktop.latest_snapshot.render_world_generation == retained_world_generation)
+	expect(snapshot_unchanged,
 		"rendered UI/Rapier progress consumes the exact last immutable native snapshot; no partial newer packet leaks")
 
 	var first_path: String = evidence_dir.path_join("held-before.png")
@@ -572,11 +588,6 @@ func run() -> void:
 		and int(final_gate.dispatch_return_sequence) > int(final_gate.drained_sequence),
 		"positive rendered hold is manual and fully drained, not watchdog substitution")
 
-	var snapshot_unchanged: bool = (
-		desktop.latest_snapshot == retained_snapshot
-		and desktop.latest_snapshot.serial == retained_serial
-		and desktop.latest_snapshot.tick_index == retained_tick
-		and desktop.latest_snapshot.render_world_generation == retained_world_generation)
 	# A conditional expression yields an untyped Array in GDScript, which
 	# cannot be assigned to Array[int] at runtime even when both branches
 	# contain ints. Keep the result typed and fill its elements explicitly.
@@ -588,6 +599,11 @@ func run() -> void:
 	var second_buckets: int = sampled_colour_buckets(second)
 	await finish(worker, session)
 	var result: Dictionary = {
+		"process_pid": OS.get_process_id(),
+		"process_nonce": OS.get_environment("CYBERSAND_PLAY_BUSY_NONCE"),
+		"source_sha": OS.get_environment("CYBERSAND_PLAY_BUSY_SOURCE_SHA"),
+		"rendering_driver": RenderingServer.get_current_rendering_driver_name(),
+		"retirement": retirement,
 		"assertions": assertions,
 		"failures": failures,
 		"elapsed_ms": Time.get_ticks_msec() - started_ms,

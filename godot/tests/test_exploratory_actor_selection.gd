@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Catalogue = preload("res://scripts/microscenario_catalogue.gd")
 const Trial = preload("res://scripts/physical_actor_trial.gd")
 var failures: int = 0
@@ -16,7 +18,7 @@ func expect(value: bool, message: String) -> void:
 		push_error(message)
 
 func installed() -> void:
-	var deadline: int = Time.get_ticks_msec() + 60000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("main_ack_seconds")
 	while (not desktop.pending_microscenario_apply.is_empty() or desktop._actor_reset_receipt != 0) and Time.get_ticks_msec() < deadline:
 		await process_frame
 	expect(desktop.pending_microscenario_apply.is_empty() and desktop._actor_reset_receipt == 0, "Owner must acknowledge replacement")
@@ -36,7 +38,7 @@ func run() -> void:
 	expect(desktop.apply_actor_prototype_configuration(&"physical/ripper", &"human", false), "Physical Ripper before legacy F6")
 	await installed()
 	expect(desktop.cycle_player_representation(), "Legacy F6 must leave physical Ripper")
-	var legacy_deadline: int = Time.get_ticks_msec() + 60000
+	var legacy_deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("main_ack_seconds")
 	while desktop.latest_snapshot.player_representation == "barrel-rapier" and Time.get_ticks_msec() < legacy_deadline:
 		await process_frame
 	expect(not desktop.player_uses_barrel() and desktop.rigid_bodies.size() == 3, "Legacy F6 must restore all three reference bodies")

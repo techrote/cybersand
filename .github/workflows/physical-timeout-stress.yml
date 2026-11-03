@@ -13,7 +13,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: physical-timeout-${{ inputs.source_sha }}
+  group: physical-timeout-${{ github.run_id }}
   cancel-in-progress: false
 
 env:
@@ -26,7 +26,8 @@ jobs:
   linux-build:
     name: Pin and build Linux native runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    # Existing 35m + 20m child builds plus exact-source setup and upload.
+    timeout-minutes: 90
     steps:
       - name: Validate immutable commit input
         env:
@@ -104,6 +105,7 @@ jobs:
     timeout-minutes: 125
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         mode: [serial, parallel]
         batch: [0, 1, 2, 3, 4]
@@ -209,6 +211,7 @@ jobs:
     timeout-minutes: 125
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         mode: [serial, parallel]
         batch: [0, 1, 2, 3, 4]

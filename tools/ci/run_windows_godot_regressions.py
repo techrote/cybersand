@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Execute the complete current headless suite on Windows with the retained DLL."""
 
+from contextlib import contextmanager
 import argparse
 from collections import Counter
 import hashlib
@@ -15,6 +16,7 @@ import time
 import zipfile
 
 import run_godot_regressions as runner
+import execution_policy
 
 ROOT = runner.ROOT
 PROVENANCE = "godot/addons/cybersand_native/runtime-provenance.json"
@@ -30,6 +32,14 @@ INPUT_SCOPES = (
     "godot", "native/include", "native/src", "tools/ci/run_godot_regressions.py",
     "tools/ci/run_windows_godot_regressions.py", "tools/ci/godot_timeout_diagnostics.py",
     "tools/ci/godot_process_monitor.py", "tools/ci/physical_progress_watchdog.py",
+    "tools/ci/execution_policy.py", "tools/ci/execution_telemetry.py",
+    "tools/ci/godot_scheduling.py", "tools/ci/godot_scheduling_profile.json",
+    "tools/ci/performance_history.py",
+    "tools/ci/play_execution_contract.py",
+    "tools/ci/verify_play_life010.py", "tools/ci/verify_play_input011.py",
+    "tools/ci/verify_play_life011.py", "tools/lcb/policy_contract.py",
+    "tools/lcb/inertial_parameter_contract.py",
+    "docs/reference/liquid-solver-capability-matrix.json",
     ".github/workflows/gdextension.yml",
     "third_party/godot-runtime.lock.json", "third_party/native-toolchain.lock.json",
     "third_party/rapier-bvh-build.lock.json", "third_party/patches",
@@ -43,8 +53,31 @@ RAPIER_IMPORT_DESCRIPTORS = frozenset({
 })
 
 
+_METADATA_DEADLINE = None
+
+
+def metadata_remaining() -> float:
+    allowance = execution_policy.watchdog_seconds("operation_seconds")
+    remaining = allowance if _METADATA_DEADLINE is None else _METADATA_DEADLINE - time.monotonic()
+    if remaining <= 0:
+        raise RuntimeError("Source/runtime metadata exhausted its shared operation allowance")
+    return remaining
+
+
+@contextmanager
+def metadata_budget():
+    global _METADATA_DEADLINE
+    previous = _METADATA_DEADLINE
+    _METADATA_DEADLINE = time.monotonic() + execution_policy.watchdog_seconds("operation_seconds")
+    try:
+        yield
+        metadata_remaining()
+    finally:
+        _METADATA_DEADLINE = previous
+
+
 def git(root: Path, *arguments: str) -> bytes:
-    return subprocess.check_output(["git", "-C", str(root), *arguments], timeout=60)
+    return subprocess.check_output(["git", "-C", str(root), *arguments], timeout=metadata_remaining())
 
 
 def native_input_paths(root: Path) -> set[str]:
@@ -130,7 +163,7 @@ def prepare_godot(archive: Path) -> tuple[Path, dict]:
     # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE job. Killing it at the shared runner's
     # per-case timeout therefore also terminates its engine process tree.
     binary = directory / "Godot_v4.7-stable_win64_console.exe"
-    version = subprocess.check_output([str(binary), "--version"], text=True, timeout=30).strip()
+    version = subprocess.check_output([str(binary), "--version"], text=True, timeout=metadata_remaining()).strip()
     if version != GODOT_VERSION:
         raise RuntimeError("Windows Godot version mismatch: " + version)
     return binary, {
@@ -159,8 +192,7 @@ def tested_inputs(root: Path) -> dict[str, str]:
     }
 
 
-def execute_cases(godot: str, output: Path, report: dict, cases: list[runner.Case],
-                  *, shard_count: int = 1, shard_index: int = 0) -> None:
+def plan_cases(report: dict, cases: list[runner.Case], *, shard_count: int, shard_index: int) -> list[runner.Case]:
     if shard_count < 1 or not 0 <= shard_index < shard_count:
         raise ValueError("Windows shard index/count must describe one valid shard")
     selected = [case for case in cases if not case.requires_display]
@@ -180,7 +212,17 @@ def execute_cases(godot: str, output: Path, report: dict, cases: list[runner.Cas
         "shard_estimated_seconds": weights[shard_index],
         "assigned_cases": [case.name for case in assigned],
         "case_plan": [runner.case_dict(case) for case in assigned],
+        "scheduling": runner.scheduling.profile_identity(),
     })
+    return assigned
+
+
+def execute_cases(godot: str, output: Path, report: dict, cases: list[runner.Case],
+                  *, shard_count: int = 1, shard_index: int = 0,
+                  budget: runner.scheduling.ExecutionBudget | None = None) -> None:
+    budget = budget or runner.scheduling.ExecutionBudget()
+    assigned = plan_cases(report, cases, shard_count=shard_count, shard_index=shard_index)
+    report["execution_budget"] = budget.metadata()
 
     def run(case: runner.Case, role: str) -> bool:
         record, failed = runner.run_case(godot, case, output, role)
@@ -193,12 +235,23 @@ def execute_cases(godot: str, output: Path, report: dict, cases: list[runner.Cas
         return failed
 
     runner.write_json(output / "windows-execution.json", report)
-    if run(runner.Case("import", ("--editor", "--quit"), 240, 3.0), "preflight"):
+    import_case = runner.Case("import", ("--editor", "--quit"), execution_policy.watchdog_seconds("godot_import_seconds"), 3.0)
+    if not runner.admit_case(budget, import_case, report, assigned, output / "windows-execution.json", readback=False):
+        return
+    if run(import_case, "preflight"):
+        runner.mark_incomplete(report, assigned, reason="import_failed")
+        runner.write_json(output / "windows-execution.json", report)
         return
     # Always finish the applicable scope after a case fails, preserving each
     # original timeout and strict error/skip semantics from the shared runner.
-    for case in assigned:
+    for index, case in enumerate(assigned):
+        if not runner.admit_case(budget, case, report, assigned[index:], output / "windows-execution.json"):
+            return
         run(case, "case")
+    if budget.remaining() < budget.terminal_reserve:
+        runner.mark_incomplete(report, [], reason="aggregate_terminal_reserve_exhausted")
+        runner.write_json(output / "windows-execution.json", report)
+        return
     actual = Counter(item["name"] for item in report["results"] if item["role"] == "case")
     if actual != Counter(case.name for case in assigned):
         raise RuntimeError("Windows cases were not executed exactly once")
@@ -212,6 +265,8 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument("--execution-seconds", type=float,
+                        help="Aggregate runner envelope, separate from every full case watchdog")
     args = parser.parse_args()
     if args.shard_count < 1 or not 0 <= args.shard_index < args.shard_count:
         parser.error("--shard-index must be within the positive --shard-count")
@@ -225,28 +280,35 @@ def main() -> int:
     }
     started = time.monotonic()
     try:
+        budget = runner.scheduling.ExecutionBudget(args.execution_seconds, started=started)
+        cases = runner.discover_cases()
+        plan_cases(report, cases, shard_count=args.shard_count, shard_index=args.shard_index)
+        report["execution_budget"] = budget.metadata()
+        runner.write_json(output / "windows-execution.json", report)
         if sys.platform != "win32":
             raise RuntimeError("This gate requires actual Windows execution")
-        source = git(ROOT, "rev-parse", "HEAD").decode().strip()
-        if source != args.expected_source_sha:
-            raise RuntimeError("Windows checkout differs from the workflow's tested Git commit")
-        report.update({"source_commit": source, "source_tree": git(ROOT, "rev-parse", "HEAD^{tree}").decode().strip()})
-        report.update(verify_retained_runtime(ROOT))
-        (output / "runtime-provenance.json").write_bytes((ROOT / PROVENANCE).read_bytes())
-        git(ROOT, "diff", "--exit-code", "HEAD", "--", *INPUT_SCOPES, ":!godot/.godot")
-        report["tested_inputs"] = tested_inputs(ROOT)
-        godot, report["godot_identity"] = prepare_godot(args.godot_archive.resolve())
-        report["godot_version"] = report["godot_identity"]["version"]
+        with metadata_budget():
+            source = git(ROOT, "rev-parse", "HEAD").decode().strip()
+            if source != args.expected_source_sha:
+                raise RuntimeError("Windows checkout differs from the workflow's tested Git commit")
+            report.update({"source_commit": source, "source_tree": git(ROOT, "rev-parse", "HEAD^{tree}").decode().strip()})
+            report.update(verify_retained_runtime(ROOT))
+            (output / "runtime-provenance.json").write_bytes((ROOT / PROVENANCE).read_bytes())
+            git(ROOT, "diff", "--exit-code", "HEAD", "--", *INPUT_SCOPES, ":!godot/.godot")
+            report["tested_inputs"] = tested_inputs(ROOT)
+            godot, report["godot_identity"] = prepare_godot(args.godot_archive.resolve())
+            report["godot_version"] = report["godot_identity"]["version"]
         os.environ["CYBERSAND_SOURCE_REVISION"] = source
-        execute_cases(str(godot), output, report, runner.discover_cases(),
-                      shard_count=args.shard_count, shard_index=args.shard_index)
-        after = tested_inputs(ROOT)
-        report["source_drift"] = sorted(
-            relative for relative in report["tested_inputs"].keys() | after.keys()
-            if report["tested_inputs"].get(relative) != after.get(relative)
-        )
-        if report["source_drift"]:
-            raise RuntimeError("Tested source or runtime inputs changed during execution")
+        execute_cases(str(godot), output, report, cases,
+                      shard_count=args.shard_count, shard_index=args.shard_index, budget=budget)
+        with metadata_budget():
+            after = tested_inputs(ROOT)
+            report["source_drift"] = sorted(
+                relative for relative in report["tested_inputs"].keys() | after.keys()
+                if report["tested_inputs"].get(relative) != after.get(relative)
+            )
+            if report["source_drift"]:
+                raise RuntimeError("Tested source or runtime inputs changed during execution")
         if report["completed"] and all(item["status"] == "passed" for item in report["results"]):
             report["status"] = "passed"
         else:
@@ -254,6 +316,8 @@ def main() -> int:
     except (OSError, RuntimeError, ValueError, KeyError, subprocess.SubprocessError, zipfile.BadZipFile) as error:
         report["status"] = "failed"
         report["errors"].append(str(error))
+        observed = {row["name"] for row in report["results"] if row.get("role") == "case"}
+        report["incomplete_cases"] = [name for name in report.get("assigned_cases", []) if name not in observed]
     report["seconds"] = round(time.monotonic() - started, 3)
     runner.write_json(output / "windows-execution.json", report)
     print("Windows execution:", report["status"], "executed", report["executed_case_count"],

@@ -4,11 +4,248 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-29
+last-reviewed: 2026-11-02
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
 # Player control playground
+
+## Current PLAY acceptance boundary — 2026-10-30
+
+The [authoritative owner decision](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
+accepts [PR #302](https://github.com/techrote/cybersand/pull/302), merged at
+`8d2dd843dfe457d34f32ebd015a924cf58b3c1ce`, for PLAY's mandatory native-busy
+lifecycle gate. Its [exact-source special-runtime execution](https://github.com/techrote/cybersand/actions/runs/40987544825)
+at `102f6b5da74bffcf3da0063ca335ba6e8c22ce94` passed **34/0 assertions on each
+Windows and Linux**: genuine claimed `World::tick_phased()` jobs stayed
+outstanding while Main, physics/Rapier and Viewport/input progressed; the
+immutable snapshot stayed valid; production stop preceded manual release,
+drain, dispatch return and worker join. The
+[original audit](../audits/2026-10-29-play-busy001b-real-phase-host.md)
+preserves its special-runtime provenance, earlier failure and actual ordering.
+Ordinary production binaries do not contain the temporary qualification hook.
+
+**PR #304 is optional and non-blocking.** Its changing-framebuffer-under-held-job
+experiment is not an additional mandatory acceptance gate. The original
+[run 41046902349](https://github.com/techrote/cybersand/actions/runs/41046902349)
+at `0d5619e83b60e35ce49aa0efe4efa48a28b11dca` failed both host jobs. Retained
+artifacts and later nonqualifying diagnostics must not be relabeled as passing
+authoritative executions. Historical references below to an unmet native-busy
+gate describe those earlier slices; #302 and the owner decision supersede that
+dependency without broadening their original evidence claims.
+The [3 November current-main apparatus reconciliation](../audits/2026-10-29-play-busy001c-rendered-hold.md#current-main-reconciliation-and-original-process-verification--2026-11-03)
+preserves that optional scope and adds strict original-process/pixel verification;
+its own exact-source host outcomes remain separately recorded.
+
+Live state checked on 2026-10-30: #266, #267 and #273 are completed/closed;
+#265 remains closed Not Planned; #271 is deferred; #272 remains conditional
+fallback architecture. The active path is **#268 → #269 → #270 → #263**.
+The [concrete #270 human checklist](https://github.com/techrote/cybersand/issues/270#issuecomment-6485284121)
+remains unexecuted. Neither this checkpoint nor automated counters establish
+PLAY promotion, physical-controller compatibility or human responsiveness.
+
+## Integrated playable-session selection and device rearm
+
+**Current implementation, candidate qualification:** the feature launcher now
+offers **Play session**, opening the shared `main.tscn` host's composed selector.
+Choose the original Player Playground course, any of the five mechanical SetP
+rigs, keyboard plus standard gamepad or keyboard only, four-checkpoint lap or
+free play, construction-time per-material solver policy and close-follow or
+overview starting camera. No alternative simulation owner is introduced.
+The in-host Play button shares the existing wrapping MicroScenario action bar,
+so it does not add a vertical launcher row or displace the older mouse targets.
+
+[`main.gd::apply_playable_session`](../../godot/scripts/main.gd) validates the
+copied selection and calls the existing prepared native/physical reconstruction.
+The [panel](../../godot/scripts/playable_session_panel.gd) reuses the existing
+native-backed liquid editor; unsupported family/material choices retain native
+refusal reasons. **Build selected session** queues one request. Previous applied
+actor, options, World and receipts remain authoritative until the matching
+worker acknowledgement. Refusal retires the prepared candidate and preserves
+the old applied session. A successful build starts paused; **Play / resume**
+requires neutral input, and **Restart applied session** retains the accepted
+policy/options instead of unsubmitted UI edits. Solver selection is a rebuild,
+never a live swap. Default selections remain Current, keyboard/gamepad, lap
+and follow camera; existing entry points retain their defaults.
+
+Requested and applied policy are displayed separately for the selected material;
+the applied native policy and construction-receipt hashes are available in the
+policy tooltip. The panel blocks gameplay input while open. P/Escape and selected-gamepad Start pause, R restarts,
+F toggles the course camera. **Return to launcher** in the Play session panel
+uses the existing scene-navigation teardown; F2 remains an optional shortcut. Keyboard-only mode
+excludes gamepad polling and button forwarding. Free play suppresses the lap
+tracker/HUD. Protected scientific/blind fixtures refuse the new reconstruction
+route; the standalone material swarms and specialist/NPC paths remain separate.
+
+### Course target visibility and optional worker details
+
+The shared course now reuses the authored checkpoint drawing: the next gate is
+accented, future gates are faint and completed gates are marked. The overlay
+receives copied lap identity and the same camera/content transform as the actor.
+It neither queries a native World nor awards checkpoints. Invalid/retired actor
+or World identity, pending reconstruction, fault, free play and clean-view mode
+clear the targets. Completed native ticks and actual main-thread Rapier
+observations still own timing and visits; visual rings are not traversal proof.
+
+F3 expanded details in a running Play course request an optional owner-side
+statistics sample at most four times per second. Main only receives the frozen
+copy, including a retained read-only empty value when sampling is off or
+unavailable. Replacing the owner slot preserves earlier published values.
+The display separates the constructor's requested worker setting, capacity,
+observed **task participants**, source native tick and sample age. Participants
+mean the maximum distinct task-claiming workers in one phase dispatch of that
+tick; an inline nonempty phase counts the owner as one. This does not measure
+simultaneous execution or utilization. Sampling defaults off, stops when details
+close, and Main sends a request only when that choice changes.
+
+Owner-publication serial gaps count snapshots coalesced before Main consumed
+them. They are separate from native tick deltas, rejected serials and rejected
+render payloads. An unavailable sample is labelled unavailable, not replaced
+by the configured capacity. No production shader, default solver, mechanical
+tuning or additional simulation owner is introduced.
+
+The [UI007 audit](../audits/2026-10-31-play-ui007-desktop-readiness.md) retains
+the original missing-overlay negative, five actual-host headless regressions,
+separate overlay-only pixel tests and failed shared-Main graphical startup.
+The [manual packet](../operations/play-desktop-manual-qualification.md) binds
+all five rig entry points and physical checks to a reviewed source/runtime;
+generating it proves identity only and leaves every human row untested.
+
+The [course event bridge](../../godot/scripts/playable_course_gamepad_events.gd)
+observes `Input.joy_connection_changed`. Loss, replacement or addition of the
+selected first controller cancels the current physical command and pending
+button edges through the existing owner, including its native-effect
+cancellation signal, and requires neutral input before rearming. An unrelated
+secondary controller event does not revoke the selected controller. A
+keyboard-only session ignores gamepad connection changes. This is a source
+behavior claim; physical disconnect/reconnect still needs the manual checklist.
+
+The [real-host regression](../../godot/tests/test_play_ui005_session_selection.gd)
+constructs all five rigs with alternating Current/Water-pressure policies,
+checks one transaction and unchanged prior owner/options while pending, actual
+native receipts, original map, newer identities, prior Rapier retirement,
+camera/rule/control selection, running native/Rapier clocks and policy-retaining
+reset. It also exercises native Oil/pressure refusal, protected-fixture and
+deferred-swarm refusal, selected/unselected device signals and focus rearm.
+It also sends viewport mouse events to the visible in-host Play button. The
+existing Experiment Tower mouse/Space/F9 regression remains unchanged.
+Only the OS-focus predicate and device enumeration are synthetic; they do not
+qualify real hardware, OS focus delivery, natural course traversal or human feel.
+The [dated audit](../audits/2026-10-30-play-ui005-integrated-session.md) owns local
+source hashes, commands, original failures and final-head hosted-gate status.
+
+## Stopped composed-session recovery
+
+**Current implementation; exact-source qualification is recorded in
+[PR #332](https://github.com/techrote/cybersand/pull/332):** when a composed
+Play session's native World fails, **Restart applied session** retires the whole
+failed Main scene before the replacement starts its exclusive simulation worker. The existing
+[`main.gd`](../../godot/scripts/main.gd) exit path disposes accepted and pending
+Rapier graphs and joins its exclusive simulation worker. Recovery then uses ordinary
+session admission, with the accepted recipe, rig, solver policy/setup, options
+and owner settings copied by `_queue_failed_playable_restart`. Pending selector
+edits, failed cells, snapshots, native pointers, commands and lap state are not
+recovery inputs. The replacement starts paused at simulation tick zero.
+
+Main consumes its recovery envelope once, before startup's early returns.
+Repeated Restart requests latch one deferred replacement. F2 and the visible
+**Return to launcher** action use
+[`FeatureNavigation`](../../godot/scripts/feature_navigation.gd) to cancel both
+a queued request and an envelope between old-scene exit and replacement entry.
+The selector's separate PopupPanel viewport forwards F2 to that same owner.
+Failure and reload-error text stay visible; retries require explicit input.
+Native failed-World quarantine and main-thread Rapier ownership are unchanged.
+
+The [dated recovery audit](../audits/2026-10-31-play-stopped-session-recovery.md)
+preserves the original failure and earlier local results. LIFE007 exercises all
+five mechanical rigs with real capacity faults, accepted/pending graph disposal,
+stale-command refusal and fresh paused owners. LIFE008 covers three navigation
+orderings, including the no-current-scene boundary. The injected construction
+limit is removed before replacement; this is not a remedy for a persistently
+invalid configuration. Reload-error presentation includes a synthetic control.
+Resulting-head Linux/Windows, complete native and actual-backend shader gates
+remain source-specific; physical devices, OS focus, display cadence and human
+feel require separate acceptance. Downstream PACE004 #334 is a separate task.
+
+## Immediate shared-course pause transitions
+
+**Current source behavior; final hosted acceptance is recorded separately:**
+P, Escape and the selected gamepad's Start route through the same shared-course
+pause setter. Every actual pause/resume transition immediately cancels input
+authority and queued button/equipment edges, before the next physics callback.
+A pause then resume within one callback interval therefore cannot retain an old
+press or lease. The existing native worker, World, actor session and Rapier
+bridge remain the owners; release controls to neutral before fresh input rearms.
+
+The pause toggle respects window/UI ownership. Unselected controllers and
+keyboard-only sessions cannot use Start; modal/unfocused input cannot resume.
+The panel's explicit Play / resume button uses the same cancellation path.
+Resume refuses failed native work, pending reconstruction/reset or unready terrain.
+Controls outside the composed course retain their previous behavior.
+
+Ordinary actor-picker and environment-tuning opening, GUI focus acquisition and
+window-focus-loss notification also revoke course authority immediately. The
+visible MicroScenario Pause / resume button calls the central pause setter as
+an explicit UI action, including while its Seed field retains text focus. The
+keyboard/gamepad toggle remains context-gated. Every successful transition still
+requires neutral controls before fresh physical input can rearm.
+
+The [INPUT010 audit](../audits/2026-10-31-play-input010-pause-transitions.md)
+records an actual failing-before callback-gap reproduction, all-five-rig
+automatic Main/native/Rapier regressions, original local environmental failures
+and required exact-head hosted results. Injected focus/device enumeration is
+explicitly synthetic; this is not physical-controller or OS-focus acceptance.
+The [INPUT011 audit](../audits/2026-10-31-play-input011-authority-transitions.md)
+preserves the rapid modal/focus failure and the separately reproduced focused
+button refusal. Its v2 five-rig cases include both explicit-button success and
+keyboard-toggle refusal with retained text focus, actual later neutral/fresh
+Rapier steps, and the matched stale-input negative. The ordinary parent runner
+requires source-bound raw-evidence readback before accepting each rig case;
+synthetic window notifications do not establish real OS-focus delivery.
+
+## Live adversarial delivery qualification
+
+[LIFE010](../audits/2026-10-31-play-life010-live-delivery.md) supplements the
+accepted50-real-lifetimes-per-platform baseline with two sequential actual
+Main/native/Rapier lifetimes per rig. An inherited worker probe retains authentic
+immutable packets and deliberately delivers duplicates, delayed/out-of-order
+values and an old actor/World packet while the sole publisher stays live. A
+separate real-host serial-guard bypass must fail specifically for serial
+regression. No artificial production transport queue or second worker loop is
+introduced.
+
+Actual quick equipment presses reach the inherited worker's extracted-request
+boundary. A bounded test gate outside the production mutex allows Main and
+Rapier to continue. Valid-lease pause cancellation must prevent the native effect;
+fresh authority must recover. Positive native receipts require a subsequent
+completed Rapier step on the same run/epoch/control generation. These checks
+preserve actual body/terrain/render/lap fences through reconstruction and complete
+join. The common Windows/Linux runner independently reduces retained raw packets,
+process receipts and logs, including21 reason-specific adverse controls, before
+accepting each LIFE010 case. This is synthetic scheduling on the actual host,
+not physical-device, graphical or human-feel qualification. Exact resulting-head
+hosted execution remains in the PR ledger.
+
+## Eight-policy composed-session qualification
+
+[LIFE011](../audits/2026-10-31-play-life011-composed-solver-matrix.md) exercises
+all eight liquid-selector presets on every mechanical rig through ordinary
+shared-Main construction and retained-policy reset. Each rig requires eight
+builds, eight resets and 72 samples of completed nonneutral Rapier progress
+alongside native progress. The existing transaction must refuse eight Oil/pressure requests and
+three radius-two inertial requests while preserving the current World, actor,
+applied policy and receipt. Any inertial solver requires explicit radius three;
+this does not change the default geometry or solver assignments.
+
+Old-run and still-valid-lease old-control observations are separately refused;
+fresh observations recover. Retained publications remain immutable and all
+replaced graphs and the final worker retire. The ordinary Windows/Linux runner
+requires the independent policy/receipt verifier and its 37 reason-specific
+adverse controls under the same 15-second readback budget. The verifier and
+policy dependencies are bound to the declared source before and after reduction.
+This actual-host headless contract supplements the 50-lifetime baseline. Exact
+integrated hosted evidence, graphical output, physical devices and human play
+remain separate qualification requirements.
 
 ## PLAY composable existing-host route — accepted course and five-rig slice
 
@@ -118,11 +355,11 @@ These are parent-source results, not qualification of a later combined branch.
 They do not establish hardware gamepad behavior, interactive FPS, subjectively
 acceptable camera/controls, or #269's fifty-real-host lifecycle campaign.
 The remaining [#268](https://github.com/techrote/cybersand/issues/268)
-scope includes an integrated playable selector, gameplay-rule options, complete
-focus and physical-gamepad qualification and real frame-pacing/feel validation.
+scope includes final qualification of the integrated selector/rules described
+above, complete focus and physical-gamepad qualification and real frame-pacing/feel validation.
 The accepted four-checkpoint lap/HUD slice does not close those requirements.
-Native Auto measurements, lifecycle/stress and final desktop feel remain
-#266/#269/#270. Material swarms (#271) remain deferred in the standalone
+Native Auto measurement history is retained under closed #266; remaining
+lifecycle/stress and final desktop feel are #269/#270. Material swarms (#271) remain deferred in the standalone
 seven-preset experimental scene. Specialist scientific and NPC-training
 fixtures retain independent deterministic admission/execution.
 No second native World owner is introduced; redundant #265 remains closed.
@@ -308,11 +545,17 @@ The [accepted receipt](../audits/2026-10-29-play-life005-native-failure-recovery
 preserves original CI-checkout ancestry and all source-specific cohorts.
 This exercises actual Main failure
 and ordinary default-policy recovery, not the five SetP course rigs. Prepared
-liquid construction still requires a healthy World; no prepared recovery or live
-solver replacement is admitted. Source/platform qualification is separate from
+liquid construction still requires a healthy World; this LIFE005 route admits no
+prepared recovery or live solver replacement. The separate
+[stopped composed-session recovery](#stopped-composed-session-recovery) route
+retires the failed owner before ordinary fresh construction. Source/platform qualification is separate from
 slow-native/outstanding-job shutdown, arbitrary cancellation races, general
 leak/race freedom, gameplay performance, physical devices and human feel.
 #269/#270 remain open.
+
+### Executed normal-load snapshot-handoff lock wait baseline (PLAY-WAIT-001)
+
+The **unmerged, source-qualified** five-rig [test-only probe](../audits/2026-10-29-play-wait001-main-snapshot-mutex.md) uses actual Main/CyberSimulationWorker/main-thread-Rapier course execution with an instrumented, semantically equivalent `take_latest_snapshot` mutex acquisition. Windows/Linux [Godot run 40899843252](https://github.com/techrote/cybersand/actions/runs/40899843252) passes 16 assertions per rig, with 120 real native and Rapier ticks per rig, 290 Main callbacks and 289 complete callback intervals. Normal-load mutex-acquire p95 was 1 microsecond per rig. The same-source [Native run 40899843210](https://github.com/techrote/cybersand/actions/runs/40899843210) failed its first TSan 15-minute timeout but passed on explicitly diagnosed attempt 2; both attempts remain evidence. This measures only that handoff lock, **not** other Main waits, sustained rendered FPS, native jobs actually held, physical device/focus or human feel. No production, native runtime or solver default is altered. #268/#269/#270 remain open.
 
 ## Open the seven-preset movement course
 

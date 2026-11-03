@@ -4,13 +4,108 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-29
+last-reviewed: 2026-10-31
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
-## PLAY composable desktop checkpoint — 2026-10-29
+## Stopped PLAY recovery — 2026-11-02
+
+[PR #332](https://github.com/techrote/cybersand/pull/332) preserves the reviewed
+fresh-owner Restart implementation on accepted shader/render-copy main
+`a8f08a67`. The [canonical contract](../systems/player-control-playground.md#stopped-composed-session-recovery)
+distinguishes accepted recipe/settings from pending edits, whole-owner retirement,
+paused tick-zero reconstruction and launcher cancellation. Its
+[reconciliation audit](../audits/2026-10-31-play-stopped-session-recovery.md)
+preserves original failures and identifies the necessary Windows helper-control
+oracle correction. The PR ledger owns exact-head CI, independent review and
+guarded-merge status; this source description alone is not a qualification pass.
+PACE004 #334 and the physical/device/display/human acceptance areas remain separate.
+
+The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
+
+## Current owner policy and accepted baseline — 2026-10-31
+
+The owner supersedes the earlier shader deferral and short immutable deadline
+restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
+[shared execution watchdog and advisory performance policy](../operations/ci-execution-and-performance.md).
+Its original attempt-1 post-merge Docs41204873388, scope41204873081,
+Native41204873121 and Godot41204873192 all passed. #269 is closed;
+#268/#270/#263 still require their remaining actual acceptance evidence.
+#324/#325 were already included and are administratively closed.
+
+The focused timeout/telemetry source requires fresh full CI and independent
+review. Shader integration and the source-preserving Windows crash diagnostic
+remain separate work packages. Historical failures keep their original status.
+The physical/human packet still has 51 untested rows. Scheduswarm stays paused;
+[#305](https://github.com/techrote/cybersand/issues/305) owns current coordination.
+Earlier dated checkpoints below describe their original restrictions and source,
+not today's superseding owner decision.
+
+
+## PLAY desktop continuation — 2026-10-31
+
+The [INPUT010 correction](../audits/2026-10-31-play-input010-pause-transitions.md)
+revokes queued input immediately at pause transitions and supplies shared
+P/Escape/selected-pad Start parity. It is accepted through #318 at
+`afa8185c8dc57405ef54765a6cdf71cb7bfbf6e4` after its complete exact-head matrix
+and independent review. Post-merge checks remain separately recorded. The
+earlier #317 post-merge Native run41175310972 failed the unchanged worldgen
+sanitizer build/run deadline with its ninth test incomplete; that original
+failure remains visible while a bounded build-scheduling correction is reviewed.
+[UI007](../audits/2026-10-31-play-ui007-desktop-readiness.md)
+adds authored checkpoint targets, source-bound optional worker participation
+details and a visible Return to launcher route. The
+[manual packet](../operations/play-desktop-manual-qualification.md) authenticates
+source, all retained runtime objects and the official engine before preparing
+51 untested physical/display/human rows. These are implementation capabilities;
+the respective PR ledgers own exact-head CI, review and merged-state claims.
+UI007's first ordinary matrix is not qualified: an original Windows
+post-summary access violation and separate incomplete TSan timeout remain
+failed. The subsequent read-only empty-publication correction addresses its
+own independently reproduced defect, without claiming to cure either failure.
+
+Preserve the accepted 50-real-lifetimes-per-platform baseline and original
+failures. The separate 40-event PACE004 successor remains a qualification lane,
+not a release claim. First cold Linux shared-Main graphical attempts exceeded
+the existing 30-second acknowledgement bound; headless native/Rapier results
+and overlay-only pixels do not erase those failures. #268/#269/#270/#263 remain
+open until their actual remaining contracts are reviewed. Physical devices,
+real OS focus, actual display pacing and human feel remain unqualified.
+
+Owner holds remain: no shader compilation/cache/decomposition work; #308/#310
+held, #312/#316 frozen and unmerged; Scheduswarm paused. Follow the current
+#305 manual ownership ledger before assigning successor source owners.
+
+## Production CI parallelism — 2026-10-31
+
+**Implemented in this integration source; resulting-head qualification remains
+separate:** six independent Native families with original command limits and a
+complete `native` aggregate; four Windows Godot shards with independent coverage
+that fails on an admitted failed/missing matrix; unchanged Linux and scientific
+coverage. The conservative Native scope report authorizes no skips. The
+[dated audit](../audits/2026-10-31-ci-parallel-production-integration.md) preserves
+the actual predecessor timing, five rejected deadline expansions, adverse tests
+and exact [qualification/integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140).
+Faster CI cannot satisfy the separately red #309/#308 graphical contract.
+
+## PLAY composable desktop checkpoint — 2026-10-30
+
+**Current owner boundary:** [decision 6522029843](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
+accepts merged #302 (`8d2dd843`) for the mandatory native-busy responsiveness,
+outstanding-job shutdown and resource-ordering gate. Optional #304 remains
+non-blocking and its failed run41046902349 remains failed. The critical path is
+#268 integrated product → #269 remaining meaningful stress/measurement → #270
+physical-device/human-feel/promotion → #263. #266, #267 and #273 were reverified
+closed; #265 remains Not Planned, #271 deferred and #272 conditional fallback.
+
+**Current implementation candidate:** [PLAY-UI-005](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+adds one real shared-host selector for course, five rigs, controls, lap/free-play,
+solver policy and camera, plus selected-controller-change cancellation/rearm.
+The [dated record](../audits/2026-10-30-play-ui005-integrated-session.md) separates
+focused local evidence from required exact-head hosted CI and unexecuted manual
+gates. It changes no native solver/default or simulation owner.
 
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
@@ -25,10 +120,10 @@ owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
 The same contract records the bounded solver-construction/refusal regression
 and its 335/0 Windows and Linux Godot result, with [PR #287](https://github.com/techrote/cybersand/pull/287)
 owning the final CI/review/accepted-tree receipt.
-**Open:** #266 gameplay scheduling/performance, remaining #268 selection/device/pacing,
-#269 slow-native/outstanding-job shutdown, broader course/failure/stale-delivery
-and effect stress, and #270
-desktop/manual acceptance. Configured capacity, actual task participation,
+**Open:** final #268 integrated selection/device/pacing qualification,
+#269 broader course/failure/stale-delivery and effect stress where not already
+covered, and #270 representative rendered pacing and desktop/manual acceptance.
+The mandatory native-busy requirement is satisfied by #302. Configured capacity, actual task participation,
 concurrent execution, reference timing and human feel remain distinct claims.
 The accepted shared `CyberSimulationWorker` plus main-thread Rapier remains
 the implementation path; #265 is closed Not Planned and #271 stays deferred.
@@ -683,7 +778,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Human movement playground | Seven [player presets](../systems/player-control-playground.md), keyboard/gamepad sampler, acrobat chains and separate leased native Sand/Water fields; course checkpoints and focused tests are not human feel or route-completion acceptance |
 | Assisted physical free flight | Internal [4LY single-chassis family](../systems/physical-free-flight.md), strict two-output velocity profile, bounded goal-blind assistance and passive revocation; initial Trainer conformance numbers only, with normal selection and differentiated handling owned by 4LY-002 |
 | Actor control and battle experiments | Separate physical Thunderbowl v2 plus retained sampled [Thunderbowl v1](../systems/thunderbowl-control-reference.md); physical wire control does not silently inherit sampled metal/NCA/message semantics; trained policies and general actor damage remain Planned |
-| Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
+| Rendering | Immutable native snapshots, chunk-run RG8 copy candidate with unchanged dirty/ACK policy, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md), [current-main qualification](../audits/2026-11-01-render-copy-production-reconciliation.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
 

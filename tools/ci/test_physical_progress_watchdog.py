@@ -1,11 +1,22 @@
 """Check liveness boundaries without waiting for wall-clock deadlines."""
 
 import unittest
+from unittest import mock
+import physical_progress_watchdog as subject
 
 from physical_progress_watchdog import ProgressWatchdog
 
 
 class WatchdogTests(unittest.TestCase):
+    def setUp(self):
+        # Small explicit model-control bounds; production uses the shared policy.
+        self.capture = mock.patch.object(subject, "SNAPSHOT_IDLE_SECONDS", 30)
+        self.failure = mock.patch.object(subject, "FAIL_IDLE_SECONDS", 45)
+        self.capture.start()
+        self.failure.start()
+        self.addCleanup(self.capture.stop)
+        self.addCleanup(self.failure.stop)
+
     def test_stalled_step_requests_live_capture_then_failure(self):
         watchdog = ProgressWatchdog("test_physical_actor_rigs", 0)
         watchdog.observe('CYBERSAND_PROGRESS {"phase":"step","steps":120}', 1)
@@ -62,6 +73,29 @@ class WatchdogTests(unittest.TestCase):
         watchdog = ProgressWatchdog("test_physical_actor_arena", 0)
         with self.assertRaises(ValueError):
             watchdog.observe("", float("inf"))
+
+
+class PolicyTests(unittest.TestCase):
+    def test_busy001c_protocol_keeps_original_bounds_without_changing_shared_policy(self):
+        busy = ProgressWatchdog("play_busy001c_render", 0)
+        self.assertFalse(busy.capture_due(29.999))
+        self.assertTrue(busy.capture_due(30))
+        self.assertFalse(busy.expired(44.999))
+        self.assertTrue(busy.expired(45))
+        ordinary = ProgressWatchdog("test_physical_actor_rigs", 0)
+        self.assertFalse(ordinary.capture_due(45))
+        self.assertFalse(ordinary.expired(45))
+
+    def test_busy001c_clock_only_samples_do_not_hide_a_stall(self):
+        busy = ProgressWatchdog("play_busy001c_render", 0)
+        busy.observe('CYBERSAND_PROGRESS {"case":"play_busy001c_render","phase":"course_queued","sequence":3,"elapsed_ms":1}', 1)
+        busy.observe('CYBERSAND_PROGRESS {"case":"play_busy001c_render","phase":"course_queued","sequence":3,"elapsed_ms":44000}\nPLAY_BUSY001C_COURSE_SAMPLE {"native_tick":99}', 44)
+        self.assertTrue(busy.expired(46))
+
+    def test_production_idle_watchdog_does_not_reinstate_old_cold_start_limit(self):
+        self.assertEqual(subject.FAIL_IDLE_SECONDS, subject.watchdog_seconds("complex_fixture_seconds"))
+        self.assertGreater(subject.FAIL_IDLE_SECONDS, subject.watchdog_seconds("main_ack_seconds"))
+        self.assertFalse(ProgressWatchdog("test_physical_actor_rigs", 0).expired(181))
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-30
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -14,6 +14,31 @@ This page carries forward owner direction recorded in the
 [pre-rewrite handover](../audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt)
 at checkpoint `126175c`. It preserves intent separately from source and dated
 validation; later approved decisions should update this canonical reference.
+
+## PLAY convergence and acceptance boundary — 2026-10-30
+
+**Approved owner decision:** [epic #263 comment 6522029843](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
+accepts merged [PR #302](https://github.com/techrote/cybersand/pull/302) as
+sufficient for the mandatory real-native-busy responsiveness, outstanding-job
+shutdown and resource-ordering requirement. The stronger changing-framebuffer
+experiment in [PR #304](https://github.com/techrote/cybersand/pull/304) is a
+non-blocking diagnostic. Its failures remain failures; it need not pass, merge
+or complete to close #268, #269, #270 or the epic. Reprioritize it only on a new
+owner decision or evidence of a genuine product defect requiring that diagnostic.
+
+The critical path is integrated shared-host gameplay/UI/device work (#268),
+remaining meaningful lifecycle/stress/measurement work (#269), then physical
+devices, actual human feel and promotion (#270). Preserve one composable
+session host: map/scenario + actor/player + control profile + construction-time
+per-material solver policy + optional rules/objectives + presentation/camera.
+The accepted asynchronous worker/native phased pool and main-thread Rapier
+remain the production architecture. #265 stays superseded/Not Planned; #271
+is deferred for the five mechanical rigs; #272/ADR-015 is a conditional fallback.
+
+Prefer actual product completion and strong real-host evidence. Passing
+counters do not replace physical-device and human-feel qualification. See the
+[current player contract](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
+for implementation and source-bound qualification status.
 
 ## Should all actors use Rapier physics?
 

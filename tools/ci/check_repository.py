@@ -6,7 +6,9 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import time
 from check_docs import check as check_docs
+from execution_policy import watchdog_seconds
 
 ROOT = Path(__file__).resolve().parents[2]
 GODOT = "4.7.stable.official.5b4e0cb0f"
@@ -72,11 +74,20 @@ def verify_rapier_overrides(root, lock):
         errors.extend(verify_runtime(root, manifest))
     return errors
 
-def check(root, require_materialized=False):
+def check(root, require_materialized=False, *, operation_deadline=None):
+    deadline = time.monotonic() + watchdog_seconds("operation_seconds")
+    if operation_deadline is not None:
+        deadline = min(deadline, operation_deadline)
+    def remaining():
+        seconds = deadline - time.monotonic()
+        if seconds <= 0:
+            raise TimeoutError("Repository provenance exhausted its shared operation allowance")
+        return seconds
     docs = check_docs(root)
     errors = list(docs["errors"])
     materialized, pointers = [], []
     try:
+        remaining()
         def load(name):
             return json.loads((root / name).read_text(encoding="utf-8"))
         native = load("third_party/native-toolchain.lock.json")
@@ -91,11 +102,11 @@ def check(root, require_materialized=False):
             errors.append("current godot-cpp dependency differs from the approved pin")
         for manifest_name in ("runtime-provenance.json", "runtime-provenance.linux.json"):
             errors.extend(verify_runtime(root, load("godot/addons/cybersand_native/" + manifest_name)))
-        tracked = subprocess.check_output(["git", "-C", str(root), "ls-files", "godot/addons"], text=True).splitlines()
+        tracked = subprocess.check_output(["git", "-C", str(root), "ls-files", "godot/addons"], text=True, timeout=remaining()).splitlines()
         for relative in tracked:
             if not (relative.endswith((".dll", ".so", ".dylib", ".wasm")) or ".framework/libgodot_rapier." in relative):
                 continue
-            committed = subprocess.check_output(["git", "-C", str(root), "show", "HEAD:" + relative])
+            committed = subprocess.check_output(["git", "-C", str(root), "show", "HEAD:" + relative], timeout=remaining())
             match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", committed)
             if not match:
                 errors.append("required runtime is not a committed LFS pointer: " + relative)
@@ -115,7 +126,8 @@ def check(root, require_materialized=False):
                          "godot/addons/cybersand_native/LICENSE-godot-cpp.md"):
             if not (root / relative).is_file():
                 errors.append("required notice/bootstrap file missing: " + relative)
-    except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as exc:
+        remaining()
+    except (OSError, ValueError, KeyError, subprocess.SubprocessError) as exc:
         errors.append("current provenance check failed: " + str(exc))
     return {"status": "failed" if errors else "passed", "scope": "current source/documentation and artifact identity",
             "documentation": docs, "materialized_runtime_files": materialized, "unmaterialized_runtime_files": pointers,

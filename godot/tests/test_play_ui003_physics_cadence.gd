@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # PLAY-UI-003 / #268: actual native+Rapier shared-course regression. A real
 # Rapier body assembly visits AND leaves the first authored checkpoint during
 # completed manual physics steps with the desktop render callback disabled.
@@ -54,7 +56,9 @@ func expect(value: bool, message: String) -> void:
 		push_error("PLAY_UI003_PHYSICS: " + message)
 
 
-func wait_for(predicate: Callable, timeout_ms: int = 30000) -> bool:
+func wait_for(predicate: Callable, timeout_ms: int = -1) -> bool:
+	if timeout_ms < 0:
+		timeout_ms = Watchdogs.milliseconds("operation_seconds")
 	var deadline: int = Time.get_ticks_msec() + timeout_ms
 	while Time.get_ticks_msec() < deadline:
 		if predicate.call():

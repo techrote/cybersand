@@ -4,12 +4,16 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 import run_auto_campaign as campaign
 
 
-def process(name="row", timeout=180):
+def process(name="row", timeout=None):
+    if timeout is None:
+        timeout = campaign.case_seconds("run_play_auto_campaign")
     return {"name": name, "status": "passed", "returncode": 0,
+            "execution_policy": campaign.policy_identity(), "natural_completion": True,
             "diagnostic_error": False, "launch_error": None, "capture_error": None,
             "skip_messages": [], "timeout_kind": None, "timeout_diagnostic_error": None,
             "seconds": 1.0, "timeout_seconds": timeout, "command": ["godot", "--headless"],
@@ -19,7 +23,7 @@ def process(name="row", timeout=180):
 def report(logical_processors=4):
     config = {"requested_counts": campaign.COUNTS, "sizes": campaign.SIZES,
               "repetitions": 5, "warmup_ticks": 60, "ticks": 120,
-              "process_timeout_seconds": 180, "order": "cyclic-per-repeat"}
+              "process_timeout_seconds": campaign.case_seconds("run_play_auto_campaign"), "order": "cyclic-per-repeat"}
     rows = []
     for identity in campaign.plan(config):
         requested = identity["requested_workers"]
@@ -59,7 +63,7 @@ def report(logical_processors=4):
                      "result": value, "process": process(identity["id"]),
                      "rendered_gameplay_fps_measured": False, "concurrent_execution_measured": False,
                      "worker_creation_count_measured": False})
-    return {"schema": campaign.SCHEMA, "status": "passed", "errors": [], "source_drift": [],
+    return {"schema": campaign.SCHEMA, "status": "passed", "execution_policy": campaign.policy_identity(), "errors": [], "source_drift": [],
             "platform": "linux", "source_sha": "c" * 40, "source_tree": "d" * 40,
             "native_inputs": {"native/src/world.cpp": "e" * 64},
             "runtime_source_mode": "fresh-publisher-build-assertion",
@@ -69,12 +73,35 @@ def report(logical_processors=4):
             "rapier_runtime": {"path": "rapier.so", "sha256": "b" * 64, "size": 1024},
             "config": config, "godot_version": campaign.GODOT_VERSION,
             "rows": rows, "summaries": campaign.reduction(rows), "log_sha256": {},
-            "preflight_results": [process("import", 240)],
+            "preflight_results": [process("import", campaign.watchdog_seconds("godot_import_seconds"))],
             "concurrent_execution_measured": False, "rendered_gameplay_fps_measured": False,
             "positive_speedup_required": False, "retries": 0}
 
 
 class CampaignEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        patch = mock.patch.object(campaign, "verify_source_policy", return_value=campaign.policy_identity())
+        patch.start()
+        self.addCleanup(patch.stop)
+
+    def test_slow_process_is_retained_but_late_exit_or_failure_is_rejected(self):
+        data = report()
+        data["rows"][0]["process"]["seconds"] = 181
+        campaign.verify_report(data)
+        for field, value in (("seconds", campaign.case_seconds("run_play_auto_campaign") + .1),
+                             ("seconds", float("nan")), ("returncode", 1),
+                             ("natural_completion", False), ("execution_policy", {}), ("timed_out", True)):
+            changed = copy.deepcopy(data)
+            changed["rows"][0]["process"][field] = value
+            with self.subTest(field=field), self.assertRaises(RuntimeError):
+                campaign.verify_report(changed)
+
+    def test_old_campaign_schema_requires_its_historical_reader(self):
+        data = report()
+        data["schema"] = "play-auto-campaign-v1"
+        with self.assertRaises(RuntimeError):
+            campaign.verify_report(data)
+
     def test_balanced_order_and_complete_identity(self):
         data = report()
         campaign.verify_report(data, "c" * 40)

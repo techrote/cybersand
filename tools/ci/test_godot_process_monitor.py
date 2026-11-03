@@ -72,9 +72,10 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(snapshots, [])
 
     def test_play_busy_render_stall_is_independently_watched(self):
-        result, snapshots = self.run_child(
-            'import time; print(\'CYBERSAND_PROGRESS {"case":"play_busy001c_render","phase":"course_queued","sequence":1}\'); time.sleep(10)',
-            name="play_busy001c_render")
+        with mock.patch.dict(watchdog.PROTOCOL_IDLE_LIMITS, {"play_busy001c_render": (0.1, 0.2)}):
+            result, snapshots = self.run_child(
+                'import time; print(\'CYBERSAND_PROGRESS {"case":"play_busy001c_render","phase":"course_queued","sequence":1}\'); time.sleep(10)',
+                name="play_busy001c_render")
         self.assertEqual(result[:2], (True, "progress_watchdog"))
         self.assertTrue(snapshots)
         self.assertIsNone(snapshots[0][1])

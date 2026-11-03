@@ -4,11 +4,57 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 remains separate.
+
+Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
+
+CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).
+
+## Current owner policy and accepted baseline — 2026-10-31
+
+The owner supersedes the earlier shader deferral and short immutable deadline
+restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
+[shared execution watchdog and advisory performance policy](operations/ci-execution-and-performance.md).
+Its original attempt-1 post-merge Docs41204873388, scope41204873081,
+Native41204873121 and Godot41204873192 all passed. #269 is closed;
+#268/#270/#263 still require their remaining actual acceptance evidence.
+#324/#325 were already included and are administratively closed.
+
+The focused timeout/telemetry source requires fresh full CI and independent
+review. Shader integration and the source-preserving Windows crash diagnostic
+remain separate work packages. Historical failures keep their original status.
+The physical/human packet still has 51 untested rows. Scheduswarm stays paused;
+[#305](https://github.com/techrote/cybersand/issues/305) owns current coordination.
+Earlier dated checkpoints below describe their original restrictions and source,
+not today's superseding owner decision.
+
+
+## CI parallel production integration — 2026-10-31
+
+The [production CI record](audits/2026-10-31-ci-parallel-production-integration.md)
+reconciles the six-family Native, four-way Windows and report-only scope trials.
+The [CI contract](operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31)
+preserves scientific fixtures and complete
+Windows/Linux gate. Predecessor trial timing is distinct from resulting-head
+qualification and does not remove the separate PLAY graphical hold.
+
+## PLAY current route — 2026-10-30
+
+The [player contract](systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
+records the owner's accepted #302 native-busy boundary and optional, non-blocking
+#304 diagnostic. The [integrated Play session selector](systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+composes the authored course, five mechanical players, controls, rules, solver
+policy and camera through the original asynchronous desktop host. Its
+[source-bound audit](audits/2026-10-30-play-ui005-integrated-session.md) separates
+automated execution from pending exact-head hosted and physical/human gates.
+Use the [owner walkthrough](operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
+for the shortest reproducible route into #270. PLAY is not release-qualified.
 
 ## Trial successor correction after accepted App — 2026-10-25
 
@@ -291,6 +337,7 @@ The [actual Main failure/recovery regression](systems/player-control-playground.
 separately records Windows/Linux30/0 and accepted merge4b6c for a real capacity
 fault and ordinary reset with reference Rapier bodies; it is not five-rig or
 native-busy shutdown qualification.
+The [PLAY-WAIT-001 snapshot handoff probe](audits/2026-10-29-play-wait001-main-snapshot-mutex.md) has **source-matched Windows/Linux execution evidence** for five real SetP rigs on its corrected test-only source (`35af6e84`): isolated normal-load Main snapshot mutex acquisition, 120 native/Rapier ticks per rig, and worker/Rapier retirement. The first Native TSan run timed out; a manually diagnosed unchanged-head rerun passed, with the failure retained. This unmerged candidate does **not** qualify native-busy shutdown, full Main wait attribution, physical-device or human-feel acceptance.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 

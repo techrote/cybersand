@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # 4LY-002 representative gameplay screenshots, never synthetic body locations:
 # install each real drone through the ordinary main.tscn/F5 selection contract,
 # run the real native worker + Rapier owner, and screenshot submitted GL frames.
@@ -24,7 +26,9 @@ func expect(value: bool, reason: String) -> void:
 		push_error("4LY_GAMEPLAY_RENDER: " + reason)
 
 
-func wait_for(predicate: Callable, timeout_ms: int = 60000) -> bool:
+func wait_for(predicate: Callable, timeout_ms: int = -1) -> bool:
+	if timeout_ms < 0:
+		timeout_ms = Watchdogs.milliseconds("operation_seconds")
 	var until: int = Time.get_ticks_msec() + timeout_ms
 	while Time.get_ticks_msec() < until:
 		await process_frame

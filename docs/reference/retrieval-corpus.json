@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-25",
+  "reviewed": "2026-10-31",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -39,6 +39,7 @@
     "operations/github-development-and-release.md",
     "operations/gameplay-recording.md",
     "operations/local-build-and-validation.md",
+    "operations/play-desktop-manual-qualification.md",
     "operations/physics-characterisation-plan.md",
     "operations/physics-characterisation.md",
     "operations/profiling-observability-and-performance.md",
@@ -117,7 +118,8 @@
     "decisions/ADR-014-semantic-plane-admission.md",
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
-    "architecture/pressure-optimization.md"
+    "architecture/pressure-optimization.md",
+    "operations/ci-execution-and-performance.md"
   ],
   "navigation": [
     "README.md",
@@ -130,6 +132,10 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "audits/2026-11-01-render-copy-production-reconciliation.md",
+      "reason": "Dated current-main R source selection, differential, runtime and graphical qualification. Retrieve through the bridge contract and validation ledger; historical stack results and new execution retain distinct identities."
+    },
     {
       "path": "audits/2026-10-18-act002-actor-rigs.md",
       "reason": "Dated ACT-002 source/runtime, preserved failure and scoped rig validation evidence; retrieve explicitly through the rig contract or validation ledger, not as a default Current runtime contract"

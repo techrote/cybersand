@@ -234,7 +234,7 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual([item["name"] for item in report["results"]], ["import", "zero_exit_error", "zero_exit_skip", "later_case"])
         self.assertEqual([item["status"] for item in report["results"]], ["passed", "failed", "skipped", "passed"])
         self.assertEqual(report["executed_case_count"], 3)
-        self.assertEqual([item["timeout_seconds"] for item in report["results"]], [240, 5, 5, 5])
+        self.assertEqual([item["timeout_seconds"] for item in report["results"]], [subject.execution_policy.watchdog_seconds("godot_import_seconds"), 5, 5, 5])
 
     def test_failed_import_records_incomplete_suite(self):
         report = self.execute_fixture("ERROR: import failure")
@@ -242,6 +242,31 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(report["status"], "failed")
         self.assertEqual([item["name"] for item in report["results"]], ["import"])
         self.assertEqual(report["executed_case_count"], 0)
+
+    def test_aggregate_deadline_preserves_original_allowance_and_remaining_inventory(self):
+        cases = [subject.runner.Case("slow", (), 3940, 100), subject.runner.Case("unstarted", (), 1200, 15)]
+        report = {"results": [], "log_sha256": {}, "completed": False, "status": "running"}
+        budget = mock.Mock()
+        budget.metadata.return_value = {"execution_seconds": 6000}
+        budget.admission.side_effect = [{"admitted": True}, {"admitted": True},
+            {"admitted": False, "remaining_seconds": 100, "required_seconds": 2640}]
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            output = Path(directory)
+            commands = []
+            def command(_godot, case):
+                commands.append((case.name, case.timeout))
+                initial = json.loads((output / "windows-execution.json").read_text())
+                self.assertEqual(initial["assigned_cases"], ["slow", "unstarted"])
+                self.assertFalse(initial["completed"])
+                return [sys.executable, "-c", "print('real control passed')"]
+            with mock.patch.object(subject.runner, "case_command", side_effect=command):
+                subject.execute_cases("unused", output, report, cases, budget=budget)
+            retained = json.loads((output / "windows-execution.json").read_text())
+        self.assertEqual(commands, [("import", 1200), ("slow", 3940)])
+        self.assertEqual(retained["incomplete_cases"], ["unstarted"])
+        self.assertFalse(retained["completed"])
+        self.assertEqual(retained["status"], "failed")
+        self.assertEqual(retained["executed_case_count"], 1)
 
     def test_two_windows_shards_partition_all_applicable_cases_once(self):
         a = self.execute_fixture(shard_count=2, shard_index=0)

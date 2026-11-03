@@ -1,5 +1,8 @@
 extends SceneTree
 
+const Context = preload("res://tests/palette_qualification_context.gd")
+var context_emitted: bool = false
+
 const WORLD_SIDE: int=4
 const TARGET:=Vector2i(1,1)
 var failures: int=0
@@ -34,7 +37,10 @@ func _render(with_water: bool, mode: int, scale: int, oriented: bool) -> Image:
 	rect.stretch_mode=TextureRect.STRETCH_SCALE
 	rect.texture=texture
 	var material:=ShaderMaterial.new()
-	material.shader=load("res://shaders/material_palette.gdshader")
+	material.shader=CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
+	if not context_emitted:
+		Context.emit(get_script().resource_path, material.shader)
+		context_emitted = true
 	material.set_shader_parameter("world_size_px",Vector2(WORLD_SIDE,WORLD_SIDE))
 	material.set_shader_parameter("view_size_px",Vector2(WORLD_SIDE,WORLD_SIDE))
 	material.set_shader_parameter("view_rect_uv",Vector4(0,0,1,1))
@@ -54,6 +60,7 @@ func _render(with_water: bool, mode: int, scale: int, oriented: bool) -> Image:
 	await process_frame
 	await RenderingServer.frame_post_draw
 	var result: Image=viewport.get_texture().get_image()
+	Context.capture(result,"water_%d_%d_%d_%d" % [int(with_water),mode,scale,int(oriented)])
 	viewport.queue_free()
 	await process_frame
 	return result

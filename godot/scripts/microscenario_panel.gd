@@ -54,7 +54,7 @@ func setup(controller: Control) -> void:
 	row.add_child(seed_input)
 	launch_button = _button(row, "Load selected", _launch)
 	reset_button = _button(row, "Fresh reset", func() -> void: host.microscenario_reset())
-	pause_button = _button(row, "Pause / resume", func() -> void: host.paused = not host.paused)
+	pause_button = _button(row, "Pause / resume", _toggle_pause)
 	step_button = _button(row, "Single step", func() -> void: host.tower_command({"step":true}))
 	definition_button = _button(row, "Definition JSON", _open_definition)
 	capture_button = _button(row, "Capture", func() -> void: host.microscenario_capture())
@@ -90,6 +90,12 @@ func setup(controller: Control) -> void:
 	liquid_panel.custom_minimum_size = Vector2(740, 340)
 	liquid_dialog.add_child(liquid_panel)
 	liquid_panel.setup(host)
+
+func _toggle_pause() -> void:
+	if host._playable_course_controls_active():
+		host.set_playable_course_paused(not host.paused)
+	else:
+		host.paused = not host.paused
 
 func open_liquids(load_dam: bool = false) -> void:
 	workbench.cancel_declared_window()

@@ -85,6 +85,10 @@ var frozen_blocks_last_tick: int = 0
 var scheduler_jobs_last_tick: int = 0
 var scheduler_parallel_phases_last_tick: int = 0
 var scheduler_thread_capacity_hint: int = 1
+var native_worker_request: int = 0 # Constructor ProjectSettings value; <=0 means Auto.
+# Optional, immutable owner-side statistics sample. Empty means unobserved.
+# Carries its own completed tick, World generation and sampling timestamp.
+var native_worker_participation: Dictionary = {}
 var backend_name: String = "unknown"
 var sparse_flight_moves_last_tick: int = 0
 var rigid_body_results: PackedFloat32Array = PackedFloat32Array()

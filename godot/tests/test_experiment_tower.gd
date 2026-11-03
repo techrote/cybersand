@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 func _init() -> void:
 	call_deferred("_run")
 
@@ -41,7 +43,7 @@ func _run() -> void:
 	owner._world = world
 	owner.queue_lab({"reset":true,"floor":3})
 	assert(owner.start_worker(spawn_for_test()) == OK)
-	var deadline: int = Time.get_ticks_msec()+15000
+	var deadline: int = Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	var snapshot: CyberSimulationSnapshot
 	while Time.get_ticks_msec() < deadline:
 		await process_frame

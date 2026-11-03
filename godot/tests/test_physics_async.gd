@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Observer = preload("res://tests/physics_async_worker.gd")
 
 func _init() -> void:
@@ -74,7 +76,7 @@ func _run() -> void:
 		var peak: float = 0.0
 		var floor_tick: int = -1
 		var applied: Vector2 = Vector2.ZERO
-		var deadline: int = Time.get_ticks_msec()+maxi(20000,ticks*50)
+		var deadline: int = Time.get_ticks_msec()+maxi(Watchdogs.milliseconds("operation_seconds"),ticks*50)
 		var snapshot: CyberSimulationSnapshot
 		while true:
 			await physics_frame

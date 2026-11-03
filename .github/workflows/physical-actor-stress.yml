@@ -31,7 +31,8 @@ jobs:
   linux-build:
     name: linux build x86_64
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    # Existing 35m + 20m child builds, preparation and evidence all fit.
+    timeout-minutes: 100
     steps:
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -123,7 +124,7 @@ jobs:
     timeout-minutes: 100
     strategy:
       fail-fast: false
-      max-parallel: 5
+      max-parallel: 3
       matrix:
         batch: [0, 1, 2, 3, 4]
         variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
@@ -175,7 +176,7 @@ jobs:
     timeout-minutes: 100
     strategy:
       fail-fast: false
-      max-parallel: 5
+      max-parallel: 3
       matrix:
         batch: [0, 1, 2, 3, 4]
         variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
@@ -233,6 +234,7 @@ jobs:
     timeout-minutes: 100
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         batch: [0, 1, 2, 3, 4]
     steps:
@@ -288,6 +290,7 @@ jobs:
     timeout-minutes: 100
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         batch: [0, 1, 2, 3, 4]
     defaults:
@@ -347,6 +350,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
     steps:

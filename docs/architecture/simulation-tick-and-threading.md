@@ -6,7 +6,7 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-10-28
+last-reviewed: 2026-10-30
 ---
 
 # Simulation tick and threading
@@ -41,7 +41,7 @@ process logs, machine conditions and slower-than-serial observations.
 Each row keeps its 180-second bound; import keeps 240 seconds. These are
 native reference measurements; the independently paced gameplay owner's
 publication latency, rendered frame pacing and human feel remain separate
-#266/#270 gates. The [source audit](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md)
+#270 gates; #266 is closed. The [source audit](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md)
 owns publication identities, failures and actual platform results.
 
 The exact-source [Windows/Linux publication](https://github.com/techrote/cybersand/actions/runs/40651352334)
@@ -52,6 +52,14 @@ and preserved the same per-size terminal level hashes. The
 include every repeat and the cases where Auto was slower than explicit four
 despite equal configured capacity. This accepts instrumentation and the bounded
 reference campaign; gameplay/release qualification remains separately required.
+
+The [current PLAY acceptance boundary](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
+records accepted #302 evidence for real outstanding phase jobs and production
+shutdown ordering. The owner accepts it as satisfying the mandatory native-busy
+lifecycle requirement. Optional #304 framebuffer experimentation adds no blocking
+architecture or lifecycle dependency. This decision preserves the existing
+asynchronous owner, phased pool and main-thread Rapier; it does not claim
+general race freedom or human responsiveness.
 
 ## Who advances simulation on each platform?
 

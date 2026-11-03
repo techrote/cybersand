@@ -27,7 +27,7 @@ class PreparationBarrier extends RefCounted:
 class StopFenceRelease extends RefCounted:
 	var worker: CyberSimulationWorker
 	var barrier: PreparationBarrier
-	var safety_timeout_ms: int = 15000
+	var safety_timeout_ms: int = Watchdogs.milliseconds("operation_seconds")
 
 	func wait_then_release() -> Dictionary:
 		var started: int = Time.get_ticks_msec()

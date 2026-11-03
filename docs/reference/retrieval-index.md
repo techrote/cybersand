@@ -4,16 +4,27 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
 
-- [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
-  Shared existing-host composition and normal lifetimes are qualified separately
-  from native parallel measurements, adversarial stress, physical gamepad and
-  human feel; #265 stays closed and #271 deferred.
+- [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
+  #302 satisfies mandatory native-busy lifecycle qualification; #304 is optional
+  and retains its failed evidence. Remaining #268/#269/#270 product, stress,
+  physical-device and human-feel gates still apply; #265 stays closed and #271 deferred.
+
+- [How do I build one shared playable session with a map, rig, controls, rules, solver and camera?](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+- [How do rapid pause/resume, Escape and selected-gamepad Start revoke shared-course input?](../systems/player-control-playground.md#immediate-shared-course-pause-transitions)
+  The composed selector uses the existing prepared transaction, reports actual
+  applied state and requires neutral rearm after selected-device changes. The
+  [manual walkthrough](../operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
+  distinguishes synthetic focus/device regression from physical/human acceptance.
+
+- [How do I prepare a source-pinned physical desktop checklist without claiming a device pass?](../operations/play-desktop-manual-qualification.md)
+  The generator authenticates the selected source, runtime and official engine,
+  emits an untested result sheet and rechecks identity before user launch.
 
   [Supplementary PLAY questions](retrieval-questions-play.json) test those
   qualifiers separately from the unchanged frozen retrieval evaluation.
@@ -48,6 +59,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How are CI scheduling costs separated from watchdogs, how do hosted parents admit children, and do performance ratios fail correctness? | [Shared execution and advisory history](../operations/ci-execution-and-performance.md), [focused implementation audit](../audits/2026-10-31-execution-watchdog-modernization.md). Complete original suites and source-matched review remain required; [scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [all-workflow audit](../audits/2026-11-01-ci-workflow-audit.md) record capacity and concurrency. |
 | How are imported CYSD temperatures and heated Empty cells preserved when preparing another liquid solver, and is the normal importer complete? | [Native payload preparation and explicit normalization](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation), [local Windows proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md). Bounded ordinary body-free import is implemented; physical importers, complete host identity and final platforms remain open. |
 | Can the Water IN publisher run without disturbing the Brine branch, and is its request armed? | [Separate Water profile, actual native-repair sequence2 publication and required final-head gates](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication). Preparation does not qualify new runtime artifacts or waive full gates. |
 | How does Water IN retain momentum and coherence through two grain pickups, what complete radius/quantity refusal applies, and did Current behavior change? | [Water native adapter and carrier ownership](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25), [dated source/Current identity proof](../audits/2026-10-25-water-inertial-native.md). Runtime/scientific/full-host qualification remains separate. |
@@ -157,6 +169,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |
 | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
+| How do six Native families and four Windows shards preserve CI coverage and deadlines, and may scope advice skip Native? | [Parallel validation contract](../operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31), [exact coverage](../operations/testing-validation-and-replay.md#parallel-native-and-four-way-windows-admission), and [source-bound integration audit](../audits/2026-10-31-ci-parallel-production-integration.md). Scope advice grants no exemption; predecessor timing is not resulting-head qualification. |
 | CI drift, base-only build identity, release readiness | [Repository/release](../operations/github-development-and-release.md) |
 | What is the current CI provider/recovery state, and is main protected? | [Repository/release](../operations/github-development-and-release.md), then the [2026-09-24 recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for incident evidence |
 | Is Stage-3B #65 complete and what is the next dependency-ready package? | [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md), [roadmap](status-and-roadmap.md); use the [recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for #65 recovery evidence |
@@ -316,3 +329,8 @@ executed results belong to the [dated Deepworks audit](../audits/2026-10-20-deep
 ## Semantic four-plane generation and authoring
 
 GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-background questions route to the [semantic-plane contract](../systems/procedural-semantic-planes.md). Refinery/cavern JSON, source programmes, controls, actor placements, actual captures and provenance inspection route to the [authoring guide](../operations/semantic-depth-authoring.md).
+
+### Shared course targets and worker details
+
+For authored checkpoint visibility, Return to launcher, sampled task participants and
+coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).

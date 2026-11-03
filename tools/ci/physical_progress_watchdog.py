@@ -4,9 +4,16 @@ import json
 import math
 import re
 
+from execution_policy import watchdog_seconds
+
 CASES = frozenset({"test_physical_actor_arena", "test_physical_actor_rigs", "test_physical_usable_course", "play_busy001c_render"})
-SNAPSHOT_IDLE_SECONDS = 30.0
-FAIL_IDLE_SECONDS = 45.0
+SNAPSHOT_IDLE_SECONDS = watchdog_seconds("operation_seconds")
+FAIL_IDLE_SECONDS = watchdog_seconds("complex_fixture_seconds")
+
+# BUSY001C is an explicitly bounded native-hold protocol. Reconciliation must
+# neither shorten the accepted ordinary-fixture policy nor silently extend this
+# fixture's original 30-second diagnostic / 45-second no-progress boundaries.
+PROTOCOL_IDLE_LIMITS = {"play_busy001c_render": (30.0, 45.0)}
 
 
 class ProgressWatchdog:
@@ -51,7 +58,9 @@ class ProgressWatchdog:
         return max(0.0, now - self.last_change)
 
     def capture_due(self, now: float) -> bool:
-        return self.enabled and self.idle_seconds(now) >= SNAPSHOT_IDLE_SECONDS
+        limit = PROTOCOL_IDLE_LIMITS.get(self.name, (SNAPSHOT_IDLE_SECONDS, FAIL_IDLE_SECONDS))[0]
+        return self.enabled and self.idle_seconds(now) >= limit
 
     def expired(self, now: float) -> bool:
-        return self.enabled and self.idle_seconds(now) >= FAIL_IDLE_SECONDS
+        limit = PROTOCOL_IDLE_LIMITS.get(self.name, (SNAPSHOT_IDLE_SECONDS, FAIL_IDLE_SECONDS))[1]
+        return self.enabled and self.idle_seconds(now) >= limit

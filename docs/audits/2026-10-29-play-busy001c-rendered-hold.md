@@ -3,7 +3,7 @@ title: PLAY-BUSY-001C rendered framebuffer during real native phase hold
 status: Planned
 document-kind: audit
 canonical-for: []
-last-reviewed: 2026-10-29
+last-reviewed: 2026-11-03
 scope: Graphical source-matched qualification stacked on PLAY-BUSY-001B; no release promotion
 related-documents: [2026-10-29-play-busy001b-real-phase-host.md, ../systems/player-control-playground.md, ../architecture/simulation-tick-and-threading.md, ../operations/github-development-and-release.md]
 ---
@@ -599,3 +599,166 @@ stacks and adds a synthetic normal-exit/refusal regression. It retains
 an interrupt stack, and does **not** modify the authoritative 001C test or
 its deadlines, 001B control, production worker, native runtime or renderer.
 New exact-head CI and any original execution artifacts remain required.
+
+
+## Current-main reconciliation and original-process verification — 2026-11-03
+
+### Source authority and disposition at source freeze
+
+The owner requests bounded completion of optional #304 and explicitly prohibits
+merging it without a later decision. The accepted source is
+`89020b9eb6d540383a5bb64b58dcd29a87592c32`, tree
+`79de02472a653a4315149bc5e1970a512e6d74b6`; original #304 is
+`0d5619e83b60e35ce49aa0efe4efa48a28b11dca`, tree
+`ed0dfade16b5347bca061001d776005d58d447ee`. The focused ten-path predecessor
+delta was applied to an isolated checkout of accepted main and reconciled
+additively with current watchdog/test infrastructure. The final reconciliation
+commit retains both histories but uses the reviewed current-main source tree
+plus only this apparatus/documentation delta. It does not import old production
+files. The accepted shader, recovery, render-copy, native ownership, solver,
+material and LFS runtime paths remain byte-identical to main.
+
+**At this source freeze, fresh original-host execution is pending.** The
+[PR #304 qualification ledger](https://github.com/techrote/cybersand/pull/304)
+records the immutable resulting commit/tree, original run/attempt, independently
+verified artifacts and final disposition. Do not transfer a historical green to
+this source, infer a pass from workflow presence, or equate a documentation-only
+follow-up with a freshly executed host. #304 remains draft and non-blocking for
+#268/#269/#270/#334/#263. #334's branch is outside this change. No normal full
+project matrix is launched merely to diagnose the isolated apparatus.
+
+### Independent recovery of the original failed run
+
+Original [run 41046902349](https://github.com/techrote/cybersand/actions/runs/41046902349)
+remains failed on both authoritative graphical hosts. Directly downloaded ZIPs
+match GitHub's sizes, SHA-256 digests and every safe, unique, CRC-clean member:
+
+| Host | Artifact | Bytes | Members | Original ZIP SHA-256 |
+|---|---|---:|---:|---|
+| Linux | 12973576226 | 1737301 | 73 | `3394d5f1200b14ed166e64019a15f6ac1a2f73031b357009a6b40b8a574f47a1` |
+| Windows | 12973072343 | 1837096 | 22 | `c22524b7a822dd40bb93d4c497edc6e1d512954df71cdf935047a46a3c410e7e` |
+
+All 95 original member identities are retained in the independent verification
+inventory, SHA-256 `08d09350a2d3ad43a39b1cd8c6b7756a5afdf8b4e862723e1e5f773cf8065bf6`.
+Original 001B machine rows exactly equal their archived receipt objects and
+pass 34 assertions / zero failures on each OS. Native runtime sizes and hashes
+match the original receipts: Linux 4255552 bytes,
+`988e3efec285f2940d298e02feac9f12c172cec34643ec4ab26848f469c165b4`;
+Windows 4850176 bytes,
+`147e8048d6bfbd1c47b2ddcd97895fb68641029857e1a4cd720e25c3564a9679`.
+The separate Windows build artifact 12972882926 now returns HTTP 404; its
+continued availability is not claimed. Its runtime remains in the verified
+Windows execution ZIP. Neither original graphical process produced a qualifying
+001C result row or held-frame PNG.
+
+Linux's first traced Main callback completes in 2.962 ms, followed by a
+31.430815-second gap before the next traced physics callback. The pending course
+has a running worker, native tick 4 and snapshot serial 5, but no acknowledgement.
+Windows's first Main callback completes in 4.599 ms and then reaches the original
+45.031-second progress watchdog. An independent parse of its original minidump
+places the 34.390625-CPU-second thread 4616 at
+`d3dcompiler_47.dll + 0x494b4`; the Main thread waits in `ntdll.dll`. This proves
+compiler activity, not the causal shader or a production native deadlock. Both
+failures occur before native-gate arm and outside the traced Main methods.
+
+### Authoritative host versus separate debugger child
+
+The old Linux hosts use identical Godot argv, 960x540 window/content scale,
+X11/gl_compatibility, Dummy audio, runtime paths and software-renderer variables
+(`LIBGL_ALWAYS_SOFTWARE=1`, `LP_NUM_THREADS=2`, `GALLIVM_PERF=nopt`). The GDB child
+has a different parent and evidence directory and runs second in the same
+checkout. It finishes in 21.229 seconds, before the scheduled 22-second interrupt;
+no debugger interruption or stack capture precedes success. Its actual course
+installation is at 12.022 s, native hold at 19.633 s, frame completions at
+19.709/20.304 s and manual release/dispatch return at 20.367/20.376 s.
+
+That explicitly nonqualifying child reports 32/0, four distinct held jobs,
+32 Rapier steps, real input and 22.489-pixel actor motion. Independent decoding
+finds 176128 changed pixels in its two 960x540 PNGs. The original sampling oracle
+is reproduced exactly: 32/39 colour buckets and 10212 changed four-pixel-grid
+samples. Its GDB transcript hash is
+`6232b6af974354b6fed9e28288b997c9012170566754ffa81111907a5760b2a1`.
+This valuable diagnostic does not substitute for either original host result.
+
+**Causal confidence:** launch equality and the absence of an actual debugger
+interrupt are established; a debugger-specific benefit is unproven. Cache state
+was neither isolated nor inventoried. A cold/warm compiler confound is plausible.
+Accepted main now contains the separately qualified
+[palette compiler restructuring](2026-10-31-palette-shader-integration.md), whose
+local source-controlled cold request/readback observations were 36.717 s for the
+old shader versus 4.667 s for selected full and 2.160 s for selected bounded.
+Those are different experiments, not a causal proof for the original hosted
+failure. The first useful controlled successor is the authoritative current-main
+host with the original scientific budgets, without a prewarm or silent retry.
+
+### Demonstrated apparatus defects and focused corrections
+
+The old reader accepts two malformed 25-byte PNG headers together with fabricated
+metrics, a missing DisplayServer/assertion count, NaN actor motion and arbitrary
+source/platform strings. That synthetic counterexample is an apparatus failure,
+never gameplay evidence. The replacement
+[reader](../../tools/ci/readback_play_busy001c.py) validates full PNG CRC/deflate/
+scanline data and recomputes the unchanged 32x18 colour-bucket and four-pixel RGB
+oracles. It rejects nonfinite metrics, duplicate keys/records, missing stages,
+wrong source/process lineage, any premature release, incomplete retirement and
+mismatched bytes. All original minimum dimensions, six-colour, >20-change,
+input/Main/Rapier, native hold, immutable snapshot and drain criteria remain.
+
+The [runner](../../tools/ci/run_play_busy001c_render.py) writes an initially
+incomplete, nonce-bound original-process receipt, exact argv/source/tree and
+engine/native/Rapier/log identities. A
+[creation-bound observer](../../tools/ci/play_busy001c_process.py) distinguishes
+the Windows console wrapper from its real engine and independently checks
+natural retirement. Diagnostic processes have a separate recorded role and
+cannot qualify. Observational failure, a surviving child or forced cleanup
+cannot produce a positive receipt. Existing original output is never overwritten
+or retried. Partial live log writes are ignored only until their terminating
+newline; malformed final records fail. Shader-cache contents are observed before
+and after execution without alteration; unknown driver cache state stays unknown.
+
+Three fixture sampling corrections preserve the intended observations: start the
+2500-ms capture clock before synchronous `force_draw()` and include image readback;
+retain snapshot immutability while the dispatch is still held, before a legal
+post-release publication; use one copied initial gate sample for the progress
+record and result. Both capture events retain the actual gate status for the
+same generation/tick/phase/dispatch. Actual scene/worker/session retirement is
+recorded after the existing finish checks.
+
+The shared physical watchdog retains current-main policy for ordinary cases.
+Only 001C explicitly retains its historical 30-second diagnostic / 45-second
+progress limits, plus its 120-second outer case, 30-second course setup,
+12-second hold and 2.5-second frame limits. The Linux parent reserves
+120 + 240 = 360 seconds using the current shared diagnostic/cleanup allowance;
+that parent does not extend case acceptance. The obsolete 150-second parent
+could cut off the independently owned cleanup/evidence path. GitHub-hosted Linux
+and Windows qualification remains a focused three-job workflow; original
+artifacts, including the Windows build packet, now retain for 90 days.
+
+### Verification and remaining gates
+
+Deterministic adverse controls cover decoded-image corruption, original process
+lineage, wrong nonces/sources, duplicate/missing stages, different held dispatches,
+slow frame submission, nonfinite metrics, early completion, lingering descendants,
+PID reuse, explicit diagnostic registration and unchanged watchdog boundaries.
+The new reader passes 39 controls normally and under Python `-O`; its original
+pixel arithmetic also matches the retained real diagnostic PNGs. The 14 custody
+controls pass 13 deterministic tests locally; the real-process test refuses this
+sandbox's mismatched `/proc` PID namespace and is explicitly skipped locally.
+That skip is prohibited on GitHub Actions and must execute there. These controls
+are apparatus evidence, not a new Linux or Windows gameplay pass.
+
+Independent source review covers the reconciled source, unchanged production
+paths, sample timing, process ownership, parent budgets and reader/runner schema.
+Fresh 001B and authoritative 001C outcomes require the exact resulting source,
+original ZIPs and independently rerun decoded-pixel/process readback. Offline
+readback may supply `--engine` to relocate the pinned executable, but its hash
+and size must match the untouched original process receipt. Full applicable
+Native/Godot integration checks remain a later readiness gate; draft skips do
+not satisfy them. Physical devices, focus, sustained frame pacing and human feel
+remain unqualified. No release/LFS publication, merge or issue closure is authorized.
+
+Documentation mapping: this audit owns dated failures/corrections; the existing
+[PLAY contract](../systems/player-control-playground.md) routes to this optional
+experiment. Native/threading ownership, interfaces, production defaults,
+architecture decisions and critical-path ordering are unchanged. Existing index,
+retrieval and roadmap routes retain their canonical owners.

@@ -8,6 +8,16 @@ const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
+const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
+const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
+const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
+const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
+const PLAYABLE_RECOVERY_META: StringName = &"cybersand_playable_recovery"
+var playable_session_panel: PopupPanel
+var playable_session_options: Dictionary = DEFAULT_PLAYABLE_OPTIONS.duplicate()
+var _playable_recovery_queued: bool = false
+var _playable_recovery_cancelled: bool = false
+var _playable_recovery_error: String = ""
 const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
 const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
 const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
@@ -25,6 +35,7 @@ var physical_trial_input = PhysicalTrial.new()
 var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
+var playable_course_overlay: Control
 var _physical_epoch: int = 0
 var _physical_terrain_ready: bool = false
 const PHYSICAL_TOOL_KEYS: Array[int] = [KEY_M, KEY_N, KEY_U]
@@ -578,6 +589,126 @@ func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> 
 	return (physical_rig_id != &"" or physical_trial_arm in ["barrel","ripper"]) and microscenario_mode != "Benchmark" \
 		and CyberMicroScenarioCatalogue.exploratory_actor_map(definition)
 
+
+func playable_session_unavailable_reason() -> String:
+	if _playable_recovery_queued:
+		return "Rebuilding the applied session from its initial state."
+	if not _playable_recovery_error.is_empty():
+		return _playable_recovery_error
+	if simulation_worker.has_failed():
+		return ("World stopped. Restart the applied session to rebuild it from its initial state."
+			if playable_session_can_recover() else "World stopped. Return to the launcher with F2 to start a fresh session.")
+	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty():
+		return "A session rebuild is still pending."
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty() \
+		or not actor_prototypes_allowed():
+		return "Leave the protected experiment before starting a playable session."
+	return ""
+
+
+func playable_session_can_recover() -> bool:
+	# A failed prepared World cannot be the retained input to another native
+	# preparation. Explicit recovery retires the WHOLE scene before its new
+	# owner starts. Pending candidates belong to that retiring scene as well.
+	return (not _playable_recovery_queued and not _playable_recovery_cancelled and is_inside_tree()
+		and get_tree().current_scene == self and simulation_worker.has_failed()
+		and _playable_course_controls_active() and water_blind_set.is_empty()
+		and water_active_blind_label.is_empty()
+		and microscenario_liquid_setup.get("intent", "") == "exploratory"
+		and microscenario_liquid_policy is PackedInt32Array)
+
+
+func _queue_failed_playable_restart() -> void:
+	if not playable_session_can_recover(): return
+	# Carry values from the accepted owner, never unsubmitted panel choices,
+	# partial failed cells, commands, snapshots, nodes, RIDs or native pointers.
+	var selection: Dictionary = playable_session_options.duplicate(true)
+	selection.map = CyberMicroScenarioCatalogue.PLAYER_COURSE_ID
+	selection.actor = str(physical_rig_id)
+	var request: Dictionary = {"selection":selection,
+		"policy":microscenario_liquid_policy.duplicate(),
+		"definition":microscenario_definition.duplicate(true),
+		# microscenario_mode can already describe an unaccepted pending request.
+		# The completed worker context retains the accepted execution mode.
+		"mode":str(tower_context.microscenario.mode),
+		"setup":microscenario_liquid_setup.duplicate(true),
+		"settings":{"simulation_window_enabled":simulation_window_enabled,
+			"cadence_lod_enabled":cadence_lod_enabled,
+			"liquid_surface_adhesion_enabled":liquid_surface_adhesion_enabled,
+			"simulation_margin_index":simulation_margin_index, "simulation_margin":simulation_margin,
+			"render_snapshot_hz_index":render_snapshot_hz_index, "render_snapshot_hz":render_snapshot_hz,
+			"player_environment_profile":active_player_environment_profile.duplicate(true)}}
+	_playable_recovery_queued = true
+	_playable_recovery_error = ""
+	paused = true
+	cancel_playable_course_input()
+	_reload_failed_playable_scene.call_deferred(request)
+
+
+func cancel_playable_session_recovery() -> void:
+	# Navigation owns the user's latest intent. Fence a still-deferred restart
+	# and discard an envelope whose pending replacement has not entered yet.
+	_playable_recovery_cancelled = true
+	_playable_recovery_queued = false
+	if is_inside_tree() and get_tree().has_meta(PLAYABLE_RECOVERY_META):
+		get_tree().remove_meta(PLAYABLE_RECOVERY_META)
+
+
+func _reload_failed_playable_scene(request: Dictionary) -> void:
+	# F2/another scene transition can win before this deferred request. Never
+	# leave a recovery envelope for an unrelated future launch in that case.
+	if _playable_recovery_cancelled or not _playable_recovery_queued \
+		or not is_inside_tree() or get_tree().current_scene != self: return
+	var tree: SceneTree = get_tree()
+	tree.set_meta(PLAYABLE_RECOVERY_META, request.duplicate(true))
+	var error: Error = tree.reload_current_scene()
+	if error != OK:
+		tree.remove_meta(PLAYABLE_RECOVERY_META)
+		_playable_recovery_queued = false
+		_playable_recovery_error = "Fresh session restart failed (%d); return to the launcher with F2." % error
+		microscenario_error = _playable_recovery_error
+
+
+func _restore_failed_playable_selection(request: Dictionary) -> void:
+	# One attempt through the normal admission/receipt path. Failure stays
+	# visible and paused; do not retry, coerce policy or resume automatically.
+	var selection: Dictionary = request.selection
+	if _apply_microscenario_definition(request.definition, request.mode,
+		_playable_actor_configuration(StringName(str(selection.actor))), request.policy, request.setup):
+		pending_microscenario_apply.playable_options = {"controls":str(selection.controls),
+			"rules":str(selection.rules), "camera":str(selection.camera)}
+	playable_session_panel.show_selection()
+
+
+func _playable_actor_configuration(rig: StringName) -> Dictionary:
+	return {"representation":"barrel-rapier", "runtime_recovery_enabled":false,
+		"experimental":true, "physical_trial":"", "physical_rig":str(rig),
+		"actor_model":"", "actor_producer":"human", "actor_demo_npcs":false, "actor_definitions":[]}
+
+
+# One composed request, through the existing prepared native/physical transaction.
+# Options remain candidate data until the matching worker acknowledgement.
+func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
+		normalize_water: bool = false, maximum_rule_radius: int = 2) -> bool:
+	microscenario_error = playable_session_unavailable_reason()
+	if not microscenario_error.is_empty(): return false
+	var rig := StringName(str(selection.get("actor", "")))
+	if selection.get("map", "") != CyberMicroScenarioCatalogue.PLAYER_COURSE_ID \
+		or rig not in PlayerCourse.MECHANICAL_PRESETS \
+		or selection.get("controls", "") not in ["keyboard_gamepad", "keyboard"] \
+		or selection.get("rules", "") not in ["lap", "freeplay"] \
+		or selection.get("camera", "") not in ["follow", "overview"]:
+		microscenario_error = "Unsupported playable-session selection; current session retained."
+		return false
+	var configuration: Dictionary = _playable_actor_configuration(rig)
+	var definition: Dictionary = CyberMicroScenarioCatalogue.definition(CyberMicroScenarioCatalogue.PLAYER_COURSE_ID, 0)
+	if not microscenario_apply_exploratory_liquid(definition, policy, normalize_water, "Play",
+		configuration, maximum_rule_radius):
+		return false
+	pending_microscenario_apply.playable_options = {"controls":str(selection.controls),
+		"rules":str(selection.rules), "camera":str(selection.camera)}
+	return true
+
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, retain_trial_motion: bool = false) -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
@@ -715,9 +846,17 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	# optional 512x256 overview. Other MicroScenarios keep their 480x270 view.
 	var mechanical_course_view: bool = (str(definition.get("id","")) == CyberMicroScenarioCatalogue.PLAYER_COURSE_ID
 		and StringName(str(player_configuration.get("physical_rig",""))) in PlayerCourse.MECHANICAL_PRESETS)
+	if mechanical_course_view:
+		playable_session_options = pending_microscenario_apply.get("playable_options", playable_session_options).duplicate(true)
+	else:
+		playable_session_options = DEFAULT_PLAYABLE_OPTIONS.duplicate()
 	current_view_size = Vector2i(256,128) if mechanical_course_view else Vector2i(480,270)
 	camera_follow_enabled = mechanical_course_view
 	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
+	if mechanical_course_view and playable_session_options.camera == "overview":
+		current_view_size = PlayerCourse.VIEW.size
+		camera_follow_enabled = false
+		camera_origin = Vector2(PlayerCourse.VIEW.position)
 	character_position = Vector2(definition.player_start[0], definition.player_start[1])
 	if _pending_physical_candidate != null:
 		_adopt_prepared_physical_candidate()
@@ -736,6 +875,10 @@ func _microscenario_installed(definition: Dictionary) -> void:
 		simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.get("serial",0)))
 
 func microscenario_reset() -> void:
+	if playable_session_can_recover():
+		_queue_failed_playable_restart()
+		return
+	if _playable_recovery_queued or _playable_recovery_cancelled: return
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
 	if tower_context.get("micro_active", false):
 		if not microscenario_liquid_setup.is_empty() and microscenario_liquid_policy != null:
@@ -1291,6 +1434,7 @@ func _refresh_recording_button() -> void:
 var latest_snapshot: CyberSimulationSnapshot
 var worker_start_error: Error = OK
 var consumed_snapshot_serial: int = -1
+var worker_publication_counter = SnapshotPublicationCounter.new()
 
 var image: Image
 var texture: ImageTexture
@@ -1351,6 +1495,8 @@ var character_position: Vector2 = CHARACTER_SPAWN
 var camera_origin: Vector2 = Vector2.ZERO
 var camera_follow_enabled: bool = true
 var _playable_course_progress = PlayableCourseLap.new()
+var _playable_course_observation_valid: bool = false
+var _participation_sampling_requested: bool = false
 var player_representation: StringName = CyberPlayerRepresentation.SAMPLED
 var sampled_runtime_recovery_enabled: bool = true
 var barrel_player_spawn_position: Vector2 = CHARACTER_SPAWN
@@ -1407,6 +1553,8 @@ func setup_player_environment_tuning() -> void:
 func toggle_player_environment_tuning() -> void:
 	if player_environment_panel == null:
 		return
+	if not player_environment_panel.visible:
+		cancel_playable_course_input()
 	player_environment_panel.visible = not player_environment_panel.visible
 
 
@@ -1460,6 +1608,13 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
+	# Consume before any early return, so a later unrelated scene cannot inherit
+	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
+	# fresh scene's _ready starts its worker. The envelope contains copied values.
+	var recovery: Dictionary = get_tree().get_meta(PLAYABLE_RECOVERY_META, {})
+	if get_tree().has_meta(PLAYABLE_RECOVERY_META): get_tree().remove_meta(PLAYABLE_RECOVERY_META)
+	if not recovery.is_empty(): paused = true
 	if OS.get_cmdline_user_args().has("--depth-lab") and not get_tree().has_meta("cybersand_depth_lab_visited"):
 		set_process(false)
 		call_deferred("open_depth_lab")
@@ -1468,8 +1623,22 @@ func _ready() -> void:
 	setup_brush_preview()
 	setup_player_representation_button()
 	setup_player_environment_tuning()
+	if not recovery.is_empty():
+		var settings: Dictionary = recovery.settings
+		simulation_window_enabled = bool(settings.simulation_window_enabled)
+		cadence_lod_enabled = bool(settings.cadence_lod_enabled)
+		liquid_surface_adhesion_enabled = bool(settings.liquid_surface_adhesion_enabled)
+		simulation_margin_index = int(settings.simulation_margin_index)
+		simulation_margin = settings.simulation_margin
+		render_snapshot_hz_index = int(settings.render_snapshot_hz_index)
+		render_snapshot_hz = int(settings.render_snapshot_hz)
+		active_player_environment_profile = settings.player_environment_profile.duplicate(true)
+		simulation_worker.queue_player_environment_profile(active_player_environment_profile)
+		player_environment_panel.set_active(active_player_environment_profile)
 	setup_depth_lab_launcher()
 	setup_actor_prototypes()
+	setup_playable_session_panel()
+	get_viewport().gui_focus_changed.connect(_on_playable_course_gui_focus_changed)
 	setup_flight_lab_launcher()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
@@ -1513,6 +1682,7 @@ func _ready() -> void:
 			body.freeze = true
 	latest_snapshot = simulation_worker.take_latest_snapshot(-1)
 	if latest_snapshot != null:
+		worker_publication_counter.observe(latest_snapshot.serial)
 		consumed_snapshot_serial = latest_snapshot.serial
 		character_position = latest_snapshot.character_position
 		sync_hard_surface_colliders()
@@ -1541,8 +1711,7 @@ func _ready() -> void:
 			latest_snapshot.render_patch_cells,
 			latest_snapshot.render_channels
 		)
-	texture = ImageTexture.create_from_image(image)
-	previous_texture = ImageTexture.create_from_image(image)
+	create_render_textures()
 	material_appearance_lut = CyberMaterialAppearanceLut.create_texture()
 	material_appearance_program = CyberMaterialAppearanceLut.create_program_texture()
 	world_view.texture = texture
@@ -1570,6 +1739,9 @@ func _ready() -> void:
 		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
 	update_status()
+	if not recovery.is_empty():
+		_restore_failed_playable_selection.call_deferred(recovery)
+		return
 	var feature: String = str(get_tree().get_meta("cybersand_feature", ""))
 	if PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)
@@ -1581,10 +1753,18 @@ func _ready() -> void:
 		toggle_actor_prototypes.call_deferred()
 	elif feature == "liquid_comparison":
 		microscenario_panel.open_liquids.call_deferred(true)
+	elif feature == "play_session":
+		playable_session_panel.show_selection.call_deferred()
 	elif feature.is_empty() and "--blacksite-nine" in OS.get_cmdline_user_args():
 		blacksite_nine_presentation.launch.call_deferred()
 	elif feature.is_empty() and "--showcase" in OS.get_cmdline_user_args():
 		showcase_presentation.launch.call_deferred()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		# A loss/regain between physics callbacks must still retire old edges.
+		cancel_playable_course_input()
 
 
 func _exit_tree() -> void:
@@ -1626,6 +1806,7 @@ func _process(delta: float) -> void:
 	update_brush_preview()
 	handle_painting()
 	update_camera(delta)
+	_present_playable_course_targets()
 	actor_prototype_overlay.present(
 		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
 		camera_origin.floor(), current_view_size, view_content_rect()
@@ -1859,7 +2040,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_R:
 			reset_world()
 		KEY_P:
-			paused = not paused
+			if _playable_course_controls_active():
+				toggle_playable_course_pause()
+			else:
+				paused = not paused
+		KEY_ESCAPE:
+			if _playable_course_controls_active():
+				toggle_playable_course_pause()
 		KEY_F:
 			toggle_playable_course_camera()
 		KEY_L:
@@ -2535,6 +2722,8 @@ func consume_worker_snapshot() -> void:
 	var snapshot: CyberSimulationSnapshot = simulation_worker.take_latest_snapshot(consumed_snapshot_serial)
 	if snapshot == null:
 		return
+	if not worker_publication_counter.observe(snapshot.serial):
+		return
 	latest_snapshot = snapshot
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
@@ -2626,6 +2815,12 @@ func consume_worker_snapshot() -> void:
 		paused = true
 	if not player_uses_barrel():
 		character_position = snapshot.character_position
+	consume_render_snapshot(snapshot)
+	gameplay_recorder.ingest_snapshot(snapshot)
+
+
+func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
 		record_render_payload(snapshot)
 		var render_uploaded: bool = upload_texture_patches(
@@ -2646,7 +2841,6 @@ func consume_worker_snapshot() -> void:
 			)
 		else:
 			reject_render_snapshot(snapshot)
-	gameplay_recorder.ingest_snapshot(snapshot)
 
 
 func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
@@ -2744,9 +2938,30 @@ func setup_actor_prototypes() -> void:
 	usable_overlay.name = "UsableOverlay"
 	usable_overlay.clip_contents = true
 	$Layout/World.add_child(usable_overlay)
+	playable_course_overlay = PlayableCourseOverlay.new()
+	playable_course_overlay.name = "PlayableCourseOverlay"
+	$Layout/World.add_child(playable_course_overlay)
+	playable_course_overlay.clear_course()
 	physical_actor_overlay = PhysicalOverlay.new()
 	physical_actor_overlay.name = "PhysicalActorOverlay"
 	$Layout/World.add_child(physical_actor_overlay)
+
+
+func setup_playable_session_panel() -> void:
+	playable_session_panel = PlayableSessionPanel.new()
+	playable_session_panel.name = "PlayableSessionPanel"
+	add_child(playable_session_panel)
+	playable_session_panel.setup(self)
+	var launcher := Button.new()
+	launcher.name = "PlayableSessionLauncher"
+	launcher.text = "Play session"
+	launcher.focus_mode = Control.FOCUS_NONE
+	launcher.pressed.connect(playable_session_panel.show_selection)
+	# Reuse the wrapping action bar: another full-height launcher row pushes
+	# existing controls below the viewport and breaks real mouse entry.
+	var controls_row: HFlowContainer = microscenario_panel.launch_button.get_parent()
+	controls_row.add_child(launcher)
+	controls_row.move_child(launcher, 0)
 
 
 func actor_prototypes_allowed() -> bool:
@@ -2764,6 +2979,7 @@ func toggle_actor_prototypes() -> void:
 	if actor_prototype_panel.visible:
 		actor_prototype_panel.hide()
 		return
+	cancel_playable_course_input()
 	_actor_input_rearm = true
 	var selected_model: StringName = StringName("physical/" + physical_trial_arm) if not physical_trial_arm.is_empty() else actor_model_selection
 	if physical_rig_id != &"": selected_model = StringName("rapier/" + str(physical_rig_id))
@@ -2941,6 +3157,9 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 
 func _close_physical_actors() -> void:
 	_physical_terrain_ready = false
+	_playable_course_observation_valid = false
+	if playable_course_overlay != null:
+		playable_course_overlay.clear_course()
 	if physical_actor_session == null:
 		return
 	simulation_worker.set_physical_actor_epoch(0)
@@ -2993,7 +3212,7 @@ func _on_physical_actor_input_cancelled(actor_id: int, actor_epoch: int) -> void
 # Native source-tick and main-thread actor-epoch fence for the course HUD.
 # A stale pre-rebuild worker packet can never advance a newly selected actor.
 func _playable_course_progress_identity() -> bool:
-	return (_playable_course_controls_active() and _physical_terrain_ready
+	return (_playable_course_controls_active() and playable_session_options.rules == "lap" and _physical_terrain_ready
 		and _actor_reset_receipt == 0 and pending_microscenario_apply.is_empty()
 		and latest_snapshot != null and not latest_snapshot.simulation_failed
 		and int(latest_snapshot.rigid_body_epoch) == _physical_epoch
@@ -3011,18 +3230,21 @@ func _record_completed_playable_course_step() -> void:
 # Both render and physics callbacks may call this: the lap model ignores
 # duplicate physics ticks and counts each completed native delta once.
 func _observe_playable_course_progress() -> void:
+	_playable_course_observation_valid = false
 	if not _playable_course_progress_identity():
 		_playable_course_progress.clear_session()
 		return
 	var observed: Dictionary = physical_actor_session.observation(0)
 	var position: Vector2 = observed.get("position", Vector2.INF)
-	if int(observed.get("epoch",-1)) != _physical_epoch or not position.is_finite():
+	if int(observed.get("epoch",-1)) != _physical_epoch or not position.is_finite() \
+		or not str(observed.get("fault", "")).is_empty():
 		return
 	var source_tick: int = int(latest_snapshot.tick_index)
 	if not _playable_course_progress.bind(physical_rig_id, _physical_epoch,
 		int(latest_snapshot.render_world_generation), source_tick):
 		return
-	_playable_course_progress.observe(source_tick, int(observed.get("tick",-1)), position, paused)
+	_playable_course_observation_valid = _playable_course_progress.observe(
+		source_tick, int(observed.get("tick",-1)), position, paused)
 
 
 # HUD text/visibility are published only on the independent presentation
@@ -3030,10 +3252,28 @@ func _observe_playable_course_progress() -> void:
 func _update_playable_course_progress() -> void:
 	course_timing_label.visible = false
 	_observe_playable_course_progress()
-	if not _playable_course_progress_identity() or _playable_course_progress.rig_id != physical_rig_id:
+	if not _playable_course_observation_valid or not _playable_course_progress_identity() \
+		or _playable_course_progress.rig_id != physical_rig_id:
 		return
 	course_timing_label.text = _playable_course_progress.display_text()
 	course_timing_label.visible = not microscenario_hud_hidden
+
+
+func _present_playable_course_targets() -> void:
+	if playable_course_overlay == null:
+		return
+	if microscenario_hud_hidden or not _playable_course_observation_valid \
+		or not _playable_course_progress_identity() or _playable_course_progress.rig_id != physical_rig_id \
+		or _playable_course_progress.actor_epoch != _physical_epoch \
+		or _playable_course_progress.world_generation != latest_snapshot.render_world_generation:
+		playable_course_overlay.clear_course()
+		return
+	playable_course_overlay.present_course({"rig":str(physical_rig_id), "actor_epoch":_physical_epoch,
+		"world_generation":int(latest_snapshot.render_world_generation),
+		"source_tick":_playable_course_progress.last_source_tick,
+		"physics_tick":_playable_course_progress.last_physics_tick,
+		"target_index":_playable_course_progress.target_index},
+		camera_origin.floor(), current_view_size, view_content_rect())
 
 
 # Only the authored PLAY course uses this copied controller adapter. All
@@ -3044,6 +3284,49 @@ func _playable_course_controls_active() -> bool:
 		and physical_actor_session != null
 		and physical_rig_id in PlayerCourse.MECHANICAL_PRESETS
 		and actor_producer_selection == &"human")
+
+
+func _playable_course_gamepad_active() -> bool:
+	return _playable_course_controls_active() and playable_session_options.controls == "keyboard_gamepad"
+
+
+func _on_playable_course_gui_focus_changed(control: Control) -> void:
+	if control != null:
+		# Context polling alone can miss a brief UI focus owner.
+		cancel_playable_course_input()
+
+
+func cancel_playable_course_input() -> void:
+	if not _playable_course_controls_active(): return
+	_actor_input_rearm = true
+	_actor_usable_pointer_rearm = true
+	physical_actor_session.cancel_input(0, _physical_epoch, &"human")
+
+
+func set_playable_course_paused(value: bool) -> bool:
+	if not _playable_course_controls_active():
+		return false
+	if not value and (simulation_worker.has_failed() or not _physical_terrain_ready
+		or _actor_reset_receipt != 0 or not pending_microscenario_apply.is_empty()
+		or _pending_physical_candidate != null):
+		return false
+	if value == paused:
+		return true
+	# Revoke at the user transition, not the next physics callback. Otherwise
+	# pause -> resume between callbacks retains queued edges and their authority.
+	# The same owner handles native-effect cancellation and neutral rearming.
+	cancel_playable_course_input()
+	paused = value
+	update_worker_frame_state()
+	return true
+
+
+func toggle_playable_course_pause() -> bool:
+	# Paused is deliberately excluded from context ownership: an owned pause
+	# key can resume, but a popup, another window or construction cannot do so.
+	if not _playable_course_controls_active() or not _actor_keyboard_context_allowed():
+		return false
+	return set_playable_course_paused(not paused)
 
 
 func _publish_physical_keyboard_input(trigger_override: Variant = null, alternate_override: Variant = null) -> void:
@@ -3058,7 +3341,8 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 	# an ordinary copied action and keeps its existing edge, epoch and lease
 	# authority; the cellular worker never sees Input or a gamepad object.
 	var playable: bool = _playable_course_controls_active()
-	var playable_action: Dictionary = CyberPlayerPlaygroundInput.sample(true) if playable else {}
+	var playable_action: Dictionary = CyberPlayerPlaygroundInput.sample(true,
+		_playable_course_gamepad_active()) if playable else {}
 	if _actor_input_rearm:
 		for key: int in ACTOR_CONTROL_KEYS + PHYSICAL_TOOL_KEYS:
 			if Input.is_key_pressed(key):
@@ -3371,12 +3655,22 @@ func _reconcile_actor_prototype_reset() -> void:
 		actor_prototype_button.tooltip_text = latest_snapshot.actor_prototype_status
 
 
+func _actor_window_has_focus() -> bool:
+	return get_window().has_focus()
+
+
 func actor_keyboard_allowed() -> bool:
-	if paused or not get_window().has_focus() or not actor_prototypes_allowed():
+	return not paused and _actor_keyboard_context_allowed()
+
+
+func _actor_keyboard_context_allowed() -> bool:
+	if not _actor_window_has_focus() or not actor_prototypes_allowed():
 		return false
 	if physical_actor_session != null and not _physical_terrain_ready:
 		return false
 	if actor_prototype_panel.visible or player_environment_panel.visible:
+		return false
+	if playable_session_panel != null and playable_session_panel.visible:
 		return false
 	if tower_profile_panel != null and tower_profile_panel.visible:
 		return false
@@ -3750,6 +4044,11 @@ func view_content_rect() -> Rect2:
 	return Rect2((available_size - shown_size) * 0.5, shown_size)
 
 
+func create_render_textures() -> void:
+	texture = ImageTexture.create_from_image(image)
+	previous_texture = ImageTexture.create_from_image(image)
+
+
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:
 	if image == null or texture == null or previous_texture == null:
 		return
@@ -3954,7 +4253,7 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	var old_current_texture: ImageTexture = texture
 	texture = previous_texture
 	previous_texture = old_current_texture
-	texture.update(image)
+	update_render_texture()
 	world_view.texture = texture
 	world_shader.set_shader_parameter("current_world_texture", texture)
 	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
@@ -3963,6 +4262,10 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	last_uploaded_revision = world_revision
 	upload_time_ms = float(Time.get_ticks_usec() - start_usec) / 1000.0
+
+
+func update_render_texture() -> void:
+	texture.update(image)
 
 
 func update_shader_parameters() -> void:
@@ -4067,6 +4370,11 @@ func recording_status_for_hud() -> Dictionary:
 
 
 func update_status() -> void:
+	var sampling_requested: bool = debug_stats_visible and debug_stats_expanded \
+		and not microscenario_hud_hidden and _playable_course_controls_active()
+	if sampling_requested != _participation_sampling_requested:
+		_participation_sampling_requested = sampling_requested
+		simulation_worker.set_worker_participation_sampling(sampling_requested)
 	if latest_snapshot != null and latest_snapshot.simulation_failed:
 		status_label.visible = not microscenario_hud_hidden
 		status_label.text = "STOPPED — R reset | fault %d | %s" % [
@@ -4164,8 +4472,10 @@ func update_status() -> void:
 	]
 
 	if debug_stats_expanded:
-		var thread_text: String = "%s/%d threads" % [
+		var request_text: String = "Auto" if latest_snapshot.native_worker_request <= 0 else str(latest_snapshot.native_worker_request)
+		var thread_text: String = "%s requested %s / capacity %d" % [
 			latest_snapshot.backend_name,
+			request_text,
 			latest_snapshot.scheduler_thread_capacity_hint,
 		]
 		if worker_start_error != OK:
@@ -4214,6 +4524,16 @@ func update_status() -> void:
 				"glow" if glow_enabled else "no-glow",
 			]
 		)
+		var participation: Dictionary = latest_snapshot.native_worker_participation
+		var participation_text: String = "task participants unavailable (sampling requires a running Play course)"
+		if not participation.is_empty() and not latest_snapshot.simulation_failed \
+			and int(participation.get("world_generation", -1)) == latest_snapshot.render_world_generation:
+			participation_text = "%d task participants at native tick %d · sample age %.0fms" % [
+				int(participation.workers_observed), int(participation.completed_tick),
+				maxf(0.0, float(Time.get_ticks_usec()-int(participation.sampled_usec))/1000.0)]
+		status_label.text += "\nWORK %s · owner publications %d consumed / %d coalesced / %d refused · render payloads %d refused" % [
+			participation_text, worker_publication_counter.consumed, worker_publication_counter.coalesced,
+			worker_publication_counter.rejected, rejected_render_snapshot_count]
 
 	if latest_snapshot.tick_failure_count > 0:
 		status_label.text += " // STOPPED — R reset. Fault %d: %s" % [

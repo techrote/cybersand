@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [performance-measurement, metric-interpretation]
 status: Current
 scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 related-documents: [configuration-and-capacity-budgets.md, web-threading.md, testing-validation-and-replay.md, ../reference/validation-evidence.md, ../audits/2026-09-08-performance-history.md]
 ---
 
@@ -21,6 +21,17 @@ the [validation ledger](../reference/validation-evidence.md). Original hosted
 2026-08-27/28 and local 2026-09-08 timing tables are preserved verbatim in the
 [historical performance archive](../audits/2026-09-08-performance-history.md),
 excluded from ordinary Current-behavior retrieval.
+
+## Persistent hosted execution history
+
+The [CI execution and performance contract](ci-execution-and-performance.md)
+owns shared generous watchdogs and `execution-performance-v1` records. Current
+fixture/process observations, original failed rows and comparable default-branch
+history are retained for 90 days. Median-ratio warnings at 1.5/2 times and
+cumulative drift advice never change correctness verdicts. Missing compiler,
+cache or hardware provenance prevents comparison; Avrea and GitHub-hosted
+measurements remain separate cohorts. Existing phase markers are measured
+where available, without claiming complete production profiling or GPU timing.
 
 ## Current observations and their limits
 
@@ -57,6 +68,16 @@ also do not count all ordinary heap allocations; explicit probes and source
 inspection have their own recorded boundary.
 
 ## Current benchmark entry points
+
+`make build/render_copy_benchmark` builds the isolated RG8 copy comparison.
+`build/render_copy_benchmark 41 --implementation R` retains paired literal
+oracle and production samples, p50/p95/p99/max, and explicitly source-derived
+address/lookup/run counts. A separately compiled frozen-main Control measures
+the original production loop; an external oracle's call overhead must not be
+reported as the production speedup. The
+[R qualification record](../audits/2026-11-01-render-copy-production-reconciliation.md)
+binds both builds and the separate real-Main N/W graphical campaign. Texture
+submission timings cover CPU API calls, not GPU completion or human feel.
 
 [native/bench/benchmark.cpp](../../native/bench/benchmark.cpp) accepts dimensions,
 ticks, chunk size, dense/sparse scenario, backend, worker count and preallocated/

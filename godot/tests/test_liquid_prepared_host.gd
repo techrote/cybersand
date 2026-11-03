@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Native construction values through the normal MicroScenario owner, with a
 # deterministic worker preparation/commit barrier. No timing-based race oracle.
 const Host = preload("res://scripts/microscenario_host.gd")
@@ -38,7 +40,7 @@ func expect(value: bool, message: String) -> void:
 		push_error("LIQUID_PREPARED_HOST: " + message)
 
 func wait_for(predicate: Callable) -> bool:
-	var deadline: int = Time.get_ticks_msec() + 20000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec() < deadline:
 		await process_frame
 		if predicate.call(): return true

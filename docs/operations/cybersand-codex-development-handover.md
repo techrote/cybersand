@@ -4,11 +4,144 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Stopped PLAY recovery reconciliation — 2026-11-02
+
+The owner authorizes focused completion and guarded merge of
+[PR #332](https://github.com/techrote/cybersand/pull/332) after exact-source
+Native, complete Windows/Linux Godot, actual-backend shader, provenance and
+independent-review gates pass. Its original seven-file recovery delta is
+reconciled onto accepted shader/render-copy main `a8f08a67`; current reduced CI
+and production rendering remain intact. The
+[canonical recovery contract](../systems/player-control-playground.md#stopped-composed-session-recovery)
+and [dated source audit](../audits/2026-10-31-play-stopped-session-recovery.md)
+separate implementation from qualification. Consult the live PR ledger for the
+frozen candidate, merge identity and post-merge results; earlier branch greens
+are not successor evidence. Preserve downstream #334 at its existing head
+`4f3decc242633fb621d76b7529ef87b420dbd87a`; its source reconciliation and PACE004
+qualification are the next distinct assignment. Physical/human gates remain open.
+
+The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
+
+## Current owner policy and accepted baseline — 2026-10-31
+
+The owner supersedes the earlier shader deferral and short immutable deadline
+restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
+[shared execution watchdog and advisory performance policy](ci-execution-and-performance.md).
+Its original attempt-1 post-merge Docs41204873388, scope41204873081,
+Native41204873121 and Godot41204873192 all passed. #269 is closed;
+#268/#270/#263 still require their remaining actual acceptance evidence.
+#324/#325 were already included and are administratively closed.
+
+The focused timeout/telemetry source requires fresh full CI and independent
+review. Shader integration and the source-preserving Windows crash diagnostic
+remain separate work packages. Historical failures keep their original status.
+The physical/human packet still has 51 untested rows. Scheduswarm stays paused;
+[#305](https://github.com/techrote/cybersand/issues/305) owns current coordination.
+Earlier dated checkpoints below describe their original restrictions and source,
+not today's superseding owner decision.
+
+
+## Active manual PLAY continuation — 2026-10-31
+
+Fresh reconciliation began from accepted main
+`0bf28d5760aed989a79386de03ef4fc6171fef42`. PR #317's original scoped 515/0
+per-OS result was not full integration qualification. Independent review found
+and corrected an offline parser-negative false pass; corrected head
+`ca426a63d14f7b604799c7fa5cba1197240caa55` has a stricter v2 contract and bounded
+teardown. Its dedicated run41173057126 records Linux520/0 and Windows523/0;
+full pre-merge Documentation, Native and Windows/Linux Godot gates passed before
+guarded merge at `5c709f837a0e2b3248bc9df85baf6da9c8a88a0b`, tree
+`901166624bfde7cf2691c57a8937e59d3402febc`. Its post-merge Godot run41175311073
+passed206 Windows and218 Linux cases. Post-merge Native41175310972 **failed**:
+the unchanged600-second worldgen-sanitize build/run bound interrupted the ninth
+sanitized executable after eight completed. That original result remains
+incomplete; a separate bounded build-scheduling repair is under review.
+Original source1686, run41171088500, cancelled ordinary attempts and all raw
+artifacts retain their original status and identities.
+
+PR #318 at `12380a590d1bc301a9700ec4af78cbc72ca027e0` adds the independently
+reproduced immediate-pause cancellation correction. Its own complete exact-head
+matrix and independent original-artifact review passed, including515 INPUT010
+assertions and50 actual LIFE001 lifetimes per OS. It was guardedly merged at
+`afa8185c8dc57405ef54765a6cdf71cb7bfbf6e4`, tree
+`6ec0ca07a9f49c4c3039b52c87d15414582c31e5`; original post-merge runs41178118495
+(Documentation),41178118533 (Native) and41178118530 (Godot) are separately
+tracked in the live ledger. The different-tree #317 failure is not relabelled
+by this qualification. The
+[UI007 desktop package](../audits/2026-10-31-play-ui007-desktop-readiness.md)
+adds authored target visibility, optional sampled task participation, publication
+accounting and visible launcher return. The [manual packet](play-desktop-manual-qualification.md)
+prepares exact-source launch/checklist files without executing Godot or claiming
+physical qualification. Consult the live PR and #305 ledgers for guarded merge
+and post-merge receipts; these source descriptions are not green-gate claims.
+The original #319 full matrix remains failed: Windows86/0 then0xC0000005 in
+the unchanged desktop-default fixture, and a separate TSan15-minute timeout
+after153/164 case passes. Its independently reviewed immutable-empty-publication
+correction is a distinct defect; no cause/cure for those failures is asserted.
+
+Continue #268 → #269 → #270 → #263 without another gameplay owner. Keep native
+World exclusive to the existing worker, immutable publications and main-thread
+Rapier. Preserve 50 actual lifetimes per platform and unchanged deadlines.
+Keep #308/#310 held, #312/#316 frozen, all shader/cache/decomposition work
+deferred, and Scheduswarm paused. No physical device or human feel pass exists
+in this automated continuation; failed cold graphical attempts remain failed.
+
+## CI parallel integration checkpoint — 2026-10-31
+
+The owner requested production integration of #311/#313/#314 in the active
+#309 run. The separate branch `ci/parallel-production-integration-20261031`
+starts at main `b55ce690f9a3d2ca3026674a2e9c6a7635966f59`; the original draft
+trial branches remain intact. Read the [dated CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)
+and [source/qualification ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+for the exact resulting head, first-attempt gate results, review and integration
+lease. The source port uses six Native families with the stable `native` gate,
+four complete Windows Godot shards, unchanged Linux coverage and all original
+command deadlines. Five expanded #311 trial bounds are deliberately not promoted.
+Scope advice cannot authorize Native skips. The three predecessor trials passed
+their own scoped checks; they do not qualify this new source or prove an
+under-30-minute full production cycle. Preserve prior failed experiments and
+TSan exit124. CI integration does not merge #308, close PLAY issues, change any
+native/runtime/training input or restart Scheduswarm.
+
+## PLAY convergence checkpoint — 2026-10-30
+
+Start each continuation with fresh main/branch heads, instructions, #263 and
+children, open PLAY PRs, exact-head jobs/artifacts, source/runtime/LFS identity,
+reviews/unresolved threads and relevant historical failures. This checkpoint
+was based on main `8d2dd843dfe457d34f32ebd015a924cf58b3c1ce`; reverify it.
+
+The [owner decision](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
+accepts merged #302 for mandatory real-native-busy lifecycle qualification.
+Do not put optional #304 back on the critical path or rewrite its failures as
+passes. #266/#267/#273 are closed, #265 Not Planned, #271 deferred and #272 is
+historical/conditional fallback. Work through #268 → #269 → #270 → #263 using
+the existing asynchronous desktop owner and main-thread Rapier.
+
+The current [PLAY-UI-005 implementation](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+composes map, five rigs, controls, lap/free-play, solver policy and camera in the
+real host and cancels/rearms input when the selected controller changes. The
+[audit](../audits/2026-10-30-play-ui005-integrated-session.md) records the branch,
+source identity, focused execution, original environmental failures, raw
+historical evidence and outstanding exact-head CI/manual gates. The
+[manual entry instructions](local-build-and-validation.md#shared-play-session-and-owner-qualification)
+lead directly to the existing #270 checklist. Physical devices and actual human
+feel are unexecuted; passing automated counters do not complete them.
+The first ready head `64bbd818` failed ordinary Windows/Linux CI because its
+extra launcher row displaced the Experiment Tower mouse target. The correction
+shares the existing wrapping action bar; the original 55-assertion controller
+test passes unchanged and the integrated fixture adds real mouse entry (90/0
+locally). Preserve run41074846660 as failed and require fresh corrected-head CI.
+
+Perform substantive source/evidence review in the active engineering session.
+An owner-account COMMENT review is legitimate engineering work and is not a
+separate-account approval. The historical dated checkpoints below retain their
+original source and validation scope.
 
 ## Trial successor correction after accepted App — 2026-10-25
 

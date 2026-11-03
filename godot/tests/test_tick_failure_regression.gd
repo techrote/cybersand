@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 var failures: Array[String] = []
 
 func _init() -> void:
@@ -47,7 +49,7 @@ func _desktop_owner() -> void:
 		return
 	var before: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
 	worker.set_frame_state(1.0, true, false, Vector2i.ZERO, Vector2i.ZERO, Vector2i(320, 180), 0, 0, true, true, true)
-	var deadline: int = Time.get_ticks_msec() + 5000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 	while not worker.has_failed() and Time.get_ticks_msec() < deadline:
 		await process_frame
 	var failed: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
@@ -65,7 +67,7 @@ func _desktop_owner() -> void:
 			failures.append("desktop retried failure")
 		worker.set_frame_state(0, false, true, Vector2i.ZERO, Vector2i(384, 0), Vector2i(64, 64), 0, 0, true, true, true)
 		worker.queue_reset(Vector2(60, 60))
-		deadline = Time.get_ticks_msec() + 5000
+		deadline = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 		while worker.has_failed() and Time.get_ticks_msec() < deadline:
 			await process_frame
 		var recovered: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
@@ -80,7 +82,7 @@ func _desktop_regions() -> void:
 	bridge.build_world(worker._world, PackedInt32Array([800, 20, 1, 1, 2]))
 	worker.set_frame_state(0, false, false, Vector2i.ZERO, Vector2i.ZERO, Vector2i(64, 64), 0, 0, true, true, true)
 	worker.start_worker(Vector2(40, 40))
-	var deadline: int = Time.get_ticks_msec() + 5000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 	while worker.take_latest_snapshot(-1).tick_index < 8 and Time.get_ticks_msec() < deadline:
 		await process_frame
 	worker.stop_worker()
@@ -90,7 +92,7 @@ func _desktop_regions() -> void:
 	var before: int = worker._world.get_tick_index()
 	worker.set_frame_state(0, false, false, Vector2i.ZERO, Vector2i(768, 0), Vector2i(64, 64), 0, 0, true, true, true)
 	worker.start_worker(Vector2(40, 40))
-	deadline = Time.get_ticks_msec() + 5000
+	deadline = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 	while worker.take_latest_snapshot(-1).tick_index <= before and Time.get_ticks_msec() < deadline:
 		await process_frame
 	worker.stop_worker()

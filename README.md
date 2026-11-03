@@ -30,6 +30,18 @@ for every preset's controls, gamepad mapping, focus/reset behavior and current
 qualification. `--player=acrobat` selects a preset at launch. These are experimental
 controls; headless regressions do not establish target-PC human feel acceptance.
 
+**Manual PLAY continuation, 31 October 2026:** the owner now prioritizes
+qualification and integration of Claude's #326 shader improvement and replaces
+historical short CI deadlines with generous shared watchdogs. The
+[execution and performance contract](docs/operations/ci-execution-and-performance.md)
+separates correctness, complete execution and advisory timing history. Accepted
+main `adaaa37` has complete original post-merge gates; the active successors
+require their own source-matched review and full Windows/Linux and Native gates.
+Physical displays, controller devices and human feel remain unqualified. The
+[development handover](docs/operations/cybersand-codex-development-handover.md)
+and [#305 ledger](https://github.com/techrote/cybersand/issues/305) record active
+ownership. Scheduswarm remains paused.
+
 ## Deepworks — the exhibition below
 
 Choose **Deepworks** in the launcher or pass **`--deepworks`** to open a
@@ -133,7 +145,7 @@ The GDScript fallback has different material semantics.
 The desktop sandbox includes 46 experimental
 [articulated actors](docs/systems/physical-actor-rigs.md) in eight sets: the original **SetA**
 Runner/Skimmer/Crawler controls, **SetB** ground machines, **SetF** flight and
-descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
+ descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
 **SetV** fictional interface personas, plus twelve **SetX** machines including
 multirotors, a suspended payload, a rocket blade and a concertina crawler, and
 the five human movement presets in **SetP**.

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Local repository policy and unresolved remote CI and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-10-31
 related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ../audits/2026-09-19-runner-routing-weekend-benchmark.md]
 ---
 
@@ -70,6 +70,47 @@ evidence. Source-sensitive runtime provenance remains a hard gate: a changed
 runtime input requires a source-matched rebuild and provenance update rather than
 a hand-edited hash.
 
+## Parallel validation and source-scope advice — 2026-10-31
+
+The [shared execution policy](ci-execution-and-performance.md) now supersedes
+historical short command limits. Six Native families preserve every original
+command and scientific input, with complete derived parent budgets. Godot uses
+source-derived Linux/Windows matrices balanced by expected execution cost,
+full-watchdog admission within a hosted safety boundary, and independent
+exact-coverage readers. Historical elapsed-time weights and rolling
+performance warnings are advisory; assertions, crashes, incomplete readbacks and
+cleanup failures remain failures. Independent matrices continue after failures,
+and superseded automatic PR runs are cancelled. Main and explicit manual runs
+have unique concurrency groups to preserve qualification evidence without
+same-reference blocking. See the [scheduling audit](../audits/2026-11-01-ci-scheduling-qualification.md)
+for the measured baseline and the [complete workflow audit](../audits/2026-11-01-ci-workflow-audit.md)
+for matrix caps, remaining limitations and reproduction commands.
+
+The stable `native`, `linux x86_64`, Windows cross-build and complete Windows
+execution/coverage gates remain required. A failed ready-scope classifier cannot
+make an admitted required aggregate pass by skipping it. The old optional
+four-shard serial-migration check is replaced by mandatory original-log,
+source/runtime and unique-case Linux coverage. Full resulting-source execution
+and independent review remain necessary; predecessor results are not successor
+qualification.
+
+The [Native source-scope advisory](../../.github/workflows/native-scope-advisory.yml)
+is informational. Its classifier authenticates immutable base/executed-head
+commits, trees, clean checkout and committed classifier bytes, and examines both
+sides of renames using Git `--no-renames`. Raw unsafe paths, unknown inputs and
+empty/duplicate inventories cannot recommend an exemption. The advice always
+sets `native_skip_authorized=false`; no required job consumes a candidate
+exemption. Actual dependency-aware skipping would require a separate owner
+policy decision and audit.
+
+The [production integration audit](../audits/2026-10-31-ci-parallel-production-integration.md)
+separates predecessor trials from exact resulting-head qualification and the
+[guarded integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140).
+The owner requested promotion on2026-10-31. The original branch-only drafts,
+original failed trials and historical Native timeout remain retained. Provider,
+scientific/training and source/runtime policies are unchanged. There is no
+Scheduswarm restart, new external provider or relaxation of PLAY graphical gates.
+
 ## Recovery closure checkpoint — 2026-09-24
 
 The [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md)
@@ -105,8 +146,10 @@ Rulesets** (or the equivalent branch-protection UI):
    Issue49 is path-scoped; making those names unconditional required checks can
    leave unrelated PRs permanently pending.
 6. For implementation/behavior PRs, the procedural final gate remains the
-   exact-head Native `native` job, GDExtension `windows x86_64` plus aggregate
-   `linux x86_64` job, and any applicable path-scoped apparatus workflow.
+   exact-head Native `native` aggregate, GDExtension `windows x86_64` cross-build,
+   all source-planned Windows execution shards, `windows sharded execution
+   coverage`, the aggregate `linux x86_64` job, and any applicable path-scoped
+   apparatus workflow.
 7. Keep only repository-owner/administrator emergency bypass. Any bypass is an
    incident/recovery action and must be recorded; it is not the normal merge path.
 8. After saving the rule, verify the branch page reports `main` protected and

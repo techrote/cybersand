@@ -11,13 +11,13 @@ permissions:
   contents: read
 
 concurrency:
-  group: docs-${{ github.ref }}
-  cancel-in-progress: true
+  group: docs-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   consistency:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 240
     defaults:
       run:
         working-directory: workspace/source
@@ -34,53 +34,79 @@ jobs:
           lfs: true
           fetch-depth: 0
       - name: Validate active CI provider policy
-        run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_ci_provider_policy.py
       - name: Test CI provider policy checker
-        run: timeout 1m python3 -m unittest discover -s tools/ci -p test_ci_provider_policy.py
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_ci_provider_policy.py
+      - name: Validate Actions syntax with pinned actionlint
+        timeout-minutes: 10
+        run: |
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 300 \
+            -o "$RUNNER_TEMP/actionlint.tar.gz" \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/actionlint"
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP/actionlint" actionlint
+          "$RUNNER_TEMP/actionlint/actionlint" -shellcheck='' -pyflakes=''
+      - name: Audit workflow inventory and scheduling policies
+        timeout-minutes: 10
+        run: |
+          python3 -m venv "$RUNNER_TEMP/ci-audit"
+          "$RUNNER_TEMP/ci-audit/bin/python" -m pip install --require-hashes -r tools/requirements-ci-audit.txt
+          "$RUNNER_TEMP/ci-audit/bin/python" tools/ci/test_ci_scheduling_policy.py
+          "$RUNNER_TEMP/ci-audit/bin/python" tools/ci/check_ci_scheduling_policy.py --output build/ci-workflow-inventory.json
+          python3 tools/ci/test_ci_run_metrics.py
+      - name: Retain machine-readable workflow inventory
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ci-workflow-inventory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/build/ci-workflow-inventory.json
+          if-no-files-found: error
+          retention-days: 90
       - name: Check LCB capability matrix is source-derived
-        run: timeout 1m python3 tools/lcb/derive_capability_matrix.py --check
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/derive_capability_matrix.py --check
       - name: Check LCB policy wire/hash contract vectors
         run: |
-          timeout 1m python3 tools/lcb/policy_contract.py --check
-          timeout 1m python3 -m unittest discover -s tools/lcb -p test_policy_contract.py
-          timeout 1m python3 tools/lcb/native_policy_artifacts.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/policy_contract.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lcb -p test_policy_contract.py
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/native_policy_artifacts.py --check
       - name: Check native LCB setup and run receipt canonical vectors
         run: |
-          timeout 1m python3 tools/lcb/water_normalization_contract.py --check
-          timeout 1m python3 tools/lcb/liquid_run_receipt_contract.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/water_normalization_contract.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/liquid_run_receipt_contract.py --check
       - name: Check LCB scenario definitions and registry are source-derived
         run: |
-          timeout 2m python3 tools/lcb/scenario_catalogue.py --check
-          timeout 2m python3 tools/lcb/lcb_registry.py build --check
-          timeout 2m python3 tools/lcb/lcb_registry.py reledger --check
-          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v2 --check
-          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v3 --check
-          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v4 --check
-          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v5 --check
-          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v6 --check
-          timeout 2m python3 -m unittest discover -s tools/lcb -p test_lcb_registry.py
-          timeout 2m python3 tools/lcb/physics_contracts.py --check
-          timeout 2m python3 -m unittest discover -s tools/lcb -p test_inertial_contract.py
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/scenario_catalogue.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/lcb_registry.py build --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/lcb_registry.py reledger --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/lcb_registry.py reledger --version v2 --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/lcb_registry.py reledger --version v3 --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/lcb_registry.py reledger --version v4 --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/lcb_registry.py reledger --version v5 --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/lcb_registry.py reledger --version v6 --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lcb -p test_lcb_registry.py
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/physics_contracts.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lcb -p test_inertial_contract.py
       - name: Validate current documentation
-        run: timeout 5m python3 tools/ci/check_docs.py
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_docs.py
       - name: Validate dependency pins and published runtime provenance
         if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-        run: timeout 5m python3 tools/ci/check_repository.py --require-materialized
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_repository.py --require-materialized
       - name: Verify retained M11 records against their audited Git revision
-        run: timeout 5m python3 tools/ci/check_m11_consistency.py
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_m11_consistency.py
       - name: Test validation failure contracts
-        run: timeout 2m python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
       - name: Test soliding evidence integrity contracts
-        run: timeout 2m python3 -m unittest discover -s tools/experiments -p test_soliding_baseline_reduction.py
+        run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/experiments -p test_soliding_baseline_reduction.py
       - name: Evaluate current retrieval routes
         id: retrieval
         run: |
           mkdir -p build/retrieval
-          timeout 2m python3 tools/docs/retrieval_eval.py --output build/retrieval/frozen.json
-          timeout 2m python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/retrieval/challenges.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --output build/retrieval/frozen.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/retrieval/challenges.json
       - name: Validate Git LFS objects and whitespace
         run: |
-          timeout 5m git lfs fsck
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" git lfs fsck
           git diff --check HEAD
       - name: Retain retrieval evidence
         if: always() && steps.retrieval.outcome == 'success'

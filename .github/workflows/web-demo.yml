@@ -13,8 +13,8 @@ permissions:
   actions: read
 
 concurrency:
-  group: web-demo-${{ github.ref }}
-  cancel-in-progress: true
+  group: web-demo-${{ github.event_name == 'push' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   build:

@@ -63,7 +63,7 @@ func configure(id: String, frozen: bool = false, authored_size: Vector2i = MATER
 	add_child(_material_rect)
 
 	_material = ShaderMaterial.new()
-	_material.shader = load("res://shaders/material_palette.gdshader")
+	_material.shader = CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
 	_material_rect.material = _material
 	_material.set_shader_parameter("world_size_px", Vector2(NATIVE_SIZE))
 	_material.set_shader_parameter("view_size_px", Vector2(material_surface_size))

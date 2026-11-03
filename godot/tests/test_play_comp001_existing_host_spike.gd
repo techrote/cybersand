@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # PLAY-COMP-001 / #273: real native/Rapier proof of the existing asynchronous
 # desktop host. No dedicated player World owner or synthetic physics shim.
 const Course = preload("res://scripts/player_playground_course.gd")
@@ -33,7 +35,9 @@ func expect(condition: bool, reason: String) -> void:
 		push_error("PLAY_COMP001: " + reason)
 
 
-func wait_for(predicate: Callable, timeout_ms: int = 30000) -> bool:
+func wait_for(predicate: Callable, timeout_ms: int = -1) -> bool:
+	if timeout_ms < 0:
+		timeout_ms = Watchdogs.milliseconds("operation_seconds")
 	var deadline: int = Time.get_ticks_msec() + timeout_ms
 	while Time.get_ticks_msec() < deadline:
 		if predicate.call(): return true
@@ -164,7 +168,7 @@ func run() -> void:
 		"live real Rapier session owns the correct human preset")
 	expect(session.bodies().size() > 0, "Rapier geometry exists, not a sampled mock")
 
-	var terrain_ready: bool = await wait_for(Callable(self, "terrain_installed"), 30000)
+	var terrain_ready: bool = await wait_for(Callable(self, "terrain_installed"), Watchdogs.milliseconds("operation_seconds"))
 	expect(terrain_ready, "actual hard-terrain collider installation gate released")
 	if not terrain_ready:
 		await finish()
@@ -172,7 +176,7 @@ func run() -> void:
 
 	_initial_physics_tick = session.tick
 	desktop.paused = false
-	var rearmed: bool = await wait_for(Callable(self, "input_rearmed"), 30000)
+	var rearmed: bool = await wait_for(Callable(self, "input_rearmed"), Watchdogs.milliseconds("operation_seconds"))
 	expect(rearmed, "neutral physics frame clears the normal desktop input rearm fence")
 	if not rearmed:
 		await finish()
@@ -181,7 +185,7 @@ func run() -> void:
 	_initial_physics_tick = session.tick
 	key(KEY_D, true)
 	expect(desktop.get_horizontal_input() > 0.5, "injected D is visible to the real keyboard sampler")
-	var stepped: bool = await wait_for(Callable(self, "player_stepped"), 30000)
+	var stepped: bool = await wait_for(Callable(self, "player_stepped"), Watchdogs.milliseconds("operation_seconds"))
 	key(KEY_D, false)
 	expect(stepped, "main-thread Rapier advances while separate native worker is live")
 	if stepped:
@@ -207,6 +211,6 @@ func run() -> void:
 		}))
 	desktop.paused = true
 	desktop.microscenario_reset()
-	var reset_ok: bool = await wait_for(Callable(self, "reset_acknowledged"), 30000)
+	var reset_ok: bool = await wait_for(Callable(self, "reset_acknowledged"), Watchdogs.milliseconds("operation_seconds"))
 	expect(reset_ok, "reset preserves course + selected mechanical actor through existing owner")
 	await finish()

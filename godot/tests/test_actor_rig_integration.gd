@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Worker = preload("res://scripts/simulation_worker.gd")
 const Recorder = preload("res://scripts/gameplay_recorder.gd")
 const Catalog = preload("res://scripts/actor_rig_catalog.gd")
@@ -77,7 +79,9 @@ func _expect(condition: bool, message: String) -> void:
 	push_error("ACTOR_RIG_INTEGRATION: " + message)
 
 
-func _wait_for(predicate: Callable, timeout_ms: int = 15000) -> bool:
+func _wait_for(predicate: Callable, timeout_ms: int = -1) -> bool:
+	if timeout_ms < 0:
+		timeout_ms = Watchdogs.milliseconds("operation_seconds")
 	var deadline: int = Time.get_ticks_msec() + timeout_ms
 	while Time.get_ticks_msec() < deadline:
 		await process_frame

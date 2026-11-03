@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Context = preload("res://tests/palette_qualification_context.gd")
+
 # Actual-pixel checks for presentation contracts changed by the material
 # readability pass. Like test_water_presentation_render.gd this needs a real
 # display; a headless DisplayServer submits no frames and the test skips.
@@ -140,7 +142,8 @@ func _run() -> void:
 	program_lut = CyberMaterialAppearanceLut.create_program_texture()
 	# Retain these across fixtures instead of repeatedly compiling an identical
 	# large shader as each temporary viewport is freed.
-	palette_shader = load("res://shaders/material_palette.gdshader")
+	palette_shader = CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
+	Context.emit(get_script().resource_path, palette_shader)
 	emission_shader = load("res://shaders/material_emission.gdshader")
 	trail_shader = load("res://shaders/material_vapour_trail.gdshader")
 	var full: Rect2i = Rect2i(Vector2i.ZERO, SIDE)
@@ -226,8 +229,16 @@ func _run() -> void:
 	var new_alone: Image = await _render(current, current, 0.0)
 	var start: Image = await _render(current, previous, 0.0, 0.0)
 	var finish: Image = await _render(current, previous, 0.0, 1.0)
-	_expect(_difference(start, old_alone, eligible) <= TOLERANCE,
-		"blend 0 eligible pixels did not use the previous neighbourhood")
+	if CyberPaletteShader.uses_bounded_crossfade():
+		# The ANGLE-specific base/program endpoint and intermediate mixture have
+		# positive independent-LUT pixel oracles for every ID/condition/camera in
+		# test_palette_crossfade_render. Here retain the endpoint's shader custody.
+		_expect(CyberPaletteShader.provenance(palette_shader).source_bound
+			and CyberPaletteShader.provenance(palette_shader).variant == "angle_bounded_crossfade",
+			"bounded crossfade uses unbound or wrong-variant bytes")
+	else:
+		_expect(_difference(start, old_alone, eligible) <= TOLERANCE,
+			"blend 0 eligible pixels did not use the previous neighbourhood")
 	_expect(_difference(finish, new_alone, eligible) <= TOLERANCE, "blend 1 eligible pixels differ from current")
 	_expect(_difference(start, new_alone, same_id) <= TOLERANCE, "same-ID pixels were crossfaded")
 	_expect(_difference(start, new_alone, unsupported) <= TOLERANCE, "unsupported pair was crossfaded")
