@@ -8,6 +8,37 @@ var _solid_publication: Dictionary = {}
 var _solid_pending_reply: Dictionary = {}
 var _solid_last_request: int = 0
 var _solid_refused_replacements: int = 0
+# Set before start_worker and immutable for this owner's lifetime.
+var solid_contact_observations_enabled: bool = false
+var _contact_attempts: int = 0
+var _contact_usec: int = 0
+var _contact_max_usec: int = 0
+var _contact_geometry_probes: int = 0
+var _contact_support_probes: int = 0
+
+func _populate_specialized_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	if solid_contact_observations_enabled and not _simulation_failed \
+		and _world.has_method(&"solid_detachment_contact_observation"):
+		var started: int = Time.get_ticks_usec()
+		var observation: Dictionary = _world.solid_detachment_contact_observation()
+		observation["snapshot_serial"] = snapshot.serial
+		observation["physics_epoch"] = snapshot.rigid_body_epoch
+		observation["published_usec"] = Time.get_ticks_usec()
+		_freeze_capture(observation)
+		snapshot.solid_contact_observation = observation
+		var elapsed: int = Time.get_ticks_usec() - started
+		_contact_attempts += 1
+		_contact_usec += elapsed
+		_contact_max_usec = maxi(_contact_max_usec, elapsed)
+		_contact_geometry_probes += int(observation.get("geometry_probes", 0))
+		_contact_support_probes += int(observation.get("support_probes", 0))
+		# Cumulative owner work survives overwritten publications and refusals.
+		# Includes native observation, copied metadata and freezing the contact value.
+		var work := {"attempts":_contact_attempts, "elapsed_usec":_contact_usec,
+			"max_usec":_contact_max_usec, "geometry_probes":_contact_geometry_probes,
+			"support_probes":_contact_support_probes}
+		work.make_read_only()
+		snapshot.solid_contact_work = work
 
 func _refuse_replacement() -> void:
 	_solid_reply_mutex.lock()

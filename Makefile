@@ -90,6 +90,19 @@ conservative-displacement-test: $(BUILD_DIR)/test_conservative_displacement
 conservative-displacement-sanitize: $(BUILD_DIR)/test_conservative_displacement_sanitized
 	./$(BUILD_DIR)/test_conservative_displacement_sanitized
 
+$(BUILD_DIR)/test_solid_contact_geometry: native/tests/test_solid_contact_geometry.cpp native/include/cybersand/solid_contact_geometry.hpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -Werror $< -o $@
+
+$(BUILD_DIR)/test_solid_contact_geometry_sanitized: native/tests/test_solid_contact_geometry.cpp native/include/cybersand/solid_contact_geometry.hpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $< -o $@
+
+.PHONY: solid-contact-geometry-test solid-contact-geometry-sanitize
+solid-contact-geometry-test: $(BUILD_DIR)/test_solid_contact_geometry
+	./$(BUILD_DIR)/test_solid_contact_geometry
+
+solid-contact-geometry-sanitize: $(BUILD_DIR)/test_solid_contact_geometry_sanitized
+	./$(BUILD_DIR)/test_solid_contact_geometry_sanitized
+
 $(BUILD_DIR)/test_soliding_lifecycle: native/tests/test_soliding_lifecycle.cpp native/include/cybersand/soliding_lifecycle.hpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) native/tests/test_soliding_lifecycle.cpp -o $@
 

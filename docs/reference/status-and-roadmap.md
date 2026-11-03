@@ -4,11 +4,23 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-01
+last-reviewed: 2026-11-03
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Dense-contact recovery experiment — 2026-11-03
+
+The [new SOL281 checkpoint](../audits/2026-11-03-sol281-dense-contact.md) advances
+draft #347 with exact rotated native overlap measurements and bounded unilateral
+resistance to supported ambient Sand. It preserves the six compound proxies,
+both holes, conservative transfer ownership and existing contact defaults.
+Accepted main `89020b9e` is reconciled without rewriting historical qualification.
+Controlled contact gates and asynchronous populated trials have distinct evidence
+denominators; none implies complete dense-bed gameplay acceptance. Restoration,
+multiple aggregate ownership, reactive cohesion, fracture and persistence remain
+separate follow-on work. #281/#12 remain open and no merge is authorized.
 
 ## Structural detachment increment — 2026-11-01
 

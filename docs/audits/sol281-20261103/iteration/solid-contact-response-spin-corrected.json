@@ -1,0 +1,205 @@
+{
+	"cases": {
+		"central": {
+			"energy_after": 0.0,
+			"energy_before": 37440.0,
+			"impulse_y": -6240.0
+		},
+		"grouped_falling_spin": {
+			"energy_after": 20454.545557164,
+			"energy_before": 61440.0,
+			"impulses": 2,
+			"maximum_sampled_approach": 0.0,
+			"omega": 3.40909090169271,
+			"velocity_y": -3.40909099578857
+		},
+		"grouped_pure_spin": {
+			"energy_after": 20454.545557164,
+			"energy_before": 24000.0,
+			"impulses": 1,
+			"maximum_sampled_approach": 0.0,
+			"omega": 3.40909090169271,
+			"velocity_y": -3.40909099578857
+		},
+		"off_center": {
+			"energy_after": 14040.0,
+			"energy_before": 37440.0,
+			"omega": -4.5,
+			"torque_impulse": -3900.0,
+			"velocity_y": 4.5
+		},
+		"symmetric": {
+			"groups": 1,
+			"omega": 0.0,
+			"velocity_y": 0.0
+		}
+	},
+	"checks": 90,
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"failures": [],
+	"mechanical": {
+		"baseline": "3-unit aggregate impulse ceiling, fully upward on every step",
+		"baseline_added_overlap_area_steps": 56.75390625,
+		"baseline_max_penetration": 2.64250183105469,
+		"candidate_added_overlap_area_steps": 0.0,
+		"candidate_max_penetration": 0.25,
+		"fixture": "single-plane-zero-gravity-actual-Rapier",
+		"gate_passed": true,
+		"inertia": 866.666666666667,
+		"initial_penetration": 0.25,
+		"initial_velocity_y": 12.0,
+		"mass": 520.0,
+		"off_center": {
+			"baseline_added_overlap_area_steps": 14.1884765625,
+			"candidate_added_overlap_area_steps": 1.25024323004829,
+			"fixture": "one-cell-wide-supported-column-zero-gravity-actual-Rapier",
+			"gate_passed": true,
+			"initial_overlap_area": 0.25,
+			"maximum_rotation": 0.899894714355469,
+			"proposed_gate_minimum_reduction": 0.25,
+			"reduction": 0.911883194468342
+		},
+		"proposed_gate_minimum_reduction": 0.25,
+		"reduction": 1.0,
+		"scope": "controlled impulse/overlap mechanism; populated native and asynchronous acceptance are separate",
+		"step_seconds": 0.0166666666666667,
+		"steps": 12,
+		"trajectory": [
+			{
+				"baseline_area": 1.79962158203125,
+				"baseline_depth": 0.449905395507812,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 0.449905395507812,
+				"off_center_candidate_area": 0.252683341503143,
+				"off_center_candidate_rotation": -0.0749912187457085,
+				"step": 1
+			},
+			{
+				"baseline_area": 2.59884643554688,
+				"baseline_depth": 0.649711608886719,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 0.649711608886719,
+				"off_center_candidate_area": 0.260230213403702,
+				"off_center_candidate_rotation": -0.149982422590256,
+				"step": 2
+			},
+			{
+				"baseline_area": 3.397705078125,
+				"baseline_depth": 0.84942626953125,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 0.84942626953125,
+				"off_center_candidate_area": 0.271995507180691,
+				"off_center_candidate_rotation": -0.224973663687706,
+				"step": 3
+			},
+			{
+				"baseline_area": 4.1961669921875,
+				"baseline_depth": 1.04904174804688,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 1.04904174804688,
+				"off_center_candidate_area": 0.28743015229702,
+				"off_center_candidate_rotation": -0.299964874982834,
+				"step": 4
+			},
+			{
+				"baseline_area": 4.99423217773438,
+				"baseline_depth": 1.24855804443359,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 1.24855804443359,
+				"off_center_candidate_area": 0.306073471903801,
+				"off_center_candidate_rotation": -0.374956130981445,
+				"step": 5
+			},
+			{
+				"baseline_area": 5.79193115234375,
+				"baseline_depth": 1.44798278808594,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 1.44798278808594,
+				"off_center_candidate_area": 0.327520713210106,
+				"off_center_candidate_rotation": -0.449947416782379,
+				"step": 6
+			},
+			{
+				"baseline_area": 6.5892333984375,
+				"baseline_depth": 1.64730834960938,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 1.64730834960938,
+				"off_center_candidate_area": 0.351436451077461,
+				"off_center_candidate_rotation": -0.524938583374023,
+				"step": 7
+			},
+			{
+				"baseline_area": 7.38616943359375,
+				"baseline_depth": 1.84654235839844,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 1.84654235839844,
+				"off_center_candidate_area": 0.377509757526486,
+				"off_center_candidate_rotation": -0.599929809570312,
+				"step": 8
+			},
+			{
+				"baseline_area": 8.0,
+				"baseline_depth": 2.04567718505859,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 2.0,
+				"off_center_candidate_area": 0.405490040779114,
+				"off_center_candidate_rotation": -0.674921035766602,
+				"step": 9
+			},
+			{
+				"baseline_area": 8.0,
+				"baseline_depth": 2.24471282958984,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 2.0,
+				"off_center_candidate_area": 0.435625380511787,
+				"off_center_candidate_rotation": -0.749912202358246,
+				"step": 10
+			},
+			{
+				"baseline_area": 8.0,
+				"baseline_depth": 2.44365692138672,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 2.0,
+				"off_center_candidate_area": 0.468816190958023,
+				"off_center_candidate_rotation": -0.824903428554535,
+				"step": 11
+			},
+			{
+				"baseline_area": 8.0,
+				"baseline_depth": 2.64250183105469,
+				"candidate_area": 1.0,
+				"candidate_depth": 0.25,
+				"off_center_baseline_area": 2.0,
+				"off_center_candidate_area": 0.50543200969696,
+				"off_center_candidate_rotation": -0.899894714355469,
+				"step": 12
+			}
+		]
+	},
+	"planner_source_sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+	"platform": "Linux",
+	"schema": "cybersand.sol281.contact-response.v1",
+	"scope": "pure complete-record planner plus actual Rapier impulse readback and registered mechanism control",
+	"test_source_sha256": "6b4ab230c642e78430a04c6575066d00247532342b5740c089ed5e43d68d973b"
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "cybersand.sol281.contact-iteration-evidence.v1",
+  "captured_utc": "2026-11-03T20:01:09.588912+00:00",
+  "scope": "Preserved local dirty-source mechanism iterations; not final source or Linux/Windows qualification.",
+  "base_commit": "2321cf24d65024a609140b949efc3f5d909f6afa",
+  "branch": "sol-detach-001-current-main",
+  "reports": [
+    {
+      "path": "solid-contact-response-spin-negative.json",
+      "sha256": "c9c555086103147a80653be6c412e2233c37afa8b1a89e9cccefba43b667b227",
+      "bytes": 6395,
+      "checks": 90,
+      "failures": [
+        "grouped_pure_spin cannot disappear at the group COM",
+        "grouped_pure_spin arrests both sampled segment approaches",
+        "grouped_pure_spin response is dissipative",
+        "grouped_falling_spin arrests both sampled segment approaches"
+      ],
+      "planner_source_sha256": "747b397cb9533842a8127a993bb57d2020594e1083ef60252f2b4c7a5e431f47",
+      "test_source_sha256": "6b4ab230c642e78430a04c6575066d00247532342b5740c089ed5e43d68d973b",
+      "platform": "Linux",
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      }
+    },
+    {
+      "path": "solid-contact-response-spin-corrected.json",
+      "sha256": "0a78e77d0353566f6dafa867008c73d065517081bdb7d2e9e43609acad9724de",
+      "bytes": 6231,
+      "checks": 90,
+      "failures": [],
+      "planner_source_sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+      "test_source_sha256": "6b4ab230c642e78430a04c6575066d00247532342b5740c089ed5e43d68d973b",
+      "platform": "Linux",
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      }
+    }
+  ],
+  "source_copies": [
+    {
+      "path": "solid_contact_response.gd.txt",
+      "source_path": "godot/scripts/solid_contact_response.gd",
+      "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+      "bytes": 18934,
+      "matches_reports": [
+        "solid-contact-response-spin-corrected.json"
+      ]
+    }
+  ],
+  "missing_original_source": [
+    {
+      "source_path": "godot/scripts/solid_contact_response.gd",
+      "sha256": "747b397cb9533842a8127a993bb57d2020594e1083ef60252f2b4c7a5e431f47",
+      "reason": "The original failing planner source bytes were not retained. Its original report records the hash; no source was reconstructed."
+    },
+    {
+      "source_path": "godot/tests/test_solid_contact_response.gd",
+      "sha256": "6b4ab230c642e78430a04c6575066d00247532342b5740c089ed5e43d68d973b",
+      "reason": "The report-bound test source bytes were no longer present at archive creation after a later wording correction. Both original reports retain the hash; no source was reconstructed."
+    }
+  ],
+  "source_qualification_limit": "Reports contain planner/test SHA-256 and engine identity, but no complete execution-source tree or runtime binary receipt. These results do not qualify the later commit or Windows runtime.",
+  "fresh_rerun": {
+    "command": [
+      "/workspace/scratch/c70e59ad4aa8/sol281-tools/godot/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "godot",
+      "--script",
+      "res://tests/test_solid_contact_response.gd",
+      "--",
+      "/workspace/scratch/c70e59ad4aa8/sol281-tools/solid-contact-response-spin-final.json"
+    ],
+    "exit_code": 0,
+    "sha256": "0a78e77d0353566f6dafa867008c73d065517081bdb7d2e9e43609acad9724de",
+    "byte_identical_to": "solid-contact-response-spin-corrected.json",
+    "note": "The fresh local rerun is additional iteration verification; source remains qualified only at the two script hashes recorded in the report."
+  },
+  "preservation": "Reports copied byte-for-byte; failure strings, quantities and source hashes unchanged. Only matching source bytes available at archive creation are copied."
+}

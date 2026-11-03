@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-03
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
@@ -18,6 +18,15 @@ conservative local Sand/Water displacement. The [dated gate ledger](audits/2026-
 distinguishes actual platform results from remaining dense-bed, fracture,
 restoration, gameplay and hardware acceptance. It preserves archive#283 and
 current-main render-copyR; it does not wait for global Stage3B or GCR completion.
+
+The separately enabled [supported-Sand resistance experiment](systems/solid-detachment.md#opt-in-supported-sand-resistance)
+adds exact rotated overlap observations and a bounded, revision-fenced Rapier
+normal response. **V** or `--sand-resistance` selects it in the lab. Its
+[3 November ledger](audits/2026-11-03-sol281-dense-contact.md) and
+[prospective gates](audits/2026-11-03-sol281-dense-contact-registration.md)
+preserve the earlier evidence and distinguish controlled mechanism gains from
+unresolved embedding, live cost, graphical/human acceptance and restoration.
+PR #347 remains draft; ordinary defaults and Y1 #343 are unchanged.
 
 Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 remains separate.
 

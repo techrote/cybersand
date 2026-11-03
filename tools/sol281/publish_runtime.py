@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Prepare a bounded, exact-source SOL-281 runtime publication; never commit/push.
 
-Run on the GitHub-hosted publication job after all six actual-host cohorts pass.
+Run on the GitHub-hosted publication job after all eight actual-host cohorts pass.
 The workflow stages ``publication_paths`` from the output receipt, then invokes
 this helper again with --verify-staged before its own fast-forward publication.
 """
@@ -30,16 +30,17 @@ ROOT = qualification.ROOT
 BRANCH = "sol-detach-001-current-main"
 REPOSITORY = "techrote/cybersand"
 BINDINGS_REVISION = "101ae38034304346a46ea9ea84ae156d3e860496"
-EVIDENCE = "docs/audits/sol281-20261101/hosted"
-NATIVE_COUNT = 86
+EVIDENCE = "docs/audits/sol281-20261103/hosted"
+NATIVE_COUNT = 88
 MAX_FILES = 2048
 MAX_FILE_BYTES = 128 * 1024 * 1024
 MAX_EVIDENCE_BYTES = 256 * 1024 * 1024
 RUNTIMES = commonengine.RUNTIMES
 MANIFESTS = commonengine.MANIFESTS
-SCOPE = ("All three SOL-281 actual-host cohorts on this target OS, including workers 1 and 4, "
-         "native structural ownership, lifecycle, compound response, conservative replay, populated material "
-         "conservation and ordinary compatibility controls. Dense-contact physical quality, general "
+SCOPE = ("All four SOL-281 actual-host cohorts on this target OS, including workers 1 and 4, "
+         "native structural ownership, lifecycle, compound response, conservative replay, exact rotated geometry, "
+         "registered unilateral-contact mechanisms, repeated populated conservation and ordinary compatibility controls. "
+         "Complete dense-contact physical quality, general "
          "restoration/fracture/gameplay, full repository CI and representative GPU pacing remain separate gates.")
 
 
@@ -385,7 +386,7 @@ def prepare(args):
         summary_path = Path(temporary) / "qualification.json"
         with redirect_stdout(io.StringIO()):
             result = qualification.summarize(argparse.Namespace(input=args.evidence_root, output=summary_path))
-        require(result == 0, "Original six-cohort qualification failed: " + str(load(summary_path).get("errors")))
+        require(result == 0, "Original eight-cohort qualification failed: " + str(load(summary_path).get("errors")))
         plan[base + "/qualification.json"] = summary_path.read_bytes()
     plan[base + "/publication-checkout-before.json"] = encoded(checkout)
     for target in RUNTIMES:

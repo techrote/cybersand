@@ -28,6 +28,25 @@ def payload(spec, platform="Linux"):
     if spec.script == "test_solid_detachment_populated":
         result["conservative_displacement"] = "--baseline" not in spec.flags
         result["surroundings"] = next(x.split("=", 1)[1] for x in spec.flags if x.startswith("--surroundings="))
+    if spec.script == "test_solid_contact_response":
+        gate = {"gate_passed": True, "proposed_gate_minimum_reduction": 0.25,
+                "baseline_added_overlap_area_steps": 10.0, "candidate_added_overlap_area_steps": 1.0}
+        result["mechanical"] = {**gate, "steps": 12, "mass": 520, "trajectory": [{}] * 12, "off_center": gate.copy()}
+    if spec.script == "test_solid_contact_observation":
+        result["cases"] = [{"id": x} for x in ("partial_shared_edge", "float32_seam", "refusals")]
+    if spec.script == "test_solid_detachment_contact_recovery":
+        result["cases"] = [{"surroundings": kind, "candidate": arm, "repeat": repeat, "steps": 360,
+                            "sand_before": 100, "sand_after": 100, "water_before": 0, "water_after": 0,
+                            "metrics": {"physical_contact": {"observations": 3, "energy_violations": 0,
+                                "worker_observation_attempts": 3, "worker_contact_ms_total": 1.0,
+                                "geometry_ms_total": 0.9, "response_ms_all_attempts": float(arm),
+                                "response_ms_total": 0.5 * int(arm), "response_attempts": int(arm),
+                                "response_accepts": int(arm), "impulse_magnitude_sum": float(arm)}},
+                            "trace": [{**dict.fromkeys(("revision", "physics_epoch", "token", "body_generation",
+                                "source_x", "source_y", "source_angle", "current_x", "current_y", "current_angle",
+                                "source_published_usec", "observed_usec"), 1), "proxies": [{}] * 6}]}
+                           for kind in ("packed_sand", "embedded_sand", "mixed") for repeat in range(3)
+                           for arm in ((False, True) if repeat % 2 == 0 else (True, False))]
     return result
 
 
@@ -62,7 +81,39 @@ class QualificationReader(unittest.TestCase):
                          + q.policy.watchdog_seconds("godot_metadata_seconds")
                          + 2 * q.policy.watchdog_seconds("dependency_prepare_seconds"))
             self.assertLessEqual(allowance, q.policy.identity()["watchdogs"]["godot_job_minutes"] * 60)
-        self.assertEqual([len(q.inventory(x)) for x in q.COHORTS], [11, 9, 9])
+            if cohort == "mechanism":
+                msvc = (q.policy.watchdog_seconds("native_suite_seconds")
+                        + 2 * q.policy.watchdog_seconds("terminate_grace_seconds")
+                        + q.policy.watchdog_seconds("operation_seconds"))
+                self.assertLessEqual(allowance + msvc, q.policy.identity()["watchdogs"]["godot_job_minutes"] * 60)
+        self.assertEqual([len(q.inventory(x)) for x in q.COHORTS], [11, 11, 11, 2])
+
+    def test_physical_gates_cannot_be_redefined_or_truncated(self):
+        response = next(x for x in q.inventory("mechanism") if x.script == "test_solid_contact_response")
+        for mutate in (lambda d: d["mechanical"].update(proposed_gate_minimum_reduction=0.1),
+                       lambda d: d["mechanical"].update(candidate_added_overlap_area_steps=9.0),
+                       lambda d: d["mechanical"]["off_center"].update(gate_passed=False),
+                       lambda d: d["mechanical"]["trajectory"].pop()):
+            value = payload(response)
+            mutate(value)
+            with self.assertRaises(RuntimeError):
+                q.verify_footer(response, response.footer + " " + json.dumps(value), "Linux")
+        recovery = next(x for x in q.inventory("contact-w1") if x.script == "test_solid_detachment_contact_recovery")
+        for mutate in (lambda d: d["cases"].pop(),
+                       lambda d: d["cases"].append(d["cases"][0]),
+                       lambda d: d["cases"][0].update(sand_after=99),
+                       lambda d: d["cases"][0]["metrics"]["physical_contact"].update(energy_violations=1),
+                       lambda d: d["cases"][1]["metrics"]["physical_contact"].update(response_accepts=0),
+                       lambda d: d["cases"][1]["metrics"]["physical_contact"].update(impulse_magnitude_sum=0),
+                       lambda d: d["cases"][0]["metrics"]["physical_contact"].update(response_accepts=1),
+                       lambda d: d["cases"][0]["metrics"]["physical_contact"].update(worker_contact_ms_total=0.1),
+                       lambda d: d["cases"][0]["metrics"]["physical_contact"].update(worker_observation_attempts=1),
+                       lambda d: d["cases"][1]["metrics"]["physical_contact"].update(response_ms_all_attempts=0.1),
+                       lambda d: d["cases"][0]["trace"][0].pop("source_angle")):
+            value = payload(recovery)
+            mutate(value)
+            with self.assertRaises(RuntimeError):
+                q.verify_footer(recovery, recovery.footer + " " + json.dumps(value), "Linux")
 
     def test_all_declared_footers_and_worker_policies(self):
         for cohort in q.COHORTS:

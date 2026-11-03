@@ -1,7 +1,7 @@
 ---
 title: SOL281 dense contact recovery registration
 status: Planned
-document-kind: audit
+document-kind: evidence
 scope: Preregistered opt-in unilateral Sand contact experiment and source reconciliation; no gameplay acceptance
 canonical-for: []
 last-reviewed: 2026-11-03
@@ -31,7 +31,7 @@ unchanged. #282 and #343 remain draft/unmerged. No merge or promotion is authori
 The aggregate has native mass 520, yet its host caps the sum of the six proxy
 impulse magnitudes at 3 per consumed sample. At the fixture's gravity scale
 0.094, nominal acceleration 980 and 60 Hz, the corresponding gravity impulse
-is approximately 798.35 per step. This dimensional comparison explains why the
+is approximately 798.37 per step. This dimensional comparison explains why the
 existing response is weak; it is not a measured causal gameplay result. Native
 bearing also has its own capacity limit. Simply raising the host cap is not the
 registered experiment.

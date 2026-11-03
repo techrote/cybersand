@@ -194,6 +194,9 @@ public:
     [[nodiscard]] SimulationBackend backend() const noexcept;
     [[nodiscard]] Material get(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Material stored_material(std::int64_t x, std::int64_t y) const noexcept;
+    // Exclusive external owner: complete residency/inclusion witness for a
+    // bounded read-only contact observation. Unknown storage is not Empty.
+    [[nodiscard]] bool contact_cell_available(std::int64_t x, std::int64_t y) const noexcept;
     // Serialized external-owner query. Never called from a rule kernel: its
     // bounded read neighbourhood extends beyond the kernel write domain.
     [[nodiscard]] bool granular_support_at(std::int64_t x, std::int64_t y,

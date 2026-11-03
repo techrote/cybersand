@@ -4,11 +4,23 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-01
+last-reviewed: 2026-11-03
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## SOL281 dense-contact continuation — 2026-11-03
+
+Draft #347 now reconciles accepted main `89020b9e` through ordinary merge
+`2321cf24`, preserving its existing source/evidence ancestry and the merged PLAY
+recovery. The [dense-contact checkpoint](../audits/2026-11-03-sol281-dense-contact.md)
+records the opt-in supported-Sand response, exact rotated overlap observer,
+proposed physical gates, independent review corrections and new source-bound
+qualification. Follow that ledger for current results; the earlier host matrix
+below qualifies only its original executable. Persistent embedding, restoration,
+human gameplay and merge acceptance remain open. #283 stays frozen; #343 Y1
+and all ordinary Water/material/contact defaults remain separate and unchanged.
 
 ## SOL281 current-main branch — 2026-11-01
 

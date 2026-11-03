@@ -3,10 +3,10 @@ title: Rigid-body and cellular coupling
 document-kind: contract
 canonical-for: [rigid-body-cellular-coupling]
 status: Current
-scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
+scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
-related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../systems/solid-detachment.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
+last-reviewed: 2026-11-03
 ---
 
 # Rigid-body and cellular coupling
@@ -22,6 +22,38 @@ remain unchanged. The shared Rapier bridge owns both ordinary and compound
 response; the latter applies existing proxy impulses at rotated offsets and
 one weighted correction, refusing duplicate/mixed/stale samples. This is not
 a new bearing/friction law or a claim that dense-bed penetration is solved.
+
+### Separately enabled supported-Sand constraint — 2026-11-03
+
+**Current experimental source:** the detachment session can additionally enable
+`sand_resistance`; its default remains `false`. The exclusive native owner
+publishes whole-cell/rotated-proxy SAT depth, clipped overlap area and supported
+ambient-Sand exterior face segments. The observer removes internal compound
+seams and preserves the six proxies and both tree holes. Its copied immutable
+payload is separate from the unchanged 11/9 ABI and conservative material
+transactions. Water, MAT chemistry, hard contact, ordinary granular defaults and
+the unaccepted Y1 #343 policy are unchanged.
+
+The existing main-thread bridge authenticates snapshot, tick, **revision**,
+epoch, token/generation and sample order before applying any candidate impulse.
+The pure planner validates all geometry against the observed and current poses,
+refuses sample age over one or corner drift over 0.25 cells, and constructs an
+effective-mass, zero-restitution normal response. Parallel segments use only
+currently approaching point velocities in each of four fixed sweeps; symmetric
+falling contact therefore retains zero artificial torque while rotating approach
+cannot disappear at the group's center. Energy nonincrease is preflighted for
+every impulse and checked against actual Rapier readback. No candidate position
+correction, friction gain, ejection radius or native material mutation is added.
+
+This is a bounded dissipative resistance experiment, not a calibrated granular
+momentum law or completed penetration recovery. Deep embedding, residual contact
+after the fixed sweeps, rejected stale geometry and asynchronous contact latency
+remain measurable limitations. Geometry work is bounded by 8,192 cell/proxy
+probes and 256 contact segments; unsupported/capacity/unknown-residency input
+refuses. The [canonical detachment contract](../systems/solid-detachment.md#opt-in-supported-sand-resistance)
+owns the full algorithm, capacity, controls, metric denominators and lifecycle
+limits. The [dated ledger](../audits/2026-11-03-sol281-dense-contact.md) separates
+iteration results from required exact-source Linux/Windows qualification.
 
 
 ## When a crate moves through sand, are its pixels erased and restored?

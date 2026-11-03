@@ -76,9 +76,15 @@ var _coupling_correction_applications: int = 0
 var _coupling_stale_results: int = 0
 var _coupling_last_impulse: Vector2 = Vector2.ZERO
 var _coupling_last_correction: Vector2 = Vector2.ZERO
+var sand_resistance_enabled: bool = false
+var contact_measurement_enabled: bool = false
+var last_contact_observation: Dictionary = {}
+var last_contact_response: Dictionary = {}
+var _contact_metrics: Dictionary = {}
 
 func open(parent: Node, workers: int = 4, surroundings: String = "empty",
-		conservative_displacement: bool = true) -> bool:
+		conservative_displacement: bool = true, sand_resistance: bool = false,
+		measure_contacts: bool = false) -> bool:
 	close()
 	_parent = parent
 	_tree = parent.get_tree()
@@ -86,6 +92,20 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 	_opening = true
 	last_error = ""
 	worker = _create_worker()
+	sand_resistance_enabled = sand_resistance
+	contact_measurement_enabled = measure_contacts or sand_resistance
+	worker.solid_contact_observations_enabled = contact_measurement_enabled
+	_contact_metrics = {"observations":0, "refused_observations":0, "overlap_cell_samples":0,
+		"area_samples":0.0, "sand_area_samples":0.0, "max_penetration":0.0,
+		"max_sand_penetration":0.0, "geometry_ms_total":0.0, "geometry_ms_max":0.0,
+		"geometry_probes":0, "response_accepts":0, "response_refusals":{},
+		"impulse_magnitude_sum":0.0, "torque_impulse_sum":0.0, "energy_change_sum":0.0,
+		"impulse_x_sum":0.0, "impulse_y_sum":0.0, "max_impulse_magnitude":0.0,
+		"angular_momentum_change_sum":0.0,
+		"worker_observation_attempts":0, "worker_contact_ms_total":0.0, "worker_contact_ms_max":0.0,
+		"worker_geometry_probes":0, "worker_support_probes":0, "response_attempts":0,
+		"response_ms_all_attempts":0.0, "response_ms_max_attempt":0.0,
+		"response_ms_total":0.0, "latency_ms_total":0.0, "energy_violations":0}
 	surroundings_kind = surroundings
 	var owner_generation: int = generation
 	var owner_worker: CyberSimulationWorker = worker
@@ -462,6 +482,7 @@ func _consume_compound_results() -> void:
 		return
 	if snapshot.rigid_body_epoch != physics_epoch:
 		return
+	_record_contact_observation(snapshot.solid_contact_observation, snapshot.solid_contact_work)
 	_last_worker_step_ms = snapshot.worker_step_time_ms
 	_last_native_tick_ms = snapshot.simulation_time_ms
 	_timed_snapshots += 1
@@ -494,6 +515,60 @@ func _consume_compound_results() -> void:
 	_coupling_correction_applications += int(applied.correction_applications)
 	_coupling_last_impulse = applied.impulse
 	_coupling_last_correction = applied.correction
+	if sand_resistance_enabled:
+		var contact_started: int = Time.get_ticks_usec()
+		last_contact_response = bridge.apply_solid_sand_contact(snapshot.solid_contact_observation,
+			0, snapshot.serial, snapshot.tick_index, snapshot.simulation_world_revision,
+			physics_epoch, str(source_receipt.token),
+			generation, int(applied.sample_serial), _coupling_sample_serial,
+			_coupling_local_centers, _coupling_sizes)
+		var contact_ms: float = float(Time.get_ticks_usec() - contact_started) / 1000.0
+		_contact_metrics.response_attempts += 1
+		_contact_metrics.response_ms_all_attempts += contact_ms
+		_contact_metrics.response_ms_max_attempt = maxf(_contact_metrics.response_ms_max_attempt, contact_ms)
+		_record_contact_response(last_contact_response)
+
+func _record_contact_observation(observation: Dictionary, work: Dictionary) -> void:
+	if not contact_measurement_enabled:
+		return
+	last_contact_observation = observation
+	_contact_metrics.worker_observation_attempts = int(work.get("attempts", 0))
+	_contact_metrics.worker_contact_ms_total = float(work.get("elapsed_usec", 0)) / 1000.0
+	_contact_metrics.worker_contact_ms_max = float(work.get("max_usec", 0)) / 1000.0
+	_contact_metrics.worker_geometry_probes = int(work.get("geometry_probes", 0))
+	_contact_metrics.worker_support_probes = int(work.get("support_probes", 0))
+	if not observation.get("ok", false) or not observation.get("complete", false):
+		_contact_metrics.refused_observations += 1
+		return
+	_contact_metrics.observations += 1
+	_contact_metrics.overlap_cell_samples += int(observation.overlap_cells)
+	_contact_metrics.area_samples += float(observation.overlap_area)
+	_contact_metrics.sand_area_samples += float(observation.sand_overlap_area)
+	_contact_metrics.max_penetration = maxf(_contact_metrics.max_penetration, float(observation.max_penetration))
+	_contact_metrics.max_sand_penetration = maxf(_contact_metrics.max_sand_penetration, float(observation.max_sand_penetration))
+	_contact_metrics.geometry_ms_total += float(observation.observation_ms)
+	_contact_metrics.geometry_ms_max = maxf(_contact_metrics.geometry_ms_max, float(observation.observation_ms))
+	_contact_metrics.geometry_probes += int(observation.geometry_probes)
+
+func _record_contact_response(response: Dictionary) -> void:
+	if not response.get("accepted", false):
+		var key: String = str(response.get("outcome", "Unknown"))
+		_contact_metrics.response_refusals[key] = int(_contact_metrics.response_refusals.get(key, 0)) + 1
+		return
+	_contact_metrics.response_accepts += 1
+	for action: Dictionary in response.impulses:
+		_contact_metrics.impulse_magnitude_sum += (action.impulse as Vector2).length()
+		_contact_metrics.max_impulse_magnitude = maxf(_contact_metrics.max_impulse_magnitude, (action.impulse as Vector2).length())
+	_contact_metrics.impulse_x_sum += float(response.actual_momentum_change.x)
+	_contact_metrics.impulse_y_sum += float(response.actual_momentum_change.y)
+	_contact_metrics.angular_momentum_change_sum += float(response.actual_angular_momentum_change)
+	_contact_metrics.torque_impulse_sum += float(response.torque_impulse)
+	_contact_metrics.energy_change_sum += float(response.actual_energy_after) - float(response.energy_before)
+	_contact_metrics.response_ms_total += float(response.application_ms)
+	_contact_metrics.latency_ms_total += float(response.publication_latency_ms)
+	if float(response.actual_energy_after) > float(response.energy_before) + 1e-4 * maxf(1.0, float(response.energy_before)):
+		_contact_metrics.energy_violations += 1
+		_fail("Sand contact energy readback violated its registered bound; reset required")
 
 func physics_step() -> void:
 	if active and not physics_paused and not transaction_busy and bridge != null:
@@ -592,6 +667,7 @@ func inspect_coupling(points: PackedInt32Array = PackedInt32Array(),
 
 func coupling_metrics() -> Dictionary:
 	return {"proxy_count":_coupling_local_centers.size(), "proxy_mass":_coupling_total_mass,
+		"sand_resistance_enabled":sand_resistance_enabled, "physical_contact":_contact_metrics.duplicate(true),
 		"state_publications":_coupling_state_publications, "result_snapshots":_coupling_result_snapshots,
 		"result_records":_coupling_result_records, "contacts":_coupling_contacts,
 		"displaced":_coupling_displaced, "unresolved":_coupling_unresolved,
@@ -684,6 +760,11 @@ func close() -> void:
 	_coupling_stale_results = 0
 	_coupling_last_impulse = Vector2.ZERO
 	_coupling_last_correction = Vector2.ZERO
+	last_contact_observation = {}
+	last_contact_response = {}
+	_contact_metrics = {}
+	sand_resistance_enabled = false
+	contact_measurement_enabled = false
 	status = "closed"
 
 func _destroy_physics() -> void:

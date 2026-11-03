@@ -14,6 +14,7 @@ var busy: bool = true
 var surroundings: int = 0
 var workers: int = 4
 var conservative_displacement: bool = true
+var sand_resistance: bool = false
 var _captured: Dictionary = {}
 var _capture_prefix: String = ""
 var _title: Label
@@ -31,7 +32,7 @@ func _ready() -> void:
 	_stats = _label(Vector2(35, 730), 14)
 	_material_stats = _label(Vector2(35, 755), 14)
 	var help := _label(Vector2(35, 790), 13)
-	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nX excavate below body  |  I inspect conservation  |  ESC exit"
+	help.text = "SPACE cut  |  P pause  |  R reset  |  1 dry  2 packed Sand  3 embedded  4 mixed  |  W workers 1/4\nV reset with experimental Sand resistance on/off  |  X excavate  |  I inspect  |  ESC exit"
 	var args := OS.get_cmdline_user_args()
 	for i: int in range(args.size()):
 		if args[i] == "--capture" and i + 1 < args.size():
@@ -42,6 +43,8 @@ func _ready() -> void:
 				surroundings = choice
 		elif args[i] == "--baseline":
 			conservative_displacement = false
+		elif args[i] == "--sand-resistance":
+			sand_resistance = true
 		elif args[i] == "--workers=1":
 			workers = 1
 	_title.text += " / conservative relocation" if conservative_displacement else " / historical contact control"
@@ -70,7 +73,8 @@ func _open() -> void:
 	snapshot_serial = -1
 	_captured.clear()
 	_material_stats.text = "520-cell RedBrick tree; two exact holes; one aggregate; " + SURROUNDINGS_LABELS[surroundings]
-	if await session.open(self, workers, SURROUNDINGS[surroundings], conservative_displacement):
+	_title.text = "SOL-281 / NATIVE STRUCTURAL DETACHMENT / " + ("experimental Sand resistance" if sand_resistance else "previous contact baseline")
+	if await session.open(self, workers, SURROUNDINGS[surroundings], conservative_displacement, sand_resistance, true):
 		var intact: Dictionary = await session.observe_intact()
 		_status.text = "%s / %s / workers %d — SPACE cuts the actual native trunk" % [
 			str(intact.get("outcome")), SURROUNDINGS_LABELS[surroundings], workers]
@@ -126,6 +130,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_W:
 			if not busy:
 				workers = 1 if workers == 4 else 4
+				_open()
+		KEY_V:
+			if not busy:
+				sand_resistance = not sand_resistance
 				_open()
 		KEY_X:
 			if not busy and session != null:

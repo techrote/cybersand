@@ -6,6 +6,7 @@ import argparse
 from dataclasses import dataclass
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import platform
@@ -21,11 +22,13 @@ import execution_policy as policy
 import run_godot_regressions as runner
 from run_windows_godot_regressions import GODOT_SHA512, GODOT_VERSION
 
-COHORTS = ("core", "contact-w1", "contact-w4")
+COHORTS = ("core", "contact-w1", "contact-w4", "mechanism")
 SCOPES = ("native", "godot", "tools", "third_party", "Makefile", "AGENTS.md", ".gitattributes",
           ".github/workflows/sol281-current-main.yml", ".github/workflows/rapier-bvh-build.yml")
 RESULT_FILES = frozenset({"test_solid_detachment", "test_solid_detachment_coupling",
-                          "test_solid_detachment_populated", "test_solid_detachment_displacement"})
+                          "test_solid_detachment_populated", "test_solid_detachment_displacement",
+                          "test_solid_contact_response", "test_solid_contact_observation",
+                          "test_solid_detachment_contact_recovery"})
 
 
 def require(value, message):
@@ -165,6 +168,11 @@ def inventory(cohort):
             Spec("ordinary-failure", "test_tick_failure_regression", "Tick failure regression: passed", structured=False),
             Spec("ordinary-capacity", "test_act004_body_capacity", "ACT-004 body capacity fixtures passed", structured=False),
         ]
+    if cohort == "mechanism":
+        return [
+            Spec("sand-contact-response", "test_solid_contact_response", "SOL281_CONTACT_RESPONSE", 90),
+            Spec("sand-contact-fences", "test_solid_contact_fences", "SOL281_CONTACT_FENCES", 38),
+        ]
     workers = int(cohort[-1])
     return [
         Spec(f"coupling-w{workers}", "test_solid_detachment_coupling", "SOL281_COMPOUND_COUPLING", 33,
@@ -176,6 +184,10 @@ def inventory(cohort):
         *(Spec(f"{kind}-{mode}-w{workers}", "test_solid_detachment_populated", "SOL281_POPULATED", 14,
                (f"--workers={workers}", f"--surroundings={kind}", *(("--baseline",) if mode == "baseline" else ())), workers)
           for kind in ("packed_sand", "embedded_sand", "mixed") for mode in ("candidate", "baseline")),
+        Spec(f"contact-observation-w{workers}", "test_solid_contact_observation", "SOL281_CONTACT_OBSERVATION", 129,
+             (f"--workers={workers}",), workers),
+        Spec(f"contact-recovery-w{workers}", "test_solid_detachment_contact_recovery", "SOL281_CONTACT_RECOVERY", 290,
+             (f"--workers={workers}",), workers),
     ]
 
 
@@ -202,6 +214,54 @@ def verify_footer(spec, text, expected_platform):
         require(result.get("conservative_displacement") == ("--baseline" not in spec.flags), "Wrong contact policy")
         require(result.get("surroundings") == next(x.split("=", 1)[1] for x in spec.flags if x.startswith("--surroundings=")),
                 "Wrong populated fixture")
+    if spec.script == "test_solid_contact_response":
+        mechanical = result.get("mechanical", {})
+        require(mechanical.get("steps") == 12 and mechanical.get("mass") == 520,
+                "Wrong registered mechanical input")
+        for gate in (mechanical, mechanical.get("off_center", {})):
+            require(gate.get("gate_passed") is True and gate.get("proposed_gate_minimum_reduction") == 0.25,
+                    "Mechanical gate absent, failed or redefined")
+            before = gate.get("baseline_added_overlap_area_steps")
+            after = gate.get("candidate_added_overlap_area_steps")
+            require(type(before) in (int, float) and type(after) in (int, float)
+                    and before > 0 and after >= 0 and after <= before * 0.75,
+                    "Registered overlap reduction did not pass")
+        require(len(mechanical.get("trajectory", [])) == 12, "Incomplete mechanical trajectory")
+    if spec.script == "test_solid_contact_observation":
+        require([x.get("id") for x in result.get("cases", [])] ==
+                ["partial_shared_edge", "float32_seam", "refusals"], "Incomplete native contact replay")
+    if spec.script == "test_solid_detachment_contact_recovery":
+        expected = [(kind, arm, repeat) for kind in ("packed_sand", "embedded_sand", "mixed")
+                    for repeat in range(3) for arm in ((False, True) if repeat % 2 == 0 else (True, False))]
+        cases = result.get("cases", [])
+        require([(x.get("surroundings"), x.get("candidate"), x.get("repeat")) for x in cases] == expected,
+                "Incomplete, duplicated or reordered repeated fixture inventory")
+        for case in cases:
+            require(type(case.get("candidate")) is bool and case.get("steps") == 360
+                    and case.get("sand_before", -1) > 0 and case.get("sand_before") == case.get("sand_after")
+                    and case.get("water_before", -1) >= 0 and case.get("water_before") == case.get("water_after"),
+                    "Incomplete steps or failed quantity conservation")
+            physical = case.get("metrics", {}).get("physical_contact", {})
+            require(physical.get("observations", 0) > 0 and physical.get("energy_violations") == 0
+                    and bool(case.get("trace")), "Missing complete geometry or failed energy readback")
+            require((physical.get("response_accepts", 0) > 0 and physical.get("impulse_magnitude_sum", 0) > 0)
+                    if case["candidate"] else physical.get("response_accepts", 0) == 0,
+                    "Candidate resistance was unexercised or baseline policy changed")
+            require(physical.get("worker_observation_attempts", 0) >=
+                    physical["observations"] + physical.get("refused_observations", 0)
+                    and physical.get("response_attempts", -1) ==
+                    physical.get("response_accepts", 0) + sum(physical.get("response_refusals", {}).values()),
+                    "Contact work attempt inventory is incomplete")
+            for total, accepted in (("worker_contact_ms_total", "geometry_ms_total"),
+                                    ("response_ms_all_attempts", "response_ms_total")):
+                require(type(physical.get(total)) in (int, float) and math.isfinite(physical[total])
+                        and physical[total] >= physical.get(accepted, 0) >= 0,
+                        "Contact cost omitted refused or overwritten work")
+            for point in case["trace"]:
+                require(all(key in point for key in ("revision", "physics_epoch", "token", "body_generation",
+                        "source_x", "source_y", "source_angle", "current_x", "current_y", "current_angle",
+                        "source_published_usec", "observed_usec")) and len(point.get("proxies", [])) == 6,
+                        "Trace lacks exact source geometry or separate current pose")
     return result
 
 

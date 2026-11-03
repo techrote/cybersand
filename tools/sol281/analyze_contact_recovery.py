@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""Describe repeated SOL281 geometry observations without trajectory matching."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import statistics
+import run_qualification as qualification
+
+
+def analyze(paths: list[Path]) -> dict:
+    cohorts = []
+    for path in paths:
+        raw = path.read_bytes()
+        report = json.loads(raw)
+        spec = next(x for x in qualification.inventory(f"contact-w{report.get('workers')}")
+                    if x.script == "test_solid_detachment_contact_recovery")
+        qualification.verify_footer(spec, spec.footer + " " + json.dumps(report), report.get("platform"))
+        if (report.get("schema") != "cybersand.sol281.contact-recovery.v1"
+                or report.get("failures") != [] or report.get("checks") != 290
+                or len(report.get("cases", [])) != 18):
+            raise ValueError(f"Incomplete/failed original recovery report: {path}")
+        seen = set()
+        groups = {}
+        for case in report["cases"]:
+            key = (case["surroundings"], case["candidate"])
+            identity = (*key, case["repeat"])
+            if identity in seen:
+                raise ValueError("Duplicate case identity")
+            seen.add(identity)
+            metrics = case["metrics"]
+            physical = metrics["physical_contact"]
+            observations = physical["observations"]
+            if observations <= 0 or case["steps"] != 360 or not case["trace"]:
+                raise ValueError("Missing geometry/step inventory")
+            if case["sand_before"] != case["sand_after"] or case["water_before"] != case["water_after"]:
+                raise ValueError("Material quantity differs")
+            span_start = None
+            longest_span = 0
+            positive_samples = 0
+            for point in case["trace"]:
+                if point["sand_overlap_area"] > 1e-9:
+                    positive_samples += 1
+                    if span_start is None:
+                        span_start = point["source_published_usec"]
+                    longest_span = max(longest_span, point["source_published_usec"] - span_start)
+                else:
+                    span_start = None
+            values = {
+                "max_sand_penetration_cells": physical["max_sand_penetration"],
+                "mean_overlap_cells_per_observation": physical["overlap_cell_samples"] / observations,
+                "mean_overlap_area_per_observation": physical["area_samples"] / observations,
+                "mean_sand_overlap_area_per_observation": physical["sand_area_samples"] / observations,
+                "geometry_ms_per_observation": physical["geometry_ms_total"] / observations,
+                "combined_contact_ms_per_observation": (physical["worker_contact_ms_total"] + physical["response_ms_all_attempts"]) / observations,
+                "worker_observation_attempts": physical["worker_observation_attempts"],
+                "worker_ms_per_attempt": physical["worker_contact_ms_total"] / physical["worker_observation_attempts"],
+                "response_attempts": physical["response_attempts"],
+                "response_ms_per_attempt": physical["response_ms_all_attempts"] / max(1, physical["response_attempts"]),
+                "positive_sand_overlap_observations": positive_samples,
+                "longest_positive_observation_span_seconds": longest_span / 1e6,
+                "geometry_ms_max": physical["geometry_ms_max"],
+                "geometry_probes_per_observation": physical["geometry_probes"] / observations,
+                "response_ms_per_accept": physical["response_ms_total"] / max(1, physical["response_accepts"]),
+                "publication_latency_ms_per_accept": physical["latency_ms_total"] / max(1, physical["response_accepts"]),
+                "impulse_magnitude_sum": physical["impulse_magnitude_sum"],
+                "torque_impulse_sum": physical["torque_impulse_sum"],
+                "response_energy_change_sum": physical["energy_change_sum"],
+                "observations": observations,
+                "response_accepts": physical["response_accepts"],
+                "refused_observations": physical["refused_observations"],
+                "max_translation_cells": case["max_translation"],
+                "max_rotation_rad": case["max_rotation"],
+                "max_angular_velocity_rad_s": case["max_angular_velocity"],
+            }
+            groups.setdefault(key, []).append({"values": values, "case": case})
+        expected = {(kind, arm, repeat) for kind in ("packed_sand", "embedded_sand", "mixed")
+                    for arm in (False, True) for repeat in range(3)}
+        if seen != expected:
+            raise ValueError("Wrong complete cohort inventory")
+        summaries = []
+        for (kind, arm), items in sorted(groups.items()):
+            stats = {}
+            for metric in items[0]["values"]:
+                sample = [x["values"][metric] for x in items]
+                stats[metric] = {"min": min(sample), "median": statistics.median(sample), "max": max(sample)}
+            refusals = {}
+            for item in items:
+                for name, count in item["case"]["metrics"]["physical_contact"]["response_refusals"].items():
+                    refusals[name] = refusals.get(name, 0) + count
+            summaries.append({"surroundings": kind, "candidate": arm, "repetitions": len(items),
+                              "metrics": stats, "response_refusals": refusals,
+                              "proposed_contact_cost_gate_passed": stats["combined_contact_ms_per_observation"]["max"] <= 2.0,
+                              "energy_readback_gate_passed": all(x["case"]["metrics"]["physical_contact"]["energy_violations"] == 0 for x in items)})
+        cohorts.append({"platform": report["platform"], "workers": report["workers"],
+                        "original": str(path), "sha256": hashlib.sha256(raw).hexdigest(), "groups": summaries})
+    return {"schema": "cybersand.sol281.contact-recovery-analysis.v1", "cohorts": cohorts,
+            "interpretation": "Descriptive ranges/medians over independent asynchronous runs, not causal paired comparisons. "
+                              "Exact geometry is at copied native publication poses. Counts are observation samples, not cell-ticks. "
+                              "Positive-overlap span is the time between consecutive positive sampled publications, not proof of unobserved continuity. "
+                              "Response energy excludes separate gravity, ordinary coupling, damping and hard contacts. "
+                              "Cost gate includes all worker attempts (including overwritten publications and refusals) "
+                              "and every main response attempt, divided conservatively by complete consumed observations. "
+                              "CPU cost is provisional; no GPU or human gameplay acceptance."}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("reports", nargs="+", type=Path)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    result = analyze(args.reports)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+    print(result["interpretation"])
+    for cohort in result["cohorts"]:
+        print(f"{cohort['platform']} workers={cohort['workers']}")
+        for group in cohort["groups"]:
+            m = group["metrics"]
+            def show(key):
+                v = m[key]
+                return f"{v['median']:.6g} [{v['min']:.6g},{v['max']:.6g}]"
+            print(group["surroundings"], "candidate" if group["candidate"] else "baseline",
+                  "depth", show("max_sand_penetration_cells"),
+                  "mean area", show("mean_sand_overlap_area_per_observation"),
+                  "geometry ms", show("geometry_ms_per_observation"),
+                  "refusals", group["response_refusals"])
+
+
+if __name__ == "__main__":
+    main()

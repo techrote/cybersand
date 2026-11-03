@@ -2190,10 +2190,16 @@ func _publish_snapshot(
 		}
 		_freeze_capture(_pending_render_context)
 	snapshot.render_context = _pending_render_context
+	_populate_specialized_snapshot(snapshot)
 
 	_mutex.lock()
 	_published_snapshot = snapshot
 	_mutex.unlock()
+
+
+func _populate_specialized_snapshot(_snapshot: CyberSimulationSnapshot) -> void:
+	# Dedicated diagnostic owners attach copied values BEFORE publication.
+	pass
 
 
 func has_failed() -> bool:
@@ -2227,6 +2233,8 @@ func _publish_failure_snapshot() -> void:
 	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied
 	snapshot.paused = true
 	snapshot.rigid_body_results = PackedFloat32Array()
+	snapshot.solid_contact_observation = {}
+	snapshot.solid_contact_work = {}
 	snapshot.failed_tick_index = int(_world.get_attempted_tick_index())
 	snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 	snapshot.last_tick_error = str(_world.get_last_tick_error())

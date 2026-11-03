@@ -2,11 +2,13 @@
 
 #include "cybersand/material_rules.hpp"
 #include "cybersand/default_demo_recipe.hpp"
+#include "cybersand/solid_contact_geometry.hpp"
 
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/variant/rect2i.hpp>
+#include <godot_cpp/variant/transform2d.hpp>
 
 #include <algorithm>
 #include <array>
@@ -71,6 +73,7 @@ CyberNativeCellWorld::~CyberNativeCellWorld() = default;
 void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("solid_detachment_fenced"), &CyberNativeCellWorld::solid_detachment_fenced);
     ClassDB::bind_method(D_METHOD("solid_detachment_command", "command"), &CyberNativeCellWorld::solid_detachment_command);
+    ClassDB::bind_method(D_METHOD("solid_detachment_contact_observation"), &CyberNativeCellWorld::solid_detachment_contact_observation);
     ClassDB::bind_method(D_METHOD("diagnostic_replay_conservative_contact", "capsule"), &CyberNativeCellWorld::diagnostic_replay_conservative_contact);
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
@@ -2156,5 +2159,6 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 #include "pressure_optimization_inspection.inc"
 #include "conservative_displacement_adapter.inc"
 #include "solid_detachment_adapter.inc"
+#include "solid_contact_adapter.inc"
 
 }  // namespace godot

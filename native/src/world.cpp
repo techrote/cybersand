@@ -1603,6 +1603,20 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,
     return around >= config_.interaction_policy.side_support_cells;
 }
 
+bool World::contact_cell_available(std::int64_t x, std::int64_t y) const noexcept {
+    constexpr std::int64_t limit = 1'000'000'000;
+    if (has_failed() || x < -limit || x > limit || y < -limit || y > limit ||
+        selected_core_region_ != applied_core_region_) return false;
+    if (find_chunk(address(x, y).chunk) == nullptr) return false;
+    if (selected_core_region_) {
+        const auto core = scheduler_geometry_.core_for_cell(x, y);
+        const auto& region = *selected_core_region_;
+        if (core.x < region.min_x || core.x > region.max_x ||
+            core.y < region.min_y || core.y > region.max_y) return false;
+    }
+    return true;
+}
+
 Material World::stored_material(std::int64_t x, std::int64_t y) const noexcept {
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);

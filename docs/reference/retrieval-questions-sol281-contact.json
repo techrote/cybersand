@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-03",
+  "purpose": "Supplementary supported-Sand contact questions; original SOL281 and historical query sets remain unchanged. Canonical retrieval is not physical or platform acceptance.",
+  "questions": [
+    {
+      "id": "SOL281-CONTACT-001",
+      "query": "How does detached-tree contact measure exact rotated native-cell overlap without filling compound holes or counting internal proxy seams?",
+      "canonical": ["systems/solid-detachment.md", "architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": [
+        "SAT and polygon clipping intersect full native unit squares with one coherent rotated rectangle union; AABBs only bound traversal.",
+        "Six proxies and two holes remain; exact exterior source-grid runs remove partial sibling seams.",
+        "All nonempty material contributes geometry but only supported ambient Sand supplies the new response."
+      ],
+      "sources": ["../native/include/cybersand/solid_contact_geometry.hpp", "../godot/native_extension/solid_contact_adapter.inc"]
+    },
+    {
+      "id": "SOL281-CONTACT-002",
+      "query": "What makes the optional Sand resistance respond to a rotating edge while preserving symmetric contact and bounded energy?",
+      "canonical": ["systems/solid-detachment.md", "architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": [
+        "The pure planner uses current contact-point velocity, mass and inertia for a zero-restitution unilateral normal impulse.",
+        "Only currently approaching parallel segments enter the length-weighted resultant, recomputed on each of four fixed sweeps.",
+        "Each planned impulse must satisfy the registered energy bound; actual Rapier energy is checked separately, with no full multi-contact convergence claim."
+      ],
+      "sources": ["../godot/scripts/solid_contact_response.gd", "../godot/tests/test_solid_contact_response.gd"]
+    },
+    {
+      "id": "SOL281-CONTACT-003",
+      "query": "Can a stale, replayed or wrong-revision detached-body contact observation apply another Rapier impulse?",
+      "canonical": ["systems/solid-detachment.md", "architecture/rigid-body-and-cellular-coupling.md"],
+      "facts": [
+        "The worker freezes copied observations before publication; main never queries live native cells.",
+        "Snapshot, tick, exact revision, epoch, token, generation and forward sample order are checked before candidate RID mutation.",
+        "Sample age over one, corner drift over 0.25 cells, malformed or incomplete geometry and duplicate observations refuse."
+      ],
+      "sources": ["../godot/scripts/solid_detachment_worker.gd", "../godot/scripts/rapier_physics_bridge.gd", "../godot/tests/test_solid_contact_fences.gd"]
+    },
+    {
+      "id": "SOL281-CONTACT-004",
+      "query": "How do I enable experimental Sand resistance in the structural detachment lab, and does it change Water or promote Y1?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "V resets and toggles the candidate; --sand-resistance enables it at launch. Without the flag the prior response remains selected.",
+        "The lab observes both arms, while session resistance defaults to false.",
+        "The 11/9 interface, conservative material transactions, Water, chemistry, hard-contact and ordinary GCR defaults remain; Y1 #343 is not promoted."
+      ],
+      "sources": ["../godot/scripts/solid_detachment_lab.gd", "../godot/scripts/solid_detachment_session.gd"]
+    },
+    {
+      "id": "SOL281-CONTACT-005",
+      "query": "Are asynchronous overlap-cell-samples native cell-ticks, and what denominator includes all contact-processing work?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "Area-samples and overlap-cell-samples count complete consumed native observations, not native simulation ticks.",
+        "Total owner observation/freeze and main response CPU includes refused attempts and unconsumed publications; the proposed mean divides by complete consumed geometry observations.",
+        "Repeated live trajectories have ranges but are not matched causal comparisons; headless CPU measurements do not establish GPU or human acceptance."
+      ],
+      "sources": ["../godot/scripts/solid_detachment_worker.gd", "../godot/scripts/solid_detachment_session.gd", "../tools/sol281/analyze_contact_recovery.py"]
+    },
+    {
+      "id": "SOL281-CONTACT-006",
+      "query": "Does improved detached-tree contact now resolve deep embedding or restore a sleeping Rapier aggregate into native terrain?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "Deeply embedded cells without an exterior face crossing can retain overlap without a response segment.",
+        "The candidate adds no position correction, cell mutation or automatic restoration; sleeping remains aggregate ownership.",
+        "Dense-contact, lifecycle, source-qualified platform and human gameplay gates remain separate; #347 stays draft and #281/#12 remain open."
+      ],
+      "sources": ["../godot/native_extension/solid_contact_adapter.inc", "../godot/scripts/solid_detachment_session.gd"]
+    }
+  ]
+}

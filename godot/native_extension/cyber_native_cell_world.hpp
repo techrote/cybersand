@@ -39,6 +39,9 @@ public:
     // SOL281 diagnostic-only value facade. Exclusive native owner, no RIDs.
     [[nodiscard]] bool solid_detachment_fenced() const;
     [[nodiscard]] Dictionary solid_detachment_command(const Dictionary& command);
+    // Bounded, read-only exact geometry and supported-Sand contact side channel.
+    // Values only; callers must remain the exclusive native owner.
+    [[nodiscard]] Dictionary solid_detachment_contact_observation() const;
     // Frozen-contact regression facade. Calls the same native transaction and
     // geometric admission as the opt-in detachment host, without advancing time.
     [[nodiscard]] Dictionary diagnostic_replay_conservative_contact(const Dictionary& capsule);

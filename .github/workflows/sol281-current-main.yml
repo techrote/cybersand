@@ -102,10 +102,10 @@ jobs:
             compiler_path="$WINDOWS_CXX"
           fi
           python3 tools/sol281/run_qualification.py manifest --before "build/sol281/build/$SOL281_TARGET/before.json" --output "build/sol281/build/$SOL281_TARGET/build.json" --runtime "$CYBERSAND_NATIVE_OUTPUT" --bindings "$GODOT_CPP_ROOT/bin/libgodot-cpp.$SOL281_TARGET.template_debug.x86_64.a" --compiler "$compiler_path"
-      - name: Native ownership and relocation regressions with sanitizers
+      - name: Native ownership, relocation and exact contact geometry with sanitizers
         if: matrix.target == 'linux'
         run: |
-          python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds --label native-sol281 --output-dir build/sol281/build/linux/native-regressions -- make CXX=/usr/bin/g++-13 solid-detachment-test conservative-displacement-test solid-detachment-sanitize conservative-displacement-sanitize
+          python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds --label native-sol281 --output-dir build/sol281/build/linux/native-regressions -- make CXX=/usr/bin/g++-13 solid-detachment-test conservative-displacement-test solid-contact-geometry-test solid-detachment-sanitize conservative-displacement-sanitize solid-contact-geometry-sanitize
       - name: Preserve exact source archive
         if: matrix.target == 'linux'
         run: |
@@ -128,7 +128,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cohort: [core, contact-w1, contact-w4]
+        # Keep complete per-case watchdogs within the fixed hosted job ceiling.
+        cohort: [core, contact-w1, contact-w4, mechanism]
       max-parallel: 3
     steps:
       - name: Check out exact host source
@@ -177,7 +178,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cohort: [core, contact-w1, contact-w4]
+        cohort: [core, contact-w1, contact-w4, mechanism]
       max-parallel: 3
     steps:
       - name: Preserve canonical source bytes on Windows
@@ -196,6 +197,107 @@ jobs:
         with:
           name: sol281-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/sol281/runtime
+      - name: Authenticate MSVC focused source and derive its shared suite allowance
+        # The mechanism cohort leaves room for the complete native-suite bound;
+        # adding it to core would exceed the unchanged six-hour job ceiling.
+        if: matrix.cohort == 'mechanism'
+        id: msvc-source
+        shell: pwsh
+        run: |
+          python tools/sol281/run_qualification.py manifest --output build/sol281/msvc/before.json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $suite = [double](python tools/ci/execution_policy.py seconds native_suite_seconds)
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $grace = [double](python tools/ci/execution_policy.py seconds terminate_grace_seconds)
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $metadata = [double](python tools/ci/execution_policy.py seconds operation_seconds)
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          "timeout_minutes=$([Math]::Ceiling(($suite + 2 * $grace + $metadata) / 60))" >> $env:GITHUB_OUTPUT
+      - name: Build and execute focused native cases with actual Windows MSVC
+        if: matrix.cohort == 'mechanism'
+        timeout-minutes: ${{ fromJSON(steps.msvc-source.outputs.timeout_minutes) }}
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $output = Join-Path $PWD 'build/sol281/msvc'
+          $suite = [double](python tools/ci/execution_policy.py seconds native_suite_seconds)
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $grace = [double](python tools/ci/execution_policy.py seconds terminate_grace_seconds)
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $before = Get-Content "$output/before.json" -Raw | ConvertFrom-Json
+          $receipt = [ordered]@{
+            schema = 'cybersand.sol281.msvc-command.v1'; status = 'running'
+            source = $before.source; platform = 'Windows'; cohort = 'mechanism'
+            run_id = $env:GITHUB_RUN_ID; run_attempt = $env:GITHUB_RUN_ATTEMPT
+            command = @($env:ComSpec, '/d', '/c', 'tools\sol281\run_msvc_contact.cmd')
+            timeout_seconds = $suite; cleanup_seconds = $grace
+            timed_out = $false; natural_completion = $false; returncode = $null
+            started_utc = [DateTime]::UtcNow.ToString('o')
+          }
+          $receipt | ConvertTo-Json -Depth 10 | Set-Content "$output/receipt.json" -Encoding utf8
+          $clock = [Diagnostics.Stopwatch]::StartNew()
+          $child = $null
+          try {
+            $child = Start-Process -FilePath $env:ComSpec -ArgumentList @('/d', '/c', 'tools\sol281\run_msvc_contact.cmd') -NoNewWindow -PassThru -RedirectStandardOutput "$output/command.log" -RedirectStandardError "$output/command.stderr.log"
+            $receipt.pid = $child.Id
+            if (-not $child.WaitForExit([int]($suite * 1000))) {
+              $receipt.timed_out = $true
+              # Only this command's process tree is eligible for timeout cleanup.
+              $child.Kill($true)
+              if (-not $child.WaitForExit([int]($grace * 1000))) {
+                throw 'MSVC command did not exit within its cleanup allowance'
+              }
+            }
+            $child.Refresh()
+            $receipt.returncode = $child.ExitCode
+            $receipt.natural_completion = -not $receipt.timed_out -and $null -ne $child.ExitCode
+            $receipt.status = if ($receipt.timed_out) { 'timeout' } elseif ($child.ExitCode -eq 0) { 'passed' } else { 'failed' }
+          } catch {
+            $receipt.status = 'command_error'
+            $receipt.error = $_.Exception.Message
+            $receipt.natural_completion = $false
+          } finally {
+            if ($null -ne $child -and -not $child.HasExited) {
+              try {
+                $child.Kill($true)
+                if (-not $child.WaitForExit([int]($grace * 1000))) { throw 'Owned MSVC command remains alive' }
+              } catch {
+                $receipt.status = 'cleanup_failed'
+                $receipt.cleanup_error = $_.Exception.Message
+              }
+              $receipt.natural_completion = $false
+            }
+            $receipt.elapsed_seconds = $clock.Elapsed.TotalSeconds
+            $receipt.log_sha256 = (Get-FileHash "$output/command.log" -Algorithm SHA256 -ErrorAction SilentlyContinue).Hash
+            $receipt.stderr_sha256 = (Get-FileHash "$output/command.stderr.log" -Algorithm SHA256 -ErrorAction SilentlyContinue).Hash
+            $receipt | ConvertTo-Json -Depth 10 | Set-Content "$output/receipt.json" -Encoding utf8
+          }
+          Get-Content "$output/command.log" -ErrorAction SilentlyContinue
+          Get-Content "$output/command.stderr.log" -ErrorAction SilentlyContinue
+          if ($receipt.status -ne 'passed' -or -not $receipt.natural_completion) { exit 1 }
+      - name: Authenticate unchanged MSVC inputs and retain executable identities
+        if: always() && matrix.cohort == 'mechanism' && steps.msvc-source.outcome == 'success'
+        shell: pwsh
+        run: |
+          python tools/sol281/run_qualification.py manifest --before build/sol281/msvc/before.json --output build/sol281/msvc/after.json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $identities = [ordered]@{}
+          foreach ($name in @('solid_detachment', 'conservative_displacement', 'solid_contact_geometry')) {
+            $path = "build/sol281/msvc-bin/test_$name.exe"
+            if (Test-Path $path) {
+              $identities[$name] = @{ path = $path; size = (Get-Item $path).Length; sha256 = (Get-FileHash $path -Algorithm SHA256).Hash }
+            }
+          }
+          $identities | ConvertTo-Json -Depth 5 | Set-Content build/sol281/msvc/binary-identities.json -Encoding utf8
+      - name: Retain original MSVC command, source manifests and focused logs
+        if: always() && matrix.cohort == 'mechanism'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          # Keep the existing strict host artifact root/inventory unchanged.
+          name: sol281-msvc-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/sol281/msvc
+          if-no-files-found: error
+          retention-days: 90
       - name: Materialize current Windows Rapier runtime
         timeout-minutes: 20
         shell: pwsh
@@ -242,7 +344,7 @@ jobs:
         with:
           pattern: sol281-host-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/sol281/evidence
-      - name: Reopen all six cohorts and reject absent or incomplete evidence
+      - name: Reopen all eight cohorts and reject absent or incomplete evidence
         run: python3 tools/sol281/run_qualification.py summarize --input build/sol281/evidence --output build/sol281/qualification.json
       - name: Retain bounded qualification disposition
         if: always()
@@ -272,7 +374,7 @@ jobs:
         with:
           pattern: sol281-build-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/sol281/publication-builds
-      - name: Retrieve all six original host bundles
+      - name: Retrieve all eight original host bundles
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           pattern: sol281-host-*-${{ github.run_id }}-${{ github.run_attempt }}
@@ -301,7 +403,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m "Publish qualified SOL281 development runtimes from $GITHUB_SHA"
           test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
-          git push --force-with-lease="refs/heads/$branch_name:$GITHUB_SHA" origin "HEAD:refs/heads/$branch_name"
+          git push origin "HEAD:refs/heads/$branch_name"
           gh workflow run documentation.yml --ref "$branch_name"
       - name: Retain publication decision and failures
         if: always()

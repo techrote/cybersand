@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-03
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -16,9 +16,18 @@ For native terrain support loss, compound Rapier motion, conservative local
 Sand/Water displacement or the diagnostic controls, retrieve
 [Native structural detachment](../systems/solid-detachment.md). For current
 #281 gates, original failed experiments and tested identities, explicitly
-retrieve the [dated SOL281 record](../audits/2026-11-01-sol281-current-main.md).
+retrieve the [3 November contact ledger](../audits/2026-11-03-sol281-dense-contact.md)
+and the [earlier SOL281 qualification](../audits/2026-11-01-sol281-current-main.md).
 Global acceleration and Stage3B ordering remain in the
 [soliding programme](../operations/soliding-programme.md).
+
+For exact rotated overlap, supported-Sand resistance, revision and replay fences,
+**V** / `--sand-resistance`, contact cost or overlap-cell-sample denominators,
+retrieve the [opt-in contact contract](../systems/solid-detachment.md#opt-in-supported-sand-resistance).
+The [supplementary contact questions](retrieval-questions-sol281-contact.json)
+exercise those new claims separately from the unchanged 1 November questions.
+Passing a narrow mechanism gate does not establish buried-body clearance,
+native restoration, GPU pacing, human feel or #281 completion.
 
 
 - [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
