@@ -26,6 +26,21 @@ copy GCR/PLAY implementations into this branch. The 11/9 coupling ABI remains.
 Dense resistance/penetration and representative GPU pacing remain unpassed;
 active restoration, fracture and normal gameplay remain deferred.
 
+## Stopped PLAY recovery reconciliation — 2026-11-02
+
+The owner authorizes focused completion and guarded merge of
+[PR #332](https://github.com/techrote/cybersand/pull/332) after exact-source
+Native, complete Windows/Linux Godot, actual-backend shader, provenance and
+independent-review gates pass. Its original seven-file recovery delta is
+reconciled onto accepted shader/render-copy main `a8f08a67`; current reduced CI
+and production rendering remain intact. The
+[canonical recovery contract](../systems/player-control-playground.md#stopped-composed-session-recovery)
+and [dated source audit](../audits/2026-10-31-play-stopped-session-recovery.md)
+separate implementation from qualification. Consult the live PR ledger for the
+frozen candidate, merge identity and post-merge results; earlier branch greens
+are not successor evidence. Preserve downstream #334 at its existing head
+`4f3decc242633fb621d76b7529ef87b420dbd87a`; its source reconciliation and PACE004
+qualification are the next distinct assignment. Physical/human gates remain open.
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
 

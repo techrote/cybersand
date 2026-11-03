@@ -19,6 +19,7 @@ distinguishes actual platform results from remaining dense-bed, fracture,
 restoration, gameplay and hardware acceptance. It preserves archive#283 and
 current-main render-copyR; it does not wait for global Stage3B or GCR completion.
 
+Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 remains separate.
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 

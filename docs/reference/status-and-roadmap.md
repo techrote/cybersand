@@ -24,6 +24,18 @@ persistence, normal gameplay and hardware physical acceptance remain incomplete.
 No automatic Stage3B or GCR dependency is added; frozen #283 and other PLAY/GCR
 branches remain separate.
 
+## Stopped PLAY recovery — 2026-11-02
+
+[PR #332](https://github.com/techrote/cybersand/pull/332) preserves the reviewed
+fresh-owner Restart implementation on accepted shader/render-copy main
+`a8f08a67`. The [canonical contract](../systems/player-control-playground.md#stopped-composed-session-recovery)
+distinguishes accepted recipe/settings from pending edits, whole-owner retirement,
+paused tick-zero reconstruction and launcher cancellation. Its
+[reconciliation audit](../audits/2026-10-31-play-stopped-session-recovery.md)
+preserves original failures and identifies the necessary Windows helper-control
+oracle correction. The PR ledger owns exact-head CI, independent review and
+guarded-merge status; this source description alone is not a qualification pass.
+PACE004 #334 and the physical/device/display/human acceptance areas remain separate.
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [repository-wide workflow audit](../audits/2026-11-01-ci-workflow-audit.md) separate expected shard cost, generous individual watchdogs and aggregate hosted safety. Eight jobs per platform bound GDExtension fan-out; superseded PR checks cancel while explicit qualification keeps distinct run groups. The owner authorized final review and conditional integration; [PR #340](https://github.com/techrote/cybersand/pull/340) records exact-head and post-merge gates. Historical draft qualification remains distinct from final integration acceptance.
 
