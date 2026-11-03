@@ -10,10 +10,23 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
-- [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
+- [How does Restart recover a failed composed session and how can Return cancel its pending reload?](../systems/player-control-playground.md#stopped-composed-session-recovery)
+  Accepted configuration crosses a one-use envelope; old worker and body graphs
+  retire before the new paused owner. Exact-source automated recovery and
+  physical-device acceptance remain distinct.
+- [What does the complete PACE004 campaign measure, and does it prove displayed FPS?](../systems/player-control-playground.md#source-bound-pace004-campaign)
+  The union is 60 headless plus 12 graphical cases. Native/Rapier completion,
+  actual participation, input attribution and software draw submissions do not
+  substitute for physical scanout or human control feel.
+- [Why does ANGLE use a different outgoing palette finish, and which shader evidence qualifies it?](../systems/material-appearance-and-rendering.md#renderer-specific-palette-variants--2026-10-31)
+  Exact source and actual renderer select full versus bounded variants; preserved
+  local compiler reports and whole-process timings are separate cohorts.
+
+- [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-integration-and-acceptance-scope--2026-10-31)
   #302 satisfies mandatory native-busy lifecycle qualification; #304 is optional
-  and retains its failed evidence. Remaining #268/#269/#270 product, stress,
-  physical-device and human-feel gates still apply; #265 stays closed and #271 deferred.
+  and retains its failed evidence. #269 is closed. Remaining #268/#270/#263
+  product, physical-device and human-feel gates still apply; #265 stays closed
+  and #271 deferred. The dated 2026-10-30 boundary retains its historical path.
 
 - [How do I build one shared playable session with a map, rig, controls, rules, solver and camera?](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
 - [How do rapid pause/resume, Escape and selected-gamepad Start revoke shared-course input?](../systems/player-control-playground.md#immediate-shared-course-pause-transitions)

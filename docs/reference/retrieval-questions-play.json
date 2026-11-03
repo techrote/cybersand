@@ -102,7 +102,7 @@
       "facts": [
         "The 2026-10-30 owner decision accepts merged PR 302 for mandatory real-native-busy responsiveness, outstanding-job shutdown and resource ordering.",
         "PR 304 is optional and non-blocking; run41046902349 remains a failure and nonqualifying diagnostics remain nonqualifying.",
-        "The critical path is 268 integrated product, 269 remaining stress and 270 physical devices, human feel and promotion; no automated counter substitutes for manual qualification."
+        "The 2026-10-30 historical path was 268 integrated product, 269 remaining stress and 270 physical devices, human feel and promotion. The 2026-10-31 current checkpoint records 269 closed, with 268/270/263 acceptance still open; no automated counter substitutes for manual qualification."
       ],
       "sources": [
         "../godot/tests/play_busy001_real_phase_shutdown.gd"
@@ -157,6 +157,65 @@
         "../godot/scripts/main.gd",
         "../godot/scripts/playable_course_gamepad_events.gd",
         "../godot/tests/play_input010_pause_controls_case.gd"
+      ]
+    },
+    {
+      "id": "PLAY-RECOVERY-01",
+      "query": "How does a stopped composed Play session recover with the accepted rig and solver, and can F2 cancel the deferred replacement?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "Explicit Restart copies only accepted session configuration into a one-use recovery envelope; it joins the failed worker and retires accepted and pending Rapier graphs before constructing a fresh paused owner.",
+        "Pending form edits, old input and lap state do not become new authority. Returning to launcher cancels the reload even in the no-current-scene replacement window.",
+        "LIFE007 and LIFE008 use real native failures; a synthetic reload-error presentation arm is not an engine loader-failure injection. Exact-source automated results do not qualify physical keyboard, OS focus or human feel."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/scripts/feature_navigation.gd",
+        "../godot/scripts/playable_session_panel.gd",
+        "../godot/tests/test_play_life007_failed_session_restart.gd",
+        "../godot/tests/test_play_life008_recovery_navigation.gd"
+      ]
+    },
+    {
+      "id": "PLAY-PACE004-01",
+      "query": "How many PACE004 cases are required, how is input tied to real completed steps, and does software drawing measure physical displayed FPS?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "The complete Windows/Linux union is 60 headless plus 12 graphical cases in 36 two-case jobs; original #320 headless totals are across both platforms, not per platform.",
+        "Original commands, exact source and protected ancestor baseline, runtime identities, real completed native/Rapier application, process/owner retirement and all required shard readbacks must agree.",
+        "Capacity, actual task participation, native throughput, physics cadence, input latency, snapshot freshness and draw submissions are separate observations. Null displayed_fps and software submissions do not establish physical scanout or human feel.",
+        "The failed terrain alpha-removal control is retained; the corrected control clears/restores the texture while retaining the visible actor and unchanged pixel thresholds. The earlier two-case and later six-case local graphical results retain their distinct source identities and do not qualify the complete current-head hosted union."
+      ],
+      "sources": [
+        "../tools/play/run_pace004_campaign.py",
+        "../tools/play/pace004_execution.py",
+        "../tools/play/pace004_contract.py",
+        "../godot/tests/play_pace004_input_tape.gd",
+        "../.github/workflows/play-pace004.yml"
+      ]
+    },
+    {
+      "id": "PLAY-PALETTE-01",
+      "query": "Why does actual ANGLE use bounded palette crossfade, what presentation difference is intended, and can local compiler timings substitute for hosted qualification?",
+      "canonical": [
+        "systems/material-appearance-and-rendering.md"
+      ],
+      "facts": [
+        "Actual opengl3_angle selects a source-bound cached bounded shader using the previous base colour and complete incoming finish; native OpenGL retains full previous and current finishes.",
+        "Full and bounded outgoing presentations are intentionally different; source edits invalidate the derived cache and repeated Main construction must not stack prefixes.",
+        "Actual source/variant and visible World bindings, material/camera oracle and cold/warm shared-Main evidence remain required. Claude local Windows timings are a separate cohort; whole-process duration is not compiler-only time.",
+        "The v3 contract preserves the original 24 captures, 132 slots, conditions, blends and 2/255 threshold. It adds all 4096 scalar samples of the actual-bound GPU program texture against the registered edited program reconstructed from an independently pinned canonical image, plus an actual rendered clamped-negative rejection, alongside per-backend interpolation/full-current/camera, cross-backend outgoing-base and exact native atlas gates.",
+        "Complete-finish cross-backend images retain an explicit finished_image_diagnostic with observed passed/failed status, differing-pixel count, maximum error and original threshold. The corrected v2 11-pixel failure remains failed; coherent wrong endpoints cannot replace independent semantic qualification or fresh v3 execution."
+      ],
+      "sources": [
+        "../godot/scripts/palette_shader_selector.gd",
+        "../godot/shaders/material_palette.gdshader",
+        "../tools/play/palette_qualification_contract.py",
+        "../tools/play/run_palette_shader_qualification.py"
       ]
     }
   ]
