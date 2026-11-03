@@ -21,7 +21,7 @@ Stopped PLAY recovery: [canonical ownership and controls](systems/player-control
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 
-CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).
+CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md), and [Linux display setup qualification](audits/2026-11-03-linux-display-mesa-utils-removal.md).
 
 ## Current owner policy and accepted baseline — 2026-10-31
 
