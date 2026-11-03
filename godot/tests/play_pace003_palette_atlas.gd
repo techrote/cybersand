@@ -34,7 +34,7 @@ func _frame() -> void:
 func _world(phase: int, smoke_previous: bool = false) -> Image:
 	var world := Image.create_empty(SIZE.x, SIZE.y, false, Image.FORMAT_RG8)
 	world.fill(Color(0, 0, 0, 1))
-	for material_id: int in range(132):
+	for material_id: int in range(CyberMaterialAppearanceLut.MATERIAL_COUNT):
 		var origin := Vector2i((material_id % 16) * 40, floori(float(material_id) / 16.0) * 40)
 		for shape_index: int in range(SHAPES.size()):
 			var shape: Rect2i = SHAPES[shape_index]

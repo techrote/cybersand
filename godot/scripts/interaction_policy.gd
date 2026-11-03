@@ -10,7 +10,7 @@ const MERCURY_PERIOD: int = 30
 
 static func supports_load(material: int) -> bool:
 	match material:
-		2, 13, 14, 19, 23, 25, 26, 27, 29:
+		2, 13, 14, 19, 23, 25, 26, 27, 29, 135, 136:
 			return true
 		_:
 			return false

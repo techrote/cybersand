@@ -44,6 +44,8 @@ func _ready() -> void:
 	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 46 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
 	_button(column, "Play session — shared desktop course, five mechanical players and solver choices", "play_session")
 	_button(column, "Player playground — stunt buggy, trials bike, acrobat, spacecraft, material swarms and jet barrel", "player_playground")
+	if not OS.has_feature("web") and not bool(ProjectSettings.get_setting("cybersand/web_demo",false)):
+		_button(column, "Paired material lab — break shells, expose powder and try finite curing", "paired_materials")
 	_button(column, "Deepworks — 1024 × 1024 multilayer material exhibition", "deepworks")
 	_button(column, "Blacksite Nine — connected industrial complex", "blacksite")
 	_button(column, "Neon Reliquary — four showcase districts", "showcase")
@@ -86,5 +88,8 @@ func launch(destination: String) -> void:
 	elif destination == "depth": scene = "res://depth_lab.tscn"
 	elif destination == "deepworks": scene = "res://deepworks.tscn"
 	elif destination == "player_playground": scene = "res://player_playground.tscn"
+	elif destination == "paired_materials":
+		if OS.has_feature("web") or bool(ProjectSettings.get_setting("cybersand/web_demo",false)): return
+		scene = "res://paired_material_playground.tscn"
 	get_tree().set_meta("cybersand_feature", destination)
 	get_tree().change_scene_to_file(scene)

@@ -1,0 +1,17 @@
+{
+  "captured_date": "2026-11-03",
+  "platform": "Linux x86_64 / Ubuntu24.04 WSL",
+  "compiler": "GCC13.3.0 -O1 C++20",
+  "source_base": "15422c54ef55badfb782742aaca974cc777c1a64",
+  "native_input_manifest_sha256": "35a9908da3ed9248053af77439d1747a65fe0058c20666d568f7d6425e7880fe",
+  "binary_sha256": "d67c22aeab4ffb0df3b9788eb398f315c7ff0afc6873ccd23fdcd181c4a318d0",
+  "capture_receipt_sha256": "ace5cea0d59d5610ca795c6190bf4cd507f2e4d643b8ec5e9480add8f415a1a2",
+  "hash_version": 2,
+  "hashes": {
+    "empty": 12641602789305355948,
+    "selected": 555040076829390279,
+    "pressure": 204027985366062442,
+    "normalized": 8800875187443783774
+  },
+  "qualification": "Four measured fixture physical hashes after quantity schema2 only. Temporary acquisition harness omits only the old frozen receipt-hash assertion; all63 other assertions pass. Independent Python struct/hashlib encoding must match all seven complete native byte files before admission. Not published-runtime or independent physics proof. V1 historical facts/vectors remain unchanged."
+}

@@ -2,8 +2,8 @@
   "schema": "lcb-liquid-capability-matrix-v1",
   "status": "LCB-000 Gate C classifications with source-qualified execution. Descriptor fields are parsed source facts; family statuses, variants and kernel_specialization text remain reviewed design classifications. Current defaults execute unchanged; executable_today and executable_variants identify qualified opt-in candidates.",
   "sources": {
-    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
-    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+    "native/include/cybersand/material.hpp": "d05733da3ac64211c0cf8ca758bbedef22e4482b2d50be487f80b1a9de9b98e5",
+    "native/include/cybersand/interaction_rules.hpp": "b030b59c5bbabcfed60649d3b0e8fb7405ea861d7cf4337259277abc2d77be43"
   },
   "families": {
     "freemass_v1": {
@@ -57,7 +57,7 @@
     "proposed_alternate": "documented substitute candidate; NOT selectable (refused as not_selectable) until its owner qualifies it",
     "rejected": "construction must refuse this mapping before replacing any session"
   },
-  "material_descriptor_count": 132,
+  "material_descriptor_count": 138,
   "liquid_rows": [
     {
       "material_id": 3,
@@ -949,6 +949,6 @@
   "non_liquid_policy": {
     "status": "rejected",
     "note": "family assignment applies to liquid descriptors only; any assignment for these materials is refused",
-    "count": 120
+    "count": 126
   }
 }

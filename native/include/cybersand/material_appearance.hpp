@@ -153,6 +153,12 @@ inline constexpr std::array<VisualStateSource, kMaterialDefinitions.size()>
         VisualStateSource::Zero,   // solar panel
         VisualStateSource::Zero,   // carbon fibre
         VisualStateSource::Zero,   // heat-shield tile
+        VisualStateSource::Zero,   // stone wall (no loose collapse state)
+        VisualStateSource::Zero,   // salt wall
+        VisualStateSource::StateB, // coal wall burn progress
+        VisualStateSource::Zero,   // dry binder
+        VisualStateSource::StateA, // activated binder cure remaining
+        VisualStateSource::Zero,   // binder crust (bound quantity is not color)
     }};
 
 [[nodiscard]] constexpr std::uint8_t project_visual_state(

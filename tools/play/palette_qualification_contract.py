@@ -26,10 +26,14 @@ BOUNDED = b'#define CYBER_BOUNDED_CROSSFADE\n'
 VERSION = '4.7.stable.official.5b4e0cb0f'
 GODOT_HASH = '5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88'
 TOLERANCE = 2 / 255
-ORACLE_VERSION = 'palette-bounded-crossfade-v3'
-ORACLE_ASSERTIONS = 1274
-# Independently registered canonical 4x256 RGBAH bytes, unchanged by v3.
-PROGRAM_SHA256 = '6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d'
+ORACLE_VERSION = 'palette-bounded-crossfade-v4-paired'
+ORACLE_ASSERTIONS = 1329
+MATERIAL_SLOTS = 138
+LEGACY_MATERIAL_SLOTS = 132
+# v4 registers six appended catalogue rows only. Shader algorithms, backend
+# predicates, GPU-input controls and pixel tolerances retain their v3 meaning.
+PROGRAM_SHA256 = 'b79199e249748dfbdf23bbd113daa6f36f3e7be870ff41baf76c9273829edc10'
+LEGACY_PROGRAM_SHA256 = '6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d'
 PROGRAM_PROBE_SHA256 = '9a21543c0cdf2105bf8350a94e7526547eed3a71f3062cee85370601f313e93e'
 # Runtime preparation is separate from the immutable scientific inputs.
 PYTHON_PACKAGES = ('numpy==2.3.5', 'Pillow==12.3.0')
@@ -43,7 +47,7 @@ VISUAL = (
 )
 SUCCESS = {
  'guard': r'^PALETTE_COMPILE_BOUNDS: PASS$',
- 'material': r'^MATERIAL_PRESENTATION_RENDER: actual pixels passed \(time override, still scenery, anchoring, crossfade endpoints, conditions, all 132 ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks\)$',
+ 'material': r'^MATERIAL_PRESENTATION_RENDER: actual pixels passed \(time override, still scenery, anchoring, crossfade endpoints, conditions, all 138 ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks\)$',
  'vapour': r'^MATERIAL_VAPOUR_PIPELINE: actual pixels, 26 assertions, 0 failures$',
  'water': r'^WATER_PRESENTATION_RENDER: actual pixels coverage=2/4 at 2x, 8/16 at 4x; oriented right edge passed$',
  'integration': r'^WATER_FEEL_INTEGRATION: 24 policy cases \+ 70 scenario builds/reset/invalid/actions/RG8/authority passed default_hash=.+$',
@@ -337,7 +341,7 @@ def reference_pixels(condition: int):
                         [1, 0, 1], [1, 1, 0], [1, 1, 1]], dtype=float)
     response = max(0.0, min(1.0, (condition / 255 - .25) / .5))
     response = response * response * (3 - 2 * response)
-    ids = np.minimum((np.arange(36)[:, None] // 4) * 16 + np.arange(64)[None, :] // 4, 131)
+    ids = np.minimum((np.arange(36)[:, None] // 4) * 16 + np.arange(64)[None, :] // 4, MATERIAL_SLOTS - 1)
     rgb = colours[ids % 7] * (.25 + .5 * response)
     rgb = rgb * (1 - .5 * response) + np.array([0, 1, 0]) * (.5 * response)
     rgb += np.array([.5, 0, .25]) * (.125 * response)
@@ -349,6 +353,10 @@ def edited_program(canonical: bytes):
     require(len(canonical) == 8192 and hashlib.sha256(canonical).hexdigest() == PROGRAM_SHA256,
             'Canonical CPU program differs from the independent byte registration')
     values = np.frombuffer(canonical, dtype='<f2').reshape(256, 4, 4).copy()
+    legacy = values.copy()
+    legacy[LEGACY_MATERIAL_SLOTS:MATERIAL_SLOTS] = values[MATERIAL_SLOTS]
+    require(hashlib.sha256(legacy.tobytes()).hexdigest() == LEGACY_PROGRAM_SHA256,
+            'Legacy/unused CPU program rows differ outside the six appended rows')
     require(values[2, 3, 3] == 33 and values[3, 3, 3] == 29, 'Registered Sand/Water HDR instructions differ')
     values[:, 0] = (0, 1, 0, .5)
     values[:, 1] = (.25, .75, .25, .75)
@@ -440,7 +448,7 @@ def verify_oracle(result: dict, directory: Path, report: dict) -> dict:
             and type(result.get('assertions')) is int and result['assertions'] == ORACLE_ASSERTIONS
             and type(result.get('failures')) is int and result['failures'] == 0
             and result.get('conditions') == [0, 128, 255] and result.get('blends') == [0, .5, 1]
-            and result.get('material_slots') == 132 and _same(result.get('tolerance'), TOLERANCE),
+            and result.get('material_slots') == MATERIAL_SLOTS and _same(result.get('tolerance'), TOLERANCE),
             'Bounded oracle scientific inventory differs')
     verify_shader(result.get('shader'), 'angle_bounded_crossfade', report['shader_hashes'])
     expected = {(condition, blend) for condition in (0, 128, 255) for blend in (0, .5, 1)}
@@ -460,7 +468,7 @@ def verify_oracle(result: dict, directory: Path, report: dict) -> dict:
         controls[row['condition']] = reference, complete, row['reference']['format']
     maximum = 0.0; camera_maximum = 0.0
     for row in rows:
-        require(row.get('material_slots') == 132, 'Outgoing material slot inventory differs')
+        require(row.get('material_slots') == MATERIAL_SLOTS, 'Outgoing material slot inventory differs')
         actual = pixels(directory, row['capture'], (64, 36)); pan = pixels(directory, row['pan_capture'], (64, 36))
         reference, complete, image_format = controls[row['condition']]
         expected_pixels = reference * (1 - row['blend']) + complete * row['blend']
@@ -480,7 +488,7 @@ def verify_oracle(result: dict, directory: Path, report: dict) -> dict:
         row.get('readback_usec', 0) > row.get('requested_usec', 0) >= 0 for row in result['draw_timings']),
         'Missing bounded oracle actual draw/readback inventory')
     program_inputs = verify_program_inputs(result.get('program_inputs'), directory, result['draw_timings'])
-    return {'frames': 9, 'material_slots': 132, 'retained_images': 24, 'max_rgba_error': maximum,
+    return {'frames': 9, 'material_slots': MATERIAL_SLOTS, 'retained_images': 24, 'max_rgba_error': maximum,
             'max_camera_error': camera_maximum, 'tolerance': TOLERANCE, 'program_inputs': program_inputs}
 
 

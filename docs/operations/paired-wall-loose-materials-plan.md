@@ -5,10 +5,18 @@ document-kind: design
 scope: Implementation sequence and admission gates for authored load-bearing material shells, shared chemistry and finite local curing; no native implementation or qualification claim
 canonical-for: [paired-wall-loose-materials-plan]
 last-reviewed: 2026-11-03
-related-documents: [microscenarios-programme.md, ../systems/intermaterial-interactions.md, ../systems/materials-and-rule-kernels.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/soliding-lifecycle.md, gcr-rest-registration.md]
+related-documents: [microscenarios-programme.md, ../systems/intermaterial-interactions.md, ../systems/materials-and-rule-kernels.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/soliding-lifecycle.md, paired-materials-registration.md]
 ---
 
 # Paired wall and loose materials with finite curing
+
+**November3 bounded implementation:** the [current paired-material contract](../systems/paired-materials-and-curing.md)
+and [committed registration](paired-materials-registration.md) now own the six
+admitted IDs, full/no-overfill Water activation, state/accounting limits and
+desktop shell lab. The original proposal below remains its dated planning
+context. Optional resin/hardener, spent-binder recycling and broader fracture
+are not implied by the bounded implementation. Runtime qualification and owner
+acceptance remain separate.
 
 ## Decision and implementation boundary
 
@@ -170,7 +178,7 @@ is an inspection reference, not a request to stack future work on this branch.
 | 2. Shared chemistry | [`interaction_rules.hpp`](../../native/include/cybersand/interaction_rules.hpp), necessary narrow [`world.cpp`](../../native/src/world.cpp) kernel separation. Reuse INT-000 selection, product effects, source/context provenance and derived partner sets. | Matched wall/loose channel fixtures pass; no duplicate effects or movement inheritance; old material oracle remains unchanged. |
 | 3. Local break and collider lifetime | Native authoritative conversion/removal through existing bounded world commands; inspect [`cyber_native_cell_world.cpp`](../../godot/native_extension/cyber_native_cell_world.cpp), [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd), [`rapier_physics_bridge.gd`](../../godot/scripts/rapier_physics_bridge.gd). Change adapters only if the existing contract cannot express the event. | Native hard revision, snapshot consumption and Rapier retirement/rebuild are observed. No ghost support, duplicated contact response, or early collider destruction before native commit. |
 | 4. Finite curing | Explicit new descriptors and INT-000 context/lifecycle entries; narrow World implementation and quantity-ledger integration if admitted. | Agent/activation/product ledger closes; agent removal and no-agent controls stop the front; current Cement fixtures remain unchanged. |
-| 5. Presentation and lab | [`cell_world.gd`](../../godot/scripts/cell_world.gd) ID/fallback boundary, [`material_appearance.hpp`](../../native/include/cybersand/material_appearance.hpp), [`material_appearance_lut.gd`](../../godot/scripts/material_appearance_lut.gd), picker metadata and a small dedicated scene/host linked from [`gcr_fleet_playground.gd`](../../godot/scripts/gcr_fleet_playground.gd). | Full material painting and existing flyer controls remain usable; explicit shell/binder labels and source receipt; no UI code implements chemistry. |
+| 5. Presentation and lab | [`cell_world.gd`](../../godot/scripts/cell_world.gd) ID/fallback boundary, [`material_appearance.hpp`](../../native/include/cybersand/material_appearance.hpp), [`material_appearance_lut.gd`](../../godot/scripts/material_appearance_lut.gd), picker metadata and a small dedicated scene/host linked from [`gcr_fleet_playground.gd` at the retained proposal source](https://github.com/techrote/cybersand/blob/8ce36b0e41c9292ab0b1f02cf7789450082a67b5/godot/scripts/gcr_fleet_playground.gd). | Full material painting and existing flyer controls remain usable; explicit shell/binder labels and source receipt; no UI code implements chemistry. |
 | 6. Qualification and handoff | Native/host regressions, compact receipts and canonical documentation/retrieval updates. | Technical gates and playable review are distinct; draft PR remains unmerged pending owner acceptance. |
 
 Prefer a narrow reuse of current authoritative paint/explosion commands for the

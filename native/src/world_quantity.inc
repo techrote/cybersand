@@ -352,10 +352,12 @@ void World::validate_quantity_ledger(bool scan_authority) const {
         const bool produces = kernel == RuleKernel::Steam || kernel == RuleKernel::Lava ||
             kernel == RuleKernel::Ice || kernel == RuleKernel::Cloner || kernel == RuleKernel::Rocket;
         const bool consumes = kernel == RuleKernel::Metal || kernel == RuleKernel::Ice ||
-            kernel == RuleKernel::Acid || kernel == RuleKernel::Plant;
+            kernel == RuleKernel::Acid || kernel == RuleKernel::Plant ||
+            kernel == RuleKernel::FiniteBinder;
         const auto& flow = quantity_.kernel_rules[i];
         if ((!produces && flow.produced != 0U) || (!consumes && flow.consumed != 0U) ||
-            flow.produced % maximum != 0U)
+            flow.produced % maximum != 0U ||
+            (kernel == RuleKernel::FiniteBinder && flow.consumed % maximum != 0U))
             throw std::invalid_argument("quantity kernel has an impossible Water role or quantum");
     }
     for (std::size_t i = 0; i < kPairInteractionRules.size(); ++i) {

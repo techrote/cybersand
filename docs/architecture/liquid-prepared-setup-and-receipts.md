@@ -4,11 +4,35 @@ status: Current
 document-kind: design
 scope: Accepted main LCB-001 native construction contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and source-matched Windows/Linux acceptance; application-host proof and downstream family work remain open
 canonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-03
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-state-transition-matrix.md, lcb-pressure-inertial-handoff.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../operations/current-and-historical-validation.md, ../reference/status-and-roadmap.md]
 ---
 
 # Native liquid prepared setup, receipts and quantity accounting
+
+## Paired-material quantity extension — 2026-11-03
+
+**Current experimental branch source:** [PAIR-CURE-001](../systems/paired-materials-and-curing.md)
+appends a finite-binder Water-consuming kernel. Nested quantity-ledger schema2
+has20 kernel slots instead of19; the56 pair slots, six kinds and256 material
+population slots retain their indexes. Old nested quantity schemas reject
+explicitly at physical restore, rather than being read with a different implicit
+array length. This source extension requires fresh runtime qualification; the
+accepted historical sources and publications below keep their original scope.
+
+The new kernel books consumed free Water while retaining its quantity in binder
+stateB. Bound chemical quantity is inspected separately from free Water and
+pressure overfill; it is not added to the free-Water ledger's visible total.
+Closed curing fixtures must reconcile free plus bound quantity, with external
+edits identified separately. Partial or overfilled Water is not consumed by
+this admission. Existing Cement and Water transport laws remain unchanged.
+
+The current independent receipt oracle is
+[`liquid-run-receipt-vectors-v2.json`](../reference/liquid-run-receipt-vectors-v2.json),
+separate from retained v1 fixture bytes. This oracle revision is not a renumbering
+of the unchanged prepared-setup or typed-run-receipt schema1 APIs. Material and
+ledger edits change source-sensitive identities; historical hashes are not
+recalculated as if they described the new catalogue.
 
 ## Combined Trial successor scope
 
@@ -174,7 +198,8 @@ at merge `ec58d919b3d904fbd338eaccc25de35782c41a24` on 2026-10-25.
 Its final tested head `560f9a4143852c5a508b5f33a4a7f2059edbcbdc` and the merge
 share tree `e8e999899bd35bf20df4b03cf9c0620d86089ff1`. The native prepared setup,
 normalization receipt, typed run receipt, construction-attempt receipt and
-quantity ledger use their explicit schema/version **1** contracts below. The
+quantity ledger used their explicit schema/version **1** contracts at that
+checkpoint. Current branch quantity schema2 is separated above and below. The
 complete physical-state hash version and CYPS persistence format are **2**.
 The [accepted checkpoint](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
 records source-matched Windows/Linux runtime publication and the final required
@@ -770,7 +795,8 @@ arbitrary rehashed lifetime history is established by these digests.
 
 ## Quantity aggregates, producers and continuation
 
-`QuantityLedgerSnapshot` schema 1 is native World-wide accounting, including
+`QuantityLedgerSnapshot` schema2 in current experimental source is native
+World-wide accounting, including
 stored cells under body masks and outside the current simulation region.
 
 | Data | Unit and interpretation |
@@ -778,7 +804,7 @@ stored cells under body masks and outside the current simulation region.
 | Visible Water and pressure overfill | Exact selected-precision Water integer units |
 | Six source/sink kinds | Setup normalization, external edit, generated chunk, deferred event, pair reaction and kernel conversion; produced/consumed Water are separate unsigned totals |
 | 56 pair-rule entries and event counts | Rule-specific gross Water inputs/products, with actual consumed partial/overfill quantity and initialized full Water outputs |
-| 19 kernel-rule entries | Rule-specific Water source/sink quantities, checked against the kernel's actual source/sink roles and full-cell production quantum |
+| 20 kernel-rule entries | Rule-specific Water source/sink quantities, including appended finite-binder activation; checked against actual source/sink roles and full-cell production quantum |
 | Current/prepared populations | Two exact arrays of 256 material cell-count slots; these are per-species counts, not inferred common liquid mass |
 | Construction seed | Original/prepared identities, original baseline, normalization source/sink and receipt digest; attached once by the private native initializer |
 
@@ -807,11 +833,11 @@ copy/scan the entire ledger for each painted cell. Both paths preserve checked
 arithmetic and transactional external refusal; phase reduction retains its
 complete worker-delta merge. The dated audit retains the full Windows setup
 timeout that motivated this repair and a source-fenced construction comparison.
-In the measured Windows x64 layout a delta is 3816 bytes: the default 4096 slots
-add **15,630,336 bytes**. `QuantityLedgerSnapshot` is **6088 bytes** and
-`QuantityConstructionSeed` is **208 bytes**; the optional seed is already part
-of the snapshot layout. These are accounting storage costs, not total World
-memory or a performance qualification.
+In the retained schema1 Windows x64 study a delta was3816 bytes: its default4096 slots
+add **15,630,336 bytes**. `QuantityLedgerSnapshot` was **6088 bytes** and
+`QuantityConstructionSeed` was **208 bytes**; the optional seed was already part
+of that snapshot layout. These retained schema1 accounting costs are not the
+current20-kernel-slot layout, total World memory or a new performance qualification.
 
 Checked counters reject external/generated overflow before authority or a new
 chunk changes. Worker/reduction overflow quarantines the partially advanced

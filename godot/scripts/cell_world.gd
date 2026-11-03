@@ -143,9 +143,17 @@ const POLYMER_PANEL: int = 128
 const SOLAR_PANEL: int = 129
 const CARBON_FIBRE: int = 130
 const HEAT_SHIELD_TILE: int = 131
+const STONE_WALL: int = 132
+const SALT_WALL: int = 133
+const COAL_WALL: int = 134
+const DRY_BINDER: int = 135
+const ACTIVATED_BINDER: int = 136
+const BINDER_CRUST: int = 137
 const FIRST_BUILDING_MATERIAL: int = 81
-const LAST_MATERIAL: int = 131
-# Display names for IDs FIRST_BUILDING_MATERIAL..LAST_MATERIAL.
+const LAST_BUILDING_MATERIAL: int = HEAT_SHIELD_TILE
+const LAST_MATERIAL: int = BINDER_CRUST
+# Labels for IDs FIRST_BUILDING_MATERIAL..LAST_MATERIAL. The appended
+# PAIR-CURE-001 materials require native chemistry and are refused by fallback.
 const BUILDING_MATERIAL_NAMES: Array[String] = [
 	"pine planks",
 	"birch log",
@@ -198,6 +206,12 @@ const BUILDING_MATERIAL_NAMES: Array[String] = [
 	"solar panel",
 	"carbon fibre",
 	"heat-shield tile",
+	"stone wall",
+	"salt wall",
+	"coal wall",
+	"dry binder",
+	"activated binder",
+	"binder crust",
 ]
 
 const EMISSION_FLAG_NONE: int = 0
@@ -1525,6 +1539,8 @@ func _set_cell_internal(
 	material_id: int,
 	emission_flags: int = EMISSION_FLAG_NONE
 ) -> bool:
+	if material_id >= STONE_WALL:
+		return false # Native-only chemistry; never silently emulate static powder.
 	if not in_bounds(x, y):
 		return false
 	var index: int = cell_index(x, y)
@@ -2179,6 +2195,8 @@ func _adjust_movable_count(x: int, y: int, old_material: int, new_material: int)
 
 
 func _write_direct(x: int, y: int, material_id: int) -> void:
+	if material_id >= STONE_WALL:
+		return
 	var index: int = cell_index(x, y)
 	cells[index] = material_id
 	flow_budget[index] = _initial_lateral_flow(material_id)
@@ -2197,14 +2215,18 @@ func in_bounds(x: int, y: int) -> bool:
 	return x >= 0 and x < WORLD_WIDTH and y >= 0 and y < WORLD_HEIGHT
 
 
-func _is_hard_surface_material(material_id: int) -> bool:
-	if material_id >= LIMESTONE_BLOCK and material_id <= LAST_MATERIAL:
+static func is_hard_material(material_id: int) -> bool:
+	if material_id >= LIMESTONE_BLOCK and material_id <= LAST_BUILDING_MATERIAL:
 		return true
 	match material_id:
-		WALL, CLONER, WOOD, ICE, METAL, CONCRETE, GLASS:
+		WALL, CLONER, WOOD, ICE, METAL, CONCRETE, GLASS, STONE_WALL, SALT_WALL, COAL_WALL, BINDER_CRUST:
 			return true
 		_:
 			return false
+
+
+func _is_hard_surface_material(material_id: int) -> bool:
+	return is_hard_material(material_id)
 
 
 func is_movable(material_id: int) -> bool:

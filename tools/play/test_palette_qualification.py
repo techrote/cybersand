@@ -24,9 +24,26 @@ import run_palette_shader_qualification as runner
 
 HASHES = {'full_crossfade': 'a' * 64, 'angle_bounded_crossfade': 'b' * 64}
 # Original canonical CPU bytes, independently retained from 19ddd366's unchanged
-# factory. Compression keeps the registered 8,192-byte golden input compact.
-CANONICAL_PROGRAM = zlib.decompress(base64.b64decode(
+# factory. Keep the v3 golden input unchanged, then author only v4's six rows.
+LEGACY_CANONICAL_PROGRAM = zlib.decompress(base64.b64decode(
     'eNrtmL9v00AUx2/OzFAkdEohQW6jVDiOU/+4S6+oEFoaknTOwHQzcyYvzJ0tFiR2zx6tm++PIHPn7jzHThWjyI9ihJA4v8XWR9/zu2/ee7mEkIeLPcT+ax9n9bw9r+ditr2j/c+h8i0mTyq8oucQuV7Zyk5O5YnyxQKefGUTRrsx6B2e83wN50x6SS+awfNQvlQ+7To+YYvy/dTWrOUkL8jF7vqU043eCZ1QinSkjrJZff4Zsj/Mv+8LhGPri2b+t2/ArQHtSq/wxyp57qB+RQ+jK8KW4b0nPUIOnoEzvOTj+EKfEyZukPwQ/hXJ7yPiT7TLA+Vzlo4q+vmfqs/f9Hde1N+nsv7k1t8B4XLQeQ533jrIK44exi5hccnTUezqQI/byP7F9e7+73zrsf5dNqw/6L8E+g5yJ/IY8i/6b6CZcx6fkSFB9NGUsEmYnILmOPaVP9noaR8cEdCz/Ur/edCXTLkV/bzZfGrMRUOOrf8a5WwF9XX3U33BROSJc9CB+caejFbWbUC79x5htyW3hprr4ZcOeYOs/xbhE4S/Q/j7hvqGPML0l80+P6y/yBUyHxfNOOZvhPl//Yj5s299hGcIJ9NmXFS4VX6/tXqtHu2nIz2Mpuh8qs8fy+8Dkh/CowpPIXK+DJch7TtiPc4q/BvElkci6Wm2nxfnG5gJR1W+gticr1zlar4ePxVkVj9fsoXh/zmv7w/DDTe85Plc3pxv7Twk/E79u+/nAQ+K87kcKNthsf+v+4f+/2C44YYbbrjhhhtuuOGGG2644Yb/Av8BLU5WzA=='))
+
+
+def paired_program_fixture():
+    # Independently registered Godot4.7 RGBAH CPU bytes for only rows132..137.
+    # Preserve their actual half precision instead of re-rounding decimal
+    # authoring literals through NumPy's different float-to-half conversion.
+    rows = bytes.fromhex(
+        '00000000000000000000003c003c003c003c003c00000000000000000000003c'
+        '00000000000000000000003c003c003c003c003c00000000000000000000003c'
+        '003c0034662670391e253339003c663c003c003c00006632003d66322422003c'
+        '00000000000000000000003c003c003c003c003c000000000000000000002050'
+        '99395c39a33899350000a539cc3cb83a003c003c000000000000000000002050'
+        '00000000000000000000003c003c003c003c003c000000000000000000008049')
+    return LEGACY_CANONICAL_PROGRAM[:132 * 32] + rows + LEGACY_CANONICAL_PROGRAM[138 * 32:]
+
+
+CANONICAL_PROGRAM = paired_program_fixture()
 
 
 def shader(variant='angle_bounded_crossfade'):
@@ -89,7 +106,7 @@ def program_inputs(directory):
 
 def oracle(directory):
     result = {'fixture': c.ORACLE_VERSION, 'assertions': c.ORACLE_ASSERTIONS, 'failures': 0, 'backend': 'opengl3',
-              'conditions': [0, 128, 255], 'blends': [0, .5, 1], 'material_slots': 132,
+              'conditions': [0, 128, 255], 'blends': [0, .5, 1], 'material_slots': 138,
               'tolerance': c.TOLERANCE, 'shader': shader(), 'rows': [], 'oracle_inputs': [],
               'draw_timings': [{'requested_usec': 10 + i * 2, 'readback_usec': 11 + i * 2} for i in range(24)]}
     for condition in result['conditions']:
@@ -101,7 +118,7 @@ def oracle(directory):
         for blend in result['blends']:
             values = (reference * (1 - blend) + current * blend).astype('<f2').astype(float)
             panned = np.roll(values, (-2, -3), (0, 1))
-            result['rows'].append({'condition': condition, 'blend': blend, 'material_slots': 132,
+            result['rows'].append({'condition': condition, 'blend': blend, 'material_slots': 138,
                 'capture': capture(directory, f'actual-{condition}-{blend}', values),
                 'pan_capture': capture(directory, f'pan-{condition}-{blend}', panned),
                 'max_rgba_difference': 0.0, 'camera_pan_difference': 0.0})
@@ -304,7 +321,18 @@ class PixelReadback(unittest.TestCase):
 
     def test_complete_independent_half_precision_oracle_passes(self):
         value = self.check()
-        self.assertEqual((value['frames'], value['material_slots'], value['retained_images']), (9, 132, 24))
+        self.assertEqual((value['frames'], value['material_slots'], value['retained_images']), (9, 138, 24))
+
+    def test_paired_registration_appends_only_six_program_rows(self):
+        self.assertEqual(c.ORACLE_VERSION, 'palette-bounded-crossfade-v4-paired')
+        self.assertEqual(hashlib.sha256(LEGACY_CANONICAL_PROGRAM).hexdigest(), c.LEGACY_PROGRAM_SHA256)
+        self.assertEqual(hashlib.sha256(CANONICAL_PROGRAM).hexdigest(), c.PROGRAM_SHA256)
+        old = np.frombuffer(LEGACY_CANONICAL_PROGRAM, '<f2').reshape(256, 4, 4)
+        current = np.frombuffer(CANONICAL_PROGRAM, '<f2').reshape(256, 4, 4)
+        np.testing.assert_array_equal(old[:132], current[:132])
+        np.testing.assert_array_equal(old[138:], current[138:])
+        restored = current.copy(); restored[132:138] = current[138]
+        self.assertEqual(hashlib.sha256(restored.tobytes()).hexdigest(), c.LEGACY_PROGRAM_SHA256)
 
     def test_registered_cpu_program_has_positive_outgoing_conditions(self):
         zero, full = c.reference_pixels(0), c.reference_pixels(255)
@@ -349,7 +377,9 @@ class PixelReadback(unittest.TestCase):
         with self.assertRaises(ValueError): self.check()
 
     def test_wrong_shader_or_assertion_receipt_refuses(self):
-        for key, value in [('failures', True), ('assertions', 1215), ('tolerance', .1), ('fixture', 'v1')]:
+        for key, value in [('failures', True), ('assertions', 1215), ('assertions', 1274),
+                           ('material_slots', 132), ('tolerance', .1), ('fixture', 'v1'),
+                           ('fixture', 'palette-bounded-crossfade-v3')]:
             original = copy.deepcopy(self.result); self.result[key] = value
             with self.subTest(key=key), self.assertRaises(ValueError): self.check()
             self.result = original
@@ -375,7 +405,7 @@ class PixelReadback(unittest.TestCase):
 
     def test_actual_gpu_hdr_input_and_rendered_clamped_negative_are_independent(self):
         value = self.check()['program_inputs']
-        self.assertEqual(value['canonical_sha256'], '6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d')
+        self.assertEqual(value['canonical_sha256'], 'b79199e249748dfbdf23bbd113daa6f36f3e7be870ff41baf76c9273829edc10')
         self.assertEqual((value['scalars_per_probe'], value['retained_probe_images'], value['production_bindings']), (4096, 2, 21))
         self.assertEqual((value['sand_rejection_error'], value['water_rejection_error']), (.5, .4375))
 

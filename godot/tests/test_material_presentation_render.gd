@@ -276,7 +276,7 @@ func _run() -> void:
 	await _check_fidelity_pass_two(full)
 
 	if failures == 0:
-		print("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, all 132 ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks)")
+		print("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, all 138 ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks)")
 	quit(failures)
 
 
@@ -431,7 +431,7 @@ func _check_single_cell_emission() -> void:
 # tested as negative controls at both ends of the unused byte range.
 func _check_catalogue_rendering() -> void:
 	var empty_render: Image = await _render(_blank(), _blank(), 1.0)
-	var atlas := Image.create_empty(SIDE.x * 12, SIDE.y * 11, false, Image.FORMAT_RGBA8)
+	var atlas := Image.create_empty(SIDE.x * 12, SIDE.y * ceili(float(CyberCellWorld.LAST_MATERIAL + 1) / 12.0), false, Image.FORMAT_RGBA8)
 	atlas.blit_rect(empty_render, Rect2i(Vector2i.ZERO, SIDE), Vector2i.ZERO)
 	for material_id: int in range(1, CyberCellWorld.LAST_MATERIAL + 1):
 		if material_id == 10:
@@ -463,7 +463,7 @@ func _check_catalogue_rendering() -> void:
 	if not evidence.is_empty():
 		_expect(DirAccess.make_dir_recursive_absolute(evidence) == OK,
 			"could not create the presentation evidence directory")
-		_expect(atlas.save_png(evidence.path_join("material-id-slots-000-131.png")) == OK,
+		_expect(atlas.save_png(evidence.path_join("material-id-slots-000-%03d.png" % CyberCellWorld.LAST_MATERIAL)) == OK,
 			"could not retain the rendered catalogue evidence")
 
 

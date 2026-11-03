@@ -9,7 +9,7 @@ const ATLAS_WIDTH: int = 64
 const ATLAS_HEIGHT: int = 256
 const PROGRAM_WIDTH: int = 4
 const PROGRAM_HEIGHT: int = 256
-const MATERIAL_COUNT: int = 132
+const MATERIAL_COUNT: int = 138
 
 # Texel 3 alpha stores one integer presentation-only flair class. The shader
 # uses it to select a bounded, texture-free procedural finish; zero remains the
@@ -207,6 +207,12 @@ const BASE_RGBA8: Array[int] = [
 	0x1A2E5EFF, # 129 solar panel
 	0x222429FF, # 130 carbon fibre
 	0x1A1A1DFF, # 131 heat-shield tile
+	0x7E7E84FF, # 132 stone wall
+	0xECE8DAFF, # 133 salt wall
+	0x2B292DFF, # 134 coal wall
+	0xBCAE8FFF, # 135 dry binder
+	0x756953FF, # 136 activated binder
+	0xA29C8BFF, # 137 binder crust
 ]
 
 # Fractional value range around each canonical colour. These are appearance
@@ -231,6 +237,8 @@ const VALUE_VARIATION: Array[float] = [
 	0.080, 0.050, 0.060, 0.120, 0.090, 0.080, 0.070, 0.040,
 	0.040, 0.060, 0.040, 0.050, 0.040, 0.090, 0.040, 0.050,
 	0.040, 0.050, 0.060,
+	# 132+ paired forms and finite binder; no changes to legacy rows.
+	0.045, 0.035, 0.080, 0.060, 0.040, 0.025,
 ]
 
 
@@ -450,6 +458,12 @@ static func create_program_image() -> Image:
 	_set_program_row(program, 127, Color(0.0, 0.0, 0.0, 0.0), Vector2(0.0, 1.0),
 		Vector2(0.78, 0.78), Vector2(1.0, 1.0), Vector2(0.20, 0.20),
 		Color(0.18, 1.05, 0.70, 0.0)) # phosphor afterglow
+	_set_program_row(program, 134, Color(1.0, 0.25, 0.025, 0.68), Vector2(0.02, 0.65),
+		Vector2(1.0, 1.10), Vector2(1.0, 1.0), Vector2(0.0, 0.20),
+		Color(1.25, 0.20, 0.012, 0.0)) # coal wall shares Coal burn presentation
+	_set_program_row(program, 136, Color(0.70, 0.67, 0.58, 0.35), Vector2(0.0, 180.0/255.0),
+		Vector2(1.20, 0.84), Vector2(1.0, 1.0), Vector2(0.0, 0.0),
+		Color(0.0, 0.0, 0.0, 0.0)) # local countdown lightens the damp grains
 
 	# Flair assignment changes only texel 3 alpha, preserving the condition and
 	# emission profiles above. Each branch is constant-bounded and performs no
@@ -501,7 +515,10 @@ static func create_program_image() -> Image:
 	_set_flair(program, [18], FLAIR_FUNGUS)
 	_set_flair(program, [15], FLAIR_MITE)
 	_set_flair(program, [17], FLAIR_ROCKET)
-	_set_flair(program, range(81, MATERIAL_COUNT), FLAIR_BUILDING)
+	_set_flair(program, range(81, 132), FLAIR_BUILDING)
+	_set_flair(program, [132, 133, 134], FLAIR_MASONRY)
+	_set_flair(program, [135, 136], FLAIR_POWDER)
+	_set_flair(program, [137], FLAIR_CONCRETE)
 	_set_flair(program, [9], FLAIR_ICE)
 	_set_flair(program, [12, 32], FLAIR_REACTIVE_LIQUID)
 	_set_flair(program, [33], FLAIR_MERCURY)

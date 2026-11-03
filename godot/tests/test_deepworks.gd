@@ -65,7 +65,7 @@ func _run() -> void:
 	var generation_before: int = runtime.generation()
 	var old_probe: int = runtime.material_at("play", Vector2i(20, 20))
 	for mutation: Dictionary in [
-		{"material": 10}, {"material": 132}, {"material": 3.0}, {"layer": "background"},
+		{"material": 10}, {"material": Cell.LAST_MATERIAL + 1}, {"material": 3.0}, {"layer": "background"},
 		{"layer": "foreign"}, {"district": -1}, {"period": 0}, {"period": -1},
 		{"first_tick": -1}, {"first_tick": 36001}, {"repeat": -1}, {"repeat": 10001},
 		{"rect": Rect2i(0, 10, 2, 2)}, {"rect": Rect2i(50, 50, 0, 1)},

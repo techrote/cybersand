@@ -137,8 +137,7 @@ static func _index(x: int, y: int) -> int:
 
 
 static func protected_material(material: int) -> bool:
-	return material == 1 or material == 5 or material == 28 or material == 31 \
-		or (material >= 38 and material <= CyberCellWorld.LAST_MATERIAL and not editable_material(material))
+	return CyberCellWorld.is_hard_material(material) and not editable_material(material)
 
 
 static func editable_material(material: int) -> bool:

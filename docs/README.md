@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-03
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
@@ -554,3 +554,19 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+## Paired wall materials and finite curing — 2026-11-03
+
+The [current experimental contract](systems/paired-materials-and-curing.md) owns
+Stone/Salt/Coal wall forms, shared native chemistry and the separate Dry Binder →
+Activated Binder → Binder Crust family. Activation consumes one full, non-overfilled
+Water cell; new crust cannot activate neighboring powder. Existing Cement keeps
+its original behavior. The desktop-native shell lab compares all-loose, intact
+and breached shells, with free painting and a finite-dose curing tray.
+
+The [implementation registration](operations/paired-materials-registration.md)
+and [original plan](operations/paired-wall-loose-materials-plan.md) distinguish
+admitted source from deferred designs. The feature remains unmerged; exact
+source/runtime qualification, owner gameplay acceptance and broad granular-rest
+acceptance are separate. New materials require the matching native runtime;
+fallback/Web do not silently emulate the new chemistry.

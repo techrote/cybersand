@@ -2015,20 +2015,30 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
     PackedByteArray cells;
     cells.resize(static_cast<std::int64_t>(size.x) * size.y);
     auto* bytes = cells.ptrw();
-    std::int64_t water = 0;
+    std::int64_t water = 0, overfill = 0, bound_water = 0;
     for (auto y = 0; y < size.y; ++y) for (auto x = 0; x < size.x; ++x) {
         const auto m = static_cast<std::uint8_t>(world_->stored_material(origin.x + x, origin.y + y));
         bytes[y * size.x + x] = m;
         ++counts[m]; sum_y[m] += y + origin.y;
         // liquid_mass() is an occupancy query and hides cells under a body.
         // Conservation must count authoritative stored mass, including overlap.
-        if (m == static_cast<std::uint8_t>(cybersand::Material::Water))
+        if (m == static_cast<std::uint8_t>(cybersand::Material::Water)) {
             water += world_->stored_state_a(origin.x + x, origin.y + y);
+            overfill += world_->pressure_cell(origin.x + x, origin.y + y).overfill;
+        }
+        if (m == static_cast<std::uint8_t>(cybersand::Material::ActivatedBinder) ||
+            m == static_cast<std::uint8_t>(cybersand::Material::BinderCrust))
+            bound_water += world_->stored_state_b(origin.x + x, origin.y + y);
     }
     Array material_counts, material_sum_y;
     for (std::size_t i = 0; i < counts.size(); ++i) { material_counts.append(counts[i]); material_sum_y.append(sum_y[i]); }
     result["counts"] = material_counts; result["sum_y"] = material_sum_y;
     result["water_mass"] = water; result["cells"] = cells;
+    // Additional read-only accounting for closed binder/Water fixtures. Retain
+    // water_mass's existing visible-Water meaning for older apparatus.
+    result["water_overfill"] = overfill;
+    result["bound_water"] = bound_water;
+    result["total_free_and_bound_water"] = water + overfill + bound_water;
     result["hash"] = String::num_uint64(world_->state_hash(), 16);
     result["completed_ticks"] = static_cast<std::int64_t>(world_->completed_tick_index());
     result["attempted_ticks"] = static_cast<std::int64_t>(world_->tick_index());

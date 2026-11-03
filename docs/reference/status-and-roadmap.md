@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-03
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1763,3 +1763,24 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+## Paired materials and finite curing — 2026-11-03
+
+**Current experimental branch source:** [PAIR-CURE-001](../systems/paired-materials-and-curing.md)
+starts from fresh main89020b9e, preserving the accepted stopped-PLAY recovery and
+rendering paths. Six IDs132..137 provide Stone/Salt/Coal wall forms plus a finite
+Water-activated binder/crust family. Old material identity and Cement behavior
+remain unchanged. Chemistry stays native and hard support remains Rapier-owned;
+no sleep, friction/load law or ordinary actor-mass retuning is included.
+
+The [registered scope](../operations/paired-materials-registration.md) includes
+full/no-overfill Water admission, retained bound quantity/countdown, explicit
+quantity schema2, source-matched Windows/Linux libraries and a desktop shell
+destruction lab. Existing unmerged flyer/GCR PR351 stays separate. New-material
+source availability does not establish runtime qualification, owner acceptance
+or REM-004 completion. The focused implementation PR stays unmerged.
+
+**Deferred:** general structural fracture/detachment, spent-binder recycling,
+optional resin/hardener and any automatic wall destruction from actor control
+forces. Finite activation does not adopt existing Cement's Concrete-neighbor
+curing as a self-propagating mechanism.

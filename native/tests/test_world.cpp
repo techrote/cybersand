@@ -1984,7 +1984,7 @@ void test_sandspiel_material_catalog() {
     }
 
     const auto descriptors = cybersand::MaterialRules::descriptors();
-    require(descriptors.size() == 132, "MaterialRules descriptor span has the wrong extent");
+    require(descriptors.size() == 138, "MaterialRules descriptor span has the wrong extent");
     cybersand_material_info info{};
     require(cybersand_material_get_info(static_cast<std::uint16_t>(Material::Lava), &info) == 1,
             "C API could not query imported material information");
@@ -2052,7 +2052,7 @@ void test_themed_combustibles_reuse_bounded_kernel() {
 
 void test_building_material_catalog() {
     for (std::uint16_t id = static_cast<std::uint16_t>(cybersand::kFirstBuildingMaterial);
-         id < cybersand::kMaterialDefinitions.size(); ++id) {
+         id <= static_cast<std::uint16_t>(Material::HeatShieldTile); ++id) {
         const auto material = static_cast<Material>(id);
         const auto& definition = cybersand::material_definition(material);
         require(cybersand::valid_material(id) && definition.valid && !definition.name.empty(),
@@ -2255,7 +2255,7 @@ void test_building_level_snapshot_round_trip() {
     }
 
     for (const std::int32_t invalid_id : {
-             -1, 10, 132, 255, 256, 65536,
+             -1, 10, 138, 255, 256, 65536,
              std::numeric_limits<std::int32_t>::min(),
              std::numeric_limits<std::int32_t>::max()}) {
         require(!cybersand::demo::valid_material(invalid_id),
@@ -2272,7 +2272,7 @@ void test_building_level_snapshot_round_trip() {
     // Put the bad value at the end so validation must inspect the entire
     // payload before a replacement World can be constructed.
     const auto last_cell = bytes.size() - cybersand::demo::kCellBytes;
-    for (const auto invalid_id : std::array<std::uint8_t, 3>{10U, 132U, 255U}) {
+    for (const auto invalid_id : std::array<std::uint8_t, 3>{10U, 138U, 255U}) {
         bytes[last_cell] = invalid_id;
         bool rejected = false;
         try {
@@ -2557,6 +2557,10 @@ void test_granular_player_support_policy() {
     for (const auto& definition : cybersand::MaterialRules::descriptors()) {
         const auto material = static_cast<Material>(&definition - cybersand::kMaterialDefinitions.data());
         if (!cybersand::MaterialRules::supports_granular_load(material)) continue;
+        // Activated Binder is an internal, continuously changing cure state;
+        // its zero-bound default deliberately retires to Dry Binder. Its valid
+        // state freshness and transition to hard support are tested separately.
+        if (material == Material::ActivatedBinder) continue;
         World world;
         for (int x=48; x<80; ++x) {
             world.set(x,104,Material::Wall);
@@ -3148,14 +3152,14 @@ void test_int000_sparse_schema_shadow_equivalence() {
     require(cybersand::kInteractionSchemaVersion == 1U,
             "INT schema version changed");
     require(cybersand::kInteractionProfileId == "int.current-behaviour" &&
-                cybersand::kInteractionProfileVersion == 2U,
+                cybersand::kInteractionProfileVersion == 3U,
             "INT current profile identity changed");
     require(InteractionRules::channels().size() == 7U,
             "INT channel catalogue is incomplete");
     require(cybersand::kCurrentOraclePairRuleCount == frozen_current.size() &&
                 InteractionRules::pair_rules().size() > frozen_current.size(),
             "INT compact Current oracle prefix changed");
-    require(InteractionRules::specialized_rules().size() == 19U,
+    require(InteractionRules::specialized_rules().size() == 20U,
             "INT specialized Current inventory is incomplete");
     require(InteractionRules::layer_kinds().size() == 5U &&
                 InteractionRules::authored_layers().empty(),
@@ -3366,7 +3370,7 @@ void test_int000_sparse_schema_shadow_equivalence() {
                 "themed glass inherited base Glass INT semantics");
     }
     require(InteractionRules::coverage().size() >= 7U &&
-                InteractionRules::tuning_passes().size() == 2U &&
+                InteractionRules::tuning_passes().size() == 3U &&
                 InteractionRules::tuning_passes()[1].parent == "int.pass.current-oracle",
             "INT coverage/pass metadata is incomplete");
 
@@ -3808,6 +3812,7 @@ void test_water_normalization_canonical_vectors();
 void test_liquid_run_receipt_native_identity();
 void test_liquid_construction_refusal_native_issuance();
 void test_quantity_ledger();
+void run_paired_material_tests();
 
 int main(int argc, char** argv) {
     struct Test {
@@ -3980,6 +3985,7 @@ int main(int argc, char** argv) {
         {"LCB-001 native run receipt identity", test_liquid_run_receipt_native_identity},
         {"LCB-001 native-issued construction refusals", test_liquid_construction_refusal_native_issuance},
         {"LCB-001 native quantity ledger", test_quantity_ledger},
+        {"PAIR-CURE-001 paired chemistry and finite activation", run_paired_material_tests},
     };
 
     std::size_t passed = 0;

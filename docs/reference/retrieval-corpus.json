@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-31",
+  "reviewed": "2026-11-03",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -119,7 +119,10 @@
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
-    "operations/ci-execution-and-performance.md"
+    "operations/ci-execution-and-performance.md",
+    "systems/paired-materials-and-curing.md",
+    "operations/paired-materials-registration.md",
+    "operations/paired-wall-loose-materials-plan.md"
   ],
   "navigation": [
     "README.md",

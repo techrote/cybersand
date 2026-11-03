@@ -4,8 +4,8 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-10-19
-related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
+last-reviewed: 2026-11-03
+related-documents: [paired-materials-and-curing.md, themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
 # Materials and rule kernels
@@ -24,9 +24,13 @@ Test executions are scoped in the [evidence ledger](../reference/validation-evid
 [material.hpp](../../native/include/cybersand/material.hpp) defines byte-sized
 `Material`, `MaterialDefinition`, `RuleKernel`, and constexpr descriptor lookup.
 IDs 0–19 preserve the attributed Sandspiel numbering; 10 is invalid and
-`Gas` aliases `Smoke` at 4. Project IDs continue through 131 (`kLastMaterial`;
-building materials start at `kFirstBuildingMaterial` = 81). Excluding Empty and
-invalid 10 leaves 130 paintable materials. UI slots are not serialized IDs.
+`Gas` aliases `Smoke` at 4. Current experimental source continues through137
+(`kLastMaterial`); the retained building range is81..131
+(`kFirstBuildingMaterial`/`kLastBuildingMaterial`). Excluding Empty and invalid10
+leaves136 valid nonempty IDs; UI slots and offered palette entries are separate
+from serialized identity. The [paired-material contract](paired-materials-and-curing.md)
+owns appended walls132..134 and finite-binder forms135..137, with runtime
+qualification and owner acceptance kept separate from source availability.
 Descriptor and pair-rule edits also change the LCB liquid-policy identity; see the
 [regeneration sequence](../architecture/liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit).
 
@@ -60,6 +64,7 @@ identity or completion timing.
 | Work lane | Current period | Scope |
 |---|---:|---|
 | Eligible transport/density motion | Each selected tick, except Mercury/powder permeability | Empty movement and native Water transfer remain full rate; [granular policy](granular-interaction-policy.md) owns pair exclusions and deadlines |
+| Finite Binder activation/countdown | Each eligible cell update | At most8 local probes/one consumed full Water cell;180 countdown updates; no crust-neighbor activation |
 | Selected burn/charge/lifecycle work | 2 ticks | Kernel-specific, not every lifetime; Fire/Foam have full-rate portions |
 | Pair chemistry, thermal/growth/capture checks | 4 ticks | Persistent contacts can react; brief contacts can be missed |
 | Smoke lifetime/crowding | 8 ticks | Coordinate-staggered decay |
@@ -113,6 +118,8 @@ Exact triggering and writes are in `update_rule_kernel` and
 | Cloner, Mite, Rocket | Capture/emission, feeding/movement, payload/launch/trail/impact |
 | Salt, Brine, Sodium, Gunpowder | Dissolution and energetic contact reactions |
 | Cement, Concrete | Flowing wet Cement and environment-dependent cure |
+| Stone Wall, Salt Wall, Coal Wall | Explicit hard forms sharing only admitted parent chemistry; immobile until real conversion/destruction |
+| Dry/Activated Binder, Binder Crust | Finite Water activation, granular countdown and hard cured product; no propagated activation |
 | Toxic Sludge, Mercury | Purification reaction and high-density liquid exchange |
 | Paste, Slush | Viscous whole-cell yield that can retain heaps |
 
@@ -146,6 +153,8 @@ owns IDs 38–80: 41 inert hard surfaces plus combustible Oak Timber/Thatch. The
 [building catalogue](building-material-catalogue.md) owns IDs 81–131: 17 combustible
 woods/fibres/polymers, 25 materials with versioned pair reactions and 9 inert
 surfaces (MAT-002, 2026-10-18).
+The [paired-material contract](paired-materials-and-curing.md) owns IDs132..137.
+Its new finite kernel does not change existing Cement30/Concrete31 behavior.
 
 ## Boundaries and extension obligations
 
@@ -165,6 +174,9 @@ building surfaces as static but does not reproduce native combustion or pair
 reactions.
 Native descriptors, fallback constants, and appearance tables are not generated
 from one catalogue.
+The fallback refuses native-only IDs132+ at its write boundary rather than
+silently emulating the new binder as a static cell. The shell lab requires a
+matching native profile and is unavailable on fallback/Web.
 
 Before adding/changing a material, identify state-byte meaning, numeric units,
 radii, conversion/source-sink accounting, cadence, wake/dirty, save/hash impact,

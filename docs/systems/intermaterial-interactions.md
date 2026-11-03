@@ -4,8 +4,8 @@ status: Current
 document-kind: contract
 scope: Versioned sparse authoring, resolution, provenance, coverage and migration contract for non-kinetic intermaterial semantics
 canonical-for: [intermaterial-interactions, interaction-schema, interaction-provenance, interaction-coverage]
-last-reviewed: 2026-10-19
-related-documents: [../operations/microscenarios-programme.md, materials-and-rule-kernels.md, ../operations/microscenario-reference-pack.md, ../reference/status-and-roadmap.md]
+last-reviewed: 2026-11-03
+related-documents: [paired-materials-and-curing.md, ../operations/microscenarios-programme.md, materials-and-rule-kernels.md, ../operations/microscenario-reference-pack.md, ../reference/status-and-roadmap.md]
 ---
 
 # Intermaterial interaction substrate
@@ -35,11 +35,15 @@ The native authored source is native/include/cybersand/interaction_rules.hpp.
 Current schema/profile:
 
 - schema ID cybersand.interactions, version 1;
-- profile ID int.current-behaviour, version 2 (version 1 was the 14-rule oracle
-  catalogue; version 2 adds the MAT-002 building pass, 2026-10-18);
+- profile ID int.current-behaviour, version3 in current experimental source
+  (version1 was the14-rule oracle; version2 added MAT-002; version3 adds the
+  bounded paired-form/finite-binder extension on2026-11-03);
 - tuning-pass root int.pass.current-oracle, version 1;
 - tuning pass int.pass.mat002-building-materials, version 1, parent
-  int.pass.current-oracle.
+  int.pass.current-oracle;
+- tuning pass int.pass.pair-cure-001, version1, parent
+  int.pass.mat002-building-materials. Source availability is separate from
+  source-matched runtime qualification and owner acceptance.
 
 The source is sparse constexpr data plus a deterministic resolver. It is
 human-reviewable and diffable. **Current since MAT-002:** the production resolver
@@ -98,6 +102,26 @@ inherit base-Glass thermal pair semantics. Any later expansion is a versioned
 tuning decision with fixtures/evidence.
 
 ## Compact pair migration
+
+### Paired forms and finite curing — current experimental source
+
+The [PAIR-CURE-001 contract](paired-materials-and-curing.md) admits only three
+explicit chemical-parent mappings: Stone Wall132→Stone13, Salt Wall133→Salt23
+and Coal Wall134→Coal27. The contact resolver, participant/partner cache and
+scanned oracle use the same mapping. Existing56 pair rules keep their IDs,
+indexes, roles and probability boundaries. A surviving paired endpoint retains
+its wall form; genuine products remain ordinary materials. This does not turn
+legacy same-product writes into a global state-preservation rule.
+
+Movement and collision use the actual descriptor. Shared Coal survival writes
+retain Coal Wall, while terminal Dust is loose. Finite Binder135/136 adds
+`int.kernel.finite-binder.cure.v1` as the twentieth specialized entry, with explicit consumed
+full-cell Water and retained bound quantity. Partial/overfilled Water refuses;
+crust never supplies activation. Existing Cement context and cadence stay
+unchanged. The current native profile also exposes copied material/form metadata
+for inspection without providing mutable descriptor authority.
+
+### Retained original migration
 
 The retained INT-000 oracle contains 14 sparse compact reactions over IDs 0–80.
 The corresponding prefix of `kPairInteractionRules` preserves their stable rule
