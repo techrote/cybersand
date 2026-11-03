@@ -1,0 +1,128 @@
+{
+  "schema": "lcb-feel-registration-v1",
+  "id": "lcb.feel.campaign.v1",
+  "issue": 360,
+  "registered": "2026-11-03",
+  "admitted_by": "lcb.feel.preflight.v1 ADMITTED (docs/audits/2026-11-03-lcb360-feel-preflight.md)",
+  "purpose": "Seven-scenario native correctness campaign: one registered primary fixture per executable slot x four Water families (reference, matched radius 3) x configured workers 1/4 x Windows/Linux, at each fixture's own horizon. Slot 7 has no actor-free controlled fixture and is a registered gap, not an executed row.",
+  "horizon_ticks": 1200,
+  "hash_interval_ticks": 10,
+  "workers": [1, 4],
+  "platforms": ["windows", "linux"],
+  "material": 3,
+  "normalization": "water-normalize-v1",
+  "scenarios": [
+    {
+      "id": "lcb.feel.campaign.leak-side.vented.v1",
+      "slot": "1",
+      "fixture": "res://tests/fixtures/lcb/feel/lcb.feel.leak-side.vented.v1.json",
+      "fixture_id": "lcb.feel.leak-side.vented.v1",
+      "fixture_git_blob": "166c214fb384ef83d15bcbcc66686f769367b872",
+      "definition_hash": "017269b348bde90c95a93f53454b8bb72603b205b65098f9984e79c2274b25a3",
+      "horizon_ticks": 1200,
+      "census_region": [16, 16, 992, 272],
+      "void_region": [66, 50, 124, 124],
+      "checkpoint_ticks": [120, 180, 240, 360, 600, 900, 1200],
+      "expected": {"initial_water_quantity": 3478200, "quantity_rule": "constant", "water_sources": 0, "water_sinks": 0,
+                   "normalization_net_delta": 0, "allowed_materials": [0, 1, 3], "wall_delta_after_tick_zero_events": -8}
+    },
+    {
+      "id": "lcb.feel.campaign.drain-bottom.sealed.v1",
+      "slot": "2",
+      "fixture": "res://tests/fixtures/lcb/feel/lcb.feel.drain-bottom.sealed.v1.json",
+      "fixture_id": "lcb.feel.drain-bottom.sealed.v1",
+      "fixture_git_blob": "52f18df1e20c8dd0f8334ea4da22d570f64240dc",
+      "definition_hash": "580388a29c22d729a5e730a5b89f6f85faa556d36d8f2d6832a78ef35a5aaeb0",
+      "horizon_ticks": 1200,
+      "census_region": [16, 16, 992, 272],
+      "void_region": [66, 50, 124, 124],
+      "checkpoint_ticks": [120, 180, 240, 360, 600, 900, 1200],
+      "expected": {"initial_water_quantity": 3478200, "quantity_rule": "constant", "water_sources": 0, "water_sinks": 0,
+                   "normalization_net_delta": 0, "allowed_materials": [0, 1, 3], "wall_delta_after_tick_zero_events": -4}
+    },
+    {
+      "id": "lcb.feel.campaign.dam-release.d96.v1",
+      "slot": "3",
+      "fixture": "res://tests/fixtures/lcb/scenarios/lcb.dam.water.freemass.depth-96.v1.json",
+      "fixture_id": "lcb.dam.water.freemass.depth-96.v1",
+      "fixture_git_blob": "e189f876120de9970b97e7d59c5545adc11c47f8",
+      "definition_hash": "d1f701323c6af606ec3b16ae87e09858dbeebdaecf1e7c796bdfdbf9926aba9c",
+      "horizon_ticks": 1800,
+      "census_region": [16, 16, 992, 272],
+      "expected": {"initial_water_quantity": 4700160, "quantity_rule": "constant", "water_sources": 0, "water_sinks": 0,
+                   "normalization_net_delta": 0, "allowed_materials": [0, 1, 3], "wall_delta_after_tick_zero_events": -1536}
+    },
+    {
+      "id": "lcb.feel.campaign.vented-two-limb.v1",
+      "slot": "4",
+      "fixture": "res://tests/fixtures/lcb/scenarios/lcb.head.vented-two-limb.v1.json",
+      "fixture_id": "lcb.head.vented-two-limb.v1",
+      "fixture_git_blob": "7c39de2e54f797253e2419a6ddf7f6dfb3481582",
+      "definition_hash": "cc8bb9626d223ff35fa2376eabb1f3bfb068d379433254b10d1d9530cc1a03a9",
+      "horizon_ticks": 2400,
+      "census_region": [80, 48, 296, 224],
+      "expected": {"initial_water_quantity": 2758080, "quantity_rule": "constant", "water_sources": 0, "water_sinks": 0,
+                   "normalization_net_delta": 0, "allowed_materials": [0, 1, 3], "wall_delta_after_tick_zero_events": 0}
+    },
+    {
+      "id": "lcb.feel.campaign.remote-disturbance.v1",
+      "slot": "5",
+      "fixture": "res://tests/fixtures/lcb/scenarios/lcb.rest.remote-disturbance.v1.json",
+      "fixture_id": "lcb.rest.remote-disturbance.v1",
+      "fixture_git_blob": "c401036a37a9d2eecbfb98ea595bc87b7c2a6205",
+      "definition_hash": "7a50363425ffd5045e48902ca1147e546513cac3e6a9f4c8823b32032d565277",
+      "horizon_ticks": 1200,
+      "census_region": [16, 16, 992, 272],
+      "expected": {"initial_water_quantity": 38515200, "quantity_rule": "host_ledger",
+                   "normalization_net_delta": 0, "allowed_materials": [0, 1, 3], "wall_delta_after_tick_zero_events": 0}
+    },
+    {
+      "id": "lcb.feel.campaign.stream-steps.v1",
+      "slot": "6",
+      "fixture": "res://tests/fixtures/lcb/scenarios/lcb.shallow.stream-steps.v1.json",
+      "fixture_id": "lcb.shallow.stream-steps.v1",
+      "fixture_git_blob": "eadb66200edd908cf28f30337110c72aa851fc83",
+      "definition_hash": "85e93a9cff5a7a6b4515d1c7bfc17ba8f527ebed3d013a3722d39688e1df190b",
+      "horizon_ticks": 1800,
+      "census_region": [16, 16, 992, 272],
+      "expected": {"initial_water_quantity": 0, "quantity_rule": "host_ledger",
+                   "normalization_net_delta": 0, "allowed_materials": [0, 1, 3], "wall_delta_after_tick_zero_events": 0}
+    }
+  ],
+  "registered_gaps": [
+    {"slot": "7", "title": "Rapier impact / Water displacement", "reason": "No actor-free controlled fixture can carry a Rapier body; the native-only harness cannot execute it. The desktop Exploratory route and #362 own body-bearing contact measurement."}
+  ],
+  "arms": [
+    {"lane": "A", "role": "primary", "family": "freemass_v1", "variant": "reference", "radius": 3},
+    {"lane": "A", "role": "primary", "family": "cellular_yield_v1", "variant": "reference", "radius": 3},
+    {"lane": "A", "role": "primary", "family": "pressure_flow_v1", "variant": "reference", "radius": 3},
+    {"lane": "A", "role": "primary", "family": "inertial_cellular_v1", "variant": "reference", "radius": 3}
+  ],
+  "invariants": [
+    "requested Water family/variant/radius/workers equal native applied readback; every non-Water assignment equals the native default",
+    "normalization deltas are zero for these whole-cell fixtures",
+    "constant scenarios: complete stored Water equals the registered quantity after every tick",
+    "host_ledger scenarios: complete stored Water after tick t equals the initial quantity plus every scheduled edit delta applied before t, and the final quantity equals initial + explicit source - explicit sink",
+    "complete 1024x1024 inventory contains only registered materials; Wall changes only by the registered scheduled edits",
+    "no World failure; completed ticks equal the scenario horizon",
+    "inertial arms: complete motion census and zero negative vertical velocity; pressure arms: gas ledger closes",
+    "configured 1 and 4 workers of the same arm: identical physical hashes at every 10th tick and the horizon, identical terminal Water, inventory, inertial digest and pressure ledger",
+    "World retired after the run and the process exits 0"
+  ],
+  "observations_not_asserted": [
+    "declared fixture observations (tank, basin, reservoir, bands) per family",
+    "submerged Empty cells in the tank interior at checkpoints, classified by PF gas label when PressureFlow is enabled",
+    "native tick p50/p95/max over the full horizon (fresh process; not a benchmark)",
+    "observed task claimants and phase jobs per tick"
+  ],
+  "stop_conditions": [
+    "unexplained material creation or loss",
+    "invalid pressure or inertial state",
+    "requested policy not applied or silently replaced",
+    "hard-boundary corruption",
+    "worker-count divergence of the same arm",
+    "unsafe retirement or failed World reported healthy",
+    "source/runtime provenance mismatch"
+  ],
+  "negative_controls": ["same construction-time controls as lcb.feel.preflight.v1, re-executed at the campaign source"]
+}

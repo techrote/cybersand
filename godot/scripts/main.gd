@@ -13,6 +13,9 @@ const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_c
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
 const PLAYABLE_RECOVERY_META: StringName = &"cybersand_playable_recovery"
+# LCB-FEEL #360: copied comparison selection carried across a fresh-owner reload
+# that changes the construction-time native worker capacity.
+const LIQUID_FEEL_RELAUNCH_META: StringName = &"cybersand_liquid_feel_relaunch"
 var playable_session_panel: PopupPanel
 var playable_session_options: Dictionary = DEFAULT_PLAYABLE_OPTIONS.duplicate()
 var _playable_recovery_queued: bool = false
@@ -667,6 +670,39 @@ func _reload_failed_playable_scene(request: Dictionary) -> void:
 		_playable_recovery_queued = false
 		_playable_recovery_error = "Fresh session restart failed (%d); return to the launcher with F2." % error
 		microscenario_error = _playable_recovery_error
+
+
+# LCB-FEEL #360: rebuild a fresh desktop owner at another construction-time
+# worker capacity (0 = existing Auto policy), then reapply the copied accepted
+# comparison selection through the ordinary controlled preparation. The
+# in-memory project setting is the same input the constructor already reads;
+# nothing is saved to project.godot. Refusal keeps the running owner.
+func liquid_feel_relaunch(workers: int, envelope: Dictionary) -> bool:
+	if workers not in [0, 1, 4] or envelope.is_empty():
+		microscenario_error = "Unsupported comparison worker selection"
+		return false
+	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty() \
+		or not water_blind_set.is_empty() or not water_active_blind_label.is_empty() \
+		or physical_actor_session != null or _playable_recovery_queued:
+		microscenario_error = "Finish the pending or physical session before changing worker capacity"
+		return false
+	if not is_inside_tree() or get_tree().current_scene != self:
+		microscenario_error = "Comparison worker change requires the active desktop scene"
+		return false
+	ProjectSettings.set_setting("cybersand/native_worker_threads", workers)
+	paused = true
+	cancel_playable_course_input()
+	get_tree().set_meta(LIQUID_FEEL_RELAUNCH_META, envelope.duplicate(true))
+	_reload_for_liquid_feel.call_deferred()
+	return true
+
+
+func _reload_for_liquid_feel() -> void:
+	if not is_inside_tree() or get_tree().current_scene != self: return
+	var error: Error = get_tree().reload_current_scene()
+	if error != OK:
+		get_tree().remove_meta(LIQUID_FEEL_RELAUNCH_META)
+		microscenario_error = "Fresh comparison owner failed to start (%d); the previous owner is retained." % error
 
 
 func _restore_failed_playable_selection(request: Dictionary) -> void:
@@ -1497,6 +1533,10 @@ var camera_follow_enabled: bool = true
 var _playable_course_progress = PlayableCourseLap.new()
 var _playable_course_observation_valid: bool = false
 var _participation_sampling_requested: bool = false
+# Set by the liquid comparison controls only while their panel is shown or their
+# own accepted comparison session is live. Ordinary sessions keep sampling off.
+var liquid_feel_sampling_requested: bool = false
+var _liquid_feel_relaunch: Dictionary = {}
 var player_representation: StringName = CyberPlayerRepresentation.SAMPLED
 var sampled_runtime_recovery_enabled: bool = true
 var barrel_player_spawn_position: Vector2 = CHARACTER_SPAWN
@@ -1615,6 +1655,9 @@ func _ready() -> void:
 	var recovery: Dictionary = get_tree().get_meta(PLAYABLE_RECOVERY_META, {})
 	if get_tree().has_meta(PLAYABLE_RECOVERY_META): get_tree().remove_meta(PLAYABLE_RECOVERY_META)
 	if not recovery.is_empty(): paused = true
+	_liquid_feel_relaunch = get_tree().get_meta(LIQUID_FEEL_RELAUNCH_META, {})
+	if get_tree().has_meta(LIQUID_FEEL_RELAUNCH_META): get_tree().remove_meta(LIQUID_FEEL_RELAUNCH_META)
+	if not _liquid_feel_relaunch.is_empty(): paused = true
 	if OS.get_cmdline_user_args().has("--depth-lab") and not get_tree().has_meta("cybersand_depth_lab_visited"):
 		set_process(false)
 		call_deferred("open_depth_lab")
@@ -1743,7 +1786,9 @@ func _ready() -> void:
 		_restore_failed_playable_selection.call_deferred(recovery)
 		return
 	var feature: String = str(get_tree().get_meta("cybersand_feature", ""))
-	if PhysicalTrial.contains(feature):
+	if not _liquid_feel_relaunch.is_empty():
+		microscenario_panel.open_liquids.call_deferred(false, _liquid_feel_relaunch)
+	elif PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)
 	elif feature == "blacksite":
 		blacksite_nine_presentation.launch.call_deferred()
@@ -4370,8 +4415,8 @@ func recording_status_for_hud() -> Dictionary:
 
 
 func update_status() -> void:
-	var sampling_requested: bool = debug_stats_visible and debug_stats_expanded \
-		and not microscenario_hud_hidden and _playable_course_controls_active()
+	var sampling_requested: bool = (debug_stats_visible and debug_stats_expanded \
+		and not microscenario_hud_hidden and _playable_course_controls_active()) or liquid_feel_sampling_requested
 	if sampling_requested != _participation_sampling_requested:
 		_participation_sampling_requested = sampling_requested
 		simulation_worker.set_worker_participation_sampling(sampling_requested)

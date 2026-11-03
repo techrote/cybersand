@@ -1,0 +1,87 @@
+{
+  "schema": "lcb-feel-registration-v1",
+  "id": "lcb.feel.preflight.v1",
+  "issue": 360,
+  "registered": "2026-11-03",
+  "purpose": "Bounded 32-row admission preflight: two scenarios x four Water physical families x configured workers 1/4 x Windows/Linux, 30 completed native ticks, before any seven-scenario expansion.",
+  "horizon_ticks": 30,
+  "workers": [1, 4],
+  "platforms": ["windows", "linux"],
+  "material": 3,
+  "normalization": "water-normalize-v1",
+  "scenarios": [
+    {
+      "id": "lcb.feel.dam-release.d96.v1",
+      "fixture": "res://tests/fixtures/lcb/scenarios/lcb.dam.water.freemass.depth-96.v1.json",
+      "fixture_id": "lcb.dam.water.freemass.depth-96.v1",
+      "fixture_git_blob": "e189f876120de9970b97e7d59c5545adc11c47f8",
+      "definition_hash": "d1f701323c6af606ec3b16ae87e09858dbeebdaecf1e7c796bdfdbf9926aba9c",
+      "census_region": [16, 16, 992, 272],
+      "expected": {
+        "initial_water_quantity": 4700160,
+        "water_sources": 0,
+        "water_sinks": 0,
+        "normalization_net_delta": 0,
+        "allowed_materials": [0, 1, 3],
+        "wall_delta_after_tick_zero_events": -1536
+      }
+    },
+    {
+      "id": "lcb.feel.quiet-pool.v1",
+      "fixture": "res://tests/fixtures/lcb/scenarios/lcb.rest.deep-quiet-pool.v1.json",
+      "fixture_id": "lcb.rest.deep-quiet-pool.v1",
+      "fixture_git_blob": "4d49876b42b8e148c25b845671dedb2cb5b43cc1",
+      "definition_hash": "08d7ad7b7dcaef449ab61ae38c9fa9e9e939b1b4b4a0d66205551c07b760314f",
+      "census_region": [16, 16, 992, 272],
+      "expected": {
+        "initial_water_quantity": 38515200,
+        "water_sources": 0,
+        "water_sinks": 0,
+        "normalization_net_delta": 0,
+        "allowed_materials": [0, 1, 3],
+        "wall_delta_after_tick_zero_events": 0
+      }
+    }
+  ],
+  "arms": [
+    {"lane": "A", "role": "primary", "family": "freemass_v1", "variant": "reference", "radius": 3},
+    {"lane": "A", "role": "primary", "family": "cellular_yield_v1", "variant": "reference", "radius": 3},
+    {"lane": "A", "role": "primary", "family": "pressure_flow_v1", "variant": "reference", "radius": 3},
+    {"lane": "A", "role": "primary", "family": "inertial_cellular_v1", "variant": "reference", "radius": 3},
+    {"lane": "B", "role": "supplemental", "family": "freemass_v1", "variant": "reference", "radius": 2},
+    {"lane": "B", "role": "supplemental", "family": "cellular_yield_v1", "variant": "reference", "radius": 2},
+    {"lane": "B", "role": "supplemental", "family": "pressure_flow_v1", "variant": "reference", "radius": 2}
+  ],
+  "lane_notes": {
+    "A": "Matched execution geometry: every family at explicit radius 3. Physical-behaviour lane.",
+    "B": "Preferred geometry: non-IN families at their native radius 2. InertialCellular's preferred geometry is radius 3, identical to its lane-A row, which is therefore not re-executed. Timings of lanes A and B are never pooled."
+  },
+  "invariants": [
+    "requested Water family/variant/radius/workers equal native applied readback; every non-Water assignment equals the native default",
+    "normalization receipt net/positive/negative deltas equal the registered values",
+    "complete stored Water quantity (visible plus pressure overfill) equals the registered initial quantity after every completed tick",
+    "complete 1024x1024 inventory contains only registered materials; Wall changes only by the registered tick-zero edit",
+    "no World failure, tick failure count zero, completed ticks equal the horizon",
+    "inertial arms: complete motion census, zero negative vertical velocity",
+    "pressure arms: gas ledger closes",
+    "configured 1 and 4 workers of the same arm: identical per-tick physical hashes and identical terminal Water, inventory, inertial digest and pressure ledger",
+    "World retired after the run: no reference remains and the process exits 0"
+  ],
+  "stop_conditions": [
+    "unexplained material creation or loss",
+    "invalid pressure or inertial state",
+    "requested policy not applied or silently replaced",
+    "hard-boundary corruption",
+    "worker-count divergence of the same arm",
+    "unsafe retirement or failed World reported healthy",
+    "source/runtime provenance mismatch"
+  ],
+  "participation_semantics": "Configured workers are capacity. worker_threads_observed is the maximum distinct task-claiming participants in one phase dispatch of the completed tick, not utilization or proof of simultaneous overlap.",
+  "negative_controls": [
+    "inertial Water at radius 2 refuses and retains the previous World and receipt",
+    "whole-cell Water families refuse a fractional fill without explicit normalization and retain the previous World",
+    "explicit normalization of the same fractional fill records its exact nonzero deltas",
+    "pressure variants are refused for Oil and Brine",
+    "cached and cached_dormant variants are not offered for non-pressure families"
+  ]
+}

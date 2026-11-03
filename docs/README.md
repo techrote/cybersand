@@ -21,6 +21,8 @@ Stopped PLAY recovery: [canonical ownership and controls](systems/player-control
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 
+LCB-FEEL #360 four-family liquid comparison: [playable desktop route, catalogue and UNTESTED playtest sheet](operations/lcb-feel-comparison-route.md); [32-row admission preflight](audits/2026-11-03-lcb360-feel-preflight.md) (ADMITTED, native-only); seven-scenario campaign pending.
+
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).
 
 ## Current owner policy and accepted baseline — 2026-10-31

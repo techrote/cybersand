@@ -88,7 +88,12 @@ func setup(controller: Control) -> void:
 	add_child(liquid_dialog)
 	liquid_panel = LiquidPanel.new()
 	liquid_panel.custom_minimum_size = Vector2(740, 340)
-	liquid_dialog.add_child(liquid_panel)
+	liquid_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# The #360 comparison controls extend the panel; scroll instead of clipping.
+	var liquid_scroll := ScrollContainer.new()
+	liquid_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	liquid_dialog.add_child(liquid_scroll)
+	liquid_scroll.add_child(liquid_panel)
 	liquid_panel.setup(host)
 
 func _toggle_pause() -> void:
@@ -97,12 +102,20 @@ func _toggle_pause() -> void:
 	else:
 		host.paused = not host.paused
 
-func open_liquids(load_dam: bool = false) -> void:
+func open_liquids(load_dam: bool = false, relaunch: Dictionary = {}) -> void:
 	workbench.cancel_declared_window()
 	host.paused = true
-	if load_dam: liquid_panel.load_dam()
+	if not relaunch.is_empty(): liquid_panel.restore_relaunch(relaunch)
+	elif load_dam: liquid_panel.load_dam()
 	liquid_panel.refresh(host.tower_context)
-	liquid_dialog.popup_centered(Vector2i(780, 420))
+	if liquid_panel.feel_controls == null:
+		liquid_dialog.popup_centered(Vector2i(780, 420))
+		return
+	# Dock the larger A/B comparison dialog at the right edge so the compared
+	# liquid stays visible while it runs.
+	var area: Vector2i = Vector2i(get_viewport().get_visible_rect().size)
+	var width: int = mini(820, area.x)
+	liquid_dialog.popup(Rect2i(maxi(0, area.x - width - 16), 40, width, maxi(420, mini(area.y - 80, 900))))
 
 func modal_open() -> bool:
 	return definition_dialog.visible or liquid_dialog.visible or workbench.modal_open()
@@ -116,6 +129,7 @@ func _launch() -> void:
 func refresh(context: Dictionary) -> void:
 	workbench.refresh(context)
 	if liquid_dialog.visible: liquid_panel.refresh(context)
+	elif liquid_panel.feel_controls != null: liquid_panel.feel_controls.observe(context)
 	if host.microscenario_hud_hidden:
 		definition_dialog.hide()
 		liquid_dialog.hide()
