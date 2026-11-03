@@ -1,0 +1,10 @@
+{
+  "schema": "cybersand.gcr-creep.raw-bundle.v1",
+  "path": "build/gcr-creep-qualification-20261103-v2.zip",
+  "sha256": "b9311af5751ac1dd1a76faa88b3b955cd0878cf6ad59b128fc32e6f050fd20e8",
+  "bytes": 49586716,
+  "files": 197,
+  "uncompressed_bytes": 645381687,
+  "crc": "PASS",
+  "scope": "Local raw evidence retained outside Git; includes all failed/partial runs, complete raw captures and original host/source/runtime identities, historical inputs, strict reducers, compact-generation helper and metadata. No runtime binaries or project caches."
+}

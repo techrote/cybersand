@@ -1,14 +1,20 @@
 ---
 title: GCR-LA passive creep and powered burrowing investigation
-status: Planned
+status: Current
 document-kind: design
-scope: Frozen apparatus-only independent-body investigation; unchanged response laws, no structural-detachment edits or sleep
+scope: Frozen and executed apparatus-only independent-body investigation; unchanged response laws, no structural-detachment edits or sleep
 canonical-for: [gcr-creep-investigation]
 last-reviewed: 2026-11-03
 related-documents: [gcr-rest-registration.md, ../architecture/granular-contact-rest.md, ../systems/granular-review-flight-fleet.md]
 ---
 
 # GCR-LA passive creep and powered burrowing investigation
+
+**Current experimental apparatus:** the [dated qualification](../audits/2026-11-03-gcr-la-creep-and-burrowing.md)
+records32 dynamic-bank/barrel and8 separately registered flat-bed captures on
+actual Windows/Linux Godot/Rapier. This registration retains the prospective
+decisions and apparatus failures. Results do not select a new response law,
+close REM-004 or supply owner acceptance.
 
 ## Source, ownership and purpose
 
@@ -148,9 +154,10 @@ The separate [flat-bed protocol](../audits/gcr-creep-2026-11-03/flat-protocol.js
 registers four Sand/Kestrel arms per OS, eight new full-length captures. Remove
 only the tall bank, retain the same191-deep base and closed room, and use the
 constructor's default angle0 at(296,312). Native/bridge priming already matches
-that initial pose; no pose-reset or new owner is needed. Before the measured
-baseline, the existing arena's normal terrain revision consumer installs the
-authored hard borders. All body authoring, laws and numerical thresholds remain.
+that initial pose; no pose-reset or new owner is needed. Before the first measured
+Rapier step, the existing arena's normal terrain revision consumer installs the
+authored hard borders; the baseline census precedes that rebuild. All body
+authoring, laws and numerical thresholds remain.
 
 Compare coast, zero actuator ceilings, pulse and sustained drive. Drive uses the
 existing Q/E side jet via `trim=+0.15` with `move=0`, the original120/180/1200
