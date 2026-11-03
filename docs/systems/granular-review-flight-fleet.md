@@ -169,6 +169,17 @@ ejection/correction and sleep remain unchanged.
 
 ## What is qualified and what remains open?
 
+The [focused creep investigation](../operations/gcr-creep-registration.md)
+separates neutral controller input, zero actuator ceilings and powered movement.
+Neutral input can still request drag. Controller force and rig impulse telemetry
+describe bounded requests; `_apply_rig_impulse` can record a request before the
+per-part tiny-impulse guard suppresses backend delivery. Do not infer actual
+force delivery from exhaust, controller requests or that rig accumulator alone.
+The investigation's single-hull same-phase velocity difference measures delivery
+before the native wrench and Rapier integration, with rig safety participation
+reported separately. Its dynamic-bank and quiet flat-bed results have distinct
+scope; neither is a general sleep or friction acceptance result.
+
 This is a playable developer comparison surface, not a new physical acceptance
 population. The earlier [88-case qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md)
 retains its original source and failures: R/PRC is NO-GO as implemented, P/C never

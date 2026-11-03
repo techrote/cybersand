@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [How do we separate passive creep from powered flyer burrowing?](../operations/gcr-creep-registration.md)
+  Use actual actuator output and fresh application ledgers; quiet input can still
+  request drag. This investigation does not change structural detachment or sleep.
+
 - [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
   #302 satisfies mandatory native-busy lifecycle qualification; #304 is optional
   and retains its failed evidence. Remaining #268/#269/#270 product, stress,

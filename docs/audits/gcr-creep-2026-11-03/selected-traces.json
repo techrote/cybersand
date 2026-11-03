@@ -1,0 +1,538 @@
+{
+ "schema": "cybersand.gcr-creep.selected-stage-traces.v1",
+ "scope": "Four exact source-bound observations; selected phase accounting, not isolated causal interventions",
+ "rows": [
+  {
+   "population": "primary04",
+   "file": "windows/flyer-sand-unactuated.json",
+   "sha256": "4efb69c3f5d24190383d2bff16b0b6115c832e8c344c3b6902f39244c39ccb6b",
+   "tick": 600,
+   "position": [
+    286.416381835938,
+    412.619689941406
+   ],
+   "rotation": 0.00555288186296821,
+   "velocity_after_Rapier": [
+    0.00317350565455854,
+    11.0125780105591
+   ],
+   "omega_after_Rapier": -0.00337082426995039,
+   "command_active": false,
+   "input_action": {
+    "aim": [
+     1.0,
+     0.0
+    ],
+    "auxiliary": false,
+    "effort": 0.7,
+    "move": [
+     0.0,
+     0.0
+    ],
+    "primary": false,
+    "secondary": false,
+    "trim": 0.0
+   },
+   "reported_controller_force": [
+    0.0,
+    0.0
+   ],
+   "reported_controller_torque": 0.0,
+   "rig_reported_impulse": [
+    0.0,
+    0.0
+   ],
+   "rig_reported_torque_impulse": 0.0,
+   "native_sample_velocity": [
+    0.00676210690289736,
+    11.011833190918
+   ],
+   "native_sample_omega": -0.00263216928578913,
+   "application": {
+    "sample": 603,
+    "session": 1,
+    "age": 0,
+    "actual_mass": 0.100000001490116,
+    "actual_inertia": 0.975000023841858,
+    "velocity_before_correction": [
+     0.00676210690289736,
+     11.011833190918
+    ],
+    "omega_before_correction": -0.00263216928578913,
+    "correction": [
+     0.0,
+     0.0
+    ],
+    "velocity_after_zeroing": [
+     0.00676210690289736,
+     11.011833190918
+    ],
+    "omega_after_zeroing": -0.00263216928578913,
+    "velocity_after_wrench": [
+     0.00317350565455854,
+     10.3792428970337
+    ],
+    "omega_after_wrench": -0.00338093680329621,
+    "impulse": [
+     -0.000358860124833882,
+     -0.0632590055465698
+    ],
+    "angular_impulse": -0.000730048479232429,
+    "zeroing_removed_energy": 0.0,
+    "correction_potential_delta": 0.0,
+    "kinetic_before_correction": 6.06302913318304,
+    "kinetic_after_zeroing": 6.06302913318304,
+    "kinetic_after_wrench": 5.38644020780064
+   },
+   "computed_gcr": {
+    "event_accepted": [
+     0.0,
+     1.48000001907349
+    ],
+    "event_budget_cost": 1.48000001907349,
+    "normal_impulse": [
+     -0.000809159537311643,
+     -1.53572285175323
+    ],
+    "tangent_impulse": [
+     0.000450299412477762,
+     -0.00753625342622399
+    ],
+    "normal_accepted": 1.54511744770528,
+    "tangent_accepted": 0.00794668070699878,
+    "normal_capacity": 18.5199999809265,
+    "active_capacity_limiter": "global",
+    "nodes": 16,
+    "normal_cap_hits": 0,
+    "tangent_cap_hits": 48,
+    "energy_before": 33.3200710311135,
+    "energy_after": 5.38643997027885
+   },
+   "post_overlap": 54,
+   "hard_floor_contact": false,
+   "hard_clearance": true,
+   "material_work": [
+    27130,
+    38,
+    12
+   ]
+  },
+  {
+   "population": "flat01",
+   "file": "windows/flat-sand-sustained.json",
+   "sha256": "768b680d995af1343344eb3a72f62b8813b5f30e4eb2fc46652d5c0481b42899",
+   "tick": 900,
+   "position": [
+    310.587158203125,
+    316.400665283203
+   ],
+   "rotation": 0.0027888563927263,
+   "velocity_after_Rapier": [
+    -0.0742110908031464,
+    -0.818673849105835
+   ],
+   "omega_after_Rapier": -0.171142399311066,
+   "command_active": true,
+   "input_action": {
+    "aim": [
+     1.0,
+     0.0
+    ],
+    "auxiliary": false,
+    "effort": 0.7,
+    "move": [
+     0.0,
+     0.0
+    ],
+    "primary": false,
+    "secondary": false,
+    "trim": 0.15
+   },
+   "reported_controller_force": [
+    0.995492339134216,
+    0.0413340963423252
+   ],
+   "reported_controller_torque": 0.0,
+   "rig_reported_impulse": [
+    0.016591539606452,
+    0.000688901636749506
+   ],
+   "rig_reported_torque_impulse": 0.0,
+   "native_sample_velocity": [
+    -0.240126490592957,
+    -1.45889616012573
+   ],
+   "native_sample_omega": -0.17165581882,
+   "application": {
+    "sample": 902,
+    "session": 1,
+    "age": 0,
+    "actual_mass": 0.100000001490116,
+    "actual_inertia": 0.975000023841858,
+    "velocity_before_correction": [
+     -0.0742110908031464,
+     -1.45200717449188
+    ],
+    "omega_before_correction": -0.17165581882,
+    "correction": [
+     0.0,
+     0.0
+    ],
+    "velocity_after_zeroing": [
+     -0.0742110908031464,
+     -1.45200717449188
+    ],
+    "omega_after_zeroing": -0.17165581882,
+    "velocity_after_wrench": [
+     -0.0742110908031464,
+     -1.45200717449188
+    ],
+    "omega_after_wrench": -0.17165581882,
+    "impulse": [
+     0.0,
+     0.0
+    ],
+    "angular_impulse": 0.0,
+    "zeroing_removed_energy": 0.0,
+    "correction_potential_delta": 0.0,
+    "kinetic_before_correction": 0.12005614033777,
+    "kinetic_after_zeroing": 0.12005614033777,
+    "kinetic_after_wrench": 0.12005614033777
+   },
+   "computed_gcr": {
+    "event_accepted": [
+     0.0,
+     0.0
+    ],
+    "event_budget_cost": 0.0,
+    "normal_impulse": [
+     0.0,
+     0.0
+    ],
+    "tangent_impulse": [
+     0.0,
+     0.0
+    ],
+    "normal_accepted": 0.0,
+    "tangent_accepted": 0.0,
+    "normal_capacity": 0.0,
+    "active_capacity_limiter": "source",
+    "nodes": 0,
+    "normal_cap_hits": 0,
+    "tangent_cap_hits": 0,
+    "energy_before": 0.123666475792661,
+    "energy_after": 0.123666475792661
+   },
+   "post_overlap": 0,
+   "hard_floor_contact": false,
+   "hard_clearance": true,
+   "material_work": [
+    4096,
+    0,
+    2
+   ],
+   "controller_delivery": {
+    "actual_inertia": 0.975000023841858,
+    "actual_mass": 0.100000001490116,
+    "impulse": [
+     0.016591539606452,
+     0.000688898551743478
+    ],
+    "measured": true,
+    "method": "same-phase-backend-velocity-difference",
+    "omega_before_correction": -0.17165581882,
+    "sample": 902,
+    "sample_omega": -0.17165581882,
+    "sample_velocity": [
+     -0.240126490592957,
+     -1.45889616012573
+    ],
+    "scope": "single-hull rig actuation between native sampling and main response; includes rig safety impulses when movement_limited",
+    "session": 1,
+    "torque_impulse": 0.0,
+    "velocity_before_correction": [
+     -0.0742110908031464,
+     -1.45200717449188
+    ]
+   }
+  },
+  {
+   "population": "flat01",
+   "file": "windows/flat-sand-sustained.json",
+   "sha256": "768b680d995af1343344eb3a72f62b8813b5f30e4eb2fc46652d5c0481b42899",
+   "tick": 906,
+   "position": [
+    310.638916015625,
+    316.420623779297
+   ],
+   "rotation": -0.00674537383019924,
+   "velocity_after_Rapier": [
+    1.0101078748703,
+    -0.7012540102005
+   ],
+   "omega_after_Rapier": 0.277721405029297,
+   "command_active": true,
+   "input_action": {
+    "aim": [
+     1.0,
+     0.0
+    ],
+    "auxiliary": false,
+    "effort": 0.7,
+    "move": [
+     0.0,
+     0.0
+    ],
+    "primary": false,
+    "secondary": false,
+    "trim": 0.15
+   },
+   "reported_controller_force": [
+    0.971302032470703,
+    -0.0685119777917862
+   ],
+   "reported_controller_torque": 0.0,
+   "rig_reported_impulse": [
+    0.0161883682012558,
+    -0.00114186631981283
+   ],
+   "rig_reported_torque_impulse": 0.0,
+   "native_sample_velocity": [
+    0.745261669158936,
+    2.33642554283142
+   ],
+   "native_sample_omega": -0.168598219752312,
+   "application": {
+    "sample": 908,
+    "session": 1,
+    "age": 0,
+    "actual_mass": 0.100000001490116,
+    "actual_inertia": 0.975000023841858,
+    "velocity_before_correction": [
+     0.907145380973816,
+     2.32500696182251
+    ],
+    "omega_before_correction": -0.168598219752312,
+    "correction": [
+     0.0,
+     -0.0346234142780304
+    ],
+    "velocity_after_zeroing": [
+     0.907145380973816,
+     0.0
+    ],
+    "omega_after_zeroing": -0.168598219752312,
+    "velocity_after_wrench": [
+     1.0101078748703,
+     -1.33458733558655
+    ],
+    "omega_after_wrench": 0.278554558753967,
+    "impulse": [
+     0.0102962525561452,
+     -0.133458733558655
+    ],
+    "angular_impulse": 0.435973965011388,
+    "zeroing_removed_energy": 0.270282865617914,
+    "correction_potential_delta": 0.131568979209435,
+    "kinetic_before_correction": 0.325285867056833,
+    "kinetic_after_zeroing": 0.0550030014389196,
+    "kinetic_after_wrench": 0.177898475717336
+   },
+   "computed_gcr": {
+    "event_accepted": [
+     0.0,
+     0.0
+    ],
+    "event_budget_cost": 0.0,
+    "normal_impulse": [
+     -0.00151835440192372,
+     -0.133324176073074
+    ],
+    "tangent_impulse": [
+     0.0118146073073149,
+     -0.000134549947688356
+    ],
+    "normal_accepted": 0.13333282377038,
+    "tangent_accepted": 0.0118153730935924,
+    "normal_capacity": 4.0,
+    "active_capacity_limiter": "source",
+    "nodes": 2,
+    "normal_cap_hits": 0,
+    "tangent_cap_hits": 0,
+    "energy_before": 0.314572326830019,
+    "energy_after": 0.12408398946207
+   },
+   "post_overlap": 0,
+   "hard_floor_contact": false,
+   "hard_clearance": true,
+   "material_work": [
+    4096,
+    0,
+    2
+   ],
+   "controller_delivery": {
+    "actual_inertia": 0.975000023841858,
+    "actual_mass": 0.100000001490116,
+    "impulse": [
+     0.0161883719265461,
+     -0.00114185817074031
+    ],
+    "measured": true,
+    "method": "same-phase-backend-velocity-difference",
+    "omega_before_correction": -0.168598219752312,
+    "sample": 908,
+    "sample_omega": -0.168598219752312,
+    "sample_velocity": [
+     0.745261669158936,
+     2.33642554283142
+    ],
+    "scope": "single-hull rig actuation between native sampling and main response; includes rig safety impulses when movement_limited",
+    "session": 1,
+    "torque_impulse": 0.0,
+    "velocity_before_correction": [
+     0.907145380973816,
+     2.32500696182251
+    ]
+   }
+  },
+  {
+   "population": "flat01",
+   "file": "windows/flat-sand-sustained.json",
+   "sha256": "768b680d995af1343344eb3a72f62b8813b5f30e4eb2fc46652d5c0481b42899",
+   "tick": 907,
+   "position": [
+    310.658447265625,
+    316.415557861328
+   ],
+   "rotation": -0.00211668550036848,
+   "velocity_after_Rapier": [
+    1.17091703414917,
+    -0.0661697089672089
+   ],
+   "omega_after_Rapier": 0.276890724897385,
+   "command_active": true,
+   "input_action": {
+    "aim": [
+     1.0,
+     0.0
+    ],
+    "auxiliary": false,
+    "effort": 0.7,
+    "move": [
+     0.0,
+     0.0
+    ],
+    "primary": false,
+    "secondary": false,
+    "trim": 0.15
+   },
+   "reported_controller_force": [
+    0.964854955673218,
+    0.0105053838342428
+   ],
+   "reported_controller_torque": 0.0,
+   "rig_reported_impulse": [
+    0.016080915927887,
+    0.000175089735421352
+   ],
+   "rig_reported_torque_impulse": 0.0,
+   "native_sample_velocity": [
+    1.0101078748703,
+    -0.7012540102005
+   ],
+   "native_sample_omega": 0.277721405029297,
+   "application": {
+    "sample": 909,
+    "session": 1,
+    "age": 0,
+    "actual_mass": 0.100000001490116,
+    "actual_inertia": 0.975000023841858,
+    "velocity_before_correction": [
+     1.17091703414917,
+     -0.699503123760223
+    ],
+    "omega_before_correction": 0.277721405029297,
+    "correction": [
+     0.0,
+     0.0
+    ],
+    "velocity_after_zeroing": [
+     1.17091703414917,
+     -0.699503123760223
+    ],
+    "omega_after_zeroing": 0.277721405029297,
+    "velocity_after_wrench": [
+     1.17091703414917,
+     -0.699503123760223
+    ],
+    "omega_after_wrench": 0.277721405029297,
+    "impulse": [
+     0.0,
+     0.0
+    ],
+    "angular_impulse": 0.0,
+    "zeroing_removed_energy": 0.0,
+    "correction_potential_delta": 0.0,
+    "kinetic_before_correction": 0.130618043180173,
+    "kinetic_after_zeroing": 0.130618043180173,
+    "kinetic_after_wrench": 0.130618043180173
+   },
+   "computed_gcr": {
+    "event_accepted": [
+     0.0,
+     0.0
+    ],
+    "event_budget_cost": 0.0,
+    "normal_impulse": [
+     0.0,
+     0.0
+    ],
+    "tangent_impulse": [
+     0.0,
+     0.0
+    ],
+    "normal_accepted": 0.0,
+    "tangent_accepted": 0.0,
+    "normal_capacity": 0.0,
+    "active_capacity_limiter": "source",
+    "nodes": 0,
+    "normal_cap_hits": 0,
+    "tangent_cap_hits": 0,
+    "energy_before": 0.113204230874896,
+    "energy_after": 0.113204230874896
+   },
+   "post_overlap": 0,
+   "hard_floor_contact": false,
+   "hard_clearance": true,
+   "material_work": [
+    4096,
+    0,
+    2
+   ],
+   "controller_delivery": {
+    "actual_inertia": 0.975000023841858,
+    "actual_mass": 0.100000001490116,
+    "impulse": [
+     0.016080915927887,
+     0.00017508864402771
+    ],
+    "measured": true,
+    "method": "same-phase-backend-velocity-difference",
+    "omega_before_correction": 0.277721405029297,
+    "sample": 909,
+    "sample_omega": 0.277721405029297,
+    "sample_velocity": [
+     1.0101078748703,
+     -0.7012540102005
+    ],
+    "scope": "single-hull rig actuation between native sampling and main response; includes rig safety impulses when movement_limited",
+    "session": 1,
+    "torque_impulse": 0.0,
+    "velocity_before_correction": [
+     1.17091703414917,
+     -0.699503123760223
+    ]
+   }
+  }
+ ]
+}

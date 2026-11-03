@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+GCR-LA residual motion: the [passive-creep and powered-burrowing registration](operations/gcr-creep-registration.md)
+owns the bounded independent-body investigation while #281 structural detachment
+progresses separately. Neutral controller input and zero actuator force are
+different controls; shared response laws and sleep remain unchanged.
+
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).
