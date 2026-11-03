@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import struct
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -230,6 +231,55 @@ class PublicationTests(unittest.TestCase):
             changed.append("unrelated/source.cpp")
             with self.assertRaisesRegex(RuntimeError, "path set"):
                 subject.verify_index(paths, identity)
+
+    def test_real_git_staging_preserves_current_and_historical_evidence_bytes(self):
+        # Exercise the actual repository attributes and Git clean filters. A
+        # mocked index cannot catch a newly dated archive missing its -text rule.
+        attributes = (subject.ROOT / ".gitattributes").read_bytes()
+        checkout = self.root / "checkout"
+        checkout.mkdir()
+
+        def git(*args):
+            return subprocess.check_output(["git", "-C", str(checkout), *args],
+                                           stderr=subprocess.PIPE, timeout=30)
+
+        git("init", "-q")
+        git("config", "user.name", "SOL281 publication fixture")
+        git("config", "user.email", "fixture@example.invalid")
+        (checkout / ".gitattributes").write_bytes(attributes)
+        control = "tools/sol281/attribute-control.json"
+        (checkout / control).parent.mkdir(parents=True)
+        (checkout / control).write_bytes(b'{"source":"canonical LF"}\r\n')
+        git("add", "--", ".gitattributes", control)
+        # The archive exception must not disable ordinary source normalization.
+        self.assertEqual(git("show", ":" + control), b'{"source":"canonical LF"}\n')
+        git("-c", "commit.gpgsign=false", "commit", "-qm", "fixture attributes and source")
+
+        source = "a" * 40
+        plan = {
+            subject.EVIDENCE + "/" + source + "/cohorts/windows/contact-w1/report.json":
+                b'{"platform":"Windows","original":true}\r\n',
+            subject.EVIDENCE + "/" + source + "/cohorts/windows/mechanism/qualification.log":
+                b"original Windows output\r\nsecond line\r\n\r\n",
+            subject.EVIDENCE + "/" + source + "/cohorts/linux/core/report.json":
+                b'{"platform":"Linux","original":true}\n',
+            "docs/audits/sol281-20261101/hosted/" + source + "/original.json":
+                b'{"historical":"unaltered Windows evidence"}\r\n',
+        }
+        for relative, raw in plan.items():
+            destination = checkout / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(raw)
+        paths = sorted(plan)
+        git("add", "--", *paths)
+        for relative, raw in plan.items():
+            with self.subTest(path=relative):
+                self.assertEqual(git("show", ":" + relative), raw)
+        identities = {path: {"sha256": subject.sha(raw), "size": len(raw)}
+                      for path, raw in plan.items()}
+        with patch.object(subject.qualification, "ROOT", checkout):
+            subject.verify_index(paths, identities)
+        git("diff", "--cached", "--check")
 
 
 if __name__ == "__main__":
