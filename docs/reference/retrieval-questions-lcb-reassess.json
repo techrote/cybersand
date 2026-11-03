@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-03",
+  "purpose": "Additive source-backed #359 reassessment questions. Frozen32 and existing157 challenges are unchanged; lexical route hits require separate expected-fact review.",
+  "questions": [
+    {
+      "id": "LCB-REASSESS-01",
+      "query": "Which four liquid solver families are selectable on current main for Water, Brine and the other liquids, and are pressure variants separate families?",
+      "canonical": [
+        "architecture/liquid-solver-family-policy.md"
+      ],
+      "facts": [
+        "Water admits FreeMass/reference, CellularYield/reference, PressureFlow/reference/cached/cached_dormant and InertialCellular/reference.",
+        "Brine admits CY/reference and IN/reference; the other nine liquids admit CY/reference only. ToxicSludge IN has no qualified variant.",
+        "Each material has one immutable applied family per World; pressure variants are one family and production defaults remain unchanged."
+      ],
+      "sources": [
+        "../native/include/cybersand/liquid_solver_policy.hpp",
+        "../native/include/cybersand/liquid_policy_catalogue.hpp"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-REASSESS-02",
+      "query": "Can ordinary Liquid comparison and shared PLAY select all four Water laws and rebuild real native Rapier sessions, and what acceptance remains?",
+      "canonical": [
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "The eight-preset panel and shared PLAY selector construct real native Worlds with explicit geometry and normalization; App #256 and Trial #257 are merged.",
+        "LIFE011 covers eight presets and five mechanical rigs, including terrain and lifecycle, not completed fair scientific or human comparison.",
+        "The panel exposes two protected setups; native-default PF capacity refusal and separate full-host/Web/manual limits remain explicit."
+      ],
+      "sources": [
+        "../godot/scripts/liquid_comparison_panel.gd",
+        "../godot/scripts/playable_session_panel.gd",
+        "../godot/tests/play_life011_solver_case.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-REASSESS-03",
+      "query": "Do inertial leak and bottom-drain bubbles simulate gas pressure, does Rapier impact inject liquid momentum, and can IN make upward ballistic spray?",
+      "canonical": [
+        "architecture/inertial-cellular-v1.md"
+      ],
+      "facts": [
+        "IN retains motion and can leave vacant cells, but has no gas-pressure or buoyancy operator. The remembered scene still needs registered reproduction.",
+        "Downward-positive vy is constrained to 0..32; negative vy is refused and genuine upward ballistic IN momentum is unsupported.",
+        "Body overlap relocation carries existing IN state without injecting impact velocity; projectile velocity is separate from deposited liquid state."
+      ],
+      "sources": [
+        "../native/src/world_inertial.inc",
+        "../native/src/world.cpp",
+        "../native/include/cybersand/inertial_cellular.hpp"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-REASSESS-04",
+      "query": "How much dense IN memory does a 1024 squared resident World require and does matching its physical hash prove all saved ledgers match?",
+      "canonical": [
+        "architecture/inertial-cellular-v1.md"
+      ],
+      "facts": [
+        "A shared six-byte array covers every resident cell when IN is enabled, including Empty; 1024 squared slots require 6,291,456 bytes before other memory.",
+        "IN uses hash3/CYPS3 and non-IN uses2; CYPS persists extra diagnostic ledgers not covered by physical hash.",
+        "Compare IN/pressure ledgers independently; array/component cost is not total host RSS."
+      ],
+      "sources": [
+        "../native/include/cybersand/inertial_cellular.hpp",
+        "../native/src/world_pressure.inc",
+        "../native/src/world.cpp"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-REASSESS-05",
+      "query": "Does four configured native workers prove four simultaneous participants, and which PLAY observations measure jobs and full gameplay cost?",
+      "canonical": [
+        "architecture/simulation-tick-and-threading.md",
+        "operations/lcb-manual-comparison-ux.md",
+        "reference/validation-evidence.md"
+      ],
+      "facts": [
+        "worker_threads_observed is maximum distinct task claimants in one phase, not configured workers or simultaneous overlap.",
+        "Brine boundary evidence explicitly requires four claimants; Water tests require more than one. SerialInPlace zero is unmeasured, while phased inline may report one.",
+        "Existing 4Hz PLAY samples need comparison export; native tick, preparation, Rapier, publication and frame pacing are separate costs. No four-family gameplay FPS result follows."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/main.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-REASSESS-06",
+      "query": "How should radius three IN, radius two FreeMass, whole-cell normalization and pressure overfill be handled in fair comparison without rewriting protected LCB fixtures?",
+      "canonical": [
+        "operations/lcb-scenario-catalogue.md"
+      ],
+      "facts": [
+        "Use separate Worlds with shared seed, geometry, precision and action schedule; matched radius3 and preferred radius2 non-IN/radius3 IN are separately labelled lanes.",
+        "Explicit initial normalization records quantity changes and cannot legalize future fractional drips/trickle/thin-stream inputs.",
+        "Census PF overfill and gas state; compare cache/dormancy to pressure reference. Keep27 protected/default catalogue results and117 historical arm classifications unchanged."
+      ],
+      "sources": [
+        "../godot/tests/lcb_scenario_runner.gd",
+        "../godot/scripts/water_feel_scenarios.gd",
+        "../tools/lcb/scenario_catalogue.py"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-REASSESS-07",
+      "query": "What existing observation and scientific PRs should LCB-FEEL reuse and how can leaks, contact and PLAY work proceed without conflicting owners?",
+      "canonical": [
+        "operations/cybersand-codex-development-handover.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "Reconcile #258 unique copied IN ledger/availability and #259 Godot-prepared CYPS/native full-resident scientific consumer, rather than duplicating them. Both remain unmerged.",
+        "Existing PLAY can provide the common host; #260 actor retention is optional and #261 historical pending statuses are not current CI truth.",
+        "One owner integrates shared Main/worker/readback changes; coordinate structural/contact work with #347 and pacing/recovery/diagnostics with #334/#304. #363 consumes evidence without automatic defaults or merges."
+      ],
+      "sources": [
+        "audits/2026-11-03-lcb-reassessment.md",
+        "../godot/scripts/main.gd",
+        "../godot/scripts/liquid_host_evidence.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-REASSESS-08",
+      "query": "What does the latest pressure cached and dormant timing evidence prove about performance and actual worker participation?",
+      "canonical": [
+        "reference/validation-evidence.md",
+        "architecture/pressure-flow-v1.md"
+      ],
+      "facts": [
+        "Packed-source c97f68ec measured complete native tick cost on Windows; awake workloads improved while some churn/fallback cases regressed.",
+        "Actual task participation depends on workload; small fixtures may use only one despite configured four.",
+        "The source-bound results do not establish universal speedup, Rapier host cost, gameplay frame rate or a preferred liquid family."
+      ],
+      "sources": [
+        "audits/2026-10-25-water-inertial-native.md",
+        "../native/bench/lcb_pressure_optimization.cpp",
+        "../tools/lcb/pressure_optimization_cost.py"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

@@ -4,11 +4,18 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-03
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
+[canonical family/material policy](architecture/liquid-solver-family-policy.md),
+[ordinary application comparison paths](operations/lcb-manual-comparison-ux.md)
+and [bounded scenario reuse](operations/lcb-scenario-catalogue.md#current-main-reuse-and-fair-comparison--2026-11-03).
+All four families are landed; #360–#363 own the remaining comparison/tools/contact
+and decision work. Historical pre-merge records below retain their dated scope.
 
 Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 remains separate.
 
