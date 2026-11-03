@@ -14,10 +14,11 @@ Compact evidence: [qualification summary](gcr-creep-2026-11-03/qualification-sum
 [200 phase windows](gcr-creep-2026-11-03/phase-summary.csv),
 [four selected witnesses](gcr-creep-2026-11-03/selected-traces.json), and
 [raw bundle identity](gcr-creep-2026-11-03/raw-bundle.json). The three committed
-result artifacts total66,792bytes. The CRC-verified49,586,716-byte local raw ZIP
+result artifacts total66,884bytes. The CRC-verified49,586,716-byte local raw ZIP
 contains197 original evidence/helper files and is deliberately not committed.
-Committed JSON uses canonical LF with matching internal artifact hashes; the raw
-bundle retains the original generated CRLF summary/selected-trace bytes.
+Committed JSON uses canonical LF with matching internal artifact hashes; the CSV
+hash likewise denotes canonical LF/Git-blob bytes. The raw bundle retains the
+original generated CRLF summary/selected-trace bytes.
 
 ## Outcome and source boundaries
 
