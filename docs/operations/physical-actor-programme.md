@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
 canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-03
 related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
 ---
 
@@ -112,7 +112,13 @@ The desktop **GRANULAR OWNER REVIEW / experimental** section near the top adds
 playground + painting**. These open the existing experimental scenes and use the
 same F2 teardown/return path; Web demo policy hides/refuses them. The
 [flyer guide](../systems/granular-review-flight-fleet.md) explains staged controls
-and painting. Previously running builds need reopening to show the new entries.
+and painting. Its 2026-11-03 experimental room source adds craft-specific Q/E
+side jets or material dispensers, Kestrel S Gunpowder, and an initially disabled
+live **Thrusters emit real Fire** checkbox. Those room-only sources reuse native
+materials and actor command leases; they add no ordinary actor action ABI,
+material law or sleep policy. The guide owns their exact controls and bounds;
+dated host qualification remains separate. Previously running builds need
+reopening to show the new entries.
 The native generation workbench remains an isolated authoring preview, without
 live material simulation or attachment to the sandbox's World.
 Deepworks uses its own four-world native material owner and camera/painting

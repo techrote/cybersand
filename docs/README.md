@@ -580,3 +580,22 @@ seven-craft painting room, staged LA budgets and mass/inertia multipliers, retai
 fixed-20 RFT reference and reset/input semantics. This developer comparison reuses
 the existing response owner; it does not enable rest modes or qualify production
 physics. PR #351 stays unmerged.
+
+The [craft-specific source controls](systems/granular-review-flight-fleet.md#what-do-qe-kestrel-s-and-the-fire-toggle-do)
+add Q/E side jets or native material dispensers, Kestrel S Gunpowder and an
+initially off **Thrusters emit real Fire** toggle. They preserve the existing
+force ceiling, command lifetime and native material laws. Updated source needs
+its own dated host evidence; earlier fleet results keep their original scope.
+
+## Paired wall and loose materials plan — 2026-11-03
+
+The [concrete implementation plan](operations/paired-wall-loose-materials-plan.md)
+proposes distinct wall/loose forms with shared INT-000 chemistry, authored hard
+shells that expose ordinary powder when destroyed, and finite local curing
+prototypes. Stone/Salt/Coal are the proposed first pairs. New binder crust must
+consume a bounded supplied activation budget and cannot activate its neighbors;
+current Cement's air/Water/Concrete-context law remains unchanged. No material
+implementation or qualification is implied by this plan. It includes the
+all-loose/intact/breached playground comparison, collider-release gates and
+compatibility/provenance work; sleep and generic structural fracture remain
+outside scope.

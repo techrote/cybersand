@@ -2,9 +2,9 @@
 title: Lightweight flight fleet for granular owner review
 status: Current
 document-kind: contract
-scope: Developer-only editable flyer room with staged LA budget and mass/inertia controls, retained RFT reference and separate qualification limits
+scope: Developer-only editable flyer room with staged LA budget and actuator controls, bounded material dispensers and optional real Fire; retained RFT reference and separate qualification limits
 canonical-for: [granular-review-flight-fleet]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-03
 related-documents: [../architecture/granular-contact-rest.md, ../architecture/compound-granular-coupling.md, player-control-playground.md, ../operations/gcr-rest-registration.md]
 ---
 
@@ -43,10 +43,59 @@ yellow Sand alone.
 
 LMB paints, RMB erases and the wheel changes brush radius 2..24. F switches
 overview/follow; P pauses. Space remains thrust/lift. Ordinary craft use W/Space
-for body-axis thrust, A/D or Q/E to rotate, S for reverse, Shift to brake and C
-for upright assistance. Afterglow uses WASD to strafe/rise/descend, Space for a
-lift burst and Q/E to tilt. Painting intentionally adds/removes native material;
-this room is not a closed conservation fixture.
+for body-axis thrust, A/D to rotate, S for reverse, Shift to brake and C for
+upright assistance, with the Kestrel S exception below. Afterglow uses WASD to
+strafe/rise/descend, Space for a lift burst and Q/E to tilt. Painting and
+dispensers intentionally add/remove native material; this room is not a closed
+conservation fixture.
+
+## What do Q/E, Kestrel S and the Fire toggle do?
+
+**Current experimental desktop source, 2026-11-03:** the room adds these
+craft-specific controls. Left/right are relative to the craft's body axes, so
+the ports rotate with the hull.
+
+| Craft | Q | E | S |
+|---|---|---|---|
+| Midge | Left Acid dispenser | Right Lava dispenser | Reverse thrust |
+| Needle | Left side thrust | Right side thrust | Reverse thrust |
+| Kestrel | Left side thrust | Right side thrust | Gunpowder dispenser |
+| Afterglow | Retained deck tilt | Retained deck tilt | Descend |
+| Surveyor | Left side thrust | Right side thrust | Reverse thrust |
+| Cartographer | Left Water dispenser | Right Water dispenser | Reverse thrust |
+| Observatory | Left Lava dispenser | Right Lava dispenser | Reverse thrust |
+
+Needle, Kestrel and Surveyor request lateral acceleration at 0.65 of the selected
+craft's authored acceleration. Main thrust, side thrust, drag and brake requests
+share the existing combined force ceiling; side thrust does not add another
+impulse budget. A/D still supplies yaw. Kestrel S no longer requests reverse
+thrust; W+S can fly forward while dropping Gunpowder. Both Q and E dispenser
+ports can be held together without cancellation by the signed steering axis.
+
+**Thrusters emit real Fire** is a live developer checkbox, initially off. Its
+selection survives room reset and craft selection. It adds ordinary native Fire
+from active main/side thrusters when the controller has nonzero applied force,
+positive effort and a nonzero thrust ceiling. It does not change force or torque,
+create new chemistry, or enable Fire merely because brake/hover assistance is on.
+Turning the option off stops new emission; existing Fire follows its normal law.
+
+Dispensers are bounded native material sources without added recoil: at most
+three one-cell, radius-zero emissions every six simulation ticks. Blocked or
+missed opportunities do not accumulate into a later burst. A bounded direct ray
+must be clear after leaving the source body's mask; foreign masks, occupied cells
+and terrain block the nozzle. The target must still be Empty and unmasked at the
+write boundary. There is no relocation search, overwrite or excavation to clear
+a nozzle. These checks do not turn an actor emitter into a material-law owner.
+
+Emission ports inherit the accepted actor command's epoch, sequence, generation
+and lease. Cancellation, expiry, focus loss, numeric editing, pause and room
+replacement stop emission through the existing input lifetime. Held dispenser
+keys must be released before rearming after focus/edit/pause cancellation. This
+room-only port path does not extend the ordinary actor action ABI or equipment
+catalogue. Sources: [controller](../../godot/scripts/gcr_review_fleet_controller.gd),
+[emitter](../../godot/scripts/gcr_review_fleet_emitter.gd),
+[arena admission](../../godot/scripts/physical_actor_arena.gd) and
+[room input](../../godot/scripts/gcr_fleet_playground.gd).
 
 ## How do I compare budgets and physical properties?
 
@@ -136,6 +185,9 @@ checks; old fleet execution is not relabelled as current proof. The focused
 controls are `test_gcr_fleet_controls.gd`, `test_gcr_review_fleet.gd` and
 `test_gcr_crash_playground.gd`, alongside relevant ordinary actor-host regressions.
 Test definitions alone do not establish execution or human feel acceptance.
+The new side-thrust/emitter/input paths likewise require their own dated
+source-matched execution; the 2026-11-02 records do not attest the 2026-11-03
+extension.
 
 Launch a source-matched project with
 `python tools/experiments/run_gcr_fleet_review.py --project <project>`.

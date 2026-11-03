@@ -209,6 +209,20 @@ func submit_action(action: Dictionary) -> bool:
 	return not view.is_empty() and submit(make_command(view, int(view.last_sequence) + 1, action))
 
 
+func submit_review_action(action: Dictionary, ports: Dictionary) -> bool:
+	if _arena==null or paused or failed:
+		return _reject("Review fleet owner is inactive or paused.")
+	var view: Dictionary = observation()
+	if view.is_empty(): return false
+	var accepted: bool = _arena.submit_review_command(make_command(view,int(view.last_sequence)+1,action),ports)
+	last_error="" if accepted else _arena.last_error
+	return accepted
+
+
+func set_review_thruster_fire(enabled: bool) -> bool:
+	return _arena!=null and _arena.configure_review_fire(enabled)
+
+
 func _token(observed: int) -> String:
 	return "%s:%d:%d:%d" % [_run_id, epoch, _generation, observed]
 
@@ -289,6 +303,7 @@ func step() -> Dictionary:
 func snapshot() -> Dictionary:
 	return {"selection": selection, "epoch": epoch, "tick": tick, "paused": paused,
 		"failed": failed, "last_error": last_error, "actor": _view(false),
+		"review_emissions": _arena._review_emitter.snapshot() if _arena!=null and _arena.config.has("review_fleet_index") else {},
 		"material_mode": Course.is_swarm(selection), "field_active": not _command.is_empty() and _deadline > tick}
 
 

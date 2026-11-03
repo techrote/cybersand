@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-03
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1288,3 +1288,35 @@ Contact persistence(P), Rest-aware correction(R), Residual catch(C) and combined
 PRC. The structure room and retained barrel room expose the same staged variants;
 Apply rebuilds instead of changing a live response law. Physical outcomes and
 unqualified scope are recorded in the [dated qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md).
+
+## Experimental flyer sources and side thrust
+
+The [fleet contract](../systems/granular-review-flight-fleet.md#what-do-qe-kestrel-s-and-the-fire-toggle-do)
+owns the current room-only mapping: Needle/Kestrel/Surveyor Q/E side thrust,
+Midge Q Acid/E Lava, Cartographer Q/E left/right Water, Observatory Q/E left/right
+Lava and Kestrel S Gunpowder. Afterglow Q/E tilt is retained; ordinary fleet yaw
+uses A/D. Side acceleration is 0.65 of authored acceleration and shares the
+controller's existing combined linear force ceiling. Kestrel S does not also
+reverse thrust; W+S is supported.
+
+**Thrusters emit real Fire** is live, default off and retained across room/craft
+reset. Fire requires active thrust, positive effort, nonzero applied controller
+force and a nonzero force ceiling. These sources use normal native material
+laws; dispensers add no recoil and do not change the granular response.
+
+| Room-only emission bound | Current value |
+|---|---:|
+| Emission opportunity cadence | Every 6 simulation ticks |
+| Maximum nozzles per opportunity | 3 |
+| Emission radius / cells per nozzle | 0 / 1 |
+| Direct trace limit | 64 cells |
+| Total guarded material/mask reads per opportunity | 1,024 |
+| Catch-up queue after blocked/missed opportunity | None |
+
+Nozzles require a clear direct path, Empty target and no foreign/endpoint body
+mask; they never overwrite or search beyond an obstacle. Accepted command
+epoch/generation/sequence and lease gate port state. Cancel, focus loss, editing,
+pause or lease expiry stops emission; release is required before rearming held
+ports after focus/edit/pause cancellation. These are developer-room bounds, not
+new global material or ordinary actor controls. Source:
+[`gcr_review_fleet_emitter.gd`](../../godot/scripts/gcr_review_fleet_emitter.gd).

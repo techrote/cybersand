@@ -1,6 +1,14 @@
 extends SceneTree
 
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
+class InputScene extends "res://scripts/gcr_fleet_playground.gd":
+	# Headless DisplayServer has no physical keyboard mapping. Inject only
+	# sampled button levels; exercise the actual scene normalization, leased
+	# submission, native owner, reset and rearm paths beneath that boundary.
+	var test_ports: Dictionary = {"q":false,"e":false,"s":false}
+	var test_up: bool = false
+	func _review_ports() -> Dictionary: return test_ports.duplicate()
+	func _thrust_up_pressed() -> bool: return test_up
 var failures: int = 0
 var reports: Array = []
 func check(ok: bool, reason: String) -> void:
@@ -9,7 +17,7 @@ func check(ok: bool, reason: String) -> void:
 		push_error("Fleet: "+reason)
 func _init() -> void: call_deferred("run")
 func run() -> void:
-	var scene: Control = load("res://gcr_fleet_playground.tscn").instantiate()
+	var scene: Control = InputScene.new()
 	scene.applied_controls={"response":"RFT","budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0}
 	root.add_child(scene)
 	scene.set_physics_process(false)
@@ -70,6 +78,27 @@ func run() -> void:
 	check(is_equal_approx(applied_profile.fleet_torque,float(Fleet.ROWS[scene.selected][9])*.25),"UI torque reaches controller cap")
 	scene.restore_controls()
 	check(scene.applied_controls.thrust_multiplier==1 and scene.applied_controls.torque_multiplier==1,"restore resets actuator multipliers")
+	check(scene.thruster_fire != null and not scene.thruster_fire.button_pressed,"real-fire toggle starts off")
+	scene.thruster_fire.button_pressed=true
+	check(scene.runtime.snapshot().review_emissions.fire_enabled,"live toggle reaches current owner without rebuilding")
+	var previous_arena = scene.runtime._arena
+	scene.thruster_fire.button_pressed=false
+	check(scene.runtime._arena==previous_arena and not scene.runtime.snapshot().review_emissions.fire_enabled,"fire toggle preserves terrain/session")
+	scene.thruster_fire.button_pressed=true
+	check(scene.select_preset(2) and scene.runtime.snapshot().review_emissions.fire_enabled,"fire selection persists across fresh craft")
+	# Independent sampled levels retain simultaneous actions lost by an axis.
+	scene.test_ports={"q":true,"e":true,"s":true}
+	scene.test_up=true
+	var ports: Dictionary = scene._review_ports()
+	check(ports.q and ports.e and ports.s,"independent Q/E/S remain held together")
+	check(scene._sample_action().move.y==-1.0,"Kestrel W thrust survives simultaneous S dispenser")
+	scene._rearm=true
+	scene.advance_frame({"move":Vector2.ZERO,"aim":Vector2.UP,"trim":0.0,"primary":false,"secondary":false,"auxiliary":false},true)
+	check(scene._rearm,"held independent ports cannot rearm after cancellation")
+	scene.test_ports={"q":false,"e":false,"s":false}
+	scene.test_up=false
+	scene.advance_frame({"move":Vector2.ZERO,"aim":Vector2.UP,"trim":0.0,"primary":false,"secondary":false,"auxiliary":false},true)
+	check(not scene._rearm,"releasing all ports permits normal neutral rearm")
 	scene.queue_free()
 	await process_frame
 	var output := FileAccess.open("res://../fleet-test-report.json",FileAccess.WRITE)

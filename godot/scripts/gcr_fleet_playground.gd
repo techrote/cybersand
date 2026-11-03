@@ -7,6 +7,7 @@ var control_fields: Dictionary = {}
 var response_select: OptionButton
 var control_status: Label
 var control_error: String = ""
+var thruster_fire: CheckButton
 
 func _ready() -> void:
 	super._ready()
@@ -67,6 +68,13 @@ func _build_comparison_controls() -> void:
 	var explanation := _label(actuator_row,"0 disables that actuator. Limits change; acceleration/speed targets stay authored.",13,Color("adc0ce"))
 	explanation.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	explanation.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	thruster_fire=CheckButton.new()
+	thruster_fire.text="Thrusters emit real Fire"
+	thruster_fire.focus_mode=Control.FOCUS_NONE
+	thruster_fire.tooltip_text="Live developer toggle. Fire reacts with the world; blocked nozzles do not overwrite material."
+	thruster_fire.toggled.connect(func(enabled: bool) -> void:
+		if runtime != null: runtime.set_review_thruster_fire(enabled))
+	panel.add_child(thruster_fire)
 	control_status=_label(panel,"",14,Color("f7c579"))
 	control_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 
@@ -108,6 +116,42 @@ func _input(event: InputEvent) -> void:
 		return
 	super._input(event)
 
+func _review_ports() -> Dictionary:
+	# Keep independent buttons: Q+E may dispense both sides, W+S may
+	# thrust while dropping powder. Signed steering axes cannot retain this.
+	var ports: Dictionary = {"q":Input.is_physical_key_pressed(KEY_Q),"e":Input.is_physical_key_pressed(KEY_E),"s":Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN)}
+	var pads: Array[int] = Input.get_connected_joypads()
+	if not pads.is_empty():
+		var pad: int = pads[0]
+		ports.q = ports.q or Input.is_joy_button_pressed(pad,JOY_BUTTON_LEFT_SHOULDER)
+		ports.e = ports.e or Input.is_joy_button_pressed(pad,JOY_BUTTON_RIGHT_SHOULDER)
+		ports.s = ports.s or Input.get_joy_axis(pad,JOY_AXIS_LEFT_Y) > 0.2
+	return ports
+
+func _sample_action() -> Dictionary:
+	var action: Dictionary = super._sample_action()
+	if selected==2:
+		# Kestrel S is a dispenser rather than reverse. Retain W when both
+		# keys are held; primary/Space independently keeps its normal thrust.
+		var move: Vector2 = action.move
+		move.y=minf(0.0,move.y)
+		if _thrust_up_pressed(): move.y=-1.0
+		action.move=move
+	return action
+
+func _thrust_up_pressed() -> bool:
+	return Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)
+
+func _submit_action(action: Dictionary) -> bool:
+	return runtime.submit_review_action(action,_review_ports())
+
+func advance_frame(action: Dictionary, allowed: bool) -> void:
+	# A held dispenser must be released after focus/edit/pause cancellation,
+	# even when Q+E cancels the signed trim or Kestrel S leaves move neutral.
+	var ports: Dictionary = _review_ports()
+	if _rearm and (ports.q or ports.e or ports.s): allowed=false
+	super.advance_frame(action,allowed)
+
 func select_preset(index: int) -> bool:
 	if not Fleet.valid_index(index): return false
 	_cancel_input()
@@ -115,6 +159,7 @@ func select_preset(index: int) -> bool:
 	if not runtime.configure_review_fleet(index,applied_controls):
 		_status.text = "Fleet refused: "+runtime.last_error
 		return false
+	runtime.set_review_thruster_fire(thruster_fire != null and thruster_fire.button_pressed)
 	selected = index
 	_target = 0
 	_lap_ticks = 0

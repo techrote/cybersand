@@ -50,4 +50,10 @@ static func definition(index: int) -> Dictionary:
 
 static func controls(index: int) -> String:
 	if index == 3: return "W / S   Rise / descend\nA / D   Strafe\nSPACE   Lift burst\nQ / E   Tilt deck\nSHIFT   Brake · C   Level assistance"
-	return "W / SPACE   Body-axis thrust\nA / D or Q / E   Rotate\nS   Reverse thrust\nSHIFT   Brake\nHold C   Upright assistance"
+	var utility: String = ""
+	match index:
+		0: utility="Q   Acid · E   Lava dispenser"
+		1,2,4: utility="Q / E   Left / right side thrust"
+		5: utility="Q / E   Left / right water dispenser"
+		6: utility="Q / E   Left / right lava dispenser"
+	return "W / SPACE   Body-axis thrust\nA / D   Rotate\n%s\n%s\nSHIFT   Brake · C   Upright assistance" % [utility,"S   Gunpowder dispenser" if index==2 else "S   Reverse thrust"]

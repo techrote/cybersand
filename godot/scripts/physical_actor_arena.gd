@@ -8,6 +8,7 @@ const Rig = preload("res://scripts/physical_actor_rig.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Effects = preload("res://scripts/physical_actor_effects.gd")
+const ReviewEmitter = preload("res://scripts/gcr_review_fleet_emitter.gd")
 const UsableRuntime = preload("res://scripts/physical_usable_runtime.gd")
 const UsableCatalog = preload("res://scripts/usable_catalog.gd")
 const UsableCourse = preload("res://scripts/physical_usable_course.gd")
@@ -28,6 +29,7 @@ var config: Dictionary = {}
 var _world: Object
 var _viewport: SubViewport
 var _effects := Effects.new()
+var _review_emitter := ReviewEmitter.new()
 var _usables := UsableRuntime.new()
 var _usable_requests_total: int = 0
 var _usable_accepted_total: int = 0
@@ -381,17 +383,50 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 		last_error = "inactive_or_paused"
 		return false
 	var accepted: bool = session.submit(command, producer)
+	if accepted:
+		_review_emitter.revoke()
 	if not accepted:
 		last_error = session.last_error
 	return accepted
 
 
+func _review_room_active() -> bool:
+	return session != null and not _finished and not _failed and not _paused \
+		and int(config.get("review_fleet_index",-1)) in range(7) \
+		and session._rigs.size()==1 and session.bodies().size()==1 \
+		and config.actors.size()==1 and str(config.actors[0].producer)=="human"
+
+
+func submit_review_command(command: Variant, ports: Dictionary) -> bool:
+	# Port state travels beside the existing command ABI and inherits the exact
+	# accepted lease identity. Invalid room/ports cannot consume a sequence.
+	if not _review_room_active() or not ReviewEmitter.valid_ports(ports):
+		last_error="review_ports_refused"
+		return false
+	if not submit(command,&"human"): return false
+	_review_emitter.capture(session._view(0,false),ports)
+	return true
+
+
+func configure_review_fire(enabled: bool) -> bool:
+	# Configuration may be applied while paused, but never to ordinary actors.
+	if session==null or not config.has("review_fleet_index") or _failed or _finished \
+		or session._rigs.size()!=1 or session.bodies().size()!=1 \
+		or config.actors.size()!=1 or str(config.actors[0].producer)!="human":
+		return false
+	_review_emitter.fire_enabled=enabled
+	return true
+
+
 func cancel(actor_id: int, producer: StringName) -> bool:
-	return session != null and session.cancel_input(actor_id, session.epoch, producer)
+	var accepted: bool = session != null and session.cancel_input(actor_id, session.epoch, producer)
+	if accepted: _review_emitter.revoke()
+	return accepted
 
 
 func set_paused(paused: bool) -> void:
 	_paused = paused
+	if paused: _review_emitter.revoke()
 	if session != null:
 		session.set_suspended(paused)
 
@@ -430,6 +465,10 @@ func step(commands: Variant = []) -> Dictionary:
 		_command_receipts.append({"accepted": accepted,
 			"reason": "" if accepted else last_error})
 	session.advance(1.0 / PHYSICS_HZ)
+	if config.has("review_fleet_index"):
+		var rig = session._rigs[0]
+		_review_emitter.step(_world,int(config.review_fleet_index),rig._transforms[0],rig._sizes[0],
+			rig._action,rig._player_controller.observation(),float(rig._profile.fleet_force),session._view(0,false))
 	var requests: Array = session.drain_effects()
 	_effect_receipts = _effects.apply(_world, requests, session.epoch)
 	_effect_requests_total += requests.size()
@@ -526,6 +565,7 @@ func snapshot() -> Dictionary:
 		"world_tick": int(_world.get_tick_index()) if _world != null else 0,
 		"command_results": _command_receipts.duplicate(true),
 		"effects": _effect_receipts.duplicate(true),
+		"review_emissions": _review_emitter.snapshot(),
 		"physical_usables": _usables.snapshot(),
 		"usable_totals": {"requests": _usable_requests_total, "accepted": _usable_accepted_total,
 			"refused": _usable_refused_total, "changed_cells": _usable_changes_total},
@@ -653,6 +693,7 @@ func close() -> void:
 	_viewport = null
 	_world = null
 	_effects.reset()
+	_review_emitter.reset()
 	_usables.reset()
 	_coupling_results.clear()
 	_effect_receipts.clear()
