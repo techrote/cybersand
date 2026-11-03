@@ -221,6 +221,14 @@ class Registration(unittest.TestCase):
         self.assertEqual(fp.materialized_lfs_matches_head(native), materialized)
         self.assertFalse(fp.materialized_lfs_matches_head("tools/lcb/feel_preflight.py"))
 
+    def test_committed_preflight_packet_still_reduces_admitted(self):
+        evidence = fp.ROOT / "docs/audits/lcb360-preflight-2026-11-03"
+        summary = fp.reduce_packets(fp.ROOT / fp.DEFAULT_REGISTRATION, [evidence / "windows", evidence / "linux"],
+                                    logs_external=True)
+        self.assertEqual(summary["verdict"], "ADMITTED")
+        self.assertEqual(summary["primary_rows_total"], 32)
+        self.assertTrue(all(row["tick_hashes_equal"] for row in summary["cross_platform_observation"]))
+
     def test_independent_normalization_rule(self):
         self.assertEqual(fp.normalized_water(128, 255), 255)
         self.assertEqual(fp.normalized_water(127, 255), 0)

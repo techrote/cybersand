@@ -4,6 +4,9 @@ extends VBoxContainer
 # Presentation and copied request selection only. The existing application
 # owner and native prepared builder perform every actual reconstruction.
 const Contract = preload("res://scripts/microscenario_contract.gd")
+const FeelCatalogue = preload("res://scripts/liquid_feel_catalogue.gd")
+const FeelControls = preload("res://scripts/liquid_feel_controls.gd")
+const SETUP_BUILTIN_COUNT: int = 2 # Protected Dam Break and mixed lock exchange keep indices 0/1.
 const DAM_PATH: String = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 const MIXED_PATH: String = "res://tests/fixtures/lcb/lcb.mixed.water-oil-brine.v1.json"
 const PRESETS: Array[Dictionary] = [
@@ -40,6 +43,11 @@ var _dirty: bool = false
 var _applied_generation: int = -1
 var _waiting_serial: int = 0
 var _refusal: String = ""
+var feel_controls: Control
+# Native generation produced by this panel's own accepted comparison request;
+# optional comparison sampling is tied to it, never to ordinary sessions.
+var comparison_generation: int = -1
+var _comparison_pending: bool = false
 
 func _button(row: Node, text: String, action: Callable) -> Button:
 	var button := Button.new()
@@ -67,6 +75,12 @@ func setup(controller: Control, selection_only: bool = false) -> void:
 	setup_picker = OptionButton.new()
 	setup_picker.add_item("Protected Dam Break")
 	setup_picker.add_item("Water / Oil / Brine lock exchange")
+	for index: int in FeelCatalogue.SCENARIOS.size():
+		var entry: Dictionary = FeelCatalogue.SCENARIOS[index]
+		setup_picker.add_item("#360 " + str(entry.title))
+		var item: int = SETUP_BUILTIN_COUNT + index
+		setup_picker.set_item_tooltip(item, str(entry.get("unavailable", entry.measure)))
+		setup_picker.set_item_disabled(item, entry.has("unavailable"))
 	presets.add_child(setup_picker)
 	session_picker = OptionButton.new()
 	session_picker.add_item("Controlled • fixed actor-free")
@@ -77,7 +91,8 @@ func setup(controller: Control, selection_only: bool = false) -> void:
 	geometry_picker = OptionButton.new()
 	geometry_picker.add_item("Original Current geometry (radius 2)",2)
 	geometry_picker.add_item("Matched IN geometry (radius 3)",3)
-	geometry_picker.tooltip_text = "Any inertial solver requires explicit radius three. Use the same geometry for its Current comparator. Original Current control always restores radius two."
+	geometry_picker.add_item("Preferred per family (IN 3, others 2)",0)
+	geometry_picker.tooltip_text = "Any inertial solver requires explicit radius three. Matched geometry runs every family at radius three; preferred geometry uses each family's native radius. Never pool their timings. Original Current control always restores radius two."
 	geometry_picker.item_selected.connect(func(_index: int) -> void: _dirty = true;_refusal = "")
 	presets.add_child(geometry_picker)
 	preset_picker = OptionButton.new()
@@ -123,6 +138,10 @@ func setup(controller: Control, selection_only: bool = false) -> void:
 	status = Label.new()
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(status)
+	if not selection_only and host.has_method(&"liquid_feel_relaunch"):
+		feel_controls = FeelControls.new()
+		add_child(feel_controls)
+		feel_controls.setup(self, host)
 	if selection_only:
 		# Reuse the native-backed editor, without exposing its separate
 		# comparison/import transactions inside the playable-session surface.
@@ -241,7 +260,7 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 	if not _definition_supported(definition) and not (active_route and _active_owner_supported()):
 		_refusal = "This route is not yet wired for experimental policies. Choose a fixed actor-free MicroScenario or load Dam Break."
 		return false
-	if not original_control and geometry_picker.get_selected_id() == 3 \
+	if not original_control and selected_radius() == 3 \
 		and not bridge.has_method(&"liquid_policy_with_inertial_damping"):
 		_refusal = "This runtime has no explicit matched-IN geometry support"
 		return false
@@ -249,18 +268,82 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 	if original_control: admitted = host.microscenario_apply_definition(definition, mode)
 	elif active_route:
 		admitted = host.liquid_comparison_apply_active(requested_policy,normalize_water.button_pressed,
-			session_picker.selected == 1,mode,geometry_picker.get_selected_id())
+			session_picker.selected == 1,mode,selected_radius())
 	elif session_picker.selected == 1:
-		admitted = host.microscenario_apply_exploratory_liquid(definition, requested_policy, normalize_water.button_pressed, mode,{},geometry_picker.get_selected_id())
-	else: admitted = host.microscenario_apply_controlled_liquid(definition, requested_policy, normalize_water.button_pressed, mode,geometry_picker.get_selected_id())
+		admitted = host.microscenario_apply_exploratory_liquid(definition, requested_policy, normalize_water.button_pressed, mode,{},selected_radius())
+	else: admitted = host.microscenario_apply_controlled_liquid(definition, requested_policy, normalize_water.button_pressed, mode,selected_radius())
 	if not admitted:
 		_refusal = str(host.microscenario_error)
 		return false
+	_comparison_pending = not original_control
 	if not host.pending_microscenario_apply.is_empty():
 		_waiting_serial = int(host.pending_microscenario_apply.serial)
 	else:
 		_dirty = false
 		_sync_applied(host.tower_context)
+		_accept_comparison(host.tower_context)
+	return true
+
+func _accept_comparison(context: Dictionary) -> void:
+	comparison_generation = int(context.get("liquid_solver_policy",{}).get("session_generation",-1)) if _comparison_pending else -1
+	_comparison_pending = false
+
+# Explicit request geometry. Preferred resolves to each family's native radius:
+# three when any selected assignment requires it, otherwise two.
+func selected_radius() -> int:
+	var selected: int = geometry_picker.get_selected_id()
+	if selected != 0: return selected
+	return maxi(2, int(_validation.get("receipt",{}).get("minimum_rule_radius",2)))
+
+# Replace only the pending Water assignment, through the native choice list.
+func select_water_family(family: String, variant: String = "reference") -> bool:
+	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices"): return false
+	for choice: Dictionary in bridge.liquid_policy_assignment_choices(requested_policy, 3):
+		if choice.family != family or choice.variant != variant: continue
+		if not choice.accepted:
+			_refusal = str(choice.refusal.code) + ": " + str(choice.refusal.detail)
+			return false
+		requested_policy = choice.request.duplicate()
+		_dirty = true
+		_refusal = ""
+		_refresh_choices()
+		return true
+	_refusal = "This runtime offers no Water %s/%s choice" % [family, variant]
+	return false
+
+func requested_water_assignment() -> Dictionary:
+	for assignment: Dictionary in _validation.get("receipt",{}).get("assignments",[]):
+		if int(assignment.material) == 3:
+			return {"family":str(assignment.applied_family), "variant":str(assignment.applied_variant)}
+	return {}
+
+# Copied accepted comparison selection for Main's fresh-owner reload.
+func relaunch_envelope() -> Dictionary:
+	var context: Dictionary = host.tower_context
+	var applied: Dictionary = context.get("liquid_solver_policy",{})
+	if comparison_generation < 0 or int(applied.get("session_generation",-2)) != comparison_generation: return {}
+	if host.microscenario_definition.is_empty() or not applied.has("envelope"): return {}
+	return {"definition":host.microscenario_definition.duplicate(true), "policy":PackedInt32Array(applied.envelope),
+		"normalization":str(host.microscenario_liquid_setup.get("normalization","")),
+		"radius":int(applied.get("maximum_rule_radius",2)), "mode":str(host.microscenario_mode),
+		"setup_index":setup_picker.selected, "geometry_index":geometry_picker.selected}
+
+func restore_relaunch(envelope: Dictionary) -> bool:
+	requested_policy = PackedInt32Array(envelope.policy)
+	normalize_water.set_pressed_no_signal(str(envelope.normalization) == "water-normalize-v1")
+	setup_picker.select(int(envelope.setup_index))
+	geometry_picker.select(int(envelope.geometry_index))
+	session_picker.select(0)
+	_dirty = true
+	_refresh_choices()
+	_comparison_pending = true
+	var admitted: bool = host.microscenario_apply_controlled_liquid(envelope.definition, requested_policy,
+		str(envelope.normalization) == "water-normalize-v1", str(envelope.mode), int(envelope.radius))
+	if not admitted:
+		_comparison_pending = false
+		_refusal = str(host.microscenario_error)
+		return false
+	if not host.pending_microscenario_apply.is_empty(): _waiting_serial = int(host.pending_microscenario_apply.serial)
 	return true
 
 func apply_active() -> bool:
@@ -273,7 +356,7 @@ func _active_owner_supported() -> bool:
 func arm_import() -> bool:
 	if import_button == null: return false
 	var accepted: bool = host.liquid_comparison_arm_import(requested_policy,normalize_water.button_pressed,
-		session_picker.selected==1,geometry_picker.get_selected_id())
+		session_picker.selected==1,selected_radius())
 	_refusal = "" if accepted else str(host.microscenario_error)
 	_dirty = true
 	return accepted
@@ -283,7 +366,14 @@ func clear_import() -> void:
 	_refusal = ""
 
 func _selected_definition() -> Dictionary:
-	var checked: Dictionary = Contract.parse(FileAccess.get_file_as_string(DAM_PATH if setup_picker.selected == 0 else MIXED_PATH))
+	var path: String = DAM_PATH if setup_picker.selected == 0 else MIXED_PATH
+	if setup_picker.selected >= SETUP_BUILTIN_COUNT:
+		var entry: Dictionary = FeelCatalogue.entry(setup_picker.selected - SETUP_BUILTIN_COUNT)
+		if entry.is_empty() or entry.has("unavailable"):
+			_refusal = str(entry.get("unavailable","Unknown comparison scenario"))
+			return {}
+		path = str(entry.fixture)
+	var checked: Dictionary = Contract.parse(FileAccess.get_file_as_string(path))
 	if not checked.get("ok",false):
 		_refusal = str(checked.get("error","Protected Dam Break unavailable"))
 		return {}
@@ -317,8 +407,12 @@ func refresh(context: Dictionary) -> void:
 	var blind: bool = not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty()
 	var import_state: Dictionary = host.liquid_comparison_import_state() if import_button != null else {}
 	if _waiting_serial != 0 and not pending and int(context.get("scenario_request_serial",0)) == _waiting_serial:
-		if context.get("scenario_request_applied",false): _dirty = false
-		else: _refusal = str(host.microscenario_error)
+		if context.get("scenario_request_applied",false):
+			_dirty = false
+			_accept_comparison(context)
+		else:
+			_comparison_pending = false
+			_refusal = str(host.microscenario_error)
 		_waiting_serial = 0
 	var generation: int = int(context.get("liquid_solver_policy",{}).get("session_generation",-1))
 	if available and generation != _applied_generation:
@@ -368,6 +462,7 @@ func refresh(context: Dictionary) -> void:
 	elif not (_definition_supported(host.liquid_comparison_active_definition()) or _active_owner_supported()): status.text = "Controlled needs a fixed actor-free setup. Exploratory retains sampled owners in Tower or supported MicroScenarios and desktop articulated owners; other routes remain pending."
 	elif _dirty:
 		status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."
-		if int(_validation.get("receipt",{}).get("minimum_rule_radius",2)) > geometry_picker.get_selected_id():
+		if int(_validation.get("receipt",{}).get("minimum_rule_radius",2)) > selected_radius():
 			status.text += " IN Brine requires the explicit matched geometry selection."
 	else: status.text = "Applied setup is ready. Reset keeps its accepted policy and normalization selection."
+	if feel_controls != null: feel_controls.observe(context)

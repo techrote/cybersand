@@ -87,6 +87,10 @@ jobs:
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lcb -p test_lcb_registry.py
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/physics_contracts.py --check
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lcb -p test_inertial_contract.py
+      - name: Check LCB-FEEL capsules and preflight reducer
+        run: |
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/feel_capsules.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lcb -p test_feel_preflight.py
       - name: Validate current documentation
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_docs.py
       - name: Validate dependency pins and published runtime provenance
