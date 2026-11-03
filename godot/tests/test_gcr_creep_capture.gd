@@ -54,8 +54,21 @@ func _run() -> void:
 		"fixture_barrel":{"drive_impulse":.02,"gravity":92.12},
 		"fixture_flyer":{"fleet_index":2,"position":[296,312],"angle":PI/2.0,"region":[128,128,512,384],"base":[129,320,510,191],"bank":[300,192,339,128],"border_material":1,"gravity":38,"mass":.1,"inertia":.975,"mass_multiplier":1,"inertia_multiplier":1,"thrust_multiplier":1,"torque_multiplier":1,"census_interval":60,"fire":false,"dispensers":false}}
 	check(Capture.configuration_matches_protocol(protocol),"actual fixture constants bind the registered geometry and controls")
+	var parsed: Dictionary = JSON.parse_string(JSON.stringify(protocol))
+	check(Capture.configuration_matches_protocol(parsed),"JSON-roundtripped actual configuration retains float metadata identity")
+	check(Capture.metadata_equal(PI/2.0+5e-13,PI/2.0),"metadata-only decimal tolerance permits sub-picounit parser drift")
+	check(not Capture.metadata_equal(PI/2.0+2e-12,PI/2.0),"metadata tolerance has a strict absolute1e-12 bound")
+	check(not Capture.metadata_equal(300.0000000000005,300),"integer geometry retains exact equality")
+	check(Capture.metadata_equal([296.0,312.0],[296,312]),"JSON float-typed integer coordinate arrays compare by exact values")
+	check(not Capture.metadata_equal([296.0000000000005,312.0],[296,312]),"fractional coordinate drift refuses inside an array")
+	check(not Capture.metadata_equal(true,1),"numeric metadata cannot be supplied as a boolean")
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--protocol="):
+			var real_protocol: Variant = JSON.parse_string(FileAccess.get_file_as_string(argument.trim_prefix("--protocol=")))
+			check(real_protocol is Dictionary and Capture.configuration_matches_protocol(real_protocol),"actual committed JSON protocol binds capture configuration")
 	protocol.fixture_flyer.bank=[301,192,339,128]
 	check(not Capture.configuration_matches_protocol(protocol),"one-cell protocol/fixture geometry drift refuses")
+	check(Capture.configuration_protocol_error(protocol)=="protocol.fixture_flyer.bank differs from registered capture value","refusal identifies the exact mismatched field")
 	var copied: Dictionary = Capture.portable({"v":Vector2(1,2),"unknown":null,"contact_bins":[{"large":true}],"nested":{"cells":PackedByteArray([1]),"count":4}})
 	check(copied.v==[1.0,2.0] and copied.unknown==null,"portable values preserve coordinates and explicit unknowns")
 	check(not copied.has("contact_bins") and not copied.nested.has("cells") and copied.nested.count==4,"raw arrays omitted without discarding scalar evidence")

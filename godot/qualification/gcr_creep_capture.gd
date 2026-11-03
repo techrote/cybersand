@@ -36,18 +36,43 @@ static func phase_drive(spec: Dictionary, step: int) -> bool:
 	return step>=120 and step<(180 if mode=="pulse" else 1200) and mode in ["pulse","sustained"]
 
 static func configuration_matches_protocol(protocol: Dictionary) -> bool:
-	if protocol.get("registration","")!=REGISTRATION or protocol.get("pulse_start")!=120 or protocol.get("pulse_end")!=180 or protocol.get("drive_end")!=1200 or protocol.get("drive_fraction")!=.15 or protocol.get("effort")!=.7:
-		return false
+	return configuration_protocol_error(protocol).is_empty()
+
+static func metadata_equal(actual: Variant, expected: Variant) -> bool:
+	# JSON decimal parsing may differ from a source float literal by a few ULPs.
+	# This absolute1e-12 tolerance applies only to floating configuration metadata;
+	# integer geometry, schedules, material quantities and physical gates stay exact.
+	if expected is float:
+		return (actual is int or actual is float) and is_finite(float(actual)) and absf(float(actual)-expected)<=1e-12
+	if expected is int:
+		return (actual is int or actual is float) and is_finite(float(actual)) and float(actual)==float(expected)
+	if expected is Array:
+		if not actual is Array or actual.size()!=expected.size():
+			return false
+		for index: int in range(expected.size()):
+			if not metadata_equal(actual[index],expected[index]):
+				return false
+		return true
+	return typeof(actual)==typeof(expected) and actual==expected
+
+static func configuration_protocol_error(protocol: Dictionary) -> String:
+	var common: Dictionary = {"registration":REGISTRATION,"pulse_start":120,"pulse_end":180,"drive_end":1200,"drive_fraction":.15,"effort":.7}
+	for key: String in common:
+		if not protocol.has(key) or not metadata_equal(protocol[key],common[key]):
+			return "protocol."+key+" differs from registered capture value"
 	var flyer: Dictionary = protocol.get("fixture_flyer",{})
 	var expected: Dictionary = {"fleet_index":2,"position":[296,312],"angle":PI/2.0,"region":[128,128,512,384],
 		"base":[129,320,510,191],"bank":[300,192,339,128],"border_material":1,"gravity":38,
 		"mass":.1,"inertia":.975,"mass_multiplier":1,"inertia_multiplier":1,"thrust_multiplier":1,"torque_multiplier":1,
 		"census_interval":60,"fire":false,"dispensers":false}
 	for key: String in expected:
-		if not flyer.has(key) or flyer[key]!=expected[key]:
-			return false
+		if not flyer.has(key) or not metadata_equal(flyer[key],expected[key]):
+			return "protocol.fixture_flyer."+key+" differs from registered capture value"
 	var barrel: Dictionary = protocol.get("fixture_barrel",{})
-	return barrel.get("drive_impulse") == .02 and barrel.get("gravity")==92.12
+	for key: String in ["drive_impulse","gravity"]:
+		if not barrel.has(key) or not metadata_equal(barrel[key],.02 if key=="drive_impulse" else 92.12):
+			return "protocol.fixture_barrel."+key+" differs from registered capture value"
+	return ""
 
 static func state(body: RigidBody2D) -> Dictionary:
 	var rid: RID = body.get_rid()
@@ -133,7 +158,7 @@ func _run() -> void:
 			arguments[pair[0]]=pair[1]
 	var protocol: Variant = JSON.parse_string(FileAccess.get_file_as_string(str(arguments.get("protocol",""))))
 	if not protocol is Dictionary or not configuration_matches_protocol(protocol):
-		push_error("GCR creep protocol identity refused")
+		push_error("GCR creep protocol identity refused: "+configuration_protocol_error(protocol) if protocol is Dictionary else "GCR creep protocol is not an object")
 		quit(1)
 		return
 	var spec: Dictionary = {}

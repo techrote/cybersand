@@ -91,6 +91,39 @@ def process(command, log, timeout, env):
             'ok': code == 0 and not any(x in text for x in ['SCRIPT ERROR:', 'ERROR:'])}
 
 
+def reusable_gates(folder, platform, inputs, runtime):
+    """Reuse actual controls only when all their source/runtime inputs match.
+
+    New capture helpers are not dependencies of the retained control scripts.
+    Their own changed apparatus test always executes again in the new project.
+    """
+    if folder is None or not (folder / platform / 'gates.json').is_file():
+        return {}
+    identity = read(folder / 'identity.json')
+    old_inputs = identity['source_inputs']
+    allowed = {'godot/qualification/gcr_creep_capture.gd', 'godot/tests/test_gcr_creep_capture.gd'}
+    if set(old_inputs) != set(inputs) or any(old_inputs[p] != inputs[p] for p in inputs if p not in allowed):
+        raise RuntimeError('Retained control inputs changed; gate reuse refused')
+    for key in ['native_sha256', 'native_source_inputs', 'rapier_sha256', 'engine_sha256', 'engine_version']:
+        if identity['platforms'][platform][key] != runtime[key]:
+            raise RuntimeError('Retained control runtime changed; gate reuse refused')
+    legacy_protocol = 'docs/audits/gcr001-2026-11-01/protocol.json'
+    old_protocol = git('show', identity['source'] + ':' + legacy_protocol).replace(b'\r\n', b'\n')
+    if old_protocol != (ROOT / legacy_protocol).read_bytes().replace(b'\r\n', b'\n'):
+        raise RuntimeError('Retained control protocol changed; gate reuse refused')
+    result = {}
+    for row in read(folder / platform / 'gates.json'):
+        host = row.get('test')
+        if host not in HOSTS or host == 'test_gcr_creep_capture' or row.get('ok') is not True:
+            continue
+        log = folder / platform / (host + '.log')
+        if row.get('exit') != 0 or sha(log) != row['log_sha256']:
+            raise RuntimeError('Retained gate bytes/exit changed')
+        result[host] = dict(row, inherited_from=str(log), executed_source=identity['source'],
+                            reuse_scope='All production, retained test and configuration inputs identical; changed new capture/unit apparatus not dependencies')
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
@@ -99,6 +132,7 @@ def main():
     parser.add_argument('--godot-linux', default='/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64')
     parser.add_argument('--wsl-distro', default='Ubuntu-24.04')
     parser.add_argument('--gates-only', action='store_true')
+    parser.add_argument('--reuse-gates', type=Path, help='Authenticate previously executed unchanged controls; always rerun import and new apparatus test')
     parser.add_argument('--case', help='Exploratory selected run; never a complete campaign')
     args = parser.parse_args()
     args.output = args.output.resolve()
@@ -157,7 +191,13 @@ def main():
         write(project.parent / 'gates.json', gates)
         if not gates[-1]['ok']:
             return 1
+        reused = reusable_gates(args.reuse_gates, platform, inputs, identity['platforms'][platform])
         for host in HOSTS:
+            if host in reused:
+                gates.append(reused[host])
+                write(project.parent / 'gates.json', gates)
+                print(platform, host, 'REUSED authenticated unchanged inputs', flush=True)
+                continue
             host_args = ['--script', 'res://tests/' + host + '.gd']
             if host == 'test_gcr_envelope':
                 host_args += ['--', '--protocol=' + convert(ROOT / 'docs/audits/gcr001-2026-11-01/protocol.json')]
