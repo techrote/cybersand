@@ -132,6 +132,10 @@ max(0.5cell,10%) entry, max(1cell,10%) overlap and max(2cell/s,25%) upward rebou
 Failing these prevents selecting an intervention despite improved late motion.
 Copied-stage and delivered-wrench closure use relative1e-5. No mathematical
 zero-rest requirement or new sleep policy is introduced.
+Record any existing rig safety/movement guard activation. Restrict direct
+granular-mechanism comparisons to the common interval before either hard contact
+or a rig guard; retain later trajectories as operational outcomes, not uncaught
+solver evidence. No existing safety guard is disabled for these experiments.
 
 Keep compact summaries, selected traces, protocol and raw hashes in Git; large
 raw/log/runtime evidence stays local with a manifest. New diagnostic costs do

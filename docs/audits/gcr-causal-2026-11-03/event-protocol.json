@@ -144,7 +144,8 @@
     "barrel_entry_allowance": "max(0.5 cell, 10% of matched control peak)",
     "barrel_overlap_allowance": "max(1 cell, 10% of matched control peak)",
     "barrel_rebound_allowance": "max(2 cell/s, 25% of matched control peak upward speed)",
-    "causal_effect_thresholds": "Reporting/preregistered evidence thresholds only; no production selection without broader/owner gates"
+    "causal_effect_thresholds": "Reporting/preregistered evidence thresholds only; no production selection without broader/owner gates",
+    "rig_guards": "Record all movement/safety-guard activations. Compare direct granular mechanism metrics only before the common first hard-contact or rig-guard boundary; retain complete trajectories and classify later outcomes separately."
   },
   "registration": "GCR-CAUSAL-EVENT-001-2026-11-03",
   "lane": "blocked-move-event",
