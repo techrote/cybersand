@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Separate GCR-LA causal tests: [timing/contact and blocked-event registration](operations/gcr-causal-registration.md)
+owns the registered interventions, qualified outcomes and non-overlap with
+the independent structural-detachment work. The [dated evidence](audits/2026-11-03-gcr-causal-tests.md)
+rejects withdrawal cancellation and isolates a blocked-event contribution to bank
+burial; it does not select a production law.
+
 GCR-LA residual motion: the [passive-creep and powered-burrowing registration](operations/gcr-creep-registration.md)
 owns the bounded independent-body investigation while #281 structural detachment
 progresses separately. Neutral controller input and zero actuator force are

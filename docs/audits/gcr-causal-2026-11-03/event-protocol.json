@@ -1,0 +1,248 @@
+{
+  "schema": 1,
+  "registered_date": "2026-11-03",
+  "control_source": "029c214e7e3530ebbee63927c725f832d18ff34a",
+  "observed_main": "89020b9eb6d540383a5bb64b58dcd29a87592c32",
+  "observed_main_tree": "79de02472a653a4315149bc5e1970a512e6d74b6",
+  "astra_pr347_observed_head": "3e9749854a9bf52a0efd7e017dad901bdfae5b6d",
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "ticks": 1800,
+  "dt": 0.016666666666666666,
+  "wall_timeout_seconds": 300,
+  "pulse_start": 120,
+  "pulse_end": 180,
+  "drive_end": 1200,
+  "drive_fraction": 0.15,
+  "effort": 0.7,
+  "native_build_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+  "law": {
+    "candidate": "GCR-REST",
+    "mode": "control",
+    "admission": "A1",
+    "base_budget": 20,
+    "contact_control": 0.025,
+    "sleep": "unchanged; excluded"
+  },
+  "fixture_flyer": {
+    "fleet_index": 2,
+    "name": "Kestrel",
+    "position": [
+      296,
+      312
+    ],
+    "flat_angle": 0,
+    "bank_angle": 1.5707963267948966,
+    "region": [
+      128,
+      128,
+      512,
+      384
+    ],
+    "base": [
+      129,
+      320,
+      510,
+      191
+    ],
+    "bank": [
+      300,
+      192,
+      339,
+      128
+    ],
+    "border_material": 1,
+    "gravity": 38,
+    "mass": 0.1,
+    "inertia": 0.975,
+    "mass_multiplier": 1,
+    "inertia_multiplier": 1,
+    "census_interval": 60,
+    "fire": false,
+    "dispensers": false
+  },
+  "fixture_barrel": {
+    "left": 96,
+    "width": 96,
+    "depth": 160,
+    "layout": "packed",
+    "size": 1,
+    "mass": 1,
+    "angle": 0.08,
+    "gap": 2,
+    "speed": 0,
+    "gravity": 92.12,
+    "friction": 0.78,
+    "workers": 1
+  },
+  "fixture_barrel_high": {
+    "left": 96,
+    "width": 64,
+    "depth": 96,
+    "layout": "deep",
+    "size": 1,
+    "mass": 1,
+    "angle": 0.08,
+    "gap": 2,
+    "speed": 90,
+    "gravity": 92.12,
+    "friction": 0.78,
+    "workers": 1
+  },
+  "windows": {
+    "before_drive": [
+      0,
+      120
+    ],
+    "drive_early": [
+      120,
+      180
+    ],
+    "drive_late": [
+      900,
+      1200
+    ],
+    "after_release": [
+      1200,
+      1500
+    ],
+    "tail": [
+      1500,
+      1800
+    ]
+  },
+  "tolerances": {
+    "parity_position": 1e-05,
+    "parity_velocity": 1e-05,
+    "parity_omega": 1e-05,
+    "parity_result_relative": 1e-06,
+    "delivered_relative": 1e-05,
+    "metadata_absolute": 1e-12,
+    "quantity": "exact"
+  },
+  "write_boundary": {
+    "allowed": [
+      "new experiment-owned GDScript arena/fixture/capture/tests",
+      "new runner/reducer/tests",
+      "focused registration/evidence/docs routes"
+    ],
+    "excluded": [
+      "any existing production World/adapter/worker/bridge/actor/controller/session",
+      "Astra #281 and PR347 branch or source",
+      "material policy or native solver law",
+      "sleep/catch/default promotion",
+      "combined timing/contact/event treatment"
+    ]
+  },
+  "safety": {
+    "require_finite": true,
+    "quantity": "exact native stored counts and Water quantity",
+    "applications": "one fresh age0 result per intended boundary",
+    "hard_contact": "mark every actual hard proximity/contact; compare granular outcomes only before common hard boundary",
+    "barrel_entry_allowance": "max(0.5 cell, 10% of matched control peak)",
+    "barrel_overlap_allowance": "max(1 cell, 10% of matched control peak)",
+    "barrel_rebound_allowance": "max(2 cell/s, 25% of matched control peak upward speed)",
+    "causal_effect_thresholds": "Reporting/preregistered evidence thresholds only; no production selection without broader/owner gates",
+    "rig_guards": "Record all movement/safety-guard activations. Compare direct granular mechanism metrics only before the common first hard-contact or rig-guard boundary; retain complete trajectories and classify later outcomes separately."
+  },
+  "registration": "GCR-CAUSAL-EVENT-001-2026-11-03",
+  "lane": "blocked-move-event",
+  "maximum_primary_captures": 16,
+  "arms": {
+    "C": "Fresh reconstruction with existing contact gain0.025",
+    "E0": "Identical fresh reconstruction with existing contact gain0; native blocked attempts remain enabled and passive solve recomputes with no event J/L or budget charge"
+  },
+  "decisions": {
+    "isolation": "Powder-only causal rooms; allowed materials Empty, Wall and selected Sand/Salt. Require legacy_non_granular=(0,0) every row. Contact gain also affects legacy non-granular response, so Water is not an event-only causal cohort.",
+    "readback": "Controlled fresh native one-grain witness: N is the public contact-counter increase across its first native tick, separating unchanged adapter observations from newly recorded native contacts. Require positive N, zero parcel moves, unchanged material bytes, zero passive nodes and legacy; event_scale1. Effective gain=event_raw.y*1000/(N*1600). Equal post-one-tick native physical hashes across gains show native state/contact generation unchanged. This first-tick subtraction is not assumed to measure arbitrary live per-tick counts.",
+    "setup": "Reconstruct native World symmetrically BEFORE authoring/ticks in both arms; reprime upright actor before bank authoring to retain six masked exclusions, then same existing initial pose helper. Require initial material/body parity and source/terrain publication witnesses. Evolving material need not match after body trajectory diverges.",
+    "effect": "Compare descent at tick900 only if both arms remain hard-clear; otherwise report it unsupported and compare common pre-hard interval/first hard contact as censored. A material event-channel effect is >=max(2 cells,25%) decrease in matched hard-clear descent. Record angular/rebound/work/admission/overlap outcomes separately. Event removal changes event J/L, event budget charge and post-event provisional state together; does not isolate those subcomponents.",
+    "null": "Flat Sand/unactuated with zero observed events should match across gains; otherwise investigate rather than assert event specificity.",
+    "barrel": "Original mass1 speed90 fixture C/E0 retains canonical feel guard. Do not select E0 solely from bank descent; record impact penetration/overlap/rebound/clearance/rotation.",
+    "selection": "No timing/contact interventions in this lane; no material, solver, sleep/default change or merge."
+  },
+  "cases": [
+    {
+      "id": "bank-sand-unactuated-C",
+      "kind": "flyer",
+      "geometry": "bank",
+      "material": 2,
+      "drive": "unactuated",
+      "arm": "C",
+      "contact_gain": 0.025,
+      "ticks": 1800
+    },
+    {
+      "id": "bank-sand-unactuated-E0",
+      "kind": "flyer",
+      "geometry": "bank",
+      "material": 2,
+      "drive": "unactuated",
+      "arm": "E0",
+      "contact_gain": 0.0,
+      "ticks": 1800
+    },
+    {
+      "id": "bank-salt-unactuated-C",
+      "kind": "flyer",
+      "geometry": "bank",
+      "material": 23,
+      "drive": "unactuated",
+      "arm": "C",
+      "contact_gain": 0.025,
+      "ticks": 1800
+    },
+    {
+      "id": "bank-salt-unactuated-E0",
+      "kind": "flyer",
+      "geometry": "bank",
+      "material": 23,
+      "drive": "unactuated",
+      "arm": "E0",
+      "contact_gain": 0.0,
+      "ticks": 1800
+    },
+    {
+      "id": "flat-sand-unactuated-C",
+      "kind": "flyer",
+      "geometry": "flat",
+      "material": 2,
+      "drive": "unactuated",
+      "arm": "C",
+      "contact_gain": 0.025,
+      "ticks": 1800
+    },
+    {
+      "id": "flat-sand-unactuated-E0",
+      "kind": "flyer",
+      "geometry": "flat",
+      "material": 2,
+      "drive": "unactuated",
+      "arm": "E0",
+      "contact_gain": 0.0,
+      "ticks": 1800
+    },
+    {
+      "id": "barrel-high-C",
+      "kind": "barrel",
+      "geometry": "barrel-high",
+      "material": 2,
+      "drive": "passive",
+      "arm": "C",
+      "contact_gain": 0.025,
+      "ticks": 1800
+    },
+    {
+      "id": "barrel-high-E0",
+      "kind": "barrel",
+      "geometry": "barrel-high",
+      "material": 2,
+      "drive": "passive",
+      "arm": "E0",
+      "contact_gain": 0.0,
+      "ticks": 1800
+    }
+  ]
+}

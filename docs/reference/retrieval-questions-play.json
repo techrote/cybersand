@@ -173,6 +173,38 @@
         "operations/gcr-creep-registration.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GCRCAUSAL01",
+      "query": "How are GCR-LA actuation timing contact withdrawal and blocked-move event causes tested separately without editing shared coupling?",
+      "canonical": [
+        "operations/gcr-causal-registration.md"
+      ],
+      "facts": [
+        "Separate registered timing/contact and event lanes preserve existing production owners and sleep; no combined treatment or default promotion.",
+        "Timing uses actual clock and actuation phase witnesses; S controls the extra setter in post-delivery cancellation X; event0 uses existing fresh native contact option before passive recomputation.",
+        "Powder-only event causal comparisons require zero legacy non-granular response, with a native behavioral gain witness; Water remains a separate mechanical control."
+      ],
+      "sources": [
+        "operations/gcr-causal-registration.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCRCAUSAL02",
+      "query": "What did separate GCR-LA timing withdrawal cancellation and blocked-event removal tests establish about burial and rest?",
+      "canonical": [
+        "operations/gcr-causal-registration.md"
+      ],
+      "facts": [
+        "Timing missed its registered late-motion threshold and withdrawal cancellation failed barrel penetration and overlap guards.",
+        "Event removal reduced tick900 unactuated Sand/Salt bank descent from about154 to1cell on both OSes, with native blocked attempts retained and exact flat null.",
+        "Late barrel motion increased and bank overlap/correction persisted; no general rest, production law, sleep or gameplay acceptance follows."
+      ],
+      "sources": [
+        "operations/gcr-causal-registration.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }

@@ -4,13 +4,22 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-03
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
 
-Current focused GCR-LA investigation: [registration](gcr-creep-registration.md)
+Current GCR-LA causal successor: [registration](gcr-causal-registration.md) and
+[dated results](../audits/2026-11-03-gcr-causal-tests.md) qualify 40 captures at 9a043491.
+Timing T misses its late-motion threshold; withdrawal cancellation X fails barrel
+guards. Event removal isolates a strong cause of unactuated bank burial, while
+retaining late-motion/overlap limitations. No intervention is a production rest
+solution. Existing shared/native source and playground feel remain unchanged;
+coordinate any future event-law change with Astra's #281/PR347 owner. Sleep stays
+out of scope and all drafts remain unmerged.
+
+Retained focused GCR-LA observation: [registration](gcr-creep-registration.md)
 and [November3 evidence](../audits/2026-11-03-gcr-la-creep-and-burrowing.md) separate
 dynamic-bank burial without pilot input from quiet flat-bed subpixel cycling and
 powered sliding. Production/native/shared coupling source remains unchanged;

@@ -126,6 +126,7 @@
     "architecture/granular-contact-rest.md",
     "operations/gcr-rest-registration.md",
     "operations/gcr-creep-registration.md",
+    "operations/gcr-causal-registration.md",
     "systems/granular-review-flight-fleet.md",
     "operations/paired-wall-loose-materials-plan.md"
   ],
