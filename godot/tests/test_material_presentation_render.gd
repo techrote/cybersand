@@ -289,7 +289,7 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 		CyberCellWorld.GOLD_LEAF, CyberCellWorld.BRASS_PANEL, CyberCellWorld.PHOSPHOR_PANEL]
 	var static_ids: Array[int] = []
 	for id: int in range(CyberCellWorld.FIRST_BUILDING_MATERIAL, CyberCellWorld.LAST_MATERIAL + 1):
-		if not id in animated_ids:
+		if CyberCellWorld.is_hard_material(id) and not id in animated_ids:
 			static_ids.append(id)
 	var offset: int = 0
 	while offset < static_ids.size():

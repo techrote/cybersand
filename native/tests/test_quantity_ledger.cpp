@@ -211,7 +211,8 @@ void refusal_and_overflow() {
     auto bad = bytes;
     bad[4] = 1;
     require(refuses(bad), "historical format1 explicitly refused");
-    bad = bytes; bad[ledger_offset(bad)] = 2;
+    bad = bytes;
+    bad[ledger_offset(bad)] = static_cast<std::uint8_t>(kQuantityLedgerSchemaVersion + 1U);
     require(refuses(bad), "unknown accounting schema refused");
     bad = bytes; put64(bad, ledger_offset(bad) + 11U, 1U);
     require(refuses(bad), "forged actual quantity refused");
