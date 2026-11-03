@@ -19,6 +19,8 @@ const MAX_ROPE_LENGTH: float = 96.0
 const MIN_ROPE_LENGTH: float = 6.0
 const PROFILE_VERSION: int = 1
 const TERRAIN_MASK: int = 1
+const ReviewFleetController = preload("res://scripts/gcr_review_fleet_controller.gd")
+const ReviewFleet = preload("res://scripts/gcr_review_fleet.gd")
 const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
 const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
 const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
@@ -249,7 +251,25 @@ static func valid_action(action: Dictionary) -> bool:
 	return true
 
 
-func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnation: int = 1) -> Error:
+static func valid_review_options(options: Dictionary) -> bool:
+	if options.is_empty(): return true # Retained RFT reference authoring.
+	if options.size()<4 or options.size()>6: return false
+	for key: Variant in options:
+		if key not in ["response","budget","mass_multiplier","inertia_multiplier","thrust_multiplier","torque_multiplier"]: return false
+	if not options.get("response") is String or options.response not in ["LA","RFT"]: return false
+	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
+		if not _finite_number(options.get(key)): return false
+	if float(options.budget)<5.0 or float(options.budget)>80.0: return false
+	if options.response=="RFT" and float(options.budget)!=20.0: return false
+	for key: String in ["mass_multiplier","inertia_multiplier"]:
+		if float(options[key])<0.01 or float(options[key])>64.0: return false
+	for key: String in ["thrust_multiplier","torque_multiplier"]:
+		if options.has(key) and (not _finite_number(options[key]) or float(options[key])<0.0 or float(options[key])>64.0): return false
+	return true
+
+
+func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnation: int = 1,
+		review_fleet_index: int = -1, review_options: Dictionary = {}) -> Error:
 	if configured:
 		return ERR_ALREADY_IN_USE
 	if not is_inside_tree() or not origin.is_finite() or slot < 0 or slot >= 8 or incarnation <= 0:
@@ -258,6 +278,15 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	if not invalid.is_empty():
 		fault = invalid
 		return ERR_INVALID_DATA
+	# Developer overrides apply only to the exact retained single-hull fleet.
+	# Validate ordinary authored mass first; never widen catalogue admission.
+	if not valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1):
+		return ERR_INVALID_DATA
+	if review_fleet_index!=-1:
+		if not ReviewFleet.valid_index(review_fleet_index): return ERR_INVALID_DATA
+		var expected: Dictionary = ReviewFleet.definition(review_fleet_index)
+		expected["equipment_managed"]=true
+		if definition!=expected: return ERR_INVALID_DATA
 	var flight_gravity_scale: float = 0.0
 	if definition.has("flight_profile"):
 		var environment_gravity: Variant = ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)
@@ -282,6 +311,11 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 			return ERR_INVALID_DATA
 	_definition = definition.duplicate(true)
 	_profile = _definition.get("profile", {})
+	if review_fleet_index!=-1:
+		# Only the already validated, exact retained fleet can change propulsion
+		# ceilings. Omitted controls preserve its authored force and torque.
+		_profile["fleet_force"] = float(_profile.fleet_force)*float(review_options.get("thrust_multiplier",1.0))
+		_profile["fleet_torque"] = float(_profile.fleet_torque)*float(review_options.get("torque_multiplier",1.0))
 	_part_defs = _definition.parts
 	_player_controller = null
 	_flight_controller = null
@@ -295,6 +329,8 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		_flight_capabilities["controller_hash"] = FlightController.controller_hash()
 	if str(_profile.get("player_controller", "")) == "acrobat":
 		_player_controller = PlayerAcrobat.new()
+	elif str(_profile.get("player_controller", "")) == "gcr_review_fleet":
+		_player_controller = ReviewFleetController.new()
 	elif str(_profile.get("player_controller", "")) == "vehicle":
 		_player_controller = PlayerVehicle.new()
 	rig_id = StringName(str(_definition.id))
@@ -309,12 +345,16 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		body.name = "Part_%s" % str(part.id)
 		body.position = to_local(origin + Vector2(part.offset))
 		body.rotation = float(part.get("angle", 0.0))
-		body.mass = float(part.get("mass", 1.0))
+		body.mass = float(part.get("mass", 1.0))*float(review_options.get("mass_multiplier",1.0))
 		body.inertia = maxf(0.01, body.mass * Vector2(part.size).length_squared() / 12.0)
 		if _flight_controller != null:
 			body.inertia = float(_definition.flight_profile.inertia)
 		if str(part.get("shape", "rectangle")) == "circle":
 			body.inertia = maxf(0.01, body.mass * pow(float(part.size.x) * 0.5, 2.0) * 0.5)
+		if not review_options.is_empty():
+			# Explicit positive inertia, including tiny developer masses, is set
+			# before all cached properties and the Rapier bridge are constructed.
+			body.inertia = body.mass*Vector2(part.size).length_squared()/12.0*float(review_options.inertia_multiplier)
 		body.gravity_scale = _gravity / maxf(1.0, float(ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)))
 		if _flight_controller != null:
 			body.gravity_scale = flight_gravity_scale

@@ -464,3 +464,13 @@ labelled and excluded from that qualification claim. Increased impulse magnitude
 does not increase contact count, solver passes or8192-update bound. Exact
 mass<=1 native equality, partial-support credibility and owner barrel feel are
 distinct gates; implementation alone establishes none of their physical outcomes.
+
+## Registered contact-rest boundaries
+
+The [rest experiment](../operations/gcr-rest-registration.md) preserves one physical
+mass/COM/inertia and wrench. Contact history is fixed-capacity and cannot replace
+fresh native support. Catch requires current gravity/torque feasibility and zero
+measured overlap; no pose latch, native-cell body cache or worker Rapier call is
+permitted. Removed kinetic energy, correction translation and zeroing remain
+separate. Unknown/stale support cannot authorize hold; failure/quarantine still
+follows its existing recovery contract. No sleep policy is changed.

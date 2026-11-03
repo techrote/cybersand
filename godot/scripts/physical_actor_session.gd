@@ -83,7 +83,14 @@ static func valid_definitions(definitions: Array) -> bool:
 	return parts <= CyberRigidBodyCoupling.MAX_BODIES
 
 
-func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
+func configure(definitions: Array, space: RID, new_epoch: int = 1, review_fleet_index: int = -1,
+		review_options: Dictionary = {}) -> bool:
+	if not Rig.valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1):
+		last_error = "review_options_refused"
+		return false
+	if review_fleet_index != -1 and (not preload("res://scripts/gcr_review_fleet.gd").valid_index(review_fleet_index) or definitions.size()!=1 or not definitions[0] is Dictionary or definitions[0].get("model") != "arcadelander" or definitions[0].get("producer") != "human"):
+		last_error = "review_fleet_refused"
+		return false
 	if _active or not is_inside_tree() or not valid_definitions(definitions) or new_epoch < 1:
 		last_error = "Invalid physical actor configuration or live owner"
 		return false
@@ -105,12 +112,14 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		_has_flight = _has_flight or StringName(str(definition.model)) in Flight.IDS
 		var loadout: Dictionary = Loadouts.entry(StringName(str(definition.model)))
 		var data: Dictionary = Equipment.definition(Catalog.entry(StringName(str(definition.model))), loadout)
+		if review_fleet_index != -1:
+			data = Equipment.definition(preload("res://scripts/gcr_review_fleet.gd").definition(review_fleet_index))
 		_catalogue.append(data)
 		var rig = Rig.new()
 		add_child(rig)
 		_body_offsets.append(all_bodies.size())
 		_rigs.append(rig)
-		if rig.configure(data, definition.position, index, epoch) != OK:
+		if rig.configure(data, definition.position, index, epoch,review_fleet_index,review_options) != OK:
 			last_error = "Physical rig refused: " + str(definition.model)
 			close()
 			return false

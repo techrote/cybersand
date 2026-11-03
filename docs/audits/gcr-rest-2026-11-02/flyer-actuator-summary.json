@@ -1,0 +1,228 @@
+{
+  "source": "d86e4bba8ed759aac6fc7daa3636ab4bbe666531",
+  "ok": true,
+  "code_inputs_unchanged_before_after": true,
+  "platforms": [
+    {
+      "platform": "windows",
+      "ok": true,
+      "native_sha256": "65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e",
+      "native_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "records": [
+        {
+          "case": "import",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 9.961881399154663,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/windows/godot",
+            "--editor",
+            "--import",
+            "--quit"
+          ],
+          "log": "build/fleet-limit-final/windows/import.log",
+          "log_sha256": "0a90a1e4b946f63a50ea15f3949cf69d559e2c2651eac3314aafe0f3117f7851"
+        },
+        {
+          "case": "test_gcr_fleet_controls",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 3.367137908935547,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/windows/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_controls.gd"
+          ],
+          "log": "build/fleet-limit-final/windows/test_gcr_fleet_controls.log",
+          "log_sha256": "eca5bec96488b13d1916cf5c27277636ab1726fc24f1cc36e927acee111929aa"
+        },
+        {
+          "case": "test_gcr_review_fleet",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 12.607990503311157,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/windows/godot",
+            "--script",
+            "res://tests/test_gcr_review_fleet.gd"
+          ],
+          "log": "build/fleet-limit-final/windows/test_gcr_review_fleet.log",
+          "log_sha256": "75ca0030dfe974f59ed9190c9747a1bd0a1af5d5b1c254d61332f6ce37e5f3b3"
+        },
+        {
+          "case": "test_gcr_review_navigation",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 2.332754135131836,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/windows/godot",
+            "--script",
+            "res://tests/test_gcr_review_navigation.gd"
+          ],
+          "log": "build/fleet-limit-final/windows/test_gcr_review_navigation.log",
+          "log_sha256": "7cd0c9b8d90a215ace8296bffc58f3b51017cb17b4784e299ac2dae105561fe3"
+        },
+        {
+          "case": "test_physical_actor_rigs",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 24.47493863105774,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/windows/godot",
+            "--script",
+            "res://tests/test_physical_actor_rigs.gd"
+          ],
+          "log": "build/fleet-limit-final/windows/test_physical_actor_rigs.log",
+          "log_sha256": "89571d21b0b7816bafbe732198480963000e8aefb7dc723b7968333bce17c89e"
+        }
+      ]
+    },
+    {
+      "platform": "linux",
+      "ok": true,
+      "native_sha256": "8bfe51214643c626dd5800f66ecff86f3348a166b55551e0674d1b4f762cfbf5",
+      "native_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "records": [
+        {
+          "case": "import",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 49.32656741142273,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/linux/godot",
+            "--editor",
+            "--import",
+            "--quit"
+          ],
+          "log": "build/fleet-limit-final/linux/import.log",
+          "log_sha256": "19bcde6a66ca4477126e56b01699c70f9d0075cf86a8d395fb513c17db79b285"
+        },
+        {
+          "case": "test_gcr_fleet_controls",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 4.053147792816162,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/linux/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_controls.gd"
+          ],
+          "log": "build/fleet-limit-final/linux/test_gcr_fleet_controls.log",
+          "log_sha256": "4c50fa3676bd25e49ecd97f3f0ccbb0f97c73d867b4828702c17a175f559bbad"
+        },
+        {
+          "case": "test_gcr_review_fleet",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 30.86392593383789,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/linux/godot",
+            "--script",
+            "res://tests/test_gcr_review_fleet.gd"
+          ],
+          "log": "build/fleet-limit-final/linux/test_gcr_review_fleet.log",
+          "log_sha256": "3ca533df1f02205a548a72b8b9b0bd8945f073957c26534439543c00d39f453e"
+        },
+        {
+          "case": "test_gcr_review_navigation",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 6.015609979629517,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/linux/godot",
+            "--script",
+            "res://tests/test_gcr_review_navigation.gd"
+          ],
+          "log": "build/fleet-limit-final/linux/test_gcr_review_navigation.log",
+          "log_sha256": "19f86c9dede825428979305274aeb090724ca52bcd23e8c60591501710858f69"
+        },
+        {
+          "case": "test_physical_actor_rigs",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 23.32527184486389,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-limit-final/linux/godot",
+            "--script",
+            "res://tests/test_physical_actor_rigs.gd"
+          ],
+          "log": "build/fleet-limit-final/linux/test_physical_actor_rigs.log",
+          "log_sha256": "269038ea8d54965f38475bf49868ebe8f651eef7a50fe3ee479342b5e7bae704"
+        }
+      ]
+    }
+  ],
+  "scope": "Actuator/control/navigation mechanics; no material-law, sleep or new physical-envelope acceptance.",
+  "project_input_ledger": {
+    "path": "build/fleet-limit-final/receipt.json",
+    "sha256": "5482e3aea75b186b25192ff1adeff3b2a8a033a2e1b540c492e1b637e9f917f5",
+    "input_count": 559
+  },
+  "schema": "cybersand.flyer-actuator-navigation.v1",
+  "owner_acceptance": null,
+  "production_accepted": false,
+  "material_laws_changed": false,
+  "sleep_changed": false,
+  "limits": {
+    "thrust_multiplier": [
+      0,
+      64
+    ],
+    "torque_multiplier": [
+      0,
+      64
+    ],
+    "omitted_default": 1,
+    "interpretation": "Copied authored controller caps; speed/acceleration and existing rig safety guards remain separate."
+  }
+}

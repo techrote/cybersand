@@ -9,7 +9,7 @@ bool CyberNativeCellWorld::compound_lease_current() const {
 }
 
 bool CyberNativeCellWorld::prepare_gcr_compound_coupling(const PackedFloat64Array& states,
-    const Dictionary& lease, bool resolve_overlaps) {
+    const Dictionary& lease, bool resolve_overlaps, const Dictionary& rest_context) {
     if (!gcr_enabled_ || !conservative_displacement_ || !world_ || world_->has_failed() ||
         world_->solid_detachment_fenced() || !gcr_compound_workspace_) return false;
     const auto refuse=[this]() { invalidate_gcr_response(); return false; };
@@ -82,7 +82,7 @@ bool CyberNativeCellWorld::prepare_gcr_compound_coupling(const PackedFloat64Arra
         gcr_compound_token_=solid.token;gcr_compound_generation_=solid.body_generation;
         gcr_compound_physics_epoch_=solid.physics_epoch;gcr_preparing_compound_=true;
         struct FlagGuard {bool& flag;~FlagGuard(){flag=false;}} guard{gcr_preparing_compound_};
-        const bool accepted=prepare_gcr_coupling(states,resolve_overlaps);
+        const bool accepted=prepare_gcr_coupling(states,resolve_overlaps,rest_context);
         return accepted && compound_lease_current();
     } catch (...) {
         world_->quarantine_external_coupling();
@@ -130,11 +130,22 @@ CyberNativeCellWorld::CompoundEvaluation CyberNativeCellWorld::evaluate_gcr_comp
         }
     }
     out.radius+=2.;
+    if(total_area>0)out.precise_correction=out.precise_correction*(1./total_area);
+    const double correction_length=cybersand::gcr::length(out.precise_correction);
+    if(correction_length>.5)out.precise_correction=out.precise_correction*(.5/correction_length);
+    out.requested_correction={out.precise_correction.x,out.precise_correction.y};
+    if(rest_correction_mode() && gcr_rest_overlap_measured_ && rest_overlap(1)==0)out.precise_correction={};
+    out.correction={out.precise_correction.x,out.precise_correction.y};
+    out.legacy_scale=out.legacy_budget>impulse_cap_ ? impulse_cap_/out.legacy_budget:1.;
+    const auto legacy=raw_legacy*out.legacy_scale;
+    response.legacy={legacy.x,legacy.y};out.legacy_raw_torque=legacy_moment;out.legacy_torque=legacy_moment*out.legacy_scale;
     const cybersand::gcr::Vec event_raw{static_cast<double>(gx)*gain,static_cast<double>(gy)*gain};
     response.event_raw={event_raw.x,event_raw.y};
     response.event_raw_torque=(static_cast<double>(moment2)*.5-body.com.x*static_cast<double>(gy)+body.com.y*static_cast<double>(gx))*gain;
     const double event_cost=std::max(cybersand::gcr::length(event_raw),std::abs(response.event_raw_torque)/out.radius);
-    response.event_scale=event_cost>20 ? 20/event_cost:1.;
+    const double scale=gcr_load_aware_ ? cybersand::gcr::load_scale(body.mass):1.;
+    const double total=gcr_base_budget_*scale,event_allowance=std::min(20.,total);
+    response.event_scale=event_cost>event_allowance ? event_allowance/event_cost:1.;
     const auto event=event_raw*response.event_scale;
     response.event={event.x,event.y};
     response.event_torque=response.event_raw_torque*response.event_scale;response.event_cost=event_cost*response.event_scale;
@@ -142,18 +153,13 @@ CyberNativeCellWorld::CompoundEvaluation CyberNativeCellWorld::evaluate_gcr_comp
     state.velocity={body.velocity.x+event.x/body.mass,body.velocity.y+event.y/body.mass};
     state.omega=body.angular_velocity+response.event_torque/body.inertia;state.mass=body.mass;state.inertia=body.inertia;
     state.com={body.com.x,body.com.y};state.mu=body.friction;
-    const double scale=gcr_load_aware_ ? cybersand::gcr::load_scale(body.mass):1.;
-    response.passive=cybersand::gcr::solve_compound(state,{bins.data(),count},*gcr_compound_workspace_,20*scale-response.event_cost,scale);
-    out.legacy_scale=out.legacy_budget>impulse_cap_ ? impulse_cap_/out.legacy_budget:1.;
-    const auto legacy=raw_legacy*out.legacy_scale;
-    response.legacy={legacy.x,legacy.y};out.legacy_raw_torque=legacy_moment;out.legacy_torque=legacy_moment*out.legacy_scale;
+    auto rest=rest_options(1,response,out.radius,cybersand::gcr::length(out.precise_correction)>0 || out.legacy_torque!=0);
+    response.passive=cybersand::gcr::solve_compound(state,{bins.data(),count},*gcr_compound_workspace_,total-response.event_cost,scale,gcr_base_budget_,gcr_rest_enabled_?&rest:nullptr);
+    finish_rest(1,response,out.radius);
     out.precise_impulse=legacy+event+response.passive.impulse;
     response.impulse={out.precise_impulse.x,out.precise_impulse.y};
     response.torque=out.legacy_torque+response.event_torque+response.passive.torque;
-    if(total_area>0) out.precise_correction=out.precise_correction*(1./total_area);
-    const double correction_length=cybersand::gcr::length(out.precise_correction);
-    if(correction_length>.5) out.precise_correction=out.precise_correction*(.5/correction_length);
-    out.correction={out.precise_correction.x,out.precise_correction.y};
+
     if(!std::isfinite(out.precise_impulse.x) || !std::isfinite(out.precise_impulse.y) ||
         !std::isfinite(response.torque) || !std::isfinite(out.precise_correction.x) || !std::isfinite(out.precise_correction.y)) response.refused=true;
     return out;
@@ -163,6 +169,7 @@ PackedFloat64Array CyberNativeCellWorld::gcr_compound_results() const {
     PackedFloat64Array result;
     if(!gcr_compound_mode_ || !gcr_response_valid_ || !compound_lease_current() ||
         world_->completed_tick_index()>gcr_sample_tick_+1 || !current_bodies_[1].valid) return result;
+    revalidate_rest_material();
     if(!gcr_compound_last_valid_ || gcr_compound_last_tick_!=world_->completed_tick_index()) {
         gcr_compound_last_=evaluate_gcr_compound();gcr_compound_last_valid_=true;
         gcr_compound_last_tick_=world_->completed_tick_index();
@@ -177,9 +184,10 @@ PackedFloat64Array CyberNativeCellWorld::gcr_compound_results() const {
 }
 
 Dictionary CyberNativeCellWorld::gcr_compound_diagnostics() const {
+    revalidate_rest_material();
     Dictionary d;d["enabled"]=gcr_compound_mode_;d["protocol_version"]=2;d["physical_body_id"]=1;
     d["candidate"]=gcr_load_aware_ ? "LA":get_gcr_admission_variant();
-    d["load_aware"]=gcr_load_aware_;
+    d["load_aware"]=gcr_load_aware_;d["base_budget"]=gcr_base_budget_;d["rest_mode"]=gcr_rest_mode_;
     d["lab_mass_multiplier"]=gcr_mass_multiplier_; d["lab_inertia_multiplier"]=gcr_inertia_multiplier_;
     d["admission_variant"]=get_gcr_admission_variant();d["proxy_count"]=static_cast<std::int64_t>(gcr_compound_count_);
     d["source_bins"]=static_cast<std::int64_t>(gcr_compound_count_*8);
@@ -198,6 +206,10 @@ Dictionary CyberNativeCellWorld::gcr_compound_diagnostics() const {
     if(!gcr_compound_last_valid_) return d;
     const auto& e=gcr_compound_last_;const auto& r=e.response;const auto& p=r.passive;
     d["capacity_scale"]=gcr_load_aware_ ? cybersand::gcr::load_scale(b.mass):1.;
+    const double scale=gcr_load_aware_?cybersand::gcr::load_scale(b.mass):1.;std::uint64_t sources=0;
+    for(std::size_t id=1;id<=gcr_compound_count_;++id)for(const auto& bin:gcr_bins_[id])sources+=bin.count;
+    d["global_capacity"]=gcr_base_budget_*scale;d["source_capacity"]=2.*sources*scale;d["normalization_saturated"]=gcr_load_aware_&&b.mass>4096.;
+    d["active_capacity_limiter"]=(gcr_base_budget_*scale-r.event_cost<=2.*sources*scale)?"global":"source";
     d["normal_cap_hits"]=p.normal_cap_hits; d["tangent_cap_hits"]=p.tangent_cap_hits;
     d["nodes"]=p.nodes;d["updates"]=p.updates;d["normal_capacity"]=p.capacity;d["normal_accepted"]=p.normal;
     d["tangent_accepted"]=p.tangent;d["event_budget_cost"]=r.event_cost;d["event_scale"]=r.event_scale;

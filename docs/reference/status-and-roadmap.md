@@ -1760,3 +1760,43 @@ experimental mass-capacity hypothesis, original building comparison, barrel
 preservation gates, partial support and staged developer controls. Sleep and
 production promotion remain excluded. Source implementation is not gameplay
 acceptance; consult the registration for the frozen population and limitations.
+
+## Budget and contact-rest comparisons — 2026-11-02
+
+The owner authorizes [GCR-REST-001](../operations/gcr-rest-registration.md): budget5/10/20/40/80, contact persistence,
+rest-aware correction and constrained residual catch, plus payload mass/inertia
+controls through64. PR349/350 stay unmerged and their source/evidence remain
+controls. Sleep and material-law changes stay excluded. The88-case bounded
+registration precedes results; no production acceptance follows from implementation.
+The [source-bound qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md)
+records native181a8257 and capture594a1a73 separately. PR351 is a focused draft
+against frozen PR350; no rest/default or gameplay acceptance is implied.
+All88 captures completed. R/PRC fails synchronous penetration/overlap gates;
+P/C and admitted support loss remain unqualified. Strong asynchronous delivery
+variation and partial-support failures prevent a general budget recommendation.
+Keep20 as the control and all three drafts unmerged.
+
+## Editable flyer budget playground — 2026-11-02
+
+**Current developer extension, 2026-11-03:** the same room adds bounded native
+material dispensers, body-local side jets and a live default-off thruster Fire
+toggle. [Source-matched desktop host checks](../audits/2026-11-03-paired-material-plan-and-fleet-emissions.md)
+cover input lifetime and the existing force ceiling; they do not qualify rest,
+burrowing or new material laws. PR351 remains draft and unmerged.
+
+**Planned:** the [paired wall/loose implementation](../operations/paired-wall-loose-materials-plan.md)
+will give explicitly admitted forms shared chemistry and ordinary hard-terrain
+support until destruction exposes powder. A separate finite-dose binder/crust
+prototype must not propagate activation through cured neighbors. The shell
+playground annex and material/collider-release qualification are part of that
+future work; existing Cement and all current material laws remain unchanged.
+
+**Current developer source:** the [seven-flyer room](../systems/granular-review-flight-fleet.md)
+combines material painting with staged LA budget5..80 and mass/inertia0.01..64
+controls. Defaults are LA/20 and multipliers1/1; fixed-20 RFT remains a reference.
+Actual flyer properties/caches change during fresh construction, with default
+authored actuator ceilings and no rescaling of detached terrain. Native SDK181 inputs are
+unchanged. This is a playable comparison extension, not a new accepted physical
+population: prior rest failures remain, P/R/C and sleep stay excluded, and PR #351
+remains draft/unmerged; host mechanics and owner gameplay acceptance remain
+separate gates.

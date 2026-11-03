@@ -3,6 +3,9 @@ extends "res://tests/support/y1_envelope_review.gd"
 var parameters: Dictionary = {}
 var parameter_status: Label
 var load_controls: VBoxContainer
+var budget_input: SpinBox
+var rest_mode_input: OptionButton
+const REST_MODES: Array[String] = ["control","P","R","C","PRC"]
 var _arms: Array[String] = ["GCR-A1","GCR-LA"]
 
 func _ready() -> void:
@@ -22,6 +25,19 @@ func _ready() -> void:
 			spec.id=entry.id
 			spec.ticks=1800 # Manual30s observation; registered acquisition remains1200.
 			cases.append(spec)
+	# Keep the original eight references and expose the new registered motion
+	# mechanisms without creating a second force-law implementation.
+	for suffix: String in ["../docs/audits/gcr-rest-2026-11-02/protocol.json","../../docs/audits/gcr-rest-2026-11-02/protocol.json"]:
+		var rest_path: String = base.path_join(suffix).simplify_path()
+		if not FileAccess.file_exists(rest_path): continue
+		var rest_protocol: Variant = JSON.parse_string(FileAccess.get_file_as_string(rest_path))
+		if rest_protocol is Dictionary and rest_protocol.get("registration","")=="GCR-REST-001-2026-11-02":
+			for entry: Dictionary in rest_protocol.cases:
+				if entry.kind=="barrel" and entry.mode=="control" and entry.comparison in ["gentle-drive","edge","salt-gentle"]:
+					var spec: Dictionary = entry.spec.duplicate(true)
+					spec.id="rest/"+str(entry.comparison)
+					cases.append(spec)
+		break
 	var panel := VBoxContainer.new()
 	panel.position=Vector2(20,12)
 	add_child(panel)
@@ -69,11 +85,20 @@ func _ready() -> void:
 		load_controls.add_child(caption)
 		var input := SpinBox.new()
 		input.min_value=0.01 if key in ["mass","inertia_multiplier"] else 0.0
-		input.max_value=368.48 if key=="gravity" else (32.0 if key=="mass" else 4.0)
+		input.max_value=368.48 if key=="gravity" else (32.0 if key=="mass" else (64.0 if key=="inertia_multiplier" else 4.0))
 		input.step=.01
 		input.value={"gravity":92.12,"mass":1.0,"friction":.78,"inertia_multiplier":1.0}[key]
 		load_controls.add_child(input)
 		parameters[key]=input
+	var budget_label := Label.new()
+	budget_label.text="Base impulse budget (LA/rest only)"
+	load_controls.add_child(budget_label)
+	budget_input=SpinBox.new()
+	budget_input.min_value=5.0; budget_input.max_value=80.0; budget_input.step=1.0; budget_input.value=20.0
+	load_controls.add_child(budget_input)
+	rest_mode_input=OptionButton.new()
+	for mode: String in REST_MODES: rest_mode_input.add_item({"control":"LA control","P":"Contact persistence","R":"Rest-aware correction","C":"Residual catch","PRC":"Persistence + correction + catch"}[mode])
+	load_controls.add_child(rest_mode_input)
 	var apply := Button.new()
 	apply.text="Apply parameter overrides and reset"
 	apply.focus_mode=Control.FOCUS_NONE
@@ -111,7 +136,20 @@ func _apply_parameters(read_editor: bool = true) -> void:
 	fixture=Fixture.new()
 	var spec: Dictionary = cases[chooser.selected].duplicate(true)
 	spec.mass=float(parameters.mass.value)
-	if not await fixture.setup(self,spec,_arms[arm.selected]):
+	if read_editor:
+		budget_input.apply()
+		budget_input.get_line_edit().release_focus()
+	if arm.selected==0 and (budget_input.value!=20.0 or rest_mode_input.selected!=0):
+		last_error="Rest modes and budget overrides require LA selection"
+		resetting=false
+		return
+	spec.gravity=float(parameters.gravity.value)
+	spec.friction=float(parameters.friction.value)
+	spec.inertia_multiplier=float(parameters.inertia_multiplier.value)
+	if arm.selected==1:
+		spec.rest_mode=REST_MODES[rest_mode_input.selected]
+		spec.base_budget=budget_input.value
+	if not await fixture.setup(self,spec,"GCR-REST" if arm.selected==1 else _arms[arm.selected]):
 		last_error="Load-aware barrel setup refused: "+fixture.error
 		push_error(last_error)
 		resetting=false
@@ -124,7 +162,10 @@ func _apply_parameters(read_editor: bool = true) -> void:
 		body.inertia=body.mass*fixture.body_size.length_squared()/12.0*inertia_scale
 	fixture.bridge.refresh_all_states()
 	native_sha256=FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")
-	parameter_status.text="Applied: mass %.3f | g %.2f\nfriction %.2f | inertia scale %.3f\n%s" % [body.mass,parameters.gravity.value,parameters.friction.value,inertia_scale,"Registered case defaults" if spec.mass==cases[chooser.selected].mass and parameters.gravity.value==92.12 and parameters.friction.value==.78 and inertia_scale==1.0 else "EXPLORATORY OVERRIDE"]
+	parameter_status.text="Applied: mass %.3f | g %.2f\nfriction %.2f | inertia scale %.3f\n%s" % [body.mass,parameters.gravity.value,parameters.friction.value,inertia_scale,"Registered body defaults" if spec.mass==cases[chooser.selected].mass and parameters.gravity.value==92.12 and parameters.friction.value==.78 and inertia_scale==1.0 else "EXPLORATORY OVERRIDE"]
+	parameter_status.text += "\nBudget %.1f | mode %s | mass scale %.1f" % [budget_input.value,REST_MODES[rest_mode_input.selected],minf(4096.0,maxf(1.0,body.mass))]
+	if spec.has("drive_impulse_schedule"):
+		parameter_status.text += "\nScripted small push at10s; breakaway pulse at15s"
 	paused=true
 	last_rows=[]
 	resetting=false

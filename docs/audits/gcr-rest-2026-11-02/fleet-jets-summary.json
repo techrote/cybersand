@@ -1,0 +1,528 @@
+{
+  "source": "d624bc191cbf3f6ad2c0e8988b3a2aa520e8bf93",
+  "ok": true,
+  "code_inputs_unchanged_before_after": true,
+  "platforms": [
+    {
+      "platform": "windows",
+      "ok": true,
+      "native_sha256": "65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e",
+      "native_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "records": [
+        {
+          "case": "import",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 11.113535642623901,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--editor",
+            "--import",
+            "--quit"
+          ],
+          "log": "build/fleet-jets-final/windows/import.log",
+          "log_sha256": "a1b5d64ef12f91ad7e2347127521ebd1a76da2863d3de6a22eda3b297f58f0e2"
+        },
+        {
+          "case": "test_gcr_fleet_side_thrusters",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 2.280285358428955,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_side_thrusters.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_gcr_fleet_side_thrusters.log",
+          "log_sha256": "48d0fe0178b2f7b458b2833103dc99ac113a10ac8ed3bd85e908d244bb875361"
+        },
+        {
+          "case": "test_gcr_fleet_emissions",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 1.132561445236206,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_emissions.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_gcr_fleet_emissions.log",
+          "log_sha256": "ab0f9578c83e78e197d9a8d9ab22681266c632233d66cf9da80b2ca56f775a24"
+        },
+        {
+          "case": "test_gcr_fleet_controls",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 3.527339458465576,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_controls.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_gcr_fleet_controls.log",
+          "log_sha256": "eca5bec96488b13d1916cf5c27277636ab1726fc24f1cc36e927acee111929aa"
+        },
+        {
+          "case": "test_gcr_review_fleet",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 13.733477592468262,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_gcr_review_fleet.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_gcr_review_fleet.log",
+          "log_sha256": "75ca0030dfe974f59ed9190c9747a1bd0a1af5d5b1c254d61332f6ce37e5f3b3"
+        },
+        {
+          "case": "test_gcr_review_navigation",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 2.631934404373169,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_gcr_review_navigation.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_gcr_review_navigation.log",
+          "log_sha256": "7cd0c9b8d90a215ace8296bffc58f3b51017cb17b4784e299ac2dae105561fe3"
+        },
+        {
+          "case": "test_physical_actor_rigs",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 26.137879610061646,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_physical_actor_rigs.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_physical_actor_rigs.log",
+          "log_sha256": "744c21a63b3275e1ef29802c423add2a205ecdb95f502513f4cc59653aeac5de"
+        },
+        {
+          "case": "test_physical_actor_effects",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 0.4088625907897949,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_physical_actor_effects.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_physical_actor_effects.log",
+          "log_sha256": "75ea55b08e14d66333149f8c7dcdedf536be0e7626cf1923fa384a5f837d33c7"
+        },
+        {
+          "case": "test_physical_actor_effect_admission",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 1.423994541168213,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_physical_actor_effect_admission.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_physical_actor_effect_admission.log",
+          "log_sha256": "7421ad74674ca77d756f83396c9e88156d35fe8f9874b8eee08ff3b23d9019d6"
+        },
+        {
+          "case": "test_physical_actor_session",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 0.6720294952392578,
+          "command": [
+            "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+            "--headless",
+            "--path",
+            "C:/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/windows/godot",
+            "--script",
+            "res://tests/test_physical_actor_session.gd"
+          ],
+          "log": "build/fleet-jets-final/windows/test_physical_actor_session.log",
+          "log_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72"
+        }
+      ]
+    },
+    {
+      "platform": "linux",
+      "ok": true,
+      "native_sha256": "8bfe51214643c626dd5800f66ecff86f3348a166b55551e0674d1b4f762cfbf5",
+      "native_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+      "records": [
+        {
+          "case": "import",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 50.46776223182678,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--editor",
+            "--import",
+            "--quit"
+          ],
+          "log": "build/fleet-jets-final/linux/import.log",
+          "log_sha256": "652fceb90a1b82202cdbd03980e80ee54b2b0010b776b3d318bf7478a51ac27f"
+        },
+        {
+          "case": "test_gcr_fleet_side_thrusters",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 3.0785903930664062,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_side_thrusters.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_gcr_fleet_side_thrusters.log",
+          "log_sha256": "d965dd581c21985be84ba6453babfc7543d1ab645d4cfb6b2b2b304c7116186f"
+        },
+        {
+          "case": "test_gcr_fleet_emissions",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 2.370770215988159,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_emissions.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_gcr_fleet_emissions.log",
+          "log_sha256": "6a45e09f8b480d3e28cbd7ac0ead7d822da8c7746be2b0dac2053eb9b54c9301"
+        },
+        {
+          "case": "test_gcr_fleet_controls",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 4.20458459854126,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_gcr_fleet_controls.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_gcr_fleet_controls.log",
+          "log_sha256": "4c50fa3676bd25e49ecd97f3f0ccbb0f97c73d867b4828702c17a175f559bbad"
+        },
+        {
+          "case": "test_gcr_review_fleet",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 31.99091410636902,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_gcr_review_fleet.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_gcr_review_fleet.log",
+          "log_sha256": "3ca533df1f02205a548a72b8b9b0bd8945f073957c26534439543c00d39f453e"
+        },
+        {
+          "case": "test_gcr_review_navigation",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 5.930808067321777,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_gcr_review_navigation.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_gcr_review_navigation.log",
+          "log_sha256": "19f86c9dede825428979305274aeb090724ca52bcd23e8c60591501710858f69"
+        },
+        {
+          "case": "test_physical_actor_rigs",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 22.97709321975708,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_physical_actor_rigs.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_physical_actor_rigs.log",
+          "log_sha256": "2f363743cb451b51caa89c7a2809b28b12edc472bf22d6bb824cd6ec2b5a2399"
+        },
+        {
+          "case": "test_physical_actor_effects",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 0.71820068359375,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_physical_actor_effects.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_physical_actor_effects.log",
+          "log_sha256": "8c3b16544734bcc75b200034f83f9237b70698e114fd27a3a0ee7b85f8e7b9a5"
+        },
+        {
+          "case": "test_physical_actor_effect_admission",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 3.575000524520874,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_physical_actor_effect_admission.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_physical_actor_effect_admission.log",
+          "log_sha256": "17d014885df14155fe24ec23eb6fc7ea984e3d965772b0e8cdbfb318d7823e67"
+        },
+        {
+          "case": "test_physical_actor_session",
+          "ok": true,
+          "exit": 0,
+          "elapsed": 1.5655713081359863,
+          "command": [
+            "wsl",
+            "-d",
+            "Ubuntu-24.04",
+            "--",
+            "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/mnt/c/Users/_/.codex/worktrees/gcr-rest/khybersand/build/fleet-jets-final/linux/godot",
+            "--script",
+            "res://tests/test_physical_actor_session.gd"
+          ],
+          "log": "build/fleet-jets-final/linux/test_physical_actor_session.log",
+          "log_sha256": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84"
+        }
+      ]
+    }
+  ],
+  "scope": "App-only flyer actuators, material nozzles, input lifetime and review navigation; material plan remains Planned and no new physical-envelope or owner acceptance is claimed.",
+  "project_input_count": 562,
+  "project_inputs_sha256": "8d8e9dcea6279939cc3fa5e17bd93fa62f06b6448622c6b71d9087b5bf62a653",
+  "raw_receipt": {
+    "path": "build/fleet-jets-final/receipt.json",
+    "sha256": "84cd67544c0b93b721127ac500a0f53f87c67af5af17667fb4924b9fd1c71f91"
+  },
+  "native_input_count": 88,
+  "launch_identity": {
+    "source": "d624bc191cbf3f6ad2c0e8988b3a2aa520e8bf93",
+    "tree": "a9dcf0029cb1739427cc7be17d0ecf43cd63243f",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "native_build_source": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+    "input_identity": "ce8ff545a9cf70c13de3f2f7b14ad4406921c684e9766f9e2a3eb5ca5d455c6a",
+    "runtimes": {
+      "native": "65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e",
+      "rapier": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  },
+  "runtime_backend": "Godot Rapier addon0.35.2/core0.35.1",
+  "preflight_failure": {
+    "log": "build/fleet-jets-preflight/ui.log",
+    "sha256": "b6e910f0cebd707eeb2cfb4c4d015b47bedb57bdeaa8c1b8f398df010abe1709",
+    "failures": 3,
+    "cause": "Synthetic input lacked physical-key state under headless DisplayServer; sampled-input boundary test corrected, production input unchanged."
+  },
+  "corrected_preflight": {
+    "log": "build/fleet-jets-preflight/ui-sampled-levels.log",
+    "sha256": "7734bb8d10112b2e276ba4d6b0cd738e290be1040692b4bacc30aee4cf248e24",
+    "failures": 0
+  },
+  "retrieval": {
+    "retrieval": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "misses": []
+    },
+    "challenges": {
+      "summary": {
+        "questions": 163,
+        "canonical_hit_at_1": 126,
+        "canonical_hit_at_k": 162,
+        "mrr_at_k": 0.8652,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "misses": [
+        "LCB03"
+      ]
+    },
+    "parent-challenges": {
+      "summary": {
+        "questions": 161,
+        "canonical_hit_at_1": 125,
+        "canonical_hit_at_k": 160,
+        "mrr_at_k": 0.8656,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "misses": [
+        "LCB03"
+      ]
+    }
+  },
+  "limitations": [
+    "Paired materials, finite curing and the shell playground annex are Planned, not implemented.",
+    "No new native/sanitizer/physical-envelope/Web or owner gameplay acceptance.",
+    "LCB03 supplementary retrieval miss retained from starting checkpoint.",
+    "First retrieval wrapper used unsupported --questions; corrected --queries invocation succeeded. A UTF-8 summary-display retry changed no source."
+  ],
+  "documentation_checks": [
+    {
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "seconds": 1.5867958068847656,
+      "log": "build/fleet-jets-docs/final/0.log",
+      "sha256": "364859e4a27cbd14b5a074b254a2229404149656e9c99f35d01c2bb0ab34b6ea"
+    },
+    {
+      "command": [
+        "python",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "seconds": 0.9924569129943848,
+      "log": "build/fleet-jets-docs/final/1.log",
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+    },
+    {
+      "command": [
+        "python",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit": 0,
+      "seconds": 2.5376780033111572,
+      "log": "build/fleet-jets-docs/final/2.log",
+      "sha256": "1b572675ab0aa8d95413837767d5f7527fb43820993c045dff450fe474d9f98e"
+    },
+    {
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-rest\\khybersand\\build\\fleet-jets-docs\\final\\retrieval.json"
+      ],
+      "exit": 0,
+      "seconds": 0.4615795612335205,
+      "log": "build/fleet-jets-docs/final/3.log",
+      "sha256": "619d5c290f05e2f8707aaf9d59331b6cb5e5b7d7ead133bf372349d5feceb10e"
+    },
+    {
+      "command": [
+        "python",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-rest\\khybersand\\build\\fleet-jets-docs\\final\\challenges.json"
+      ],
+      "exit": 0,
+      "seconds": 1.2293689250946045,
+      "log": "build/fleet-jets-docs/final/4.log",
+      "sha256": "9926d2e3da62e3b974508d9d2454beabddff0c17514d3ca0660408ed07e8d438"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.04014158248901367,
+      "log": "build/fleet-jets-docs/final/5.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

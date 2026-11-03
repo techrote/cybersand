@@ -50,6 +50,20 @@ const GCR_RESULT_VERSION: int = 12
 const GCR_RESULT_SESSION: int = 13
 const GCR_RESULT_STRIDE: int = 14
 const GCR_MAX_SESSION: int = 9007199254740991
+const GCR_REST_VERSION: int = 1
+const GCR_REST_MODES: Array[String] = ["control", "P", "R", "C", "PRC"]
+
+
+static func gcr_rest_context_valid(context: Dictionary, states: PackedFloat64Array) -> bool:
+	if context.is_empty(): return true # Absence carries no rest authority.
+	if context.size()!=7 or states.size()<GCR_INPUT_STRIDE: return false
+	for key: String in ["version","sample","session","last_applied_sample"]:
+		if typeof(context.get(key))!=TYPE_INT: return false
+	if context.version!=GCR_REST_VERSION or context.sample!=int(states[INPUT_SAMPLE_SERIAL]) or context.session!=int(states[GCR_INPUT_SESSION]): return false
+	if context.last_applied_sample < -1 or context.last_applied_sample>=1000000: return false
+	if typeof(context.get("external_drive"))!=TYPE_BOOL or typeof(context.get("hard_clearance"))!=TYPE_BOOL: return false
+	if typeof(context.get("gravity")) not in [TYPE_FLOAT,TYPE_INT]: return false
+	return is_finite(float(context.gravity)) and float(context.gravity)>=0.0 and float(context.gravity)<=368.48
 
 
 static func gcr_result_record_valid(results: PackedFloat64Array, offset: int) -> bool:

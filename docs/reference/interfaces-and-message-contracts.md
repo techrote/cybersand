@@ -1444,10 +1444,25 @@ Complete host binding and final platform publication remain separate.
 
 The [compound response contract](../architecture/compound-granular-coupling.md#load-aware-successor-experiment--2026-11-02)
 adds reset-only GCR-LA / GCR-LA-001-2026-11-02 selection and optional finite
-`gcr_lab_mass_multiplier`, `gcr_lab_inertia_multiplier` values0.01–4. They require
+`gcr_lab_mass_multiplier`, `gcr_lab_inertia_multiplier` values0.01–4 in the retained
+LA registration, extended to0.01–64 on the GCR-REST experimental branch. They require
 GCR construction and change expected physical transport values only; native
 payload mass/COM/inertia remain authoritative provenance. Omitted values are1.
 Complete compound admission compares actual state with the explicitly configured
 expectation; all existing lease/generation/shape and pre-mutation checks remain.
 Strides17/14, ownership, sample lifetimes and one-wrench delivery do not change.
 Diagnostics copy candidate, load-aware flag, scale and override values.
+
+## Registered rest value envelope
+
+The [rest contract](../architecture/granular-contact-rest.md) implements an opt-in version1
+copied rest context/receipt alongside the unchanged17-value input and14-value
+result. Session/sample, current physical gravity, known drive, hard clearance and
+last applied sample bind rest eligibility. Generic diagnostics never authorize
+catch. Original callers with no rest context retain original response semantics;
+unknown context cannot grant a catch. `gcr_rest_receipt()` supplies explicit
+proposal authority separately from diagnostics. Independent/compound application
+binds its actual mode and finite base budget to the bridge configuration; catch
+requires age0, unchanged sampled velocity and zero positional correction. Worker
+publication revalidates current material and hard-surface revision. Implemented
+interfaces do not establish physical rest or owner acceptance.

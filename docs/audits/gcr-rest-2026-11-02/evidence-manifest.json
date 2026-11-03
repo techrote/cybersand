@@ -1,0 +1,1823 @@
+{
+  "schema": "cybersand.gcr-rest.file-manifest.v1",
+  "observed_head": "e4e53309883a2c72ddc1cb1ccf0289b3b47b196c",
+  "native_sources": {
+    "windows": "181a8257a93f82d64fbeb97e9c413ef52d44f13d",
+    "linux": "181a8257a93f82d64fbeb97e9c413ef52d44f13d"
+  },
+  "capture_source": "594a1a732f477aef6a7aec783251e7a784315722",
+  "analysis_sha256": "a491605389dbd159fe03a05a8b07764f62cb25f658334d90a50fb81edc66bde2",
+  "hash_semantics": "SHA256 of exact retained bytes, without normalization; archive and manifest are outside their own inventory",
+  "files": [
+    {
+      "path": "build/build_extensions.py",
+      "bytes": 3001,
+      "sha256": "b871b0dbe9d99abd67d5646b029ad834e62ea9de4862cc7b71e86be99645062c"
+    },
+    {
+      "path": "build/compound-runtime-linux.json",
+      "bytes": 11909,
+      "sha256": "e8640960ee75312bfc8df1070792d7639875d5e96f452d3ba8b3f436b26a89de"
+    },
+    {
+      "path": "build/compound-runtime-windows.json",
+      "bytes": 11481,
+      "sha256": "bd7d5b8742f82accbee79d2170227ab3679c93020e3ac737608329fd58ffe888"
+    },
+    {
+      "path": "build/export_rest_evidence.py",
+      "bytes": 21514,
+      "sha256": "96edd0adb5e80b48268bf03a1991d98e296955a6932cd7ef421d5778851eb51b"
+    },
+    {
+      "path": "build/extension-linux.log",
+      "bytes": 45402,
+      "sha256": "4f76d360f499ec70e3f4cccaeac930096e5d64e5f73a0dc75e9305fc7ee52ea4"
+    },
+    {
+      "path": "build/extension-windows.log",
+      "bytes": 2344,
+      "sha256": "c0ba4b37b6f34bbc01e0dbfca854baf6a20cc8bbdf460be9c8e0d264163955b8"
+    },
+    {
+      "path": "build/finish_rest_evidence.py",
+      "bytes": 4144,
+      "sha256": "5b1dc0e889c22e6519e3087b1eac1947e1cfe4a314e4333d45fd0f9f4446d1e0"
+    },
+    {
+      "path": "build/full-native-composition/driver.py",
+      "bytes": 14537,
+      "sha256": "bc6f8ced4dafb4c72a2fc3fb5d2c7405579a26ba56b5ba42643942fd4583c653"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/completion.json",
+      "bytes": 688,
+      "sha256": "e9ffe76d506e349da2f98ea7f60c6d81da97ba7fd881698176d1adc135038c2f"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/input-manifest.json",
+      "bytes": 44019,
+      "sha256": "a6509b96c1f0cdcfcbc18db0bbde59a39d451e57e6fc48dc700fdcf0622535c7"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/linux-asan-conservative-displacement.log",
+      "bytes": 521,
+      "sha256": "25c5a792ddb922715e83ef2d0900a70ba92d22b89bb47f497ac1f9351ebbfd3c"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/linux-asan-core.log",
+      "bytes": 16608,
+      "sha256": "24d3af986e9512cf7cea6bb89662daebd5a0d46e8a0c15355ba24776f452f74e"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/linux-asan-solid-detachment.log",
+      "bytes": 719,
+      "sha256": "306c418ee68c1ba8d410ca3397146f9bdc98182bd9889df4ece698cb5ba4e40e"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/linux-conservative-displacement.log",
+      "bytes": 521,
+      "sha256": "25c5a792ddb922715e83ef2d0900a70ba92d22b89bb47f497ac1f9351ebbfd3c"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/linux-core.log",
+      "bytes": 16608,
+      "sha256": "e8aa5fe887ac9c264965ae9fb1d02b5d507f271777b640c23c54269e5be775dc"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/linux-solid-detachment.log",
+      "bytes": 719,
+      "sha256": "306c418ee68c1ba8d410ca3397146f9bdc98182bd9889df4ece698cb5ba4e40e"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/receipt.json",
+      "bytes": 76055,
+      "sha256": "fef89c9a327eb986b0d1fb3100129191aaf8b7c896a8d3f10729ce0053419a40"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/windows-conservative-displacement.log",
+      "bytes": 529,
+      "sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/windows-core.log",
+      "bytes": 16876,
+      "sha256": "22000bedd0ec378227fc3622034ac8c630228923684350c41bf2dc79f9d67567"
+    },
+    {
+      "path": "build/full-native-composition/rest-freeze/windows-solid-detachment.log",
+      "bytes": 731,
+      "sha256": "5f4fb52d5d6f065a083320fcb416731f474a6e71a437cf64930a5e4a752ff68b"
+    },
+    {
+      "path": "build/launch-gcr-rest-review.cmd",
+      "bytes": 247,
+      "sha256": "0e64affc1f37b50084bf4710868e7a9e40b6f6e019d18448e0163e8e9fbf17a7"
+    },
+    {
+      "path": "build/prepare_rest_acquisition.py",
+      "bytes": 3238,
+      "sha256": "eeb89bff2949d3a792e6a2d59517d8addc2010f27857f91785029dacec4a288f"
+    },
+    {
+      "path": "build/qualify_rest_publication.py",
+      "bytes": 3858,
+      "sha256": "b808770a96dcf4105739fa49271b226e72e4da3a0a366b425569e742f8ab6200"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/linux-import.log",
+      "bytes": 3254,
+      "sha256": "9353ffcc9f59d7d8a0ca055815fee48b78a5d675f3c4baf8a66a23925b9110d1"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/linux-test_gcr_detachment_async.log",
+      "bytes": 408,
+      "sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/linux-test_gcr_rest_bridge.log",
+      "bytes": 395,
+      "sha256": "9df33ab436965d9593f56acc9b167886f2dfd4933931b5137282d76b9b595f19"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/linux-test_gcr_rest_census.log",
+      "bytes": 4368,
+      "sha256": "27c064e4fb7c2c36052a32cb65761c5a4819f48eaef29ed82c9098e7a1d01153"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/linux-test_gcr_rest_controls.log",
+      "bytes": 365,
+      "sha256": "29224b050a0132fdaea50070383c0eced4defbb1b24ecfd6519f8d42dcd4e23b"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/linux-test_gcr_rest_material_freshness.log",
+      "bytes": 491,
+      "sha256": "bd4a4594d06260392c1f3fa71aabe59b684861d621e556d13a9fee80e0bd6889"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/linux.json",
+      "bytes": 3329,
+      "sha256": "1df0a753eceeead6e96566465f88a7d2e43e5b6294e93d599bfa3f7c95f19581"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/receipt.json",
+      "bytes": 8506,
+      "sha256": "df273b6e2003edec53d569f2e1c5dc388648c1a4f9361720bc9e6b115f292b66"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/windows-import.log",
+      "bytes": 3306,
+      "sha256": "06c193f08a72c88ba783093ce0adb975d827874ac1ffbb30e0567a5c111e7735"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/windows-test_gcr_detachment_async.log",
+      "bytes": 412,
+      "sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/windows-test_gcr_rest_bridge.log",
+      "bytes": 399,
+      "sha256": "c355595d0e224bc36fe039385e903bec14be040f4eac284345fbe1ba04f6d8bb"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/windows-test_gcr_rest_census.log",
+      "bytes": 4372,
+      "sha256": "6e4fda23742fd9a218aa2984689ed143a51001b05719b973c6cfb943cd8dabbd"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/windows-test_gcr_rest_controls.log",
+      "bytes": 369,
+      "sha256": "a15c6d0e79cae2e6df608ad7c21239b44619e1cbfc164f93315ec12ddce1e4a3"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/windows-test_gcr_rest_material_freshness.log",
+      "bytes": 495,
+      "sha256": "4a9afa015268c3f6b7764a874514facacceb1b00b6290b415f9c18af7e6c2905"
+    },
+    {
+      "path": "build/rest-acquisition-mechanics/windows.json",
+      "bytes": 2765,
+      "sha256": "2da3e9b5ee128309e09fb7e1bdcf09bf69578a4a6fd8e33b3510adc5efbaf226"
+    },
+    {
+      "path": "build/rest-analysis.json",
+      "bytes": 865436,
+      "sha256": "a491605389dbd159fe03a05a8b07764f62cb25f658334d90a50fb81edc66bde2"
+    },
+    {
+      "path": "build/rest-census/receipt.json",
+      "bytes": 66101,
+      "sha256": "59ff9497a324ec2c63c32c02543a1aac7f70d0728bd944dfac7ea655137f4b89"
+    },
+    {
+      "path": "build/rest-evidence-final/engineering-summary.json",
+      "bytes": 1425236,
+      "sha256": "4622403d96e18d474dab0b8a721ba38ee22ea469a70006e4633e16000eaf0d06"
+    },
+    {
+      "path": "build/rest-evidence-final/physical-summary.json",
+      "bytes": 826903,
+      "sha256": "c1e0c269dbd96e2bdcc0f9db184676c567e9ed86cde32c4defe7ad23be5e3ff6"
+    },
+    {
+      "path": "build/rest-evidence-final/selected-traces.json",
+      "bytes": 1091053,
+      "sha256": "1683483473d54c61168e1da9274706e9167d21ca368cd4efe62f3b9ae0bb1758"
+    },
+    {
+      "path": "build/rest-final-host-preflight-refusal.json",
+      "bytes": 346,
+      "sha256": "5fe6d8f5e72c1ecfc5d851455015e6f04a3219d1e2a986097041862dd9e9d869"
+    },
+    {
+      "path": "build/rest-final-hosts.py",
+      "bytes": 19307,
+      "sha256": "1be8c01d40d4bf7002e691a0198e0aafe1a8d53e4a833c7a8c3ad7c227d48284"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/invocation.json",
+      "bytes": 597,
+      "sha256": "4c725e143e2b652ffd864da9b72bd541b1206c3bc912136d65a50b4e115fdc9e"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/cases.json",
+      "bytes": 23810,
+      "sha256": "8a212a3e602f77b29d8a5a647b4400f8cc90edf65c6f68e0c0d9e4cb1a4f6a5a"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/detachment-async.log",
+      "bytes": 408,
+      "sha256": "df09a86d76da0fee7c5553fc6fdc205096ed355e803b0af0dcd22cc4edca15e3"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/detachment-lab.log",
+      "bytes": 378,
+      "sha256": "800d1bbdad34d8056a7178f493eb568712c85acb716e823557d1e391976adb64"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/detachment-native.log",
+      "bytes": 378,
+      "sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/displacement-w1.log",
+      "bytes": 336,
+      "sha256": "81d5ceaa79a0e29bf0a7622dbdf8274b7b57516aa9b27a01e2a04310e830cdcc"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/displacement-w4.log",
+      "bytes": 336,
+      "sha256": "4431a88b4a9d15e849a50ca544a22fdac762f4820509024d073a6d93d0f213fd"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/engine-identity.json",
+      "bytes": 730,
+      "sha256": "ab4826747f011daee1e7845aa09ca941c33c58b731901943853964888e80ca4b"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/engine-version.log",
+      "bytes": 30,
+      "sha256": "87fac5ffedc06e67db8ac5810bbedd8e412d166bcd89b314f3c5a4fa05a78a2d"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/gcr-admission.log",
+      "bytes": 323,
+      "sha256": "95bbce731bb2e5386969b8864c90ae7f9d4fbd0e94d8906786a9ff864f4a23e3"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/gcr-delayed-hold6.log",
+      "bytes": 282,
+      "sha256": "fae727fe7bcee1619dc3e8e2a45450a50d69dcbf3866775f828d4bf6cbf47a9b"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/gcr-protocol.log",
+      "bytes": 260,
+      "sha256": "a2a783f1fba990078b34f4b4e7c1acf7f0f1d42b34d93a4178b6f3d04aa20b9d"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/import.log",
+      "bytes": 35598,
+      "sha256": "2a81e801d1777cbd6f049ee3c58ecf278e1071cfcc83ad84655d10a04ed563f7"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/legacy-compound-coupling.log",
+      "bytes": 2553,
+      "sha256": "305714185f7b2b868cc4c8804e5edf1b10b4dae5f00221eb08841c958a1c1764"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/legacy-compound-response.log",
+      "bytes": 293,
+      "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/load-controls.log",
+      "bytes": 277,
+      "sha256": "387a70a56a3fb4dbbd1de44f0ed0f5c81a234244ee6030a7934b67125b313fbe"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/load-review.log",
+      "bytes": 365,
+      "sha256": "bc5beca9d9c32705d263d67ade785bb294e3c9bc258803727fb82294e5830fd5"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/physics-async.log",
+      "bytes": 2627,
+      "sha256": "1c2342c37dfdd210d1ea8d086f9a6067d4f455646629c650351e918b84a5ec92"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/physics-instrumentation.log",
+      "bytes": 296,
+      "sha256": "c8fb193284d1e4d14eef32071ba747b3fa991ef0c7f7f6f27948bfc683ebdc5e"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/raw-output-hashes.json",
+      "bytes": 510,
+      "sha256": "7eb782ce51be59012ebf637dd99d89cc77b50f21033dc2b289959eccb4a28d65"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/raw/compound-coupling.json",
+      "bytes": 2952,
+      "sha256": "c1d8ee8f3fcfd650bc9e03bd4c0cc939fae259ca190f3da2cbeedd818d00328a"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/raw/displacement-w1.json",
+      "bytes": 26071,
+      "sha256": "e29b3e02d698cb4e3033b2dd35f76718a04d09b92fb2caf6592b18b94edfcbab"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/raw/displacement-w4.json",
+      "bytes": 26071,
+      "sha256": "e7bb4d4a6638e4a6468dbab6a5557033d6324b524453ed1e42beab03e141dd1a"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/raw/gcr-async.json",
+      "bytes": 13363596,
+      "sha256": "71267f99e6d10cef712d727c44d9719aa352863f1dbb87180c3c602b67c549f4"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/raw/physics-async/async-s00.json",
+      "bytes": 18709,
+      "sha256": "98877b7c880a441bf9c9ca9d5b90954735a88ae8a63c3dea34c0a193704629c3"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/rem002.log",
+      "bytes": 511,
+      "sha256": "f8a4682de50aa128224ca2d907d0ce63524f1b82f5ec99b94c7b42e0a57ab55f"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/rem003.log",
+      "bytes": 70771,
+      "sha256": "042065a242d54467d0f2b316ad4f9461c8bd91a64c0dd1710c0aa6dee2c94017"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/repository-after.json",
+      "bytes": 249528,
+      "sha256": "eb67a5dd490454ee21057e52567077243d38f8bfb12081f7875d0257bfc02688"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/repository-before.json",
+      "bytes": 249528,
+      "sha256": "eb67a5dd490454ee21057e52567077243d38f8bfb12081f7875d0257bfc02688"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/rest-bridge.log",
+      "bytes": 395,
+      "sha256": "9df33ab436965d9593f56acc9b167886f2dfd4933931b5137282d76b9b595f19"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/rest-census.log",
+      "bytes": 4368,
+      "sha256": "27c064e4fb7c2c36052a32cb65761c5a4819f48eaef29ed82c9098e7a1d01153"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/rest-controls.log",
+      "bytes": 365,
+      "sha256": "29224b050a0132fdaea50070383c0eced4defbb1b24ecfd6519f8d42dcd4e23b"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/rest-freshness.log",
+      "bytes": 491,
+      "sha256": "bd4a4594d06260392c1f3fa71aabe59b684861d621e556d13a9fee80e0bd6889"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/result.json",
+      "bytes": 26253,
+      "sha256": "d238a49b526cce2c02812f78f8c1685de8f1ba037ee9d9bc2cf418e2b1518e5f"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/runtime-identity.json",
+      "bytes": 11739,
+      "sha256": "fe94c80c1da6ff589e96c4ca2652245ab2d3389809622e155cbf1ff3f4d29df6"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/staged-inputs-after.json",
+      "bytes": 91227,
+      "sha256": "a65374846a95b21fb3e7d18489daaf541927cd125157d7a4aa7f29f665de07a0"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/linux/staged-inputs-before.json",
+      "bytes": 91227,
+      "sha256": "c270fc05310b9cba97afbbd1bb30ca2844e1843a831ac184e4349c602fa872c5"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/receipt.json",
+      "bytes": 54920,
+      "sha256": "36616c302159c4e5403b7723f072349344340ddf1a8d0c5c491700e28a539170"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/receipt.sha256",
+      "bytes": 80,
+      "sha256": "02081fc6191f9bbb94d69aa1275825249e90dc4a3ace2b340a04584539f1cf99"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/repository-start.json",
+      "bytes": 249528,
+      "sha256": "eb67a5dd490454ee21057e52567077243d38f8bfb12081f7875d0257bfc02688"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/staged-sidecar-disposition.json",
+      "bytes": 11711,
+      "sha256": "a26fe8b2bb1f36a8ca19fe66a8e5b06b998f4885d8700cdac014a88aea9f245c"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/staged-sidecar-disposition.sha256",
+      "bytes": 99,
+      "sha256": "9ed7d243fbf4ff4c2fcce3a91926b9bb8764401c4d93c09d8847f5e0b406b589"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/cases.json",
+      "bytes": 20699,
+      "sha256": "96cfbe067d3a90ac212ded6cb63ccbdaabcf776cdb6af49af7a009997fc608b0"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/detachment-async.log",
+      "bytes": 412,
+      "sha256": "5945c4a298b54d230b9e692be24313f5e310500113137783cda2ca4f447bc579"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/detachment-lab.log",
+      "bytes": 382,
+      "sha256": "282feae2347d467695be21cb8bb908146487d387438cf15746a341e4230f3bbc"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/detachment-native.log",
+      "bytes": 384,
+      "sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/displacement-w1.log",
+      "bytes": 342,
+      "sha256": "f1ab7e910fbd13e03b6d220c3e950e8f6a44d077beee8f00c6e8e6c53997fd85"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/displacement-w4.log",
+      "bytes": 342,
+      "sha256": "f63dc1ee0c12c019c3d4017ec51d1a507a102360e2a26b2a447ad3c1c64bdb1b"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/engine-identity.json",
+      "bytes": 570,
+      "sha256": "07d0242e358e5cf74a8bd3662e0f3b3120927ec7263de41a1e7b86eb4d9c0dc2"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/engine-version.log",
+      "bytes": 31,
+      "sha256": "5a4c39354856b07de09b419a9327a4e8edec0ac610ec5fb8a3ebcd7017e7d035"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/gcr-admission.log",
+      "bytes": 327,
+      "sha256": "6216b59567be6d89c907914a973e6f36bb4ab1da7115f864fbb92c2b9370a080"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/gcr-delayed-hold6.log",
+      "bytes": 286,
+      "sha256": "2107de52e8364fd1a50674d2e4b47975c28b99c3b50847d6454c4258417f7dbc"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/gcr-protocol.log",
+      "bytes": 264,
+      "sha256": "a4a0499c90df41053877985a6aa85f7a87df5019504d8510f29226bf312d25f4"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/import.log",
+      "bytes": 36161,
+      "sha256": "c7735b68275da905e516bc8645c63f9c0612856d95443998b0015f35cfb71e8c"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/legacy-compound-coupling.log",
+      "bytes": 2554,
+      "sha256": "f00bd27be2781be6b5c41354830081ec5ddd9064559fc19051d9ce4c52bb48fb"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/legacy-compound-response.log",
+      "bytes": 299,
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/load-controls.log",
+      "bytes": 281,
+      "sha256": "b7f0676d1670525b32adb4fe18db7cde1878f0b4eda3ba1d32a9e00d625d0faf"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/load-review.log",
+      "bytes": 369,
+      "sha256": "80f52de1cabc7571cc6e048f7a9290cf81b656658d525ecff6e2570f51a35a70"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/physics-async.log",
+      "bytes": 2607,
+      "sha256": "a72345d5df9d9d102af1dd95172d42057b2474704db2587393e9584b15333390"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/physics-instrumentation.log",
+      "bytes": 300,
+      "sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/raw-output-hashes.json",
+      "bytes": 510,
+      "sha256": "e449bdeab7da6978c0e538a59b8b73fef551ec4a6955d0df4101335a0b95ef36"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/raw/compound-coupling.json",
+      "bytes": 2949,
+      "sha256": "5eeee7172f6f93687e10b1b48185db373b99659429abad9c9c2df4cd05f06acf"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/raw/displacement-w1.json",
+      "bytes": 26073,
+      "sha256": "085ae2e2e0e77022ef3923cad6cdbfe5b5d6055c62b0db87ca21093d6673279a"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/raw/displacement-w4.json",
+      "bytes": 26073,
+      "sha256": "324e9f37e82b9c670dc8bee9fcc8d4636ebb3abaaf8b7c9e30d296593142dd5d"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/raw/gcr-async.json",
+      "bytes": 15675214,
+      "sha256": "67c529876dbc5d7e000061af8d3b410ab2d35f4950e95e6660f028a9b4e7433d"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/raw/physics-async/async-s00.json",
+      "bytes": 17181,
+      "sha256": "007c3f908568bd727c8a91142f01600d2d87845b3c6e049bad8f70ff8aba3584"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/rem002.log",
+      "bytes": 516,
+      "sha256": "9679fb4f7e8478d7bf8a1218ac266b1396f09936a00efe5e8dda5debd8d93288"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/rem003.log",
+      "bytes": 70782,
+      "sha256": "0f5b991514f26834ba261a707ea1efaa0ae0fc58f6eadcf40b2816d48e407922"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/repository-after.json",
+      "bytes": 249528,
+      "sha256": "eb67a5dd490454ee21057e52567077243d38f8bfb12081f7875d0257bfc02688"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/repository-before.json",
+      "bytes": 249528,
+      "sha256": "eb67a5dd490454ee21057e52567077243d38f8bfb12081f7875d0257bfc02688"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/rest-bridge.log",
+      "bytes": 399,
+      "sha256": "c355595d0e224bc36fe039385e903bec14be040f4eac284345fbe1ba04f6d8bb"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/rest-census.log",
+      "bytes": 4372,
+      "sha256": "6e4fda23742fd9a218aa2984689ed143a51001b05719b973c6cfb943cd8dabbd"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/rest-controls.log",
+      "bytes": 369,
+      "sha256": "a15c6d0e79cae2e6df608ad7c21239b44619e1cbfc164f93315ec12ddce1e4a3"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/rest-freshness.log",
+      "bytes": 495,
+      "sha256": "4a9afa015268c3f6b7764a874514facacceb1b00b6290b415f9c18af7e6c2905"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/result.json",
+      "bytes": 22808,
+      "sha256": "6437fbf43bb43746c0bf0c1db2f34319bc210ebfe0d990f3e5d62d0f72195558"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/runtime-identity.json",
+      "bytes": 11738,
+      "sha256": "d4d9625afff70c64bc107ef12f89c1b8a33d7538298fc609398d0651b70071cb"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/staged-inputs-after.json",
+      "bytes": 91228,
+      "sha256": "8ac7867ecedc2d347ea7c22f7d19d6f37c4bf1abe99860510eb27986d8d72c64"
+    },
+    {
+      "path": "build/rest-final-hosts/20261102T215345Z-e4e53309883a-d4f0db/windows/staged-inputs-before.json",
+      "bytes": 91228,
+      "sha256": "67624aae9c490ad11a2615a0b81a3e99c455eece7a00d39a2a5a42f19eeb6acb"
+    },
+    {
+      "path": "build/rest-final-repository-gates.py",
+      "bytes": 2261,
+      "sha256": "e8e5d966328ce8553d26023be8b79ecfb1f34491e6b34651ec5e0eb60902a670"
+    },
+    {
+      "path": "build/rest-final-repository-gates/diff.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/rest-final-repository-gates/docs.log",
+      "bytes": 731,
+      "sha256": "1860b68fb453f1175026cf7c4b6c6d482414418a30c94492a3f6e98f86e1d2e2"
+    },
+    {
+      "path": "build/rest-final-repository-gates/lfs.log",
+      "bytes": 16,
+      "sha256": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9"
+    },
+    {
+      "path": "build/rest-final-repository-gates/linux-abi.log",
+      "bytes": 120,
+      "sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c"
+    },
+    {
+      "path": "build/rest-final-repository-gates/load-tools.log",
+      "bytes": 107,
+      "sha256": "72f5595d3b7def0aedf14601dce26d3ce3ed29eee815fe930e26ed611dc705ec"
+    },
+    {
+      "path": "build/rest-final-repository-gates/m11.log",
+      "bytes": 318,
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+    },
+    {
+      "path": "build/rest-final-repository-gates/receipt.json",
+      "bytes": 4096,
+      "sha256": "98055241305b437963d3965faeb952c9ba2aad72886a9def0b4036a3d2d9e8cc"
+    },
+    {
+      "path": "build/rest-final-repository-gates/repository.json",
+      "bytes": 2592,
+      "sha256": "85dd85e3af185e3959cbaaae284cd91119cf41bce7eb448bd7c0ca2aa4d38220"
+    },
+    {
+      "path": "build/rest-final-repository-gates/repository.log",
+      "bytes": 2592,
+      "sha256": "85dd85e3af185e3959cbaaae284cd91119cf41bce7eb448bd7c0ca2aa4d38220"
+    },
+    {
+      "path": "build/rest-final-repository-gates/rest-tools.log",
+      "bytes": 120,
+      "sha256": "1ad5048e732b00531f8df9bcfc42e2dfb68b025eebbeddefbbbdf24be140a938"
+    },
+    {
+      "path": "build/rest-final-repository-gates/retrieval-challenges.json",
+      "bytes": 2611273,
+      "sha256": "5e1915a8117749d1c95835cddc08d0741110e0446d18c6751cba784cdf216efa"
+    },
+    {
+      "path": "build/rest-final-repository-gates/retrieval-challenges.log",
+      "bytes": 24707,
+      "sha256": "26f004ae9f7ed7e57281bc99d9e68e568b4b6e48036ffe5878be166d9c01bf4b"
+    },
+    {
+      "path": "build/rest-final-repository-gates/retrieval-frozen.json",
+      "bytes": 418254,
+      "sha256": "fe697de2df03ad3460daecd1257a664f3223b25cf05f4c9d79387f7d730c45cf"
+    },
+    {
+      "path": "build/rest-final-repository-gates/retrieval-frozen.log",
+      "bytes": 4386,
+      "sha256": "73b338dc9f580d65003b7164cd81fe04b4fbcec194f712b77794025aab819f27"
+    },
+    {
+      "path": "build/rest-final-sidecar-disposition.py",
+      "bytes": 6735,
+      "sha256": "974c6b97b87366b0d3932fce52a75a044380426ec0a1bcabae3636fae6fdfb11"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-103e54ea/linux-test_gcr_rest_material_freshness.log",
+      "bytes": 3169,
+      "sha256": "34d83aead0323c93085b5e3b08e671c3af7148cb4ad4b5bbbaff5c4f0172b7d9"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-103e54ea/receipt.json",
+      "bytes": 164,
+      "sha256": "c1a0cb48788f8eb4a89c7e63350c5779a1b427a52e8e0d0e2741ba2d7e1a8821"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-103e54ea/windows-test_gcr_rest_material_freshness.log",
+      "bytes": 3201,
+      "sha256": "eaeb10a9ab8128f8c28ee5d2b46f73692a01c0a8b69fe16578e1d5f043e75db9"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-181a8257-translated/linux-test_gcr_rest_material_freshness.log",
+      "bytes": 2575,
+      "sha256": "3290fa8db3dff5963063d9a87c9a2f90c77fdfa00f3a9d5c8e094ee110065e41"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-181a8257-translated/receipt.json",
+      "bytes": 164,
+      "sha256": "90b0ac9520918ba89ec33179c2a4854ddb4362af2488e4468749e83b0a438ede"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-181a8257-translated/windows-test_gcr_rest_material_freshness.log",
+      "bytes": 2599,
+      "sha256": "ef71f6a43f5b3af0fa1d817d54d463f7577fc4b4904022b406367633a6c351ca"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-181a8257/linux-test_gcr_rest_material_freshness.log",
+      "bytes": 2575,
+      "sha256": "3290fa8db3dff5963063d9a87c9a2f90c77fdfa00f3a9d5c8e094ee110065e41"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-181a8257/receipt.json",
+      "bytes": 164,
+      "sha256": "13324146ec88f2aa73a9177e45702474e57b164c426300177b424a3433685b86"
+    },
+    {
+      "path": "build/rest-freshness/preliminary-181a8257/windows-test_gcr_rest_material_freshness.log",
+      "bytes": 2599,
+      "sha256": "ef71f6a43f5b3af0fa1d817d54d463f7577fc4b4904022b406367633a6c351ca"
+    },
+    {
+      "path": "build/rest-freshness/receipt.json",
+      "bytes": 163,
+      "sha256": "ce5f59ab52e50d6d6fb4acc618350681cbe1fdb8c836808f9af05dbf71867706"
+    },
+    {
+      "path": "build/rest-math/linux-asan-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/rest-math/linux-asan-run.log",
+      "bytes": 28,
+      "sha256": "49f45d0eee237935e9afd9562b803a66819cd366b7d33467e74458a9abc73043"
+    },
+    {
+      "path": "build/rest-math/linux-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/rest-math/linux-run.log",
+      "bytes": 28,
+      "sha256": "49f45d0eee237935e9afd9562b803a66819cd366b7d33467e74458a9abc73043"
+    },
+    {
+      "path": "build/rest-math/receipt.json",
+      "bytes": 4480,
+      "sha256": "998ca20921f4841a84e4a8e304439d44ad0c2ef1d8e4ca9b959890f1dc63db36"
+    },
+    {
+      "path": "build/rest-math/windows-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/rest-math/windows-run.log",
+      "bytes": 29,
+      "sha256": "5f35020f41a57746d8646cde8315da58f0505b39a15048cea350292c4b2c8a0d"
+    },
+    {
+      "path": "build/rest-mechanical-final/linux-script-inputs.json",
+      "bytes": 61761,
+      "sha256": "c764ed49876bdbeea5aaa8f2970e7ae3245e0329cefcdd41f8d3e2a310dae064"
+    },
+    {
+      "path": "build/rest-mechanical-final/preliminary-protocol-layout/linux-test_gcr_rest_controls.log",
+      "bytes": 1087,
+      "sha256": "43100dde32960e646cfdcac04d25d588cda325e4120d9c2336b3b4688eff1c13"
+    },
+    {
+      "path": "build/rest-mechanical-final/preliminary-protocol-layout/receipt.json",
+      "bytes": 11088,
+      "sha256": "ea2f333daf54caf5dd711d1654abfe7728ac0623da8c9e971cda7a2193fd0805"
+    },
+    {
+      "path": "build/rest-mechanical-final/preliminary-protocol-layout/windows-test_gcr_rest_controls.log",
+      "bytes": 1084,
+      "sha256": "e521249cdf99690fce8b4ee825af46fc5942047ad20ea2af3739692297022388"
+    },
+    {
+      "path": "build/rest-mechanical-final/receipt.json",
+      "bytes": 13507,
+      "sha256": "078d3488b3e33131aa948fca51e19e367c52fa71b28c80aec801dc7498cd90c8"
+    },
+    {
+      "path": "build/rest-mechanical-final/windows-script-inputs.json",
+      "bytes": 61878,
+      "sha256": "d6c6b4959d01caac86090f6af21617c8e7f1bda29aee7936c29fcca6275e1372"
+    },
+    {
+      "path": "build/rest-physical/completion.json",
+      "bytes": 333,
+      "sha256": "39ac7e55e515a6e3e74281610c1a1379e62e678b078ffa9ebf63de337945f4b5"
+    },
+    {
+      "path": "build/rest-physical/identity.json",
+      "bytes": 158826,
+      "sha256": "c86d35e42b9d75c71dc7eea945688817e4af2ec6b110c8e2f94155f4f6ddbec6"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b10.json",
+      "bytes": 8522858,
+      "sha256": "ee5d8d133247ba265e92fbb0bed8040cb70be2823148edf3da1805279e7e3eb1"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b10.log",
+      "bytes": 337,
+      "sha256": "fed88ebf207c3ed0ac5ab987b67b91c1d6c170e48d2c445eccd00988e3c12fe4"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b20.json",
+      "bytes": 8400269,
+      "sha256": "0227427e6b427648b1ad55552a33636225bee56b3caeb2b06930206ce2dbe4ee"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b20.log",
+      "bytes": 337,
+      "sha256": "750a4d65ab3a3dfbb1e30e7997cf60d424a806b1fb13ac90ac8478c9fb4aabaf"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b40.json",
+      "bytes": 8286084,
+      "sha256": "df7b918528f124b13a0b5351b5db2c702dcb04b5d4abe4e27cce222922af99e7"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b40.log",
+      "bytes": 337,
+      "sha256": "38e021b58f81a6571a76dc5b8e7ad3cefc8e809585fb83f1f9fe0f0f743925a4"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b5.json",
+      "bytes": 8515145,
+      "sha256": "189edab1624ceb3170a99f390d0428b99e8182349cfd605a82a83e667f646294"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b5.log",
+      "bytes": 336,
+      "sha256": "eddec06103ddc08afce6811214d8e0200331733ce0fafb470a6712dba3a2a089"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b80.json",
+      "bytes": 8287352,
+      "sha256": "e3f0db937df50a656e82d8099f46ea3374fef41814a8da2e912730c6d8ccb0e8"
+    },
+    {
+      "path": "build/rest-physical/linux-budget-barrel-m2-v90-control-b80.log",
+      "bytes": 337,
+      "sha256": "acc2ab25e7bd22c54d7ddae2017d3eab09102a8cbfea0c603faf4fc22f7a424e"
+    },
+    {
+      "path": "build/rest-physical/linux-campaign.json",
+      "bytes": 40821,
+      "sha256": "72e9ba2123eb1888547e0c6563194de242715f234f378cf8d567fcb8e9d1d913"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-C-b20.json",
+      "bytes": 12621247,
+      "sha256": "ea84d6cff444aa1e40ef533f2cccac9f33fcc4efb6b45d2bf86a2142c5b7f0d2"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-C-b20.log",
+      "bytes": 315,
+      "sha256": "ffb54cd840de644dc72e7bd641b417beb8bb6f93c31bc7a5ec23797beca78550"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-P-b20.json",
+      "bytes": 12621437,
+      "sha256": "2f667d1a1210c680382d0ad4b32dd53cae272729546c8f52a509a74c1ca9f649"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-P-b20.log",
+      "bytes": 315,
+      "sha256": "72461c3cc86d382ea0aead1b1f04e2792a24fece76eaa7a62e57ffc86de24d21"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-PRC-b20.json",
+      "bytes": 12627716,
+      "sha256": "460340140c08985aa80eda41bbb8a55be3d1fb2592cef8241b48cf4e98dc5f45"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-PRC-b20.log",
+      "bytes": 317,
+      "sha256": "3c003155824a26db37d5bda36d43097ec3b5486a98d352b7f590bc4821ff352c"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-R-b20.json",
+      "bytes": 12620698,
+      "sha256": "7f85f0f4b0684fc05043cf22ae4f7612529da1267e152207589ede5ca07a0666"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-R-b20.log",
+      "bytes": 315,
+      "sha256": "2d523e4e2abe5bca87405b38428b5efde64128bfb3b2e961b3e3c0386467d341"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-control-b20.json",
+      "bytes": 12642729,
+      "sha256": "bc92856db70976f22f979cfa764f569d6f0d681ef84652ee9adaf2b5afb79e91"
+    },
+    {
+      "path": "build/rest-physical/linux-edge-control-b20.log",
+      "bytes": 321,
+      "sha256": "2036bdd956112813caaa695b34997ce64e3e724d77a856a7c02522a74d121eac"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-C-b20.json",
+      "bytes": 11354805,
+      "sha256": "9421037ffdc7eb9649e6ce6a4609d6439ff01fdca1aefd64c08672400d5a996b"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-C-b20.log",
+      "bytes": 339,
+      "sha256": "50a72594bb76e2a1a93d1004679727059e61b0be14f8d8f24f4074eda50899a9"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-P-b20.json",
+      "bytes": 11397506,
+      "sha256": "d75b9090f35e7d87c1253cf759f1c9f6958706987fdcc8b791ec10a7de954935"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-P-b20.log",
+      "bytes": 339,
+      "sha256": "47881375780264e06a4b19c898300307f470b6b2d6fa6e091cc89bd0610fb96b"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-PRC-b20.json",
+      "bytes": 7757301,
+      "sha256": "fab7ebdaa8bbf6df37383cdbab3edda3730bb2e512ff3a0c0b8ccd2ee1d5b026"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-PRC-b20.log",
+      "bytes": 341,
+      "sha256": "a2701634aa8108dda87312347b5d31f5be20504cb479942b8492215ace7e3b9c"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-R-b20.json",
+      "bytes": 9973931,
+      "sha256": "33d2d0b7994cc8f4fbcc5e79979ac210f98f6845c788c240a8f4bf3f65e36479"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-R-b20.log",
+      "bytes": 339,
+      "sha256": "5368d54a2e13c78f448d929bf639217cc2ab0150fcf335ec9929ad7ba45ebc6d"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-control-b20.json",
+      "bytes": 10543797,
+      "sha256": "8490415efed35bd5f72ad648fed3fee34c80c821860c1312dc311a6637918123"
+    },
+    {
+      "path": "build/rest-physical/linux-excavation520-control-b20.log",
+      "bytes": 345,
+      "sha256": "2b9e7f0be249abb178a0bea3e119661f1db77859ee712d2d2d5a5b422cd22cfc"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-C-b20.json",
+      "bytes": 10269117,
+      "sha256": "997daa2fd1bd846ec6dff29a65df17d253db039b3fee5f5d10165a1d03d03a09"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-C-b20.log",
+      "bytes": 318,
+      "sha256": "a216b12cc09aab754042e32f951eabb655f37861749dd240f6ebcddf93d12d75"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-P-b20.json",
+      "bytes": 10900693,
+      "sha256": "a6d759cd921bbc76576d97696142f4583f4912ea05505f2e99a0e4eb8ad061ea"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-P-b20.log",
+      "bytes": 318,
+      "sha256": "49802dfa37afee14fa42a45f223a138b3fc3079ac6a6c4e97debb357d301c7f1"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-PRC-b20.json",
+      "bytes": 8209130,
+      "sha256": "c8be01b124f7dd2e416026a0db73fb6463150c4fe1a073fb407b9d87f195407d"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-PRC-b20.log",
+      "bytes": 320,
+      "sha256": "0407d4ea62f494824d7b84d2256df355b5c28ee16d3800a62ad167f05a8cfbde"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-R-b20.json",
+      "bytes": 7996202,
+      "sha256": "e469364dcd0fc0f573e2934f003fa09cbc4485846ffcc6b377e9584d99892173"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-R-b20.log",
+      "bytes": 318,
+      "sha256": "579a2322d017d9c1511838c326278bedb5f6687a62a616b12768b3cafdaf46c0"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b10.json",
+      "bytes": 4738195,
+      "sha256": "0395a67d00a1eacacfc6f0c6f50a840ed57894ea8ab00c6833207b07ab7102da"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b10.log",
+      "bytes": 324,
+      "sha256": "216ab7baf232bcb55f02c10f80c8856ce1c65ddb74fdef704059a859665e70e2"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b20.json",
+      "bytes": 7617494,
+      "sha256": "d68db1ae72cdb8975181def873f619a315d748b78208dd586aef66533ffefd7d"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b20.log",
+      "bytes": 324,
+      "sha256": "311c6e25f480afa833fecb12e680215574dccb9acd0e4a41a23096e69d0d90c0"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b40.json",
+      "bytes": 6916398,
+      "sha256": "31d625817cc40563ba8069ef1ddd2269dedd3b5d2433a339275f2ae2b63524ef"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b40.log",
+      "bytes": 324,
+      "sha256": "93c3d4615ddcb897ef2e3d7c4e7a0ad550794c64f398bb0f108e585f41574ffb"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b5.json",
+      "bytes": 5319601,
+      "sha256": "9d4f36640d31da52267256ec826aeec0d15e13f1c97b30583473f1f080535a8e"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b5.log",
+      "bytes": 323,
+      "sha256": "2e04cfa4d0ef483ba28be46107b35c7e3c6c38391045d5398f2e70b0264b8b82"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b80.json",
+      "bytes": 6839423,
+      "sha256": "bca5fc683f151b75551fdea1186f0d8dbcd9e77f11939b6a37cb25d6cf002f09"
+    },
+    {
+      "path": "build/rest-physical/linux-full520-control-b80.log",
+      "bytes": 324,
+      "sha256": "4ba036dbfbbdf2b452f675b67c7bb492a1f7e6afc4a9c381e4936688ca958c83"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-C-b20.json",
+      "bytes": 11860093,
+      "sha256": "996d238faa95fc205aeae6fa40538a053201ca07aeedb8c206d2d113e30b18d6"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-C-b20.log",
+      "bytes": 323,
+      "sha256": "ce941708424317ac568690f7384c8b8171f1bf35d0351337f73fb29e782be7d2"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-P-b20.json",
+      "bytes": 11860308,
+      "sha256": "349eab30bb4944c9ebee8a3e03bf27904e5e38cd94dca1bf8f23bfee2547cc5b"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-P-b20.log",
+      "bytes": 323,
+      "sha256": "1ab51db3f46d80ebaac42247a035bc3db1eb595276e8d1ade15ad40b5f79030d"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-PRC-b20.json",
+      "bytes": 12631559,
+      "sha256": "c96afb2519bec95b4ceb230f928b5a3be3d8a8d4cc91ebc587866039e133383d"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-PRC-b20.log",
+      "bytes": 325,
+      "sha256": "c5d641f8f2fb269077e228f12ad10fb1bbafddcd3dd4c262da7e8056e981530f"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-R-b20.json",
+      "bytes": 12624453,
+      "sha256": "65a5a1e1e831b0ab86adbd00c113704763bce499ce376950ff00bb97f0bc8573"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-R-b20.log",
+      "bytes": 323,
+      "sha256": "a4eb48e657c1d707452eccac8cb615dbeb01307659f29a1fc9b01566740cc17a"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-control-b20.json",
+      "bytes": 11881987,
+      "sha256": "4791a5224e5819c5dd7f371a3aae103b35cea5a4d5ea403e359f0738ce613a4a"
+    },
+    {
+      "path": "build/rest-physical/linux-gentle-drive-control-b20.log",
+      "bytes": 329,
+      "sha256": "23c9c79de3ac7d845152b65e2411ce0122edfe8c3eace82125e9acf43fb52142"
+    },
+    {
+      "path": "build/rest-physical/linux-original-barrel-m1-v90-PRC-b20.json",
+      "bytes": 12758910,
+      "sha256": "0a973fffe6954781e6d66b6815a4f723c59477f7219ca4d12d5114458923f3a3"
+    },
+    {
+      "path": "build/rest-physical/linux-original-barrel-m1-v90-PRC-b20.log",
+      "bytes": 335,
+      "sha256": "b346c97338dbf1628175e9214bfdfee5d84566cb61d33e1bed553e5d206dd61f"
+    },
+    {
+      "path": "build/rest-physical/linux-original-barrel-m1-v90-control-b20.json",
+      "bytes": 12582601,
+      "sha256": "3a6643a29445fb30eb935e3eaaf8a5223fdb2d69066d2b54eb364fa6c1b7d81e"
+    },
+    {
+      "path": "build/rest-physical/linux-original-barrel-m1-v90-control-b20.log",
+      "bytes": 339,
+      "sha256": "e80af3bfc5e9d72b8baee0a2ac6ce8f78e8ed20b8e4ca3df7328f3f9d541d666"
+    },
+    {
+      "path": "build/rest-physical/linux-original-packed520-PRC-b20.json",
+      "bytes": 8967614,
+      "sha256": "c3e5495eecae1b2b596e6a2971d092dde47549bb149c138990c70a6961a60128"
+    },
+    {
+      "path": "build/rest-physical/linux-original-packed520-PRC-b20.log",
+      "bytes": 331,
+      "sha256": "1335020248c5da1264d9f48ccfd7d3c1dd1c5700104d7d01bf11d3cab9d0c51d"
+    },
+    {
+      "path": "build/rest-physical/linux-original-packed520-control-b20.json",
+      "bytes": 8901709,
+      "sha256": "955030f020e78e44f2b7d3510385f8e49fe89e3cd9a4fba38e18b29f25b37200"
+    },
+    {
+      "path": "build/rest-physical/linux-original-packed520-control-b20.log",
+      "bytes": 335,
+      "sha256": "cbc21d98f7561c484dfab7e678f4b57a5e5f1a1e101d9dab154f643c12ae5685"
+    },
+    {
+      "path": "build/rest-physical/linux-partial-half-control-b20.json",
+      "bytes": 4768126,
+      "sha256": "8aed38cca2e5329ed0e19b23904f32e798f5029f925b8d7e33d2031903b2665c"
+    },
+    {
+      "path": "build/rest-physical/linux-partial-half-control-b20.log",
+      "bytes": 329,
+      "sha256": "7f9f15179beaaf3ff58b427c05a64066e670c755d9699fe2c6395cc694f73ba7"
+    },
+    {
+      "path": "build/rest-physical/linux-partial-half-control-b80.json",
+      "bytes": 5141790,
+      "sha256": "4b932134af9ba70c16626095b81e9d4c0ee7cfc16fbc17ff27b587cfd5d77be0"
+    },
+    {
+      "path": "build/rest-physical/linux-partial-half-control-b80.log",
+      "bytes": 329,
+      "sha256": "d513fd74f0cc91cc61c00e65b705aa022f35d68407b1a6945888da1cc7337e90"
+    },
+    {
+      "path": "build/rest-physical/linux-partial-narrow-control-b20.json",
+      "bytes": 5051025,
+      "sha256": "7e94ffe50d26f7b830fe8869b00dd7a1a541f1f8e01999dcc673e5c7e9223f1f"
+    },
+    {
+      "path": "build/rest-physical/linux-partial-narrow-control-b20.log",
+      "bytes": 331,
+      "sha256": "3fc3b4374be10a5306c9a9aed8781259bc7dc2d0b19921485bf579395384e96f"
+    },
+    {
+      "path": "build/rest-physical/linux-partial-narrow-control-b80.json",
+      "bytes": 6822210,
+      "sha256": "5969ceaaaa14691334a1df68060ded4afdc28ce4fce9aa557ad55eac66c14a92"
+    },
+    {
+      "path": "build/rest-physical/linux-partial-narrow-control-b80.log",
+      "bytes": 331,
+      "sha256": "a417886e7e56c2208e56ca05ce931a1ce37cf8e0a2313ca34ca72f2aa582e2a1"
+    },
+    {
+      "path": "build/rest-physical/linux-salt-gentle-PRC-b20.json",
+      "bytes": 12636801,
+      "sha256": "a61f1d61a0d29a8520da6daf46a473256a35442fbe8a678972708b2a2d929e49"
+    },
+    {
+      "path": "build/rest-physical/linux-salt-gentle-PRC-b20.log",
+      "bytes": 324,
+      "sha256": "725cb3899e15fc7d00c09cdc67da84a11cb76966d7653450a4bd235d8f0bf2e0"
+    },
+    {
+      "path": "build/rest-physical/linux-salt-gentle-control-b20.json",
+      "bytes": 11849138,
+      "sha256": "78573df2e32bb4802127fd7333300c0b715b0e853fc746e6b361408d1a991e58"
+    },
+    {
+      "path": "build/rest-physical/linux-salt-gentle-control-b20.log",
+      "bytes": 328,
+      "sha256": "98fbf2b316d48054a56318ac9490af2d24275b7c40d52a169ec5fdbcb58fb43a"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-C-b20.json",
+      "bytes": 9770630,
+      "sha256": "e86e828e225e53e88e6698e9d29a318faab045329a91c8e04de3ee938a33bd25"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-C-b20.log",
+      "bytes": 321,
+      "sha256": "0afd10d248208c72936021ca375451becf135e9498096da870a4379d61decee1"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-P-b20.json",
+      "bytes": 11344112,
+      "sha256": "ff4cc781af083ec6f6bbd718df6028a0ccbfd8a1df6d05fc2250ac463b93446c"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-P-b20.log",
+      "bytes": 321,
+      "sha256": "e1a31332af6c038447eff57778a601832edfe8ac3ca3705e4e681ae8af94bf1f"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-PRC-b20.json",
+      "bytes": 9931398,
+      "sha256": "29d0c6147b7e0080a66e816a572e2aa50da3ebc4127bda09de7506c080974146"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-PRC-b20.log",
+      "bytes": 323,
+      "sha256": "3e79cb12bb5acbf04fea3189188b584f9d16e36b17e097f4c20f8b793b691ad7"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-R-b20.json",
+      "bytes": 9809985,
+      "sha256": "40058d7511fc78e4c35ceaac6b2e2183f8af5498afc547a587583ed3f95a87ab"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-R-b20.log",
+      "bytes": 321,
+      "sha256": "42f60143cffcd58b8e020974a425489f0ce98742105768fb39831ff23e9e262d"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-control-b20.json",
+      "bytes": 11515319,
+      "sha256": "f6100cc54787f824330b30401d889b3163eee5e93eaa26bee6cbd4dc37e9c81a"
+    },
+    {
+      "path": "build/rest-physical/linux-water-only-control-b20.log",
+      "bytes": 327,
+      "sha256": "77b0cdbb7be6e7f80fd46da9682ea503c993ad2a68c0fe799b3ce8aa2b5d4fc3"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b10.json",
+      "bytes": 8477498,
+      "sha256": "71b3fb3fb8e591c597275f4ad965d16529422b27c492a9f7b4cde87fbc6b1470"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b10.log",
+      "bytes": 341,
+      "sha256": "778e4960b3e509be5d0ddb108deb3c31ad79fc6a708e71fa5fc4c755cbbfb4ee"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b20.json",
+      "bytes": 8397746,
+      "sha256": "5fba1b399761d95291430c1fd4d0d4464357fdb9d3fdb7a72423e2e67eaf8eb5"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b20.log",
+      "bytes": 341,
+      "sha256": "ad1863de3962132dc352f1c6d28aed2a4747a388984ebffcdc388b053af11289"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b40.json",
+      "bytes": 8284690,
+      "sha256": "6e6c64f8e750732537a90388b3bc59a157c4e957d95d6fb4382df1bb4093ee2a"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b40.log",
+      "bytes": 341,
+      "sha256": "9b296c367ca1c2674b9df964cf7a56caf64d9365be72a6a2a4885ad721fd2e1c"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b5.json",
+      "bytes": 8489340,
+      "sha256": "8fc9b0c0f53034a57b310bd4e14926a93e693e63c7acc7cd3ff079c2fe5dee36"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b5.log",
+      "bytes": 340,
+      "sha256": "c332436334cc9ccfc765043c4f7fbdab4908bdd2a5a0dd299c050f05acfb9032"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b80.json",
+      "bytes": 8285842,
+      "sha256": "3799610428017ccabe6e60025bccc8f241420a46381577f6e447b33642cfc8fd"
+    },
+    {
+      "path": "build/rest-physical/windows-budget-barrel-m2-v90-control-b80.log",
+      "bytes": 341,
+      "sha256": "197e8e98c757ef0708a8fe306a157d31b23784c5aec6cb7bea8d24cfb72185ce"
+    },
+    {
+      "path": "build/rest-physical/windows-campaign.json",
+      "bytes": 40830,
+      "sha256": "f068ec3970dde727852d6e6851b9f78a09041c949ab34fe342110dcb8c908c07"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-C-b20.json",
+      "bytes": 12615395,
+      "sha256": "41b96c3e2d3619777591eebe474f97f55011d79fe06d7e5ea3ec7046007510a4"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-C-b20.log",
+      "bytes": 319,
+      "sha256": "157901119660a4f789bbed855d35dbcc3332b3c87931350efe66be651add394d"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-P-b20.json",
+      "bytes": 12615331,
+      "sha256": "3ef434d8f9fbd871b1a1ab029e445fb150cf4933dfec378cc4904e8b561a5f93"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-P-b20.log",
+      "bytes": 319,
+      "sha256": "6950cd671519593c9805c5d386c3da8a132b562b8e5771d31164c4a61bd74e03"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-PRC-b20.json",
+      "bytes": 12607474,
+      "sha256": "e1781d632ef9e5be52895693d61bda6ebdcce1c4560bd7c334bf6be89d8d6c41"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-PRC-b20.log",
+      "bytes": 321,
+      "sha256": "bb619a1ef2e638248a7ca0beff9d7992bc104a033bc6a3b5f61f7b60bd0c4a1b"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-R-b20.json",
+      "bytes": 12600421,
+      "sha256": "c421cbc59c2867bea0ab394676b2b1e0517e5fcf2201b5b34d3cae9f584557e2"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-R-b20.log",
+      "bytes": 319,
+      "sha256": "d2bf91889587e4de28e628ddcd4b250ec81c2201408d9f94540d4aa45542c0a1"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-control-b20.json",
+      "bytes": 12637231,
+      "sha256": "9918caa35f82027228e2067077c989f2cf100e12d684cccb713e6143c487e1dd"
+    },
+    {
+      "path": "build/rest-physical/windows-edge-control-b20.log",
+      "bytes": 325,
+      "sha256": "ec6531dff845d1312f1ae0246d61e19ce9eeaa42b6623c59fc52dc0796242486"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-C-b20.json",
+      "bytes": 7176188,
+      "sha256": "0220834e18a608f7d141451d36c55ecf1e73e8f5997fd01f6da94c6bc99f4e48"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-C-b20.log",
+      "bytes": 343,
+      "sha256": "51f2ba4a5aac8124370d8e156bc22bd9502200310b17ac25817875471a90b1c3"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-P-b20.json",
+      "bytes": 8880635,
+      "sha256": "b7b3eeafeae0e845a9d010c6a073989afddb9cc1cc3cca91e3c5d29a33fe9139"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-P-b20.log",
+      "bytes": 343,
+      "sha256": "7fd639294837dc9f570acf61d09d93679c06f22d4eb65387e16f310ccc69b326"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-PRC-b20.json",
+      "bytes": 7020017,
+      "sha256": "7d530ef65c54bdea48bb21e109847421d9667ef423c92d3d8fa4ac2e031233f1"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-PRC-b20.log",
+      "bytes": 345,
+      "sha256": "3182368be248b1791e2d8974d67bfe9ea29792aaaa0dbf3b1b8f799a7f9aa77f"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-R-b20.json",
+      "bytes": 8607683,
+      "sha256": "9636ccbd24d2f7cf109413dbc7e013dc4a1175ddba9530cf235a1e5bdda8eb03"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-R-b20.log",
+      "bytes": 343,
+      "sha256": "20b808002ed384696402393b8c8f72c249062da522ceebe116bbcd0df1330767"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-control-b20.json",
+      "bytes": 9009609,
+      "sha256": "2d12bf8c417110ff91ec7168107837615f47a3749fd4afd0c02b95f7ae7844ca"
+    },
+    {
+      "path": "build/rest-physical/windows-excavation520-control-b20.log",
+      "bytes": 349,
+      "sha256": "54fa62c3b1cf139e05bf8d3188fc01f4efe65a030564c84eb41dbd5efb8939c3"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-C-b20.json",
+      "bytes": 9124074,
+      "sha256": "c3ff6ac10a6c5ba459427447bd875fffd95e5fe384b95f6ada892d8320715ee0"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-C-b20.log",
+      "bytes": 322,
+      "sha256": "bf6d7b13b812dc04229296b777f066be2408329351162390d64f2a26cde0f327"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-P-b20.json",
+      "bytes": 9412611,
+      "sha256": "9152cf0725018c6329ca5c7f1fa34961b51de9f76f488173ad31ca77220cc159"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-P-b20.log",
+      "bytes": 322,
+      "sha256": "8ad1cdbe0702b42ffcc50ec9a455aa262f5957fcc5ce4ea7969b3786eab18dd8"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-PRC-b20.json",
+      "bytes": 8814974,
+      "sha256": "a934f63fee9b1ba7e53420b678e46326196e3ef85af4aaa86d1c447581f03570"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-PRC-b20.log",
+      "bytes": 324,
+      "sha256": "4edee77aa30533b2b031346e27b5ed3857326551d61d3ea64551eff2fa16f826"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-R-b20.json",
+      "bytes": 9458982,
+      "sha256": "c8bdef765a7bdddc96d5e94ba7fa1b97cd19b0971cb5a6dca3a43c9100f08d02"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-R-b20.log",
+      "bytes": 322,
+      "sha256": "a21451075df4ebc248861281332bdd7df9d67bcc2b277204968c71c8366a1c9f"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b10.json",
+      "bytes": 6391151,
+      "sha256": "bff3112d5ae17c54fffba0874096d3a1edc5ca6e734792595bc9e50de187cd8f"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b10.log",
+      "bytes": 328,
+      "sha256": "c94110f97455121d629442db41c07c150a0a1a7116ae7c60aa56c8417c23064a"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b20.json",
+      "bytes": 11426742,
+      "sha256": "424a0e3813fc01c81fd468baed6a72a6e41c6de4eef51c8de08343c858a19ba9"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b20.log",
+      "bytes": 328,
+      "sha256": "cce84718ce86821400def8f40671e5e8b7af59536b19ff12637f6e62b3175145"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b40.json",
+      "bytes": 7545138,
+      "sha256": "60acaa80559ea97176e699b4d44a93d21cf628ce8a803524cbb934e6efdeb6f6"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b40.log",
+      "bytes": 328,
+      "sha256": "80f9e05b5870af1941671631336e56bef4ab427600a940115096a58d473b62fe"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b5.json",
+      "bytes": 6892128,
+      "sha256": "64f03dff103fd726004a39129828c666a7bec5ccb6a26c8e1374ee2480283bce"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b5.log",
+      "bytes": 327,
+      "sha256": "84a6577f41afdca88172620bf04860383ef4ef84a1434a1c5b4680777877134d"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b80.json",
+      "bytes": 7547206,
+      "sha256": "17773043529ca0df8d150aa007f7f57f627fadd1820c6147fdda2212e73af968"
+    },
+    {
+      "path": "build/rest-physical/windows-full520-control-b80.log",
+      "bytes": 328,
+      "sha256": "ad80c3c087550b9f35680bcfee2d57f0c4968a34a0d6edf4f81c58ad472b7b54"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-C-b20.json",
+      "bytes": 11857839,
+      "sha256": "12735b8dfaf7deb9bbdd18a3d74c7829772b0f685f343aaaa696ef19b5633334"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-C-b20.log",
+      "bytes": 327,
+      "sha256": "7e5123a4267685964c73ffb8884618872c24cf37c7988277e2fe492d0f146882"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-P-b20.json",
+      "bytes": 11858136,
+      "sha256": "1c2a07d55fb7e2f16f4dce5cdf1fe10b976e9739489281206feeca7b8f0d87b0"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-P-b20.log",
+      "bytes": 327,
+      "sha256": "3dcd414f79e1e0f8c8cf8227b70703d03971a3b34921259722dea3e7e0375f17"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-PRC-b20.json",
+      "bytes": 12629077,
+      "sha256": "5e41cde5e49374b60191054e0bc40803299dcb47ba651a5dad6dd7ce80ed4d81"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-PRC-b20.log",
+      "bytes": 329,
+      "sha256": "7b1e87385ce31a27b69a278324ff4b91bbe5bdd072ccf685cefdd50481f6cb24"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-R-b20.json",
+      "bytes": 12621947,
+      "sha256": "979fc9bf638f8a9b20af9edad953b816a31b9b4526ba6dbab50e140c82b34c32"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-R-b20.log",
+      "bytes": 327,
+      "sha256": "5d80afdbb75e093f0d541739aefcf9d87987b414f9421796d357b4f49523350a"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-control-b20.json",
+      "bytes": 11880847,
+      "sha256": "d17a6732758abb8c916e9099e46d7860a1f73278231730f88d271252d8f9bc6f"
+    },
+    {
+      "path": "build/rest-physical/windows-gentle-drive-control-b20.log",
+      "bytes": 333,
+      "sha256": "4db67269fbcc8c8ec9dca460413e5155bacbb97c7a9679362f91664fd29a1362"
+    },
+    {
+      "path": "build/rest-physical/windows-original-barrel-m1-v90-PRC-b20.json",
+      "bytes": 12755747,
+      "sha256": "a6ee70b036c75b824ca9965bc1e214f519b31c88212bf9931863ca9942ec4fb3"
+    },
+    {
+      "path": "build/rest-physical/windows-original-barrel-m1-v90-PRC-b20.log",
+      "bytes": 339,
+      "sha256": "65fc8613a2082d828f18181c1193281ced1a5124387b4c09871c5af68b9908b1"
+    },
+    {
+      "path": "build/rest-physical/windows-original-barrel-m1-v90-control-b20.json",
+      "bytes": 12579480,
+      "sha256": "081bf28dfb83944154ffa7a7903fd45ee6d3b12f387ecf3ada056cf3eafc9997"
+    },
+    {
+      "path": "build/rest-physical/windows-original-barrel-m1-v90-control-b20.log",
+      "bytes": 343,
+      "sha256": "4dcf6034dea0f5bcc5e241308f11114c9981b889e6a580aff2b39ee835e01191"
+    },
+    {
+      "path": "build/rest-physical/windows-original-packed520-PRC-b20.json",
+      "bytes": 7992234,
+      "sha256": "c1234e9bb44a707e67f50c4324b1c9be21389e40b0d9042021d70f0e78d88488"
+    },
+    {
+      "path": "build/rest-physical/windows-original-packed520-PRC-b20.log",
+      "bytes": 335,
+      "sha256": "80222110a52ab2e82c4385ad1aed67d70c9c750c01528a8d13ec25fbbd3632ff"
+    },
+    {
+      "path": "build/rest-physical/windows-original-packed520-control-b20.json",
+      "bytes": 11537034,
+      "sha256": "753e7e7edc1e1455545802e0bedcb6c7ca6f7c76ed909e7f4600d4844832393d"
+    },
+    {
+      "path": "build/rest-physical/windows-original-packed520-control-b20.log",
+      "bytes": 339,
+      "sha256": "bff6c62efd5ba0798bf9a8dddaf564c870c954565f701d49d29822bb18146bd3"
+    },
+    {
+      "path": "build/rest-physical/windows-partial-half-control-b20.json",
+      "bytes": 6841850,
+      "sha256": "a2be00be897c40f62ab09995be3791619b45b34341c7b458ca62586704a49cca"
+    },
+    {
+      "path": "build/rest-physical/windows-partial-half-control-b20.log",
+      "bytes": 333,
+      "sha256": "3888e5d8b4a38536cf912992970d113c12163fbd7dbee2e4c10682348a26ce5a"
+    },
+    {
+      "path": "build/rest-physical/windows-partial-half-control-b80.json",
+      "bytes": 5680997,
+      "sha256": "ca7d6d804f5404bf65cba5482246ae6955d18547b678f73d7de2ed110ae2a219"
+    },
+    {
+      "path": "build/rest-physical/windows-partial-half-control-b80.log",
+      "bytes": 333,
+      "sha256": "3f989cefd9c914f94ecac94421285cec1191fe5973ac174fd735c34599465118"
+    },
+    {
+      "path": "build/rest-physical/windows-partial-narrow-control-b20.json",
+      "bytes": 5295946,
+      "sha256": "e81e5d0b25123c6b5902fd3bc3dc2c2d0d2f548ff3048618c737db30368db698"
+    },
+    {
+      "path": "build/rest-physical/windows-partial-narrow-control-b20.log",
+      "bytes": 335,
+      "sha256": "782ea803b941daa6e0810f34e7be0326ddc846817edefc1ed1f3f93599f8bf75"
+    },
+    {
+      "path": "build/rest-physical/windows-partial-narrow-control-b80.json",
+      "bytes": 4582840,
+      "sha256": "15858aa2e2bc48e60dae79aedd3fa50b3cc5f0610d74d79104df79e2bc93ffec"
+    },
+    {
+      "path": "build/rest-physical/windows-partial-narrow-control-b80.log",
+      "bytes": 335,
+      "sha256": "5690405d206d8bee02c9a48640692456464d55d2cf716a17fb8e1f706a6d275c"
+    },
+    {
+      "path": "build/rest-physical/windows-salt-gentle-PRC-b20.json",
+      "bytes": 12630946,
+      "sha256": "f456b8d6605460de2740212964a6f4be2d130450f7143801c5ff1967a840497f"
+    },
+    {
+      "path": "build/rest-physical/windows-salt-gentle-PRC-b20.log",
+      "bytes": 328,
+      "sha256": "f3e16424a3b7c8c3c7e8e27f0c9e2533dda4375cafd5dc498dc49563a31ca56c"
+    },
+    {
+      "path": "build/rest-physical/windows-salt-gentle-control-b20.json",
+      "bytes": 11842475,
+      "sha256": "2fb1bc7e70d9b43adf3144a05561654ba52b541d2c2b1e99098f70a19043a8aa"
+    },
+    {
+      "path": "build/rest-physical/windows-salt-gentle-control-b20.log",
+      "bytes": 332,
+      "sha256": "6bb3ea990d08870e9bdc48fb1c1b2c6deee99441348b0e3ba53d5bda1b1e8caf"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-C-b20.json",
+      "bytes": 11524177,
+      "sha256": "c5ebb36c13f27229ddcd23e19bda2eb00ef0702460f6e3138cbf96e554c101bb"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-C-b20.log",
+      "bytes": 325,
+      "sha256": "a68318f60d9cccbab5d573fe11d440b6532b06db4ce802bea0e2f6ce2778d067"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-P-b20.json",
+      "bytes": 9294413,
+      "sha256": "0ccdc26bfd4e38599c5dc3e4540327a6cf257c059dd98f772880d751446c3df9"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-P-b20.log",
+      "bytes": 325,
+      "sha256": "c10721447e97883ddf7cccc4399f558eaca5db75c1363335adba21d7d93d476d"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-PRC-b20.json",
+      "bytes": 11542188,
+      "sha256": "b6986276327093a1de96455d72e7c4015d10d294f933568ec82875ed6bb04ba5"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-PRC-b20.log",
+      "bytes": 327,
+      "sha256": "e03b1f7c005bbb15537d56b005fc27282cdb2e68d50f93fab0dd02a8cf3977fc"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-R-b20.json",
+      "bytes": 11403084,
+      "sha256": "731efee9f3f2299dcf8fe999dc582feb463b0e82535d1db344c6c740994c08fc"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-R-b20.log",
+      "bytes": 325,
+      "sha256": "f18cb39d26524e4b27cca94f592f1d1ddd3ca198f193fe1ca6589fb3353705a6"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-control-b20.json",
+      "bytes": 11556330,
+      "sha256": "b824f239ad41d7d6285f0f7a96465bf6ddde6ba0e0229ef3b24cd7ebce02d064"
+    },
+    {
+      "path": "build/rest-physical/windows-water-only-control-b20.log",
+      "bytes": 331,
+      "sha256": "204b2888c30804645d27fbe935d5324dff44635674c03ef04f18a874a8a63fe3"
+    },
+    {
+      "path": "build/rest-publication/preparation.json",
+      "bytes": 501,
+      "sha256": "01c5b4cbafba32100858468a03d88375a8a3e141f75a3336cc342a58aaed3a3c"
+    },
+    {
+      "path": "build/rest-publication/publication-requirements.json",
+      "bytes": 2173,
+      "sha256": "ccba7145dde3c221e144ecd1d8e717de09152e06900bd948855419c079a6cb15"
+    },
+    {
+      "path": "build/rest-publication/publication.json",
+      "bytes": 544,
+      "sha256": "d5cdc2fa0282efe49cae7bfe3672da5399504a03611ef6981a3557d8bd63b168"
+    },
+    {
+      "path": "build/rest-publication/publish-runtime-provenance.json",
+      "bytes": 21423,
+      "sha256": "31777a77c5947f08ae8566c0502b84e0cfcd1c3f763dadadcae2b779128360f8"
+    },
+    {
+      "path": "build/rest-publication/publish-runtime-provenance.linux.json",
+      "bytes": 21843,
+      "sha256": "b90c2df9b363902534c1510306a9fd356e6f98594a8c1dc1a2e8307e90bf7cef"
+    },
+    {
+      "path": "build/rest-publication/publish_exact.py",
+      "bytes": 16837,
+      "sha256": "9d3d4a6abdbd382a033e531ee9c1c7578649c8127ac6efc89f40b40dbc7d4cac"
+    },
+    {
+      "path": "build/rest-publication/qualification.json",
+      "bytes": 5790,
+      "sha256": "30ca642d081da555bc99b3c563e026c7171aa3572f2d285367730edf9d1c0d20"
+    },
+    {
+      "path": "build/rest-publication/qualification.template.json",
+      "bytes": 2194,
+      "sha256": "3918c15e2ebc09d4d86661492858e85449436553f7f493858eb144862d3e4d30"
+    },
+    {
+      "path": "build/rest-publication/toolchain-last-verification.json",
+      "bytes": 3880,
+      "sha256": "afeaa233ff0e5ad2a635ffe0c1663cf04f37bb67e4ce0e7940d1487dae8f7f5d"
+    },
+    {
+      "path": "build/rest-publication/toolchain-postbuild.json",
+      "bytes": 3880,
+      "sha256": "c205033e64b8d19b157a70c29a51aff0e73760a7e8480fe36506c44d2ea41447"
+    },
+    {
+      "path": "build/rest_census.py",
+      "bytes": 2996,
+      "sha256": "ace5744bab335f41c063bfd57b8dcd702ff523258743ea4965e6ea1fdc39a9df"
+    },
+    {
+      "path": "build/rest_freshness.py",
+      "bytes": 2588,
+      "sha256": "49547d08baec4f2c18f9c9acce003a05d15e43def73fa30a6a70b82ed9ab19c9"
+    },
+    {
+      "path": "build/run_rest_math.py",
+      "bytes": 2354,
+      "sha256": "ec417202d2b1fa5612baccee815f5b64109525a57cb260c03949a27a7c2eaa3b"
+    },
+    {
+      "path": "build/start_native_rest.py",
+      "bytes": 716,
+      "sha256": "e99be1fab08a43ef3c9b5ee4c539a3ab80c5d0e7b31264caa80d05cef00b60d7"
+    },
+    {
+      "path": "docs/audits/gcr-rest-2026-11-02/engineering-summary.json",
+      "bytes": 830242,
+      "sha256": "9b29cfdeb2fcfcb643db7ae06298922ce03030bb3ddc0d9fdc7373426561d6c5"
+    },
+    {
+      "path": "docs/audits/gcr-rest-2026-11-02/final-validation.json",
+      "bytes": 5971,
+      "sha256": "6730081f009cb9ca51b6f6b12e69b63541b52c4b6caa3b8936ed68ab6b5a92c2"
+    },
+    {
+      "path": "docs/audits/gcr-rest-2026-11-02/mechanical-summary.json",
+      "bytes": 23368,
+      "sha256": "0333a7efa22a1a817c5436bf3ffb94482e25f70b8e2df5bdd7c10a705ac63586"
+    },
+    {
+      "path": "docs/audits/gcr-rest-2026-11-02/physical-summary.json",
+      "bytes": 631477,
+      "sha256": "ffd6a2bc8a3e1df6ffa1ebb58ce8c5066e696bbdd4873ed95330df895b1e22d0"
+    },
+    {
+      "path": "docs/audits/gcr-rest-2026-11-02/protocol.json",
+      "bytes": 16453,
+      "sha256": "c6ab908cb2e8e2f64255ff14e6678796a522f5f246b856316001cce74b1966fb"
+    },
+    {
+      "path": "docs/audits/gcr-rest-2026-11-02/selected-traces.json",
+      "bytes": 580539,
+      "sha256": "28d2e21a4389d0d5150185124ed69624f8d8b7ab2d60c230bdb09e907e1f3ede"
+    }
+  ]
+}

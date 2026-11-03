@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-03
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1259,7 +1259,64 @@ these declared logical charges.
 The [registered LA successor](../operations/gcr-load-aware-registration.md) owns
 the frozen candidate law and test population. `solid_detachment_lab.tscn` exposes
 staged gravity0–368.48 cell/s², mass multiplier0.01–4, friction0–4 and independent
-inertia multiplier0.01–4. Apply resets the complete scene. Defaults preserve the
+inertia multiplier0.01–4 at the retained LA checkpoint; the GCR-REST branch
+extends both multiplier maxima to64. Apply resets the complete scene. Defaults preserve the
 520-cell building's actual mass/inertia; changed mass or inertia is visibly an
 exploratory override, not payload-mass qualification. Ordinary defaults and
 original legacy/R2/A1 response constants are unchanged.
+
+## Registered GCR budget/rest controls
+
+The [rest comparison contract](../architecture/granular-contact-rest.md) owns the
+experimental source/configuration distinction. Current opt-in/reset-only base budget is
+5..80, default20; prescribed sweeps are5/10/20/40/80. Per-source2 and effective
+mass-scale ceiling4096 remain separate. Mass and inertia multipliers extend to64;
+friction remains4 maximum and gravity368.48. An actual mass33280 from520×64 is
+not an effective scale33280. Rest comparisons stay at20 independent of the sweep.
+All settings are explicitly experimental and rebuild a fresh developer session.
+The [editable seven-flyer room](../systems/granular-review-flight-fleet.md) also
+exposes budget5..80 and mass/inertia multipliers0.01..64 in its LA/control route.
+The retained RFT/R2 reference stays at20; no rest variants are enabled there.
+Its inertia factor multiplies shape inertia at the actual scaled mass. Apply
+rebuilds the room and clears paint; selecting a craft retains applied values.
+Optional flyer `thrust_multiplier` and `torque_multiplier` values0..64 (default1)
+scale the copied controller force/torque ceilings only. Four-key callers remain
+valid. Actual mass/inertia, native granular laws and existing rig safety guards
+retain their separate owners; these limits do not raise authored movement targets.
+Select LA before using the budget or rest-mode controls. Modes are LA control,
+Contact persistence(P), Rest-aware correction(R), Residual catch(C) and combined
+PRC. The structure room and retained barrel room expose the same staged variants;
+Apply rebuilds instead of changing a live response law. Physical outcomes and
+unqualified scope are recorded in the [dated qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md).
+
+## Experimental flyer sources and side thrust
+
+The [fleet contract](../systems/granular-review-flight-fleet.md#what-do-qe-kestrel-s-and-the-fire-toggle-do)
+owns the current room-only mapping: Needle/Kestrel/Surveyor Q/E side thrust,
+Midge Q Acid/E Lava, Cartographer Q/E left/right Water, Observatory Q/E left/right
+Lava and Kestrel S Gunpowder. Afterglow Q/E tilt is retained; ordinary fleet yaw
+uses A/D. Side acceleration is 0.65 of authored acceleration and shares the
+controller's existing combined linear force ceiling. Kestrel S does not also
+reverse thrust; W+S is supported.
+
+**Thrusters emit real Fire** is live, default off and retained across room/craft
+reset. Fire requires active thrust, positive effort, nonzero applied controller
+force and a nonzero force ceiling. These sources use normal native material
+laws; dispensers add no recoil and do not change the granular response.
+
+| Room-only emission bound | Current value |
+|---|---:|
+| Emission opportunity cadence | Every 6 simulation ticks |
+| Maximum nozzles per opportunity | 3 |
+| Emission radius / cells per nozzle | 0 / 1 |
+| Direct trace limit | 64 cells |
+| Total guarded material/mask reads per opportunity | 1,024 |
+| Catch-up queue after blocked/missed opportunity | None |
+
+Nozzles require a clear direct path, Empty target and no foreign/endpoint body
+mask; they never overwrite or search beyond an obstacle. Accepted command
+epoch/generation/sequence and lease gate port state. Cancel, focus loss, editing,
+pause or lease expiry stops emission; release is required before rearming held
+ports after focus/edit/pause cancellation. These are developer-room bounds, not
+new global material or ordinary actor controls. Source:
+[`gcr_review_fleet_emitter.gd`](../../godot/scripts/gcr_review_fleet_emitter.gd).

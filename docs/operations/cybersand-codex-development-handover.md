@@ -10,6 +10,13 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+Current flyer-review follow-up: staged thrust/torque ceiling multipliers0..64
+(default1) supplement mass/inertia and native budget controls. Material laws and
+sleep stay unchanged. F2 now exposes the three desktop granular review rooms near
+the top of the launcher; see the [fleet guide](../systems/granular-review-flight-fleet.md).
+Keep PR351 unmerged. The owner's cropped burrowing recording is observational,
+with unknown source/settings; visible exhaust is not an input/force receipt.
+
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
 
 ## Current owner policy and accepted baseline — 2026-10-31
@@ -1558,3 +1565,32 @@ experimental mass-capacity hypothesis, original building comparison, barrel
 preservation gates, partial support and staged developer controls. Sleep and
 production promotion remain excluded. Source implementation is not gameplay
 acceptance; consult the registration for the frozen population and limitations.
+
+## Budget and contact-rest comparisons — 2026-11-02
+
+The owner authorizes [GCR-REST-001](gcr-rest-registration.md): budget5/10/20/40/80, contact persistence,
+rest-aware correction and constrained residual catch, plus payload mass/inertia
+controls through64. PR349/350 stay unmerged and their source/evidence remain
+controls. Sleep and material-law changes stay excluded. The88-case bounded
+registration precedes results; no production acceptance follows from implementation.
+The recoverable capture checkpoint is594a1a732f477aef6a7aec783251e7a784315722,
+with native runtimes built from181a8257a93f82d64fbeb97e9c413ef52d44f13d. Read the
+[dated qualification](../audits/2026-11-02-gcr-rest-contact-comparison.md) before
+continuing; it preserves preliminary failures and separates mechanical gates from
+physical and owner acceptance. PR351 is draft against the frozen350 branch.
+The88-capture campaign is complete: R/PRC fails, P/C has zero physical admission,
+and the budget sweep has no general winner. Investigate correction/zeroing
+separately and compound response delivery before attributing inactive-mode
+trajectory changes to a law. Do not tune from these results or promote defaults.
+
+## Editable flyer budget playground — 2026-11-02
+
+The owner requests the [seven-flyer painting room](../systems/granular-review-flight-fleet.md)
+with staged LA budgets 20/40/80 and mass/inertia multipliers through64. Current
+source restores the retained f7d61150 fleet authoring on the existing SDK181
+runtime, with a fixed-20 GCR/R2 reference. Apply/reset rebuilds terrain and craft;
+numeric entry suppresses gameplay shortcuts and flight input. Native compiled
+inputs, ordinary defaults and building payload properties remain unchanged.
+P/R/C and sleep are excluded; current host execution and owner judgement require
+separate source-matched evidence, not inherited fleet or88-case acceptance.
+Keep PR #351 draft and unmerged.

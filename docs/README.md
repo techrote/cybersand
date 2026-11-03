@@ -562,3 +562,40 @@ experimental mass-capacity hypothesis, original building comparison, barrel
 preservation gates, partial support and staged developer controls. Sleep and
 production promotion remain excluded. Source implementation is not gameplay
 acceptance; consult the registration for the frozen population and limitations.
+
+## Budget and contact-rest comparisons — 2026-11-02
+
+The owner authorizes [GCR-REST-001](operations/gcr-rest-registration.md): budget5/10/20/40/80, contact persistence,
+rest-aware correction and constrained residual catch, plus payload mass/inertia
+controls through64. PR349/350 stay unmerged and their source/evidence remain
+controls. Sleep and material-law changes stay excluded. The88-case bounded
+registration precedes results; no production acceptance follows from implementation.
+Use the [source-bound qualification record](audits/2026-11-02-gcr-rest-contact-comparison.md)
+for mechanics, physical outcomes, retained failures and the owner-review boundary.
+
+## Editable flyer budget playground — 2026-11-02
+
+The [lightweight fleet contract](systems/granular-review-flight-fleet.md) owns the
+seven-craft painting room, staged LA budgets and mass/inertia multipliers, retained
+fixed-20 RFT reference and reset/input semantics. This developer comparison reuses
+the existing response owner; it does not enable rest modes or qualify production
+physics. PR #351 stays unmerged.
+
+The [craft-specific source controls](systems/granular-review-flight-fleet.md#what-do-qe-kestrel-s-and-the-fire-toggle-do)
+add Q/E side jets or native material dispensers, Kestrel S Gunpowder and an
+initially off **Thrusters emit real Fire** toggle. They preserve the existing
+force ceiling, command lifetime and native material laws. Updated source needs
+its own dated host evidence; earlier fleet results keep their original scope.
+
+## Paired wall and loose materials plan — 2026-11-03
+
+The [concrete implementation plan](operations/paired-wall-loose-materials-plan.md)
+proposes distinct wall/loose forms with shared INT-000 chemistry, authored hard
+shells that expose ordinary powder when destroyed, and finite local curing
+prototypes. Stone/Salt/Coal are the proposed first pairs. New binder crust must
+consume a bounded supplied activation budget and cannot activate its neighbors;
+current Cement's air/Water/Concrete-context law remains unchanged. No material
+implementation or qualification is implied by this plan. It includes the
+all-loose/intact/breached playground comparison, collider-release gates and
+compatibility/provenance work; sleep and generic structural fracture remain
+outside scope.

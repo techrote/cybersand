@@ -8,11 +8,11 @@ const SolidWorker = preload("res://scripts/solid_detachment_worker.gd")
 class ReceiptWorker:
 	extends SolidWorker
 	var fault: String = ""
-	func set_gcr_compound_states(states: PackedFloat64Array, lease_value: Dictionary, epoch: int) -> bool:
+	func set_gcr_compound_states(states: PackedFloat64Array, lease_value: Dictionary, epoch: int, rest_context: Dictionary = {}) -> bool:
 		var value: Dictionary = lease_value.duplicate(true)
 		if fault=="refused-first":
 			value.body_generation += 1
-		return super.set_gcr_compound_states(states,value,epoch)
+		return super.set_gcr_compound_states(states,value,epoch,rest_context)
 	func _publish_snapshot(step_ms: float, paused: bool, interval: int, force_full: bool = false,
 			body_states: PackedFloat32Array = PackedFloat32Array(),body_epoch: int = 0) -> void:
 		var saved: Dictionary = _gcr_compound_preparation.duplicate(true)

@@ -17,6 +17,8 @@ const COUPLING_IMPULSE_CAP: float = 3.0
 const COUPLING_CORRECTION_CAP: float = 0.5
 
 var _isolated_surroundings: bool = false
+var _isolated_stump_retired: bool = false
+var rest_options: Dictionary = {}
 var lab_parameters: Dictionary = {"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
 var worker: CyberSimulationWorker
 var bridge: CyberRapierPhysicsBridge
@@ -82,21 +84,29 @@ var _coupling_last_impulse: Vector2 = Vector2.ZERO
 var _coupling_last_correction: Vector2 = Vector2.ZERO
 
 func open(parent: Node, workers: int = 4, surroundings: String = "empty",
-		conservative_displacement: bool = true, candidate: String = "legacy", parameters: Dictionary = {}) -> bool:
+		conservative_displacement: bool = true, candidate: String = "legacy", parameters: Dictionary = {}, experiment: Dictionary = {}) -> bool:
 	if candidate not in ["legacy","R2","A1","LA"]: return false
 	var requested: Dictionary = {"gravity":92.12,"mass_multiplier":1.0,"friction":0.78,"inertia_multiplier":1.0}
 	for key: String in parameters:
 		if not requested.has(key) or typeof(parameters[key]) not in [TYPE_FLOAT,TYPE_INT]: return false
 		var value: float = float(parameters[key])
 		var minimum: float = 0.01 if key in ["mass_multiplier","inertia_multiplier"] else 0.0
-		var maximum: float = 368.48 if key=="gravity" else 4.0
+		var maximum: float = 368.48 if key=="gravity" else (64.0 if key in ["mass_multiplier","inertia_multiplier"] else 4.0)
 		if not is_finite(value) or value<minimum or value>maximum: return false
 		requested[key]=value
 	if candidate=="legacy" and (requested.mass_multiplier!=1.0 or requested.inertia_multiplier!=1.0): return false
+	var experiment_values: Dictionary = {}
+	if not experiment.is_empty():
+		if candidate!="LA" or experiment.size()!=2 or not experiment.has("mode") or not experiment.has("budget"): return false
+		if typeof(experiment.mode)!=TYPE_STRING or experiment.mode not in ["control","P","R","C","PRC"]: return false
+		if typeof(experiment.budget) not in [TYPE_FLOAT,TYPE_INT] or not is_finite(float(experiment.budget)) or float(experiment.budget)<5.0 or float(experiment.budget)>80.0: return false
+		experiment_values={"mode":str(experiment.mode),"budget":float(experiment.budget)}
 	close()
+	rest_options=experiment_values
 	contact_candidate = candidate
 	lab_parameters=requested.duplicate()
 	_isolated_surroundings=surroundings.begins_with("isolated_")
+	_isolated_stump_retired=false
 	_parent = parent
 	_tree = parent.get_tree()
 	generation += 1
@@ -116,6 +126,12 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 		native_options["gcr_lab_mass_multiplier"]=lab_parameters.mass_multiplier
 		native_options["gcr_lab_inertia_multiplier"]=lab_parameters.inertia_multiplier
 		native_options["bearing_experiment"] = "GCR-LA-001-2026-11-02" if contact_candidate=="LA" else ("GCR-001-2026-11-01" if contact_candidate=="R2" else "GCR-ADMISSION-001-2026-11-01")
+	if not rest_options.is_empty():
+		native_options["bearing_candidate"]="GCR-REST"
+		native_options["bearing_experiment"]="GCR-REST-001-2026-11-02"
+		native_options["gcr_rest_mode"]=rest_options.mode
+		native_options["gcr_base_budget"]=rest_options.budget
+		native_options["gcr_rest_gravity"]=lab_parameters.gravity
 	if not native.diagnostic_reset(native_options):
 		return _fail("Native diagnostic setup refused")
 	# Exclusive pre-thread initialization: no second reset after authoring.
@@ -329,6 +345,7 @@ func cut_and_release() -> bool:
 			return _fail("isolated collider retirement refused")
 		_terrain_revision=terrain.hard_surface_revision
 		bridge.process_hard_surface_collider_budget(64,0)
+		_isolated_stump_retired=true
 		# Re-prime geometry after material/collider revision while still frozen.
 		if not await _prime_compound_coupling(): return _fail("isolated re-prime refused")
 	body.freeze = false
@@ -390,6 +407,8 @@ func _prepare_body(prepared: Dictionary) -> bool:
 	bridge = CyberRapierPhysicsBridge.new()
 	var bodies: Array[RigidBody2D] = [body]
 	if bridge.initialize(viewport.world_2d.space,bodies,PackedVector2Array([Vector2(29,38)])) != OK:
+		return false
+	if not rest_options.is_empty() and not bridge.configure_gcr_rest(str(rest_options.mode),float(rest_options.budget),float(lab_parameters.gravity)):
 		return false
 	if PhysicsServer2D.body_get_shape_count(body.get_rid()) != int(prepared.shape_count):
 		return false
@@ -480,6 +499,18 @@ func _pack_compound_states() -> PackedFloat32Array:
 			_coupling_sample_serial)
 	return states
 
+func rest_hard_clearance() -> bool:
+	if not active or bridge==null or not is_instance_valid(body): return false
+	var transform: Transform2D = bridge.body_transform(0)
+	var floor_y: float = 118.0 if _isolated_surroundings else 72.0
+	# Original stump remains a hard-contact confound. Never admit rest there.
+	if not _isolated_surroundings or not _isolated_stump_retired: return false
+	for i: int in range(_coupling_local_centers.size()):
+		for corner: Vector2 in [Vector2(-.5,-.5),Vector2(.5,-.5),Vector2(.5,.5),Vector2(-.5,.5)]:
+			var point: Vector2 = transform*(_coupling_local_centers[i]+corner*_coupling_sizes[i])
+			if point.x<=33.0 or point.x>=117.0 or point.y>=floor_y-2.0: return false
+	return true
+
 func _publish_compound_states() -> bool:
 	if worker == null or physics_epoch <= 0:
 		return false
@@ -488,7 +519,8 @@ func _publish_compound_states() -> bool:
 		if values.size()!=_coupling_local_centers.size()*17: return false
 		_coupling_sample_serial = int(values[10])
 		var lease: Dictionary = {"token":source_receipt.token,"body_id":1,"body_generation":generation,"physics_epoch":physics_epoch}
-		if not worker.set_gcr_compound_states(values,lease,physics_epoch): return false
+		var context: Dictionary = bridge.gcr_rest_context_for_states(values,false,rest_hard_clearance()) if not rest_options.is_empty() else {}
+		if not worker.set_gcr_compound_states(values,lease,physics_epoch,context): return false
 	else:
 		var states: PackedFloat32Array = _pack_compound_states()
 		if states.size() != _coupling_local_centers.size() * CyberRigidBodyCoupling.INPUT_STRIDE:
@@ -556,11 +588,11 @@ func _consume_compound_results() -> void:
 	# already owns force/friction calculation; detachment only supplies the exact
 	# geometry that maps its proxy impulse positions into the one aggregate.
 	if contact_candidate!="legacy":
-		bridge.apply_gcr_compound_results(snapshot.serial,snapshot.gcr_compound_results)
+		bridge.apply_gcr_compound_results(snapshot.serial,snapshot.gcr_compound_results,snapshot.gcr_rest_receipt)
 		var application: Dictionary = bridge.gcr_application_diagnostics()
 		last_compound_observation = {"candidate":contact_candidate,"lab_parameters":lab_parameters.duplicate(),"snapshot_serial":snapshot.serial,"native_tick":snapshot.tick_index,
 			"computed_result":snapshot.gcr_compound_results.duplicate(),"application":application,
-			"native_diagnostics":snapshot.gcr_compound_diagnostics.duplicate(true),"result_generation_usec":snapshot.gcr_result_generation_usec}
+			"native_diagnostics":snapshot.gcr_compound_diagnostics.duplicate(true),"rest_receipt":snapshot.gcr_rest_receipt.duplicate(true),"result_generation_usec":snapshot.gcr_result_generation_usec}
 		if not application.get("accepted",false):
 			_coupling_stale_results += 1
 			return
@@ -676,7 +708,7 @@ func wait_native_ticks(ticks: int, timeout_ms: int = 0) -> bool:
 	return false
 
 func inspect_coupling(points: PackedInt32Array = PackedInt32Array(),
-		region: Rect2i = Rect2i(0, 0, 128, 80)) -> Dictionary:
+		region: Rect2i = Rect2i(0, 0, 128, 80), include_global_census: bool = false) -> Dictionary:
 	if worker == null or _opening or _release_in_progress or transaction_busy:
 		return {"ok":false,"outcome":"SessionBusyOrClosed"}
 	var owner_generation: int = generation
@@ -685,7 +717,7 @@ func inspect_coupling(points: PackedInt32Array = PackedInt32Array(),
 	set_paused(true)
 	var request: Dictionary = {"action":"inspect", "probe_points":points,
 		"snapshot_origin":region.position, "snapshot_size":region.size,
-		"include_body_metrics":true}
+		"include_body_metrics":true,"include_global_census":include_global_census}
 	var result: Dictionary = await command(request)
 	if not _owns(owner_generation, owner_worker):
 		return {"ok":false,"outcome":"SessionRetired"}
@@ -694,7 +726,7 @@ func inspect_coupling(points: PackedInt32Array = PackedInt32Array(),
 	return result
 
 func coupling_metrics() -> Dictionary:
-	return {"candidate":contact_candidate,"last_compound_observation":last_compound_observation.duplicate(true),
+	return {"candidate":contact_candidate,"rest_options":rest_options.duplicate(),"last_compound_observation":last_compound_observation.duplicate(true),
 		"proxy_count":_coupling_local_centers.size(), "proxy_mass":_coupling_total_mass,
 		"state_publications":_coupling_state_publications, "result_snapshots":_coupling_result_snapshots,
 		"result_records":_coupling_result_records, "contacts":_coupling_contacts,
