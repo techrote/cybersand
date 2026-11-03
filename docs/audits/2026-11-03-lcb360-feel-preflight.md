@@ -73,8 +73,11 @@ python tools/lcb/feel_preflight.py reduce --logs-external --packet docs/audits/l
 Each process used the shared `ordinary_case_seconds` watchdog (1,200 s); the
 slowest took 4.7 s. Windows ran 22:33:27–22:34:39Z and Linux 22:35:01–22:36:20Z.
 The [committed packet](lcb360-preflight-2026-11-03/) holds both `packet.json`
-manifests, all 58 raw receipts and the reduced `summary.json`. Packet SHA-256:
-Windows `0f2bdb17…12eaa3`, Linux `1176818f…49f429b`. Process logs are kept outside
+manifests, all 58 raw receipts and the reduced `summary.json`. Committed
+LF-blob SHA-256: Windows packet `edf179e9…47f1e9` (produced with CRLF as
+`0f2bdb17…12eaa3`; the driver now writes LF on every host), Linux packet
+`1176818f…49f429b`, summary `aebbc0b2…4daec1`. Receipt hashes are unaffected
+because Godot wrote them with LF. Process logs are kept outside
 Git under the repository log policy. Their SHA-256 values are in the manifests.
 
 ## Correctness

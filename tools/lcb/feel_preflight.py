@@ -594,7 +594,7 @@ def command_reduce(arguments: argparse.Namespace) -> int:
         return 1
     text = json.dumps(summary, indent=2, sort_keys=True) + "\n"
     if arguments.output:
-        Path(arguments.output).write_text(text, encoding="utf-8")
+        Path(arguments.output).write_bytes(text.encode("utf-8"))
     print(f"{summary['verdict']}: {summary['primary_rows_total']} primary rows on {sorted(summary['platforms'])}")
     for label, value in sorted(summary["platforms"].items()):
         for case in value["cases"]:
