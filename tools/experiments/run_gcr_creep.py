@@ -101,8 +101,10 @@ def reusable_gates(folder, platform, inputs, runtime):
         return {}
     identity = read(folder / 'identity.json')
     old_inputs = identity['source_inputs']
-    allowed = {'godot/qualification/gcr_creep_capture.gd', 'godot/tests/test_gcr_creep_capture.gd'}
-    if set(old_inputs) != set(inputs) or any(old_inputs[p] != inputs[p] for p in inputs if p not in allowed):
+    allowed = {'godot/qualification/gcr_creep_capture.gd', 'godot/tests/test_gcr_creep_capture.gd',
+               'godot/qualification/gcr_creep_flat_capture.gd', 'godot/tests/test_gcr_creep_flat_capture.gd'}
+    protected = (set(old_inputs) | set(inputs)) - allowed
+    if any(old_inputs.get(p) != inputs.get(p) for p in protected):
         raise RuntimeError('Retained control inputs changed; gate reuse refused')
     for key in ['native_sha256', 'native_source_inputs', 'rapier_sha256', 'engine_sha256', 'engine_version']:
         if identity['platforms'][platform][key] != runtime[key]:
@@ -127,6 +129,7 @@ def reusable_gates(folder, platform, inputs, runtime):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--protocol', type=Path, default=PROTOCOL)
     parser.add_argument('--platform', choices=['windows', 'linux', 'both'], default='both')
     parser.add_argument('--godot-windows', default='C:/Godot47/Godot_v4.7-stable_win64_console.exe')
     parser.add_argument('--godot-linux', default='/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64')
@@ -136,15 +139,20 @@ def main():
     parser.add_argument('--case', help='Exploratory selected run; never a complete campaign')
     args = parser.parse_args()
     args.output = args.output.resolve()
+    protocol_path = args.protocol.resolve()
     if args.output.exists():
         raise RuntimeError('Never overwrite retained evidence')
     if git('diff', '--binary', 'HEAD'):
         raise RuntimeError('Commit the complete source before execution')
-    if git('show', 'HEAD:' + PROTOCOL.relative_to(ROOT).as_posix()).replace(b'\r\n', b'\n') != PROTOCOL.read_bytes().replace(b'\r\n', b'\n'):
+    if git('show', 'HEAD:' + protocol_path.relative_to(ROOT).as_posix()).replace(b'\r\n', b'\n') != protocol_path.read_bytes().replace(b'\r\n', b'\n'):
         raise RuntimeError('Protocol must be committed unchanged')
-    protocol = read(PROTOCOL)
-    if protocol['registration'] != 'GCR-CREEP-001-2026-11-03' or len(protocol['cases']) != 16:
+    protocol = read(protocol_path)
+    expected = {'GCR-CREEP-001-2026-11-03': (16, 'gcr_creep_capture.gd'),
+                'GCR-CREEP-FLAT-001-2026-11-03': (4, 'gcr_creep_flat_capture.gd')}
+    if protocol.get('registration') not in expected or len(protocol['cases']) != expected[protocol['registration']][0]:
         raise RuntimeError('Unexpected registered population')
+    capture_script = expected[protocol['registration']][1]
+    hosts = HOSTS + (['test_gcr_creep_flat_capture'] if protocol['registration'] == 'GCR-CREEP-FLAT-001-2026-11-03' else [])
     cases = [x for x in protocol['cases'] if not args.case or x['id'] == args.case]
     if not cases:
         raise RuntimeError('Unknown case')
@@ -152,7 +160,7 @@ def main():
     inputs = source_inputs()
     args.output.mkdir(parents=True)
     identity = {'source': head, 'tree': git('rev-parse', 'HEAD^{tree}').decode().strip(),
-                'protocol_sha256': sha(PROTOCOL), 'source_inputs': inputs,
+                'protocol_sha256': sha(protocol_path), 'source_inputs': inputs,
                 'source_inputs_sha256': hashlib.sha256(json.dumps(inputs, sort_keys=True).encode()).hexdigest(),
                 'platforms': {}, 'scope': 'Apparatus only; unchanged native and shared coupling; no sleep or law changes'}
     env = dict(os.environ, GCR_CREEP_SOURCE=head, GCR_CREEP_INPUT_IDENTITY=identity['source_inputs_sha256'])
@@ -192,7 +200,7 @@ def main():
         if not gates[-1]['ok']:
             return 1
         reused = reusable_gates(args.reuse_gates, platform, inputs, identity['platforms'][platform])
-        for host in HOSTS:
+        for host in hosts:
             if host in reused:
                 gates.append(reused[host])
                 write(project.parent / 'gates.json', gates)
@@ -201,6 +209,10 @@ def main():
             host_args = ['--script', 'res://tests/' + host + '.gd']
             if host == 'test_gcr_envelope':
                 host_args += ['--', '--protocol=' + convert(ROOT / 'docs/audits/gcr001-2026-11-01/protocol.json')]
+            elif host == 'test_gcr_creep_capture':
+                host_args += ['--', '--protocol=' + convert(PROTOCOL)]
+            elif host == 'test_gcr_creep_flat_capture':
+                host_args += ['--', '--protocol=' + convert(protocol_path)]
             row = process(prefix + host_args, project.parent / (host + '.log'), 300, env)
             gates.append(dict(row, test=host))
             write(project.parent / 'gates.json', gates)
@@ -211,12 +223,12 @@ def main():
         if not args.gates_only:
             for case in cases:
                 output = project.parent / (case['id'] + '.json')
-                row = process(prefix + ['--script', 'res://qualification/gcr_creep_capture.gd', '--',
-                              '--protocol=' + convert(PROTOCOL), '--case=' + case['id'], '--output=' + convert(output)],
+                row = process(prefix + ['--script', 'res://qualification/' + capture_script, '--',
+                              '--protocol=' + convert(protocol_path), '--case=' + case['id'], '--output=' + convert(output)],
                               project.parent / (case['id'] + '.log'), protocol['wall_timeout_seconds'], env)
                 data = read(output) if output.exists() else {}
                 actual = data.get('identity', {})
-                bound = actual.get('source') == head and actual.get('native_sha256') == runtime['native_sha256'] and actual.get('protocol_sha256') == sha(PROTOCOL) and actual.get('input_identity') == identity['source_inputs_sha256'] and actual.get('engine_sha256') == engine_sha
+                bound = actual.get('source') == head and actual.get('native_sha256') == runtime['native_sha256'] and actual.get('protocol_sha256') == sha(protocol_path) and actual.get('input_identity') == identity['source_inputs_sha256'] and actual.get('engine_sha256') == engine_sha
                 row.update(case=case['id'], identity_ok=bound, raw_sha256=sha(output) if output.exists() else None,
                            rows=len(data.get('rows', [])))
                 row['ok'] = row['ok'] and data.get('ok') is True and bound and row['rows'] == case['ticks']
