@@ -1,0 +1,1169 @@
+{
+  "kind": "arm",
+  "case_id": "lcb.feel.dam-release.d96.v1|A|pressure_flow_v1.reference|r3|w1",
+  "lane": "A",
+  "scenario": "lcb.feel.dam-release.d96.v1",
+  "requested": {
+    "material": 3,
+    "family": "pressure_flow_v1",
+    "variant": "reference",
+    "radius": 3,
+    "workers": 1,
+    "normalization": "water-normalize-v1",
+    "horizon": 30
+  },
+  "fixture": {
+    "id": "lcb.dam.water.freemass.depth-96.v1",
+    "definition_hash": "d1f701323c6af606ec3b16ae87e09858dbeebdaecf1e7c796bdfdbf9926aba9c",
+    "transport_hash": "1b27b4e934dc7560e6901eb09e634ed604c0111dcf26d5dac6b10885a3e5e268"
+  },
+  "default_policy": [
+    {
+      "material": 3,
+      "name": "water",
+      "applied_family": "freemass_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 8,
+      "name": "lava",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 12,
+      "name": "acid",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 16,
+      "name": "oil",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 20,
+      "name": "paste",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 21,
+      "name": "slush",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 24,
+      "name": "brine",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 30,
+      "name": "cement",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 32,
+      "name": "toxic-sludge",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 33,
+      "name": "mercury",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    },
+    {
+      "material": 36,
+      "name": "molten-glass",
+      "applied_family": "cellular_yield_v1",
+      "applied_variant": "reference"
+    }
+  ],
+  "construction_us": 517458,
+  "applied": {
+    "policy_hash": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+    "session_generation": 3,
+    "assignments": [
+      {
+        "material": 3,
+        "name": "water",
+        "applied_family": "pressure_flow_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 8,
+        "name": "lava",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 12,
+        "name": "acid",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 16,
+        "name": "oil",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 20,
+        "name": "paste",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 21,
+        "name": "slush",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 24,
+        "name": "brine",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 30,
+        "name": "cement",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 32,
+        "name": "toxic-sludge",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 33,
+        "name": "mercury",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      },
+      {
+        "material": 36,
+        "name": "molten-glass",
+        "applied_family": "cellular_yield_v1",
+        "applied_variant": "reference"
+      }
+    ],
+    "family_parameters": {
+      "pressure_flow_v1": {
+        "family_version": 1,
+        "gas_enabled": true,
+        "atmospheric_head_rows": 32,
+        "flow_scale": 1024,
+        "compartment_volume_limit": 16384,
+        "compartment_capacity": 1024,
+        "acceleration": 3,
+        "retain_per_256": 256,
+        "friction": 0,
+        "start_dead_band_per_255": 128,
+        "moving_dead_band_per_255": 10,
+        "overfill_limit": "maximum()",
+        "adhesion_film": "resting cells only"
+      }
+    },
+    "minimum_rule_radius": 2,
+    "maximum_rule_radius": 3,
+    "physical_state_hash_version": 2,
+    "configured_workers": 1,
+    "backend": "native-phased"
+  },
+  "construction": {
+    "receipt_hash": "0daa1630f49b3bab55fd4f196d80cd3f3331d8141e8d5e5aff45e8aa371f4c63",
+    "run_intent": "controlled",
+    "worker_threads": 1,
+    "maximum_rule_radius": 3,
+    "prepared_setup_hash": "0cc7693f1cc7f39ac065c8504154e7a317338c6bf01f8ebe78458b32edbc1058",
+    "prepared_payload_hash": "348c0b3754202adee72f34e2eef1dbea86c8da2c1153439f40d652a2be0142b1",
+    "physical_state_hash": "c074e800839e8519",
+    "eligible_for_full_matched_evidence": false,
+    "normalization": {
+      "rule": "water-normalize-v1",
+      "receipt_hash": "9299d451684f7b82a990e9c51c762de2d8004971f874ddd4640935545ee54e85",
+      "payload_before_hash": "348c0b3754202adee72f34e2eef1dbea86c8da2c1153439f40d652a2be0142b1",
+      "payload_after_hash": "348c0b3754202adee72f34e2eef1dbea86c8da2c1153439f40d652a2be0142b1",
+      "setup_before_hash": "0cc7693f1cc7f39ac065c8504154e7a317338c6bf01f8ebe78458b32edbc1058",
+      "setup_after_hash": "0cc7693f1cc7f39ac065c8504154e7a317338c6bf01f8ebe78458b32edbc1058",
+      "water_before": 4700160,
+      "water_after": 4700160,
+      "positive_delta": 0,
+      "negative_delta": 0,
+      "net_delta": 0,
+      "cells_up": 0,
+      "cells_down": 0,
+      "cells_unchanged": 18432
+    }
+  },
+  "host_observation": {
+    "digest": "190f20d158053178499c2989d0bb9a2661da61393178d376730d1a0a78fe9bb8",
+    "host_eligible_for_full_matched_evidence": false,
+    "mapped_module_binding": "unverified"
+  },
+  "initial": {
+    "schema": "lcb-feel-probe-v1",
+    "completed_tick": 0,
+    "health": {
+      "failed": false,
+      "tick_failure_count": 0,
+      "last_tick_error": "",
+      "attempted_tick": 0,
+      "tick_index": 0
+    },
+    "water": {
+      "visible": 4700160,
+      "overfill": 0,
+      "quantity": 4700160,
+      "water_cells": 18432,
+      "content_hash": "3262df5c13a2e1cb",
+      "state_hash": "c3151221af3c5496",
+      "scope": "complete World stored Water state_a plus pressure overfill"
+    },
+    "inventory": {
+      "complete": true,
+      "area": 1048576,
+      "counts": {
+        "1": 16380,
+        "3": 18432,
+        "0": 1013764
+      },
+      "sources": "non-Water: copied material cells; Water: stored census; Empty: exact remainder"
+    },
+    "physical_state_hash": "c074e800839e8519",
+    "physical_state_hash_version": 2,
+    "physical_state_format_version": 2,
+    "inertial": {
+      "available": false
+    },
+    "pressure": {
+      "available": true,
+      "ledger": {
+        "available": true,
+        "overfill_converted": 0,
+        "overfill_external": 0,
+        "flow_remainder": 0,
+        "contact_loss": 0,
+        "relief_cells": 0,
+        "last_tick": {
+          "head_cells": 0,
+          "unknown_heads": 0,
+          "gas_visited": 0,
+          "gas_regions": 0,
+          "atmosphere_regions": 0,
+          "chunk_allocations": 0,
+          "woken_blocks": 0
+        }
+      },
+      "gas_enabled": true,
+      "atmospheric_head_rows": 32,
+      "topology_revision": 0,
+      "compartments": 0,
+      "history": 0,
+      "gas_ledger": {
+        "created": 0,
+        "absorbed": 0,
+        "vented": 0,
+        "collapsed": 0,
+        "merges": 0,
+        "splits": 0,
+        "creations": 0,
+        "vents": 0,
+        "collapses": 0,
+        "amount_live": 0,
+        "closes": true
+      },
+      "gas_ledger_closes": true
+    }
+  },
+  "ticks": [
+    {
+      "tick": 1,
+      "native_tick_ms": 26.733,
+      "host_advance_us": 52523,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        18,
+        19,
+        4,
+        5
+      ],
+      "scheduler_jobs": 46,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 1430,
+      "visited_cells": 18432,
+      "active_chunks": 35,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 23,
+      "physical_state_hash": "411f16a1a160c15e",
+      "failed": false
+    },
+    {
+      "tick": 2,
+      "native_tick_ms": 28.526,
+      "host_advance_us": 28672,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        18,
+        19,
+        4,
+        5
+      ],
+      "scheduler_jobs": 46,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 2764,
+      "visited_cells": 18434,
+      "active_chunks": 35,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 671,
+      "physical_state_hash": "b5b047772655f28b",
+      "failed": false
+    },
+    {
+      "tick": 3,
+      "native_tick_ms": 26.2384,
+      "host_advance_us": 26386,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        18,
+        19,
+        4,
+        5
+      ],
+      "scheduler_jobs": 46,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 3166,
+      "visited_cells": 18432,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 1232,
+      "physical_state_hash": "0624228843ba4fbe",
+      "failed": false
+    },
+    {
+      "tick": 4,
+      "native_tick_ms": 28.8765,
+      "host_advance_us": 29024,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 2759,
+      "visited_cells": 9985,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 2176,
+      "physical_state_hash": "e6d4ca8edccecf5d",
+      "failed": false
+    },
+    {
+      "tick": 5,
+      "native_tick_ms": 21.2125,
+      "host_advance_us": 21367,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 3730,
+      "visited_cells": 9983,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 2457,
+      "physical_state_hash": "805deab9825fb58b",
+      "failed": false
+    },
+    {
+      "tick": 6,
+      "native_tick_ms": 22.5015,
+      "host_advance_us": 22635,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 3761,
+      "visited_cells": 9991,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 2581,
+      "physical_state_hash": "afa6f47b24a9a558",
+      "failed": false
+    },
+    {
+      "tick": 7,
+      "native_tick_ms": 21.7816,
+      "host_advance_us": 21917,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 3909,
+      "visited_cells": 9986,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 3306,
+      "physical_state_hash": "6535e7b5ad723c50",
+      "failed": false
+    },
+    {
+      "tick": 8,
+      "native_tick_ms": 21.4665,
+      "host_advance_us": 21624,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 3586,
+      "visited_cells": 9979,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 4465,
+      "physical_state_hash": "6106d542738ef51a",
+      "failed": false
+    },
+    {
+      "tick": 9,
+      "native_tick_ms": 21.8661,
+      "host_advance_us": 22006,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4079,
+      "visited_cells": 9983,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 5179,
+      "physical_state_hash": "ea1297035cbc31ea",
+      "failed": false
+    },
+    {
+      "tick": 10,
+      "native_tick_ms": 20.142,
+      "host_advance_us": 20296,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4210,
+      "visited_cells": 9988,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 5871,
+      "physical_state_hash": "eaa855de742d42ec",
+      "failed": false
+    },
+    {
+      "tick": 11,
+      "native_tick_ms": 21.8166,
+      "host_advance_us": 21950,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4343,
+      "visited_cells": 9989,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 6399,
+      "physical_state_hash": "03a9216e643bb047",
+      "failed": false
+    },
+    {
+      "tick": 12,
+      "native_tick_ms": 20.3509,
+      "host_advance_us": 20467,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4097,
+      "visited_cells": 9981,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 7135,
+      "physical_state_hash": "01e543e4f7c5c307",
+      "failed": false
+    },
+    {
+      "tick": 13,
+      "native_tick_ms": 21.0237,
+      "host_advance_us": 21157,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4486,
+      "visited_cells": 9979,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 7639,
+      "physical_state_hash": "36a81b3e02ba979a",
+      "failed": false
+    },
+    {
+      "tick": 14,
+      "native_tick_ms": 27.1246,
+      "host_advance_us": 27277,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4610,
+      "visited_cells": 9983,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 8605,
+      "physical_state_hash": "dac6dd9ddaa7d78f",
+      "failed": false
+    },
+    {
+      "tick": 15,
+      "native_tick_ms": 21.0039,
+      "host_advance_us": 21134,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4733,
+      "visited_cells": 9982,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 9853,
+      "physical_state_hash": "386cababbe3fdd65",
+      "failed": false
+    },
+    {
+      "tick": 16,
+      "native_tick_ms": 21.0248,
+      "host_advance_us": 21145,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4566,
+      "visited_cells": 9969,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 10791,
+      "physical_state_hash": "a350181143b15f93",
+      "failed": false
+    },
+    {
+      "tick": 17,
+      "native_tick_ms": 21.3539,
+      "host_advance_us": 21484,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4859,
+      "visited_cells": 9969,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 11027,
+      "physical_state_hash": "6ab9151c5e400d3e",
+      "failed": false
+    },
+    {
+      "tick": 18,
+      "native_tick_ms": 21.0758,
+      "host_advance_us": 21202,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4976,
+      "visited_cells": 9979,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 11903,
+      "physical_state_hash": "bda6313ee564cede",
+      "failed": false
+    },
+    {
+      "tick": 19,
+      "native_tick_ms": 20.4613,
+      "host_advance_us": 20591,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5089,
+      "visited_cells": 9975,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 13494,
+      "physical_state_hash": "3a4154c940832558",
+      "failed": false
+    },
+    {
+      "tick": 20,
+      "native_tick_ms": 22.2779,
+      "host_advance_us": 22429,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 4952,
+      "visited_cells": 9960,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 14224,
+      "physical_state_hash": "2e5c8aa94186dbe5",
+      "failed": false
+    },
+    {
+      "tick": 21,
+      "native_tick_ms": 21.3213,
+      "host_advance_us": 21459,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5138,
+      "visited_cells": 9960,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 14355,
+      "physical_state_hash": "ff63b23f71323893",
+      "failed": false
+    },
+    {
+      "tick": 22,
+      "native_tick_ms": 21.9667,
+      "host_advance_us": 22110,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5213,
+      "visited_cells": 9970,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 15070,
+      "physical_state_hash": "f3a100d3c29d5731",
+      "failed": false
+    },
+    {
+      "tick": 23,
+      "native_tick_ms": 22.1844,
+      "host_advance_us": 22336,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5314,
+      "visited_cells": 9964,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 16617,
+      "physical_state_hash": "469f2c5623f9fd48",
+      "failed": false
+    },
+    {
+      "tick": 24,
+      "native_tick_ms": 23.0038,
+      "host_advance_us": 23148,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5317,
+      "visited_cells": 9945,
+      "active_chunks": 21,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 17090,
+      "physical_state_hash": "024d602675d8ea91",
+      "failed": false
+    },
+    {
+      "tick": 25,
+      "native_tick_ms": 23.1101,
+      "host_advance_us": 23250,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        3,
+        2,
+        1,
+        1
+      ],
+      "scheduler_jobs": 7,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5436,
+      "visited_cells": 9950,
+      "active_chunks": 23,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 17198,
+      "physical_state_hash": "6cb3e280e0dbdb9a",
+      "failed": false
+    },
+    {
+      "tick": 26,
+      "native_tick_ms": 27.7388,
+      "host_advance_us": 27877,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        4,
+        3,
+        2,
+        2
+      ],
+      "scheduler_jobs": 11,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5414,
+      "visited_cells": 16111,
+      "active_chunks": 23,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 17621,
+      "physical_state_hash": "be097c98ff2a7a55",
+      "failed": false
+    },
+    {
+      "tick": 27,
+      "native_tick_ms": 42.6015,
+      "host_advance_us": 42767,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        4,
+        3,
+        2,
+        2
+      ],
+      "scheduler_jobs": 11,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5626,
+      "visited_cells": 16128,
+      "active_chunks": 22,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 19588,
+      "physical_state_hash": "257581e03ebaeb03",
+      "failed": false
+    },
+    {
+      "tick": 28,
+      "native_tick_ms": 21.3678,
+      "host_advance_us": 21516,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        4,
+        2,
+        2,
+        1
+      ],
+      "scheduler_jobs": 9,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5526,
+      "visited_cells": 9959,
+      "active_chunks": 22,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 20290,
+      "physical_state_hash": "50d07d529e16e315",
+      "failed": false
+    },
+    {
+      "tick": 29,
+      "native_tick_ms": 21.8575,
+      "host_advance_us": 22100,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        4,
+        2,
+        2,
+        1
+      ],
+      "scheduler_jobs": 9,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5685,
+      "visited_cells": 9964,
+      "active_chunks": 23,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 20500,
+      "physical_state_hash": "50298fe712f4fb85",
+      "failed": false
+    },
+    {
+      "tick": 30,
+      "native_tick_ms": 26.0974,
+      "host_advance_us": 26231,
+      "statistics_ok": true,
+      "worker_threads_observed": 1,
+      "phase_jobs": [
+        4,
+        3,
+        2,
+        2
+      ],
+      "scheduler_jobs": 11,
+      "scheduler_parallel_phases": 0,
+      "moved_cells": 5778,
+      "visited_cells": 16108,
+      "active_chunks": 23,
+      "resident_chunks": 100,
+      "chunk_allocations": 0,
+      "temperature_field_allocations": 0,
+      "water_quantity": 4700160,
+      "water_overfill": 20678,
+      "physical_state_hash": "b76072e2f6b833c2",
+      "failed": false
+    }
+  ],
+  "final": {
+    "schema": "lcb-feel-probe-v1",
+    "completed_tick": 30,
+    "health": {
+      "failed": false,
+      "tick_failure_count": 0,
+      "last_tick_error": "",
+      "attempted_tick": 30,
+      "tick_index": 30
+    },
+    "water": {
+      "visible": 4679482,
+      "overfill": 20678,
+      "quantity": 4700160,
+      "water_cells": 18408,
+      "content_hash": "67ab9653cc0c9983",
+      "state_hash": "f4b2c56673a24edb",
+      "scope": "complete World stored Water state_a plus pressure overfill"
+    },
+    "inventory": {
+      "complete": true,
+      "area": 1048576,
+      "counts": {
+        "1": 14844,
+        "3": 18408,
+        "0": 1015324
+      },
+      "sources": "non-Water: copied material cells; Water: stored census; Empty: exact remainder"
+    },
+    "physical_state_hash": "b76072e2f6b833c2",
+    "physical_state_hash_version": 2,
+    "physical_state_format_version": 2,
+    "inertial": {
+      "available": false
+    },
+    "pressure": {
+      "available": true,
+      "ledger": {
+        "available": true,
+        "overfill_converted": 0,
+        "overfill_external": 0,
+        "flow_remainder": 21881328,
+        "contact_loss": 0,
+        "relief_cells": 113,
+        "last_tick": {
+          "head_cells": 18414,
+          "unknown_heads": 0,
+          "gas_visited": 17670,
+          "gas_regions": 65,
+          "atmosphere_regions": 43,
+          "chunk_allocations": 0,
+          "woken_blocks": 0
+        }
+      },
+      "gas_enabled": true,
+      "atmospheric_head_rows": 32,
+      "topology_revision": 29,
+      "compartments": 21,
+      "history": 64,
+      "gas_ledger": {
+        "created": 833,
+        "absorbed": 111,
+        "vented": 552,
+        "collapsed": 1,
+        "merges": 0,
+        "splits": 11,
+        "creations": 54,
+        "vents": 32,
+        "collapses": 1,
+        "amount_live": 391,
+        "closes": true
+      },
+      "gas_ledger_closes": true
+    }
+  },
+  "host_ledger": {
+    "initial": 4700160,
+    "source": 0,
+    "sink": 0,
+    "current": 4700160,
+    "events_applied": 1,
+    "action_history": [
+      {
+        "tick": 0,
+        "action": {
+          "tick": 0,
+          "kind": "erase",
+          "x": 232,
+          "y": 64,
+          "width": 8,
+          "height": 192,
+          "material": 0,
+          "normalized_mass": 0,
+          "coherence": 0
+        },
+        "before_water_integer": 0,
+        "after_water_integer": 0
+      }
+    ],
+    "host_outcome": "running",
+    "budget_outcome": "admitted",
+    "scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+  },
+  "outcome": "completed",
+  "retirement": {
+    "world_released": true
+  },
+  "schema": "lcb-feel-case-receipt-v1",
+  "registration_id": "lcb.feel.preflight.v1",
+  "registration_sha256": "0dfcd81b2b1dd76226668a3c1eecef78d148b65fcd9290053f80bc9acde3344b",
+  "source_sha_argument": "95e72985c334874a131fa4e5c60195f9ce517c96",
+  "godot_version": {
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "hex": 263936,
+    "status": "stable",
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "timestamp": 0,
+    "string": "4.7-stable (official)"
+  },
+  "os": {
+    "name": "Windows",
+    "processor_count": 12,
+    "processor_name": "AMD Ryzen 5 5600X 6-Core Processor",
+    "logical_processors": 12
+  }
+}

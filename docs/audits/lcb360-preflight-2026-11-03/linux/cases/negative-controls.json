@@ -1,0 +1,156 @@
+{
+  "kind": "negative",
+  "case_id": "negative-controls",
+  "outcome": "completed",
+  "baseline_installed": true,
+  "controls": [
+    {
+      "id": "inertial-water-radius-2",
+      "expected": "refused",
+      "accepted": false,
+      "error": "Liquid solver policy refused; running world preserved: malformed_policy: inertial_cellular_v1 requires complete execution radius three",
+      "refusal": {
+        "code": "malformed_policy",
+        "material": 3,
+        "detail": "inertial_cellular_v1 requires complete execution radius three"
+      },
+      "previous_world_retained": true
+    },
+    {
+      "id": "fractional-without-normalization-cellular_yield_v1",
+      "expected": "refused",
+      "accepted": false,
+      "error": "Liquid solver policy refused; running world preserved: normalization_required: fractional Water setup requires explicit water-normalize-v1 opt-in",
+      "refusal": {
+        "code": "normalization_required",
+        "material": 3,
+        "detail": "fractional Water setup requires explicit water-normalize-v1 opt-in"
+      },
+      "previous_world_retained": true
+    },
+    {
+      "id": "fractional-without-normalization-inertial_cellular_v1",
+      "expected": "refused",
+      "accepted": false,
+      "error": "Liquid solver policy refused; running world preserved: normalization_required: fractional Water setup requires explicit water-normalize-v1 opt-in",
+      "refusal": {
+        "code": "normalization_required",
+        "material": 3,
+        "detail": "fractional Water setup requires explicit water-normalize-v1 opt-in"
+      },
+      "previous_world_retained": true
+    },
+    {
+      "id": "fractional-with-normalization-cellular_yield_v1",
+      "expected": "accepted",
+      "accepted": true,
+      "error": "",
+      "normalization": {
+        "rule": "water-normalize-v1",
+        "receipt_hash": "809328124885cf4e9b02c830fc3b82c6d926bb44eeca321f1792d79c12d7326a",
+        "payload_before_hash": "801a04a7ad23faccd38ccae34e720e87127532dc2294d24fdb0e2723f3eef2b6",
+        "payload_after_hash": "348c0b3754202adee72f34e2eef1dbea86c8da2c1153439f40d652a2be0142b1",
+        "setup_before_hash": "415c32d48c87b223003309f9a265cb4b6a5900008f4447782d16f6b1052143f1",
+        "setup_after_hash": "cac18a5c8a3174646e7089f4e988cba96894da1c2db24e430a04dd7236eedcdb",
+        "water_before": 2359296,
+        "water_after": 4700160,
+        "positive_delta": 2340864,
+        "negative_delta": 0,
+        "net_delta": 2340864,
+        "cells_up": 18432,
+        "cells_down": 0,
+        "cells_unchanged": 0
+      },
+      "requested_fill_numerator_per_cell": 128,
+      "cells": 18432,
+      "maximum": 255
+    },
+    {
+      "id": "pressure-for-material-16",
+      "expected": "refused_or_absent",
+      "offered": [
+        {
+          "variant": "reference",
+          "accepted": false,
+          "refusal": {
+            "code": "combination_rejected",
+            "material": 16,
+            "detail": "oil x pressure_flow_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pressure-for-material-24",
+      "expected": "refused_or_absent",
+      "offered": [
+        {
+          "variant": "reference",
+          "accepted": false,
+          "refusal": {
+            "code": "combination_rejected",
+            "material": 24,
+            "detail": "brine x pressure_flow_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "water-variant-catalogue",
+      "expected": "cached variants only for pressure_flow_v1",
+      "offered": [
+        {
+          "family": "freemass_v1",
+          "variant": "reference",
+          "accepted": true
+        },
+        {
+          "family": "cellular_yield_v1",
+          "variant": "reference",
+          "accepted": true
+        },
+        {
+          "family": "pressure_flow_v1",
+          "variant": "reference",
+          "accepted": true
+        },
+        {
+          "family": "pressure_flow_v1",
+          "variant": "cached",
+          "accepted": true
+        },
+        {
+          "family": "pressure_flow_v1",
+          "variant": "cached_dormant",
+          "accepted": true
+        },
+        {
+          "family": "inertial_cellular_v1",
+          "variant": "reference",
+          "accepted": true
+        }
+      ]
+    }
+  ],
+  "schema": "lcb-feel-case-receipt-v1",
+  "registration_id": "lcb.feel.preflight.v1",
+  "registration_sha256": "0dfcd81b2b1dd76226668a3c1eecef78d148b65fcd9290053f80bc9acde3344b",
+  "source_sha_argument": "95e72985c334874a131fa4e5c60195f9ce517c96",
+  "godot_version": {
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "hex": 263936,
+    "status": "stable",
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "timestamp": 0,
+    "string": "4.7-stable (official)"
+  },
+  "os": {
+    "name": "Linux",
+    "processor_count": 12,
+    "processor_name": "AMD Ryzen 5 5600X 6-Core Processor",
+    "logical_processors": 12
+  }
+}

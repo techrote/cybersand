@@ -491,7 +491,7 @@ def evaluate_negative(receipt: dict) -> list[dict]:
     return results
 
 
-def load_packet(directory: Path, registration_path: Path, development: bool = False) -> dict:
+def load_packet(directory: Path, registration_path: Path, development: bool = False, logs_external: bool = False) -> dict:
     manifest = json.loads((directory / "packet.json").read_text(encoding="utf-8"))
     if manifest.get("schema") != PACKET_SCHEMA:
         raise StopCondition(f"{directory}: wrong packet schema")
@@ -507,8 +507,14 @@ def load_packet(directory: Path, registration_path: Path, development: bool = Fa
         if execution["timed_out"] or execution["exit_code"] != 0:
             raise StopCondition(f"{directory}: {execution['case_id']} process exit {execution['exit_code']} timeout={execution['timed_out']}")
         path = directory / execution["receipt"]
-        if sha256_file(path) != execution["receipt_sha256"] or sha256_file(directory / execution["log"]) != execution["log_sha256"]:
-            raise StopCondition(f"{directory}: {execution['case_id']} raw file hash differs from manifest")
+        if sha256_file(path) != execution["receipt_sha256"]:
+            raise StopCondition(f"{directory}: {execution['case_id']} receipt hash differs from manifest")
+        log = directory / execution["log"]
+        if log.exists():
+            if sha256_file(log) != execution["log_sha256"]:
+                raise StopCondition(f"{directory}: {execution['case_id']} log hash differs from manifest")
+        elif not logs_external:
+            raise StopCondition(f"{directory}: {execution['case_id']} log missing (use --logs-external for a committed packet)")
         receipt = json.loads(path.read_text(encoding="utf-8"))
         if receipt.get("source_sha_argument") != manifest["source"]["head"]:
             raise StopCondition(f"{directory}: {execution['case_id']} executed a different source argument")
@@ -521,13 +527,14 @@ def load_packet(directory: Path, registration_path: Path, development: bool = Fa
     return {"manifest": manifest, "receipts": receipts}
 
 
-def reduce_packets(registration_path: Path, directories: list[Path], development: bool = False) -> dict:
+def reduce_packets(registration_path: Path, directories: list[Path], development: bool = False,
+                   logs_external: bool = False) -> dict:
     registration = json.loads(registration_path.read_text(encoding="utf-8"))
     scenarios = {scenario["id"]: scenario for scenario in registration["scenarios"]}
     expected_cases = expand(registration)
     platforms = {}
     for directory in directories:
-        packet = load_packet(directory, registration_path, development)
+        packet = load_packet(directory, registration_path, development, logs_external)
         label = packet["manifest"]["platform"]
         if label in platforms:
             raise StopCondition(f"duplicate platform packet {label}")
@@ -581,7 +588,7 @@ def reduce_packets(registration_path: Path, directories: list[Path], development
 def command_reduce(arguments: argparse.Namespace) -> int:
     try:
         summary = reduce_packets(ROOT / arguments.registration, [Path(path) for path in arguments.packet],
-                                 arguments.development)
+                                 arguments.development, arguments.logs_external)
     except StopCondition as error:
         print("STOP:", error, file=sys.stderr)
         return 1
@@ -612,6 +619,8 @@ def main(argv: list[str] | None = None) -> int:
     reduce.add_argument("--output", default="")
     reduce.add_argument("--development", action="store_true",
                         help="accept an uncommitted executed tree; the verdict is DEVELOPMENT_NONQUALIFYING")
+    reduce.add_argument("--logs-external", action="store_true",
+                        help="accept absent process logs (retained outside Git); receipt hashes are still verified")
     reduce.set_defaults(handler=command_reduce)
     arguments = parser.parse_args(argv)
     return arguments.handler(arguments)
