@@ -4,11 +4,55 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-03
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## LCB reassessment and bounded successors — 2026-11-03
+
+[#359's audit](../audits/2026-11-03-lcb-reassessment.md) inspects live main
+`89020b9eb6d540383a5bb64b58dcd29a87592c32` (tree
+`79de02472a653a4315149bc5e1970a512e6d74b6`), including merged stopped-session
+recovery #332. All four liquid families, application selection, shared PLAY
+construction and native worker observation already exist. This checkpoint is
+documentation only; it does not resume the original LCB implementation programme,
+merge parked PRs, select a preferred solver or change production defaults.
+
+Start successors from the audit's exact reuse map and dependency-ordered
+instructions: #360 owns fair playable comparison and actual multithreaded
+profiling, #361 owns bounded leaks/drains/material tools, #362 owns comparative
+body impacts and investigation of upward spray, #363 consumes their evidence for
+retention/profile decisions. Reconcile existing #258/#259 observation/scientific
+work before extending it. #260 is optional actor-retention work; existing PLAY
+can provide the common host. #261 retains old handover evidence, not current
+pending-CI truth. The live PR ledger confirms all four remain unmerged.
+
+Assign one integration owner for shared Main/worker/host-readback changes.
+Scenario registration and analysis can proceed independently from native
+structural/contact changes. Coordinate with active #347 before changing overlap
+ejection, occupancy masks, detachment or Rapier contacts, and with PLAY #304 and
+the PACE004 apparatus merged by #334 (apparatus-only, no LCB-relevant delta) before
+modifying pacing, recovery or diagnostics. The audit's post-audit section records
+the open GCR/material/parked-PR file-overlap register. Keep historical failures,
+configured-versus-actual worker counts and untested human/Web gates explicit.
+
+## Stopped PLAY recovery reconciliation — 2026-11-02
+
+The owner authorizes focused completion and guarded merge of
+[PR #332](https://github.com/techrote/cybersand/pull/332) after exact-source
+Native, complete Windows/Linux Godot, actual-backend shader, provenance and
+independent-review gates pass. Its original seven-file recovery delta is
+reconciled onto accepted shader/render-copy main `a8f08a67`; current reduced CI
+and production rendering remain intact. The
+[canonical recovery contract](../systems/player-control-playground.md#stopped-composed-session-recovery)
+and [dated source audit](../audits/2026-10-31-play-stopped-session-recovery.md)
+separate implementation from qualification. Consult the live PR ledger for the
+frozen candidate, merge identity and post-merge results; earlier branch greens
+are not successor evidence. Preserve downstream #334 at its existing head
+`4f3decc242633fb621d76b7529ef87b420dbd87a`; its source reconciliation and PACE004
+qualification are the next distinct assignment. Physical/human gates remain open.
 
 The 2026-11-01 [CI scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) starts from main `15b3a401`. Expected regression cost now determines grouping while unchanged watchdogs and explicit incomplete-work failure protect correctness. The [workflow audit](../audits/2026-11-01-ci-workflow-audit.md) covers all 24 workflows. The owner subsequently authorized final independent review, ready-for-review qualification, merge only after all required exact-head gates pass, and post-merge verification. [PR #340](https://github.com/techrote/cybersand/pull/340) records the final source/run identities and integration disposition; the earlier draft run alone is not merge acceptance. Main development remains paused.
 

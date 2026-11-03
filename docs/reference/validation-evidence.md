@@ -4,11 +4,38 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-03
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## LCB reassessment evidence boundary — 2026-11-03
+
+[#359's dated inventory](../audits/2026-11-03-lcb-reassessment.md#existing-evidence-inventory)
+binds inspected main `89020b9eb6d540383a5bb64b58dcd29a87592c32`, current runtime
+manifests and the original evidence sources. All four families and normal
+application paths are implemented. Current Brine IN tests explicitly require
+four actual phase task claimants; Water IN tests require more than one. #285's
+Windows/Linux worker sweep proves real participation in distributed work while
+the small ordinary course often has only one job. Configured four is not proof
+of four participants, overlap or full gameplay frame rate.
+
+The latest retained packed pressure campaign at `c97f68ec` measures complete
+native ticks on Windows, including serial pressure preparation: cached/dormant
+help the awake workload but regress some churn/fallback cases. The audit records
+the exact ratios, binary and worker counts. IN's six-byte dense slot and declared
+component sums are not host RSS. #259's separately qualified short scientific
+consumer remains unmerged and has three omitted retained bootstrap files.
+LIFE011 provides actual shared native/Rapier construction/lifecycle evidence,
+not four-family scientific or human acceptance. Historical Web functional
+success coexists with a failed visual gate; no current browser pass is claimed.
+
+The original WEX001 global-conservation success also contained floor leakage;
+current hard-boundary regressions require zero forbidden-region Water. Preserve
+both facts. This reassessment runs documentation/provenance/retrieval checks,
+not a new engine or performance campaign. Runtime results and human feel retain
+their original source/platform limits; parked PR CI is not merged qualification.
 
 ## Chunk-run render copy on current main — 2026-11-01
 

@@ -2,15 +2,53 @@
 title: LCB scenario catalogue and controlled runner
 status: Current
 document-kind: runbook
-scope: LCB-003 (#202) / LCB-000 Gate E (#213) — versioned liquid comparison scenario catalogue v1, source-derived scenario registry for the LCB UI, controlled native-only runner, regressions, negative contracts and blocked future-family arms
+scope: LCB versioned scenario catalogue, protected Current-default runner and historical campaign accounting; current-main four-family support and bounded successor comparison registration remain distinct from retained results
 canonical-for: [lcb-scenario-catalogue]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-03
 related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-ux.md, ../architecture/liquid-solver-family-policy.md, microscenarios.md, ../audits/2026-10-23-lcb003-scenario-qualification.md]
 ---
 
 # LCB scenario catalogue and controlled runner
 
+## Current-main reuse and fair comparison — 2026-11-03
+
+All four native solver families are implemented at inspected main
+`89020b9eb6d540383a5bb64b58dcd29a87592c32`, with normal application selection.
+That does not reclassify this catalogue's117 historical campaign arms or extend
+the accepted27-scenario default-law tick30 prefix. The existing
+[`lcb_scenario_runner.gd`](../../godot/tests/lcb_scenario_runner.gd) still binds
+the protected default policy and hashes; it is not a ready-made arbitrary-family
+runner. Reuse its fixture parsing, scheduling and failure discipline, with a
+separately registered opt-in comparison mode. Keep the protected definitions,
+historical receipts and classifications unchanged.
+
+The [#359 scenario handover](../audits/2026-11-03-lcb-reassessment.md#seven-scenarios-and-reusable-infrastructure)
+maps leaks, bottom drains, deep releases, pipes, quiet pools, material usables and
+Rapier impacts to existing LCB/Water Feel/MicroScenario/WEX fixtures. Only a
+precisely registered puncture/drain recipe is missing; `cavity-fill-drain` is not
+already a bottom-puncture fixture. Reconcile parked #259's Godot-prepared CYPS and
+full-resident native census rather than rebuilding scientific accounting.
+
+Fair comparisons use separate Water Worlds, shared seed/geometry/precision/action
+schedule and explicit initial inventory. A matched-radius lane sets radius3 for
+all four; a separate preferred-configuration lane keeps radius2 for FM/CY/PF and3
+for IN. Never change the protected radius2 control. Whole-cell CY/IN initial
+normalization is an explicit recorded source/sink; it cannot legalize later
+fractional `drips`, `trickle` or `thin-stream` emissions. PF quantities include
+hidden overfill and optional gas state. Its cached/dormant implementation cost
+belongs in a separate comparison against PF reference, not as extra physics.
+
+Assess exact quantity/hard-boundary correctness, actual jobs/participants and
+complete tick/host cost, and qualitative feel as separate dimensions. Existing
+tools execute native work; missing collection/export or untested graphical
+acceptance must not be described as missing solver implementation. No new
+campaign or preferred solver is accepted by this documentation checkpoint.
+
 ## Status
+
+The following admission/campaign account retains the original2026-10-23–25
+scope. Its then-blocked native-family prerequisites have since landed; their
+retained campaign arms still need separately qualified successor execution.
 
 **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is outside this accepted main checkpoint. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
@@ -181,7 +219,7 @@ UI rules (to be enforced by #202):
 | `W-FM` / `C0` | Current defaults | **measured** on Current |
 | `W-CY` | Water `cellular_yield_v1/reference` | campaign arm unmeasured; native/explicit-constructor admission accepted on main in #246 with Windows/Linux publication and required matrix; registry host campaign integration remains pending |
 | `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | retained registry campaign unmeasured. All three variants are accepted on main through #253, with source-matched publication and exact-head gates. This does not reclassify the retained registry campaign |
-| `W-IN` | Water `inertial_cellular_v1/reference` | retained campaign blocked: #200, #212. Isolated sourceaa8af247 and Windows/Linux scoped publication execute Water IN; final ready-PR/common-Water campaign qualification remain separate |
+| `W-IN` | Water `inertial_cellular_v1/reference` | retained campaign remains unmeasured/blocked; native Water IN is accepted on main through #254 with explicit radius3 and source-bound Windows/Linux evidence; common-Water campaign qualification remains separate |
 | `BRINE-IN` | Brine `inertial_cellular_v1/reference` | retained campaign unmeasured/blocked; Brine IN is accepted on main through #250 after corrected source-matched publication and full exact-head gates; retained campaign qualification remains open |
 | `M1` | Water FreeMass + Oil CellularYield + Brine Inertial | retained campaign unmeasured/blocked; local #212 mixed controls exist, with fresh combined-source and registry campaign qualification separate |
 | `M2` | pressure Water + Oil + inertial Brine | blocked: #200, #201, #212 |
@@ -200,11 +238,11 @@ distinct families.
 
 | PR #215 NC | Coverage on current source |
 |---|---|
-| NC-1, NC-2, NC-10 | **Executed by the #200 foundation** in [`test_liquid_solver_policy.gd`](../../godot/tests/test_liquid_solver_policy.gd) through the MicroScenario host: Oil × inertial `combination_rejected`, pressure/inertial `family_unavailable` with the live session intact, and CYSD1 import on default families. Accepted #246 main admits pressure reference; #201 admits all three Water PF variants, so its transactional negatives use unsupported Oil/PF mappings and inertial. Retained registry campaign statuses are not retroactively promoted. A definition carrying a `solver_family` field is still refused as an unknown root field. |
-| NC-3 | Native preparation and explicit Godot policy-constructor regressions exercise `normalization_required` on accepted #246 native/explicit-constructor source, preserving the live session. The retained registry/negative-contract record remains blocked pending #202 consumption; Godot explicit normalization opt-in is still absent. |
-| NC-4 | Current #201 branch executes certificate/revocation and exact body/material/authority tests. This separate local proof does not promote the retained registry NC-4 arm or final platform acceptance |
+| NC-1, NC-2, NC-10 | Current [`test_liquid_solver_policy.gd`](../../godot/tests/test_liquid_solver_policy.gd) preserves installed sessions on unsupported Oil/IN or Oil/PF `combination_rejected` and IN cached `variant_unsupported`; supported Water/Brine IN and PF variants are admitted. Historical `family_unavailable` controls retain their original source. CYSD1 default import and unknown-root `solver_family` refusal remain separate contracts. Retained registry statuses are not retroactively promoted. |
+| NC-3 | Native preparation and explicit Godot policy-constructor regressions exercise `normalization_required`, preserving the live session. Current panel/prepared constructors supply explicit initial normalization; future fractional sources still refuse. The retained registry/negative-contract record still needs separately qualified consumption. |
+| NC-4 | Merged #253 executes certificate/revocation and body/material/authority tests. Its source/platform evidence does not promote the retained registry NC-4 arm |
 | NC-5 | **Blocked (#212)** under M1. The Current equivalent is measured (`salt-dissolution`, mixed M0). |
-| NC-6 | **Blocked (#200/#212)** across families. Current same-family density exchange is measured (lock exchanges, inverted column, Mercury drop). Physical hash/CYPS2 exist on accepted #246 main; inertial-family qualification remains #212. |
+| NC-6 | Retained cross-family campaign remains blocked/unmeasured. Native/Godot mixed-family controls and hash/CYPS2 (non-IN) or3 (IN) now exist; those controls do not change this registry's campaign status. |
 | NC-7 | **Executed:** campaign 1/4-worker parity plus regression tick-30 parity |
 | NC-8, NC-9 | **Blocked (#202):** presentation/exploratory flags live in the UI. Partial cover: the native-only runner refuses player-enabled definitions. |
 
