@@ -172,14 +172,24 @@ class _Windows:
         if identity is None or identity["creation_time"] != row["creation_time"]:
             return False
         state = self.kernel.WaitForSingleObject(self.handles[row["pid"]], 0)
+        if state == 0xFFFFFFFF:  # WAIT_FAILED; preserve error before another API.
+            error = C.get_last_error()
+            raise CustodyError(
+                f"Cannot observe process {row['pid']} retirement: WAIT_FAILED, error={error}")
         if state not in (0, 258):
             raise CustodyError(f"Cannot observe process {row['pid']} retirement: {state}")
         return state == 258
 
     def terminate(self, row):
-        if self.alive(row) and not self.kernel.TerminateProcess(self.handles[row["pid"]], 1):
-            if self.alive(row):
-                raise CustodyError(f"Cannot terminate owned process {row['pid']}: {C.get_last_error()}")
+        # Request once on the retained creation-bound handle. TerminateProcess
+        # is asynchronous; ERROR_ACCESS_DENIED can also mean already exited.
+        # Neither success nor refusal establishes retirement: stop_remaining
+        # must observe that same handle signaled within its existing deadline.
+        if self.alive(row):
+            if not self.kernel.TerminateProcess(self.handles[row["pid"]], 1):
+                error = C.get_last_error()  # Before GetProcessTimes/Wait/Close.
+                return error
+        return None
 
     def reap(self, row, launcher_pid):
         pass
@@ -203,6 +213,7 @@ class ProcessCustody:
         self.launcher_pid = None
         self._observed = {}
         self.observation_errors = []
+        self.cleanup_termination_errors = {}
         self._closed = False
         try:
             table = self.backend.table()
@@ -333,12 +344,22 @@ class ProcessCustody:
                 if observation_error is not None:
                     raise observation_error
                 return attempted
-            for key, row in live.items():
-                self.backend.terminate(row)
-                attempted[key] = row
             if time.monotonic() >= deadline:
-                raise CustodyError("Owned processes remain after bounded failure cleanup")
-            time.sleep(0.01)
+                raise CustodyError(
+                    "Owned processes remain after bounded failure cleanup; "
+                    f"termination_errors={self.cleanup_termination_errors}")
+            for key, row in live.items():
+                if key not in attempted:
+                    attempted[key] = row
+                    error = self.backend.terminate(row)
+                    if error is not None:
+                        self.cleanup_termination_errors[key] = {
+                            "creation_time": row["creation_time"], "error": error}
+            # Do not extend a deadline or repeatedly terminate a retiring object.
+            # The next iteration performs the final same-handle observation.
+            remaining_seconds = deadline - time.monotonic()
+            if remaining_seconds > 0:
+                time.sleep(min(0.01, remaining_seconds))
 
     def close(self):
         if not self._closed:

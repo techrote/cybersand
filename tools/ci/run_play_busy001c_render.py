@@ -199,23 +199,30 @@ def main() -> int:
             receipt["forced_cleanup"] = True
             diagnostics.stop_process_tree(child)
         if custody is not None:
+            cleanup_attempted = False
             try:
                 remaining = custody.remaining()
                 if remaining:
                     receipt["surviving_processes"] = remaining
                     receipt["forced_cleanup"] = True
+                    cleanup_attempted = True
                     custody.stop_remaining()
                 receipt["cleanup_complete"] = child is not None and child.poll() is not None and not custody.remaining()
                 receipt["observed_processes"] = custody.observed_processes
             except Exception as caught:
                 receipt["cleanup_complete"] = False
                 error = error or f"cleanup: {type(caught).__name__}: {caught}"
-                try:
-                    receipt["forced_cleanup"] = True
-                    custody.stop_remaining()
-                except Exception as cleanup_error:
-                    receipt["cleanup_error"] = f"{type(cleanup_error).__name__}: {cleanup_error}"
+                # An observation failure may still need its one bounded cleanup.
+                # A failed cleanup must not restart the three-second allowance.
+                if not cleanup_attempted:
+                    try:
+                        receipt["forced_cleanup"] = True
+                        cleanup_attempted = True
+                        custody.stop_remaining()
+                    except Exception as cleanup_error:
+                        receipt["cleanup_error"] = f"{type(cleanup_error).__name__}: {cleanup_error}"
             finally:
+                receipt["cleanup_termination_errors"] = dict(custody.cleanup_termination_errors)
                 receipt["observation_errors"] = list(custody.observation_errors)
                 if custody.observation_errors:
                     error = error or "process custody observation failed: " + "; ".join(custody.observation_errors)
