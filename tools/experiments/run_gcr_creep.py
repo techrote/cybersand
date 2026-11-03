@@ -116,10 +116,10 @@ def reusable_gates(folder, platform, inputs, runtime):
         host = row.get('test')
         if host not in HOSTS or host == 'test_gcr_creep_capture' or row.get('ok') is not True:
             continue
-        log = folder / platform / (host + '.log')
+        log = Path(row.get('inherited_from', folder / platform / (host + '.log')))
         if row.get('exit') != 0 or sha(log) != row['log_sha256']:
             raise RuntimeError('Retained gate bytes/exit changed')
-        result[host] = dict(row, inherited_from=str(log), executed_source=identity['source'],
+        result[host] = dict(row, inherited_from=str(log), executed_source=row.get('executed_source', identity['source']),
                             reuse_scope='All production, retained test and configuration inputs identical; changed new capture/unit apparatus not dependencies')
     return result
 

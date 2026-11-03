@@ -105,3 +105,33 @@ The deliverable is a reduced reproduction, compact machine summary, selected
 traces and hashed raw evidence, followed by the smallest justified next causal
 experiment. Keep the barrel feel and actual structural mass as retained controls.
 Gameplay acceptance and the remaining REM-004 envelope stay separate.
+
+## Apparatus continuation registered before attempt04
+
+The original protocol remains byte-identical. Attempt01 stopped in a retained
+control because the isolated project needed an explicit legacy protocol path.
+Attempt02 passed all nine Windows host controls, then refused the new protocol
+before physics: JSON numeric arrays compared unequal to source integer arrays.
+The repair accepts numerically exact integer coordinates and retains refusal of
+fractional geometry; floating metadata has only an absolute1e-12 parse tolerance.
+
+Attempt03 completed the six Windows barrel cases, then the first flyer refused
+at step0 with no trajectory rows. Its setup called `bridge.reset_body` after
+the arena's initial native prime, creating a new bridge session while native
+retained the old session. The session mismatch guard is correct and unchanged.
+All six barrel results and the failed flyer remain original partial evidence.
+
+Before attempt04, register a setup-only repair: retire the preconfigured pose
+through an acknowledged empty native preparation; author the initial transform
+once using the existing main-thread Rapier API without resetting bridge history;
+prime the registered geometry without resolving overlap. Require the same bridge
+session, unchanged native tick/material/Water quantities and no invented swept
+geometry. This is initialization, never a per-frame transform assignment.
+
+The complete successor is the same32-case two-platform population. Combined with
+the retained six completed attempt03 cases, this permits38 actual full-length
+captures across the original partial attempt and complete successor. Nothing is
+tuned from the six barrel outcomes, and no failed/partial attempt is relabelled
+as a passing complete campaign. Authenticate unchanged retained control inputs
+and original logs before reuse; always execute import and the changed apparatus
+test. Record the original executed source for inherited controls explicitly.

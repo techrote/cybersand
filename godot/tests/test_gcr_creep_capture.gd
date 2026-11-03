@@ -24,6 +24,41 @@ func check(condition: bool, reason: String) -> void:
 		failures+=1
 		push_error("GCR creep apparatus: "+reason)
 
+func check_actual_initial_authoring() -> void:
+	var arena = Capture.Arena.new()
+	root.add_child(arena)
+	await process_frame
+	var configuration: Dictionary = {"version":Capture.Arena.VERSION,"seed":0,"max_ticks":2,"local_patch_radius":0,
+		"course":"manoeuvre","actors":[{"model":"arcadelander","producer":"human","position":Capture.FLYER_POSITION}]}
+	var controls: Dictionary = {"response":"LA","budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,"thrust_multiplier":1.0,"torque_multiplier":1.0}
+	var configured: bool = arena.configure_review_fleet(configuration,"GCR-REST","GCR-REST-001-2026-11-02",2,controls)
+	check(configured,"actual default LA Kestrel constructs and primes")
+	if not configured:
+		arena.free()
+		return
+	var body: RigidBody2D = arena.session.bodies()[0]
+	var mass_before: float = body.mass
+	var inertia_before: float = body.inertia
+	var receipt: Dictionary = Capture.author_flyer_initial_pose(arena)
+	check(receipt.get("accepted",false),"initial authoring retires and re-primes through existing owner API")
+	check(receipt.get("retired_ack",false) and receipt.get("primed_ack",false),"both native preparation acknowledgements succeed")
+	check(receipt.get("session_before",-1)==receipt.get("session_after",-2),"fixture authoring preserves exact bridge session")
+	check(int(receipt.get("sample_after",-1))==int(receipt.get("sample_before",-3))+1,"authored sample advances existing serial once")
+	check(receipt.get("native_tick_before",-1)==receipt.get("native_tick_after",-2) and int(receipt.get("native_tick_after",-1))==0,"initial authoring executes zero native ticks")
+	check(receipt.get("counts_unchanged",false) and receipt.get("water_unchanged",false),"initial authoring preserves every material count and Water quantity")
+	check(receipt.get("mask_after_retire",[])==[0,0,0],"old occupancy fully retires before final pose authoring")
+	check(receipt.get("mask_after_prime",[])==[1,0,1],"registered rotated occupancy replaces old orientation without swept residue")
+	check(body.mass==mass_before and body.inertia==inertia_before,"initial authoring preserves actual mass and inertia")
+	var action: Dictionary = {"move":Vector2.ZERO,"aim":Vector2.RIGHT,"effort":.7,"trim":0.0,"primary":false,"secondary":false,"auxiliary":false}
+	var view: Dictionary = arena.observation(0)
+	check(arena.submit(arena.session.make_command(view,int(view.last_sequence)+1,action),&"human"),"actual neutral command admitted after authoring")
+	var snapshot: Dictionary = arena.step()
+	check(not snapshot.get("failed",true),"first actual synchronous frame succeeds after authoring")
+	check(arena.session.bridge.gcr_application_diagnostics().get("accepted",false),"first fresh native response is accepted without weakening session guards")
+	arena.close()
+	arena.free()
+	await process_frame
+
 func _run() -> void:
 	for mode: String in ["passive","coast","unactuated","pulse","sustained"]:
 		var spec: Dictionary = {"drive":mode}
@@ -72,5 +107,6 @@ func _run() -> void:
 	var copied: Dictionary = Capture.portable({"v":Vector2(1,2),"unknown":null,"contact_bins":[{"large":true}],"nested":{"cells":PackedByteArray([1]),"count":4}})
 	check(copied.v==[1.0,2.0] and copied.unknown==null,"portable values preserve coordinates and explicit unknowns")
 	check(not copied.has("contact_bins") and not copied.nested.has("cells") and copied.nested.count==4,"raw arrays omitted without discarding scalar evidence")
+	await check_actual_initial_authoring()
 	print("GCR_CREEP_APPARATUS ",JSON.stringify({"checks":checks,"failures":failures,"scope":"capture boundaries, conservation and rotated readback only; no physical efficacy"}))
 	quit(0 if failures==0 else 1)

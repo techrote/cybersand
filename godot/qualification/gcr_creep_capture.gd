@@ -103,6 +103,53 @@ static func flyer_census(world: Object) -> Dictionary:
 	census["domain"]=[ROOM.position.x,ROOM.position.y,ROOM.size.x,ROOM.size.y]
 	return census
 
+static func author_flyer_initial_pose(arena) -> Dictionary:
+	# configure_review_fleet already primes a native sample. reset_body would
+	# create a different bridge session, which the primed native owner correctly
+	# refuses. Initial authoring instead retires that sample's occupancy, keeps
+	# its session/serial history, and primes the final pose with resolve=false.
+	# The empty preparation also retires the old previous geometry so setup
+	# cannot manufacture a swept path between two authored orientations.
+	var result: Dictionary = {"accepted":false,"phase":"initial authoring before baseline or physics",
+		"retired_ack":false,"primed_ack":false}
+	if arena==null or arena.session==null or arena.session.bodies().size()!=1:
+		result["error"]="fixture requires its one configured flyer"
+		return result
+	var world: Object = arena._world
+	var bridge: CyberRapierPhysicsBridge = arena.session.bridge
+	var body: RigidBody2D = arena.session.bodies()[0]
+	var before: Dictionary = flyer_census(world)
+	result["session_before"]=bridge._gcr_session_id
+	result["sample_before"]=bridge._sample_serial
+	result["native_tick_before"]=int(world.get_tick_index())
+	result["retired_ack"]=bool(world.prepare_gcr_coupling(PackedFloat64Array(),false))
+	result["mask_after_retire"]=[world.rigid_body_id_at(296,312),world.rigid_body_id_at(299,312),world.rigid_body_id_at(296,315)]
+	if not result.retired_ack:
+		result["error"]="initial occupancy retirement refused"
+		return result
+	PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM,Transform2D(FLYER_ANGLE,FLYER_POSITION))
+	bridge.refresh_all_states()
+	var states: PackedFloat64Array = bridge.pack_gcr_body_states()
+	if states.size()!=17:
+		result["error"]="initial authored sample packing refused"
+		return result
+	result["primed_ack"]=bool(world.prepare_gcr_coupling(states,false))
+	result["session_after"]=bridge._gcr_session_id
+	result["sample_after"]=bridge._sample_serial
+	result["packed_session"]=states[16]
+	result["packed_sample"]=states[10]
+	result["native_tick_after"]=int(world.get_tick_index())
+	result["mask_after_prime"]=[world.rigid_body_id_at(296,312),world.rigid_body_id_at(299,312),world.rigid_body_id_at(296,315)]
+	var after: Dictionary = flyer_census(world)
+	result["counts_unchanged"]=before.counts==after.counts
+	result["water_before"]=before.water_mass
+	result["water_after"]=after.water_mass
+	result["water_unchanged"]=int(before.water_mass)==int(after.water_mass)
+	result["accepted"]=result.primed_ack and result.session_before==result.session_after and float(result.packed_session)==float(result.session_before) and int(result.sample_after)==int(result.sample_before)+1 and int(result.packed_sample)==int(result.sample_after) and result.native_tick_before==result.native_tick_after and result.counts_unchanged and result.water_unchanged and result.mask_after_retire==[0,0,0] and result.mask_after_prime==[1,0,1]
+	if not result.accepted:
+		result["error"]="initial authoring ownership, mask or conservation witness refused"
+	return result
+
 static func hard_contacts(body: RigidBody2D) -> int:
 	var direct: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(body.get_rid())
 	if direct==null:
@@ -283,8 +330,12 @@ func capture_flyer(spec: Dictionary, report: Dictionary) -> void:
 			arena.free()
 			return
 	var body: RigidBody2D = arena.session.bodies()[0]
-	arena.session.bridge.reset_body(0,FLYER_POSITION,FLYER_ANGLE)
-	arena.session.bridge.refresh_all_states()
+	report["initial_authoring"]=author_flyer_initial_pose(arena)
+	if not report.initial_authoring.get("accepted",false):
+		errors.append("flyer initial authoring: "+str(report.initial_authoring.get("error","")))
+		arena.close()
+		arena.free()
+		return
 	# Terrain authoring uses the arena's existing revision consumer on its next
 	# normal step; setup changes no production scheduling or response path.
 	report.configuration={"controls":controls,"fleet_index":2,"fleet_name":Fleet.NAMES[2],
