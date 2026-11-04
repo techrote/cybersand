@@ -6,10 +6,35 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-04
 ---
 
 # Interfaces and message contracts
+
+## SOL public boundary results — 2026-11-04
+
+The [isolated facade repair](../systems/solid-detachment.md#public-refusal-and-authoritative-readback--2026-11-04)
+adds explicit results without changing existing method signatures. Qualification
+and integration status are in its [dated ledger](../audits/2026-11-04-sol-facade-refusal-repair.md).
+
+| Public surface | Current repair-branch contract |
+|---|---|
+| `get_physical_state_hash_result()` / `get_liquid_comparison_hash_result(id)` | Dictionary schema `cybersand.public-boundary.v1`; `ok`, `operation`, `code`, actual operation-time SOL `phase`, `diagnostic`; only success contains sixteen-hex-digit `value` |
+| Legacy hash String getters | Exact successful hashes retained; refusal returns empty invalid-length String and observable last result; never compare two refusals as identities |
+| `get_last_boundary_result()` | Independent copied status for hash, window, adhesion, coupling and diagnostic-fill entry points; explicit `native_refusal`, `invalid_argument`, `world_unavailable` or `world_failed` where applicable; success `available`, `applied` or `unchanged` |
+| `get_simulation_window_state()` | Copied `available`, `enabled`, `view_origin`, `view_size`, buffers, `native_region`, `selected_cores`, `applied_cores`; packed int64 region is x/y/width/height, core ranges are min-x/min-y/max-x/max-y; empty arrays mean no region/range |
+| `get_liquid_surface_adhesion_result()` | Applied native boolean under `value` on success; no value when authority is unavailable; legacy getter reads native state |
+
+The status phase is `-1` when World is unavailable, otherwise native enum values
+Disabled0, Idle1, Prepared2, Acknowledged3, Committed4, Restored5, Active6,
+Quarantined7. Native fences remain authoritative. These values require the same
+exclusive owner as the adapter; they provide no new cross-thread access.
+Reset helper routes keep their existing exception handlers. Generic later
+exceptions are not claimed to roll back arbitrary earlier work.
+In particular, coupling's native occupancy refusal after CYPS import may follow
+retirement of frame observations/body samples; the refusal does not restore
+unavailable transient-mask storage or establish full source/import hash parity.
+The staged simulation-window rejection remains nonmutating.
 
 ## Structural detachment value interface — 2026-11-01
 

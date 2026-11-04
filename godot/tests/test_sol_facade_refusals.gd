@@ -285,26 +285,50 @@ func _cyps_adhesion(world: Object, expected: bool, label: String) -> Dictionary:
 		label + ": both public gets agree with independently reimported authority")
 	var saved_again: PackedByteArray = bridge.export_physical_state(other)
 	check(saved_again == saved, label + ": independently reimported native CYPS reexports byte-exact")
-	# CYPS intentionally omits transient body masks. The adhesion/reexport witness
-	# above is native-import-only; full identity below also needs the same explicit
-	# ordinary mask publication. Never clear the source mask to manufacture parity.
-	var transient_mask_republished: bool = int(world.rigid_body_id_at(1000,1000)) == 64
-	if transient_mask_republished:
-		check(int(other.rigid_body_id_at(1000,1000)) == 0,
-			label + ": CYPS import does not pretend to persist transient masks")
-		other.prepare_rigid_body_coupling(PackedFloat32Array(MARKER), false)
-		check(int(other.rigid_body_id_at(1000,1000)) == 64,
-			label + ": independently republish known transient marker")
 	var actual_hash: Dictionary = world.get_physical_state_hash_result()
 	var imported_hash: Dictionary = other.get_physical_state_hash_result()
 	check(bool(actual_hash.get("ok", false)) and bool(imported_hash.get("ok", false))
-		and _hex16(str(actual_hash.get("value", ""))) and actual_hash.value == imported_hash.value,
-		label + ": full physical identity agrees after native import and explicit transient-mask parity")
+		and _hex16(str(actual_hash.get("value", ""))) and _hex16(str(imported_hash.get("value", ""))),
+		label + ": independent owners expose available native physical hashes")
+	# CYPS intentionally omits host masks and restores no transient mask domain.
+	# The native adhesion/reexport witness above remains valid. A body publication
+	# into this imported owner must refuse when native occupancy rejects it; it
+	# must not claim success or alter the persisted authority. Never clear the
+	# original owner's mask to manufacture full-identity equality.
+	var source_mask_retained: bool = int(world.rigid_body_id_at(1000,1000)) == 64
+	var imported_publication_refusals: Array[Dictionary] = []
+	var full_hash_parity: String = "EXACT"
+	if source_mask_retained:
+		full_hash_parity = "NOT_APPLICABLE: source retains a host mask omitted by CYPS; imported mask domain is unavailable"
+		check(int(other.rigid_body_id_at(1000,1000)) == 0,
+			label + ": CYPS import does not pretend to persist transient masks")
+		var imported_revision: int = int(other.get_revision())
+		for repeat: int in range(2):
+			other.prepare_rigid_body_coupling(PackedFloat32Array(MARKER), false)
+			var result: Dictionary = other.get_last_boundary_result()
+			_status(result, false, "prepare_rigid_body_coupling", 0, label + "/imported mask refusal")
+			check(str(result.get("code", "")) == "native_refusal",
+				label + ": unavailable native occupancy cannot acknowledge applied body state")
+			imported_publication_refusals.append(result.duplicate(true))
+			check(int(other.rigid_body_id_at(1000,1000)) == 0 and int(world.rigid_body_id_at(1000,1000)) == 64,
+				label + ": refused imported mask preserves both owners' native occupancy")
+			var after: Dictionary = other.get_physical_state_hash_result()
+			check(bool(after.get("ok", false)) and after.get("value") == imported_hash.get("value")
+				and int(other.get_revision()) == imported_revision,
+				label + ": repeated imported mask refusal changes no native physical identity or revision")
+			check(bridge.export_physical_state(other) == saved,
+				label + ": repeated imported mask refusal preserves exact native CYPS authority")
+			check(bool(other.get_liquid_surface_adhesion_enabled()) == expected,
+				label + ": imported native adhesion remains authoritative after refusal")
+	else:
+		check(actual_hash.get("value") == imported_hash.get("value"),
+			label + ": full physical identity agrees when the source has no nonpersisted mask")
 	var h := HashingContext.new()
 	h.start(HashingContext.HASH_SHA256)
 	h.update(saved)
 	return {"bytes":saved.size(), "sha256":h.finish().hex_encode(), "native_adhesion":authority.value,
-		"transient_mask_republished":transient_mask_republished,
+		"source_transient_mask_retained":source_mask_retained, "full_hash_parity":full_hash_parity,
+		"imported_publication_refusals":imported_publication_refusals,
 		"source_hash":actual_hash.get("value", ""), "imported_hash":imported_hash.get("value", "")}
 
 func _adhesion(world: Object, phase: int, label: String) -> Dictionary:
@@ -419,7 +443,23 @@ func _reset_and_masked_fill() -> void:
 		"subsequent demo reset cannot resurrect stale false cache")
 	var default_witness: Dictionary = _cyps_adhesion(world, true, "reset native authority")
 	check(bool(world.diagnostic_reset({"workers":workers, "telemetry":false})), "isolated masked-fill owner")
+	# Native first-body occupancy is valid arbitration, not refusal. Both records
+	# request the same cell; the lower body id is rasterized first by the facade.
+	world.prepare_rigid_body_coupling(PackedFloat32Array([
+		63,1000.5,1000.5,0,1,1,0,0,0,1,7,
+		64,1000.5,1000.5,0,1,1,0,0,0,1,7]), false)
+	_status(world.get_last_boundary_result(), true, "prepare_rigid_body_coupling", 0, "occupied native mask arbitration")
+	check(int(world.rigid_body_id_at(1000,1000)) == 63,
+		"overlapping valid bodies retain the existing first-body native occupancy")
+	world.prepare_rigid_body_coupling(PackedFloat32Array([
+		64,-1000.5,-1000.5,0,1,1,0,0,0,1,7]), false)
+	_status(world.get_last_boundary_result(), true, "prepare_rigid_body_coupling", 0, "outside body")
+	check(int(world.rigid_body_id_at(1000,1000)) == 0 and int(world.rigid_body_id_at(0,0)) == 0
+		and not bool(world.has_failed()),
+		"body with no in-domain raster cells remains a valid empty publication")
 	world.prepare_rigid_body_coupling(PackedFloat32Array(MARKER), false)
+	_status(world.get_last_boundary_result(), true, "prepare_rigid_body_coupling", 0, "ordinary marker after positive controls")
+	check(int(world.rigid_body_id_at(1000,1000)) == 64, "ordinary configured owner still publishes its native marker")
 	var before: Dictionary = _witness(world)
 	for repeat: int in range(2):
 		check(not bool(world.diagnostic_fill_rect(Vector2i(999,1000), Vector2i(2,1), 2)),
@@ -476,7 +516,7 @@ func _extreme_window() -> void:
 	world.set_simulation_window_enabled(false)
 	_status(world.get_last_boundary_result(), true, "set_simulation_window_enabled", 1, "disable after cancel")
 	actual = world.get_simulation_window_state()
-	check(not bool(actual.get("enabled", true)) and actual.get("native_region") == PackedInt64Array(),
+	check(not bool(actual.get("enabled", true)) and actual.get("native_region") == PackedInt64Array([0,0,1024,1024]),
 		"successful cancellation permits the same previously refused disable command")
 	world.set_simulation_window_enabled(true)
 	world.set_simulation_window(Vector2i(10,20), Vector2i(30,40), -1, -MAX_BUFFER)

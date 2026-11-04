@@ -1,0 +1,269 @@
+name: SOL facade refusal dependent-branch qualification
+
+on:
+  push:
+    branches: [fix/sol347-facade-refusal-20261104-095628]
+    paths:
+      - native/**
+      - godot/native_extension/**
+      - godot/tests/test_sol_facade_refusals.gd
+      - tools/sol281/qualify_facade_refusal.py
+      - tools/sol281/qualify_facade_msvc.py
+      - tools/sol281/probes/mat_sol_godot_boundary_probe.gd
+      - tools/build_native_extension_windows.sh
+      - tools/build_pinned_godot_cpp.sh
+      - tools/requirements-build.txt
+      - tools/ci/execution_policy.py
+      - godot/tests/support/ci_execution_policy.json
+      - third_party/**
+      - .github/workflows/sol-facade-refusal.yml
+  workflow_dispatch:
+
+# This campaign can only read source and retain artifacts. It has no publisher,
+# branch-composition step or permission to modify the owning SOL branch.
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sol-facade-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
+
+env:
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+
+jobs:
+  windows-build:
+    name: pinned Windows DLL cross-build
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/fix/sol347-facade-refusal-20261104-095628'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      SCONS_JOBS: '2'
+    steps:
+      - name: Check out the exact dependent source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Authenticate source and set private dependency paths
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          printf 'GODOT_CPP_ROOT=%s/facade-godot-cpp\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'SCONS_PYTHON=%s/facade-scons/bin/python\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'LLVM_MINGW_ROOT=%s/facade-llvm-mingw\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          printf 'WINDOWS_CXX=%s/facade-llvm-mingw/bin/x86_64-w64-mingw32-g++\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, sys
+          root = pathlib.Path.cwd()
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'facade-setup'
+          output.mkdir()
+          workflow = root / '.github/workflows/sol-facade-refusal.yml'
+          data = workflow.read_bytes()
+          assert data == subprocess.check_output(['git', 'show', 'HEAD:.github/workflows/sol-facade-refusal.yml'])
+          receipt = {'source_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'source_parents': subprocess.check_output(['git', 'show', '-s', '--format=%P', 'HEAD'], text=True).strip().split(),
+              'workflow_sha256': hashlib.sha256(data).hexdigest(), 'python': sys.version,
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT']}
+          (output / 'source.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          PY
+      - name: Prepare immutable bindings and cross compiler
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key dependency_prepare_seconds --label facade-dependencies --output-dir "$RUNNER_TEMP/facade-setup/dependencies" -- bash -euc '
+            python3 -m venv "$RUNNER_TEMP/facade-scons"
+            "$SCONS_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt
+            "$SCONS_PYTHON" -c "import SCons; assert SCons.__version__ == \"4.10.1\""
+            mkdir "$GODOT_CPP_ROOT"
+            git -C "$GODOT_CPP_ROOT" init
+            git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+            git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+            git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+            test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+            curl --fail --location --retry 3 "$LLVM_MINGW_URL" -o "$RUNNER_TEMP/facade-llvm-mingw.tar.xz"
+            printf "%s  %s\n" "$LLVM_MINGW_SHA256" "$RUNNER_TEMP/facade-llvm-mingw.tar.xz" | sha256sum --check --strict
+            mkdir "$LLVM_MINGW_ROOT"
+            tar -xf "$RUNNER_TEMP/facade-llvm-mingw.tar.xz" -C "$LLVM_MINGW_ROOT" --strip-components=1
+            if [ ! -e "$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-gcc-ar" ]; then
+              ln -s llvm-ar "$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-gcc-ar"
+            fi
+          '
+      - name: Build pinned Windows bindings
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label facade-bindings --output-dir "$RUNNER_TEMP/facade-setup/bindings" -- tools/build_pinned_godot_cpp.sh windows
+      - name: Build and authenticate this exact source DLL
+        run: |
+          python3 tools/sol281/qualify_facade_refusal.py build --source "$GITHUB_WORKSPACE" --commit "$GITHUB_SHA" --target windows --godot-cpp "$GODOT_CPP_ROOT" --compiler "$WINDOWS_CXX" --output "$RUNNER_TEMP/facade-build"
+      - name: Retain source, compiler, dependency and runtime receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: facade-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/facade-build/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Retain setup and binding-build evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: facade-windows-build-setup-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/facade-setup/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-boundary:
+    name: actual Windows facade (${{ matrix.arm }})
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/fix/sol347-facade-refusal-20261104-095628'
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        arm: [original, status, extended]
+    defaults:
+      run:
+        shell: bash
+    env:
+      FACADE_ARM: ${{ matrix.arm }}
+    steps:
+      - name: Preserve canonical source bytes on Windows
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out the exact host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retrieve the same-run authenticated DLL and build receipt
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: facade-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/facade-runtime
+      - name: Prepare exact dossier and official Windows Godot
+        run: |
+          python - <<'PY'
+          import ast, hashlib, json, os, pathlib, subprocess, sys, zipfile
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          sys.path.insert(0, str(root / 'tools/sol281'))
+          import qualify_facade_refusal as facade
+          source = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+          assert source == os.environ['GITHUB_SHA']
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'facade-setup'
+          output.mkdir()
+          policy = facade.execution_policy(root)
+          def checked(label, command):
+              directory = output / label
+              directory.mkdir()
+              result = facade.run_command(command, cwd=root, env=os.environ.copy(),
+                  timeout=policy.watchdog_seconds('dependency_prepare_seconds'),
+                  grace=policy.watchdog_seconds('terminate_grace_seconds'), out=directory)
+              assert result['exit_code'] == 0 and not result['timed_out'], label + ' failed'
+          support = 'b661a6f354f8c51e79759d22ad4573a875964b43'
+          checked('support-fetch', ['git', 'fetch', '--no-tags', '--depth=1', 'origin', support])
+          data = subprocess.check_output(['git', 'show', support + ':docs/audits/mat-sol-20261104/godot-boundary-matrix.json'], cwd=root)
+          assert facade.blob_sha(data) == facade.MATRIX_BLOB
+          (output / 'godot-boundary-matrix.json').write_bytes(data)
+          engine_dir = pathlib.Path(os.environ['RUNNER_TEMP']) / 'facade-godot'
+          engine_dir.mkdir()
+          archive = engine_dir / 'godot.zip'
+          url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          checked('godot-download', ['curl', '--fail', '--location', '--retry', '3', '--output', str(archive), url])
+          tree = ast.parse((root / 'tools/ci/run_windows_godot_regressions.py').read_text())
+          expected = next(ast.literal_eval(node.value) for node in tree.body if isinstance(node, ast.Assign)
+              and any(isinstance(x, ast.Name) and x.id == 'GODOT_SHA512' for x in node.targets))
+          assert hashlib.sha512(archive.read_bytes()).hexdigest() == expected
+          with zipfile.ZipFile(archive) as package:
+              assert package.testzip() is None
+              package.extractall(engine_dir)
+          workflow = root / '.github/workflows/sol-facade-refusal.yml'
+          assert workflow.read_bytes() == subprocess.check_output(['git', 'show', 'HEAD:.github/workflows/sol-facade-refusal.yml'], cwd=root)
+          facade.write_json(output / 'setup.json', {'source_commit': source,
+              'source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], cwd=root, text=True).strip(),
+              'workflow': facade.info(workflow), 'dossier': facade.info(output / 'godot-boundary-matrix.json'),
+              'engine_archive': facade.info(archive), 'engine_archive_sha512': expected,
+              'python': {**facade.info(sys.executable), 'version': sys.version},
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT']})
+          PY
+      - name: Execute the full actual Windows arm
+        run: |
+          args=(--source "$GITHUB_WORKSPACE" --commit "$GITHUB_SHA" --build-receipt "$RUNNER_TEMP/facade-runtime/build.json" --runtime "$RUNNER_TEMP/facade-runtime/cybersand_native.windows.x86_64.dll" --godot "$RUNNER_TEMP/facade-godot/Godot_v4.7-stable_win64_console.exe" --godot-archive "$RUNNER_TEMP/facade-godot/godot.zip" --output "$RUNNER_TEMP/facade-host")
+          if [ "$FACADE_ARM" = extended ]; then
+            python tools/sol281/qualify_facade_refusal.py extended "${args[@]}"
+          elif [ "$FACADE_ARM" = status ]; then
+            python tools/sol281/qualify_facade_refusal.py matrix "${args[@]}" --original-matrix "$RUNNER_TEMP/facade-setup/godot-boundary-matrix.json" --instrumented
+          else
+            test "$FACADE_ARM" = original
+            python tools/sol281/qualify_facade_refusal.py matrix "${args[@]}" --original-matrix "$RUNNER_TEMP/facade-setup/godot-boundary-matrix.json"
+          fi
+      - name: Retain complete Windows outcomes and command receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: facade-windows-${{ matrix.arm }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/facade-host/
+            ${{ runner.temp }}/facade-setup/
+            !${{ runner.temp }}/facade-host/project/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-msvc:
+    name: actual Windows MSVC native ownership and lifecycle
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/fix/sol347-facade-refusal-20261104-095628'
+    runs-on: windows-2022
+    timeout-minutes: 360
+    steps:
+      - name: Preserve canonical source bytes on Windows
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out the exact native source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Initialize actual MSVC and qualify four existing native cases
+        shell: cmd
+        run: |
+          @echo off
+          setlocal
+          set "FACADE_VSROOT="
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "FACADE_VSROOT=%%i"
+          if not defined FACADE_VSROOT exit /b 1
+          call "%FACADE_VSROOT%\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64
+          if not "%errorlevel%"=="0" exit /b 1
+          python tools\sol281\qualify_facade_msvc.py --source "%GITHUB_WORKSPACE%" --commit "%GITHUB_SHA%" --compiler cl --output "%RUNNER_TEMP%\facade-msvc"
+          exit /b %errorlevel%
+      - name: Retain native source, compiler, executable and original command evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: facade-msvc-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/facade-msvc/
+            !${{ runner.temp }}/facade-msvc/**/*.obj
+            !${{ runner.temp }}/facade-msvc/**/*.pdb
+            !${{ runner.temp }}/facade-msvc/**/*.ilk
+          if-no-files-found: error
+          retention-days: 90

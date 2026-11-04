@@ -10,6 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Isolated SOL facade refusal repair — 2026-11-04
+
+The dependent branch `fix/sol347-facade-refusal-20261104-095628` starts from
+verified #347 `1598115c`; it does not write the owning branch or import #386/main.
+Read the [repair source and qualification ledger](../audits/2026-11-04-sol-facade-refusal-repair.md)
+and [public contract](../systems/solid-detachment.md#public-refusal-and-authoritative-readback--2026-11-04).
+The fresh baseline reproduces all 122 #386 results, including 38 aborts and eight
+authority disagreements. The repair preserves all 27 frozen material consumers
+and native safety fences. Any dependent PR stays Draft and targets the owning
+SOL branch. Independent read-only review and explicit owner admission precede
+composition; no Ready, merge, material transition or restoration is authorized.
+Original physical NO-GO, CPU limits and archive-publication failure remain.
+
 ## SOL364-B independent lanes and negative corridor result — 2026-11-04
 
 Start with the [SOL364-B result and receipt ledger](../audits/2026-11-04-sol364b-corridor-result.md)

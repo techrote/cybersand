@@ -166,7 +166,9 @@ def build(args):
     for name in ['CYBERSAND_ALLOW_TOOLCHAIN_DRIFT', 'CYBERSAND_VERIFY_M11_OUTPUT', 'CYBERSAND_DRY_RUN']:
         env.pop(name, None)
     compiler_env = 'LINUX_CXX' if args.target == 'linux' else 'WINDOWS_CXX'
-    env.update(GODOT_CPP_ROOT=str(args.godot_cpp.resolve()), CYBERSAND_NATIVE_OUTPUT=str(runtime))
+    env.update(GODOT_CPP_ROOT=str(args.godot_cpp.resolve()),
+               GODOT_CPP_LIBRARY=dependency['library']['path'],
+               CYBERSAND_NATIVE_OUTPUT=str(runtime))
     env[compiler_env] = str(compiler)
     script = 'build_native_extension.sh' if args.target == 'linux' else 'build_native_extension_windows.sh'
     command = ['bash', str(source / 'tools' / script)]
@@ -187,7 +189,7 @@ def build(args):
               'dependency_receipt': info(out / 'dependency-before.json'), 'bindings': dependency['library'],
               'compiler': compiler_info, 'linker': linker_info, 'command_receipt': receipt,
               'runner': info(__file__), 'errors': errors, 'environment': {k: env[k] for k in
-                  ['GODOT_CPP_ROOT', compiler_env, 'CYBERSAND_NATIVE_OUTPUT']}}
+                  ['GODOT_CPP_ROOT', 'GODOT_CPP_LIBRARY', compiler_env, 'CYBERSAND_NATIVE_OUTPUT']}}
     write_json(out / 'build.json', result)
     print(json.dumps({'status': result['status'], 'source': args.commit, 'runtime': result['runtime'], 'errors': errors}, indent=2), flush=True)
     return 0 if success else 1

@@ -613,6 +613,12 @@ void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world,
             if (std::abs(local.x) > half_size.x || std::abs(local.y) > half_size.y) continue;
             if (world.set_transient_obstacle(x, y, body_id)) {
                 if (indices) indices->push_back(y * kWorldWidth + x);
+            } else if (world.transient_obstacle_at(x, y) == 0U) {
+                // An occupied cell belongs to the existing first-body-wins
+                // arbitration. An empty covered cell means native publication
+                // was refused (for example an imported, unconfigured mask
+                // domain); never acknowledge that preparation as applied.
+                throw std::logic_error("Native rigid-body mask refused an in-domain cell; preparation is incomplete");
             }
         }
     }

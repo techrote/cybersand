@@ -12,6 +12,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Native structural detachment
 
+The isolated [public refusal and authoritative readback repair](systems/solid-detachment.md#public-refusal-and-authoritative-readback--2026-11-04)
+has its own [source/qualification ledger](audits/2026-11-04-sol-facade-refusal-repair.md).
+It preserves native SOL fences, the frozen material guard and every physical
+NO-GO; a Draft dependent repair does not admit composition or restoration.
+
 The [SOL364-B existing-penetration result](audits/2026-11-04-sol364b-corridor-result.md)
 is **bounded family NO-GO** under its
 [prospective corridor/work registration](audits/2026-11-04-sol364b-corridor-registration.md).
