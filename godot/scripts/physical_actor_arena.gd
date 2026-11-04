@@ -136,17 +136,19 @@ func configure_granular_experiment(value: Variant, candidate: String, token: Str
 	return _configure_granular(value,candidate,spawn_offset)
 
 func configure_review_fleet(value: Variant, candidate: String, token: String, fleet_index: int,
-		review_options: Dictionary = {}) -> bool:
+		review_options: Dictionary = {}, powder_review: bool = false) -> bool:
+	if powder_review and (fleet_index!=2 or review_options.get("response","") not in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]): return false
 	var load_aware: bool = review_options.get("response","") in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]
 	var expected_candidate: String = "GCR-REST" if load_aware else "GCR"
 	var expected_token: String = "GCR-REST-001-2026-11-02" if load_aware else "GCR-001-2026-11-01"
 	if not Rig.valid_review_options(review_options) or token!=expected_token or candidate!=expected_candidate or not preload("res://scripts/gcr_review_fleet.gd").valid_index(fleet_index):
 		last_error = "review_fleet_refused"
 		return false
-	return _configure_granular(value,candidate,Vector2.ZERO,fleet_index,review_options)
+	return _configure_granular(value,candidate,Vector2.ZERO,fleet_index,review_options,powder_review)
 
 func _configure_granular(value: Variant, granular_candidate: String, spawn_offset: Vector2 = Vector2.ZERO,
-		review_fleet_index: int = -1, review_options: Dictionary = {}) -> bool:
+		review_fleet_index: int = -1, review_options: Dictionary = {}, powder_review: bool = false) -> bool:
+	if powder_review and (review_fleet_index!=2 or granular_candidate!="GCR-REST" or review_options.get("response","") not in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]): return false
 	var validated: Dictionary = _validated_config(value)
 	if validated.is_empty() or not is_inside_tree():
 		last_error = "invalid_config_or_owner"
@@ -172,7 +174,7 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 		native_options["bearing_experiment"] = "GCR-ADMISSION-001-2026-11-01" if granular_candidate == "GCR-A1" else ("GCR-001-2026-11-01" if granular_candidate == "GCR" else "Y1-ENVELOPE-2026-11-01")
 	if granular_candidate=="GCR-REST":
 		native_options.merge({"bearing_experiment":"GCR-REST-001-2026-11-02","gcr_rest_mode":"control",
-			"gcr_base_budget":float(review_options.budget),"gcr_rest_gravity":38.0},true)
+			"gcr_base_budget":float(review_options.budget),"gcr_rest_gravity":0.0 if powder_review else 38.0},true)
 		if review_options.response=="LA-EVENT-OFF":
 			native_options.merge({"gcr_granular_events":"off","gcr_event_experiment":"GCR-EVT-001-2026-11-04"},true)
 	if review_options.get("response","")=="LA-SELECTIVE":
@@ -195,6 +197,7 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 		rectangles = PlayerCourse.layout()
 	elif validated.course == FlightCourse.ID:
 		rectangles = FlightCourse.layout(validated.flight_scenario, validated.seed, validated.flight_split)
+	if powder_review: rectangles=[]
 	for rectangle: Dictionary in rectangles:
 		if not world.diagnostic_fill_rect(rectangle.origin, rectangle.size, rectangle.material):
 			last_error = "native_layout"
@@ -212,7 +215,14 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 		candidate.close()
 		viewport.free()
 		return false
-	if granular_candidate=="GCR-REST" and not candidate.bridge.configure_gcr_rest("control",float(review_options.budget),38.0):
+	if powder_review:
+		# Fresh loading-test construction: actual gravity and native/bridge context agree.
+		for body: RigidBody2D in candidate.bodies(): body.gravity_scale=0.0
+		candidate._rigs[0]._profile.gravity=0.0
+		candidate.bridge.reset_body(0,Vector2(512,256),0.0)
+		candidate.bridge.refresh_all_states()
+		candidate._rigs[0].refresh_observation()
+	if granular_candidate=="GCR-REST" and not candidate.bridge.configure_gcr_rest("control",float(review_options.budget),0.0 if powder_review else 38.0):
 		last_error="review_budget_bridge_refused"
 		candidate.close()
 		viewport.free()
@@ -227,6 +237,7 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 	config["granular_experiment"] = granular_candidate
 	if review_fleet_index != -1: config["review_fleet_index"] = review_fleet_index
 	if not review_options.is_empty(): config["review_options"]=review_options.duplicate(true)
+	if powder_review: config["powder_review"]=true
 	gcr_stats = {"prepared":0,"responses":0,"applications":0,"granular_frames":0}
 	_epoch_counter += 1
 	_effects.reset(_epoch_counter)
@@ -288,7 +299,8 @@ func reset() -> bool:
 	authored.erase("granular_experiment")
 	authored.erase("review_fleet_index")
 	authored.erase("review_options")
-	return _configure_granular(authored,str(config.get("granular_experiment","B0")),Vector2.ZERO,int(config.get("review_fleet_index",-1)),config.get("review_options",{}))
+	authored.erase("powder_review")
+	return _configure_granular(authored,str(config.get("granular_experiment","B0")),Vector2.ZERO,int(config.get("review_fleet_index",-1)),config.get("review_options",{}),bool(config.get("powder_review",false)))
 
 
 func observation(actor_id: int) -> Dictionary:

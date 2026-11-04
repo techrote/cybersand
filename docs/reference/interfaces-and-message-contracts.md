@@ -6,12 +6,31 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-04
 ---
 
 # Interfaces and message contracts
 
-**Selective event interface under qualification:** the [prospective registration](../operations/gcr-selective-events-registration.md) extends fresh diagnostic construction with gcr_granular_events=selective and exact GCR-SEL-001-2026-11-04 token, requiring GCR-REST/control. C/control and E/off can use that token to observe identical transport history. Native selector/arrival-witness readback must acknowledge the requested mode; old runtimes and unsupported compound preparation refuse. Raw all-attempt J/L remain distinct from admitted arrival J/L/counts and sidecar bytes. Packed body/result strides, main-thread response ownership and sample fences remain unchanged. Transport stamps reset with World construction and are not physical save or complete replay state. Qualification results remain pending.
+**Current source powder-review interface; host validation pending:** the
+[fleet guide](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review)
+owns the fresh fixed-Kestrel burst/stream setup, paused reset, automatic source
+clock and actual edit ledger. Native and bridge gravity are selected together
+before owner activation; this is not a live private gravity mutation. Canned tests
+advance the existing synchronous owner with no leased pilot command, avoiding
+controller drag/assistance from nominally neutral input. Pause stops emission and
+simulation; manual painting marks the run modified. Receipts separate the native
+initial cell hash, body pose/settings and source schedule from exact coupled
+replay, which remains unimplemented. Packed strides and response ownership stay
+unchanged.
+
+The public review entry is
+`PlayerPlaygroundRuntime.configure_review_powder_test(options)`. It accepts only
+the existing LA/E/S review options and fixes Kestrel index2; the ordinary
+`configure_review_fleet(index, options)` path retains its previous38 gravity.
+Scene methods `start_powder_test("burst"/"stream")`, `return_to_painting()` and
+`powder_test_receipt()` own test selection and copied diagnostic receipt access.
+
+**Implemented selective event interface:** the [prospective registration](../operations/gcr-selective-events-registration.md) extends fresh diagnostic construction with gcr_granular_events=selective and exact GCR-SEL-001-2026-11-04 token, requiring GCR-REST/control. C/control and E/off can use that token to observe identical transport history. Native selector/arrival-witness readback must acknowledge the requested mode; old runtimes and unsupported compound preparation refuse. Raw all-attempt J/L remain distinct from admitted arrival J/L/counts and sidecar bytes. Packed body/result strides, main-thread response ownership and sample fences remain unchanged. Transport stamps reset with World construction and are not physical save or complete replay state. The84-capture qualification records failed joint physical gates; this interface availability does not establish production or owner acceptance.
 
 **Experimental granular event selector, November4:** the
 [registered interface](../operations/gcr-granular-events-registration.md) adds

@@ -8,15 +8,21 @@ last-reviewed: 2026-11-04
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
+# Status and foundational roadmap
+
+Repeatable powder owner review is available in source in the
+[painting playground](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review):
+fixed Kestrel burst/stream setups, paused fresh resets and actual source counts
+compare LA, events off and selective arrivals. Source-only UI validation is
+pending; native laws, sleep and the earlier registered NO-GO remain unchanged.
 
 Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
 records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
 and late edge rebound miss their gates. Continuous arrival/torque and excavation
 release pass; no rest/default acceptance follows. The painting selector remains
 experimental; source-lock compatibility and owner review remain open.
-# Status and foundational roadmap
 
-**Selective event admission, November4 - preregistered/in progress:** [GCR-SEL-001](../operations/gcr-selective-events-registration.md) tests transport-backed arrivals against LA and event-off over84 bounded Windows/Linux captures. The target is joint creep retention and falling-grain loading/torque recovery with unchanged barrel impact guards. Results are pending; no accepted response law, sleep, compound integration, production promotion or merge follows.
+**Selective event admission, November4 — implemented, registered NO-GO:** [GCR-SEL-001](../operations/gcr-selective-events-registration.md) tests transport-backed arrivals against LA and event-off over84 bounded Windows/Linux captures. The target is joint creep retention and falling-grain loading/torque recovery with unchanged barrel impact guards. All84 captures complete; registered creep preservation, finite-batch recovery and late operational edge-rebound gates fail. No accepted response law, sleep, compound integration, production promotion or merge follows.
 
 **Experimental granular event successor, November4:** [the qualified comparison](../operations/gcr-granular-events-registration.md) completes48 Windows/Linux captures. Burial reduction generalizes to Sand/Salt/Dust and the tested powered bank; ordinary gentle/high/heavy/angled barrel impact guards pass. The falling-grain loading/torque control fails, and late motion increases in some cases. Event-off is available in the painting playground for owner comparison, with no production promotion, sleep change, compound qualification or merge.
 

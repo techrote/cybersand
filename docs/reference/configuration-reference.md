@@ -4,13 +4,22 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
 
-**Preregistered selective event comparison, November4:** [GCR-SEL-001](../operations/gcr-selective-events-registration.md) plans the fourth developer response LA-SELECTIVE, displayed as **LA · selective arrivals (experimental)**. Fresh native construction requires gcr_granular_events=selective and exact token GCR-SEL-001-2026-11-04 in GCR-REST/control. That token also admits C/control and E/off with identical observation history. Only these explicit experimental worlds allocate the bounded eight-byte-per-resident-cell transport sidecar; ordinary construction and old-token C/E allocate none. Initial/Restore LA, material laws and physical/actuator settings remain controls. Runtime qualification is pending.
+**Current source powder-review setup; host validation pending:** the
+[fleet controls](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review)
+define fixed Kestrel index2 at(512,256), zero body gravity/velocity/rotation,
+Sand2 burst4×24 at(514,224), or4×1 stream before ticks0..599, and a1800tick60Hz
+automatic stop. Fresh native and Rapier contexts agree on gravity0. Ordinary
+painting remains gravity38. Applied budget/mass/inertia settings are retained;
+source additions and blocked placements are counted. No native coefficient or
+material law changes, scientific acceptance or sleep follow.
+
+**Implemented selective event comparison, November4:** [GCR-SEL-001](../operations/gcr-selective-events-registration.md) provides the fourth developer response LA-SELECTIVE, displayed as **LA · selective arrivals (experimental)**. Fresh native construction requires gcr_granular_events=selective and exact token GCR-SEL-001-2026-11-04 in GCR-REST/control. That token also admits C/control and E/off with identical observation history. Only these explicit experimental worlds allocate the bounded eight-byte-per-resident-cell transport sidecar; ordinary construction and old-token C/E allocate none. Initial/Restore LA, material laws and physical/actuator settings remain controls. The84-capture qualification records a registered NO-GO for the joint physical gates; owner acceptance and source-lock integration remain open.
 
 The [granular event successor](../operations/gcr-granular-events-registration.md)
 owns the explicit development selector and current qualification limits. The
