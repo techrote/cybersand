@@ -166,7 +166,7 @@
         "systems/player-control-playground.md"
       ],
       "facts": [
-        "The Draft workbench prepares multiple instances with one World and one physical owner and uses selective arrivals by default.",
+        "The Draft workbench prepares multiple instances with one World and one physical owner and uses selective arrivals by default. Pilot and Reset act during play; an explicit solver change reports incompatible pressure inventory loss.",
         "The bounded named starting recipe reconstructs authored cells, spawns, settings and policy across processes. Continuing physics state is omitted."
       ],
       "sources": [

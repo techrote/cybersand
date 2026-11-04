@@ -1881,3 +1881,5 @@ The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies f
 ## WORKBENCH-001 / #391 integration candidate
 
 The [desktop development workbench](../systems/player-control-playground.md#development-workbench-on-desktop) is being qualified on a separate Draft branch from main 751edc0b. The required baseline includes the eight-flyer fleet, five-piece Scooper and actual multi-body granular response. The preserved #392 attempt covers an earlier assignment. Review the [dated evidence and source compatibility disposition](../audits/2026-11-04-workbench-consolidation.md) before making a platform, physics or promotion claim.
+
+[Owner-feedback follow-up](../audits/2026-11-04-workbench-live-editing.md) records immediate pilot switching, acknowledged reset during play, recovery of the authored start and explicit workbench-only liquid conversions on PR #394.

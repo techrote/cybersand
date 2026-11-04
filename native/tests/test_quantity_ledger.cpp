@@ -383,7 +383,7 @@ void workbench_inertial_inheritance() {
     current.maximum_rule_radius=InertialParameters::kExecutionRadius;
     World source(current);
     source.set(2,2,Material::Brine);
-    require(source.diagnostic_set_inertial_cell(2,2,-40,31,-2,3),"source native Brine motion");
+    require(source.diagnostic_set_inertial_cell(2,2,-16,31,-2,3),"source native Brine motion");
     normalization::FinalSetupInput input;
     input.setup.domain={0,0,8,8};
     input.cells={{2,2,Material::Brine,source.stored_state_a(2,2),source.stored_state_b(2,2),200}};
@@ -396,7 +396,7 @@ void workbench_inertial_inheritance() {
     auto receipts=retained->inherit_workbench_liquid_state(source,false);
     const auto copied=retained->inertial_cell(2,2);
     require(receipts.preserved_inertial_cells==1 && receipts.discarded_inertial_cells==0 &&
-            copied.vx==-40 && copied.vy==31 && copied.ax==-2 && copied.ay==3,
+            copied.vx==-16 && copied.vy==31 && copied.ax==-2 && copied.ay==3,
             "retained actor edit preserves actual native IN motion and fractions");
     auto replacement=candidate(config());
     const auto before=source.physical_state_hash();

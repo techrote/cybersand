@@ -135,6 +135,7 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {"path":"audits/2026-11-04-workbench-live-editing.md","reason":"Dated owner feedback, desktop runtime, live conversion, recovery and source review evidence. Current controls belong to the player playground guide."},
     {"path":"audits/2026-11-04-workbench-consolidation.md","reason":"Dated #391 source, platform, acceptance and compatibility evidence. Retrieve through the player playground controls."},
     {
       "path": "audits/2026-11-04-mat-auth371-integration.md",
