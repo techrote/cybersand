@@ -136,6 +136,8 @@ var _workbench_source := preload("res://scripts/workbench_powder_source.gd").new
 var _workbench_step_serial: int = 0
 var _workbench_completed_sample: int = -1
 var _workbench_result: Dictionary = {}
+var _workbench_consumed_sample: Dictionary = {}
+var _workbench_display: Dictionary = {}
 var _workbench_refusal: String = ""
 var _workbench_prepared_sample: int = -1
 var _scenario_request_serial: int = 0
@@ -324,6 +326,8 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		_workbench_emitter_receipts.clear()
 		_workbench_source.reset()
 		_workbench_result = {}
+		_workbench_consumed_sample = {}
+		_workbench_display = {}
 		_workbench_completed_sample = -1
 		_workbench_refusal = ""
 		_workbench_prepared_sample = -1
@@ -1232,6 +1236,26 @@ static func _workbench_sample_inside(states: PackedFloat64Array, extent: Vector2
 		if not Rect2(Vector2.ZERO,Vector2(extent)).encloses(Rect2(center-projected,2.0*projected)): return false
 	return true
 
+# Private owner builds immutable display poses from the *consumed* mask
+# sample and the native receipt. A newer pending main-thread sample may
+# already exist. Rendering never reads it or grants it application authority.
+func _capture_workbench_result() -> void:
+	_workbench_result = _world.workbench_coupling_results()
+	_workbench_display = {}
+	var packet := _workbench_result
+	var sample := _workbench_consumed_sample
+	if not packet.get("valid",false) or packet.get("session") != sample.get("session") or packet.get("epoch") != sample.get("epoch"): return
+	var states: PackedFloat64Array = sample.states
+	var poses := {}
+	for row: Dictionary in packet.rows:
+		var member: Dictionary = sample.bodies[int(row.id)-1]
+		var offset: int = (int(member.first_proxy)-1)*CyberRigidBodyCoupling.GCR_INPUT_STRIDE
+		if row.instance_id != member.instance_id or row.generation != member.generation or int(states[offset+10]) != row.sample: return
+		poses[int(row.instance_id)] = {"pose":Transform2D(states[offset+3],row.com),"sample":int(row.sample),"generation":int(row.generation)}
+	_workbench_display = {"session":int(packet.session),"epoch":int(packet.epoch),"sample_tick":int(packet.sample_tick),
+		"tick":int(_world.tick_index),"revision":int(_world.revision),"world_generation":_world_generation,"instances":poses}
+
+
 func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
 	# Linearize short source edits and nozzle requests with input cancellation.
 	# The maximum burst is 96 cells, the stream is 4 cells per tick for <=600
@@ -1984,7 +2008,8 @@ func _worker_loop() -> void:
 						_workbench_refusal = "The workbench body sample was refused. Rebuild or reset the selected setup."
 					else:
 						_workbench_prepared_sample = workbench_serial
-						if _workbench_result.is_empty(): _workbench_result = _world.workbench_coupling_results()
+						_workbench_consumed_sample = sample
+						if _workbench_result.is_empty(): _capture_workbench_result()
 				if not _workbench_refusal.is_empty():
 					local_paused = true
 					_lab_status = _workbench_refusal
@@ -2027,7 +2052,7 @@ func _worker_loop() -> void:
 				else:
 					_world.simulation_tick()
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
-					_workbench_result = _world.workbench_coupling_results()
+					_capture_workbench_result()
 					_workbench_completed_sample = workbench_serial
 				if not _simulation_failed and local_lab.has("workbench_step_serial"):
 					_workbench_step_serial = int(local_lab.workbench_step_serial)
@@ -2320,6 +2345,7 @@ func _publish_snapshot(
 	}
 	if _workbench_extent != Vector2i.ZERO:
 		snapshot.lab_context["workbench_gcr"] = _workbench_result
+		snapshot.lab_context["workbench_display"] = _workbench_display
 		snapshot.lab_context["workbench_completed_sample"] = _workbench_completed_sample
 		snapshot.lab_context["workbench_refusal"] = _workbench_refusal
 		snapshot.lab_context["workbench_source"] = _workbench_source.receipt()
@@ -2354,6 +2380,8 @@ func _publish_snapshot(
 				},
 			},
 		}
+		if _workbench_extent != Vector2i.ZERO and _workbench_display.get("revision",-1) == _snapshot_world_revision:
+			_pending_render_context["workbench_display"] = _workbench_display
 		_freeze_capture(_pending_render_context)
 	snapshot.render_context = _pending_render_context
 

@@ -80,6 +80,17 @@ func pack_sample(drives: Array[bool]) -> Dictionary:
 
 # Copied sample geometry for comparing a published result with the actual
 # cellular mask it used. The live pose may already be one Rapier step newer.
+func display_pose(slot: int, frame: Dictionary) -> Transform2D:
+	# Only display transforms use this path. The actor/input/physics owners
+	# still read the authoritative main-thread RID.
+	if frame.get("session") == _session and frame.get("epoch") == _epoch:
+		var member: Dictionary = _members[slot]
+		var entry: Dictionary = frame.instances.get(member.instance_id,{})
+		if entry.get("generation") == member.generation and entry.get("pose") is Transform2D:
+			return entry.pose
+	return body_transform(slot)
+
+
 func retire_provisional_samples() -> void:
 	for slot: int in range(_history.size()): _history[slot] = {}
 

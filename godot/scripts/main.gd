@@ -1494,6 +1494,7 @@ var material_appearance_lut: ImageTexture
 var material_appearance_program: ImageTexture
 var render_channels: int = 1
 var render_image_format: Image.Format = Image.FORMAT_R8
+var _uploaded_workbench_frame: Dictionary = {}
 var last_uploaded_render_snapshot_serial: int = 0
 var last_uploaded_world_generation: int = -1
 var last_render_patch_count: int = 0
@@ -1871,7 +1872,7 @@ func _process(delta: float) -> void:
 		camera_origin.floor(), current_view_size, view_content_rect()
 	)
 	physical_actor_overlay.present(
-		physical_actor_session.render_parts() if physical_actor_session != null else [],
+		physical_actor_session.render_parts(workbench_display_frame()) if physical_actor_session != null else [],
 		camera_origin.floor(), current_view_size, view_content_rect())
 	update_worker_frame_state()
 	update_shader_parameters()
@@ -2912,6 +2913,18 @@ func consume_worker_snapshot() -> void:
 	gameplay_recorder.ingest_snapshot(snapshot)
 
 
+func workbench_display_frame() -> Dictionary:
+	if shared_workbench == null or latest_snapshot == null: return {}
+	# Static material bytes can span multiple native ticks. Prefer the most
+	# recent completed mask bound to the exact uploaded material revision.
+	var frame: Dictionary = latest_snapshot.lab_context.get("workbench_display",{})
+	if frame.get("world_generation",-1) == last_uploaded_world_generation and frame.get("revision",-1) == last_uploaded_revision:
+		return frame
+	# While newer material is waiting for upload, display the pose bound to
+	# the visible upload. No matching receipt at startup falls back to Rapier.
+	return _uploaded_workbench_frame
+
+
 func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
@@ -2929,6 +2942,7 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 				reset_vapour_trail()
 			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
+			if shared_workbench != null: _uploaded_workbench_frame = snapshot.render_context.get("workbench_display",{})
 			simulation_worker.acknowledge_render_snapshot(
 				snapshot.render_snapshot_serial
 			)

@@ -786,7 +786,7 @@ func accept_equipment_feedback(snapshot_value: Dictionary) -> int:
 	return accepted
 
 
-func render_parts() -> Array:
+func render_parts(display_frame: Dictionary = {}) -> Array:
 	var result: Array = []
 	for index: int in range(_rigs.size()):
 		var parts: Array = _catalogue[index].parts
@@ -794,8 +794,9 @@ func render_parts() -> Array:
 		var flight: Dictionary = _view(index, false).get("flight", {}) if is_flight_actor(index) else {}
 		for part_index: int in range(actor_bodies.size()):
 			var body: RigidBody2D = actor_bodies[part_index]
+			var body_index: int = _body_offsets[index]+part_index
+			var physical_pose: Transform2D = bridge.display_pose(body_index,display_frame) if bridge is WorkbenchBridge else bridge.body_transform(body_index)
 			if str(parts[part_index].get("shape","rectangle"))=="rectangle_union":
-				var physical_pose: Transform2D=bridge.body_transform(_body_offsets[index]+part_index)
 				var shape_index: int=0
 				for child in body.get_children():
 					if not child is CollisionShape2D or not child.shape is RectangleShape2D: continue
@@ -808,7 +809,7 @@ func render_parts() -> Array:
 			var shape: Shape2D = body.get_child(0).shape
 			var dimensions: Vector2 = Vector2(shape.radius * 2.0, shape.radius * 2.0) if shape is CircleShape2D else shape.size
 			var presented: Dictionary = {"actor_id": index, "part_id": str(parts[part_index].id),
-				"transform": bridge.body_transform(_body_offsets[index] + part_index),
+				"transform": physical_pose,
 				"size": dimensions, "color": parts[part_index].color,
 				"shape": "circle" if shape is CircleShape2D else "rectangle"}
 			if _rigs[index]._profile.has("fleet_markings"): presented["markings"] = _rigs[index]._profile.fleet_markings

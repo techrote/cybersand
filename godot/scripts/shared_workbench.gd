@@ -245,6 +245,11 @@ func new_canvas() -> bool:
 
 func installed(candidate: Dictionary) -> void:
 	applied = candidate.duplicate(true)
+	var roster_choice := _model.selected
+	_model.clear()
+	for name_text: String in Fleet.NAMES: _model.add_item(name_text)
+	_model.add_item("Passive barrel")
+	_model.select(clampi(roster_choice,0,_model.item_count-1))
 	_reload_rollback.clear()
 	var policy: Dictionary = host.tower_context.get("liquid_solver_policy",{})
 	if policy.has("envelope"): applied.liquid_policy = Array(policy.envelope)
@@ -283,7 +288,7 @@ func installed(candidate: Dictionary) -> void:
 	for i: int in 3:
 		host.world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
 	host.update_worker_frame_state()
-	message = "Paused · left paint/tool, right erase, middle pan, wheel zoom."
+	message = "Left paint/tool, right erase, middle pan, wheel zoom."
 
 func select_instance(id: int, installing: bool = false) -> bool:
 	if not installing and busy(): return refuse("Wait for owner acknowledgement.")

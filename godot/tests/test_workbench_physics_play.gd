@@ -163,12 +163,44 @@ func synchronized_cavity(stats: Dictionary, field: String) -> void:
 		return snap.paused and snap.tick_index>=latest_tick and snap.world_revision==snap.simulation_world_revision and host.last_uploaded_render_snapshot_serial>=snap.render_snapshot_serial)
 	if require(ready,"current material publication at "+field):
 		var inventory := load_inventory()
-		var row: Dictionary = host.tower_context.get("workbench_gcr",{}).get("rows",[{}])[0]
+		var snap: CyberSimulationSnapshot = host.latest_snapshot
+		var packet: Dictionary = snap.lab_context.get("workbench_gcr",{})
+		var row: Dictionary = packet.get("rows",[{}])[0]
 		var sampled: Dictionary = host.physical_actor_session.bridge.sampled_pose(1,int(row.get("sample",-1)))
-		if sampled.has("pose"): stats[field+"_sampled_material"] = load_inventory(sampled.pose)
+		var frame: Dictionary = host.workbench_display_frame()
+		var shown: Dictionary = frame.get("instances",{}).get(1,{})
+		var identity := {"frame_tick":frame.get("tick",-1),"sample_tick":packet.get("sample_tick",-1),"completed_tick":snap.tick_index,
+			"render_tick":snap.render_tick_index,"revision":snap.world_revision,"uploaded_revision":host.last_uploaded_revision,
+			"world_generation":snap.render_world_generation,"uploaded_generation":host.last_uploaded_world_generation,
+			"render_serial":snap.render_snapshot_serial,"uploaded_serial":host.last_uploaded_render_snapshot_serial,
+			"session":packet.get("session",-1),"epoch":packet.get("epoch",-1),"instance":row.get("instance_id",-1),
+			"generation":row.get("generation",-1),"sample":row.get("sample",-1)}
+		stats[field+"_identity"] = identity
+		var bound: bool = packet.get("valid",false) and row.get("instance_id")==1 and row.get("generation")==host._physical_epoch \
+			and row.get("sample")==shown.get("sample",-1) and row.get("generation")==shown.get("generation",-1) \
+			and sampled.get("session")==packet.get("session") and sampled.get("epoch")==packet.get("epoch") \
+			and frame.get("session")==packet.get("session") and frame.get("epoch")==host._physical_epoch \
+			and frame.get("tick")==snap.tick_index and frame.get("sample_tick")==packet.sample_tick \
+			and snap.tick_index-int(packet.sample_tick) in [0,1] and snap.render_tick_index <= snap.tick_index \
+			and frame.get("world_generation")==host.last_uploaded_world_generation and frame.get("revision")==host.last_uploaded_revision \
+			and snap.render_world_generation==host.last_uploaded_world_generation and snap.world_revision==host.last_uploaded_revision \
+			and snap.render_snapshot_serial==host.last_uploaded_render_snapshot_serial \
+			and sampled.has("pose") and shown.has("pose") and Transform2D(shown.pose).is_equal_approx(sampled.pose)
+		if require(bound,"display/census owner, sample and uploaded material identity at "+field):
+			stats[field+"_sampled_material"] = load_inventory(shown.pose)
+			var displayed: Array = host.physical_actor_session.render_parts(frame)
+			var collider: CollisionShape2D = host.physical_actor_session.bodies()[0].get_child(0)
+			require(Transform2D(displayed[0].transform).is_equal_approx(Transform2D(shown.pose)*collider.transform),"overlay uses matched sample at "+field)
 		stats[field] = inventory.cavity
 		stats[field+"_material"] = inventory
 		stats[field+"_native_tick"]=host.latest_snapshot.tick_index
+	if field=="carried" and not OS.get_environment("CYBERSAND_WORKBENCH_FRAME_PNG").is_empty() and DisplayServer.get_name()!="headless":
+		ui.focus_selected()
+		host.update_worker_frame_state()
+		await process_frame
+		await RenderingServer.frame_post_draw
+		var shot := root.get_texture().get_image()
+		require(shot != null and shot.save_png(OS.get_environment("CYBERSAND_WORKBENCH_FRAME_PNG")) == OK,"save graphical carry frame")
 	require(ui.toggle_pause(),"resume after "+field)
 
 
@@ -293,10 +325,13 @@ func run() -> void:
 	ui=host.shared_workbench
 	if require(await wait_for(func() -> bool: return host.shared_workbench != null and not host.shared_workbench.applied.is_empty()),"open default workbench: "+str(host.microscenario_error)):
 		ui=host.shared_workbench
-		await burial(2)
-		await burial(14)
-		await scoop()
-		await mixed_impact()
+		if OS.get_cmdline_user_args().has("--capture-scooper"):
+			await scoop()
+		else:
+			await burial(2)
+			await burial(14)
+			await scoop()
+			await mixed_impact()
 	host.queue_free()
 	await process_frame
 	await process_frame
