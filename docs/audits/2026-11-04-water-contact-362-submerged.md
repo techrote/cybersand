@@ -22,29 +22,34 @@ entry in the matrix.
 
 Neither more reach nor a short push chain would fix it. Most masked cells are
 pushed sideways, into Water that continues to the basin walls. A one-cell
-vacancy chain of at most four moves reaches Empty for under 2 % of cell-samples.
+vacancy chain of at most four moves that starts at the body border, as #347's
+does, reaches Empty for at most 1.6 % of all residual cell-samples, and at most
+6.2 % of border cells that have any chain.
 
 | Question (registered) | Answer (28 submerged dynamic rows; both OSes identical) |
 |---|---|
 | Q1 amount | Median masked Water 62–128 cells against body areas of 96–128 cells. It persists from entry to the 240-tick horizon. The only rows with median ≤ 5 are the low-speed rows (G-D12-V60, G-D24-V15), where the body floats near the surface. |
-| Q2 cause | `no_empty_within_reach` in **43–96 %** of residual cell-samples. Every probe target holds Water. `hard_or_bounds_only` in **4–56 %**: bottom-face cells against the floor (highest for the flat 16×8 body). Exclusion under the body mask plus a blocked path is **≤ 0.55 %**, and `empty_path_blocked` is zero. |
+| Q2 cause | `no_empty_within_reach` in **43–96 %** of residual cell-samples: no probe met Empty, and the fan holds Water (plus possibly floor or masked cells). `hard_or_bounds_only` in **4–56 %**: mostly bottom-face cells against the floor, highest for the flat 16×8 body. This class also absorbs fans that land only on masked or swept Water, because such probes are skipped without being counted. It is therefore an upper bound on purely floor-backed cells. Exclusion under the body mask plus a blocked path is **≤ 0.55 %**, and `empty_path_blocked` is zero. |
 | Q3 geometry | Residuals get **lateral** overlap normals in 71–94 % of samples for 8×14 and 4×24 bodies, and 25–39 % for the 16×8 body. Their fan points sideways into Water. |
-| Q4 required reach | **63–100 %** of residual cell-samples would need more than 64 cells of straight reach before meeting unmasked Empty. Adapter reach is `ceil(penetration)+8`. |
-| Q5 push chain | A four-connected chain through unmasked Water of **≤ 4 moves** exists for **0–1.6 %** of residual cell-samples. **48–98 %** cannot reach unmasked Empty within 64 steps at all, because the body column blocks the short route up. |
+| Q4 required reach | For **63–100 %** of residual cell-samples, the same fixed-direction probe fan meets no unmasked Empty within 64 cells; adapter reach is `ceil(penetration)+8`. For lateral normals it hits the basin walls and never meets Empty, so more reach in that direction would not help at any length. |
+| Q5 push chain | A border-first chain (the masked source steps to an unmasked neighbour, then travels through unmasked Water) of **≤ 4 moves** exists for **0–1.6 %** of all residual cell-samples, and 0–6.2 % of those that have any chain. The **48–98 % "unreachable"** share is mostly **definitional**: interior mask cells have no unmasked neighbour. Interior plus floor-backed cells over body area predict it (8×14: 69.6 % against 69.9 % observed; 4×24: 47.9 % / 47.8 %; 16×8: 76.6 % / 75.8 %). Only the 96-deep rows also exceed the 64-step chain limit to the surface. |
 | Q6 threshold | No fixed depth threshold. Relocation continues only while the body carries a small **Empty pocket** trapped at entry (see below). |
 
 P1 holds: the classifier and the adapter never disagree, and the classifier
 predicts the adapter's exact destination in the positive control for every
-family. P2 holds (the no-Empty class dominates every submerged row except the
-floor-heavy flat body). P3 does not hold as a simple depth: see Q6.
+family. P2 holds: the no-Empty class dominates every submerged row except
+S-WIDE/IN3 (43 % no-Empty against 56 % hard; S-WIDE/FM3 is 64 % against 35 %).
+P3 does not hold as a simple depth: see Q6.
 
 ## The carried Empty pocket (kinematic descents)
 
 Prescribed descents isolate the relocation law. A body entering from above the
 surface traps about 20 Empty cells under its mask (112 − 92 for the 8×14
-body). Moving down one row per step exposes its top mask row. The adapter
-immediately relocates exactly one body-width of top-face cells into that row,
-before any liquid tick. The pocket therefore travels with the body.
+body). At one row per step the sweep extent is 1, no larger than the 1-cell
+sample spacing (`rasterize_body_sweep`). So only the current pose is masked,
+and the exposed top row is an admissible first-probe target in the same
+prepare call: exactly one body-width of top-face cells moves into it, before
+any liquid tick, and the pocket travels with the body.
 Displacement per step equals the body width at every depth (8, 4 and 16 cells
 for the reference, tall and wide bodies) down to the floor. The **net displaced
 volume stays the trapped pocket**, never the body volume.
@@ -59,11 +64,14 @@ volume stays the trapped pocket**, never the body volume.
 | 16×8 body, 1 row/step | 1,428, residual 76 | — | — | — | 86 |
 | 4×24 body, 1 row/step | 286, residual 90 | — | — | — | 70 |
 
-At 3 rows per step, FreeMass, CellularYield and PressureFlow flow into the
-exposed pocket during the liquid tick. The pocket collapses by 17–20 rows and
-the body becomes a full 112-cell overlay. IN Water at rest does not fill it, so
-the conveyor continues. At 8 rows per step the exposed rows lie beyond reach
-and the pocket is lost at entry.
+At 3 and 8 rows per step the exposed rows lie inside the sweep raster and are
+excluded as targets (`find_ejection_target`). They become targetable only on
+the next coupling call, after the liquid tick. At 3 rows per step, FreeMass,
+CellularYield and PressureFlow flow into them first; the pocket collapses by
+17–20 rows and the body becomes a full 112-cell overlay. Coupling-only descents
+and IN, whose resting Water does not fill the pocket, keep the conveyor going.
+At 8 rows per step the exposed rows also lie beyond reach, and the pocket is
+lost at entry.
 
 ## Qualification
 
@@ -118,8 +126,20 @@ Godot logs are not committed.
 ## Limits
 
 - The classifier replays the documented rule in GDScript; the adapter's own
-  per-cell reason is not exported. Agreement is established by zero
-  disagreement plus the exact positive control, not by a native trace.
+  per-cell reason is not exported. Agreement rests on zero disagreement, the
+  exact positive control and, mainly, on the stage-1 failure. That failure
+  shows the disagreement check fires (5 cell-samples) when the sweep is
+  ignored. The positive control covers only one unrotated, unswept, top-normal,
+  zero-tangent case, with a replayed rather than adapter mask. A per-cell
+  destination check against the coupling-only K-R3-N census (506 swept
+  relocations) is a recommended strengthening, not done here.
+- Two small arithmetic differences can only bias the classifier toward
+  "not admissible", so they could hide, never create, a disagreement, and
+  only within `empty_only_under_mask` (≤ 0.55 %):
+  - `overlap()` computes `half − |local|` in double, while the adapter
+    subtracts in single precision; near ties this can flip the normal or
+    `ceil(penetration)`.
+  - The replayed sweep also excludes the exact current pose.
 - Samples are every 4 ticks. Counts are cell-samples, not distinct cells.
 - Push-chain length is a geometric lower bound through unmasked Water. It is
   not a proposal, and it ignores whether #347's transaction would admit the path.
@@ -137,11 +157,36 @@ Godot logs are not committed.
    - accepting the overlay and representing displaced volume only as a body
      impulse, which is today's behavior.
 2. **#347's conservative displacement does not address this.** It is
-   detachment-only, refuses PF/IN/CY Worlds, and is limited to four moves,
-   which would cover at most 1.6 % of the measured residual cell-samples.
+   detachment-only, refuses PF/IN/CY Worlds, and is limited to four moves
+   with every destination unmasked. Its chains would cover at most 1.6 % of
+   all measured residual cell-samples, an upper bound.
 3. **A ballistic spray law (Phase B option 1) would still act on only a few
    relocated surface cells per impact.** That supports keeping Phase B DEFERRED
    until the owner decides whether to admit a non-local displacement design.
 4. Any such design is a new coupling-law change and needs owner admission, a
    versioned rule, sequencing with #347/#349/#358 on the shared adapter, and
    acceptance against these two fixtures, unchanged.
+
+## Independent review — 2026-11-04
+
+An independent read-only review of `6da4a101` returned **ACCEPT WITH
+CORRECTIONS**. It confirmed the following:
+
+- both stage-2 reductions reproduce byte-equal, and the attempt-1 packets fail;
+- every table range and descent row;
+- 38/38 cross-OS final hashes, with trace digests that differ between OSes;
+- the replay's soundness argument and the ROI handling;
+- the `mask_check` fix and the observer-defect conclusion;
+- the #347 statements;
+- the scope: no production, #347 or #370 path changed.
+
+Corrections applied in this revision:
+
+1. The Q5 "unreachable" share is definitional for interior cells. The border-first
+   share is now added, and #347's bound is stated as an upper bound.
+2. `hard_or_bounds_only` now carries the caveat about fully masked fans.
+3. The pocket mechanism is split by sweep extent (rate 1 versus 3 and 8).
+4. The two classifier precision biases are documented, along with the limits
+   of the positive control.
+5. The P2 exception, the Q2 wording and the Q4 "never" interpretation are
+   corrected.
