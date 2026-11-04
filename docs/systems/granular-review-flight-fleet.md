@@ -12,10 +12,11 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 
 ## Repeatable powder burst and continuous-stream review
 
-**Current source; actual-host validation pending:** the painting playground
+**Current source; Windows/Linux host controls passed:** the painting playground
 provides two canned loading tests alongside the normal painting room.
 The [dated UI record](../audits/2026-11-04-repeatable-powder-review.md) owns actual
-source/runtime validation; these controls do not repeat or supersede the earlier
+source/runtime validation;6605 new Windows/Linux checks per platform now pass.
+These controls do not repeat or supersede the earlier
 scientific qualification or its registered NO-GO.
 
 **Powder burst · reset paused** and **Continuous stream · reset paused** reconstruct a fresh Kestrel

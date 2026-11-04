@@ -2,7 +2,7 @@
 title: Repeatable powder loading owner-review controls
 status: Current
 document-kind: validation
-scope: Source-inspected painting-playground burst and stream apparatus; actual-host validation pending
+scope: Windows/Linux source-matched repeatable painting-playground apparatus; no new physical efficacy acceptance
 canonical-for: []
 last-reviewed: 2026-11-04
 related-documents: [../systems/granular-review-flight-fleet.md, 2026-11-04-gcr-selective-events.md, ../operations/gcr-selective-events-registration.md]
@@ -23,11 +23,13 @@ Implementation starts from22fb5026edda2ea95e620ad4c15b491f4fc115a8 in the isolat
 codex/gcr-powder-review-tests-20261104 worktree. Accepted main is still
 7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1. The previously running owner-review
 checkout's generated imports/UIDs and the dirty C:/khybersand worktree are not
-modified. Native source inputs and published desktop runtime bytes are intended
-to remain identical to compiled856c49371b37b3921bf859a67a883336252134ee; root must
-authenticate that identity before recording source-matched reuse.
+modified. All88 native source inputs and both published desktop runtime bytes remain
+identical to compiled856c49371b37b3921bf859a67a883336252134ee, authenticated before
+and after host execution. Bridge and detachment worker files also match22fb.
+Implemented/tested source is92fa021ba0cd80a6da2a15b8604a68afdb61c64a. Later
+documentation-only changes do not relabel that original host acquisition.
 
-## Implemented setup and receipt — host validation pending
+## Implemented setup and receipt
 
 The canonical [fleet guide](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review)
 owns the exact current controls and values. The source implementation reconstructs
@@ -53,10 +55,12 @@ ordinary flight. These tests are limited to LA/E/S; retained RFT remains availab
 in free play. Changing mass/inertia between responses changes the comparison and
 must remain visible in the applied settings.
 
-## Required source-only validation — pending
+## Completed source-only validation
 
-Before final handoff, record actual source/local-delta, engine/native/Rapier
-identities, command, platform, watchdog and original log/result hashes for:
+The [host summary](gcr-powder-review-2026-11-04/host-summary.json) records actual
+source, engine/native/Rapier identities,300s process watchdogs and original
+command/log/result hashes. Both Windows and Linux pass10 suites plus import.
+The new suite passes6605 checks on each platform, including:
 
 - Same initial native material hash and six-component Kestrel pose/settings across
   fresh LA/E/S construction and repeated resets.
@@ -74,4 +78,35 @@ earlier physical matrix must not be relabelled as new execution. The current-mai
 material shadow checker still refuses three inherited protected source drifts;
 preserve that known integration blocker and its hashes rather than refreshing the
 lock. Host correctness does not override failed physical gates or constitute
-subjective owner acceptance. Root will add actual results and limitations here.
+subjective owner acceptance. Current checks and historical evidence stay distinct.
+
+## Reproduction and practical review
+
+Run python tools/experiments/run_gcr_powder_review.py --output with a fresh
+output folder from committed source. The runner uses separate Windows/Linux
+projects, verifies all88 native inputs and actual runtime bytes, executes both
+platforms independently, authenticates logs, and refuses changed source at exit.
+The first complete source-bound run is build/powder-hosts-01 at92fa021b; final-head
+results remain separate PR/local records. No native build or old physical matrix
+is relabelled as a new run.
+
+Burst initial material hash is c41e9aeb4908decc; stream hash is465745ec946bfb62
+on both OSes and allthree responses. Each same-response run reproduces all120
+recorded six-component poses and its source ledger exactly after reset. Stream
+attempts exactly2400 cells over600 source ticks, then stops; automatic pause at
+1800 is separately exercised. Blocked hard cells and a current hull whose native
+mask is from the previous sample both refuse source insertion. No controller
+impulse/torque appears despite hostile test input.
+
+The updated source92fa021b painting room was opened with the verified Windows
+runtime from its isolated host project. Visual inspection confirms the two
+buttons and status fit on screen; it is left open for owner use. Computer-use
+input was stopped when user activity was detected, so no claim of manually
+activating the burst button is made. The actual-host suite exercises that method.
+This visual check is not subjective gameplay acceptance.
+
+Local document, M11, materialized repository/runtime identity, retrieval and
+whitespace checks pass. Native/sanitizer source is unchanged; no additional core
+run is claimed. Hosted documentation remains blocked by the inherited material
+source-lock mismatch, preserving original failure and hashes. All PRs stay draft
+and unmerged.
