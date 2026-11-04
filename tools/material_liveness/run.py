@@ -72,7 +72,7 @@ def canonical_sha(value):
 
 def fact(path, root=None):
     path = Path(path)
-    return {'path': str(path.relative_to(root)) if root else str(path), 'bytes': path.stat().st_size,
+    return {'path': path.relative_to(root).as_posix() if root else str(path), 'bytes': path.stat().st_size,
             'sha256': sha(path)}
 
 
@@ -253,6 +253,98 @@ def inventory(root, sources, extra_paths=()):
         if path == root or root in path.parents:
             paths.add(path.relative_to(root).as_posix())
     return [fact(root / path, root) for path in sorted(paths)]
+
+
+def make_dependency_paths(content):
+    """Read compiler Make dependencies without confusing drive letters/escapes.
+
+    This handles generated -MMD files, not arbitrary Make programs. Backslashes
+    before ordinary path characters remain Windows separators; quoted spaces,
+    hashes, colons and dollar signs are decoded without shell interpretation.
+    """
+    if '\0' in content:
+        raise EvidenceError('NUL in dependency file')
+    content = re.sub(r'\\\r?\n', ' ', content)
+    dependencies = []
+    for line in content.splitlines():
+        if not line.strip():
+            continue
+        delimiter, token_start, index = None, 0, 0
+        while index < len(line):
+            char = line[index]
+            if char == '\\' and index + 1 < len(line) and line[index + 1] in ' \t#:$':
+                index += 2
+                continue
+            if char.isspace():
+                token_start = index + 1
+            if char == ':':
+                drive = (index == token_start + 1 and line[token_start].isalpha() and
+                         index + 1 < len(line) and line[index + 1] in '/\\')
+                if not drive:
+                    delimiter = index
+                    break
+            index += 1
+        if delimiter is None:
+            raise EvidenceError('dependency rule has no target delimiter')
+        values, current, index = [], [], delimiter + 1
+        while index < len(line):
+            char = line[index]
+            if char.isspace():
+                if current:
+                    values.append(''.join(current))
+                    current = []
+                index += 1
+                continue
+            if char == '#':
+                break
+            if char == '\\' and index + 1 < len(line):
+                following = line[index + 1]
+                if following in ' \t#:$':
+                    current.append(following)
+                    index += 2
+                    continue
+                if following == '\\' and current:
+                    current.append('\\')
+                    index += 2
+                    continue
+            if char == '$' and index + 1 < len(line) and line[index + 1] == '$':
+                current.append('$')
+                index += 2
+                continue
+            current.append(char)
+            index += 1
+        if current:
+            values.append(''.join(current))
+        dependencies.extend(values)
+    if not dependencies:
+        raise EvidenceError('dependency files contain no inputs')
+    return dependencies
+
+
+def actual_dependencies(root, dependency_files, compile_directory):
+    paths = set()
+    for dependency_file in dependency_files:
+        for name in make_dependency_paths(dependency_file.read_text(encoding='utf-8')):
+            path = Path(name)
+            if not path.is_absolute():
+                path = compile_directory / path
+            path = path.resolve()
+            if not path.is_file():
+                raise EvidenceError(f'compiler dependency is unavailable or misparsed: {name}')
+            paths.add(path)
+    if (root / 'native/src/world.cpp').resolve() not in paths:
+        raise EvidenceError('compiler dependency inventory does not contain actual native/src/world.cpp')
+    return [fact(path, root) if root in path.parents else fact(path) for path in sorted(paths)]
+
+
+def compiler_flags(mode, operating_system):
+    flags = list(COMMON_FLAGS)
+    if operating_system == 'nt':
+        # The Windows workflow uses installed LLVM's GNU-compatible driver in
+        # a real MSVC development environment, not a POSIX thread runtime.
+        flags.remove('-pthread')
+        flags += ['-fexceptions', '-fcxx-exceptions']
+    return flags + MODES[mode]
 
 
 def physical_arguments(argv):
@@ -475,11 +567,11 @@ def run(args):
         receipt['compiler_version'] = version
         if version['returncode'] != 0 or version['timed_out']:
             raise EvidenceError('compiler identity command failed')
-        flags = COMMON_FLAGS + MODES[args.mode] + ['-I' + str(root / 'native/include')] + extra_flags
+        flags = compiler_flags(args.mode, os.name) + ['-I' + str(root / 'native/include')] + extra_flags
         receipt['compile_flags'] = flags
         objects = []
         for index, source in enumerate(sources):
-            obj = out / f'input-{index:02d}.o'
+            obj = out / (f'input-{index:02d}.obj' if os.name == 'nt' else f'input-{index:02d}.o')
             dep = out / f'input-{index:02d}.d'
             command = [compiler, *flags, '-MMD', '-MF', str(dep), '-c', str(root / source), '-o', str(obj)]
             step = process(command, out, out / f'compile-{index:02d}',
@@ -500,15 +592,7 @@ def run(args):
         receipt['build_finished_utc'] = now()
         receipt['executable'] = fact(executable)
         receipt['dependency_files'] = [fact(path) for path in sorted(out.glob('input-*.d'))]
-        dependencies = set()
-        for dep in sorted(out.glob('input-*.d')):
-            content = dep.read_text().replace('\\\n', ' ')
-            # GCC Make-style -MMD files, with escaped whitespace handled below.
-            for value in re.findall(r'(?:\\.|[^\s])+', content.split(':', 1)[1]):
-                path = Path(re.sub(r'\\(.)', r'\1', value)).resolve()
-                if path.is_file():
-                    dependencies.add(path)
-        receipt['actual_dependency_inventory'] = [fact(path, root) if root in path.parents else fact(path) for path in sorted(dependencies)]
+        receipt['actual_dependency_inventory'] = actual_dependencies(root, sorted(out.glob('input-*.d')), out)
         if inventory(root, sources, (args.plan,)) != receipt['compiled_input_inventory']:
             raise EvidenceError('source/runtime identity mismatch: inputs changed during build')
         receipt['status'] = 'RUNNING'

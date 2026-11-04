@@ -95,6 +95,55 @@ class EvidenceTests(unittest.TestCase):
         receipt['plan_sha256'] = reader.canonical_sha(receipt['plan'])
         return receipt
 
+    def test_dependency_parser_preserves_windows_drive_colons_and_separators(self):
+        dep = r'C:\build\probe.obj: C:\src\native\src\world.cpp C:\Program\ Files\SDK\header.hpp' + '\n'
+        self.assertEqual(runner.make_dependency_paths(dep), [r'C:\src\native\src\world.cpp', r'C:\Program Files\SDK\header.hpp'])
+        escaped = r'C\:/build/probe.obj: C\:/src/native/src/world.cpp D\:/sdk/a.hpp' + '\n'
+        self.assertEqual(runner.make_dependency_paths(escaped), ['C:/src/native/src/world.cpp', 'D:/sdk/a.hpp'])
+
+    def test_dependency_parser_decodes_generated_spaces_hashes_and_dollars(self):
+        dep = 'object.o: source.cpp path\\ with\\ space.hpp tag\\#value.hpp dollar$$name.hpp \\\n  second.hpp\n'
+        self.assertEqual(runner.make_dependency_paths(dep),
+                         ['source.cpp', 'path with space.hpp', 'tag#value.hpp', 'dollar$name.hpp', 'second.hpp'])
+
+    def test_dependency_parser_retains_unescaped_windows_drive_target(self):
+        dep = 'C:/build/object.obj: C:/src/world.cpp \\\r\n C:/include/a.hpp\r\n'
+        self.assertEqual(runner.make_dependency_paths(dep), ['C:/src/world.cpp', 'C:/include/a.hpp'])
+
+    def test_dependency_parser_rejects_missing_rules_and_empty_inputs(self):
+        for dep in ('not a rule', 'empty.o:\n', '\0'):
+            with self.assertRaises(runner.EvidenceError):
+                runner.make_dependency_paths(dep)
+
+    def test_actual_dependencies_resolve_from_compiler_directory_and_require_world(self):
+        root, build = self.directory / 'repo', self.directory / 'build'
+        world = root / 'native/src/world.cpp'
+        world.parent.mkdir(parents=True)
+        world.write_text('test-only bytes')
+        build.mkdir()
+        dep = build / 'input.d'
+        dep.write_text('object.o: ../repo/native/src/world.cpp\n')
+        inventory = runner.actual_dependencies(root, [dep], build)
+        self.assertEqual(inventory[0]['path'], 'native/src/world.cpp')
+        another = root / 'other.hpp'
+        another.write_text('header')
+        dep.write_text('object.o: ../repo/other.hpp\n')
+        with self.assertRaisesRegex(runner.EvidenceError, 'does not contain actual'):
+            runner.actual_dependencies(root, [dep], build)
+        dep.write_text('object.o: ../repo/missing.hpp\n')
+        with self.assertRaisesRegex(runner.EvidenceError, 'unavailable or misparsed'):
+            runner.actual_dependencies(root, [dep], build)
+
+    def test_windows_flags_use_explicit_cxx_exceptions_without_posix_threads(self):
+        windows = runner.compiler_flags('normal', 'nt')
+        linux = runner.compiler_flags('normal', 'posix')
+        self.assertNotIn('-pthread', windows)
+        self.assertIn('-fexceptions', windows)
+        self.assertIn('-fcxx-exceptions', windows)
+        self.assertIn('-pthread', linux)
+        self.assertIn('-O2', windows)
+        self.assertIn('-O2', linux)
+
     def test_current_committed_manifest_loads_without_executing(self):
         path = runner.ROOT / 'native/tests/fixtures/material_liveness_campaign_v1.json'
         manifest = runner.load_json(path)

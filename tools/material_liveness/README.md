@@ -112,3 +112,33 @@ from a final state, invent a retry contract, or reimplement material movement.
 checks using synthetic rows. These tests are apparatus checks, not native
 physical evidence. If raw files are moved as a bundle, retain their filenames and
 pass `--raw-root` to the reader. It verifies their original bytes and SHA-256.
+
+## Focused hosted execution
+
+`.github/workflows/material-liveness-phase-a.yml` runs two ordinary native jobs,
+with literal `ubuntu-24.04` and `windows-2022` hosts and40-minute job bounds. PR
+triggers cover only this probe, its manifest, its tools and this workflow. Manual
+runs retain separate concurrency identities. Both check out the exact PR head
+(or dispatch SHA), fetch compatibility history and run the same552-case manifest.
+The workflow does not invoke production publication, Godot or the full Native
+matrix, and it does not change the existing expensive-workflow draft gates.
+
+Linux selects installed GCC13. Windows discovers installed Visual Studio with
+`vswhere`, calls `VsDevCmd`, and selects an installed LLVM `clang++.exe`; missing
+tools fail rather than downloading an unqualified compiler. Windows uses explicit
+C++ exception flags and no POSIX thread flag. Its actual compiler/version, flags,
+inputs and native executable hash are recorded by the same runner. Windows
+checkout preserves LF bytes. Adding this workflow is not evidence that Windows
+execution has passed; only completed, authenticated hosted outputs establish that.
+
+Compiler dependency parsing handles Windows drive colons, path separators,
+escaped spaces, hashes, dollar signs and line continuations. Missing/misparsed
+files fail, relative dependencies resolve against the actual compiler working
+directory, and the inventory must include `native/src/world.cpp`. Source-relative
+inventory paths use forward slashes on both systems.
+
+Both jobs run the independent reducer, preserve unsuccessful attempts, and pack
+raw files using the authenticated transport codec when available. The always-run
+artifact step retains raw/provenance/partial outputs and transport shards for90
+days. Objects and executable bytes are excluded; the receipt retains their
+executable identity. Local sanitizer attempts remain a separate evidence lane.
