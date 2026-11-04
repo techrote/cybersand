@@ -17,7 +17,10 @@ records accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`.
 [Section 14](#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04)
 records the owner's later assignment: generated Main labels, scoped current
 proofs and an apparatus source transition, ending at a draft independent-review
-handoff. It authorizes no merge or other production consumer migration.
+handoff. The later #374/current-main reconciliation changes only the accepted
+B executable-source baseline; its old display oracle and 27-owner authority
+remain frozen. Independent admission review must precede Ready-for-review.
+No merge or other production consumer migration is authorized.
 
 The [current-main admission correction](#11-current-main-review-and-implementation-admission--2026-11-03)
 and [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
@@ -643,9 +646,12 @@ assignment admits exactly one production consumer:
 `godot/scripts/main.gd::material_name(material_id: int) -> String`. The
 [canonical tool guide](../operations/material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
 owns implementation details and commands; the
-[dated B evidence](../audits/2026-11-04-mat-auth353b-display-names.md) owns source,
-runtime and artifact qualification. The deliverable is a draft PR for independent
-review, with no merge, issue closure or import of other active branches.
+[dated B evidence](../audits/2026-11-04-mat-auth353b-display-names.md) owns the
+original source, runtime and artifact qualification. The later
+[#374 reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+keeps new-source evidence separate. The deliverable stays a draft PR for
+independent admission review, before Ready, with no merge, issue closure or
+import of other active branches.
 
 The labels-only generator validates the entire unchanged canonical catalogue
 and a small independent presentation schema. It preserves all existing display
@@ -655,7 +661,8 @@ bounded indexing replaces the old Main table; all public callers remain on the
 same method. Picker membership/order, semantic-family grouping, cycling,
 secondary material behavior, Worldgen, transport v1, shaders and saves have no
 cutover. The original compiler, catalogue, four full-shadow artifacts and native
-sources stay unchanged.
+production owners stay unchanged. The accepted #374 benchmark is preserved as
+research apparatus through the source-admission transition below.
 
 This admission also authorizes current schema-v2 compatibility/native/shadow
 receipts that separately identify unchanged native runtime authority, complete
@@ -665,14 +672,35 @@ metadata compilation and Godot shadow parsing cannot satisfy that report.
 Historical schema-v1 receipts/readers remain authenticatable through their dated
 paths and retained source; a v1 result is not current B acceptance.
 
-The original 27-owner lock remains authenticated against `0fd4af59` with unchanged
-catalogue/capability digests and stale-policy refusal. A separate B admission
-inventory authenticates accepted `7ef4856e` native/Godot executable and routing
-sources, allowing only the Main preload/method, generated labels resource and
-apparatus dependency entry. It refuses extra, renamed and indirect consumers.
-Later integrations touching that inventory, including another Main writer such
-as #370, require a reviewed B transition and new source-qualified evidence;
-they do not authorize refreshing the immutable A lock.
+The original 27-owner lock remains authenticated against
+`0fd4af5987e77db4da3e37c757cf2c0917ae9e15`, with unchanged catalogue/capability
+digests and stale-policy refusal. The old display-output oracle independently
+remains at `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`, tree
+`36ce5a01e754a141c321f41cac7f1c6b6059c371`.
+
+**Current #374 reconciliation:** accepted main advanced to
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`, tree
+`4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`, after the original `bbed081b`
+independent review. Its added `native/bench/lcb201_pressure_idle_cost.cpp`
+correctly fails the original B path-set guard, although the protected owners,
+material domain and old Main/CellWorld source remain unchanged. The separate
+B admission now authenticates accepted native/Godot executable and routing
+sources against `01f9b7c8`. The benchmark's accepted bytes are included in that
+inventory; there is no benchmark exemption or permission for unknown files.
+The [three-baseline contract](../operations/material-catalogue-shadow.md#current-main-b-admission-after-374--2026-11-04)
+keeps this change separate from the historical display oracle and immutable A
+lock. The allowed consumer delta remains only the Main preload/method,
+generated labels resource and apparatus dependency entry.
+
+Extra, renamed and indirect consumers remain refused. Later integrations
+touching the B inventory, including another Main writer such as #370, require
+a reviewed transition and new source-qualified evidence; they do not authorize
+refreshing either frozen authority. The reconciled candidate requires fresh
+actual four-stage B proof and separate native/shadow receipts. It stops before
+Ready for a strictly read-only **GO TO READY / CONDITIONAL / NO-GO** admission
+review. Ready-state runtime/provenance gates, Web export/package loading,
+startup/lookup measurements and final independent integration review remain
+pending; the original `bbed081b` audit does not approve the new head.
 
 The independent legacy-name fixture comes from actual accepted Main/CellWorld
 Git source before the consumer changes. It covers every byte-domain ID and
@@ -685,6 +713,8 @@ Adding the generated resource to `microscenario_identity.gd::SOURCES` deliberate
 changes current apparatus source hashes. Previous captures retain their original
 source sets and mixed-source refusal remains in force. Binary identities are
 measured from actual artifacts; source equality alone is not binary equality.
+#374's benchmark belongs to the complete B inventory, not the narrower
+MicroScenario `SOURCES` list; its admission does not change that apparatus list.
 Rollback restores the consumer, generated dependency and matching proof boundary
 together, without save or World conversion.
 

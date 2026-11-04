@@ -1,12 +1,29 @@
 """Actual file mutations against the bounded B admission (all in temp copies)."""
+import hashlib
+import json
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
+import compatibility
 import display_contract as contract
 import legacy_display_names as legacy
 import presentation
 from consumer_test_support import copy_b_inputs
+
+
+ACCEPTED_MAIN = "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+ACCEPTED_TREE = "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204"
+LEGACY_MAIN = "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+LEGACY_TREE = "36ce5a01e754a141c321f41cac7f1c6b6059c371"
+FROZEN_AUTHORITY = "0fd4af5987e77db4da3e37c757cf2c0917ae9e15"
+BENCHMARK = "native/bench/lcb201_pressure_idle_cost.cpp"
+BENCHMARK_BLOB = "d251777990a137d42264275e7eb25a6ab6760af7"
+BENCHMARK_SHA256 = "872c65fdc684a01ace9b55bfb6e92181070c21b34503f4460e4d8f8cf0297e6d"
+LOCK_SHA256 = "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
+ORACLE_SHA256 = "f7c27a60ddd6185c78b2fcc1fab956a0496021024090b467b8071305239d30a1"
 
 
 class DisplayContractTests(unittest.TestCase):
@@ -34,6 +51,153 @@ class DisplayContractTests(unittest.TestCase):
         self.assertFalse(report["runtime_execution"])
         self.assertTrue(report["b_consumer_report_required"])
         self.assertEqual(before, {p: (p.read_bytes(), p.stat().st_mtime_ns) for p in before})
+
+    def test_374_benchmark_is_authenticated_as_accepted_source(self):
+        accepted = subprocess.run(
+            ["git", "-C", str(contract.ROOT), "show", ACCEPTED_MAIN + ":" + BENCHMARK],
+            check=True, capture_output=True, timeout=30).stdout
+        self.assertEqual(hashlib.sha256(accepted).hexdigest(), BENCHMARK_SHA256)
+        self.assertEqual((self.root / BENCHMARK).read_bytes(), accepted)
+        inventory = contract.script_inventory()
+        self.assertEqual(inventory[BENCHMARK], BENCHMARK_BLOB)
+        with patch.object(contract, "B_ADMISSION_BASELINE", LEGACY_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", LEGACY_TREE):
+            old_inventory = contract.script_inventory()
+        self.assertEqual(set(inventory) - set(old_inventory), {BENCHMARK})
+        self.assertEqual({name: inventory[name] for name in old_inventory}, old_inventory)
+        self.assertNotIn("tools/lcb/pressure_idle_cost.py", inventory)
+        report = self.check()
+        self.assertEqual(report["status"], "PASS")
+        self.assertEqual(report["admission_source_commit"], ACCEPTED_MAIN)
+        self.assertEqual(report["admission_source_tree"], ACCEPTED_TREE)
+        self.assertEqual(report["legacy_display_oracle_commit"], LEGACY_MAIN)
+        self.assertEqual(report["legacy_display_oracle_tree"], LEGACY_TREE)
+        self.assertEqual(report["executable_source_count"], len(inventory) + 1)
+
+    def test_old_inventory_refuses_the_accepted_374_addition(self):
+        # Reproduce the original intake blocker using the historical inventory,
+        # while retaining the actual newly accepted benchmark in the candidate.
+        with patch.object(contract, "B_ADMISSION_BASELINE", LEGACY_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", LEGACY_TREE):
+            with self.assertRaises(ValueError) as refusal:
+                self.check()
+        self.assertIn("unapproved executable source inventory", str(refusal.exception))
+        self.assertIn("missing=[]", str(refusal.exception))
+        self.assertIn("extra=['" + BENCHMARK + "']", str(refusal.exception))
+
+    def test_accepted_benchmark_bytes_cannot_change(self):
+        path = self.root / BENCHMARK
+        path.write_bytes(path.read_bytes() + b"\n// unapproved benchmark change\n")
+        with self.assertRaisesRegex(ValueError, "lcb201_pressure_idle_cost.cpp: executable source drift"):
+            self.check()
+
+    def test_accepted_benchmark_cannot_be_removed(self):
+        (self.root / BENCHMARK).unlink()
+        with self.assertRaises(ValueError) as refusal:
+            self.check()
+        self.assertIn("missing=['" + BENCHMARK + "']", str(refusal.exception))
+        self.assertIn("extra=[]", str(refusal.exception))
+
+    def test_accepted_benchmark_cannot_be_renamed(self):
+        renamed = "native/bench/renamed_idle_cost.cpp"
+        (self.root / BENCHMARK).rename(self.root / renamed)
+        with self.assertRaises(ValueError) as refusal:
+            self.check()
+        self.assertIn("missing=['" + BENCHMARK + "']", str(refusal.exception))
+        self.assertIn("extra=['" + renamed + "']", str(refusal.exception))
+
+    def test_accepted_benchmark_cannot_admit_an_additional_copy(self):
+        copied = "native/bench/copied_idle_cost.cpp"
+        (self.root / copied).write_bytes((self.root / BENCHMARK).read_bytes())
+        with self.assertRaises(ValueError) as refusal:
+            self.check()
+        self.assertIn("missing=[]", str(refusal.exception))
+        self.assertIn("extra=['" + copied + "']", str(refusal.exception))
+
+    def test_374_admission_does_not_exempt_arbitrary_executable_suffixes(self):
+        native_suffixes = {".h", ".hh", ".hpp", ".hxx", ".c", ".cc", ".cpp", ".cxx", ".inc"}
+        # Keep the expected scope independent of the implementation's suffix
+        # set, so deleting a checked suffix cannot delete its negative control.
+        executable_suffixes = (".gd", ".tscn", ".tres", ".godot", ".gdshader", ".gdextension", ".cfg",
+                               ".h", ".hh", ".hpp", ".hxx", ".c", ".cc", ".cpp", ".cxx", ".inc")
+        for suffix in executable_suffixes:
+            with self.subTest(suffix=suffix):
+                directory = "native/bench" if suffix in native_suffixes else "godot"
+                relative = directory + "/unadmitted_source" + suffix
+                path = self.root / relative
+                path.write_bytes(b"unadmitted executable source\n")
+                try:
+                    with self.assertRaises(ValueError) as refusal:
+                        self.check()
+                    self.assertIn("unapproved executable source inventory", str(refusal.exception))
+                    self.assertIn("extra=['" + relative + "']", str(refusal.exception))
+                finally:
+                    path.unlink()
+
+    def test_wrong_b_admission_tree_is_refused(self):
+        with patch.object(contract, "B_ADMISSION_TREE", LEGACY_TREE):
+            with self.assertRaisesRegex(ValueError, "B admission tree differs"):
+                self.check()
+
+    def test_new_baseline_cannot_silently_admit_changed_main_or_identity(self):
+        inventory = contract.script_inventory()
+        for name in (contract.MAIN, contract.IDENTITY):
+            with self.subTest(name=name):
+                # Model a future accepted inventory containing changed Main or
+                # routing source. Advancing its baseline cannot extend this
+                # consumer's narrowly approved old-to-new transformation.
+                changed_inventory = {**inventory, name: "0" * 40}
+                with patch.object(contract, "script_inventory", return_value=changed_inventory):
+                    with self.assertRaisesRegex(ValueError, "B admission baseline differs from frozen legacy display source"):
+                        self.check()
+
+    def test_b_admission_keeps_frozen_27_owner_authentication(self):
+        self.assertEqual(compatibility.BASELINE, FROZEN_AUTHORITY)
+        self.assertEqual(legacy.BASELINE, LEGACY_MAIN)
+        self.assertEqual(contract.B_ADMISSION_BASELINE, ACCEPTED_MAIN)
+        self.assertEqual(len({compatibility.BASELINE, legacy.BASELINE, contract.B_ADMISSION_BASELINE}), 3)
+        frozen_sources = compatibility.retained_sources(contract.ROOT)
+        self.assertEqual(len(frozen_sources), 27)
+        for relative, frozen in frozen_sources.items():
+            actual = (contract.ROOT / relative).read_bytes()
+            self.assertEqual(actual, frozen, relative)
+            destination = self.root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(actual)
+        lock = self.root / compatibility.LOCK
+        lock.parent.mkdir(parents=True, exist_ok=True)
+        lock.write_bytes((contract.ROOT / compatibility.LOCK).read_bytes())
+        before = (lock.read_bytes(), lock.stat().st_mtime_ns)
+        self.assertEqual(hashlib.sha256(before[0]).hexdigest(), LOCK_SHA256)
+        self.assertEqual(compatibility.read_lock(lock), compatibility.build_lock(frozen_sources))
+        report = compatibility.check(self.root, baseline_repository=contract.ROOT)
+        self.assertEqual(report["baseline"], FROZEN_AUTHORITY)
+        self.assertEqual(report["protected_sources"], 27)
+        self.assertEqual(report["display_consumer_source_guard"]["admission_source_commit"], ACCEPTED_MAIN)
+        self.assertEqual(before, (lock.read_bytes(), lock.stat().st_mtime_ns))
+        wrong = json.loads(before[0])
+        wrong["source_commit"] = ACCEPTED_MAIN
+        lock.write_text(json.dumps(wrong) + "\n", encoding="utf-8")
+        with self.assertRaisesRegex(compatibility.CompatibilityError, "source_commit: expected retained"):
+            compatibility.check(self.root, baseline_repository=contract.ROOT)
+
+    def test_legacy_oracle_stays_frozen_and_ignores_374_and_candidate_inputs(self):
+        self.assertEqual((legacy.BASELINE, legacy.BASELINE_TREE), (LEGACY_MAIN, LEGACY_TREE))
+        fixture = self.root / legacy.FIXTURE
+        before = (fixture.read_bytes(), fixture.stat().st_mtime_ns)
+        self.assertEqual(hashlib.sha256(before[0]).hexdigest(), ORACLE_SHA256)
+        # These intentionally invalid inputs must be irrelevant to the old
+        # display oracle. Only the separate B/presentation guards consume them.
+        for relative in (BENCHMARK, presentation.PRESENTATION, contract.RESOURCE):
+            (self.root / relative).write_bytes(b"not a legacy oracle input\n")
+        with patch.object(legacy, "git_bytes", wraps=legacy.git_bytes) as historical_reads:
+            report = legacy.check(self.root, contract.ROOT)
+        self.assertEqual([call.args[1] for call in historical_reads.call_args_list],
+                         [legacy.MAIN, legacy.CELL])
+        self.assertEqual(report["source_commit"], LEGACY_MAIN)
+        self.assertEqual(report["fixture_sha256"], ORACLE_SHA256)
+        self.assertEqual(report["cases"], 277)
+        self.assertEqual(before, (fixture.read_bytes(), fixture.stat().st_mtime_ns))
 
     def test_missing_stale_and_poisoned_generated_resource_fail_closed(self):
         path = self.root / contract.RESOURCE

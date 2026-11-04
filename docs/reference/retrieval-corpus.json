@@ -135,6 +135,10 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-11-04-mat-auth384-current-main-reconciliation.md",
+      "reason": "Dated 384/374 B-inventory reconciliation and exact-source evidence boundary. Retrieve current three-baseline admission and before-Ready status through the material catalogue guide, architecture, handover and validation ledger; original and reconciled receipts retain separate source identities."
+    },
+    {
       "path": "audits/2026-11-04-mat-auth353b-display-names.md",
       "reason": "Dated bounded Main-label consumer qualification and scoped-proof transition. Retrieve through the canonical material catalogue guide and validation ledger; static checks, actual application proof, historical v1 receipts and draft integration status remain distinct."
     },

@@ -1,7 +1,7 @@
 {
-  "version": 3,
+  "version": 4,
   "reviewed": "2026-11-04",
-  "scope": "Separate MAT-AUTH-001 353-A implementation questions; version3 updates only MAT353A-01's revision-sensitive facts and fixture metadata for accepted A-only main7ef4856e and the separately assigned draft Main-label B consumer. Query wording, canonical/source routes, all other questions, frozen32 and challenge157 remain unchanged; version2 remains in accepted Git. Full-shadow metadata stays unconsumed, with only the bounded Main labels candidate newly authorized.",
+  "scope": "Separate MAT-AUTH-001 353-A implementation questions; version4 updates only MAT353A-01's revision-sensitive facts and fixture metadata for the later accepted374/current-main B reconciliation, preserving the A-only acceptance at7ef4856e. Query wording, canonical/source routes, all other questions, frozen32 and challenge157 remain unchanged; version3 remains at bbed081b. Full-shadow metadata stays unconsumed, and the reconciled Main-label candidate stops before Ready for independent admission review.",
   "questions": [
     {
       "id": "MAT353A-01",
@@ -10,7 +10,7 @@
       "facts": [
         "Owner-authorized353-A supplies the shadow compiler, independent native parity and immutable compatibility guards accepted through merged371 at main7ef4856e.",
         "The original full-shadow outputs, native/fallback physics and existing policy artifacts remain unchanged;357 is the merged owner-adopted Planned architecture. The later separately assigned B candidate changes only Main's generated display names, scoped current proofs and the apparatus dependency inventory.",
-        "The bounded B assignment ends at a draft independent-review handoff with no merge authorization; other production consumers and later stages remain separately gated, and broad353 remains open."
+        "The later B reconciliation authenticates accepted374/main01f9b7c8 as its executable baseline while retaining the old display oracle at7ef4856e and frozen27-owner authority at0fd4af59. It stops Draft before independent admission review and Ready, with no merge authorization; other consumers and later stages remain separately gated and broad353 stays open."
       ],
       "sources": ["operations/material-catalogue-shadow.md"],
       "revision_sensitive": true

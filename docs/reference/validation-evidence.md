@@ -10,7 +10,28 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-AUTH 384 current-main B admission — 2026-11-04
+
+The [reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+separates reviewed #384 `bbed081b`, accepted #374/main `01f9b7c8` and the resulting
+candidate's fresh evidence. #374 adds an authenticated native benchmark, changing
+the complete B executable inventory without changing the 132-slot material
+domain, old Main/CellWorld source or 27 protected owners. B admission now uses
+`01f9b7c8`; the display oracle deliberately remains at `7ef4856e` and the
+compatibility lock at `0fd4af59`.
+
+Fresh final-head compatibility, native/shadow v2 and four-stage actual B reports
+belong to [#384's source-qualified ledger](https://github.com/techrote/cybersand/pull/384)
+and retained evidence, with raw files, commands, return codes and hashes. The
+original candidate's receipts below are not relabelled as new-head qualification.
+The endpoint remains Draft before independent **GO TO READY / CONDITIONAL /
+NO-GO** admission review. Expensive ready-state matrices, Web export/package
+loading, lookup/startup measurements and final independent integration audit
+remain pending; a source check or draft skip is not a runtime pass.
+
 ## MAT-AUTH Main display-name candidate proof — 2026-11-04
+
+**Original Main-label candidate evidence, preserved.**
 
 The [B evidence record](../audits/2026-11-04-mat-auth353b-display-names.md)
 starts from accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`,

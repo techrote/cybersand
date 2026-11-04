@@ -1,7 +1,9 @@
 """Narrow current B import admission; this is source proof, not UI execution.
 
 The accepted native/Godot executable and routing sources are authenticated
-through Git. Only the one
+through a separately pinned current-main Git baseline. The legacy display
+oracle and the 27-owner compatibility authority retain their historical
+baselines. Only the one
 Main method/preload and one apparatus source entry may change in this bounded
 checkpoint. Thus a renamed copy, extra alias or dynamically assembled indirect
 import cannot become a second consumer by evading a filename search. A later
@@ -18,6 +20,10 @@ import legacy_display_names as legacy
 import presentation
 
 ROOT = Path(__file__).resolve().parents[2]
+# Reviewed #374 integration: ordinary accepted source, never a path exemption.
+# This is distinct from legacy.BASELINE and compatibility.BASELINE.
+B_ADMISSION_BASELINE = "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+B_ADMISSION_TREE = "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204"
 RESOURCE = "godot/scripts/generated/material_ui_names.gd"
 MAIN = "godot/scripts/main.gd"
 IDENTITY = "godot/scripts/microscenario_identity.gd"
@@ -43,7 +49,11 @@ def _blob_sha(data: bytes) -> str:
 
 
 def script_inventory(repository: Path = ROOT) -> dict[str, str]:
-    raw = subprocess.run(["git", "-C", str(repository), "ls-tree", "-rz", legacy.BASELINE,
+    tree = subprocess.run(["git", "-C", str(repository), "rev-parse", B_ADMISSION_BASELINE + "^{tree}"],
+                          check=True, capture_output=True, text=True, timeout=30).stdout.strip()
+    if tree != B_ADMISSION_TREE:
+        raise ValueError("B admission tree differs from the reviewed accepted source")
+    raw = subprocess.run(["git", "-C", str(repository), "ls-tree", "-rz", B_ADMISSION_BASELINE,
                           "--", *EXECUTABLE_ROOTS], check=True, capture_output=True, timeout=30).stdout
     result = {}
     for entry in raw.split(b"\0"):
@@ -57,7 +67,7 @@ def script_inventory(repository: Path = ROOT) -> dict[str, str]:
                 raise ValueError("unapproved production script type: " + name)
             result[name] = digest.decode("ascii")
     if MAIN not in result or IDENTITY not in result or RESOURCE in result:
-        raise ValueError("accepted legacy executable source inventory is incomplete")
+        raise ValueError("accepted B executable source inventory is incomplete")
     return result
 
 
@@ -66,6 +76,13 @@ def check(root: Path = ROOT, baseline_repository: Path = ROOT) -> dict:
     generated = presentation.check(root)
     # Full old return table is authenticated independently of presentation.
     legacy.check(root, baseline_repository)
+    accepted = script_inventory(baseline_repository)
+    # #374 changes neither pre-cutover Main nor the apparatus source list.
+    # Authenticate that premise independently; a later Main/routing transition
+    # cannot be admitted merely by moving the executable inventory baseline.
+    for name in (MAIN, IDENTITY):
+        if _blob_sha(_lf(legacy.git_bytes(baseline_repository, name))) != accepted[name]:
+            raise ValueError(name + ": B admission baseline differs from frozen legacy display source; separate consumer transition required")
     old_main = _lf(legacy.git_bytes(baseline_repository, MAIN)).decode("utf-8")
     old_method = legacy.function(old_main, "material_name")
     expected_main = old_main.replace("extends Control\n", "extends Control\n\n" + PRELOAD, 1)
@@ -79,7 +96,6 @@ def check(root: Path = ROOT, baseline_repository: Path = ROOT) -> dict:
     expected_identity = old_identity.replace(IDENTITY_NEEDLE, IDENTITY_NEEDLE + IDENTITY_ENTRY)
     if _lf((root / IDENTITY).read_bytes()).decode("utf-8") != expected_identity:
         raise ValueError("microscenario_identity.gd: expected only the admitted executable resource entry; stale source fingerprint refused")
-    accepted = script_inventory(baseline_repository)
     current = {p.relative_to(root).as_posix(): p for tree in EXECUTABLE_ROOTS for p in (root / tree).rglob("*")
                if p.is_file() and p.suffix in EXECUTABLE_SUFFIXES and
                ".godot" not in p.relative_to(root).parts}
@@ -97,8 +113,10 @@ def check(root: Path = ROOT, baseline_repository: Path = ROOT) -> dict:
         facts.append({"path": name, "lf_bytes": len(data), "lf_sha256": hashlib.sha256(data).hexdigest()})
     inventory_bytes = json.dumps(facts, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return {"status": "PASS", "consumer": "godot/scripts/main.gd::material_name",
-            "resource": RESOURCE, "admission_source_commit": legacy.BASELINE,
-            "admission_source_tree": legacy.BASELINE_TREE,
+            "resource": RESOURCE, "admission_source_commit": B_ADMISSION_BASELINE,
+            "admission_source_tree": B_ADMISSION_TREE,
+            "legacy_display_oracle_commit": legacy.BASELINE,
+            "legacy_display_oracle_tree": legacy.BASELINE_TREE,
             "generated_artifacts": generated["artifacts"],
             "executable_source_count": len(facts),
             "executable_source_inventory_sha256": hashlib.sha256(inventory_bytes).hexdigest(),

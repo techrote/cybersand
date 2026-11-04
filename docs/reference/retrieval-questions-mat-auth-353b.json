@@ -1,7 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "reviewed": "2026-11-04",
-  "scope": "Separate six-question MAT-AUTH-001 353-B Main-label consumer fixture. It checks sole presentation authority, scoped current proof, signed invalid semantics, frozen native/shadow inputs, apparatus identity and the draft-only admission boundary. It does not modify frozen32, challenge157 or prior question wording/routes, and lexical canonical hits are not runtime or answer-sufficiency proof.",
+  "scope": "Separate six-question MAT-AUTH-001 353-B Main-label consumer fixture. Version2 updates only revision-sensitive MAT353B-04/05/06 facts and this metadata for the accepted374/current-main B-admission transition and stop-before-Ready handoff. All six queries, canonical/source routes and MAT353B-01/02/03 facts remain unchanged; version1 remains at bbed081b. Frozen32 and challenge157 are unchanged. Lexical canonical hits are not runtime or answer-sufficiency proof.",
   "questions": [
     {
       "id": "MAT353B-01",
@@ -46,7 +46,7 @@
       "facts": [
         "The original 27 legacy owners remain authenticated against frozen 0fd4af59; their lock, catalogue/capability digests and stale-policy refusal are not refreshed.",
         "The canonical catalogue, original compiler, all four full-shadow outputs and native/fallback behavior remain unchanged; full native-shadow metadata stays unconsumed by production.",
-        "A separate B executable-source admission allows only the new resource, exact Main consumer and identity dependency; extra or indirect consumers require a reviewed transition, not an A-lock refresh."
+        "The separate B executable-source admission now authenticates accepted374/main01f9b7c8, including its unchanged native benchmark, while the legacy display oracle remains at7ef4856e. It still allows only the new resource, exact Main consumer and identity dependency; extra or indirect consumers require a reviewed transition, not an A-lock or oracle refresh."
       ],
       "sources": ["operations/material-catalogue-shadow.md"],
       "revision_sensitive": true
@@ -58,7 +58,8 @@
       "facts": [
         "The generated executable resource is added to microscenario_identity.gd::SOURCES, so current apparatus source hashes deliberately change.",
         "Historical captures and receipts retain their original source sets; comparisons between old and new sets remain refused or explicitly ineligible.",
-        "Native binary hashes must be measured from actual artifacts; unchanged native source alone does not prove equal binary hashes."
+        "Native binary hashes must be measured from actual artifacts; unchanged native source alone does not prove equal binary hashes.",
+        "The complete B executable inventory and narrower MicroScenario SOURCES list are distinct; the accepted374 native benchmark enters B admission without entering the apparatus source list."
       ],
       "sources": ["operations/material-catalogue-shadow.md"],
       "revision_sensitive": true
@@ -68,8 +69,8 @@
       "query": "Does this #353-B assignment allow merging, migrating other consumers, adding ID132 or implementing Materials Lab editing?",
       "canonical": ["architecture/material-authoring-catalogue-plan.md", "operations/material-catalogue-shadow.md"],
       "facts": [
-        "The owner admits only Main display names, scoped current proof receipts and the apparatus dependency transition on an isolated feature branch, ending at a draft independent-review handoff with no merge.",
-        "Broad #353/#352 remain open; other consumers, #356 editing and unrelated branch reconciliation are not authorized.",
+        "The owner admits only Main display names, scoped current proofs and the apparatus dependency transition, plus reconciliation with accepted374/main01f9b7c8 on the existing384 branch. The resulting candidate stays Draft before a separate GO TO READY / CONDITIONAL / NO-GO admission review; no Ready transition or merge is authorized by this reconciliation assignment.",
+        "Broad #353/#352 remain open; other consumers, #356 editing and unrelated active-branch imports are not authorized. The original bbed081b audit and receipts do not qualify the reconciled head.",
         "The domain remains 132 slots with invalid10. If accepted main incorporates #358's experimental 132–137 or another expanded catalogue, stop for a new scope decision."
       ],
       "sources": ["architecture/material-authoring-catalogue-plan.md", "operations/material-catalogue-shadow.md"],

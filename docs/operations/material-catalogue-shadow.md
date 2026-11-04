@@ -15,10 +15,15 @@ records accepted A-only main
 `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. The owner separately assigned
 the [bounded Main display-name migration](#bounded-main-display-name-authority--2026-11-04):
 one labels-only generated consumer, scoped current proofs and an explicit
-apparatus source transition. This assignment permits a **draft PR, no merge**.
-Native and fallback physics retain their existing authority. The
-[B evidence record](../audits/2026-11-04-mat-auth353b-display-names.md) owns actual
-source, measured artifacts, runtime results and remaining review gates.
+apparatus source transition. The later
+[#374/current-main reconciliation](#current-main-b-admission-after-374--2026-11-04)
+authenticates accepted main `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc` for the
+B executable inventory while preserving the historical display oracle and
+27-owner lock. **PR #384 stays Draft; independent admission review precedes
+Ready-for-review.** No merge is authorized. Native and fallback physics retain
+their existing authority. The [original B evidence](../audits/2026-11-04-mat-auth353b-display-names.md)
+and [reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+keep their source, measured artifacts, runtime results and remaining gates distinct.
 
 **Historical A-only integration framing:** the following adoption/reconciliation
 paragraphs retain the scope that preceded accepted #371 and this separate B
@@ -358,20 +363,65 @@ authenticatable and cannot be relabelled as current B acceptance.
 
 The [source-admission guard](../../tools/material_catalogue/display_contract.py)
 authenticates the accepted native/Godot executable and scene/configuration
-routing inventory against `7ef4856e`. It permits only the new labels resource,
-the exact Main preload/method replacement and the declared apparatus entry.
-Second, renamed or indirect imports, including other script directories,
-addons, scene resources, autoload routing and native sources, are refused.
-This B admission inventory is separate from the unchanged 27-owner legacy lock.
-A future integration that edits Main or another admitted executable source,
-including active #370, needs a reviewed B inventory transition and fresh proofs;
-it must not refresh the A lock or silently import an active branch.
+routing inventory. Its original `bbed081b` candidate used `7ef4856e`; the
+reconciled candidate uses the explicit B baseline described below. Only the new
+labels resource, exact Main preload/method replacement and declared apparatus
+entry are permitted consumer changes. Second, renamed or indirect imports,
+including other script directories, addons, scene resources, autoload routing
+and native sources, are refused. This B inventory is separate from the unchanged
+27-owner legacy lock. A future integration that edits Main or another admitted
+executable source, including active #370, needs a reviewed B transition and fresh
+proofs; it must not refresh the A lock or silently import an active branch.
+
+### Current-main B admission after #374 — 2026-11-04
+
+**Current candidate source transition; independent admission review pending.**
+After the original #384 review, [#374](https://github.com/techrote/cybersand/pull/374)
+landed on main at `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`, tree
+`4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`. It adds
+[`native/bench/lcb201_pressure_idle_cost.cpp`](../../native/bench/lcb201_pressure_idle_cost.cpp),
+an executable C++ translation unit under the B guard's existing inventory rules.
+The old B inventory correctly refuses that extra path. #374 changes neither the
+old Main/CellWorld display source nor the material catalogue and protected owners.
+
+| Source role | Retained commit | Meaning |
+|---|---|---|
+| Frozen 27-owner compatibility authority | `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` | Immutable legacy lock, material/policy identity and source owners |
+| Legacy display-output oracle | `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` | Actual pre-cutover Main/CellWorld outputs and immutable fixture |
+| Current B executable admission | `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc` | Accepted native/Godot executable and routing inventory before the same bounded Main migration |
+
+`display_contract.py::B_ADMISSION_BASELINE` and `B_ADMISSION_TREE` authenticate
+the new accepted inventory and its tree. The accepted Main and apparatus-identity
+sources must still equal their frozen pre-cutover versions before applying the
+reviewed consumer delta. The #374 benchmark is positively authenticated against
+its accepted Git blob; no benchmark-directory, filename or unknown-source
+exemption is introduced. Tampering, removal, renaming and extra executable files
+remain refusals. [`tools/lcb/pressure_idle_cost.py`](../../tools/lcb/pressure_idle_cost.py)
+is preserved as accepted research tooling; Python under `tools/` is outside the
+guard's deliberately unchanged `native`/`godot` roots and executable suffix set.
+
+Fresh source-bound compatibility, native/shadow and four-stage actual B receipts
+are required on the resulting candidate. Original `bbed081b` receipts and the
+[dated original audit](../audits/2026-11-04-mat-auth353b-display-names.md) retain
+their original identities; they are not new-head acceptance. The
+[reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+routes the final published SHA/tree and retained evidence to the PR ledger.
+
+This assignment ends **before Ready**, even when focused checks pass. A separate
+strictly read-only reviewer must return **GO TO READY / CONDITIONAL / NO-GO**.
+Ready-state materialized provenance, full Native/sanitizers, Linux/Windows
+GDExtension/current Godot, palette/backend and applicable Water/LCB gates remain
+pending on the reconciled head. Actual Web export/package loading, browser/Wasm
+execution, old-versus-new startup/lookup measurement and the final independent
+integration audit are separate later evidence; no pass is inferred here.
 
 ### Independent oracle, apparatus transition and rollback
 
 [`legacy_display_names.py`](../../tools/material_catalogue/legacy_display_names.py)
 authenticates the old Main method and fallback building labels directly from
-accepted Git. Its immutable fixture covers all 256 byte IDs and 21 signed/large
+pre-cutover `7ef4856e`, tree `36ce5a01e754a141c321f41cac7f1c6b6059c371`.
+This oracle deliberately does not follow the later B admission baseline.
+Its immutable fixture covers all 256 byte IDs and 21 signed/large
 edge IDs, including both signed 64-bit limits, plus picker and grouping order.
 It does not derive expected returns from the new generator. Actual old and
 candidate Main and inherited Web-controller methods must match that oracle;
@@ -385,6 +435,9 @@ Current apparatus source hashes must therefore change. Historical captures
 and receipts retain their old source sets, and old/new comparisons remain
 refused or explicitly ineligible. Native artifact hashes must be measured from
 the actual files; unchanged native source alone proves no binary-hash equality.
+The complete B executable inventory and this narrower apparatus list are
+different scopes: #374's native benchmark enters B admission, but it does not
+enter `SOURCES` or redefine the already reviewed Main-label apparatus transition.
 
 Rollback restores the old consumer, removes its generated dependency from the
 apparatus source set and restores the matching A-only proof/admission boundary

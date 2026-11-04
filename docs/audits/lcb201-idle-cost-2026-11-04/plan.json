@@ -1,0 +1,55 @@
+{
+  "schema": "lcb201-idle-cost-plan-v1",
+  "issue": 201,
+  "registered": "2026-11-04",
+  "purpose": "Bounded current-main discrimination of PressureFlow quiet-water cost at the #370 host scale, with reference/cached/cached_dormant same-law parity and FreeMass as cost context only. Not a speedup threshold, not a default decision.",
+  "source_main": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+  "diagnostic_before_registration": {
+    "runs": 5,
+    "case": "pool-vented workers 1 replicate 0 alone; the four other scale profiles at workers 4 replicate 1 run concurrently as a fixture smoke",
+    "status": "mechanism discovery and fixture smoke only (all five completed with full parity); excluded from every registered summary; concurrent timings are contaminated"
+  },
+  "scale_apparatus": {
+    "benchmark": "native/bench/lcb201_pressure_idle_cost.cpp",
+    "reuses": "native/bench/lcb_pressure_optimization.cpp translation unit unchanged (equivalence, counters, memory snapshot, head comparison, peak RSS)",
+    "geometry": "lcb.rest.deep-quiet-pool.v1 (#370 quiet pool) prepared through PreparedWorldBuilder at the controlled host configuration: chunk 128, maximum chunks 128, active cores 1024, active chunks 128, parallel threshold 2, rule radius 2, Water policy 8/12, configured Baseline transport, diagnostics enabled, obstacle field 0,0,1024,1024, interest 16,16,992,272",
+    "profiles": [
+      {"id": "pool-vented", "state": "quiet vented pool; no edits"},
+      {"id": "pool-sealed", "state": "quiet pool under a one-cell lid, 7,552-cell sealed headspace; no edits"},
+      {"id": "pool-sealed-remote-gas", "state": "sealed pool; tail toggles a headspace Wall pixel every 8 ticks and vents/reseals the lid every 32 ticks"},
+      {"id": "pool-vented-moving-mask", "state": "vented pool; tail moves an 8x8 native body mask across the half-submerged surface every 4 ticks"},
+      {"id": "pool-vented-boundary-churn", "state": "vented pool; tail toggles a lid cell over one surface column every tick"}
+    ],
+    "arms": ["reference", "cached", "dormant", "freemass"],
+    "phase_ticks": {"cold": 8, "settle": 56, "quiet": 96, "tail": 96},
+    "head_ticks": [1, 8, 32, 64, 96, 128, 160, 208, 256],
+    "workers": [1, 4],
+    "replicates": 3,
+    "arm_order": "World preparation and every tick rotate (replicate + tick + position) mod 4",
+    "timeout_seconds": 300
+  },
+  "small_scale_apparatus": {
+    "benchmark": "native/bench/lcb_pressure_optimization.cpp (unchanged registered LCB-002 apparatus)",
+    "profiles": ["awake-boxed-water", "ordinary-sleeping-water", "continuous-topology-churn"],
+    "workers": [1, 4],
+    "replicates": 3,
+    "reducer": "tools/lcb/pressure_optimization_cost.py validate_rows (unchanged)",
+    "timeout_seconds": 120
+  },
+  "platform_check": {
+    "host": "WSL2 Ubuntu 24.04 on the same physical machine; never pooled with Windows timings",
+    "compiler": "GNU C++ 13.3.0 -O3",
+    "profiles": ["pool-vented", "pool-sealed"],
+    "workers": [1, 4],
+    "replicates": 1,
+    "timeout_seconds": 300
+  },
+  "attribution": {
+    "tool": "perf record -g (WSL2), pool-vented workers 1 replicate 0 under a separate -O2 -g build",
+    "status": "symbol attribution only; profiled timings are never used as benchmark values"
+  },
+  "total_children": {"scale_windows": 30, "small_scale_windows": 18, "linux": 4, "perf": 1},
+  "failure_policy": "Any nonzero exit, stderr byte, timeout, parity refusal or source/executable fence change stops that cohort. Raw output is retained; nothing is retried, relaxed or dropped.",
+  "reported_statistics": "per child: tick milliseconds p50/p95/p99/max per arm and phase, mean per-tick counters, preparation/gas/head nanoseconds, visits, motion calls, jobs and claimants; across replicates: medians of per-child values and per-replicate candidate/reference ratios. Windows and Linux are reported separately.",
+  "host_controls": "local desktop; uncontrolled background scheduling; process-name/CPU inventories before and after each cohort"
+}

@@ -12,34 +12,45 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## MAT-AUTH bounded Main display-name candidate — 2026-11-04
 
-Start from accepted A-only main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`,
-as recorded in [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829).
-The owner separately assigned [one #353-B consumer](material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04):
-generated labels for `main.gd::material_name`, scoped current proof receipts and
-the new executable dependency in MicroScenario identity. The
-[architecture boundary](../architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04)
-and [dated evidence](../audits/2026-11-04-mat-auth353b-display-names.md) own the
-precise admission and actual qualification.
+The original [#353-B consumer](material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
+was reviewed at `bbed081b9aa09ebf21823ac19ba3bd68e9133be1`, based on A-only main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` from
+[#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829).
+After #374 merged, the owner assigned reconciliation with accepted main
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`. The added native benchmark requires
+a new B executable-source admission; it does not move the historical display
+oracle or the frozen compatibility lock. Read the
+[three-baseline contract](material-catalogue-shadow.md#current-main-b-admission-after-374--2026-11-04)
+and [dated reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md).
+The [original B evidence](../audits/2026-11-04-mat-auth353b-display-names.md)
+retains its original source and proof limits.
 
 Work remains on isolated branch `feat/mat-auth-353b-display-names-20261104`.
-The authorized endpoint is a **draft PR and independent-review handoff, no merge**.
-Do not reconcile other active branches, close #353/#352, implement #356 or
+The authorized endpoint is **Draft, before Ready-for-review, with a fresh
+independent admission handoff**. Request **GO TO READY / CONDITIONAL / NO-GO**
+from a separate strictly read-only reviewer; the original `bbed081b` audit does
+not approve the reconciled head. Do not merge, reconcile other active branches,
+close #353/#352, implement #356 or
 increase the 132-slot domain. Recheck current main and #358 before integration;
 acceptance of its experimental 132–137 requires a new scope decision.
 
-Retain the 27-owner lock against `0fd4af59`, full-shadow outputs, native/fallback
-behavior and old receipts. The separate B executable-source admission refuses
+Retain the 27-owner lock against `0fd4af59`, the old display oracle at `7ef4856e`,
+full-shadow outputs, native/fallback behavior and old receipts. The separate
+B executable-source admission authenticates accepted `01f9b7c8` and refuses
 extra or indirect consumers; another Main/source integration such as #370 needs
 a reviewed B transition, not a lock refresh. Run the guide's source checks and
 retain a distinct schema-v2 report from actual candidate Main/inherited-Web
 methods. Static `--check` and native/Godot-shadow receipts cannot supply that
 runtime report. Current apparatus hashes change; mixed-source comparison
 refusal and actual artifact-hash measurement remain required.
+Full ready-state runtime/provenance gates, Web export/package loading,
+startup/lookup measurement and the final independent integration audit remain
+pending. Do not manually bypass Draft suppression.
 
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
 **Historical A-only integration assignment.** #371 subsequently merged at the
-accepted source above. The following text preserves its earlier scope; the
+accepted `7ef4856e` source. The following text preserves its earlier scope; the
 separate B assignment supersedes only its unadmitted Main-label consumer status.
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)

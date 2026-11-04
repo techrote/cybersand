@@ -10,6 +10,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## PressureFlow idle cost (#201) — 2026-11-04
+
+The [#201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
+measures accepted main `3da7e7be` natively, and is consistent with draft #370's
+≈30 ms quiet-pool PressureFlow tick.
+The pool's Water sleeps; the cost is serial reference preparation over the 1.64M
+cells that the prepared 1024² route makes resident. Same-law cached and
+cached_dormant variants cut quiet cost from ≈31–41 ms to ≈9–12 ms per native tick (FreeMass ≈0.02 ms). They are not
+idle-free: a per-tick wake scan remains, and gas-input edits or moving body
+masks restore roughly reference cost.
+**Task outcome B** (not #26's): residual cost is excessive at this scale. Two bounded
+cached-only proposals (P1 wake-summary elision, P2 narrowed gas revocation) are
+**Planned, not implemented**. No production code, default or host changed; #201
+stays open, and a full-host cohort remains the next practical-cost experiment.
+
 ## Material shadow foundation and integration — 2026-11-04
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
@@ -20,14 +35,20 @@ at main `7ef4856e`. The owner separately assigned the
 [bounded Main display-name candidate](../architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04).
 It replaces one presentation table with generated labels, scopes current proofs
 and authenticates the new apparatus dependency. Native/fallback physics and the
-original source locks remain unchanged. The [dated B record](../audits/2026-11-04-mat-auth353b-display-names.md)
-separates implementation, local proof and pending independent integration review.
+original source locks remain unchanged. The [original B record](../audits/2026-11-04-mat-auth353b-display-names.md)
+retains that candidate's source and local proof. After accepted #374 advanced
+main to `01f9b7c8`, its new native benchmark required a separate
+[B inventory reconciliation](../operations/material-catalogue-shadow.md#current-main-b-admission-after-374--2026-11-04).
+The [new record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+keeps the compatibility authority at `0fd4af59`, old display oracle at `7ef4856e`
+and current B admission at `01f9b7c8` distinct. The reconciled #384 candidate
+requires fresh proof and independent admission review **before Ready**.
 
 | Programme slice | Current disposition |
 |---|---|
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
 | #353-A / #371 | Accepted A-only foundation at main `7ef4856e`; complete shadows remain unconsumed |
-| #353-B Main labels | Separately assigned candidate implementation and scoped proof transition; draft independent-review handoff, no merge |
+| #353-B Main labels / #384 | Reconciled with accepted #374/main `01f9b7c8`; fresh source-bound proof and independent GO TO READY / CONDITIONAL / NO-GO admission handoff; stays Draft, no merge |
 | Other #353-B consumers | Separate admission required; no additional production migration |
 | #354 / #355 | Separate liveness and endpoint-effects work; serialize overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
@@ -39,6 +60,11 @@ establishes fallback simulation, new physics or human gameplay acceptance.
 The actual B consumer report is mandatory and separate from static/native-shadow
 checks. Future changes to the B admitted executable inventory need a reviewed
 transition; an expanded accepted catalogue requires a new scope decision.
+Ready-state materialized provenance, full Native/sanitizers, Linux/Windows
+GDExtension/current Godot, palette/backend and applicable Water/LCB gates remain
+pending on the reconciled candidate. Web export/package loading,
+startup/lookup measurement and final independent integration review remain later
+work; draft skips and the original source's passes do not satisfy these gates.
 
 ## Material authoring Planned adoption — 2026-11-04
 
