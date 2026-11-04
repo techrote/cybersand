@@ -10,6 +10,20 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## PressureFlow idle cost (#201) — 2026-11-04
+
+The [#201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
+reproduces #370's ≈30 ms quiet-pool PressureFlow tick on accepted main `3da7e7be`.
+The pool's Water sleeps; the cost is serial reference preparation over the 1.64M
+cells that the prepared 1024² route makes resident. Same-law cached and
+cached_dormant variants cut quiet cost from ≈36–40 ms to ≈9–12 ms per native tick (FreeMass ≈0.02 ms). They are not
+idle-free: a per-tick wake scan remains, and gas-input edits or moving body
+masks restore roughly reference cost.
+**Outcome B:** residual cost is excessive at this scale. Two bounded
+cached-only proposals (P1 wake-summary elision, P2 narrowed gas revocation) are
+**Planned, not implemented**. No production code, default or host changed; #201
+stays open, and a full-host cohort remains the next practical-cost experiment.
+
 ## Material authoring Planned adoption — 2026-11-04
 
 The [corrected MAT-AUTH architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
