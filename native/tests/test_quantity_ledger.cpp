@@ -377,7 +377,7 @@ void workbench_inertial_inheritance() {
     auto current=config();
     auto words=LiquidSolverPolicy::default_request();
     words[20U+6U*3U+1U]=4; // Brine row, IN family
-    const auto decoded=LiquidSolverPolicy::decode(words);
+    const auto decoded=LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
     require(decoded.accepted(),"Brine IN inheritance source policy");
     current.liquid_solver_policy=*decoded.policy;
     current.maximum_rule_radius=InertialParameters::kExecutionRadius;

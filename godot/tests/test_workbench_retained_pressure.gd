@@ -66,7 +66,7 @@ func run() -> void:
 	check(int(world.inspect_pressure_cell(Vector2i(3,400)).overfill)+int(world.inspect_pressure_cell(Vector2i(4,400)).overfill)==overfill,
 		"pressure sidecars physically installed in replacement")
 	var restored:Array=world.inspect_gas_compartments().compartments
-	check(restored.size()==compartments.size() and restored[0].id==compartments[0].id and
+	check(not restored.is_empty() and restored.size()==compartments.size() and restored[0].id==compartments[0].id and
 		restored[0].amount==compartments[0].amount,"active gas identity and amount retained")
 	check(world.simulation_tick(),"native pressure pass reuses inherited gas labels")
 	overfill=int(world.inspect_pressure_cell(Vector2i(3,400)).overfill)+int(world.inspect_pressure_cell(Vector2i(4,400)).overfill)
