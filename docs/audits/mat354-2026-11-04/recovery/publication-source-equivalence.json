@@ -1,0 +1,25 @@
+{
+  "schema": "mat354.recovery-publication-source-equivalence.v1",
+  "execution_source": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "scope": "Current continuation tree: documentation/evidence only; native and apparatus inputs are exact to recorded executions. No new execution source is inferred.",
+  "checks": [
+    {
+      "scope": "campaign",
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "input_inventory_sha256": "fc9086a283492fd51cd08e101606d62a59688dbd5c617f792982e618478e8796",
+      "checked_files": 67,
+      "mismatches": [],
+      "status": "PASS"
+    },
+    {
+      "scope": "protected-controls",
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "input_inventory_sha256": "585a6c8a10bcdfc9198e20e8de5e0e016eaef33fd0b26dc3fd5783649e805ce7",
+      "checked_files": 88,
+      "mismatches": [],
+      "status": "PASS"
+    }
+  ],
+  "production_changed_paths": [],
+  "status": "PASS"
+}

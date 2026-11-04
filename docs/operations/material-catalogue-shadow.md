@@ -2,7 +2,7 @@
 title: Material catalogue shadow compiler and compatibility guards
 status: Current
 document-kind: guide
-scope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted
+scope: Merged MAT-AUTH-001 353-A shadow tooling and source guards; legacy production authority persists, with consumer migration and production liveness corrections separately gated
 canonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]
 last-reviewed: 2026-11-04
 related-documents: [../architecture/material-authoring-catalogue-plan.md, ../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../architecture/liquid-solver-family-policy.md, documentation-maintenance.md]
@@ -14,20 +14,22 @@ The [adopted-main integration record](../audits/2026-11-04-mat-auth371-integrati
 records the escaping correction, independent review and resulting-head gate
 requirements. The PR ledger carries final hosted checks and merge identity.
 
-**Current shadow tooling; guarded integration under qualification.** On
+**Current merged shadow tooling.** [PR #371](https://github.com/techrote/cybersand/pull/371)
+merged at accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. On
 4 November the owner separately requested implementation of the architecture
 review's corrections and compatibility mitigations. [PR #371](https://github.com/techrote/cybersand/pull/371)
 contains that #353-A response: authored metadata, deterministic candidate outputs,
 independent native parity and source-identity guards. Documentation PR #357 is
 now merged and its corrected architecture is owner-adopted as Planned. The
 shadow output remains unconsumed by production; broad #353 and parent #352
-stay open, and #353-B consumer migration and #354–#356 remain separately
-unadmitted.
+stay open. #353-B consumer migration and #355/#356 retain their own admission.
+The separately authorized [#354 Phase A investigation](material-liveness-investigation.md)
+adds tests, tooling and documentation only; production corrections remain pending.
 
 The [architecture review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
 and [corrected migration contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 explain why matching values alone is insufficient. The
-[current A-only reconciliation boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+[retained A-only reconciliation boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
 preserves original implementation `6d3737594beb39e83e555f66f2e81184a4bdbf77`
 and its reviewed parent `9b776d109e7843fb9b2d25239f9d088181309aa1`, while
 merging adopted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d` normally.
@@ -83,6 +85,13 @@ appearance code and retained policy/normalization/receipt vectors. This is an
 explicitly frozen compatibility checkpoint, not a promise that these owners
 can never change. A future source update needs a separately reviewed baseline
 or cutover transition, with the old evidence retained.
+
+For #354, the [Phase A correction memo](../audits/2026-11-04-mat354-correction-admission.md)
+identifies protected `native/src/world.cpp` as the prospective deadline edit.
+Investigation changes only separate tests/tooling/docs. Any production repair
+still needs owner authorization, a reviewed compatibility transition and matching
+runtime rebuild/publication/provenance; refreshing expected hashes or disabling
+the guard is not an implementation-admission substitute.
 
 The existing catalogue digest remains
 `82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3`;

@@ -1,0 +1,22 @@
+{
+  "schema": "mat354.recovered-protected-controls-authentication.v1",
+  "status": "PASS",
+  "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+  "receipt_sha256": "a6ae969f7e2984659ec0c519dd68db40af50a81a86fb92b45c5ae2e8546dee38",
+  "source_inputs_checked": 88,
+  "actual_dependencies_checked": 70,
+  "raw_streams_checked": 66,
+  "selected_invocations": 12,
+  "passed_test_count": 14,
+  "executable": {
+    "bytes": 19759928,
+    "path": "/workspace/scratch/56386914071b/recovery-runs/protected-controls-1a06a0d/tests",
+    "sha256": "7e55b18a769aab093c059522b2791e90b71b84cf1d0a9d29991a0f65891187b0"
+  },
+  "errors": [],
+  "limits": [
+    "Selection is 14 existing tests, not the full native/Godot matrix.",
+    "Same recovery agent independently recomputed producer receipts; source/physics review is a separate agent."
+  ]
+}

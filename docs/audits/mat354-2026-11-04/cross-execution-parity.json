@@ -1,0 +1,26 @@
+{
+  "schema": "mat354.cross-execution-parity.v1",
+  "reference_reduction": "/workspace/scratch/95fff40249c9/mat354-normal-c7af583b-clean/reduction.json",
+  "reference_sha256": "944f5a254c0f1723ef0c58d13446f0ba7b6f72b4f507017dbb62b83d0f906e37",
+  "comparison": "complete per-step physical trajectory digests from independently authenticated reduction; matching case IDs and physical configuration; timing and task claimant counts are not compared",
+  "comparisons": [
+    {
+      "receipt": "/workspace/scratch/95fff40249c9/mat354-asan-c7af583b-no-lsan/reduction.json",
+      "reduction_sha256": "747dd101b601034d45bb7c1590a830822ab3951ee21570f38a21875ac4a83b57",
+      "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
+      "mode": "asan-ubsan",
+      "matched_cases": 552,
+      "mismatches": [],
+      "status": "PASS"
+    },
+    {
+      "receipt": "/workspace/scratch/95fff40249c9/mat354-hosted-run1/linux/campaign/independent-reduction.json",
+      "reduction_sha256": "3bc8df035d2fb7eee6b563ff293fefc5ca3c92aeed99e4d3c6b1c60b1b3ed058",
+      "source_commit": "cabc93ee40bf8afb9d5adba5a95d4640101b96b3",
+      "mode": "normal",
+      "matched_cases": 552,
+      "mismatches": [],
+      "status": "PASS"
+    }
+  ]
+}

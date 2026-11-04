@@ -1,0 +1,121 @@
+{
+  "schema": "mat354.evidence-index.v1",
+  "publication_status": "PACKAGING_IN_PROGRESS; draft investigation checkpoint",
+  "accepted_source": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "cases": 552,
+  "owner_steps": 88384,
+  "attempts": [
+    {
+      "id": "original-normal",
+      "qualification": "FAIL: retained raw identity mismatch",
+      "receipt_sha256": "b43cf232e1bdf1b1222cce569d76ddc2db39d4e88bfd8a6ff9c6153cb63adf63",
+      "source_commit": "23ca80747a3475f31d54246e05a1bcbbd7afcfd3",
+      "source_tree": "afd8232d6ec8fddd7fe3f546574d2e1bba51aacd",
+      "processes_recorded": 552,
+      "executable": {
+        "bytes": 8791192,
+        "path": "/workspace/scratch/95fff40249c9/mat354-normal-23ca8074/material_liveness_probe",
+        "sha256": "00b8599f98d53da9321daa557545657b6adce6810a78941a6f25761b38a2672f"
+      },
+      "mode": "normal",
+      "transport_manifest": null
+    },
+    {
+      "id": "original-repeat",
+      "qualification": "FAIL: executable mode/spawn",
+      "receipt_sha256": "522aac1824250358d66b58ec89a7b28853ce4b21d2902db44e4b018d1c95e692",
+      "source_commit": "23ca80747a3475f31d54246e05a1bcbbd7afcfd3",
+      "source_tree": "afd8232d6ec8fddd7fe3f546574d2e1bba51aacd",
+      "processes_recorded": 16,
+      "executable": {
+        "bytes": 8791192,
+        "path": "/workspace/scratch/95fff40249c9/mat354-normal-repeat-23ca8074/material_liveness_probe",
+        "sha256": "b38b3ff59088d33bd066d7d07f78ff9eee35fca378f83ee40a8eedd2d97d6f1d"
+      },
+      "mode": "normal",
+      "transport_manifest": null
+    },
+    {
+      "id": "original-leak-check",
+      "qualification": "FAIL: LeakSanitizer environment",
+      "receipt_sha256": "e010f9fb27dcfa6c47f30b7b3fd4573c675f1781638ddb13bc19020698b2a4f2",
+      "source_commit": "23ca80747a3475f31d54246e05a1bcbbd7afcfd3",
+      "source_tree": "afd8232d6ec8fddd7fe3f546574d2e1bba51aacd",
+      "processes_recorded": 1,
+      "executable": {
+        "bytes": 43123800,
+        "path": "/workspace/scratch/95fff40249c9/mat354-asan-23ca8074/material_liveness_probe",
+        "sha256": "d23831bb8b577332b24b96b83abee28fbe64fd274ff1dfeaabaafc441a4c4cfe"
+      },
+      "mode": "asan-ubsan",
+      "transport_manifest": null
+    },
+    {
+      "id": "checkout-refusal",
+      "qualification": "FAIL: source preflight, no native execution",
+      "receipt_sha256": "1cf0c2ab941ebfeb526b899e913456091f1090ecb7d489a231b6d79f0d853650",
+      "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
+      "source_tree": "f76be408acdafdfcfbb4ceeaed071808d85e8344",
+      "processes_recorded": 0,
+      "executable": null,
+      "mode": "normal",
+      "transport_manifest": null
+    },
+    {
+      "id": "local-normal",
+      "qualification": "PASS",
+      "receipt_sha256": "8fae37791ed4d4487c507e5c70a0841cba1367683b0701c6c73060915e6c6619",
+      "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
+      "source_tree": "f76be408acdafdfcfbb4ceeaed071808d85e8344",
+      "processes_recorded": 552,
+      "executable": {
+        "bytes": 8790056,
+        "path": "/workspace/scratch/95fff40249c9/mat354-normal-c7af583b-clean/material_liveness_probe",
+        "sha256": "3c5ba1e8c49b95c0b34a9c1ced672a8b5231f8861f21332254ff530dd6ff6ce0"
+      },
+      "mode": "normal",
+      "transport_manifest": null
+    },
+    {
+      "id": "local-asan-ubsan",
+      "qualification": "PASS; leak checking unexecuted",
+      "receipt_sha256": "0a14624ae52a1f3a47f06fbeedbbe7f9a07da265b0792f78f0c4028a6cce0ce7",
+      "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
+      "source_tree": "f76be408acdafdfcfbb4ceeaed071808d85e8344",
+      "processes_recorded": 552,
+      "executable": {
+        "bytes": 43128024,
+        "path": "/workspace/scratch/95fff40249c9/mat354-asan-c7af583b-no-lsan/material_liveness_probe",
+        "sha256": "ce9b302d4ef88ce44836770b30142b34bb7dcda71fc6718e63e9c6c740e3cc93"
+      },
+      "mode": "asan-ubsan",
+      "transport_manifest": null
+    },
+    {
+      "id": "local-tsan",
+      "qualification": "pending independent reduction",
+      "receipt_sha256": "65c2cc6095b37ef35be84545e20f43795ac123a43ed6f158cd33d08f4213eccb",
+      "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
+      "source_tree": "f76be408acdafdfcfbb4ceeaed071808d85e8344",
+      "processes_recorded": 552,
+      "executable": {
+        "bytes": 9694464,
+        "path": "/workspace/scratch/95fff40249c9/mat354-tsan-c7af583b/material_liveness_probe",
+        "sha256": "3a3f3c437b7ee2e446155d938459b964689f3d1ebf47b06ee2ee20f753daaae3"
+      },
+      "mode": "tsan",
+      "transport_manifest": null
+    }
+  ],
+  "hosted_first_run": {
+    "run_id": 41812690658,
+    "source_commit": "cabc93ee40bf8afb9d5adba5a95d4640101b96b3",
+    "linux": "PASS552 independently downloaded and reduced",
+    "windows": "FAIL apparatus preflight,0 native cases; retained full job log"
+  },
+  "limits": [
+    "No production implementation authorization",
+    "Original failed receipts remain unchanged",
+    "Raw transport shards are being added; original outputs remain retained outside the source checkout at this interim checkpoint"
+  ]
+}
