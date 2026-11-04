@@ -158,6 +158,25 @@ func queue_lab(command: Dictionary) -> void:
 	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
+# Per-step owner execution settings, applied before the scenario's own
+# apply_interest(). A fixed-interest MicroScenario owns the window flag and
+# simulation region: writing the camera window first and the scenario region
+# second changed the native region twice per step, and every selected-core
+# change discards the derived pressure cache (#201). The final region is the
+# scenario region either way; only the transient camera write is skipped.
+static func apply_world_execution_settings(world: Object, scenario_owns_interest: bool,
+		window_enabled: bool, cadence_enabled: bool, adhesion_enabled: bool,
+		interest_center: Vector2i, view_origin: Vector2i, view_size: Vector2i,
+		horizontal_buffer: int, vertical_buffer: int) -> void:
+	if not scenario_owns_interest:
+		world.simulation_window_enabled = window_enabled
+	world.cadence_lod_enabled = cadence_enabled
+	world.set_liquid_surface_adhesion_enabled(adhesion_enabled)
+	world.set_interest_center(interest_center)
+	if not scenario_owns_interest:
+		world.set_simulation_window(view_origin, view_size, horizontal_buffer, vertical_buffer)
+
+
 static func prepared_owner_execution(definition: Dictionary, settings: Dictionary) -> Dictionary:
 	var origin := Vector2i(int(definition.camera_origin[0]), int(definition.camera_origin[1]))
 	var size := Vector2i(480,270)
@@ -1735,16 +1754,10 @@ func _worker_loop() -> void:
 		if _micro_active and _scenario_host.fixed_execution():
 			local_cadence_enabled = _scenario_host.cadence_enabled()
 			local_liquid_adhesion_enabled = _scenario_host.adhesion_enabled()
-		_world.simulation_window_enabled = local_window_enabled
-		_world.cadence_lod_enabled = local_cadence_enabled
-		_world.set_liquid_surface_adhesion_enabled(local_liquid_adhesion_enabled)
-		_world.set_interest_center(local_interest_center)
-		_world.set_simulation_window(
-			local_view_origin,
-			local_view_size,
-			local_horizontal_buffer,
-			local_vertical_buffer
-		)
+		apply_world_execution_settings(_world, _micro_active and _scenario_host.fixed_interest(),
+			local_window_enabled, local_cadence_enabled, local_liquid_adhesion_enabled,
+			local_interest_center, local_view_origin, local_view_size,
+			local_horizontal_buffer, local_vertical_buffer)
 
 		if _micro_active: _scenario_host.apply_interest()
 
