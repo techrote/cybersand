@@ -8,6 +8,7 @@ const MIN_FROZEN_PHYSICS_FRAMES: int = 2
 var viewport: SubViewport
 var session: CyberPhysicalActorSession
 var last_error: String = ""
+var _initial_workbench: Dictionary = {}
 var _initial_states := PackedFloat32Array()
 var _initial_pose := PackedFloat32Array()
 var _last_physics_frame: int = -1
@@ -55,6 +56,12 @@ func _capture_frozen_pose() -> bool:
 	physics_bridge().refresh_all_states()
 	_initial_states = physics_bridge().pack_body_states()
 	_initial_pose = _pose_values(_initial_states)
+	if physics_bridge() is Session.WorkbenchBridge:
+		_initial_workbench = session.pack_workbench_sample()
+		if _initial_workbench.is_empty():
+			last_error = "Invalid provisional workbench hull samples"
+			close()
+			return false
 	_last_physics_frame = Engine.get_physics_frames()
 	if _initial_states.is_empty():
 		last_error = "Provisional physical owner supplied no actual body states"
@@ -72,6 +79,9 @@ static func _pose_values(states: PackedFloat32Array) -> PackedFloat32Array:
 
 func initial_body_states() -> PackedFloat32Array:
 	return _initial_states.duplicate()
+
+func initial_workbench_sample() -> Dictionary:
+	return _initial_workbench.duplicate(true)
 
 func pose_unchanged() -> bool:
 	var bridge: CyberRapierPhysicsBridge = physics_bridge()
@@ -115,6 +125,7 @@ func adopt() -> void:
 	if _adopted: return
 	_adopted = true
 	for body: RigidBody2D in bodies(): body.freeze = false
+	if session != null: session.adopt_retained_motion()
 
 func close() -> void:
 	_close_prepared_owner()

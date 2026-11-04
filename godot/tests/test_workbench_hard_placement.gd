@@ -15,7 +15,7 @@ func check(value:bool, detail:String)->void:
 func _initialize()->void:
 	call_deferred("run")
 
-func candidate(rects:PackedInt32Array, origin:Vector2, angle:float, shapes:Array, session:int)->int:
+func candidate(rects:PackedInt32Array, origin:Vector2, angle:float, shapes:Array, session:int, retain:bool=false)->int:
 	var states:=PackedFloat64Array()
 	var geometry:=PackedFloat64Array()
 	for index:int in shapes.size():
@@ -28,7 +28,7 @@ func candidate(rects:PackedInt32Array, origin:Vector2, angle:float, shapes:Array
 	var sample:Dictionary={"session":session,"epoch":session,"states":states,"geometry":geometry,"bodies":[owner]}
 	return bridge.prepare_liquid_world(world,rects,checked.transport.packed,PackedInt32Array(checked.definition.water_semantics),
 		PackedInt32Array(),bridge.default_liquid_policy(),{"workbench_extent":Vector2i(256,256),
-		"workbench_response":"LA-SELECTIVE","workbench_sample":sample,"region":PackedInt32Array([0,0,256,256]),
+		"workbench_response":"LA-SELECTIVE","workbench_sample":sample,"workbench_retain_cells":retain,"region":PackedInt32Array([0,0,256,256]),
 		"intent":"exploratory","definition_hash":checked.hash,"initial_bodies":
 		PackedFloat32Array([1,origin.x,origin.y,angle,8,8,0,0,0,1,1])})
 
@@ -54,6 +54,20 @@ func run()->void:
 		if token>0: bridge.discard_liquid_world(world,token)
 	token=candidate(PackedInt32Array([54,50,1,1,1]),origin,0,single,2)
 	check(token>0,"touching hard pixel is not overlapping it")
+	if token>0: bridge.discard_liquid_world(world,token)
+	# A resting Rapier body can have a subcell penetration in an existing
+	# contact. A retained edit elsewhere may preserve that exact contact.
+	token=candidate(PackedInt32Array([54,50,1,1,1]),origin,0,single,3)
+	check(token>0 and bridge.commit_liquid_world(world,token),"install edge-contact starting configuration")
+	var owner:Dictionary={"id":1,"instance_id":42,"generation":3,"first_proxy":1,"count":1,"budget":20,"gravity":92,"external_drive":false}
+	var resting:=Vector2(50.25,50)
+	check(world.prepare_workbench_coupling(PackedFloat64Array([1,resting.x,resting.y,0,8,8,0,0,0,1,2,20,resting.x,resting.y,0.4,1./60,3]),
+		PackedFloat64Array([0,0,8,8]),[owner],3,3,true),"accepted resting Rapier sample")
+	token=candidate(PackedInt32Array(),resting,0,single,4,true)
+	check(token>0,"unchanged shallow contact may survive reconstruction")
+	if token>0: bridge.discard_liquid_world(world,token)
+	token=candidate(PackedInt32Array(),Vector2(50.4,50),0,single,4,true)
+	check(token==0 and "hard terrain" in str(bridge.get_last_error()),"moving deeper into a retained contact refused")
 	if token>0: bridge.discard_liquid_world(world,token)
 	print("WORKBENCH_HARD_PLACEMENT failures=",failures)
 	quit(int(not failures.is_empty()))

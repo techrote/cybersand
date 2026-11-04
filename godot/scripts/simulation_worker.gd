@@ -123,6 +123,21 @@ var _lab_profile: Dictionary = CyberTransportProfiles.preset(0)
 var _lab_profile_hash: String = ""
 var _scenario_host: CyberMicroScenarioHost = MicroHost.new()
 var _micro_active: bool = false
+# Immutable physical values enter the exclusive cellular owner through one
+# replaceable sample slot. Transient emitter requests have a separate bounded
+# queue and are revoked synchronously on pause, selection and graph retirement.
+var _workbench_sample: Dictionary = {}
+var _workbench_extent := Vector2i.ZERO
+var _workbench_emitters: Array = []
+var _workbench_last_emitter_sample := -1
+var _workbench_emitter_receipts: Array = []
+var _workbench_source_commands: Array = []
+var _workbench_source := preload("res://scripts/workbench_powder_source.gd").new()
+var _workbench_step_serial: int = 0
+var _workbench_completed_sample: int = -1
+var _workbench_result: Dictionary = {}
+var _workbench_refusal: String = ""
+var _workbench_prepared_sample: int = -1
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
 var _water_exit_request_serial: int = 0
@@ -301,6 +316,20 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 			and token == int(_pending_physical_liquid.get("token",0)) and bool(_prepared_physical_ready.get("ready",false))
 	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
 	if committed:
+		_pending_emissions.clear()
+		_pending_cell_emissions.clear()
+		_workbench_emitters.clear()
+		_workbench_last_emitter_sample = -1
+		_workbench_source_commands.clear()
+		_workbench_emitter_receipts.clear()
+		_workbench_source.reset()
+		_workbench_result = {}
+		_workbench_completed_sample = -1
+		_workbench_refusal = ""
+		_workbench_prepared_sample = -1
+		_workbench_sample = command.get("controlled_liquid_setup",{}).get("workbench_sample",{}).duplicate(true)
+		_workbench_extent = Vector2i(definition.extent[0],definition.extent[1]) if definition.has("extent") else Vector2i.ZERO
+		if not _workbench_sample.is_empty(): _rigid_body_epoch = _workbench_sample.epoch
 		_actor_session = staged.actors
 		_usable_session = staged.usables
 		_character = staged.character
@@ -391,6 +420,10 @@ func _prepared_liquid_install_options(command: Dictionary, definition: Dictionar
 	if pending_profile:
 		_lab_status = "Prepared liquid request retired by a pending player environment profile"
 		return {"ok":false}
+	if validated.definition.id == CyberMicroScenarioContract.WORKBENCH_ID:
+		owner.region = validated.definition.interest.region
+		owner.simulation_window_enabled = true
+		owner.cadence_lod_enabled = false
 	var final_setup: Dictionary = setup.duplicate(true)
 	final_setup.owner_execution = owner
 	var guard: Callable = _commit_controlled_liquid_candidate.bind(
@@ -741,7 +774,8 @@ func _apply_lab(command: Dictionary) -> bool:
 		var retained_host_error: String = _scenario_host.last_error
 		var retained_host_refusal: Dictionary = _scenario_host.last_liquid_policy_refusal
 		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
-			true, command.get("liquid_policy", null), controlled_setup, guard, continuation_token):
+			command.scenario_reset.id != CyberMicroScenarioContract.WORKBENCH_ID,
+			command.get("liquid_policy", null), controlled_setup, guard, continuation_token):
 			if not _pending_physical_liquid.is_empty() and not command.get("_prepared_physical_commit",false):
 				_scenario_host.last_error = retained_host_error
 				_scenario_host.last_liquid_policy_refusal = retained_host_refusal
@@ -1123,6 +1157,7 @@ func set_frame_state(
 	_horizontal_input = horizontal_input
 	_jetpack_active = jetpack_active
 	if paused and not _paused:
+		_cancel_workbench_emission_locked()
 		_pending_physical_effects.clear()
 		_cancel_physical_usables_locked()
 		for actor: int in range(PhysicalEffects.MAX_ACTORS):
@@ -1143,6 +1178,86 @@ func set_frame_state(
 		_liquid_surface_adhesion_enabled = liquid_surface_adhesion_enabled
 	_mutex.unlock()
 
+
+func set_workbench_sample(value: Dictionary) -> void:
+	_mutex.lock()
+	if not value.is_empty() and not _workbench_sample.is_empty() and _prepared_physical_frame_hold.is_empty() \
+		and _workbench_sample.session == value.session and _workbench_sample.epoch == value.epoch:
+		_workbench_sample = value.duplicate(true)
+		if not _paused and not _reset_requested and _lab_request.is_empty() and _prepared_physical_publication.is_empty():
+			var emitters: Array = _workbench_sample.get("emitters",[])
+			if not emitters.is_empty() and not value.states.is_empty():
+				var serial := int(value.states[10])
+				if serial == _workbench_last_emitter_sample:
+					_workbench_emitter_receipts = [{"status":"duplicate_sample","sample":serial}]
+				elif emitters.size() + _workbench_emitters.size() > 24:
+					_workbench_emitter_receipts = [{"status":"capacity_refused","count":emitters.size()}]
+				else:
+					_workbench_last_emitter_sample = serial
+					for intent: Dictionary in emitters:
+						intent["sample"] = serial
+						_workbench_emitters.append(intent)
+	_mutex.unlock()
+
+func cancel_workbench_emission() -> void:
+	_mutex.lock()
+	_cancel_workbench_emission_locked()
+	_mutex.unlock()
+
+func _cancel_workbench_emission_locked() -> void:
+	_workbench_emitters.clear()
+	_workbench_source_commands = _workbench_source_commands.filter(func(v: Dictionary) -> bool: return v.command == "configure")
+	if _workbench_extent != Vector2i.ZERO:
+		_workbench_source_commands.append({"command":"stop","origin":Vector2i.ZERO,"material":0})
+
+func queue_workbench_source(origin: Vector2i, material: int, command: String) -> bool:
+	_mutex.lock()
+	var ok := _workbench_extent != Vector2i.ZERO and _prepared_physical_publication.is_empty() and _lab_request.is_empty() and _workbench_source_commands.size() < 8
+	if ok:
+		ok = command in ["configure","burst","stream","stop"] and (command != "configure" or _workbench_source.valid(origin,material,_workbench_extent))
+	if ok: _workbench_source_commands.append({"command":command,"origin":origin,"material":material})
+	_mutex.unlock()
+	return ok
+
+# A body entering unsimulated space stops the session. The arriving pose is
+# retained for inspection and a prepared reposition/reset starts a new epoch.
+static func _workbench_sample_inside(states: PackedFloat64Array, extent: Vector2i) -> bool:
+	for offset: int in range(0,states.size(),CyberRigidBodyCoupling.GCR_INPUT_STRIDE):
+		if offset + CyberRigidBodyCoupling.GCR_INPUT_STRIDE > states.size(): return false
+		var center := Vector2(states[offset+1],states[offset+2])
+		var angle := states[offset+3]
+		var half := Vector2(states[offset+4],states[offset+5])*0.5
+		var projected := Vector2(absf(cos(angle))*half.x+absf(sin(angle))*half.y,
+			absf(sin(angle))*half.x+absf(cos(angle))*half.y)
+		if not Rect2(Vector2.ZERO,Vector2(extent)).encloses(Rect2(center-projected,2.0*projected)): return false
+	return true
+
+func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
+	# Linearize short source edits and nozzle requests with input cancellation.
+	# The maximum burst is 96 cells, the stream is 4 cells per tick for <=600
+	# ticks, and the per-owner nozzle queue admits at most 24 requests.
+	_mutex.lock()
+	for request: Dictionary in _workbench_source_commands:
+		_workbench_source.command(request)
+	_workbench_source_commands.clear()
+	if not paused:
+		_workbench_source.before_tick(_world,sample)
+		if not _paused and not _workbench_emitters.is_empty():
+			var serial := int(sample.states[10]) if not sample.states.is_empty() else -1
+			var matched: Array = []
+			var pending: Array = []
+			var retired: Array = []
+			for intent: Dictionary in _workbench_emitters:
+				if int(intent.sample) == serial:
+					matched.append(intent)
+				elif not _workbench_sample.states.is_empty() and int(_workbench_sample.states[10]) == int(intent.sample):
+					pending.append(intent)
+				else:
+					retired.append({"status":"retired_sample","sample":intent.sample,"instance_id":intent.instance_id})
+			_workbench_emitters = pending
+			if not matched.is_empty() or not retired.is_empty():
+				_workbench_emitter_receipts = retired + preload("res://scripts/workbench_emitter.gd").apply(_world,matched,_workbench_extent)
+	_mutex.unlock()
 
 func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effects: Array = []) -> Dictionary:
 	# Packed value data is copied at the bridge; scene-tree nodes and Physics RIDs
@@ -1403,6 +1518,8 @@ func cancel_physical_actor_effects(epoch: int, actor_id: int = -1) -> bool:
 	for actor: int in range(PhysicalEffects.MAX_ACTORS):
 		if actor_id == -1 or actor_id == actor:
 			_physical_effect_generations[actor] += 1
+	_workbench_emitters = _workbench_emitters.filter(func(intent: Dictionary) -> bool:
+		return actor_id != -1 and int(intent.actor_slot) != actor_id)
 	_pending_physical_effects = _pending_physical_effects.filter(func(packet: Dictionary) -> bool:
 		return actor_id != -1 and int(packet.request.actor_slot) != actor_id)
 	_cancel_physical_usables_locked(actor_id)
@@ -1454,6 +1571,9 @@ func queue_emit_disc(
 		_mutex.unlock()
 		return false
 	if _pending_emissions.is_empty() or _pending_emissions.back() != emission_command:
+		if _pending_emissions.size() >= MAX_PENDING_BRUSH_COMMANDS:
+			_mutex.unlock()
+			return false
 		_pending_emissions.append(emission_command)
 	_mutex.unlock()
 	return true
@@ -1578,6 +1698,27 @@ func request_render_full_refresh() -> void:
 	_mutex.unlock()
 
 
+func _apply_emissions(local_emissions: Array, local_cell_emissions: Array) -> void:
+	for emission_command: Vector4i in local_emissions:
+		_world.emit_disc(
+			emission_command.x,
+			emission_command.y,
+			emission_command.z,
+			emission_command.w & EMISSION_MATERIAL_MASK,
+			emission_command.w >> EMISSION_FLAGS_SHIFT
+		)
+	for emission_batch: Dictionary in local_cell_emissions:
+		var points: PackedInt32Array = emission_batch.get("points", PackedInt32Array())
+		var packed_material: int = int(emission_batch.get("packed_material", 0))
+		for point_index: int in range(0, points.size(), 2):
+			_world.emit_disc(
+				points[point_index],
+				points[point_index + 1],
+				0,
+				packed_material & EMISSION_MATERIAL_MASK,
+				packed_material >> EMISSION_FLAGS_SHIFT
+			)
+
 func _worker_loop() -> void:
 	var next_tick_usec: int = Time.get_ticks_usec()
 	while true:
@@ -1610,6 +1751,7 @@ func _worker_loop() -> void:
 		var local_actor_prototype_serial: int = 0
 		var local_player_environment_profile: Dictionary = {}
 		var local_lab: Dictionary = {}
+		var workbench_serial: int = -1
 
 		_mutex.lock()
 		local_running = _running
@@ -1636,6 +1778,8 @@ func _worker_loop() -> void:
 		if not physical_wait:
 			local_physical_usables = _pending_physical_usables
 			_pending_physical_usables = []
+		var retain_cells: bool = _workbench_extent != Vector2i.ZERO and _lab_request.get("controlled_liquid_setup",{}).get("workbench_retain_cells",false)
+		if not physical_wait or retain_cells:
 			local_emissions = _pending_emissions
 			_pending_emissions = []
 			local_cell_emissions = _pending_cell_emissions
@@ -1681,6 +1825,12 @@ func _worker_loop() -> void:
 			_scenario_request_applied = false
 			_lab_status = "Prepared physical replacement refused by an admitted reset"
 			local_lab = {}
+		if retain_cells and not _simulation_failed:
+			# All accepted edits ordered before this rebuild participate in its
+			# captured starting cells, including paint followed immediately by Place.
+			_apply_emissions(local_emissions,local_cell_emissions)
+			local_emissions.clear()
+			local_cell_emissions.clear()
 		var continuation: Dictionary = _advance_prepared_physical_liquid()
 		if not continuation.is_empty(): local_lab = continuation
 		if not _pending_physical_liquid.is_empty() and continuation.is_empty():
@@ -1690,6 +1840,8 @@ func _worker_loop() -> void:
 			next_tick_usec = Time.get_ticks_usec()
 			continue
 		if _apply_lab(local_lab):
+			local_emissions.clear()
+			local_cell_emissions.clear()
 			# Candidate Worlds may reuse a hard-surface revision number. Their
 			# initial terrain must replace the previous World's retained packet.
 			_snapshot_hard_surface_revision = -1
@@ -1711,7 +1863,7 @@ func _worker_loop() -> void:
 				local_horizontal_buffer = _horizontal_buffer; local_vertical_buffer = _vertical_buffer
 				local_window_enabled = _simulation_window_enabled; local_cadence_enabled = _cadence_lod_enabled
 				local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
-				if not _prepared_physical_frame_hold.is_empty():
+				if not _prepared_physical_frame_hold.is_empty() or not _workbench_sample.is_empty():
 					local_rigid_body_states = _rigid_body_states
 					local_rigid_body_epoch = _rigid_body_epoch
 				_mutex.unlock()
@@ -1815,7 +1967,33 @@ func _worker_loop() -> void:
 		else:
 			_usable_session.clear()
 		if not _simulation_failed:
-			_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
+			if _workbench_extent != Vector2i.ZERO:
+				# This worker is the only writer to native World. Serial and body
+				# identity are checked again by the native adapter and Rapier bridge.
+				_mutex.lock()
+				var sample: Dictionary = _workbench_sample
+				_mutex.unlock()
+				workbench_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
+				if workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
+					local_paused = true
+				if _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
+					if not _workbench_sample_inside(sample.states,_workbench_extent):
+						_workbench_refusal = "A body reached the finite canvas edge. Move, reset or remove it while paused."
+					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
+						sample.session,sample.epoch,not local_paused):
+						_workbench_refusal = "The workbench body sample was refused. Rebuild or reset the selected setup."
+					else:
+						_workbench_prepared_sample = workbench_serial
+						if _workbench_result.is_empty(): _workbench_result = _world.workbench_coupling_results()
+				if not _workbench_refusal.is_empty():
+					local_paused = true
+					_lab_status = _workbench_refusal
+					_mutex.lock()
+					_paused = true
+					_mutex.unlock()
+				_consume_workbench_emissions(local_paused,sample)
+			else:
+				_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
 			# Admission is rechecked at the exclusive owner's consume boundary.
 			var physical_effects_allowed: bool = (not local_paused
 				and not _sampled_character_enabled and not _water_lab_active
@@ -1827,25 +2005,7 @@ func _worker_loop() -> void:
 				_physical_effect_receipts = _physical_effects.apply(
 					_world, local_physical_effects, local_rigid_body_epoch)
 			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
-			for emission_command: Vector4i in local_emissions:
-				_world.emit_disc(
-					emission_command.x,
-					emission_command.y,
-					emission_command.z,
-					emission_command.w & EMISSION_MATERIAL_MASK,
-					emission_command.w >> EMISSION_FLAGS_SHIFT
-				)
-			for emission_batch: Dictionary in local_cell_emissions:
-				var points: PackedInt32Array = emission_batch.get("points", PackedInt32Array())
-				var packed_material: int = int(emission_batch.get("packed_material", 0))
-				for point_index: int in range(0, points.size(), 2):
-					_world.emit_disc(
-						points[point_index],
-						points[point_index + 1],
-						0,
-						packed_material & EMISSION_MATERIAL_MASK,
-						packed_material >> EMISSION_FLAGS_SHIFT
-					)
+			_apply_emissions(local_emissions,local_cell_emissions)
 
 			if not local_paused:
 				if (
@@ -1866,6 +2026,11 @@ func _worker_loop() -> void:
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
+				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
+					_workbench_result = _world.workbench_coupling_results()
+					_workbench_completed_sample = workbench_serial
+				if not _simulation_failed and local_lab.has("workbench_step_serial"):
+					_workbench_step_serial = int(local_lab.workbench_step_serial)
 				if _lab_active and _scenario_host.active() and not _scenario_host.after_tick():
 					_lab_status = _scenario_host.last_error
 					local_paused = true
@@ -1939,7 +2104,7 @@ func _publish_snapshot(
 			_append_native_render_packet(render_packet)
 			if (
 				_pending_render_patch_cells.size()
-				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
+				> maxi(CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT,_workbench_extent.x*_workbench_extent.y) * 2
 				or _pending_render_patch_rectangles.size()
 				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
 			):
@@ -2086,7 +2251,7 @@ func _publish_snapshot(
 	snapshot.native_worker_participation = _sample_worker_participation(now_usec)
 	snapshot.backend_name = _backend_name
 	snapshot.sparse_flight_moves_last_tick = _world.sparse_flight_moves_last_tick
-	snapshot.rigid_body_results = _world.rigid_body_results()
+	snapshot.rigid_body_results = _world.rigid_body_results() if _workbench_extent == Vector2i.ZERO else PackedFloat32Array()
 	snapshot.rigid_body_contacts_last_tick = _world.rigid_body_contacts_last_tick
 	snapshot.rigid_body_displaced_last_tick = _world.rigid_body_displaced_last_tick
 	snapshot.rigid_body_unresolved_last_tick = _world.rigid_body_unresolved_last_tick
@@ -2153,6 +2318,15 @@ func _publish_snapshot(
 			"current":_water_current_integer if _water_lab_active else 0,
 		},
 	}
+	if _workbench_extent != Vector2i.ZERO:
+		snapshot.lab_context["workbench_gcr"] = _workbench_result
+		snapshot.lab_context["workbench_completed_sample"] = _workbench_completed_sample
+		snapshot.lab_context["workbench_refusal"] = _workbench_refusal
+		snapshot.lab_context["workbench_source"] = _workbench_source.receipt()
+		_mutex.lock()
+		snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
+		_mutex.unlock()
+		snapshot.lab_context["workbench_step_serial"] = _workbench_step_serial
 	if render_generation_advanced:
 		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
 		var render_presentation: Dictionary = render_micro.get("presentation", {})

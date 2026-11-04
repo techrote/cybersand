@@ -35,6 +35,9 @@ var physical_trial_input = PhysicalTrial.new()
 var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
+var _workbench_wait_sample: int = -1
+var shared_workbench: Control
+var world_extent := Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
 var playable_course_overlay: Control
 var _physical_epoch: int = 0
 var _physical_terrain_ready: bool = false
@@ -709,6 +712,37 @@ func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
 		"rules":str(selection.rules), "camera":str(selection.camera)}
 	return true
 
+# The workbench owns a finite authored recipe and configuration. Preparation,
+# acknowledgement, World stepping and Rapier adoption remain the shared owners'.
+func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, extent: Vector2i,
+		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
+		preserve_cells: bool = false) -> bool:
+	if shared_workbench == null or not pending_microscenario_apply.is_empty() or simulation_worker.has_failed():
+		return false
+	if response not in ["LA-SELECTIVE","LA","LA-EVENT-OFF","RFT"]:
+		microscenario_error = "Unknown workbench response"
+		return false
+	var definition := CyberMicroScenarioContract.base(CyberMicroScenarioContract.WORKBENCH_ID)
+	definition.schema_version = 2
+	definition["extent"] = [extent.x,extent.y]
+	definition.rectangles = rectangles
+	definition["presentation"] = {"title":"Development workbench","instructions":"Build a starting setup",
+		"duration_ticks":1,"baseline":"workbench","profile":"blank-canvas","regions":[]}
+	definition.tools = ["paint","erase"]
+	definition.interest = {"policy":"fixed","region":[0,0,extent.x,extent.y]}
+	definition.execution.cadence_lod_enabled = false
+	var config := {"actor_model":"","physical_rig":"workbench" if not actors.is_empty() else "",
+		"actor_producer":"human","representation":"barrel-rapier" if not actors.is_empty() else "sampled",
+		"workbench_actors":actors}
+	var settings := {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
+		"maximum_rule_radius":radius,"workbench_response":response,"workbench_retain_cells":preserve_cells,
+		"workbench_sample":{"session":_microscenario_request_serial+1,"epoch":_physical_epoch+1,
+			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
+	cancel_playable_course_input()
+	if not _apply_microscenario_definition(definition,"Play",config,policy,settings): return false
+	pending_microscenario_apply.workbench = candidate.duplicate(true)
+	return true
+
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, retain_trial_motion: bool = false) -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
@@ -730,7 +764,7 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 				bool(selected_actor.get("actor_demo_npcs", false)),
 				Vector2(definition.player_start[0], definition.player_start[1]))
 		definition.body_enabled = selected_actor.representation == "barrel-rapier"
-		definition.player_enabled = not definition.body_enabled
+		definition.player_enabled = not definition.body_enabled and definition.id != CyberMicroScenarioContract.WORKBENCH_ID
 	var checked: Dictionary = CyberMicroScenarioContract.validate(definition)
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
@@ -773,6 +807,8 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 				bool(player_configuration.get("actor_demo_npcs",false)),
 				Vector2(checked.definition.player_start[0],checked.definition.player_start[1]),
 				str(checked.definition.id))
+			if checked.definition.id == CyberMicroScenarioContract.WORKBENCH_ID:
+				definitions = player_configuration.workbench_actors
 			if not staged.prepare(self,definitions,_physical_epoch+1):
 				microscenario_error = staged.last_error;staged.close();return false
 		# Signal connection and all rig/equipment/space construction precede the
@@ -783,6 +819,8 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		controlled_setup = controlled_setup.duplicate(true)
 		controlled_setup.physical_owner = {"epoch":_physical_epoch+1,"instance_id":staged.get_instance_id(),
 			"initial_bodies":staged.initial_body_states()}
+		if checked.definition.id == CyberMicroScenarioContract.WORKBENCH_ID:
+			controlled_setup.workbench_sample = staged.initial_workbench_sample()
 		if trial in ["barrel","ripper"]:
 			controlled_setup.physical_owner.kind="trial_body";controlled_setup.physical_owner.trial_arm=trial
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
@@ -810,6 +848,7 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		"scenario_mode":mode,
 		"sampled_character_enabled":(
 			(controlled_setup.is_empty() or controlled_setup.get("intent", "controlled") == "exploratory")
+			and checked.definition.id != CyberMicroScenarioContract.WORKBENCH_ID
 			and requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
 		),
 		"runtime_enclosure_recovery_enabled":bool(
@@ -867,9 +906,20 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	else:
 		_activate_water_body_scenario(bool(definition.body_enabled))
 	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(definition.id)
-	if showcase_presentation != null:
+	if shared_workbench != null and pending_microscenario_apply.has("workbench"):
+		_workbench_wait_sample = -1
+		var extent := Vector2i(definition.extent[0],definition.extent[1])
+		if world_extent != extent:
+			world_extent = extent
+			image = Image.create_empty(extent.x,extent.y,false,render_image_format)
+			create_render_textures()
+			world_view.texture = texture
+			world_shader.set_shader_parameter("current_world_texture",texture)
+			world_shader.set_shader_parameter("previous_world_texture",previous_texture)
+		shared_workbench.installed(pending_microscenario_apply.workbench)
+	elif showcase_presentation != null:
 		showcase_presentation.installed(definition)
-	if blacksite_nine_presentation != null:
+	if shared_workbench == null and blacksite_nine_presentation != null:
 		blacksite_nine_presentation.installed(definition)
 	if not microscenario_liquid_setup.is_empty():
 		simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.get("serial",0)))
@@ -928,6 +978,7 @@ func microscenario_toggle_hud() -> void:
 	_refresh_microscenario_controls()
 
 func _refresh_microscenario_controls() -> void:
+	if shared_workbench != null: return
 	if microscenario_panel == null: return
 	microscenario_panel.refresh(tower_context)
 	microscenario_panel.visible = not microscenario_hud_hidden
@@ -1614,7 +1665,7 @@ func _ready() -> void:
 	# fresh scene's _ready starts its worker. The envelope contains copied values.
 	var recovery: Dictionary = get_tree().get_meta(PLAYABLE_RECOVERY_META, {})
 	if get_tree().has_meta(PLAYABLE_RECOVERY_META): get_tree().remove_meta(PLAYABLE_RECOVERY_META)
-	if not recovery.is_empty(): paused = true
+	if not recovery.is_empty() or get_tree().get_meta("cybersand_feature","") == "shared_workbench": paused = true
 	if OS.get_cmdline_user_args().has("--depth-lab") and not get_tree().has_meta("cybersand_depth_lab_visited"):
 		set_process(false)
 		call_deferred("open_depth_lab")
@@ -1695,11 +1746,11 @@ func _ready() -> void:
 		)
 		record_render_payload(latest_snapshot)
 	initial_cells.resize(
-		CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * render_channels
+		world_extent.x * world_extent.y * render_channels
 	)
 	image = Image.create_from_data(
-		CyberCellWorld.WORLD_WIDTH,
-		CyberCellWorld.WORLD_HEIGHT,
+		world_extent.x,
+		world_extent.y,
 		false,
 		render_image_format,
 		initial_cells
@@ -1743,7 +1794,10 @@ func _ready() -> void:
 		_restore_failed_playable_selection.call_deferred(recovery)
 		return
 	var feature: String = str(get_tree().get_meta("cybersand_feature", ""))
-	if PhysicalTrial.contains(feature):
+	if feature == "shared_workbench":
+		shared_workbench = load("res://scripts/shared_workbench.gd").new()
+		shared_workbench.setup(self)
+	elif PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)
 	elif feature == "blacksite":
 		blacksite_nine_presentation.launch.call_deferred()
@@ -1779,13 +1833,14 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
-	tower_panel.refresh(tower_active,tower_floor,tower_context)
-	_refresh_microscenario_controls()
+	if shared_workbench == null:
+		tower_panel.refresh(tower_active,tower_floor,tower_context)
+		_refresh_microscenario_controls()
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
 	_advance_prepared_physical_candidate()
-	if _pending_physical_candidate == null: refresh_actor_usables()
+	if _pending_physical_candidate == null and shared_workbench == null: refresh_actor_usables()
 	gameplay_recorder.poll_finalization()
 	_refresh_recording_button()
 	sync_player_presentation_position()
@@ -1836,19 +1891,28 @@ func _physics_process(_delta: float) -> void:
 		# Do not reconfigure its equipment, revoke its leases or publish stale
 		# body frames while the separate replacement graph is being prepared.
 		return
+	var single_step: bool = shared_workbench != null and shared_workbench.step_requested and paused
 	if physical_actor_session != null:
-		physical_actor_session.set_suspended(paused or simulation_worker.has_failed()
+		physical_actor_session.set_suspended((paused and not single_step) or simulation_worker.has_failed()
 			or not _physical_terrain_ready or _actor_reset_receipt != 0
 			or not pending_microscenario_apply.is_empty())
 	publish_actor_keyboard_input()
 	publish_actor_usable_input()
+	if shared_workbench != null and physical_actor_session != null:
+		if paused and not single_step:
+			_workbench_wait_sample = -1
+			return
+		# A slow native tick must not allow the manually stepped body to
+		# outrun its sample/geometry fence or receive the same wrench twice.
+		# Single-step may restart a paused, previously unpublished frame.
+		if _workbench_wait_sample >= 0 and tower_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
 		return
 	if (
 		rapier_bridge.is_initialized()
-		and not paused
+		and (not paused or single_step)
 		and worker_start_error == OK
 		and _actor_reset_receipt == 0
 		and pending_microscenario_apply.is_empty()
@@ -1868,7 +1932,17 @@ func _physics_process(_delta: float) -> void:
 			if physical_actor_session.tick > before_completed_tick:
 				_record_completed_playable_course_step()
 	_publish_physical_body_state()
+	if single_step and pending_microscenario_apply.is_empty() and worker_start_error == OK and (physical_actor_session == null or _physical_terrain_ready):
+		shared_workbench.step_requested = false
+		tower_command({"step":true,"workbench_step_serial":shared_workbench.step_serial})
+		if physical_actor_session != null: physical_actor_session.set_suspended(true)
 
+func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
+	if shared_workbench == null: return false
+	if not pending_microscenario_apply.is_empty() and not (command == "configure"
+		and tower_context.get("scenario_request_applied",false)
+		and tower_context.get("scenario_request_serial",-1) == pending_microscenario_apply.serial): return false
+	return simulation_worker.queue_workbench_source(origin,material,command)
 
 func setup_depth_lab_launcher() -> void:
 	var launcher := Button.new()
@@ -1909,6 +1983,16 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if shared_workbench != null:
+		if event is InputEventKey and event.pressed and not event.echo and not get_viewport().gui_get_focus_owner() is LineEdit:
+			match event.keycode:
+				KEY_P,KEY_ESCAPE: shared_workbench.toggle_pause()
+				KEY_R: shared_workbench.reset_selected()
+				KEY_PERIOD: shared_workbench.step_once()
+				KEY_B: shared_workbench.burst()
+				_: return
+			get_viewport().set_input_as_handled()
+		return
 	if physical_rig_id != &"" and event is InputEventKey \
 		and (event.keycode in ACTOR_CONTROL_KEYS or event.keycode in PHYSICAL_TOOL_KEYS \
 			or (_playable_course_controls_active() and event.keycode in [KEY_UP, KEY_LEFT, KEY_DOWN, KEY_RIGHT])):
@@ -2348,6 +2432,7 @@ func player_uses_barrel() -> bool:
 
 
 func refresh_player_representation_button() -> void:
+	if shared_workbench != null: return
 	if player_representation_button == null:
 		return
 	var recovery_text: String = ""
@@ -2712,6 +2797,10 @@ func apply_latest_rigid_body_results() -> void:
 		return
 	if latest_snapshot.rigid_body_epoch != _body_owner_epoch():
 		return
+	if shared_workbench != null:
+		if physical_actor_session != null:
+			physical_actor_session.apply_workbench_results(latest_snapshot.serial,tower_context.get("workbench_gcr",{}))
+		return
 	rapier_bridge.apply_cellular_results(
 		latest_snapshot.serial,
 		latest_snapshot.rigid_body_results
@@ -2727,6 +2816,10 @@ func consume_worker_snapshot() -> void:
 	latest_snapshot = snapshot
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
+	if shared_workbench != null and not str(tower_context.get("workbench_refusal","")).is_empty():
+		if not paused: cancel_playable_course_input()
+		paused = true
+		microscenario_error = tower_context.workbench_refusal
 	if _liquid_default_active and pending_microscenario_apply.is_empty() \
 		and int(tower_context.get("liquid_solver_policy",{}).get("session_generation",0)) != _liquid_default_generation:
 		_liquid_default_active = false
@@ -2880,14 +2973,14 @@ func sync_hard_surface_colliders() -> void:
 	elif latest_snapshot.hard_surface_rectangles_valid:
 		rapier_bridge.rebuild_hard_surface_colliders_from_rectangles_chunked(
 			latest_snapshot.hard_surface_rectangles,
-			CyberCellWorld.WORLD_WIDTH,
-			CyberCellWorld.WORLD_HEIGHT
+			world_extent.x,
+			world_extent.y
 		)
 	else:
 		rapier_bridge.rebuild_hard_surface_colliders(
 			latest_snapshot.cells,
-			CyberCellWorld.WORLD_WIDTH,
-			CyberCellWorld.WORLD_HEIGHT
+			world_extent.x,
+			world_extent.y
 		)
 	last_hard_surface_revision = latest_snapshot.hard_surface_revision
 	hard_surface_rebuild_cooldown = HARD_SURFACE_REBUILD_INTERVAL
@@ -3178,6 +3271,13 @@ func _close_physical_actors() -> void:
 
 
 func _publish_physical_body_state() -> void:
+	if shared_workbench != null and microscenario_definition.get("id","") == CyberMicroScenarioContract.WORKBENCH_ID:
+		if physical_actor_session != null:
+			var sample: Dictionary = physical_actor_session.pack_workbench_sample()
+			if not sample.is_empty() and not sample.states.is_empty():
+				_workbench_wait_sample = int(sample.states[10])
+				simulation_worker.set_workbench_sample(sample)
+		return
 	var effects: Array = physical_actor_session.drain_effects() if physical_actor_session != null else []
 	var states: PackedFloat32Array = pack_rigid_body_states()
 	if physical_actor_session != null:
@@ -3291,12 +3391,19 @@ func _playable_course_gamepad_active() -> bool:
 
 
 func _on_playable_course_gui_focus_changed(control: Control) -> void:
-	if control != null:
+	if control != null and (shared_workbench == null or control is LineEdit or control is TextEdit):
 		# Context polling alone can miss a brief UI focus owner.
 		cancel_playable_course_input()
 
 
 func cancel_playable_course_input() -> void:
+	if shared_workbench != null:
+		_actor_input_rearm = true
+		shared_workbench.cancel_stroke()
+		if physical_actor_session != null and shared_workbench.pilot_slot >= 0:
+			physical_actor_session.cancel_input(shared_workbench.pilot_slot,_physical_epoch,&"human")
+		simulation_worker.cancel_workbench_emission()
+		return
 	if not _playable_course_controls_active(): return
 	_actor_input_rearm = true
 	_actor_usable_pointer_rearm = true
@@ -3616,6 +3723,7 @@ func _publish_actor_usable_buttons(trigger: bool, alternate: bool) -> void:
 
 
 func publish_actor_usable_input() -> void:
+	if shared_workbench != null: return
 	# Physical keyboard publication already includes equipment. The event path
 	# above still captures a complete press/release between physics frames.
 	if physical_actor_session != null:
@@ -3702,7 +3810,37 @@ func actor_pointer_aim_at(pointer: Vector2) -> Vector2:
 	return (world_point - character_centre()).normalized()
 
 
+func _workbench_key(key: Key) -> bool:
+	return Input.is_key_pressed(key) or Input.is_physical_key_pressed(key)
+
+func _publish_workbench_keyboard() -> void:
+	if physical_actor_session == null or shared_workbench.pilot_slot < 0: return
+	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
+		or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
+		if not _actor_input_rearm: cancel_playable_course_input()
+		return
+	var action := CyberPlayerPlaygroundInput.sample(true,true)
+	var ports := {"q":_workbench_key(KEY_Q),"e":_workbench_key(KEY_E),
+		"s":_workbench_key(KEY_S) or _workbench_key(KEY_DOWN),"boost":_workbench_key(KEY_SHIFT)}
+	action.secondary = _workbench_key(KEY_CTRL)
+	var pads := Input.get_connected_joypads()
+	if not pads.is_empty():
+		var pad := pads[0]
+		ports.q = ports.q or Input.is_joy_button_pressed(pad,JOY_BUTTON_LEFT_SHOULDER)
+		ports.e = ports.e or Input.is_joy_button_pressed(pad,JOY_BUTTON_RIGHT_SHOULDER)
+		ports.s = ports.s or Input.get_joy_axis(pad,JOY_AXIS_LEFT_Y) > 0.2
+		action.secondary = action.secondary or Input.is_joy_button_pressed(pad,JOY_BUTTON_B)
+	if physical_actor_session.observation(shared_workbench.pilot_slot).get("model","") == &"kestrel":
+		action.move.y = -1.0 if _workbench_key(KEY_W) or _workbench_key(KEY_UP) else minf(0.0,action.move.y)
+	if _actor_input_rearm:
+		if CyberPlayerPlaygroundInput.active(action) or ports.q or ports.e or ports.s or ports.boost: return
+		_actor_input_rearm = false
+	physical_actor_session.submit_workbench_action(shared_workbench.selected_id(),action,ports,shared_workbench.fire_enabled)
+
 func publish_actor_keyboard_input() -> void:
+	if shared_workbench != null:
+		_publish_workbench_keyboard()
+		return
 	if physical_actor_session != null:
 		_publish_physical_keyboard_input()
 		return
@@ -3787,6 +3925,7 @@ func refresh_actor_prototypes() -> void:
 
 
 func update_camera(delta: float) -> void:
+	if shared_workbench != null: return
 	if water_controlled_run_active(): return
 	if _blacksite_keyboard_blocked(): return
 	var pan_input: Vector2 = Vector2(
@@ -3833,12 +3972,18 @@ func character_centre() -> Vector2:
 
 func clamped_camera_origin(candidate: Vector2) -> Vector2:
 	return Vector2(
-		clampf(candidate.x, 0.0, float(CyberCellWorld.WORLD_WIDTH - current_view_size.x)),
-		clampf(candidate.y, 0.0, float(CyberCellWorld.WORLD_HEIGHT - current_view_size.y))
+		clampf(candidate.x, 0.0, float(world_extent.x - current_view_size.x)),
+		clampf(candidate.y, 0.0, float(world_extent.y - current_view_size.y))
 	)
 
 
 func update_worker_frame_state() -> void:
+	if shared_workbench != null:
+		# The bounded canvas remains active independently of pan/zoom. The
+		# fixed region has one writer; LOD cadence never suspends remote piles.
+		simulation_worker.set_frame_state(0.0,false,paused,world_extent/2,Vector2i.ZERO,
+			world_extent,0,0,true,false,liquid_surface_adhesion_enabled)
+		return
 	var view_origin: Vector2i = Vector2i(floori(camera_origin.x), floori(camera_origin.y))
 	var interest: Vector2i = view_origin + Vector2i(
 		current_view_size.x >> 1,
@@ -3981,6 +4126,7 @@ func queue_brush_footprint_mutation(
 
 
 func handle_painting() -> void:
+	if shared_workbench != null: return
 	if _actor_usable_transition_pending or actor_equipment_active():
 		return
 	if _actor_usable_pointer_rearm:
@@ -4054,8 +4200,8 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 		return
 	var start_usec: int = Time.get_ticks_usec()
 	image.set_data(
-		CyberCellWorld.WORLD_WIDTH,
-		CyberCellWorld.WORLD_HEIGHT,
+		world_extent.x,
+		world_extent.y,
 		false,
 		render_image_format,
 		material_cells
@@ -4199,8 +4345,8 @@ func validate_render_patch_payload(
 		if (
 			patch_x < 0
 			or patch_y < 0
-			or patch_x > CyberCellWorld.WORLD_WIDTH - patch_width
-			or patch_y > CyberCellWorld.WORLD_HEIGHT - patch_height
+			or patch_x > world_extent.x - patch_width
+			or patch_y > world_extent.y - patch_height
 		):
 			return "patch %d rectangle (%d,%d %dx%d) exceeds the world" % [
 				patch_index,
@@ -4273,7 +4419,7 @@ func update_shader_parameters() -> void:
 		return
 	world_shader.set_shader_parameter(
 		"world_size_px",
-		Vector2(CyberCellWorld.WORLD_WIDTH, CyberCellWorld.WORLD_HEIGHT)
+		Vector2(world_extent.x, world_extent.y)
 	)
 	world_shader.set_shader_parameter("view_size_px", Vector2(current_view_size))
 	var content_rect: Rect2 = view_content_rect()
@@ -4346,9 +4492,9 @@ func update_shader_parameters() -> void:
 			"rigid_body_rotation_%d" % body_index,
 			body_transform.get_rotation()
 		)
-	if showcase_presentation != null:
+	if shared_workbench == null and showcase_presentation != null:
 		showcase_presentation.refresh()
-	if blacksite_nine_presentation != null:
+	if shared_workbench == null and blacksite_nine_presentation != null:
 		blacksite_nine_presentation.refresh()
 
 
@@ -4370,6 +4516,7 @@ func recording_status_for_hud() -> Dictionary:
 
 
 func update_status() -> void:
+	if shared_workbench != null: return
 	var sampling_requested: bool = debug_stats_visible and debug_stats_expanded \
 		and not microscenario_hud_hidden and _playable_course_controls_active()
 	if sampling_requested != _participation_sampling_requested:
@@ -4678,7 +4825,7 @@ func update_vapour_trail() -> void:
 	var shader_material: ShaderMaterial = vapour_trail_shaders[target]
 	shader_material.set_shader_parameter("world_texture", texture)
 	shader_material.set_shader_parameter(
-		"world_size_px", Vector2(CyberCellWorld.WORLD_WIDTH, CyberCellWorld.WORLD_HEIGHT))
+		"world_size_px", Vector2(world_extent.x, world_extent.y))
 	shader_material.set_shader_parameter("view_size_px", Vector2(current_view_size))
 	shader_material.set_shader_parameter("camera_origin_px", origin)
 	shader_material.set_shader_parameter("history_origin_px", vapour_trail_origins[history])
@@ -4711,7 +4858,7 @@ func update_glow_parameters(content_rect: Rect2) -> void:
 	glow_overlay.size = content_rect.size
 	glow_source_shader.set_shader_parameter(
 		"world_size_px",
-		Vector2(CyberCellWorld.WORLD_WIDTH, CyberCellWorld.WORLD_HEIGHT)
+		Vector2(world_extent.x, world_extent.y)
 	)
 	glow_source_shader.set_shader_parameter("view_size_px", Vector2(current_view_size))
 	glow_source_shader.set_shader_parameter(

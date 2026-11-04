@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "flyers": [
+    "midge.json",
+    "needle.json",
+    "kestrel.json",
+    "afterglow.json",
+    "surveyor.json",
+    "cartographer.json",
+    "observatory.json",
+    "scooper.json"
+  ]
+}

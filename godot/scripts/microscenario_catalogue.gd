@@ -163,7 +163,7 @@ static func exploratory_actor_map(definition: Dictionary) -> bool:
 	var id: String = str(definition.get("id", ""))
 	return (definition.get("maturity", "") == "exploratory"
 		and definition.get("execution", {}).get("policy", "") == "owner"
-		and (id == PLAYER_COURSE_ID or id == BlacksiteNine.SCENARIO_ID
+		and (id == CyberMicroScenarioContract.WORKBENCH_ID or id == PLAYER_COURSE_ID or id == BlacksiteNine.SCENARIO_ID
 			or Showcase.contains(id) or PhysicalTrial.contains(id)))
 
 static func player_configuration(scenario_id: String) -> Dictionary:
