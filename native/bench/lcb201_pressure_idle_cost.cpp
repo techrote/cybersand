@@ -107,8 +107,8 @@ normalization::FinalSetupInput setup_input(std::string_view profile, const World
     input.setup.kind = setup::SetupKind::MicroScenario;
     input.setup.definition_schema = 2;
     input.setup.definition_digest.emplace();
-    // Vented: the registered #370 definition hash. Derived variants bind a
-    // distinct label digest; neither claims a native definition compiler.
+    // Every profile binds a SHA-256 of its profile name as a label digest; this
+    // is setup metadata only and claims no native definition compiler.
     const auto label = Sha256::of(std::span<const std::uint8_t>(
         reinterpret_cast<const std::uint8_t*>(profile.data()), profile.size()));
     std::copy(label.begin(), label.end(), input.setup.definition_digest->begin());

@@ -13,10 +13,13 @@ related-documents: [../architecture/pressure-optimization.md, ../architecture/pr
 ## Result
 
 **The quiet-water cost is real and persistent, partly reduced by the existing
-variants, and further reducible: Outcome B.**
+variants, and further reducible.** In the task brief's terms this is
+**Outcome B** ("residual cost is excessive"). That classification was not a
+preregistered numeric criterion; it is unrelated to #26's Outcome B.
 
 - **Real, not a cold window.** At the #370 quiet-pool scale, PF reference costs a
-  median **36–40 ms per native tick** throughout 248 post-cold ticks on Windows.
+  median **31–41 ms per native tick** (replicate-median p50; per-child 31–44 ms)
+  throughout 248 post-cold ticks on Windows.
   FreeMass costs 0.02 ms. The Water is asleep in every arm, with zero visited
   cells, Water calls or phase jobs. The time is **serial pressure preparation**:
   a global gas pass (≈14 ms) and a full head rebuild plus wake scan (≈24 ms) over
@@ -89,7 +92,7 @@ concurrent fixture smokes) are recorded there and excluded from every summary.
 | `pool-vented-boundary-churn` | Repeated boundary/head change | Lid cell over one surface column toggled every tick |
 
 Each child holds the four Worlds in one process. Preparation order and every
-tick rotate `(replicate + tick + position) mod 4`; only `World::tick()` is
+tick use a cyclic shift `(replicate + tick + position) mod 4`. Every arm sees every position, but each arm always follows the same predecessor, so carryover is not counterbalanced; only `World::tick()` is
 timed. After every tick the reference, cached and dormant Worlds must have equal
 pressure-variant projections, complete quantity ledgers, gas ledger/table/history,
 PF ledgers and native body contacts/impulses; complete Water stays 38,515,200
@@ -120,7 +123,7 @@ SHA-256 `4fdb0b3f127bbbad39983ebe76067b96a7cc6f6802f27fd4d0301bd83e385dbe`.
 
 Windows ran 48 children (30 scale, 18 small-scale), completing 2026-11-04T02:33:50Z
 with no failure, stderr byte or timeout and the source fence unchanged. Scale
-children took 30–40 s each against the 300 s bound. Raw JSONL (102 MB),
+children took 30.7–43.2 s each against the 300 s bound. Raw JSONL (102 MB),
 per-child command/result/stderr files, host process inventories and the build
 receipt are kept outside Git under the repository log policy, in
 `C:/Users/_/lcb201-idle-cost-20261104/`. The committed
@@ -236,8 +239,9 @@ Water cells are awake.
 | pool-vented-boundary-churn | 4 | quiet | 32.48 / 40.90 / 46.58 / 46.73 | 8.98 / 12.16 / 14.29 / 15.75 | 9.07 / 11.74 / 13.98 / 16.89 | 0.02 / 0.03 / 0.04 / 0.05 | 0.283 | 0.284 |
 | pool-vented-boundary-churn | 4 | tail | 36.68 / 48.37 / 50.03 / 51.72 | 32.96 / 44.07 / 46.32 / 48.67 | 33.63 / 43.45 / 45.77 / 48.25 | 0.39 / 0.67 / 0.70 / 1.11 | 0.919 | 0.915 |
 
-Complete tick minus counted `preparation_nanoseconds` is 0.02–0.04 ms for every
-PF arm in every non-tail phase, and ≈1.2 / 0.4 ms in the mask/churn tails, where
+Complete tick minus counted `preparation_nanoseconds` is 0.02–0.05 ms for every
+PF arm in the settle and quiet phases. The cold phase is larger (Windows 7.6–57 ms,
+Linux 22–80 ms) because ticks 1–3 move every awake Water cell, and ≈1.2 / 0.4 ms in the mask/churn tails, where
 FreeMass costs the same. The scheduler, `finish_tick` and kernel residual is
 therefore negligible: **preparation is the PF idle cost.**
 
@@ -376,26 +380,33 @@ this checkpoint changes no production source.
 
 ## Reconciliation with earlier observations
 
-- **#370 preflight (≈30 ms PF reference on the quiet pool).** That value is
-  reproduced in kind: 36–40 ms p50 here, from a different binary (CI-built DLL
-  through Godot there; local `-O3` bench with four interleaved Worlds here). The
-  #370 window was 30 ticks; here the cost persists unchanged from tick 9 to 256.
-  It is a steady-state serial cost, not a 3,000× PF physics or production
-  slowdown. FreeMass sleeps to ≈0.02 ms in both records.
-- **Historical execution3 ratios** (source `c97f68ec…`, 90 children) against
-  today's small-scale rerun of the same apparatus at main:
+- **#370 preflight.** The [unmerged draft #370 record](https://github.com/techrote/cybersand/pull/370)
+  (`docs/audits/2026-11-03-lcb360-feel-preflight.md` at head `9a7436aa`) reports PF
+  **reference** p50 ≈30–31 ms on the quiet pool from 30-tick cold windows, through
+  the CI-built DLL in Godot. The present native median of 31–41 ms (below) is
+  **consistent with** that value. It comes from a different binary and apparatus,
+  so it is not a reproduction of the same measurement. Here the cost persists
+  unchanged from tick 9 to 256: it is steady-state serial preparation, not a
+  multiplicative PF physics slowdown. FreeMass sleeps to ≈0.02 ms in both records.
+- **Earlier LCB-002 ratios.** The table in the #201 task brief is **execution1**
+  ([LCB-002 record](2026-10-25-lcb002-pressure-variants.md), "Execution1
+  observation" table). It is not the 90-child execution3 campaign or the later
+  `c97f68ec…` repeat. All three are shown, each with its own source; today's
+  small-scale rerun uses the same apparatus at main.
 
-| Workload | Historical C/R · D/R | 2026-11-04 C/R · D/R |
-|---|---|---|
-| Awake stationary, 1 worker (warm) | 0.906 · 0.363 | 0.919 · 0.366 |
-| Awake stationary, 4 workers (warm) | 0.774 · 0.414 | 0.808 · 0.427 |
-| Topology churn, 1 worker (disturbed) | 1.084 · 1.075 | 1.089 · 1.079 |
-| Topology churn, 4 workers (disturbed) | 1.032 · 1.038 | 1.088 · 1.105 |
-| Ordinary sleeping (warm) | ≈0.493 | 0.490 · 0.489 (w1) |
+| Workload | Execution1 C/R · D/R | Execution3 campaign | `c97f68ec` repeat | 2026-11-04 |
+|---|---|---|---|---|
+| Awake stationary, 1 worker (warm) | 0.906 · 0.363 | 0.895 · 0.362 | 0.905 · 0.357 | 0.919 · 0.366 |
+| Awake stationary, 4 workers (warm) | 0.774 · 0.414 | 0.773 · 0.426 | 0.775 · 0.415 | 0.808 · 0.427 |
+| Topology churn, 1 worker (disturbed) | 1.084 · 1.075 | 1.103 · 1.086 | 1.084 · 1.079 | 1.089 · 1.079 |
+| Topology churn, 4 workers (disturbed) | 1.032 · 1.038 | 1.071 · 1.053 | 1.060 · 1.070 | 1.088 · 1.105 |
+| Ordinary sleeping (warm) | — | ≈0.493 | — | 0.490 · 0.489 (w1) |
 
-  The new ratios agree in direction and roughly in magnitude. Dormancy's large
-  benefit is specific to **awake** stationary Water, which the #370 pool is not.
-  Optimization overhead under churn remains visible (≈+9%).
+  Today's ratios fall within, or close to, the spread of the earlier campaigns.
+  Three replicates are fewer than their five, and the 4-worker churn row records
+  at most one actual claimant. Dormancy's large benefit is specific to **awake**
+  stationary Water, which the #370 pool is not. Optimization overhead under
+  churn remains visible (≈+9–10%).
 
 ## Decision
 
@@ -447,7 +458,10 @@ A sidecar write into a sleeping cell by a neighbouring job must already be
 witnessed through `JobEffects::record` → `invalidate_pressure_input`. The
 implementation must prove that for every PF write site, or clear bits
 conservatively there. A missed path produces a missed wake, which the
-same-tick reference/cached/dormant projection parity detects.
+same-tick reference/cached/dormant projection parity detects. Bits are
+derived owner state: they are cleared only on the serial owner, including the
+phase-barrier merge that calls `invalidate_pressure_input`, never inside worker
+jobs. The `put_final` x±2 clear must cross chunk seams.
 
 *Required controls.* Remote vent adjacent to a clean segment; an edit at x+2
 across a chunk seam; a column repair whose final head changes; a mask installed
@@ -456,7 +470,7 @@ followed by cached reuse; restore/reconstruction; 1/4-worker parity. Rerun this
 registered cohort plus `LCB-001 pressure` and `LCB-002` native groups.
 
 *Expected benefit.* The measured upper bound is the cached quiet head stage,
-≈11.1–11.5 ms of the ≈11.2 ms quiet cached/dormant preparation (complete tick minus preparation is ≈0.03 ms). Perf attribution: on WSL2 (g++ 13.3.0 `-O2 -g -fno-omit-frame-pointer`, `pool-vented` w1, 87,401
+the whole quiet cached/dormant preparation, ≈11.1–11.5 ms mean per tick at Windows scale (complete tick minus preparation is ≈0.03 ms). Perf attribution: on WSL2 (g++ 13.3.0 `-O2 -g -fno-omit-frame-pointer`, `pool-vented` w1, 87,401
 samples at 2 kHz, attribution only), call chains place **19.0% of all
 process samples in the wake scan** (`compute_pressure_heads` lines 1061–1113).
 That compares with 5.4% column pass, 1.7% row pass, 7.1% gas seed/BFS and 0.8% gas
@@ -485,9 +499,15 @@ relabelled cells, (b) columns intersecting each changed compartment's bounds
 existing producer-edit columns. Revoke certificates for those stencils instead
 of globally.
 
-*Proof obligation.* Heads read gauges only through `top_pressure` and the x±2
-lateral samples; certificates through `pressure_lateral_gradient`. Every gauge
-read must be at a cell whose label or compartment was recorded. A fixed point
+*Proof obligation.* Heads read gauges only through `top_pressure`. The wake scan
+(x±2 samples) and certificates (`pressure_lateral_gradient`) read them laterally,
+so columns marked for relabelled cells must widen by ±2, across chunk seams.
+Labels are written in **three** places, and all must be recorded: the per-node
+whole-chunk relabel after `ensure_chunk`, the dangling-label→vacuum sanitation,
+and the visited-cell relabel. `Compartment` carries no spatial bounds today, so
+(b) needs new derived bounds storage with an admitted capacity and a
+conservative all-columns fallback. Every gauge read must be at a cell whose
+label or compartment was recorded. A fixed point
 with unchanged gauges then marks nothing. The gas operator itself stays the
 complete reference operator.
 
@@ -506,8 +526,8 @@ checkpoint.
 ## Notes for #360 and #363
 
 **For #360 (LCB-FEEL).** The ≈30 ms PF quiet-pool tick in the #370 preflight is
-real and persistent, not a cold-window artifact. It is serial PF *reference*
-preparation over the 1.64M resident cells that the prepared 1024² route makes
+consistent with a real, persistent native cost rather than a cold-window artifact.
+Natively, it is serial PF *reference* preparation over the 1.64M resident cells that the prepared 1024² route makes
 resident; it is not Water motion and not a worker-scaling failure. Cached and
 cached_dormant are same-law, projection-identical execution variants that cut
 quiet cost by about 3.5× (to 0.28–0.30 of reference), yet remain about 500× FreeMass at
@@ -530,6 +550,43 @@ A PF gameplay-profile or promotion decision should not treat today's cached
 variant as practically idle-free at 1024² scale, and should require a full-host
 measurement first.
 
+## Independent review
+
+An independent reviewer, given no editing rights, inspected the branch, the
+driver, the runner and the raw receipts.
+
+**Checks that passed.**
+- p95, max and phase totals recomputed from three raw children (two Windows, one
+  Linux) match `summary.json` exactly, as do the ratios, claimants, resident
+  chunks, RSS, preparation times, declared memory and perf shares.
+- Every source-mechanism claim in this record checks out against
+  `world_pressure.inc`, `world_pressure_cache.inc` and `world.cpp`.
+- Idle pools block on a condition variable, so they do not spin.
+- The host configuration matches the controlled prepared-liquid route.
+- The registration commit precedes the build.
+
+**Findings corrected before publication.**
+- **Blocker:** historical ratios were mislabelled as execution3. They are now
+  execution1, shown beside the execution3 campaign and the `c97f68ec` repeat.
+- The reference p50 range is widened to 31–41 ms; between-child spread is
+  ≈25%.
+- The cold-phase tick-minus-preparation residual is stated separately.
+- The rotation is described as a non-counterbalanced cyclic shift, with
+  cache-cold absolute times.
+- #370 is cited as a draft source, and "consistent with" replaces "reproduces".
+- The non-preregistered "Outcome B" label is qualified.
+- P2 now covers all three label writes, the missing compartment bounds and
+  ±2 lateral widening.
+- P1 requires serial-owner clearing and seam-crossing `put_final`
+  invalidation.
+- Quantile, child-duration and perf-provenance limits are added.
+- The driver comment wrongly said the vented profile binds the #370 definition
+  hash. This was corrected after execution, comment only: the executed driver is
+  the registration commit `69eef3f1`, and the published head differs from it
+  only in that comment.
+
+The reviewer judged Outcome B justified on the native evidence.
+
 ## Limits
 
 - **Native only.** No Godot, Rapier, `CyberSimulationWorker`, snapshot publication
@@ -547,6 +604,16 @@ measurement first.
 - **Profiles are registered fixtures, not gameplay traces.** Edit cadences are
   bounded examples of each state class. Real body motion each tick is harsher than
   the moving-mask profile's four-tick cadence.
+- **Cold-cache absolute times.** Four 1.6M-cell Worlds exceed the 5600X's 32 MB
+  L3, and each tick follows an untimed whole-domain observation. Absolute values
+  are therefore cache-cold; ratios rest on interleaving within each child. Children
+  also differ by ≈25% between replicates, so absolute ranges are wide.
+- **Quantiles** use rounded nearest rank. The 8-tick cold phase's p95/p99 equal its
+  maximum.
+- **Perf attribution** comes from a separately built `-O2 -g` binary (hash
+  retained; no separate source fence). The run is the same registration commit's
+  driver, all four Worlds share one profile, and stage shares are call-chain
+  inferences, not timings.
 - **Upper bounds, not implementations.** P1/P2 benefits are measured stage costs
   that the proposals would remove. They are not results of an implemented change.
 - **Memory** is process peak RSS with four Worlds and declared derived capacity;
