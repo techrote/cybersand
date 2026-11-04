@@ -113,6 +113,13 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
   'source_commit': '1ca90de5181953f9ebd95ef19c920d8dee7e17e2',
   'record': 'docs/audits/2026-11-04-workbench394-material-source-transition.md',
   'issue': 391,
+  'pr': 394},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'd766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874',
+  'to_lf_sha256': '9977b8c49bfb523acf2f0abcedfc6cc99e2348c60e2bbbfeb29d1fc53738c1a8',
+  'source_commit': 'd04fe009c2d5ab45f49a1d02cd36bb377f5d9873',
+  'record': 'docs/audits/2026-11-04-workbench394-ready-validation.md',
+  'issue': 391,
   'pr': 394})
 
 

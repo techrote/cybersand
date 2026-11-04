@@ -10,6 +10,8 @@ related-documents: [../operations/material-catalogue-shadow.md, ../architecture/
 
 # Workbench 394 material-source transition — 4 November 2026
 
+The initial cleanup/admission results below remain historical for their named checkpoints. Later owner acceptance authorizes Ready validation; the [current-main final-validation record](2026-11-04-workbench394-ready-validation.md) supersedes the earlier Draft hold and owns the chained pressure admission after #382. The unmerged hold continues.
+
 ## Decision and limits
 
 **Independent scoped technical admission: GO for the three exact entries below.** The owner asked

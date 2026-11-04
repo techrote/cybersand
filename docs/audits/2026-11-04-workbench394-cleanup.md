@@ -10,6 +10,8 @@ related-documents: [../systems/player-control-playground.md, ../operations/mater
 
 # Workbench 394 cleanup — 4 November 2026
 
+The initial cleanup/admission results below remain historical for their named checkpoints. Later owner acceptance authorizes Ready validation; the [current-main final-validation record](2026-11-04-workbench394-ready-validation.md) supersedes the earlier Draft hold and owns the chained pressure admission after #382. The unmerged hold continues.
+
 ## Scope and recoverable checkpoints
 
 The owner requested cleanup of Draft [PR #394](https://github.com/techrote/cybersand/pull/394): fix the teardown diagnostic and core-log citation, retain tuning during flyer replacement, and work through MAT admission while preserving flight/contact feel. **Keep the PR Draft and unmerged.** No sleep, controller calibration, material-law change or new physics response is introduced here.
