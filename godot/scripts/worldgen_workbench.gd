@@ -38,7 +38,7 @@ const SPATIAL_EXAMPLES: Array[String] = [
 	"typed-reusable-decay", "typed-multiscale-seeds",
 ]
 # Presentation names for the existing native material IDs, matching main.gd.
-# The reserved invalid slot 10 is never offered by an authoring picker.
+# Reserved slot 10 and internal Activated Binder are never offered for authoring.
 const MATERIAL_LABELS: Array[String] = [
 	"empty", "wall", "sand", "water", "smoke", "cloner", "fire", "wood",
 	"lava", "ice", "invalid", "plant", "acid", "stone", "dust", "mite",
@@ -51,6 +51,7 @@ const MATERIAL_LABELS: Array[String] = [
 	"corrugated steel", "rusted steel", "steel grating", "chainlink", "steel pipe", "copper pipe", "ceramic tile", "chemical glass",
 	"dark glass", "rubber", "cable bundle", "insulation", "hazard stripe", "neon cyan", "neon magenta", "neon amber", "LED white",
 	"pine planks", "birch log", "rough oak log", "walnut panel", "mahogany panel", "bamboo", "plywood", "driftwood", "cedar shingles", "charred timber", "cork", "wicker", "cardboard", "paper screen", "tar block", "acrylic sheet", "moss wall", "marble", "chalk block", "basalt columns", "obsidian", "adobe brick", "raw clay", "firebrick", "packed snow", "rock salt block", "gypsum board", "quicklime block", "rammed earth", "sandbag", "terrazzo", "gabion", "galvanised zinc sheet", "aluminium panel", "magnesium plate", "thermite brick", "bare iron plate", "gold leaf", "brass panel", "glass block", "frosted glass", "quartz crystal", "uranium glass", "sugar glass", "wax block", "sulfur block", "phosphor panel", "polymer panel", "solar panel", "carbon fibre", "heat-shield tile",
+	"stone wall", "salt wall", "coal wall", "dry binder", "activated binder", "binder crust",
 ]
 
 var tools2: RefCounted
@@ -406,7 +407,7 @@ func _build_brush_tab(box: VBoxContainer) -> void:
 	material_picker = OptionButton.new()
 	box.add_child(material_picker)
 	for id: int in range(Palette.MATERIAL_COUNT):
-		if id == 10:
+		if not _authorable_material(id):
 			continue
 		material_picker.add_item("%02d / %s" % [id, _material_label(id)], id)
 	var precedence: Label = _label(box, "Hard material rectangles apply last. Routes connect in world coordinates across chunk edges. District size is global only.", 13)
@@ -1007,6 +1008,8 @@ static func _prepare_candidate(candidate: Variant, recipe: Dictionary, coordinat
 	var started: int = Time.get_ticks_usec()
 	if JSON.stringify(recipe, "", true, true).to_utf8_buffer().size() > MAX_PROFILE_BYTES:
 		return {"ok":false, "error":"Profile exceeds the 1 MiB authoring limit."}
+	if _contains_internal_material(recipe):
+		return {"ok":false, "error":"Activated Binder is internal curing state; author Dry Binder and supply Water instead."}
 	var checked: Dictionary = candidate.configure(recipe)
 	if not bool(checked.get("ok", false)): return checked
 	var sampled: Dictionary = candidate.generate_chunk(coordinate)
@@ -1885,6 +1888,34 @@ func save_profile(path: String) -> bool:
 static func _material_label(id: int) -> String:
 	return MATERIAL_LABELS[id] if id >= 0 and id < MATERIAL_LABELS.size() else "invalid material " + str(id)
 
+static func _authorable_material(id: int) -> bool:
+	return id>=0 and id<Palette.MATERIAL_COUNT and id not in [10,CyberCellWorld.ACTIVATED_BINDER]
+
+static func _contains_internal_material(recipe: Dictionary) -> bool:
+	# Narrow public-workbench preflight for the existing recipe's material
+	# fields, including raw JSON and semantic planes. Native low-level state
+	# reconstruction remains separate; numeric widths/seeds are not materials.
+	var pending: Array = [recipe]
+	while not pending.is_empty():
+		var value: Variant = pending.pop_back()
+		if value is Dictionary:
+			for key: Variant in value:
+				var item: Variant = value[key]
+				if str(key) in ["material","interior","service_material","liquid_material"]:
+					if (item is int or item is float) and item==CyberCellWorld.ACTIVATED_BINDER: return true
+				if str(key)=="palette" and item is Dictionary:
+					for slot: String in ["rock","surface","accent","fluid"]:
+						var material: Variant = item.get(slot)
+						if (material is int or material is float) and material==CyberCellWorld.ACTIVATED_BINDER: return true
+				if str(key)=="allowed_materials" and item is Array:
+					for material: Variant in item:
+						if (material is int or material is float) and material==CyberCellWorld.ACTIVATED_BINDER: return true
+				if item is Dictionary or item is Array: pending.append(item)
+		elif value is Array:
+			for item: Variant in value:
+				if item is Dictionary or item is Array: pending.append(item)
+	return false
+
 func _note(parent: Node, text: String) -> Label:
 	var result: Label = _label(parent, text, 13)
 	result.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1900,7 +1931,7 @@ func _text_input(parent: Node, label: String, initial: String) -> LineEdit:
 func _material_options(parent: Node) -> OptionButton:
 	var picker: OptionButton = _options(parent, [])
 	for id: int in range(Palette.MATERIAL_COUNT):
-		if id != 10: picker.add_item("%02d / %s" % [id, _material_label(id)], id)
+		if _authorable_material(id): picker.add_item("%02d / %s" % [id, _material_label(id)], id)
 	return picker
 
 func _field_reference(parent: Node, label: String) -> OptionButton:

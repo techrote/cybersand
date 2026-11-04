@@ -4,11 +4,57 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-04
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Paired-material remediation checkpoint — 2026-11-04
+
+Continue PR358 from its [dated remediation record](../audits/2026-11-04-paired-materials-remediation.md),
+not the original native build or an old owner package. The repaired Godot source
+and atlas consumer matter even while all 80 native production inputs remain
+identical to native build `f069b439`. The current-main reconciliation preserves
+both audit exclusions and accepted #334/#367/#369. Do not import active
+SOL-DETACH or experimental GCR changes to settle shared-file ownership.
+
+Preserve original failures, the unrecovered archive's identity, and every new
+execution's actual source/runtime record. The bounded qualification apparatus
+does not replace full Native/GDExtension/Issue49/shader gates. Obtain independent
+review, the explicit schema1 checkpoint-policy decision and source-bound human
+results from the [owner packet](paired-materials-owner-playtest.md). PR370 owns
+its observer fix and the joint fixture; original LCB admission stays attached to
+its original source. Publish recoverable progress and stop without merging or
+promoting the candidate automatically.
+
+## LCB reassessment and bounded successors — 2026-11-03
+
+[#359's audit](../audits/2026-11-03-lcb-reassessment.md) inspects live main
+`89020b9eb6d540383a5bb64b58dcd29a87592c32` (tree
+`79de02472a653a4315149bc5e1970a512e6d74b6`), including merged stopped-session
+recovery #332. All four liquid families, application selection, shared PLAY
+construction and native worker observation already exist. This checkpoint is
+documentation only; it does not resume the original LCB implementation programme,
+merge parked PRs, select a preferred solver or change production defaults.
+
+Start successors from the audit's exact reuse map and dependency-ordered
+instructions: #360 owns fair playable comparison and actual multithreaded
+profiling, #361 owns bounded leaks/drains/material tools, #362 owns comparative
+body impacts and investigation of upward spray, #363 consumes their evidence for
+retention/profile decisions. Reconcile existing #258/#259 observation/scientific
+work before extending it. #260 is optional actor-retention work; existing PLAY
+can provide the common host. #261 retains old handover evidence, not current
+pending-CI truth. The live PR ledger confirms all four remain unmerged.
+
+Assign one integration owner for shared Main/worker/host-readback changes.
+Scenario registration and analysis can proceed independently from native
+structural/contact changes. Coordinate with active #347 before changing overlap
+ejection, occupancy masks, detachment or Rapier contacts, and with PLAY #304 and
+the PACE004 apparatus merged by #334 (apparatus-only, no LCB-relevant delta) before
+modifying pacing, recovery or diagnostics. The audit's post-audit section records
+the open GCR/material/parked-PR file-overlap register. Keep historical failures,
+configured-versus-actual worker counts and untested human/Web gates explicit.
 
 ## Stopped PLAY recovery reconciliation — 2026-11-02
 

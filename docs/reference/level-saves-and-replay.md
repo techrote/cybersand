@@ -2,9 +2,9 @@
 title: Level saves and exact replay
 status: Current
 document-kind: contract
-scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+scope: CYSD1 finite-level format, material and precision boundaries; CYPS2/IN-only CYPS3 continuation with PR358 nested quantity-schema refusal and pending owner compatibility decision
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-04
 related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -69,16 +69,37 @@ mutable World storage from a writer is **Rejected**.
 
 The codec checks lengths, header/version fields, checksum, decompression and
 bounded metadata types/ranges. Native validation checks exact payload length
-and legal material IDs (`0…131` except reserved `10`). Selected-material metadata
-accepts paintable IDs through `CyberCellWorld.LAST_MATERIAL`; Empty remains an
-invalid selection. Constructor IDs are range-checked before narrowing, so a wide
+and legal material IDs (`0…137` except reserved `10` on the unmerged paired-material
+candidate). Selected-material metadata
+accepts paintable IDs through `CyberCellWorld.LAST_MATERIAL`, excluding reserved10
+and internal Activated Binder136; Empty remains an invalid selection. Refusing
+136 as a selected brush does not reject136 inside the cell payload. Constructor
+IDs are range-checked before narrowing, so a wide
 integer cannot wrap into a valid material. Validation does not implement a
 complete semantic schema for every material's two state bytes.
 
-The MAT-002 catalogue extension changes the accepted IDs, not the CYSD1 header or
-five-byte cell encoding. Existing levels remain readable. Older runtimes whose
-catalogue ends at 80 reject levels containing the new materials; they do not gain
-support from the unchanged format version alone.
+Catalogue extensions change accepted IDs, not the CYSD1 header or five-byte cell
+encoding. Old valid material tuples remain readable by the candidate. A runtime
+whose catalogue ends at 80 or 131 rejects later IDs; the unchanged format version
+does not supply new material semantics. IDs132–137 carry the paired wall/binder
+state described in the [material contract](../systems/paired-materials-and-curing.md).
+
+**Binder exchange requires matching Water mass precision.** CYSD1 has no source
+precision metadata and its generic native reconstruction preserves `state_b`
+bytes; it does not validate or normalize bound quantity for a changed profile.
+An 8-bit Activated Binder with bound255 can therefore retain255 when a low-level
+caller reconstructs it using a 3-bit configuration (full Water quantum7). This is
+unsupported cross-profile reconstruction, not a quantity conversion. Callers
+must preserve the original precision and must not treat bytewise round-trip as
+proof of cross-profile validity. Ordinary paired-lab play is fixed at8bits and
+has no save/import surface. CYPS stores and restores its own precision instead.
+
+The ordinary application refuses level save/import while Water Feel or a
+MicroScenario is active. Leaving those custom-precision scenarios through normal
+demo/Tower construction restores default8-bit Water. The retained
+`test_water_feel_controller.gd` refusal and `test_water_feel_integration.gd`
+reset controls own this application boundary; lower-level `import_level` and
+`demo::reconstruct` do not independently enforce same-precision Binder admission.
 
 `CyberDemoBridge::import_level` validates and builds a replacement World and
 render exchange before no-throw ownership swaps. CYSD1 stores no liquid solver
@@ -161,6 +182,27 @@ freeze production Cell/global ABI or those missing host contracts; CYSD1 is
 unchanged. Historical CYPS1 belongs to the #245 source/artifact evidence and is
 explicitly refused by this decoder. A valid digest does not excuse inconsistent
 accounting: restore validates closure, roles, quanta and actual stored authority.
+
+**Unmerged PR358 adds a separate nested compatibility boundary.** Outer CYPS2
+remains version2, while InertialCellular uses its existing explicit CYPS3 envelope
+(`World::restore_physical_state` in `world_pressure.inc`). Both embed a quantity checkpoint
+that changes from schema1 with19 kernel slots to schema2 with20.
+`world_quantity.inc::quantity_read` refuses schema1 before interpreting
+incompatible arrays. Thus old CYPS2/IN-only CYPS3 checkpoints written by
+the pre-PR358 engine cannot load into the candidate, even if they contain only
+legacy materials. The running World remains intact on that refusal. There is
+no schema1 migration in this branch. The
+[owner decision record](../audits/2026-11-04-paired-materials-remediation.md#quantity-compatibility-owner-decision)
+compares accepting versioned refusal with an explicitly approved, tested import
+path. Choosing that policy is a gate before integration; safe refusal does not
+mean universal backward compatibility.
+
+CYPS quantity accounting stores free Water sources/sinks and species population
+counters. Binder-bound `state_b` is retained as cell state, separately from free
+Water. Generic external paint/erase receipts do not report bound-Water loss as a
+free-Water sink. The
+[closed-cure accounting boundary](../systems/paired-materials-and-curing.md#which-water-quantities-and-destruction-sinks-are-accounted)
+must accompany any conservation or saved-receipt claim.
 
 The native prepared builder can normalize final setup tuples only with explicit
 opt-in and a bound receipt. It cannot normalize a live World. Godot's normal

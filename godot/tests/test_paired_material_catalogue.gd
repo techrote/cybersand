@@ -21,6 +21,39 @@ func metadata(material: int) -> Dictionary:
 	return {"demo":"material_lab","player":[24.,24.,0.,0.],"material":material,
 		"quality":1,"coherent":false,"adhesion":true,"glow":true,"bodies":[]}
 
+func internal_selection_save(encoded: Dictionary) -> PackedByteArray:
+	# Forge a correctly checksummed save whose cells remain valid but whose
+	# selected paint brush is internal state. This must fail semantic admission.
+	var original: PackedByteArray = encoded.binary
+	var header: PackedByteArray = original.slice(0,24)
+	var body: PackedByteArray = JSON.stringify(metadata(Cell.ACTIVATED_BINDER)).to_utf8_buffer()
+	check(body.size()==header.decode_u32(12),"adversarial metadata preserves header lengths")
+	body.append_array(original.slice(Codec.HEADER_SIZE+body.size()))
+	var forged: PackedByteArray = header.duplicate()
+	forged.append_array(Codec._digest(header,body))
+	forged.append_array(body)
+	return forged
+
+func check_web_selection_refusal(binary: PackedByteArray) -> void:
+	var web: Control = load("res://web_main.tscn").instantiate()
+	root.add_child(web)
+	await process_frame
+	web.set_process(false)
+	web.set_physics_process(false)
+	check(web.ready_to_play,"actual Web import owner is ready")
+	if web.ready_to_play:
+		var owner: Object = web.native_world
+		var before: PackedByteArray = web.demo_bridge.export_level(owner)
+		var selected: int = web.selected_material_id
+		var imports: int = web.imported_count
+		web.ui.show_page("save")
+		web.ui.save_text.text=Marshalls.raw_to_base64(binary)
+		web.ui.buttons["import"].pressed.emit()
+		check(web.last_save_error.contains("internal curing state"),"actual user import explains the internal brush refusal")
+		check(web.native_world==owner and web.demo_bridge.export_level(owner)==before and web.selected_material_id==selected and web.imported_count==imports,"rejected internal brush preserves active owner, cells and selection")
+	web.queue_free()
+	await process_frame
+
 func run() -> void:
 	check(ClassDB.class_exists(&"CyberNativeCellWorld") and ClassDB.class_exists(&"CyberDemoBridge"),"native extension available")
 	if failures:
@@ -38,6 +71,7 @@ func run() -> void:
 	var old_hard: int = 0
 	for id: int in range(132):
 		if id==10: continue
+		if id>0: check(Codec.validate_metadata(metadata(id)).is_empty(),"old selected material remains valid: "+str(id))
 		var hard: bool = bool(descriptors[id].hard_surface)
 		old_hard += int(hard)
 		check(Cell.is_hard_material(id)==hard and Rig._hard_material(id)==hard,"native and gameplay old hard capability agree: "+str(id))
@@ -76,12 +110,17 @@ func run() -> void:
 	check(world.diagnostic_reset({"workers":1}),"actual native authoring owner")
 	for id: int in range(132,138):
 		check(world.diagnostic_fill_rect(Vector2i(40+(id-132)*2,40),Vector2i.ONE,id,255 if id==136 else 0),"native authoring admits new ID")
-		check(Codec.validate_metadata(metadata(id)).is_empty(),"new selection serializes as current material ID")
+		check(Codec.validate_metadata(metadata(id)).is_empty()==(id!=Cell.ACTIVATED_BINDER),"public selections admit; internal state is not a paint selection: "+str(id))
 	var payload: PackedByteArray = bridge.export_level(world)
 	var offset: int = (40*1024+48)*5
 	check(payload[offset]==136 and payload[offset+1]==180 and payload[offset+2]==255,"CYSD1 carries active countdown and bound quantity")
 	var encoded: Dictionary = Codec.encode(payload,metadata(137))
 	check(encoded.ok,"CYSD1 encodes new catalogue")
+	check(not Codec.encode(payload,metadata(Cell.ACTIVATED_BINDER)).ok,"CYSD1 refuses internal state as selected brush without removing it from cells")
+	var forged: PackedByteArray = internal_selection_save(encoded)
+	var refused: Dictionary = Codec.decode_binary(forged)
+	check(not refused.ok and str(refused.error).contains("internal curing state"),"checksum-valid internal selection is refused semantically")
+	await check_web_selection_refusal(forged)
 	var decoded: Dictionary = Codec.decode_text(encoded.text)
 	check(decoded.ok and decoded.world==payload and decoded.metadata.material==137,"CYSD1 retains new cells and selection")
 	check(world.diagnostic_reset({"workers":1}) and bridge.import_level(world,decoded.world),"new cell state restores through native owner")

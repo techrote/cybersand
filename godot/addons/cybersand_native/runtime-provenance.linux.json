@@ -960,7 +960,7 @@
     "size": 4226480
   },
   "evidence": "docs/audits/2026-11-03-paired-materials-and-finite-curing.md",
-  "toolchain": "Local Windows-hosted pinned LLVM-MinGW23.1 UCRT and WSL Ubuntu24.04 GCC13.3/ld2.42, godot-cpp101ae380; actual target execution pending; no historical artifact-equality claim",
+  "toolchain": "Local Windows-hosted pinned LLVM-MinGW23.1 UCRT and WSL Ubuntu24.04 GCC13.3/ld2.42, godot-cpp101ae380; original target execution is recorded in validation at its historical source; the original raw archive remains unrecovered as of 2026-11-04 and resulting-source qualification is separate; no historical artifact-equality claim",
   "toolchain_record": {
     "measured_utc": "2026-11-03T02:43:43.151691+00:00",
     "scope": "Post-build identity verification of compiler/linker/static-library paths named by actual build recipe/log; not build-time tracing or proof of historical M11 binary equality.",

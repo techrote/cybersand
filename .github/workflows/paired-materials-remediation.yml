@@ -1,0 +1,196 @@
+name: PR358 focused material remediation evidence
+
+# Preregistered finite replacement evidence while #358 remains draft. These two
+# literal hosted jobs are the entire fan-out (at most two concurrent hosts).
+# They do not replace the complete required merge gates or owner acceptance.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paired-material-remediation-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  PAIRED_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  linux:
+    if: github.event.pull_request.number == 358
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/paired-material-remediation-linux
+      LIBGL_ALWAYS_SOFTWARE: '1'
+    steps:
+      - name: Check out the exact PR source
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PAIRED_SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Register finite source-derived scope and check reader admission
+        id: plan
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$PAIRED_SOURCE_SHA"
+          python tools/ci/check_ci_provider_policy.py 2>&1 | tee "$EVIDENCE_DIR/provider.log"
+          python tools/experiments/test_paired_material_remediation.py 2>&1 | tee "$EVIDENCE_DIR/driver-controls.log"
+          python -O tools/experiments/test_paired_material_remediation.py 2>&1 | tee "$EVIDENCE_DIR/driver-controls-optimized.log"
+          python tools/experiments/run_paired_material_remediation.py --plan-json > "$EVIDENCE_DIR/plan.json"
+          python - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          plan = json.loads((Path(os.environ['EVIDENCE_DIR']) / 'plan.json').read_text())
+          budgets = next(host['budgets'] for host in plan['hosts'] if host['platform'] == 'linux')
+          if (budgets['job_minutes'] != 360 or budgets['metadata_step_minutes'] != 5
+                  or budgets['readback_minutes'] != 15 or budgets['upload_minutes'] != 10):
+              raise SystemExit('Workflow parent/setup limits differ from source policy')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as handle:
+              for key, value in budgets.items():
+                  if key.endswith('_minutes'):
+                      handle.write(f'{key}={value}\n')
+          PYTHON
+      - name: Prepare the current-main Linux display dependencies
+        timeout-minutes: ${{ fromJSON(steps.plan.outputs.display_minutes) }}
+        run: |
+          set -euo pipefail
+          bash tools/ci/prepare_linux_display.sh 2>&1 | tee "$EVIDENCE_DIR/display-preparation.log"
+      - name: Materialize retained modules and authenticate the pinned official engine
+        timeout-minutes: ${{ fromJSON(steps.plan.outputs.dependency_minutes) }}
+        run: |
+          set -euo pipefail
+          python tools/experiments/run_paired_material_remediation.py --prepare-dependencies \
+            --expected-source-sha "$PAIRED_SOURCE_SHA" --godot-archive "$RUNNER_TEMP/paired-materials-godot.zip" \
+            --output "$EVIDENCE_DIR/dependencies" 2>&1 | tee "$EVIDENCE_DIR/dependencies.log"
+      - name: Execute focused native, sanitizer, headless host and actual material pixels
+        timeout-minutes: ${{ fromJSON(steps.plan.outputs.suite_minutes) }}
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python tools/experiments/run_paired_material_remediation.py \
+            --expected-source-sha "$PAIRED_SOURCE_SHA" --godot-archive "$RUNNER_TEMP/paired-materials-godot.zip" \
+            --output "$EVIDENCE_DIR/qualification" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently reread the original source, process receipts and pixels
+        if: always()
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python tools/experiments/run_paired_material_remediation.py --verify-only \
+            --expected-source-sha "$PAIRED_SOURCE_SHA" --output "$EVIDENCE_DIR/qualification" \
+            2>&1 | tee "$EVIDENCE_DIR/independent-readback.log"
+      - name: Retain all original source-bound successes and failures
+        if: always()
+        timeout-minutes: 10
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paired-material-remediation-linux-${{ env.PAIRED_SOURCE_SHA }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE_DIR }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    if: github.event.pull_request.number == 358
+    runs-on: windows-2022
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/paired-material-remediation-windows
+    steps:
+      - name: Keep exact LF checkout bytes on Windows
+        timeout-minutes: 5
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out the exact PR source
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PAIRED_SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Register finite source-derived scope and check reader admission
+        id: plan
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$PAIRED_SOURCE_SHA"
+          python tools/ci/check_ci_provider_policy.py 2>&1 | tee "$EVIDENCE_DIR/provider.log"
+          python tools/experiments/test_paired_material_remediation.py 2>&1 | tee "$EVIDENCE_DIR/driver-controls.log"
+          python -O tools/experiments/test_paired_material_remediation.py 2>&1 | tee "$EVIDENCE_DIR/driver-controls-optimized.log"
+          python tools/experiments/run_paired_material_remediation.py --plan-json > "$EVIDENCE_DIR/plan.json"
+          python - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          plan = json.loads((Path(os.environ['EVIDENCE_DIR']) / 'plan.json').read_text())
+          budgets = next(host['budgets'] for host in plan['hosts'] if host['platform'] == 'win32')
+          if (budgets['job_minutes'] != 360 or budgets['metadata_step_minutes'] != 5
+                  or budgets['readback_minutes'] != 15 or budgets['upload_minutes'] != 10):
+              raise SystemExit('Workflow parent/setup limits differ from source policy')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as handle:
+              for key, value in budgets.items():
+                  if key.endswith('_minutes'):
+                      handle.write(f'{key}={value}\n')
+          PYTHON
+      - name: Materialize retained DLLs and authenticate the pinned official engine
+        timeout-minutes: ${{ fromJSON(steps.plan.outputs.dependency_minutes) }}
+        run: |
+          set -euo pipefail
+          python tools/experiments/run_paired_material_remediation.py --prepare-dependencies \
+            --expected-source-sha "$PAIRED_SOURCE_SHA" --godot-archive "$RUNNER_TEMP/paired-materials-godot.zip" \
+            --output "$EVIDENCE_DIR/dependencies" 2>&1 | tee "$EVIDENCE_DIR/dependencies.log"
+      - name: Execute focused actual Windows headless fixtures
+        timeout-minutes: ${{ fromJSON(steps.plan.outputs.suite_minutes) }}
+        run: |
+          set -euo pipefail
+          python tools/experiments/run_paired_material_remediation.py \
+            --expected-source-sha "$PAIRED_SOURCE_SHA" --godot-archive "$RUNNER_TEMP/paired-materials-godot.zip" \
+            --output "$EVIDENCE_DIR/qualification" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently reread original source and Windows process receipts
+        if: always()
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python tools/experiments/run_paired_material_remediation.py --verify-only \
+            --expected-source-sha "$PAIRED_SOURCE_SHA" --output "$EVIDENCE_DIR/qualification" \
+            2>&1 | tee "$EVIDENCE_DIR/independent-readback.log"
+      - name: Retain all original source-bound successes and failures
+        if: always()
+        timeout-minutes: 10
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paired-material-remediation-windows-${{ env.PAIRED_SOURCE_SHA }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE_DIR }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90

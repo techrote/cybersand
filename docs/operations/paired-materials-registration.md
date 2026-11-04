@@ -19,6 +19,14 @@ isolated on `codex/paired-materials-20261103`. The unrelated dirty checkout at
 read-only evidence/input here, not a prerequisite for changing production material
 rules. Main's stopped-PLAY recovery and accepted render/shader paths are retained.
 
+**4 November implementation correction:** the frozen protocol below retains its
+original intent. Its generic bound-Water external-edit/removal ledger promise was
+not fully implemented: current native quantity receipts track free Water, while
+bound `state_b` destruction needs separate before/after accounting. The
+[current accounting contract](../systems/paired-materials-and-curing.md#which-water-quantities-and-destruction-sinks-are-accounted)
+and [remediation record](../audits/2026-11-04-paired-materials-remediation.md)
+state that narrower claim and the pending quantity-schema owner decision.
+
 INT-000 infrastructure is already landed according to the canonical programme;
 old issue29 implementation-gate wording is historical. New chemistry stays in
 that native resolver/kernel owner. Active PR357 is a documentation-only catalogue

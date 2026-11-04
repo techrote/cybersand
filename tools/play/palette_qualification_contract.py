@@ -19,6 +19,7 @@ CONTEXT = 'PALETTE_QUALIFICATION_CONTEXT '
 CAPTURE = 'PALETTE_QUALIFICATION_CAPTURE '
 MAIN_RESULT = 'PALETTE_MAIN_PROBE_RESULT '
 ORACLE_RESULT = 'PALETTE_CROSSFADE_RENDER_RESULT '
+MATERIAL_ATLAS_RESULT = 'MATERIAL_PRESENTATION_ATLAS_RESULT '
 PALETTE = 'godot/shaders/material_palette.gdshader'
 BASELINE = 'adaaa37ae35ffcdaa961b80353be3a23b805c0cc'
 BASELINE_SHADER = '3d9ee3b04ce6eee03490ad2c4af1f487f208e9ff0db31e6d514127633c2e0fef'
@@ -30,6 +31,8 @@ ORACLE_VERSION = 'palette-bounded-crossfade-v4-paired'
 ORACLE_ASSERTIONS = 1329
 MATERIAL_SLOTS = 138
 LEGACY_MATERIAL_SLOTS = 132
+MATERIAL_ATLAS_COLUMNS = 12
+MATERIAL_SWATCH_SIZE = (48, 24)
 # v4 registers six appended catalogue rows only. Shader algorithms, backend
 # predicates, GPU-input controls and pixel tolerances retain their v3 meaning.
 PROGRAM_SHA256 = 'b79199e249748dfbdf23bbd113daa6f36f3e7be870ff41baf76c9273829edc10'
@@ -47,7 +50,7 @@ VISUAL = (
 )
 SUCCESS = {
  'guard': r'^PALETTE_COMPILE_BOUNDS: PASS$',
- 'material': r'^MATERIAL_PRESENTATION_RENDER: actual pixels passed \(time override, still scenery, anchoring, crossfade endpoints, conditions, all 138 ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks\)$',
+ 'material': rf'^MATERIAL_PRESENTATION_RENDER: actual pixels passed \(time override, still scenery, anchoring, crossfade endpoints, conditions, all {MATERIAL_SLOTS} ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks\)$',
  'vapour': r'^MATERIAL_VAPOUR_PIPELINE: actual pixels, 26 assertions, 0 failures$',
  'water': r'^WATER_PRESENTATION_RENDER: actual pixels coverage=2/4 at 2x, 8/16 at 4x; oriented right edge passed$',
  'integration': r'^WATER_FEEL_INTEGRATION: 24 policy cases \+ 70 scenario builds/reset/invalid/actions/RG8/authority passed default_hash=.+$',
@@ -333,6 +336,68 @@ def pixels(directory: Path, capture: dict, size: tuple | None = None):
     require(float(np.max(np.abs(encoded - np.clip(values, 0, 1)))) <= 1 / 255 + 1e-7,
             'PNG does not represent the retained native framebuffer')
     return values
+
+
+def verify_material_atlas(result: dict, context: dict, directory: Path, report: dict) -> dict:
+    """Read every registered slot using the producer's unchanged pixel tests."""
+    import numpy as np
+    require(isinstance(result, dict) and result.get('schema') == 'material-presentation-atlas-v1'
+            and _same(result.get('context'), context), 'Material atlas source/process/nonce identity differs')
+    catalogue = result.get('catalogue')
+    expected_digest = report['source_inputs'].get('godot/scripts/cell_world.gd')
+    require(type(expected_digest) is str and re.fullmatch(r'[0-9a-f]{64}', expected_digest) is not None
+            and _same(catalogue, {'path': 'res://scripts/cell_world.gd', 'sha256': expected_digest}),
+            'Material atlas catalogue identity differs')
+    require(_same(result.get('first_material'), 0) and _same(result.get('last_material'), MATERIAL_SLOTS - 1)
+            and _same(result.get('material_slots'), MATERIAL_SLOTS)
+            and _same(result.get('slot_ids'), list(range(MATERIAL_SLOTS))),
+            'Material atlas slot inventory is incomplete or stale')
+    require(_same(result.get('columns'), MATERIAL_ATLAS_COLUMNS)
+            and _same(result.get('swatch_size'), list(MATERIAL_SWATCH_SIZE)), 'Material atlas layout differs')
+
+    def retained(capture: object, label: str, size: tuple):
+        require(isinstance(capture, dict) and capture.get('label') == label
+                and capture.get('png') == label + '.png' and capture.get('raw') == label + '.raw'
+                and _same(capture.get('format'), 5), 'Material atlas capture identity differs')
+        return pixels(directory, capture, size)
+
+    width, height = MATERIAL_SWATCH_SIZE
+    dimensions = (width * MATERIAL_ATLAS_COLUMNS,
+                  height * math.ceil(MATERIAL_SLOTS / MATERIAL_ATLAS_COLUMNS))
+    label = f'material-id-slots-000-{MATERIAL_SLOTS - 1:03d}'
+    atlas = retained(result.get('capture'), label, dimensions)
+
+    def swatch(material_id: int):
+        x, y = material_id % MATERIAL_ATLAS_COLUMNS * width, material_id // MATERIAL_ATLAS_COLUMNS * height
+        return atlas[y:y + height, x:x + width]
+
+    empty = swatch(0)
+    for material_id in range(1, MATERIAL_SLOTS):
+        if material_id == 10:
+            continue
+        interior = swatch(material_id)[4:20, 4:44, :3]
+        require(float(np.max(np.abs(interior - empty[4:20, 4:44, :3]))) > TOLERANCE,
+                f'Material atlas slot {material_id} rendered as Empty')
+        invalid = (interior[:, :, 0] > .6) & (interior[:, :, 2] > .6) & (interior[:, :, 1] < .1)
+        require(int(np.count_nonzero(invalid)) < 640,
+                f'Material atlas slot {material_id} rendered the invalid-ID fallback')
+    controls = result.get('invalid_controls')
+    invalid_ids = [10, MATERIAL_SLOTS, 255]
+    require(isinstance(controls, list) and len(controls) == len(invalid_ids)
+            and all(isinstance(row, dict) and type(row.get('material_id')) is int for row in controls)
+            and _same([row.get('material_id') for row in controls], invalid_ids),
+            'Material atlas invalid-ID control inventory differs')
+    for row in controls:
+        material_id = row['material_id']
+        values = retained(row.get('capture'), f'material-invalid-id-{material_id:03d}', MATERIAL_SWATCH_SIZE)
+        red, green, blue = values[12, 24, :3]
+        require(red > .6 and blue > .6 and green < .1,
+                f'Material atlas invalid-ID control {material_id} lost its magenta fallback')
+        if material_id == 10:
+            require(bool(np.array_equal(values, swatch(material_id))), 'Material atlas reserved slot differs from its control')
+    return {'material_slots': MATERIAL_SLOTS, 'valid_nonempty_slots': MATERIAL_SLOTS - 2,
+            'invalid_controls': invalid_ids, 'atlas_png': label + '.png',
+            'size': list(dimensions), 'catalogue_sha256': expected_digest}
 
 
 def reference_pixels(condition: int):
@@ -628,9 +693,10 @@ def verify_case(case: dict, row: dict, directory: Path, report: dict) -> dict:
                     'Compiler/custody guard inventory differs')
             verify_shader(value.get('production_variant'), 'angle_bounded_crossfade', report['shader_hashes'])
         if case['kind'] == 'material':
-            from PIL import Image
-            with Image.open(file(captures, 'material-id-slots-000-131.png')) as image:
-                require(image.width > 0 and image.height > 0, 'Missing original material atlas pixels')
+            value = one(log, MATERIAL_ATLAS_RESULT)
+            require(_same(value, json.loads(file(captures, 'material-atlas.json').read_text())),
+                    'Material atlas receipt differs from original engine output')
+            reduced = verify_material_atlas(value, context, captures, report)
         if case['kind'] == 'vapour':
             for name in ('vapour-seeded.exr', 'vapour-decayed.exr', 'vapour-reset.exr'):
                 require(file(captures, name).stat().st_size > 100, 'Missing original vapour framebuffer')

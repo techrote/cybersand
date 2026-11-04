@@ -50,6 +50,7 @@ def authenticate(args):
     return {'source':git('rev-parse','HEAD').decode().strip(),
             'tree':git('rev-parse','HEAD^{tree}').decode().strip(),
             'scene':'res://paired_material_playground.tscn', 'godot':version,
+            'godot_executable':str(args.godot.resolve()), 'godot_executable_sha256':digest(args.godot),
             'native_build_source':native['source_commit'], 'runtimes':runtimes,
             'inputs':inputs, 'input_identity':hashlib.sha256(json.dumps(inputs,sort_keys=True).encode()).hexdigest(),
             'scope':'Native paired forms and finite-curing developer review; current-main actor coupling, no GCR-LA/rest/default or owner-acceptance claim'}

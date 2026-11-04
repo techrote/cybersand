@@ -2,6 +2,7 @@
 #include "cybersand/material_rules.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/demo_snapshot.hpp"
+#include "cybersand/render_snapshot.hpp"
 #include "cybersand/sha256.hpp"
 
 #include <algorithm>
@@ -356,6 +357,232 @@ void rim_depth_and_freshness() {
             "completed cure enters hard terrain rather than bypassing granular freshness");
 }
 
+// Compare the complete continuation payload, not just the visible material
+// census or a terminal hash. CYPS includes cell state/epochs/temperature,
+// activity, policy, sidecars and all quantity counters; worker capacity is an
+// execution setting and is deliberately absent from that serialized state.
+void exact_worker_state(const World& one, const World& four, Sha256* trajectory = nullptr) {
+    const auto first = one.save_physical_state();
+    require(first == four.save_physical_state(), "complete worker-count continuation state diverged");
+    require(one.quantity_ledger() == four.quantity_ledger(), "complete worker-count quantity ledger diverged");
+    if (trajectory != nullptr) {
+        // Each fixed-width record is the payload's own 32-byte SHA-256 footer.
+        // Including t0 and every tick makes this a digest of the full trajectory.
+        trajectory->update(std::span<const std::uint8_t>(first).last(32U));
+    }
+}
+
+void curing_workers_and_state_parity() {
+    constexpr RectI64 bounds{0, 0, 128, 128};
+    constexpr std::size_t doses = 64;
+    constexpr int ticks = 210;
+    for (int family : {1, 2, 3, 4}) for (std::uint8_t bits : {std::uint8_t{3}, std::uint8_t{8}}) {
+        std::cout << "PAIR_CURE worker-case family=" << family << " bits=" << unsigned(bits) << '\n';
+        World one(config(family, bits, 1));
+        World four(config(family, bits, 4));
+        for (auto* w : {&one, &four}) {
+            // Every capsule has exactly one dose. Dispersion across independent
+            // cores supplies enough real curing jobs to observe pool claimants.
+            w->reserve_region(bounds);
+            for (int row = 0; row < 8; ++row) for (int column = 0; column < 8; ++column) {
+                const int x = 8 + 16 * column, y = 8 + 16 * row;
+                box(*w, x, y);
+                w->set(x, y, Material::DryBinder);
+                w->set(x + 1, y, Material::Water);
+            }
+        }
+        const auto supply = doses * static_cast<std::uint64_t>(one.config().water_experiment_policy.maximum());
+        Sha256 trajectory;
+        exact_worker_state(one, four, &trajectory);
+        std::array<std::uint64_t, 5> observed{};
+        std::uint32_t curing_peak = 0;
+        std::uint64_t curing_parallel_ticks = 0;
+        for (int t = 0; t < ticks; ++t) {
+            const bool curing = one.quantity_ledger().material_cells[static_cast<std::uint8_t>(Material::ActivatedBinder)] > 0;
+            const auto serial_stats = one.tick(), parallel_stats = four.tick();
+            require(serial_stats.worker_threads_observed <= 1 && parallel_stats.worker_threads_observed <= 4,
+                    "observed task claimants exceed configured worker capacity");
+            ++observed[parallel_stats.worker_threads_observed];
+            if (curing) {
+                require(serial_stats.worker_threads_observed == 1, "serial curing tick performed no observed work");
+                curing_peak = std::max(curing_peak, parallel_stats.worker_threads_observed);
+                curing_parallel_ticks += static_cast<std::uint64_t>(parallel_stats.worker_threads_observed > 1);
+            }
+            exact_worker_state(one, four, &trajectory);
+            const auto ledger = one.quantity_ledger();
+            require(ledger.water_visible + ledger.water_overfill == one.water_quantity(bounds),
+                    "worker fixture free-Water census differs from authoritative quantity ledger");
+            require(one.water_quantity(bounds) + bound(one, bounds) == supply,
+                    "worker fixture free plus bound quantity did not close");
+            require(ledger.material_cells[static_cast<std::uint8_t>(Material::DryBinder)] +
+                        ledger.material_cells[static_cast<std::uint8_t>(Material::ActivatedBinder)] +
+                        ledger.material_cells[static_cast<std::uint8_t>(Material::BinderCrust)] == doses,
+                    "worker fixture lost or created a binder parcel");
+        }
+        require(curing_peak > 1 && curing_parallel_ticks > 0,
+                "configured-four fixture never observed multiple task claimants during curing");
+        require(count(one, Material::BinderCrust, bounds) == doses && one.water_quantity(bounds) == 0,
+                "worker fixture did not finish all finite doses");
+        std::cout << "PAIR_CURE worker-parity family=" << family << " bits=" << unsigned(bits)
+                  << " ticks=" << ticks << " capsules=" << doses << " curing_peak=" << curing_peak
+                  << " curing_parallel_ticks=" << curing_parallel_ticks << " observed_histogram=";
+        for (std::size_t i = 0; i < observed.size(); ++i) std::cout << (i == 0 ? "" : ",") << observed[i];
+        std::cout << " trajectory_sha256=" << Sha256::hex(trajectory.finish()) << '\n';
+    }
+}
+
+void mid_cure_interest_resume() {
+    constexpr RectI64 bounds{0, 0, 32, 32};
+    constexpr int excluded_ticks = 45;
+    for (int family : {1, 2, 3, 4}) for (std::uint8_t bits : {std::uint8_t{3}, std::uint8_t{8}}) {
+        World one(config(family, bits, 1));
+        World four(config(family, bits, 4));
+        const auto supply = one.config().water_experiment_policy.maximum();
+        for (auto* w : {&one, &four}) {
+            box(*w); w->set(8, 8, Material::DryBinder); w->set(9, 8, Material::Water);
+        }
+        for (int t = 0; t < 30; ++t) {
+            tick(one); tick(four); exact_worker_state(one, four);
+        }
+        require(one.stored_material(8, 8) == Material::ActivatedBinder && one.stored_state_b(8, 8) == supply,
+                "region fixture did not reach genuine finite-dose activation");
+        const auto countdown = one.stored_state_a(8, 8);
+        const auto temperature = one.stored_temperature(8, 8);
+        const auto retained_ledger = one.quantity_ledger();
+        const auto retained_content = one.content_hash();
+        one.set_simulation_region(RectI64{512, 512, 8, 8});
+        four.set_simulation_region(RectI64{512, 512, 8, 8});
+        for (int t = 0; t < excluded_ticks; ++t) {
+            const auto a = one.tick(), b = four.tick();
+            require(a.scheduled_cores == 0 && b.scheduled_cores == 0 &&
+                        a.worker_threads_observed == 0 && b.worker_threads_observed == 0,
+                    "excluded curing region still scheduled native work");
+            require(one.content_hash() == retained_content && one.quantity_ledger() == retained_ledger &&
+                        one.stored_material(8, 8) == Material::ActivatedBinder &&
+                        one.stored_state_a(8, 8) == countdown && one.stored_state_b(8, 8) == supply &&
+                        one.stored_temperature(8, 8) == temperature,
+                    "excluded curing state or quantity advanced");
+            exact_worker_state(one, four);
+        }
+        one.set_simulation_region(bounds); four.set_simulation_region(bounds);
+        tick(one); tick(four); exact_worker_state(one, four);
+        require(one.stored_state_a(8, 8) == countdown - 1U &&
+                    one.stored_material(8, 8) == Material::ActivatedBinder,
+                "re-entry missed one eligible update or performed excluded-time catch-up");
+        for (int t = 1; t < 180; ++t) {
+            tick(one); tick(four); exact_worker_state(one, four);
+            require(one.water_quantity(bounds) + bound(one, bounds) == supply,
+                    "region re-entry lost the retained finite dose");
+        }
+        require(one.stored_material(8, 8) == Material::BinderCrust && one.stored_state_b(8, 8) == supply,
+                "re-entered binder failed to cure after eligible updates");
+        std::cout << "PAIR_CURE region-resume family=" << family << " bits=" << unsigned(bits)
+                  << " excluded_ticks=" << excluded_ticks << " retained_countdown=" << countdown
+                  << " resumed_countdown=" << countdown - 1U << " bound=" << supply << '\n';
+    }
+}
+
+void activation_failure_quarantine() {
+    for (const auto workers : {1U, 4U}) for (const bool with_event : {false, true}) {
+        auto c = config(1, 8, workers);
+        c.chunk_size = 128; c.activity_block_size = 32; c.scheduling_core_size = 64;
+        c.initial_chunk_reserve = 1; c.maximum_chunk_count = 1;
+        World w(c);
+        // Attempt 1 executes phase 1 (the complete activation) before phase 2
+        // demands an unavailable chunk for Sand at the lower storage edge.
+        // This tests real late failure, not an injected inter-write interruption.
+        box(w, 80, 20); w.set(80, 20, Material::DryBinder); w.set(81, 20, Material::Water);
+        w.set(10, 127, Material::Sand);
+        if (with_event) {
+            w.set(40, 40, Material::Wall);
+            require(w.queue_explosion(40, 40, 1, 0), "failure fixture event admission");
+        }
+        RenderSnapshotExchange exchange(2, 2, 128 * 128 * 2);
+        require(exchange.publish(w).status == RenderPublishStatus::Published, "pre-fault publication failed");
+        auto lease = exchange.acquire_latest();
+        require(lease.has_value(), "pre-fault lease unavailable");
+        const std::vector<std::uint8_t> retained(lease->cells().begin(), lease->cells().end());
+        bool threw = false;
+        try { tick(w); } catch (const std::runtime_error&) { threw = true; }
+        require(threw && w.has_failed() && w.tick_index() == 1 && w.completed_tick_index() == 0,
+                "late activation failure claimed a completed tick");
+        require(w.stored_material(80, 20) == Material::ActivatedBinder && w.stored_state_a(80, 20) == 180 &&
+                    w.stored_state_b(80, 20) == 255 && w.stored_material(81, 20) == Material::Empty,
+                "late failure did not retain the completed earlier activation phase");
+        require(w.stored_material(10, 127) == Material::Sand,
+                "capacity failure unexpectedly advanced the unprepared later phase");
+        if (with_event) require(w.stored_material(40, 40) == Material::Fire,
+                                "failure incorrectly rolled back the accepted event");
+        w.set_simulation_region(RectI64{0, 0, 128, 128});
+        const auto failed_hash = w.state_hash();
+        threw = false;
+        try { tick(w); } catch (const std::logic_error&) { threw = true; }
+        require(threw && w.state_hash() == failed_hash && w.completed_tick_index() == 0,
+                "region selection resumed the quarantined activation");
+        require(!w.set_cell_state(80, 20, Material::DryBinder, 0, 0) &&
+                    !w.queue_explosion(80, 20, 1, 0) && w.state_hash() == failed_hash,
+                "quarantined activation admitted a new write or event");
+        threw = false;
+        try { (void)w.quantity_ledger(); } catch (const std::logic_error&) { threw = true; }
+        require(threw, "partial tick exposed a healthy quantity accounting snapshot");
+        threw = false;
+        try { (void)w.save_physical_state(); } catch (const std::logic_error&) { threw = true; }
+        require(threw, "partial activation was exported as a valid physical checkpoint");
+        threw = false;
+        try { (void)exchange.publish(w); } catch (const std::logic_error&) { threw = true; }
+        require(threw && exchange.latest_serial() == 1 &&
+                    std::equal(retained.begin(), retained.end(), lease->cells().begin()),
+                "partial activation replaced or mutated the retained publication");
+        w.clear();
+        require(!w.has_failed() && w.completed_tick_index() == 0 && bound(w, {0, 0, 128, 128}) == 0 &&
+                    w.quantity_ledger().kernel_rules.back().consumed == 0,
+                "clear retained quarantined bound quantity or conversion accounting");
+        box(w, 80, 20); w.set(80, 20, Material::DryBinder); w.set(81, 20, Material::Water);
+        const auto recovered = w.tick();
+        require(recovered.tick == 1 && recovered.deferred_events == 0 &&
+                    w.stored_material(40, 40) == Material::Empty &&
+                    w.stored_material(80, 20) == Material::ActivatedBinder && w.stored_state_b(80, 20) == 255,
+                "fresh activation failed after clear or replayed the old accepted event");
+        std::cout << "PAIR_CURE quarantine workers=" << workers << " event=" << with_event
+                  << " completed_before_fault=0 attempted=1 retained_bound=255 clear_recovery=1\n";
+    }
+}
+
+void external_bound_water_sinks() {
+    constexpr RectI64 bounds{0, 0, 32, 32};
+    for (std::uint8_t bits : {std::uint8_t{3}, std::uint8_t{8}}) {
+        for (bool cured : {false, true}) for (auto replacement : {Material::Empty, Material::StoneWall}) {
+            World w(config(1, bits)); box(w);
+            w.set(8, 8, Material::DryBinder); w.set(9, 8, Material::Water);
+            for (int t = 0; t < (cured ? 210 : 30); ++t) tick(w);
+            const auto supply = w.config().water_experiment_policy.maximum();
+            require(w.stored_material(8, 8) == (cured ? Material::BinderCrust : Material::ActivatedBinder) &&
+                        bound(w, bounds) == supply && w.water_quantity(bounds) == 0,
+                    "bound-removal fixture did not consume one genuine Water dose");
+            const auto before = w.quantity_ledger();
+            const auto bound_before = bound(w, bounds);
+            w.set(8, 8, replacement);
+            const auto after = w.quantity_ledger();
+            const auto removed_bound = bound_before - bound(w, bounds);
+            const auto edit = static_cast<std::size_t>(QuantityKind::ExternalEdit);
+            require(removed_bound == supply && after.kinds[edit] == before.kinds[edit] &&
+                        after.water_visible == before.water_visible && after.water_overfill == before.water_overfill,
+                    "bound-cell edit was misclassified as a free-Water source or sink");
+            // The fixture's separate bound-destruction sink closes this edit.
+            // The production free-Water ledger deliberately does not own it.
+            require(w.water_quantity(bounds) + bound(w, bounds) == 0 &&
+                        w.water_quantity(bounds) + bound(w, bounds) + removed_bound == supply,
+                    "external bound destruction was hidden in the closed-cure claim");
+            tick(w);
+            require(w.stored_material(8, 8) == replacement && bound(w, bounds) == 0,
+                    "erased/repainted bound state resumed curing");
+            std::cout << "PAIR_CURE bound-sink bits=" << unsigned(bits) << " cured=" << cured
+                      << " replacement=" << unsigned(replacement) << " removed_bound=" << removed_bound
+                      << " free_external_sink_delta=0\n";
+        }
+    }
+}
+
 void persistence() {
     World w(config()); box(w); w.set(8, 8, Material::DryBinder); w.set(9, 8, Material::Water);
     for (int t = 0; t < 30; ++t) tick(w);
@@ -376,7 +603,8 @@ void persistence() {
         kQuantityKindCount * 16U + kQuantityPairRuleSlots * 16U +
         kQuantityPairRuleSlots * 8U + kQuantityKernelRuleSlots * 16U +
         kQuantityMaterialSlots * 8U * 2U + 1U;
-    auto corrupt = w.save_physical_state();
+    const auto kept_checkpoint = w.save_physical_state();
+    auto corrupt = kept_checkpoint;
     require(corrupt.size() > ledger_bytes + 33U && corrupt[corrupt.size() - 33U] == 0,
             "nonpressure quantity wire suffix");
     const auto offset = corrupt.size() - 33U - ledger_bytes;
@@ -392,6 +620,14 @@ void persistence() {
         if (!refused) std::cout << "PAIR_CURE unexpected schema refusal=" << e.what() << "\n";
     }
     require(refused, "old quantity schema explicitly rejects instead of shifting fields");
+    require(w.save_physical_state() == kept_checkpoint,
+            "quantity-schema refusal altered the existing live World");
+    auto lower_precision_execution = w.config();
+    lower_precision_execution.water_experiment_policy = WaterExperimentPolicy(3, 12);
+    auto saved_precision = World::restore_physical_state(lower_precision_execution, kept_checkpoint);
+    require(saved_precision->config().water_experiment_policy.mass_bits() == 8 &&
+                saved_precision->save_physical_state() == kept_checkpoint,
+            "physical checkpoint reinterpreted bound quantity under the caller's execution precision");
 
     auto level = demo::empty_level(config());
     require(level->set_cell_state(8, 8, Material::ActivatedBinder, 73, 255), "level activated state");
@@ -422,5 +658,13 @@ void run_paired_material_tests() {
     rim_depth_and_freshness();
     std::cout << "PAIR_CURE phase=persistence\n";
     persistence();
+    std::cout << "PAIR_CURE phase=observed-workers-and-complete-state\n";
+    curing_workers_and_state_parity();
+    std::cout << "PAIR_CURE phase=mid-cure-region\n";
+    mid_cure_interest_resume();
+    std::cout << "PAIR_CURE phase=activation-quarantine\n";
+    activation_failure_quarantine();
+    std::cout << "PAIR_CURE phase=external-bound-sinks\n";
+    external_bound_water_sinks();
     std::cout << "PAIR_CURE_001 checks=" << checks << " failures=0\n";
 }

@@ -1,10 +1,17 @@
 extends "res://scripts/player_playground_runtime.gd"
 
 const Fixture = preload("res://scripts/paired_material_fixture.gd")
+# Observation work has its own monotonic clock. Painting, simulation speed and
+# pause never renew this budget or force an expensive whole-World state hash.
+const TRAY_OBSERVATION_INTERVAL_USEC: int = 500_000
 var family: int = 0
 var authoring_receipt: Dictionary = {}
 var profile_identity: Dictionary = {}
-var _tray_tick: int = -30
+var _tray_sample_usec: int = -1
+var _tray_edit_serial: int = 0
+var _tray_sample_edit_serial: int = -1
+var _tray_sample_host_failed: bool = false
+var _tray_readbacks: int = 0
 var _tray_cache: Dictionary = {}
 
 static func supported() -> bool:
@@ -47,7 +54,11 @@ func configure_lab(id: StringName, requested_family: int=0, spawn: Vector2=Vecto
 	failed=false
 	last_error=""
 	authoring_receipt={"operation":"fresh-lab","family":Fixture.FAMILIES[family],"external_edits":true}
-	_tray_tick=-30
+	_tray_sample_usec=-1
+	_tray_edit_serial=0
+	_tray_sample_edit_serial=-1
+	_tray_sample_host_failed=false
+	_tray_readbacks=0
 	_tray_cache.clear()
 	var bridge: Object = ClassDB.instantiate(&"CyberDemoBridge")
 	profile_identity=bridge.inspect_interaction_profile()
@@ -57,34 +68,54 @@ func breach_shell() -> Dictionary:
 	if not active() or failed: return {}
 	authoring_receipt=Fixture.breach(_arena._world)
 	_arena._sync_terrain()
+	_tray_edit_serial+=1
 	return authoring_receipt.duplicate(true)
 
 func add_water_dose() -> Dictionary:
 	if not active() or failed: return {}
 	authoring_receipt=Fixture.dose(_arena._world)
-	_tray_tick=tick-30
+	_tray_edit_serial+=1
 	return authoring_receipt.duplicate(true)
 
 func remove_water_dose() -> Dictionary:
 	if not active() or failed: return {}
 	authoring_receipt=Fixture.remove_water(_arena._world)
-	_tray_tick=tick-30
+	_tray_edit_serial+=1
 	return authoring_receipt.duplicate(true)
+
+func _observation_clock_usec() -> int:
+	return Time.get_ticks_usec()
+
+func _read_tray_snapshot() -> Dictionary:
+	# Count the actual expensive call, not cache requests or painted cells.
+	_tray_readbacks+=1
+	return _arena._world.diagnostic_snapshot(Fixture.TRAY.position,Fixture.TRAY.size,false)
 
 func tray_observation() -> Dictionary:
 	if not active(): return {}
-	# Diagnostics include an authoritative state hash. Refresh the bounded UI
-	# census at2Hz, not for every rendering or physics callback.
-	if not _tray_cache.is_empty() and tick-_tray_tick<30: return _tray_cache.duplicate(true)
-	_tray_cache=_arena._world.diagnostic_snapshot(Fixture.TRAY.position,Fixture.TRAY.size,false)
-	_tray_tick=tick
-	return _tray_cache.duplicate(true)
+	var now_usec: int = _observation_clock_usec()
+	if _tray_sample_usec<0 or now_usec-_tray_sample_usec>=TRAY_OBSERVATION_INTERVAL_USEC:
+		_tray_cache=_read_tray_snapshot()
+		_tray_sample_usec=now_usec
+		_tray_sample_edit_serial=_tray_edit_serial
+		_tray_sample_host_failed=failed
+	var result: Dictionary = _tray_cache.duplicate(true)
+	# Never present cached counts/hash as a fresh native observation. Even a
+	# no-op brush conservatively marks the sample stale until its next deadline.
+	result["sample_tick"]=int(_tray_cache.get("completed_ticks",-1))
+	result["sample_age_usec"]=maxi(0,now_usec-_tray_sample_usec)
+	# Host/actor quarantine can occur while the native World remains healthy.
+	# Preserve native `failed`; compare each host status with its own sample.
+	result["sample_stale"]=(_tray_sample_edit_serial!=_tray_edit_serial
+		or int(result.sample_tick)!=tick or _tray_sample_host_failed!=failed)
+	result["diagnostic_readbacks"]=_tray_readbacks
+	return result
 
 func paint_lab(cell: Vector2i, material: int, radius: int) -> bool:
 	if not active() or failed or radius<1 or radius>24 or not Fixture.VIEW.grow(-radius-6).has_point(cell): return false
 	if material not in [0,1,2,3,6,8,12,13,14,23,24,27,30,31,132,133,134,135,137]: return false
 	_arena._world.paint_disc(cell.x,cell.y,radius,material,0)
 	_arena._sync_terrain()
-	_tray_tick=tick-30
+	_tray_edit_serial+=1
 	authoring_receipt={"operation":"free-paint","material":material,"radius":radius,"centre":cell,"scope":"external authoring; separate from closed fixtures"}
 	return true

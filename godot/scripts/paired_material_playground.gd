@@ -122,7 +122,7 @@ func _present(state: Dictionary, force: bool=false) -> void:
 		var counts: Variant = tray.get("counts",[])
 		var active: int = int(counts[136]) if counts.size()>137 else 0
 		var crust: int = int(counts[137]) if counts.size()>137 else 0
-		_lab_receipt.text="EXPERIMENTAL · source %s · native profile3 / 138 IDs · Rapier / synchronous · free Water %d · bound Water %d · activated %d · crust %d\nPaint, breach and dose are explicit external edits; this free-play room is not a closed conservation run. Last edit: %s" % [OS.get_environment("CYBERSAND_SOURCE_REVISION").left(12),int(tray.get("water_mass",0)),int(tray.get("bound_water",0)),active,crust,str(_lab_runtime.authoring_receipt.get("operation","none"))]
+		_lab_receipt.text="EXPERIMENTAL · source %s · native profile3 / 138 IDs · Rapier / synchronous · free Water %d · bound Water %d · activated %d · crust %d\nTray sample tick %d · age %.2fs%s · refresh at most 2 Hz. Paint, breach and dose are external edits; this room is not a closed conservation run. Last edit: %s" % [OS.get_environment("CYBERSAND_SOURCE_REVISION").left(12),int(tray.get("water_mass",0)),int(tray.get("bound_water",0)),active,crust,int(tray.get("sample_tick",-1)),float(tray.get("sample_age_usec",0))/1_000_000.0," · awaiting refresh" if bool(tray.get("sample_stale",true)) else "",str(_lab_runtime.authoring_receipt.get("operation","none"))]
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:

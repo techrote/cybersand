@@ -10,6 +10,15 @@ var checks: int = 0
 var failures: int = 0
 var reports: Array = []
 
+class ClockedLab extends "res://scripts/paired_material_runtime.gd":
+	var clock_usec: int = 0
+	var measured_native_readbacks: int = 0
+	func _observation_clock_usec() -> int:
+		return clock_usec
+	func _read_tray_snapshot() -> Dictionary:
+		measured_native_readbacks+=1
+		return super._read_tray_snapshot()
+
 func _init() -> void: call_deferred("run")
 func check(value: bool, reason: String) -> void:
 	checks+=1
@@ -89,8 +98,95 @@ func chemical_retirement() -> void:
 	check(arena.snapshot().terrain_revision==world.get_hard_surface_revision() and arena.session.bridge.pending_hard_surface_chunks()==0,"chemical hard revision delivered exactly")
 	arena.free()
 
+func crust_ray(arena, x: float) -> Dictionary:
+	# Ends above the supporting floor: a floor hit cannot impersonate Crust.
+	var query := PhysicsRayQueryParameters2D.create(Vector2(x,259.1),Vector2(x,260.9),1)
+	var exclusions: Array[RID] = []
+	for body: RigidBody2D in arena.session.bodies(): exclusions.append(body.get_rid())
+	query.exclude=exclusions
+	return arena.session.get_world_2d().direct_space_state.intersect_ray(query)
+
+func newly_cured_collider() -> void:
+	var arena = Arena.new()
+	root.add_child(arena)
+	check(arena.configure(configuration(Vector2(176,200))),"new Crust collider owner")
+	if arena.session==null:
+		arena.free()
+		return
+	var world: Object = arena._world
+	check(world.diagnostic_fill_rect(Vector2i.ZERO,Vector2i(1024,512),0),"clear cure-collider apparatus")
+	check(world.diagnostic_fill_rect(Vector2i(315,261),Vector2i(30,1),1),"floor holds powder outside the query segment")
+	check(world.diagnostic_fill_rect(Vector2i(320,260),Vector2i.ONE,135),"real dry target at a chunk seam")
+	check(world.diagnostic_fill_rect(Vector2i(330,260),Vector2i.ONE,132),"unchanged neighboring Stone Wall control")
+	arena._sync_terrain()
+	arena.step()
+	check(int(world.material_at(320,260))==135 and crust_ray(arena,320.5).is_empty(),"dry powder does not collide as hard Crust")
+	var neighbor_before: Dictionary = crust_ray(arena,330.5)
+	check(not neighbor_before.is_empty(),"neighbor is genuinely collidable before cure")
+	var before_revision: int = int(world.get_hard_surface_revision())
+	check(world.diagnostic_fill_rect(Vector2i(320,259),Vector2i.ONE,3),"one full finite Water cell supplies activation")
+	var saw_active: bool = false
+	var cure_ticks: int = 0
+	for _tick: int in range(240):
+		arena.step()
+		cure_ticks+=1
+		saw_active=saw_active or int(world.material_at(320,260))==136
+		if int(world.material_at(320,260))==137: break
+	check(saw_active and int(world.material_at(320,260))==137,"native activation/countdown produced new Crust")
+	var cured: Dictionary = world.diagnostic_snapshot(Vector2i(315,256),Vector2i(30,8),false)
+	check(int(cured.bound_water)==255 and int(cured.total_free_and_bound_water)==255,"real cure retains exactly its255-unit dose")
+	check(not arena.snapshot().failed and int(world.get_hard_surface_revision())>before_revision,"cure adds hard terrain without a host failure")
+	check(arena.snapshot().terrain_revision==world.get_hard_surface_revision() and arena.session.bridge.pending_hard_surface_chunks()==0,"new Crust revision reaches Rapier before the next step")
+	check(not crust_ray(arena,320.5).is_empty(),"newly cured Crust actually collides")
+	var neighbor_cured: Dictionary = crust_ray(arena,330.5)
+	check(not neighbor_cured.is_empty() and neighbor_cured.get("position")==neighbor_before.get("position") and neighbor_cured.get("normal")==neighbor_before.get("normal"),"neighbor collision geometry unchanged by cure")
+	var cured_revision: int = int(world.get_hard_surface_revision())
+	check(world.diagnostic_fill_rect(Vector2i(320,260),Vector2i.ONE,0),"explicitly erase newly cured Crust")
+	arena.step()
+	check(int(world.get_hard_surface_revision())>cured_revision and arena.snapshot().terrain_revision==world.get_hard_surface_revision() and arena.session.bridge.pending_hard_surface_chunks()==0,"erased Crust revision fully admitted")
+	check(crust_ray(arena,320.5).is_empty(),"erased Crust no longer collides")
+	var neighbor_erased: Dictionary = crust_ray(arena,330.5)
+	check(not neighbor_erased.is_empty() and neighbor_erased.get("position")==neighbor_before.get("position") and neighbor_erased.get("normal")==neighbor_before.get("normal"),"neighbor collision geometry unchanged by erase")
+	reports.append({"arm":"new-crust-collider","transition":["miss","hit","miss"],"cure_ticks":cure_ticks,"bound_before_erasure":cured.bound_water,"free_and_bound_before_erasure":cured.total_free_and_bound_water,"neighbor_retained":not neighbor_erased.is_empty(),"scope":"closed cure before explicit destruction; erasure is an external bound-Water sink"})
+	arena.free()
+
+func observation_throttle() -> void:
+	for arm: String in ["idle","held-brush","no-op-brush","paused-held-brush"]:
+		var runtime := ClockedLab.new()
+		root.add_child(runtime)
+		check(runtime.configure_lab(&"arcadelander",0),"throttle real native/Rapier owner: "+arm)
+		if not runtime.active():
+			runtime.free()
+			continue
+		runtime.set_paused(arm=="paused-held-brush")
+		var accepted_brushes: int = 0
+		var last: Dictionary = {}
+		for callback: int in range(300):
+			runtime.clock_usec=callback*1_000_000/60
+			if arm in ["held-brush","paused-held-brush"]:
+				accepted_brushes+=int(runtime.paint_lab(Vector2i(870,430),135 if callback%2==0 else 0,1))
+			elif arm=="no-op-brush":
+				# Empty, outside the tray, admitted paint call with no material change.
+				accepted_brushes+=int(runtime.paint_lab(Vector2i(250,200),0,1))
+			runtime.step()
+			last=runtime.tray_observation()
+			var count_before: int = runtime.measured_native_readbacks
+			var repeated: Dictionary = runtime.tray_observation()
+			check(runtime.measured_native_readbacks==count_before and repeated==last,"same-time presentation cannot spend another observation: "+arm)
+		check(accepted_brushes==(0 if arm=="idle" else 300),"all intended brush callbacks exercised: "+arm)
+		check(runtime.measured_native_readbacks==10 and int(last.diagnostic_readbacks)==10,"300 callbacks spend exactly10 actual expensive reads: "+arm)
+		check(not runtime.failed and bool(last.sample_stale),"cached observation explicitly reports pending state/edits: "+arm)
+		check(int(last.sample_tick)==(0 if runtime.paused else 271),"sample tick identifies the last native read, not current presentation: "+arm)
+		runtime.clock_usec=5_000_000
+		var fresh: Dictionary = runtime.tray_observation()
+		check(runtime.measured_native_readbacks==11 and not bool(fresh.sample_stale) and int(fresh.sample_tick)==runtime.tick,"deadline refresh observes the current native state even while paused: "+arm)
+		fresh.counts[135]=-1
+		check(int(runtime.tray_observation().counts[135])>=0,"caller cannot mutate cached native counts: "+arm)
+		reports.append({"arm":"observation-throttle/"+arm,"callbacks":300,"clock_hz":60,"brush_calls":accepted_brushes,"expensive_native_reads":10,"post_deadline_reads":runtime.measured_native_readbacks,"sample_tick":last.sample_tick,"completed_tick":runtime.tick,"clock":"deterministic presentation clock; actual native diagnostics"})
+		runtime.free()
+
 func live_room() -> void:
-	var runtime = Lab.new()
+	var runtime := ClockedLab.new()
 	root.add_child(runtime)
 	check(runtime.configure_lab(&"jetbarrel",0),"source-matched full room")
 	if not runtime.active():
@@ -108,11 +204,13 @@ func live_room() -> void:
 	var removed: Dictionary = runtime.remove_water_dose()
 	check(removed.removed_cells==16 and removed.removed_free_water==16*255,"Water removal explicitly accounted before activation")
 	for _tick: int in range(200): runtime.step()
+	runtime.clock_usec+=Lab.TRAY_OBSERVATION_INTERVAL_USEC
 	var no_dose: Dictionary = runtime.tray_observation()
 	check(no_dose.counts[137]==0,"no dose remains: no autonomous curing")
 	check(no_dose.total_free_and_bound_water==0,"removed dose leaves no hidden bound or free Water")
 	runtime.add_water_dose()
 	for _tick: int in range(360): runtime.step()
+	runtime.clock_usec+=Lab.TRAY_OBSERVATION_INTERVAL_USEC
 	var after: Dictionary = runtime.tray_observation()
 	check(after.counts[137]>0 and after.counts[137]<=16,"finite native curing produces a bounded crust")
 	check(after.counts[135]+after.counts[136]+after.counts[137]==144*24,"binder parcels retained in contained tray")
@@ -131,6 +229,24 @@ func live_room() -> void:
 	check(runtime.breach_shell().accepted,"bounded roof button reaches native owner")
 	check(runtime.paint_lab(Vector2i(250,200),135,4) and runtime.paint_lab(Vector2i(250,200),0,4),"ordinary paint/erase kept")
 	check(not runtime.paint_lab(Vector2i(250,200),136,4),"internal activated state is not a painting shortcut")
+	check(not bool(runtime.tray_observation().sample_stale),"new owner has a fresh native sample before host failure")
+	var reads_before_fault: int = runtime.measured_native_readbacks
+	# Inject the existing rig owner's quarantined outcome; do not integrate NaNs
+	# or infer a transactional rollback of an interrupted native activation.
+	runtime._arena.session._rigs[0].fault="paired lab injected actor quarantine"
+	for body: RigidBody2D in runtime._arena.session.bodies(): body.freeze=true
+	runtime.step()
+	var fault_tick: int = runtime.tick
+	check(runtime.failed and not runtime.paint_lab(Vector2i(250,200),135,4) and runtime.add_water_dose().is_empty() and runtime.remove_water_dose().is_empty() and runtime.breach_shell().is_empty(),"quarantined lab refuses authoring and dose operations")
+	runtime.step()
+	check(runtime.tick==fault_tick,"quarantined lab does not silently retry")
+	var waiting: Dictionary = runtime.tray_observation()
+	check(bool(waiting.sample_stale) and runtime.measured_native_readbacks==reads_before_fault,"host failure marks an old sample stale without forcing an expensive observation")
+	runtime.clock_usec+=Lab.TRAY_OBSERVATION_INTERVAL_USEC
+	var fault_sample: Dictionary = runtime.tray_observation()
+	check(runtime.failed and not bool(fault_sample.failed) and not bool(fault_sample.sample_stale) and int(fault_sample.sample_age_usec)==0,"fresh sample preserves healthy native authority separately from host quarantine")
+	check(runtime.measured_native_readbacks==reads_before_fault+1 and runtime.tray_observation()==fault_sample and runtime.measured_native_readbacks==reads_before_fault+1,"host quarantine retains the ordinary sampling deadline and same-time cache")
+	check(runtime.configure_lab(&"jetbarrel",0) and not runtime.failed,"fresh owner is the explicit recovery path")
 	var old_web: Variant = ProjectSettings.get_setting("cybersand/web_demo",false)
 	ProjectSettings.set_setting("cybersand/web_demo",true)
 	check(not Lab.supported(),"Web policy refuses lab despite loaded native symbols")
@@ -168,6 +284,8 @@ func run() -> void:
 	roof_release(328)
 	roof_release(320)
 	chemical_retirement()
+	newly_cured_collider()
+	observation_throttle()
 	live_room()
 	await scene_navigation()
 	print("PAIRED_MATERIAL_PLAYGROUND ",JSON.stringify({"checks":checks,"failures":failures,"reports":reports,"scope":"actual synchronous host material/collider and input controls; owner gameplay acceptance remains separate"}))

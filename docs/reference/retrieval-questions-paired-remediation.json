@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-04",
+  "purpose": "Additive PR358 remediation checks; frozen questions and historical results remain unchanged.",
+  "questions": [
+    {
+      "id": "PAIR-REPAIR-01",
+      "query": "Does erasing Activated Binder conserve free and bound Water, and does its native edit receipt account for bound destruction?",
+      "canonical": ["systems/paired-materials-and-curing.md"],
+      "facts": [
+        "Curing transfers free Water into bound stateB, and Crust retains it.",
+        "Generic erase/repaint can destroy bound Water without adding a free-Water sink; separate before/after bound-loss accounting is required.",
+        "Exact free plus overfill plus bound closure applies to closed-cure fixtures without edits or destructive chemistry."
+      ],
+      "sources": ["../native/src/world_quantity.inc", "../native/tests/test_paired_materials.cpp"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PAIR-REPAIR-02",
+      "query": "Can old CYPS2 or IN-only CYPS3 physical checkpoints load after the paired-material quantity schema grows from19 to20 kernel slots?",
+      "canonical": ["reference/level-saves-and-replay.md"],
+      "facts": [
+        "Nested quantity schema1 is refused before incompatible arrays are interpreted; outer CYPS version alone does not establish compatibility.",
+        "The break also affects checkpoints containing only old materials.",
+        "The owner must accept versioned refusal or separately authorize a tested migration; no migration is implemented."
+      ],
+      "sources": ["../native/include/cybersand/quantity_ledger.hpp", "../native/src/world_quantity.inc"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PAIR-REPAIR-03",
+      "query": "Can CYSD1 reconstruct an8-bit Activated Binder with bound255 under3-bit Water precision and silently rescale it?",
+      "canonical": ["reference/level-saves-and-replay.md"],
+      "facts": [
+        "CYSD1 preserves the stateB byte and has no source mass-precision profile; it does not rescale or validate cross-profile bound quantity.",
+        "Binder level exchange requires matching precision; low-level cross-profile reconstruction is unsupported.",
+        "The paired lab is fixed8-bit and has no import UI; controlled scenario save/import refuses and ordinary reconstruction resets default8-bit. CYPS restores its own saved precision."
+      ],
+      "sources": ["../native/include/cybersand/demo_snapshot.hpp", "../godot/scripts/web_demo_controller.gd", "../godot/tests/test_water_feel_controller.gd"],
+      "revision_sensitive": true
+    }
+  ]
+}

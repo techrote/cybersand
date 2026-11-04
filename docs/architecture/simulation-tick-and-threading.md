@@ -6,7 +6,7 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-11-03
 ---
 
 # Simulation tick and threading
@@ -21,10 +21,23 @@ last-reviewed: 2026-10-30
 and [distinct artifact review](https://github.com/techrote/cybersand/pull/285#pullrequestreview-5688319979)
 passed. The copied
 native statistics adapter exposes `TickStats::worker_threads_observed`.
-It reports the maximum distinct task-claiming pool participants in a completed
-tick; the serial route reports one. A value above one proves that multiple
+It reports the maximum distinct task-claiming participants in a single phase
+of a completed tick, not their sum across phases. Current `SerialInPlace` leaves
+the counter at zero/unmeasured; phased execution that runs inline can report one.
+A value above one proves that multiple
 pool workers took tasks. It does not measure overlapping execution, worker CPU
 time or utilization. Native pool workers still call no Godot APIs.
+
+The [2026-11-03 liquid reassessment](../audits/2026-11-03-lcb-reassessment.md)
+separates configured workers from actual jobs/participants for all four families.
+Large Brine IN boundary tests explicitly require four claimants; Water IN tests
+require more than one. Neither proves four simultaneous participants in every
+ordinary scene. Existing active PLAY HUD samples at4Hz carry completed-tick
+generation, timing and phase/job data; comparison needs collection/export, not
+a replacement execution path. Complete native `World::tick` cost excludes the
+owner's preceding body-mask/usable preparation, main-thread Rapier step and
+rendered frame pacing. Measure those host stages and snapshot age separately;
+overlapping timelines cannot be summed into a claimed gameplay frame rate.
 
 `CyberNativeCellWorld.get_worker_threads()` reads configured capacity.
 Successful persistent-pool construction creates the requested pool or throws

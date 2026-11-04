@@ -5,7 +5,10 @@ extends RefCounted
 # replacement. No callbacks, scripts, live nodes or arbitrary per-tick writes.
 const VERSION: int = 2
 const SIDE: int = 1024
-const MATERIAL_COUNT: int = 132
+# Schema1/2 authoring and declared observations deliberately retain the original
+# catalogue through Heat Shield Tile. The runtime identity may report more
+# materials; it does not widen this shared desktop/Web/fallback apparatus.
+const MATERIAL_COUNT: int = CyberCellWorld.LAST_BUILDING_MATERIAL + 1
 const MAX_RECORDS: int = 4096
 const MAX_EVENTS: int = 24
 const MAX_OBSERVATIONS: int = 24
@@ -97,7 +100,7 @@ static func validate(value: Variant) -> Dictionary:
 	var rectangles: Variant = _records(value.rectangles, 5, 8 * SIDE * SIDE)
 	var fills: Variant = _records(value.partial_water_fills, 6, SIDE * SIDE)
 	if rectangles == null or fills == null:
-		return _error("Invalid setup rectangle/fill or setup capacity exceeded")
+		return _error("Invalid setup rectangle/fill or setup capacity exceeded; MicroScenarios admit material IDs 0..%d except reserved 10" % (MATERIAL_COUNT-1))
 	if not value.events is Array or value.events.size() > MAX_EVENTS:
 		return _error("Scheduled event capacity exceeded")
 	var events: Array = []

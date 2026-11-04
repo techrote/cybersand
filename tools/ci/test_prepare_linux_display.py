@@ -12,7 +12,8 @@ class DisplaySetupTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "dpkg-query").write_text(
-                '#!/bin/bash\n[[ " $MISSING " == *" ${@: -1} "* ]] || printf installed\n')
+                '#!/bin/bash\necho "${@: -1}" >> "$QUERIES"\n'
+                '[[ " $MISSING " == *" ${@: -1} "* ]] || printf installed\n')
             (root / "sudo").write_text(
                 '#!/bin/bash\necho "$*" >> "$CALLS"\n'
                 '[[ "$*" != *" $FAILURE "* && "$*" != *" $FAILURE" ]] || exit 42\n')
@@ -20,15 +21,22 @@ class DisplaySetupTests(unittest.TestCase):
                 (root / name).chmod(0o755)
             env = {**os.environ, "PATH": str(root) + os.pathsep + os.environ["PATH"],
                    "MISSING": missing, "FAILURE": failure or "never-fail",
-                   "CALLS": str(root / "calls")}
+                   "CALLS": str(root / "calls"), "QUERIES": str(root / "queries")}
             script = Path(__file__).with_name("prepare_linux_display.sh")
             result = subprocess.run(["bash", str(script)], env=env, capture_output=True, timeout=10)
             calls = (root / "calls").read_text().splitlines() if (root / "calls").exists() else []
+            self.queries = (root / "queries").read_text().splitlines()
             return result.returncode, calls
 
     def test_preinstalled_image_never_contacts_mirror(self):
         code, calls = self.run_setup()
         self.assertEqual((code, calls), (0, []))
+
+    def test_only_required_display_stack_is_checked(self):
+        # mesa-utils is never invoked and is absent from the hosted image;
+        # requiring it forced a package-mirror request on every Linux shard.
+        self.run_setup()
+        self.assertEqual(self.queries, ["xvfb", "xauth", "libgl1-mesa-dri"])
 
     def test_only_missing_packages_installed_with_bounded_network_retries(self):
         code, calls = self.run_setup(missing="xvfb xauth")

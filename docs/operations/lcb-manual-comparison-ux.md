@@ -4,11 +4,52 @@ status: Current
 document-kind: design
 scope: LCB-003 (#202) bounded experimental comparison UI, native availability, explicit normalization and constructor coverage, followed by remaining planned manual feel-testing flow
 canonical-for: [lcb-manual-comparison-ux]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-03
 related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-comparison-and-fixtures.md, experiment-tower.md, microscenarios.md, ../systems/player-control-playground.md]
 ---
 
 # LCB manual liquid comparison UX flow
+
+## Current application and comparison readiness — 2026-11-03
+
+At inspected main `89020b9eb6d540383a5bb64b58dcd29a87592c32`, App #256 and Trial
+#257 are merged. [`liquid_comparison_panel.gd`](../../godot/scripts/liquid_comparison_panel.gd)
+offers eight presets, explicit radius2/3 and whole-cell normalization, immutable
+requested/applied policy readback, and transactional Apply & rebuild. The launcher
+Liquid comparison route uses the real Main host; PLAY embeds the same selector.
+All four Water families execute as separately selected configurations through
+the native owner and main-thread Rapier host. One World cannot assign multiple
+families to Water. The later LIFE011 matrix exercises eight presets × five
+mechanical rigs, including water/Sand terrain, rebuild and retirement; it is
+constructor/lifecycle evidence, not a completed scientific or human comparison.
+
+The existing panel exposes two protected setups, not the full27-scenario picker.
+The ordinary native-default demo can refuse PF gas capacity; choose registered
+finite comparison fixtures rather than silently changing gas physics. Direct
+painting and existing Water Lance/Drain/Capsule routes are available through the
+shared host, but future fractional Water sources refuse under CY/IN and projectile
+velocity does not initialize IN material momentum. New leak/drain/nozzle tools
+belong to bounded #361 work after existing usable semantics are reused.
+
+Actual native worker participation is already copied in
+[`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd) and sampled
+at4Hz by the expanded active PLAY HUD. `worker_threads_observed` is the maximum
+distinct task claimants in one phase, not configured capacity or simultaneous
+overlap. Current SerialInPlace leaves the counter0/unmeasured; phased inline
+execution can report1. The comparison view needs a narrow routing/export extension
+to reuse these samples. Record complete native tick, owner preparation, Rapier
+step, mask publication, snapshot age and display pacing separately. Existing
+full-host qualification remains false until mapped-module/script/actor identity
+is verified; more fields alone do not make that gate pass.
+
+[#359's source-qualified audit](../audits/2026-11-03-lcb-reassessment.md) gives
+the reuse map, seven bounded scenarios and #360–#363 acceptance instructions.
+Reconcile #258's unique IN ledger availability and #259's native scientific
+consumer before inventing new observation/census tooling. Preserve current
+PLAY ownership/lifecycle code and the separate structural-contact owner #347.
+
+**Earlier source-bound App/Trial checkpoints follow.** Their former pending
+merge statements are historical; qualification limits and failures remain valid.
 
 The [actual003 Windows/Linux publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
 now executes import plus35 strict host/control cases on both target OSes at
@@ -29,7 +70,7 @@ consumed by content-identical application mergea704ce50 and does not qualify
 remaining constructors or complete manual/scientific comparisons.
 ## Desktop barrel and Ripper selection
 
-This unmerged Trial successor now consumes App checkpoint
+The then-unmerged Trial successor consumed App checkpoint
 `ea96d4851621c4bed37d5e6997a0320215450f79`, including the actual source5f02/
 bot0c9 publication and accepted main06451f8a. The ten Trial source files remain
 exactly sourcef65f3de9; its recorded Windows executions are not relabeled as

@@ -42,6 +42,10 @@ static func validate_metadata(meta: Dictionary) -> String:
 		return "Invalid selected material"
 	if float(material) != float(int(material)) or int(material) == 10:
 		return "Invalid selected material"
+	# Cell payloads may retain this internal curing state, but restoring it as
+	# the active paint brush would expose an unsupported authoring shortcut.
+	if int(material) == CyberCellWorld.ACTIVATED_BINDER:
+		return "Activated Binder is internal curing state, not a selectable paint material"
 	var quality: Variant = meta.get("quality", null)
 	if not _number(quality, 0, 2) or float(quality) != float(int(quality)):
 		return "Invalid quality profile"

@@ -157,6 +157,159 @@ def host_paths(platform):
             'engine': r'C:\engine\Godot_v4.7-stable_win64.exe'}
 
 
+def material_capture(directory, label, values):
+    """Synthetic RGBA8 reader control; never an actual rendered result."""
+    raw = directory / (label + '.raw'); png = directory / (label + '.png')
+    data = values.astype('u1')
+    raw.write_bytes(data.tobytes())
+    Image.fromarray(data).save(png)
+    return {'label': label, 'raw': raw.name, 'png': png.name, 'raw_sha256': c.sha(raw),
+            'png_sha256': c.sha(png), 'size': [data.shape[1], data.shape[0]], 'format': 5}
+
+
+def material_atlas(directory, context, catalogue_sha256):
+    width, height = c.MATERIAL_SWATCH_SIZE
+    rows = (c.MATERIAL_SLOTS + c.MATERIAL_ATLAS_COLUMNS - 1) // c.MATERIAL_ATLAS_COLUMNS
+    values = np.zeros((height * rows, width * c.MATERIAL_ATLAS_COLUMNS, 4), dtype='u1')
+    for material_id in range(c.MATERIAL_SLOTS):
+        x, y = material_id % c.MATERIAL_ATLAS_COLUMNS * width, material_id // c.MATERIAL_ATLAS_COLUMNS * height
+        colour = ((255, 0, 255, 255) if material_id == 10 else
+                  (0, 0, 0, 255) if material_id == 0 else (material_id, 100, 30, 255))
+        values[y:y + height, x:x + width] = colour
+    controls = []
+    for material_id in (10, c.MATERIAL_SLOTS, 255):
+        control = np.full((height, width, 4), (255, 0, 255, 255), dtype='u1')
+        controls.append({'material_id': material_id,
+                         'capture': material_capture(directory, f'material-invalid-id-{material_id:03d}', control)})
+    return {'schema': 'material-presentation-atlas-v1', 'context': copy.deepcopy(context),
+            'catalogue': {'path': 'res://scripts/cell_world.gd', 'sha256': catalogue_sha256},
+            'first_material': 0, 'last_material': c.MATERIAL_SLOTS - 1, 'material_slots': c.MATERIAL_SLOTS,
+            'slot_ids': list(range(c.MATERIAL_SLOTS)), 'columns': c.MATERIAL_ATLAS_COLUMNS,
+            'swatch_size': list(c.MATERIAL_SWATCH_SIZE),
+            'capture': material_capture(directory, f'material-id-slots-000-{c.MATERIAL_SLOTS - 1:03d}', values),
+            'invalid_controls': controls}
+
+
+class MaterialAtlasReadback(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.directory = Path(self.temp.name)
+        self.captures = self.directory / 'captures'; self.captures.mkdir()
+        self.context, _, self.report, self.row = context_fixture()
+        self.case = c.plan('linux', 'visual')[2]
+        self.context['fixture'] = 'res://tests/' + self.case['script']
+        self.context['shader'] = shader('full_crossfade')
+        self.report['source_inputs'] = {'godot/tests/' + self.case['script']: 'd' * 64,
+                                        'godot/scripts/cell_world.gd': 'a' * 64}
+        self.row['process'].update(status='passed', returncode=0, natural_completion=True,
+            execution_policy=c.policy.identity(), timeout_seconds=self.case['timeout'], seconds=1,
+            requires_display=True, command=c.expected_command(self.case, self.report),
+            name=self.case['name'], log=self.case['name'] + '.log', role='source-bound shader qualification')
+        self.result = material_atlas(self.captures, self.context, 'a' * 64)
+
+    def check(self, *, receipt=None, extra_log=''):
+        log = (c.CONTEXT + json.dumps(self.context) + '\n'
+               + c.MATERIAL_ATLAS_RESULT + json.dumps(self.result) + '\n'
+               + f'MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, all {c.MATERIAL_SLOTS} ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks)\n'
+               + extra_log)
+        log_path = self.directory / self.row['process']['log']; log_path.write_text(log)
+        self.row['log_sha256'] = c.sha(log_path)
+        c.write(self.directory / 'process.json', self.row['process'])
+        c.write(self.captures / 'material-atlas.json', self.result if receipt is None else receipt)
+        return c.verify_case(self.case, self.row, self.directory, self.report)
+
+    def atlas_values(self):
+        with Image.open(self.captures / self.result['capture']['png']) as image:
+            return np.array(image.convert('RGBA'))
+
+    def replace_atlas(self, values):
+        self.result['capture'] = material_capture(self.captures, self.result['capture']['label'], values)
+
+    def test_complete_current_atlas_passes_the_full_case_reader(self):
+        result = self.check()['reduced']
+        self.assertEqual(result['material_slots'], 138)
+        self.assertEqual(result['atlas_png'], 'material-id-slots-000-137.png')
+        self.assertEqual(result['size'], [576, 288])
+        self.assertEqual(result['invalid_controls'], [10, 138, 255])
+
+    def test_wrong_filename_and_legacy_only_atlas_refuse(self):
+        current = self.captures / self.result['capture']['png']
+        current.rename(self.captures / 'material-id-slots-000-131.png')
+        with self.assertRaisesRegex(ValueError, 'Missing shader artifact'): self.check()
+        self.result['capture']['png'] = 'material-id-slots-000-131.png'
+        with self.assertRaisesRegex(ValueError, 'capture identity'): self.check()
+
+    def test_incomplete_and_duplicate_slot_inventories_refuse(self):
+        original = copy.deepcopy(self.result)
+        for key, value in [('material_slots', 132), ('last_material', 131), ('first_material', 1),
+                           ('slot_ids', list(range(132))), ('slot_ids', list(range(137)) + [136]),
+                           ('slot_ids', [False] + list(range(1, c.MATERIAL_SLOTS)))]:
+            self.result = copy.deepcopy(original); self.result[key] = value
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'slot inventory'): self.check()
+
+    def test_cropped_legacy_dimensions_and_missing_appended_pixels_refuse(self):
+        values = self.atlas_values()
+        self.replace_atlas(values[:264])
+        with self.assertRaisesRegex(ValueError, 'size differs'): self.check()
+        self.replace_atlas(values)
+        width, height = c.MATERIAL_SWATCH_SIZE
+        for material_id in range(132, c.MATERIAL_SLOTS):
+            changed = values.copy()
+            x, y = material_id % c.MATERIAL_ATLAS_COLUMNS * width, material_id // c.MATERIAL_ATLAS_COLUMNS * height
+            changed[y:y + height, x:x + width] = values[:height, :width]
+            self.replace_atlas(changed)
+            with self.subTest(material_id=material_id), self.assertRaisesRegex(ValueError, 'rendered as Empty'): self.check()
+
+    def test_malformed_identity_and_old_invocation_cannot_qualify_fresh_output(self):
+        original = copy.deepcopy(self.result)
+        for key, value in [('source_revision', '0' * 40), ('nonce', '0' * 32), ('process_id', True),
+                           ('fixture', 'res://tests/wrong.gd'), ('fixture_sha256', '0' * 64),
+                           ('engine_sha256', '0' * 64), ('context', None)]:
+            self.result = copy.deepcopy(original)
+            if key == 'context': self.result['context'] = value
+            else: self.result['context'][key] = value
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'source/process/nonce'): self.check()
+        for catalogue in ({}, {'path': 'res://scripts/wrong.gd', 'sha256': 'a' * 64},
+                          {'path': 'res://scripts/cell_world.gd', 'sha256': 'old-source'},
+                          {'path': 'res://scripts/cell_world.gd', 'sha256': '0' * 64}):
+            self.result = copy.deepcopy(original); self.result['catalogue'] = catalogue
+            with self.subTest(catalogue=catalogue), self.assertRaisesRegex(ValueError, 'catalogue identity'): self.check()
+
+    def test_missing_stale_or_changed_pixels_refuse(self):
+        capture = self.result['capture']; path = self.captures / capture['png']
+        original = path.read_bytes(); path.unlink()
+        with self.assertRaisesRegex(ValueError, 'Missing shader artifact'): self.check()
+        Image.new('RGBA', (576, 288), (0, 0, 0, 255)).save(path)
+        with self.assertRaisesRegex(ValueError, 'digest differs'): self.check()
+        path.write_bytes(original)
+        raw = self.captures / capture['raw']; original_raw = raw.read_bytes()
+        raw.write_bytes(original_raw[:-4]); capture['raw_sha256'] = c.sha(raw)
+        with self.assertRaisesRegex(ValueError, 'byte count differs'): self.check()
+
+    def test_invalid_controls_and_reserved_slot_are_required(self):
+        original = copy.deepcopy(self.result)
+        self.result['invalid_controls'].pop()
+        with self.assertRaisesRegex(ValueError, 'control inventory'): self.check()
+        self.result = copy.deepcopy(original)
+        values = np.full((24, 48, 4), (0, 0, 0, 255), dtype='u1')
+        self.result['invalid_controls'][1]['capture'] = material_capture(self.captures, 'material-invalid-id-138', values)
+        with self.assertRaisesRegex(ValueError, 'lost its magenta fallback'): self.check()
+        self.result = copy.deepcopy(original)
+        values[:] = (255, 0, 255, 255)
+        material_capture(self.captures, 'material-invalid-id-138', values)
+        atlas = self.atlas_values(); atlas[:24, 480:528] = (0, 0, 0, 255)
+        self.replace_atlas(atlas)
+        with self.assertRaisesRegex(ValueError, 'reserved slot differs'): self.check()
+
+    def test_duplicate_or_mismatched_receipt_and_retained_growth_failure_refuse(self):
+        with self.assertRaisesRegex(ValueError, 'duplicate completion packet'):
+            self.check(extra_log=c.MATERIAL_ATLAS_RESULT + json.dumps(self.result) + '\n')
+        changed = copy.deepcopy(self.result); changed['last_material'] = 131
+        with self.assertRaisesRegex(ValueError, 'receipt differs'): self.check(receipt=changed)
+        with self.assertRaisesRegex(ValueError, 'error or skip'):
+            self.check(extra_log='ERROR: growth decor moved with the camera\n')
+
+
 class InventoryAndIdentity(unittest.TestCase):
     def test_exact_six_cohorts_and_nineteen_process_cases(self):
         plan = c.hosted_plan()['include']

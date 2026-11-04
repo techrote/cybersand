@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Current experimental branch source for six appended native materials, shared chemistry, finite Water activation and a desktop shell lab; runtime qualification and owner acceptance remain separate
 canonical-for: [paired-materials-and-curing, paired-wall-chemistry, finite-binder-curing, paired-material-shell-lab]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [materials-and-rule-kernels.md, intermaterial-interactions.md, ../operations/paired-materials-registration.md, ../operations/paired-wall-loose-materials-plan.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/liquid-prepared-setup-and-receipts.md]
 ---
 
@@ -19,6 +19,9 @@ platform qualification or owner gameplay acceptance. The feature stays unmerged.
 The [dated qualification record](../audits/2026-11-03-paired-materials-and-finite-curing.md)
 retains actual source/runtime identities, the inherited graphics failure and
 the active-curing performance investigation separately from owner acceptance.
+The [4 November remediation record](../audits/2026-11-04-paired-materials-remediation.md)
+preserves the independent review, original archive search, new evidence protocol
+and uncompleted integration gates.
 
 ## Which materials are paired, and what does the wall form change?
 
@@ -30,6 +33,21 @@ the active-curing performance investigation separately from owner acceptance.
 | 135 | Dry Binder | New granular powder, density1600; requires a qualifying consumed Water dose |
 | 136 | Activated Binder | Internal damp granular form, density1800; finite countdown and retained bound quantity |
 | 137 | Binder Crust | Hard, immobile cured product, density2000; never an activation donor |
+
+**Public authoring:** the paired native lab and generation workbench may offer
+Stone Wall, Salt Wall, Coal Wall, Dry Binder and Binder Crust. Activated Binder
+is internal state: the workbench omits it from pickers and refuses it in authored
+recipe material fields. CYSD selected-brush metadata also refuses136, while real
+simulation-produced136 cell payloads still round-trip. Existing general
+desktop/Web material menus retain their narrower old catalogue. Names describe
+all six IDs truthfully when inspecting state; a numeric ID is not authoring
+permission.
+
+MicroScenario schemas1/2 deliberately retain historical admission0–131 except
+reserved10. Their profile identity can describe the138-slot native catalogue
+without admitting all of it as scenario authoring input. New IDs refuse with the
+installed owner intact. Extending that shared Web/fallback apparatus is separate
+from this bounded lab and does not implement the future material compiler.
 
 Activated Binder retains its original density1800, movable Powder state,
 downward motion and target-side density-exchange opt-in. Existing
@@ -100,12 +118,31 @@ renewed reservoir, crust catalysis or automatic binder recycling.
 existing flowing kernel and Air/Water/Brine/Concrete context. Concrete-neighbor
 acceleration in that older material is not reused by finite Binder.
 
-The free-Water quantity ledger records activation as a finite-binder kernel
-consumption. Bound stateB is a separate chemical-product quantity. In an admitted
-closed fixture, compare free visible Water plus overfill plus retained bound
-quantity against the supplied dose; do not count bound quantity as free Water
-or conceal intentional external painting/removal. The lab's bounded tray census
-exposes free and bound quantities independently.
+## Which Water quantities and destruction sinks are accounted?
+
+The native free-Water quantity ledger records activation as a finite-binder kernel
+consumption. Bound `state_b` remains a separate chemical-product quantity on
+Activated Binder and Binder Crust. It is not free Water and contributes neither
+visible Water occupancy nor pressure overfill. Curing preserves that byte when
+Activated Binder becomes Crust; the tray census sums it independently.
+
+| Event | Authoritative accounting and claim boundary |
+|---|---|
+| Finite activation | One qualifying full Water cell is consumed; its free quantity transfers into bound `state_b`. Native free-Water consumption and cell population counters record the native writes. |
+| Cure completion | Bound amount is unchanged. The material population changes from136 to137; no new Water is supplied or donated. |
+| Free Water dose/removal or ordinary external edit | Native free-Water source/sink accounting describes the actual free Water edit; the lab also records explicit authoring/removal actions. An action receipt is not a complete chemical-product ledger. |
+| Erase/repaint of Activated Binder or Crust | Bound quantity can be destroyed. Generic edit receipts and the free-Water ledger do **not** automatically add that loss to a bound-Water sink. A verifier must separately record the before/after bound amount and the edit, or exclude that interval from closed-cure conservation. |
+| Acid, explosion or other destructive chemistry | Products and destruction follow their existing native owners. No universal free+bound conservation or complete bound-destruction receipt is claimed. |
+
+Exact `free visible Water + pressure overfill + retained bound quantity = supplied
+dose` applies only to the admitted **closed-cure** fixtures: no external edits,
+removals, destructive chemistry or boundary loss during the measured interval.
+An explicitly instrumented edit fixture may add its measured bound-destruction
+sink to close that broader balance, but that is fixture evidence, not a newly
+implemented native receipt field. The original registration's stronger promise
+of separate explicit removal ledgers was not implemented for generic bound
+destruction; this dated correction narrows the current claim without rewriting
+the original protocol or its failures.
 
 ## What changes in saves, receipts and fallback?
 
@@ -122,6 +159,12 @@ CYSD1 retains its existing five-byte cell payload: material, stateA, stateB and
 temperature. It can carry new IDs and finite-cure state through a matching new
 native runtime without a format expansion. CYSD is a reconstructable level,
 not complete replay. An older runtime must reject unknown IDs transactionally.
+Binder-containing CYSD exchange requires the same Water precision: the low-level
+codec preserves bytes and does not infer the missing source profile or rescale
+bound quantity. The fixed8-bit lab has no save/import route. Read the
+[canonical save boundary](../reference/level-saves-and-replay.md) and pending
+[quantity compatibility decision](../audits/2026-11-04-paired-materials-remediation.md#quantity-compatibility-owner-decision)
+before accepting any persistence claim.
 
 The GDScript fallback refuses IDs132+ at its material write boundary. It does
 not simulate native wall chemistry or silently freeze binder powder. The new
@@ -161,6 +204,16 @@ activation stops while existing wet cells can finish. Free painting remains
 available: LMB paints, RMB erases, wheel adjusts radius1..24, P pauses and R
 reconstructs the room. Keys1/2 choose Vector Rush/Barrel Rocket. The receipt
 labels source, native profile, response owner and explicit external edits.
+
+Tray observation is independently limited to one expensive native diagnostic
+snapshot per500ms of monotonic time. Paint, erase and no-op/out-of-tray strokes
+do not reset that deadline; paused painting also remains bounded. Each copied
+sample identifies its observed native tick and age/staleness, so cached quantity
+values are not represented as a new authoritative census. Owner reconstruction
+starts a new cache. This changes UI observation cost, not simulation scheduling
+or material laws. The
+[owner playtest packet](../operations/paired-materials-owner-playtest.md) records
+manual responsiveness and gameplay separately from invocation-count tests.
 
 Intact shell cells use ordinary Rapier terrain collision. Destruction/conversion
 changes native hard revision, then the existing synchronous arena admits terrain
