@@ -1,0 +1,126 @@
+{
+  "files": [
+    {
+      "archive_relation": "EXACT_SNAPSHOT_V1_MEMBER",
+      "original_path": "/workspace/scratch/53686e322277/mat354-evidence/sanitize-h1.py",
+      "original_relative_path": "mat354-evidence/sanitize-h1.py",
+      "published": {
+        "bytes": 7563,
+        "path": "textual-sources/mat354-evidence/sanitize-h1.py",
+        "sha256": "c4a6800ef616cc204a28bf4e015650ce3e2fd1d5346755ec99cf80cd3cc1e41e"
+      }
+    },
+    {
+      "archive_relation": "EXACT_SNAPSHOT_V1_MEMBER",
+      "original_path": "/workspace/scratch/53686e322277/mat354-evidence/execution-audit/audit.py",
+      "original_relative_path": "mat354-evidence/execution-audit/audit.py",
+      "published": {
+        "bytes": 15346,
+        "path": "textual-sources/mat354-evidence/execution-audit/audit.py",
+        "sha256": "2099343e677f016ba462f9fc4c5ef8591dbc307eede28d009245779fd0f97f71"
+      }
+    },
+    {
+      "archive_relation": "EXACT_SNAPSHOT_V1_MEMBER",
+      "original_path": "/workspace/scratch/53686e322277/mat354-evidence/performance-audit/audit.py",
+      "original_relative_path": "mat354-evidence/performance-audit/audit.py",
+      "published": {
+        "bytes": 29119,
+        "path": "textual-sources/mat354-evidence/performance-audit/audit.py",
+        "sha256": "0311d76f6c624c41ff7344c7b7f113330cbce7aa7c6da1154efb205186954b1f"
+      }
+    },
+    {
+      "archive_relation": "EXACT_SNAPSHOT_V1_MEMBER",
+      "original_path": "/workspace/scratch/53686e322277/mat354-evidence/performance-audit/primary/performance-audit.md",
+      "original_relative_path": "mat354-evidence/performance-audit/primary/performance-audit.md",
+      "published": {
+        "bytes": 11043,
+        "path": "textual-sources/mat354-evidence/performance-audit/primary/performance-audit.md",
+        "sha256": "ef351c0b5d0c6679779b4dff4a001c18e7a511131441341d342a7dae80e3f296"
+      }
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "original_path": "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement/reduce.py",
+      "original_relative_path": "mat354-evidence/performance-empty-supplement/reduce.py",
+      "published": {
+        "bytes": 21099,
+        "path": "textual-sources/mat354-evidence/performance-empty-supplement/reduce.py",
+        "sha256": "a1ff98a404639007d3e110c7d731f443623fe669aba19f2a70e6cb80c60ab1a9"
+      }
+    },
+    {
+      "archive_relation": "EXACT_SNAPSHOT_V1_MEMBER",
+      "original_path": "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement/run.py",
+      "original_relative_path": "mat354-evidence/performance-empty-supplement/run.py",
+      "published": {
+        "bytes": 14091,
+        "path": "textual-sources/mat354-evidence/performance-empty-supplement/run.py",
+        "sha256": "0b986b9370f11ada9726c53c9b4a826e3ef8a2d79b85dc21207d7b0470bcfc64"
+      }
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "original_path": "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement/analysis-1/repository-results-section.md",
+      "original_relative_path": "mat354-evidence/performance-empty-supplement/analysis-1/repository-results-section.md",
+      "published": {
+        "bytes": 11789,
+        "path": "textual-sources/mat354-evidence/performance-empty-supplement/analysis-1/repository-results-section.md",
+        "sha256": "e31aaf30043b09db46ab667277273745ba57032fa6f7462518f225592ce04607"
+      }
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "original_path": "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement/analysis-1/supplement-report.md",
+      "original_relative_path": "mat354-evidence/performance-empty-supplement/analysis-1/supplement-report.md",
+      "published": {
+        "bytes": 3795,
+        "path": "textual-sources/mat354-evidence/performance-empty-supplement/analysis-1/supplement-report.md",
+        "sha256": "bc203b42bd2d84d69bafabcdd53da200a47bea2545017d3d2ca147ac3cacb588"
+      }
+    },
+    {
+      "archive_relation": "EXACT_SNAPSHOT_V1_MEMBER",
+      "original_path": "/workspace/scratch/53686e322277/mat354-independent-review/derive_causal_review.py",
+      "original_relative_path": "mat354-independent-review/derive_causal_review.py",
+      "published": {
+        "bytes": 7948,
+        "path": "textual-sources/mat354-independent-review/derive_causal_review.py",
+        "sha256": "02abf44015bcc6aedbd93701e4680e0e921a0fbda3d459411ad941d46a65355d"
+      }
+    },
+    {
+      "archive_relation": "EXACT_SNAPSHOT_V1_MEMBER",
+      "original_path": "/workspace/scratch/53686e322277/mat354-independent-review/derive_idle_supplement_review.py",
+      "original_relative_path": "mat354-independent-review/derive_idle_supplement_review.py",
+      "published": {
+        "bytes": 7991,
+        "path": "textual-sources/mat354-independent-review/derive_idle_supplement_review.py",
+        "sha256": "7c74e9dbc85185fd37f80d4a4862da37e279a958d1ddc3e307c4a031caaab3d7"
+      }
+    },
+    {
+      "archive_relation": "EXACT_SNAPSHOT_V1_MEMBER",
+      "original_path": "/workspace/scratch/53686e322277/mat354-independent-review/derive_performance_review.py",
+      "original_relative_path": "mat354-independent-review/derive_performance_review.py",
+      "published": {
+        "bytes": 14537,
+        "path": "textual-sources/mat354-independent-review/derive_performance_review.py",
+        "sha256": "2285fcaed8e2cdeea48da4590dd6d006f377a35590ca31e40876db4d3d9c91a6"
+      }
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "kind": "fresh read-only audit addendum, exact textual JSON",
+      "original_path": "/workspace/scratch/53686e322277/mat354-independent-review/local-evidence-v1-readback-addendum.json",
+      "original_relative_path": "mat354-independent-review/local-evidence-v1-readback-addendum.json",
+      "published": {
+        "bytes": 1250,
+        "path": "textual-sources/mat354-independent-review/local-evidence-v1-readback-addendum.json",
+        "sha256": "d051acf1e2e8002d7a007efe3efe0aae60f4163880ff00e0d77dcc76796136b3"
+      }
+    }
+  ],
+  "scope": "Exact original textual report/reproducer copies, separate from raw codec; not native executables."
+}

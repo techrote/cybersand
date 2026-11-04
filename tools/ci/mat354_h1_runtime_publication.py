@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import mat354_h1_runtime_dependencies as compiled_inputs
 
 _spec = spec_from_file_location(
     "_mat354_h1_publication_engine",
@@ -52,6 +53,7 @@ engine.EXECUTION_SCOPE = (
 engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_historical_workflow, _historical_request}) | {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE,
     "tools/ci/mat354_h1_runtime_publication.py", "tools/ci/test_mat354_h1_runtime_publication.py",
+    "tools/ci/mat354_h1_runtime_dependencies.py", "tools/ci/test_mat354_h1_runtime_dependencies.py",
     "tools/ci/execution_policy.py", "tools/ci/godot_scheduling.py",
     "tools/ci/godot_scheduling_profile.json", "godot/tests/support/ci_execution_policy.json",
     "tools/material_catalogue/compatibility.py", "tools/material_catalogue/h1_transition.py",
@@ -62,6 +64,7 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_historical_workflow, _historic
 }
 _verify_bundle = engine.verify_bundle
 _verify_case_results = engine.verify_case_results
+_record_build = engine.record_build
 
 H1_SCOPE = "actual native cooling and hot180 retirement; native standalone owns distributed-worker proof"
 H1_PHASES = ((0, 11, 4, 720), (1, 8, 1, 717), (2, 10, 2, 718), (3, 26, 3, 719))
@@ -175,6 +178,7 @@ def verify_case_results(directory, report):
 
 def verify_bundle(directory, platform, source, validated):
     manifest = _verify_bundle(directory, platform, source, validated)
+    compiled_inputs.verify(directory, manifest, source, engine.ROOT)
     if validated:
         expected = ("mat354-h1-runtime-attempt-" + manifest["workflow_attempt"]
                     + "-" + platform + "-" + os.environ["GITHUB_RUN_ID"] + "/validation.json")
@@ -183,6 +187,11 @@ def verify_bundle(directory, platform, source, validated):
         report = json.loads((directory / "validation.json").read_text(encoding="utf-8"))
         engine.require(report.get("scope") == engine.EXECUTION_SCOPE, "H1 runtime scope differs")
     return manifest
+
+
+def record_build(args):
+    _record_build(args)
+    verify_bundle(args.bundle, args.platform, args.source_sha, validated=False)
 
 
 def verify_native_text(text):
@@ -277,6 +286,7 @@ def verify_native(log, output, source):
 engine.focused_cases = focused_cases
 engine.verify_case_results = verify_case_results
 engine.verify_bundle = verify_bundle
+engine.record_build = record_build
 
 
 def main():

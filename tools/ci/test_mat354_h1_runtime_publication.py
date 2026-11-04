@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -162,11 +163,12 @@ class ProfileTests(unittest.TestCase):
 
     def test_all_source_byte_lease_staging_and_execution_guards_are_unchanged(self):
         for name in ("context", "require_publication_request", "check_source", "input_ledgers",
-                     "runtime_identity", "record_build", "execute", "stage", "check_index"):
+                     "runtime_identity", "execute", "stage", "check_index"):
             with self.subTest(name=name):
                 self.assertEqual(inspect.getsource(getattr(subject, name)), inspect.getsource(getattr(historical, name)))
         self.assertEqual(inspect.getsource(profile._verify_bundle), inspect.getsource(historical.verify_bundle))
         self.assertEqual(inspect.getsource(profile._verify_case_results), inspect.getsource(historical.verify_case_results))
+        self.assertEqual(inspect.getsource(profile._record_build), inspect.getsource(historical.record_build))
 
     def test_selected_case_watchdogs_flags_and_display_requirements_are_preserved(self):
         discovered = {case.name: case for case in subject.runner.discover_cases()}
@@ -282,11 +284,29 @@ class H1EvidenceTests(unittest.TestCase):
             root = Path(directory)
             (root / "validation.json").write_text(json.dumps({"scope": subject.EXECUTION_SCOPE}), encoding="utf-8")
             manifest = {"workflow_attempt": "1", "validation_output": "mat354-h1-runtime-attempt-1-windows-123456/validation.json"}
-            with mock.patch.object(profile, "_verify_bundle", return_value=manifest):
+            with mock.patch.object(profile, "_verify_bundle", return_value=manifest), \
+                    mock.patch.object(profile.compiled_inputs, "verify") as dependencies:
                 self.assertEqual(profile.verify_bundle(root, "windows", "a" * 40, True), manifest)
+                dependencies.assert_called_once_with(root, manifest, "a" * 40, subject.ROOT)
                 manifest["validation_output"] = "mat354-h1-runtime-attempt-2-windows-123456/validation.json"
                 with self.assertRaisesRegex(RuntimeError, "artifact identity"):
                     profile.verify_bundle(root, "windows", "a" * 40, True)
+
+    def test_built_and_validated_bundles_require_compiler_input_receipt(self):
+        with tempfile.TemporaryDirectory() as directory, mock.patch.object(profile, "_verify_bundle", return_value={}):
+            for validated in (False, True):
+                with self.subTest(validated=validated), self.assertRaisesRegex(RuntimeError, "Missing compiled-input receipt"):
+                    profile.verify_bundle(Path(directory), "linux", "a" * 40, validated)
+
+    def test_record_command_rejects_missing_compiler_input_receipt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            argv = ["mat354_h1_runtime_publication.py", "record", "--source-sha", "a" * 40,
+                    "--platform", "linux", "--bundle", directory, "--runtime", "runtime.so", "--toolchain", "toolchain.txt"]
+            with mock.patch.object(sys, "argv", argv), mock.patch.object(profile, "_record_build") as record, \
+                    mock.patch.object(profile, "_verify_bundle", return_value={}):
+                with self.assertRaisesRegex(RuntimeError, "Missing compiled-input receipt"):
+                    profile.main()
+                record.assert_called_once()
 
 
 class HostedToolchainEvidenceTests(unittest.TestCase):
@@ -324,6 +344,16 @@ class HostedToolchainEvidenceTests(unittest.TestCase):
                 self.assertIn('digest="$(sha256sum "$resolved")"', body)
                 for marker in markers:
                     self.assertIn(marker, body)
+
+    def test_both_runtime_builds_capture_and_bind_actual_full_dependencies(self):
+        workflow = (subject.ROOT / WORKFLOW).read_text(encoding="utf-8")
+        for platform in ("linux", "windows"):
+            blocks = re.findall(r"(?ms)^  " + platform + r"-build:\n(.*?)(?=^  [a-z][a-z0-9-]*:\n|\Z)", workflow)
+            self.assertEqual(len(blocks), 1)
+            self.assertIn("mat354_h1_runtime_dependencies.py build", blocks[0])
+            self.assertIn("runtime-compiled-inputs.json", blocks[0])
+            self.assertIn("H1_COMPILED_INPUTS_SHA256=", blocks[0])
+            self.assertIn("--bundle build/mat354-h1-" + platform, blocks[0])
 
 
 class NativeEvidenceTests(unittest.TestCase):

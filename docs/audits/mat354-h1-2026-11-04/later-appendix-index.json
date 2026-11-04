@@ -1,0 +1,137 @@
+{
+  "exact_byte_equivalences": [
+    {
+      "archive_v1_original_path": {
+        "bytes": 75065,
+        "path": "/workspace/scratch/53686e322277/mat354-evidence/source-custody/local-qualified-history.bundle",
+        "sha256": "1cb6eaddd15e7664293476ac921261bb96d8fa0dd0e0ed3f12870f4b0fe1a16d"
+      },
+      "archive_v1_sha256": "c3ae3024d85e8d152e5065ae38e5b2aa549c8167ad942cfaa2150b4b04bdbb82",
+      "later_path": {
+        "bytes": 75065,
+        "path": "/workspace/scratch/53686e322277/mat354-independent-review/retained-source-history.bundle",
+        "sha256": "1cb6eaddd15e7664293476ac921261bb96d8fa0dd0e0ed3f12870f4b0fe1a16d"
+      },
+      "note": "Later path itself is not a snapshot member; its unchanged bytes are recoverable under the original archived source-custody path."
+    }
+  ],
+  "files": [
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 362317,
+      "path": "mat354-evidence/performance-empty-supplement/analysis-1/supplement-audit.json",
+      "sha256": "60843a26a4077751e8eff76684d879bb54cd70401b89a89c0c55eccb19fa1bcb"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 1665,
+      "path": "mat354-h1-compatibility-preliminary/receipt.json",
+      "sha256": "6c3e4aae6971955c82dab4bf2f5561cae85ba6a8c6c0255cc2262c10a09a0474"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 2102,
+      "path": "mat354-independent-review/local-evidence-v1-review.json",
+      "sha256": "a064a8e35d268f08cd24d8ac9c48b33b8516f0b5100c336306a9ac203e4cdec3"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 3047,
+      "path": "mat354-independent-review/preliminary-review-evidence-index.json",
+      "sha256": "4f84e8d3ab46ab1ff22eb00801d0c5b58dbad62178088bea6959a14505d564b8"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 21099,
+      "path": "mat354-evidence/performance-empty-supplement/reduce.py",
+      "sha256": "a1ff98a404639007d3e110c7d731f443623fe669aba19f2a70e6cb80c60ab1a9"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 11789,
+      "path": "mat354-evidence/performance-empty-supplement/analysis-1/repository-results-section.md",
+      "sha256": "e31aaf30043b09db46ab667277273745ba57032fa6f7462518f225592ce04607"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 3795,
+      "path": "mat354-evidence/performance-empty-supplement/analysis-1/supplement-report.md",
+      "sha256": "bc203b42bd2d84d69bafabcdd53da200a47bea2545017d3d2ca147ac3cacb588"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 226,
+      "path": "mat354-h1-compatibility-preliminary/0.stderr.txt",
+      "sha256": "d127cf1f457e32f51e3413339f1a92f46fa483d5d269022887861d1d9926bb18"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 0,
+      "path": "mat354-h1-compatibility-preliminary/0.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 0,
+      "path": "mat354-h1-compatibility-preliminary/1.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 2182,
+      "path": "mat354-h1-compatibility-preliminary/1.stdout.txt",
+      "sha256": "baf51c9146032ac715bd1fa043b776afcafd61008b8fa1dc4bae1064f0441327"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 75065,
+      "path": "mat354-independent-review/retained-source-history.bundle",
+      "sha256": "1cb6eaddd15e7664293476ac921261bb96d8fa0dd0e0ed3f12870f4b0fe1a16d"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 516,
+      "path": "mat354-library-readback-v1/mat354-h1-local-evidence-v1.readback.json",
+      "sha256": "42964eb6dab40b3818c8f7401875c7b420605ead9a48ca87fdddbf8355c40541"
+    },
+    {
+      "archive_relation": "NOT_IN_SNAPSHOT_V1",
+      "bytes": 1250,
+      "path": "mat354-independent-review/local-evidence-v1-readback-addendum.json",
+      "sha256": "d051acf1e2e8002d7a007efe3efe0aae60f4163880ff00e0d77dcc76796136b3"
+    }
+  ],
+  "final_custody_handover": {
+    "future_final_review": "Any independent final review completed after this index must be appended to final custody; no future disposition is anticipated.",
+    "later_excluded_roots": [
+      "/workspace/scratch/53686e322277/mat354-publisher-preparation",
+      "/workspace/scratch/53686e322277/mat354-evidence/public-head-custody-1",
+      "/workspace/scratch/53686e322277/mat354-evidence/public-head-build-1",
+      "/workspace/scratch/53686e322277/mat354-hosted-41913470635",
+      "/workspace/scratch/53686e322277/mat354-hosted-41914202188"
+    ],
+    "preliminary_noncodec_logs": {
+      "durable_archive": "Pending final archive v2 per owner/root; not in archive v1",
+      "files": [
+        "0.stdout.txt",
+        "0.stderr.txt",
+        "1.stdout.txt",
+        "1.stderr.txt"
+      ],
+      "local_exact_appendix": {
+        "bytes": 4358,
+        "path": "/workspace/scratch/53686e322277/mat354-public-evidence-prep/later-noncodec-custody/custody.json",
+        "sha256": "85815e837ab162df616687dc69330fc1a79b9e7ff99d768bf7e947dbde767608"
+      },
+      "original_directory": "/workspace/scratch/53686e322277/mat354-h1-compatibility-preliminary",
+      "public_transport": "EXCLUDED \u2014 original names do not satisfy unchanged codec; no rename or plain raw-log Git copy"
+    },
+    "publication_payloads": "Publication payload tree JSON remains excluded from this Git transport."
+  },
+  "future_separate_evidence": [
+    "Hosted/current public-head execution folders are intentionally excluded; attach their finalized indexed artifacts separately.",
+    "A final independent review created after this selection must be appended separately; this index does not anticipate its disposition."
+  ],
+  "scope": "Current selected originals absent from or different to snapshot-v1. These are retained in this new transport/text appendix where admitted; no claim they were saved in the earlier archive.",
+  "snapshot_utc": "2026-11-04T21:17:25.994407+00:00"
+}

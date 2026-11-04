@@ -1,0 +1,21 @@
+{
+  "schema": "mat354.independent.archive-readback-addendum.v1",
+  "status": "PASS_BYTE_IDENTICAL_MATERIALIZED_READBACK",
+  "previous_review_unchanged": {
+    "path": "/workspace/scratch/53686e322277/mat354-independent-review/local-evidence-v1-review.json",
+    "bytes": 2102,
+    "sha256": "a064a8e35d268f08cd24d8ac9c48b33b8516f0b5100c336306a9ac203e4cdec3"
+  },
+  "readback_copy_independently_hashed": {
+    "path": "/workspace/scratch/53686e322277/mat354-library-readback-v1/mat354-h1-local-evidence-v1.zip",
+    "bytes": 74588389,
+    "sha256": "c3ae3024d85e8d152e5065ae38e5b2aa549c8167ad942cfaa2150b4b04bdbb82"
+  },
+  "readback_operation_receipt": {
+    "path": "/workspace/scratch/53686e322277/mat354-library-readback-v1/mat354-h1-local-evidence-v1.readback.json",
+    "bytes": 516,
+    "sha256": "42964eb6dab40b3818c8f7401875c7b420605ead9a48ca87fdddbf8355c40541"
+  },
+  "library_file_id": "libfile_eaa703d5e51481918721faca364bac58",
+  "scope": "Root used the Library connector to materialize this readback. Independent reviewer separately read and hashed the resulting file; bytes equal the fully authenticated original archive. Earlier review remains unchanged; no duplicate member reduction or claim of reviewer-initiated remote download."
+}

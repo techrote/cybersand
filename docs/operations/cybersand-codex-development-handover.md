@@ -21,6 +21,8 @@ source-only correction is `16533ff81c561677308665357eb1d0d5f65e85bc`.
 The original #371 lock and #377 Phase A evidence remain immutable. H2 mutual
 heating, H3 generic rest, catalogue/capability identities and ABI stay unchanged.
 
+**B — IMPLEMENTED, ADOPTION BLOCKED.** [PR #395](https://github.com/techrote/cybersand/pull/395) owns this lane. The [resulting-head ledger](../audits/2026-11-04-mat354-h1-final-status.md) records exact current runtime/CI heads and disposition. Local/native and first hosted Linux/Windows correction proofs pass within their recorded scopes; unexplained epoch-wrap CPU cost and historical sleeping-CYPS import remain blockers. The first runtime publication is `a5052b6b3d3e90b894c1b1a2d0ce8a466290a370`. The H1-only dependency-capture extension has independent preliminary clearance and actual Linux/Windows compile evidence; a fresh hosted build and actual OS proof remain required at this checkpoint.
+
 This is an unmerged candidate, not runtime adoption. Keep #354/#352 open.
 No H1-specific numerical performance acceptance threshold exists; the owner must
 dispose of measured results before adoption. Exact runtime/CI evidence and an
@@ -29,7 +31,16 @@ consumer/checker change, #382 the pressure include, and #358/SOL their parked
 protected-source deltas; this H1 transition admits none of them. Reconcile
 checker composition explicitly when integrating either branch.
 
+The 22:03 UTC ownership reconciliation also found #396's separately owned empty
+per-file transition mechanism and #382's intended pressure consumer. They have
+not changed accepted main or this lane's World source. H1 intentionally changes
+behaviour, so #396's equivalence premise does not admit it. Continue isolated
+qualification only; any future integration must reconcile the actual contracts
+and resulting source. Do not import or silently combine those mechanisms here.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
+
+**Historical completed integration assignment.** PR #377 is merged. Its earlier no-B boundary applied to Phase A; the separate H1 authorization above owns the current candidate. The original wording/evidence below remains retained.
 
 The owner now authorizes current-main reconciliation, focused preflight, a
 Ready-for-review transition and one guarded integration of

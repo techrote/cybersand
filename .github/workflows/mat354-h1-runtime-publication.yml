@@ -12,6 +12,8 @@ on:
       - 'tools/ci/mat354_h1_runtime_publication.py'
       - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
       - 'tools/ci/test_mat354_h1_runtime_publication.py'
+      - 'tools/ci/mat354_h1_runtime_dependencies.py'
+      - 'tools/ci/test_mat354_h1_runtime_dependencies.py'
   push:
     branches: [fix/mat354b-moltenglass-deadline-20261104]
     # Explicit source-bound publication request; normal native edits do not dispatch a publisher.
@@ -22,6 +24,8 @@ on:
       - 'tools/ci/mat354_h1_runtime_publication.py'
       - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
       - 'tools/ci/test_mat354_h1_runtime_publication.py'
+      - 'tools/ci/mat354_h1_runtime_dependencies.py'
+      - 'tools/ci/test_mat354_h1_runtime_dependencies.py'
 
 permissions:
   contents: read
@@ -59,6 +63,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_mat354_h1_runtime_publication.py
+          python3 tools/ci/test_mat354_h1_runtime_dependencies.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/material_catalogue/compatibility.py --check
           python3 tools/ci/check_ci_provider_policy.py
@@ -84,6 +89,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_mat354_h1_runtime_publication.py
+          python3 tools/ci/test_mat354_h1_runtime_dependencies.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/material_catalogue/compatibility.py --check
           if test -f 'tools/ci/mat354_h1_publish_request.json'; then
@@ -181,6 +187,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_mat354_h1_runtime_publication.py
+          python3 tools/ci/test_mat354_h1_runtime_dependencies.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/material_catalogue/compatibility.py --check
           python3 tools/ci/mat354_h1_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
@@ -216,7 +223,10 @@ jobs:
         run: |
           set -euo pipefail
           timeout 35m tools/build_pinned_godot_cpp.sh linux
-          timeout 20m tools/build_native_extension.sh
+          timeout 20m python3 tools/ci/mat354_h1_runtime_dependencies.py build \
+            --platform linux --source-sha "$GITHUB_SHA" --compiler "$LINUX_CXX" \
+            --sdk-root "$GODOT_CPP_ROOT" --runtime "$CYBERSAND_NATIVE_OUTPUT" \
+            --bundle build/mat354-h1-linux
           record_executable() {
             local label="$1" candidate="$2" selected resolved bytes digest
             selected="$(command -v "$candidate")"
@@ -236,6 +246,8 @@ jobs:
             record_executable compiler-cc1plus "$("$LINUX_CXX" -print-prog-name=cc1plus)"
             record_executable linker "$("$LINUX_CXX" -print-prog-name=ld)"
             sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a"
+            printf 'H1_COMPILED_INPUTS_SHA256='
+            sha256sum build/mat354-h1-linux/runtime-compiled-inputs.json | cut -d ' ' -f 1
           } > "$RUNNER_TEMP/toolchain.txt"
           python3 tools/ci/mat354_h1_runtime_publication.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/mat354-h1-linux
 
@@ -245,6 +257,7 @@ jobs:
         run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
 
       - name: Retain Linux build for actual Linux execution
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: mat354-h1-build-linux-${{ github.run_id }}-${{ github.run_attempt }}
@@ -274,6 +287,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_mat354_h1_runtime_publication.py
+          python3 tools/ci/test_mat354_h1_runtime_dependencies.py
           python3 tools/material_catalogue/compatibility.py --check
           python3 tools/ci/mat354_h1_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
 
@@ -330,6 +344,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_mat354_h1_runtime_publication.py
+          python3 tools/ci/test_mat354_h1_runtime_dependencies.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/material_catalogue/compatibility.py --check
           python3 tools/ci/mat354_h1_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
@@ -370,7 +385,10 @@ jobs:
         run: |
           set -euo pipefail
           timeout 35m tools/build_pinned_godot_cpp.sh windows
-          timeout 20m tools/build_native_extension_windows.sh
+          timeout 20m python3 tools/ci/mat354_h1_runtime_dependencies.py build \
+            --platform windows --source-sha "$GITHUB_SHA" --compiler "$WINDOWS_CXX" \
+            --sdk-root "$GODOT_CPP_ROOT" --runtime "$CYBERSAND_NATIVE_OUTPUT" \
+            --bundle build/mat354-h1-windows
           mkdir -p build/mat354-h1-windows
           "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > build/mat354-h1-windows/windows-imports.txt
           record_executable() {
@@ -393,6 +411,8 @@ jobs:
             record_executable compiler-clang-payload "$LLVM_MINGW_ROOT/bin/clang"
             record_executable linker-lld-payload "$LLVM_MINGW_ROOT/bin/ld.lld"
             sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a"
+            printf 'H1_COMPILED_INPUTS_SHA256='
+            sha256sum build/mat354-h1-windows/runtime-compiled-inputs.json | cut -d ' ' -f 1
           } > "$RUNNER_TEMP/toolchain.txt"
           python3 tools/ci/mat354_h1_runtime_publication.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/mat354-h1-windows
 
@@ -402,6 +422,7 @@ jobs:
         run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
 
       - name: Retain Windows build for actual Windows execution
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: mat354-h1-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
@@ -437,6 +458,7 @@ jobs:
         run: |
           set -euo pipefail
           python tools/ci/test_mat354_h1_runtime_publication.py
+          python tools/ci/test_mat354_h1_runtime_dependencies.py
           python tools/material_catalogue/compatibility.py --check
           python tools/ci/mat354_h1_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
 
@@ -493,6 +515,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_mat354_h1_runtime_publication.py
+          python3 tools/ci/test_mat354_h1_runtime_dependencies.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/material_catalogue/compatibility.py --check
           python3 tools/ci/mat354_h1_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
