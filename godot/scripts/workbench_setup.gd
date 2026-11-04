@@ -73,7 +73,7 @@ static func _actor_error(a: Variant, size: Vector2i, response: String) -> String
 static func _material(value: Variant, powders_only := false) -> bool:
 	return _integer(value,0,255) and int(value) in (MATERIALS.slice(0,9) if powders_only else MATERIALS)
 
-static func validate(value: Variant) -> String:
+static func validate(value: Variant, check_starting_paint: bool = true) -> String:
 	if not _keys(value,ROOT_KEYS) or not _integer(value.version,2,2):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
@@ -96,10 +96,12 @@ static func validate(value: Variant) -> String:
 		ids[int(a.id)] = true
 	if not _integer(value.selected,0,2147483646) or (value.selected != 0 and not ids.has(int(value.selected))):
 		return "Selected instance does not exist."
-	if not value.edits is Array or value.edits.size() > MAX_STAMPS: return "Starting paint capacity exhausted."
-	for stamp: Variant in value.edits:
-		if not stamp is Array or stamp.size() != 4 or not _integer(stamp[0],0,size.x-1) or not _integer(stamp[1],0,size.y-1) or not _integer(stamp[2],2,24) or not _material(stamp[3]):
-			return "Invalid brush stamp."
+	if not value.edits is Array: return "Invalid starting paint history."
+	if check_starting_paint:
+		if value.edits.size() > MAX_STAMPS: return "Starting paint capacity exhausted."
+		for stamp: Variant in value.edits:
+			if not stamp is Array or stamp.size() != 4 or not _integer(stamp[0],0,size.x-1) or not _integer(stamp[1],0,size.y-1) or not _integer(stamp[2],2,24) or not _material(stamp[3]):
+				return "Invalid brush stamp."
 	if not value.source is Array or (not value.source.is_empty() and (value.source.size() != 3 or not _integer(value.source[0],0,size.x-4) or not _integer(value.source[1],0,size.y-24) or not _material(value.source[2],true))):
 		return "Place the entire 4 × 24 powder source inside the canvas."
 	if not value.liquid_policy is Array or value.liquid_policy.is_empty() or value.liquid_policy.size() > 4096:

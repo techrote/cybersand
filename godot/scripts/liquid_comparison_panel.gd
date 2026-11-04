@@ -35,6 +35,7 @@ var receipt_label: Label
 var status: Label
 var requested_policy := PackedInt32Array()
 var _choices: Array = []
+var _preset_policies: Array[PackedInt32Array] = []
 var _validation: Dictionary = {}
 var _normalize_on_next_apply_only := false
 var _dirty: bool = false
@@ -144,6 +145,7 @@ func setup(controller: Control, selection_only: bool = false) -> void:
 		material_picker.add_item(str(assignment.name).capitalize(), int(assignment.material))
 	for index: int in PRESETS.size():
 		var result: Dictionary = _preset(index)
+		_preset_policies.append(result.get("request",PackedInt32Array()))
 		preset_picker.add_item(str(PRESETS[index].label))
 		preset_picker.set_item_disabled(index, not result.ok)
 		preset_picker.set_item_tooltip(index, str(result.get("error", "Pending policy; applies only on rebuild")))
@@ -177,6 +179,11 @@ func select_preset(index: int) -> void:
 
 func _refresh_choices() -> void:
 	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices") or requested_policy.is_empty(): return
+	# The same editor survives New/Load and owner reconstruction. Reflect
+	# the actual staged envelope even when the old preset label survived.
+	var preset: int = _preset_policies.find(requested_policy)
+	preset_picker.select(preset)
+	if preset < 0: preset_picker.text = "Custom policy"
 	_validation = bridge.validate_liquid_policy(requested_policy)
 	_choices = bridge.liquid_policy_assignment_choices(requested_policy, material_picker.get_selected_id())
 	family_picker.clear()

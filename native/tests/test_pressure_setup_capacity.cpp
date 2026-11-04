@@ -63,6 +63,11 @@ void exact_capacity() {
            "running topology was mislabeled a fresh setup capacity check");
 
     auto excessive = holes(1025, true);
+    expect(!PreparedWorldBuilder::validate_initial_pressure_capacity(*excessive,{0,0,64,64},64),
+           "canvas-only pressure census unexpectedly counted exterior pockets");
+    const auto boundary=PreparedWorldBuilder::validate_initial_pressure_capacity(*excessive,{0,0,64,64},64,true);
+    expect(boundary && boundary->policy_refusal()->code==LiquidPolicyRefusalCode::CapacityRefused,
+           "retained pressure halo missed actual 1025th compartment outside canvas");
     const auto untouched = excessive->save_physical_state();
     const auto refused = PreparedWorldBuilder::validate_initial_pressure_capacity(*excessive, domain);
     expect(initial_pressure_capacity(*excessive, domain).compartments == 1025 && refused &&

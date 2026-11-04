@@ -384,6 +384,10 @@ void workbench_inertial_inheritance() {
     World source(current);
     source.set(2,2,Material::Brine);
     require(source.diagnostic_set_inertial_cell(2,2,-16,31,-2,3),"source native Brine motion");
+    source.set(-1,2,Material::Brine);
+    source.set(4096,2,Material::Brine);
+    require(source.diagnostic_set_inertial_cell(-1,2,8,16,2,1) &&
+            source.diagnostic_set_inertial_cell(4096,2,-4,12,1,2),"native exterior IN motion");
     normalization::FinalSetupInput input;
     input.setup.domain={0,0,8,8};
     input.cells={{2,2,Material::Brine,source.stored_state_a(2,2),source.stored_state_b(2,2),200}};
@@ -393,20 +397,104 @@ void workbench_inertial_inheritance() {
         return std::get<PreparedWorld>(result).take_world();
     };
     auto retained=candidate(current);
-    auto receipts=retained->inherit_workbench_liquid_state(source,false);
+    auto receipts=retained->inherit_workbench_liquid_state(source,{0,0,8,8},false,false);
     const auto copied=retained->inertial_cell(2,2);
-    require(receipts.preserved_inertial_cells==1 && receipts.discarded_inertial_cells==0 &&
+    require(receipts.preserved_inertial_cells==2 && receipts.discarded_inertial_cells==1 &&
+            receipts.clipped_inertial_cells==1 && retained->inertial_cell(-1,2).vx==8 &&
+            retained->inertial_cell(-1,2).ax==2 && retained->stored_material(4096,2)==Material::Empty &&
             copied.vx==-16 && copied.vy==31 && copied.ax==-2 && copied.ay==3,
             "retained actor edit preserves actual native IN motion and fractions");
     auto replacement=candidate(config());
     const auto before=source.physical_state_hash();
     bool refused=false;
-    try { (void)replacement->inherit_workbench_liquid_state(source,false); }
+    try { (void)replacement->inherit_workbench_liquid_state(source,{0,0,8,8},false,false); }
     catch(const std::invalid_argument&) { refused=true; }
     require(refused && source.physical_state_hash()==before,"policy change without conversion intent");
-    receipts=replacement->inherit_workbench_liquid_state(source,true);
-    require(receipts.discarded_inertial_cells==1 && !replacement->inertial_cell(2,2).available &&
+    receipts=replacement->inherit_workbench_liquid_state(source,{0,0,8,8},true,false);
+    require(receipts.discarded_inertial_cells==3 && receipts.clipped_inertial_cells==1 && !replacement->inertial_cell(2,2).available &&
             replacement->stored_material(2,2)==Material::Brine,"deliberately retired IN motion, retained Brine");
+}
+
+void workbench_boundary_inventory() {
+    const auto cfg=config();
+    World source(cfg);
+    source.set(2,2,Material::Wall);
+    require(source.set_cell_state(-1,3,Material::Sand,19,4),"left halo powder setup");
+    source.set_temperature(-1,3,317);
+    source.set(3,-1,Material::Dust);
+    source.set_temperature(-1,-1,245);
+    require(source.set_cell_state(8,3,Material::Water,75,0),"right halo Water setup");
+    require(source.set_cell_state(3,8,Material::Water,180,0),"bottom halo Water setup");
+    require(source.set_cell_state(4096,3,Material::Water,35,0),"source-only Water");
+    source.set(4096,8,Material::Gunpowder);
+    source.set_temperature(4096,8,290);
+    normalization::FinalSetupInput input;
+    input.setup.domain={0,0,8,8};
+    input.cells={{2,2,Material::Wall,source.stored_state_a(2,2),source.stored_state_b(2,2),200}};
+    const auto candidate=[&](const WorldConfig& target) {
+        auto result=PreparedWorldBuilder::prepare(target,input,normalization::NormalizationOptIn::None);
+        require(std::holds_alternative<PreparedWorld>(result),"workbench boundary candidate");
+        return std::get<PreparedWorld>(result).take_world();
+    };
+    const auto before=source.physical_state_hash();
+    auto retained=candidate(cfg);
+    const auto receipt=retained->inherit_workbench_liquid_state(source,{0,0,8,8},false,false);
+    require(receipt.clipped_visible_water==35 && receipt.clipped_materials[3]==1 &&
+            receipt.clipped_materials[static_cast<int>(Material::Gunpowder)]==1 &&
+            receipt.clipped_thermal_cells==1,"true exterior clipping ledger");
+    require(receipt.preserved_halo_visible_water==255 && receipt.preserved_halo_materials[3]==2 &&
+            retained->stored_material(-1,3)==Material::Sand && retained->stored_state_a(-1,3)==19 &&
+            retained->stored_state_b(-1,3)==4 && retained->stored_temperature(-1,3)==317 &&
+            retained->stored_material(3,-1)==Material::Dust && retained->stored_temperature(-1,-1)==245 &&
+            retained->stored_state_a(8,3)==75 && retained->stored_state_a(3,8)==180 &&
+            retained->stored_material(4096,3)==Material::Empty,"four-edge resident halo payload and ambient/thermal lanes");
+    auto whole_config=cfg;
+    auto words=LiquidSolverPolicy::default_request(); words[21]=2;
+    const auto policy=LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+    require(policy.accepted(),"whole-cell target for halo");
+    whole_config.liquid_solver_policy=*policy.policy;
+    auto whole=candidate(whole_config);
+    const auto rounded=whole->inherit_workbench_liquid_state(source,{0,0,8,8},true,true);
+    require(rounded.halo_normalization_produced==75 && rounded.halo_normalization_consumed==75 &&
+            whole->stored_state_a(3,8)==255 && whole->stored_material(8,3)==Material::Empty &&
+            source.quantity_ledger().water_visible+rounded.halo_normalization_produced==
+                whole->quantity_ledger().water_visible+rounded.halo_normalization_consumed+rounded.clipped_visible_water,
+            "whole-cell halo uses canonical normalization and closes quantity");
+    require(before==source.physical_state_hash(),"transfer did not modify retained source");
+}
+
+void workbench_clipped_pressure_sidecars() {
+    auto cfg=config(1,true);
+    World source(cfg);
+    source.set_simulation_region(RectI64{0,384,64,32});
+    box(source,3,1,1,400,Material::Water);
+    source.set(2,400,Material::Wall); source.set(5,400,Material::Wall);
+    box(source,2,401,4,1,Material::Wall);
+    source.set(4,400,Material::Water);
+    box(source,24,390,7,7,Material::Wall);
+    box(source,25,391,5,5,Material::Empty);
+    box(source,25,395,5,1,Material::Water);
+    (void)source.tick();
+    const auto inventory=source.quantity_ledger();
+    const auto gas=source.gas_compartments();
+    require(inventory.water_overfill>0 && gas.size()==1 && gas[0].amount>0,"live exterior pressure inventory");
+    normalization::FinalSetupInput input;
+    input.setup.domain={0,0,8,8};
+    for(int y=0;y<8;++y) for(int x=0;x<8;++x) {
+        const auto material=source.stored_material(x,y);
+        if(material!=Material::Empty) input.cells.push_back({x,y,material,source.stored_state_a(x,y),source.stored_state_b(x,y),200});
+    }
+    auto result=PreparedWorldBuilder::prepare(cfg,input,normalization::NormalizationOptIn::None);
+    require(std::holds_alternative<PreparedWorld>(result),"clipped pressure candidate");
+    auto retained=std::get<PreparedWorld>(result).take_world();
+    const auto clipped=retained->inherit_workbench_liquid_state(source,{0,0,8,8},false,false);
+    require(clipped.clipped_water_overfill==inventory.water_overfill && clipped.discarded_overfill==inventory.water_overfill &&
+            clipped.clipped_gas_amount==gas[0].amount && clipped.discarded_gas==gas[0].amount && clipped.clipped_gas_labels>0 &&
+            retained->gas_compartments().empty(),"same-policy clipping reports unrepresentable PF overfill/gas");
+    require(inventory.water_visible==clipped.clipped_visible_water+retained->quantity_ledger().water_visible,
+            "clipped Water counted independently of overfill");
+    (void)retained->tick();
+    require(!retained->has_failed(),"clipped pressure candidate remains usable");
 }
 
 void prepared_population_binding() {
@@ -446,6 +534,8 @@ void test_quantity_ledger() {
     refusal_and_overflow();
     prepared_population_binding();
     workbench_inertial_inheritance();
+    workbench_boundary_inventory();
+    workbench_clipped_pressure_sidecars();
     serial_and_phased_transactions();
     resident_serial_overflow_transaction();
 }

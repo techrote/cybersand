@@ -18,6 +18,7 @@ var _model := OptionButton.new()
 var _roster := OptionButton.new()
 var _actor_action: String = ""
 var _liquid_action := false
+var _pending_request_serial := 0
 var _instances := OptionButton.new()
 var _material := OptionButton.new()
 var _response := OptionButton.new()
@@ -43,6 +44,7 @@ var _requested_response: String = "LA-SELECTIVE"
 var _zoom := 1
 var _last_status_ms := -1000
 var _runtime_label := ""
+var _processor_label := ""
 
 func _row(parent: Control) -> HFlowContainer:
 	var row := HFlowContainer.new()
@@ -153,6 +155,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		if not applied.is_empty(): applied.fire = enabled)
 	row.add_child(_fire)
 	add_child(_details)
+	_details.visibility_changed.connect(_details_visibility_changed)
 	_details.hide()
 	row = _row(_details)
 	for key: String in Setup.DEFAULT_OPTIONS:
@@ -178,6 +181,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_status)
 	DisplayServer.window_set_title("CyberSand · Development workbench")
+	_processor_label = "%s · %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
 	var binary_hash := FileAccess.get_sha256("res://addons/cybersand_native/bin/"+binary)
 	_runtime_label = "%s · Godot %s · native %s · definitions %s" % [OS.get_name(),Engine.get_version_info().string,binary_hash.left(12),Fleet.registry_hash().left(12)]
@@ -228,7 +232,7 @@ func body_state(id: int) -> Dictionary:
 	return host.physical_actor_session.workbench_actor_state(id)
 
 func refuse(reason: String) -> bool:
-	message = "Refused · " + reason
+	message = "Refused · " + reason.trim_prefix("MicroScenario rejected; ")
 	return false
 
 func busy() -> bool:
@@ -244,10 +248,21 @@ func _editable() -> bool:
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
-	var error := Setup.validate(candidate)
+	if preserve:
+		if applied.is_empty(): return refuse("No installed session to retain.")
+		# A retained request can change ownership/settings, never substitute a
+		# different starting paint history for the native cells being copied.
+		candidate = candidate.duplicate()
+		candidate.edits = applied.edits
+	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
-	var recipe := Setup.rectangles(candidate)
-	if recipe.has("error"): return refuse(recipe.error)
+	var runs := []
+	if not preserve:
+		var recipe := Setup.rectangles(candidate)
+		if recipe.has("error"): return refuse(recipe.error)
+		runs = recipe.runs
+	# Retained authoring transfers the current native cells. Stamp replay and
+	# its rectangle limit apply only when constructing an authored start.
 	var definitions := Setup.physical_definitions(candidate)
 	if preserve:
 		for a: Dictionary in definitions:
@@ -261,9 +276,11 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	else:
 		_saved_view.clear()
 	_cancel()
-	var ok: bool = host.workbench_apply(candidate,definitions,recipe.runs,Setup.extent_of(candidate),
+	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),str(candidate.response),preserve,convert_liquid_inventory,resume_play)
-	return true if ok else refuse(host.microscenario_error)
+	if not ok: return refuse(host.microscenario_error)
+	_pending_request_serial = int(host.pending_microscenario_apply.serial)
+	return true
 
 func new_canvas() -> bool:
 	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
@@ -274,6 +291,7 @@ func new_canvas() -> bool:
 	return apply(candidate)
 
 func installed(candidate: Dictionary) -> void:
+	_pending_request_serial = 0
 	applied = candidate.duplicate(true)
 	var roster_choice := _model.selected
 	_model.clear()
@@ -319,6 +337,7 @@ func installed(candidate: Dictionary) -> void:
 	for i: int in 3:
 		host.world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
 	host.update_worker_frame_state()
+	var rounded_on_apply: bool = _liquid_action and bool(candidate.normalize)
 	if not _actor_action.is_empty():
 		_reveal_selected()
 		var state := body_state(selected_id())
@@ -327,21 +346,88 @@ func installed(candidate: Dictionary) -> void:
 		_actor_action = ""
 	elif _liquid_action:
 		_liquid_action = false
-		var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
 		message = "Liquid settings applied."
-		if receipt.has("water_before") and (receipt.get("requested",false) or applied.normalize):
-			message += " Water quantity %d → %d." % [int(receipt.water_before),int(receipt.water_after)]
-			if applied.normalize or receipt.normalization_produced or receipt.normalization_consumed:
-				message += " Rounding added %d and removed %d Water units." % [int(receipt.normalization_produced),int(receipt.normalization_consumed)]
-			var losses := PackedStringArray()
-			if receipt.discarded_water_overfill: losses.append("%d pressure overfill units" % int(receipt.discarded_water_overfill))
-			if receipt.discarded_gas_amount: losses.append("%d gas units" % int(receipt.discarded_gas_amount))
-			if receipt.discarded_inertial_cells: losses.append("inertial state in %d cells" % int(receipt.discarded_inertial_cells))
-			if receipt.get("discarded_pressure_flow_cells",0): losses.append("pressure flow in %d cells" % int(receipt.discarded_pressure_flow_cells))
-			if not losses.is_empty(): message += " Discarded " + ", ".join(losses) + "."
-
 	else:
 		message = "Choose a flyer to pilot, or use Place model to add an independent body."
+	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("workbench_conversion",{})
+	message += _inventory_report(receipt,rounded_on_apply)
+
+
+func _material_counts(counts: Dictionary) -> String:
+	var names := PackedStringArray()
+	var ids := counts.keys()
+	ids.sort()
+	for id: Variant in ids:
+		var cells := int(counts[id])
+		if cells > 0: names.append("%d %s" % [cells,host.material_name(int(id))])
+	return ", ".join(names)
+
+
+func _inventory_report(receipt: Dictionary, rounded_on_apply: bool) -> String:
+	if receipt.is_empty(): return ""
+	var halo := int(receipt.get("preserved_halo_cells",0))
+	var clipped := int(receipt.get("clipped_material_cells",0))
+	var losses := PackedStringArray()
+	if clipped > 0:
+		losses.append("%d cells beyond reserved storage (%s, %d visible Water units)" % [
+			clipped,_material_counts(receipt.clipped_materials),int(receipt.clipped_visible_water)])
+	# State can also be clipped from an Empty cell or gas compartment. These
+	# counts are separate from the material ledger. Each clipped subset is
+	# annotated on its total rather than counted twice.
+	for field: Array in [["water_overfill","%d pressure overfill units"],["gas_amount","%d gas units"],
+			["inertial_cells","inertial state in %d cells"],["pressure_flow_cells","pressure flow in %d cells"]]:
+		var total := int(receipt.get("discarded_"+field[0],0))
+		var beyond := int(receipt.get("clipped_"+field[0],0))
+		if total > 0:
+			var loss: String = field[1] % total
+			if beyond > 0: loss += " (%d beyond storage)" % beyond
+			losses.append(loss)
+		elif beyond > 0:
+			losses.append(field[1] % beyond + " beyond storage")
+	if receipt.get("clipped_thermal_cells",0):
+		losses.append("thermal state in %d cells beyond storage" % int(receipt.clipped_thermal_cells))
+	if receipt.get("clipped_gas_labels",0):
+		losses.append("%d gas labels beyond storage" % int(receipt.clipped_gas_labels))
+	var added := int(receipt.get("normalization_produced",0))
+	var removed := int(receipt.get("normalization_consumed",0))
+	if not receipt.get("requested",false) and not rounded_on_apply and not added and not removed and halo == 0 and losses.is_empty(): return ""
+	var report := " Water quantity %d → %d." % [int(receipt.water_before),int(receipt.water_after)]
+	if rounded_on_apply or added or removed: report += " Rounding added %d and removed %d Water units." % [added,removed]
+	if halo > 0:
+		report += " Kept %d cells outside the canvas (%s), including %d visible Water units." % [
+			halo,_material_counts(receipt.preserved_halo_materials),int(receipt.preserved_halo_visible_water)]
+	if not losses.is_empty(): report += " Discarded " + ", ".join(losses) + "."
+	return report
+
+
+func _water_identity(context: Dictionary) -> String:
+	for assignment: Dictionary in context.get("liquid_solver_policy",{}).get("assignments",[]):
+		if int(assignment.material)==CyberCellWorld.WATER:
+			return "%s/%s" % [str(assignment.applied_family).trim_suffix("_v1"),assignment.applied_variant]
+	return "pending"
+
+
+func _details_visibility_changed() -> void:
+	if is_instance_valid(host):
+		host.simulation_worker.set_worker_participation_sampling(_details.is_visible_in_tree())
+
+
+func _participation_report(snapshot: CyberSimulationSnapshot) -> String:
+	if snapshot == null: return "Waiting for the native worker."
+	var requested := "Auto" if snapshot.native_worker_request <= 0 else str(snapshot.native_worker_request)
+	var result := "%s · native pool %s" % [_processor_label,requested]
+	var sample := snapshot.native_worker_participation
+	if sample.is_empty() or sample.world_generation != snapshot.render_world_generation:
+		return result + " · waiting for a completed tick sample."
+	result += ", capacity %d" % int(sample.worker_capacity)
+	result += "\nTick %d · %d task claimants (peak in one cell-update phase) · cell-update phase jobs %s" % [
+		sample.completed_tick,sample.workers_observed,str(sample.phase_jobs)]
+	if sample.has("native_tick_ms"):
+		var elapsed: float = sample.native_tick_ms
+		var budget_ms := 1000.0/60.0
+		result += " · %.2f ms (%.0f%% of the %.2f ms tick budget)" % [elapsed,100.0*elapsed/budget_ms,budget_ms]
+	return result + ". An inline owner counts as one claimant. CPU utilization is a separate measure."
+
 
 func select_instance(id: int, installing: bool = false) -> bool:
 	if not installing and busy(): return refuse("Wait for owner acknowledgement.")
@@ -693,7 +779,8 @@ func _process(_delta: float) -> void:
 			refuse(str(host.tower_context.get("workbench_refusal","World failed")))
 		elif int(host.tower_context.get("workbench_step_serial",-1)) == step_serial:
 			step_pending = false
-	if (not _actor_action.is_empty() or _liquid_action) and host.pending_microscenario_apply.is_empty():
+	if _pending_request_serial > 0 and host.pending_microscenario_apply.is_empty():
+		_pending_request_serial = 0
 		_actor_action = ""
 		_liquid_action = false
 		_saved_view.clear()
@@ -717,11 +804,16 @@ func _process(_delta: float) -> void:
 	var gcr: Dictionary = context.get("workbench_gcr",{})
 	var state := "Preparing" if not host.pending_microscenario_apply.is_empty() else ("Paused" if host.paused else "Playing")
 	var reason: String = message
-	if not host.microscenario_error.is_empty() and not reason.contains(host.microscenario_error):
-		reason += " · " + host.microscenario_error
+	# Show a current fault separately. Completed request errors are consumed
+	# once above; an old rejection must not follow later successful actions.
+	var owner_error: String = context.get("workbench_refusal","")
+	if host.latest_snapshot != null and host.latest_snapshot.simulation_failed:
+		owner_error = host.latest_snapshot.last_tick_error
+	if not owner_error.is_empty() and not reason.contains(owner_error):
+		reason += " · " + owner_error
 	_status.text = "%s · cell %s · %s · %s   |   source %d inserted / %d blocked" % [
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
-	_status.text += " · granular %s" % gcr.get("response","pending")
+	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
 	if _details.visible:
 		var selected := body_state(selected_id())
 		var policy: Dictionary = context.get("liquid_solver_policy",{})
@@ -747,3 +839,4 @@ func _process(_delta: float) -> void:
 			int(policy.get("maximum_rule_radius",0)),", ".join(assignments),Fleet.controls(Fleet.index_for_id(str(actor(applied,selected_id()).get("model",""))))]
 		_detail_label.text += "\nWorld limits · %s bodies, %s proxies, %s raster cells · arrivals %s bytes" % [
 			gcr.get("body_limit","—"),gcr.get("proxy_limit","—"),gcr.get("world_mask_cell_limit","—"),gcr.get("arrival_storage_bytes","—")]
+		_detail_label.text += "\n" + _participation_report(host.latest_snapshot)
