@@ -251,7 +251,10 @@ public:
     // Dynamic rigid bodies are represented by a transient collision field,
     // separate from authoritative material storage. The field is immutable
     // during tick() and therefore safe for phased worker reads without locks.
-    void configure_transient_obstacles(RectI64 region);
+    // Full reservation is a construction-time option for a bounded authored
+    // workspace. A sweeping mask can touch each cell of its domain at most once.
+    void configure_transient_obstacles(RectI64 region, bool reserve_full_occupancy = false);
+    [[nodiscard]] std::size_t transient_occupancy_capacity() const noexcept;
     void clear_transient_obstacles();
     [[nodiscard]] bool set_transient_obstacle(std::int64_t x, std::int64_t y,
                                                std::uint16_t body_id);

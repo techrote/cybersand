@@ -69,6 +69,18 @@ void actual(int workers,bool paint,bool relocate,bool write) {
     w.set(10,10,Material::Sand); mask(w); (void)w.tick();
     check(w.transient_arrival_count(1)==0,"new painted grain after reset has no witness");
 }
+void mask_reservation() {
+    World world;
+    constexpr int side=256;
+    world.configure_transient_obstacles({0,0,side,side},true);
+    const auto capacity=world.transient_occupancy_capacity();
+    check(capacity>=side*side,"workbench reserves all distinct native mask indices at setup");
+    for (int y=0; y<side; ++y) for(int x=0; x<side; ++x)
+        if(!world.set_transient_obstacle(x,y,1)) throw std::runtime_error("first mask writer refused");
+    check(world.transient_occupancy_capacity()==capacity,"full canvas occupancy never grows reserved scratch");
+    world.clear_transient_obstacles();
+    check(world.transient_occupancy_capacity()==capacity,"clearing occupancy preserves reusable scratch");
+}
 void separated(int workers) {
     World world(configuration(workers));
     world.configure_transient_obstacles({0,0,2048,2048});
@@ -120,6 +132,7 @@ void probes() {
 }
 int main() {
     try {
+        mask_reservation();
         for(int workers:{1,4}) {
             separated(workers);
             actual(workers,false,false,false); actual(workers,true,false,false);

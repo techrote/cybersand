@@ -251,6 +251,8 @@ private:
     static bool parse_workbench_sample(WorkbenchSample& out, const Workbench& retained,
         const PackedFloat64Array& states, const PackedFloat64Array& geometry, const Array& owners,
         std::int64_t session, std::int64_t epoch);
+    static void validate_workbench_terrain(const cybersand::World& candidate, Vector2i extent,
+        const WorkbenchSample& sample, const cybersand::World* retained, const WorkbenchSample* previous);
     void prepare_body_coupling(bool resolve_overlaps);
     void accumulate_workbench_contacts();
     bool authored_entry_normal(std::uint16_t proxy, std::int32_t x, std::int32_t y,

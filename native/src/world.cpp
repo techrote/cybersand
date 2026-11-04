@@ -2161,7 +2161,11 @@ bool World::liquid_surface_adhesion_enabled() const noexcept {
     return liquid_surface_adhesion_enabled_;
 }
 
-void World::configure_transient_obstacles(RectI64 region) {
+std::size_t World::transient_occupancy_capacity() const noexcept {
+    return transient_obstacles_->occupied_indices.capacity();
+}
+
+void World::configure_transient_obstacles(RectI64 region, bool reserve_full_occupancy) {
     require_healthy();
     if (region.width <= 0 || region.height <= 0) {
         throw std::invalid_argument("transient obstacle dimensions must be positive");
@@ -2180,7 +2184,7 @@ void World::configure_transient_obstacles(RectI64 region) {
         transient_obstacles_->body_ids.assign(required, 0U);
     }
     transient_obstacles_->occupied_indices.reserve(
-        std::min<std::size_t>(required, kMaximumTransientBodies * 256U));
+        reserve_full_occupancy ? required : std::min<std::size_t>(required, kMaximumTransientBodies * 256U));
     (void)witness_discovery_rect(
         region, soliding::ProducerReason::TransientMask, 0);
 }

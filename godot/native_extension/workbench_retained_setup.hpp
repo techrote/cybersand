@@ -16,6 +16,18 @@ inline void workbench_copy_retained_cells(const cybersand::World& source,
         input.ambient_temperature != source.config().ambient_temperature)
         throw std::invalid_argument("Incompatible retained workbench extent, Water precision or ambient temperature");
 
+    const auto inventory = source.quantity_ledger();
+    if (inventory.water_overfill != 0)
+        throw std::invalid_argument("Retained Water has " + std::to_string(inventory.water_overfill) +
+            " units of pressure overfill that starting-setup cells cannot store");
+    // A changed hull or policy can change a sealed gas compartment's volume.
+    // Rebuilding it at atmospheric amount would invent or discard trapped gas.
+    for (const auto& gas : source.gas_compartments()) {
+        if (gas.amount != 0)
+            throw std::invalid_argument("Retained pressure World owns sealed gas amount that starting-setup cells cannot store");
+    }
+    decltype(inventory.material_cells) copied_materials{};
+    std::uint64_t copied_water = 0;
     input.cells.clear();
     input.setup.kind = cybersand::setup::SetupKind::NativeCellFixture;
     input.setup.coverage = cybersand::setup::SetupCoverage::NativePayloadOnly;
@@ -26,10 +38,15 @@ inline void workbench_copy_retained_cells(const cybersand::World& source,
             const auto material = source.stored_material(x, y);
             const auto temperature = source.stored_temperature(x, y);
             if (material == cybersand::Material::Empty && temperature == input.ambient_temperature) continue;
+            if (material != cybersand::Material::Empty)
+                ++copied_materials[static_cast<std::uint8_t>(material)];
+            if (material == cybersand::Material::Water) copied_water += source.stored_state_a(x,y);
             input.cells.push_back({x, y, material, source.stored_state_a(x, y),
                                    source.stored_state_b(x, y), temperature});
         }
     }
+    if (copied_materials != inventory.material_cells || copied_water != inventory.water_visible)
+        throw std::invalid_argument("Retained material inventory extends outside the starting-setup canvas");
 }
 
 } // namespace godot::prepared_liquid_detail

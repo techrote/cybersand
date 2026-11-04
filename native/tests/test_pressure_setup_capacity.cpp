@@ -175,6 +175,18 @@ void default_recipe_and_nonpressure() {
 } // namespace
 
 void test_pressure_setup_capacity() {
+    // The workbench widens only prepared finite extent. The ordinary construction
+    // default still refuses >1024, and the compartment ceiling remains independent.
+    World large(*config());
+    large.set(1740,1620,Material::Water);
+    const setup::SetupDomain canvas{0,0,2048,2048};
+    expect(PreparedWorldBuilder::validate_initial_pressure_capacity(large,canvas).has_value(),
+           "ordinary initial pressure census admitted workbench-only extent");
+    expect(!PreparedWorldBuilder::validate_initial_pressure_capacity(large,canvas,2048),
+           "2048 workbench census refused a distant vented Water cell");
+    expect(PreparedWorldBuilder::validate_initial_pressure_capacity(large,{0,0,2049,2048},2048).has_value(),
+           "workbench allowed a census outside its finite limit");
+
     exact_capacity(); atmospheric_rules(); actual_masks(); default_recipe_and_nonpressure();
     std::cout << "PRESSURE_SETUP_CAPACITY: " << assertions << " assertions; 0 failures\n";
 }

@@ -283,7 +283,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->world = prepared.take_world();
         pending->reset_demo_coupling = default_demo;
         pending->extent = extent;
-        pending->world->configure_transient_obstacles({0, 0, extent.x, extent.y});
+        pending->world->configure_transient_obstacles({0, 0, extent.x, extent.y}, workbench);
         if (workbench) {
             if (options.get("workbench_sample",Variant()).get_type() != Variant::DICTIONARY)
                 throw std::invalid_argument("Missing workbench initial body sample");
@@ -323,6 +323,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 identity.integer(static_cast<std::uint8_t>(owner.external_drive));
             }
             pending->workbench_initial_digest=prepared_liquid_detail::digest(cybersand::Sha256::of(identity.bytes));
+            CyberNativeCellWorld::validate_workbench_terrain(*pending->world, extent, initial,
+                retain ? adapter->world_.get() : nullptr, retain ? &adapter->workbench_->sample : nullptr);
             pending->workbench->sample = initial;
             pending->world->enable_transient_granular_wrenches(true);
             pending->world->enable_granular_arrival_witness(response == "LA-SELECTIVE");
