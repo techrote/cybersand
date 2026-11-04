@@ -1450,7 +1450,7 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
     const auto tx = x + step;
     if (const auto body = transient_obstacle_at(tx, y); body != 0U) {
         record_physics(PhysicsEvent::BodyContact, Material::Water, Material::Empty, step, 0, effects);
-        record_transient_contact(body, Material::Water, step, 0);
+        record_transient_contact(body, Material::Water, step, 0, x, y);
         if (effects != nullptr) effects->pf_contact_loss += static_cast<std::uint64_t>(flow < 0 ? -flow : flow);
         else pressure_->flow.contact_loss += static_cast<std::uint64_t>(flow < 0 ? -flow : flow);
         flow = 0;

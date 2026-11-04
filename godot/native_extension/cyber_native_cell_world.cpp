@@ -122,6 +122,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("apply_player_material_field", "center", "direction",
                                   "material_id", "mode", "phase"),
                          &CyberNativeCellWorld::apply_player_material_field);
+    ClassDB::bind_method(D_METHOD("prepare_workbench_coupling","states","geometry","bodies","session","epoch","resolve_overlaps"), &CyberNativeCellWorld::prepare_workbench_coupling);
+    ClassDB::bind_method(D_METHOD("workbench_coupling_results"), &CyberNativeCellWorld::workbench_coupling_results);
     ClassDB::bind_method(D_METHOD("prepare_rigid_body_coupling", "states",
                                   "resolve_overlaps"),
                          &CyberNativeCellWorld::prepare_rigid_body_coupling,
@@ -287,6 +289,10 @@ bool CyberNativeCellWorld::reset_demo_world() {
         config.interaction_policy = {};
         config.liquid_solver_policy = {}; // The ordinary demo runs every liquid's default.
         config.maximum_rule_radius = kProtectedCurrentRuleRadius;
+        if (workbench_) {
+            config.maximum_chunk_count = 128;
+            config.active_chunk_capacity = 128;
+        }
         auto candidate = std::make_unique<cybersand::World>(config);
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
@@ -298,6 +304,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
+        workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         default_demo_recipe_active_ = true;
@@ -410,13 +417,15 @@ void CyberNativeCellWorld::paint_disc(std::int64_t centre_x, std::int64_t centre
     emit_disc(centre_x, centre_y, radius, material_id, emission_flags);
 }
 
-void CyberNativeCellWorld::prepare_rigid_body_coupling(
-    const PackedFloat32Array& states, bool resolve_overlaps) {
-    if (world_ == nullptr || world_->has_failed()) return;
+void CyberNativeCellWorld::prepare_rigid_body_coupling(const PackedFloat32Array& states, bool resolve_overlaps) {
+    if (workbench_ || world_ == nullptr || world_->has_failed()) return;
+    parse_body_states(states);
+    prepare_body_coupling(resolve_overlaps);
+}
+
+void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
     world_->clear_transient_obstacles();
     clear_observations();
-    parse_body_states(states);
-
     raster_indices_.clear();
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
         const auto& body = current_bodies_[body_id];
@@ -434,7 +443,8 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
     }
     if (resolve_overlaps) {
         accumulate_boundary_pressure();
-        accumulate_granular_bearing();
+        if (workbench_) accumulate_workbench_contacts();
+        else accumulate_granular_bearing();
     }
     previous_bodies_ = current_bodies_;
 }
@@ -534,10 +544,10 @@ void CyberNativeCellWorld::rasterize_body_sweep(const BodyState& body,
 
 void CyberNativeCellWorld::rasterize_transform(std::uint16_t body_id, Vector2 center,
                                                double rotation, Vector2 half_size) {
-    rasterize_transform_in(*world_, &raster_indices_, body_id, center, rotation, half_size);
+    rasterize_transform_in(*world_, extent_, &raster_indices_, body_id, center, rotation, half_size);
 }
 
-void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world,
+void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world, Vector2i canvas,
     std::vector<std::int32_t>* indices, std::uint16_t body_id, Vector2 center,
     double rotation, Vector2 half_size) {
     const auto cosine = std::cos(rotation);
@@ -549,13 +559,13 @@ void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world,
     // Clamp in floating point before conversion: an escaped body may be far
     // outside the cell world, but must not overflow an integer raster bound.
     const auto first_x = static_cast<std::int32_t>(std::clamp(
-        std::floor(static_cast<double>(center.x) - extent.x), 0.0, double(kWorldWidth - 1)));
+        std::floor(static_cast<double>(center.x) - extent.x), 0.0, double(canvas.x - 1)));
     const auto last_x = static_cast<std::int32_t>(std::clamp(
-        std::ceil(static_cast<double>(center.x) + extent.x) - 1.0, 0.0, double(kWorldWidth - 1)));
+        std::ceil(static_cast<double>(center.x) + extent.x) - 1.0, 0.0, double(canvas.x - 1)));
     const auto first_y = static_cast<std::int32_t>(std::clamp(
-        std::floor(static_cast<double>(center.y) - extent.y), 0.0, double(kWorldHeight - 1)));
+        std::floor(static_cast<double>(center.y) - extent.y), 0.0, double(canvas.y - 1)));
     const auto last_y = static_cast<std::int32_t>(std::clamp(
-        std::ceil(static_cast<double>(center.y) + extent.y) - 1.0, 0.0, double(kWorldHeight - 1)));
+        std::ceil(static_cast<double>(center.y) + extent.y) - 1.0, 0.0, double(canvas.y - 1)));
     for (auto y = first_y; y <= last_y; ++y) {
         for (auto x = first_x; x <= last_x; ++x) {
             const Vector2 delta{static_cast<double>(x) + 0.5 - center.x,
@@ -564,7 +574,7 @@ void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world,
                                 -sine * delta.x + cosine * delta.y};
             if (std::abs(local.x) > half_size.x || std::abs(local.y) > half_size.y) continue;
             if (world.set_transient_obstacle(x, y, body_id)) {
-                if (indices) indices->push_back(y * kWorldWidth + x);
+                if (indices) indices->push_back(y * canvas.x + x);
             }
         }
     }
@@ -572,8 +582,8 @@ void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world,
 
 void CyberNativeCellWorld::reconcile_swept_overlaps() {
     for (const auto cell_index : raster_indices_) {
-        const auto x = cell_index % kWorldWidth;
-        const auto y = cell_index / kWorldWidth;
+        const auto x = cell_index % extent_.x;
+        const auto y = cell_index / extent_.x;
         const auto body_id = world_->transient_obstacle_at(x, y);
         if (body_id != 0U && world_->stored_material(x, y) != cybersand::Material::Empty) {
             reconcile_overlap(cell_index, body_id);
@@ -586,8 +596,8 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     if (body_id == 0U || body_id >= current_bodies_.size()) return;
     const auto& body = current_bodies_[body_id];
     if (!body.valid) return;
-    const auto x = cell_index % kWorldWidth;
-    const auto y = cell_index / kWorldWidth;
+    const auto x = cell_index % extent_.x;
+    const auto y = cell_index / extent_.x;
     const auto material = world_->stored_material(x, y);
     auto& observation = observations_[body_id];
     ++observation.contacts;
@@ -614,18 +624,21 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
         return;
     }
 
+    if (workbench_) authored_entry_normal(body_id, x, y, outward, penetration);
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
         ++observation.unresolved;
         const auto impulse = -outward * displacement_gain_;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
-        record_impulse(body_id, impulse);
+        if (!workbench_ || !cybersand::MaterialRules::supports_granular_load(material))
+            record_impulse(body_id, impulse);
         return;
     }
     ++observation.displaced;
     const auto impulse = -outward * displacement_gain_ * density_scale(material);
     if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
-    record_impulse(body_id, impulse);
+    if (!workbench_ || !cybersand::MaterialRules::supports_granular_load(material))
+        record_impulse(body_id, impulse);
     ++revision_;
 }
 
@@ -721,8 +734,8 @@ void CyberNativeCellWorld::accumulate_boundary_pressure() {
         {0, -1}, {1, 0}, {0, 1}, {-1, 0},
     }};
     for (const auto cell_index : raster_indices_) {
-        const auto x = cell_index % kWorldWidth;
-        const auto y = cell_index / kWorldWidth;
+        const auto x = cell_index % extent_.x;
+        const auto y = cell_index / extent_.x;
         const auto body_id = world_->transient_obstacle_at(x, y);
         if (body_id == 0U || body_id >= observations_.size()) continue;
         for (const auto direction : directions) {
@@ -738,6 +751,7 @@ void CyberNativeCellWorld::accumulate_boundary_pressure() {
                 continue;
             }
             ++observations_[body_id].contacts;
+            if (workbench_ && cybersand::MaterialRules::supports_granular_load(material)) continue;
             const Vector2 normal{-static_cast<double>(direction.x),
                                  -static_cast<double>(direction.y)};
             const auto impulse = normal * boundary_gain_ * density_scale(material, 0.01);
@@ -757,8 +771,8 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
     std::array<std::uint16_t, cybersand::World::kMaximumTransientBodies + 1U>
         support_samples{};
     for (const auto cell_index : raster_indices_) {
-        const auto x = cell_index % kWorldWidth;
-        const auto y = cell_index / kWorldWidth;
+        const auto x = cell_index % extent_.x;
+        const auto y = cell_index / extent_.x;
         const auto body_id = world_->transient_obstacle_at(x, y);
         if (body_id == 0U || body_id >= current_bodies_.size() ||
             !in_bounds(x, y + 1) || world_->transient_obstacle_at(x, y + 1) != 0U) {
@@ -806,6 +820,10 @@ void CyberNativeCellWorld::accumulate_granular_bearing() {
 
 void CyberNativeCellWorld::record_impulse(std::uint16_t body_id, Vector2 impulse) {
     if (body_id == 0U || body_id >= observations_.size()) return;
+    if (workbench_ && workbench_->sample.owners[workbench_->sample.owner_of[body_id]].count > 1) {
+        observations_[body_id].impulse += impulse; // cap once across this owner's hull.
+        return;
+    }
     auto combined = observations_[body_id].impulse + impulse;
     if (combined.length() > impulse_cap_) {
         if (body_diagnostics_) ++(*body_diagnostics_)[body_id].intermediate_caps;
@@ -815,6 +833,7 @@ void CyberNativeCellWorld::record_impulse(std::uint16_t body_id, Vector2 impulse
 }
 
 PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
+    if (workbench_) return {};
     PackedFloat32Array results;
     if (world_ == nullptr || world_->has_failed()) return results;
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
@@ -872,17 +891,17 @@ bool CyberNativeCellWorld::box_collides(Vector2 origin, Vector2 size) const {
 }
 
 bool CyberNativeCellWorld::character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const {
-    return character_box_collides_in(world_.get(), origin, size, mode);
+    return character_box_collides_in(world_.get(), extent_, origin, size, mode);
 }
 
 bool CyberNativeCellWorld::character_box_collides_in(
-    const cybersand::World* world, Vector2 origin, Vector2 size, std::int64_t mode) {
+    const cybersand::World* world, Vector2i canvas, Vector2 origin, Vector2 size, std::int64_t mode) {
     // 0: enclosure/volume, 1: downward feet, 2: sides, 3: upward head.
     // Bounded owner query; malformed/out-of-world queries fail closed.
     if (!origin.is_finite() || !size.is_finite() || size.x <= 0 || size.y <= 0 ||
         size.x > 32 || size.y > 32 || mode < 0 || mode > 3 ||
-        origin.x < 0 || origin.y < 0 || origin.x + size.x > kWorldWidth ||
-        origin.y + size.y > kWorldHeight || world == nullptr) return true;
+        origin.x < 0 || origin.y < 0 || origin.x + size.x > canvas.x ||
+        origin.y + size.y > canvas.y || world == nullptr) return true;
     const auto first_x = static_cast<std::int32_t>(std::floor(origin.x + 0.001));
     const auto first_y = static_cast<std::int32_t>(std::floor(origin.y + 0.001));
     const auto last_x = static_cast<std::int32_t>(std::ceil(origin.x + size.x - 0.001)) - 1;
@@ -903,8 +922,8 @@ std::int64_t CyberNativeCellWorld::character_disturb_granular(
     if (world_ == nullptr || world_->has_failed() || !origin.is_finite() ||
         !size.is_finite() || !std::isfinite(impact_speed) || impact_speed < 24.0 ||
         size.x <= 0 || size.y <= 0 || size.x > 32 || size.y > 32 ||
-        origin.x < 0 || origin.y < 0 || origin.x + size.x > kWorldWidth ||
-        origin.y + size.y > kWorldHeight) {
+        origin.x < 0 || origin.y < 0 || origin.x + size.x > extent_.x ||
+        origin.y + size.y > extent_.y) {
         return 0;
     }
 
@@ -954,12 +973,12 @@ std::int64_t CyberNativeCellWorld::character_disturb_granular(
 
 void CyberNativeCellWorld::refresh_render_cells() const {
     if (world_ == nullptr || world_->has_failed()) return;
-    render_cells_.resize(static_cast<std::int64_t>(kWorldWidth) * kWorldHeight);
+    render_cells_.resize(static_cast<std::int64_t>(extent_.x) * extent_.y);
     auto* bytes = render_cells_.ptrw();
     world_->copy_material_cells(
-        {0, 0, kWorldWidth, kWorldHeight},
+        {0, 0, extent_.x, extent_.y},
         std::span<std::uint8_t>{bytes, static_cast<std::size_t>(render_cells_.size())},
-        kWorldWidth);
+        extent_.x);
     render_cells_revision_ = revision_;
 }
 
@@ -993,21 +1012,21 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
         }
 
         if (full_refresh) {
-            const auto width = static_cast<std::size_t>(kWorldWidth);
-            const auto height = static_cast<std::size_t>(kWorldHeight);
+            const auto width = static_cast<std::size_t>(extent_.x);
+            const auto height = static_cast<std::size_t>(extent_.y);
             cells.resize(static_cast<std::int64_t>(width * height * 2U));
             world_->copy_render_cells(
-                {0, 0, kWorldWidth, kWorldHeight},
+                {0, 0, extent_.x, extent_.y},
                 std::span<std::uint8_t>{cells.ptrw(), static_cast<std::size_t>(cells.size())},
                 width * 2U);
             rectangles.resize(6);
             auto* metadata = rectangles.ptrw();
             metadata[0] = 0;
             metadata[1] = 0;
-            metadata[2] = kWorldWidth;
-            metadata[3] = kWorldHeight;
+            metadata[2] = extent_.x;
+            metadata[3] = extent_.y;
             metadata[4] = 0;
-            metadata[5] = kWorldWidth * 2;
+            metadata[5] = extent_.x * 2;
             if (status == cybersand::RenderPublishStatus::CapacityExceeded) {
                 (void)world_->take_dirty_chunks();
             }
@@ -1021,16 +1040,32 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
                 cells.resize(static_cast<std::int64_t>(source_cells.size()));
                 std::copy(source_cells.begin(), source_cells.end(), cells.ptrw());
                 auto* metadata = rectangles.ptrw();
-                for (std::size_t index = 0; index < patches.size(); ++index) {
-                    const auto& patch = patches[index];
-                    const auto base = index * 6U;
-                    metadata[base] = static_cast<std::int32_t>(patch.world_rect.x);
-                    metadata[base + 1U] = static_cast<std::int32_t>(patch.world_rect.y);
-                    metadata[base + 2U] = static_cast<std::int32_t>(patch.world_rect.width);
-                    metadata[base + 3U] = static_cast<std::int32_t>(patch.world_rect.height);
-                    metadata[base + 4U] = static_cast<std::int32_t>(patch.data_offset);
+                std::size_t written = 0;
+                for (const auto& patch : patches) {
+                    auto rect = patch.world_rect;
+                    auto offset = patch.data_offset;
+                    if (workbench_) {
+                        // The scheduler reserves a halo. Only the intersection with
+                        // the authored finite canvas has presentation coordinates.
+                        const auto left = std::max<std::int64_t>(0,rect.x);
+                        const auto top = std::max<std::int64_t>(0,rect.y);
+                        const auto right = std::min<std::int64_t>(extent_.x,rect.x+rect.width);
+                        const auto bottom = std::min<std::int64_t>(extent_.y,rect.y+rect.height);
+                        if (left>=right || top>=bottom) continue;
+                        offset += static_cast<std::size_t>(top-rect.y)*patch.stride_bytes +
+                                  static_cast<std::size_t>(left-rect.x)*2U;
+                        rect = {left,top,right-left,bottom-top};
+                    }
+                    const auto base = written++ * 6U;
+                    metadata[base] = static_cast<std::int32_t>(rect.x);
+                    metadata[base + 1U] = static_cast<std::int32_t>(rect.y);
+                    metadata[base + 2U] = static_cast<std::int32_t>(rect.width);
+                    metadata[base + 3U] = static_cast<std::int32_t>(rect.height);
+                    metadata[base + 4U] = static_cast<std::int32_t>(offset);
                     metadata[base + 5U] = static_cast<std::int32_t>(patch.stride_bytes);
                 }
+                if (written != patches.size()) rectangles.resize(static_cast<std::int64_t>(written * 6U));
+                if (!written) cells.clear();
             }
         }
     }
@@ -1070,25 +1105,25 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_rectangles() const {
 
     std::unordered_map<std::uint64_t, Rectangle> active;
     std::unordered_map<std::uint64_t, Rectangle> next;
-    active.reserve(static_cast<std::size_t>(kWorldWidth / 2 + 1));
-    next.reserve(static_cast<std::size_t>(kWorldWidth / 2 + 1));
+    active.reserve(static_cast<std::size_t>(extent_.x / 2 + 1));
+    next.reserve(static_cast<std::size_t>(extent_.x / 2 + 1));
     std::vector<Rectangle> completed;
     completed.reserve(1024);
     const auto* cells = render_cells_.ptr();
-    for (std::int32_t y = 0; y < kWorldHeight; ++y) {
+    for (std::int32_t y = 0; y < extent_.y; ++y) {
         next.clear();
         std::int32_t x = 0;
-        while (x < kWorldWidth) {
-            while (x < kWorldWidth &&
+        while (x < extent_.x) {
+            while (x < extent_.x &&
                    !cybersand::MaterialRules::is_hard_surface(
-                       static_cast<cybersand::Material>(cells[y * kWorldWidth + x]))) {
+                       static_cast<cybersand::Material>(cells[y * extent_.x + x]))) {
                 ++x;
             }
-            if (x >= kWorldWidth) break;
+            if (x >= extent_.x) break;
             const auto first_x = x;
-            while (x < kWorldWidth &&
+            while (x < extent_.x &&
                    cybersand::MaterialRules::is_hard_surface(
-                       static_cast<cybersand::Material>(cells[y * kWorldWidth + x]))) {
+                       static_cast<cybersand::Material>(cells[y * extent_.x + x]))) {
                 ++x;
             }
             const auto width = x - first_x;
@@ -1137,13 +1172,13 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
     if (hard_surface_chunk_rectangles_revision_ == hard_revision) return hard_surface_chunk_rectangles_;
     if (render_cells_revision_ != revision_) refresh_render_cells();
-    hard_surface_chunk_rectangles_ = hard_surface_chunks_from_cells(render_cells_);
+    hard_surface_chunk_rectangles_ = hard_surface_chunks_from_cells(render_cells_, extent_);
     hard_surface_chunk_rectangles_revision_ = hard_revision;
     return hard_surface_chunk_rectangles_;
 }
 
-PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const PackedByteArray& material_cells) {
-    if (material_cells.size() != static_cast<std::int64_t>(kWorldWidth) * kWorldHeight)
+PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const PackedByteArray& material_cells, Vector2i canvas) {
+    if (material_cells.size() != static_cast<std::int64_t>(canvas.x) * canvas.y)
         throw std::invalid_argument("Finite material projection has an invalid size");
     PackedInt32Array result;
     // Collision chunks are intentionally smaller than storage chunks. The
@@ -1151,10 +1186,10 @@ PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const Pack
     // so 64x64 bounds a pathological fragmented replacement far better than
     // the previous 128x128 atomic unit.
     constexpr std::int32_t chunk_size = 64;
-    constexpr std::int32_t chunk_columns = kWorldWidth / chunk_size;
-    constexpr std::int32_t chunk_rows = kWorldHeight / chunk_size;
-    constexpr std::int32_t chunk_count = chunk_columns * chunk_rows;
-    static_assert(kWorldWidth % chunk_size == 0 && kWorldHeight % chunk_size == 0);
+    const auto chunk_columns = canvas.x / chunk_size;
+    const auto chunk_rows = canvas.y / chunk_size;
+    const auto chunk_count = chunk_columns * chunk_rows;
+    if (canvas.x % chunk_size || canvas.y % chunk_size) throw std::invalid_argument("Invalid terrain chunk extent");
 
     struct Rectangle {
         std::int32_t x = 0;
@@ -1167,7 +1202,7 @@ PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const Pack
                static_cast<std::uint32_t>(width);
     };
 
-    std::array<std::vector<Rectangle>, chunk_count> chunk_rectangles;
+    std::vector<std::vector<Rectangle>> chunk_rectangles(static_cast<std::size_t>(chunk_count));
     const auto* cells = material_cells.ptr();
     for (std::int32_t chunk_y = 0; chunk_y < chunk_rows; ++chunk_y) {
         for (std::int32_t chunk_x = 0; chunk_x < chunk_columns; ++chunk_x) {
@@ -1189,7 +1224,7 @@ PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const Pack
                     while (x < maximum_x &&
                            !cybersand::MaterialRules::is_hard_surface(
                                static_cast<cybersand::Material>(
-                                   cells[y * kWorldWidth + x]))) {
+                                   cells[y * canvas.x + x]))) {
                         ++x;
                     }
                     if (x >= maximum_x) break;
@@ -1197,7 +1232,7 @@ PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const Pack
                     while (x < maximum_x &&
                            cybersand::MaterialRules::is_hard_surface(
                                static_cast<cybersand::Material>(
-                                   cells[y * kWorldWidth + x]))) {
+                                   cells[y * canvas.x + x]))) {
                         ++x;
                     }
                     const auto width = x - first_x;
@@ -1253,8 +1288,8 @@ PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const Pack
 }
 
 void CyberNativeCellWorld::set_interest_center(Vector2i world_cell) {
-    interest_center_.x = std::clamp<std::int64_t>(world_cell.x, 0, kWorldWidth - 1);
-    interest_center_.y = std::clamp<std::int64_t>(world_cell.y, 0, kWorldHeight - 1);
+    interest_center_.x = std::clamp<std::int64_t>(world_cell.x, 0, extent_.x - 1);
+    interest_center_.y = std::clamp<std::int64_t>(world_cell.y, 0, extent_.y - 1);
 }
 
 void CyberNativeCellWorld::set_simulation_window(Vector2i view_origin, Vector2i view_size,
@@ -1270,21 +1305,21 @@ void CyberNativeCellWorld::set_simulation_window(Vector2i view_origin, Vector2i 
 void CyberNativeCellWorld::refresh_simulation_region() {
     if (world_ == nullptr) return;
     if (!simulation_window_enabled_) {
-        world_->set_simulation_region(cybersand::RectI64{0, 0, kWorldWidth, kWorldHeight});
+        world_->set_simulation_region(cybersand::RectI64{0, 0, extent_.x, extent_.y});
         return;
     }
     const auto first_x = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.x) - last_horizontal_buffer_, 0, kWorldWidth - 1);
+        static_cast<std::int64_t>(last_view_origin_.x) - last_horizontal_buffer_, 0, extent_.x - 1);
     const auto first_y = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.y) - last_vertical_buffer_, 0, kWorldHeight - 1);
+        static_cast<std::int64_t>(last_view_origin_.y) - last_vertical_buffer_, 0, extent_.y - 1);
     const auto last_x = std::clamp<std::int64_t>(
         static_cast<std::int64_t>(last_view_origin_.x) + last_view_size_.x +
             last_horizontal_buffer_,
-        first_x + 1, kWorldWidth);
+        first_x + 1, extent_.x);
     const auto last_y = std::clamp<std::int64_t>(
         static_cast<std::int64_t>(last_view_origin_.y) + last_view_size_.y +
             last_vertical_buffer_,
-        first_y + 1, kWorldHeight);
+        first_y + 1, extent_.y);
     world_->set_simulation_region(
         cybersand::RectI64{first_x, first_y, last_x - first_x, last_y - first_y});
 }
@@ -1322,8 +1357,8 @@ std::int32_t CyberNativeCellWorld::symmetric_probe_offset(std::int32_t index) {
     return (index & 1) != 0 ? magnitude : -magnitude;
 }
 
-bool CyberNativeCellWorld::in_bounds(std::int64_t x, std::int64_t y) {
-    return x >= 0 && x < kWorldWidth && y >= 0 && y < kWorldHeight;
+bool CyberNativeCellWorld::in_bounds(std::int64_t x, std::int64_t y) const {
+    return x >= 0 && x < extent_.x && y >= 0 && y < extent_.y;
 }
 
 
@@ -1443,6 +1478,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
+        workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
@@ -1468,7 +1504,7 @@ bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
     if (!diagnostic_fixture_ || has_failed() || material < 0 ||
         material > static_cast<std::int64_t>(cybersand::kLastMaterial) ||
         !cybersand::valid_material(static_cast<std::uint16_t>(material)) || state_b < 0 || state_b > 255 ||
-        size.x < 1 || size.y < 1 || size.x > kWorldWidth || size.y > kWorldHeight ||
+        size.x < 1 || size.y < 1 || size.x > extent_.x || size.y > extent_.y ||
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
                                                    static_cast<std::int64_t>(origin.y) + size.y - 1)) return false;
     const auto value = static_cast<cybersand::Material>(material);
@@ -1507,7 +1543,7 @@ Dictionary CyberNativeCellWorld::apply_player_material_field(Vector2i center,
     command.material = static_cast<cybersand::Material>(material_id);
     command.mode = static_cast<std::uint32_t>(mode);
     command.phase = static_cast<std::uint64_t>(phase);
-    command.bounds = {0, 0, kWorldWidth, kWorldHeight};
+    command.bounds = {0, 0, extent_.x, extent_.y};
     const auto receipt = world_->apply_player_material_field(command);
     using Outcome = cybersand::PlayerMaterialFieldOutcome;
     result["accepted"] = receipt.outcome == Outcome::Applied;
@@ -1690,7 +1726,7 @@ std::int64_t CyberNativeCellWorld::get_physical_state_format_version() const {
 }
 
 Dictionary CyberNativeCellWorld::inspect_inertial_cell(Vector2i point) const {
-    if (!world_ || world_->has_failed() || point.x < 0 || point.y < 0 || point.x >= kWorldWidth || point.y >= kWorldHeight) {
+    if (!world_ || world_->has_failed() || point.x < 0 || point.y < 0 || point.x >= extent_.x || point.y >= extent_.y) {
         Dictionary refused; refused["ok"] = false; refused["error"] = "Healthy finite native cell required";
         return refused;
     }
@@ -1888,7 +1924,7 @@ void CyberNativeCellWorld::retire_liquid_construction_identity() {
     applied_liquid_construction_receipt_.clear();
     liquid_construction_attempt_.clear();
     applied_liquid_setup_ = {};
-    applied_liquid_setup_.domain = {0, 0, kWorldWidth, kWorldHeight};
+    applied_liquid_setup_.domain = {0, 0, static_cast<std::uint32_t>(extent_.x), static_cast<std::uint32_t>(extent_.y)};
 }
 
 Dictionary CyberNativeCellWorld::get_liquid_construction_attempt() const {
@@ -2095,5 +2131,7 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 }
 
 #include "pressure_optimization_inspection.inc"
+
+#include "workbench_granular_coupling.inc"
 
 }  // namespace godot

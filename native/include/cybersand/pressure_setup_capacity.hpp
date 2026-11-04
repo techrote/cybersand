@@ -27,14 +27,14 @@ struct InitialPressureCapacity final {
 // boundary vents through the unbounded exterior; a larger-than-v1-limit region
 // is atmosphere even when enclosed. No World state, labels or ledgers change.
 inline InitialPressureCapacity initial_pressure_capacity(const World& world,
-                                                         const setup::SetupDomain& domain) {
+                                                         const setup::SetupDomain& domain,
+                                                         std::uint32_t maximum_side = 1024U) {
     InitialPressureCapacity result;
     if (!world.pressure_flow_enabled() || !world.pressure_flow_parameters().gas_enabled) return result;
     result.applicable = true;
     if (world.tick_index() != 0U || world.gas_topology_revision() != 0U || world.gas_next_id() != 1U)
         throw std::invalid_argument("initial pressure capacity requires a fresh prepared World");
-    constexpr std::uint32_t maximum_side = 1024U;
-    if (domain.width == 0U || domain.height == 0U || domain.width > maximum_side ||
+    if (maximum_side > setup::kMaximumFiniteSetupSide || domain.width == 0U || domain.height == 0U || domain.width > maximum_side ||
         domain.height > maximum_side ||
         domain.x > std::numeric_limits<std::int64_t>::max() - (domain.width - 1U) ||
         domain.y > std::numeric_limits<std::int64_t>::max() - (domain.height - 1U))
@@ -42,7 +42,7 @@ inline InitialPressureCapacity initial_pressure_capacity(const World& world,
 
     const auto width = domain.width;
     const auto count = static_cast<std::size_t>(width) * domain.height;
-    // Each vector has at most 1024^2 entries, allocated only during preparation.
+    // Each vector is bounded by the admitted finite domain and allocated only during preparation.
     // 0 blocked, 1 unseen Empty, 2 unmasked Water, 3 visited Empty.
     std::vector<std::uint8_t> cells(count, 0U);
     std::vector<std::uint32_t> queue;
