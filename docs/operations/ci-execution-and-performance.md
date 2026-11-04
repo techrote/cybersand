@@ -4,8 +4,8 @@ status: Current
 document-kind: runbook
 scope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history
 canonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]
-last-reviewed: 2026-11-01
-related-documents: [github-development-and-release.md, profiling-observability-and-performance.md, testing-validation-and-replay.md, ../audits/2026-10-31-execution-watchdog-modernization.md]
+last-reviewed: 2026-11-03
+related-documents: [github-development-and-release.md, profiling-observability-and-performance.md, testing-validation-and-replay.md, ../audits/2026-10-31-execution-watchdog-modernization.md, ../audits/2026-11-03-linux-display-mesa-utils-removal.md]
 ---
 
 # CI execution watchdogs and advisory performance
@@ -133,6 +133,17 @@ subprocess exits, no-progress hangs, successful parent exit with surviving
 children, rapid detached children and preservation of the first attempt.
 Dedicated Windows controls separately exercise actual 20-second success and a
 20-second delayed exit 19. These are harness controls, not game qualification.
+
+## Hosted Linux display setup
+
+GDExtension Linux shards run [`prepare_linux_display.sh`](../../tools/ci/prepare_linux_display.sh)
+before rendered regressions. It requires only `xvfb`, `xauth` and `libgl1-mesa-dri`,
+all preinstalled on the hosted `ubuntu-24.04` image, so routine shards make no
+package-mirror request. Missing packages use bounded retries, 30-second HTTP/HTTPS
+timeouts and fail on any index error instead of continuing with stale indexes.
+The unused `mesa-utils` diagnostics were removed on 2026-11-03 after an exact-head
+run showed unchanged `opengl3`/llvmpipe identity and byte-identical deterministic
+pixels; see the [qualification record](../audits/2026-11-03-linux-display-mesa-utils-removal.md).
 
 ## Timing records and comparable history
 
