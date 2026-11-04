@@ -136,6 +136,10 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("gcr_rest_receipt"), &CyberNativeCellWorld::gcr_rest_receipt);
     ClassDB::bind_method(D_METHOD("prepare_gcr_compound_coupling", "states", "lease", "resolve_overlaps", "rest_context"),
         &CyberNativeCellWorld::prepare_gcr_compound_coupling, DEFVAL(true), DEFVAL(Dictionary()));
+    ClassDB::bind_method(D_METHOD("prepare_gcr_authored_compound_coupling", "states", "geometry", "identity", "resolve_overlaps", "rest_context"),
+        &CyberNativeCellWorld::prepare_gcr_authored_compound_coupling, DEFVAL(true), DEFVAL(Dictionary()));
+    ClassDB::bind_method(D_METHOD("retire_gcr_authored_compound", "identity"),
+        &CyberNativeCellWorld::retire_gcr_authored_compound);
     ClassDB::bind_method(D_METHOD("gcr_compound_results"), &CyberNativeCellWorld::gcr_compound_results);
     ClassDB::bind_method(D_METHOD("gcr_compound_diagnostics"), &CyberNativeCellWorld::gcr_compound_diagnostics);
     ClassDB::bind_method(D_METHOD("gcr_diagnostics"), &CyberNativeCellWorld::gcr_diagnostics);
@@ -365,6 +369,7 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     gcr_rest_enabled_=false;gcr_rest_mode_="control";gcr_base_budget_=20.;gcr_rest_gravity_=92.12;
     gcr_rest_context_={};gcr_rest_history_={};gcr_rest_cache_.reset();gcr_rest_evaluation_valid_={};
     gcr_compound_mode_ = gcr_preparing_compound_ = false; gcr_compound_count_ = 0;
+    gcr_authored_compound_enabled_=false;gcr_authored_compound_={};
     gcr_compound_token_ = {}; gcr_compound_generation_ = gcr_compound_physics_epoch_ = 0;
     gcr_compound_workspace_.reset();
     gcr_session_id_ = 0;
@@ -832,7 +837,9 @@ bool CyberNativeCellWorld::ejection_path_reachable(std::int32_t source_x,
             std::floor(static_cast<double>(delta_y * sample) / samples + 0.5));
         if (!in_bounds(x, y)) return false;
         const auto obstacle = world_->transient_obstacle_at(x, y);
-        if ((obstacle != 0U && obstacle != source_body_id) ||
+        const bool same_authored_body=gcr_authored_compound_enabled_ && gcr_compound_mode_ &&
+            source_body_id>=1 && source_body_id<=gcr_compound_count_ && obstacle>=1 && obstacle<=gcr_compound_count_;
+        if ((obstacle != 0U && obstacle != source_body_id && !same_authored_body) ||
             cybersand::MaterialRules::is_hard_surface(world_->stored_material(x, y))) {
             return false;
         }
@@ -1007,7 +1014,7 @@ void CyberNativeCellWorld::invalidate_gcr_response() {
 bool CyberNativeCellWorld::prepare_gcr_coupling(const PackedFloat64Array& states,
                                                        bool resolve_overlaps, const Dictionary& rest_context) {
     if (!gcr_enabled_ || world_ == nullptr || world_->has_failed() || world_->solid_detachment_fenced()) return false;
-    if (gcr_compound_mode_ && !gcr_preparing_compound_) { invalidate_gcr_response(); return false; }
+    if ((gcr_compound_mode_ || gcr_authored_compound_enabled_) && !gcr_preparing_compound_) { invalidate_gcr_response(); return false; }
     const auto refuse=[this]() { invalidate_gcr_response(); return false; };
     if (states.size()%17 != 0 || states.size()/17 > cybersand::World::kMaximumTransientBodies) return refuse();
     BodyStates next{};
@@ -1487,6 +1494,8 @@ Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
     if(gcr_compound_mode_) return gcr_compound_diagnostics();
     revalidate_rest_material();
     Dictionary result; result["enabled"]=gcr_enabled_; result["protocol_version"]=1;
+    result["authored_compound_enabled"]=gcr_authored_compound_enabled_;
+    result["authored_compound_retired"]=gcr_authored_compound_.retired;
     result["candidate"]=gcr_load_aware_ ? "GCR-LA" : gcr_admission_a1_ ? "GCR-A1":"GCR";
     result["load_aware"]=gcr_load_aware_;result["base_budget"]=gcr_base_budget_;result["rest_mode"]=gcr_rest_mode_;
     result["granular_events"]=gcr_granular_events_selective_?"selective":(gcr_granular_events_off_?"off":"control");
@@ -2174,6 +2183,9 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         if (options.has("conservative_displacement") &&
             options["conservative_displacement"].get_type() != Variant::BOOL) return false;
         const bool conservative = options.get("conservative_displacement", false);
+        if(options.has("gcr_authored_compound") && options["gcr_authored_compound"].get_type()!=Variant::BOOL)return false;
+        const bool authored_compound=options.get("gcr_authored_compound",false);
+        if(authored_compound && (!gcr || conservative || (rest_enabled && rest_mode!="control")))return false;
         cybersand::WorldConfig config;
         config.worker_threads = static_cast<std::uint32_t>(workers);
         config.maximum_chunk_count = 128;
@@ -2204,7 +2216,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         candidate->enable_granular_arrival_witness(arrival_witness);
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
-        auto compound_workspace = gcr && conservative ? std::make_unique<cybersand::gcr::CompoundWorkspace>() : nullptr;
+        auto compound_workspace = gcr && (conservative || authored_compound) ? std::make_unique<cybersand::gcr::CompoundWorkspace>() : nullptr;
         auto rest_cache=rest_enabled?std::make_unique<cybersand::gcr::RestCache>():nullptr;
         // First-writer occupancy admits at most one index per world cell,
         // including sweep union. Reserve GCR's entire bound at construction.
@@ -2222,6 +2234,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         gcr_rest_context_={};gcr_rest_history_={};gcr_rest_evaluation_valid_={};
         gcr_rest_cache_=std::move(rest_cache);
         gcr_compound_mode_ = gcr_preparing_compound_ = false; gcr_compound_count_ = 0;
+        gcr_authored_compound_enabled_=authored_compound;gcr_authored_compound_={};
         gcr_compound_token_ = {}; gcr_compound_generation_ = gcr_compound_physics_epoch_ = 0;
         gcr_compound_workspace_ = std::move(compound_workspace);
         gcr_session_id_ = 0;
@@ -2904,5 +2917,6 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 #include "conservative_displacement_adapter.inc"
 #include "solid_detachment_adapter.inc"
 #include "gcr_compound_adapter.inc"
+#include "gcr_authored_compound_adapter.inc"
 
 }  // namespace godot

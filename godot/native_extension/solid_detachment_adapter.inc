@@ -106,6 +106,10 @@ Dictionary CyberNativeCellWorld::solid_detachment_command(const Dictionary& comm
     if (!command.has("action") || Variant(command["action"]).get_type() != Variant::STRING)
         return reply(world_.get(), SolidOutcome::Invalid, false);
     const String action = command["action"];
+    // An authored actor owns no native detached payload and cannot acquire a
+    // second material/physical owner through this separate diagnostic facade.
+    if(gcr_authored_compound_enabled_ && action!="inspect")
+        return reply(world_.get(), SolidOutcome::Ineligible, false);
     const bool include_payload = action == "prepare" || action == "cut_prepare" || action == "inspect";
     auto outcome = SolidOutcome::Invalid;
     bool cut_applied = false;
