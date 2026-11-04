@@ -343,7 +343,7 @@ public:
     // cell tuples and new hull masks installed. No solver may call this in tick().
     struct WorkbenchLiquidTransfer {
         std::uint64_t preserved_overfill = 0, discarded_overfill = 0;
-        std::uint64_t preserved_gas = 0, discarded_gas = 0;
+        std::uint64_t preserved_gas = 0, discarded_gas = 0, discarded_pressure_flow_cells = 0;
         std::uint64_t preserved_inertial_cells = 0, discarded_inertial_cells = 0;
     };
     WorkbenchLiquidTransfer inherit_workbench_liquid_state(const World& source, bool allow_conversion);

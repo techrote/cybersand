@@ -130,8 +130,11 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (!window && (region[0] != 0 || region[1] != 0 ||
             region[2] != extent.x || region[3] != extent.y))
             throw std::invalid_argument("Disabled simulation window requires the full finite World region");
-        if (convert && (!retain || intent != "exploratory" ||
-            adapter->world_->liquid_solver_policy().policy_hash() == decoded.policy->policy_hash()))
+        const bool changed_policy = retain &&
+            adapter->world_->liquid_solver_policy().policy_hash() != decoded.policy->policy_hash();
+        if (changed_policy && !convert)
+            throw std::invalid_argument("Changing a retained workbench liquid policy requires explicit inventory conversion");
+        if (convert && (!changed_policy || intent != "exploratory"))
             throw std::invalid_argument("Explicit inventory conversion requires a retained workbench and changed liquid policy");
         const String rule = options.get("normalization", String());
         if (!rule.is_empty() && rule != "water-normalize-v1")
@@ -277,9 +280,14 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             limits.maximum_cells = static_cast<std::size_t>(extent.x) * extent.y;
             if (retain) prepared_liquid_detail::workbench_copy_retained_cells(*adapter->world_, input);
         }
+        const auto water_assignment = config->liquid_solver_policy.assignment(static_cast<std::uint16_t>(cybersand::Material::Water));
+        const bool whole_water = water_assignment &&
+            (water_assignment->family == cybersand::LiquidSolverFamily::CellularYieldV1 ||
+             water_assignment->family == cybersand::LiquidSolverFamily::InertialCellularV1);
+        const bool normalize_water = !rule.is_empty() || (convert && whole_water);
         auto result = std::make_unique<cybersand::PreparedWorldBuilder::Result>(cybersand::PreparedWorldBuilder::prepare(
-            *config, input, rule.is_empty() && !convert ? cybersand::normalization::NormalizationOptIn::None :
-                cybersand::normalization::NormalizationOptIn::WaterNormalizeV1, limits));
+            *config, input, normalize_water ? cybersand::normalization::NormalizationOptIn::WaterNormalizeV1 :
+                cybersand::normalization::NormalizationOptIn::None, limits));
         if (const auto* refused = std::get_if<cybersand::ConstructionRefusal>(result.get())) {
             record_refusal(*refused);
             return 0;
@@ -406,6 +414,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             conversion_receipt["preserved_gas_amount"] = transfer.preserved_gas;
             conversion_receipt["preserved_inertial_cells"] = transfer.preserved_inertial_cells;
             conversion_receipt["discarded_inertial_cells"] = transfer.discarded_inertial_cells;
+            conversion_receipt["discarded_pressure_flow_cells"] = transfer.discarded_pressure_flow_cells;
             conversion_receipt["water_before"] = water_before;
             conversion_receipt["water_after"] = water_after;
             conversion_receipt["normalization_produced"] = produced;
