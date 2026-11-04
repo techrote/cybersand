@@ -30,6 +30,36 @@ func cell(point: Vector2i) -> int:
 	if host.image == null or host.image.get_size() != Vector2i(2048,2048): return -1
 	return roundi(host.image.get_pixelv(point).r*255.0)
 
+func edit_terrain_without_render(material: int) -> bool:
+	# Main physics callbacks are driven explicitly so we can check every
+	# advancing step during installation of the worker's changed terrain.
+	const POINT := Vector2i(1150,730)
+	var previous_revision: int = host.last_hard_surface_revision
+	var previous_shapes: int = host.rapier_bridge.hard_surface_shape_count()
+	var previous_step: int = host.rapier_bridge.manual_step_count()
+	host.set_process(false)
+	host.set_physics_process(false)
+	var edited: bool = panel.paint(POINT,material) and await wait_for(func():
+		var value: CyberSimulationSnapshot = host.simulation_worker.take_latest_snapshot(0)
+		return value != null and value.lab_context.get("workbench_hard_surface_revision",-1) > previous_revision)
+	var advanced := false
+	if edited and panel.toggle_pause():
+		var deadline := Time.get_ticks_msec()+10000
+		while not advanced and Time.get_ticks_msec()<deadline:
+			host._physics_process(1.0/60.0)
+			advanced = host.rapier_bridge.manual_step_count() > previous_step
+			await process_frame
+		panel.toggle_pause()
+	var final: CyberSimulationSnapshot = host.simulation_worker.take_latest_snapshot(0)
+	var shapes: int = host.rapier_bridge.hard_surface_shape_count()
+	var correct: bool = advanced and host.latest_snapshot.hard_surface_revision == previous_revision and final != null \
+		and host.last_hard_surface_revision == final.lab_context.get("workbench_hard_surface_revision",-1) \
+		and host.rapier_bridge.pending_hard_surface_chunks() == 0 \
+		and (shapes > previous_shapes if material != 0 else shapes < previous_shapes)
+	host.set_physics_process(true)
+	host.set_process(true)
+	return check(correct,"first Rapier step after terrain edit uses the installed current shapes with render held")
+
 func finish() -> void:
 	if host != null:
 		report.worker_step_ms = host.latest_snapshot.worker_step_time_ms
@@ -84,10 +114,30 @@ func run() -> void:
 	check(await wait_for(func(): return cell(NEAR)==14),"near uploaded powder")
 	var near_before: Vector2 = panel.body_state(2).position
 	var far_before: Vector2 = panel.body_state(1).position
+	host.simulation_worker.set_worker_participation_sampling(true)
 	check(panel.toggle_pause() and panel.burst() and panel.stream(true),"start ordinary play, burst and stream")
+	# Delay Main's render consumer without suspending its physics callbacks.
+	# Freezing the render-side ack used to stall Rapier at the next sample.
+	var retained_tick: int = host.latest_snapshot.tick_index
+	var retained_render: int = host.last_uploaded_render_snapshot_serial
+	host.set_process(false)
+	var advanced := await wait_for(func():
+		var latest: CyberSimulationSnapshot = host.simulation_worker.take_latest_snapshot(0)
+		return latest != null and latest.tick_index >= retained_tick+5 and host.physical_actor_session.tick >= 5)
+	check(host.latest_snapshot.tick_index == retained_tick and host.last_uploaded_render_snapshot_serial == retained_render,
+		"renderer retains its independent publication")
+	host.set_process(true)
+	if not check(advanced,"mixed physics consumes completed samples while render publication is held"):
+		finish()
+		return
 	if not check(await wait_for(func(): return host.latest_snapshot.tick_index >= 14 and host.tower_context.workbench_source.inserted > 0),"both owners advance with camera away"):
 		finish()
 		return
+	check(await wait_for(func():
+		var sample: Dictionary = host.latest_snapshot.native_worker_participation
+		return sample.get("native_tick_ms",0.0) > 0.0 and sample.get("completed_tick",0) > retained_tick),
+		"sampled native duration is bound to a completed workbench tick")
+	host.simulation_worker.set_worker_participation_sampling(false)
 	check(panel.toggle_pause(),"pause")
 	check(await wait_for(func(): return not host.tower_context.workbench_source.stream_enabled),"pause cancels active source")
 	var stepped: int = host.latest_snapshot.tick_index
@@ -109,6 +159,12 @@ func run() -> void:
 	check(panel.paint(NEAR,14),"same authored stamp still reaches the live worker")
 	check(await wait_for(func(): return cell(NEAR)==14),"repaint after powder moved")
 	check(panel.applied.edits.size() == stamp_count,"repaint coalesces only the saved recipe")
+	if not await edit_terrain_without_render(58) or not check(await wait_for(func(): return cell(Vector2i(1150,730)) == 58),"resume render after hard paint"):
+		finish()
+		return
+	if not await edit_terrain_without_render(0) or not check(await wait_for(func(): return cell(Vector2i(1150,730)) == 0),"resume render after erasure"):
+		finish()
+		return
 	report.near_actor = panel.body_state(2).position
 	report.distant_actor = panel.body_state(1).position
 	report.source = host.tower_context.workbench_source

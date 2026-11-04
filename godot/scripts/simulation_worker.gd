@@ -957,6 +957,7 @@ func _sample_worker_participation(now_usec: int) -> Dictionary:
 	_participation_sample_sequence += 1
 	_participation_sample = {"world_generation":_world_generation, "completed_tick":completed_tick,
 		"sampled_usec":started, "sequence":_participation_sample_sequence,
+		"native_tick_ms":float(_world.simulation_time_ms),
 		"workers_observed":int(values.get("values", {}).get("worker_threads_observed", -1)),
 		"worker_capacity":int(_world.get_worker_threads()),
 		"phase_jobs":values.get("phase_jobs_last_tick", []).duplicate(),
@@ -2346,6 +2347,9 @@ func _publish_snapshot(
 	if _workbench_extent != Vector2i.ZERO:
 		snapshot.lab_context["workbench_gcr"] = _workbench_result
 		snapshot.lab_context["workbench_display"] = _workbench_display
+		# The immutable geometry packet is throttled; this revision identifies
+		# edits already present at the same completion as the body response.
+		snapshot.lab_context["workbench_hard_surface_revision"] = current_hard_surface_revision
 		snapshot.lab_context["workbench_completed_sample"] = _workbench_completed_sample
 		snapshot.lab_context["workbench_refusal"] = _workbench_refusal
 		snapshot.lab_context["workbench_source"] = _workbench_source.receipt()

@@ -36,6 +36,7 @@ var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
+var _workbench_collider_frame: int = -1
 var shared_workbench: Control
 var world_extent := Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
 var playable_course_overlay: Control
@@ -1891,14 +1892,15 @@ func _process(delta: float) -> void:
 	sync_player_presentation_position()
 	_update_playable_course_progress()
 	refresh_player_representation_button()
-	hard_surface_rebuild_cooldown = maxf(0.0, hard_surface_rebuild_cooldown - delta)
-	if hard_surface_rebuild_cooldown <= 0.0:
-		sync_hard_surface_colliders()
-	rapier_bridge.process_hard_surface_collider_budget(
-		HARD_SURFACE_CHUNKS_PER_FRAME,
-		HARD_SURFACE_FRAME_BUDGET_USEC
-	)
-	_update_physical_terrain_ready()
+	if shared_workbench == null or physical_actor_session == null:
+		hard_surface_rebuild_cooldown = maxf(0.0, hard_surface_rebuild_cooldown - delta)
+		if hard_surface_rebuild_cooldown <= 0.0:
+			sync_hard_surface_colliders()
+		rapier_bridge.process_hard_surface_collider_budget(
+			HARD_SURFACE_CHUNKS_PER_FRAME,
+			HARD_SURFACE_FRAME_BUDGET_USEC
+		)
+		_update_physical_terrain_ready()
 	maximum_collider_time_ms = maxf(
 		maximum_collider_time_ms,
 		rapier_bridge.last_hard_surface_build_time_ms()
@@ -1943,14 +1945,20 @@ func _physics_process(_delta: float) -> void:
 			or not pending_microscenario_apply.is_empty())
 	publish_actor_keyboard_input()
 	publish_actor_usable_input()
+	var physics_snapshot: CyberSimulationSnapshot = latest_snapshot
 	if shared_workbench != null and physical_actor_session != null:
+		# Physics can consume an immutable completion before the next render
+		# callback. Its native terrain revision, sample fence and wrench must
+		# all belong to the same publication.
+		physics_snapshot = simulation_worker.take_latest_snapshot(0)
+		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch(): return
+		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty(): return
+		if not _workbench_terrain_installed(physics_snapshot): return
 		if paused and not single_step:
 			_workbench_wait_sample = -1
 			return
-		# A slow native tick must not allow the manually stepped body to
-		# outrun its sample/geometry fence or receive the same wrench twice.
-		# Single-step may restart a paused, previously unpublished frame.
-		if _workbench_wait_sample >= 0 and tower_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
+		# A single step can restart a previously unpublished paused frame.
+		if _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -1963,7 +1971,7 @@ func _physics_process(_delta: float) -> void:
 		and pending_microscenario_apply.is_empty()
 		and (physical_actor_session == null or _physical_terrain_ready)
 	):
-		apply_latest_rigid_body_results()
+		apply_latest_rigid_body_results(physics_snapshot)
 		if physical_actor_session != null:
 			physical_actor_session.advance(rapier_bridge.fixed_delta())
 		else:
@@ -2835,20 +2843,21 @@ func pack_rigid_body_states() -> PackedFloat32Array:
 	return states
 
 
-func apply_latest_rigid_body_results() -> void:
-	if latest_snapshot == null or latest_snapshot.simulation_failed or not rapier_bridge.is_initialized():
+func apply_latest_rigid_body_results(snapshot: CyberSimulationSnapshot = null) -> void:
+	if snapshot == null: snapshot = latest_snapshot
+	if snapshot == null or snapshot.simulation_failed or not rapier_bridge.is_initialized():
 		return
 	if _actor_reset_receipt != 0 or not pending_microscenario_apply.is_empty():
 		return
-	if latest_snapshot.rigid_body_epoch != _body_owner_epoch():
+	if snapshot.rigid_body_epoch != _body_owner_epoch():
 		return
 	if shared_workbench != null:
 		if physical_actor_session != null:
-			physical_actor_session.apply_workbench_results(latest_snapshot.serial,tower_context.get("workbench_gcr",{}))
+			physical_actor_session.apply_workbench_results(snapshot.serial,snapshot.lab_context.get("workbench_gcr",{}))
 		return
 	rapier_bridge.apply_cellular_results(
-		latest_snapshot.serial,
-		latest_snapshot.rigid_body_results
+		snapshot.serial,
+		snapshot.rigid_body_results
 	)
 
 
@@ -3021,36 +3030,54 @@ func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
 	last_render_was_full_refresh = snapshot.render_full_refresh
 
 
-func sync_hard_surface_colliders() -> void:
+func _workbench_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
+	if _actor_reset_receipt != 0 or not pending_microscenario_apply.is_empty() or not rapier_bridge.is_initialized():
+		return false
+	var required: int = snapshot.lab_context.get("workbench_hard_surface_revision",-1)
+	if required < 0 or not snapshot.hard_surface_chunk_rectangles_valid: return false
+	# Finish the current bounded install before accepting a newer packet.
+	# A worker publication without the latest geometry cannot release Rapier.
+	if rapier_bridge.pending_hard_surface_chunks() == 0 and snapshot.hard_surface_revision == required and last_hard_surface_revision != required:
+		sync_hard_surface_colliders(snapshot)
+	if rapier_bridge.pending_hard_surface_chunks() > 0 and _workbench_collider_frame != Engine.get_process_frames():
+		_workbench_collider_frame = Engine.get_process_frames()
+		rapier_bridge.process_hard_surface_collider_budget(HARD_SURFACE_CHUNKS_PER_FRAME,HARD_SURFACE_FRAME_BUDGET_USEC)
+	if last_hard_surface_revision != required or rapier_bridge.pending_hard_surface_chunks() != 0: return false
+	_physical_terrain_ready = true
+	return true
+
+
+func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> void:
+	if snapshot == null: snapshot = latest_snapshot
 	if (
-		latest_snapshot == null
+		snapshot == null
 		or not rapier_bridge.is_initialized()
-		or latest_snapshot.hard_surface_revision == last_hard_surface_revision
+		or snapshot.hard_surface_revision == last_hard_surface_revision
 	):
 		return
 	if physical_actor_session != null and not _physical_terrain_ready \
-		and (latest_snapshot.rigid_body_epoch != _physical_epoch or _actor_reset_receipt != 0
+		and (snapshot.rigid_body_epoch != _physical_epoch or _actor_reset_receipt != 0
 			or not pending_microscenario_apply.is_empty()):
 		return
-	if latest_snapshot.hard_surface_chunk_rectangles_valid:
+	if snapshot.hard_surface_chunk_rectangles_valid:
 		if not rapier_bridge.queue_hard_surface_chunk_snapshot(
-			latest_snapshot.hard_surface_chunk_rectangles
+			snapshot.hard_surface_chunk_rectangles
 		):
 			microscenario_error = "Terrain collider snapshot was refused"
 			return
-	elif latest_snapshot.hard_surface_rectangles_valid:
+	elif snapshot.hard_surface_rectangles_valid:
 		rapier_bridge.rebuild_hard_surface_colliders_from_rectangles_chunked(
-			latest_snapshot.hard_surface_rectangles,
+			snapshot.hard_surface_rectangles,
 			world_extent.x,
 			world_extent.y
 		)
 	else:
 		rapier_bridge.rebuild_hard_surface_colliders(
-			latest_snapshot.cells,
+			snapshot.cells,
 			world_extent.x,
 			world_extent.y
 		)
-	last_hard_surface_revision = latest_snapshot.hard_surface_revision
+	last_hard_surface_revision = snapshot.hard_surface_revision
 	hard_surface_rebuild_cooldown = HARD_SURFACE_REBUILD_INTERVAL
 
 
