@@ -143,5 +143,98 @@
     "Other platforms retain historical provenance",
     "No native source from Astra PR347 imported or replaced",
     "No old qualification is relabelled as new execution"
-  ]
+  ],
+  "dependency_inputs": {
+    "LICENSE_STATUS.md": "3bfb7c5ddd1418ab38621d1e5b841c9e9c4845e9166a196143c8a71f3cd46b70",
+    "THIRD_PARTY_NOTICES.md": "df8aa85bb2be5b09eb92b1660f03db12484cf685ffc44ee8802c7334180e0c6c",
+    "godot/addons/cybersand_native/LICENSE-godot-cpp.md": "26a5b210d90760156ce886267ce9df235787dcc6cebfd7ecd95ef5b6fdcc95bf",
+    "godot/addons/godot-rapier2d/LICENSE": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8",
+    "godot/addons/godot-rapier2d/THIRDPARTY.txt": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df",
+    "godot/third_party/rapier2d.lock.json": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+    "third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+    "third_party/rapier-bvh-build.lock.json": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b"
+  },
+  "toolchain_record": {
+    "linux": {
+      "files": {
+        "/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496/bin/libgodot-cpp.linux.template_debug.x86_64.a": {
+          "resolved_path": "/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496/bin/libgodot-cpp.linux.template_debug.x86_64.a",
+          "sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+          "size": 84962728
+        },
+        "/usr/bin/g++-13": {
+          "resolved_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+          "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+          "size": 1027128
+        },
+        "/usr/bin/ld": {
+          "resolved_path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+          "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+          "size": 1359128
+        },
+        "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus": {
+          "resolved_path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+          "sha256": "840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d",
+          "size": 32675168
+        }
+      },
+      "godot_cpp_markers": {
+        ".cybersand-source-archive-sha256": "f55d1cd5a2d528a9dc72fc54c1ef2b3d4dd90a0570dd8841d6766cbd4912dad8",
+        ".cybersand-source-revision": "101ae38034304346a46ea9ea84ae156d3e860496"
+      },
+      "versions": {
+        "/usr/bin/g++-13": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "/usr/bin/ld": "GNU ld (GNU Binutils for Ubuntu) 2.42"
+      }
+    },
+    "measured_utc": "2026-11-04T02:09:16.139051+00:00",
+    "scope": "Post-build re-verification of every retained compiler/linker/static-library file hash against the unchanged pinned toolchain record. Not build-time tracing or M11 exact artifact equality.",
+    "windows_files": {
+      "C:\\Users\\_\\lcb-local-toolchain\\env\\godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496\\bin\\libgodot-cpp.windows.template_debug.x86_64.a": {
+        "sha256": "2629ba35adc7b1263deeb1155d674252e1e4188c2c89d1d7158e816d18f957df",
+        "size": 66374316
+      },
+      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang-23.exe": {
+        "sha256": "981e3fc62c949bad1132a1f5f76428495e69109a7603a1e878aa227cfbf731b7",
+        "size": 96256
+      },
+      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang.exe": {
+        "sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690",
+        "size": 14336
+      },
+      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\ld.lld.exe": {
+        "sha256": "284daba5d41833c41d164d3b8b4715a41a11f0c8fd22c19eabc0929cbf081db8",
+        "size": 5184512
+      },
+      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\libclang-cpp.dll": {
+        "sha256": "b3585afae005a6aa7e576d46de3d37581a9a877d0c11c02010e4a8c3c7aa8dc3",
+        "size": 49632768
+      },
+      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\x86_64-w64-mingw32-g++.exe": {
+        "sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690",
+        "size": 14336
+      }
+    },
+    "windows_godot_cpp_markers": {
+      ".cybersand-source-archive-sha256": "f55d1cd5a2d528a9dc72fc54c1ef2b3d4dd90a0570dd8841d6766cbd4912dad8",
+      ".cybersand-source-revision": "101ae38034304346a46ea9ea84ae156d3e860496"
+    },
+    "windows_versions": {
+      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang.exe": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)",
+      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\ld.lld.exe": "LLD 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4) (compatible with GNU linkers)",
+      "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\x86_64-w64-mingw32-g++.exe": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)"
+    },
+    "prior_measurement_utc": "2026-11-02T21:24:17.959884+00:00"
+  },
+  "build_inputs": {
+    ".gitattributes": "05c9fbe5f823c51aec0ae542d0c7641a117fb0b95cd1d7fb511fffe9f8cbdbaa",
+    "godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+    "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+    "tools/build_native_extension.sh": "cdb1702ab2d896ff1147147124cb79bf9df4f73dee07ec72f32e09dd6fee0313",
+    "tools/build_native_extension_windows.sh": "3308b5aeebb4064130d3d6fe36a23b02c2709f0793dd7e3de1e4e73df4c8b940",
+    "tools/check_linux_runtime_floor.sh": "12f372ffa2222c83f07367f4e93409eaf51dcde861ecf4c1f3c3f3da80a8d251",
+    "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+    "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+    "tools/verify_pinned_source_tree.py": "a0524839c9a2857906013c9cef6327dfd3fd1878372da05ca16c34a497eaea97"
+  }
 }

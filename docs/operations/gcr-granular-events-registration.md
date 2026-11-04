@@ -1,6 +1,6 @@
 ---
 title: Granular-only blocked-event response successor
-status: Planned
+status: Current
 document-kind: design
 scope: Preregistered independent-body event omission and painting-playground comparison; no default, sleep or compound response promotion
 canonical-for: [gcr-granular-event-successor]
@@ -10,17 +10,34 @@ related-documents: [gcr-causal-registration.md, ../architecture/granular-contact
 
 # Granular-only blocked-event response successor
 
+## Current outcome and review status
+
+[November4 qualification](../audits/2026-11-04-gcr-granular-event-successor.md)
+completes 48 source-matched Windows/Linux captures at 5235cec2. The explicit
+granular-only selector preserves the sinking improvement while legacy contact
+gain remains0.025. Sand/Salt/Dust banks pass the registered burial reduction;
+gentle/high/heavy/angled barrel impact guards pass. The falling-grain loading
+control fails: candidate translation/rotation are zero despite incoming native
+material motion. This is a distinct loading/torque gap and blocks general
+event-free production adoption. Tail motion and six-cell overlap persist.
+
+The developer painting playground exposes LA events OFF alongside unchanged
+LA/control and RFT reference choices. Apply/reset selects fresh native authority;
+all seven craft, painting and existing physical/actuator controls remain. LA is
+the initial/Restore default. Owner gameplay acceptance is pending; no sleep,
+default promotion, latest-Astra compound acceptance or merge follows.
+
 ## Source reconciliation and owner
 
 This successor starts from PR368 head43028e4999c3038d5d83d77140461329f16364d3
-and merges accepted main3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d
+and merges accepted main 3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d
 (tree da52ce3ac85e765ccff31d53ab1cbf7475def032) at e05afec2.
 Six additive documentation conflicts preserve both topics and union the retrieval
 records. Accepted-main input/recovery and CI-display repairs remain present.
 The dirty material-authoring checkout C:/khybersand is not modified.
 
-Astra's #347 remains draft at5b9b5a982e4638f4609309f996b92825d3dc36e4,
-executed749fb8b5/runtime89d2eb6d. Its new solid_contact_adapter and main-thread
+Astra's #347 remains draft at 5b9b5a982e4638f4609309f996b92825d3dc36e4,
+executed 749fb8b5/runtime 89d2eb6d. Its new solid_contact_adapter and main-thread
 SolidContactResponse own the opt-in aggregate response. Its four-sweep normal
 response, immutable geometry publication, finite-readback latch, quarantine,
 handoff and conservative relocation remain separately qualified. Its full-matrix
@@ -57,7 +74,7 @@ actuator limits, mass and inertia remain controls. No combined T/X intervention.
 ## Registered population and gates
 
 The companion protocol fixes12 representative scenarios, C/E on Windows/Linux,
-48 captures of1800 ticks at60Hz, one native worker, with300second process fences.
+48 captures of 1800 ticks at 60Hz, one native worker, with300 second process fences.
 Three banks use Sand/Salt/Dust; the remaining scenarios cover original gentle/high
 barrels, heavy mass2, angled/edge impact, horizontal entry, off-centre falling
 grains, support excavation and powered flyer bank entry. No Cartesian expansion.
@@ -71,16 +88,16 @@ with Water, malformed admission refusal, no hard-only granular response, selecto
 reset/lifetime and playground painting/input controls. No stale runtime reuse.
 
 Impact guards retain entry allowance max(0.5cell,10%), overlap max(1cell,10%),
-upward speed max(2cell/s,25%). Heavy-body/mass settings stay actual values.
+upward speed max(2 cell/s,25%). Heavy-body/mass settings stay actual values.
 Timing and event comparisons use the same registered C schedule. Compare bank
-descent at900 only before common first hard proximity/rig guard; otherwise report
+descent at 900 only before common first hard proximity/rig guard; otherwise report
 unsupported and retain the censored prefix. Require at least75% decrease in
 hard-clear bank descent to call the retained benefit generalized per material.
 
 Falling-grain loading is an adequacy control: require actual native moves before
 first blocked contact and nonzero attempted event J/L. Measure body displacement,
 rotation and delivered impulse with gravity0. If E retains less than25% of a
-control body response exceeding0.5cell travel or0.05rad rotation, flag a distinct
+control body response exceeding0.5cell travel or0.05 rad rotation, flag a distinct
 material-loading/torque gap. Missing incoming contact is unexercised, not a pass.
 Do not invent continuous grain momentum from cellular attempts.
 

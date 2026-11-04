@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Granular-only event successor: [registration and disposition](operations/gcr-granular-events-registration.md) and [November4 qualification](audits/2026-11-04-gcr-granular-event-successor.md) record reduced burial across three materials, a demonstrated moving-grain loading/torque gap and the experimental painting-playground selector. No production/default or sleep acceptance follows.
+
 Separate GCR-LA causal tests: [timing/contact and blocked-event registration](operations/gcr-causal-registration.md)
 owns the registered interventions, qualified outcomes and non-overlap with
 the independent structural-detachment work. The [dated evidence](audits/2026-11-03-gcr-causal-tests.md)

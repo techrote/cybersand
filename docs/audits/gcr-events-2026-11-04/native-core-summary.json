@@ -1,0 +1,39 @@
+{
+  "scope": "Native core regression and sanitizer execution; GDExtension adapter separately exercised in actual Godot hosts",
+  "input_equivalent_native_source": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+  "normal": {
+    "groups": 177,
+    "status": "pass",
+    "log": "native-core-02.log",
+    "sha256": "adc102839c3b138242d99dbd8894d0da275762375e3317c0bb9ebb9f6e2368e1",
+    "scope": "Normal complete marker and successful progression to sanitizer in combined script; combined later exits1"
+  },
+  "sanitizer": {
+    "groups": 177,
+    "status": "pass",
+    "exit": 0,
+    "timeout_seconds": 3600,
+    "log": "native-core-03-asan.log",
+    "sha256": "bf4a9695606e25177e06c63247c9b39a3d5235051ae3523a0905de23b9ac14cc",
+    "options": {
+      "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+      "UBSAN_OPTIONS": "halt_on_error=1"
+    },
+    "binary_sha256": "732af0180722d76c356c19e619b46c8ec02e7bb8720fbd2e80ae5e933e18d744"
+  },
+  "retained_failures": [
+    {
+      "file": "native-core-01.log",
+      "reason": "make unavailable"
+    },
+    {
+      "file": "native-core-02.log",
+      "reason": "earlier combined sanitizer execution incomplete, exit1 without final diagnosis; not a pass"
+    }
+  ],
+  "limitations": [
+    "LeakSanitizer excluded",
+    "No TSAN or other-platform sanitizer acceptance",
+    "Separate arithmetic checks are by the same engineer, not independent human review"
+  ]
+}

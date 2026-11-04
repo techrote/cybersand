@@ -11,6 +11,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+**Experimental granular event successor, November4:** [the qualified comparison](../operations/gcr-granular-events-registration.md) completes48 Windows/Linux captures. Burial reduction generalizes to Sand/Salt/Dust and the tested powered bank; ordinary gentle/high/heavy/angled barrel impact guards pass. The falling-grain loading/torque control fails, and late motion increases in some cases. Event-off is available in the painting playground for owner comparison, with no production promotion, sleep change, compound qualification or merge.
+
 **Experimental GCR-LA causal tests, November 3:** the
 [separate timing/contact and event lanes](../operations/gcr-causal-registration.md)
 completed 40 Windows/Linux captures. Withdrawal cancellation fails barrel guards;

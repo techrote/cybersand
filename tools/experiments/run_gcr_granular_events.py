@@ -38,7 +38,9 @@ def main():
         cv=lambda x:str(Path(x).resolve()) if platform=='windows' else linux(x)
         prefix=engine+['--headless','--audio-driver','Dummy','--path',cv(project)]
         gates=[]
-        for name in ['import','test_gcr_granular_events']+EXISTING:
+        for name in ['import','test_gcr_granular_events','test_gcr_granular_events_playground']+EXISTING+[
+                'test_gcr_detachment','test_solid_detachment_displacement','test_solid_detachment_compound_response',
+                'test_gcr_fleet_emissions','test_gcr_fleet_side_thrusters','test_gcr_review_navigation']:
             command=prefix+(['--editor','--quit'] if name=='import' else ['--script','res://tests/'+name+'.gd'])
             if name=='test_gcr_envelope':command+=['--','--protocol='+cv(ROOT/'docs/audits/gcr001-2026-11-01/protocol.json')]
             receipt=run(command,folder/(name+'.log'),300,env,platform,le)

@@ -10,6 +10,13 @@ related-documents: [compound-granular-coupling.md, ../operations/gcr-rest-regist
 
 # Experimental granular budgets and contact rest
 
+The [granular-only event successor](../operations/gcr-granular-events-registration.md)
+is a separate explicit experiment within control mode. It retains raw attempts,
+legacy contact gain and the existing passive solver, while omitting accepted
+granular event J/L and cost. Its demonstrated moving-grain loading/torque gap
+prevents general adoption. It adds no rest history or sleep, and does not revive
+the failed correction ablation. Owner review and compound response remain separate.
+
 ## What is authorized and what remains a control?
 
 The [registration](../operations/gcr-rest-registration.md) fixes budget5/10/20/40/80

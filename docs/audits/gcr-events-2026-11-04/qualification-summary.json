@@ -1,0 +1,5326 @@
+{
+  "schema": "cybersand.gcr-events.compact.v1",
+  "source": "5235cec255f0c2ffde0c2b25f04c8ae656f6b381",
+  "native_build_source": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+  "captures": [
+    {
+      "case": "bank-sand",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": 1123,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 55,
+      "peak_upward": 4.59863376617432,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -9.780456542968977,
+          196.00213623046898
+        ],
+        "position_span": [
+          9.850433349608977,
+          196.00213623046898
+        ],
+        "sampled_path_length": 202.89715531079662,
+        "net_rotation_unwrapped": -1.5707288590929271,
+        "sampled_angular_travel": 2.1542968551802875,
+        "speed_p50": 10.851894190403605,
+        "speed_p95": 11.011019339505486,
+        "speed_max": 36.45346514337096,
+        "abs_omega_p95": 0.0796981751918793,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 5.80919731873992e-07,
+        "sampled_angular_travel": 0.00010092413140228089,
+        "speed_p50": 0.024889126420038942,
+        "speed_p95": 0.02489017136395426,
+        "speed_max": 0.0248902756720781,
+        "abs_omega_p95": 0.00708563532680273,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        -13.43999980390072,
+        2632.960031881935
+      ],
+      "event_cost_sum": 2634.5736109167397,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        26891018,
+        177270,
+        11762
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 30.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 42
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 154.26651000976602,
+      "final_y": 508.008728027344,
+      "raw_file": "windows/bank-sand-C.json",
+      "raw_sha256": "c14332ab8344952a199f03081800e3561d9a520ecefc6737b03d3c6cf6de3f08",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        5.913182528078762e-07,
+        2.4523594688297123e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-sand",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 6,
+      "peak_upward": 0.172422960400581,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.015380859375,
+          1.058929443358977
+        ],
+        "position_span": [
+          0.4359130859369884,
+          1.0683898925780113
+        ],
+        "sampled_path_length": 16.589230624397622,
+        "net_rotation_unwrapped": -0.030499696731570047,
+        "sampled_angular_travel": 0.2155480384825057,
+        "speed_p50": 0.7373824814423894,
+        "speed_p95": 0.9790138026077219,
+        "speed_max": 4.43333292007446,
+        "abs_omega_p95": 0.0162734929472208,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.5247646279390437,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921773910507806,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        21128880,
+        173603,
+        10243
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 34
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 1.072906494141023,
+      "final_y": 313.065521240234,
+      "raw_file": "windows/bank-sand-E.json",
+      "raw_sha256": "9cec9437b2e05b8dec346a3d25c59babb4885c9684f53d00326030a28ca5cc01",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-salt",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "2729b8b9b85724cc",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": 1123,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 55,
+      "peak_upward": 4.59863376617432,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -9.780456542968977,
+          196.00213623046898
+        ],
+        "position_span": [
+          9.850433349608977,
+          196.00213623046898
+        ],
+        "sampled_path_length": 202.89715531079662,
+        "net_rotation_unwrapped": -1.5707288590929271,
+        "sampled_angular_travel": 2.1542968551802875,
+        "speed_p50": 10.851894190403605,
+        "speed_p95": 11.011019339505486,
+        "speed_max": 36.45346514337096,
+        "abs_omega_p95": 0.0796981751918793,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 5.80919731873992e-07,
+        "sampled_angular_travel": 0.00010092413140228089,
+        "speed_p50": 0.024889126420038942,
+        "speed_p95": 0.02489017136395426,
+        "speed_max": 0.0248902756720781,
+        "abs_omega_p95": 0.00708563532680273,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        -13.43999980390072,
+        2632.960031881935
+      ],
+      "event_cost_sum": 2634.5736109167397,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        26891018,
+        177270,
+        11762
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 30.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 42
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 154.26651000976602,
+      "final_y": 508.008728027344,
+      "raw_file": "windows/bank-salt-C.json",
+      "raw_sha256": "a5228572312609dda477839f828f00d06b6b2253c290856c445b286d4437ca59",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        5.913182528078762e-07,
+        2.4523594688297123e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-salt",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "2729b8b9b85724cc",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 6,
+      "peak_upward": 0.172422960400581,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.015380859375,
+          1.058929443358977
+        ],
+        "position_span": [
+          0.4359130859369884,
+          1.0683898925780113
+        ],
+        "sampled_path_length": 16.589230624397622,
+        "net_rotation_unwrapped": -0.030499696731570047,
+        "sampled_angular_travel": 0.2155480384825057,
+        "speed_p50": 0.7373824814423894,
+        "speed_p95": 0.9790138026077219,
+        "speed_max": 4.43333292007446,
+        "abs_omega_p95": 0.0162734929472208,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.5247646279390437,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921773910507806,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        21128880,
+        173603,
+        10243
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 34
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 1.072906494141023,
+      "final_y": 313.065521240234,
+      "raw_file": "windows/bank-salt-E.json",
+      "raw_sha256": "d7cbbebac1e48aadeae7cac2488434cec1f24d8ebcfd7fa1b3f44bcc74af4042",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-dust",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "8f4f2c099ceb3584",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 52,
+      "peak_upward": 4.22542142868042,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -8.706298828125,
+          8.398803710938012
+        ],
+        "position_span": [
+          8.7529296875,
+          8.398803710938012
+        ],
+        "sampled_path_length": 61.42565039567718,
+        "net_rotation_unwrapped": -1.5575395505875382,
+        "sampled_angular_travel": 1.749439220875514,
+        "speed_p50": 1.8558721815326455,
+        "speed_p95": 2.4586168364858256,
+        "speed_max": 20.00824252559691,
+        "abs_omega_p95": 0.0898998528718948,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01989746093698841,
+          1.2433471679690342
+        ],
+        "position_span": [
+          0.031494140625,
+          1.2433471679690342
+        ],
+        "sampled_path_length": 9.796796587547917,
+        "net_rotation_unwrapped": -0.0023210952058435007,
+        "sampled_angular_travel": 0.018950092606246093,
+        "speed_p50": 0.9767027763726067,
+        "speed_p95": 2.4592262005038084,
+        "speed_max": 2.5572950593079615,
+        "abs_omega_p95": 0.00800377037376165,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 52,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        -16.484999897889793,
+        687.6345008965579
+      ],
+      "event_cost_sum": 688.5735974684355,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        26225770,
+        177079,
+        11765
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 38,
+        "p99": 40,
+        "max": 42
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 4.779388427733977,
+      "final_y": 320.405395507813,
+      "raw_file": "windows/bank-dust-C.json",
+      "raw_sha256": "cf832904822622d752b253731032f7789fef2148af707127d29484b8b6e3d5dc",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.7518376766369913e-07,
+        1.1321254217433463e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-dust",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "8f4f2c099ceb3584",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 6,
+      "peak_upward": 0.172422960400581,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.015380859375,
+          1.058929443358977
+        ],
+        "position_span": [
+          0.4359130859369884,
+          1.0683898925780113
+        ],
+        "sampled_path_length": 16.589230624397622,
+        "net_rotation_unwrapped": -0.030499696731570047,
+        "sampled_angular_travel": 0.2155480384825057,
+        "speed_p50": 0.7373824814423894,
+        "speed_p95": 0.9790138026077219,
+        "speed_max": 4.43333292007446,
+        "abs_omega_p95": 0.0162734929472208,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.5247646279390437,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921773910507806,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        21128880,
+        173603,
+        10243
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 34
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 1.072906494141023,
+      "final_y": 313.065521240234,
+      "raw_file": "windows/bank-dust-E.json",
+      "raw_sha256": "2e114c313db914499e64a2cea9f6af2c9437f0dbedf76594e29d4e8d7828e888",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "powered-bank",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": 1173,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 55,
+      "peak_upward": 8.61752319335938,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -5.883728027343977,
+          196.00210571289102
+        ],
+        "position_span": [
+          9.513427734375,
+          196.00210571289102
+        ],
+        "sampled_path_length": 202.9108398472608,
+        "net_rotation_unwrapped": -1.5706802619824918,
+        "sampled_angular_travel": 2.6603208267188307,
+        "speed_p50": 10.277127409304912,
+        "speed_p95": 10.90673624483932,
+        "speed_max": 39.75264755471105,
+        "abs_omega_p95": 0.175539419054985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 7.502312655559982e-07,
+        "sampled_angular_travel": 0.00025420454767300206,
+        "speed_p50": 0.03342832997441622,
+        "speed_p95": 0.03343009203672742,
+        "speed_max": 0.033430192619565424,
+        "abs_omega_p95": 0.00940577313303947,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        -14.119999803602697,
+        2639.120025232439
+      ],
+      "event_cost_sum": 2641.1066600531385,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        26831403,
+        177368,
+        11763
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 30.0,
+        "p95": 34,
+        "p99": 38,
+        "max": 42
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 146.98492431640602,
+      "final_y": 508.008697509766,
+      "raw_file": "windows/powered-bank-C.json",
+      "raw_sha256": "7f9da925af33c1ae503c2efda6ed92f5364aad3705f65eaf8267f918715da709",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        8.57820551032758e-07,
+        2.3872082643983106e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "powered-bank",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 8,
+      "peak_upward": 0.28533136844635,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.2236328125,
+          0.9875183105469887
+        ],
+        "position_span": [
+          0.5732421875,
+          1.003021240233977
+        ],
+        "sampled_path_length": 20.855354918575685,
+        "net_rotation_unwrapped": 0.002343416213990146,
+        "sampled_angular_travel": 0.2345516681672506,
+        "speed_p50": 0.7785677996508428,
+        "speed_p95": 1.1218721633244213,
+        "speed_max": 4.37939262390137,
+        "abs_omega_p95": 0.0187050979584455,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          -0.00985717773403394
+        ],
+        "position_span": [
+          0.0,
+          0.011291503905965783
+        ],
+        "sampled_path_length": 2.9009094238297166,
+        "net_rotation_unwrapped": 7.724761963001647e-05,
+        "sampled_angular_travel": 0.010142803192129568,
+        "speed_p50": 0.26617149840895477,
+        "speed_p95": 0.8476040962413599,
+        "speed_max": 0.8476196454802845,
+        "abs_omega_p95": 0.00308700790628791,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 8,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        21228339,
+        173505,
+        10266
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "solver_updates": {
+        "p50": 112.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 1.004791259766023,
+      "final_y": 312.994110107422,
+      "raw_file": "windows/powered-bank-E.json",
+      "raw_sha256": "8b728f02604cf6f08edc66cf43607a2015331c40f4f8028bae8005682d1c8fa5",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.3557789684110846e-08,
+        6.898018183130322e-09
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-gentle",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "da440f1aafade34f",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 0.0279799309113002,
+      "peak_overlap": 0,
+      "peak_upward": 3.54037261009216,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.53466796875,
+          1.7825317382810226
+        ],
+        "position_span": [
+          0.6842041015619884,
+          2.0146331787110228
+        ],
+        "sampled_path_length": 26.437739672732302,
+        "net_rotation_unwrapped": -0.07729951408691708,
+        "sampled_angular_travel": 1.1586047565506306,
+        "speed_p50": 1.4863998702042946,
+        "speed_p95": 3.0915551168238955,
+        "speed_max": 16.4739513397217,
+        "abs_omega_p95": 0.111267007887363,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.003662109375,
+          0.014755249023011174
+        ],
+        "position_span": [
+          0.1301879882809942,
+          0.16001892089801117
+        ],
+        "sampled_path_length": 4.055675341581633,
+        "net_rotation_unwrapped": 0.0001378853339701933,
+        "sampled_angular_travel": 0.16127589833922676,
+        "speed_p50": 1.4882414475858388,
+        "speed_p95": 3.063587803653771,
+        "speed_max": 3.4150152255284385,
+        "abs_omega_p95": 0.0851333364844322,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.36666666666666664,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        7177216,
+        0,
+        3592
+      ],
+      "coupling_us": {
+        "p50": 69.0,
+        "p95": 119,
+        "p99": 141,
+        "max": 236
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 48,
+        "p99": 48,
+        "max": 48
+      },
+      "solver_updates": {
+        "p50": 16.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 1.8518981933600003,
+      "final_y": 184.501251220703,
+      "raw_file": "windows/barrel-gentle-C.json",
+      "raw_sha256": "4e7f860783d7669813c870992cc00d740cd44996b025b9cfa3037f8bf1fcb54b",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0596687083364031e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-gentle",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "da440f1aafade34f",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 0.0279799309113002,
+      "peak_overlap": 0,
+      "peak_upward": 3.54037261009216,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.53466796875,
+          1.7825317382810226
+        ],
+        "position_span": [
+          0.6842041015619884,
+          2.0146331787110228
+        ],
+        "sampled_path_length": 26.437739672732302,
+        "net_rotation_unwrapped": -0.07729951408691708,
+        "sampled_angular_travel": 1.1586047565506306,
+        "speed_p50": 1.4863998702042946,
+        "speed_p95": 3.0915551168238955,
+        "speed_max": 16.4739513397217,
+        "abs_omega_p95": 0.111267007887363,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.003662109375,
+          0.014755249023011174
+        ],
+        "position_span": [
+          0.1301879882809942,
+          0.16001892089801117
+        ],
+        "sampled_path_length": 4.055675341581633,
+        "net_rotation_unwrapped": 0.0001378853339701933,
+        "sampled_angular_travel": 0.16127589833922676,
+        "speed_p50": 1.4882414475858388,
+        "speed_p95": 3.063587803653771,
+        "speed_max": 3.4150152255284385,
+        "abs_omega_p95": 0.0851333364844322,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.36666666666666664,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        7177216,
+        0,
+        3592
+      ],
+      "coupling_us": {
+        "p50": 63.0,
+        "p95": 105,
+        "p99": 122,
+        "max": 197
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 48,
+        "p99": 48,
+        "max": 48
+      },
+      "solver_updates": {
+        "p50": 16.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 1.8518981933600003,
+      "final_y": 184.501251220703,
+      "raw_file": "windows/barrel-gentle-E.json",
+      "raw_sha256": "73df8b39a76675c466c15ef357789b3298b0c96e4f99fd1694b1b57fae460b13",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0596687083364031e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-high",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 6.69016327843201,
+      "peak_overlap": 22,
+      "peak_upward": 2.92296004295349,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          1.1107788085940058,
+          2.5947265625
+        ],
+        "position_span": [
+          2.0791015625,
+          6.904602050781023
+        ],
+        "sampled_path_length": 14.854522935591074,
+        "net_rotation_unwrapped": 0.3150239810347559,
+        "sampled_angular_travel": 0.7422358468174856,
+        "speed_p50": 1.093898234028683,
+        "speed_p95": 1.4059684073641279,
+        "speed_max": 91.155517578125,
+        "abs_omega_p95": 0.0789912939071655,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.5376586914059942,
+          -0.3484802246090055
+        ],
+        "position_span": [
+          0.8306884765630116,
+          0.47578430175801145
+        ],
+        "sampled_path_length": 2.486421519012241,
+        "net_rotation_unwrapped": 0.028534740209579967,
+        "sampled_angular_travel": 0.3130900561809598,
+        "speed_p50": 1.0669607747436336,
+        "speed_p95": 1.8253597456167043,
+        "speed_max": 3.6758259676898333,
+        "abs_omega_p95": 0.26938670873642,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.4766666666666667,
+      "event_attempt_active": 1644,
+      "accepted_event_sum": [
+        59.159998729825006,
+        677.4400075376034
+      ],
+      "event_cost_sum": 691.6020601317291,
+      "first_attempted_event": 2,
+      "moves_before_event": 0,
+      "native_work_sum": [
+        7378944,
+        390,
+        7218
+      ],
+      "coupling_us": {
+        "p50": 99.0,
+        "p95": 178,
+        "p99": 194,
+        "max": 292
+      },
+      "support_probes": {
+        "p50": 50.0,
+        "p95": 58,
+        "p99": 58,
+        "max": 58
+      },
+      "solver_updates": {
+        "p50": 64.0,
+        "p95": 72,
+        "p99": 72,
+        "max": 72
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 185.0,
+        "unresolved": 11214.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 6.190017700195995,
+      "final_y": 186.813446044922,
+      "raw_file": "windows/barrel-high-C.json",
+      "raw_sha256": "e94e205a702e4af555bc3b66ccd192651728345584124cbd3dd57abf1185f0e3",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.4493945428736774e-07,
+        3.934860426380027e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-high",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 6.38551027650695,
+      "peak_overlap": 20,
+      "peak_upward": 3.36067461967468,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          2.8749084472659945,
+          3.247955322266023
+        ],
+        "position_span": [
+          3.1958618164060084,
+          6.595001220703011
+        ],
+        "sampled_path_length": 19.915359899200137,
+        "net_rotation_unwrapped": 0.822179310023785,
+        "sampled_angular_travel": 1.1964774057269087,
+        "speed_p50": 1.2121531359740592,
+        "speed_p95": 1.9937119688273357,
+        "speed_max": 91.155517578125,
+        "abs_omega_p95": 0.180587574839592,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          1.279113769531989,
+          0.7886810302740059
+        ],
+        "position_span": [
+          1.71533203125,
+          0.918411254882983
+        ],
+        "sampled_path_length": 5.354990710439716,
+        "net_rotation_unwrapped": 0.429875761270523,
+        "sampled_angular_travel": 0.5647381246089946,
+        "speed_p50": 1.4396641124627716,
+        "speed_p95": 3.0395898980767413,
+        "speed_max": 3.9200174329695776,
+        "abs_omega_p95": 0.406891673803329,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.36,
+      "event_attempt_active": 1367,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 2,
+      "moves_before_event": 0,
+      "native_work_sum": [
+        7378944,
+        132,
+        7218
+      ],
+      "coupling_us": {
+        "p50": 93.0,
+        "p95": 159,
+        "p99": 184,
+        "max": 554
+      },
+      "support_probes": {
+        "p50": 56.0,
+        "p95": 60,
+        "p99": 62,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 56.0,
+        "p95": 64,
+        "p99": 72,
+        "max": 72
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 62.0,
+        "unresolved": 9764.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.399917602539006,
+      "final_y": 187.466674804688,
+      "raw_file": "windows/barrel-high-E.json",
+      "raw_sha256": "8327244da069229eb5618186bb29627d930fb60c7bf3b0bd68a88205d3ba6c1a",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.3425932647148078e-07,
+        4.1982430476483756e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-heavy",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 2.0,
+      "actual_inertia": 43.3333396911621,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 6.50421224202768,
+      "peak_overlap": 21,
+      "peak_upward": 3.47800540924072,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          3.1303405761719887,
+          3.000106811523011
+        ],
+        "position_span": [
+          3.1658935546879974,
+          6.716247558594006
+        ],
+        "sampled_path_length": 16.24172714804273,
+        "net_rotation_unwrapped": 0.7070246860384939,
+        "sampled_angular_travel": 0.9206782206892877,
+        "speed_p50": 1.0799463211348335,
+        "speed_p95": 1.5493636283482404,
+        "speed_max": 91.155517578125,
+        "abs_omega_p95": 0.108804181218147,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          1.2079467773439774,
+          0.21220397949198855
+        ],
+        "position_span": [
+          1.662658691406989,
+          0.6227874755859943
+        ],
+        "sampled_path_length": 3.8608643054149296,
+        "net_rotation_unwrapped": 0.286443948745727,
+        "sampled_angular_travel": 0.4126029610633868,
+        "speed_p50": 1.2164745943748372,
+        "speed_p95": 2.81053260821172,
+        "speed_max": 4.531629716554352,
+        "abs_omega_p95": 0.376779109239578,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.39666666666666667,
+      "event_attempt_active": 1458,
+      "accepted_event_sum": [
+        38.35999915003775,
+        605.5200029164553
+      ],
+      "event_cost_sum": 611.6705340817573,
+      "first_attempted_event": 2,
+      "moves_before_event": 0,
+      "native_work_sum": [
+        7378944,
+        233,
+        7218
+      ],
+      "coupling_us": {
+        "p50": 93.0,
+        "p95": 166,
+        "p99": 187,
+        "max": 236
+      },
+      "support_probes": {
+        "p50": 52.0,
+        "p95": 60,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 64.0,
+        "p95": 64,
+        "p99": 72,
+        "max": 72
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 106.0,
+        "unresolved": 10570.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.759796142579006,
+      "final_y": 187.218826293945,
+      "raw_file": "windows/barrel-heavy-C.json",
+      "raw_sha256": "047a4ccc933790e427ad275d4b38b1618119d46e5aa23dca2fd13ac1879ea124",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.595029606161794e-07,
+        3.166762047035476e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-heavy",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 2.0,
+      "actual_inertia": 43.3333396911621,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 6.38551027650695,
+      "peak_overlap": 20,
+      "peak_upward": 3.36067461967468,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          2.8749084472659945,
+          3.247955322266023
+        ],
+        "position_span": [
+          3.1958618164060084,
+          6.595001220703011
+        ],
+        "sampled_path_length": 19.915359899200137,
+        "net_rotation_unwrapped": 0.822179310023785,
+        "sampled_angular_travel": 1.1964774057269087,
+        "speed_p50": 1.2121531359740592,
+        "speed_p95": 1.9937119688273357,
+        "speed_max": 91.155517578125,
+        "abs_omega_p95": 0.180587574839592,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          1.279113769531989,
+          0.7886810302740059
+        ],
+        "position_span": [
+          1.71533203125,
+          0.918411254882983
+        ],
+        "sampled_path_length": 5.354990710439716,
+        "net_rotation_unwrapped": 0.429875761270523,
+        "sampled_angular_travel": 0.5647381246089946,
+        "speed_p50": 1.4396641124627716,
+        "speed_p95": 3.0395898980767413,
+        "speed_max": 3.9200174329695776,
+        "abs_omega_p95": 0.406891673803329,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.36,
+      "event_attempt_active": 1367,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 2,
+      "moves_before_event": 0,
+      "native_work_sum": [
+        7378944,
+        132,
+        7218
+      ],
+      "coupling_us": {
+        "p50": 96.5,
+        "p95": 167,
+        "p99": 187,
+        "max": 266
+      },
+      "support_probes": {
+        "p50": 56.0,
+        "p95": 60,
+        "p99": 62,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 56.0,
+        "p95": 64,
+        "p99": 72,
+        "max": 72
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 62.0,
+        "unresolved": 9764.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.399917602539006,
+      "final_y": 187.466674804688,
+      "raw_file": "windows/barrel-heavy-E.json",
+      "raw_sha256": "cb5cdf54d374c35df5babf32d9a78d51e4ee7a4155d5d476a6aee299c4f2cf16",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.3425932997256608e-07,
+        4.198242986586109e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-angle",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 1.80983581905267,
+      "peak_overlap": 1,
+      "peak_upward": 6.41899251937866,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          3.5732116699219887,
+          4.738800048827983
+        ],
+        "position_span": [
+          4.0549392700190054,
+          4.825012207030994
+        ],
+        "sampled_path_length": 33.40451237941689,
+        "net_rotation_unwrapped": 0.786118328571317,
+        "sampled_angular_travel": 2.926951467990796,
+        "speed_p50": 1.4192343831861898,
+        "speed_p95": 3.2298331379525433,
+        "speed_max": 34.195987701416,
+        "abs_omega_p95": 0.205575913190842,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.019714355468977374,
+          0.04054260253900566
+        ],
+        "position_span": [
+          0.10534667968701683,
+          0.17199707031298317
+        ],
+        "sampled_path_length": 4.521714509048873,
+        "net_rotation_unwrapped": -1.4185905460095167e-05,
+        "sampled_angular_travel": 0.3687607049942194,
+        "speed_p50": 1.4344148830747034,
+        "speed_p95": 3.0985582558207496,
+        "speed_max": 3.914204216907363,
+        "abs_omega_p95": 0.190577164292336,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 1,
+      "tail_correction_duty": 0.34,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        6697764,
+        1,
+        6885
+      ],
+      "coupling_us": {
+        "p50": 69.0,
+        "p95": 111,
+        "p99": 122,
+        "max": 324
+      },
+      "support_probes": {
+        "p50": 46.0,
+        "p95": 48,
+        "p99": 56,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 16.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 6.0,
+        "unresolved": 722.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.203857421875,
+      "final_y": 187.476623535156,
+      "raw_file": "windows/barrel-angle-C.json",
+      "raw_sha256": "b53d0e2003574c202709be2d2732f914a3d92e46674744b0bb1f2af6cd716732",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        3.833061616597068e-07,
+        8.952770236270169e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-angle",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 1.80983581905267,
+      "peak_overlap": 1,
+      "peak_upward": 6.41899251937866,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          3.5732116699219887,
+          4.738800048827983
+        ],
+        "position_span": [
+          4.0549392700190054,
+          4.825012207030994
+        ],
+        "sampled_path_length": 33.40451237941689,
+        "net_rotation_unwrapped": 0.786118328571317,
+        "sampled_angular_travel": 2.926951467990796,
+        "speed_p50": 1.4192343831861898,
+        "speed_p95": 3.2298331379525433,
+        "speed_max": 34.195987701416,
+        "abs_omega_p95": 0.205575913190842,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.019714355468977374,
+          0.04054260253900566
+        ],
+        "position_span": [
+          0.10534667968701683,
+          0.17199707031298317
+        ],
+        "sampled_path_length": 4.521714509048873,
+        "net_rotation_unwrapped": -1.4185905460095167e-05,
+        "sampled_angular_travel": 0.3687607049942194,
+        "speed_p50": 1.4344148830747034,
+        "speed_p95": 3.0985582558207496,
+        "speed_max": 3.914204216907363,
+        "abs_omega_p95": 0.190577164292336,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 1,
+      "tail_correction_duty": 0.34,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        6697764,
+        1,
+        6885
+      ],
+      "coupling_us": {
+        "p50": 67.0,
+        "p95": 108,
+        "p99": 123,
+        "max": 243
+      },
+      "support_probes": {
+        "p50": 46.0,
+        "p95": 48,
+        "p99": 56,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 16.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 6.0,
+        "unresolved": 722.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.203857421875,
+      "final_y": 187.476623535156,
+      "raw_file": "windows/barrel-angle-E.json",
+      "raw_sha256": "d37dc558651e1c59c8746e954170ee98423ea92ff6941f0508d707ed845318ce",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        3.833061616597068e-07,
+        8.952770236270169e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-edge",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "94099b192a29f955",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 107,
+      "first_guard": null,
+      "peak_entry": 96.1860891010123,
+      "peak_overlap": 63,
+      "peak_upward": 7.29783487319946,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          16.179214477539006,
+          100.78366088867199
+        ],
+        "position_span": [
+          23.09751892089801,
+          100.78366088867199
+        ],
+        "sampled_path_length": 110.37698818234391,
+        "net_rotation_unwrapped": 1.49079351872206,
+        "sampled_angular_travel": 3.1825342699903594,
+        "speed_p50": 2.221330541986438,
+        "speed_p95": 26.390475092621173,
+        "speed_max": 111.65279622462215,
+        "abs_omega_p95": 0.728856682777405,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.00012826919603448061,
+        "speed_p50": 2.2213305423013057,
+        "speed_p95": 2.221330543390271,
+        "speed_max": 2.221330543392567,
+        "abs_omega_p95": 0.0151223447173834,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 63,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1705,
+      "accepted_event_sum": [
+        3.200000301003495,
+        3490.4400082379543
+      ],
+      "event_cost_sum": 3502.9278152212464,
+      "first_attempted_event": 12,
+      "moves_before_event": 6194,
+      "native_work_sum": [
+        3547938,
+        61118,
+        6075
+      ],
+      "coupling_us": {
+        "p50": 266.0,
+        "p95": 504,
+        "p99": 534,
+        "max": 649
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 58,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 96.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 20.0,
+        "unresolved": 81297.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 101.29965209960997,
+      "final_y": 284.002380371094,
+      "raw_file": "windows/barrel-edge-C.json",
+      "raw_sha256": "1740bb649fdbc6a9f9bdf06ddac27787e55e7e1dbfd6419319e5ca4c21e985e4",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.834356559839797e-06,
+        1.0772286290761102e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-edge",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "94099b192a29f955",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 107,
+      "first_guard": null,
+      "peak_entry": 97.5127793377885,
+      "peak_overlap": 59,
+      "peak_upward": 6.71082592010498,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          16.03965759277301,
+          100.78216552734403
+        ],
+        "position_span": [
+          21.553649902344006,
+          100.78216552734403
+        ],
+        "sampled_path_length": 110.08644961066099,
+        "net_rotation_unwrapped": 1.49079542607069,
+        "sampled_angular_travel": 3.1687436625365253,
+        "speed_p50": 0.25949945656678713,
+        "speed_p95": 26.089151606630754,
+        "speed_max": 112.6336615908994,
+        "abs_omega_p95": 0.634545683860779,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 1.1920928999487046e-07,
+        "sampled_angular_travel": 4.136562362822005e-05,
+        "speed_p50": 7.92393922938171e-09,
+        "speed_p95": 1.1046024116722397e-08,
+        "speed_max": 1.1046024116722397e-08,
+        "abs_omega_p95": 9.2015106645249e-10,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 59,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1716,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 12,
+      "moves_before_event": 6194,
+      "native_work_sum": [
+        3605880,
+        60969,
+        6169
+      ],
+      "coupling_us": {
+        "p50": 244.0,
+        "p95": 443,
+        "p99": 507,
+        "max": 793
+      },
+      "support_probes": {
+        "p50": 50.0,
+        "p95": 60,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 96.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 20.0,
+        "unresolved": 67345.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 100.294708251954,
+      "final_y": 284.000885009766,
+      "raw_file": "windows/barrel-edge-E.json",
+      "raw_sha256": "354e1a78fabce6ba8b52d56497c8aadd813d6ea575f66ee7c8de53375d863eef",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.398465697209092e-07,
+        1.2678464175741588e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-horizontal",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "41d6c2b57e386bd5",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 107,
+      "first_guard": null,
+      "peak_entry": 6.13657317675177,
+      "peak_overlap": 46,
+      "peak_upward": 6.01499557495117,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -21.953422546387102,
+          64.985107421875
+        ],
+        "position_span": [
+          28.955184936523096,
+          64.985107421875
+        ],
+        "sampled_path_length": 83.94701944116314,
+        "net_rotation_unwrapped": -3.221578426659111,
+        "sampled_angular_travel": 4.7296986580011735,
+        "speed_p50": 1.361316391215573,
+        "speed_p95": 19.09123167087147,
+        "speed_max": 87.88972279619433,
+        "abs_omega_p95": 0.678844273090363,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          7.6293945028282906e-06,
+          0.0
+        ],
+        "sampled_path_length": 0.00018310546806787897,
+        "net_rotation_unwrapped": 2.384185799897409e-07,
+        "sampled_angular_travel": 4.029273978378711e-05,
+        "speed_p50": 1.543260625439427,
+        "speed_p95": 1.54334760977526,
+        "speed_max": 1.5433501831442504,
+        "abs_omega_p95": 0.0911445319652557,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 19,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1785,
+      "accepted_event_sum": [
+        -970.8799994289878,
+        2483.440061017872
+      ],
+      "event_cost_sum": 2673.2837277203776,
+      "first_attempted_event": 3,
+      "moves_before_event": 5061,
+      "native_work_sum": [
+        2729516,
+        62900,
+        4063
+      ],
+      "coupling_us": {
+        "p50": 107.0,
+        "p95": 191,
+        "p99": 259,
+        "max": 313
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 60,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 72.0,
+        "p95": 96,
+        "p99": 96,
+        "max": 96
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 613.0,
+        "unresolved": 14341.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 62.59503173828102,
+      "final_y": 281.001098632813,
+      "raw_file": "windows/barrel-horizontal-C.json",
+      "raw_sha256": "669f0b90299c1097a06b46f23e485f9bbeea085c6e3ca7af5aaffb500174df60",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        2.8979790168851682e-06,
+        2.3471002754543724e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-horizontal",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "41d6c2b57e386bd5",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 239,
+      "first_guard": null,
+      "peak_entry": 5.60706709746322,
+      "peak_overlap": 42,
+      "peak_upward": 2.01959156990051,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -15.605842590332003,
+          57.031982421875
+        ],
+        "position_span": [
+          23.682922363280994,
+          57.15539550781199
+        ],
+        "sampled_path_length": 73.28277793885952,
+        "net_rotation_unwrapped": -4.936647068952217,
+        "sampled_angular_travel": 4.9822427148569,
+        "speed_p50": 0.8724288657552153,
+        "speed_p95": 16.86114151326111,
+        "speed_max": 75.59755264351162,
+        "abs_omega_p95": 1.48332345485687,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.164794921875,
+          -0.049011230468011036
+        ],
+        "position_span": [
+          0.164794921875,
+          0.049011230468011036
+        ],
+        "sampled_path_length": 0.2022084773776443,
+        "net_rotation_unwrapped": -0.016444802284240057,
+        "sampled_angular_travel": 0.01651990413662019,
+        "speed_p50": 0.2677981565071647,
+        "speed_p95": 1.000415873226421,
+        "speed_max": 1.067481841492851,
+        "abs_omega_p95": 0.00565638579428196,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 11,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1797,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 3,
+      "moves_before_event": 5061,
+      "native_work_sum": [
+        2609995,
+        61529,
+        3868
+      ],
+      "coupling_us": {
+        "p50": 108.0,
+        "p95": 188,
+        "p99": 208,
+        "max": 406
+      },
+      "support_probes": {
+        "p50": 50.0,
+        "p95": 54,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 322.0,
+        "unresolved": 11230.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 57.169921875,
+      "final_y": 273.047973632813,
+      "raw_file": "windows/barrel-horizontal-E.json",
+      "raw_sha256": "d090fa1f9ddad02bbc47d79e387a46fcca9e24cf1aa5a0e89b8e23aec49bd62c",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        6.556511494559825e-07,
+        1.2867640780678258e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "falling-grains",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "ef1453e05513b1c9",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 22.230286292777,
+      "peak_overlap": 0,
+      "peak_upward": 0,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -4.1482849121090055,
+          14.203063964844006
+        ],
+        "position_span": [
+          4.1482849121090055,
+          14.203063964844006
+        ],
+        "sampled_path_length": 14.797510036763576,
+        "net_rotation_unwrapped": 0.425885617733002,
+        "sampled_angular_travel": 0.42597724834195133,
+        "speed_p50": 0.0,
+        "speed_p95": 4.737282719661661,
+        "speed_max": 6.4709272754010065,
+        "abs_omega_p95": 0.099711686372757,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 38,
+      "accepted_event_sum": [
+        -1.9599999785423268,
+        6.7600000426173175
+      ],
+      "event_cost_sum": 7.200376912951471,
+      "first_attempted_event": 1,
+      "moves_before_event": 96,
+      "native_work_sum": [
+        13145,
+        10870,
+        4019
+      ],
+      "coupling_us": {
+        "p50": 70.0,
+        "p95": 115,
+        "p99": 145,
+        "max": 4594
+      },
+      "support_probes": {
+        "p50": 56.0,
+        "p95": 56,
+        "p99": 58,
+        "max": 58
+      },
+      "solver_updates": {
+        "p50": 0.0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 14.203063964844006,
+      "final_y": 206.203063964844,
+      "raw_file": "windows/falling-grains-C.json",
+      "raw_sha256": "9a247ca2d9bf28adcb6bb73e4713ce1e2dea987f660ed8902a4329aa10c7a683",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.9726459442347994e-07,
+        1.4700951669541218e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "falling-grains",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "ef1453e05513b1c9",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 7.0,
+      "peak_overlap": 0,
+      "peak_upward": 0,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 96,
+      "native_work_sum": [
+        14048,
+        10772,
+        7393
+      ],
+      "coupling_us": {
+        "p50": 60.0,
+        "p95": 99,
+        "p99": 111,
+        "max": 173
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 44,
+        "p99": 44,
+        "max": 44
+      },
+      "solver_updates": {
+        "p50": 0.0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 0.0,
+      "final_y": 192.0,
+      "raw_file": "windows/falling-grains-E.json",
+      "raw_sha256": "e57f2a1adcd38cbaf7d768d8b7fc28e00338b292c2d5dfbbfd63e8b56de42327",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        0.0,
+        0.0
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "excavate",
+      "arm": "C",
+      "platform": "windows",
+      "initial_native_hash": "da440f1aafade34f",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 720,
+      "first_guard": null,
+      "peak_entry": 160.000431512095,
+      "peak_overlap": 0,
+      "peak_upward": 3.39177560806274,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.6775817871090055,
+          162.28164672851602
+        ],
+        "position_span": [
+          0.6842041015619884,
+          162.28164672851602
+        ],
+        "sampled_path_length": 170.66061979551057,
+        "net_rotation_unwrapped": -0.08000368315379096,
+        "sampled_angular_travel": 0.4961957771834022,
+        "speed_p50": 0.0,
+        "speed_p95": 44.5864544970258,
+        "speed_max": 145.69778567769183,
+        "abs_omega_p95": 0.0913588777184486,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        2405376,
+        0,
+        2514
+      ],
+      "coupling_us": {
+        "p50": 57.0,
+        "p95": 93,
+        "p99": 103,
+        "max": 250
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 48,
+        "p99": 48,
+        "max": 48
+      },
+      "solver_updates": {
+        "p50": 0.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 162.297637939454,
+      "final_y": 345.000366210938,
+      "raw_file": "windows/excavate-C.json",
+      "raw_sha256": "0924a195118d98dc6831193b6164c67aecf6b335ece7465f09cbf9def8d6be59",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0596687083364031e-08
+      ],
+      "authored_edits": [
+        {
+          "tick": 600,
+          "before_nonempty": 16258,
+          "after_nonempty": 898
+        }
+      ]
+    },
+    {
+      "case": "excavate",
+      "arm": "E",
+      "platform": "windows",
+      "initial_native_hash": "da440f1aafade34f",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 720,
+      "first_guard": null,
+      "peak_entry": 160.000431512095,
+      "peak_overlap": 0,
+      "peak_upward": 3.39177560806274,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.6775817871090055,
+          162.28164672851602
+        ],
+        "position_span": [
+          0.6842041015619884,
+          162.28164672851602
+        ],
+        "sampled_path_length": 170.66061979551057,
+        "net_rotation_unwrapped": -0.08000368315379096,
+        "sampled_angular_travel": 0.4961957771834022,
+        "speed_p50": 0.0,
+        "speed_p95": 44.5864544970258,
+        "speed_max": 145.69778567769183,
+        "abs_omega_p95": 0.0913588777184486,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        2405376,
+        0,
+        2514
+      ],
+      "coupling_us": {
+        "p50": 60.0,
+        "p95": 99,
+        "p99": 114,
+        "max": 210
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 48,
+        "p99": 48,
+        "max": 48
+      },
+      "solver_updates": {
+        "p50": 0.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 162.297637939454,
+      "final_y": 345.000366210938,
+      "raw_file": "windows/excavate-E.json",
+      "raw_sha256": "7b8866db04b757c1129849c65155829d77bfaea693adc66e8e411d393d800599",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0596687083364031e-08
+      ],
+      "authored_edits": [
+        {
+          "tick": 600,
+          "before_nonempty": 16258,
+          "after_nonempty": 898
+        }
+      ]
+    },
+    {
+      "case": "bank-sand",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": 1123,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 55,
+      "peak_upward": 4.59863376617432,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -9.780456542968977,
+          196.00213623046898
+        ],
+        "position_span": [
+          9.850433349608977,
+          196.00213623046898
+        ],
+        "sampled_path_length": 202.89715531079653,
+        "net_rotation_unwrapped": -1.5707288590929271,
+        "sampled_angular_travel": 2.1542965747357767,
+        "speed_p50": 10.851894190403605,
+        "speed_p95": 11.011019339523267,
+        "speed_max": 36.453465144206604,
+        "abs_omega_p95": 0.0796982049942017,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 5.80919731873992e-07,
+        "sampled_angular_travel": 0.00010092413140228089,
+        "speed_p50": 0.024889126420038942,
+        "speed_p95": 0.02489017136395426,
+        "speed_max": 0.0248902756720781,
+        "abs_omega_p95": 0.00708563532680273,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        -13.43999980390072,
+        2632.960031881935
+      ],
+      "event_cost_sum": 2634.5736109167397,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        26891018,
+        177270,
+        11762
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 30.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 42
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 154.26651000976602,
+      "final_y": 508.008728027344,
+      "raw_file": "linux/bank-sand-C.json",
+      "raw_sha256": "b11e1a6930c11a78ed1adae1e314031e41ead48463cf5b1422272c86f3898bdf",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.911793449548041e-07,
+        2.4523594688297123e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-sand",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 6,
+      "peak_upward": 0.172422960400581,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.015380859375,
+          1.058929443358977
+        ],
+        "position_span": [
+          0.4359130859369884,
+          1.0683898925780113
+        ],
+        "sampled_path_length": 16.589230624396947,
+        "net_rotation_unwrapped": -0.030499696731570047,
+        "sampled_angular_travel": 0.21554803848252568,
+        "speed_p50": 0.7373824814423894,
+        "speed_p95": 0.9790138024654065,
+        "speed_max": 4.43333292007446,
+        "abs_omega_p95": 0.0162734929472208,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.524764627930883,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921726226791808,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        21128880,
+        173603,
+        10243
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 34
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 1.072906494141023,
+      "final_y": 313.065521240234,
+      "raw_file": "linux/bank-sand-E.json",
+      "raw_sha256": "9646ccd7a1be9972ead80337d2320bc49b1fa7ce9ef3496e9eb515d2342e0067",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-salt",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "2729b8b9b85724cc",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": 1123,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 55,
+      "peak_upward": 4.59863376617432,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -9.780456542968977,
+          196.00213623046898
+        ],
+        "position_span": [
+          9.850433349608977,
+          196.00213623046898
+        ],
+        "sampled_path_length": 202.89715531079653,
+        "net_rotation_unwrapped": -1.5707288590929271,
+        "sampled_angular_travel": 2.1542965747357767,
+        "speed_p50": 10.851894190403605,
+        "speed_p95": 11.011019339523267,
+        "speed_max": 36.453465144206604,
+        "abs_omega_p95": 0.0796982049942017,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 5.80919731873992e-07,
+        "sampled_angular_travel": 0.00010092413140228089,
+        "speed_p50": 0.024889126420038942,
+        "speed_p95": 0.02489017136395426,
+        "speed_max": 0.0248902756720781,
+        "abs_omega_p95": 0.00708563532680273,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        -13.43999980390072,
+        2632.960031881935
+      ],
+      "event_cost_sum": 2634.5736109167397,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        26891018,
+        177270,
+        11762
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 30.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 42
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 154.26651000976602,
+      "final_y": 508.008728027344,
+      "raw_file": "linux/bank-salt-C.json",
+      "raw_sha256": "136350156cc1d9be0d30626c7b768db5258ee7bb0c5f6267e77024aaeee7d787",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.911793449548041e-07,
+        2.4523594688297123e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-salt",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "2729b8b9b85724cc",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 6,
+      "peak_upward": 0.172422960400581,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.015380859375,
+          1.058929443358977
+        ],
+        "position_span": [
+          0.4359130859369884,
+          1.0683898925780113
+        ],
+        "sampled_path_length": 16.589230624396947,
+        "net_rotation_unwrapped": -0.030499696731570047,
+        "sampled_angular_travel": 0.21554803848252568,
+        "speed_p50": 0.7373824814423894,
+        "speed_p95": 0.9790138024654065,
+        "speed_max": 4.43333292007446,
+        "abs_omega_p95": 0.0162734929472208,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.524764627930883,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921726226791808,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        21128880,
+        173603,
+        10243
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 34
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 1.072906494141023,
+      "final_y": 313.065521240234,
+      "raw_file": "linux/bank-salt-E.json",
+      "raw_sha256": "2d7587fcd7b4d0c39a10cb9c550bb7ec1eaaaefce3d5b95517181c759168aa02",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-dust",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "8f4f2c099ceb3584",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 52,
+      "peak_upward": 4.22542142868042,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -8.706298828125,
+          8.398803710936988
+        ],
+        "position_span": [
+          8.7529296875,
+          8.398803710936988
+        ],
+        "sampled_path_length": 61.425650395712985,
+        "net_rotation_unwrapped": -1.5575395505875382,
+        "sampled_angular_travel": 1.7494397182017658,
+        "speed_p50": 1.8558721815326455,
+        "speed_p95": 2.4586168353956745,
+        "speed_max": 20.008241849114082,
+        "abs_omega_p95": 0.0898998528718948,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01989746093698841,
+          1.243347167968011
+        ],
+        "position_span": [
+          0.031494140625,
+          1.243347167968011
+        ],
+        "sampled_path_length": 9.7967965875407,
+        "net_rotation_unwrapped": -0.0023210952058435007,
+        "sampled_angular_travel": 0.018950094468891506,
+        "speed_p50": 0.9767027764057957,
+        "speed_p95": 2.4592262005038084,
+        "speed_max": 2.5572950593257637,
+        "abs_omega_p95": 0.00800377037376165,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 52,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        -16.484999897889793,
+        687.6345008965579
+      ],
+      "event_cost_sum": 688.5735974684355,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        26225770,
+        177079,
+        11765
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 38,
+        "p99": 40,
+        "max": 42
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 4.779388427733977,
+      "final_y": 320.405395507812,
+      "raw_file": "linux/bank-dust-C.json",
+      "raw_sha256": "ddb00c7ab3f2f614c624223536dabc33cdf1d4a789257860843b2861cc208ce0",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.883392224997723e-07,
+        1.1035897470867972e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "bank-dust",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "8f4f2c099ceb3584",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 6,
+      "peak_upward": 0.172422960400581,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.015380859375,
+          1.058929443358977
+        ],
+        "position_span": [
+          0.4359130859369884,
+          1.0683898925780113
+        ],
+        "sampled_path_length": 16.589230624396947,
+        "net_rotation_unwrapped": -0.030499696731570047,
+        "sampled_angular_travel": 0.21554803848252568,
+        "speed_p50": 0.7373824814423894,
+        "speed_p95": 0.9790138024654065,
+        "speed_max": 4.43333292007446,
+        "abs_omega_p95": 0.0162734929472208,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.01452636718698841,
+          -0.00939941406301159
+        ],
+        "position_span": [
+          0.01452636718698841,
+          0.00964355468801159
+        ],
+        "sampled_path_length": 2.524764627930883,
+        "net_rotation_unwrapped": 6.818771361993825e-05,
+        "sampled_angular_travel": 0.00921726226791808,
+        "speed_p50": 0.24718401596928774,
+        "speed_p95": 0.7510344348544166,
+        "speed_max": 0.7511188838543765,
+        "abs_omega_p95": 0.00317654106765985,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 6,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        21128880,
+        173603,
+        10243
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 32,
+        "p99": 34,
+        "max": 34
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 1.072906494141023,
+      "final_y": 313.065521240234,
+      "raw_file": "linux/bank-dust-E.json",
+      "raw_sha256": "ddad8cf53e951320f866f4be9b8199ed09ab1bb22afedb051f1f44571bcf11f2",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        7.126807714436475e-08,
+        1.627705117912548e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "powered-bank",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": 1173,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 55,
+      "peak_upward": 8.61752319335938,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -5.883728027343977,
+          196.00210571289102
+        ],
+        "position_span": [
+          9.513427734375,
+          196.00210571289102
+        ],
+        "sampled_path_length": 202.9108398472596,
+        "net_rotation_unwrapped": -1.5706802619824918,
+        "sampled_angular_travel": 2.6603211200854426,
+        "speed_p50": 10.277127409304912,
+        "speed_p95": 10.90673624483932,
+        "speed_max": 39.75264755564598,
+        "abs_omega_p95": 0.175539389252663,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 7.502312655559982e-07,
+        "sampled_angular_travel": 0.00025420454767300206,
+        "speed_p50": 0.03342832997441622,
+        "speed_p95": 0.03343009203672742,
+        "speed_max": 0.033430192619565424,
+        "abs_omega_p95": 0.00940577313303947,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 54,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        -14.119999803602697,
+        2639.120025232439
+      ],
+      "event_cost_sum": 2641.1066600531385,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        26831403,
+        177368,
+        11763
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 30.0,
+        "p95": 34,
+        "p99": 38,
+        "max": 42
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 146.98492431640602,
+      "final_y": 508.008697509766,
+      "raw_file": "linux/powered-bank-C.json",
+      "raw_sha256": "10e9836d36478246dc4dd57391b038e43d879cb83f6d724adad1b590181ca43e",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        8.578205510396929e-07,
+        1.8957772962568953e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "powered-bank",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "bfc8be27c3a0d23c",
+      "actual_mass": 0.100000001490116,
+      "actual_inertia": 0.975000023841858,
+      "exact_conservation": true,
+      "raw_census_checks": 31,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": null,
+      "peak_overlap": 8,
+      "peak_upward": 0.28533136844635,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.2236328125,
+          0.9875183105469887
+        ],
+        "position_span": [
+          0.5732421875,
+          1.003021240233977
+        ],
+        "sampled_path_length": 20.8553549185949,
+        "net_rotation_unwrapped": 0.002343416213990146,
+        "sampled_angular_travel": 0.23455119133007107,
+        "speed_p50": 0.7785677996631782,
+        "speed_p95": 1.1218721607349644,
+        "speed_max": 4.37939262390137,
+        "abs_omega_p95": 0.0187050979584455,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          -0.00985717773403394
+        ],
+        "position_span": [
+          0.0,
+          0.011291503905965783
+        ],
+        "sampled_path_length": 2.9009094238338093,
+        "net_rotation_unwrapped": 7.724761963001647e-05,
+        "sampled_angular_travel": 0.010141134262089624,
+        "speed_p50": 0.26617149840755483,
+        "speed_p95": 0.8476040962413599,
+        "speed_max": 0.8476196454802194,
+        "abs_omega_p95": 0.0030870211776346,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 8,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 1793,
+      "native_work_sum": [
+        21228339,
+        173505,
+        10266
+      ],
+      "coupling_us": null,
+      "support_probes": {
+        "p50": 32.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "solver_updates": {
+        "p50": 112.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": null,
+      "descent900": 1.004791259766023,
+      "final_y": 312.994110107422,
+      "raw_file": "linux/powered-bank-E.json",
+      "raw_sha256": "4156ce5a0f5ef5512bca483a205a601e285c40fa087b566f6d97a2b3f2b241d9",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.3557789684110846e-08,
+        6.898018183130322e-09
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-gentle",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "da440f1aafade34f",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 0.0279799309113002,
+      "peak_overlap": 0,
+      "peak_upward": 3.54037261009216,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.53466796875,
+          1.7825317382810226
+        ],
+        "position_span": [
+          0.6842041015619884,
+          2.0146331787110228
+        ],
+        "sampled_path_length": 26.43773967272965,
+        "net_rotation_unwrapped": -0.07729952153749768,
+        "sampled_angular_travel": 1.1586047636519652,
+        "speed_p50": 1.4863998702042946,
+        "speed_p95": 3.0915551168238955,
+        "speed_max": 16.4739513397217,
+        "abs_omega_p95": 0.111267007887363,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.003662109375,
+          0.014755249023011174
+        ],
+        "position_span": [
+          0.1301879882809942,
+          0.16001892089801117
+        ],
+        "sampled_path_length": 4.05567534158088,
+        "net_rotation_unwrapped": 0.0001378853339701918,
+        "sampled_angular_travel": 0.16127589647658164,
+        "speed_p50": 1.4882414475858388,
+        "speed_p95": 3.063587803653771,
+        "speed_max": 3.4150152255284385,
+        "abs_omega_p95": 0.0851333364844322,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.36666666666666664,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        7177216,
+        0,
+        3592
+      ],
+      "coupling_us": {
+        "p50": 93.0,
+        "p95": 137,
+        "p99": 181,
+        "max": 525
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 48,
+        "p99": 48,
+        "max": 48
+      },
+      "solver_updates": {
+        "p50": 16.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 1.8518981933600003,
+      "final_y": 184.501251220703,
+      "raw_file": "linux/barrel-gentle-C.json",
+      "raw_sha256": "fcdc8d5a2eacfea1ffe94deab523866841413ca9800602ce014e05fc9d82b65e",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0588633692076854e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-gentle",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "da440f1aafade34f",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 0.0279799309113002,
+      "peak_overlap": 0,
+      "peak_upward": 3.54037261009216,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.53466796875,
+          1.7825317382810226
+        ],
+        "position_span": [
+          0.6842041015619884,
+          2.0146331787110228
+        ],
+        "sampled_path_length": 26.43773967272965,
+        "net_rotation_unwrapped": -0.07729952153749768,
+        "sampled_angular_travel": 1.1586047636519652,
+        "speed_p50": 1.4863998702042946,
+        "speed_p95": 3.0915551168238955,
+        "speed_max": 16.4739513397217,
+        "abs_omega_p95": 0.111267007887363,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.003662109375,
+          0.014755249023011174
+        ],
+        "position_span": [
+          0.1301879882809942,
+          0.16001892089801117
+        ],
+        "sampled_path_length": 4.05567534158088,
+        "net_rotation_unwrapped": 0.0001378853339701918,
+        "sampled_angular_travel": 0.16127589647658164,
+        "speed_p50": 1.4882414475858388,
+        "speed_p95": 3.063587803653771,
+        "speed_max": 3.4150152255284385,
+        "abs_omega_p95": 0.0851333364844322,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.36666666666666664,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        7177216,
+        0,
+        3592
+      ],
+      "coupling_us": {
+        "p50": 89.0,
+        "p95": 133,
+        "p99": 160,
+        "max": 221
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 48,
+        "p99": 48,
+        "max": 48
+      },
+      "solver_updates": {
+        "p50": 16.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 1.8518981933600003,
+      "final_y": 184.501251220703,
+      "raw_file": "linux/barrel-gentle-E.json",
+      "raw_sha256": "8e6d68e8db40145e0cfd7696fe9e004dc04ffa04928735f522b119c845a93ec6",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0588633692076854e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-high",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 6.69016327843201,
+      "peak_overlap": 22,
+      "peak_upward": 2.92296004295349,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          1.1107788085940058,
+          2.5947265625
+        ],
+        "position_span": [
+          2.0791015625,
+          6.904602050781023
+        ],
+        "sampled_path_length": 14.854522935606726,
+        "net_rotation_unwrapped": 0.3150239735841753,
+        "sampled_angular_travel": 0.7422359436750331,
+        "speed_p50": 1.0938982340708079,
+        "speed_p95": 1.4059684073641279,
+        "speed_max": 91.155517578125,
+        "abs_omega_p95": 0.0789913013577461,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.5376586914059942,
+          -0.3484802246090055
+        ],
+        "position_span": [
+          0.8306884765630116,
+          0.47578430175801145
+        ],
+        "sampled_path_length": 2.486421519017708,
+        "net_rotation_unwrapped": 0.028534740209579967,
+        "sampled_angular_travel": 0.3130901157856019,
+        "speed_p50": 1.0669608943417481,
+        "speed_p95": 1.8253597456167043,
+        "speed_max": 3.675826211554577,
+        "abs_omega_p95": 0.26938670873642,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.4766666666666667,
+      "event_attempt_active": 1644,
+      "accepted_event_sum": [
+        59.159998729825006,
+        677.4400075376034
+      ],
+      "event_cost_sum": 691.6020601317291,
+      "first_attempted_event": 2,
+      "moves_before_event": 0,
+      "native_work_sum": [
+        7378944,
+        390,
+        7218
+      ],
+      "coupling_us": {
+        "p50": 134.0,
+        "p95": 214,
+        "p99": 238,
+        "max": 296
+      },
+      "support_probes": {
+        "p50": 50.0,
+        "p95": 58,
+        "p99": 58,
+        "max": 58
+      },
+      "solver_updates": {
+        "p50": 64.0,
+        "p95": 72,
+        "p99": 72,
+        "max": 72
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 185.0,
+        "unresolved": 11214.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 6.190017700195995,
+      "final_y": 186.813446044922,
+      "raw_file": "linux/barrel-high-C.json",
+      "raw_sha256": "f35cf2d93c1ef347093987173f5e79c823e431d82b4a000f427fd04495acf483",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.44939454289344e-07,
+        3.357758765476504e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-high",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 6.38551027650695,
+      "peak_overlap": 20,
+      "peak_upward": 3.36067461967468,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          2.8749084472659945,
+          3.247955322266023
+        ],
+        "position_span": [
+          3.1958618164060084,
+          6.595001220703011
+        ],
+        "sampled_path_length": 19.915359899213733,
+        "net_rotation_unwrapped": 0.8221793025732044,
+        "sampled_angular_travel": 1.1964777559041961,
+        "speed_p50": 1.2121531359740592,
+        "speed_p95": 1.9937119688273357,
+        "speed_max": 91.155517578125,
+        "abs_omega_p95": 0.180587589740753,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          1.279113769531989,
+          0.7886810302740059
+        ],
+        "position_span": [
+          1.71533203125,
+          0.918411254882983
+        ],
+        "sampled_path_length": 5.354990710441124,
+        "net_rotation_unwrapped": 0.429875731468201,
+        "sampled_angular_travel": 0.5647382736206047,
+        "speed_p50": 1.4396641165972544,
+        "speed_p95": 3.0395898980767413,
+        "speed_max": 3.9200172928951273,
+        "abs_omega_p95": 0.406891614198685,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.36,
+      "event_attempt_active": 1367,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 2,
+      "moves_before_event": 0,
+      "native_work_sum": [
+        7378944,
+        132,
+        7218
+      ],
+      "coupling_us": {
+        "p50": 124.0,
+        "p95": 217,
+        "p99": 251,
+        "max": 459
+      },
+      "support_probes": {
+        "p50": 56.0,
+        "p95": 60,
+        "p99": 62,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 56.0,
+        "p95": 64,
+        "p99": 72,
+        "max": 72
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 62.0,
+        "unresolved": 9764.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.399917602539006,
+      "final_y": 187.466674804688,
+      "raw_file": "linux/barrel-high-E.json",
+      "raw_sha256": "6fea5a1bb49d01558a98a6229ba2a19913499b87d2c38755c8c9b7935099cd47",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.3425932626741783e-07,
+        4.895232735835364e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-heavy",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 2.0,
+      "actual_inertia": 43.3333396911621,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 6.50421228339425,
+      "peak_overlap": 21,
+      "peak_upward": 3.47800540924072,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          3.1303405761719887,
+          3.000106811523011
+        ],
+        "position_span": [
+          3.1658935546879974,
+          6.716247558594006
+        ],
+        "sampled_path_length": 16.241727148022637,
+        "net_rotation_unwrapped": 0.7070246785879133,
+        "sampled_angular_travel": 0.9206776469945832,
+        "speed_p50": 1.0799463211348335,
+        "speed_p95": 1.5493636283482404,
+        "speed_max": 91.155517578125,
+        "abs_omega_p95": 0.108804188668728,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          1.2079467773439774,
+          0.21220397949198855
+        ],
+        "position_span": [
+          1.662658691406989,
+          0.6227874755859943
+        ],
+        "sampled_path_length": 3.860864305412447,
+        "net_rotation_unwrapped": 0.286444008350372,
+        "sampled_angular_travel": 0.4126024246215819,
+        "speed_p50": 1.2164746524249945,
+        "speed_p95": 2.81053260821172,
+        "speed_max": 4.531629520603268,
+        "abs_omega_p95": 0.376779109239578,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.39666666666666667,
+      "event_attempt_active": 1458,
+      "accepted_event_sum": [
+        38.35999915003775,
+        605.5200029164553
+      ],
+      "event_cost_sum": 611.6705340817573,
+      "first_attempted_event": 2,
+      "moves_before_event": 0,
+      "native_work_sum": [
+        7378944,
+        233,
+        7218
+      ],
+      "coupling_us": {
+        "p50": 127.0,
+        "p95": 210,
+        "p99": 246,
+        "max": 341
+      },
+      "support_probes": {
+        "p50": 52.0,
+        "p95": 60,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 64.0,
+        "p95": 64,
+        "p99": 72,
+        "max": 72
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 106.0,
+        "unresolved": 10570.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.759796142577983,
+      "final_y": 187.218826293945,
+      "raw_file": "linux/barrel-heavy-C.json",
+      "raw_sha256": "a9933fbf35276138f715a82152e8d666f1d5485b5b7a677e0c79a2f786dc7cee",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.595808238584739e-07,
+        3.2621226442319795e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-heavy",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 2.0,
+      "actual_inertia": 43.3333396911621,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 6.38551027650695,
+      "peak_overlap": 20,
+      "peak_upward": 3.36067461967468,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          2.8749084472659945,
+          3.247955322266023
+        ],
+        "position_span": [
+          3.1958618164060084,
+          6.595001220703011
+        ],
+        "sampled_path_length": 19.915359899213733,
+        "net_rotation_unwrapped": 0.8221793025732044,
+        "sampled_angular_travel": 1.1964777559041961,
+        "speed_p50": 1.2121531359740592,
+        "speed_p95": 1.9937119688273357,
+        "speed_max": 91.155517578125,
+        "abs_omega_p95": 0.180587589740753,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          1.279113769531989,
+          0.7886810302740059
+        ],
+        "position_span": [
+          1.71533203125,
+          0.918411254882983
+        ],
+        "sampled_path_length": 5.354990710441124,
+        "net_rotation_unwrapped": 0.429875731468201,
+        "sampled_angular_travel": 0.5647382736206047,
+        "speed_p50": 1.4396641165972544,
+        "speed_p95": 3.0395898980767413,
+        "speed_max": 3.9200172928951273,
+        "abs_omega_p95": 0.406891614198685,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.36,
+      "event_attempt_active": 1367,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 2,
+      "moves_before_event": 0,
+      "native_work_sum": [
+        7378944,
+        132,
+        7218
+      ],
+      "coupling_us": {
+        "p50": 120.0,
+        "p95": 213,
+        "p99": 244,
+        "max": 445
+      },
+      "support_probes": {
+        "p50": 56.0,
+        "p95": 60,
+        "p99": 62,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 56.0,
+        "p95": 64,
+        "p99": 72,
+        "max": 72
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 62.0,
+        "unresolved": 9764.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.399917602539006,
+      "final_y": 187.466674804688,
+      "raw_file": "linux/barrel-heavy-E.json",
+      "raw_sha256": "fa902b5a480ab7617461ef9ed67f65c5ee6deb080ee7b45b0c644cb18f54ccfa",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.342593297685031e-07,
+        4.895232846857667e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-angle",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 1.80983601566513,
+      "peak_overlap": 1,
+      "peak_upward": 6.41899251937866,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          3.5732116699219887,
+          4.738800048827983
+        ],
+        "position_span": [
+          4.0549392700190054,
+          4.825012207030994
+        ],
+        "sampled_path_length": 33.40451237940792,
+        "net_rotation_unwrapped": 0.786118328571317,
+        "sampled_angular_travel": 2.926945507526256,
+        "speed_p50": 1.4192343890067365,
+        "speed_p95": 3.2298331379525433,
+        "speed_max": 34.195987701416,
+        "abs_omega_p95": 0.205575913190842,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.019714355468977374,
+          0.04054260253900566
+        ],
+        "position_span": [
+          0.10534667968701683,
+          0.17199707031298317
+        ],
+        "sampled_path_length": 4.521714509044524,
+        "net_rotation_unwrapped": -1.418590546009381e-05,
+        "sampled_angular_travel": 0.3687597513198795,
+        "speed_p50": 1.4344148830747034,
+        "speed_p95": 3.0985582558207496,
+        "speed_max": 3.914204216907363,
+        "abs_omega_p95": 0.190577164292336,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 1,
+      "tail_correction_duty": 0.34,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        6697764,
+        1,
+        6885
+      ],
+      "coupling_us": {
+        "p50": 84.0,
+        "p95": 132,
+        "p99": 156,
+        "max": 252
+      },
+      "support_probes": {
+        "p50": 46.0,
+        "p95": 48,
+        "p99": 56,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 16.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 6.0,
+        "unresolved": 722.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.203857421875,
+      "final_y": 187.476623535156,
+      "raw_file": "linux/barrel-angle-C.json",
+      "raw_sha256": "ec5020c870f1e6ed231b1b3a936a63d0fd796c4ccb8ade06cba082856b104c41",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        2.983521124259253e-07,
+        8.554587305198424e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-angle",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "49e7d1f0d5c7b811",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 1.80983601566513,
+      "peak_overlap": 1,
+      "peak_upward": 6.41899251937866,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          3.5732116699219887,
+          4.738800048827983
+        ],
+        "position_span": [
+          4.0549392700190054,
+          4.825012207030994
+        ],
+        "sampled_path_length": 33.40451237940792,
+        "net_rotation_unwrapped": 0.786118328571317,
+        "sampled_angular_travel": 2.926945507526256,
+        "speed_p50": 1.4192343890067365,
+        "speed_p95": 3.2298331379525433,
+        "speed_max": 34.195987701416,
+        "abs_omega_p95": 0.205575913190842,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.019714355468977374,
+          0.04054260253900566
+        ],
+        "position_span": [
+          0.10534667968701683,
+          0.17199707031298317
+        ],
+        "sampled_path_length": 4.521714509044524,
+        "net_rotation_unwrapped": -1.418590546009381e-05,
+        "sampled_angular_travel": 0.3687597513198795,
+        "speed_p50": 1.4344148830747034,
+        "speed_p95": 3.0985582558207496,
+        "speed_max": 3.914204216907363,
+        "abs_omega_p95": 0.190577164292336,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 1,
+      "tail_correction_duty": 0.34,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        6697764,
+        1,
+        6885
+      ],
+      "coupling_us": {
+        "p50": 89.0,
+        "p95": 139,
+        "p99": 170,
+        "max": 228
+      },
+      "support_probes": {
+        "p50": 46.0,
+        "p95": 48,
+        "p99": 56,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 16.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 6.0,
+        "unresolved": 722.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 5.203857421875,
+      "final_y": 187.476623535156,
+      "raw_file": "linux/barrel-angle-E.json",
+      "raw_sha256": "f519d5b05cf3883d87b116b4d70fcdd7c6c7d153d2bfd6028690b7191adba5a3",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        2.983521124259253e-07,
+        8.554587305198424e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-edge",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "94099b192a29f955",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 107,
+      "first_guard": null,
+      "peak_entry": 96.1860891010123,
+      "peak_overlap": 63,
+      "peak_upward": 7.29783487319946,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          16.18037414550801,
+          100.78369140625
+        ],
+        "position_span": [
+          23.09751892089801,
+          100.78369140625
+        ],
+        "sampled_path_length": 110.36690279238297,
+        "net_rotation_unwrapped": 1.4907910078763993,
+        "sampled_angular_travel": 3.182447835804305,
+        "speed_p50": 2.221203971135052,
+        "speed_p95": 26.390475092621173,
+        "speed_max": 111.65279633431453,
+        "abs_omega_p95": 0.728856682777405,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 2.384185799897409e-07,
+        "sampled_angular_travel": 9.036064181611181e-05,
+        "speed_p50": 2.221203971955541,
+        "speed_p95": 2.221203972464269,
+        "speed_max": 2.2212039727119195,
+        "abs_omega_p95": 0.0152205061167479,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 63,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1705,
+      "accepted_event_sum": [
+        3.3200002983212857,
+        3490.440007761117
+      ],
+      "event_cost_sum": 3502.925229094919,
+      "first_attempted_event": 12,
+      "moves_before_event": 6194,
+      "native_work_sum": [
+        3547938,
+        61118,
+        6075
+      ],
+      "coupling_us": {
+        "p50": 375.0,
+        "p95": 623,
+        "p99": 707,
+        "max": 5173
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 58,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 96.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 20.0,
+        "unresolved": 81294.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 101.29968261718798,
+      "final_y": 284.002410888672,
+      "raw_file": "linux/barrel-edge-C.json",
+      "raw_sha256": "66630f414a58e852f8f174d669aecb2caa9f681465b722a80bf7babc7d46c162",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.8343565596954969e-06,
+        1.0772286290761102e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-edge",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "94099b192a29f955",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 107,
+      "first_guard": null,
+      "peak_entry": 97.5127793377885,
+      "peak_overlap": 59,
+      "peak_upward": 6.7108268737793,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          16.039291381835994,
+          100.78213500976602
+        ],
+        "position_span": [
+          21.553649902344006,
+          100.78213500976602
+        ],
+        "sampled_path_length": 110.08665038919398,
+        "net_rotation_unwrapped": 1.4907949417829494,
+        "sampled_angular_travel": 3.1687522381548243,
+        "speed_p50": 0.25949945656678713,
+        "speed_p95": 26.089151606630754,
+        "speed_max": 112.6336615908994,
+        "abs_omega_p95": 0.634545683860779,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 4.5061111618061034e-05,
+        "speed_p50": 2.728497179372096e-09,
+        "speed_p95": 3.1441571197099566e-09,
+        "speed_max": 3.1441571197099566e-09,
+        "abs_omega_p95": 2.76513478780771e-10,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 59,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1716,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 12,
+      "moves_before_event": 6194,
+      "native_work_sum": [
+        3605880,
+        60969,
+        6169
+      ],
+      "coupling_us": {
+        "p50": 334.0,
+        "p95": 555,
+        "p99": 622,
+        "max": 895
+      },
+      "support_probes": {
+        "p50": 50.0,
+        "p95": 60,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 96.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 20.0,
+        "unresolved": 67343.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 100.294708251954,
+      "final_y": 284.000854492188,
+      "raw_file": "linux/barrel-edge-E.json",
+      "raw_sha256": "3df76429b1befc8cdf48cb94a4a1a4e9eb9a34c453ab207a310e65482f0d17a9",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.398465697209092e-07,
+        1.2273197649848022e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-horizontal",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "41d6c2b57e386bd5",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 107,
+      "first_guard": null,
+      "peak_entry": 6.1365730851391,
+      "peak_overlap": 46,
+      "peak_upward": 6.01499462127686,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -21.953430175781705,
+          64.98513793945301
+        ],
+        "position_span": [
+          28.955207824706704,
+          64.98513793945301
+        ],
+        "sampled_path_length": 83.2890006846332,
+        "net_rotation_unwrapped": -3.221586540341378,
+        "sampled_angular_travel": 4.700928523819765,
+        "speed_p50": 1.449071332574358,
+        "speed_p95": 19.09123167087147,
+        "speed_max": 87.88972315945416,
+        "abs_omega_p95": 0.678844213485718,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 7.152557297551709e-07,
+        "sampled_angular_travel": 5.793571431444988e-05,
+        "speed_p50": 1.5428455413532136,
+        "speed_p95": 1.5428455841484754,
+        "speed_max": 1.5428461404876137,
+        "abs_omega_p95": 0.0912623479962349,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 19,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1785,
+      "accepted_event_sum": [
+        -970.2799990773204,
+        2493.640063330532
+      ],
+      "event_cost_sum": 2681.7451169043757,
+      "first_attempted_event": 3,
+      "moves_before_event": 5061,
+      "native_work_sum": [
+        2612082,
+        61864,
+        3906
+      ],
+      "coupling_us": {
+        "p50": 231.0,
+        "p95": 403,
+        "p99": 471,
+        "max": 770
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 60,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 64.0,
+        "p95": 96,
+        "p99": 96,
+        "max": 96
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 501.0,
+        "unresolved": 15638.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 62.81048583984398,
+      "final_y": 281.001129150391,
+      "raw_file": "linux/barrel-horizontal-C.json",
+      "raw_sha256": "514dce78037de71c3089b1780c9338a07ac4ed6f8bf33269115085dfa620810d",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        2.8979790483422355e-06,
+        2.3471002754543724e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "barrel-horizontal",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "41d6c2b57e386bd5",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 239,
+      "first_guard": null,
+      "peak_entry": 5.60706709746322,
+      "peak_overlap": 42,
+      "peak_upward": 2.01959228515625,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -15.605842590332003,
+          57.03198242187398
+        ],
+        "position_span": [
+          23.682922363280994,
+          57.15539550781199
+        ],
+        "sampled_path_length": 73.28277793887358,
+        "net_rotation_unwrapped": -4.936647076402798,
+        "sampled_angular_travel": 4.98224176863308,
+        "speed_p50": 0.8724288657552153,
+        "speed_p95": 16.86114151326111,
+        "speed_max": 75.59755264351162,
+        "abs_omega_p95": 1.48332381248474,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.164794921875,
+          -0.04901123046903422
+        ],
+        "position_span": [
+          0.164794921875,
+          0.04901123046903422
+        ],
+        "sampled_path_length": 0.20220847738378003,
+        "net_rotation_unwrapped": -0.01644492149353005,
+        "sampled_angular_travel": 0.016519784927330194,
+        "speed_p50": 0.2677981565071647,
+        "speed_p95": 1.0004158109238928,
+        "speed_max": 1.067481841492851,
+        "abs_omega_p95": 0.00565638579428196,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 11,
+      "tail_correction_duty": 0.5,
+      "event_attempt_active": 1797,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 3,
+      "moves_before_event": 5061,
+      "native_work_sum": [
+        2609995,
+        61529,
+        3868
+      ],
+      "coupling_us": {
+        "p50": 173.0,
+        "p95": 271,
+        "p99": 316,
+        "max": 376
+      },
+      "support_probes": {
+        "p50": 50.0,
+        "p95": 54,
+        "p99": 60,
+        "max": 62
+      },
+      "solver_updates": {
+        "p50": 128.0,
+        "p95": 128,
+        "p99": 128,
+        "max": 128
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 322.0,
+        "unresolved": 11230.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 57.169921875,
+      "final_y": 273.047973632812,
+      "raw_file": "linux/barrel-horizontal-E.json",
+      "raw_sha256": "faefef0059e52d943fae3541ee7482f04faac81b9db6feedac40d644caabf38f",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        6.556511494559825e-07,
+        1.2867640780678258e-07
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "falling-grains",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "ef1453e05513b1c9",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 22.230286292777,
+      "peak_overlap": 0,
+      "peak_upward": 0,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -4.1482849121090055,
+          14.203063964844006
+        ],
+        "position_span": [
+          4.1482849121090055,
+          14.203063964844006
+        ],
+        "sampled_path_length": 14.797510036763626,
+        "net_rotation_unwrapped": 0.425885617733002,
+        "sampled_angular_travel": 0.42597724834195133,
+        "speed_p50": 0.0,
+        "speed_p95": 4.737282719661661,
+        "speed_max": 6.4709272754010065,
+        "abs_omega_p95": 0.099711686372757,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 38,
+      "accepted_event_sum": [
+        -1.9599999785423268,
+        6.7600000426173175
+      ],
+      "event_cost_sum": 7.200376912951471,
+      "first_attempted_event": 1,
+      "moves_before_event": 96,
+      "native_work_sum": [
+        13145,
+        10870,
+        4019
+      ],
+      "coupling_us": {
+        "p50": 74.0,
+        "p95": 120,
+        "p99": 141,
+        "max": 195
+      },
+      "support_probes": {
+        "p50": 56.0,
+        "p95": 56,
+        "p99": 58,
+        "max": 58
+      },
+      "solver_updates": {
+        "p50": 0.0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 14.203063964844006,
+      "final_y": 206.203063964844,
+      "raw_file": "linux/falling-grains-C.json",
+      "raw_sha256": "f86e40a6e04c2ae25ae7218d6a3d92d1e4cd651dff601e8da56101b472bdbbdc",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        1.9726459442347994e-07,
+        1.4700951669541218e-08
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "falling-grains",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "ef1453e05513b1c9",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": null,
+      "first_guard": null,
+      "peak_entry": 7.0,
+      "peak_overlap": 0,
+      "peak_upward": 0,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 1799,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": 1,
+      "moves_before_event": 96,
+      "native_work_sum": [
+        14048,
+        10772,
+        7393
+      ],
+      "coupling_us": {
+        "p50": 77.0,
+        "p95": 117,
+        "p99": 139,
+        "max": 276
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 44,
+        "p99": 44,
+        "max": 44
+      },
+      "solver_updates": {
+        "p50": 0.0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 0.0,
+      "final_y": 192.0,
+      "raw_file": "linux/falling-grains-E.json",
+      "raw_sha256": "8ff4dad49c3c3cd9242d02316d19ec28c6efa8b6e306c4eb89321b69d886fb88",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        0.0,
+        0.0
+      ],
+      "authored_edits": []
+    },
+    {
+      "case": "excavate",
+      "arm": "C",
+      "platform": "linux",
+      "initial_native_hash": "da440f1aafade34f",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 720,
+      "first_guard": null,
+      "peak_entry": 160.000431512095,
+      "peak_overlap": 0,
+      "peak_upward": 3.39177560806274,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.6775817871090055,
+          162.28164672851602
+        ],
+        "position_span": [
+          0.6842041015619884,
+          162.28164672851602
+        ],
+        "sampled_path_length": 170.66061979552228,
+        "net_rotation_unwrapped": -0.08000369060437156,
+        "sampled_angular_travel": 0.4961957885921037,
+        "speed_p50": 0.0,
+        "speed_p95": 44.5864544970258,
+        "speed_max": 145.69778567769183,
+        "abs_omega_p95": 0.0913588777184486,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        2405376,
+        0,
+        2514
+      ],
+      "coupling_us": {
+        "p50": 72.0,
+        "p95": 117,
+        "p99": 141,
+        "max": 278
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 48,
+        "p99": 48,
+        "max": 48
+      },
+      "solver_updates": {
+        "p50": 0.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 162.297637939454,
+      "final_y": 345.000366210938,
+      "raw_file": "linux/excavate-C.json",
+      "raw_sha256": "b7be5af2ce81aa54c6cc015db49d7ff03cd836535f479116a92b605fc91ee58b",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0588633692076854e-08
+      ],
+      "authored_edits": [
+        {
+          "tick": 600,
+          "before_nonempty": 16258,
+          "after_nonempty": 898
+        }
+      ]
+    },
+    {
+      "case": "excavate",
+      "arm": "E",
+      "platform": "linux",
+      "initial_native_hash": "da440f1aafade34f",
+      "actual_mass": 1.0,
+      "actual_inertia": 21.6666698455811,
+      "exact_conservation": true,
+      "raw_census_checks": 0,
+      "first_hard": 720,
+      "first_guard": null,
+      "peak_entry": 160.000431512095,
+      "peak_overlap": 0,
+      "peak_upward": 3.39177560806274,
+      "motion": {
+        "samples": 1800,
+        "first_tick": 0,
+        "last_tick": 1799,
+        "net_translation": [
+          -0.6775817871090055,
+          162.28164672851602
+        ],
+        "position_span": [
+          0.6842041015619884,
+          162.28164672851602
+        ],
+        "sampled_path_length": 170.66061979552228,
+        "net_rotation_unwrapped": -0.08000369060437156,
+        "sampled_angular_travel": 0.4961957885921037,
+        "speed_p50": 0.0,
+        "speed_p95": 44.5864544970258,
+        "speed_max": 145.69778567769183,
+        "abs_omega_p95": 0.0913588777184486,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_motion": {
+        "samples": 300,
+        "first_tick": 1500,
+        "last_tick": 1799,
+        "net_translation": [
+          0.0,
+          0.0
+        ],
+        "position_span": [
+          0.0,
+          0.0
+        ],
+        "sampled_path_length": 0.0,
+        "net_rotation_unwrapped": 0.0,
+        "sampled_angular_travel": 0.0,
+        "speed_p50": 0.0,
+        "speed_p95": 0.0,
+        "speed_max": 0.0,
+        "abs_omega_p95": 0.0,
+        "scope": "Sampled physical state; path length excludes unobserved within-step motion"
+      },
+      "tail_overlap": 0,
+      "tail_correction_duty": 0.0,
+      "event_attempt_active": 0,
+      "accepted_event_sum": [
+        0.0,
+        0.0
+      ],
+      "event_cost_sum": 0.0,
+      "first_attempted_event": null,
+      "moves_before_event": null,
+      "native_work_sum": [
+        2405376,
+        0,
+        2514
+      ],
+      "coupling_us": {
+        "p50": 89.0,
+        "p95": 140,
+        "p99": 187,
+        "max": 740
+      },
+      "support_probes": {
+        "p50": 44.0,
+        "p95": 48,
+        "p99": 48,
+        "max": 48
+      },
+      "solver_updates": {
+        "p50": 0.0,
+        "p95": 32,
+        "p99": 32,
+        "max": 32
+      },
+      "overlap_resolution_outcomes": {
+        "displaced": 0.0,
+        "unresolved": 0.0,
+        "scope": "Packed outcome counts; after hard proximity includes non-granular refusals, not a no-target/search-attempt census"
+      },
+      "descent900": 162.297637939454,
+      "final_y": 345.000366210938,
+      "raw_file": "linux/excavate-E.json",
+      "raw_sha256": "3c636c42e98d61babf3ac85392ef863bd6986054e82b71a75755dd3a2e464a20",
+      "fresh_applications": 1800,
+      "delivered_relative_error": [
+        4.801224310093801e-08,
+        1.0588633692076854e-08
+      ],
+      "authored_edits": [
+        {
+          "tick": 600,
+          "before_nonempty": 16258,
+          "after_nonempty": 898
+        }
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "case": "bank-sand",
+      "platform": "windows",
+      "common_uncensored_end": 1123,
+      "bank_descent": {
+        "control": 154.26651000976602,
+        "candidate": 1.072906494141023,
+        "supported": true,
+        "generalized_benefit": true
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "bank-salt",
+      "platform": "windows",
+      "common_uncensored_end": 1123,
+      "bank_descent": {
+        "control": 154.26651000976602,
+        "candidate": 1.072906494141023,
+        "supported": true,
+        "generalized_benefit": true
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "bank-dust",
+      "platform": "windows",
+      "common_uncensored_end": 1800,
+      "bank_descent": {
+        "control": 4.779388427733977,
+        "candidate": 1.072906494141023,
+        "supported": true,
+        "generalized_benefit": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "powered-bank",
+      "platform": "windows",
+      "common_uncensored_end": 1173,
+      "bank_descent": {
+        "control": 146.98492431640602,
+        "candidate": 1.004791259766023,
+        "supported": true,
+        "generalized_benefit": null
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "barrel-gentle",
+      "platform": "windows",
+      "common_uncensored_end": 1800,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": true,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "barrel-high",
+      "platform": "windows",
+      "common_uncensored_end": 1800,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": true,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "barrel-heavy",
+      "platform": "windows",
+      "common_uncensored_end": 1800,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": true,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "barrel-angle",
+      "platform": "windows",
+      "common_uncensored_end": 1800,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": true,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "barrel-edge",
+      "platform": "windows",
+      "common_uncensored_end": 107,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": false,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "barrel-horizontal",
+      "platform": "windows",
+      "common_uncensored_end": 107,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": false,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "falling-grains",
+      "platform": "windows",
+      "common_uncensored_end": 1800,
+      "moving_grain_loading": {
+        "exercised": true,
+        "control_travel": 14.797510036763576,
+        "candidate_travel": 0.0,
+        "control_rotation": 0.42597724834195133,
+        "candidate_rotation": 0.0,
+        "gap": true,
+        "scope": "Common prefix before first hard proximity or rig guard; sampled motion"
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "excavate",
+      "platform": "windows",
+      "common_uncensored_end": 720,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": false,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false,
+      "excavation": {
+        "control_fall": 44.045974731445995,
+        "candidate_fall": 44.045974731445995,
+        "candidate_tail_support_nodes": 0,
+        "scope": "Author removal at600; later floor contact is separate"
+      }
+    },
+    {
+      "case": "bank-sand",
+      "platform": "linux",
+      "common_uncensored_end": 1123,
+      "bank_descent": {
+        "control": 154.26651000976602,
+        "candidate": 1.072906494141023,
+        "supported": true,
+        "generalized_benefit": true
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "bank-salt",
+      "platform": "linux",
+      "common_uncensored_end": 1123,
+      "bank_descent": {
+        "control": 154.26651000976602,
+        "candidate": 1.072906494141023,
+        "supported": true,
+        "generalized_benefit": true
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "bank-dust",
+      "platform": "linux",
+      "common_uncensored_end": 1800,
+      "bank_descent": {
+        "control": 4.779388427733977,
+        "candidate": 1.072906494141023,
+        "supported": true,
+        "generalized_benefit": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "powered-bank",
+      "platform": "linux",
+      "common_uncensored_end": 1173,
+      "bank_descent": {
+        "control": 146.98492431640602,
+        "candidate": 1.004791259766023,
+        "supported": true,
+        "generalized_benefit": null
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "barrel-gentle",
+      "platform": "linux",
+      "common_uncensored_end": 1800,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": true,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "barrel-high",
+      "platform": "linux",
+      "common_uncensored_end": 1800,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": true,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "barrel-heavy",
+      "platform": "linux",
+      "common_uncensored_end": 1800,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": true,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": true
+    },
+    {
+      "case": "barrel-angle",
+      "platform": "linux",
+      "common_uncensored_end": 1800,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": true,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "barrel-edge",
+      "platform": "linux",
+      "common_uncensored_end": 107,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": false,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "barrel-horizontal",
+      "platform": "linux",
+      "common_uncensored_end": 107,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": false,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "falling-grains",
+      "platform": "linux",
+      "common_uncensored_end": 1800,
+      "moving_grain_loading": {
+        "exercised": true,
+        "control_travel": 14.797510036763626,
+        "candidate_travel": 0.0,
+        "control_rotation": 0.42597724834195133,
+        "candidate_rotation": 0.0,
+        "gap": true,
+        "scope": "Common prefix before first hard proximity or rig guard; sampled motion"
+      },
+      "tail_tradeoff": false
+    },
+    {
+      "case": "excavate",
+      "platform": "linux",
+      "common_uncensored_end": 720,
+      "impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "impact_guard_scope": "Whole operational capture; direct granular attribution requires the common hard/rig-clear prefix",
+      "entire_impact_hard_clear": false,
+      "prefix_impact_guards": {
+        "entry": true,
+        "overlap": true,
+        "rebound": true
+      },
+      "tail_tradeoff": false,
+      "excavation": {
+        "control_fall": 44.045974731445995,
+        "candidate_fall": 44.045974731445995,
+        "candidate_tail_support_nodes": 0,
+        "scope": "Author removal at600; later floor contact is separate"
+      }
+    }
+  ],
+  "observations": 86400,
+  "production_acceptance": false,
+  "owner_acceptance": null,
+  "reader_sha256": "0d86739c5140046e5b3d16e986c0eccabe100663b23e54b667f4f3adf39b2c37",
+  "full_reduction_sha256": "19953bac1e6653144b43227c29b414db24f8b78583f8c61fc400777f52f97b04",
+  "independent_arithmetic_sha256": "0caa7f104b8406921fe6d1dfb722cc17bae365f22ccb4c0aef0e0ac50586f77b",
+  "review_scope": "Separate arithmetic verification by the same engineer, not an independent reviewer"
+}

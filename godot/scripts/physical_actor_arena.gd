@@ -178,6 +178,9 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 	if not world.diagnostic_reset(native_options):
 		last_error = "native_reset"
 		return false
+	if review_options.get("response","")=="LA-EVENT-OFF" and world.gcr_diagnostics().get("granular_events","")!="off":
+		last_error = "granular_event_runtime_identity_refused"
+		return false
 	world.set_simulation_window_enabled(false)
 	world.set_cadence_lod_enabled(false)
 	var rectangles: Array = layout(int(validated.seed))

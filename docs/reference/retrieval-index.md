@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [What does granular-only event omission improve, what response does it lose, and how can I compare it while painting?](../operations/gcr-granular-events-registration.md)
+
 - [How are actuation timing, contact withdrawal and blocked-move events tested causally?](../operations/gcr-causal-registration.md)
   Separate lanes, actual clock/phase witnesses, a setter sham and native gain
   calibration preserve attribution; existing production and sleep stay unchanged.

@@ -11,6 +11,8 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+Current granular-only event successor: [registration](gcr-granular-events-registration.md) and [November4 evidence](../audits/2026-11-04-gcr-granular-event-successor.md) retain the sinking improvement with the legacy contact gain intact. Falling grains produce no measured body motion in the candidate, establishing a loading/torque gap; high/heavy barrels retain late-motion tradeoffs. The painting room adds an explicit experimental choice; LA remains its default. Main3da7e7be is reconciled, Astra347 at5b9b5a98 is separately owned and unmerged; no latest compound-response integration is claimed. Sleep and default promotion remain excluded.
+
 Current GCR-LA causal successor: [registration](gcr-causal-registration.md) and
 [dated results](../audits/2026-11-03-gcr-causal-tests.md) qualify 40 captures at 9a043491.
 Timing T misses its late-motion threshold; withdrawal cancellation X fails barrel

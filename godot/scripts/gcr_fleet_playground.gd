@@ -8,6 +8,7 @@ var response_select: OptionButton
 var control_status: Label
 var control_error: String = ""
 var thruster_fire: CheckButton
+var event_runtime_identity: String = ""
 
 func _ready() -> void:
 	super._ready()
@@ -34,7 +35,8 @@ func _build_comparison_controls() -> void:
 	response_select.focus_mode=Control.FOCUS_NONE
 	response_select.add_item("LA / A1 · budget comparison")
 	response_select.add_item("RFT / R2 reference · fixed 20")
-	response_select.add_item("LA · granular events OFF · experimental")
+	response_select.add_item("LA · events OFF (experimental)")
+	response_select.set_item_tooltip(2,"Reduces measured bank burial. Moving-grain loading and torque are deficient; late barrel motion can increase. Compare with LA. Applies on reset.")
 	response_select.select(["LA","RFT","LA-EVENT-OFF"].find(applied_controls.response))
 	responses.add_child(response_select)
 	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
@@ -78,6 +80,10 @@ func _build_comparison_controls() -> void:
 	panel.add_child(thruster_fire)
 	control_status=_label(panel,"",14,Color("f7c579"))
 	control_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	var provenance: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://addons/cybersand_native/runtime-provenance.json" if OS.get_name()=="Windows" else "res://addons/cybersand_native/runtime-provenance.linux.json"))
+	if provenance is Dictionary:
+		var actual: String = FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")
+		event_runtime_identity="Native %s · binary %s %s · room %s" % [str(provenance.get("source_commit","unknown")).left(8),actual.left(12),"verified" if actual==provenance.get("sha256") else "MISMATCH",FileAccess.get_sha256("res://scripts/gcr_fleet_playground.gd").left(12)]
 
 func _release_edit_focus() -> void:
 	var focused: Control = get_viewport().gui_get_focus_owner()
@@ -191,3 +197,5 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		var profile: Dictionary = runtime._arena.session._rigs[0]._profile
 		control_status.text="Applied: %s · budget %.0f · mass %.5f (×%.2f) · inertia %.5f (×%.2f) · thrust cap %.3f · torque cap %.3f\nApply/reset rebuilds terrain and craft. Settings persist across craft; material laws and sleep unchanged." % [applied_controls.response,applied_controls.budget,body.mass,applied_controls.mass_multiplier,body.inertia,applied_controls.inertia_multiplier,profile.fleet_force,profile.fleet_torque]
 		if not control_error.is_empty(): control_status.text+="\n"+control_error
+		control_status.text+="\n"+event_runtime_identity
+		if applied_controls.response=="LA-EVENT-OFF": control_status.text+=" · Experimental: moving-grain loading/torque incomplete."

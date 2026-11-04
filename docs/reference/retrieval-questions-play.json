@@ -205,6 +205,22 @@
         "operations/gcr-causal-registration.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GCREVT01",
+      "query": "How can I test granular event-off in the painting flyer playground and what sinking versus moving-grain loading tradeoff remains?",
+      "canonical": [
+        "operations/gcr-granular-events-registration.md"
+      ],
+      "facts": [
+        "Explicit LA event-off selects the granular channel only; legacy gain remains0.025 and LA remains the initial/Restore default.",
+        "Sand/Salt/Dust burial improves, while falling-grain body translation and rotation disappear in the controlled test; no general event-free law or owner acceptance follows.",
+        "Fresh Apply/reset, all seven flyers, painting/erase, actuator controls and the separate RFT reference are retained; sleep and compound response promotion are excluded."
+      ],
+      "sources": [
+        "operations/gcr-granular-events-registration.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }

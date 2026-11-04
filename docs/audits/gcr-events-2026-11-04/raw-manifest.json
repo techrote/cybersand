@@ -1,0 +1,258 @@
+{
+  "schema": "cybersand.gcr-events.raw-manifest.v1",
+  "source": "5235cec255f0c2ffde0c2b25f04c8ae656f6b381",
+  "bundle": {
+    "file": "gcr-granular-events-20261104-v2.zip",
+    "bytes": 72415851,
+    "sha256": "1142da89270079ee9f51003d44c0a187e306e6c29d2c69d93881523ff151fffd",
+    "scope": "Closed primary captures, native normal/sanitizer logs and build/mechanical/source evidence; final-head logs remain separate; runtime binaries excluded"
+  },
+  "protocol_sha256": "965f29e1888a2fd2f29cc8515becb50cd65d066faf154943b4ba9955e51f3fff",
+  "identity_sha256": "7842e845f1af04944697507531da653e224422767df454cdf570ba17782e743c",
+  "completion_sha256": "2c590255d7500e9fe125c810418a67407ef8752c6feeb314cce1a99abf3a5a35",
+  "full_reduction_sha256": "19953bac1e6653144b43227c29b414db24f8b78583f8c61fc400777f52f97b04",
+  "compact_sha256": "ba487d77b449e937a42710898f6809b72a9d7a95a18ae0b7162896cf092c16a6",
+  "selected_csv_sha256": "bc2aa2dc9fd03c43977fd8c7ba1b20865a4cda394596b876a6a21031347ea999",
+  "sources": [
+    {
+      "path": "windows/bank-sand-C.json",
+      "sha256": "c14332ab8344952a199f03081800e3561d9a520ecefc6737b03d3c6cf6de3f08",
+      "bytes": 12299647
+    },
+    {
+      "path": "windows/bank-sand-E.json",
+      "sha256": "9cec9437b2e05b8dec346a3d25c59babb4885c9684f53d00326030a28ca5cc01",
+      "bytes": 12344827
+    },
+    {
+      "path": "windows/bank-salt-C.json",
+      "sha256": "a5228572312609dda477839f828f00d06b6b2253c290856c445b286d4437ca59",
+      "bytes": 12299648
+    },
+    {
+      "path": "windows/bank-salt-E.json",
+      "sha256": "d7cbbebac1e48aadeae7cac2488434cec1f24d8ebcfd7fa1b3f44bcc74af4042",
+      "bytes": 12344828
+    },
+    {
+      "path": "windows/bank-dust-C.json",
+      "sha256": "cf832904822622d752b253731032f7789fef2148af707127d29484b8b6e3d5dc",
+      "bytes": 12394242
+    },
+    {
+      "path": "windows/bank-dust-E.json",
+      "sha256": "2e114c313db914499e64a2cea9f6af2c9437f0dbedf76594e29d4e8d7828e888",
+      "bytes": 12350274
+    },
+    {
+      "path": "windows/powered-bank-C.json",
+      "sha256": "7f9da925af33c1ae503c2efda6ed92f5364aad3705f65eaf8267f918715da709",
+      "bytes": 12273395
+    },
+    {
+      "path": "windows/powered-bank-E.json",
+      "sha256": "8b728f02604cf6f08edc66cf43607a2015331c40f4f8028bae8005682d1c8fa5",
+      "bytes": 12378759
+    },
+    {
+      "path": "windows/barrel-gentle-C.json",
+      "sha256": "4e7f860783d7669813c870992cc00d740cd44996b025b9cfa3037f8bf1fcb54b",
+      "bytes": 12237255
+    },
+    {
+      "path": "windows/barrel-gentle-E.json",
+      "sha256": "73df8b39a76675c466c15ef357789b3298b0c96e4f99fd1694b1b57fae460b13",
+      "bytes": 12221926
+    },
+    {
+      "path": "windows/barrel-high-C.json",
+      "sha256": "e94e205a702e4af555bc3b66ccd192651728345584124cbd3dd57abf1185f0e3",
+      "bytes": 12957224
+    },
+    {
+      "path": "windows/barrel-high-E.json",
+      "sha256": "8327244da069229eb5618186bb29627d930fb60c7bf3b0bd68a88205d3ba6c1a",
+      "bytes": 12699942
+    },
+    {
+      "path": "windows/barrel-heavy-C.json",
+      "sha256": "047a4ccc933790e427ad275d4b38b1618119d46e5aa23dca2fd13ac1879ea124",
+      "bytes": 12881064
+    },
+    {
+      "path": "windows/barrel-heavy-E.json",
+      "sha256": "cb5cdf54d374c35df5babf32d9a78d51e4ee7a4155d5d476a6aee299c4f2cf16",
+      "bytes": 12682001
+    },
+    {
+      "path": "windows/barrel-angle-C.json",
+      "sha256": "b53d0e2003574c202709be2d2732f914a3d92e46674744b0bb1f2af6cd716732",
+      "bytes": 12112422
+    },
+    {
+      "path": "windows/barrel-angle-E.json",
+      "sha256": "d37dc558651e1c59c8746e954170ee98423ea92ff6941f0508d707ed845318ce",
+      "bytes": 12097870
+    },
+    {
+      "path": "windows/barrel-edge-C.json",
+      "sha256": "1740bb649fdbc6a9f9bdf06ddac27787e55e7e1dbfd6419319e5ca4c21e985e4",
+      "bytes": 13015630
+    },
+    {
+      "path": "windows/barrel-edge-E.json",
+      "sha256": "354e1a78fabce6ba8b52d56497c8aadd813d6ea575f66ee7c8de53375d863eef",
+      "bytes": 13254045
+    },
+    {
+      "path": "windows/barrel-horizontal-C.json",
+      "sha256": "669f0b90299c1097a06b46f23e485f9bbeea085c6e3ca7af5aaffb500174df60",
+      "bytes": 12864101
+    },
+    {
+      "path": "windows/barrel-horizontal-E.json",
+      "sha256": "d090fa1f9ddad02bbc47d79e387a46fcca9e24cf1aa5a0e89b8e23aec49bd62c",
+      "bytes": 12957059
+    },
+    {
+      "path": "windows/falling-grains-C.json",
+      "sha256": "9a247ca2d9bf28adcb6bb73e4713ce1e2dea987f660ed8902a4329aa10c7a683",
+      "bytes": 10913887
+    },
+    {
+      "path": "windows/falling-grains-E.json",
+      "sha256": "e57f2a1adcd38cbaf7d768d8b7fc28e00338b292c2d5dfbbfd63e8b56de42327",
+      "bytes": 10407669
+    },
+    {
+      "path": "windows/excavate-C.json",
+      "sha256": "0924a195118d98dc6831193b6164c67aecf6b335ece7465f09cbf9def8d6be59",
+      "bytes": 11416428
+    },
+    {
+      "path": "windows/excavate-E.json",
+      "sha256": "7b8866db04b757c1129849c65155829d77bfaea693adc66e8e411d393d800599",
+      "bytes": 11402431
+    },
+    {
+      "path": "linux/bank-sand-C.json",
+      "sha256": "b11e1a6930c11a78ed1adae1e314031e41ead48463cf5b1422272c86f3898bdf",
+      "bytes": 12299854
+    },
+    {
+      "path": "linux/bank-sand-E.json",
+      "sha256": "9646ccd7a1be9972ead80337d2320bc49b1fa7ce9ef3496e9eb515d2342e0067",
+      "bytes": 12344858
+    },
+    {
+      "path": "linux/bank-salt-C.json",
+      "sha256": "136350156cc1d9be0d30626c7b768db5258ee7bb0c5f6267e77024aaeee7d787",
+      "bytes": 12299855
+    },
+    {
+      "path": "linux/bank-salt-E.json",
+      "sha256": "2d7587fcd7b4d0c39a10cb9c550bb7ec1eaaaefce3d5b95517181c759168aa02",
+      "bytes": 12344859
+    },
+    {
+      "path": "linux/bank-dust-C.json",
+      "sha256": "ddb00c7ab3f2f614c624223536dabc33cdf1d4a789257860843b2861cc208ce0",
+      "bytes": 12394793
+    },
+    {
+      "path": "linux/bank-dust-E.json",
+      "sha256": "ddad8cf53e951320f866f4be9b8199ed09ab1bb22afedb051f1f44571bcf11f2",
+      "bytes": 12350305
+    },
+    {
+      "path": "linux/powered-bank-C.json",
+      "sha256": "10e9836d36478246dc4dd57391b038e43d879cb83f6d724adad1b590181ca43e",
+      "bytes": 12273576
+    },
+    {
+      "path": "linux/powered-bank-E.json",
+      "sha256": "4156ce5a0f5ef5512bca483a205a601e285c40fa087b566f6d97a2b3f2b241d9",
+      "bytes": 12378829
+    },
+    {
+      "path": "linux/barrel-gentle-C.json",
+      "sha256": "fcdc8d5a2eacfea1ffe94deab523866841413ca9800602ce014e05fc9d82b65e",
+      "bytes": 12239960
+    },
+    {
+      "path": "linux/barrel-gentle-E.json",
+      "sha256": "8e6d68e8db40145e0cfd7696fe9e004dc04ffa04928735f522b119c845a93ec6",
+      "bytes": 12225218
+    },
+    {
+      "path": "linux/barrel-high-C.json",
+      "sha256": "f35cf2d93c1ef347093987173f5e79c823e431d82b4a000f427fd04495acf483",
+      "bytes": 12960621
+    },
+    {
+      "path": "linux/barrel-high-E.json",
+      "sha256": "6fea5a1bb49d01558a98a6229ba2a19913499b87d2c38755c8c9b7935099cd47",
+      "bytes": 12703830
+    },
+    {
+      "path": "linux/barrel-heavy-C.json",
+      "sha256": "a9933fbf35276138f715a82152e8d666f1d5485b5b7a677e0c79a2f786dc7cee",
+      "bytes": 12884808
+    },
+    {
+      "path": "linux/barrel-heavy-E.json",
+      "sha256": "fa902b5a480ab7617461ef9ed67f65c5ee6deb080ee7b45b0c644cb18f54ccfa",
+      "bytes": 12685178
+    },
+    {
+      "path": "linux/barrel-angle-C.json",
+      "sha256": "ec5020c870f1e6ed231b1b3a936a63d0fd796c4ccb8ade06cba082856b104c41",
+      "bytes": 12114738
+    },
+    {
+      "path": "linux/barrel-angle-E.json",
+      "sha256": "f519d5b05cf3883d87b116b4d70fcdd7c6c7d153d2bfd6028690b7191adba5a3",
+      "bytes": 12100722
+    },
+    {
+      "path": "linux/barrel-edge-C.json",
+      "sha256": "66630f414a58e852f8f174d669aecb2caa9f681465b722a80bf7babc7d46c162",
+      "bytes": 13021380
+    },
+    {
+      "path": "linux/barrel-edge-E.json",
+      "sha256": "3df76429b1befc8cdf48cb94a4a1a4e9eb9a34c453ab207a310e65482f0d17a9",
+      "bytes": 13296149
+    },
+    {
+      "path": "linux/barrel-horizontal-C.json",
+      "sha256": "514dce78037de71c3089b1780c9338a07ac4ed6f8bf33269115085dfa620810d",
+      "bytes": 12867715
+    },
+    {
+      "path": "linux/barrel-horizontal-E.json",
+      "sha256": "faefef0059e52d943fae3541ee7482f04faac81b9db6feedac40d644caabf38f",
+      "bytes": 12961694
+    },
+    {
+      "path": "linux/falling-grains-C.json",
+      "sha256": "f86e40a6e04c2ae25ae7218d6a3d92d1e4cd651dff601e8da56101b472bdbbdc",
+      "bytes": 10914094
+    },
+    {
+      "path": "linux/falling-grains-E.json",
+      "sha256": "8ff4dad49c3c3cd9242d02316d19ec28c6efa8b6e306c4eb89321b69d886fb88",
+      "bytes": 10409997
+    },
+    {
+      "path": "linux/excavate-C.json",
+      "sha256": "b7be5af2ce81aa54c6cc015db49d7ff03cd836535f479116a92b605fc91ee58b",
+      "bytes": 11418835
+    },
+    {
+      "path": "linux/excavate-E.json",
+      "sha256": "3c636c42e98d61babf3ac85392ef863bd6986054e82b71a75755dd3a2e464a20",
+      "bytes": 11406094
+    }
+  ]
+}
