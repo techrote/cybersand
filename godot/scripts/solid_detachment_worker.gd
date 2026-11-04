@@ -15,28 +15,62 @@ var _contact_usec: int = 0
 var _contact_max_usec: int = 0
 var _contact_geometry_probes: int = 0
 var _contact_support_probes: int = 0
+var _contact_complete_attempts: int = 0
+var _contact_refused_attempts: int = 0
+var _contact_native_geometry_ms: float = 0.0
+var _contact_native_payload_freeze_ms: float = 0.0
+var _contact_native_call_usec: int = 0
+var _contact_envelope_usec: int = 0
 
 func _populate_specialized_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	if solid_contact_observations_enabled and not _simulation_failed \
 		and _world.has_method(&"solid_detachment_contact_observation"):
 		var started: int = Time.get_ticks_usec()
 		var observation: Dictionary = _world.solid_detachment_contact_observation()
+		var native_finished: int = Time.get_ticks_usec()
 		observation["snapshot_serial"] = snapshot.serial
 		observation["physics_epoch"] = snapshot.rigid_body_epoch
+		# The dedicated native API freezes its scalar contact/proxy leaves and
+		# their arrays before returning. Refusals contain scalar metadata only.
+		# Keep the generic recursive freezer unchanged: arbitrary read-only
+		# containers do not establish deep immutability. Stamp this envelope only
+		# after its native payload is frozen, then seal the last mutable level.
 		observation["published_usec"] = Time.get_ticks_usec()
-		_freeze_capture(observation)
+		if observation.get("payload_immutability", "") == "scalar-contact-records-v1":
+			observation.make_read_only()
+		else:
+			# An older runtime may be present during a rejected source/runtime
+			# composition. Preserve its original recursive safety boundary; this
+			# fallback does not make that runtime source-qualified.
+			_freeze_capture(observation)
 		snapshot.solid_contact_observation = observation
-		var elapsed: int = Time.get_ticks_usec() - started
+		var ready_usec: int = Time.get_ticks_usec()
+		var elapsed: int = ready_usec - started
 		_contact_attempts += 1
 		_contact_usec += elapsed
 		_contact_max_usec = maxi(_contact_max_usec, elapsed)
 		_contact_geometry_probes += int(observation.get("geometry_probes", 0))
 		_contact_support_probes += int(observation.get("support_probes", 0))
+		_contact_native_call_usec += native_finished - started
+		_contact_envelope_usec += ready_usec - native_finished
+		_contact_native_geometry_ms += float(observation.get("native_geometry_ms", observation.get("observation_ms", 0.0)))
+		_contact_native_payload_freeze_ms += float(observation.get("native_payload_freeze_ms", 0.0))
+		if observation.get("ok", false) and observation.get("complete", false):
+			_contact_complete_attempts += 1
+		else:
+			_contact_refused_attempts += 1
 		# Cumulative owner work survives overwritten publications and refusals.
 		# Includes native observation, copied metadata and freezing the contact value.
 		var work := {"attempts":_contact_attempts, "elapsed_usec":_contact_usec,
 			"max_usec":_contact_max_usec, "geometry_probes":_contact_geometry_probes,
-			"support_probes":_contact_support_probes}
+			"support_probes":_contact_support_probes,
+			"complete_attempts":_contact_complete_attempts, "refused_attempts":_contact_refused_attempts,
+			"native_geometry_ms":_contact_native_geometry_ms,
+			"native_payload_freeze_ms":_contact_native_payload_freeze_ms,
+			"native_call_usec":_contact_native_call_usec, "envelope_usec":_contact_envelope_usec,
+			# Exact readiness follows the final envelope freeze. The envelope's
+			# published_usec remains its conservative, immediately prior stamp.
+			"ready_usec":ready_usec}
 		work.make_read_only()
 		snapshot.solid_contact_work = work
 

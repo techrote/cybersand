@@ -9,6 +9,18 @@ Vec rotate(Vec a, double c, double s) { return {c * a.x - s * a.y, s * a.x + c *
 Vector2 value(Vec p) { return {static_cast<real_t>(p.x), static_cast<real_t>(p.y)}; }
 struct EdgeSpan { std::uint16_t begin{}, end{}; };
 struct SpanRange { std::uint16_t offset{}, count{}; };
+struct ExteriorSegment { Vec a{}, b{}, normal{}; std::size_t face{}; };
+// This channel constructs scalar-only records: no nested container, object,
+// RID or mutable World alias is stored in a contact or proxy metric. Freeze
+// those known leaves and their owning array here, before they cross to script.
+// This is deliberately not a generic "read-only means deeply frozen" shortcut.
+void freeze_scalar_records(Array& records) {
+    for (std::int64_t i = 0; i < records.size(); ++i) {
+        Dictionary record = records[i];
+        record.make_read_only();
+    }
+    records.make_read_only();
+}
 // Clip an actual exterior rectangle edge to the CLOSED native unit square.
 // A point-only corner is measured geometrically but is not a support segment.
 bool segment_in_cell(Vec a, Vec b, int x, int y, Vec& point, double& length,
@@ -41,10 +53,18 @@ Dictionary CyberNativeCellWorld::solid_detachment_contact_observation() const {
     result["schema"] = "cybersand.sol281.sand-contact.v1";
     result["ok"] = false; result["complete"] = false;
     std::size_t probes = 0, support_probes = 0;
+    double native_geometry_ms = 0.0, payload_freeze_ms = 0.0;
     const auto finish = [&](const char* outcome) {
         result["outcome"] = outcome;
         result["geometry_probes"] = static_cast<std::int64_t>(probes);
         result["support_probes"] = static_cast<std::int64_t>(support_probes);
+        // Refusal returns contain scalar metadata only. Successful results
+        // already froze every nested record/array before marking complete.
+        result["payload_immutability"] = "scalar-contact-records-v1";
+        result["native_geometry_ms"] = native_geometry_ms > 0.0 ? native_geometry_ms :
+            std::chrono::duration<double, std::milli>(
+                std::chrono::steady_clock::now() - started).count();
+        result["native_payload_freeze_ms"] = payload_freeze_ms;
         result["observation_ms"] = std::chrono::duration<double, std::milli>(
             std::chrono::steady_clock::now() - started).count();
         return result;
@@ -196,6 +216,26 @@ Dictionary CyberNativeCellWorld::solid_detachment_contact_observation() const {
         const double hx = rect.half_size.x, hy = rect.half_size.y;
         const std::array<Vec, 4> corners{{{-hx,-hy},{hx,-hy},{hx,hy},{-hx,hy}}};
         const std::array<Vec, 4> normals{{{0,-1},{1,0},{0,1},{-1,0}}};
+        // Shape geometry is constant within this exclusive-owner observation.
+        // Reuse the exact same transformed exterior endpoints for every cell;
+        // nothing is retained across revisions, generations or body samples.
+        // The old face/part order and all admission/refusal checks are retained.
+        std::array<ExteriorSegment, 4 * cybersand::soliding::kSolidDomainSide> exterior{};
+        std::size_t exterior_count = 0;
+        for (std::size_t face = 0; face < 4; ++face) {
+            const auto& span_range = face_spans[i][face];
+            const auto units = static_cast<double>(face % 2 == 0 ? shapes[i].width : shapes[i].height);
+            const Vec direction{(corners[(face + 1) % 4].x - corners[face].x) / units,
+                                (corners[(face + 1) % 4].y - corners[face].y) / units};
+            for (std::size_t part = 0; part < span_range.count; ++part) {
+                const auto& span = spans[span_range.offset + part];
+                if (exterior_count == exterior.size()) return finish("EdgeCapacity");
+                exterior[exterior_count++] = {
+                    add(rect.center, rotate(add(corners[face], mul(direction, span.begin)), c, s)),
+                    add(rect.center, rotate(add(corners[face], mul(direction, span.end)), c, s)),
+                    rotate(normals[face], c, s), face};
+            }
+        }
         double proxy_area = 0.0, proxy_depth = 0.0;
         std::size_t proxy_cells = 0;
         for (int y = range[1]; y < range[3]; ++y) for (int x = range[0]; x < range[2]; ++x) {
@@ -223,28 +263,20 @@ Dictionary CyberNativeCellWorld::solid_detachment_contact_observation() const {
                 if (!world_->contact_cell_available(sx, sy)) return finish("UnknownSupport");
             }
             if (!world_->granular_support_at(x, y, false, false)) { ++unsupported; continue; }
-            for (std::size_t face = 0; face < 4; ++face) {
-                const auto& span_range = face_spans[i][face];
-                const auto units = static_cast<double>(face % 2 == 0 ? shapes[i].width : shapes[i].height);
-                const Vec direction{(corners[(face + 1) % 4].x - corners[face].x) / units,
-                                    (corners[(face + 1) % 4].y - corners[face].y) / units};
-                for (std::size_t part = 0; part < span_range.count; ++part) {
-                    const auto& span = spans[span_range.offset + part];
-                    const auto a = add(rect.center, rotate(add(corners[face], mul(direction, span.begin)), c, s));
-                    const auto b = add(rect.center, rotate(add(corners[face], mul(direction, span.end)), c, s));
-                    Vec point{}, clipped_a{}, clipped_b{}; double length = 0.0;
-                    if (!segment_in_cell(a, b, x, y, point, length, clipped_a, clipped_b)) continue;
-                    if (contacts.size() >= static_cast<std::int64_t>(max_contacts)) return finish("ContactCapacity");
-                    Dictionary contact;
-                    contact["proxy"] = static_cast<std::int64_t>(i + 1);
-                    contact["face"] = static_cast<std::int64_t>(face);
-                    contact["cell"] = Vector2i(x, y);
-                    contact["point"] = value(point); contact["normal"] = value(rotate(normals[face], c, s));
-                    contact["a"] = value(clipped_a); contact["b"] = value(clipped_b);
-                    contact["depth"] = intersection.depth; contact["area"] = intersection.area;
-                    contact["weight"] = length;
-                    contacts.append(contact);
-                }
+            for (std::size_t edge = 0; edge < exterior_count; ++edge) {
+                const auto& segment = exterior[edge];
+                Vec point{}, clipped_a{}, clipped_b{}; double length = 0.0;
+                if (!segment_in_cell(segment.a, segment.b, x, y, point, length, clipped_a, clipped_b)) continue;
+                if (contacts.size() >= static_cast<std::int64_t>(max_contacts)) return finish("ContactCapacity");
+                Dictionary contact;
+                contact["proxy"] = static_cast<std::int64_t>(i + 1);
+                contact["face"] = static_cast<std::int64_t>(segment.face);
+                contact["cell"] = Vector2i(x, y);
+                contact["point"] = value(point); contact["normal"] = value(segment.normal);
+                contact["a"] = value(clipped_a); contact["b"] = value(clipped_b);
+                contact["depth"] = intersection.depth; contact["area"] = intersection.area;
+                contact["weight"] = length;
+                contacts.append(contact);
             }
         }
         Dictionary metric;
@@ -265,6 +297,13 @@ Dictionary CyberNativeCellWorld::solid_detachment_contact_observation() const {
     result["exterior_edge_spans"] = static_cast<std::int64_t>(span_count);
     result["unsupported_contacts"] = static_cast<std::int64_t>(unsupported);
     result["hot_contacts"] = static_cast<std::int64_t>(hot);
+    native_geometry_ms = std::chrono::duration<double, std::milli>(
+        std::chrono::steady_clock::now() - started).count();
+    const auto freeze_started = std::chrono::steady_clock::now();
+    freeze_scalar_records(contacts);
+    freeze_scalar_records(proxy_metrics);
+    payload_freeze_ms = std::chrono::duration<double, std::milli>(
+        std::chrono::steady_clock::now() - freeze_started).count();
     result["contacts"] = contacts; result["proxies"] = proxy_metrics;
     result["ok"] = true; result["complete"] = true;
     return finish("Observed");

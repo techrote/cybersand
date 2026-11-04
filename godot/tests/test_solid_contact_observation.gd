@@ -4,6 +4,7 @@ extends SceneTree
 # reservation/finalization is an adapter fixture, not a claim of live Rapier
 # ownership or gameplay qualification; those have separate host tests.
 const Coupling = preload("res://scripts/rigid_body_coupling.gd")
+const ContactWorker = preload("res://scripts/solid_detachment_worker.gd")
 const GENERATION: int = 7
 const PHYSICS_EPOCH: int = 17
 var checks: int = 0
@@ -11,6 +12,13 @@ var failures: Array[String] = []
 var workers: int = 1
 var report_path: String = ""
 var case_reports: Array[Dictionary] = []
+
+class LegacyContactObservation extends RefCounted:
+	func solid_detachment_contact_observation() -> Dictionary:
+		# No new native immutability marker: arbitrary nested refusal metadata
+		# must still take the existing recursive safety path.
+		return {"ok":false, "complete":false, "outcome":"LegacyRefusal",
+			"diagnostic":[{"nested":[1, 2]}]}
 
 func _init() -> void:
 	call_deferred("_run")
@@ -72,6 +80,111 @@ func _states(source: Dictionary, pose: Transform2D, sample: int) -> PackedFloat3
 func _observe(world: Object, states: PackedFloat32Array) -> Dictionary:
 	world.prepare_rigid_body_coupling(states, false)
 	return world.solid_detachment_contact_observation()
+
+func _scalar_record(record: Dictionary) -> bool:
+	# Native leaf freezing is justified by this dedicated value schema, not by
+	# treating arbitrary shallow read-only dictionaries as deeply immutable.
+	for value: Variant in record.values():
+		if typeof(value) not in [TYPE_NIL, TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING,
+				TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_TRANSFORM2D]:
+			return false
+	return true
+
+func _frozen_payload(observation: Dictionary) -> bool:
+	for key: Variant in observation:
+		if key not in ["contacts", "proxies"]:
+			if not _scalar_record({"value":observation[key]}):
+				return false
+			continue
+		var records: Variant = observation[key]
+		if not records is Array or not records.is_read_only():
+			return false
+		for record: Variant in records:
+			if not record is Dictionary or not record.is_read_only() or not _scalar_record(record):
+				return false
+	return true
+
+func _publication_checks(world: Object, states: PackedFloat32Array, reference: Dictionary) -> void:
+	check(not reference.is_read_only() and _frozen_payload(reference),
+		"native freezes every known payload leaf while reserving only envelope metadata for owner")
+	check(reference.get("payload_immutability") == "scalar-contact-records-v1",
+		"native declares the dedicated scalar payload freezing contract")
+	check(float(reference.get("native_geometry_ms", -1.0)) >= 0.0
+		and float(reference.get("native_payload_freeze_ms", -1.0)) >= 0.0
+		and float(reference.observation_ms) >= float(reference.native_geometry_ms) + float(reference.native_payload_freeze_ms),
+		"native observation timing includes geometry construction and payload freeze stages")
+	var detached: Dictionary = reference.duplicate(true)
+	var original_area: float = float(reference.contacts[0].area)
+	detached.contacts[0].area = -1.0
+	check(float(reference.contacts[0].area) == original_area and float(detached.contacts[0].area) == -1.0,
+		"a mutable deep diagnostic copy cannot alter retained native payload")
+	var owner = ContactWorker.new()
+	# No worker thread runs in this fixture: this is the one exclusive native
+	# owner exercising the actual pre-publication value path synchronously.
+	owner._world = world
+	owner.solid_contact_observations_enabled = true
+	world.prepare_rigid_body_coupling(states, false)
+	var first := CyberSimulationSnapshot.new()
+	first.serial = 40
+	first.rigid_body_epoch = PHYSICS_EPOCH
+	owner._populate_specialized_snapshot(first)
+	check(first.solid_contact_observation.is_read_only() and _frozen_payload(first.solid_contact_observation)
+		and first.solid_contact_work.is_read_only() and _scalar_record(first.solid_contact_work),
+		"owner seals the complete envelope and work record without a mutable nested alias")
+	check(first.solid_contact_observation.snapshot_serial == 40
+		and first.solid_contact_observation.physics_epoch == PHYSICS_EPOCH
+		and first.solid_contact_observation.contacts == reference.contacts
+		and first.solid_contact_observation.proxies == reference.proxies,
+		"publication metadata preserves exact ordered geometry values")
+	check(int(first.solid_contact_work.attempts) == 1
+		and int(first.solid_contact_work.complete_attempts) == 1
+		and int(first.solid_contact_work.refused_attempts) == 0,
+		"first complete owner attempt is counted")
+	var retained: String = JSON.stringify(first.solid_contact_observation)
+	var second := CyberSimulationSnapshot.new()
+	second.serial = 41
+	second.rigid_body_epoch = PHYSICS_EPOCH
+	owner._populate_specialized_snapshot(second)
+	check(int(second.solid_contact_work.attempts) == 2
+		and int(second.solid_contact_work.complete_attempts) == 2
+		and int(second.solid_contact_work.refused_attempts) == 0
+		and int(second.solid_contact_work.elapsed_usec) >= int(first.solid_contact_work.elapsed_usec),
+		"an unconsumed complete publication retains its owner work in cumulative counters")
+	world.prepare_rigid_body_coupling(states.slice(0, Coupling.INPUT_STRIDE), false)
+	var third := CyberSimulationSnapshot.new()
+	third.serial = 42
+	third.rigid_body_epoch = PHYSICS_EPOCH
+	owner._populate_specialized_snapshot(third)
+	var work: Dictionary = third.solid_contact_work
+	check(not third.solid_contact_observation.get("ok", true)
+		and third.solid_contact_observation.is_read_only() and _frozen_payload(third.solid_contact_observation)
+		and int(work.attempts) == 3 and int(work.complete_attempts) == 2 and int(work.refused_attempts) == 1,
+		"incomplete compound refusal remains immutable and contributes its complete attempt cost")
+	check(int(work.elapsed_usec) == int(work.native_call_usec) + int(work.envelope_usec)
+		and int(work.native_call_usec) >= 0 and int(work.envelope_usec) >= 0
+		and float(work.native_geometry_ms) >= 0.0 and float(work.native_payload_freeze_ms) >= 0.0
+		and float(work.native_geometry_ms) + float(work.native_payload_freeze_ms)
+			<= float(work.native_call_usec) / 1000.0 + float(work.attempts) * 0.001,
+		"all-attempt elapsed numerator exactly covers native call plus metadata and envelope freeze")
+	check(int(work.ready_usec) >= int(third.solid_contact_observation.published_usec)
+		and int(work.ready_usec) >= int(second.solid_contact_work.ready_usec),
+		"post-freeze readiness is distinguished from the conservative envelope timestamp")
+	check(JSON.stringify(first.solid_contact_observation) == retained,
+		"later complete and refused attempts cannot mutate an earlier retained snapshot")
+	case_reports.append({"id":"immutable_publication", "attempts":work.attempts,
+		"complete_attempts":work.complete_attempts, "refused_attempts":work.refused_attempts,
+		"stages_accounted":int(work.elapsed_usec) == int(work.native_call_usec) + int(work.envelope_usec)})
+	owner._world = LegacyContactObservation.new()
+	var legacy := CyberSimulationSnapshot.new()
+	owner._populate_specialized_snapshot(legacy)
+	var legacy_observation: Dictionary = legacy.solid_contact_observation
+	check(legacy_observation.is_read_only() and legacy_observation.diagnostic.is_read_only()
+		and legacy_observation.diagnostic[0].is_read_only()
+		and legacy_observation.diagnostic[0].nested.is_read_only(),
+		"markerless legacy refusal retains recursive freezing of arbitrary nested metadata")
+	owner._world = null
+	owner = null
+	world.prepare_rigid_body_coupling(states, false)
 
 func _run() -> void:
 	for argument: String in OS.get_cmdline_user_args():
@@ -166,6 +279,7 @@ func _run() -> void:
 		"one common transform keeps exact area and penetration across proxy rounding")
 	case_reports.append({"id":"float32_seam", "admitted":coherent.get("ok",false),
 		"exact_contacts":JSON.stringify(coherent.get("contacts",[])) == JSON.stringify(observation.contacts)})
+	_publication_checks(world, states, observation)
 
 	var huge: PackedFloat32Array = _states(source, Transform2D(0.0, Vector2(1e30,1e30)), 102)
 	var escaped: Dictionary = _observe(world, huge)
