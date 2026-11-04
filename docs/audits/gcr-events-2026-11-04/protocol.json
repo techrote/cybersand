@@ -1,0 +1,227 @@
+{
+  "registration": "GCR-EVT-001-2026-11-04",
+  "source_control": "43028e4999c3038d5d83d77140461329f16364d3",
+  "reconciled_main": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+  "astra_head": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+  "ticks": 1800,
+  "dt": 0.016666666666666666,
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "arms": [
+    "C",
+    "E"
+  ],
+  "contact_gain": 0.025,
+  "wall_timeout_seconds": 300,
+  "cases": [
+    {
+      "id": "bank-sand",
+      "kind": "flyer",
+      "geometry": "bank",
+      "material": 2,
+      "drive": "unactuated"
+    },
+    {
+      "id": "bank-salt",
+      "kind": "flyer",
+      "geometry": "bank",
+      "material": 23,
+      "drive": "unactuated"
+    },
+    {
+      "id": "bank-dust",
+      "kind": "flyer",
+      "geometry": "bank",
+      "material": 14,
+      "drive": "unactuated"
+    },
+    {
+      "id": "powered-bank",
+      "kind": "flyer",
+      "geometry": "bank",
+      "material": 2,
+      "drive": "sustained"
+    },
+    {
+      "id": "barrel-gentle",
+      "kind": "barrel",
+      "material": 2,
+      "configuration": {
+        "left": 96,
+        "width": 96,
+        "depth": 160,
+        "layout": "packed",
+        "size": 1,
+        "mass": 1,
+        "angle": 0.08,
+        "gap": 2,
+        "speed": 0,
+        "gravity": 92.12,
+        "friction": 0.78,
+        "workers": 1,
+        "rest_mode": "control",
+        "base_budget": 20
+      }
+    },
+    {
+      "id": "barrel-high",
+      "kind": "barrel",
+      "material": 2,
+      "configuration": {
+        "left": 96,
+        "width": 64,
+        "depth": 96,
+        "layout": "deep",
+        "size": 1,
+        "mass": 1,
+        "angle": 0.08,
+        "gap": 2,
+        "speed": 90,
+        "gravity": 92.12,
+        "friction": 0.78,
+        "workers": 1,
+        "rest_mode": "control",
+        "base_budget": 20
+      }
+    },
+    {
+      "id": "barrel-heavy",
+      "kind": "barrel",
+      "material": 2,
+      "configuration": {
+        "left": 96,
+        "width": 64,
+        "depth": 96,
+        "layout": "deep",
+        "size": 1,
+        "mass": 2,
+        "angle": 0.08,
+        "gap": 2,
+        "speed": 90,
+        "gravity": 92.12,
+        "friction": 0.78,
+        "workers": 1,
+        "rest_mode": "control",
+        "base_budget": 20
+      }
+    },
+    {
+      "id": "barrel-angle",
+      "kind": "barrel",
+      "material": 2,
+      "configuration": {
+        "left": 96,
+        "width": 64,
+        "depth": 96,
+        "layout": "deep",
+        "size": 1,
+        "mass": 1,
+        "angle": 0.7853981633974483,
+        "gap": 2,
+        "speed": 30,
+        "gravity": 92.12,
+        "friction": 0.78,
+        "workers": 1,
+        "rest_mode": "control",
+        "base_budget": 20
+      }
+    },
+    {
+      "id": "barrel-edge",
+      "kind": "barrel",
+      "material": 2,
+      "configuration": {
+        "left": 96,
+        "width": 64,
+        "depth": 96,
+        "layout": "edge",
+        "size": 1,
+        "mass": 1,
+        "angle": 0.08,
+        "gap": 2,
+        "speed": 30,
+        "gravity": 92.12,
+        "friction": 0.78,
+        "workers": 1,
+        "rest_mode": "control",
+        "base_budget": 20
+      }
+    },
+    {
+      "id": "barrel-horizontal",
+      "kind": "barrel",
+      "material": 2,
+      "configuration": {
+        "left": 96,
+        "width": 64,
+        "depth": 96,
+        "layout": "horizontal-entry",
+        "size": 1,
+        "mass": 1,
+        "angle": 0.08,
+        "gap": 2,
+        "speed": 30,
+        "gravity": 92.12,
+        "friction": 0.78,
+        "workers": 1,
+        "rest_mode": "control",
+        "base_budget": 20,
+        "bank_gap": 2,
+        "bank_body_y": 24
+      }
+    },
+    {
+      "id": "falling-grains",
+      "kind": "barrel",
+      "material": 2,
+      "configuration": {
+        "left": 96,
+        "width": 64,
+        "depth": 96,
+        "layout": "grain-stream",
+        "size": 1,
+        "mass": 1,
+        "angle": 0,
+        "gap": 2,
+        "speed": 0,
+        "gravity": 0,
+        "friction": 0.78,
+        "workers": 1,
+        "rest_mode": "control",
+        "base_budget": 20,
+        "position": [
+          128,
+          192
+        ]
+      }
+    },
+    {
+      "id": "excavate",
+      "kind": "barrel",
+      "material": 2,
+      "configuration": {
+        "left": 96,
+        "width": 96,
+        "depth": 160,
+        "layout": "excavate",
+        "size": 1,
+        "mass": 1,
+        "angle": 0.08,
+        "gap": 2,
+        "speed": 0,
+        "gravity": 92.12,
+        "friction": 0.78,
+        "workers": 1,
+        "rest_mode": "control",
+        "base_budget": 20
+      }
+    }
+  ],
+  "expected_captures": 48,
+  "pulse_start": 120,
+  "drive_end": 1200,
+  "effort": 0.7,
+  "drive_fraction": 0.15
+}
