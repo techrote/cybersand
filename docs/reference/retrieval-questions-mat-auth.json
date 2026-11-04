@@ -1,7 +1,7 @@
 {
-  "version": 1,
-  "reviewed": "2026-11-03",
-  "scope": "Supplementary MAT-AUTH architecture/admission questions; frozen32 and challenge157 remain unchanged. Planned status and owner decision boundaries are required answer facts.",
+  "version": 2,
+  "reviewed": "2026-11-04",
+  "scope": "Supplementary MAT-AUTH architecture/admission questions; frozen32 and challenge157 remain unchanged. MAT-AUTH-01's revision-sensitive adoption fact reflects the 2026-11-04 owner decision; all query wording and canonical routes remain unchanged. Planned status and separate implementation assignment are required answer facts.",
   "questions": [
     {
       "id": "MAT-AUTH-01",
@@ -10,7 +10,7 @@
         "architecture/material-authoring-catalogue-plan.md"
       ],
       "facts": [
-        "The design remains Planned and PR357 draft/unmerged; ACCEPT WITH CORRECTIONS is a recommendation awaiting owner adoption.",
+        "The owner adopted the corrected design as Planned and authorized documentation-only guarded integration of PR357 on 2026-11-04; this does not authorize or start353-A implementation, and actual merge/CI status belongs to the PR ledger.",
         "Proposed353-A compiles shadow metadata against independent old-source and backend-qualified oracles without changing runtime authority.",
         "The broad353 issue remains open after a narrow checkpoint unless the owner explicitly changes its completion scope."
       ],

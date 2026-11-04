@@ -4,16 +4,19 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
 
-Material authoring: the [corrected Planned catalogue proposal](architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
-and [independent current-main review](audits/2026-11-03-mat-auth-000-architecture-review.md)
-recommend a shadow compiler before production cutover. PR #357 remains draft;
-architecture adoption and #353–#356 implementation require an owner decision.
+Material authoring: the [owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+authorizes documentation integration only. The [corrected technical contract](architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+and [independent review](audits/2026-11-03-mat-auth-000-architecture-review.md)
+retain shadow generation before any production cutover. #353-A remains a separate,
+unstarted task; #353–#356 implementation and production migration are not authorized
+by this adoption. The [PR ledger](https://github.com/techrote/cybersand/pull/357)
+owns actual integration and CI status.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),

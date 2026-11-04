@@ -4,13 +4,34 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
 
+## MAT-AUTH documentation adoption boundary — 2026-11-04
+
+The [owner decision](https://github.com/techrote/cybersand/pull/357#issuecomment-6619407158)
+adopts the corrected architecture as Planned and permits documentation-only
+guarded integration after final checks. It assigns no compiler or gameplay work.
+The [canonical adoption record](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+and [PR integration ledger](https://github.com/techrote/cybersand/pull/357) separate
+this decision from actual final-head, merge and post-merge qualification.
+
+The earlier [readiness checkpoint](https://github.com/techrote/cybersand/pull/357#issuecomment-6619191972)
+authenticates reviewed head `9b776d109e7843fb9b2d25239f9d088181309aa1` through its
+exact tree equality with hosted synthetic merge `c4e06dbd629a76f88807bcd434c8291927307b01`.
+The hosted materialized-provenance step was skipped by draft state; authorized
+ready-state and post-merge documentation checks must execute it. Pointer identity,
+materialized artifact validation and runtime execution remain separate claims.
+The original review, failed evidence, LCB03 retrieval miss and Q09 partial answer
+remain historical results; no later documentation result rewrites them.
+
 ## MAT-AUTH architecture review — 2026-11-03
+
+**Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+supersedes the adoption hold below; original review results remain unchanged.
 
 The [#357 review record](../audits/2026-11-03-mat-auth-000-architecture-review.md)
 separates static source/metadata inspection, documentation/retrieval checks and

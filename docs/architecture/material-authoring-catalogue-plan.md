@@ -1,23 +1,27 @@
 ---
-title: Canonical material catalogue and interaction authoring — proposed programme
+title: Canonical material catalogue and interaction authoring — adopted Planned baseline
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Planned material-authoring programme; sections 1–10 retain the 2026-11-02 intake and section 11 owns the corrected 2026-11-03 proposed admission; no implementation approval
-last-reviewed: 2026-11-03
+scope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries
+last-reviewed: 2026-11-04
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
 
-# Canonical material catalogue and interaction authoring — proposed programme
+# Canonical material catalogue and interaction authoring — adopted Planned baseline
 
-**Independent review, 2026-11-03: ACCEPT WITH CORRECTIONS, awaiting owner adoption.**
-The [current-main admission correction](#11-current-main-review-and-implementation-admission--2026-11-03)
+**Owner-adopted Planned baseline, 2026-11-04; implementation remains unstarted.**
+The owner authorized documentation-only guarded integration of PR #357 after
+final checks. The [adoption record](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+records that decision and the separate #353-A assignment boundary. The
+[current-main admission correction](#11-current-main-review-and-implementation-admission--2026-11-03)
 and [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
-qualify this proposal. Sections 1–10 below retain the original 2 November text
+retain the technical design and its evidence. Sections 1–10 retain the original 2 November text
 from PR #357 at `fc7f74768bb3d24fb7e913615f6774dbff321f91`; their numerical
 intake remains historical even where reverified. Section 11 corrects the
-proposed migration and endpoint shorthand; it does not promote any design to
-Current or authorize #353–#356. The PR remains draft and unmerged.
+proposed migration and endpoint shorthand; its dated decision holds are qualified
+by section 12. Adoption does not promote the design to Current runtime behavior
+or authorize #353–#356. The PR ledger records actual integration and CI status.
 
 **Status: Planned, not implemented or gameplay-qualified.** The owner requested a documented short implementation chain on 2026-11-02. This document captures the proposed architectural disposition; it does **not** activate a new material inheritance system, reinterpret historical evidence, or authorise default material rebalancing.
 
@@ -38,6 +42,7 @@ Current or authorize #353–#356. The PR remains draft and unmerged.
 9. [Issue dependency and acceptance plan](#9-issue-dependency-and-acceptance-plan) — finite steps, qualification, rollback and write-set separation.
 10. [Decisions held for explicit disposition](#10-decisions-held-for-explicit-disposition) — questions to resolve with evidence rather than guesswork.
 11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions.
+12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates.
 
 ## 1. Authority and preserved substrate
 
@@ -287,6 +292,13 @@ No dynamic runtime material creation is implied: v1 can add source-level materia
 
 ## 11. Current-main review and implementation admission — 2026-11-03
 
+**Dated status correction, 2026-11-04:** the owner has adopted the corrected
+design as Planned and authorized documentation integration. The 3 November
+review text below is preserved; its adoption hold is superseded by
+[section 12](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
+#353-A implementation and production consumer replacement remain unstarted and
+require separate assignment and their own qualification.
+
 **Planned correction; owner decision pending.** Review of accepted main
 `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` confirms the original material counts
 and supports the six orthogonal classifications. It also establishes compatibility
@@ -482,6 +494,11 @@ reaction semantics; editing cannot bypass #355 or relevant #354 dispositions.
 
 ### Successor gates and owner decisions
 
+**Current assignment boundary, 2026-11-04:** architecture adoption is recorded
+in [section 12](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04), but
+no implementation stage below has been assigned by that decision. The retained
+3 November table and final recommendation describe their technical gates.
+
 | Stage | Admission and required proof | Stop/rollback boundary |
 |---|---|---|
 | #353-A | Owner adopts this narrowed scope; freeze source and per-consumer oracle, validate all IDs/descriptors/families/indices/capabilities, synthetic conflicts and deterministic outputs; preserve current LCB derivation/wire/receipt checks | Shadow outputs only; a mismatch is evidence, not a reason to update the oracle |
@@ -505,3 +522,48 @@ scope, same-ID/quantity exceptions, MoltenGlass thermal law and viscous retry/re
 law only if their bounded successors present evidence. Preserve current behavior
 and backend differences until each such decision. This review grants none of
 those semantic changes and does not merge #357.
+
+## 12. Owner adoption and shadow-compiler handover — 2026-11-04
+
+**Approved direction, retained Planned status.** The owner explicitly authorized
+adopting this corrected architecture and merging only the documentation after
+final checks. The [recorded decision](https://github.com/techrote/cybersand/pull/357#issuecomment-6619407158)
+supersedes the earlier adoption hold. It does not assign #353-A or any later
+implementation. Current native and GDScript definitions remain authoritative;
+no material behavior, default, Cell layout, transport, quantity, save, policy,
+receipt identity or runtime binary changes follow from accepting the plan.
+
+The [#353-A handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661)
+defines the next separately assigned task: strict versioned JSON, a Python-stdlib
+compiler, deterministic shadow outputs/source maps, an independent pre-generator
+source/backend oracle, strict and adversarial validation, read-only `--check`,
+unchanged-output preservation and no partial publication after validation failure.
+The architecture-adoption prerequisite is now satisfied; the implementation
+assignment remains outstanding. Broad #353 and parent #352 remain open.
+
+The first implementation compares all existing identities/descriptors, all 256
+byte-ID predicate outcomes, semantic families, ordered compact/specialized rules,
+relevant ordering/threshold/orientation/no-op semantics, original source bytes and
+known-answer tests. It must preserve backend differences and complete material/
+interaction header-byte identities. Semantic equality does not establish source-byte
+compatibility. Production consumer cutover requires its own exact-byte review or
+an explicitly authorized identity transition, with rollback and appropriate gates.
+
+At adoption intake, accepted main was `0fd4af5987e77db4da3e37c757cf2c0917ae9e15`
+and the reviewed proposal was `9b776d109e7843fb9b2d25239f9d088181309aa1`.
+The [integration ledger](https://github.com/techrote/cybersand/pull/357)
+owns final-head, merge and post-merge documentation results. The earlier
+[readiness checkpoint](https://github.com/techrote/cybersand/pull/357#issuecomment-6619191972)
+preserves its actual tested tree, draft-state provenance skip and retrieval limits;
+its green runs are not claims about a later edited head. Ready-state and post-merge
+Documentation checks must validate materialized runtime identity; this does not
+require Native/GDExtension/gameplay execution for a documentation-only change.
+
+Before implementing A, independently recapture newly accepted main and active
+file ownership. PR #358's IDs132–137 remain experimental at this decision; if
+that work lands first, baseline the accepted result instead of importing its
+unmerged candidate. Keep #353 → (#354 and #355, serializing overlapping writes)
+→ #356. Identity transition, production ID allocation, Spark membership, endpoint/
+quantity exceptions, MoltenGlass thermal law, viscous retry/rest and runtime
+editing remain separate decisions. This adoption grants no new material physics
+or automatic inheritance.
