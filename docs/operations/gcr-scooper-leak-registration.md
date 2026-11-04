@@ -122,3 +122,45 @@ Do not query diagnostic_body_metrics for compound capture: its rest evaluation
 can mutate per-proxy history. Existing aggregate diagnostics are copied; full
 endpoint-reason census is unavailable here and remains null. One-grain replay
 can observe the actual relocation endpoint directly without that evaluator.
+
+## Entry-side candidate registered after baseline, before implementation
+
+Baselinefa6de57e completes all20 live captures and both1046-check native replay
+processes on matched Windows/Linux SDK0206, with unchanged source custody.
+Both routes and all event modes eject the one grain downward3cells at upward
+advances1.5/2. SA full rise at181 and boosted rise at148 relocate all16 grains
+from the deck's lower half to its far side; the grains remain horizontally
+inside the deck. Slow/moderate rise and stationary controls do not. The known
+one-boundary presentation overlap is not counted as this persistent escape.
+
+Test one native-adapter repair for explicitly authored compounds only. Preserve
+independent bodies and the structural conservative payload route byte-for-byte
+in their executed selection. For a currently overlapping source, admit a
+previous-side witness only when its previous proxy is valid, sample serials are
+consecutive, size and angle are unchanged, translation is nonzero and within the
+existing32-cell sweep bound, and the source centre is outside the entire previous
+authored union. Intersect the old-to-current body-local point segment with the
+current overlapping rectangle using a two-axis slab interval. Preserve that
+entry face and compute penetration to that face instead of the current nearest
+face. Keep existing first-distance/radius, endpoint, empty-cell, hard/foreign-mask
+and whole-union rules; do not add advection, material ownership, inventory,
+force or capacity. Fallback retains the old rule when a witness is unavailable.
+
+This is explicitly an unchanged-orientation translation repair, not general
+rotational/concave continuous collision detection. A point already inside the
+previous union, proxy-seam ambiguity, nonconsecutive sample, changed geometry,
+rotation or out-of-bound travel cannot claim this new entry witness. No new
+coefficient/angle threshold is tuned from the capture results.
+
+Before accepting the repair, rebuild both native SDKs and run the unchanged
+20-case population. Require no persistent closed-deck escape in SA full/boost
+rise, exact16-grain conservation, unchanged no-motion/slow controls, bounded
+owner/budget/work checks and retained independent replay outcomes. Record
+horizontal/diagonal/open-end results separately rather than requiring enclosed
+storage from the open nose. Add targeted native tests for witness admission,
+fallback, sample/reset fencing, seam/union membership and terrain/mask refusals;
+run the existing full authored/body/source, barrel/actor, async/REM, Water/hard
+and structural mechanical controls. Native core inputs remain separate from
+changed adapter sanitizer coverage. If translated carrying improves but rotation
+or rim escape persists, state that exact limit and retain owner review instead
+of broadening the law or claiming universal carry. All PRs remain unmerged.
