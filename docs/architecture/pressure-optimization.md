@@ -153,7 +153,7 @@ allocator overhead, shared engine storage and process RSS; they are not a
 complete World memory figure. C64-E8 and the default Cell carrier remain intact.
 
 The native optimization identity retains encoding version 1 and its domain,
-then hashes six little-endian u64 words: **execution version 3**, variant 1/2,
+then hashes six little-endian u64 words: **execution version 4**, variant 1/2,
 and the four requested budgets in table order. This distinguishes execution
 semantics from the pressure physical parameters. Reference has no optimization
 extension identity. Cache contents, timing counters and certificates are derived,
@@ -230,8 +230,44 @@ forces a complete gas pass. Every gas pass marks all columns dirty and makes the
 certificates cold, so frequent boundary or mask changes return the cache to
 roughly reference cost. The numeric results, same-law parity and the
 **Planned** P1/P2 proposals (wake-summary elision; narrowed gas-triggered
-revocation) are owned by that record. Neither is implemented. Execution
-version 3 above remains Current.
+revocation) are owned by that record. **Execution version 4** (below)
+implements P1/P1b; P2 remains Planned.
+
+## Execution version 4: sleeping-segment wake summaries
+
+**Source state:** in this change set (#201 P1, PR #382). It is Current on main
+only once merged, and only with that PR's republished runtimes and gates.
+
+Cached and cached_dormant keep one derived **wake-clean bit per indexed cell**
+in `PressureCache` (`world_pressure_cache_state.inc`), reserved at construction.
+Every index rebuild zero-fills the bits within that reservation, so there is no
+tick-time allocation; they are never serialized. In `compute_pressure_heads()`,
+the state-only wake loop skips a sleeping row segment whose bits are all set.
+It sets bits only after a complete negative scan, and clears them for active
+blocks.
+
+Any change to a wake input clears bits:
+- producer, host and explosion writes and body-mask edits clear their rows, with
+  columns widened by ±2 across horizontal seams;
+- a changed final head clears its row at x±2;
+- every gas pass clears all bits;
+- membership changes, cold state, fallback and restore rebuild the index.
+
+Elision requires `sleep_after_quiet_ticks >= 2`. All bit writes happen on the
+serial owner. Wake samples in the scanning cell's own chunk read it directly,
+without a chunk-map lookup (P1b, all variants, identical values).
+
+Wake decisions, and therefore physics, equal reference. The certificate law
+above is unchanged from execution 3. The
+[P1 evidence record](../audits/2026-11-04-lcb201-p1-wake-summaries.md) owns its
+controls, mutation checks, cost and the remaining small overhead under
+continuous index churn.
+
+**In-app result (2026-11-04).** Before the desktop host fix below, the worker
+made the cache cold twice per step, and in-app cached/dormant cost more than
+reference. With the committed #390 fix and P1, the in-app cached quiet-pool
+step is ≈0.9 ms at the 60 Hz cap (one headless Windows run per variant, in the
+[P1 evidence](../audits/2026-11-04-lcb201-p1-wake-summaries.md#full-host-cohort-the-per-step-region-flip)).
 
 **Desktop host interaction (2026-11-04).** The desktop worker used to write the
 camera window and then the scenario's fixed interest on every step. Each

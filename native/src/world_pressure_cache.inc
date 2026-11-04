@@ -17,6 +17,28 @@ std::uint64_t certificate_budget_multiply(std::uint64_t value, std::uint64_t wei
 void certificate_counter_add(std::uint64_t& value, std::uint64_t amount) noexcept {
     bool overflow=false; value=certificate_budget_add(value,amount,overflow);
 }
+// #201 P1. A cell's state-only wake predicate reads its own head/flow/overfill
+// and mask, residency, material and gauge-or-head at x+-1 and x+-2 in its row.
+// Clear every indexed cell whose predicate can read [min_x,max_x] x [min_y,max_y]
+// of `coord`, across horizontal chunk seams. Owner-only; never from a job.
+template <class Cache, class Find>
+void clear_pressure_wake(Cache& cache, Find find, std::int32_t size, ChunkCoord coord,
+                         std::int32_t min_x, std::int32_t min_y, std::int32_t max_x, std::int32_t max_y) noexcept {
+    if (!cache.wake_bits_ready()) return;
+    const auto words = cache.wake_words_per_chunk;
+    for (std::int32_t dx = -1; dx <= 1; ++dx) {
+        const auto first_x = std::max(0, min_x - 2 - dx * size);
+        const auto last_x = std::min(size - 1, max_x + 2 - dx * size);
+        if (first_x > last_x) continue;
+        auto* chunk = find(ChunkCoord{coord.x + dx, coord.y});
+        if (chunk == nullptr) continue;
+        const auto slot = static_cast<std::size_t>(chunk->pressure->gas_chunk_slot);
+        if (slot >= cache.column_order.size()) { cache.wake_reset(); return; }
+        for (auto y = std::max(0, min_y); y <= std::min(size - 1, max_y); ++y)
+            cache.wake_assign(slot * words * 64U + static_cast<std::size_t>(y) * static_cast<std::size_t>(size) +
+                              static_cast<std::size_t>(first_x), static_cast<std::size_t>(last_x - first_x + 1), false);
+    }
+}
 }
 
 void World::account_pressure_certificate_work() noexcept {
@@ -176,6 +198,11 @@ void World::rebuild_pressure_index() {
     }
     cache.complete = true; cache.membership_dirty = false;
     if (++cache.incarnation == 0U) ++cache.incarnation;
+    // Fresh slots: every wake bit starts cold, within the reserved capacity.
+    const auto wake_words = cache.column_order.size() * cache.wake_words_per_chunk;
+    if (cache.wake_words_per_chunk != 0U && wake_words <= cache.wake_clean.capacity()) {
+        cache.wake_clean.assign(wake_words, std::uint64_t{0}); ++cache.wake_resets;
+    } else cache.wake_clean.clear();
     for (std::size_t i = 0; i < cache.columns.size(); ++i) cache.mark(true, i, 0, config_.chunk_size - 1);
     for (std::size_t i = 0; i < cache.rows.size(); ++i) cache.mark(false, i, 0, config_.chunk_size - 1);
     ++pressure_->optimization.index_rebuilds;
@@ -234,6 +261,8 @@ void World::invalidate_pressure_input(ChunkCoord coord, std::int32_t min_x, std:
     }
     cache.mark(true, chunk->pressure->column_group, min_x, max_x);
     invalidate_pressure_certificates(coord, min_x, min_y, max_x, max_y);
+    clear_pressure_wake(cache, [this](ChunkCoord c) { return find_chunk(c); }, config_.chunk_size,
+                        coord, min_x, min_y, max_x, max_y);
 }
 
 PressureOptimizationSnapshot World::pressure_optimization_snapshot() const {
@@ -266,7 +295,11 @@ PressureOptimizationSnapshot World::pressure_optimization_snapshot() const {
     out.gas_capacity_bytes = cache.gas_members.capacity() * sizeof(PressureCache::GasMember) +
         cache.gas_components.capacity() * sizeof(PressureCache::GasComponent) +
         cache.gas_dirty_chunks.capacity() * sizeof(ChunkCoord);
-    out.derived_capacity_bytes = sizeof(PressureCache) +
+    out.wake_segments_scanned = cache.wake_segments_scanned; out.wake_segments_skipped = cache.wake_segments_skipped;
+    out.wake_resets = cache.wake_resets;
+    for (const auto word : cache.wake_clean) out.wake_clean_cells += static_cast<std::size_t>(std::popcount(word));
+    out.wake_capacity_bytes = cache.wake_clean.capacity() * sizeof(std::uint64_t);
+    out.derived_capacity_bytes = out.wake_capacity_bytes + sizeof(PressureCache) +
         (cache.column_order.capacity() + cache.row_order.capacity()) * sizeof(ChunkCoord) +
         (cache.columns.capacity() + cache.rows.capacity()) * sizeof(PressureCache::Group) +
         (cache.dirty_columns.capacity() + cache.dirty_rows.capacity()) * sizeof(std::size_t) + out.gas_capacity_bytes;

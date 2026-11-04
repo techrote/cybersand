@@ -380,6 +380,8 @@ void World::prepare_pressure_tick() {
                 // changing any lidded Water head. Revoke those assumptions
                 // before kernels run, including paused/outside-interest gas.
                 if (cache->dormant) cache->certificate_contents_cold=true;
+                // Gauges and Empty labels feed the x+-2 wake samples (#201 P1).
+                cache->wake_reset();
                 for (std::size_t i = 0; i < cache->columns.size(); ++i)
                     cache->mark(true, i, 0, config_.chunk_size - 1);
             }
@@ -992,6 +994,8 @@ void World::compute_pressure_heads() {
             const auto local_x = static_cast<std::int32_t>(index % static_cast<std::size_t>(size));
             const auto local_y = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
             invalidate_pressure_certificates(chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
+            clear_pressure_wake(*cache, [this](ChunkCoord c) { return find_chunk(c); }, size,
+                                chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
         }
         old = value;
     };
@@ -1256,17 +1260,41 @@ void World::compute_pressure_heads() {
             }
             // Actionable-gradient wake for cells in sleeping blocks (same stencil
             // and start dead band as the kernel).
+            //
+            // #201 P1 (cached/cached_dormant only): a sleeping row segment whose
+            // wake bits are all set repeats a negative evaluation over unchanged
+            // inputs, so skipping it is exact. Bits are set only here, after a
+            // complete negative scan, and cleared by every input path. With
+            // sleep_after_quiet_ticks >= 2 a block updated in any tick is still
+            // active at the next preparation, which clears its bits first.
+            const bool elide = cached && cache->wake_bits_ready() && config_.sleep_after_quiet_ticks >= 2U;
             for (auto position = begin; position < end; ++position) {
                 const auto coord = row_coordinates[position];
                 auto& chunk = *find_chunk(coord);
                 const auto block_y = local_y / config_.activity_block_size;
+                const auto slot = static_cast<std::size_t>(chunk.pressure->gas_chunk_slot);
+                const bool chunk_elide = elide && slot < cache->column_order.size();
+                const auto row_bit = chunk_elide
+                    ? slot * cache->wake_words_per_chunk * 64U + static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size)
+                    : std::size_t{0};
+                const auto origin_x = coord.x * size;
                 for (std::int32_t block_x = 0; block_x < chunk.activity_blocks_per_axis; ++block_x) {
                     const auto block_index = static_cast<std::size_t>(block_y) *
                                                  static_cast<std::size_t>(chunk.activity_blocks_per_axis) +
                                              static_cast<std::size_t>(block_x);
-                    if (chunk.activity_blocks[block_index].active) continue;
                     const auto first = block_x * config_.activity_block_size;
                     const auto last = std::min(first + config_.activity_block_size, size);
+                    const auto segment_bit = row_bit + static_cast<std::size_t>(first);
+                    const auto segment_cells = static_cast<std::size_t>(last - first);
+                    if (chunk.activity_blocks[block_index].active) {
+                        if (chunk_elide) cache->wake_assign(segment_bit, segment_cells, false);
+                        continue;
+                    }
+                    if (chunk_elide) {
+                        if (cache->wake_test(segment_bit, segment_cells)) { ++cache->wake_segments_skipped; continue; }
+                        ++cache->wake_segments_scanned;
+                    }
+                    bool woke = false;
                     for (std::int32_t local_x = first; local_x < last; ++local_x) {
                         const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
                                            static_cast<std::size_t>(local_x);
@@ -1278,14 +1306,25 @@ void World::compute_pressure_heads() {
                         if (!actionable) {
                             const auto sample = [&](std::int64_t nx) -> std::optional<std::int64_t> {
                                 if (transient_obstacle_at(nx, y) != 0U) return std::nullopt;
-                                const auto target = address(nx, y);
-                                const auto* other = find_chunk(target.chunk);
+                                // #201 P1b: same-chunk samples skip the chunk map
+                                // lookup; the cell and its value are identical.
+                                const Chunk* other = nullptr;
+                                std::size_t target_index = 0;
+                                if (nx >= origin_x && nx < origin_x + size) {
+                                    other = &chunk;
+                                    target_index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
+                                                   static_cast<std::size_t>(nx - origin_x);
+                                } else {
+                                    const auto target = address(nx, y);
+                                    other = find_chunk(target.chunk);
+                                    target_index = target.index;
+                                }
                                 if (other == nullptr) return 0;
-                                const auto material = other->cells[target.index].material_value();
+                                const auto material = other->cells[target_index].material_value();
                                 if (material == Material::Empty)
-                                    return state.gauge_of_label(other->pressure->cells[target.index].gas);
+                                    return state.gauge_of_label(other->pressure->cells[target_index].gas);
                                 if (material != Material::Water) return std::nullopt;
-                                const auto h = other->pressure->head[target.index];
+                                const auto h = other->pressure->head[target_index];
                                 return h == kNoHead ? 0 : static_cast<std::int64_t>(h);
                             };
                             const auto own_value = static_cast<std::int64_t>(own);
@@ -1302,7 +1341,21 @@ void World::compute_pressure_heads() {
                         }
                         if (actionable) {
                             wake_activity_block(coord, chunk, block_index);
+                            woke = true;
                             break;
+                        }
+                    }
+                    if (chunk_elide) {
+                        if (!woke) cache->wake_assign(segment_bit, segment_cells, true);
+                        else {
+                            // Earlier rows of this block may already be marked
+                            // clean this pass; the block is now awake.
+                            const auto block_first_y = block_y * config_.activity_block_size;
+                            const auto block_last_y = std::min(block_first_y + config_.activity_block_size, size);
+                            for (auto row = block_first_y; row < block_last_y; ++row)
+                                cache->wake_assign(slot * cache->wake_words_per_chunk * 64U +
+                                    static_cast<std::size_t>(row) * static_cast<std::size_t>(size) +
+                                    static_cast<std::size_t>(first), segment_cells, false);
                         }
                     }
                 }

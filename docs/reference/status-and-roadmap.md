@@ -44,6 +44,11 @@ masks restore roughly reference cost.
 cached-only proposals (P1 wake-summary elision, P2 narrowed gas revocation) are
 **Planned, not implemented**. No production code, default or host changed; #201
 stays open, and a full-host cohort remains the next practical-cost experiment.
+An [experimental P1 draft](../audits/2026-11-04-lcb201-p1-wake-summaries.md),
+not accepted and not on main, cuts the quiet cached tick to ≈0.32 ms with exact
+parity. It shows a small cost under continuous index churn. In the real desktop
+host, a per-step simulation-region flip erased the gain (cached ≈34 ms); with
+the flip fixed on main (above), the committed in-app cached step is ≈0.9 ms at 60 Hz.
 
 ## Material shadow foundation and integration — 2026-11-04
 
@@ -1898,3 +1903,5 @@ The [desktop development workbench](../systems/player-control-playground.md#deve
 The [edge-conversion and desktop pacing follow-up](../audits/2026-11-04-workbench-boundary-and-pacing.md) covers live solver changes after material leaves the canvas, render-independent body stepping, and parity and throughput of workbench pressure-column dispatch.
 
 The [PR #394 cleanup](../audits/2026-11-04-workbench394-cleanup.md) retains tuning across missing-model pilot replacement and repairs the fleet registry shutdown lifetime. Its [three-consumer MAT source transition](../audits/2026-11-04-workbench394-material-source-transition.md) reuses the approved #396 mechanism and preserves the frozen lock. Technical admission, owner adoption and merge are separately recorded; #394 remains Draft and unmerged.
+
+The owner accepted the playable workbench and authorized [current-main reconciliation and Ready qualification](../audits/2026-11-04-workbench394-ready-validation.md). Accepted main now includes #396 and #382 at `ee92dc45`; the combined native source requires rebuilt desktop runtimes and its own complete gates. The earlier Draft checkpoints remain historical; merge remains held.

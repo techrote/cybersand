@@ -135,6 +135,7 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {"path":"audits/2026-11-04-workbench394-ready-validation.md","reason":"Dated owner acceptance, accepted-main pressure reconciliation and exact resulting-source qualification. Retrieve current controls through the player playground guide and transition rules through the material shadow guide."},
     {"path":"audits/2026-11-04-workbench394-cleanup.md","reason":"Dated PR394 lifetime, tuning, runtime and corrected log evidence. Retrieve current controls through the player playground guide."},
     {"path":"audits/2026-11-04-workbench394-material-source-transition.md","reason":"Exact three-consumer admission evidence and source review. The material catalogue shadow guide owns the transition mechanism."},
     {"path":"audits/2026-11-04-workbench-boundary-and-pacing.md","reason":"Source-matched developer workbench edge conversions and timing evidence. Retrieve controls and ownership through the player playground and simulation threading guides."},

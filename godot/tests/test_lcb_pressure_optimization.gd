@@ -132,7 +132,7 @@ func _encoded_fields(values: Dictionary, names: Array[String], label: String) ->
 func _inspection(world: Variant, variant: int) -> Dictionary:
 	var facts: Dictionary = world.inspect_pressure_optimization()
 	expect(facts.get("schema_version", 0) == 1 and facts.get("unsigned_encoding", "") == "decimal_string"
-		and facts.get("execution_version", 0) == 3 and facts.get("certificate_warmup_visits", 0) == 1
+		and facts.get("execution_version", 0) == 4 and facts.get("certificate_warmup_visits", 0) == 1
 		and facts.get("certificate_backoff_visits", 0) == 8, "readback schema/derived admission version differs")
 	expect(facts.get("available", false) and bool(facts.cached) == (variant > 0)
 		and bool(facts.dormant) == (variant == 2), "readback does not distinguish the actual implementation")
