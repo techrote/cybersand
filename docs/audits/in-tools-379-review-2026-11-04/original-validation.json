@@ -1,0 +1,191 @@
+{
+  "git_commit": "24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+  "git_tree": "9a59169d74b74cef9bcb89d50c6a7c362136bbfd",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 1.267,
+      "stdout_sha256": "7ae9338d29ebc977cb9fe4d3dd0b0187b958ec518212370191a7fcfa93226ebe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\n  \"status\": \"passed\",\n  \"documents\": 121,\n  \"navigation_link_documents\": 8,\n  \"canonical_claims\": 239,\n  \"local_links\": 3620,\n  \"heading_anchors\": 693,\n  \"questions\": 32,\n  \"errors\": [],\n  \"warnings\": [],\n  \"limitations\": [\n    \"Does not verify source semantics or runtime claims\",\n    \"Does not fetch external URLs\",\n    \"Does not rewrite or reattest historical audits\",\n    \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 1.625,
+      "stdout_sha256": "f2b9188d5d1b667888784b366ad2efac44f97c57ef0e04cfa16ace050129400e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"current source/documentation and artifact identity\",\n  \"documentation\": {\n    \"status\": \"passed\",\n    \"documents\": 121,\n    \"navigation_link_documents\": 8,\n    \"canonical_claims\": 239,\n    \"local_links\": 3620,\n    \"heading_anchors\": 693,\n    \"questions\": 32,\n    \"errors\": [],\n    \"warnings\": [],\n    \"limitations\": [\n      \"Does not verify source semantics or runtime claims\",\n      \"Does not fetch external URLs\",\n      \"Does not rewrite or reattest historical audits\",\n      \"Retrieval quality requires the separate lexical evaluation and expected-fact review\"\n    ]\n  },\n  \"materialized_runtime_files\": [\n    \"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\",\n    \"godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\",\n    \"godot/addons/godot-rapier2d/bin/godot_rapier.wasm\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n    \"godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm\"\n  ],\n  \"unmaterialized_runtime_files\": [],\n  \"errors\": [],\n  \"limitations\": [\n    \"Identity is not execution evidence; read the dated runtime acceptance report\",\n    \"Retained vendor binaries and platform execution have separate dated provenance\",\n    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.152,
+      "stdout_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\n  \"status\": \"passed\",\n  \"scope\": \"historical M11 integrity; no current runtime acceptance\",\n  \"historical_source_commit\": \"05ea45fda7bdd7b0150eb86c4922c202e89e08f4\",\n  \"records_checked\": 18,\n  \"source_hashes_checked\": 28,\n  \"compare_working_tree\": false,\n  \"working_tree_differences\": [],\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/in_tools_contract.py",
+        "--check-comparison"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.083,
+      "stdout_sha256": "39311d9c22925e1b53a965f78eb374b23778146f884f4a2cb39d38fe78dca34e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "{\n  \"fixtures_checked\": 6,\n  \"host_execution\": \"NOT_RUN\",\n  \"gameplay_qualified\": false,\n  \"source_inputs_checked\": 25,\n  \"comparison_inputs_checked\": 9,\n  \"scope\": \"source equality only; not runtime qualification\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/lcb",
+        "-p",
+        "test_policy_contract.py"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.101,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a2dc3c137a58e07b1fd7b3c8f9e51920dcf77b1e278bedb9dc1292f27cdb7160",
+      "stdout": "",
+      "stderr": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.027s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/derive_capability_matrix.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.039,
+      "stdout_sha256": "e246e64b95105b1982c94d0b2dbcd32cc649a33bf871daa6142442e4c8c11070",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "capability matrix matches source\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/policy_contract.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.049,
+      "stdout_sha256": "7ace1bbe6e17427c542beae22a94a6cb3afb857d88379dfaefcee9617dc75ac2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "policy wire vectors match the oracle\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/native_policy_artifacts.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.052,
+      "stdout_sha256": "6998bc4b68444d6594c4fca0bf00292415741a1c9ecec1eeae092c7946bea72c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "native liquid-policy artifacts match their sources\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/liquid_run_receipt_contract.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.045,
+      "stdout_sha256": "31b6cffc9c746110b7ef3e0c43ec4e8b296e03c8c3a58283232d446fb81456ca",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "liquid run receipts: 7 independent complete vectors match\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/water_normalization_contract.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.042,
+      "stdout_sha256": "149826da8d652aae6df0f77413c68b87b456311310d91e764d9354c6bc0374c4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "water normalization: 8 independent complete canonical vectors match\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/scenario_catalogue.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.048,
+      "stdout_sha256": "af3524b63690a45ceeebc4c771332e2a8c8479edb3e077c28c389e07555012c5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "25 scenario definitions match the catalogue\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "lfs",
+        "fsck"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.333,
+      "stdout_sha256": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "Git LFS fsck OK\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "seconds": 0.004,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

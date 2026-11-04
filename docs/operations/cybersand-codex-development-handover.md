@@ -10,6 +10,32 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## IN-TOOLS bounded handover — 2026-11-04
+
+Consume the [#361 architecture](../architecture/in-tools-gameplay-admission.md)
+and [test/playtest runbook](in-tools-fixtures-and-playtest.md). This preparation
+originally inspected main `7ef4856e` and immutable #370 `fbe82bca` reuse pins.
+The [bounded successor source admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+reconciles accepted main `751edc0b`, preserves #377 content and explicitly admits
+#390's one inspected worker change without rewriting the original plan.
+Existing physical U10 can gain exact application-observed sink metering;
+a registered resident valve requires one exclusive-owner preflight/commit and
+explicit fault handling. Both are future integration work. Momentum injection
+requires a separately authorized native contract; no negative-vy law is admitted.
+Coordinate Main/panel changes with #370, actor lifecycle with PLAY, and any
+mask/coupling change with #347. Do not modify their active branches or import #358.
+Keep #379 Ready for fresh exact-head gates and independent review; stop before
+merge and keep #361 open. See the
+[qualification record](../audits/2026-11-04-in-tools-admission.md) for exact scope.
+The subsequent [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
+owns retrieval recovery, stricter test evidence and the separate Liquid Drain
+handover. It preserves original source locks and requires explicit owner
+integration approval; no parallel implementation is imported.
+The [Windows exit continuation](../audits/2026-11-04-pr379-windows-exit-investigation.md)
+now investigates the required Windows process/coverage failure. Keep the
+original failure and all source locks; diagnostic capture is not a repair
+or merge approval.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a

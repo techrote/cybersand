@@ -1,0 +1,49 @@
+{
+  "schema": "in-tools-379-review-intake-v1",
+  "review_date": "2026-11-04",
+  "accepted_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "accepted_main_tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371",
+  "original_pr_head": "24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+  "original_pr_tree": "9a59169d74b74cef9bcb89d50c6a7c362136bbfd",
+  "comparison_370": "fbe82bcab8f821aac442c2bf59eb57b279717873",
+  "unimported_material_358": "7383946a3ed384966e9e5fb72553fc267f9aacb7",
+  "historical_native_packet_sha256": "8e4bc9932c06b30c89c01d7f107d739c6db26fb9bae8060201fe82ab77d2a276",
+  "original_packet_inputs_checked": 56,
+  "original_packet_input_mismatches": [],
+  "original_hosted": {
+    "head": "24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+    "documentation": {
+      "run_id": 41815034639,
+      "job_id": 126523516428,
+      "conclusion": "success",
+      "materialized_provenance_step": "skipped"
+    },
+    "scope_advisory": {
+      "run_id": 41815034388,
+      "conclusion": "success",
+      "report_only": true
+    },
+    "native": {
+      "run_id": 41815035086,
+      "conclusion": "skipped"
+    },
+    "gdextension": {
+      "run_id": 41815034612,
+      "conclusion": "skipped"
+    },
+    "shader": {
+      "run_id": 41815034365,
+      "conclusion": "skipped"
+    }
+  },
+  "github_reviews_at_intake": 0,
+  "unresolved_review_threads_at_intake": 0,
+  "owner_integration_approval": "not recorded; task explicitly withholds advance approval",
+  "environment_recovery": {
+    "initial_check_docs": "failed: six expected-fact references to five absent companion files",
+    "resolution": "Restored exact five files from separately pinned companion commit; original evaluator and expected facts unchanged",
+    "companion_commit": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "corrected_check_docs": "passed"
+  },
+  "scope": "Documentation/test-only review; no gameplay implementation or merge"
+}

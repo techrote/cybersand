@@ -10,6 +10,19 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## IN-TOOLS bounded gameplay preparation
+
+Use [command admission](../architecture/in-tools-gameplay-admission.md) for
+quantity, native/application ownership, reversible closure and nozzle readiness;
+[fixtures/playtest](../operations/in-tools-fixtures-and-playtest.md) for runnable
+preparation and remaining host gates; [dated evidence](../audits/2026-11-04-in-tools-admission.md)
+for actual source-qualified results. The [six separate retrieval questions](retrieval-in-tools-361.json)
+keep the frozen32 and existing challenges unchanged. Production gameplay remains Planned.
+The [source re-admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+and runbook distinguish the retained v1 lock from the current-main checker.
+Use the [validation ledger](validation-evidence.md#in-tools-preparation-scope--2026-11-04)
+for the blocking Windows exit and the separately scoped diagnostic continuation.
+
 ## Material liveness Phase A and implementation admission — 2026-11-04
 
 | Question | Canonical route |

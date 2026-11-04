@@ -10,6 +10,30 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## IN-TOOLS preparation — 2026-11-04
+
+The [#361 admission package](../architecture/in-tools-gameplay-admission.md)
+traces accepted main `7ef4856e` and pins unmerged #370 `fbe82bca`. New standalone
+native probes and proposed receipt adversaries support a bounded next task:
+meter the existing physical Liquid Drain, then a registered reversible port.
+The [fixture runbook](../operations/in-tools-fixtures-and-playtest.md) preserves
+FreeMass defaults, Water/Brine eligibility and exact units. A velocity inlet needs
+separate native input admission; upward spray stays #362. Ordinary desktop/Rapier
+placement, new command lifecycle and owner feel remain unqualified. The
+[dated audit](../audits/2026-11-04-in-tools-admission.md) records actual evidence.
+No production implementation, automatic merge or #361 closure is authorized.
+The [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
+records the corrected preparation and integration-approval boundary. The
+[current-main source re-admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+preserves that original registration while admitting #390's worker change on
+main `751edc0b`. #379 remains Ready and requires fresh resulting-head gates and
+an independent final review before the owner receives a merge recommendation.
+The resulting b30 qualification is on **HOLD**: the Windows host process printed
+86/0 assertions and then exited0xC0000005, so Windows coverage failed. The
+[bounded exit investigation](../audits/2026-11-04-pr379-windows-exit-investigation.md)
+preserves that failure and admits current-source exception capture. No production
+repair, runtime upgrade or merge approval is inferred from this diagnostic work.
+
 ## PressureFlow desktop region flip (#201) — 2026-11-04
 
 The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a

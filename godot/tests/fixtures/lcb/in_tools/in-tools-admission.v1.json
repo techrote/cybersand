@@ -1,0 +1,1101 @@
+{
+  "schema": "in-tools-admission-plan-v1",
+  "status": "planned-host-contract",
+  "production_changes": false,
+  "accepted_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "accepted_tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371",
+  "source_inputs": {
+    "native/src/world.cpp": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+    "native/src/world_inertial.inc": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+    "native/include/cybersand/world.hpp": "c2299260851d003471977f9175b5f452c9badb277d07e056db148329faec55e9",
+    "native/include/cybersand/inertial_cellular.hpp": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+    "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+    "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+    "native/include/cybersand/prepared_world.hpp": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985",
+    "native/include/cybersand/water_normalization.hpp": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05",
+    "native/include/cybersand/quantity_ledger.hpp": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+    "godot/native_extension/cyber_native_cell_world.cpp": "0085475d766b78efc7635ccea4089aeea00b16ba4e7f880046287e55a4f82163",
+    "godot/native_extension/cyber_native_cell_world.hpp": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c",
+    "godot/native_extension/cyber_demo_bridge.hpp": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+    "godot/scripts/microscenario_contract.gd": "6c15e65b8e7c4f3747d6dcca93d014897ebef6681cbfd1881fb12be32ec14540",
+    "godot/scripts/microscenario_host.gd": "a351bf83e55d042dfa17798503ba05b0de4aeb9689622d6dbf8373991d29a3c0",
+    "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+    "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+    "godot/scripts/physical_usable_runtime.gd": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+    "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+    "godot/scripts/physical_actor_session.gd": "993fdca10bc9ad6be42b8ffd7b1f352de9d460b9c2bdafcc6b668e721057bf83",
+    "godot/scripts/simulation_worker.gd": "7facdb0cd1a59a039fb78c22298b7422f656f733082228ea178d7917234a2dd0",
+    "godot/scripts/main.gd": "61e963f381155e0b3e7de88cde7c9d2bb8c5d2adfda0717e22d23fe632f02f7b",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+    "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+    "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f"
+  },
+  "comparison": {
+    "pr": 370,
+    "commit": "fbe82bcab8f821aac442c2bf59eb57b279717873",
+    "reuse": [
+      {
+        "path": "tools/lcb/feel_capsules.py",
+        "git_blob": "910ca1e07be6daa1d61d31618d426d4733127624",
+        "sha256": "fb6604d00f1c4875a481c41fbf4ca2442ed359864565a254a36077ef927cb5c4"
+      },
+      {
+        "path": "tools/lcb/feel_preflight.py",
+        "git_blob": "fdee5d90281440c45511dde2a38400571fa449c4",
+        "sha256": "8bd8d4b33619094a98367b5f66903ea60615a22bf6b0fce9bd4d10b27a710392"
+      },
+      {
+        "path": "godot/scripts/liquid_feel_probe.gd",
+        "git_blob": "8cc11954f0be87a2e7976804f5ff21847caa7d30",
+        "sha256": "2785a4bc6ac7f6f202cfc431622727e72a296c8147ba720f7af459bba4d4e749"
+      },
+      {
+        "path": "godot/scripts/liquid_feel_controls.gd",
+        "git_blob": "216d708d861a2ee6fc053d180a2acdba5a79c1ab",
+        "sha256": "747e2b3c17c093d723b044c50654d2b0786182b183b9fb50b2e4bb30eaccc253"
+      },
+      {
+        "path": "godot/scripts/liquid_feel_catalogue.gd",
+        "git_blob": "321594c6f4ee30fa9da5563ce8fdad67cf0e7785",
+        "sha256": "0f343a4c1e7981f569bc2d45065279dd8e158149f19ae44308f181a19d8bc96c"
+      },
+      {
+        "path": "godot/tests/lcb_feel_case.gd",
+        "git_blob": "cb25ce64ca1a77f9b9d86e243813a51c6f6d4d65",
+        "sha256": "fd62a42e4315accc99d6f4dee8163f4fc9c22a540cd9224cc1931359969ff54f"
+      },
+      {
+        "path": "godot/tests/fixtures/lcb/feel/lcb.feel.leak-side.vented.v1.json",
+        "git_blob": "166c214fb384ef83d15bcbcc66686f769367b872",
+        "sha256": "fa4cc145f9728fccf1ded17dd80e85151eea891b8e65c49933ddfd36edacff3c"
+      },
+      {
+        "path": "godot/tests/fixtures/lcb/feel/lcb.feel.drain-bottom.sealed.v1.json",
+        "git_blob": "52f18df1e20c8dd0f8334ea4da22d570f64240dc",
+        "sha256": "26e1026a2197645896746127d75fe8f9786821eae59c3689df6061957d8db18a"
+      },
+      {
+        "path": "godot/tests/fixtures/lcb/feel/lcb.feel.campaign.v1.json",
+        "git_blob": "5210fb04244f028931a653efab26f71e1aeb9b45",
+        "sha256": "94066512e551e29d5d0f8b5703b8f12abfb0eae406a6f96f1618d7d8014022d5"
+      }
+    ],
+    "integration_status": "unmerged at inspection; no files imported",
+    "canonical_seed_hashes": {
+      "lcb.feel.leak-side.vented.v1": "017269b348bde90c95a93f53454b8bb72603b205b65098f9984e79c2274b25a3",
+      "lcb.feel.drain-bottom.sealed.v1": "580388a29c22d729a5e730a5b89f6f85faa556d36d8f2d6832a78ef35a5aaeb0"
+    }
+  },
+  "limits": {
+    "cells_per_command": 16,
+    "commands_per_fixture": 24,
+    "horizon_ticks_max": 3600,
+    "source_units": "finite explicit supply; Water native units, Brine cells",
+    "closure": "all cells Empty and unmasked; otherwise refuse entire closure"
+  },
+  "time_semantics": "tick k is the between-ticks boundary after k completed native ticks and before tick k+1; no late catch-up",
+  "geometry_semantics": "rectangles [x,y,width,height] are half-open; inherit initial material raster only, NOT base scheduled edits; distinct compiled scenario identity required",
+  "comparison_arms": [
+    {
+      "material": 3,
+      "families": [
+        "freemass_v1",
+        "inertial_cellular_v1"
+      ],
+      "radius": 3,
+      "mass_bits": [
+        3,
+        8
+      ],
+      "workers": [
+        1,
+        4
+      ],
+      "quantity_unit": "Water native units; full=(1<<mass_bits)-1"
+    },
+    {
+      "material": 24,
+      "families": [
+        "cellular_yield_v1",
+        "inertial_cellular_v1"
+      ],
+      "radius": 3,
+      "mass_bits": [
+        8
+      ],
+      "workers": [
+        1,
+        4
+      ],
+      "quantity_unit": "whole Brine cells"
+    },
+    {
+      "material": 3,
+      "families": [
+        "freemass_v1"
+      ],
+      "radius": 2,
+      "mass_bits": [
+        8
+      ],
+      "workers": [
+        1,
+        4
+      ],
+      "quantity_unit": "unchanged original Current control; not matched timing comparator"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "in-tools.valve-side.v1",
+      "execution": "planned_host_only",
+      "base_seed": "lcb.feel.leak-side.vented.v1",
+      "domain": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "horizon_ticks": 1200,
+      "events": [
+        {
+          "id": "vent",
+          "tick": 0,
+          "operation": "open_valve",
+          "rect": [
+            128,
+            48,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "open",
+          "tick": 120,
+          "operation": "open_valve",
+          "rect": [
+            190,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "close",
+          "tick": 600,
+          "operation": "close_valve",
+          "rect": [
+            190,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "reopen",
+          "tick": 900,
+          "operation": "open_valve",
+          "rect": [
+            190,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        }
+      ],
+      "variants": [
+        "narrow-1",
+        "baseline-2",
+        "wide-4"
+      ],
+      "initial_quantity": "13640 whole cells; exact material substitution only; Water normalization delta zero",
+      "host_route": "existing prepared owner and comparison panel; new versioned command hook required",
+      "expectation": "Closure while liquid/any body occupies aperture refuses with no sink; closure success separately tested on emptied port; repeated open is refused unchanged, not extra Wall removal.",
+      "geometry_variants": [
+        {
+          "id": "narrow-1",
+          "aperture_rect": [
+            190,
+            150,
+            2,
+            1
+          ],
+          "intake_rect": [
+            188,
+            150,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "baseline-2",
+          "aperture_rect": [
+            190,
+            150,
+            2,
+            2
+          ],
+          "intake_rect": [
+            188,
+            150,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "wide-4",
+          "aperture_rect": [
+            190,
+            150,
+            2,
+            4
+          ],
+          "intake_rect": [
+            188,
+            150,
+            2,
+            4
+          ]
+        }
+      ],
+      "variant_application": "Replace non-vent valve event rects with aperture_rect and sink event rects with intake_rect. Vent stays2x2. Freeze resolved event list and geometry in a new definition digest before execution."
+    },
+    {
+      "id": "in-tools.valve-bottom.v1",
+      "execution": "planned_host_only",
+      "base_seed": "lcb.feel.drain-bottom.sealed.v1",
+      "domain": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "horizon_ticks": 1200,
+      "events": [
+        {
+          "id": "open",
+          "tick": 120,
+          "operation": "open_valve",
+          "rect": [
+            128,
+            174,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "close",
+          "tick": 600,
+          "operation": "close_valve",
+          "rect": [
+            128,
+            174,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "reopen",
+          "tick": 900,
+          "operation": "open_valve",
+          "rect": [
+            128,
+            174,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        }
+      ],
+      "variants": [
+        "narrow-1",
+        "baseline-2",
+        "wide-4"
+      ],
+      "initial_quantity": "13640 whole cells; exact material substitution only; Water normalization delta zero",
+      "host_route": "existing prepared owner and comparison panel; new versioned command hook required",
+      "geometry_variants": [
+        {
+          "id": "narrow-1",
+          "aperture_rect": [
+            128,
+            174,
+            1,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            1,
+            2
+          ]
+        },
+        {
+          "id": "baseline-2",
+          "aperture_rect": [
+            128,
+            174,
+            2,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "wide-4",
+          "aperture_rect": [
+            128,
+            174,
+            4,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            4,
+            2
+          ]
+        }
+      ],
+      "variant_application": "Replace non-vent valve event rects with aperture_rect and sink event rects with intake_rect. Vent stays2x2. Freeze resolved event list and geometry in a new definition digest before execution."
+    },
+    {
+      "id": "in-tools.sink-bottom.v1",
+      "execution": "planned_host_only",
+      "base_seed": "lcb.feel.drain-bottom.sealed.v1",
+      "domain": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "horizon_ticks": 1200,
+      "events": [
+        {
+          "id": "open",
+          "tick": 120,
+          "operation": "open_valve",
+          "rect": [
+            128,
+            174,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-0",
+          "tick": 121,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-1",
+          "tick": 151,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-2",
+          "tick": 181,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-3",
+          "tick": 211,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-4",
+          "tick": 601,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-5",
+          "tick": 631,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        }
+      ],
+      "variants": [
+        "narrow-1",
+        "baseline-2",
+        "wide-4"
+      ],
+      "initial_quantity": "13640 whole cells; exact material substitution only; Water normalization delta zero",
+      "host_route": "existing prepared owner and comparison panel; new versioned command hook required",
+      "sink_budget_cells": 32,
+      "stop_window_ticks": [
+        212,
+        600
+      ],
+      "expectation": "Debit actual selected-material quantity only; stopped interval has no sink; empty/masked/unreachable/exhausted operations refuse without charge or material effect.",
+      "geometry_variants": [
+        {
+          "id": "narrow-1",
+          "aperture_rect": [
+            128,
+            174,
+            1,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            1,
+            2
+          ]
+        },
+        {
+          "id": "baseline-2",
+          "aperture_rect": [
+            128,
+            174,
+            2,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "wide-4",
+          "aperture_rect": [
+            128,
+            174,
+            4,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            4,
+            2
+          ]
+        }
+      ],
+      "variant_application": "Replace non-vent valve event rects with aperture_rect and sink event rects with intake_rect. Vent stays2x2. Freeze resolved event list and geometry in a new definition digest before execution."
+    },
+    {
+      "id": "in-tools.sink-side.v1",
+      "execution": "planned_host_only",
+      "base_seed": "lcb.feel.leak-side.vented.v1",
+      "domain": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "horizon_ticks": 1200,
+      "events": [
+        {
+          "id": "vent",
+          "tick": 0,
+          "operation": "open_valve",
+          "rect": [
+            128,
+            48,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "open",
+          "tick": 120,
+          "operation": "open_valve",
+          "rect": [
+            190,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-0",
+          "tick": 121,
+          "operation": "sink",
+          "rect": [
+            188,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-1",
+          "tick": 151,
+          "operation": "sink",
+          "rect": [
+            188,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-2",
+          "tick": 181,
+          "operation": "sink",
+          "rect": [
+            188,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-3",
+          "tick": 211,
+          "operation": "sink",
+          "rect": [
+            188,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-4",
+          "tick": 601,
+          "operation": "sink",
+          "rect": [
+            188,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "sink-5",
+          "tick": 631,
+          "operation": "sink",
+          "rect": [
+            188,
+            150,
+            2,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        }
+      ],
+      "variants": [
+        "narrow-1",
+        "baseline-2",
+        "wide-4"
+      ],
+      "initial_quantity": "13640 whole cells; exact material substitution only; Water normalization delta zero",
+      "host_route": "existing prepared owner and comparison panel; new versioned command hook required",
+      "sink_budget_cells": 16,
+      "stop_window_ticks": [
+        212,
+        600
+      ],
+      "geometry_variants": [
+        {
+          "id": "narrow-1",
+          "aperture_rect": [
+            190,
+            150,
+            2,
+            1
+          ],
+          "intake_rect": [
+            188,
+            150,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "baseline-2",
+          "aperture_rect": [
+            190,
+            150,
+            2,
+            2
+          ],
+          "intake_rect": [
+            188,
+            150,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "wide-4",
+          "aperture_rect": [
+            190,
+            150,
+            2,
+            4
+          ],
+          "intake_rect": [
+            188,
+            150,
+            2,
+            4
+          ]
+        }
+      ],
+      "variant_application": "Replace non-vent valve event rects with aperture_rect and sink event rects with intake_rect. Vent stays2x2. Freeze resolved event list and geometry in a new definition digest before execution."
+    },
+    {
+      "id": "in-tools.source-channel.v1",
+      "execution": "planned_host_only",
+      "base_seed": "lcb.feel.drain-bottom.sealed.v1",
+      "domain": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "horizon_ticks": 1200,
+      "events": [
+        {
+          "id": "source-0",
+          "tick": 120,
+          "operation": "source",
+          "rect": [
+            200,
+            180,
+            4,
+            1
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "source-1",
+          "tick": 180,
+          "operation": "source",
+          "rect": [
+            200,
+            180,
+            4,
+            1
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "source-2",
+          "tick": 240,
+          "operation": "source",
+          "rect": [
+            200,
+            180,
+            4,
+            1
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "source-3",
+          "tick": 300,
+          "operation": "source",
+          "rect": [
+            200,
+            180,
+            4,
+            1
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        }
+      ],
+      "variants": [
+        "right-facing-guide",
+        "left-facing-guide",
+        "down-facing-guide"
+      ],
+      "initial_quantity": "13640 whole cells; exact material substitution only; Water normalization delta zero",
+      "host_route": "existing prepared owner and comparison panel; new versioned command hook required",
+      "source_supply_cells": 16,
+      "guide_geometry": "Apply the selected static_wall_rects to an unexposed candidate after resolving base raster, require no overlap with base liquid, then hash final raster. Replace every source event rect with the selected source_rect before fixture identity is frozen.",
+      "direction_semantics": "Direction chooses source port/channel; all newly admitted motion zero. No velocity command is implemented or emulated.",
+      "expectation": "Match actual admitted quantity; equal requests are not equal delivered dose. Blocked output retains supply; no pumping head or upward launch promised.",
+      "geometry_variants": [
+        {
+          "id": "right-facing-guide",
+          "direction": [
+            1,
+            0
+          ],
+          "static_wall_rects": [
+            [
+              198,
+              176,
+              18,
+              2
+            ],
+            [
+              198,
+              184,
+              18,
+              2
+            ],
+            [
+              198,
+              178,
+              2,
+              6
+            ]
+          ],
+          "source_rect": [
+            201,
+            180,
+            4,
+            1
+          ]
+        },
+        {
+          "id": "left-facing-guide",
+          "direction": [
+            -1,
+            0
+          ],
+          "static_wall_rects": [
+            [
+              188,
+              176,
+              18,
+              2
+            ],
+            [
+              188,
+              184,
+              18,
+              2
+            ],
+            [
+              204,
+              178,
+              2,
+              6
+            ]
+          ],
+          "source_rect": [
+            200,
+            180,
+            4,
+            1
+          ]
+        },
+        {
+          "id": "down-facing-guide",
+          "direction": [
+            0,
+            1
+          ],
+          "static_wall_rects": [
+            [
+              198,
+              176,
+              8,
+              2
+            ],
+            [
+              198,
+              178,
+              2,
+              16
+            ],
+            [
+              204,
+              178,
+              2,
+              16
+            ]
+          ],
+          "source_rect": [
+            200,
+            180,
+            4,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-tools.usable-liquid-drain.v1",
+      "execution": "planned_host_only",
+      "base_seed": "lcb.feel.drain-bottom.sealed.v1",
+      "domain": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "horizon_ticks": 1200,
+      "events": [
+        {
+          "id": "held-pulse",
+          "tick": 120,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "after-stop-refusal",
+          "tick": 600,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        },
+        {
+          "id": "after-reset-stale-refusal",
+          "tick": 900,
+          "operation": "sink",
+          "rect": [
+            126,
+            172,
+            4,
+            2
+          ],
+          "motion": "zero_new_motion",
+          "on_occupied_close": "refuse_preserve_world"
+        }
+      ],
+      "variants": [
+        "narrow-1",
+        "baseline-2",
+        "wide-4"
+      ],
+      "initial_quantity": "13640 whole cells; exact material substitution only; Water normalization delta zero",
+      "host_route": "Existing physical actor/equipment route, Exploratory supported-body setup; not actor-free controlled capture",
+      "sink_budget_cells": 32,
+      "expectation": "Use existing liquid_drain ID, charge and cooldown; add opt-in metered readback. Frozen policy, reset/control/equipment generations and native run receipt must bind every effect. Schedule is a test-driver request, not automatic effect authorization.",
+      "geometry_variants": [
+        {
+          "id": "narrow-1",
+          "aperture_rect": [
+            128,
+            174,
+            1,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            1,
+            2
+          ]
+        },
+        {
+          "id": "baseline-2",
+          "aperture_rect": [
+            128,
+            174,
+            2,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "wide-4",
+          "aperture_rect": [
+            128,
+            174,
+            4,
+            2
+          ],
+          "intake_rect": [
+            128,
+            172,
+            4,
+            2
+          ]
+        }
+      ],
+      "variant_application": "Replace non-vent valve event rects with aperture_rect and sink event rects with intake_rect. Vent stays2x2. Freeze resolved event list and geometry in a new definition digest before execution.",
+      "lifecycle_controls": [
+        "one-held-pulse",
+        "release-focus-pause",
+        "fresh-owner-stale-command"
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "requirement": "Leak closed/open/reclosed/reopened",
+      "scope": "planned_host"
+    },
+    {
+      "requirement": "Drain active/stopped/empty/exhausted",
+      "scope": "native_and_planned_host"
+    },
+    {
+      "requirement": "Narrow/wide and direction as geometry",
+      "scope": "planned_host"
+    },
+    {
+      "requirement": "Water precision 3/8 and Brine whole cells",
+      "scope": "native_core"
+    },
+    {
+      "requirement": "Fractional ingress refusal and explicit setup normalization",
+      "scope": "native_core"
+    },
+    {
+      "requirement": "Invalid material/policy/radius",
+      "scope": "native_core"
+    },
+    {
+      "requirement": "1/4 workers, actual phase participants and parity",
+      "scope": "native_core"
+    },
+    {
+      "requirement": "Core/chunk/signed boundaries",
+      "scope": "native_core"
+    },
+    {
+      "requirement": "Wall positional no-crossing and body masks",
+      "scope": "native_core_plus_planned_real_body"
+    },
+    {
+      "requirement": "Repeated reset/fresh-owner reconstruction",
+      "scope": "native_core_plus_planned_host"
+    },
+    {
+      "requirement": "Delayed/duplicate/wrong-generation commands",
+      "scope": "synthetic_contract_plus_planned_host"
+    },
+    {
+      "requirement": "Full free quantity and source/sink inventory",
+      "scope": "native_core_plus_planned_host"
+    },
+    {
+      "requirement": "Default FM control unchanged",
+      "scope": "source_lock_plus_native_core"
+    },
+    {
+      "requirement": "Upward directed momentum",
+      "scope": "unsupported_physics_change"
+    },
+    {
+      "requirement": "Real native command receipts in ordinary UI",
+      "scope": "planned_host"
+    }
+  ],
+  "acceptance": {
+    "closed_quantity": "initial + actual sources - actual sinks = remaining stored quantity; no reactions in primary fixtures",
+    "identity": "bind command to actual owner generation, input generation, equipment epoch, sequence, lease, applied policy and native run receipt",
+    "workers": "record configured capacity, jobs and actual claimants; no forced four-claimant assertion for sleeping/small fixtures",
+    "geometry": "check hard-wall positions and mask coverage; net Wall count alone is insufficient",
+    "feel": "UNTESTED; no aesthetic/physics inference from contract consistency"
+  },
+  "native_test_scope": "Separate native fixture: eight signed-coordinate reservoirs, Water FM/IN or Brine CY/IN, widths1/4, workers1/4, 224 ticks. It is NOT execution of the six planned host fixtures or the 16-target host-command bound; wide native operations visit32 targets across eight separate tanks.",
+  "native_test_cases": [
+    "native.ingress.v1",
+    "native.edit-refusals.v1",
+    "native.nozzle-no-input.v1",
+    "native.capacity-quarantine.v1",
+    "native.mask-barrier.v1",
+    "native.sink-exhaustion.v1",
+    "native.leak-closure-reopen.v1",
+    "native.drain-active-stopped-empty.v1",
+    "native.owner-reconstruction.v1"
+  ],
+  "quantity_observation_domain": "Complete finite World domain, never a cropped ROI; receipt quantities use owner.material units even on an invalid-material refusal.",
+  "material_substitution": "For Brine control variants, rebuild all initial liquid cells using native Brine descriptor defaults and unchanged coordinates/temperature, with zero new IN motion; do not preserve Water mass/coherence bytes as Brine payload. Freeze resulting final tuples/digest."
+}

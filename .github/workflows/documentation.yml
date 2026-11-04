@@ -74,6 +74,13 @@ jobs:
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/water_normalization_contract.py --check
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/liquid_run_receipt_contract.py --check
+      - name: Check reviewed IN-TOOLS source admission and failure controls
+        id: in_tools_admission
+        run: |
+          mkdir -p build/in-tools-admission
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" git fetch --no-tags origin fbe82bcab8f821aac442c2bf59eb57b279717873
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/in_tools_source_admission.py > build/in-tools-admission/source-admission.json
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/lcb -p 'test_in_tools*.py' -v > build/in-tools-admission/focused.stdout.log 2> build/in-tools-admission/focused.stderr.log
       - name: Check material catalogue shadow compatibility
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compatibility.py --check
@@ -110,6 +117,9 @@ jobs:
           mkdir -p build/retrieval
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --output build/retrieval/frozen.json
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/retrieval/challenges.json
+          for cohort in retrieval-in-tools-361 retrieval-questions-mat354 retrieval-questions-mat354-recovery retrieval-questions-mat-auth-353a retrieval-questions-mat-auth; do
+            timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/docs/retrieval_eval.py --queries "docs/reference/$cohort.json" --output "build/retrieval/$cohort.json"
+          done
       - name: Validate Git LFS objects and whitespace
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" git lfs fsck
@@ -129,4 +139,12 @@ jobs:
           name: material-catalogue-parity-${{ github.run_id }}-${{ github.run_attempt }}
           path: workspace/source/build/material-catalogue/
           if-no-files-found: ignore
+          retention-days: 90
+      - name: Retain IN-TOOLS admission and focused failure-control evidence
+        if: always() && steps.in_tools_admission.outcome != 'skipped'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: in-tools-admission-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/build/in-tools-admission/
+          if-no-files-found: error
           retention-days: 90

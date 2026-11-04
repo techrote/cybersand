@@ -10,6 +10,21 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+IN-TOOLS #361: [bounded gameplay admission](architecture/in-tools-gameplay-admission.md),
+[fixtures and future playtest](operations/in-tools-fixtures-and-playtest.md), and
+[source-qualified preparation record](audits/2026-11-04-in-tools-admission.md).
+This documentation/test-only candidate prepares metered drains, reversible ports
+and geometric sources; gameplay integration and native momentum inputs remain
+Planned. It does not complete #361 or import unmerged #370/#358.
+The [independent #379 review](audits/2026-11-04-in-tools-379-independent-review.md)
+records retrieval recovery, evidence-tool corrections and the owner approval boundary.
+The [current-main source re-admission](audits/2026-11-04-in-tools-379-current-main-readmission.md)
+preserves the original plan while explicitly consuming #390's worker correction;
+the PR ledger owns fresh resulting-head qualification and the owner decision.
+The [Windows exit investigation](audits/2026-11-04-pr379-windows-exit-investigation.md)
+preserves the blocking process failure and admits bounded exception capture;
+#379 remains on hold pending evidence, repair and fresh qualification.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;

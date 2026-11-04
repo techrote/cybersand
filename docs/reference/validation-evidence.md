@@ -10,6 +10,26 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## IN-TOOLS preparation scope — 2026-11-04
+
+The [#361 dated record](../audits/2026-11-04-in-tools-admission.md) binds actual
+Linux native primitive runs, source custody and synthetic proposal-checker
+adversaries. They are separate from the six Planned host fixtures, Windows/Godot
+execution, Rapier-safe terrain insertion and human feel. Existing #370 historical
+results retain their own source, platform and timing exclusions.
+The [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
+reproduces the original head, preserves retrieval failures and records the
+corrected census, diagnostic-ledger and evidence-validation contracts separately.
+The [current-main source re-admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+binds the one changed worker input to accepted main `751edc0b` and leaves all
+earlier receipts at their original identities. The live #379 ledger owns fresh
+resulting-head execution; source admission alone supplies no runtime pass.
+The [Windows process investigation](../audits/2026-11-04-pr379-windows-exit-investigation.md)
+retains b30/test-merge d340, the86/0 footer followed by0xC0000005, and the failed
+Windows coverage gate. Its separately admitted exception apparatus preserves
+the fixture and current runtimes; no repair or successful diagnostic is claimed
+by its source checkpoint.
+
 ## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
 
 The later [Phase A integration gate](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration)

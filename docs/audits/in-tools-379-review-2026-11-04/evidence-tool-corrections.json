@@ -1,0 +1,409 @@
+{
+  "baseline": {
+    "code_commit": "24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/lcb",
+      "-p",
+      "test_in_tools*.py",
+      "-v"
+    ],
+    "log": {
+      "filename": "baseline-tests.log",
+      "retained_local_path": "/workspace/scratch/848a20a11128/in379-evidence-review/baseline-tests.log",
+      "sha256": "f5eed54e77586c0009908f9cc5217fde2b07712da41b848781460f25f96040a8"
+    },
+    "output_excerpt": [
+      "Ran 49 tests in 0.088s",
+      "OK"
+    ],
+    "source_input_sha256": {
+      "native/tests/test_in_tools_361_contract.cpp": "f743a2c8beef02caa40b44c4803511c4822cccc3bd3fea77f82e06776dfcbb3c",
+      "tools/lcb/in_tools_contract.py": "2fdacbbed301e495393b052877f6ff7f3d8443c26096775243715eac15761de9",
+      "tools/lcb/run_in_tools_native.py": "926512fe3f85d27cebb1c8839502103b6ef1a364816132c63ba98b7f169383a4",
+      "tools/lcb/test_in_tools_contract.py": "76e8d39db3d63624db6fa78074819309da1a75d5488209a9f4e15b746ffc9708",
+      "tools/lcb/test_in_tools_native_runner.py": "8b77a1884f77d4f014e43a21a4182ffd7264b9b2b0e2c96954b30e0b2fa4f2e3"
+    },
+    "status": "pass",
+    "tests": 49
+  },
+  "final_python_validation": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/lcb",
+      "-p",
+      "test_in_tools*.py",
+      "-v"
+    ],
+    "cwd": "/workspace/scratch/848a20a11128/cybersand-379-evidence",
+    "elapsed_seconds": 0.21256238899513846,
+    "exit_code": 0,
+    "finished_at_utc": "2026-11-04T11:52:56.895965+00:00",
+    "git_commit": "d4660bf72255ed15f20d1ea50d2fc524a8277145",
+    "git_tree": "3696cbc8f5bd8c956cfe2dc984c74624c9561aec",
+    "inputs_unchanged": true,
+    "log_path": "/workspace/scratch/848a20a11128/in379-evidence-review/evidence-final58.log",
+    "log_sha256": "e55df30ad8440fcafc636845146eb515ac6b0dbd6b6d5e5c9be8b66af98f4573",
+    "native_runner_tests": 20,
+    "output_tail": [
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 58 tests in 0.109s",
+      "",
+      "OK"
+    ],
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+    "proposal_contract_tests": 38,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "python_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+    "python_executable_sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7",
+    "source_input_sha256": {
+      "native/tests/test_in_tools_361_contract.cpp": "393ffb1b1e9782a89345ea8e19ed755238d815af57671eade3dd834009137e27",
+      "tools/lcb/in_tools_contract.py": "5fc29cd9bf111e1d1154530f13b14f006f11d401672175c0bcd90241ad284b91",
+      "tools/lcb/run_in_tools_native.py": "f6a04bbba8eec3fb888c524e0bf5856beae3a5ddb92599d270c84c397a4801f4",
+      "tools/lcb/test_in_tools_contract.py": "bbb005ed785ee6d20a7842a6a29448504f548f754fab4e67788cdf2dca2cf3b4",
+      "tools/lcb/test_in_tools_native_runner.py": "90a79a4d5bb615968cb89e795d688fa73bbf61ff53cfe4fc622cf9982c004e07"
+    },
+    "source_input_sha256_after": {
+      "native/tests/test_in_tools_361_contract.cpp": "393ffb1b1e9782a89345ea8e19ed755238d815af57671eade3dd834009137e27",
+      "tools/lcb/in_tools_contract.py": "5fc29cd9bf111e1d1154530f13b14f006f11d401672175c0bcd90241ad284b91",
+      "tools/lcb/run_in_tools_native.py": "f6a04bbba8eec3fb888c524e0bf5856beae3a5ddb92599d270c84c397a4801f4",
+      "tools/lcb/test_in_tools_contract.py": "bbb005ed785ee6d20a7842a6a29448504f548f754fab4e67788cdf2dca2cf3b4",
+      "tools/lcb/test_in_tools_native_runner.py": "90a79a4d5bb615968cb89e795d688fa73bbf61ff53cfe4fc622cf9982c004e07"
+    },
+    "started_at_utc": "2026-11-04T11:52:56.683408+00:00",
+    "status": "pass",
+    "tests": 58,
+    "timeout_seconds": 60,
+    "tracked_status_before_record": ""
+  },
+  "findings": [
+    {
+      "corrected_anchor": "tools/lcb/run_in_tools_native.py:311-324 at d4660bf72255ed15f20d1ea50d2fc524a8277145",
+      "id": "EV-01",
+      "original_anchor": "tools/lcb/run_in_tools_native.py:294-307 at 24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+      "reason": "The prior executable survived when a compiler wrapper returned zero without producing output. Removing it before compilation makes subsequent missing-binary custody fail before execution. This adversarial defect is not evidence that the historical GCC build used a stale binary.",
+      "severity": "high-qualification",
+      "status": "fixed",
+      "title": "Successful compiler exit could execute an old binary"
+    },
+    {
+      "corrected_anchor": "native/tests/test_in_tools_361_contract.cpp:146-214,244-280 at d4660bf72255ed15f20d1ea50d2fc524a8277145",
+      "id": "EV-02",
+      "original_anchor": "native/tests/test_in_tools_361_contract.cpp:31-39,183-190 at 24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+      "reason": "Old quantity and closure checks compared values from the same native ledger; positional checks covered exterior strips. New stored-cell census covers all 393216 cells in 24 pre-reserved chunks at completed ticks0,8,24,32,64,224 and original/restored owners at232. It compares all material populations and Water mass independently to the ledger, rejects foreign/escaped material, verifies actual Wall positions and rejects changed resident coverage. Five negative controls include spatial violations whose native ledger still closes.",
+      "severity": "medium-qualification",
+      "status": "implemented-awaiting-separate-native-run",
+      "title": "Full-world inventory and positional protection lacked an independent census"
+    },
+    {
+      "corrected_anchor": "tools/lcb/in_tools_contract.py:25-53,65-77,146-251 at d4660bf72255ed15f20d1ea50d2fc524a8277145",
+      "id": "EV-03",
+      "original_anchor": "tools/lcb/in_tools_contract.py:104-168,340-343 at 24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+      "reason": "Duplicate JSON keys now refuse. Fixed v1 requires all six fixture IDs, complete variant geometry and schedules, and all fourteen material/family/radius/precision/worker combinations, including original Current FreeMass radius-two controls. Missing/duplicate work cannot receive a successful complete-plan interpretation. Fixture JSON and source locks remain unchanged.",
+      "severity": "medium-qualification",
+      "status": "fixed",
+      "title": "Ambiguous JSON and incomplete or duplicate v1 registration were accepted"
+    },
+    {
+      "corrected_anchor": "native/tests/test_in_tools_361_contract.cpp:269-285,319-321 at d4660bf72255ed15f20d1ea50d2fc524a8277145",
+      "id": "EV-04",
+      "original_anchor": "native/tests/test_in_tools_361_contract.cpp:191,196-200,232 at 24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+      "reason": "The v2 probe separately compares copied InertialLedger values for all224 worker1/4 ticks, immediately after restore, and every8 continuation ticks. The result schema explicitly requires these claims; old v1 output is not promoted to v2 evidence.",
+      "severity": "medium-qualification",
+      "status": "implemented-awaiting-separate-native-run",
+      "title": "Physical hash parity did not establish IN diagnostic-ledger parity"
+    },
+    {
+      "corrected_anchor": "tools/lcb/in_tools_contract.py:323-338,393-399 at d4660bf72255ed15f20d1ea50d2fc524a8277145",
+      "id": "EV-05",
+      "original_anchor": "tools/lcb/in_tools_contract.py:307-314 at 24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+      "reason": "The validator now counts only cells intersecting the complete finite World when subtracting local capacity. Outside copies must be Empty and unmasked. Correct unchanged full-world refusals pass, and invented outside liquid no longer masquerades as valid local inventory.",
+      "severity": "medium-qualification",
+      "status": "fixed",
+      "title": "Out-of-domain refusals used the wrong finite-world capacity"
+    }
+  ],
+  "limitations": [
+    "Synthetic Python command/receipt consistency never authenticates native gameplay commands, caller-supplied masks, source claims or state digests.",
+    "Full-world census executes at the declared checkpoints, not every tick; pre-existing exterior-band positional and ledger checks continue each tick.",
+    "The 24-chunk completeness argument is valid for this registered World: all chunks are reserved first and production source has no chunk eviction in these probes; clear is not called inside a flow arm.",
+    "The renamed first-reservoir-depletion observation remains distinct from downstream outlet flux.",
+    "Reopening has no separately authenticated applied native gameplay-command receipt.",
+    "The empty-intake control does not establish full reservoir exhaustion.",
+    "Width-four primitive operations visit32 targets across eight tanks; they do not qualify the proposed16-target application command limit.",
+    "The standalone test compiles production World primitives; it does not run the six planned Godot host fixtures.",
+    "No Windows, Godot, Rapier, normal desktop input lifecycle, equipment/reset/cooldown or human-feel execution is established by these corrections.",
+    "Native elapsed times include hashes, assertions and census work, and are not performance benchmark results.",
+    "Original v1 native packet and historical reports remain unchanged. Corrected-head native/runtime/hosted acceptance is recorded by the integration owner separately."
+  ],
+  "native_test_changes": {
+    "arms": 32,
+    "census_cells": 393216,
+    "census_chunks": 24,
+    "census_completed_ticks": [
+      0,
+      8,
+      24,
+      32,
+      64,
+      224
+    ],
+    "census_negative_controls": [
+      "water-quantity-mismatch",
+      "material-count-mismatch",
+      "escaped-liquid",
+      "missing-wall",
+      "extra-chunk"
+    ],
+    "depletion_field": "first_reservoir_depletion_tick",
+    "execution_disposition": "Root integration owner executes and records the source-qualified full native v2 run separately; this file does not claim its outcome.",
+    "flow_pairs": 16,
+    "full_world_census_domain": [
+      -128,
+      -128,
+      768,
+      512
+    ],
+    "native_runner_record_schema": "in-tools-native-run-v1",
+    "native_test_sha256": "393ffb1b1e9782a89345ea8e19ed755238d815af57671eade3dd834009137e27",
+    "not_an_outlet_flux_measure": true,
+    "restored_census_completed_tick": 232,
+    "result_schema": "in-tools-native-primitives-v2",
+    "runner_sha256": "f6a04bbba8eec3fb888c524e0bf5856beae3a5ddb92599d270c84c397a4801f4",
+    "ticks_per_arm": 224
+  },
+  "other_checks": [
+    {
+      "command": [
+        "python3",
+        "tools/lcb/in_tools_contract.py",
+        "--check-comparison"
+      ],
+      "comparison_inputs_checked": 9,
+      "fixtures_checked": 6,
+      "gameplay_qualified": false,
+      "host_execution": "NOT_RUN",
+      "source_inputs_checked": 25,
+      "status": "pass"
+    },
+    {
+      "command": [
+        "g++",
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-I",
+        "native/include",
+        "-fsyntax-only",
+        "native/tests/test_in_tools_361_contract.cpp"
+      ],
+      "scope": "syntax only; not native execution",
+      "status": "pass"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "status": "pass"
+    }
+  ],
+  "preserved_before_fix_groups": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/lcb",
+        "-p",
+        "test_in_tools*.py",
+        "-v"
+      ],
+      "corrected_control": {
+        "log": {
+          "filename": "python-corrected-controls.log",
+          "retained_local_path": "/workspace/scratch/848a20a11128/in379-evidence-review/python-corrected-controls.log",
+          "sha256": "fb403e421a84a159c40373d41b78723ea45811643c8b2a12cf2f99f0d2e964f2"
+        },
+        "status": "pass",
+        "tests": 54
+      },
+      "correction_commit": "a05c265b98ae4b033ee45aa3d8edc658ea4a399b",
+      "expected_regression_failures": 9,
+      "failure_excerpts": [
+        "AssertionError: 0 != 1 (successful compiler must create a fresh executable)",
+        "AssertionError: 0 != 1 (duplicate JSON keys cannot discard a conflicting receipt)",
+        "AssertionError: ContractError not raised",
+        "Ran 54 tests in 0.126s",
+        "FAILED (failures=9)"
+      ],
+      "id": "EV-negative-1",
+      "implementation_commit": "24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+      "implementation_sha256": {
+        "tools/lcb/in_tools_contract.py": "2fdacbbed301e495393b052877f6ff7f3d8443c26096775243715eac15761de9",
+        "tools/lcb/run_in_tools_native.py": "926512fe3f85d27cebb1c8839502103b6ef1a364816132c63ba98b7f169383a4"
+      },
+      "log": {
+        "filename": "new-negative-tests-before-fix.log",
+        "retained_local_path": "/workspace/scratch/848a20a11128/in379-evidence-review/new-negative-tests-before-fix.log",
+        "sha256": "2d741f5809343f7e1030514cacf03411f05f76be13b30e686ba922648b8521d2"
+      },
+      "regressions": [
+        "compiler exit zero without new executable accepted old executable",
+        "duplicate JSON outcome keys silently discarded conflicting refusal",
+        "empty geometry, empty event schedule, duplicate variant list",
+        "duplicate comparison arm, worker and precision",
+        "floating point command limit"
+      ],
+      "snapshot_qualification": "Implementation bytes are original committed inputs; regression-only tests were added before fixes. The exact intermediate full test-file snapshot was not separately hashed at failure time. Failure log bytes and the implemented regression assertions are retained.",
+      "status": "failed-as-required-to-reproduce-defects",
+      "tests": 54,
+      "unexpected_errors": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/lcb",
+        "-p",
+        "test_in_tools*.py",
+        "-v"
+      ],
+      "corrected_control": {
+        "log": {
+          "filename": "incomplete-v1-corrected-controls.log",
+          "retained_local_path": "/workspace/scratch/848a20a11128/in379-evidence-review/incomplete-v1-corrected-controls.log",
+          "sha256": "bc50353354a7bdd18e7ca95ecec2253143cd8f32cbc788fcb158c94d947614b8"
+        },
+        "status": "pass",
+        "tests": 57
+      },
+      "correction_commit": "1bb4b0fcbe19d0f4e658d26f0ddbc383ba01c20e",
+      "expected_regression_failures": 9,
+      "failure_excerpts": [
+        "AssertionError: ContractError not raised",
+        "Ran 57 tests in 0.139s",
+        "FAILED (failures=9)"
+      ],
+      "id": "EV-negative-2",
+      "implementation_commit": "a05c265b98ae4b033ee45aa3d8edc658ea4a399b",
+      "implementation_sha256": {
+        "tools/lcb/in_tools_contract.py": "7de5644d08f13cfa8677fef5a145b1e4ce305441d3ded81a2b7d4c989d1bcb9f",
+        "tools/lcb/run_in_tools_native.py": "86a17f7d97696dbb5b882d5f1aeebd4543c14a63ed3aa217e58413a72d38181f"
+      },
+      "log": {
+        "filename": "incomplete-v1-before-fix.log",
+        "retained_local_path": "/workspace/scratch/848a20a11128/in379-evidence-review/incomplete-v1-before-fix.log",
+        "sha256": "02d576d2b324522c9e89b2f46d018cee6912ea29e917927511b5b933c4808430"
+      },
+      "regression_test_sha256": {
+        "tools/lcb/test_in_tools_contract.py": "3d42e6df4d6a861a9dc721fe0b3aa4aebaf257ee9c4b522220739a4cca63cc6a"
+      },
+      "regressions": [
+        "omitted one of six required fixtures",
+        "omitted Brine material cohort",
+        "omitted original radius-two FreeMass control",
+        "omitted family, worker or mass precision",
+        "missing geometry rectangle",
+        "omitted geometry variant",
+        "omitted required event"
+      ],
+      "status": "failed-as-required-to-reproduce-defects",
+      "tests": 57,
+      "unexpected_errors": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/lcb",
+        "-p",
+        "test_in_tools*.py",
+        "-v"
+      ],
+      "corrected_control": {
+        "log": {
+          "filename": "outside-refusal-corrected-controls.log",
+          "retained_local_path": "/workspace/scratch/848a20a11128/in379-evidence-review/outside-refusal-corrected-controls.log",
+          "sha256": "2928098741197dafd547ad45378afa43fdfef9c99c132723a910cfb16b4c5ba0"
+        },
+        "status": "pass",
+        "tests": 58
+      },
+      "correction_commit": "d4660bf72255ed15f20d1ea50d2fc524a8277145",
+      "expected_regression_errors": 2,
+      "expected_regression_failures": 1,
+      "failure_excerpts": [
+        "in_tools_contract.ContractError: World quantity exceeds declared domain capacity",
+        "AssertionError: ContractError not raised",
+        "Ran 58 tests in 0.140s",
+        "FAILED (failures=1, errors=2)"
+      ],
+      "id": "EV-negative-3",
+      "implementation_commit": "1bb4b0fcbe19d0f4e658d26f0ddbc383ba01c20e",
+      "implementation_sha256": {
+        "tools/lcb/in_tools_contract.py": "410ec2fd342eb524b29fe62010430ce5b6ae5445606bcc6b714b7a0235bcbe5c",
+        "tools/lcb/run_in_tools_native.py": "f6a04bbba8eec3fb888c524e0bf5856beae3a5ddb92599d270c84c397a4801f4"
+      },
+      "log": {
+        "filename": "outside-refusal-before-fix.log",
+        "retained_local_path": "/workspace/scratch/848a20a11128/in379-evidence-review/outside-refusal-before-fix.log",
+        "sha256": "9b5d6330908b95a7eafe520d227cf121ecc68f2b90b3e1fae1a9e3245720f326"
+      },
+      "regression_test_sha256": {
+        "tools/lcb/test_in_tools_contract.py": "bbb005ed785ee6d20a7842a6a29448504f548f754fab4e67788cdf2dca2cf3b4"
+      },
+      "regressions": [
+        "full one-cell World: correct wholly outside refusal rejected",
+        "full one-cell World: correct partly outside refusal rejected",
+        "fictional nonempty cell outside complete World accepted"
+      ],
+      "status": "failed-as-required-to-reproduce-defects",
+      "tests": 58
+    }
+  ],
+  "recorded_at_utc": "2026-11-04T11:54:32.571147+00:00",
+  "schema": "in-tools-379-evidence-corrections-v1",
+  "scope": "Documentation/test-only audit of a copied-value validator and standalone native probe; no production gameplay or native command authentication",
+  "source": {
+    "accepted_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "changed_paths": [
+      "native/tests/test_in_tools_361_contract.cpp",
+      "tools/lcb/in_tools_contract.py",
+      "tools/lcb/run_in_tools_native.py",
+      "tools/lcb/test_in_tools_contract.py",
+      "tools/lcb/test_in_tools_native_runner.py"
+    ],
+    "correction_commits": [
+      "a05c265b98ae4b033ee45aa3d8edc658ea4a399b",
+      "1bb4b0fcbe19d0f4e658d26f0ddbc383ba01c20e",
+      "d4660bf72255ed15f20d1ea50d2fc524a8277145"
+    ],
+    "fixture_source_locks_changed": false,
+    "production_changes": false,
+    "reviewed_head": "24d0e612ae986edbdc48e5b94f52315d9c3d8421",
+    "unchanged_registration": {
+      "path": "godot/tests/fixtures/lcb/in_tools/in-tools-admission.v1.json",
+      "sha256": "8e5e12a5cbaf0ccf554f07dfc49ea17757112445bf23d6dc144154b6165b735a"
+    }
+  }
+}

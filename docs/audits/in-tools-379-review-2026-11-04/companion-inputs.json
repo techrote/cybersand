@@ -1,0 +1,10 @@
+{
+  "checkpoint": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "files": {
+    "SOURCE-PROVENANCE.json": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+    "docs/WEB_THREADING.md": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+    "tools/dev.py": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+    "docs/LOCAL_DEVELOPMENT.md": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d",
+    "validation/browser-results.json": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839"
+  }
+}

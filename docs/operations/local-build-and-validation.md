@@ -10,6 +10,13 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## IN-TOOLS preparation apparatus
+
+The [#361 runbook](in-tools-fixtures-and-playtest.md#what-can-run-now) gives the
+standalone C++20 native probe and Python proposal checks. No new Godot library,
+launcher or comparison host is required. Read its explicit native-only scope
+and source-custody receipt before interpreting a successful run.
+
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 
 The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged
