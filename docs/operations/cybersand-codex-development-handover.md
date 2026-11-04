@@ -10,11 +10,13 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-Flyer review control follow-up: [Shift/Ctrl, live powder sources and edge alignment](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
-records the implemented room-only modifier, full-roster normal-gravity sources
-and texture-footprint correction. Positive owner feedback was for LA/A1; burial
-in Sand/Rust/Coal remains reported, relative loading remains a hypothesis, and
-sleep/response-law changes, production acceptance and merges remain excluded.
+Flyer review controls: [saved spawn, Burst key and compact toolbars](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
+extend the room-only Shift/Ctrl, live powder sources and edge-alignment repair.
+Saved centres survive reset/craft/response changes within the room; B bursts
+without cancelling held flight input and Details starts collapsed. Exact-head
+execution remains separately recorded. Positive owner feedback was for LA/A1;
+Sand/Rust/Coal burial and the loading hypothesis remain unresolved. Material-law
+changes, sleep, production acceptance and merges remain excluded.
 
 Repeatable powder owner review is available in source in the
 [painting playground](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review):

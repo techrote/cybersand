@@ -44,20 +44,24 @@ func configure_granular_experiment(id: StringName, candidate: String, token: Str
 		return false
 	return _configure_granular(id,candidate,token,spawn_offset)
 
-func configure_review_fleet(index: int, options: Dictionary = {}) -> bool:
+func configure_review_fleet(index: int, options: Dictionary = {}, spawn_position: Vector2 = Vector2(178,304)) -> bool:
 	if not Arena.Rig.valid_review_options(options) or not preload("res://scripts/gcr_review_fleet.gd").valid_index(index):
 		last_error="review_options_refused"
 		return false
+	if not Arena.valid_review_fleet_spawn(spawn_position,index):
+		last_error="review_spawn_refused"
+		return false
 	var load_aware: bool = options.get("response","") in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]
 	return _configure_granular(&"arcadelander","GCR-REST" if load_aware else "GCR",
-		"GCR-REST-001-2026-11-02" if load_aware else "GCR-001-2026-11-01",Vector2.ZERO,index,options)
+		"GCR-REST-001-2026-11-02" if load_aware else "GCR-001-2026-11-01",Vector2.ZERO,index,options,false,spawn_position)
 
 func configure_review_powder_test(options: Dictionary) -> bool:
 	if not Arena.Rig.valid_review_options(options) or options.get("response","") not in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]: return false
 	return _configure_granular(&"arcadelander","GCR-REST","GCR-REST-001-2026-11-02",Vector2.ZERO,2,options,true)
 
 func _configure_granular(id: StringName, granular_candidate: String, token: String, spawn_offset: Vector2 = Vector2.ZERO,
-		review_fleet_index: int = -1, review_options: Dictionary = {}, powder_review: bool = false) -> bool:
+		review_fleet_index: int = -1, review_options: Dictionary = {}, powder_review: bool = false,
+		review_spawn: Vector2 = Vector2(178,304)) -> bool:
 	if id not in Course.PRESETS or not is_inside_tree():
 		last_error = "Unknown player preset or missing scene owner."
 		return false
@@ -93,6 +97,7 @@ func _configure_granular(id: StringName, granular_candidate: String, token: Stri
 		var spawn := Vector2(178, Course.FLOOR_Y - float(prepared.get("spawn_floor_clearance", 20.0)))
 		if id in [&"arcadelander", &"jetbarrel"]:
 			spawn.y = 304.0
+		if review_fleet_index != -1: spawn=review_spawn
 		if powder_review: spawn=Vector2(512,256)
 		var config: Dictionary = {"version": Arena.VERSION, "seed": 0, "max_ticks": Arena.MAX_TICKS,
 			"local_patch_radius": 0, "course": Course.ID,

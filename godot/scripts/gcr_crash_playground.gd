@@ -9,6 +9,11 @@ var paint_material: int = 2
 var brush_radius: int = 8
 var _brush_label: Label
 
+static func crash_hard_rects() -> Array[Rect2i]:
+	var result: Array[Rect2i]=[Rect2i(16,475,992,21),Rect2i(16,16,6,480),Rect2i(1002,16,6,480),Rect2i(16,16,992,6)]
+	for index: int in range(4): result.append(Rect2i(285+index*170,255-index%2*55,86,5))
+	return result
+
 func _ready() -> void:
 	_granular_experiment = "GCR"
 	_granular_token = "GCR-001-2026-11-01"
@@ -40,7 +45,7 @@ func select_preset(index: int) -> bool:
 func seed_crash_room() -> bool:
 	var world: Object = runtime._arena._world
 	if not world.diagnostic_fill_rect(Vector2i(0,0),Vector2i(1024,512),0): return false
-	for rect: Rect2i in [Rect2i(16,475,992,21),Rect2i(16,16,6,480),Rect2i(1002,16,6,480),Rect2i(16,16,992,6)]:
+	for rect: Rect2i in crash_hard_rects():
 		if not world.diagnostic_fill_rect(rect.position,rect.size,58): return false
 	# Separated, deep category banks; varied height and stepped slopes.
 	for i: int in range(9):
@@ -52,7 +57,6 @@ func seed_crash_room() -> bool:
 	# A second airborne tier provides glancing entries and thin support.
 	for i: int in range(4):
 		var x: int = 285+i*170
-		if not world.diagnostic_fill_rect(Vector2i(x,255-i%2*55),Vector2i(86,5),58): return false
 		if not world.diagnostic_fill_rect(Vector2i(x,225-i%2*55),Vector2i(64,30),MATERIALS[i]): return false
 	_present(runtime.snapshot(),true)
 	return true
