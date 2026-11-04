@@ -7,12 +7,26 @@ String pressure_optimization_unsigned(std::uint64_t value) {
 }
 
 String CyberNativeCellWorld::get_liquid_comparison_hash(std::int64_t projection_id) const {
-    if (world_ == nullptr || (projection_id != 1 && projection_id != 2)) return {};
-    const auto projection = static_cast<cybersand::LiquidStateProjection>(projection_id);
-    char text[17];
-    std::snprintf(text, sizeof(text), "%016llx",
-                  static_cast<unsigned long long>(world_->liquid_comparison_hash(projection)));
-    return String(text);
+    const auto result = get_liquid_comparison_hash_result(projection_id);
+    return result["ok"] ? String(result["value"]) : String();
+}
+
+Dictionary CyberNativeCellWorld::get_liquid_comparison_hash_result(std::int64_t projection_id) const {
+    constexpr const char* operation = "get_liquid_comparison_hash";
+    if (!world_) return boundary_result(operation, false, "world_unavailable", "No native World");
+    if (projection_id != 1 && projection_id != 2)
+        return boundary_result(operation, false, "invalid_argument", "Unknown liquid state projection");
+    try {
+        const auto projection = static_cast<cybersand::LiquidStateProjection>(projection_id);
+        char text[17];
+        std::snprintf(text, sizeof(text), "%016llx",
+            static_cast<unsigned long long>(world_->liquid_comparison_hash(projection)));
+        return boundary_result(operation, true, "available", "Native liquid comparison identity", String(text));
+    } catch (const std::exception& error) {
+        return boundary_result(operation, false, "native_refusal", error.what());
+    } catch (...) {
+        return boundary_result(operation, false, "native_refusal", "Unknown native exception obtaining liquid comparison identity");
+    }
 }
 
 Dictionary CyberNativeCellWorld::inspect_pressure_optimization() const {

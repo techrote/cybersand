@@ -1,0 +1,20 @@
+{
+  "schema": "sol-facade-api-publication-map-v1",
+  "description": "Metadata-only Git API mapping; exact source trees and ordered dependency ancestry authenticated. No merge or force-push.",
+  "base": "1598115c9065239cc1eaec11e99077274b457be1",
+  "stages": [
+    {
+      "local_commit": "1caffe16c21bc411e7219ed7a6157d8b17a6ff51",
+      "published_commit": "f4f2adf99f63375f296632948e607f6d1cc5ffd9",
+      "tree": "2bfa829513b0ea4a363f3c4d89e909b0c5dab2c3",
+      "published_parent": "1598115c9065239cc1eaec11e99077274b457be1"
+    },
+    {
+      "local_commit": "2aca1bb250cde4ff7b0bcc668c2898ac897cfd13",
+      "published_commit": "bb2daad5cb22054bd69bba94cbf3016c43cd422a",
+      "tree": "ead90c43eb12293c99500cc8d3839a566dce7069",
+      "published_parent": "f4f2adf99f63375f296632948e607f6d1cc5ffd9"
+    }
+  ],
+  "scope": "At this map creation no branch ref had been created by the object writes. The final evidence child and actual branch/PR are authenticated separately."
+}

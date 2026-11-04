@@ -12,6 +12,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 ## Structural detachment routing
 
+For public hash refusal, safe simulation-window changes and native adhesion
+readback, retrieve the [facade contract](../systems/solid-detachment.md#public-refusal-and-authoritative-readback--2026-11-04)
+and [result interface](interfaces-and-message-contracts.md#sol-public-boundary-results--2026-11-04).
+The [repair ledger](../audits/2026-11-04-sol-facade-refusal-repair.md) separates
+Linux/Windows boundary qualification from unchanged physical, CPU and material
+admission gates. [Supplementary questions](retrieval-questions-sol-facade.json)
+preserve all earlier frozen fixtures.
+
 For SOL364-B bounded existing-penetration recovery, retrieve the
 [current diagnostic boundary](../systems/solid-detachment.md#sol364-b-existing-penetration-corridor--2026-11-04)
 and [negative result](../audits/2026-11-04-sol364b-corridor-result.md).

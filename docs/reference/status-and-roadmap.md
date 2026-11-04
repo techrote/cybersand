@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL facade repair, separate from physical admission — 2026-11-04
+
+An [isolated dependent repair](../audits/2026-11-04-sol-facade-refusal-repair.md)
+addresses reproduced public hash/window aborts and adhesion applied-state
+disagreement at #347's verified `1598115c` base. Its additive
+[result contract](../systems/solid-detachment.md#public-refusal-and-authoritative-readback--2026-11-04)
+retains native serialization/mutation fences and the original 27-role source
+guard. Passing facade execution is not source-transition or physical acceptance.
+All original 84 clearance/64 depth failures, 36 asynchronous final overlaps,
+120+60-step and 2 ms limits remain; #347 stays Draft and #365 blocked. Owner
+admission and independent audit precede any later composition.
+
 ## SOL364-B bounded corridor NO-GO — 2026-11-04
 
 The [existing-penetration result](../audits/2026-11-04-sol364b-corridor-result.md)

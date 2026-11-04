@@ -83,10 +83,15 @@ public:
                                std::int64_t vertical_buffer);
     void set_simulation_window_enabled(bool enabled);
     [[nodiscard]] bool get_simulation_window_enabled() const;
+    // Copied authoritative region selection and the last exclusive-owner
+    // boundary result. Neither is a cross-thread mailbox or a live World view.
+    [[nodiscard]] Dictionary get_simulation_window_state() const;
+    [[nodiscard]] Dictionary get_last_boundary_result() const;
     void set_cadence_lod_enabled(bool enabled);
     [[nodiscard]] bool get_cadence_lod_enabled() const;
     void set_liquid_surface_adhesion_enabled(bool enabled);
     [[nodiscard]] bool get_liquid_surface_adhesion_enabled() const;
+    [[nodiscard]] Dictionary get_liquid_surface_adhesion_result() const;
 
     [[nodiscard]] std::int64_t get_revision() const;
     [[nodiscard]] std::int64_t get_hard_surface_revision() const;
@@ -126,6 +131,9 @@ public:
     // LCB-001 pressure_flow_v1 (#200) inspection. Serialized owner-only reads of
     // immutable values; nothing exposes live World storage.
     [[nodiscard]] String get_physical_state_hash() const;
+    // Only ok=true supplies a value. Legacy String accessors return an empty,
+    // invalid-length string on refusal and retain this explicit result.
+    [[nodiscard]] Dictionary get_physical_state_hash_result() const;
     [[nodiscard]] std::int64_t get_physical_state_hash_version() const;
     [[nodiscard]] std::int64_t get_physical_state_format_version() const;
     [[nodiscard]] Dictionary inspect_inertial_cell(Vector2i point) const;
@@ -135,6 +143,7 @@ public:
     // Exclusive-owner diagnostic observations. Unknown projection IDs return
     // no hash; optimization counters/budgets use exact unsigned decimal strings.
     [[nodiscard]] String get_liquid_comparison_hash(std::int64_t projection_id) const;
+    [[nodiscard]] Dictionary get_liquid_comparison_hash_result(std::int64_t projection_id) const;
     [[nodiscard]] Dictionary inspect_pressure_optimization() const;
     // Run receipt: binds the applied policy and every World execution input with
     // the caller's setup identity into one SHA-256 receipt hash.
@@ -282,6 +291,17 @@ private:
     Dictionary applied_liquid_construction_receipt_;
     Dictionary liquid_construction_attempt_;
     String last_tick_error_{};
+    mutable Dictionary last_boundary_result_;
+    // Common successful frame commands retain only fixed scalar/literal status.
+    // Materialize a Dictionary when observed, not on every native-owner loop.
+    struct BoundarySuccess {
+        bool valid = false;
+        const char* operation = "";
+        const char* code = "";
+        const char* diagnostic = "";
+        std::int64_t phase = -1;
+    };
+    mutable BoundarySuccess last_boundary_success_;
     double simulation_time_ms_ = 0.0;
     bool simulation_window_enabled_ = true;
     bool cadence_lod_enabled_ = true;
@@ -293,6 +313,12 @@ private:
     void retire_liquid_construction_identity();
     void reset_demo_coupling_parameters() noexcept;
     void refresh_simulation_region();
+    void apply_simulation_region(Vector2i origin, Vector2i size,
+        std::int64_t horizontal_buffer, std::int64_t vertical_buffer, bool enabled);
+    [[nodiscard]] Dictionary boundary_result(const char* operation, bool ok,
+        const char* code, const String& diagnostic, const Variant& value = Variant()) const;
+    void boundary_success(const char* operation, const char* code,
+        const char* diagnostic) const noexcept;
     void refresh_render_cells() const;
     void clear_observations();
     [[nodiscard]] static BodyStates parse_body_state_values(const PackedFloat32Array& states, bool strict);

@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-04",
+  "purpose": "Separate public-facade refusal and native authority questions; all older frozen question sets are unchanged.",
+  "questions": [
+    {
+      "id": "SOL-FACADE-HASH-001",
+      "query": "How do public physical and liquid comparison hashes refuse an active SOL transaction without aborting or inventing a physical identity?",
+      "canonical": ["systems/solid-detachment.md", "reference/interfaces-and-message-contracts.md"],
+      "facts": ["Structured results contain ok, operation, code, actual phase and diagnostic; value exists only on success.", "Legacy String refusals are empty invalid-length values, not zero or state_hash substitutes.", "Active full serialization remains unavailable; public refusal is not physical acceptance."],
+      "sources": ["../godot/native_extension/cyber_native_cell_world.cpp", "../godot/native_extension/pressure_optimization_inspection.inc"]
+    },
+    {
+      "id": "SOL-FACADE-AUTHORITY-001",
+      "query": "Can a refused SOL simulation-window or adhesion request change reported native state, and how is applied authority independently checked after rollback and reset?",
+      "canonical": ["systems/solid-detachment.md", "reference/interfaces-and-message-contracts.md"],
+      "facts": ["Window fields commit only after native acceptance; native region, selected cores and applied cores are copied separately.", "Adhesion reads native World state after a request, and reset synchronizes the cache.", "Independent CYPS import and reexport prove applied adhesion; synthetic body reservations are not live Rapier certification."],
+      "sources": ["../godot/native_extension/cyber_native_cell_world.cpp", "../godot/tests/test_sol_facade_refusals.gd"]
+    },
+    {
+      "id": "SOL-FACADE-ADMISSION-001",
+      "query": "Does a passing SOL public-facade repair admit the frozen material-source transition, persistent penetration solver, 2 ms CPU gate or restoration?",
+      "canonical": ["systems/solid-detachment.md", "reference/status-and-roadmap.md"],
+      "facts": ["No protected source identity or guard is changed; original checker still refuses SOL.", "Original physical failures, 120+60-step criteria and 24-group worst-of-three 2 ms ceiling remain separate.", "Dependent PR stays Draft; independent read-only audit and explicit owner admission are required before composition or restoration."],
+      "sources": ["../tools/material_catalogue/compatibility.py", "../tools/sol281/qualify_facade_refusal.py"]
+    }
+  ]
+}

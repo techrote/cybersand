@@ -10,6 +10,56 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 # Native structural detachment
 
+## Public refusal and authoritative readback — 2026-11-04
+
+**Current isolated dependent repair source; not integrated #347/main:** public
+physical/comparison hash access, simulation-window selection and adhesion now
+translate native SOL fences into explicit copied results. The
+[repair ledger](../audits/2026-11-04-sol-facade-refusal-repair.md) owns exact
+source/runtime/platform evidence. Passing this boundary does not accept either
+protected material consumer, penetration recovery or restoration.
+
+`CyberNativeCellWorld.get_physical_state_hash_result()` and
+`get_liquid_comparison_hash_result(1/2)` return `cybersand.public-boundary.v1`:
+`ok`, `operation`, `code`, integer `phase` and `diagnostic`. Only success has
+`value`, preserving the exact sixteen hexadecimal digits. Prepared,
+Acknowledged, Committed, Restored and Active hashes remain unavailable. Legacy
+String getters return empty invalid-length strings on refusal; empty strings
+are not valid identities and two refusals must never establish equality.
+`get_last_boundary_result()` exposes the latest operation's copied status for
+legacy void setters. It belongs to the exclusive native owner; it is not a
+cross-thread mailbox, durable command receipt or always-current phase query.
+
+Both window routes stage facade fields until the native region setter accepts.
+`get_simulation_window_state()` copies cached accepted geometry, native region,
+selected cores and tick-applied cores so a refusal can be checked without
+confusing selection with application. Adhesion reads the existing native World
+getter; a refused request cannot change cache, reported state or later reset
+configuration. `get_liquid_surface_adhesion_result()` represents unavailable
+authority explicitly. Diagnostic reset synchronizes to the new World's value.
+Common successful frame operations retain fixed scalar/literal status and only
+construct the public Dictionary on observation.
+
+Related coupling, diagnostic-fill and prepared-liquid commit entry points
+preserve safe SOL refusal; exceptional catches are not a new general rollback
+transaction. A refused native mask write at an otherwise covered empty cell
+also refuses coupling, while occupied-cell arbitration and wholly escaped bodies
+retain their existing behavior. CYPS import still does not configure transient
+mask storage; this repair reports that unavailable publication and does not
+restore the omitted host masks. Native adhesion and byte-exact CYPS re-export
+remain independently testable. Actual failed-World region configuration remains permitted for its
+existing recovery route while the failed tick stays latched. No public test hook
+fabricates Quarantined. Native ownership, material authority, 520 members, six
+proxies, all physical/CPU limits and the original negative results are unchanged.
+
+The facade fixtures use synthetic source-bound reservations, not live Rapier
+certification. The original 27-role guard passes on accepted main and still
+refuses unadmitted SOL source. The 120+60-step physical criteria and 24-group,
+worst-of-three CPU ceiling of 2 ms retain their separate evidence and decisions.
+The dependent PR remains Draft pending independent read-only audit and explicit
+owner admission; no material transition, composition or restoration follows from
+these facade results.
+
 ## SOL364-B existing-penetration corridor — 2026-11-04
 
 The [registered fixed-orientation translation experiment](../audits/2026-11-04-sol364b-corridor-registration.md)

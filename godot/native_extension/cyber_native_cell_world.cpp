@@ -8,6 +8,7 @@
 #include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/variant/rect2i.hpp>
+#include <godot_cpp/variant/packed_int64_array.hpp>
 #include <godot_cpp/variant/transform2d.hpp>
 
 #include <algorithm>
@@ -95,6 +96,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("water_experiment_observation", "origin", "size"),
                          &CyberNativeCellWorld::water_experiment_observation);
     ClassDB::bind_method(D_METHOD("get_physical_state_hash"), &CyberNativeCellWorld::get_physical_state_hash);
+    ClassDB::bind_method(D_METHOD("get_physical_state_hash_result"), &CyberNativeCellWorld::get_physical_state_hash_result);
+    ClassDB::bind_method(D_METHOD("get_last_boundary_result"), &CyberNativeCellWorld::get_last_boundary_result);
     ClassDB::bind_method(D_METHOD("get_physical_state_hash_version"),
                          &CyberNativeCellWorld::get_physical_state_hash_version);
     ClassDB::bind_method(D_METHOD("get_physical_state_format_version"),
@@ -105,6 +108,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_pressure_flow_ledger"), &CyberNativeCellWorld::get_pressure_flow_ledger);
     ClassDB::bind_method(D_METHOD("get_liquid_comparison_hash", "projection_id"),
                          &CyberNativeCellWorld::get_liquid_comparison_hash);
+    ClassDB::bind_method(D_METHOD("get_liquid_comparison_hash_result", "projection_id"),
+                         &CyberNativeCellWorld::get_liquid_comparison_hash_result);
     ClassDB::bind_method(D_METHOD("inspect_pressure_optimization"),
                          &CyberNativeCellWorld::inspect_pressure_optimization);
     ClassDB::bind_method(D_METHOD("get_liquid_run_receipt", "setup"), &CyberNativeCellWorld::get_liquid_run_receipt);
@@ -162,6 +167,10 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::set_simulation_window_enabled);
     ClassDB::bind_method(D_METHOD("get_simulation_window_enabled"),
                          &CyberNativeCellWorld::get_simulation_window_enabled);
+    ClassDB::bind_method(D_METHOD("get_simulation_window_state"),
+                         &CyberNativeCellWorld::get_simulation_window_state);
+    ClassDB::bind_method(D_METHOD("get_liquid_surface_adhesion_result"),
+                         &CyberNativeCellWorld::get_liquid_surface_adhesion_result);
     ClassDB::bind_method(D_METHOD("set_cadence_lod_enabled", "enabled"),
                          &CyberNativeCellWorld::set_cadence_lod_enabled);
     ClassDB::bind_method(D_METHOD("get_cadence_lod_enabled"),
@@ -425,42 +434,57 @@ void CyberNativeCellWorld::paint_disc(std::int64_t centre_x, std::int64_t centre
 
 void CyberNativeCellWorld::prepare_rigid_body_coupling(
     const PackedFloat32Array& states, bool resolve_overlaps) {
-    if (world_ == nullptr || world_->has_failed()) return;
-    world_->clear_transient_obstacles();
-    clear_observations();
-    parse_body_states(states);
-    if (conservative_displacement_) prepare_conservative_sample();
-
-    raster_indices_.clear();
-    for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
-        const auto& body = current_bodies_[body_id];
-        if (!body.valid) continue;
-        const auto& previous = previous_bodies_[body_id];
-        if (previous.valid) rasterize_body_sweep(body, previous);
-        else rasterize_body(body);
-    }
-    if (resolve_overlaps) reconcile_swept_overlaps();
-    if (world_->has_failed()) {
-        // A conservative transaction quarantines unexpected partial progress.
-        // Do not call another mutating World API (including mask clearing), or
-        // publish forces from that incomplete preparation. simulation_tick()
-        // returns false and the existing worker publishes its stopped state.
-        ++tick_failure_count_;
-        last_tick_error_ = "conservative contact transaction quarantined the World";
-        clear_observations();
+    constexpr const char* operation = "prepare_rigid_body_coupling";
+    if (world_ == nullptr || world_->has_failed()) {
+        (void)boundary_result(operation, false, world_ ? "world_failed" : "world_unavailable",
+            "Rigid-body preparation requires an available, healthy World");
         return;
     }
+    // The native SOL fence is checked before clearing observations, masks or
+    // body samples. The exclusive-owner contract prevents a phase change here.
+    try {
+        world_->clear_transient_obstacles();
+        clear_observations();
+        parse_body_states(states);
+        if (conservative_displacement_) prepare_conservative_sample();
 
-    world_->clear_transient_obstacles();
-    raster_indices_.clear();
-    for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
-        if (current_bodies_[body_id].valid) rasterize_body(current_bodies_[body_id]);
+        raster_indices_.clear();
+        for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
+            const auto& body = current_bodies_[body_id];
+            if (!body.valid) continue;
+            const auto& previous = previous_bodies_[body_id];
+            if (previous.valid) rasterize_body_sweep(body, previous);
+            else rasterize_body(body);
+        }
+        if (resolve_overlaps) reconcile_swept_overlaps();
+        if (world_->has_failed()) {
+            // A conservative transaction quarantines unexpected partial progress.
+            // Do not call another mutating World API (including mask clearing), or
+            // publish forces from that incomplete preparation. simulation_tick()
+            // returns false and the existing worker publishes its stopped state.
+            ++tick_failure_count_;
+            last_tick_error_ = "conservative contact transaction quarantined the World";
+            clear_observations();
+            (void)boundary_result(operation, false, "world_failed", last_tick_error_);
+            return;
+        }
+
+        world_->clear_transient_obstacles();
+        raster_indices_.clear();
+        for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
+            if (current_bodies_[body_id].valid) rasterize_body(current_bodies_[body_id]);
+        }
+        if (resolve_overlaps) {
+            accumulate_boundary_pressure();
+            accumulate_granular_bearing();
+        }
+        previous_bodies_ = current_bodies_;
+        boundary_success(operation, "applied", "Rigid-body preparation applied");
+    } catch (const std::exception& error) {
+        (void)boundary_result(operation, false, "native_refusal", error.what());
+    } catch (...) {
+        (void)boundary_result(operation, false, "native_refusal", "Unknown native exception during rigid-body preparation");
     }
-    if (resolve_overlaps) {
-        accumulate_boundary_pressure();
-        accumulate_granular_bearing();
-    }
-    previous_bodies_ = current_bodies_;
 }
 
 void CyberNativeCellWorld::clear_observations() {
@@ -589,6 +613,12 @@ void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world,
             if (std::abs(local.x) > half_size.x || std::abs(local.y) > half_size.y) continue;
             if (world.set_transient_obstacle(x, y, body_id)) {
                 if (indices) indices->push_back(y * kWorldWidth + x);
+            } else if (world.transient_obstacle_at(x, y) == 0U) {
+                // An occupied cell belongs to the existing first-body-wins
+                // arbitration. An empty covered cell means native publication
+                // was refused (for example an imported, unconfigured mask
+                // domain); never acknowledge that preparation as applied.
+                throw std::logic_error("Native rigid-body mask refused an in-domain cell; preparation is incomplete");
             }
         }
     }
@@ -1313,43 +1343,115 @@ void CyberNativeCellWorld::set_interest_center(Vector2i world_cell) {
 void CyberNativeCellWorld::set_simulation_window(Vector2i view_origin, Vector2i view_size,
                                                  std::int64_t horizontal_buffer,
                                                  std::int64_t vertical_buffer) {
-    last_view_origin_ = view_origin;
-    last_view_size_ = view_size;
-    last_horizontal_buffer_ = std::max<std::int64_t>(0, horizontal_buffer);
-    last_vertical_buffer_ = std::max<std::int64_t>(0, vertical_buffer);
-    refresh_simulation_region();
+    constexpr const char* operation = "set_simulation_window";
+    if (!world_) {
+        (void)boundary_result(operation, false, "world_unavailable", "No native World");
+        return;
+    }
+    horizontal_buffer = std::max<std::int64_t>(0, horizontal_buffer);
+    vertical_buffer = std::max<std::int64_t>(0, vertical_buffer);
+    try {
+        apply_simulation_region(view_origin, view_size, horizontal_buffer, vertical_buffer,
+                                simulation_window_enabled_);
+        // Native validation/fencing precedes its assignment; everything after
+        // that assignment is noexcept. Commit facade intent only after success.
+        last_view_origin_ = view_origin;
+        last_view_size_ = view_size;
+        last_horizontal_buffer_ = horizontal_buffer;
+        last_vertical_buffer_ = vertical_buffer;
+        boundary_success(operation, "applied", "Simulation region selected");
+    } catch (const std::exception& error) {
+        (void)boundary_result(operation, false, "native_refusal", error.what());
+    } catch (...) {
+        (void)boundary_result(operation, false, "native_refusal", "Unknown native exception selecting simulation region");
+    }
 }
 
 void CyberNativeCellWorld::refresh_simulation_region() {
-    if (world_ == nullptr) return;
-    if (!simulation_window_enabled_) {
+    apply_simulation_region(last_view_origin_, last_view_size_, last_horizontal_buffer_,
+                            last_vertical_buffer_, simulation_window_enabled_);
+}
+
+void CyberNativeCellWorld::apply_simulation_region(Vector2i origin, Vector2i size,
+    std::int64_t horizontal_buffer, std::int64_t vertical_buffer, bool enabled) {
+    if (world_ == nullptr) throw std::logic_error("No native World");
+    if (!enabled) {
         world_->set_simulation_region(cybersand::RectI64{0, 0, kWorldWidth, kWorldHeight});
         return;
     }
+    // Buffers beyond this bound necessarily cover the whole finite adapter
+    // domain, even for extreme Vector2i origins/sizes. Cap arithmetic operands
+    // only, retaining the caller's accepted configuration without int64 overflow.
+    constexpr std::int64_t arithmetic_buffer_limit = INT64_MAX - 2LL * INT32_MAX - 2;
+    horizontal_buffer = std::min(horizontal_buffer, arithmetic_buffer_limit);
+    vertical_buffer = std::min(vertical_buffer, arithmetic_buffer_limit);
     const auto first_x = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.x) - last_horizontal_buffer_, 0, kWorldWidth - 1);
+        static_cast<std::int64_t>(origin.x) - horizontal_buffer, 0, kWorldWidth - 1);
     const auto first_y = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.y) - last_vertical_buffer_, 0, kWorldHeight - 1);
+        static_cast<std::int64_t>(origin.y) - vertical_buffer, 0, kWorldHeight - 1);
     const auto last_x = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.x) + last_view_size_.x +
-            last_horizontal_buffer_,
+        static_cast<std::int64_t>(origin.x) + size.x + horizontal_buffer,
         first_x + 1, kWorldWidth);
     const auto last_y = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.y) + last_view_size_.y +
-            last_vertical_buffer_,
+        static_cast<std::int64_t>(origin.y) + size.y + vertical_buffer,
         first_y + 1, kWorldHeight);
     world_->set_simulation_region(
         cybersand::RectI64{first_x, first_y, last_x - first_x, last_y - first_y});
 }
 
 void CyberNativeCellWorld::set_simulation_window_enabled(bool enabled) {
-    if (simulation_window_enabled_ == enabled) return;
-    simulation_window_enabled_ = enabled;
-    refresh_simulation_region();
+    constexpr const char* operation = "set_simulation_window_enabled";
+    if (!world_) {
+        (void)boundary_result(operation, false, "world_unavailable", "No native World");
+        return;
+    }
+    if (simulation_window_enabled_ == enabled) {
+        boundary_success(operation, "unchanged", "Simulation window already has the requested state");
+        return;
+    }
+    try {
+        apply_simulation_region(last_view_origin_, last_view_size_, last_horizontal_buffer_,
+                                last_vertical_buffer_, enabled);
+        simulation_window_enabled_ = enabled;
+        boundary_success(operation, "applied", "Simulation window state applied");
+    } catch (const std::exception& error) {
+        (void)boundary_result(operation, false, "native_refusal", error.what());
+    } catch (...) {
+        (void)boundary_result(operation, false, "native_refusal", "Unknown native exception selecting simulation window");
+    }
 }
 
 bool CyberNativeCellWorld::get_simulation_window_enabled() const {
     return simulation_window_enabled_;
+}
+
+Dictionary CyberNativeCellWorld::get_simulation_window_state() const {
+    Dictionary out;
+    out["available"] = world_ != nullptr;
+    out["enabled"] = simulation_window_enabled_;
+    out["view_origin"] = last_view_origin_;
+    out["view_size"] = last_view_size_;
+    out["horizontal_buffer"] = last_horizontal_buffer_;
+    out["vertical_buffer"] = last_vertical_buffer_;
+    PackedInt64Array region;
+    if (world_) {
+        if (const auto r = world_->simulation_region()) {
+            region.push_back(r->x); region.push_back(r->y);
+            region.push_back(r->width); region.push_back(r->height);
+        }
+    }
+    out["native_region"] = region;
+    const auto pack = [](const std::optional<cybersand::SimulationCoreRange>& r) {
+        PackedInt64Array result;
+        if (r) {
+            result.push_back(r->min_x); result.push_back(r->min_y);
+            result.push_back(r->max_x); result.push_back(r->max_y);
+        }
+        return result;
+    };
+    out["selected_cores"] = pack(world_ ? world_->selected_simulation_cores() : std::nullopt);
+    out["applied_cores"] = pack(world_ ? world_->applied_simulation_cores() : std::nullopt);
+    return out;
 }
 
 void CyberNativeCellWorld::set_cadence_lod_enabled(bool enabled) {
@@ -1361,12 +1463,29 @@ bool CyberNativeCellWorld::get_cadence_lod_enabled() const {
 }
 
 void CyberNativeCellWorld::set_liquid_surface_adhesion_enabled(bool enabled) {
-    liquid_surface_adhesion_enabled_ = enabled;
-    if (world_ != nullptr) world_->set_liquid_surface_adhesion_enabled(enabled);
+    constexpr const char* operation = "set_liquid_surface_adhesion_enabled";
+    if (!world_) {
+        (void)boundary_result(operation, false, "world_unavailable", "No native adhesion authority");
+        return;
+    }
+    world_->set_liquid_surface_adhesion_enabled(enabled); // noexcept, may refuse.
+    liquid_surface_adhesion_enabled_ = world_->liquid_surface_adhesion_enabled();
+    const bool accepted = liquid_surface_adhesion_enabled_ == enabled;
+    if (accepted) boundary_success(operation, "applied", "Native adhesion state matches the request");
+    else (void)boundary_result(operation, false, "native_refusal", "Native SOL fence retained the applied adhesion state");
 }
 
 bool CyberNativeCellWorld::get_liquid_surface_adhesion_enabled() const {
-    return liquid_surface_adhesion_enabled_;
+    if (world_) return world_->liquid_surface_adhesion_enabled();
+    (void)boundary_result("get_liquid_surface_adhesion_enabled", false, "world_unavailable", "No native adhesion authority");
+    return false; // The additive result explicitly distinguishes unavailable.
+}
+
+Dictionary CyberNativeCellWorld::get_liquid_surface_adhesion_result() const {
+    if (!world_) return boundary_result("get_liquid_surface_adhesion_enabled", false,
+        "world_unavailable", "No native adhesion authority");
+    return boundary_result("get_liquid_surface_adhesion_enabled", true, "available",
+        "Applied native adhesion state", world_->liquid_surface_adhesion_enabled());
 }
 
 std::int32_t CyberNativeCellWorld::symmetric_probe_offset(std::int32_t index) {
@@ -1502,6 +1621,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
+        liquid_surface_adhesion_enabled_ = world_->liquid_surface_adhesion_enabled();
         diagnostic_fixture_ = true;
         conservative_displacement_ = conservative;
         displacement_accounting_ = {};
@@ -1527,22 +1647,52 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
 
 bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
     std::int64_t material, std::int64_t state_b) {
+    constexpr const char* operation = "diagnostic_fill_rect";
+    if (!world_ || has_failed() || solid_detachment_fenced()) {
+        (void)boundary_result(operation, false, !world_ ? "world_unavailable" :
+            (has_failed() ? "world_failed" : "native_refusal"), "Native mutation is unavailable or fenced");
+        return false;
+    }
     if (!diagnostic_fixture_ || has_failed() || material < 0 ||
         material > static_cast<std::int64_t>(cybersand::kLastMaterial) ||
         !cybersand::valid_material(static_cast<std::uint16_t>(material)) || state_b < 0 || state_b > 255 ||
         size.x < 1 || size.y < 1 || size.x > kWorldWidth || size.y > kWorldHeight ||
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
-                                                   static_cast<std::int64_t>(origin.y) + size.y - 1)) return false;
+                                                   static_cast<std::int64_t>(origin.y) + size.y - 1)) {
+        (void)boundary_result(operation, false, "invalid_argument", "Invalid diagnostic fill domain or material state");
+        return false;
+    }
     const auto value = static_cast<cybersand::Material>(material);
+    if (value == cybersand::Material::Water && state_b > world_->config().water_experiment_policy.coherence_ticks()) {
+        (void)boundary_result(operation, false, "invalid_argument", "Water coherence exceeds the applied native policy");
+        return false;
+    }
+    // Refuse a masked multi-cell command before any prefix can be written.
+    if (value != cybersand::Material::Empty)
+        for (auto y = origin.y; y < origin.y + size.y; ++y)
+            for (auto x = origin.x; x < origin.x + size.x; ++x)
+                if (world_->transient_obstacle_at(x, y) != 0U) {
+                    (void)boundary_result(operation, false, "native_refusal", "Native transient occupancy refuses diagnostic fill");
+                    return false;
+                }
     const auto state_a = value == cybersand::Material::Water
         ? world_->config().water_experiment_policy.maximum()
         : static_cast<std::uint16_t>(cybersand::MaterialRules::descriptor(value).initial_state_a);
-    for (auto y = origin.y; y < origin.y + size.y; ++y)
-        for (auto x = origin.x; x < origin.x + size.x; ++x)
-            (void)world_->set_cell_state(x, y, value, state_a,
-                                       static_cast<std::uint8_t>(state_b));
-    ++revision_;
-    return true;
+    try {
+        for (auto y = origin.y; y < origin.y + size.y; ++y)
+            for (auto x = origin.x; x < origin.x + size.x; ++x)
+                (void)world_->set_cell_state(x, y, value, state_a,
+                                           static_cast<std::uint8_t>(state_b));
+        ++revision_;
+        boundary_success(operation, "applied", "Diagnostic fill applied or already equal");
+        return true;
+    } catch (const std::exception& error) {
+        (void)boundary_result(operation, false, "native_refusal", error.what());
+        return false;
+    } catch (...) {
+        (void)boundary_result(operation, false, "native_refusal", "Unknown native exception during diagnostic fill");
+        return false;
+    }
 }
 
 Dictionary CyberNativeCellWorld::apply_player_material_field(Vector2i center,
@@ -1737,10 +1887,59 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
 }
 
 String CyberNativeCellWorld::get_physical_state_hash() const {
-    if (world_ == nullptr) return {};
-    char text[17];
-    std::snprintf(text, sizeof(text), "%016llx", static_cast<unsigned long long>(world_->physical_state_hash()));
-    return String(text);
+    const auto result = get_physical_state_hash_result();
+    return result["ok"] ? String(result["value"]) : String();
+}
+
+Dictionary CyberNativeCellWorld::boundary_result(const char* operation, bool ok,
+    const char* code, const String& diagnostic, const Variant& value) const {
+    last_boundary_success_.valid = false;
+    Dictionary result;
+    result["schema"] = "cybersand.public-boundary.v1";
+    result["ok"] = ok;
+    result["operation"] = operation;
+    result["code"] = code;
+    result["phase"] = world_ ? static_cast<std::int64_t>(world_->inspect_solid_detachment().phase) : -1;
+    result["diagnostic"] = diagnostic;
+    if (ok && value.get_type() != Variant::NIL) result["value"] = value;
+    last_boundary_result_ = result.duplicate(true);
+    if (!ok) UtilityFunctions::push_warning(String(operation) + ": " + diagnostic);
+    return result;
+}
+
+Dictionary CyberNativeCellWorld::get_last_boundary_result() const {
+    if (last_boundary_success_.valid) {
+        Dictionary result;
+        result["schema"] = "cybersand.public-boundary.v1";
+        result["ok"] = true;
+        result["operation"] = last_boundary_success_.operation;
+        result["code"] = last_boundary_success_.code;
+        result["phase"] = last_boundary_success_.phase;
+        result["diagnostic"] = last_boundary_success_.diagnostic;
+        return result;
+    }
+    return last_boundary_result_.duplicate(true);
+}
+
+void CyberNativeCellWorld::boundary_success(const char* operation, const char* code,
+    const char* diagnostic) const noexcept {
+    // Callers pass string literals only. No native state or Godot object escapes.
+    last_boundary_success_ = {true, operation, code, diagnostic,
+        world_ ? static_cast<std::int64_t>(world_->inspect_solid_detachment().phase) : -1};
+}
+
+Dictionary CyberNativeCellWorld::get_physical_state_hash_result() const {
+    constexpr const char* operation = "get_physical_state_hash";
+    if (!world_) return boundary_result(operation, false, "world_unavailable", "No native World");
+    try {
+        char text[17];
+        std::snprintf(text, sizeof(text), "%016llx", static_cast<unsigned long long>(world_->physical_state_hash()));
+        return boundary_result(operation, true, "available", "Complete native physical identity", String(text));
+    } catch (const std::exception& error) {
+        return boundary_result(operation, false, "native_refusal", error.what());
+    } catch (...) {
+        return boundary_result(operation, false, "native_refusal", "Unknown native exception obtaining physical identity");
+    }
 }
 
 std::int64_t CyberNativeCellWorld::get_physical_state_hash_version() const {
@@ -1921,7 +2120,7 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     add("diagnostic_physics", concat(config.physics_diagnostics.disable_powder_exchange_targets ? 1 : 0, ":",
                                      config.physics_diagnostics.mercury_viscosity));
     add("execution", concat(simulation_window_enabled_ ? "window" : "full", ":", cadence_lod_enabled_ ? "lod" : "nolod",
-                            ":", liquid_surface_adhesion_enabled_ ? "adhesion" : "noadhesion"));
+                            ":", world_->liquid_surface_adhesion_enabled() ? "adhesion" : "noadhesion"));
     const auto region = world_->simulation_region();
     add("simulation_region", region ? concat(region->x, ":", region->y, ":", region->width, ":", region->height)
                                      : std::string("unrestricted"));
