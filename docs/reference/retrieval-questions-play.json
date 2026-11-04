@@ -262,7 +262,7 @@
       ],
       "facts": [
         "Eight bundled flyers use named JSON definitions and a bounded manifest. Explicit Reload + reset validates atomically, reconstructs the selected stable id at the saved spawn and records a canonical definition hash. Invalid authoring/construction keeps the old owner; file I/O occurs at load/reload, not during physics. The seven original physical scalars and controller outputs remain controls.",
-        "Scooper uses one actual body with six matching collider/native/render rectangles, uniform-area COM/inertia and one shared response budget. Its cavity is open and carried material remains native cells. Mass0.18/inertiaabout22.10, Afterglow linear controls, stabilizationgain40/damping12.5/angularcap48/torque1200 and Q/Etrim1.2rad are experimental motor authoring; Afterglow retains10/4/12/36/.4.",
+        "Scooper uses one actual body with five matching U-hull collider/native/render rectangles, uniform-area COM/inertia and one shared response budget. Its cavity is open and carried material remains native cells. Mass0.18/inertiaabout24.79014, Afterglow linear controls, stabilizationgain40/damping12.5/angularcap48/torque1200 and Q/Etrim1.2rad are experimental motor authoring; Afterglow retains10/4/12/36/.4.",
         "Reset spawn X/Y or Use flyer saves a normal-room centre without moving the live body. R, craft/response/property changes, Defaults and a canned-test round trip retain it within the room scene; Default spawn restores178,304. Fresh upright stationary hulls must fit the inner walls and avoid hard platforms; ordinary arena admission is unchanged and canned tests keep512,256. F2/new scene/process restart does not persist it to disk.",
         "B queues one live burst per non-echo press and is suppressed during numeric editing, lost window focus and canned fixtures. Non-text UI clicks retain held pilot input; numeric editing, OS focus loss, pause/reset retain cancellation and rearm. Dense wrapping toolbars use full canvas width with Details initially collapsed.",
         "In the flyer review room Shift holds a staged1..8 propulsion/force-cap multiplier(default2); Ctrl keeps the old brake and takes precedence. Torque, hover compensation and passive damping are unchanged; the optional review port follows the accepted command lease without widening shared actor actions.",
@@ -284,6 +284,37 @@
         "Native current-nearest-face ejection can choose the far side after a thin moving deck crosses a grain. A temporary sampled/current-pose overlap is distinct from persistent through-deck escape.",
         "The authored-only repair preserves a unique entry face for consecutive unchanged-angle/size translation within the existing sweep bound and outside the previous whole union. Another crossed proxy, corner/seam or rotation retains the original rule; independent and structural routes keep their selection.",
         "Matched Windows/Linux captures eliminate persistent deck-side escape in level selective full/boost and events-off full rises at unchanged peak speeds. Diagonal/corner/open-edge limitations and zero primary cavity minima remain; no universal carry, sleep, material-law tuning, promotion or merge follows."
+      ],
+      "sources": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCRUHULL03",
+      "query": "Does the U-shaped Scooper with corner blocks stop powder leaking at the seams between its boxes?",
+      "canonical": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "facts": [
+        "The active Scooper has five nonoverlapping U rectangles with a continuous four-cell floor, three-cell walls and inside-corner reserves. Mass0.18 and all motors stay unchanged; area192, rawCOM1.5/.28125 and inertia24.79013671875 are derived and reported.",
+        "Matched48 physical captures and96 static poses find no missing mask pixels or closed graph paths in the sampled geometry. Twenty-eight extra U boundary pixels perOS are float32 inclusions, not demonstrated holes; this is not universal rotational closure.",
+        "The U does not solve fast powered carrying: strafing/diagonal arms lose all16 cavity grains and have additional persistent below-floor occupancy near corner contacts. It remains an experimental authoring shape; motion/relocation, owner acceptance and production promotion remain separate, with no friction/material/sleep change or merge."
+      ],
+      "sources": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCRACCEPT04",
+      "query": "Has the owner accepted current LA-SA gameplay, and can the granular testing campaign close?",
+      "canonical": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "facts": [
+        "The owner explicitly accepts current LA-SA for production gameplay after the supplied source52f19b51 U-Scooper review: small loads can be lifted, carried and dumped; residual drips are acceptable. The current hands-on comparison campaign can stop.",
+        "The prior selective joint-criteria NO-GO and automated fast U retention failures remain their original scientific results. Production integration/default selection, source-lock compatibility, resulting-head qualification, REM004 issue closure and merge remain separate; no default or merge is changed."
       ],
       "sources": [
         "systems/granular-review-flight-fleet.md"

@@ -16,7 +16,8 @@ related-documents: [rigid-body-and-cellular-coupling.md, soliding-lifecycle.md, 
 adds an explicit authored admission for one physical review body with1..8 local
 rectangle shapes. It reuses the existing compound solver and one version2
 wrench, while retaining the original independent and structurally leased paths.
-Scooper is the first six-shape consumer; the earlier seven flyers keep their
+Scooper is the first consumer, currently a five-piece braced U; its earlier
+six-piece stepped shape remains a historical fixture. The seven other flyers keep their
 single-rectangle path. This is not a new granular force, friction or sleep law.
 
 The authoring resolver computes a uniform-area COM/inertia and recentres all

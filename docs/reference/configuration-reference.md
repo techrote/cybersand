@@ -41,7 +41,8 @@ to64; a loader-valid larger rectangle still refuses construction. The explicit
 rectangle-union route admits its registered128-cell dimensions. Refusal does
 not replace the live owner or turn a cached definition into physical acceptance.
 
-Scooper's experimental defaults are mass0.18/inertia≈22.10, six rectangles,
+Scooper's experimental U defaults are mass0.18/inertia≈24.79014, five rectangles
+(area192, raw COM1.5/0.28125;33×12 outer bounds, four-cell floor and corner fills),
 Afterglow linear acceleration125/speed95/slew4/drag0.55/force23, attitude gain40,
 damping12.5, angular acceleration48, torque1200 and trim1.2rad. Afterglow keeps
 gain10/damping4/angular acceleration12/torque36/trim0.4rad. These are authored

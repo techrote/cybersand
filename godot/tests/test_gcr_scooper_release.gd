@@ -43,7 +43,7 @@ func release(arm: String) -> void:
 	var arena=runtime._arena
 	var native: Object=arena._world
 	var body: RigidBody2D=arena.session.bodies()[0]
-	check(arena.session.bodies().size()==1,"one body for all six hull pieces "+arm)
+	check(arena.session.bodies().size()==1,"one body for the active authored hull "+arm)
 	check(native.diagnostic_fill_rect(Vector2i.ZERO,Vector2i(1024,512),0),"clear old course cells without replacing owner "+arm)
 	check(native.diagnostic_fill_rect(FLOOR.position,FLOOR.size,58),"distant hard floor below deep support "+arm)
 	check(native.diagnostic_fill_rect(BED.position,BED.size,2),"author explicit packed granular support "+arm)
@@ -92,6 +92,8 @@ func release(arm: String) -> void:
 	var after: Dictionary=native.diagnostic_snapshot(CENSUS.position,CENSUS.size,false,false)
 	check(Base.same_quantity(removed,after),"closed post-excavation material remains conserved "+arm)
 	reports.append(Base.portable({"response":arm,"options":options,"bed":[BED.position.x,BED.position.y,BED.size.x,BED.size.y],
+		"definition_hash":Fleet.definition_hash(Fleet.index_for_id("scooper")),"definition_record":Fleet.authoring_record(Fleet.index_for_id("scooper")),
+		"shape_count":body.get_child_count(),"body_mass":body.mass,"body_inertia":body.inertia,"physical_com_local":body.center_of_mass,
 		"excavation":[EXCAVATION.position.x,EXCAVATION.position.y,EXCAVATION.size.x,EXCAVATION.size.y],
 		"floor":[FLOOR.position.x,FLOOR.position.y,FLOOR.size.x,FLOOR.size.y],
 		"positive_tick":positive_tick,"bearing_before":bearing,"at_removal":at_removal,"first_fresh_after":first,

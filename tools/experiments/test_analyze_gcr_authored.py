@@ -2,10 +2,17 @@
 import copy
 import unittest
 from analyze_gcr_authored import (DEFINITION_HASH, REG, EvidenceError,
-                                  carry_gate, conserved, reduce_capture,verify_source_map)
+                                  carry_gate, conserved, reduce_capture,verify_source_map,
+                                  DEFINITION, HISTORICAL_DEFINITION, registered_definition_path)
 
 
 class AuthoredAnalysisTests(unittest.TestCase):
+    def test_historical_profile_authority_is_explicit(self):
+        self.assertEqual(registered_definition_path({"retained":{DEFINITION:b"old"},"hashes":{}}),DEFINITION)
+        new={"retained":{DEFINITION:b"new",HISTORICAL_DEFINITION:b"old"},"hashes":{}}
+        with self.assertRaises(EvidenceError):registered_definition_path(new)
+        new["hashes"]["godot/tests/support/gcr_historical_scooper.gd"]="bound"
+        self.assertEqual(registered_definition_path(new),HISTORICAL_DEFINITION)
     def fixture(self):
         census={"counts":[100,0,16,20],"sum_y":[0,0,160,200],"water_mass":36}
         spec={"id":"landing","material":2,"ticks":1}

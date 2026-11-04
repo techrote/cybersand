@@ -10,6 +10,22 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 
 # Lightweight flight fleet for granular owner review
 
+## Owner acceptance and campaign closeout — 4 November 2026
+
+**Owner gameplay acceptance: ACCEPTED.** After testing review source52f19b51,
+the owner explicitly accepts current LA-SA for production: the U Scooper can
+lift, carry and dump small loads, and residual drips are acceptable. The
+[dated verdict](../audits/2026-11-04-gcr-la-sa-owner-acceptance.md) records the
+supplied source/runtime and the absence of a new full settings/trajectory receipt.
+The current hands-on comparison campaign can stop; preserve its build and fixtures.
+
+The earlier registered selective NO-GO and fast U retention failures remain
+unchanged scientific outcomes. Acceptance of the observed gameplay tradeoffs
+does not erase those results or establish arbitrary-load/shape support.
+Production integration/default selection, protected-source compatibility,
+resulting-head qualification and REM-004 closure remain separate. No default,
+sleep, material law or merge changes in this documentation checkpoint.
+
 ## How do I author or reload a flyer, including Scooper?
 
 **Current experimental source:** eight bundled flyers use named definitions in
@@ -48,15 +64,17 @@ keeps implementation, mechanical gates and physical qualification separate.
 Scooper follows Afterglow's world-axis W/S rise/descend, A/D strafe, Space lift,
 Shift boost and Ctrl brake. Q/E commands a target of±1.2rad, about±69°, to allow
 deliberate tipping/spilling; releasing Q/E requests level again. Its mass is0.18,
-with uniform-area inertia approximately22.10 before developer overrides. Its
+with uniform-area inertia approximately24.79 before developer overrides. Its
 attitude gain40, angular damping12.5, angular-acceleration cap48 and torque
 ceiling1200 are bounded authored motors. Afterglow retains10/4/12/36 and±0.4rad.
 The linear acceleration125, speed95, slew4, drag0.55 and force ceiling23 retain
 the Afterglow baseline. Stronger torque compensates for Scooper's actual larger
 inertia; it does not strengthen the granular material law or grant a new budget.
 
-One actual Rapier body carries six collider rectangles: thin deck, rear stop and
-stepped leading penetrator. Graphics and native occupancy/contact/ejection use
+One actual Rapier body carries five collider rectangles: a continuous four-cell
+floor, two upright three-cell walls and two inside-corner reserves. The33×12 U
+replaces the earlier thin deck/stepped nose; that six-piece shape is a frozen
+historical fixture. Graphics and native occupancy/contact/ejection use
 that same COM-centred union. The cavity is open; no bounding rectangle is added
 as solid material or another response. Mass, COM, inertia and response budget
 belong to the body once. Carried material remains ordinary native cells that
@@ -75,6 +93,29 @@ keeps original failures, source-matched builds, mechanical controls and the
 48-case Windows/Linux physical population separate from final-head execution
 and owner gameplay acceptance. No sleep, material-law tuning, production
 promotion or merge follows from adding the authoring workflow.
+
+## Does the braced U-shaped Scooper eliminate leakage at box seams?
+
+The owner's [U-hull comparison](../operations/gcr-scooper-u-hull-registration.md)
+changes only geometry/description, with mass0.18 and all motor settings retained.
+Area192, raw COM(1.5,0.28125) and inertia24.79013671875 are computed from the
+five nonoverlapping pieces. Corner blocks widen the barrier without overlapping
+or duplicating mass/support. The previous stepped shape remains a hash-bound
+fixture for its historical apparatus.
+
+The [matched qualification](../audits/2026-11-04-scooper-u-hull.md) records48
+Windows/Linux physical captures and96 static poses. No missing mask pixels or
+closed-side graph path is found in those sampled poses for either shape. The
+U's28 extra occupied boundary pixels per OS are explained by float32 rounding.
+This does not prove general dynamic closure: both shapes lose their16-grain
+load during fast strafing/diagonal commands, and the U has additional persistent
+below-floor occupancy near corner contacts. Stationary and final level-rise
+counts remain16; left/right tip results differ. The U is available as an
+authoring prototype, **not a qualified powered-carrying fix**. Motion/contact
+relocation across the union remains a separate mechanism gap; material laws,
+friction, sleep, production defaults and merge boundaries stay unchanged.
+The later owner review above accepts the U's practical small-load gameplay and
+residual drips; it does not change this automated fast-carrying result.
 
 ## Why can Scooper lose powder through its thin deck while moving?
 
@@ -270,11 +311,12 @@ Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selec
 records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
 and late edge rebound miss their gates. Continuous arrival/torque and excavation
 release pass; no rest/default acceptance follows. The painting selector remains
-experimental; source-lock compatibility and owner review remain open.
+experimental; source-lock compatibility and integration remain open. The later
+owner verdict above accepts LA-SA gameplay with known limitations.
 
 ## Selective arrivals — implemented comparison with failed joint gates
 
-The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals** (LA-SELECTIVE; experimental). Use **Apply + reset** to construct fresh native authority; painted edits are discarded. LA remains initial/Defaults, RFT and event-off remain separate references, and the retained seven-flyer population, painting, physical/actuator controls, Fire and dispensers remain intact; Scooper has its own authored admission and qualification. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. The candidate is retained for comparison under a registered NO-GO; no owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
+The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals** (LA-SELECTIVE; experimental). Use **Apply + reset** to construct fresh native authority; painted edits are discarded. LA remains initial/Defaults, RFT and event-off remain separate references, and the retained seven-flyer population, painting, physical/actuator controls, Fire and dispensers remain intact; Scooper has its own authored admission and qualification. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. That registered NO-GO is preserved alongside the later actual owner gameplay acceptance above. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain separate; none is performed here.
 
 ## Granular-only event comparison — November4
 
@@ -323,7 +365,7 @@ onto the current source does not inherit its old runtime qualification.
 
 Each craft has one actual Rapier body, no hidden equipment chassis and default
 authored mass0.035..0.32. The original seven retain one rectangular collider;
-Scooper uses six rectangles on its one body. The colliders match the hull outline;
+Scooper uses five U-hull rectangles on its one body. The colliders match the hull outline;
 sensor markings and lift lights add no physical mass. The room contains Sand,
 Dust, Rust, Stone, Seed, Salt, Sodium, Gunpowder and Coal banks, stepped entries
 and thin upper supports. The palette also offers Water, hard wall and erase.

@@ -65,7 +65,7 @@ The separate [flyer review room](granular-review-flight-fleet.md#how-do-i-author
 uses eight named developer definitions, including Scooper. It does not change
 the ordinary46-actor catalogue or player-preset indices. The original seven
 review flyers remain one-rectangle bodies; Scooper is one physical body with
-six matching collider/native/render rectangles and one mass/COM/inertia/budget.
+five matching U-hull collider/native/render rectangles and one mass/COM/inertia/budget.
 Its explicit authored compound constructor requires the corresponding native
 API. Ordinary rig construction refuses a rectangle_union without that review
 admission, rather than silently using an AABB native mask. Authored gains and

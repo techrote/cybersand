@@ -1,0 +1,383 @@
+{
+  "groups": [
+    {
+      "local_folder": "build/u-hull-captures-01",
+      "completion": {
+        "source": "96d6524fc79535c410f4a1916ab0f3625d78cd54",
+        "ok": false,
+        "inputs_unchanged": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": false,
+            "failed": "test_gcr_flyer_authoring"
+          },
+          {
+            "platform": "linux",
+            "ok": false,
+            "failed": "test_gcr_flyer_authoring"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 327,
+          "sha256": "8d21400df0c50f7e326bc2dddef7edad04606440470f2824d27c989503b6c4d9"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 83553,
+          "sha256": "ba96be97c5c263aa48e6550e8289a6ddfe7a25d77891d4c04959b0999822c1e1"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 2056,
+          "sha256": "d0a198ede114c95012b90455fb8cfcb15b96a1025f356c0820f9fa60d93c41f4"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 39020,
+          "sha256": "240bfe08d29cf88381e1006c578348290868e2c7e6558cd61c84025c5ea45ec3"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11159,
+          "sha256": "699ffb47d56c0ce525f92385f2b664bf73c949e3b711a8904a211c24af3a08db"
+        },
+        {
+          "path": "linux/test_gcr_flyer_authoring.log",
+          "bytes": 914,
+          "sha256": "1dc5bdbcb258b8b4e4741c6a93a7338d10a62d940bb9e19a3a8f2b00d8ed163e"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1388,
+          "sha256": "a72b404924b1b7ad6fdfe12940f5ab086d35fa4b447e67abb84bc4577a948048"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39642,
+          "sha256": "a649496d8dde11ae71e2bfff07d86c5ace66e6880a24ada5852b03c6e64867ed"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11159,
+          "sha256": "8ac99b45046815fd98b8f3804af9119e9a15eeea3e65962af151434320cfc412"
+        },
+        {
+          "path": "windows/test_gcr_flyer_authoring.log",
+          "bytes": 925,
+          "sha256": "9d3bc34ec5340b3c89e2556e7958dac008d6ea07f5b70be5ba4b607da6c30c96"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/u-hull-captures-02",
+      "completion": {
+        "source": "cfe333058703d7cb67ffce03332efddee42c714f",
+        "ok": false,
+        "inputs_unchanged": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": false,
+            "failed": "test_gcr_scooper_u_capture"
+          },
+          {
+            "platform": "linux",
+            "ok": false,
+            "failed": "test_gcr_scooper_u_capture"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 331,
+          "sha256": "ee2cca76a81870aa1b9968a6e807a5fdb9e9e2c31177cf5fae316b4e709a6646"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 83553,
+          "sha256": "41bef761ccdd6696f4c5bbe342d2f5630983ef552d98a31c614147258244dcaa"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 4323,
+          "sha256": "a591263a006b6b1a8160ebbeebd42f7373e0ee8e84468bb5f31d8c9730f6f5a0"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 39020,
+          "sha256": "240bfe08d29cf88381e1006c578348290868e2c7e6558cd61c84025c5ea45ec3"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11159,
+          "sha256": "699ffb47d56c0ce525f92385f2b664bf73c949e3b711a8904a211c24af3a08db"
+        },
+        {
+          "path": "linux/test_gcr_flyer_authoring.log",
+          "bytes": 374,
+          "sha256": "48ebfdbe9476fedda3af65c1844c1c0fa8d3426f316185541ec9d836c2182d74"
+        },
+        {
+          "path": "linux/test_gcr_scooper_body.log",
+          "bytes": 412,
+          "sha256": "8afc35f528a631497b7cf4ad5e3ea69facd9cf8c86fe96b44e9495ed714c4957"
+        },
+        {
+          "path": "linux/test_gcr_scooper_u_capture.log",
+          "bytes": 476,
+          "sha256": "3fb8e27c78232221880cad850c5dafe406a743ffe7b361588951cea49b75369f"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 3001,
+          "sha256": "d53a0a4b1dd7fce072cda0a52db14ba8f0887c2343c6cd5c25d0310b772e7081"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39642,
+          "sha256": "a649496d8dde11ae71e2bfff07d86c5ace66e6880a24ada5852b03c6e64867ed"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11159,
+          "sha256": "8ac99b45046815fd98b8f3804af9119e9a15eeea3e65962af151434320cfc412"
+        },
+        {
+          "path": "windows/test_gcr_flyer_authoring.log",
+          "bytes": 378,
+          "sha256": "a9d6b495fa0c43a1055e78dee759a9f57d4c15314a680c3729020c50ec682522"
+        },
+        {
+          "path": "windows/test_gcr_scooper_body.log",
+          "bytes": 416,
+          "sha256": "13a439cc60ae85ac8dbbaf0b4c65ec2aedea0e92ba1d412df8ed52ebd3b658ea"
+        },
+        {
+          "path": "windows/test_gcr_scooper_u_capture.log",
+          "bytes": 480,
+          "sha256": "c27a0ec410634bea67e7fdeddd64c939b4377acb63ab01a3e4582d64685a3c48"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/u-hull-captures-03",
+      "completion": {
+        "source": "48ab262b556f905b98fd4c96a00d4d3eaa9fa628",
+        "ok": true,
+        "inputs_unchanged": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "captures": 26,
+            "gates_sha256": "53af2669c82331bb4bf0e1d6f8e1df3019963f85f65acb9010b2b23eb1038aa2",
+            "campaign_sha256": "002022ca78d980e28175ebc1e6b12ccbd2e01afed86f96901c87879f5f73e841"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "captures": 26,
+            "gates_sha256": "3feb823eba68a9a27120c57723e6261794595cf584dbb21a781c0787f0be29e4",
+            "campaign_sha256": "4d458c22d75409b16e0f2685d14c38f313e28822d969260e7ba3161fa78ca5e2"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 646,
+          "sha256": "7abdac6a7ce74b35f2f9e9745bec544dcf2095e2503f3d46413db50120b95696"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 83553,
+          "sha256": "996c9283fd1a0ada4e9080a605be733c0789bd22df148cd432e2ec4ba81b50fa"
+        },
+        {
+          "path": "linux/campaign.json",
+          "bytes": 42436,
+          "sha256": "4d458c22d75409b16e0f2685d14c38f313e28822d969260e7ba3161fa78ca5e2"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 4324,
+          "sha256": "3feb823eba68a9a27120c57723e6261794595cf584dbb21a781c0787f0be29e4"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11159,
+          "sha256": "699ffb47d56c0ce525f92385f2b664bf73c949e3b711a8904a211c24af3a08db"
+        },
+        {
+          "path": "linux/test_gcr_flyer_authoring.log",
+          "bytes": 374,
+          "sha256": "48ebfdbe9476fedda3af65c1844c1c0fa8d3426f316185541ec9d836c2182d74"
+        },
+        {
+          "path": "linux/test_gcr_scooper_body.log",
+          "bytes": 412,
+          "sha256": "8afc35f528a631497b7cf4ad5e3ea69facd9cf8c86fe96b44e9495ed714c4957"
+        },
+        {
+          "path": "linux/test_gcr_scooper_u_capture.log",
+          "bytes": 397,
+          "sha256": "4512ebc03bad17db1a6a090b927b22b72e8aaf06e24170833d259f105b888c29"
+        },
+        {
+          "path": "windows/campaign.json",
+          "bytes": 34249,
+          "sha256": "002022ca78d980e28175ebc1e6b12ccbd2e01afed86f96901c87879f5f73e841"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 3000,
+          "sha256": "53af2669c82331bb4bf0e1d6f8e1df3019963f85f65acb9010b2b23eb1038aa2"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11159,
+          "sha256": "8ac99b45046815fd98b8f3804af9119e9a15eeea3e65962af151434320cfc412"
+        },
+        {
+          "path": "windows/test_gcr_flyer_authoring.log",
+          "bytes": 378,
+          "sha256": "a9d6b495fa0c43a1055e78dee759a9f57d4c15314a680c3729020c50ec682522"
+        },
+        {
+          "path": "windows/test_gcr_scooper_body.log",
+          "bytes": 416,
+          "sha256": "13a439cc60ae85ac8dbbaf0b4c65ec2aedea0e92ba1d412df8ed52ebd3b658ea"
+        },
+        {
+          "path": "windows/test_gcr_scooper_u_capture.log",
+          "bytes": 401,
+          "sha256": "373c0a16ce9256e578ec826dc7d318e87d46d8f7f49cc37bec0dfbb5c2940814"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/u-hull-adapter-sanitizer-01",
+      "completion": {
+        "source": "48ab262b556f905b98fd4c96a00d4d3eaa9fa628",
+        "compiled_source": "e625c6f287a19cc12b46b0925100b91174fb4eb4",
+        "reused_instrumented_build": true,
+        "ok": true,
+        "native_inputs_unchanged": true,
+        "identity_sha256": "75c7efbb8de4922553ea98b90bf398bbbebb537cfcfe7d5a2f6b31079e312e17",
+        "processes_sha256": "0a1ffa42ad0848af2dab4fc34e849f8a01669c0688c7affc3842c9674de97673",
+        "instrumented_sha256": "9993d33a9941c2d891c66af7429604e2561dbe557e5d867d5fe106dfa14f70eb",
+        "leak_detection": true,
+        "scope": "Fresh U-hull host/project execution with source-identical reused instrumented adapter and explicitly modified local loader. Not recompiled, shipping or ordinary pinned-host execution."
+      },
+      "files": [
+        {
+          "path": "authoring-unsuppressed-process.json",
+          "bytes": 1397,
+          "sha256": "5a0438bf0c06f2b119bb22167d0715d21312b5e56b467fd4f366acd2ed7319d0"
+        },
+        {
+          "path": "authoring-unsuppressed.log",
+          "bytes": 7079,
+          "sha256": "2809f37bb861f88a7c82d6585a96b4432d5914bd9f4365382f2e4af82cbac01c"
+        },
+        {
+          "path": "completion.json",
+          "bytes": 706,
+          "sha256": "69157e350b62b16a006f33fe048a6ee62160787077a99d61af706a382c98bd82"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 96292,
+          "sha256": "75c7efbb8de4922553ea98b90bf398bbbebb537cfcfe7d5a2f6b31079e312e17"
+        },
+        {
+          "path": "import.log",
+          "bytes": 39221,
+          "sha256": "8811dad42a7f79d2e8ea6608f24586bdb9bedd24477cb48dc732acaa89e0c314"
+        },
+        {
+          "path": "lsan-external-fontconfig.supp",
+          "bytes": 131,
+          "sha256": "04dd86534ae37de400401b8a99ff5c283b7addf1082069119acc799b14b11ff8"
+        },
+        {
+          "path": "original-unsuppressed-import.log",
+          "bytes": 45117,
+          "sha256": "31bf81460a35ddba69bc63a64eafd246b825ad4ae07f4911ade0f7919afe0c5d"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 9450,
+          "sha256": "0a1ffa42ad0848af2dab4fc34e849f8a01669c0688c7affc3842c9674de97673"
+        },
+        {
+          "path": "qualification-scope.json",
+          "bytes": 3408,
+          "sha256": "ccce1b31d70bf774eb0ded9ec9ea6c30e0882764d81c8e44d7eda153138850f6"
+        },
+        {
+          "path": "strip_deepbind.c",
+          "bytes": 506,
+          "sha256": "8dc66bd4707d09c0f71c51ff7ad3884cdb678d75e5f0303ea95b076f658a9e71"
+        },
+        {
+          "path": "test_gcr_authored_compound_native.log",
+          "bytes": 366,
+          "sha256": "1a8df822d3cefa6da33fd55add77d1f2bd33f6ff50757455c05bf9d504c75a2b"
+        },
+        {
+          "path": "test_gcr_flyer_authoring.log",
+          "bytes": 575,
+          "sha256": "1988cc27bd3792462a6cbcf4e8ef90fc561516e5b56cf5a36baf3044dd0a2acf"
+        },
+        {
+          "path": "test_gcr_scooper_body.log",
+          "bytes": 412,
+          "sha256": "8afc35f528a631497b7cf4ad5e3ea69facd9cf8c86fe96b44e9495ed714c4957"
+        },
+        {
+          "path": "test_gcr_scooper_release.log",
+          "bytes": 27101,
+          "sha256": "048d60715229805df3e8a72ffefc1f3b2373d7c9ddb8d6eb84c121abcbdeed62"
+        },
+        {
+          "path": "test_gcr_scooper_u_capture.log",
+          "bytes": 397,
+          "sha256": "4512ebc03bad17db1a6a090b927b22b72e8aaf06e24170833d259f105b888c29"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/u-array-equality-probe",
+      "completion": null,
+      "files": []
+    }
+  ],
+  "native": {
+    "windows": {
+      "native_build_source": "3df1279f799230bafdc7a34766eb2995bf4ae69b",
+      "native_sha256": "c3b1f28f155d6bb871e596ad69df3cdec355ac7dd83e87aad362ce1ee883e2e1",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "linux": {
+      "native_build_source": "3df1279f799230bafdc7a34766eb2995bf4ae69b",
+      "native_sha256": "dc5be7edb7bb2b42fb8b793cf320f9bb1dffcf82dd755a58e4227ab512ce87d8",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  },
+  "production_native_inputs": 89,
+  "native_rebuild": false,
+  "old_seven_definitions_exact": true,
+  "scooper_non_hull_and_description_fields_exact": true,
+  "core_inputs_match": 136,
+  "core_local_record": "C:\\Users\\_\\.codex\\worktrees\\gcr-scooper\\khybersand\\build\\scooper-core-02",
+  "core_completion_sha256": "623e80afb95187fc272f3c00678b06e4ee8b4438b1ea848671ffbd4f895769cd",
+  "instrumentation_scope_sha256": "ccce1b31d70bf774eb0ded9ec9ea6c30e0882764d81c8e44d7eda153138850f6",
+  "companion_binding_sha256": "4ca20cb012a599202cc8439048c7b51a75a9b5c73059f10f35d00fc51b45b9fe",
+  "disposition": "Geometry prototype; no demonstrated fast powered-retention cure. Owner review pending; unmerged."
+}
