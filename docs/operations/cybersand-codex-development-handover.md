@@ -21,7 +21,7 @@ source-only correction is `16533ff81c561677308665357eb1d0d5f65e85bc`.
 The original #371 lock and #377 Phase A evidence remain immutable. H2 mutual
 heating, H3 generic rest, catalogue/capability identities and ABI stay unchanged.
 
-**B — IMPLEMENTED, ADOPTION BLOCKED.** [PR #395](https://github.com/techrote/cybersand/pull/395) owns this lane. The [resulting-head ledger](../audits/2026-11-04-mat354-h1-final-status.md) records exact current runtime/CI heads and disposition. Local/native and first hosted Linux/Windows correction proofs pass within their recorded scopes; unexplained epoch-wrap CPU cost and historical sleeping-CYPS import remain blockers. The first runtime publication is `a5052b6b3d3e90b894c1b1a2d0ce8a466290a370`. The H1-only dependency-capture extension has independent preliminary clearance and actual Linux/Windows compile evidence; a fresh hosted build and actual OS proof remain required at this checkpoint.
+**B — IMPLEMENTED, ADOPTION BLOCKED.** [PR #395](https://github.com/techrote/cybersand/pull/395) owns this lane. The [resulting-head ledger](../audits/2026-11-04-mat354-h1-final-status.md) records the frozen pre-Ready handover and exact completed native/runtime evidence; the PR description and immutable closing packet own later actual head/merge/CI/reviewer identities. Runtime publication `68e2bb988020114f90e4e32553d0ee9cd6988520` (tree `226a11e263fc127a2439a00ed1c04091b94240e8`) follows actual build source `4550589598f96c9a6d0092280730e14e25de2eff` (tree `70ee799bf27c5d1f190a431ec3fe5b79620b088d`). All eight publisher jobs/67 steps, actual Linux/Windows execution, full compiler-input custody and LFS readback pass; new scoped native head/merge/Windows evidence also passes. Unexplained epoch-wrap CPU cost and historical sleeping-CYPS import remain blockers. First-publication evidence and all original failures remain retained.
 
 This is an unmerged candidate, not runtime adoption. Keep #354/#352 open.
 No H1-specific numerical performance acceptance threshold exists; the owner must
@@ -37,6 +37,13 @@ not changed accepted main or this lane's World source. H1 intentionally changes
 behaviour, so #396's equivalence premise does not admit it. Continue isolated
 qualification only; any future integration must reconcile the actual contracts
 and resulting source. Do not import or silently combine those mechanisms here.
+
+Freeze final documentation before the definitive Ready-state matrix and keep
+that tested head unchanged. Ready is for qualification only; final Native/Godot/
+Water/palette/provenance and independent review results do not waive performance
+or saved-state blockers. Record their actual head/tree, merge checkout and
+job/artifact hashes externally, then return the PR to Draft while B applies.
+Never merge #395 or close #354/#352 under this assignment.
 
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
