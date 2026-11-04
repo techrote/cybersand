@@ -284,7 +284,7 @@ func _post_impulse_publication() -> void:
 	check(s.body.get_rid() == body_rid and s.physics_epoch == epoch and s.generation == generation,
 		"post-impulse failure cannot replace the retained RID, epoch or generation")
 	post_impulse_publication = {"fixture":"packed_sand", "candidate":s.sand_resistance_enabled,
-		"workers":workers, "wait_rapier_steps":waited, "complete":true,
+		"workers":workers, "wait_physics_calls":waited, "complete":true,
 		"pre_fault_response_accepted":bool(response.get("accepted", false)),
 		"pre_fault_readback_valid":bool(response.get("readback_valid", false)),
 		"pre_fault_impulse_applications":int(response.get("impulse_applications", 0)),
