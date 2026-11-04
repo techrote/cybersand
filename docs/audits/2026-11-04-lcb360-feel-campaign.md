@@ -251,6 +251,12 @@ Medians across the three repeats:
   - the Exploratory route through the same panel;
   - the parity and census tooling.
   - Contact baselines were not measured here.
+- **Native owner (handover, unchanged here):** `diagnostic_snapshot` increments a
+  132-entry per-material array indexed by the stored byte. This is unreachable
+  while native writes validate material IDs, but an unadmitted byte would index
+  out of bounds. Bound Water on a combined #358 material union also still needs
+  a carrier readback wired by its integrator; see the
+  [observer census record](2026-11-04-lcb360-observer-census.md).
 - **#363 LCB-DECIDE** can consume:
   - this report, both packets and the preflight;
   - the IN stall and PF never-rest findings, routed for decision;

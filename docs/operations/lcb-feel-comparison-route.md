@@ -136,3 +136,4 @@ evidence of gas, pressure or momentum: classify apparent bubbles by state
 - The existing [`test_liquid_comparison_ui.gd`](../../godot/tests/test_liquid_comparison_ui.gd)
   still covers protected setups, presets, refusals and the synchronous pane.
 - Native admission evidence is in the [preflight record](../audits/2026-11-03-lcb360-feel-preflight.md).
+- [`test_liquid_feel_census.gd`](../../godot/tests/test_liquid_feel_census.gd) qualifies the admitted-catalogue, uncached stored-material census ([observer census record](../audits/2026-11-04-lcb360-observer-census.md)).

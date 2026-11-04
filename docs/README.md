@@ -14,7 +14,7 @@ Stopped PLAY recovery: [canonical ownership and controls](systems/player-control
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
 
-LCB-FEEL #360 four-family liquid comparison: [playable desktop route, catalogue and UNTESTED playtest sheet](operations/lcb-feel-comparison-route.md); [32-row admission preflight](audits/2026-11-03-lcb360-feel-preflight.md) and [six-slot campaign, desktop-host cohort and comparison report](audits/2026-11-04-lcb360-feel-campaign.md) (both ADMITTED; slot 7 Rapier impact is a registered gap).
+LCB-FEEL #360 four-family liquid comparison: [playable desktop route, catalogue and UNTESTED playtest sheet](operations/lcb-feel-comparison-route.md); [32-row admission preflight](audits/2026-11-03-lcb360-feel-preflight.md) and [six-slot campaign, desktop-host cohort and comparison report](audits/2026-11-04-lcb360-feel-campaign.md) (both ADMITTED; slot 7 Rapier impact is a registered gap); [observer census repair](audits/2026-11-04-lcb360-observer-census.md).
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), and [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md).
 
