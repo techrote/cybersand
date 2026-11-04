@@ -11,6 +11,7 @@ const Catalog = preload("res://scripts/actor_rig_catalog.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const Flight = preload("res://scripts/physical_flight_profile.gd")
 const UsableCatalog = preload("res://scripts/usable_catalog.gd")
+const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 
 var set_choice: OptionButton
 var model_choice: OptionButton
@@ -23,6 +24,7 @@ var usable_choice: OptionButton
 var usable_power_slider: HSlider
 var usable_power_label: Label
 var usable_description: Label
+var drain_profile_choice: OptionButton
 var _equipment_physical: bool = false
 var _equip_only_button: Button
 var status: Label
@@ -92,6 +94,14 @@ func _ready() -> void:
 		usable_choice.add_item("%s — %s" % [str(definition.id).to_upper(), str(definition.name)])
 	usable_choice.item_selected.connect(_refresh_usable)
 	column.add_child(usable_choice)
+	drain_profile_choice = OptionButton.new()
+	drain_profile_choice.name = "MeteredDrainProfile"
+	drain_profile_choice.add_item("Ordinary U10")
+	drain_profile_choice.add_item("Metered Water v1 — experimental")
+	drain_profile_choice.add_item("Metered Brine v1 — experimental")
+	drain_profile_choice.item_selected.connect(func(_index: int) -> void: _refresh_usable(usable_choice.selected))
+	drain_profile_choice.visible = false
+	column.add_child(drain_profile_choice)
 	var usable_power_row := HBoxContainer.new()
 	column.add_child(usable_power_row)
 	usable_power_label = Label.new()
@@ -169,10 +179,18 @@ func restrict_prepared_default(enabled: bool) -> void:
 		status.text="Prepared native default: sampled baseline, barrel or Ripper. F5 restores the authored map and fresh pose; Liquids Apply retains live trial motion. Other actor constructors remain unavailable."
 
 
-func configure_equipment(usable_index: int, power: float, physical: bool = false) -> void:
+func configure_equipment(usable_index: int, power: float, physical: bool = false,
+	profile: String = "", material: int = 0) -> void:
 	_equipment_physical = physical
 	var item_index: int = clampi(usable_index + 1, 0, UsableCatalog.count())
 	usable_choice.select(item_index)
+	drain_profile_choice.select(0)
+	if physical and usable_index == PhysicalEquipment.METERED_USABLE \
+		and profile == PhysicalEquipment.METERED_PROFILE:
+		if material == PhysicalEquipment.METERED_WATER:
+			drain_profile_choice.select(1)
+		elif material == PhysicalEquipment.METERED_BRINE:
+			drain_profile_choice.select(2)
 	usable_power_slider.value = clampf(power, 0.0, 1.0)
 	_refresh_usable(item_index)
 
@@ -181,7 +199,22 @@ func selected_usable_index() -> int:
 	return usable_choice.selected - 1
 
 
+func selected_drain_profile() -> String:
+	return PhysicalEquipment.METERED_PROFILE if _equipment_physical \
+		and selected_usable_index() == PhysicalEquipment.METERED_USABLE \
+		and drain_profile_choice.selected > 0 else ""
+
+
+func selected_drain_material() -> int:
+	if selected_drain_profile().is_empty():
+		return 0
+	return PhysicalEquipment.METERED_WATER if drain_profile_choice.selected == 1 else PhysicalEquipment.METERED_BRINE
+
+
 func _refresh_usable(index: int) -> void:
+	drain_profile_choice.visible = _equipment_physical and index - 1 == PhysicalEquipment.METERED_USABLE
+	if not drain_profile_choice.visible:
+		drain_profile_choice.select(0)
 	if index <= 0:
 		usable_description.text = "No actor equipment. Painting is available once the owner acknowledges unequip and pointer buttons are released."
 		return
@@ -192,6 +225,9 @@ func _refresh_usable(index: int) -> void:
 		if str(definition.category) == "object":
 			controls = "Left/M: deploy the carried processor. It works after settling. U: pick up when nearby. N: release without operating."
 		usable_description.text = "%s — %s\n%s" % [str(definition.name), str(definition.description), controls]
+		if not selected_drain_profile().is_empty():
+			var quantity: String = "stored Water units" if selected_drain_material() == PhysicalEquipment.METERED_WATER else "Brine cells"
+			usable_description.text += "\nExperimental metering: %s; 32 full-cell equivalents per World, up to 16 target cells per pulse. Hold left/M; release stops new removal. Right gives one 35%% precision pulse. Only accepted native removal costs 0.85 charge. Reselecting equipment does not refill the allowance." % quantity
 
 
 func _refresh_usable_power(value: float) -> void:

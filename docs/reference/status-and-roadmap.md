@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## IN-TOOLS #361-A metered drain candidate — 2026-11-04
+
+The [opt-in physical U10 profile](../operations/in-tools-metered-drain.md) now
+has application source for exact Water/Brine removal, resource/cooldown outcomes,
+exclusive native-owner dispatch and fault quarantine. Ordinary U10, FreeMass,
+solver defaults and native/coupling APIs remain intact. The
+[dated qualification](../audits/2026-11-04-in-tools-361a-metered-drain.md) records
+the executed scope and untested gates. Keep the implementation draft and #361
+open; source implementation is not full platform or human gameplay acceptance.
+Reversible valves (#361-B), geometric sources and momentum interfaces remain
+separate work after the drain acceptance gates.
+
 ## Material shadow foundation and integration — 2026-11-04
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)

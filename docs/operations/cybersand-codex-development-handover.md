@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## IN-TOOLS #361-A implementation candidate — 2026-11-04
+
+The [metered Liquid Drain](in-tools-metered-drain.md) extends existing physical
+U10 behind an explicit profile, with exact stored quantity, finite native-owner
+allowance, current-mask preflight and terminal partial-fault handling. Its
+[qualification record](../audits/2026-11-04-in-tools-361a-metered-drain.md) separates
+actual native/application execution from remaining platform and owner gates.
+It is an implementation-specific draft based on accepted `7ef4856e`; no merge
+or parent #361 closure is authorized. PR #379 remains a separately reviewed
+preparation reference, including its updated `1aaab324` findings; no admission
+branch or #370 comparison host/recorder is imported or modified.
+
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)

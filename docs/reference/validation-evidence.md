@@ -10,6 +10,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## IN-TOOLS #361-A exact metered drain — 2026-11-04
+
+The [implementation qualification record](../audits/2026-11-04-in-tools-361a-metered-drain.md)
+binds the opt-in physical U10 source to independent native controls, source-matched
+Linux Godot/worker/Rapier tests, actual measured Water/Brine balances and retained
+negative results. Native primitive, synthetic copied-result and actual
+headless Main/input evidence are distinct. Windows, graphical pacing, physical
+input and owner feel require their own execution. Draft-skipped hosted jobs are
+not passes, and the implementation remains unmerged.
+
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
 
 The [integration qualification record](../audits/2026-11-04-mat-auth371-integration.md)

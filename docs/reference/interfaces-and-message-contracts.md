@@ -1344,7 +1344,7 @@ and current fixed pose. Body-state values can be published at the same mutex
 boundary, preserving their relationship with the source/muzzle frame. No node,
 RID, live World or controller object crosses that boundary.
 
-Each request has `version`, `run_id`, `epoch`, `actor_id`, `generation`,
+Each ordinary version-1 request has `version`, `run_id`, `epoch`, `actor_id`, `generation`,
 `equipment_epoch`, `instance_id`, `usable_index`, `body_id`, `sequence`,
 `request_id`, `operation` and `power`. Instance/request IDs are Strings. A
 request references the owner-supplied frame; it cannot supply an arbitrary
@@ -1378,6 +1378,35 @@ A released body retains its physical velocity, and collision grace continues to
 age when physical stepping resumes. Exact catalogue effects and processor
 semantics remain with [actor usables](../systems/actor-usables.md); execution and
 merge acceptance remain with the [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md).
+
+### Metered U10 request and outcome extension
+
+The opt-in [#361-A profile](../operations/in-tools-metered-drain.md) uses request
+version 2 and adds exactly `profile="metered-drain-v1"`, selected `material`
+(Water 3 or Brine 24), `native_generation`, `policy_hash`, `world_instance_id`
+and integer `quantity_budget`. The physical frame remains version 1; its
+metered actor row echoes those fields and the current `metered_request_id`.
+No arbitrary target position, footprint, writer or velocity enters the request.
+Signed nonzero native ObjectIDs are opaque identity values. A current profile
+refuses a version-1 downgrade and a retired pending token cannot dispatch.
+
+Each actor readback adds copied `metered_drain` owner context and separate
+`water_units_{initial,remaining,removed}` and
+`brine_cells_{initial,remaining,removed}` ledgers. Command results add
+`metered_drain.status` (`applied`, `refused`, `fault`), reason, requested budget,
+applied policy, before/after completed tick, target observations/transitions,
+actual quantity, sink debit, remaining allowance and charge/cooldown outcome.
+Results carry `provenance="host-local-native-observation-v1"`; an initial native
+construction receipt is separately labelled. No native per-command receipt or
+unexposed native pose revision is claimed. Admission-only refusals say
+`observation_status="not_dispatched"` rather than inventing inspected targets.
+
+`metered_terminal` and `metered_fault` expose an unexpected execution fault.
+Verified partial quantities remain evidence, while uncertain quantity is marked
+incomplete. Faulted owners stop editing/ticking and publish failure with the
+last valid cellular/render frame until explicit native reconstruction. Normal
+refusals have zero removal, zero new allowance debit and no accepted activation.
+The ordinary request/result fields and sampled equipment interface remain intact.
 
 ## Workbench replay and genuine stage interfaces
 

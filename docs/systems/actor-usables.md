@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority
 canonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-04
 related-documents: [physical-actor-rigs.md, actor-rigs.md, actor-control-prototypes.md, materials-and-rule-kernels.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
@@ -92,6 +92,24 @@ chemistry.
 
 The vacuum and drain are explicit sinks. Removed slots are not hidden inventory.
 
+### Opt-in exact metered Liquid Drain
+
+**Current candidate, #361-A:** physical U10 additionally offers the explicitly
+selected `metered-drain-v1` profile for Water or Brine. Ordinary U10 and every
+existing preset retain their behavior. The profile keeps range 29, radius 4,
+accepted cost 0.85, cooldown 0.10 seconds and shared equipment charge/recharge.
+It limits an accepted pulse to at most 16 cells and meters actual stored Water
+units or separate Brine cells. Selection does not refill its finite allowance.
+
+The [metered-drain guide](../operations/in-tools-metered-drain.md) owns supported
+policies, exact Q7/Q255 and fractional FreeMass contracts, controls, bounded
+before/after observations, refusal versus terminal fault, and reproducible
+qualification. Its results are host-local native observations, not new
+native-issued command receipts. The
+[dated evidence](../audits/2026-11-04-in-tools-361a-metered-drain.md) keeps actual
+Linux execution separate from Windows, graphical and human acceptance. No
+reversible valve, pressure change or momentum input is supplied by this profile.
+
 ## U13–U22: ballistic payloads
 
 Projectiles are sparse bounded records with swept cell-space contact, gravity,
@@ -173,7 +191,7 @@ readback and the released body's pose remain observable.
 
 ## Action and readback contract
 
-### Physical actions and copied feedback
+### Physical equipment aim, recoil and item lifecycle
 
 The physical version-2 `physical_wire_action` envelope carries an optional
 `equipment` dictionary. The enclosing run, actor epoch, producer, issued

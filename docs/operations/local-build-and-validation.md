@@ -661,6 +661,15 @@ this lane does not establish Windows rendered-output or browser acceptance.
 
 ## Physical usable validation
 
+For the opt-in U10 extension, run the
+[metered-drain focused commands and fixture](in-tools-metered-drain.md#reproducing-the-focused-checks).
+The existing Godot discovery route includes its three `test_physical_metered_*`
+cases. Preserve ordinary physical/sampled usable regressions. The standalone
+native driver, native-backed worker test, synthetic equipment-result test and
+actual Main/Rapier injected-input test have distinct scopes; the
+[dated #361-A evidence](../audits/2026-11-04-in-tools-361a-metered-drain.md) owns
+source/runtime identities and missing platform/display/human gates.
+
 ACT-005 extends the [32-item usable catalogue](../systems/actor-usables.md) onto
 the [physical actor owner](../systems/physical-actor-rigs.md). Use the pinned
 Godot runtime and materialized Linux CyberSand/Rapier libraries. Verify native
