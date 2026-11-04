@@ -94,7 +94,19 @@ click was stopped by detected user input; no click-result claim follows.
 
 ## Final qualification boundary
 
-`python tools/experiments/run_gcr_powder_review.py --output build/repeatable-final-head-01`
+The first committed-head run at55d52b77 passes all new controls on both platforms,
+then exposes a compatibility regression in the expanded retained RFT fleet test:
+its four-key options omit optional thrust/torque/boost values. The dense toolbar
+used a required dictionary lookup where the previous controls supplied defaults.
+An older sampled-port test also omits optional boost. The correction restores
+defaulted reads in both places without changing authored defaults or physics.
+The two error-stalled test processes are explicitly stopped after preserving
+their script-error logs; their receipts are failures, not watchdog passes. The
+original run and [compact failure manifest](repeatable-flight-ui-2026-11-04/failed-head-summary.json)
+remain retained in build/repeatable-final-head-01. The corrected head requires a
+fresh complete run; no successful prefix is relabelled as final qualification.
+
+`python tools/experiments/run_gcr_powder_review.py --output build/repeatable-final-head-02`
 runs19 host suites plus one fresh import per platform, including the two new
 spawn/UI suites and retained alignment, boost, source, actor arena, review fleet,
 crash-room, canned powder, event controls, bridge/freshness and navigation gates.

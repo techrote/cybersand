@@ -142,7 +142,7 @@ func _build_comparison_controls() -> void:
 		input.min_value=5.0 if key=="budget" else (1.0 if key=="boost_multiplier" else (0.0 if key in ["thrust_multiplier","torque_multiplier"] else 0.01))
 		input.max_value=80.0 if key=="budget" else (8.0 if key=="boost_multiplier" else 64.0)
 		input.step=1.0 if key=="budget" else (0.25 if key=="boost_multiplier" else 0.01)
-		input.value=applied_controls[key]
+		input.value=float(applied_controls.get(key,2.0 if key=="boost_multiplier" else 1.0))
 		input.custom_minimum_size.x=86
 		input.add_theme_font_size_override("font_size",12)
 		input.get_line_edit().add_theme_font_size_override("font_size",12)
@@ -371,7 +371,7 @@ func advance_frame(action: Dictionary, allowed: bool) -> void:
 	# A held dispenser must be released after focus/edit/pause cancellation,
 	# even when Q+E cancels the signed trim or Kestrel S leaves move neutral.
 	var ports: Dictionary = _review_ports()
-	if _rearm and (ports.q or ports.e or ports.s or ports.boost): allowed=false
+	if _rearm and (ports.q or ports.e or ports.s or ports.get("boost",false)): allowed=false
 	if room_source.armed and runtime!=null and runtime.active() and not runtime.paused and not runtime.failed:
 		if not room_source.before_step(runtime._arena):
 			control_error=room_source.error
