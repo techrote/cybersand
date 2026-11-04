@@ -1,0 +1,38 @@
+{
+  "schema": "in-tools-361a-retained-evidence-v1",
+  "implementation_pr": "https://github.com/techrote/cybersand/pull/383",
+  "measured_source_commit": "f4878302fd66975468dd307a94bb035529af5ecd",
+  "measured_source_tree": "b5743bdb4b7a6c3e8fc6c1f8d331aa08ce21b719",
+  "publication_scope": "Documentation/evidence-only addendum; no production, test, fixture, runner, runtime or dependency bytes change relative to measured source. Hosted final-head results are recorded in the PR ledger.",
+  "records": {
+    "companion-inputs.json": {
+      "bytes": 571,
+      "sha256": "1680e1d76c4d9950cf94aba483b080dd63741690f7fc5767810d15b67122b1d9"
+    },
+    "host-qualification.json": {
+      "bytes": 581911,
+      "sha256": "31d7ab0b150a90bb6fce4152223f521597e6c901060cd7d238a20021357b0a5a"
+    },
+    "host-source-identity.json": {
+      "bytes": 111488,
+      "sha256": "b1fec3c702ae0631b8cb070b296cfbf29ad5b0eb247836b497c3c11a23277eb5"
+    },
+    "independent-review.json": {
+      "bytes": 32474,
+      "sha256": "34a666e53db8ac6657299a3b1952df6f8a12d86642073ee697890aea2136c737"
+    },
+    "local-validation.json": {
+      "bytes": 57105,
+      "sha256": "d052e7281d26fd7ff66868a16a171af083ee40eb0ef4c8bb967123e818b3d8f3"
+    },
+    "native-parser-controls.json": {
+      "bytes": 1316,
+      "sha256": "174d247532b026aafdb8215579a895f7288f74a0569b6b35e27afa1f508c32fc"
+    },
+    "native-qualification.json": {
+      "bytes": 31284,
+      "sha256": "937ce315348fcbf8c065e0227432839b7c5d0c3828f3eafff3f2863b131f269a"
+    }
+  },
+  "retention": "Native/host/review/source/parser/companion records are byte-for-byte copies of their original sealed JSON. Local-validation is a declared summary with exact input/result hashes. Raw logs and toolchains remain outside source control per AGENTS.md; their hashes and completion outcomes are retained."
+}

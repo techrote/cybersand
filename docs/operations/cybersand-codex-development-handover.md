@@ -17,8 +17,10 @@ U10 behind an explicit profile, with exact stored quantity, finite native-owner
 allowance, current-mask preflight and terminal partial-fault handling. Its
 [qualification record](../audits/2026-11-04-in-tools-361a-metered-drain.md) separates
 actual native/application execution from remaining platform and owner gates.
-It is an implementation-specific draft based on accepted `7ef4856e`; no merge
-or parent #361 closure is authorized. PR #379 remains a separately reviewed
+It is [draft PR #383](https://github.com/techrote/cybersand/pull/383), based on
+accepted `7ef4856e`; measured implementation `f4878302` passes the source-qualified
+Linux native and 15 scoped Godot routes. No merge or parent #361 closure is
+authorized. PR #379 remains a separately reviewed
 preparation reference, including its updated `1aaab324` findings; no admission
 branch or #370 comparison host/recorder is imported or modified.
 

@@ -19,6 +19,9 @@ partial-fault handling. It is actual application source with executable tests,
 not an architecture-only delivery. The implementation stays draft; no automatic
 merge, parent #361 closure or reversible-valve work is authorized.
 
+Implementation PR: [#383 — opt-in exact-metered physical Liquid Drain](https://github.com/techrote/cybersand/pull/383).
+Its PR ledger owns subsequent exact-head hosted checks and integration disposition.
+
 | Authority | Inspected identity |
 |---|---|
 | Accepted main and branch base | `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` |
@@ -27,11 +30,15 @@ merge, parent #361 closure or reversible-valve work is authorized.
 | Independently corrected #379 inspected during work | `1aaab324a9bccbaa7f868798dbb4f9fd9b4a7718`, still draft/unmerged |
 | Unmodified #370 comparison reference | `fbe82bcab8f821aac442c2bf59eb57b279717873` |
 | Isolated implementation branch | `feat/in-tools-361a-metered-liquid-drain` |
+| Published implementation and measured source | `f4878302fd66975468dd307a94bb035529af5ecd` |
+| Published implementation tree | `b5743bdb4b7a6c3e8fc6c1f8d331aa08ce21b719` |
 
 Root AGENTS, handover, ownership/PLAY, policy, preparation/receipt and usable
 contracts were read before edits. Existing dirty worktrees were not used for
 implementation. The active #347 worker/snapshot and #380 actor arena/rig changes
-were inspected; their coupling/runtime files remain untouched. Main changes
+were inspected without altering either branch. Shared worker edits are limited
+to owner-local metered dispatch, cancellation, quarantine and restart. The
+coupling, actor rig/arena and snapshot-format files remain unchanged. Main changes
 are confined to equipment selection, copied input/cancellation and status.
 #370's comparison panel, host, recorder and scientific reducer are unchanged.
 
@@ -82,7 +89,7 @@ velocity rollback exists.
 
 The new standalone driver and strict runner qualify the existing native
 primitives. Their test-side preflight is not production GDScript execution.
-The strengthened development run passes **30 registered cases**, with
+The clean published implementation run passes **30 registered cases**, with
 **14,023,753 repeated assertions**; most are repeated positional inventory
 checks, not independent experiments. Compilation uses GCC 13.3 on Linux x86-64.
 
@@ -117,20 +124,21 @@ one valid synthetic shape and two fresh-output custody controls. A zero-exit
 compiler without a newly produced executable cannot pass. These parser inputs
 are synthetic and do not authenticate a native execution by themselves.
 
-## Actual Linux application development results
+## Actual Linux application results at the published implementation
 
-The candidate08 snapshot passes **15 scoped Godot tests**, **11,943 counted
+The clean `f4878302` snapshot passes **15 scoped Godot tests**, **12,026 counted
 assertions**, plus the genuine failed-tick suite whose footer has no numeric
 assertion count. Import is clean, tests exit naturally, skip/runtime-error
-screening is clean and sealed inputs remain unchanged. Later terminal-lab and
-additional actual-host negative controls require their own final snapshot;
-candidate08 is not assigned to those changes.
+screening is clean and all 754 copied source inputs remain unchanged. This final
+run includes the terminal-lab fence, retained physical-owner restart and exact
+masked-source witnesses. The earlier candidate08 passed 11,943 assertions on its
+own sealed bytes; its results and subsequent failed iterations remain historical.
 
-| Test scope | Candidate08 result |
+| Test scope | Exact `f4878302` result |
 |---|---|
-| Metered native adapter/physical runtime/worker | 1,608 assertions; 16 quantity arms and 50 refusal/resource/fault/lifecycle controls |
-| Metered physical equipment/session/panel | 93 assertions with real Rapier and explicitly synthetic copied native outcomes |
-| Actual Main/worker/Rapier metered gameplay | 77 assertions; real PLAY/F5 controls and injected M input, headless |
+| Metered native adapter/physical runtime/worker | 1,614 assertions; 16 quantity arms and 52 other refusal/resource/fault/lifecycle/ownership controls |
+| Metered physical equipment/session/panel | 99 assertions with real Rapier and explicitly synthetic copied native outcomes |
+| Actual Main/worker/Rapier metered gameplay | 148 assertions; real PLAY/F5 controls and injected M input, headless |
 | Ordinary physical runtime/admission/Main and sampled usables | 502 assertions |
 | Existing equipment/lifecycle/physical session/sampled rig session | 8,884 assertions |
 | Existing liquid policy/physical preparation/Water reference body | 779 assertions; actual native/Rapier reference body |
@@ -151,19 +159,36 @@ fixture's four observed claimants. Recorded command-owner cost and native tick
 cost are separate exploratory measurements; neither establishes graphical
 pacing, simultaneous CPU utilization or a production performance budget.
 
-Actual Main development closures are:
+Actual Main closures in this final committed-source run are:
 
 | Real headless Main arm | Initial | Registered sink | Final |
 |---|---:|---:|---:|
 | IN Water, two eight-cell held pulses | 538,560 units | 4,080 units | 534,480 units |
 | Freshly reset IN Water, one pulse | 538,560 units | 2,040 units | 536,520 units |
 | IN Brine, one pulse | 2,112 cells | 8 cells | 2,104 cells |
-| Current FreeMass, eight actual target cells | 538,560 units | **1,893 units** | 536,667 units |
+| Current FreeMass, eight actual target cells | 538,560 units | **1,561 units** | 536,999 units |
+| Hard-wall refusal | 538,560 units | 0 | 538,560 units |
+| Actual actor-body obstruction | 554,880 units | 0 | 554,880 units |
+| Ordinary U10, eight changed cells; separate joined-owner endpoint measurement | 538,560 units | **1,572 units** | 536,988 units |
 
 The FreeMass host result is actual partial-cell removal, not eight assumed
 255-unit cells. Main's joined-owner census uses authoritative Water observation;
 `get_cells` is used only for Brine/material positions because Water presentation
 is dithered. Exact wall and forbidden-side positions accompany the totals.
+Asynchronous host input timing changes which fractional cells are reached:
+candidate08 removed 1,893 units and candidate12 removed 1,594 on their own
+recorded ticks. Those earlier measurements are not transplanted into this run.
+The ordinary U10 endpoint difference is not a new ordinary per-command receipt;
+its version-1 outcome records eight changed cells, charge 99.15 and cooldown 0.10,
+while the experimental sink stays zero.
+
+The wall case refuses through the existing Rapier muzzle-clearance owner before
+native dispatch; it does not fabricate a native refusal receipt. The under-actor
+case records native `source_blocked` / `body_occlusion` with zero transitions,
+charge or cooldown cost. Six exact stored Water cells remain at quantity 255 and
+body ID 1 from native tick 63 to 69: `(100,106)` and `(97,107)` through `(101,107)`.
+The actual equipment pose, native diagnostic and both positional inventories
+are retained alongside full source/sink closure.
 
 ## Runtime and evidence identity
 
@@ -183,10 +208,29 @@ not imply execution on Windows, Android, macOS or Web.
 
 Development snapshots retain their own base/tree, changed-file hashes, raw
 packet/log hashes, fixture hashes, actual construction receipts, session/native
-generation identities, commands, timeout and completion/error screening. A clean
-source commit and final source-matched records are the next publication
-checkpoint. Later documentation-only evidence publication must not rewrite
-the original measured source identities.
+generation identities, commands, timeout and completion/error screening. The
+final tests ran on clean published implementation `f4878302`, tree `b5743bdb`.
+The later documentation/evidence addendum changes no production, test, fixture,
+runner, runtime or dependency bytes; it does not relabel the measured source.
+The [evidence index](in-tools-361a-2026-11-04/evidence-index.json) binds every
+retained JSON file by byte size and SHA-256. The
+[full host source identity](in-tools-361a-2026-11-04/host-source-identity.json)
+retains the complete source/runtime input census. Raw logs and toolchains stay
+outside source control; their hashes and completion results remain in the records.
+
+| Retained machine evidence | SHA-256 / scope |
+|---|---|
+| [Host qualification](in-tools-361a-2026-11-04/host-qualification.json) | `31d7ab0b150a90bb6fce4152223f521597e6c901060cd7d238a20021357b0a5a`; all 15 suites, measured controls, native construction and host-local outcomes, failure history |
+| [Native qualification](in-tools-361a-2026-11-04/native-qualification.json) | `937ce315348fcbf8c065e0227432839b7c5d0c3828f3eafff3f2863b131f269a`; exact source, compiler/executable and 30 native cases |
+| [Native runner controls](in-tools-361a-2026-11-04/native-parser-controls.json) | `174d247532b026aafdb8215579a895f7288f74a0569b6b35e27afa1f508c32fc`; 23 synthetic parser/custody checks |
+| [Independent review](in-tools-361a-2026-11-04/independent-review.json) | `34a666e53db8ac6657299a3b1952df6f8a12d86642073ee697890aea2136c737`; accepted for draft source review, no unresolved blocking source findings |
+| [Local validation](in-tools-361a-2026-11-04/local-validation.json) | Documentation, all 18 materialized runtimes, M11, LFS, retrieval and preserved initial companion failures |
+
+The native standalone executable SHA-256 is
+`8a35fbcc69f867d44cca009697e84f6e477b8bb76d3267389314a4fdb9112695`.
+The final compile/run took 24.64/4.03 seconds, including instrumentation; this is
+not a production speed claim. Effect command-owner time, helper time and native
+tick time are retained separately in host evidence. Graphical pacing is untested.
 
 ## Failures, independent review and corrections
 
@@ -211,9 +255,11 @@ the original measured source identities.
 Independent automated review covers World ownership, quantities/partial
 FreeMass, masks, resources, command freshness/restart, evidence integrity and
 ordinary U10 risk. Its source-hashed disposition accepts the reviewed draft
-checkpoint without unresolved blocking source findings. Subsequent edits and
-new tests must be reconciled into the final review seal. This is not a separate
-human/account approval or owner integration authorization.
+checkpoint without unresolved blocking source findings. Its final exact-source
+seal is retained with this evidence. The reviewer authored the standalone native
+driver and runner and independently reviewed the production application authored
+by the other agents; this is not independent authorship review of its own native
+driver, a separate human/account approval or owner integration authorization.
 
 Initial documentation/provenance checks failed on six references to five absent
 companion files. The exact `6a583119` companion bytes and recorded SHA-256 values
@@ -235,9 +281,9 @@ claim. The existing LCB03 miss remains disclosed.
 
 | Acceptance row | Disposition |
 |---|---|
-| Linux native primitive controls | Executed, source-qualified development PASS |
-| Linux native-backed Godot worker/equipment | Executed, source-qualified development PASS |
-| Linux actual Main/Rapier/injected input | Executed headlessly; source-qualified development PASS |
+| Linux native primitive controls | Executed at clean published implementation; PASS |
+| Linux native-backed Godot worker/equipment | Executed at clean published implementation; PASS |
+| Linux actual Main/Rapier/injected input | Executed headlessly at clean published implementation; PASS |
 | Windows native/Godot host | **UNTESTED** |
 | Actual physical mouse/keyboard/gamepad and owner feel | **UNTESTED** |
 | Rendered desktop pacing and platform-specific UI behavior | **UNTESTED** |

@@ -1,0 +1,593 @@
+{
+  "schema": "in-tools-361a-independent-native-owner-review-v1",
+  "reviewed_at_utc": "2026-11-04T12:49:46.074986+00:00",
+  "reviewer": "native_safety_audit agent: independent review of production application written by parent/equipment agent; this reviewer authored the native primitive driver, runner and parser tests, which are not represented as independently authored proof",
+  "disposition": "ACCEPTED_FOR_DRAFT_SOURCE_REVIEW",
+  "blocking_source_findings": [],
+  "integration_approved": false,
+  "full_361a_gameplay_acceptance": false,
+  "reviewed_git_base": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "reviewed_git_base_tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371",
+  "source_claim": "Exact committed implementation source. Every listed production/test/native file matches the committed blob. Measured host and native executions independently name this commit/tree. Subsequent evidence publication is documentation only and must preserve these measured identities.",
+  "reviewed_source_sha256": {
+    "godot/scripts/metered_liquid_drain.gd": "b77d6f67a1bc39eb98050e661f2814278a2d84a6bf1a77c5fd518c41e14abfde",
+    "godot/scripts/physical_usable_runtime.gd": "37f4ee6979119a9e74e6d5d1545b2e015a0aa0303c3d2636f6bc184bef720348",
+    "godot/scripts/physical_usable_equipment.gd": "218ffc83133be2dfafdacac3705b3919dc91ea96ed364505d3a6efa2a32b3a47",
+    "godot/scripts/physical_actor_session.gd": "c36066cc80711b3750bff156a4353ec9d5f408a155d2c11d26601ea2937dd1ca",
+    "godot/scripts/simulation_worker.gd": "d6c21869afc6509518e89405179bc547d07e1bd24627159f46b47f5d6a6008eb",
+    "godot/scripts/main.gd": "1d0e8037a9e112e525172137ec5f20502cda9089620c8699852486b613a2eeeb",
+    "godot/scripts/actor_prototype_panel.gd": "4768f8c7f6208d74ab51c7ceb2422868bdc43bbb23d47d08e0ffedf74de12c8d",
+    "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+    "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+    "godot/native_extension/cyber_demo_bridge.hpp": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+    "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+    "godot/native_extension/cyber_native_cell_world.cpp": "0085475d766b78efc7635ccea4089aeea00b16ba4e7f880046287e55a4f82163",
+    "godot/native_extension/cyber_native_cell_world.hpp": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c",
+    "native/src/world.cpp": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+    "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+    "native/src/world_inertial.inc": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+    "native/tests/test_metered_liquid_drain.cpp": "ce9ccbe67a6ab6775030efe086f019cbfc9d8c50d1756e778cc633f33b53fc8d",
+    "tools/lcb/run_metered_drain_native.py": "0f791222111fef67482f25817b99f708c55c59edf1a9ab410ce963a2983ed8ae",
+    "godot/tests/test_physical_metered_drain.gd": "df4f2284912356bd34e0e4317c056b95ff0e2a41fb89e1a23bc56928b19cc944",
+    "godot/tests/test_physical_metered_equipment.gd": "071ffa504dedd9dc6f0b04f6f56f7a3b3a15d4e45751c4a40406da7a655d1227",
+    "godot/tests/fixtures/in-tools-metered-drain.v1.json": "50a5ce0f6fc6d61add58e307e40cf3570849b354a5d61edc9ed8413e254aae12",
+    "tools/lcb/test_metered_drain_native.py": "18719fd930486830228e699b5413c70e55537916e63dda60b53cd43b4118fcc1",
+    "godot/tests/test_physical_metered_desktop.gd": "8bfa19ab3c95bcea90069c1072e0ad4b642659080e6802a32d5cac53c81a961d",
+    "godot/tests/fixtures/in-tools-metered-desktop.v1.json": "f1f9a606172b7d123f90b3d41c56adcc4e33e770c7da249fd331bd7cd5032d0b"
+  },
+  "review_areas": [
+    {
+      "area": "Native World ownership",
+      "disposition": "no blocking source finding",
+      "references": [
+        "godot/scripts/simulation_worker.gd:962",
+        "godot/scripts/simulation_worker.gd:1239",
+        "godot/scripts/simulation_worker.gd:1343",
+        "godot/scripts/metered_liquid_drain.gd:233"
+      ],
+      "assessment": "The existing exclusive worker owns native mutation. Current command validity and cancellation are rechecked under the ordinary queue mutex across the complete bounded preflight/write/post-readback interval. Captured body states and physical frame are paired before native masks are prepared. Results honestly bind the frame because a separate native pose revision is unavailable. Main publishes copied values only; no World writer, live Rapier handle, singleton or new queue crosses the boundary. Healthy restart preserves the retained sampled-disabled physical mode, while terminal restart skips recovery and healthy publication."
+    },
+    {
+      "area": "Quantity conservation and partial FreeMass",
+      "disposition": "no blocking source finding",
+      "references": [
+        "godot/scripts/metered_liquid_drain.gd:93",
+        "godot/scripts/metered_liquid_drain.gd:143",
+        "godot/scripts/metered_liquid_drain.gd:367",
+        "godot/scripts/metered_liquid_drain.gd:418",
+        "native/src/world_quantity.inc:171",
+        "native/src/world_quantity.inc:327"
+      ],
+      "assessment": "Water debit uses actual copied stored state_a, including partial FreeMass. Selected IN/CY Water must equal actual policy Q; Brine contributes one separate population unit regardless of its state byte. Whole-World PF exclusion bounds hidden pressure effects. Only verified selected-liquid-to-Empty transitions debit the finite 32Q Water/32 Brine allowances. Stock is retained per native owner generation/actor slot across equipment and physical-session churn. Refresh reacquires stock before debit. Independent resident inventories, native source/sink ledger and separate IN diagnostics close in native controls; actual Godot/Main censuses close separately. Exact-head Main FreeMass removes 1561 units, not eight assumed full cells; this is distinct from prior development runs."
+    },
+    {
+      "area": "Destructive edit and body-mask safety",
+      "disposition": "no blocking source finding",
+      "references": [
+        "godot/scripts/metered_liquid_drain.gd:184",
+        "godot/scripts/metered_liquid_drain.gd:202",
+        "godot/scripts/metered_liquid_drain.gd:335",
+        "godot/scripts/metered_liquid_drain.gd:353",
+        "godot/native_extension/cyber_native_cell_world.cpp:367",
+        "native/src/world.cpp:1712",
+        "godot/tests/test_physical_metered_desktop.gd:373"
+      ],
+      "assessment": "Every chosen target and its supercover visibility path is preflighted before all writes, including corner blockers, live native masks and adapter bounds. Nonempty stored sources prove residency. Restricted resident no-PF erasure avoids allocation; checked quantity candidates precede mutation and remaining bounded retirement/wake hooks were source-traced. The void raw writer is never a success receipt, and its under-mask destruction hazard is reproduced in all eight native arms. Post-readback must confirm Empty and unchanged owner/policy/tick/hard revision. Actual Main protection separately demonstrates local Rapier wall-clearance refusal without inventing a native receipt, native source body_occlusion, unchanged exact wall/forbidden-side cells, and six measured masked Water positions/quantities retained between joined censuses."
+    },
+    {
+      "area": "Equipment charge and cooldown",
+      "disposition": "no blocking source finding",
+      "references": [
+        "godot/scripts/usable_catalog.gd:45",
+        "godot/scripts/physical_usable_runtime.gd:172",
+        "godot/scripts/physical_usable_runtime.gd:230",
+        "godot/scripts/physical_usable_equipment.gd:489",
+        "godot/scripts/physical_usable_equipment.gd:629"
+      ],
+      "assessment": "U10 catalogue range29/radius4/cost0.85/cooldown0.10, charge100 and recharge6 remain unchanged. Power and35% alternate alter effect, not fixed charge. Only applied metered removal consumes activation resources. Refusal has zero new debit/charge/cooldown while normal time aging/recharge remains separate. Matching equipment tokens are consumed before recoil and duplicates cannot repeat it. Version2 copied outcomes reject excess debit, impossible remaining stock and inconsistent supplied before/debit/remaining closure. The fallback refusal supplies typed remaining_budget. Actual native-backed tests and99 real-equipment/synthetic-outcome assertions exercise these paths."
+    },
+    {
+      "area": "Stale commands and stop/restart",
+      "disposition": "no blocking source finding",
+      "references": [
+        "godot/scripts/physical_usable_runtime.gd:694",
+        "godot/scripts/physical_actor_session.gd:364",
+        "godot/scripts/physical_usable_equipment.gd:413",
+        "godot/scripts/main.gd:3309",
+        "godot/scripts/simulation_worker.gd:527",
+        "godot/scripts/simulation_worker.gd:962",
+        "godot/scripts/simulation_worker.gd:1392",
+        "godot/tests/test_physical_metered_drain.gd:797"
+      ],
+      "assessment": "Version2 requests bind native identity/policy plus run, actor/control generation, equipment instance/epoch, body, increasing sequence and lease. Latest held-state processing and immediate release publication cancel uncommitted pulses, including rapid edges. Stop fences the current control generation; a fresh producer boundary is required after direct restart. Terminal is latched before first writer. Fault handling stops peer edits, extracted brushes, native ticking and healthy publication; queued legacy release/floor/capture is rejected before lab dispatch. Restart preserves the terminal evidence. The real worker reset test reconstructs a new native generation, retires terminal state, replenishes only fresh-owner stock and rejects the old potentially-applied command. No retry or repaint rollback occurs."
+    },
+    {
+      "area": "Source and runtime evidence integrity",
+      "disposition": "accepted within exact-commit local scope; hosted/platform integration gates outstanding",
+      "references": [
+        "tools/lcb/run_metered_drain_native.py:181",
+        "native/tests/test_metered_liquid_drain.cpp:366",
+        "godot/tests/test_physical_metered_drain.gd:268",
+        "godot/tests/test_physical_metered_desktop.gd:548"
+      ],
+      "assessment": "Final local native and all15 Godot routes execute the exact committed implementation. Independently checked754 copied inputs:736 ordinary files match committed blobs and18 materialized payloads match committed LFS OID/size; only the two declared Linux runtimes were executed. All80 native runtime provenance inputs match current native source despite retained older build commit. Both Linux library hashes, Godot identity and15 logs are bound. Native runner owns a fresh directory, seals55 compiled inputs/compiler/runner/executable before and after, rejects malformed/duplicate/incomplete output, and records actual phase claimants. Full resident inventories and separate IN diagnostic-ledger traces address #379 E2/E3.23 parser/custody tests are explicitly synthetic. Failed development runs remain failures. No mapped-module attestation, Windows execution, physical-device input, rendered pacing or owner handling acceptance is inferred."
+    },
+    {
+      "area": "Regression risk to ordinary U10",
+      "disposition": "no blocking source finding",
+      "references": [
+        "godot/scripts/physical_usable_runtime.gd:210",
+        "godot/scripts/physical_usable_runtime.gd:728",
+        "godot/scripts/physical_usable_equipment.gd:142",
+        "godot/scripts/actor_prototype_panel.gd:199",
+        "godot/tests/test_physical_metered_desktop.gd:458"
+      ],
+      "assessment": "Catalogue/generic usable runtime/native solver/adapter/default policy files are unchanged. Ordinary v1 retains its _apply_tool route and the UI defaults to ordinary U10. Metered v2 requires explicit profile and preserves physical versus sampled distinction. Actual Main ordinary v1 after a fresh post-stop control boundary accepts eight cell edits with0.85 charge/0.10 cooldown; joined authoritative endpoints show1572 Water units removed without inventing a v1 metered receipt or debit. Existing ordinary runtime/admission/desktop, generic usable, equipment/session, policy/preparation and reference-body gates all pass at the exact commit. The helper adds bounded owner metadata work, explicitly outside historical per-effect cell-read accounting."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "severity": "medium",
+      "issue": "Native getter reservations undercounted metadata before/post-write identity validation.",
+      "resolution": "Helper reserves10 setup,6 preidentity and8 postidentity read units plus every cell inspection. Capacity is reserved before mutation. Lifecycle setup reads remain outside historical effect budget and are explicitly scoped."
+    },
+    {
+      "id": "R2",
+      "severity": "medium",
+      "issue": "Early refusal lacked remaining_budget expected by equipment outcome validation, leaving pending activation uncleared.",
+      "resolution": "Fallback host-local refusal includes current allowance and zero dimensions, labelled not_dispatched."
+    },
+    {
+      "id": "R3",
+      "severity": "high",
+      "issue": "Restart risked sampled spawn recovery or healthy publication on a terminal partially affected World.",
+      "resolution": "start_worker checks retained native-owner terminal latch before recovery/publication and starts only a quarantined loop capable of explicit reconstruction."
+    },
+    {
+      "id": "E2-followup",
+      "severity": "medium",
+      "issue": "Tank census alone left unobserved resident coordinates outside immediate wall checks.",
+      "resolution": "Native test adds complete512x256/8-chunk census at0,8,20,32,64 plus5 deliberate oracle corruption controls; old records remain historical."
+    },
+    {
+      "id": "E3-followup",
+      "severity": "medium",
+      "issue": "Physical hash/quantity parity did not independently establish IN diagnostic-ledger equality.",
+      "resolution": "Native test adds65-sample exact IN ledger trace parity across1/4 workers and explicit save/restore continuation ledger checks."
+    },
+    {
+      "id": "R4",
+      "severity": "medium",
+      "issue": "Direct configuration of another usable could inherit the panel remaining on a metered U10 selection.",
+      "resolution": "Main clears profile/material unless the actual requested usable is U10; final exact-commit source and host controls qualify this correction."
+    },
+    {
+      "id": "R5",
+      "severity": "high",
+      "issue": "Legacy lab dispatch precedes the ordinary terminal-owner loop gate and could reach release/floor/capture paths.",
+      "resolution": "Early _apply_lab terminal guard admits only explicit reconstruction; real queued worker control verifies no tick, mutation, input-history change or fault-evidence replacement."
+    },
+    {
+      "id": "R6",
+      "severity": "medium",
+      "issue": "A matching malformed copied outcome could claim a debit or remaining allowance beyond issued/native stock bounds.",
+      "resolution": "V2 copied-outcome consistency bounds reject malformed values before local acceptance or recoil; six additional controls pass within99 equipment assertions. This hardens copied feedback, not cryptographic authentication."
+    },
+    {
+      "id": "R7",
+      "severity": "high",
+      "issue": "Healthy worker restart silently enabled sampled ownership over a retained physical owner, suspending ordinary physical U10.",
+      "resolution": "start_worker preserves the sampled-disabled representation and disables sampled spawn recovery. Actual Main ordinary v1 and metered/body-witness restart controls pass at the exact commit. Retired control generations remain rejected."
+    }
+  ],
+  "nonblocking_limits": [
+    "Independent review of production application only; the reviewer also authored native test/runner/parser code. Root separately inspected those native controls and evidence.",
+    "Exact-commit local results are not hosted premerge gate results, owner acceptance or a human/account PR approval.",
+    "Native standalone controls remain a separate scoped command, not a newly registered hosted job.",
+    "Per-command outcome is host-local verified native observation; construction receipt is separate. No native command receipt or separate native pose revision is invented.",
+    "All PF-containing Worlds refuse; IN requires native prepared construction identity; arbitrary imported IN diagnostic histories are unsupported. Completed ticks above2^31 require fresh reconstruction for all profiles.",
+    "Bounded resident no-PF edit proof does not contain process death or an uncaught native exception; such events cannot produce a surviving host receipt.",
+    "Effect read capacity includes conservative transaction metadata reservations and cell inspections; owner lifecycle metadata setup remains outside historical effect counters.",
+    "Actual Main uses synthetic Godot key events and explicit fixed-aim/focus seams. Real Rapier/native execution is proven only for the declared headless Linux fixtures.",
+    "Asynchronous Main scheduling changes realized fractional quantities by run; exact-head values must not be replaced with earlier development values. These are not throughput or graphical-pacing benchmarks.",
+    "Windows native/Godot, physical mouse/keyboard/gamepad handling, rendered desktop pacing and owner gameplay acceptance remain UNTESTED.",
+    "Hosted exact-final-head Documentation/provenance, applicable Native/GDExtension/Godot, scoped Water/actor and required runtime publication remain integration gates. Draft skips are not passes."
+  ],
+  "native_execution": {
+    "path": "/workspace/scratch/f009d8a99c07/361a-qualification/native/qualified-linux-f4878302-final/record.json",
+    "repository_evidence": "docs/audits/in-tools-361a-2026-11-04/native-qualification.json",
+    "sha256": "937ce315348fcbf8c065e0227432839b7c5d0c3828f3eafff3f2863b131f269a",
+    "git_commit": "f4878302fd66975468dd307a94bb035529af5ecd",
+    "git_tree": "b5743bdb4b7a6c3e8fc6c1f8d331aa08ce21b719",
+    "status": "pass",
+    "cases": 30,
+    "repeated_assertions": 14023753,
+    "compiled_inputs_rechecked": 55,
+    "compiler_runner_binary_rechecked": true,
+    "executable_sha256": "8a35fbcc69f867d44cca009697e84f6e477b8bb76d3267389314a4fdb9112695",
+    "workers4_actual_claimants_per_profile": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "scope": "native primitives only; test-side preflight; no application/desktop claim"
+  },
+  "approval_boundary": "Independent automated production source review only; no human/account PR approval, merge permission, full #361-A acceptance or parent issue closure.",
+  "previous_review_sha256": "11f0ec53692af528fc8c7bb91f2ac3beb448166cfce46d4b602b0dd85b4e9b67",
+  "native_parser_unittest": {
+    "path": "/workspace/scratch/f009d8a99c07/361a-qualification/native/parser-f4878302-final/record.json",
+    "repository_evidence": "docs/audits/in-tools-361a-2026-11-04/native-parser-controls.json",
+    "sha256": "174d247532b026aafdb8215579a895f7288f74a0569b6b35e27afa1f508c32fc",
+    "git_commit": "f4878302fd66975468dd307a94bb035529af5ecd",
+    "tests": 23,
+    "status": "pass",
+    "scope": "synthetic parser/output-custody controls only; no native or Godot execution"
+  },
+  "native_source_files_frozen": true,
+  "reviewed_git_commit": "f4878302fd66975468dd307a94bb035529af5ecd",
+  "reviewed_git_tree": "b5743bdb4b7a6c3e8fc6c1f8d331aa08ce21b719",
+  "exact_commit_host_execution": {
+    "path": "/workspace/scratch/f009d8a99c07/361a-qualification/exact-f4878302/evidence/qualification-summary.json",
+    "repository_evidence": "docs/audits/in-tools-361a-2026-11-04/host-qualification.json",
+    "sha256": "31d7ab0b150a90bb6fce4152223f521597e6c901060cd7d238a20021357b0a5a",
+    "manifest_sha256": "b1fec3c702ae0631b8cb070b296cfbf29ad5b0eb247836b497c3c11a23277eb5",
+    "focused_results_sha256": "85da358d4eb3ad88ad390671c80ace36946dec317ba3ad39907a2ebf4b87f111",
+    "git_commit": "f4878302fd66975468dd307a94bb035529af5ecd",
+    "git_tree": "b5743bdb4b7a6c3e8fc6c1f8d331aa08ce21b719",
+    "tests": 15,
+    "counted_assertions": 12026,
+    "genuine_failed_tick_suite": "pass; no numeric assertion footer",
+    "status": "pass",
+    "ordinary_committed_source_files_rechecked": 736,
+    "materialized_lfs_payload_oid_size_rechecked": 18,
+    "copied_inputs_total": 754,
+    "native_source_inputs_rechecked": 80,
+    "executed_linux_runtime_hashes_rechecked": 2,
+    "log_hashes_rechecked": 15,
+    "runtime_sha256": {
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "scope": "Linux native-backed Godot including actual Main/Rapier with synthetic input; not Windows/device/rendered/owner acceptance"
+  },
+  "actual_main_exact_commit": {
+    "packet_sha256": "e1dbed9c055ffb69ca8dc42d091ea0e263ab72181a30e96e36e8619521c091a2",
+    "footer_assertions": 148,
+    "packet_assertions_before_writable_output_assertion": 147,
+    "failures": 0,
+    "water_in_initial": 538560,
+    "water_in_sink": 4080,
+    "water_in_final": 534480,
+    "water_in_reset_sink": 2040,
+    "water_in_reset_final": 536520,
+    "brine_initial_cells": 2112,
+    "brine_sink_cells": 8,
+    "brine_final_cells": 2104,
+    "freemass_initial_water": 538560,
+    "freemass_metered_sink": 1561,
+    "freemass_final_water": 536999,
+    "ordinary_v1_changed_cells": 8,
+    "ordinary_v1_endpoint_sink": 1572,
+    "ordinary_v1_final_water": 536988,
+    "ordinary_v1_scope": "joined endpoint quantity difference; no exact v1 command receipt",
+    "protected_water_initial_and_final": 554880,
+    "protected_positions": {
+      "after_cells": [
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 69,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 98,
+          "y": 106
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 69,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 97,
+          "y": 107
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 69,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 98,
+          "y": 107
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 69,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 99,
+          "y": 107
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 69,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 100,
+          "y": 107
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 69,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 101,
+          "y": 107
+        }
+      ],
+      "after_tick": 69,
+      "before_cells": [
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 63,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 98,
+          "y": 106
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 63,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 97,
+          "y": 107
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 63,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 98,
+          "y": 107
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 63,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 99,
+          "y": 107
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 63,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 100,
+          "y": 107
+        },
+        {
+          "activity_block_coordinate": [
+            3,
+            3
+          ],
+          "chunk_coordinate": [
+            0,
+            0
+          ],
+          "completed_tick": 63,
+          "material": 3,
+          "ok": true,
+          "scope": "stored cell values; block coordinates are not a per-cell awake flag",
+          "state_a": 255,
+          "state_b": 0,
+          "temperature_available": false,
+          "temperature_raw": null,
+          "temperature_units": "engine raw integer; not a calibrated heat solver",
+          "transient_body_id": 1,
+          "x": 101,
+          "y": 107
+        }
+      ],
+      "before_tick": 63,
+      "case": "actual-rapier-protected-source-positions",
+      "command_id": "be6dfd24c3bbff83e90b77a75e20b83a:7:0:equipment:2:1",
+      "scope": "joined endpoint mask/quantity witnesses plus native owner-local source refusal; ordinary transport ticks remain separate",
+      "source_diagnostic": {
+        "blocked_body_id": 1,
+        "blocked_cell": "(100, 100)",
+        "expected_body_id": 3,
+        "muzzle_cell": "(99, 100)",
+        "reason": "body_occlusion",
+        "source_cell": "(102, 102)",
+        "source_mask": 1
+      }
+    },
+    "wall_refusal_owner": "local physical equipment muzzle clearance; no native dispatch receipt invented"
+  },
+  "development_evidence": {
+    "candidate12_summary_sha256": "33b7e92fd0c7a60e4e8c85fba277fd3731776089cc7a5ae23e67fcb78b55dc94",
+    "candidate12_tests": 13,
+    "candidate12_counted_assertions": 11188,
+    "prior_review_path": "/workspace/scratch/f009d8a99c07/361a-qualification/independent-native-owner-review-v2.json",
+    "preserved_failures": [
+      "candidate01 low-power geometry expectation",
+      "candidate06 nonexistent Main member/runtime error despite apparent zero-exit footer",
+      "candidate07 interrupted incomplete ordinary diagnostic/reset test",
+      "candidate09 incorrect negative fixture orientation/local wall/retired generation assumptions",
+      "candidate10 remaining actual-pose and retired generation assumptions",
+      "candidate11 healthy restart sampled-owner defect"
+    ],
+    "interpretation": "Earlier failed outputs remain failed; later fixes require later matching source records.",
+    "historical_parser_adversaries": {
+      "path": "/workspace/scratch/f009d8a99c07/361a-qualification/native/parser-controls-v3-oracles.json",
+      "sha256": "4e9b9fbc2465e612d62e9bc955eb7fd62a93f87e03f7926605978144397aec6a",
+      "invalid_results_rejected": 20,
+      "existing_output_refused_without_rewrite": true
+    }
+  },
+  "documentation_review": {
+    "audit_owner_scope_wording": "Verified corrected wording: no alteration of active branches; shared worker changes explicitly scoped, coupling/actor-rig-arena/snapshot-format source unchanged.",
+    "current_runbook_contracts": "Verified explicit opt-in, fixed resources, quantity dimensions, noPF/importedIN restrictions, all-profile2^31 tick bound, IN-only construction canonical hash check, host-local result provenance, fresh control boundary after stop, and separate unsupported platform/owner rows.",
+    "publication_scope": "Final documentation/evidence followup is separate from measured implementation commit; required hosted documentation/provenance gate remains outstanding."
+  },
+  "implementation_pr": "https://github.com/techrote/cybersand/pull/383"
+}
