@@ -267,6 +267,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 						"budget_before": remaining, "remaining_budget": remaining,
 						"eligible_target_count": 0, "eligible_quantity": 0,
 						"reads_used": 0, "writes_attempted": 0, "command_overhead_usec": 0,
+						"read_accounting": MeteredDrain.READ_ACCOUNTING,
 						"transitions": [], "targets": []}
 					for key: String in CyberPhysicalUsableRuntime.IDENTITY_KEYS:
 						if key not in ["usable_index", "actor_id"]:

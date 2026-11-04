@@ -6,14 +6,17 @@ extends RefCounted
 # observations, never a native-issued command receipt or a second World owner.
 const PROFILE: String = "metered-drain-v1"
 const PROVENANCE: String = "host-local-native-observation-v1"
+const READ_ACCOUNTING: String = "material-work-units-v1"
 const MAX_TARGETS: int = 16
 const STOCK_CELLS: int = 32
 const MAX_NATIVE_TICK: int = 1 << 31
 const WATER: int = 3
 const BRINE: int = 24
 const EMPTY: int = 0
-# Conservative call reservations, including native metadata and Object identity
-# reads, not merely cell inspections. Short-circuit failures may use fewer calls.
+# Material-work units: every helper cell inspection plus conservative reserves
+# for metadata/Object identity within apply(). This is not an all-native-getter
+# cap: caller lifecycle refresh, scalar setup/health and mask preparation are
+# outside this counter. Short-circuit failures may use fewer actual calls.
 const IDENTITY_READS: int = 10 # refresh (at most eight), tick and hard revision
 const PRE_IDENTITY_READS: int = 6
 const POST_IDENTITY_READS: int = 8 # identity check plus final tick/revision copies
@@ -271,7 +274,7 @@ func apply(world: Object, pose: Dictionary, request: Dictionary, effective_power
 		"water_units_removed": 0, "brine_cells_removed": 0, "sink_debit": 0,
 		"budget_before": remaining, "remaining_budget": remaining,
 		"targets": [], "transitions": [], "reads_used": _reads, "writes_attempted": 0,
-		"read_accounting": "conservative-native-call-units", "preflight_complete": false,
+		"read_accounting": READ_ACCOUNTING, "preflight_complete": false,
 		"eligible_target_count": 0, "eligible_quantity": 0,
 		"completed_tick_before": -1, "completed_tick_after": -1,
 		"initial_construction_receipt": _construction.duplicate(true),

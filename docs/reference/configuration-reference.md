@@ -932,7 +932,7 @@ seconds and authored charge; recipe accounting is authored cell slots.
 | Committed projectiles | 64 globally |
 | Fixed processors | 16 globally; at most 4 owned by one actor |
 | Visual effects / hit receipts | 64 / 64 |
-| Material work | At most 2,048 reads and 128 writes per equipment owner step |
+| Material work | At most 2,048 material-work read units and 128 writes per equipment owner step; metered helper identity reserves are included, caller lifecycle/mask preparation is outside this counter (not an all-native-getter cap). See the [metered accounting contract](../operations/in-tools-metered-drain.md#reproducing-the-focused-checks). |
 | Swept projectile trace | At most 96 samples per movement segment |
 | Accepted delta | At most 1/15 second |
 | Shared equipment charge | 100 maximum; regenerates 6 per simulation second |

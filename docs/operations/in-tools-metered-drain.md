@@ -81,7 +81,7 @@ The metered selector does not itself change solver policy or normalize liquid.
 | Precision | Effective power is selected power × 0.35 for the single alternate pulse |
 | Accepted charge / cooldown | Fixed 0.85 charge and 0.10 seconds, independent of power and actual dose |
 | Equipment capacity / recharge | Existing 100 charge and 6 charge per simulation second |
-| Shared runtime bound | Existing 2,048 read units and 128 writes per step; complete metered pre/postflight capacity is reserved before editing |
+| Shared runtime bound | Existing 2,048 **material-work read units** and 128 writes per step; complete metered pre/postflight capacity is reserved before editing. This is not an all-native-call or all-getter cap. |
 | Experimental allowance | Per native World generation and actor slot: 32 × Q Water units and, separately, 32 Brine cells |
 | Per-command quantity request | Positive integer, at most 16 × Q Water units or 16 Brine cells; removal also fits the remaining allowance |
 | Refill | Only a verified replacement of the native World/generation; equipment selection, material switching, pickup and actor-session reset do not refill live stock |
@@ -192,11 +192,31 @@ separate. Wall positions, forbidden-side cells and actual native masks accompany
 quantity totals. Command-owner timing and native tick timing are separate;
 configured worker count is accompanied by observed native phase claimants.
 
-The result's `reads_used` conservatively counts native calls inside the metered
-effect preflight/write/readback section. The shared runtime additionally counts
-its existing source-clearance and observation reads. Lifecycle metadata refresh
-and existing scalar setup/health calls are outside that historical material-work
-counter. Owner-command timings in the fixture include runtime work; the helper's
+The result's `read_accounting = material-work-units-v1` names the narrower
+historical contract. `reads_used` charges each actual `inspect_cell` preflight or
+post-write call once, plus conservative helper identity reservations: ten units
+for refresh/tick/revision setup, six for the pre-write identity check and eight
+for final identity/tick/revision readback. Cached preflight cells are reused;
+post-write inspections are fresh and charged separately. Short-circuit refusals
+may use fewer native calls than their reserved units. Writes have their own
+capacity and are not counted as reads.
+
+The shared runtime adds every existing source-clearance material/body-mask read
+and each optional observation read. Repeated source-mask reads remain separate
+charged calls; they are not silently deduplicated. Optional 81-cell patches run
+only when all 81 read units remain. Before the first erase, the helper retains
+capacity for every intended post-readback and both required identity checks;
+insufficient capacity refuses the entire effect without an attempted write.
+
+Caller lifecycle refreshes, existing scalar setup/health probes, and captured
+body-mask/geometry preparation are outside this material-work counter. **No
+aggregate 2,048 limit on all native calls or getters is claimed.** This scope does
+not remove any safety-relevant cell inspection from the existing counter and
+does not change the ordinary-v1 U10 allowance. Unexpected faults after an attempted
+write retain partial/unknown quantity and terminal quarantine, even if read
+capacity remains.
+
+Owner-command timings in the fixture include runtime work; the helper's
 `command_overhead_usec` is narrower and excludes queue/input, source clearance,
 native ticking and graphical presentation. Neither is a frame-time guarantee.
 

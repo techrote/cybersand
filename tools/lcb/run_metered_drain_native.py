@@ -152,14 +152,14 @@ def parse_result(raw: str) -> dict:
             remaining = integer(row["remaining_quantity"], "flow remaining", 1, initial - 1)
             require(removed + remaining == initial, "flow ledger fails to close")
             for key, value in {
-                "ticks_per_arm": 64, "maximum_cells_per_operation": 16, "workers1_observed": 1,
+                "ticks_per_arm": 64, "maximum_cells_per_operation": 16,
+                "workers1_observed": 1, "workers4_observed": 4,
                 "physical_hash_parity": True, "flow_initial_water_model": "whole-cells-for-matched-geometry",
                 "inertial_ledger_parity": True, "resident_census_cells": 131072,
                 "resident_census_ticks": [0, 8, 20, 32, 64], "resident_domain_chunk_count": 8,
                 "water_units": removed if water else 0, "brine_cells": 0 if water else removed,
             }.items():
                 exact(row[key], value, f"{case}.{key}")
-            integer(row["workers4_observed"], "actual four-worker claimants", 2, 4)
             integer(row["operations_per_arm"], "operations", 1, 40)
             integer(row["phase_jobs_workers4"], "phase jobs", 1)
             integer(row["moved_cells_after_stop_workers1"], "post-stop movement")

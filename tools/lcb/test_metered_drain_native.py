@@ -100,6 +100,12 @@ class ParserControls(unittest.TestCase):
         with self.assertRaises(ValueError):
             runner.parse_result(json.dumps(altered))
 
+    def reject_each_worker(self, edit) -> None:
+        for index, row in enumerate(self.packet["cases"]):
+            if row["case_id"].startswith("workers."):
+                with self.subTest(case=row["case_id"]):
+                    self.reject(lambda p: edit(p["cases"][index]))
+
     def test_valid_synthetic_shape(self):
         self.assertEqual(runner.parse_result(json.dumps(self.packet)), self.packet)
 
@@ -129,10 +135,34 @@ class ParserControls(unittest.TestCase):
         self.reject(lambda p: p.__setitem__("production_application_executed", True))
 
     def test_configured_workers_without_actual_claimants(self):
-        self.reject(lambda p: worker(p).__setitem__("workers4_observed", 1))
+        self.reject_each_worker(lambda row: row.__setitem__("workers4_observed", 1))
+
+    def test_two_claimants_cannot_qualify_four_worker_arm(self):
+        self.reject_each_worker(lambda row: row.__setitem__("workers4_observed", 2))
+
+    def test_three_claimants_cannot_qualify_four_worker_arm(self):
+        self.reject_each_worker(lambda row: row.__setitem__("workers4_observed", 3))
+
+    def test_missing_claimant_count(self):
+        for field in ("workers1_observed", "workers4_observed"):
+            with self.subTest(field=field):
+                self.reject_each_worker(lambda row: row.pop(field))
 
     def test_boolean_claimant_count(self):
-        self.reject(lambda p: worker(p).__setitem__("workers4_observed", True))
+        for field in ("workers1_observed", "workers4_observed"):
+            for value in (False, True):
+                with self.subTest(field=field, value=value):
+                    self.reject_each_worker(lambda row: row.__setitem__(field, value))
+
+    def test_fractional_claimant_count(self):
+        for field, value in (("workers1_observed", 1.5), ("workers4_observed", 3.5)):
+            with self.subTest(field=field):
+                self.reject_each_worker(lambda row: row.__setitem__(field, value))
+
+    def test_integer_valued_floating_claimant_count(self):
+        for field, value in (("workers1_observed", 1.0), ("workers4_observed", 4.0)):
+            with self.subTest(field=field):
+                self.reject_each_worker(lambda row: row.__setitem__(field, value))
 
     def test_unexplained_quantity_residual(self):
         self.reject(lambda p: worker(p).__setitem__("remaining_quantity", 0))

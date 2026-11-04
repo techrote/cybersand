@@ -30,6 +30,103 @@ var fixture: Dictionary = {}
 var fixture_digest: String = ""
 
 
+class MaterialWorkProbe:
+	extends "res://scripts/metered_liquid_drain.gd"
+	# Every hook forwards to the actual native-backed implementation. These
+	# observations cover helper material work, not every native getter in a step.
+	var preflight_inspections: int = 0
+	var post_inspections: int = 0
+	var erase_attempts: int = 0
+	var pre_identity_checks: int = 0
+	var post_identity_checks: int = 0
+	var lifecycle_refreshes: int = 0
+	var apply_refreshes: int = 0
+	var first_write: Dictionary = {}
+	var post_readbacks: Array = []
+	var corrupt_post_copy: bool = false
+	var _preflight_points: Dictionary = {}
+	var _applying: bool = false
+	var _observed_owner: int = -1
+	var _available_reads: int = 0
+	var _available_writes: int = 0
+
+	func clear_trace() -> void:
+		preflight_inspections = 0
+		post_inspections = 0
+		erase_attempts = 0
+		pre_identity_checks = 0
+		post_identity_checks = 0
+		lifecycle_refreshes = 0
+		apply_refreshes = 0
+		first_write.clear()
+		post_readbacks.clear()
+		_preflight_points.clear()
+
+	func refresh(value: Object) -> Dictionary:
+		if _applying:
+			apply_refreshes += 1
+		else:
+			lifecycle_refreshes += 1
+		return super.refresh(value)
+
+	func apply(value: Object, pose: Dictionary, request: Dictionary, effective_power: float,
+		reads_available: int, writes_available: int, frame_tick: int) -> Dictionary:
+		_observed_owner = int(request.actor_id)
+		_available_reads = reads_available
+		_available_writes = writes_available
+		_applying = true
+		var result: Dictionary = super.apply(value, pose, request, effective_power,
+			reads_available, writes_available, frame_tick)
+		_applying = false
+		return result
+
+	func _inspect(value: Object, point: Vector2i) -> Dictionary:
+		var copied: Dictionary = super._inspect(value, point)
+		if erase_attempts == 0:
+			preflight_inspections += 1
+			_preflight_points[point] = true
+		else:
+			post_inspections += 1
+			post_readbacks.append(copied.duplicate(true))
+			if corrupt_post_copy:
+				return {"ok":false,"test_injection":"invalid-copy-after-forwarded-native-post-read"}
+		return copied
+
+	func _identity_matches(value: Object, request: Dictionary, revision: int) -> bool:
+		if erase_attempts == 0:
+			pre_identity_checks += 1
+		else:
+			post_identity_checks += 1
+		return super._identity_matches(value, request, revision)
+
+	func _erase(value: Object, point: Vector2i) -> void:
+		if erase_attempts == 0:
+			first_write = {"terminal":terminal,"status":terminal_evidence.get("status"),
+				"reason":terminal_evidence.get("reason"),
+				"preflight_complete":terminal_evidence.get("preflight_complete"),
+				"planned_targets":terminal_evidence.get("eligible_target_count",0),
+				"writes_attempted":terminal_evidence.get("writes_attempted",0),
+				"observed_preflight_inspections":preflight_inspections,
+				"observed_pre_identity_checks":pre_identity_checks,
+				"material_work_units_before_write":_reads,
+				"reads_available":_available_reads,"writes_available":_available_writes,
+				"stock_before":_stock_for(_observed_owner).duplicate(true)}
+		erase_attempts += 1
+		super._erase(value, point)
+
+	func trace() -> Dictionary:
+		var points: Array = []
+		for point: Vector2i in _preflight_points:
+			points.append([point.x,point.y])
+		return {"scope":"forwarded helper hooks; not an all-native-getter census",
+			"preflight_inspections":preflight_inspections,"unique_preflight_points":points,
+			"post_inspections":post_inspections,"erase_attempts":erase_attempts,
+			"pre_identity_checks":pre_identity_checks,"post_identity_checks":post_identity_checks,
+			"lifecycle_refreshes":lifecycle_refreshes,"apply_refreshes":apply_refreshes,
+			"first_write":first_write.duplicate(true),"post_readbacks":post_readbacks.duplicate(true),
+			"corrupt_post_copy":corrupt_post_copy}
+
+
 class InvalidPreflightRead:
 	extends "res://scripts/metered_liquid_drain.gd"
 
@@ -546,6 +643,200 @@ func _ordinary_u10_compatibility() -> void:
 		"ordinary FreeMass fractional removal stays exact and unchanged")
 
 
+func _install_material_probe() -> MaterialWorkProbe:
+	var probe := MaterialWorkProbe.new()
+	runtime._engine.metered = probe
+	_step()
+	return probe
+
+
+func _material_work_case(label: String, probe: MaterialWorkProbe, prior_reads: int = 0) -> Dictionary:
+	probe.clear_trace()
+	var request: Dictionary = _request()
+	# Synchronize the real physical frame before the deliberate direct-execute
+	# seam. Its ordinary observation work is recorded separately, then replaced
+	# by the explicitly synthetic prior-consumption value below.
+	_step()
+	var frame_sync_reads: int = runtime._engine.read_count_last
+	var initial: Dictionary = _census()
+	var context_before: Dictionary = _context()
+	var hash_before: String = world.get_physical_state_hash()
+	runtime._engine.active_world = world
+	runtime._engine.read_count_last = prior_reads
+	runtime._engine.write_count_last = 0
+	runtime._engine.metered_outcome = {}
+	runtime._engine._execute(request,world)
+	var receipt: Dictionary = _receipt(runtime.snapshot(),request)
+	var outcome: Dictionary = receipt.get("metered_drain",{})
+	var command_reads: int = runtime._engine.read_count_last - prior_reads
+	# Independent forwarded inspections plus the documented conservative
+	# reservation contract. Do not read the helper's accounting constants here.
+	var derived_helper_units: int = probe.preflight_inspections + probe.post_inspections \
+		+ 10 * probe.apply_refreshes + 6 * probe.pre_identity_checks + 8 * probe.post_identity_checks
+	var source_units: int = command_reads - int(outcome.get("reads_used",0))
+	expect(outcome.get("read_accounting") == "material-work-units-v1",
+		label + " explicitly identifies the narrower material-work contract")
+	expect(int(outcome.get("reads_used",-1)) == derived_helper_units,
+		label + " forwarded inspection events and identity reservations reconstruct helper units")
+	expect(probe.preflight_inspections == probe._preflight_points.size(),
+		label + " shared preflight coordinates are inspected once through the cache")
+	expect(int(outcome.get("writes_attempted",-1)) == probe.erase_attempts
+		and probe.post_inspections == probe.erase_attempts,
+		label + " every attempted real erase has a fresh forwarded native post-read")
+	if not probe.first_write.is_empty():
+		var first: Dictionary = probe.first_write
+		expect(first.terminal and first.status == "fault" and first.reason == "interrupted_execution"
+			and first.preflight_complete and int(first.writes_attempted) == 1,
+			label + " terminal uncertainty is latched before the first real writer")
+		expect(int(first.material_work_units_before_write) == 10 + probe.preflight_inspections + 6
+			and int(first.observed_pre_identity_checks) == 1,
+			label + " first writer follows complete unique preflight and reserved identity validation")
+		expect(int(first.reads_available) - int(first.material_work_units_before_write)
+			>= int(first.planned_targets) + 8 and int(first.writes_available) >= int(first.planned_targets),
+			label + " first writer has reserved every target post-read, final identity and erase capacity")
+		for key: String in ["water_units_remaining","water_units_removed","brine_cells_remaining","brine_cells_removed"]:
+			expect(first.stock_before.get(key) == context_before.get(key),
+				label + " first writer has not prematurely debited " + key)
+	for copied: Dictionary in probe.post_readbacks:
+		expect(copied.get("ok",false) and copied.get("material") == 0,
+			label + " forwarded post-read sees actual Empty, independently of cached preflight")
+	var before_observation: int = runtime._engine.read_count_last
+	var observation_attempted: bool = not runtime.metered_terminal()
+	if observation_attempted:
+		runtime._engine._observe_local(world)
+	var observation_units: int = runtime._engine.read_count_last - before_observation
+	runtime._engine.active_world = null
+	var final: Dictionary = _census()
+	var row: Dictionary = {"case":"material-work-"+label,
+		"scope":"real native direct _execute; fixture-seeded prior material-work counter; queue coverage is separate",
+		"prior_material_work_units":prior_reads,"prior_units_origin":"fixture seed, not claimed executed native calls",
+		"frame_sync_material_work_units":frame_sync_reads,"command_material_work_units":command_reads,
+		"source_clearance_units_from_parent_counter":source_units,"derived_helper_units":derived_helper_units,
+		"identity_reservations":{"initial":10,"pre_write":6,"post_write":8},
+		"optional_observation_attempted":observation_attempted,"optional_observation_units":observation_units,
+		"optional_patch_empty":runtime._engine._actors[0].get("cell_patch",{}).is_empty(),
+		"final_shared_material_work_units":runtime._engine.read_count_last,
+		"final_shared_writes":runtime._engine.write_count_last,
+		"initial":initial,"final":final,"physical_hash_before":hash_before,
+		"physical_hash_after":world.get_physical_state_hash(),"receipt":receipt,
+		"context_before":context_before,"context_after":_context(),"trace":probe.trace(),"request":request}
+	expect(runtime._engine.read_count_last <= int(fixture.equipment.maximum_reads_per_step)
+		and runtime._engine.write_count_last <= int(fixture.equipment.maximum_writes_per_step),
+		label + " preserves the original ordinary U10 shared step limits")
+	if not receipt.get("accepted",false) and not runtime.metered_terminal():
+		expect(probe.erase_attempts == 0 and initial == final
+			and row.physical_hash_after == hash_before,
+			label + " ordinary refusal attempts no destructive write and preserves whole native state")
+	reports.append(row)
+	return row
+
+
+func _material_work_accounting() -> void:
+	_setup()
+	var probe: MaterialWorkProbe = _install_material_probe()
+	var baseline: Dictionary = _material_work_case("full-q255",probe)
+	expect(baseline.receipt.accepted and probe.erase_attempts == 16
+		and int(baseline.initial.water) - int(baseline.final.water) == 16 * 255,
+		"accounting baseline performs the real registered sixteen-target Q255 pulse")
+	expect(probe.pre_identity_checks == 1 and probe.post_identity_checks == 1
+		and probe.apply_refreshes == 1 and probe.lifecycle_refreshes == 1,
+		"accounting separates effect identity work from frame lifecycle refresh")
+	expect(int(baseline.optional_observation_units) == 81 and not baseline.optional_patch_empty,
+		"ordinary optional material observation retains its separate 81-cell charge")
+	var exact_prior: int = int(fixture.equipment.maximum_reads_per_step) \
+		- int(baseline.source_clearance_units_from_parent_counter) - int(baseline.derived_helper_units)
+	expect(exact_prior > 0,"measured fixture leaves room for an adversarial prior-consumption seed")
+	for extra: int in [0,1]:
+		_setup()
+		probe = _install_material_probe()
+		var row: Dictionary = _material_work_case("exact-capacity" if extra == 0 else "one-unit-short",
+			probe,exact_prior+extra)
+		row["boundary_derived_from"] = "material-work-full-q255"
+		row["exact_fit_prior_material_units"] = exact_prior
+		if extra == 0:
+			expect(row.receipt.accepted and probe.erase_attempts == 16
+				and int(row.final_shared_material_work_units) == int(fixture.equipment.maximum_reads_per_step),
+				"exact shared material-work capacity completes all sixteen erases and post-readbacks")
+		else:
+			expect(not row.receipt.accepted and row.receipt.reason == "read_capacity"
+				and probe.erase_attempts == 0 and probe.first_write.is_empty()
+				and probe.pre_identity_checks == 0 and not runtime.metered_terminal(),
+				"one missing reserved material-work unit refuses before any identity-to-write transition")
+			expect(row.initial == row.final and row.physical_hash_before == row.physical_hash_after
+				and int(row.context_after.water_units_removed) == 0
+				and is_equal_approx(float(row.receipt.charge),100.0)
+				and is_zero_approx(float(row.receipt.cooldown)),
+				"near-capacity refusal preserves full census/hash, stock, charge and cooldown")
+		expect(int(row.optional_observation_units) == 0 and row.optional_patch_empty,
+			"optional 81-cell observation skips when the remaining shared allowance is insufficient")
+	_setup(3,1,8,1,{"fractional":true})
+	probe = _install_material_probe()
+	var partial: Dictionary = _material_work_case("fractional-freemass",probe)
+	expect(partial.receipt.accepted and probe.erase_attempts == 16
+		and int(partial.initial.water) - int(partial.final.water) == 16 * int(fixture.partial_freemass_units)
+		and int(partial.receipt.metered_drain.water_units_removed) == 16 * int(fixture.partial_freemass_units),
+		"instrumented FreeMass pulse meters actual fractional native units")
+	_setup(3,4,8,1,{"empty":true})
+	probe = _install_material_probe()
+	var empty: Dictionary = _material_work_case("empty-intake",probe)
+	expect(empty.receipt.reason == "empty_intake" and probe.preflight_inspections > 0
+		and probe.pre_identity_checks == 0 and probe.post_identity_checks == 0,
+		"empty-intake accounting contains inspection work without write identity or post-readback work")
+	_setup()
+	probe = _install_material_probe()
+	# Aim diagonally into the unchanged liquid rectangle. The Wall is one of
+	# the two side cells touched at the first grid corner, beyond the muzzle;
+	# the diagonal cell itself stays Empty and source clearance remains valid.
+	var offset := Vector2(0.0,-12.0)
+	for key: String in ["position","muzzle","owner_origin"]:
+		frame.actors[0][key] += offset
+	frame.actors[0].parts[0].position += offset
+	frame.actors[0].direction = Vector2.ONE.normalized()
+	_masks()
+	var corner := Vector2i(105,88)
+	world.emit_disc(corner.x,corner.y,0,1)
+	expect(bridge.inspect_cell(world,corner).material == 1
+		and bridge.inspect_cell(world,Vector2i(105,89)).material == 0
+		and bridge.inspect_cell(world,Vector2i(116,100)).material == 3,
+		"diagonal fixture has an actual hard side-cell blocker and unobstructed diagonal/target witnesses")
+	var blocked: Dictionary = _material_work_case("supercover-corner",probe)
+	expect(blocked.receipt.reason == "wrong_material" and probe._preflight_points.has(corner)
+		and not probe._preflight_points.has(Vector2i(105,89)) and probe.erase_attempts == 0,
+		"supercover inspects and refuses the hard corner side cell before reaching the diagonal")
+	blocked["corner_blocker"] = [corner.x,corner.y]
+	_setup()
+	probe = _install_material_probe()
+	for _pulse: int in range(2):
+		probe.clear_trace()
+		var request: Dictionary = _request()
+		expect(_receipt(_step([request]),request).get("accepted",false),
+			"instrumented exhausted-stock preparation performs real accepted removal")
+		_cool_down()
+	var exhausted: Dictionary = _material_work_case("exhausted-stock",probe)
+	expect(exhausted.receipt.reason == "budget_exhausted" and probe.preflight_inspections == 0
+		and probe.erase_attempts == 0 and int(exhausted.context_before.water_units_remaining) == 0,
+		"exhausted stock refuses after metadata admission without cell inspections or erases")
+	_setup()
+	probe = _install_material_probe()
+	probe.corrupt_post_copy = true
+	var fault: Dictionary = _material_work_case("injected-post-copy-fault",probe)
+	expect(fault.receipt.metered_drain.status == "fault"
+		and fault.receipt.reason == "post_readback_mismatch"
+		and not fault.receipt.metered_drain.quantity_complete
+		and int(fault.receipt.metered_drain.sink_debit) == 0
+		and int(fault.initial.water) - int(fault.final.water) == 255
+		and probe.erase_attempts == 1 and probe.post_inspections == 1 and runtime.metered_terminal(),
+		"corrupted copied post-read retains unknown actual first-erase quantity and terminal quarantine")
+	expect(not fault.optional_observation_attempted and int(fault.optional_observation_units) == 0,
+		"faulted direct owner follows the caller's terminal boundary before optional observation")
+	var attempted: int = probe.erase_attempts
+	_step([fault.request])
+	expect(probe.erase_attempts == attempted and runtime.metered_terminal()
+		and world.get_physical_state_hash() == fault.physical_hash_after and _census() == fault.final,
+		"real step refuses retry of a possibly applied instrumented command")
+	fault["trace_after_blocked_retry"] = probe.trace()
+
+
 func _capacity_and_fault_discrimination() -> void:
 	for channel: String in ["reads", "writes"]:
 		_setup()
@@ -888,6 +1179,7 @@ func run() -> void:
 	_refusals_and_resources()
 	_budget_and_reconstruction()
 	_ordinary_u10_compatibility()
+	_material_work_accounting()
 	_capacity_and_fault_discrimination()
 	_native_persistence_and_failure()
 	await _worker_ownership()

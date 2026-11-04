@@ -1400,6 +1400,11 @@ Results carry `provenance="host-local-native-observation-v1"`; an initial native
 construction receipt is separately labelled. No native per-command receipt or
 unexposed native pose revision is claimed. Admission-only refusals say
 `observation_status="not_dispatched"` rather than inventing inspected targets.
+`read_accounting="material-work-units-v1"` qualifies `reads_used`: helper cell
+inspections plus reserved helper identity work, within the shared material-work
+allowance. Caller lifecycle refresh and mask preparation are outside that counter;
+it is not an all-native-getter limit. The [profile accounting contract](../operations/in-tools-metered-drain.md#reproducing-the-focused-checks)
+defines the counted work and pre-write reservations.
 
 `metered_terminal` and `metered_fault` expose an unexpected execution fault.
 Verified partial quantities remain evidence, while uncertain quantity is marked

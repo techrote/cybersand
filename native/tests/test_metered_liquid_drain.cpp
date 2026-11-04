@@ -482,8 +482,10 @@ void worker_controls(const Profile& p) {
         one.remaining==four.remaining&&one.operations==four.operations,"worker-count physical/quantity parity failed");
     require(one.inertial_trace==four.inertial_trace && one.inertial_trace.size()==65,
         "worker-count IN diagnostic ledger trace differs independently of physical hash");
-    require(one.claimants==1 && four.claimants>=2 && four.claimants<=4 && four.phase_jobs>0,
-        "configured workers did not establish actual parallel participation");
+    // These large standalone arms claim four distinct workers in at least one
+    // phase; the small Godot fixture has a separate participation contract.
+    require(one.claimants==1 && four.claimants==4 && four.phase_jobs>0,
+        "registered native arms did not observe one/four distinct phase claimants");
     std::ostringstream fields;
     fields<<",\"ticks_per_arm\":64,\"initial_quantity\":"<<one.initial<<",\"removed_quantity\":"<<one.removed
         <<",\"remaining_quantity\":"<<one.remaining<<",\"operations_per_arm\":"<<one.operations
