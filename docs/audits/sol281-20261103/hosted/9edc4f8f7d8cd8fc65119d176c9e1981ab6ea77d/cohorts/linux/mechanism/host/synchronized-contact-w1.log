@@ -1,0 +1,26 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+SOL364_SYNC_CASE embedded_stationary/conservative_baseline steps=180 max_sand_depth=2.5324706190427 positive_steps=180 response_accepts=0
+SOL364_SYNC_CASE embedded_stationary/velocity_control steps=180 max_sand_depth=2.5324706190427 positive_steps=180 response_accepts=180
+SOL364_SYNC_CASE embedded_stationary/candidate steps=180 max_sand_depth=2.5324706190427 positive_steps=180 response_accepts=180
+SOL364_SYNC_CASE packed_impact/conservative_baseline steps=180 max_sand_depth=2.49995422363281 positive_steps=180 response_accepts=0
+SOL364_SYNC_CASE packed_impact/velocity_control steps=180 max_sand_depth=1.0037012640894 positive_steps=180 response_accepts=179
+SOL364_SYNC_CASE packed_impact/candidate steps=180 max_sand_depth=1.00370910657881 positive_steps=180 response_accepts=178
+SOL364_SYNC_CASE offcenter_impact/conservative_baseline steps=180 max_sand_depth=2.49995422363281 positive_steps=180 response_accepts=0
+SOL364_SYNC_CASE offcenter_impact/velocity_control steps=180 max_sand_depth=1.0037012640894 positive_steps=180 response_accepts=179
+SOL364_SYNC_CASE offcenter_impact/candidate steps=180 max_sand_depth=1.00370910657881 positive_steps=180 response_accepts=178
+SOL364_SYNC_CASE rotated_compound/conservative_baseline steps=180 max_sand_depth=4.14515443602114 positive_steps=180 response_accepts=0
+SOL364_SYNC_CASE rotated_compound/velocity_control steps=180 max_sand_depth=2.63596496943871 positive_steps=180 response_accepts=95
+SOL364_SYNC_CASE rotated_compound/candidate steps=180 max_sand_depth=2.63596496943871 positive_steps=180 response_accepts=20
+SOL364_SYNC_CASE missed_publication/conservative_baseline steps=180 max_sand_depth=2.49995422363281 positive_steps=180 response_accepts=0
+SOL364_SYNC_CASE missed_publication/velocity_control steps=180 max_sand_depth=1.00387543314864 positive_steps=180 response_accepts=132
+SOL364_SYNC_CASE missed_publication/candidate steps=180 max_sand_depth=1.00388378836434 positive_steps=180 response_accepts=131
+SOL364_SYNC_CASE delayed_publication/conservative_baseline steps=180 max_sand_depth=2.49995422363281 positive_steps=180 response_accepts=0
+SOL364_SYNC_CASE delayed_publication/velocity_control steps=180 max_sand_depth=1.07270699715721 positive_steps=180 response_accepts=167
+SOL364_SYNC_CASE delayed_publication/candidate steps=180 max_sand_depth=1.07270699715721 positive_steps=180 response_accepts=178
+SOL364_SYNC_CASE stale_publication/conservative_baseline steps=180 max_sand_depth=2.49995422363281 positive_steps=180 response_accepts=0
+SOL364_SYNC_CASE stale_publication/velocity_control steps=180 max_sand_depth=2.49995422363281 positive_steps=180 response_accepts=0
+SOL364_SYNC_CASE stale_publication/candidate steps=180 max_sand_depth=2.49995422363281 positive_steps=180 response_accepts=0
+SOL364_SYNCHRONIZED_CONTACT {"case_count":21,"checks":8338,"complete_replay":true,"failures":[],"platform":"Linux","schema":"cybersand.sol364.synchronized-contact.v1","steps":180,"workers":1}
