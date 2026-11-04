@@ -1,0 +1,71 @@
+{
+  "reviewed": "2026-11-04",
+  "reviewer": "independent read-only assistant agent /root/final_independent_review",
+  "disposition": "PASS",
+  "scope": "Unconsumed #353-A compiler, native metadata proof and compatibility guards only",
+  "files": [
+    {
+      "path": "tools/material_catalogue/compiler.py",
+      "sha256": "7b2daf48367d35c17494cc617d05db4fef12ea9f25c1395c4bee8c08cd9b35bf"
+    },
+    {
+      "path": "tools/material_catalogue/compatibility.py",
+      "sha256": "32c6c4c289a91a1e19498b21bfbca9dcc2b58e1040489653942fd7160ec1bd5a"
+    },
+    {
+      "path": "tools/material_catalogue/native_oracle.cpp",
+      "sha256": "a9ef69fedea104d8838360ba274cfcc28c6cd0131ce3f0e98988fd83754e4256"
+    },
+    {
+      "path": "tools/material_catalogue/check_native_parity.py",
+      "sha256": "2b85883db43858aed7e535b441dd66c82efd532b83a38ae3becca3d0f3dee967"
+    },
+    {
+      "path": "tools/material_catalogue/check_gdscript_shadow.py",
+      "sha256": "c5ab2b10300fdf6a6be5673e433df81c3349eea6587b34de9b4b18b11bb3743e"
+    },
+    {
+      "path": "tools/material_catalogue/test_gdscript_shadow.py",
+      "sha256": "649f82105c8c122cedb698894d39fa7e16db8f0dc3e186c27d8d34961d4b326a"
+    }
+  ],
+  "resolved_findings": [
+    "Include .inc and other native source suffixes in accidental shadow-import guard",
+    "Refuse native report output aliases before probing and before publication",
+    "Require complete three-tool/five-input native receipt inventories for Godot readback",
+    "Repeat all four explicit Godot input/output alias checks after verification; original late symlink reproduction now refuses and preserves bytes/mtimes"
+  ],
+  "independent_executions": {
+    "previous_combined_suite": {
+      "tests": 92,
+      "seconds": 6.876,
+      "status": "PASS"
+    },
+    "corrected_godot_receipt_output_suite": {
+      "tests": 15,
+      "seconds": 0.069,
+      "status": "PASS"
+    },
+    "original_late_alias_reproduction": {
+      "exit": 1,
+      "inputs_bytes_mtimes_preserved": true,
+      "success_report_emitted": false
+    },
+    "compiler_check": "PASS",
+    "compatibility_check": "PASS",
+    "tracked_whitespace": "PASS",
+    "production_native_godot_lcb_diff": "empty"
+  },
+  "root_final_suite": {
+    "tests": 98,
+    "seconds": 5.977,
+    "status": "PASS"
+  },
+  "excluded": [
+    "production cutover",
+    "new semantics",
+    "full #353 completion",
+    "World physics qualification",
+    "merge approval"
+  ]
+}

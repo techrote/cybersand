@@ -1,0 +1,17 @@
+[
+  {
+    "case": "authored density drift",
+    "status": "PASS",
+    "diagnostic": "native parity: /tmp/mat353-parity-adverse-1ek1yb9v/altered-authoring.json#/native/materials/21/density: native=1080, candidate=1081"
+  },
+  {
+    "case": "compiled header density drift",
+    "status": "PASS",
+    "diagnostic": "native parity: /tmp/mat353-parity-adverse-1ek1yb9v/generated/catalogue.shadow.hpp#/materials/21/density: native=1080, candidate=1081"
+  },
+  {
+    "case": "authored list order carries no semantics",
+    "status": "PASS",
+    "pair_cases": 16777216
+  }
+]

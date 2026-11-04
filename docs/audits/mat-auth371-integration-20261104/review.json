@@ -1,0 +1,51 @@
+{
+  "schema_id": "cybersand.mat-auth371.independent-review",
+  "schema_version": 1,
+  "review_date": "2026-11-04",
+  "reviewer": "independent read-only compiler_review agent",
+  "disposition": "ACCEPT after corrected trigraph escaping; final commit/tree binding and hosted gate disposition recorded on PR371",
+  "original_implementation": "6d3737594beb39e83e555f66f2e81184a4bdbf77",
+  "accepted_main": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+  "reviewed_files": [
+    {
+      "path": "tools/material_catalogue/compiler.py",
+      "sha256": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098"
+    },
+    {
+      "path": "tools/material_catalogue/test_compiler.py",
+      "sha256": "41b211a0946638bba2b7db671b50a93335bf0c3904ed550d7ccdd9e709ae89bd"
+    },
+    {
+      "path": "materials/catalogue/compatibility-lock.json",
+      "sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
+    },
+    {
+      "path": "materials/catalogue/generated/catalogue.shadow.hpp",
+      "sha256": "03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12"
+    },
+    {
+      "path": "materials/catalogue/generated/catalogue_shadow.gd",
+      "sha256": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed"
+    },
+    {
+      "path": "materials/catalogue/generated/inspection.json",
+      "sha256": "0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2"
+    },
+    {
+      "path": "materials/catalogue/generated/manifest.json",
+      "sha256": "bf10ed86b548df9551092a155c19cbbdba71e373f54bac8dcec5237c6496a975"
+    }
+  ],
+  "focused_tests": 99,
+  "native_parity": "PASS; independently repeated after repair",
+  "independent_native_receipt_sha256": "1efc58c72229a8cc758c0639c70eef437c5b09d51e991a17596c265ba9331d4c",
+  "finding": "Valid free-text trigraph spelling fails generated C++ under -Werror; repaired with escaped question marks and binary readback regression.",
+  "adverse_probes": [
+    "all9 trigraphs, quotes, backslashes, controls and UTF-8 generated C++ compile/readback",
+    "staged-directory rename failure restores original bytes/mtimes",
+    "output hardlink to input preserves input bytes/mtime",
+    "pinned Godot actual UTF-8/control/trigraph readback"
+  ],
+  "unresolved_code_findings": [],
+  "scope": "Shadow metadata, immutable-source compatibility and pure queries; no World physics, fallback simulation, rendered acceptance or production cutover"
+}
