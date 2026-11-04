@@ -233,6 +233,15 @@ roughly reference cost. The numeric results, same-law parity and the
 revocation) are owned by that record. Neither is implemented. Execution
 version 3 above remains Current.
 
+**Desktop host interaction (2026-11-04).** The desktop worker used to write the
+camera window and then the scenario's fixed interest on every step. Each
+`World::set_simulation_region` selected-core change calls `cache->cold()`, so
+in-app cached/dormant cost more than reference. The worker now leaves a
+fixed-interest scenario's region to the scenario
+([region-flip record](../audits/2026-11-04-lcb201-region-flip.md)). A moving
+camera window still makes the cache cold whenever its selected cores change.
+Narrowing that native invalidation is a separate, unimplemented follow-up.
+
 ## Acceptance and remaining application work
 
 The [dated branch evidence](../audits/2026-10-25-lcb002-pressure-variants.md) owns

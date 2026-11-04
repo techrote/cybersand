@@ -89,7 +89,12 @@ not a live adaptive policy. See [Web profiles](../operations/web-threading.md).
 Source: [CyberSimulationWorker `_worker_loop`](../../godot/scripts/simulation_worker.gd).
 
 1. Latch frame state, copied body samples, reset and drained emissions under
-   the mutex; apply selected window and Water options on the exclusive owner.
+   the mutex; apply selected window and Water options on the exclusive owner
+   (`CyberSimulationWorker.apply_world_execution_settings`). While a
+   fixed-interest MicroScenario is active, its `apply_interest()` alone writes
+   the window flag and region. The camera window is not written first, because
+   every selected-core change discards the derived pressure cache
+   ([#201 region-flip record](../audits/2026-11-04-lcb201-region-flip.md)).
 2. Reset if requested. Prepare body coupling, including overlap response when
    unpaused. Apply material emissions even while paused.
 3. If unpaused, advance the sampled character by `1/60` second, then call the

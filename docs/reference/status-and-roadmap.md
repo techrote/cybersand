@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## PressureFlow desktop region flip (#201) — 2026-11-04
+
+The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a
+desktop worker ordering that discarded the PressureFlow cache twice per step in
+fixed-interest scenarios. In the real host on main's runtime, the cached quiet
+pool improves from ≈36 ms to ≈10 ms per worker step and reaches the 60 Hz cap;
+reference and FreeMass are unchanged. Camera-motion invalidation remains a
+separate follow-up.
+
 ## PressureFlow idle cost (#201) — 2026-11-04
 
 The [#201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
