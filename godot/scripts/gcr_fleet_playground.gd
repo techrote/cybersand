@@ -36,8 +36,10 @@ func _build_comparison_controls() -> void:
 	response_select.add_item("LA / A1 · budget comparison")
 	response_select.add_item("RFT / R2 reference · fixed 20")
 	response_select.add_item("LA · events OFF (experimental)")
+	response_select.add_item("LA � selective arrivals (experimental)")
+	response_select.set_item_tooltip(3,"Only fresh native grain transport can supply an event. Experimental arrival witness; compare creep, loading and torque. Applies on reset.")
 	response_select.set_item_tooltip(2,"Reduces measured bank burial. Moving-grain loading and torque are deficient; late barrel motion can increase. Compare with LA. Applies on reset.")
-	response_select.select(["LA","RFT","LA-EVENT-OFF"].find(applied_controls.response))
+	response_select.select(["LA","RFT","LA-EVENT-OFF","LA-SELECTIVE"].find(applied_controls.response))
 	responses.add_child(response_select)
 	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
 		var field := VBoxContainer.new()
@@ -92,7 +94,7 @@ func _release_edit_focus() -> void:
 func apply_controls() -> bool:
 	_release_edit_focus()
 	control_error=""
-	var staged: Dictionary = {"response":["LA","RFT","LA-EVENT-OFF"][response_select.selected]}
+	var staged: Dictionary = {"response":["LA","RFT","LA-EVENT-OFF","LA-SELECTIVE"][response_select.selected]}
 	for key: String in control_fields: staged[key]=control_fields[key].value
 	if staged.response=="RFT" and staged.budget!=20.0:
 		control_error="RFT reference uses budget 20. Select LA to compare budgets 20 / 40 / 80."

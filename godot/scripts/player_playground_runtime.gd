@@ -48,7 +48,7 @@ func configure_review_fleet(index: int, options: Dictionary = {}) -> bool:
 	if not Arena.Rig.valid_review_options(options) or not preload("res://scripts/gcr_review_fleet.gd").valid_index(index):
 		last_error="review_options_refused"
 		return false
-	var load_aware: bool = options.get("response","") in ["LA","LA-EVENT-OFF"]
+	var load_aware: bool = options.get("response","") in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]
 	return _configure_granular(&"arcadelander","GCR-REST" if load_aware else "GCR",
 		"GCR-REST-001-2026-11-02" if load_aware else "GCR-001-2026-11-01",Vector2.ZERO,index,options)
 

@@ -99,7 +99,10 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 		construction["gcr_rest_mode"]=str(spec.get("rest_mode","control"))
 		construction["gcr_base_budget"]=float(spec.get("base_budget",20.0))
 		construction["gcr_rest_gravity"]=float(spec.get("gravity",92.12))
-		if spec.get("granular_events","")=="off":
+		if spec.has("granular_event_experiment"):
+			construction["gcr_granular_events"]=str(spec.granular_events)
+			construction["gcr_event_experiment"]=str(spec.granular_event_experiment)
+		elif spec.get("granular_events","")=="off":
 			construction["gcr_granular_events"]="off"
 			construction["gcr_event_experiment"]="GCR-EVT-001-2026-11-04"
 	if world == null or not world.diagnostic_reset(construction):
@@ -121,6 +124,11 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 	elif layout == "grain-stream":
 		# Separate off-centre falling grains from the far hard floor. No bed.
 		fill(left+width/2+3,SURFACE-32,4,24,material)
+	elif layout == "selective-continuous":
+		pass # Explicit external source is supplied by edit_at; no packed bed.
+	elif layout == "selective-cap":
+		# Painted directly against the top face, without a prior transport witness.
+		fill(left+width/2-2,SURFACE-8,4,1,material)
 	elif layout == "stream":
 		fill(left,SURFACE,width,int(spec.depth),material)
 	elif layout == "mixed-seam" or (layout == "reentry" and spec.has("mixed_material")):
@@ -197,7 +205,7 @@ func setup(host: Node, configuration: Dictionary, arm: String, telemetry: bool =
 	return error.is_empty()
 
 func edit_at(step_index: int) -> void:
-	if str(spec.layout) == "stream" and step_index >= int(spec.stream_ticks[0]) and step_index < int(spec.stream_ticks[1]):
+	if str(spec.layout) in ["stream","selective-continuous"] and step_index >= int(spec.stream_ticks[0]) and step_index < int(spec.stream_ticks[1]):
 		# Ordinary external source, accounted independently of closed material
 		# conservation. Repeated overwrites record actual counts, not intent.
 		var before: Dictionary = observation()
