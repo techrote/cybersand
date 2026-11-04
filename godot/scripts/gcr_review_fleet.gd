@@ -38,6 +38,7 @@ static func definition(index: int) -> Dictionary:
 	data.parts = [{"id":"chassis","offset":Vector2.ZERO,"size":row[0],"mass":row[1],
 		"angle":0.,"shape":"rectangle","friction":.8,"bounce":.04,"role":"hull","color":COLORS[index]}]
 	data.profile.merge({"player_controller":"gcr_review_fleet","fleet_index":index,
+		"fleet_boost_multiplier":2.0,
 		"gravity":38.,"air_drag":0.,"angular_drag":.18,"fleet_accel":row[2],
 		"speed":row[3],"fleet_turn_speed":row[4],"fleet_turn_accel":row[5],
 		"fleet_slew":row[6],"fleet_drag":row[7],"fleet_force":row[8],"fleet_torque":row[9]},true)
@@ -49,11 +50,11 @@ static func definition(index: int) -> Dictionary:
 	return data
 
 static func controls(index: int) -> String:
-	if index == 3: return "W / S   Rise / descend\nA / D   Strafe\nSPACE   Lift burst\nQ / E   Tilt deck\nSHIFT   Brake · C   Level assistance"
+	if index == 3: return "W / S   Rise / descend\nA / D   Strafe\nSPACE   Lift burst\nQ / E   Tilt deck\nSHIFT   Thrust multiplier · CTRL   Brake\nC   Level assistance"
 	var utility: String = ""
 	match index:
 		0: utility="Q   Acid · E   Lava dispenser"
 		1,2,4: utility="Q / E   Left / right side thrust"
 		5: utility="Q / E   Left / right water dispenser"
 		6: utility="Q / E   Left / right lava dispenser"
-	return "W / SPACE   Body-axis thrust\nA / D   Rotate\n%s\n%s\nSHIFT   Brake · C   Upright assistance" % [utility,"S   Gunpowder dispenser" if index==2 else "S   Reverse thrust"]
+	return "W / SPACE   Body-axis thrust\nA / D   Rotate\n%s\n%s\nSHIFT   Thrust multiplier · CTRL   Brake\nC   Upright assistance" % [utility,"S   Gunpowder dispenser" if index==2 else "S   Reverse thrust"]

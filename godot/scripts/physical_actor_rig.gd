@@ -82,6 +82,7 @@ var _effect_sequence: int = 0
 var _tool_cooldown: float = 0.0
 var _last_impulse: Vector2 = Vector2.ZERO
 var _last_torque_impulse: float = 0.0
+var _review_boost_held: bool = false
 var _last_energy_used: float = 0.0
 var _movement_limited: bool = false
 var _charge_armed: bool = false
@@ -253,9 +254,9 @@ static func valid_action(action: Dictionary) -> bool:
 
 static func valid_review_options(options: Dictionary) -> bool:
 	if options.is_empty(): return true # Retained RFT reference authoring.
-	if options.size()<4 or options.size()>6: return false
+	if options.size()<4 or options.size()>7: return false
 	for key: Variant in options:
-		if key not in ["response","budget","mass_multiplier","inertia_multiplier","thrust_multiplier","torque_multiplier"]: return false
+		if key not in ["response","budget","mass_multiplier","inertia_multiplier","thrust_multiplier","torque_multiplier","boost_multiplier"]: return false
 	if not options.get("response") is String or options.response not in ["LA","LA-EVENT-OFF","LA-SELECTIVE","RFT"]: return false
 	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
 		if not _finite_number(options.get(key)): return false
@@ -265,6 +266,7 @@ static func valid_review_options(options: Dictionary) -> bool:
 		if float(options[key])<0.01 or float(options[key])>64.0: return false
 	for key: String in ["thrust_multiplier","torque_multiplier"]:
 		if options.has(key) and (not _finite_number(options[key]) or float(options[key])<0.0 or float(options[key])>64.0): return false
+	if options.has("boost_multiplier") and (not _finite_number(options.boost_multiplier) or float(options.boost_multiplier)<1.0 or float(options.boost_multiplier)>8.0): return false
 	return true
 
 
@@ -316,6 +318,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		# ceilings. Omitted controls preserve its authored force and torque.
 		_profile["fleet_force"] = float(_profile.fleet_force)*float(review_options.get("thrust_multiplier",1.0))
 		_profile["fleet_torque"] = float(_profile.fleet_torque)*float(review_options.get("torque_multiplier",1.0))
+		_profile["fleet_boost_multiplier"] = float(review_options.get("boost_multiplier",2.0))
 	_part_defs = _definition.parts
 	_player_controller = null
 	_flight_controller = null
@@ -512,6 +515,15 @@ func bodies() -> Array[RigidBody2D]:
 	var result: Array[RigidBody2D] = []
 	result.assign(_parts)
 	return result
+
+
+func set_review_boost_held(held: bool) -> void:
+	# Only the review arena's accepted command lease may supply this modifier.
+	_review_boost_held = held and configured and str(_profile.get("player_controller",""))=="gcr_review_fleet"
+
+
+func review_boost_held() -> bool:
+	return _review_boost_held
 
 
 func body_sizes() -> PackedVector2Array:
@@ -1694,6 +1706,7 @@ func _update_detached(dt: float) -> void:
 
 
 func cancel() -> void:
+	_review_boost_held = false
 	# Revocation discards future work/charge; it never performs a release action,
 	# erases momentum, resets a spring, or launches a charged leap.
 	charge = 0.0

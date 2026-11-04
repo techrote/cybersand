@@ -11,7 +11,22 @@ last-reviewed: 2026-11-04
 
 # Interfaces and message contracts
 
-**Current source powder-review interface; host validation pending:** the
+## Flyer review modifier and painting-source values
+
+The [fleet interface](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
+adds optional boolean boost beside q/e/s review ports. It is validated before
+sequence consumption and bound to the same accepted command lease identity;
+ordinary submit/cancel/pause/replacement retires it. Shared Session ACTION_KEYS,
+native packed strides and response ownership are unchanged. Review options admit
+boost_multiplier1..8, default2; no native material parameter is added.
+
+Scene methods place_room_source(), emit_room_burst(), set_room_stream(bool) and
+room_source_receipt() own the explicit developer source. The receipt separates
+origin/material, source ticks, actual inserted/blocked counts and bounded recent
+history with dropped-row count. It is not cell-storage access, a solver step,
+granular arrival provenance, recoil or complete coupled replay authority.
+
+**Source92fa021b powder-review interface; Windows/Linux host controls passed:** the
 [fleet guide](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review)
 owns the fresh fixed-Kestrel burst/stream setup, paused reset, automatic source
 clock and actual edit ledger. Native and bridge gravity are selected together

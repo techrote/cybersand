@@ -10,7 +10,19 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
-**Current source powder-review setup; host validation pending:** the
+## Flyer review modifiers and live powder sources
+
+The [fleet guide](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
+owns the room-only controls. Review option boost_multiplier is finite1..8,
+default2, and remains staged until Apply/reset. It scales propulsion and the held
+force cap; Ctrl brake wins and torque/hover compensation remain controls.
+Live source placement captures one of nine supported powder IDs and fixes its
+world origin48 cells above the selected rotated hull. Burst requests4×24;
+stream requests4×1 for at most600 simulation ticks. Recent edits use a256-row
+ring with dropped-row reporting and exact cumulative counts. Sources start off,
+disarm on reset/focus loss and retain ordinary gravity38/pilot control.
+
+**Source92fa021b powder-review setup; Windows/Linux host controls passed:** the
 [fleet controls](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review)
 define fixed Kestrel index2 at(512,256), zero body gravity/velocity/rotation,
 Sand2 burst4×24 at(514,224), or4×1 stream before ticks0..599, and a1800tick60Hz

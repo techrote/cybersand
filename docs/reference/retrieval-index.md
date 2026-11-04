@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [How do Shift/Ctrl, full-roster painting-room powder sources and edge alignment work?](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
+  Room-only leased thrust multiplier, unchanged brake law on Ctrl, fixed-world
+  palette sources and the material/overlay texture-footprint mapping.
+
 - [How can I repeat the same powder burst or continuous stream across LA, events off and selective arrivals?](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review)
   Fixed Kestrel construction, body gravity0, paused resets, an actual source ledger
   and no pilot lease isolate loading; manual edits invalidate repeatability.

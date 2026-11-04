@@ -10,6 +10,71 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 
 # Lightweight flight fleet for granular owner review
 
+## Shift thrust multiplier, Ctrl brake and painting-room powder sources
+
+**Current source; integrated Windows/Linux controls passed:** the fleet
+room moves its previous Shift brake to **Ctrl**. Hold **Shift** for the staged
+**Shift thrust ×** multiplier, default2 and range1..8. Apply/reset commits that
+setting with the existing base thrust/torque ceilings. The multiplier scales
+requested main and side propulsion and the active force ceiling; it does not
+multiply torque, hoverboard gravity compensation, passive drag or speed damping.
+Ctrl/brake takes precedence. Releasing Shift restores base propulsion; gamepad B
+retains braking. These bindings are scoped to the flyer review room, not every
+player/controller preset.
+
+Shift travels as an optional boolean beside the existing q/e/s review ports,
+bound to the accepted command's epoch, generation, sequence and lease. The shared
+actor action schema is unchanged. Cancellation, lease expiry, pause, focus loss
+and replacement retire the modifier; controller/native workers do not poll Input.
+
+For a live source in the normal painting room:
+
+1. Choose any of the seven flyers and one of the nine granular materials in the
+   palette: Sand, Dust, Rust, Stone, Seed, Salt, Sodium, Gunpowder or Coal.
+2. Enable **Room powder source**, or click **Place above flyer · use palette**.
+   Placement captures that palette material and places the source48 cells above
+   the rotated hull's top. It stays fixed in world space as the flyer moves.
+3. Click **Burst** for a four-column,24-row request or toggle **Stream · up to
+   10 s** for four source-cell requests per simulation tick, for at most600ticks.
+   Enabling another stream interval requires an explicit toggle after cutoff.
+
+These live sources preserve normal gravity38, pilot control, the full flyer
+roster and manual painting; they do not reset the room or force Kestrel. Changing
+the palette alone does not silently change an already placed source: place it
+again to capture the new material. Water, hard wall and erase are not admitted as
+powder-source materials. Placement must fit the complete source within the room;
+it refuses rather than clamping the source through a boundary.
+
+Sources start off. Reset/Apply, craft selection, leaving the room or entering a
+canned comparison disarms them. Pause freezes the source clock; focus loss
+disarms it. Repeated Burst clicks coalesce into one pending request. Empty-cell,
+current-hull, native-mask, hard-terrain and bounds checks prevent overwriting or
+emitting through objects. Actual attempted/inserted/blocked counts remain exact;
+a256-row ring retains recent diagnostic edits and reports dropped rows. Sources
+are explicit external material authoring, with no new recoil or arrival authority.
+
+The original **Powder burst · reset paused** and **Continuous stream · reset
+paused** buttons remain separate fixed-Kestrel, zero-body-gravity comparisons.
+Their no-pilot setup and prior qualification are not replaced by these live tools.
+
+The edge-alignment repair makes overlay and painting coordinates use the actual
+TextureRect texture footprint. The992×480 output differs in aspect from a512×256
+follow sample; fitting the latter had compressed the overlay horizontally and
+shifted both edge positions inward. Physics poses and native cells do not move.
+The existing small terrain anisotropy/non-integer scaling remains; this is not
+GPU, pixel-perfect presentation or general physics acceptance.
+
+The owner's4 November feedback explicitly concerns **LA/A1**: ordinary landing,
+reactive contact torque and Dust burial feel improved; Sand/Rust/Coal burial still
+starts sinking. Powered Afterglow tunnelling is considered potentially useful
+gameplay. Relative material/flyer mass is a hypothesis, not a demonstrated cause.
+The cropped images lack full selector/source receipts. Record this positive
+qualitative judgement without asserting complete production-envelope acceptance
+or acceptance of the separately failed selective candidate.
+
+The [dated control/alignment record](../audits/2026-11-04-flight-review-controls.md)
+records owner feedback, source identities, scoped checks and remaining limits.
+
 ## Repeatable powder burst and continuous-stream review
 
 **Current source; Windows/Linux host controls passed:** the painting playground
@@ -118,7 +183,8 @@ yellow Sand alone.
 
 LMB paints, RMB erases and the wheel changes brush radius 2..24. F switches
 overview/follow; P pauses. Space remains thrust/lift. Ordinary craft use W/Space
-for body-axis thrust, A/D to rotate, S for reverse, Shift to brake and C for
+for body-axis thrust, A/D to rotate, S for reverse, Shift for the configured
+thrust multiplier, Ctrl to brake and C for
 upright assistance, with the Kestrel S exception below. Afterglow uses WASD to
 strafe/rise/descend, Space for a lift burst and Q/E to tilt. Painting and
 dispensers intentionally add/remove native material; this room is not a closed

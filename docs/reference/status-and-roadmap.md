@@ -10,11 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+Flyer review control follow-up: [Shift/Ctrl, live powder sources and edge alignment](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
+records the implemented room-only modifier, full-roster normal-gravity sources
+and texture-footprint correction. Positive owner feedback was for LA/A1; burial
+in Sand/Rust/Coal remains reported, relative loading remains a hypothesis, and
+sleep/response-law changes, production acceptance and merges remain excluded.
+
 Repeatable powder owner review is available in source in the
 [painting playground](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review):
 fixed Kestrel burst/stream setups, paused fresh resets and actual source counts
-compare LA, events off and selective arrivals. Source-only UI validation is
-pending; native laws, sleep and the earlier registered NO-GO remain unchanged.
+compare LA, events off and selective arrivals. The earlier source92fa021b Windows/Linux UI controls pass; that historical
+result does not relabel the current follow-up. Native laws, sleep and the earlier
+registered NO-GO remain unchanged.
 
 Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
 records84 captures and a registered NO-GO: creep preservation, finite-batch recovery

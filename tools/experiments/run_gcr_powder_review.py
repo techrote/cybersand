@@ -4,7 +4,8 @@ from pathlib import Path
 from run_gcr_causal import run
 from run_gcr_creep import ROOT,git,read,write,sha,source_inputs,verify_project,native_identity,linux
 
-GATES=['test_gcr_powder_review','test_gcr_selective_events','test_gcr_granular_events_playground',
+GATES=['test_gcr_fleet_alignment','test_gcr_fleet_boost','test_gcr_painting_source','test_gcr_fleet_room_controls',
+       'test_gcr_powder_review','test_gcr_selective_events','test_gcr_granular_events_playground',
        'test_gcr_fleet_controls','test_gcr_fleet_emissions','test_gcr_fleet_side_thrusters',
        'test_actor_rig_integration','test_gcr_rest_bridge','test_gcr_rest_material_freshness','test_gcr_review_navigation']
 
@@ -39,7 +40,7 @@ def main():
         write(out/'powder-summary.json',data)
         verify_project(project,inputs);assert native_identity(platform,project)==native
         for name in ['docs/audits/gcr-load-2026-11-02/protocol.json','docs/audits/gcr-rest-2026-11-02/protocol.json']:assert sha(ROOT/name)==sha(out/name)
-        return dict(platform=platform,ok=True,gates=10,imports=1,checks=data['checks'],gates_sha256=sha(out/'gates.json'),summary_sha256=sha(out/'powder-summary.json'))
+        return dict(platform=platform,ok=True,gates=len(GATES),imports=1,checks=data['checks'],gates_sha256=sha(out/'gates.json'),summary_sha256=sha(out/'powder-summary.json'))
     with concurrent.futures.ThreadPoolExecutor(2) as pool:results=list(pool.map(platform_host,['windows','linux']))
     assert inputs==source_inputs() and not git('diff','--binary','HEAD') and git('rev-parse','HEAD').decode().strip()==source
     write(folder/'completion.json',dict(source=source,inputs_unchanged=True,ok=all(r['ok'] for r in results),results=results))
