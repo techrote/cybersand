@@ -84,7 +84,36 @@ transport policy, liquid admission/identity sources, fallback functions,
 appearance code and retained policy/normalization/receipt vectors. This is an
 explicitly frozen compatibility checkpoint, not a promise that these owners
 can never change. A future source update needs a separately reviewed baseline
-or cutover transition, with the old evidence retained.
+or cutover transition, with the old evidence retained. For a behaviour-preserving
+edit to one non-identity owner, that transition is a
+[reviewed per-file transition](#reviewed-per-file-transitions).
+
+### Reviewed per-file transitions
+
+Owner-approved on 2026-11-04 ([decision record](../audits/2026-11-04-mat-auth-reviewed-transitions.md)).
+The lock and `BASELINE` stay byte-identical. A reviewed edit is admitted only by
+an entry in the code-pinned `REVIEWED_TRANSITIONS` tuple in `compatibility.py`,
+so editing the lock alone can never admit one. Each entry names `path`,
+`from_lf_sha256`, `to_lf_sha256`, `source_commit`, `record`, `issue` and `pr`,
+and the checker fails closed unless all of these hold:
+
+- `path` is a protected consumer and not an identity input. The two catalogue
+  headers, the capability matrix and the three fallback-fact GDScript files feed
+  the retained digests and facts; changing them is a cutover.
+- `from_lf_sha256` is the hash the path is currently admitted at: its lock entry,
+  or the previous step for the same path. Steps for one path form an ordered chain.
+- `source_commit` descends from the baseline (or the previous step's commit) and
+  is an ancestor of `HEAD`. Merge the PR with a merge commit, not a squash.
+- `to_lf_sha256` equals the LF-normalized bytes of `path` at `source_commit`, and
+  the working file equals the final target exactly. Old bytes, and any further
+  edit, fail until another reviewed step is added.
+- `record` is a `docs/audits/*.md` file committed at `HEAD` that names the path,
+  both hashes and the commit.
+
+Every other path still requires its baseline hash, and the catalogue and
+capability digests are unchanged. `check()` reports the admitted entries as
+`reviewed_transitions`, so parity receipts carry them. The production tuple is
+empty until a reviewed PR adds its own entry together with its source change.
 
 For #354, the [Phase A correction memo](../audits/2026-11-04-mat354-correction-admission.md)
 identifies protected `native/src/world.cpp` as the prospective deadline edit.
