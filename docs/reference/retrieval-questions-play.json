@@ -176,6 +176,21 @@
         "../godot/tests/test_workbench_canvas.gd",
         "../godot/tests/test_workbench_liquid_edges.gd"
       ]
+    },
+    {
+      "id": "PLAY-WORKBENCH-TUNING-01",
+      "query": "When I switch Pilot to a missing flyer in the desktop development workbench, which mass inertia thrust torque boost and response-budget values survive, and how do new placement and Defaults differ?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "Replacing the selected flyer retains its six applied tuning values and saved spawn while giving the replacement a new instance identity.",
+        "Selecting an existing flyer keeps that instance's own tuning. New placements use model defaults; Defaults explicitly restores LA-SA and the selected body defaults."
+      ],
+      "sources": [
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/tests/test_workbench_pilot_ui.gd"
+      ]
     }
   ]
 }

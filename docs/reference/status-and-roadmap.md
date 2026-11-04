@@ -1896,3 +1896,5 @@ The [desktop development workbench](../systems/player-control-playground.md#deve
 [Owner-feedback follow-up](../audits/2026-11-04-workbench-live-editing.md) records immediate pilot switching, acknowledged reset during play, recovery of the authored start and explicit workbench-only liquid conversions on PR #394.
 
 The [edge-conversion and desktop pacing follow-up](../audits/2026-11-04-workbench-boundary-and-pacing.md) covers live solver changes after material leaves the canvas, render-independent body stepping, and parity and throughput of workbench pressure-column dispatch.
+
+The [PR #394 cleanup](../audits/2026-11-04-workbench394-cleanup.md) retains tuning across missing-model pilot replacement and repairs the fleet registry shutdown lifetime. Its [three-consumer MAT source transition](../audits/2026-11-04-workbench394-material-source-transition.md) reuses the approved #396 mechanism and preserves the frozen lock. Technical admission, owner adoption and merge are separately recorded; #394 remains Draft and unmerged.
