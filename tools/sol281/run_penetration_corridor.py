@@ -42,8 +42,12 @@ def sha(data: bytes) -> str:
 
 
 def run(command: list[str], *, data: str | None = None) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(command, input=data, text=True, capture_output=True, check=True,
-                          cwd=REPOSITORY, timeout=120)
+    # Text-mode pipes translate LF to CRLF on Windows. The input SHA names the
+    # exact canonical UTF-8 bytes sent to the probe on either actual host.
+    completed = subprocess.run(command, input=None if data is None else data.encode("utf-8"),
+                               capture_output=True, check=True, cwd=REPOSITORY, timeout=120)
+    return subprocess.CompletedProcess(completed.args, completed.returncode,
+                                       completed.stdout.decode("utf-8"), completed.stderr.decode("utf-8"))
 
 
 def git(*arguments: str) -> str:
@@ -233,7 +237,7 @@ def main() -> int:
                     raise ValueError("invalid native geometry-only receipt")
                 cache[digest] = value
                 (output / "inputs").mkdir(exist_ok=True)
-                (output / "inputs" / f"{digest}.txt").write_text(text)
+                (output / "inputs" / f"{digest}.txt").write_bytes(text.encode("utf-8"))
                 emit(output / "certificates" / f"{digest}.json", {"input_sha256": digest, "probe_sha256": probe_hash_before,
                      "process_wall_seconds": time.monotonic()-started, "stderr": completed.stderr, "result": value})
             result = cache[digest]

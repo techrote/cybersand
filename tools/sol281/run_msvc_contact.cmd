@@ -40,6 +40,10 @@ set "MSVC_STAGE=run-solid_contact_geometry"
 build\sol281\msvc-bin\test_solid_contact_geometry.exe > build\sol281\msvc\run-solid_contact_geometry.log 2>&1
 if not "%errorlevel%"=="0" goto failed
 
+set "MSVC_STAGE=sol364b-diagnostic"
+python tools\sol281\qualify_penetration_corridor.py --platform windows --compiler cl --prepare-historical --output build\sol364b\windows
+if not "%errorlevel%"=="0" goto failed
+
 echo SOL281_MSVC_COMPLETE: three focused native executables passed
 exit /b 0
 

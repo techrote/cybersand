@@ -106,6 +106,22 @@ jobs:
         if: matrix.target == 'linux'
         run: |
           python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds --label native-sol281 --output-dir build/sol281/build/linux/native-regressions -- make CXX=/usr/bin/g++-13 solid-detachment-test conservative-displacement-test solid-contact-geometry-test solid-detachment-sanitize conservative-displacement-sanitize solid-contact-geometry-sanitize
+      - name: Qualify bounded corridor diagnostic with GCC and sanitizers
+        if: matrix.target == 'linux'
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key native_suite_seconds --label sol364b-diagnostic --output-dir build/sol364b/linux-command -- python3 tools/sol281/qualify_penetration_corridor.py --platform linux --compiler /usr/bin/g++-13 --prepare-historical --output build/sol364b/linux
+      - name: Retain separate Linux corridor diagnostic receipts
+        if: always() && matrix.target == 'linux'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          # Diagnostic evidence stays outside the strict native build inventory.
+          name: sol364b-diagnostic-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/sol364b/linux-command
+            build/sol364b/linux/qualification.json
+            build/sol364b/linux/replay
+          if-no-files-found: error
+          retention-days: 90
       - name: Preserve exact source archive
         if: matrix.target == 'linux'
         run: |
@@ -296,6 +312,16 @@ jobs:
           # Keep the existing strict host artifact root/inventory unchanged.
           name: sol281-msvc-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/sol281/msvc
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain separate Windows corridor diagnostic receipts
+        if: always() && matrix.cohort == 'mechanism'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol364b-diagnostic-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/sol364b/windows/qualification.json
+            build/sol364b/windows/replay
           if-no-files-found: error
           retention-days: 90
       - name: Materialize current Windows Rapier runtime
