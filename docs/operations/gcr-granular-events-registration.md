@@ -126,3 +126,14 @@ pending until actual owner judgement. If E loses useful moving-grain loading,
 characterize that deficiency before designing a replacement response. Do not
 tune arbitrary gains or automatically delete the event channel from production.
 All PRs stay draft/unmerged. No REM-004 closure, sleep or default promotion.
+
+## Final-validation continuation — November4
+
+At a03e2a9a, the first Windows final-head run passes native/UI, REM, retained
+compound, displacement and emission controls, then fails navigation because the
+isolated copied project lacks the barrel scene's external registered protocol
+files. The real source checkout contains them. Preserve events-final-head-01;
+copy the two original LA/rest protocol JSONs alongside the isolated project,
+authenticate their hashes before/after, and repeat in events-final-head-02.
+This repairs harness packaging only; no producer, physical parameter, native
+input or acceptance criterion changes. Primary48 captures remain at5235cec2.

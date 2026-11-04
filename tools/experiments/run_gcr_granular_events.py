@@ -24,6 +24,14 @@ def main():
     for platform in protocol['platforms']:
         folder=out/platform;folder.mkdir();project=folder/'godot'
         shutil.copytree(ROOT/'godot',project,ignore=shutil.ignore_patterns('.godot','*.uid'))
+        # Navigation opens the real barrel-review scene, whose retained
+        # registrations live beside the source project. Copy only those exact
+        # immutable inputs, preserving the scene's ordinary relative lookup.
+        review_protocols={}
+        for relative in ['docs/audits/gcr-load-2026-11-02/protocol.json','docs/audits/gcr-rest-2026-11-02/protocol.json']:
+            original=ROOT/relative;copied=folder/relative;copied.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(original,copied);assert sha(copied)==sha(original)
+            review_protocols[relative]=sha(original)
         verify_project(project,inputs);native=native_identity(platform,project)
         le='/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64'
         if platform=='windows':
@@ -63,6 +71,8 @@ def main():
                     if not receipt['ok']:return 1
                     completed+=1
         verify_project(project,inputs);assert native_identity(platform,project)==native
+        assert all(sha(ROOT/name)==sha(folder/name)==h for name,h in review_protocols.items())
+        write(folder/'review-protocol-inputs.json',review_protocols)
     assert source_inputs()==inputs and not git('diff','--binary','HEAD') and git('rev-parse','HEAD').decode().strip()==head
     write(out/'completion.json',dict(ok=True,source=head,end_source=head,inputs_unchanged=True,gates_only=args.gates_only,completed_captures=completed,complete_registered_population=completed==48,identity_sha256=sha(out/'identity.json')))
     return 0
