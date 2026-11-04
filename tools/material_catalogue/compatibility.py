@@ -77,7 +77,15 @@ TRANSITION_FIELDS = frozenset(("path", "from_lf_sha256", "to_lf_sha256", "source
 # commit, not a squash. `record` is a committed docs/audits/ Markdown record that
 # names the path, both hashes and the commit. Working bytes must equal the final
 # target exactly; a further edit needs its own reviewed step.
-REVIEWED_TRANSITIONS: tuple[dict, ...] = ()
+REVIEWED_TRANSITIONS: tuple[dict, ...] = (
+    # #201 P1 wake summaries: only prepare_pressure_tick/compute_pressure_heads change.
+    {"path": "native/src/world_pressure.inc",
+     "from_lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+     "to_lf_sha256": "d766e808e88287f3f9ef1b833d790106e56eb512654a350716c8573beb30a874",
+     "source_commit": "e5416b81bebf7ce79ac9894f7f9edf88f63b58da",
+     "record": "docs/audits/2026-11-04-lcb201-world-pressure-transition.md",
+     "issue": 201, "pr": 382},
+)
 
 
 class CompatibilityError(ValueError):

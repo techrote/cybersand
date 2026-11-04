@@ -289,6 +289,15 @@ are kept outside Git (`combined/`).
   host, or narrow the native `cold()` on region change. The latter lives in
   `world.cpp` and needs its own proof.
 
+## Compatibility transition
+
+`native/src/world_pressure.inc` is a MAT-AUTH protected consumer. P1's edit is
+admitted by the first reviewed per-file transition, from the baseline lock hash
+to the bytes at P1 commit `e5416b81bebf7ce79ac9894f7f9edf88f63b58da`
+([transition record](2026-11-04-lcb201-world-pressure-transition.md),
+[mechanism](2026-11-04-mat-auth-reviewed-transitions.md)). The lock, baseline
+and digests are unchanged. #382 must merge with a merge commit.
+
 ## Limits
 
 - **Not accepted.** The execution-4 identity, Godot adapter test and
