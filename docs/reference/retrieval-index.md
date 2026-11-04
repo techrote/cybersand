@@ -10,7 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
-- [How will selective granular event admission recover falling-grain loading and torque without restoring passive creep?](../operations/gcr-selective-events-registration.md) The preregistered C/E/S successor uses preceding-tick native transport as a consumed witness, not inferred momentum. Qualification and owner review remain open.
+- [How can I repeat the same powder burst or continuous stream across LA, events off and selective arrivals?](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review)
+  Fixed Kestrel construction, body gravity0, paused resets, an actual source ledger
+  and no pilot lease isolate loading; manual edits invalidate repeatability.
+
+- [How will selective granular event admission recover falling-grain loading and torque without restoring passive creep?](../operations/gcr-selective-events-registration.md) The implemented C/E/S successor uses preceding-tick native transport as a consumed witness, not inferred momentum. All84 captures complete with a registered NO-GO; owner review and source-lock integration remain open.
 
 - [What does granular-only event omission improve, what response does it lose, and how can I compare it while painting?](../operations/gcr-granular-events-registration.md)
 

@@ -8,11 +8,17 @@ last-reviewed: 2026-11-04
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
-
-[Selective arrival qualification — failed joint gates](audits/2026-11-04-gcr-selective-events.md) records the current experimental comparison and integration blockers.
 # CyberSand documentation
 
-Selective granular event admission: the [preregistered successor](operations/gcr-selective-events-registration.md) compares LA, event-off and selective arrivals. It tests fresh native transport as an admission witness to recover falling-grain loading and torque while retaining creep reduction and barrel impact guards. Implementation and qualification are in progress; no result, owner acceptance or production promotion is claimed.
+Repeatable powder owner review is available in source in the
+[painting playground](systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review):
+fixed Kestrel burst/stream setups, paused fresh resets and actual source counts
+compare LA, events off and selective arrivals. Source-only UI validation is
+pending; native laws, sleep and the earlier registered NO-GO remain unchanged.
+
+[Selective arrival qualification — failed joint gates](audits/2026-11-04-gcr-selective-events.md) records the current experimental comparison and integration blockers.
+
+Selective granular event admission: the [preregistered successor](operations/gcr-selective-events-registration.md) compares LA, event-off and selective arrivals. It tests fresh native transport as an admission witness to recover falling-grain loading and torque while retaining creep reduction and barrel impact guards. The84-capture qualification is complete and records a registered NO-GO for the joint creep/loading/edge-rebound gates; owner acceptance and production promotion remain excluded.
 
 Granular-only event successor: [registration and disposition](operations/gcr-granular-events-registration.md) and [November4 qualification](audits/2026-11-04-gcr-granular-event-successor.md) record reduced burial across three materials, a demonstrated moving-grain loading/torque gap and the experimental painting-playground selector. No production/default or sleep acceptance follows.
 

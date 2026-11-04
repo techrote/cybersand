@@ -2,6 +2,10 @@ extends "res://scripts/gcr_crash_playground.gd"
 
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const FleetOverlay = preload("res://scripts/gcr_review_fleet_overlay.gd")
+const PowderTest = preload("res://scripts/gcr_powder_review_test.gd")
+var powder_test = PowderTest.new()
+var powder_test_status: Label
+var _restoring_defaults: bool = false
 var applied_controls: Dictionary = {"response":"LA","budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,"thrust_multiplier":1.0,"torque_multiplier":1.0}
 var control_fields: Dictionary = {}
 var response_select: OptionButton
@@ -80,6 +84,14 @@ func _build_comparison_controls() -> void:
 	thruster_fire.toggled.connect(func(enabled: bool) -> void:
 		if runtime != null: runtime.set_review_thruster_fire(enabled))
 	panel.add_child(thruster_fire)
+	var powder_row := HBoxContainer.new()
+	powder_row.add_theme_constant_override("separation",8)
+	panel.add_child(powder_row)
+	_button(powder_row,"Powder burst · reset paused",func() -> void: start_powder_test("burst"))
+	_button(powder_row,"Continuous stream · reset paused",func() -> void: start_powder_test("stream"))
+	_button(powder_row,"Painting room",return_to_painting)
+	powder_test_status=_label(panel,"Repeatable loading tests: Kestrel, body gravity off, pilot off. P starts/pauses; R repeats.",13,Color("adc0ce"))
+	powder_test_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	control_status=_label(panel,"",14,Color("f7c579"))
 	control_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var provenance: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://addons/cybersand_native/runtime-provenance.json" if OS.get_name()=="Windows" else "res://addons/cybersand_native/runtime-provenance.linux.json"))
@@ -101,10 +113,18 @@ func apply_controls() -> bool:
 		control_status.text=control_error
 		return false
 	var previous: Dictionary = applied_controls
+	var previous_arena_id: int = runtime._arena.get_instance_id() if is_instance_valid(runtime._arena) else 0
 	applied_controls=staged
-	if not select_preset(selected):
-		applied_controls=previous
-		control_error=runtime.last_error
+	var restarted: bool = _reset_powder_test(powder_test.mode) if powder_test.active() and not _restoring_defaults else select_preset(selected)
+	if not restarted:
+		# A refused constructor retains the old owner. A later setup failure has
+		# already installed the new owner, so its settings must remain labelled.
+		if is_instance_valid(runtime._arena) and runtime._arena.get_instance_id()==previous_arena_id: applied_controls=previous
+		if powder_test.active():
+			runtime.set_paused(true)
+			_pause_button.text="Resume  ·  P"
+		if control_error.is_empty(): control_error=runtime.last_error if not runtime.last_error.is_empty() else "Review setup refused."
+		_present(runtime.snapshot(),true)
 		return false
 	return true
 
@@ -115,7 +135,9 @@ func restore_controls() -> void:
 	control_fields.inertia_multiplier.value=1.0
 	control_fields.thrust_multiplier.value=1.0
 	control_fields.torque_multiplier.value=1.0
+	_restoring_defaults=true
 	apply_controls()
+	_restoring_defaults=false
 
 func _input(event: InputEvent) -> void:
 	if get_viewport().gui_get_focus_owner() is LineEdit:
@@ -138,6 +160,7 @@ func _review_ports() -> Dictionary:
 	return ports
 
 func _sample_action() -> Dictionary:
+	if powder_test.active(): return {"move":Vector2.ZERO,"aim":Vector2.RIGHT,"effort":0.0,"trim":0.0,"primary":false,"secondary":false,"auxiliary":false}
 	var action: Dictionary = super._sample_action()
 	if selected==2:
 		# Kestrel S is a dispenser rather than reverse. Retain W when both
@@ -152,9 +175,28 @@ func _thrust_up_pressed() -> bool:
 	return Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)
 
 func _submit_action(action: Dictionary) -> bool:
+	if powder_test.active(): return false
 	return runtime.submit_review_action(action,_review_ports())
 
 func advance_frame(action: Dictionary, allowed: bool) -> void:
+	if powder_test.active():
+		# No leased command: even neutral fleet commands would apply authored drag.
+		if runtime == null or runtime.paused or runtime.failed: return
+		if not powder_test.before_step(runtime._arena._world):
+			runtime.set_paused(true)
+			_pause_button.text="Resume  ·  P"
+			_present(runtime.snapshot(),true)
+			return
+		runtime.cancel()
+		var before: int = runtime.tick
+		var state: Dictionary = runtime.step()
+		if runtime.tick==before+1: powder_test.after_step()
+		else: powder_test.error="owner step did not advance exactly once"
+		if runtime.failed or not powder_test.error.is_empty() or powder_test.ticks>=PowderTest.TOTAL_TICKS:
+			runtime.set_paused(true)
+			_pause_button.text="Resume  ·  P"
+		_present(state,true)
+		return
 	# A held dispenser must be released after focus/edit/pause cancellation,
 	# even when Q+E cancels the signed trim or Kestrel S leaves move neutral.
 	var ports: Dictionary = _review_ports()
@@ -167,7 +209,12 @@ func select_preset(index: int) -> bool:
 	_release_edit_focus()
 	if not runtime.configure_review_fleet(index,applied_controls):
 		_status.text = "Fleet refused: "+runtime.last_error
+		if powder_test.active():
+			runtime.set_paused(true)
+			_pause_button.text="Resume  ·  P"
 		return false
+	powder_test.clear()
+	if thruster_fire != null: thruster_fire.disabled=false
 	runtime.set_review_thruster_fire(thruster_fire != null and thruster_fire.button_pressed)
 	selected = index
 	_target = 0
@@ -177,10 +224,89 @@ func select_preset(index: int) -> bool:
 	_last_packet_epoch = -1
 	_pause_button.text = "Pause  ·  P"
 	if _surface != null: _surface.set_render_enabled(true)
-	return seed_crash_room()
+	var seeded: bool = seed_crash_room()
+	if not seeded:
+		runtime.set_paused(true)
+		control_error="Painting room authoring refused."
+	return seeded
 
 func _check_targets(_state: Dictionary) -> void:
 	pass # Free play has no course gate or score.
+
+func start_powder_test(mode: String) -> bool:
+	if mode not in ["burst","stream"]: return false
+	_release_edit_focus()
+	var staged: Dictionary = {"response":["LA","RFT","LA-EVENT-OFF","LA-SELECTIVE"][response_select.selected]}
+	for key: String in control_fields: staged[key]=control_fields[key].value
+	if staged.response=="RFT":
+		control_error="Powder tests compare LA, events OFF and selective arrivals. Select one of those responses."
+		_present(runtime.snapshot(),true)
+		return false
+	var previous: Dictionary = applied_controls
+	var previous_arena_id: int = runtime._arena.get_instance_id() if is_instance_valid(runtime._arena) else 0
+	applied_controls=staged
+	if not _reset_powder_test(mode):
+		if is_instance_valid(runtime._arena) and runtime._arena.get_instance_id()==previous_arena_id: applied_controls=previous
+		if powder_test.active():
+			runtime.set_paused(true)
+			_pause_button.text="Resume  ·  P"
+		_present(runtime.snapshot(),true)
+		return false
+	return true
+
+func _reset_powder_test(mode: String) -> bool:
+	if applied_controls.response=="RFT":
+		control_error="Powder tests require LA, events OFF or selective arrivals."
+		return false
+	_cancel_input()
+	if not runtime.configure_review_powder_test(applied_controls):
+		control_error=runtime.last_error
+		return false
+	selected=2
+	if thruster_fire != null:
+		thruster_fire.button_pressed=false
+		thruster_fire.disabled=true
+	runtime.set_review_thruster_fire(false)
+	var setup_ok: bool = powder_test.setup(runtime._arena,mode,applied_controls)
+	runtime.set_paused(true)
+	_pause_button.text="Resume  ·  P"
+	_target=0; _lap_ticks=0; _lap_started=false
+	_last_draw_tick=-1; _last_packet_epoch=-1
+	_follow=true
+	control_error="" if setup_ok else powder_test.error
+	if _surface != null: _surface.set_render_enabled(true)
+	_present(runtime.snapshot(),true)
+	return setup_ok
+
+func return_to_painting() -> bool:
+	return select_preset(selected)
+
+func powder_test_receipt() -> Dictionary:
+	return powder_test.receipt(runtime.paused if runtime!=null else true)
+
+func _restart() -> void:
+	if powder_test.active(): _reset_powder_test(powder_test.mode)
+	else: super._restart()
+
+func _toggle_pause() -> void:
+	if powder_test.active() and (powder_test.modified or not powder_test.error.is_empty() or powder_test.ticks>=PowderTest.TOTAL_TICKS):
+		control_error="Reset the powder test with R or Apply before running again."
+		_present(runtime.snapshot(),true)
+		return
+	super._toggle_pause()
+
+func _notification(what: int) -> void:
+	super._notification(what)
+	if what==NOTIFICATION_WM_WINDOW_FOCUS_OUT and powder_test.active() and runtime!=null and runtime.active():
+		runtime.set_paused(true)
+		if _pause_button!=null: _pause_button.text="Resume  ·  P"
+
+func paint_at(cell: Vector2i, material: int) -> bool:
+	if powder_test.active() and runtime!=null and runtime._arena!=null and CRASH_VIEW.grow(-brush_radius-6).has_point(cell) and material in MATERIALS:
+		powder_test.modified=true
+		runtime.set_paused(true)
+		_pause_button.text="Resume  ·  P"
+	return super.paint_at(cell,material)
 
 func _present(state: Dictionary, force: bool = false) -> void:
 	super._present(state,force)
@@ -201,3 +327,10 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		if not control_error.is_empty(): control_status.text+="\n"+control_error
 		control_status.text+="\n"+event_runtime_identity
 		if applied_controls.response=="LA-EVENT-OFF": control_status.text+=" · Experimental: moving-grain loading/torque incomplete."
+	if powder_test_status!=null:
+		if powder_test.active():
+			powder_test_status.text="%s · %s · tick %d/%d · inserted %d / attempted %d (%d blocked) · Kestrel, Sand, body gravity OFF, pilot OFF. P run/pause; R repeat." % [powder_test.mode.to_upper(),powder_test.status(runtime.paused),powder_test.ticks,PowderTest.TOTAL_TICKS,powder_test.inserted,powder_test.attempted,powder_test.blocked]
+			_hint.text="Manual painting remains available; editing pauses and marks this run modified. Reset to compare. Response/physical controls apply through a fresh paused reset."
+			_controls.text="LOADING TEST\nBody gravity OFF · pilot OFF\nSand falls under native rules\nP  Run / pause\nR  Repeat from tick zero\nPainting room  Return to flight"
+		else:
+			powder_test_status.text="Repeatable loading tests: Kestrel, body gravity off, pilot off. P starts/pauses; R repeats."

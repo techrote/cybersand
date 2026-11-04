@@ -52,8 +52,12 @@ func configure_review_fleet(index: int, options: Dictionary = {}) -> bool:
 	return _configure_granular(&"arcadelander","GCR-REST" if load_aware else "GCR",
 		"GCR-REST-001-2026-11-02" if load_aware else "GCR-001-2026-11-01",Vector2.ZERO,index,options)
 
+func configure_review_powder_test(options: Dictionary) -> bool:
+	if not Arena.Rig.valid_review_options(options) or options.get("response","") not in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]: return false
+	return _configure_granular(&"arcadelander","GCR-REST","GCR-REST-001-2026-11-02",Vector2.ZERO,2,options,true)
+
 func _configure_granular(id: StringName, granular_candidate: String, token: String, spawn_offset: Vector2 = Vector2.ZERO,
-		review_fleet_index: int = -1, review_options: Dictionary = {}) -> bool:
+		review_fleet_index: int = -1, review_options: Dictionary = {}, powder_review: bool = false) -> bool:
 	if id not in Course.PRESETS or not is_inside_tree():
 		last_error = "Unknown player preset or missing scene owner."
 		return false
@@ -89,12 +93,13 @@ func _configure_granular(id: StringName, granular_candidate: String, token: Stri
 		var spawn := Vector2(178, Course.FLOOR_Y - float(prepared.get("spawn_floor_clearance", 20.0)))
 		if id in [&"arcadelander", &"jetbarrel"]:
 			spawn.y = 304.0
+		if powder_review: spawn=Vector2(512,256)
 		var config: Dictionary = {"version": Arena.VERSION, "seed": 0, "max_ticks": Arena.MAX_TICKS,
 			"local_patch_radius": 0, "course": Course.ID,
 			"actors": [{"model": str(id), "producer": "human", "position": spawn}]}
 		var admitted: bool
 		if review_fleet_index != -1:
-			admitted = candidate_arena.configure_review_fleet(config,granular_candidate,token,review_fleet_index,review_options)
+			admitted = candidate_arena.configure_review_fleet(config,granular_candidate,token,review_fleet_index,review_options,powder_review)
 		else:
 			admitted = candidate_arena.configure(config) if granular_candidate == "B0" else candidate_arena.configure_granular_experiment(config,granular_candidate,token,spawn_offset)
 		if not admitted:

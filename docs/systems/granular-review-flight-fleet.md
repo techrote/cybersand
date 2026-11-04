@@ -4,21 +4,65 @@ status: Current
 document-kind: contract
 scope: Developer-only editable flyer room with staged LA budget and actuator controls, bounded material dispensers and optional real Fire; retained RFT reference and separate qualification limits
 canonical-for: [granular-review-flight-fleet]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [../architecture/granular-contact-rest.md, ../architecture/compound-granular-coupling.md, player-control-playground.md, ../operations/gcr-rest-registration.md]
 ---
 
+# Lightweight flight fleet for granular owner review
+
+## Repeatable powder burst and continuous-stream review
+
+**Current source; actual-host validation pending:** the painting playground
+provides two canned loading tests alongside the normal painting room.
+The [dated UI record](../audits/2026-11-04-repeatable-powder-review.md) owns actual
+source/runtime validation; these controls do not repeat or supersede the earlier
+scientific qualification or its registered NO-GO.
+
+**Powder burst · reset paused** and **Continuous stream · reset paused** reconstruct a fresh Kestrel
+(craft3/index2) at position(512,256), angle0, with zero linear/angular velocity.
+Both use an empty bounded test room and Sand2. The burst seeds four columns by24
+rows at(514,224); the stream supplies a four-cell row at(514,224) before native
+ticks0..599. The source stays fixed in world coordinates, so response-dependent
+motion does not move the emitter to follow the craft. Emission counts actual
+empty-cell additions and refused/blocked placements rather than assuming all
+requested material was inserted. It cannot overwrite a foreign body or terrain.
+
+The test starts paused. Press **P/Resume** to advance up to1800 fixed60Hz ticks,
+then it pauses automatically. Body gravity is zero for these loading tests;
+native material motion continues normally. Native construction and the one-shot
+Rapier bridge context both receive zero body gravity before activation. Pilot
+leases, Fire, Q/E/S dispensers and automatic control assistance are disabled;
+neutral controller input is not used as a substitute for zero actuation.
+Normal painting-room gravity remains38 and its manual controls remain available.
+
+Select LA, events off or selective arrivals, then **Apply + reset room** to repeat
+the selected test using the same starting geometry and source schedule. **R**
+also repeats it. Budget, mass and inertia multipliers stay at the applied values;
+compare equal values across responses. The initial pose/material hash, actual
+mass/inertia, selector and source-edit ledger are available in a test receipt.
+This is a repeatable apparatus setup, not exact saved coupled replay.
+
+Manual painting pauses and marks the run modified; reset the test before treating
+it as a repeatable comparison. **Painting room** returns to ordinary editable
+flight. Selecting another craft or restoring flyer defaults exits the canned test.
+The retained RFT reference is available in free play; canned comparison admission
+is limited to LA, events off and selective arrivals. No test outcome is labelled
+as a scientific pass or owner acceptance. Sleep and material/response laws stay
+unchanged, and all PRs remain unmerged.
+
+The scene methods are `start_powder_test("burst"/"stream")`,
+`return_to_painting()` and `powder_test_receipt()`. The receipt is copied diagnostic
+value data for review, not another impulse or cell authority interface.
 
 Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
 records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
 and late edge rebound miss their gates. Continuous arrival/torque and excavation
 release pass; no rest/default acceptance follows. The painting selector remains
 experimental; source-lock compatibility and owner review remain open.
-# Lightweight flight fleet for granular owner review
 
-## Selective arrivals - preregistered comparison in progress
+## Selective arrivals — implemented comparison with failed joint gates
 
-The [selective event registration](../operations/gcr-selective-events-registration.md) plans the fourth response **LA · selective arrivals (experimental)** (LA-SELECTIVE). Use **Apply + reset room** to construct fresh native authority; painted edits are discarded. LA remains initial/Restore, RFT and event-off remain separate references, and existing painting, seven flyers, physical/actuator controls, Fire and dispensers remain intact. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. Loading/torque recovery and creep/barrel guards remain prospective requirements; no passed result or owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
+The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals (experimental)** (LA-SELECTIVE). Use **Apply + reset room** to construct fresh native authority; painted edits are discarded. LA remains initial/Restore, RFT and event-off remain separate references, and existing painting, seven flyers, physical/actuator controls, Fire and dispensers remain intact. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. The candidate is retained for comparison under a registered NO-GO; no owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
 
 ## Granular-only event comparison — November4
 

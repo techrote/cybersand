@@ -8,15 +8,21 @@ last-reviewed: 2026-11-04
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
+# Development handover
+
+Repeatable powder owner review is available in source in the
+[painting playground](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review):
+fixed Kestrel burst/stream setups, paused fresh resets and actual source counts
+compare LA, events off and selective arrivals. Source-only UI validation is
+pending; native laws, sleep and the earlier registered NO-GO remain unchanged.
 
 Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
 records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
 and late edge rebound miss their gates. Continuous arrival/torque and excavation
 release pass; no rest/default acceptance follows. The painting selector remains
 experimental; source-lock compatibility and owner review remain open.
-# Development handover
 
-Selective event successor **in progress**, November4: [GCR-SEL-001 registration](gcr-selective-events-registration.md) fixes C/E/S and84 Windows/Linux captures before results. Main7ef4856e is reconciled into the isolated successor; Astra347 remains separately owned. The preceding-tick transport witness is transient coupling history, allocated only for explicitly admitted experimental C/E/S worlds. The proposed fourth painting choice is LA-SELECTIVE; ordinary LA and Restore remain controls. Loading/torque recovery, creep retention and barrel feel require qualification; sleep, default promotion and merges remain excluded.
+Selective event successor **implemented, registered NO-GO**, November4: [GCR-SEL-001 registration](gcr-selective-events-registration.md) fixes C/E/S and84 Windows/Linux captures before results. Main7ef4856e is reconciled into the isolated successor; Astra347 remains separately owned. The preceding-tick transport witness is transient coupling history, allocated only for explicitly admitted experimental C/E/S worlds. The fourth painting choice is LA-SELECTIVE; ordinary LA and Restore remain controls. All84 captures complete, but joint creep preservation, finite-batch recovery and late operational edge-rebound gates fail. Continuous-stream response and excavation release pass; sleep, default promotion and merges remain excluded.
 
 Current granular-only event successor: [registration](gcr-granular-events-registration.md) and [November4 evidence](../audits/2026-11-04-gcr-granular-event-successor.md) retain the sinking improvement with the legacy contact gain intact. Falling grains produce no measured body motion in the candidate, establishing a loading/torque gap; high/heavy barrels retain late-motion tradeoffs. The painting room adds an explicit experimental choice; LA remains its default. Main3da7e7be is reconciled, Astra347 at5b9b5a98 is separately owned and unmerged; no latest compound-response integration is claimed. Sleep and default promotion remain excluded.
 

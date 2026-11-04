@@ -237,6 +237,22 @@
         "operations/gcr-selective-events-registration.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GCRPOWDER01",
+      "query": "How can I repeat the same powder burst or continuous stream in the painting playground to compare LA, events off and selective arrivals?",
+      "canonical": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "facts": [
+        "The canned powder review implements a fixed Kestrel index2 loading setup: body gravity0, pose(512,256), zero velocity/rotation, Sand2 burst4x24 at(514,224), or4x1 stream before ticks0..599; native material gravity is unchanged.",
+        "Burst and Stream reset paused; P resumes, R or Apply/reset reconstructs the same selected setup and applied budget/mass/inertia settings. Automatic1800tick stop and pause freeze the source clock. Pilot leases, Fire and dispensers are disabled; no-command stepping avoids neutral-input drag.",
+        "Actual inserted and blocked source cells are counted. Manual painting pauses/marks modified and requires reset for repeatable comparison; Painting room restores gravity38. Source-only host validation is pending; no physics retuning, sleep, new scientific acceptance or merge follows."
+      ],
+      "sources": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }
