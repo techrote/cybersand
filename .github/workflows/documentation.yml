@@ -74,10 +74,13 @@ jobs:
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/water_normalization_contract.py --check
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/liquid_run_receipt_contract.py --check
-      - name: Check material catalogue shadow compatibility
+      - name: Check material catalogue shadow and bounded display compatibility
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compatibility.py --check
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compiler.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/presentation.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/legacy_display_names.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_display_consumer.py --check
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json
       - name: Check LCB scenario definitions and registry are source-derived

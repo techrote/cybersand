@@ -136,6 +136,18 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-11-04-mat-auth384-post377-reconciliation.md",
+      "reason": "Dated post-377 B source-admission reconciliation and exact-head qualification record. Retrieve through the current shadow guide; frozen compatibility, historical display oracle and current accepted executable source remain separate. Old c6d1603f receipts and GO do not qualify the new head; Draft hosted checks do not authorize Ready or merge."
+    },
+    {
+      "path": "audits/2026-11-04-mat-auth384-current-main-reconciliation.md",
+      "reason": "Dated 384/374 B-inventory reconciliation and exact-source evidence boundary. Retrieve current three-baseline admission and before-Ready status through the material catalogue guide, architecture, handover and validation ledger; original and reconciled receipts retain separate source identities."
+    },
+    {
+      "path": "audits/2026-11-04-mat-auth353b-display-names.md",
+      "reason": "Dated bounded Main-label consumer qualification and scoped-proof transition. Retrieve through the canonical material catalogue guide and validation ledger; static checks, actual application proof, historical v1 receipts and draft integration status remain distinct."
+    },
+    {
       "path": "audits/2026-11-04-mat-auth371-integration.md",
       "reason": "Dated A-only adopted-main reconciliation, compiler repair and integration evidence. Retrieve through the shadow guide and validation ledger with exact source/backend limits; final hosted and merge outcomes belong to PR371."
     },

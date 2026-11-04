@@ -10,7 +10,70 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-AUTH bounded Main display-name candidate — 2026-11-04
+
+The original [#353-B consumer](material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
+was reviewed at `bbed081b9aa09ebf21823ac19ba3bd68e9133be1`, based on A-only main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` from
+[#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829).
+The #374 reconciliation produced `c6d1603f3c144f6730e2014ab32b98b0240f1e37`
+against `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`; its
+[independent GO report](https://chatgpt.com/library?file_id=libfile_d3ee9e7f5e108191905cc6560fffe1f1&account_id=personal)
+applies only to that source pair and is not merge authorization.
+
+The post-#377 candidate `87418298e95def37ec86b83c543c2aa2d1d7c398` is now
+reconciled with accepted #390/main `751edc0b495dc85484ad5509a7c95f863651c76b`.
+Preserve the worker's fixed-interest ownership fix and both new GDScript tests
+exactly; they require a new B admission identity and fresh behavioral proof.
+The [three-baseline contract](material-catalogue-shadow.md#current-main-b-admission-after-390--2026-11-04)
+and [post-#390 record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+preserve the old display oracle, frozen compatibility lock, original B evidence
+and [#374 reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md).
+Accepted #377 tests/tooling/CI/evidence remain intact; H1 is not repaired.
+
+Work remains on isolated branch `feat/mat-auth-353b-display-names-20261104`.
+The authorized endpoint is **Draft, before Ready-for-review, with a fresh
+independent admission handoff**. Request **GO TO READY / CONDITIONAL / NO-GO**
+from a separate strictly read-only reviewer for the new exact head and main.
+Neither old audit nor the `c6d1603f` GO approves this source. Do not merge,
+reconcile other active branches, close #353/#352, implement #356 or increase
+the 132-slot domain. Recheck current main and #358 before integration;
+acceptance of its experimental 132–137 requires a new scope decision.
+
+Retain the 27-owner lock against `0fd4af59`, display oracle at `7ef4856e`,
+full-shadow outputs, native/fallback behavior and original receipts. The
+separate B admission authenticates accepted `751edc0b` and refuses extra or
+indirect consumers; another Main/source integration such as #370 needs a
+reviewed B transition. Run fresh source checks and distinct schema-v2 native,
+shadow and actual four-stage Main/inherited-Web B reports at the published
+candidate. Static `--check` and native/shadow receipts cannot replace B runtime
+proof. Preserve the required poison failure, rollback, source-map fingerprint
+and actual artifact-hash measurement; the probe adds no apparatus-list entry.
+
+Observe only normal Draft Documentation/provenance and source-scope advisory
+checks, authenticating terminal steps and actual checkout tree equivalence.
+Full Ready-state runtime/provenance gates, pinned-template Web export/package
+loading, old/new startup/lookup/memory measurements and the final independent
+integration audit remain later work. Do not manually bypass Draft suppression.
+
+## MAT-AUTH-002 accepted Phase A — 2026-11-04
+
+[#377](https://github.com/techrote/cybersand/pull/377) merged on
+4 November 2026 at 18:14:18 UTC as
+`0103de80d11304388868f89f7b26c672ad6100ad`, tree
+`0ba07dc799afca43716bbab966f48266fa924718`. It accepts the investigation's tests,
+fixture, CI, tooling, documentation and retained evidence. H1 is not repaired;
+#354 and #352 remain open. Preserve the original scientific results, failed
+attempts and qualification limits. No repeat of the full liveness campaign or
+new liveness pass is implied by the separate #384 admission reconciliation.
+
+The following integration and recovery handovers are historical. The #377
+ledger records their later final review and completed integration; original
+queued/blocked, failed, unavailable and draft-skipped evidence is not rewritten.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
+
+**Historical guarded-integration assignment, completed by the merge above.**
 
 The owner now authorizes current-main reconciliation, focused preflight, a
 Ready-for-review transition and one guarded integration of
@@ -73,9 +136,9 @@ documentation/evidence head and its resulting checks.
 
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
-**Historical integration assignment.** #371 subsequently merged at `7ef4856e`.
-The following handover preserves its earlier source and qualification boundary;
-the Phase A section above owns the current liveness assignment.
+**Historical A-only integration assignment.** #371 subsequently merged at the
+accepted `7ef4856e` source. The following text preserves its earlier scope; the
+separate B assignment supersedes only its unadmitted Main-label consumer status.
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected

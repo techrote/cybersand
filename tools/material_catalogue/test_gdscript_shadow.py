@@ -7,11 +7,13 @@ import io
 import json
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
 
 import check_gdscript_shadow as check
+import proof_scopes
 from check_native_parity import file_fact
 
 
@@ -21,19 +23,40 @@ class GodotReceiptGuards(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
         self.protected = {"unit_test_only": True}
-        self.receipt = {
-            "schema_id": "cybersand.material-catalogue.native-parity", "schema_version": 1,
-            "status": "PASS", "source_commit": check.compatibility.BASELINE,
-            "protected_sources": self.protected, "native_authored_compiled_shadow_facts_equal": True,
-            "world_executed": False, "physics_qualification": False, "production_cutover": False,
-        }
+        # Read, never update, the independently retained historical v1 report.
+        # Synthetic current custody below tests the reader, not native execution.
+        historical = check.ROOT / "docs/audits/mat-auth371-integration-20261104/native-parity.json"
+        self.historical = json.loads(historical.read_text())
+        self.receipt = copy.deepcopy(self.historical)
+        self.receipt.pop("production_cutover")
+        self.receipt.update({
+            "schema_version": 2, "protected_sources": self.protected,
+            "scope": proof_scopes.NATIVE_PROOF_SCOPE,
+            "source_commit_role": proof_scopes.NATIVE_SOURCE_COMMIT_ROLE,
+            "authority_scopes": copy.deepcopy(proof_scopes.AUTHORITY_SCOPES),
+            "b_consumer_requirement": copy.deepcopy(proof_scopes.B_CONSUMER_REQUIREMENT),
+            "ui_behavior_executed": False, "b_consumer_qualified": False,
+        })
         for group, names in check.RECEIPT_PATHS.items():
             self.receipt[group] = []
             for name in names:
                 path = self.root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text("fixture content for " + name + "\n")
+                if name == check.compatibility.LOCK.as_posix():
+                    path.write_bytes((check.ROOT / check.compatibility.LOCK).read_bytes())
+                else:
+                    path.write_text("fixture content for " + name + "\n")
                 self.receipt[group].append(file_fact(path, self.root))
+        self.git("init", "--quiet")
+        self.git("add", ".")
+        self.git("commit", "--quiet", "-m", "isolated receipt fixture")
+        self.receipt["checked_source"] = proof_scopes.checked_source(
+            self.root, {group: self.receipt[group] for group in check.RECEIPT_PATHS})
+
+    def git(self, *arguments):
+        subprocess.run(["git", "-C", str(self.root), "-c", "user.name=Receipt fixture",
+                        "-c", "user.email=receipt-fixture@invalid.local", *arguments],
+                       check=True, capture_output=True, timeout=30)
 
     def validate(self, receipt=None):
         check.validate_native_receipt(receipt or self.receipt, self.protected, self.root)
@@ -51,7 +74,7 @@ class GodotReceiptGuards(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "inspection.json.*sha256"):
             self.validate()
         self.receipt["inputs"] = [row for row in self.receipt["inputs"] if row["path"] != str(path.relative_to(self.root))]
-        with self.assertRaisesRegex(ValueError, "complete 5-path custody inventory"):
+        with self.assertRaisesRegex(ValueError, "complete 6-path custody inventory"):
             self.validate()
 
     def test_each_tool_and_input_is_mandatory(self):
@@ -90,15 +113,68 @@ class GodotReceiptGuards(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "native_oracle.cpp"):
             self.validate()
 
-    def test_receipt_must_assert_complete_shadow_equality_and_no_cutover(self):
+    def test_receipt_must_assert_complete_shadow_equality_and_no_ui_or_world_execution(self):
         for field, bad in (("native_authored_compiled_shadow_facts_equal", False),
                            ("status", "FAIL"), ("world_executed", True),
-                           ("production_cutover", True), ("schema_version", True)):
+                           ("godot_executed", True), ("ui_behavior_executed", True),
+                           ("b_consumer_qualified", True), ("schema_version", True)):
             with self.subTest(field=field):
                 changed = copy.deepcopy(self.receipt)
                 changed[field] = bad
                 with self.assertRaises(ValueError):
                     self.validate(changed)
+
+    def test_retained_v1_receipt_is_not_current_b_evidence(self):
+        with self.assertRaisesRegex(ValueError, "historical v1 is not current B proof"):
+            self.validate(self.historical)
+
+    def test_ambiguous_global_cutover_claim_is_not_in_current_schema(self):
+        for value in (False, True):
+            changed = copy.deepcopy(self.receipt)
+            changed["production_cutover"] = value
+            with self.assertRaisesRegex(ValueError, "complete schema fields"):
+                self.validate(changed)
+
+    def test_exact_scope_and_mandatory_independent_b_requirement(self):
+        for field in ("authority_scopes", "b_consumer_requirement"):
+            changed = copy.deepcopy(self.receipt)
+            changed.pop(field)
+            with self.assertRaisesRegex(ValueError, "complete schema fields"):
+                self.validate(changed)
+        for field, bad in (("mandatory", False), ("mandatory", 1),
+                           ("schema_version", 1), ("satisfied_by_this_report", True),
+                           ("status", "PASS")):
+            with self.subTest(field=field, value=bad):
+                changed = copy.deepcopy(self.receipt)
+                changed["b_consumer_requirement"][field] = bad
+                with self.assertRaisesRegex(ValueError, "B proof requirement"):
+                    self.validate(changed)
+        changed = copy.deepcopy(self.receipt)
+        changed["authority_scopes"]["native_runtime"]["production_cutover"] = True
+        with self.assertRaisesRegex(ValueError, "authority scopes"):
+            self.validate(changed)
+
+    def test_stale_or_forged_current_source_context_is_refused(self):
+        changed = copy.deepcopy(self.receipt)
+        changed["checked_source"]["inventories_sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "checked source identity"):
+            self.validate(changed)
+        self.git("commit", "--quiet", "--allow-empty", "-m", "different head, unchanged scoped files")
+        with self.assertRaisesRegex(ValueError, "checked source identity"):
+            self.validate()
+
+    def test_original_manifest_and_new_consumer_inventory_are_authenticated(self):
+        for name in ("materials/catalogue/generated/manifest.json",
+                     *check.RECEIPT_PATHS["consumer_source_custody"]):
+            with self.subTest(path=name):
+                path = self.root / name
+                previous = path.read_bytes()
+                try:
+                    path.write_bytes(previous + b"drift\n")
+                    with self.assertRaisesRegex(ValueError, "native receipt.*" + path.name):
+                        self.validate()
+                finally:
+                    path.write_bytes(previous)
 
     def test_cli_refuses_input_output_alias_before_running_editor(self):
         inputs = {name: self.root / (name + ".json") for name in
@@ -223,6 +299,47 @@ class GodotReportOutputGuards(unittest.TestCase):
         verify.assert_called_once()
         self.assertEqual(json.loads(output.read_text()), {"status": "test stub"})
         self.assertEqual(output.read_text(), stdout)
+
+    def test_editor_pin_output_alias_is_refused_before_and_after_probe(self):
+        repository = self.directory / "repository"
+        pin = repository / "third_party/godot-runtime.lock.json"
+        pin.parent.mkdir(parents=True)
+        pin.write_text("retained editor pin\n")
+        before = (pin.read_bytes(), pin.stat().st_mtime_ns)
+        output = self.directory / "pin-alias.json"
+        for late in (False, True):
+            with self.subTest(late=late), patch.object(check, "ROOT", repository):
+                def effect(*args):
+                    output.symlink_to(pin)
+                    return {"status": "test stub"}
+                if not late:
+                    output.symlink_to(pin)
+                try:
+                    result, verify, stdout, stderr = self.invoke(output, effect if late else None)
+                    self.assertEqual(result, 1)
+                    self.assertIn("must not overwrite an input", stderr)
+                    self.assertEqual(stdout, "")
+                    if late:
+                        verify.assert_called_once()
+                    else:
+                        verify.assert_not_called()
+                    self.assertEqual((pin.read_bytes(), pin.stat().st_mtime_ns), before)
+                finally:
+                    output.unlink(missing_ok=True)
+
+    def test_actual_godot_checker_source_is_an_implicit_protected_input(self):
+        checker = self.directory / "readback.py"
+        checker.write_text("retained reader source\n")
+        before = (checker.read_bytes(), checker.stat().st_mtime_ns)
+        output = self.directory / "checker-alias.json"
+        output.symlink_to(checker)
+        with patch.object(check, "__file__", str(checker)):
+            result, verify, stdout, stderr = self.invoke(output)
+        self.assertEqual(result, 1)
+        self.assertIn("must not overwrite an input", stderr)
+        self.assertEqual(stdout, "")
+        verify.assert_not_called()
+        self.assertEqual((checker.read_bytes(), checker.stat().st_mtime_ns), before)
 
 
 if __name__ == "__main__":

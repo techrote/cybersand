@@ -1,7 +1,7 @@
 {
-  "version": 3,
+  "version": 6,
   "reviewed": "2026-11-04",
-  "scope": "Separate MAT-AUTH-001 353-A questions. Version3 updates only MAT353A-01 revision-sensitive371 merge and354 Phase A facts. Query wording/routes and unrelated question objects, frozen32 and challenge157 remain unchanged; original versions remain in Git history. Shadow tooling remains unconsumed by production World.",
+  "scope": "Separate MAT-AUTH-001 #353-A implementation questions; version 6 updates only MAT353A-01's revision-sensitive facts and fixture metadata for accepted #390/main 751edc0b and the current B reconciliation. It retains A-only acceptance at 7ef4856e and accepted Phase A evidence without implying an H1 repair. All query wording, canonical/source routes, other questions, frozen32 and challenge157 remain unchanged; version 5 remains at 87418298 and version 4 at c6d1603f. Full-shadow metadata stays unconsumed; the new B candidate stops Draft before fresh independent admission and Ready.",
   "questions": [
     {
       "id": "MAT353A-01",
@@ -10,9 +10,9 @@
         "operations/material-catalogue-shadow.md"
       ],
       "facts": [
-        "Owner-authorized353-A is the merged shadow compiler, independent native parity and compatibility guards.",
-        "Production consumers, material physics and existing policy artifacts remain unchanged;357 and371 are merged at accepted main7ef4856e. The separately admitted354 Phase A adds only investigation/tests/evidence; production correction remains pending.",
-        "The broad353 issue and production cutover remain separate from this checkpoint."
+        "Owner-authorized353-A supplies the shadow compiler, independent native parity and immutable compatibility guards accepted through merged371 at main7ef4856e.",
+        "The original full-shadow outputs, native/fallback physics and existing policy artifacts remain unchanged; #357 is the merged owner-adopted Planned architecture. The later separately assigned B candidate changes only Main's generated display names, scoped current proofs and the apparatus dependency inventory. Accepted #377 adds only Phase A tests/tooling/CI/evidence; H1 remains unrepaired and #354 stays open.",
+        "The current B reconciliation authenticates accepted #390/main 751edc0b, including its exact worker ownership fix and two new GDScript tests as well as the earlier native liveness probe, while retaining the historical 7ef4856e display oracle and frozen 27-owner 0fd4af59 authority. It stays Draft before fresh independent admission and Ready, with no merge authorization. The old c6d1603f/01f9b7c8 GO is source-bound; other consumers and later stages remain separately gated, and broad #353 stays open."
       ],
       "sources": [
         "operations/material-catalogue-shadow.md"

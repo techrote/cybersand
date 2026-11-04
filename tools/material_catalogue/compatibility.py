@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only #353-A guards for the immutable legacy consumers.
+"""Read-only legacy guards with a separately admitted, labels-only B consumer.
 
 This is a compatibility checkpoint, not a migration or a generic GDScript
 interpreter. The retained source commit independently authenticates the lock.
@@ -9,6 +9,7 @@ no --accept, --refresh or automatic baseline update mode.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import re
@@ -16,6 +17,9 @@ import struct
 import subprocess
 import sys
 from pathlib import Path
+
+import display_contract
+from proof_scopes import AUTHORITY_SCOPES, B_CONSUMER_REQUIREMENT
 
 ROOT = Path(__file__).resolve().parents[2]
 BASELINE = "0fd4af5987e77db4da3e37c757cf2c0917ae9e15"
@@ -267,15 +271,25 @@ def check(root: Path = ROOT, lock_path: Path | None = None,
                 continue
             if not source.is_file():
                 continue
-            if re.search(rb"catalogue_shadow|material_catalogue_shadow|catalogue\.shadow\.(?:hpp|gd|json)|materials/catalogue/generated",
+            if re.search(rb"catalogue_shadow|material_catalogue_shadow|catalogue\.shadow\.(?:hpp|gd|json)|materials/catalogue/generated|const\s+NATIVE_FACTS\s*:",
                          source.read_bytes()):
                 raise CompatibilityError(f"{source.relative_to(root)}: production/native test imports shadow output; "
                                          "#353-A permits tooling consumers only")
-    return {"status": "PASS", "baseline": BASELINE, "protected_sources": len(SOURCE_ROLES),
+            if (tree == "native" and b"material_ui_names" in source.read_bytes()):
+                raise CompatibilityError(f"{source.relative_to(root)}: labels-only resource has no admitted native consumer")
+    try:
+        display = display_contract.check(root, baseline_repository)
+    except (OSError, ValueError, subprocess.SubprocessError) as exc:
+        raise CompatibilityError("bounded display consumer: " + str(exc)) from exc
+    return {"schema_id": "cybersand.material-catalogue.compatibility", "schema_version": 2,
+            "status": "PASS", "baseline": BASELINE, "protected_sources": len(SOURCE_ROLES),
             "catalogue_digest": catalogue_digest(current),
             "capability_digest": capability_digest(current["docs/reference/liquid-solver-capability-matrix.json"]),
             "fallback_slush_density": actual_lock["fallback_source_facts"]["slush_density"],
-            "production_cutover": False, "runtime_execution": False}
+            "authority_scopes": copy.deepcopy(AUTHORITY_SCOPES),
+            "b_consumer_requirement": copy.deepcopy(B_CONSUMER_REQUIREMENT),
+            "display_consumer_source_guard": display,
+            "runtime_execution": False, "b_consumer_qualified": False}
 
 
 def main(argv: list[str] | None = None) -> int:

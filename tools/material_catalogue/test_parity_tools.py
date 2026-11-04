@@ -37,9 +37,7 @@ class ReportOutputSafetyTests(unittest.TestCase):
         self.repository_inputs = sorted({
             self.root / parity.SOURCE, self.root / parity.CANDIDATE,
             self.root / parity.compatibility.LOCK, self.root / parity.ORACLE,
-            *(self.root / relative for relative in parity.compatibility.SOURCE_ROLES),
-            *(self.root / "tools/material_catalogue" / name for name in (
-                "check_native_parity.py", "compatibility.py", "compiler.py")),
+            *(self.root / relative for paths in parity.RECEIPT_PATHS.values() for relative in paths),
             *((self.root / parity.CANDIDATE).with_name(name) for name in (
                 "catalogue_shadow.gd", "inspection.json", "manifest.json")),
         })

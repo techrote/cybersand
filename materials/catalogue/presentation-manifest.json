@@ -1,0 +1,51 @@
+{
+  "allocated_slots": 132,
+  "artifacts": [
+    {
+      "bytes": 2881,
+      "path": "godot/scripts/generated/material_ui_names.gd",
+      "sha256": "5b2cd4cacdac6a2af43f93eb9f60b63610d3055aa6748d7c47b9c17c44f29fdb"
+    }
+  ],
+  "consumer": "godot/scripts/main.gd::material_name",
+  "generator_version": 1,
+  "identity_sha256": "e995175126f5df1dca9a9320bd121e9e8eb3f20acefb5d58d3313c41f524e370",
+  "inputs": [
+    {
+      "lf_bytes": 195969,
+      "lf_sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14",
+      "path": "materials/catalogue/catalogue.json"
+    },
+    {
+      "lf_bytes": 454,
+      "lf_sha256": "98a44559ea70eb45cf3236f49a236df8ae827c8add328268b9eb8942de04b1be",
+      "path": "materials/catalogue/presentation.json"
+    }
+  ],
+  "labels_sha256": "492f18ee8c3ec6017373afe7fd24b720ab3921215f41d81d1044b6548c46275e",
+  "maximum_bytes": {
+    "godot/scripts/generated/material_ui_names.gd": 16384,
+    "materials/catalogue/presentation-manifest.json": 32768
+  },
+  "normalization": "canonical hyphens become spaces; exactly five validated UI exceptions",
+  "presentation_schema_version": 1,
+  "reserved_ids": [
+    10
+  ],
+  "schema_id": "cybersand.material-catalogue.presentation.manifest",
+  "schema_version": 1,
+  "scope": "ui-labels-only",
+  "source_hash_encoding": "UTF-8 with CRLF normalized to LF",
+  "tool_sources": [
+    {
+      "lf_bytes": 13188,
+      "lf_sha256": "cc2064df6c9fe1c48e7032ea9fa993bddf175117cea6bfc6f4b79aa612b389f5",
+      "path": "tools/material_catalogue/presentation.py"
+    },
+    {
+      "lf_bytes": 46773,
+      "lf_sha256": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+      "path": "tools/material_catalogue/compiler.py"
+    }
+  ]
+}

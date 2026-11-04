@@ -1,0 +1,1275 @@
+{
+  "authority": "accepted Main match arms and CyberCellWorld building labels; independent of generated catalogue",
+  "building_labels": 51,
+  "cases": [
+    {
+      "expected": "empty",
+      "id": "0"
+    },
+    {
+      "expected": "wall",
+      "id": "1"
+    },
+    {
+      "expected": "sand",
+      "id": "2"
+    },
+    {
+      "expected": "water",
+      "id": "3"
+    },
+    {
+      "expected": "smoke",
+      "id": "4"
+    },
+    {
+      "expected": "cloner",
+      "id": "5"
+    },
+    {
+      "expected": "fire",
+      "id": "6"
+    },
+    {
+      "expected": "wood",
+      "id": "7"
+    },
+    {
+      "expected": "lava",
+      "id": "8"
+    },
+    {
+      "expected": "ice",
+      "id": "9"
+    },
+    {
+      "expected": "material-10",
+      "id": "10"
+    },
+    {
+      "expected": "plant",
+      "id": "11"
+    },
+    {
+      "expected": "acid",
+      "id": "12"
+    },
+    {
+      "expected": "stone",
+      "id": "13"
+    },
+    {
+      "expected": "dust",
+      "id": "14"
+    },
+    {
+      "expected": "mite",
+      "id": "15"
+    },
+    {
+      "expected": "oil",
+      "id": "16"
+    },
+    {
+      "expected": "rocket",
+      "id": "17"
+    },
+    {
+      "expected": "fungus",
+      "id": "18"
+    },
+    {
+      "expected": "seed",
+      "id": "19"
+    },
+    {
+      "expected": "paste",
+      "id": "20"
+    },
+    {
+      "expected": "slush",
+      "id": "21"
+    },
+    {
+      "expected": "steam",
+      "id": "22"
+    },
+    {
+      "expected": "salt",
+      "id": "23"
+    },
+    {
+      "expected": "brine",
+      "id": "24"
+    },
+    {
+      "expected": "sodium",
+      "id": "25"
+    },
+    {
+      "expected": "gunpowder",
+      "id": "26"
+    },
+    {
+      "expected": "coal",
+      "id": "27"
+    },
+    {
+      "expected": "metal",
+      "id": "28"
+    },
+    {
+      "expected": "rust",
+      "id": "29"
+    },
+    {
+      "expected": "cement",
+      "id": "30"
+    },
+    {
+      "expected": "concrete",
+      "id": "31"
+    },
+    {
+      "expected": "toxic sludge",
+      "id": "32"
+    },
+    {
+      "expected": "mercury",
+      "id": "33"
+    },
+    {
+      "expected": "spark",
+      "id": "34"
+    },
+    {
+      "expected": "glass",
+      "id": "35"
+    },
+    {
+      "expected": "molten glass",
+      "id": "36"
+    },
+    {
+      "expected": "foam",
+      "id": "37"
+    },
+    {
+      "expected": "limestone block",
+      "id": "38"
+    },
+    {
+      "expected": "sandstone block",
+      "id": "39"
+    },
+    {
+      "expected": "granite block",
+      "id": "40"
+    },
+    {
+      "expected": "cobblestone",
+      "id": "41"
+    },
+    {
+      "expected": "mossy cobblestone",
+      "id": "42"
+    },
+    {
+      "expected": "red brick",
+      "id": "43"
+    },
+    {
+      "expected": "lime plaster",
+      "id": "44"
+    },
+    {
+      "expected": "wattle and daub",
+      "id": "45"
+    },
+    {
+      "expected": "oak timber",
+      "id": "46"
+    },
+    {
+      "expected": "thatch",
+      "id": "47"
+    },
+    {
+      "expected": "terracotta tile",
+      "id": "48"
+    },
+    {
+      "expected": "slate",
+      "id": "49"
+    },
+    {
+      "expected": "wrought iron",
+      "id": "50"
+    },
+    {
+      "expected": "lead sheet",
+      "id": "51"
+    },
+    {
+      "expected": "bronze",
+      "id": "52"
+    },
+    {
+      "expected": "copper",
+      "id": "53"
+    },
+    {
+      "expected": "verdigris copper",
+      "id": "54"
+    },
+    {
+      "expected": "stained glass",
+      "id": "55"
+    },
+    {
+      "expected": "packed earth",
+      "id": "56"
+    },
+    {
+      "expected": "industrial brick",
+      "id": "57"
+    },
+    {
+      "expected": "reinforced concrete",
+      "id": "58"
+    },
+    {
+      "expected": "asphalt",
+      "id": "59"
+    },
+    {
+      "expected": "wet asphalt",
+      "id": "60"
+    },
+    {
+      "expected": "wet cobblestone",
+      "id": "61"
+    },
+    {
+      "expected": "steel plate",
+      "id": "62"
+    },
+    {
+      "expected": "painted steel",
+      "id": "63"
+    },
+    {
+      "expected": "corrugated steel",
+      "id": "64"
+    },
+    {
+      "expected": "rusted steel",
+      "id": "65"
+    },
+    {
+      "expected": "steel grating",
+      "id": "66"
+    },
+    {
+      "expected": "chainlink",
+      "id": "67"
+    },
+    {
+      "expected": "steel pipe",
+      "id": "68"
+    },
+    {
+      "expected": "copper pipe",
+      "id": "69"
+    },
+    {
+      "expected": "ceramic tile",
+      "id": "70"
+    },
+    {
+      "expected": "chemical glass",
+      "id": "71"
+    },
+    {
+      "expected": "dark glass",
+      "id": "72"
+    },
+    {
+      "expected": "rubber",
+      "id": "73"
+    },
+    {
+      "expected": "cable bundle",
+      "id": "74"
+    },
+    {
+      "expected": "insulation",
+      "id": "75"
+    },
+    {
+      "expected": "hazard stripe",
+      "id": "76"
+    },
+    {
+      "expected": "neon cyan",
+      "id": "77"
+    },
+    {
+      "expected": "neon magenta",
+      "id": "78"
+    },
+    {
+      "expected": "neon amber",
+      "id": "79"
+    },
+    {
+      "expected": "LED white",
+      "id": "80"
+    },
+    {
+      "expected": "pine planks",
+      "id": "81"
+    },
+    {
+      "expected": "birch log",
+      "id": "82"
+    },
+    {
+      "expected": "rough oak log",
+      "id": "83"
+    },
+    {
+      "expected": "walnut panel",
+      "id": "84"
+    },
+    {
+      "expected": "mahogany panel",
+      "id": "85"
+    },
+    {
+      "expected": "bamboo",
+      "id": "86"
+    },
+    {
+      "expected": "plywood",
+      "id": "87"
+    },
+    {
+      "expected": "driftwood",
+      "id": "88"
+    },
+    {
+      "expected": "cedar shingles",
+      "id": "89"
+    },
+    {
+      "expected": "charred timber",
+      "id": "90"
+    },
+    {
+      "expected": "cork",
+      "id": "91"
+    },
+    {
+      "expected": "wicker",
+      "id": "92"
+    },
+    {
+      "expected": "cardboard",
+      "id": "93"
+    },
+    {
+      "expected": "paper screen",
+      "id": "94"
+    },
+    {
+      "expected": "tar block",
+      "id": "95"
+    },
+    {
+      "expected": "acrylic sheet",
+      "id": "96"
+    },
+    {
+      "expected": "moss wall",
+      "id": "97"
+    },
+    {
+      "expected": "marble",
+      "id": "98"
+    },
+    {
+      "expected": "chalk block",
+      "id": "99"
+    },
+    {
+      "expected": "basalt columns",
+      "id": "100"
+    },
+    {
+      "expected": "obsidian",
+      "id": "101"
+    },
+    {
+      "expected": "adobe brick",
+      "id": "102"
+    },
+    {
+      "expected": "raw clay",
+      "id": "103"
+    },
+    {
+      "expected": "firebrick",
+      "id": "104"
+    },
+    {
+      "expected": "packed snow",
+      "id": "105"
+    },
+    {
+      "expected": "rock salt block",
+      "id": "106"
+    },
+    {
+      "expected": "gypsum board",
+      "id": "107"
+    },
+    {
+      "expected": "quicklime block",
+      "id": "108"
+    },
+    {
+      "expected": "rammed earth",
+      "id": "109"
+    },
+    {
+      "expected": "sandbag",
+      "id": "110"
+    },
+    {
+      "expected": "terrazzo",
+      "id": "111"
+    },
+    {
+      "expected": "gabion",
+      "id": "112"
+    },
+    {
+      "expected": "galvanised zinc sheet",
+      "id": "113"
+    },
+    {
+      "expected": "aluminium panel",
+      "id": "114"
+    },
+    {
+      "expected": "magnesium plate",
+      "id": "115"
+    },
+    {
+      "expected": "thermite brick",
+      "id": "116"
+    },
+    {
+      "expected": "bare iron plate",
+      "id": "117"
+    },
+    {
+      "expected": "gold leaf",
+      "id": "118"
+    },
+    {
+      "expected": "brass panel",
+      "id": "119"
+    },
+    {
+      "expected": "glass block",
+      "id": "120"
+    },
+    {
+      "expected": "frosted glass",
+      "id": "121"
+    },
+    {
+      "expected": "quartz crystal",
+      "id": "122"
+    },
+    {
+      "expected": "uranium glass",
+      "id": "123"
+    },
+    {
+      "expected": "sugar glass",
+      "id": "124"
+    },
+    {
+      "expected": "wax block",
+      "id": "125"
+    },
+    {
+      "expected": "sulfur block",
+      "id": "126"
+    },
+    {
+      "expected": "phosphor panel",
+      "id": "127"
+    },
+    {
+      "expected": "polymer panel",
+      "id": "128"
+    },
+    {
+      "expected": "solar panel",
+      "id": "129"
+    },
+    {
+      "expected": "carbon fibre",
+      "id": "130"
+    },
+    {
+      "expected": "heat-shield tile",
+      "id": "131"
+    },
+    {
+      "expected": "material-132",
+      "id": "132"
+    },
+    {
+      "expected": "material-133",
+      "id": "133"
+    },
+    {
+      "expected": "material-134",
+      "id": "134"
+    },
+    {
+      "expected": "material-135",
+      "id": "135"
+    },
+    {
+      "expected": "material-136",
+      "id": "136"
+    },
+    {
+      "expected": "material-137",
+      "id": "137"
+    },
+    {
+      "expected": "material-138",
+      "id": "138"
+    },
+    {
+      "expected": "material-139",
+      "id": "139"
+    },
+    {
+      "expected": "material-140",
+      "id": "140"
+    },
+    {
+      "expected": "material-141",
+      "id": "141"
+    },
+    {
+      "expected": "material-142",
+      "id": "142"
+    },
+    {
+      "expected": "material-143",
+      "id": "143"
+    },
+    {
+      "expected": "material-144",
+      "id": "144"
+    },
+    {
+      "expected": "material-145",
+      "id": "145"
+    },
+    {
+      "expected": "material-146",
+      "id": "146"
+    },
+    {
+      "expected": "material-147",
+      "id": "147"
+    },
+    {
+      "expected": "material-148",
+      "id": "148"
+    },
+    {
+      "expected": "material-149",
+      "id": "149"
+    },
+    {
+      "expected": "material-150",
+      "id": "150"
+    },
+    {
+      "expected": "material-151",
+      "id": "151"
+    },
+    {
+      "expected": "material-152",
+      "id": "152"
+    },
+    {
+      "expected": "material-153",
+      "id": "153"
+    },
+    {
+      "expected": "material-154",
+      "id": "154"
+    },
+    {
+      "expected": "material-155",
+      "id": "155"
+    },
+    {
+      "expected": "material-156",
+      "id": "156"
+    },
+    {
+      "expected": "material-157",
+      "id": "157"
+    },
+    {
+      "expected": "material-158",
+      "id": "158"
+    },
+    {
+      "expected": "material-159",
+      "id": "159"
+    },
+    {
+      "expected": "material-160",
+      "id": "160"
+    },
+    {
+      "expected": "material-161",
+      "id": "161"
+    },
+    {
+      "expected": "material-162",
+      "id": "162"
+    },
+    {
+      "expected": "material-163",
+      "id": "163"
+    },
+    {
+      "expected": "material-164",
+      "id": "164"
+    },
+    {
+      "expected": "material-165",
+      "id": "165"
+    },
+    {
+      "expected": "material-166",
+      "id": "166"
+    },
+    {
+      "expected": "material-167",
+      "id": "167"
+    },
+    {
+      "expected": "material-168",
+      "id": "168"
+    },
+    {
+      "expected": "material-169",
+      "id": "169"
+    },
+    {
+      "expected": "material-170",
+      "id": "170"
+    },
+    {
+      "expected": "material-171",
+      "id": "171"
+    },
+    {
+      "expected": "material-172",
+      "id": "172"
+    },
+    {
+      "expected": "material-173",
+      "id": "173"
+    },
+    {
+      "expected": "material-174",
+      "id": "174"
+    },
+    {
+      "expected": "material-175",
+      "id": "175"
+    },
+    {
+      "expected": "material-176",
+      "id": "176"
+    },
+    {
+      "expected": "material-177",
+      "id": "177"
+    },
+    {
+      "expected": "material-178",
+      "id": "178"
+    },
+    {
+      "expected": "material-179",
+      "id": "179"
+    },
+    {
+      "expected": "material-180",
+      "id": "180"
+    },
+    {
+      "expected": "material-181",
+      "id": "181"
+    },
+    {
+      "expected": "material-182",
+      "id": "182"
+    },
+    {
+      "expected": "material-183",
+      "id": "183"
+    },
+    {
+      "expected": "material-184",
+      "id": "184"
+    },
+    {
+      "expected": "material-185",
+      "id": "185"
+    },
+    {
+      "expected": "material-186",
+      "id": "186"
+    },
+    {
+      "expected": "material-187",
+      "id": "187"
+    },
+    {
+      "expected": "material-188",
+      "id": "188"
+    },
+    {
+      "expected": "material-189",
+      "id": "189"
+    },
+    {
+      "expected": "material-190",
+      "id": "190"
+    },
+    {
+      "expected": "material-191",
+      "id": "191"
+    },
+    {
+      "expected": "material-192",
+      "id": "192"
+    },
+    {
+      "expected": "material-193",
+      "id": "193"
+    },
+    {
+      "expected": "material-194",
+      "id": "194"
+    },
+    {
+      "expected": "material-195",
+      "id": "195"
+    },
+    {
+      "expected": "material-196",
+      "id": "196"
+    },
+    {
+      "expected": "material-197",
+      "id": "197"
+    },
+    {
+      "expected": "material-198",
+      "id": "198"
+    },
+    {
+      "expected": "material-199",
+      "id": "199"
+    },
+    {
+      "expected": "material-200",
+      "id": "200"
+    },
+    {
+      "expected": "material-201",
+      "id": "201"
+    },
+    {
+      "expected": "material-202",
+      "id": "202"
+    },
+    {
+      "expected": "material-203",
+      "id": "203"
+    },
+    {
+      "expected": "material-204",
+      "id": "204"
+    },
+    {
+      "expected": "material-205",
+      "id": "205"
+    },
+    {
+      "expected": "material-206",
+      "id": "206"
+    },
+    {
+      "expected": "material-207",
+      "id": "207"
+    },
+    {
+      "expected": "material-208",
+      "id": "208"
+    },
+    {
+      "expected": "material-209",
+      "id": "209"
+    },
+    {
+      "expected": "material-210",
+      "id": "210"
+    },
+    {
+      "expected": "material-211",
+      "id": "211"
+    },
+    {
+      "expected": "material-212",
+      "id": "212"
+    },
+    {
+      "expected": "material-213",
+      "id": "213"
+    },
+    {
+      "expected": "material-214",
+      "id": "214"
+    },
+    {
+      "expected": "material-215",
+      "id": "215"
+    },
+    {
+      "expected": "material-216",
+      "id": "216"
+    },
+    {
+      "expected": "material-217",
+      "id": "217"
+    },
+    {
+      "expected": "material-218",
+      "id": "218"
+    },
+    {
+      "expected": "material-219",
+      "id": "219"
+    },
+    {
+      "expected": "material-220",
+      "id": "220"
+    },
+    {
+      "expected": "material-221",
+      "id": "221"
+    },
+    {
+      "expected": "material-222",
+      "id": "222"
+    },
+    {
+      "expected": "material-223",
+      "id": "223"
+    },
+    {
+      "expected": "material-224",
+      "id": "224"
+    },
+    {
+      "expected": "material-225",
+      "id": "225"
+    },
+    {
+      "expected": "material-226",
+      "id": "226"
+    },
+    {
+      "expected": "material-227",
+      "id": "227"
+    },
+    {
+      "expected": "material-228",
+      "id": "228"
+    },
+    {
+      "expected": "material-229",
+      "id": "229"
+    },
+    {
+      "expected": "material-230",
+      "id": "230"
+    },
+    {
+      "expected": "material-231",
+      "id": "231"
+    },
+    {
+      "expected": "material-232",
+      "id": "232"
+    },
+    {
+      "expected": "material-233",
+      "id": "233"
+    },
+    {
+      "expected": "material-234",
+      "id": "234"
+    },
+    {
+      "expected": "material-235",
+      "id": "235"
+    },
+    {
+      "expected": "material-236",
+      "id": "236"
+    },
+    {
+      "expected": "material-237",
+      "id": "237"
+    },
+    {
+      "expected": "material-238",
+      "id": "238"
+    },
+    {
+      "expected": "material-239",
+      "id": "239"
+    },
+    {
+      "expected": "material-240",
+      "id": "240"
+    },
+    {
+      "expected": "material-241",
+      "id": "241"
+    },
+    {
+      "expected": "material-242",
+      "id": "242"
+    },
+    {
+      "expected": "material-243",
+      "id": "243"
+    },
+    {
+      "expected": "material-244",
+      "id": "244"
+    },
+    {
+      "expected": "material-245",
+      "id": "245"
+    },
+    {
+      "expected": "material-246",
+      "id": "246"
+    },
+    {
+      "expected": "material-247",
+      "id": "247"
+    },
+    {
+      "expected": "material-248",
+      "id": "248"
+    },
+    {
+      "expected": "material-249",
+      "id": "249"
+    },
+    {
+      "expected": "material-250",
+      "id": "250"
+    },
+    {
+      "expected": "material-251",
+      "id": "251"
+    },
+    {
+      "expected": "material-252",
+      "id": "252"
+    },
+    {
+      "expected": "material-253",
+      "id": "253"
+    },
+    {
+      "expected": "material-254",
+      "id": "254"
+    },
+    {
+      "expected": "material-255",
+      "id": "255"
+    },
+    {
+      "expected": "material--9223372036854775808",
+      "id": "-9223372036854775808"
+    },
+    {
+      "expected": "material--9223372036854775807",
+      "id": "-9223372036854775807"
+    },
+    {
+      "expected": "material--4294967296",
+      "id": "-4294967296"
+    },
+    {
+      "expected": "material--2147483648",
+      "id": "-2147483648"
+    },
+    {
+      "expected": "material--256",
+      "id": "-256"
+    },
+    {
+      "expected": "material--132",
+      "id": "-132"
+    },
+    {
+      "expected": "material--11",
+      "id": "-11"
+    },
+    {
+      "expected": "material--10",
+      "id": "-10"
+    },
+    {
+      "expected": "material--1",
+      "id": "-1"
+    },
+    {
+      "expected": "material-256",
+      "id": "256"
+    },
+    {
+      "expected": "material-257",
+      "id": "257"
+    },
+    {
+      "expected": "material-65535",
+      "id": "65535"
+    },
+    {
+      "expected": "material-2147483647",
+      "id": "2147483647"
+    },
+    {
+      "expected": "material-2147483648",
+      "id": "2147483648"
+    },
+    {
+      "expected": "material-4294967295",
+      "id": "4294967295"
+    },
+    {
+      "expected": "material-4294967296",
+      "id": "4294967296"
+    },
+    {
+      "expected": "material-9007199254740991",
+      "id": "9007199254740991"
+    },
+    {
+      "expected": "material-9007199254740992",
+      "id": "9007199254740992"
+    },
+    {
+      "expected": "material-9007199254740993",
+      "id": "9007199254740993"
+    },
+    {
+      "expected": "material-9223372036854775806",
+      "id": "9223372036854775806"
+    },
+    {
+      "expected": "material-9223372036854775807",
+      "id": "9223372036854775807"
+    }
+  ],
+  "group_first_ids": [
+    2,
+    38,
+    57,
+    77,
+    81,
+    98,
+    113,
+    120
+  ],
+  "integer_encoding": "decimal strings preserve all signed 64-bit IDs through JSON/Godot",
+  "match_arms": 80,
+  "method_sha256": "52a8d04c09fa2b1d1a6dcdbd860d7e97656ab1d68f1ac90b2db4b100bbe27282",
+  "paintable_ids": [
+    2,
+    3,
+    1,
+    4,
+    20,
+    21,
+    6,
+    7,
+    16,
+    8,
+    9,
+    12,
+    13,
+    14,
+    11,
+    18,
+    19,
+    5,
+    15,
+    17,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131
+  ],
+  "schema_id": "cybersand.material-catalogue.legacy-display-oracle",
+  "schema_version": 1,
+  "source_commit": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "source_files": [
+    {
+      "bytes": 211512,
+      "path": "godot/scripts/main.gd",
+      "sha256": "61e963f381155e0b3e7de88cde7c9d2bb8c5d2adfda0717e22d23fe632f02f7b"
+    },
+    {
+      "bytes": 78760,
+      "path": "godot/scripts/cell_world.gd",
+      "sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035"
+    }
+  ],
+  "source_tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371"
+}

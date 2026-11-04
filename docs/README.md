@@ -11,16 +11,35 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 # CyberSand documentation
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
-The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
-[#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;
-legacy native/fallback definitions remain production authority. The
-[#354 Phase A investigation](operations/material-liveness-investigation.md)
-demonstrates lost isolated MoltenGlass cooling, distinguishes existing mutual
-heating and preserves documented generic yielding rest. Only tests, tooling and
-documentation are admitted. The [current programme boundary](architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
-keeps production correction, #353-B migration and #355/#356 separately gated;
-#354 remains open. Exact source, failed attempts, review and platform outcomes
-belong to the [findings audit](audits/2026-11-04-mat354-findings.md) and PR ledger.
+The [#353-A shadow compiler](operations/material-catalogue-shadow.md) is accepted
+through [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
+at main `7ef4856e`. The separately assigned
+[bounded #353-B candidate](architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04)
+migrates only Main display names, scopes current proof receipts and records the
+new apparatus dependency. Its [guide](operations/material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
+and [original evidence](audits/2026-11-04-mat-auth353b-display-names.md) distinguish
+static checks from the mandatory actual B consumer report. The
+[#390 reconciliation](operations/material-catalogue-shadow.md#current-main-b-admission-after-390--2026-11-04)
+advances only B's executable admission to accepted `751edc0b`, including the exact
+worker ownership fix and both new GDScript tests, while retaining the accepted
+#377 probe, `7ef4856e` display oracle and `0fd4af59` compatibility authority. The
+[new-source record](audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+ends at fresh independent admission review **before Ready**, with #384 Draft
+and no merge. The earlier #374/c6d checkpoint and source-bound GO remain
+historical; they do not approve this new candidate. Other production consumers
+remain separately gated; native/fallback physics, the legacy lock and historical
+evidence are unchanged. #358's experimental IDs remain unintegrated.
+
+The [#354 Phase A investigation](operations/material-liveness-investigation.md)
+merged through [#377](https://github.com/techrote/cybersand/pull/377) at
+`0103de80d11304388868f89f7b26c672ad6100ad` on 4 November 2026, 18:14:18 UTC.
+It demonstrates lost isolated MoltenGlass cooling, distinguishes existing mutual
+heating and preserves documented generic yielding rest. Its tests, tooling, CI,
+documentation and retained evidence change no production behavior. The
+[Phase A boundary](architecture/material-authoring-catalogue-plan.md#15-material-liveness-phase-a-and-production-admission--2026-11-04)
+keeps the H1 correction and #355/#356 separately gated; #354 remains open and H1
+unrepaired. Exact source, failed attempts, review and platform outcomes remain
+in the [findings audit](audits/2026-11-04-mat354-findings.md) and #377 ledger.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),

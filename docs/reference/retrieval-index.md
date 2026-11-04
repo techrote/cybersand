@@ -28,23 +28,43 @@ contracts. Their original failed or incomplete attempts remain evidence.
 
 Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)
 for implemented #353-A scope, commands, deterministic validation, frozen native
-and fallback identities, experimental ID isolation and rollback. It distinguishes
-current shadow tooling from unchanged production authority and the separate
-#353-B cutover decision. The [353-A questions](retrieval-questions-mat-auth-353a.json)
-remain a separate implementation fixture. Version2 corrects MAT353A-01's
-revision-sensitive #357 adoption/merge fact; query wording and canonical routes
-stay fixed. Original version1 and its evidence remain at implementation head
-`6d3737594beb39e83e555f66f2e81184a4bdbf77`.
+and fallback identities, experimental ID isolation and rollback. Its
+[bounded Main display-name section](../operations/material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
+owns the separately assigned #353-B labels-only consumer, exact five exceptions,
+scoped v2 receipts, unchanged A locks and mandatory actual consumer proof.
+Static `--check` is not a runtime B report. The
+[#390/current-main admission section](../operations/material-catalogue-shadow.md#current-main-b-admission-after-390--2026-11-04)
+distinguishes B baseline `751edc0b`, historical display oracle `7ef4856e` and
+frozen 27-owner authority `0fd4af59`. The accepted worker and both new GDScript
+tests are authenticated under the unchanged suffix policy; earlier #374/#377
+executables and separately authenticated fixture data remain intact. #384 stays Draft before a new independent
+GO TO READY / CONDITIONAL / NO-GO review. The old `c6d1603f` / `01f9b7c8` GO is
+historical and does not qualify the new source.
+
+The [six B questions](retrieval-questions-mat-auth-353b.json) version4 update only
+MAT353B-04/05/06 facts and metadata for the post-#390 transition; query wording
+and canonical/source routes stay fixed. Version3 remains at `87418298`, version2 at `c6d1603f`
+and original version1 at `bbed081b`.
+The [353-A questions](retrieval-questions-mat-auth-353a.json) remain a separate
+implementation fixture. Version6 updates only MAT353A-01's revision-sensitive
+facts and metadata for post-#390 B admission; all queries, canonical/source
+routes and other questions stay fixed. Version5 remains at `87418298`. Version4
+remains at `c6d1603f`, branch-specific version3 at `bbed081b` and accepted #377,
+and version2 in accepted `7ef4856e`. Original version1 and its evidence remain
+at implementation head `6d3737594beb39e83e555f66f2e81184a4bdbf77`.
 
 ## Material-authoring adoption and implementation boundary — 2026-11-04
 
 The [adopted Planned architecture](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
-and [current A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
-distinguish merged #357 documentation, implemented #353-A tooling in #371,
-resulting-head qualification and separately gated successor work. The
-[later Phase A boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
-records merged #371 and the tests/tooling/documentation-only admission for #354;
-production implementation remains pending.
+retains its [historical A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04).
+The [current bounded B admission](../architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04)
+distinguishes accepted #357/#371 from this draft Main-label migration; all other
+consumers and the H1 production correction/#355/#356 retain separate gates.
+The accepted
+[Phase A boundary](../architecture/material-authoring-catalogue-plan.md#15-material-liveness-phase-a-and-production-admission--2026-11-04)
+records #377 merged at `0103de80`, with tests/tooling/CI/evidence only; H1 remains
+unrepaired and #354 open. Its original failures and integration chronology remain
+in the investigation guide and #377 ledger.
 The [corrected technical contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 owns header-byte identity, backend distinctions, endpoint effects, experimental
 IDs and successor gates. Original proposal and review statements retain their
@@ -53,8 +73,11 @@ is historical evidence outside the default corpus.
 
 [Supplementary architecture questions](retrieval-questions-mat-auth.json)
 exercise these distinctions separately from unchanged frozen32 and challenge157.
-Version3 updates only MAT-AUTH-01's revision-sensitive adoption/implementation
-facts and fixture metadata; query wording and canonical routes stay fixed.
+Version7 updates only MAT-AUTH-01's revision-sensitive facts and metadata for
+accepted #390/current B reconciliation and the before-Ready boundary; all queries,
+canonical/source routes and other questions stay fixed. Version6 remains at `87418298`. Version5
+remains at `c6d1603f`; branch-specific version4 remains at `bbed081b` and accepted
+#377; version3 remains in accepted `7ef4856e`.
 Version1 remains at reviewed head `9b776d109e7843fb9b2d25239f9d088181309aa1`,
 and adoption-only version2 at main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`.
 

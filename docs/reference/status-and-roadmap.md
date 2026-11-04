@@ -38,20 +38,36 @@ stays open, and a full-host cohort remains the next practical-cost experiment.
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 and the [corrected architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
-[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) merged in
-#371 at accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`.
-It provides deterministic candidate metadata,
-independent native parity and frozen source/identity guards; it does not replace
-production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
-and [#371 ledger](https://github.com/techrote/cybersand/pull/371) separate code,
-resulting-head acceptance and actual merge status.
+[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) is accepted
+through [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
+at main `7ef4856e`. The owner separately assigned the
+[bounded Main display-name candidate](../architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04).
+It replaces one presentation table with generated labels, scopes current proofs
+and authenticates the apparatus dependency. Native/fallback physics and original
+source locks remain unchanged. The [original B record](../audits/2026-11-04-mat-auth353b-display-names.md)
+and [#374 reconciliation](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+keep their tested sources and receipts. The `c6d1603f` / `01f9b7c8` independent
+GO is historical and does not approve the later candidate.
+
+Accepted #377 advanced main to `0103de80` with tests, tooling, CI and retained
+liveness evidence only; H1 remains unrepaired and #354 open. Its new native
+probe required a [historical B inventory transition](../operations/material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04).
+Accepted #390 then advanced main to `751edc0b`, preserving fixed-interest worker
+ownership and adding two GDScript tests. The [post-#390 record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+keeps frozen `0fd4af59` compatibility, historical `7ef4856e` display output and
+current `751edc0b` B admission distinct. The reconciled #384 candidate
+requires fresh published-head proof and independent admission **before Ready**.
+The [Phase A boundary](../architecture/material-authoring-catalogue-plan.md#15-material-liveness-phase-a-and-production-admission--2026-11-04)
+and #377 ledger preserve its separate source-qualified findings, failures and
+integration status; acceptance of that evidence does not repair production.
 
 | Programme slice | Current disposition |
 |---|---|
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
-| #353-A / #371 | Merged shadow tooling and 27-source guard; legacy production definitions remain authoritative |
-| #353-B | Separate consumer-migration admission required; no production switch authorized |
-| #354 / #377 | Phase A evidence-only current-main reconciliation and guarded integration authorized, subject to [fresh final-candidate gates](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration); H1 remains unrepaired, H2/H3 preserved, production admission pending and issue open |
+| #353-A / #371 | Accepted A-only foundation at main `7ef4856e`; complete shadows remain unconsumed |
+| #353-B Main labels / #384 | Reconciled with accepted #390/main `751edc0b`; exact worker/two-test preservation and 663/664 executable inventories; fresh exact-head proof and independent GO TO READY / CONDITIONAL / NO-GO required; old `c6d1603f` GO remains source-bound; stays Draft, no merge |
+| Other #353-B consumers | Separate admission required; no additional production migration |
+| #354 / #377 | Phase A tests/tooling/CI/evidence merged at `0103de80` on 4 November 2026, 18:14:18 UTC; H1 remains unrepaired, H2/H3 preserved, production correction separately gated and issue open |
 | #355 | Separate endpoint-effects implementation programme; serialize any overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
 | #358 | Independent experimental material work;132–137 not integrated here |
@@ -59,6 +75,14 @@ resulting-head acceptance and actual merge status.
 Broad #353 and parent #352 remain open. The original implementation receipts
 retain their tested source; no metadata or source-byte comparison by itself
 establishes fallback simulation, new physics or human gameplay acceptance.
+The actual B consumer report is mandatory and separate from static/native-shadow
+checks. Future changes to the B admitted executable inventory need a reviewed
+transition; an expanded accepted catalogue requires a new scope decision.
+Ready-state materialized provenance, full Native/sanitizers, Linux/Windows
+GDExtension/current Godot, palette/backend and applicable Water/LCB gates remain
+pending on the reconciled candidate. Web export/package loading,
+startup/lookup measurement and final independent integration review remain later
+work; draft skips and the original source's passes do not satisfy these gates.
 
 The [liveness guide](../operations/material-liveness-investigation.md) routes
 reproduction and the [ranked correction design](../audits/2026-11-04-mat354-correction-admission.md).
@@ -70,7 +94,7 @@ in the [findings](../audits/2026-11-04-mat354-findings.md) and live PR ledger.
 
 **Historical documentation-adoption scope.** The assignment statements below
 precede reconciliation of the separately implemented #371 candidate. The
-current A-only status is recorded above; the original adoption remains intact.
+current implementation status is recorded above; the original adoption remains intact.
 
 The [corrected MAT-AUTH architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The owner approved documentation-only guarded integration of #357 after final

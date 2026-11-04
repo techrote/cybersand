@@ -2,13 +2,35 @@
 title: Material catalogue shadow compiler and compatibility guards
 status: Current
 document-kind: guide
-scope: Merged MAT-AUTH-001 353-A shadow tooling and source guards; legacy production authority persists, with consumer migration and production liveness corrections separately gated
-canonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]
+scope: Accepted 353-A shadow tooling plus the separately assigned draft 353-B Main display-name consumer; native and fallback physics stay unchanged, with scoped current proofs and immutable historical evidence
+canonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow, material-display-name-authority]
 last-reviewed: 2026-11-04
 related-documents: [../architecture/material-authoring-catalogue-plan.md, ../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../architecture/liquid-solver-family-policy.md, documentation-maintenance.md]
 ---
 
 # Material catalogue shadow compiler and compatibility guards
+
+**Current on the #353-B candidate branch:** [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
+records accepted A-only main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. The owner separately assigned
+the [bounded Main display-name migration](#bounded-main-display-name-authority--2026-11-04):
+one labels-only generated consumer, scoped current proofs and an explicit
+apparatus source transition. The
+[#390/current-main reconciliation](#current-main-b-admission-after-390--2026-11-04)
+authenticates accepted main `751edc0b495dc85484ad5509a7c95f863651c76b` for the
+B executable inventory, including the exact worker ownership fix and both new
+GDScript tests. The accepted #374 benchmark and #377 liveness probe stay admitted. The historical
+display oracle and 27-owner lock stay fixed. **PR #384 stays Draft; fresh
+independent admission review precedes Ready-for-review.** No merge is authorized.
+Native and fallback physics retain their existing authority. The
+[original B evidence](../audits/2026-11-04-mat-auth353b-display-names.md),
+[#374 reconciliation](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+and [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+keep each source, measured artifact, runtime result and remaining gate distinct.
+
+**Historical A-only integration framing:** the following adoption/reconciliation
+paragraphs retain the scope that preceded accepted #371 and this separate B
+assignment. Full-shadow metadata remains unconsumed in the B candidate.
 
 The [adopted-main integration record](../audits/2026-11-04-mat-auth371-integration.md)
 records the escaping correction, independent review and resulting-head gate
@@ -133,12 +155,15 @@ native-parity receipt, and loads only the candidate in a temporary empty project
 Actual Godot 4.7 parses and reads all metadata; this is not a game-project,
 native-extension, fallback-physics or rendered-pixel test.
 
-The receipt must contain the exact three checker/oracle inputs and five
-catalogue/mirror inputs; missing, duplicated, renamed or stale entries fail.
-The checker verifies the whole inventory again after readback. Report paths
-cannot overwrite their checked inputs. A truncated local editor archive was
-refused during qualification; the accepted readback used the complete archive
-matching the repository's size and SHA-256 pin.
+Current schema-v2 receipts require the complete declared checker/oracle,
+catalogue/mirror, consumer-source and protected-legacy inventories; missing,
+duplicated, renamed or stale entries fail. The checker verifies those inventories
+again after readback. The original schema-v1 receipts and their readers remain
+historical evidence in dated audit paths and retained Git; v1 cannot satisfy
+current B proof. The separate labels consumer report is mandatory and is not
+produced by this shadow-parser check. Report paths cannot overwrite their
+checked inputs. The original truncated-editor refusal and accepted pinned
+readback retain their dated qualification.
 
 ## Validation, errors and deterministic publication
 
@@ -175,12 +200,11 @@ compiler; JSON generation and strict validation use Python's standard library.
 CI reuses the existing hosted
 Documentation workflow and execution watchdog. These focused commands do not
 run World scenarios or require a Godot download; expensive draft lanes stay
-suppressed. Under the existing ready-state path classifiers, this tools/data
-implementation also triggers the full Native and Windows/Linux GDExtension/Godot
-gates when #371 becomes ready. Those configured integration checks remain
-required; a draft skip or metadata readback is not a substitute. Freeze and
-independently review the candidate before that transition to avoid redundant
-matrices. Record actual jobs and any skips in the PR ledger.
+suppressed. A later ready-state integration of the B tools/data/Godot changes
+requires the applicable full Native and Windows/Linux GDExtension/Godot gates
+under the existing path classifiers. A draft skip or metadata readback does not
+satisfy those integration requirements. The present assignment stops at draft
+independent review; record actual jobs and any skips in its PR ledger.
 
 For optional actual Godot metadata readback, use a complete editor archive and
 executable matching `third_party/godot-runtime.lock.json`. Produce a native
@@ -229,12 +253,13 @@ requiring its own parity/identity review and applicable integration gates.
 
 ## Production cutover, rollback and remaining decisions
 
-#353-A adds tooling and unused candidate data only. Reverting its tools,
+#353-A alone adds tooling and unused candidate data only. Reverting its tools,
 candidate directory, documentation routes and CI step restores the previous
 development workflow; no save or World conversion is needed. Existing kernels
 and policy artifacts remain the production authority throughout.
 
-#353-B requires a separate review of each proposed consumer switch. Preserve
+The Main display-name consumer has the separate bounded assignment below.
+Every other #353-B consumer requires its own admission review. Preserve
 the exact header bytes and parser-compatible form where they bind identities,
 or design an explicitly versioned identity transition before changing them.
 Revert a switched consumer and its generated route as one unit. A stale-policy
@@ -247,3 +272,335 @@ metadata, but a slider requires an actual consumer and applied readback.
 Source fields whose native path ignores them remain read-only/unused.
 No Spark family, same-ID preservation, MoltenGlass thermal law, viscous rest,
 new production ID, runtime editing or save/ABI decision is made by these tools.
+
+## Bounded Main display-name authority — 2026-11-04
+
+**Current candidate implementation; independent review and integration remain
+separate.** Only [`main.gd::material_name`](../../godot/scripts/main.gd) changes
+production ownership. It preloads
+[`material_ui_names.gd`](../../godot/scripts/generated/material_ui_names.gd),
+bounds-checks the signed material ID and returns its static label. ID0 remains
+`"empty"`; reserved ID10, negative IDs and integers above 131 retain
+`"material-%d" % material_id`. There is no runtime JSON, per-cell parsing or
+silent fallback to the old table. Desktop HUD, inherited Web controller, Tower,
+transport and MicroScenario callers still use the same public method.
+
+[`presentation.py`](../../tools/material_catalogue/presentation.py) validates
+the complete unchanged canonical catalogue and a separately versioned
+[`presentation.json`](../../materials/catalogue/presentation.json). It normalizes
+canonical hyphens to spaces and admits exactly these existing UI exceptions:
+
+| ID | Exact display name |
+|---:|---|
+| 80 | `LED white` |
+| 83 | `rough oak log` |
+| 113 | `galvanised zinc sheet` |
+| 117 | `bare iron plate` |
+| 131 | `heat-shield tile` |
+
+The resource contains labels only, with no global class name or native/fallback
+physics fields. Semantic families do not become picker groups. Paintable IDs,
+group ordering, selection/cycling, secondary material behavior, transport v1's
+81-material schema, saves, shaders, Worldgen and native/fallback functions are
+unchanged. The 132-slot domain, invalid10, native Slush density 1080 and fallback Slush density 1100
+remain intact. ID132 is not admitted by the presentation schema.
+
+### Generation and nonwriting checks
+
+The only outputs are the labels resource and
+[`presentation-manifest.json`](../../materials/catalogue/presentation-manifest.json).
+They use deterministic UTF-8/LF bytes with a final newline. Input/tool fingerprints
+explicitly normalize CRLF to LF; output hashes describe exact generated bytes.
+The script budget is 16 KiB and the manifest budget 32 KiB; actual measured sizes
+belong to the dated evidence. Unknown fields, duplicate keys, malformed or wrong
+schema/types, changed identities and extra overrides fail before publication.
+Outputs are staged before atomic file replacements, with rollback after a
+publication failure. Unchanged outputs retain bytes and mtimes.
+
+```text
+python3 tools/material_catalogue/presentation.py
+python3 tools/material_catalogue/presentation.py --check
+python3 tools/material_catalogue/legacy_display_names.py --check
+python3 tools/material_catalogue/check_display_consumer.py --check
+```
+
+The last three commands are nonwriting source checks. In particular,
+`check_display_consumer.py --check` does **not** execute Godot or issue a current
+runtime B consumer report. Documentation CI adds these source checks to the
+existing compatibility/compiler/native metadata gate; expensive draft lanes
+remain suppressed.
+
+For the mandatory actual B consumer proof, freeze the source commit, materialize
+its published Linux libraries, and select the pinned Godot executable and
+archive. Use a new output path for each run:
+
+```text
+python3 tools/material_catalogue/check_display_consumer.py --godot /path/to/pinned-editor --archive /path/to/pinned-editor.zip --output build/material-catalogue/display-consumer.json
+python3 tools/material_catalogue/check_display_consumer.py --verify build/material-catalogue/display-consumer.json --godot /path/to/pinned-editor --archive /path/to/pinned-editor.zip
+```
+
+The driver copies the actual project into isolated scratch space and runs
+legacy, candidate, ordinary-label poison and rollback stages. It retains raw
+observations, source manifests and import/probe logs beside the report in
+`display-consumer.evidence/`. Neither destination may already exist. Verification
+requires those actual files, current source custody, authenticated editor/runtime
+bytes and all four stages; a metadata receipt or historical v1 report is refused.
+The local display-probe bounds are 240 seconds per import and 180 seconds per
+probe, tighter than the unchanged repository watchdog allowances. Execution
+qualifies detached actual Main and inherited Web UI methods on Linux, with no
+World, browser/Wasm or rendered-pixel claim.
+
+Current receipts bind the exact checked Git head/tree and listed worktree
+status as well as file hashes. A later documentation/evidence commit is a new
+source context: do not relabel an earlier receipt as final-head qualification.
+Keep final qualifying outputs outside tracked source and record their source
+and hashes in the draft-PR ledger. Repository policy forbids committing logs,
+toolchains, caches or archives; retained evidence packets remain separate.
+
+### Separate authority and proof scopes
+
+| Scope | Current authority | Required evidence |
+|---|---|---|
+| Native runtime and fallback physics | Existing protected legacy sources | Original 27-owner authentication and unchanged policy/quantity contracts |
+| Complete native shadow | Unconsumed original full-shadow outputs | Native metadata/query parity and separately authenticated Godot shadow readback |
+| Main display names | Generated labels-only resource through the one public method | Independent schema-v2 B consumer report from actual candidate application methods |
+
+Current compatibility/native/Godot-shadow receipts use schema v2 and separate
+these scopes. Native metadata execution explicitly claims no actual UI behavior;
+shadow readback claims no production-project, fallback-physics or rendered-pixel
+qualification. Both carry an unsatisfied-by-this-report requirement for the
+separate `cybersand.material-catalogue.display-consumer` schema-v2 report.
+Historical v1 receipts/readers, their source hashes and dated evidence stay
+authenticatable and cannot be relabelled as current B acceptance.
+
+The [source-admission guard](../../tools/material_catalogue/display_contract.py)
+authenticates the accepted native/Godot executable and scene/configuration
+routing inventory. Its original `bbed081b` candidate used `7ef4856e`; the
+reconciled candidate uses the explicit B baseline described below. Only the new
+labels resource, exact Main preload/method replacement and declared apparatus
+entry are permitted consumer changes. Second, renamed or indirect imports,
+including other script directories, addons, scene resources, autoload routing
+and native sources, are refused. This B inventory is separate from the unchanged
+27-owner legacy lock. A future integration that edits Main or another admitted
+executable source, including active #370, needs a reviewed B transition and fresh
+proofs; it must not refresh the A lock or silently import an active branch.
+
+### Current-main B admission after #390 — 2026-11-04
+
+**Current source transition; STOP BEFORE READY.** Accepted main is
+`751edc0b495dc85484ad5509a7c95f863651c76b`, tree
+`b0d42a256285e6049a6d3bdd1613d7ecd89f43c6`. Its ordered parents are
+`0103de80d11304388868f89f7b26c672ad6100ad` and
+`9a9e63a0091f3a64e038892e651d0591d135241a`. The owner assigned an ordinary
+ancestry-preserving merge into existing #384 head `87418298e95def37ec86b83c543c2aa2d1d7c398`.
+The [post-#390 reconciliation record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+and [PR ledger](https://github.com/techrote/cybersand/pull/384) identify the
+resulting published head, fresh receipts and normal Draft hosted execution.
+
+| Authority | Immutable source | Treatment |
+|---|---|---|
+| Frozen 27-owner compatibility | `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` | Original lock, catalogue and full-shadow outputs remain unchanged |
+| Historical 277-case display oracle | `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` | Original Main/CellWorld outputs, 132 slots and invalid-ID fallbacks remain unchanged |
+| Current B executable admission | `751edc0b495dc85484ad5509a7c95f863651c76b` | Exact accepted tree and complete native/Godot inventory, without test exemptions |
+
+The accepted delta has eight paths. Its three executable changes are
+[`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd),
+[`test_simulation_worker_interest_ownership.gd`](../../godot/tests/test_simulation_worker_interest_ownership.gd)
+and [`lcb201_pressure_host_case.gd`](../../godot/tests/lcb201_pressure_host_case.gd).
+All three preserve accepted Git bytes. Fixed-interest MicroScenarios alone
+write their region/window flag; the worker still applies cadence, adhesion and
+interest-center settings, and non-fixed-interest operation retains its camera
+window writes. The [accepted #390 record](../audits/2026-11-04-lcb201-region-flip.md)
+owns original measurements. A compatibility pass alone does not prove this
+worker behavior; fresh executable ownership and real-native cache controls
+must be reported separately, with unavailable prerequisites stated explicitly.
+
+Reconstructed accepted inventory grows **661→663** and the candidate has **664**
+entries. The unchanged 16 suffixes and `godot`/`native` roots authenticate both
+new tests and the changed worker. The old post-#377 baseline actually refuses
+the two new paths; a retained old inventory cannot be treated as current.
+There are no test, benchmark, directory or extension exemptions. The only B
+consumer deviations remain the Main preload/method, generated labels resource
+and existing MicroScenario resource-list addition. The worker was already in
+the apparatus source list, so its accepted byte change also changes the current
+apparatus fingerprint. The two tests enter the complete B inventory, not that
+narrower list. Old captures and native/shadow/B receipts keep their source sets.
+
+Fresh final-head checks must cover exact baseline/tree and complete inventory,
+tamper/remove/rename/copy controls for both new tests, stale worker admission,
+unadmitted executable/indirect consumer, producer/receipt/source-map corruption,
+and attempts to retarget either historical authority. Preserve the real
+legacy/candidate/poison/rollback Godot proof, native query parity and separate
+GDScript shadow v2 proof. A poison must fail the actual consumer probe and
+rollback must restore the historical source map. Stage counts are observations,
+not hard-coded admission thresholds. Linux inherited-Web method execution does
+not establish browser/Wasm, full application, rendered pixels or Windows proof.
+
+The previous `87418298` / `0103de80` packet and older `c6d1603f` / `01f9b7c8`
+independent GO remain historical. The new owner cannot self-issue admission.
+Keep #384 open, Draft and unmerged for a new strictly read-only **GO TO READY /
+CONDITIONAL / NO-GO** decision on the exact new pair. Normal Draft CI supplies
+only its actually executed jobs/steps: advisory success grants no Native waiver;
+Draft-skipped Native, sanitizers, GDExtension, palette and Web gates remain
+unexecuted. Ready-state materialized provenance, remaining runtime/export and
+measurement gates require a later separately authorized assignment.
+
+### Current-main B admission after #377 — 2026-11-04
+
+**Historical post-#377 transition for `87418298` / `0103de80`; superseded only
+for current B admission by the #390 section above.**
+
+**Current candidate source transition; fresh independent admission required.**
+The [independent read-only GO report](https://chatgpt.com/library?file_id=libfile_d3ee9e7f5e108191905cc6560fffe1f1&account_id=personal)
+qualified #384 head `c6d1603f3c144f6730e2014ab32b98b0240f1e37`, tree
+`63ccd60e6e1943bdbcd19fe48e4e0fc28508b6b1`, against accepted main
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc` only. It authorized the next Ready
+qualification, not a merge. That source-bound report, the original 32-command
+qualification and hosted runs41863226175/41863226196 remain historical.
+
+[#377](https://github.com/techrote/cybersand/pull/377) then merged at
+`0103de80d11304388868f89f7b26c672ad6100ad` on 4 November 2026, 18:14:18 UTC;
+its tree is `0ba07dc799afca43716bbab966f48266fa924718`. Its 145-path accepted
+delta adds tests, tooling, CI, documentation and retained research evidence,
+with no changes to `native/src`, `native/include`, `godot` or `materials`.
+H1 remains unrepaired and #354 remains open. This reconciliation preserves the
+accepted #377 source/evidence bytes except the documented shared-page resolutions;
+it does not rerun the full liveness campaign or upgrade historical failed evidence.
+
+| Source role | Retained commit | Meaning |
+|---|---|---|
+| Frozen 27-owner compatibility authority | `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` | Unchanged original legacy lock and protected owners |
+| Historical display-output oracle | `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` | Unchanged Main/CellWorld source and 277-case display fixture |
+| Current B executable admission | `0103de80d11304388868f89f7b26c672ad6100ad` | Accepted native/Godot executable and routing inventory before the same bounded Main migration |
+
+[`display_contract.py`](../../tools/material_catalogue/display_contract.py)'s
+`B_ADMISSION_BASELINE` and `B_ADMISSION_TREE` authenticate this accepted source.
+The accepted Main and apparatus-identity files must still equal their historical
+pre-cutover bytes. The permitted candidate deviations remain exactly Main's
+preload/name method, generated `material_ui_names.gd` and that resource's one
+MicroScenario source-list entry. No native or additional naming consumer is
+admitted, and the unchanged #374 benchmark remains an ordinary inventory member.
+
+The new [`native/tests/material_liveness_probe.cpp`](../../native/tests/material_liveness_probe.cpp)
+is an accepted executable translation unit, not an exemption: Git blob
+`5185801e469cfed975b901243a42f3a02a0e1ee4`, 28,669 bytes, SHA-256
+`26e421d2b9de3e4e6c0c6e7e74f503f3f26f7baf17b02c6d02712eb15dcc9bb9`.
+It includes `world.cpp` once for test instrumentation through existing observer
+access; the separate MAT354 tooling builds it outside production targets. It
+does not consume generated UI labels or modify production World source.
+Authenticating its accepted Git bytes, rather than its name or test intent,
+admits it under the unchanged inventory policy.
+
+The `godot`/`native` roots and 16 suffixes remain unchanged. The measured accepted
+inventory grows 660→661; the old #384 inventory has 661 and the reconciled
+candidate has 662 entries because it retains the generated label resource.
+The `.json` suffix is not admitted by this executable policy, so
+[`material_liveness_campaign_v1.json`](../../native/tests/fixtures/material_liveness_campaign_v1.json)
+is authenticated separately as retained fixture data. Its exclusion is the
+existing suffix rule, not a new path exception. Neither the probe nor fixture
+enters the narrower MicroScenario `SOURCES` list.
+
+Probe tampering, removal, rename or copying, additional executable/routing
+source, the old `01f9b7c8` inventory, a mismatched accepted tree, indirect/alias
+consumers, missing apparatus source and unauthorized routing must still fail
+closed. Focused regression controls reuse the existing B apparatus and generic
+suffix tests; the frozen compatibility lock and old oracle are never refreshed.
+
+Fresh checks must run again at the actual published candidate: compatibility
+and raw protected-source authentication, deterministic compiler/presentation and
+277-case oracle, all material tests, native parity v2, GDScript shadow v2 and
+the pinned Godot 4.7 legacy/candidate/`sand`→`SAND`/rollback B proof. Static,
+native and shadow receipts remain separate from actual B runtime proof. Retain
+all four manifests, raw reports, process outputs, tool identities and source
+hashes; the poison must fail in actual Main and inherited Web-controller routes,
+and rollback must restore old output and apparatus fingerprint.
+
+The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+and [#384 ledger](https://github.com/techrote/cybersand/pull/384) own the exact
+published head/tree, executed results, normal Draft hosted checkouts/steps and
+remaining gates. **STOP BEFORE READY.** Request a distinct strictly read-only
+**GO TO READY / CONDITIONAL / NO-GO** for the new head plus `0103de80`;
+the old GO does not transfer. No Ready transition, expensive Draft-policy
+bypass, merge, broad issue closure or unmerged-branch import is authorized.
+After a new GO, a separately authorized agent must complete Ready-state
+provenance, full Native/sanitizers, Linux/Windows Godot/GDExtension,
+palette/backend and applicable Water/LCB gates. Pinned export-template
+provenance must precede reproducible Godot 4.7 Web export/package loading;
+old/new lookup/startup/memory measurements and final independent integration
+review remain later work.
+
+### Current-main B admission after #374 — 2026-11-04
+
+**Historical #374 reconciliation for `c6d1603f` / `01f9b7c8`.** The later
+source-bound GO is recorded above; this earlier transition and its remaining
+gates are retained separately from the new post-#377 candidate.
+After the original #384 review, [#374](https://github.com/techrote/cybersand/pull/374)
+landed on main at `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`, tree
+`4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`. It adds
+[`native/bench/lcb201_pressure_idle_cost.cpp`](../../native/bench/lcb201_pressure_idle_cost.cpp),
+an executable C++ translation unit under the B guard's existing inventory rules.
+The old B inventory correctly refuses that extra path. #374 changes neither the
+old Main/CellWorld display source nor the material catalogue and protected owners.
+
+| Source role | Retained commit | Meaning |
+|---|---|---|
+| Frozen 27-owner compatibility authority | `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` | Immutable legacy lock, material/policy identity and source owners |
+| Legacy display-output oracle | `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` | Actual pre-cutover Main/CellWorld outputs and immutable fixture |
+| Current B executable admission | `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc` | Accepted native/Godot executable and routing inventory before the same bounded Main migration |
+
+`display_contract.py::B_ADMISSION_BASELINE` and `B_ADMISSION_TREE` authenticate
+the new accepted inventory and its tree. The accepted Main and apparatus-identity
+sources must still equal their frozen pre-cutover versions before applying the
+reviewed consumer delta. The #374 benchmark is positively authenticated against
+its accepted Git blob; no benchmark-directory, filename or unknown-source
+exemption is introduced. Tampering, removal, renaming and extra executable files
+remain refusals. [`tools/lcb/pressure_idle_cost.py`](../../tools/lcb/pressure_idle_cost.py)
+is preserved as accepted research tooling; Python under `tools/` is outside the
+guard's deliberately unchanged `native`/`godot` roots and executable suffix set.
+
+Fresh source-bound compatibility, native/shadow and four-stage actual B receipts
+are required on the resulting candidate. Original `bbed081b` receipts and the
+[dated original audit](../audits/2026-11-04-mat-auth353b-display-names.md) retain
+their original identities; they are not new-head acceptance. The
+[reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+routes the final published SHA/tree and retained evidence to the PR ledger.
+
+This assignment ends **before Ready**, even when focused checks pass. A separate
+strictly read-only reviewer must return **GO TO READY / CONDITIONAL / NO-GO**.
+Ready-state materialized provenance, full Native/sanitizers, Linux/Windows
+GDExtension/current Godot, palette/backend and applicable Water/LCB gates remain
+pending on the reconciled head. Actual Web export/package loading, browser/Wasm
+execution, old-versus-new startup/lookup measurement and the final independent
+integration audit are separate later evidence; no pass is inferred here.
+
+### Independent oracle, apparatus transition and rollback
+
+[`legacy_display_names.py`](../../tools/material_catalogue/legacy_display_names.py)
+authenticates the old Main method and fallback building labels directly from
+pre-cutover `7ef4856e`, tree `36ce5a01e754a141c321f41cac7f1c6b6059c371`.
+This oracle deliberately does not follow the later B admission baseline.
+Its immutable fixture covers all 256 byte IDs and 21 signed/large
+edge IDs, including both signed 64-bit limits, plus picker and grouping order.
+It does not derive expected returns from the new generator. Actual old and
+candidate Main and inherited Web-controller methods must match that oracle;
+UI item IDs/counts/order/selection, exported `ui_name` fields and downstream
+Tower/transport/workbench behavior have separate runtime checks. A poisoned
+ordinary generated label must affect actual Main output or fail the intended
+equivalence guard; a decorative unused preload is not evidence.
+
+`microscenario_identity.gd::SOURCES` now includes the executable resource.
+Current apparatus source hashes must therefore change. Historical captures
+and receipts retain their old source sets, and old/new comparisons remain
+refused or explicitly ineligible. Native artifact hashes must be measured from
+the actual files; unchanged native source alone proves no binary-hash equality.
+The complete B executable inventory and this narrower apparatus list are
+different scopes: the accepted #374 benchmark and #377 probe enter B admission,
+but neither enters `SOURCES` or redefines the already reviewed Main-label
+apparatus transition.
+
+Rollback restores the old consumer, removes its generated dependency from the
+apparatus source set and restores the matching A-only proof/admission boundary
+as one unit. An A-only reader from retained accepted Git qualifies that restored
+state; a B guard must reject the old route. No save or World conversion is
+introduced. This candidate ends at a draft independent-review handoff:
+no merge, #353/#352 closure, #356 implementation or new material allocation.

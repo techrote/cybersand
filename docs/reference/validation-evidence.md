@@ -10,7 +10,114 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-AUTH 384 post-390 B admission — 2026-11-04
+
+The [post-#390 record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+defines the ancestry-preserving transition from prior #384 `87418298` to accepted
+main `751edc0b495dc85484ad5509a7c95f863651c76b`, tree
+`b0d42a256285e6049a6d3bdd1613d7ecd89f43c6`. Eight incoming paths include the
+exact worker ownership fix and two new executable tests. Independent inventories
+measure 663 accepted-main entries and 664 candidate entries. The historical
+compatibility lock and display oracle do not advance.
+
+Fresh actual published-head receipts belong to the [#384 ledger](https://github.com/techrote/cybersand/pull/384)
+and new portable packet: complete inventories and refusal diagnostics, native
+query/shadow parity, all four raw Godot B stages, worker preservation controls,
+documentation/retrieval checks and actual Draft hosted checkouts/steps/artifacts.
+The prior `87418298` packet, old `c6d1603f` independent GO and original #390
+measurements remain source-qualified history. None is relabelled as new execution.
+Required failed controls, unexecuted gates and runtime limitations stay explicit.
+
+The candidate remains open, Draft and unmerged, requiring a fresh independent
+read-only admission review. Advisory success grants no Native exemption; normal
+Draft skips remain unexecuted. No Ready transition or merge is authorized.
+
+## MAT-AUTH 384 post-377 B admission — 2026-11-04
+
+**Historical `87418298` / `0103de80` checkpoint; current B admission is above.**
+
+The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+separates the source-bound independent GO for `c6d1603f` / `01f9b7c8` from the
+new candidate reconciled against accepted main
+`0103de80d11304388868f89f7b26c672ad6100ad`, tree
+`0ba07dc799afca43716bbab966f48266fa924718`. The old 32-command qualification,
+four-stage B runtime proof and terminal hosted runs41863226175/41863226196 remain
+historical receipts. They are not execution at the new published head.
+
+Accepted #377's 145-path delta adds one B executable, the native liveness probe.
+The existing suffix policy excludes its JSON fixture; both retain authenticated
+accepted bytes. The measured accepted inventory grows 660→661, and the new
+candidate has 662 entries. Frozen compatibility stays at `0fd4af59`, the
+277-case display oracle stays at `7ef4856e`, and only B admission moves to
+`0103de80`. No production/native/material authority or MicroScenario source-list
+entry changes in this reconciliation.
+
+Fresh exact-published-head compatibility, native/shadow v2 and four-stage actual
+B reports, source manifests, raw process output and hashes belong to the
+[#384 ledger](https://github.com/techrote/cybersand/pull/384) and retained packet.
+Normal Draft Documentation/provenance and report-only advisory require terminal
+step evidence and an actual checkout SHA/tree. A tree-equivalent synthetic merge
+is recorded distinctly from the candidate. No Native skip authority follows.
+
+The endpoint is **Draft before Ready**, with a fresh strictly read-only
+**GO TO READY / CONDITIONAL / NO-GO** request for the new candidate plus accepted
+main. No Ready transition, merge, broad issue closure or imported active branch
+is authorized. Later Ready-state matrices, materialized provenance, pinned-template
+Web export/package loading, lookup/startup/memory measurements and final independent
+integration review remain separate. Required poison failures and all historical
+failed, missing or skipped evidence remain explicitly qualified.
+
+## MAT-AUTH 384 current-main B admission — 2026-11-04
+
+**Historical #374/c6d reconciliation checkpoint; superseded for current B admission above.**
+
+The [reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+separates reviewed #384 `bbed081b`, accepted #374/main `01f9b7c8` and the resulting
+candidate's fresh evidence. #374 adds an authenticated native benchmark, changing
+the complete B executable inventory without changing the 132-slot material
+domain, old Main/CellWorld source or 27 protected owners. B admission now uses
+`01f9b7c8`; the display oracle deliberately remains at `7ef4856e` and the
+compatibility lock at `0fd4af59`.
+
+Fresh final-head compatibility, native/shadow v2 and four-stage actual B reports
+belong to [#384's source-qualified ledger](https://github.com/techrote/cybersand/pull/384)
+and retained evidence, with raw files, commands, return codes and hashes. The
+original candidate's receipts below are not relabelled as new-head qualification.
+The endpoint remains Draft before independent **GO TO READY / CONDITIONAL /
+NO-GO** admission review. Expensive ready-state matrices, Web export/package
+loading, lookup/startup measurements and final independent integration audit
+remain pending; a source check or draft skip is not a runtime pass.
+
+## MAT-AUTH Main display-name candidate proof — 2026-11-04
+
+**Original Main-label candidate evidence, preserved.**
+
+The [B evidence record](../audits/2026-11-04-mat-auth353b-display-names.md)
+starts from accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`,
+tree `36ce5a01e754a141c321f41cac7f1c6b6059c371`. Its independently frozen
+legacy oracle covers 277 returns, and the actual Linux Godot 4.7 legacy probe
+passes 5,857 assertions with no failures before the Main cutover. This baseline
+is distinct from candidate acceptance. The record owns exact tool/source hashes,
+candidate checks, poisoned-label routing, rollback and apparatus-hash transition.
+
+The [canonical guide](../operations/material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
+separates static nonwriting checks, unchanged native pure-query/full-shadow proof
+and the mandatory schema-v2 B report from actual application methods.
+Inherited Web-controller execution in Linux Godot does not qualify browser/Wasm
+or rendered pixels. Old/new apparatus sets cannot be compared as identical;
+binary hashes come from actual artifacts. Historical v1 reports/readers remain
+unchanged and do not qualify this candidate. The authorized endpoint is a draft
+independent-review handoff with no merge or broad issue closure.
+
 ## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
+
+**Accepted integration update:** #377 merged as
+`0103de80d11304388868f89f7b26c672ad6100ad` on 4 November 2026, 18:14:18 UTC;
+tree `0ba07dc799afca43716bbab966f48266fa924718`. Its [PR ledger](https://github.com/techrote/cybersand/pull/377)
+owns the final-candidate platform/provenance gates and separate independent GO.
+The retained chronology below describes the earlier evidence and integration
+assignment. It is not a new run at the reconciled #384 head; historical failures,
+unavailable raw files and proof limits remain unchanged. H1 remains unrepaired.
 
 The later [Phase A integration gate](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration)
 authorizes current-main reconciliation and guarded integration of #377. Its live
@@ -50,10 +157,9 @@ of this tests/tooling/documentation checkpoint.
 
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
 
-**Integration completed:** #371 merged at accepted main
-`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. The original qualification records
-below retain their source and platform scope; their final receipts remain in the
-[#371 ledger](https://github.com/techrote/cybersand/pull/371).
+**Historical A-only integration evidence.** [The final #371 ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
+records its accepted main; the following original source-qualified record is
+preserved separately from the later B implementation and proof transition.
 
 The [integration qualification record](../audits/2026-11-04-mat-auth371-integration.md)
 retains the compiler escaping defect and correction,99 focused regressions,
