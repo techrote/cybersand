@@ -89,17 +89,11 @@ static func validate(value: Variant) -> String:
 	if not value.actors is Array or value.actors.size() > MAX_BODIES or not _integer(value.next_id,1,2147483647):
 		return "Up to eight independent bodies fit in the physical session."
 	var ids := {}
-	var occupied: Array[Rect2] = []
 	for a: Variant in value.actors:
 		var error := _actor_error(a,size,str(value.response))
 		if not error.is_empty(): return error
 		if ids.has(int(a.id)) or a.id >= value.next_id: return "Duplicate or retired instance ID."
 		ids[int(a.id)] = true
-		var box := bounds(str(a.model))
-		box.position += point(a.spawn)
-		for other: Rect2 in occupied:
-			if box.intersects(other): return "Separate the starting body footprints."
-		occupied.append(box)
 	if not _integer(value.selected,0,2147483646) or (value.selected != 0 and not ids.has(int(value.selected))):
 		return "Selected instance does not exist."
 	if not value.edits is Array or value.edits.size() > MAX_STAMPS: return "Starting paint capacity exhausted."
@@ -122,32 +116,6 @@ static func physical_definitions(setup: Dictionary) -> Array:
 		result.append({"model":actor.model,"instance_id":int(actor.id),"producer":"passive" if actor.model == BARREL else "human",
 			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup)})
 	return result
-
-static func _corners(center: Vector2, size: Vector2, pose: Transform2D) -> PackedVector2Array:
-	var half := size * 0.5
-	var result := PackedVector2Array()
-	for sign_xy: Vector2 in [Vector2(-1,-1),Vector2(1,-1),Vector2(1,1),Vector2(-1,1)]:
-		result.append(pose * (center + half*sign_xy))
-	return result
-
-static func placement_error(definitions: Array) -> String:
-	var prior: Array = []
-	for body: Dictionary in definitions:
-		var motion: Dictionary = body.get("retained_motion",{})
-		var pose := Transform2D(float(motion.get("rotation",0)),Vector2(body.position))
-		var pieces: Array = [{"center":Vector2.ZERO,"size":Vector2(8,14)}] if body.model == BARREL else Fleet.collision_rects(Fleet.index_for_id(body.model))
-		var polygons := []
-		for piece: Dictionary in pieces:
-			var polygon := _corners(piece.center,piece.size,pose)
-			for other: Dictionary in prior:
-				# Two untouched bodies may already be in actual solver contact.
-				if not motion.is_empty() and other.retained: continue
-				for peer: PackedVector2Array in other.polygons:
-					if not Geometry2D.intersect_polygons(polygon,peer).is_empty():
-						return "Body #%d overlaps #%d in the proposed physical session." % [body.instance_id,other.id]
-			polygons.append(polygon)
-		prior.append({"id":body.instance_id,"polygons":polygons,"retained":not motion.is_empty()})
-	return ""
 
 # Discs use the same integer circle and clipped extent as native paint_disc.
 # Coalesce each affected row; repeated edits over the same area do not consume

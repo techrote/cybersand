@@ -648,6 +648,34 @@ func _queue_failed_playable_restart() -> void:
 	_reload_failed_playable_scene.call_deferred(request)
 
 
+func workbench_restart(candidate: Dictionary) -> bool:
+	if shared_workbench == null or not simulation_worker.has_failed(): return false
+	if _playable_recovery_queued or _playable_recovery_cancelled or not is_inside_tree() or get_tree().current_scene != self:
+		microscenario_error = "A scene change is already pending."
+		return false
+	const Setup = preload("res://scripts/workbench_setup.gd")
+	var error: String = Setup.validate(candidate)
+	if not error.is_empty():
+		microscenario_error = error
+		return false
+	var recipe := Setup.rectangles(candidate)
+	if recipe.has("error"):
+		microscenario_error = recipe.error
+		return false
+	var checked: Dictionary = playable_session_panel.policy_editor.bridge.validate_liquid_policy(PackedInt32Array(candidate.liquid_policy))
+	if not checked.get("accepted",false) or candidate.rule_radius < checked.receipt.minimum_rule_radius:
+		microscenario_error = "Invalid liquid policy or rule radius for this starting setup."
+		return false
+	# A failed World cannot provide live cells or accept another prepared
+	# replacement. Carry only the checked authored setup across teardown and
+	# let fresh Main create its own worker before constructing this setup.
+	_playable_recovery_queued = true
+	_playable_recovery_error = ""
+	paused = true
+	cancel_playable_course_input()
+	_reload_failed_playable_scene.call_deferred({"workbench":candidate.duplicate(true)})
+	return true
+
 func cancel_playable_session_recovery() -> void:
 	# Navigation owns the user's latest intent. Fence a still-deferred restart
 	# and discard an envelope whose pending replacement has not entered yet.
@@ -716,8 +744,13 @@ func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
 # acknowledgement, World stepping and Rapier adoption remain the shared owners'.
 func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, extent: Vector2i,
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
-		preserve_cells: bool = false) -> bool:
-	if shared_workbench == null or not pending_microscenario_apply.is_empty() or simulation_worker.has_failed():
+		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false) -> bool:
+	if shared_workbench == null: return false
+	if not pending_microscenario_apply.is_empty():
+		microscenario_error = "Wait for the pending workbench installation."
+		return false
+	if simulation_worker.has_failed():
+		microscenario_error = "The cellular owner stopped. Reset or restore to rebuild from the starting setup."
 		return false
 	if response not in ["LA-SELECTIVE","LA","LA-EVENT-OFF","RFT"]:
 		microscenario_error = "Unknown workbench response"
@@ -734,13 +767,24 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	var config := {"actor_model":"","physical_rig":"workbench" if not actors.is_empty() else "",
 		"actor_producer":"human","representation":"barrel-rapier" if not actors.is_empty() else "sampled",
 		"workbench_actors":actors}
-	var settings := {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
+	# Saved normalization belongs to the starting recipe. A retained flyer
+	# edit must not round live Water because an earlier recipe used it.
+	var normalize_now := normalize_water and (not preserve_cells or convert_liquid_inventory)
+	var settings := {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_now else "",
 		"maximum_rule_radius":radius,"workbench_response":response,"workbench_retain_cells":preserve_cells,
 		"workbench_sample":{"session":_microscenario_request_serial+1,"epoch":_physical_epoch+1,
 			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
+	# Lossy conversion belongs only to an explicit developer policy switch.
+	# Ordinary replacements (including Apply of an unchanged policy) keep
+	# all compatible native inventory and use the normal refusal contract.
+	if convert_liquid_inventory and preserve_cells:
+		var applied: Dictionary = tower_context.get("liquid_solver_policy",{})
+		if applied.has("envelope") and PackedInt32Array(applied.envelope) != policy:
+			settings.workbench_convert_liquid_inventory = true
 	cancel_playable_course_input()
 	if not _apply_microscenario_definition(definition,"Play",config,policy,settings): return false
 	pending_microscenario_apply.workbench = candidate.duplicate(true)
+	pending_microscenario_apply.workbench_resume = resume_play
 	return true
 
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
@@ -1675,7 +1719,7 @@ func _ready() -> void:
 	setup_brush_preview()
 	setup_player_representation_button()
 	setup_player_environment_tuning()
-	if not recovery.is_empty():
+	if recovery.has("settings"):
 		var settings: Dictionary = recovery.settings
 		simulation_window_enabled = bool(settings.simulation_window_enabled)
 		cadence_lod_enabled = bool(settings.cadence_lod_enabled)
@@ -1791,13 +1835,13 @@ func _ready() -> void:
 		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
 	update_status()
-	if not recovery.is_empty():
+	if recovery.has("selection"):
 		_restore_failed_playable_selection.call_deferred(recovery)
 		return
 	var feature: String = str(get_tree().get_meta("cybersand_feature", ""))
 	if feature == "shared_workbench":
 		shared_workbench = load("res://scripts/shared_workbench.gd").new()
-		shared_workbench.setup(self)
+		shared_workbench.setup(self,recovery.get("workbench",{}))
 	elif PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)
 	elif feature == "blacksite":
@@ -2851,10 +2895,14 @@ func consume_worker_snapshot() -> void:
 			and int(tower_context.get("scenario_request_serial", 0)) == int(pending_microscenario_apply.serial)
 			and bool(tower_context.get("scenario_request_applied", false))
 			and str(tower_context.get("microscenario", {}).get("definition_hash", "")) == str(pending_microscenario_apply.hash)):
+			var resume_play: bool = pending_microscenario_apply.get("workbench_resume",false)
 			_microscenario_installed(pending_microscenario_apply.definition)
 			if tower_context.get("microscenario", {}).get("failed", false):
 				microscenario_error = "Installed session apparatus failed: " + str(tower_context.microscenario.get("error", "unavailable"))
 			pending_microscenario_apply.clear()
+			if resume_play and not snapshot.simulation_failed and microscenario_error.is_empty():
+				paused = false
+				update_worker_frame_state()
 		elif (int(tower_context.get("scenario_request_serial", 0)) == int(pending_microscenario_apply.serial)
 			and not bool(tower_context.get("scenario_request_applied", true))):
 			if pending_microscenario_apply.get("profile_request",false): pending_player_environment_profile = {}
@@ -2907,6 +2955,12 @@ func consume_worker_snapshot() -> void:
 	consumed_snapshot_serial = snapshot.serial
 	if snapshot.simulation_failed:
 		paused = true
+		if shared_workbench != null:
+			cancel_playable_course_input()
+			_close_pending_physical_candidate()
+			pending_microscenario_apply.clear()
+			microscenario_error = "Native tick %d stopped: %s. Reset or restore rebuilds the starting setup." % [
+				snapshot.failed_tick_index,snapshot.last_tick_error]
 	if not player_uses_barrel():
 		character_position = snapshot.character_position
 	consume_render_snapshot(snapshot)

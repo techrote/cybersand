@@ -41,13 +41,12 @@ func run()->void:
 	var origin:=Vector2(50,50)
 	var token:int=candidate(PackedInt32Array([49,47,1,1,1]),origin,0,hull,1)
 	check(token>0 and bridge.commit_liquid_world(world,token),"hard in U cavity must be admissible")
-	var generation:int=world.get_liquid_policy_session_generation()
-	var before:String=world.get_physical_state_hash()
+	# A development placement may deliberately intersect hard terrain. The
+	# actual Rapier collider and cellular mask own subsequent contact outcomes.
 	for spec:Array in [[50,50,0.0],[54,50,PI/4.0],[55,50,PI/4.0]]:
 		token=candidate(PackedInt32Array([spec[0],spec[1],1,1,1]),origin,float(spec[2]),single,2)
-		check(token==0 and "hard terrain" in str(bridge.get_last_error()),"reject full/partial rotated hard intersection")
+		check(token>0,"allow full/partial rotated hard intersection for experimentation")
 		if token>0: bridge.discard_liquid_world(world,token)
-		check(world.get_physical_state_hash()==before and world.get_liquid_policy_session_generation()==generation,"refused placement preserves owner")
 	for material:int in [2,3]:
 		token=candidate(PackedInt32Array([50,50,1,1,material]),origin,0,single,2)
 		check(token>0,"ordinary powder and Water remain material coupling inputs")
@@ -67,7 +66,7 @@ func run()->void:
 	check(token>0,"unchanged shallow contact may survive reconstruction")
 	if token>0: bridge.discard_liquid_world(world,token)
 	token=candidate(PackedInt32Array(),Vector2(50.4,50),0,single,4,true)
-	check(token==0 and "hard terrain" in str(bridge.get_last_error()),"moving deeper into a retained contact refused")
+	check(token>0,"intentional move deeper into existing hard terrain is allowed")
 	if token>0: bridge.discard_liquid_world(world,token)
 	print("WORKBENCH_HARD_PLACEMENT failures=",failures)
 	quit(int(not failures.is_empty()))

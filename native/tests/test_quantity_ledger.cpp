@@ -373,6 +373,42 @@ void resident_serial_overflow_transaction() {
     }
 }
 
+void workbench_inertial_inheritance() {
+    auto current=config();
+    auto words=LiquidSolverPolicy::default_request();
+    words[20U+6U*3U+1U]=4; // Brine row, IN family
+    const auto decoded=LiquidSolverPolicy::decode(words);
+    require(decoded.accepted(),"Brine IN inheritance source policy");
+    current.liquid_solver_policy=*decoded.policy;
+    current.maximum_rule_radius=InertialParameters::kExecutionRadius;
+    World source(current);
+    source.set(2,2,Material::Brine);
+    require(source.diagnostic_set_inertial_cell(2,2,-40,31,-2,3),"source native Brine motion");
+    normalization::FinalSetupInput input;
+    input.setup.domain={0,0,8,8};
+    input.cells={{2,2,Material::Brine,source.stored_state_a(2,2),source.stored_state_b(2,2),200}};
+    const auto candidate=[&](const WorldConfig& cfg) {
+        auto result=PreparedWorldBuilder::prepare(cfg,input,normalization::NormalizationOptIn::None);
+        require(std::holds_alternative<PreparedWorld>(result),"workbench candidate setup");
+        return std::get<PreparedWorld>(result).take_world();
+    };
+    auto retained=candidate(current);
+    auto receipts=retained->inherit_workbench_liquid_state(source,false);
+    const auto copied=retained->inertial_cell(2,2);
+    require(receipts.preserved_inertial_cells==1 && receipts.discarded_inertial_cells==0 &&
+            copied.vx==-40 && copied.vy==31 && copied.ax==-2 && copied.ay==3,
+            "retained actor edit preserves actual native IN motion and fractions");
+    auto replacement=candidate(config());
+    const auto before=source.physical_state_hash();
+    bool refused=false;
+    try { (void)replacement->inherit_workbench_liquid_state(source,false); }
+    catch(const std::invalid_argument&) { refused=true; }
+    require(refused && source.physical_state_hash()==before,"policy change without conversion intent");
+    receipts=replacement->inherit_workbench_liquid_state(source,true);
+    require(receipts.discarded_inertial_cells==1 && !replacement->inertial_cell(2,2).available &&
+            replacement->stored_material(2,2)==Material::Brine,"deliberately retired IN motion, retained Brine");
+}
+
 void prepared_population_binding() {
     const auto cfg = config();
     normalization::FinalSetupInput input;
@@ -409,6 +445,7 @@ void test_quantity_ledger() {
     }
     refusal_and_overflow();
     prepared_population_binding();
+    workbench_inertial_inheritance();
     serial_and_phased_transactions();
     resident_serial_overflow_transaction();
 }

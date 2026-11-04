@@ -116,6 +116,8 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			options.workbench_extent = Vector2i(candidate.extent[0],candidate.extent[1])
 			options.workbench_sample = controlled_setup.workbench_sample
 			options.workbench_retain_cells = controlled_setup.get("workbench_retain_cells",false)
+			if controlled_setup.get("workbench_convert_liquid_inventory",false):
+				options.workbench_convert_liquid_inventory = true
 		# Only the exclusive owner retains this opaque token between its two
 		# preparation turns. Revalidation above still precedes final commit.
 		var token: int = prepared_token

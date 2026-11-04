@@ -36,6 +36,7 @@ var status: Label
 var requested_policy := PackedInt32Array()
 var _choices: Array = []
 var _validation: Dictionary = {}
+var _normalize_on_next_apply_only := false
 var _dirty: bool = false
 var _applied_generation: int = -1
 var _waiting_serial: int = 0
@@ -299,6 +300,13 @@ func load_selected() -> bool:
 func load_current_control() -> bool:
 	return _request(_selected_definition(), true)
 
+func use_one_shot_normalization() -> void:
+	_normalize_on_next_apply_only = true
+	normalize_water.set_pressed_no_signal(false)
+	normalize_water.text = "Round Water on this Apply only"
+	normalize_water.tooltip_text = "Round visible Water to whole cells for this liquid change. Applied quantities are reported. Clears after successful installation."
+
+
 func _sync_applied(context: Dictionary) -> void:
 	var applied: Dictionary = context.get("liquid_solver_policy",{})
 	if applied.is_empty() or not applied.has("envelope"): return
@@ -307,7 +315,7 @@ func _sync_applied(context: Dictionary) -> void:
 		requested_policy = applied.envelope.duplicate()
 		geometry_picker.select(1 if int(applied.get("maximum_rule_radius",2)) == 3 else 0)
 		session_picker.select(1 if host.microscenario_liquid_setup.get("intent", "controlled") == "exploratory" else 0)
-		normalize_water.set_pressed_no_signal(not host.microscenario_liquid_setup.is_empty() \
+		normalize_water.set_pressed_no_signal(not _normalize_on_next_apply_only and not host.microscenario_liquid_setup.is_empty() \
 			and host.microscenario_liquid_setup.get("normalization","") == "water-normalize-v1")
 		_refresh_choices()
 
