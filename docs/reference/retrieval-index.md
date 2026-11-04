@@ -4,11 +4,26 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Material-authoring adoption and implementation boundary — 2026-11-04
+
+Use the [owner-adopted Planned status and unstarted compiler boundary](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+for the current decision, and the [corrected technical contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+for #353's shadow-first scope, header-byte identity, backend distinctions,
+endpoint effects, experimental IDs and successor gates. The original proposal
+and review retain their dated intake; owner adoption authorizes documentation
+integration, not #353-A implementation or a Current runtime catalogue. The
+[source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+is dated evidence outside the default corpus. [Supplementary questions](retrieval-questions-mat-auth.json)
+exercise these distinctions separately from unchanged frozen32 and challenge157.
+Version 2 changes only MAT-AUTH-01's revision-sensitive expected adoption fact;
+query wording and canonical routes stay fixed. Its 3 November version-1 fixture
+and evidence remain available at reviewed head `9b776d109e7843fb9b2d25239f9d088181309aa1`.
 
 ## LCB current-main reassessment routes — 2026-11-03
 

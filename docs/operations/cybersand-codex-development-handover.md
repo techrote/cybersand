@@ -4,11 +4,41 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## MAT-AUTH Planned adoption and unstarted compiler — 2026-11-04
+
+The owner has [adopted the corrected architecture as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+and authorized documentation-only guarded integration of #357. Its
+[PR ledger](https://github.com/techrote/cybersand/pull/357) owns actual final-head,
+merge and post-merge checks. This supersedes the adoption hold in the dated
+3 November record below, while implementation permission remains outstanding.
+
+The [#353-A handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661)
+is prepared for a separate assignment: shadow compiler and independent original-source
+oracle, with current native/GDScript consumers and source-byte identities unchanged.
+No #353-A code has been implemented by this adoption task. Keep #352/#353 open;
+do not start #354–#356 or treat experimental #358 IDs132–137 as production data.
+Recapture accepted source and overlapping owners before the implementation begins.
+
+## MAT-AUTH architecture decision hold — 2026-11-03
+
+**Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+supersedes the adoption hold below; implementation remains separately unstarted.
+
+[PR #357](https://github.com/techrote/cybersand/pull/357) remains draft and
+unmerged after a documentation-only current-main architecture review. Read the
+[corrected proposed admission](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+and [dated evidence](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+before assigning #353–#356. Recommendation is **ACCEPT WITH CORRECTIONS**;
+owner adoption and implementation permission remain pending. Initial #353 work
+is proposed as shadow generation with independent per-consumer oracles, not a
+header/policy/physics migration. Revalidate active #358/#347/#370 and #162/GCR
+heads before overlapping edits. Experimental IDs132–137 are not production data.
 
 ## LCB reassessment and bounded successors — 2026-11-03
 
