@@ -1,10 +1,15 @@
 """Adversarial tests of the proposed #361 observer; these run no simulation."""
 import copy
+import contextlib
+import io
 import json
 from pathlib import Path
+import sys
 import tempfile
 import unittest
+from unittest import mock
 
+import in_tools_contract as contract
 from in_tools_contract import (ContractError, PLAN, source_check,
                                validate_plan, validate_receipt)
 
@@ -178,6 +183,25 @@ class ReceiptTests(unittest.TestCase):
         self.reject(p)
         validate_receipt(**refusal(p, "outside-domain"))
 
+    def test_outside_refusal_preserves_a_full_finite_world(self):
+        outside = refusal(packet(), "outside-domain")
+        outside["owner"].update(domain=[0, 0, 1, 1], stored_units=255)
+        outside["receipt"].update(stored_before=255, stored_after=255)
+        partial = refusal(packet("sink"), "outside-domain")
+        partial["owner"].update(domain=[32, 32, 1, 1], stored_units=255)
+        partial["receipt"].update(stored_before=255, stored_after=255)
+        partial["command"]["rect"] = [31, 32, 2, 1]
+        empty = copy.deepcopy(partial["receipt"]["cells"][0])
+        empty.update(xy=[31, 32], before_material=0, after_material=0, before_units=0, after_units=0)
+        partial["receipt"]["cells"].append(empty)
+        for p in (outside, partial):
+            with self.subTest(rect=p["command"]["rect"]):
+                self.assertEqual(validate_receipt(**p)["sink_units"], 0)
+        # A copied cell outside a complete finite World cannot contain liquid.
+        outside["receipt"]["cells"][0].update(before_material=3, after_material=3,
+                                               before_units=255, after_units=255)
+        self.reject(outside)
+
     def test_bound_and_request_capacity(self):
         p = packet()
         p["command"]["rect"][2] = 17
@@ -301,6 +325,74 @@ class PlanTests(unittest.TestCase):
             p["comparison_arms"][1][field] = value
             with self.assertRaises(ContractError):
                 validate_plan(p)
+
+    def test_empty_geometry_events_and_duplicate_variants_refuse(self):
+        for mutation in ("empty-geometry", "empty-events", "duplicate-variant"):
+            p = json.loads(PLAN.read_text())
+            fixture = p["fixtures"][0]
+            if mutation == "empty-geometry":
+                fixture["geometry_variants"] = fixture["variants"] = []
+            elif mutation == "empty-events":
+                fixture["events"] = []
+            else:
+                fixture["variants"].append(fixture["variants"][0])
+            with self.subTest(mutation=mutation), self.assertRaises(ContractError):
+                validate_plan(p)
+
+    def test_duplicate_arms_workers_and_mass_precisions_refuse(self):
+        for mutation in ("arms", "workers", "mass_bits"):
+            p = json.loads(PLAN.read_text())
+            if mutation == "arms":
+                p["comparison_arms"].append(copy.deepcopy(p["comparison_arms"][0]))
+            else:
+                arm = p["comparison_arms"][0]
+                arm[mutation].append(arm[mutation][0])
+            with self.subTest(mutation=mutation), self.assertRaises(ContractError):
+                validate_plan(p)
+
+    def test_fixed_v1_registration_cannot_omit_required_coverage(self):
+        for mutation in ("fixture", "material-arm", "default-fm-control", "family", "worker",
+                         "precision", "geometry", "variant", "event"):
+            p = json.loads(PLAN.read_text())
+            if mutation == "fixture":
+                p["fixtures"].pop()
+            elif mutation == "material-arm":
+                p["comparison_arms"].pop(1)
+            elif mutation == "default-fm-control":
+                p["comparison_arms"].pop()
+            elif mutation in ("family", "worker", "precision"):
+                key = {"family": "families", "worker": "workers", "precision": "mass_bits"}[mutation]
+                p["comparison_arms"][0][key].pop()
+            elif mutation == "geometry":
+                p["fixtures"][0]["geometry_variants"][0] = {"id": "narrow-1"}
+            elif mutation == "variant":
+                p["fixtures"][0]["geometry_variants"].pop()
+                p["fixtures"][0]["variants"].pop()
+            else:
+                p["fixtures"][0]["events"].pop()
+            with self.subTest(mutation=mutation), self.assertRaises(ContractError):
+                validate_plan(p)
+
+    def test_numeric_plan_bounds_require_integers(self):
+        p = json.loads(PLAN.read_text())
+        p["limits"]["cells_per_command"] = 16.0
+        with self.assertRaises(ContractError):
+            validate_plan(p)
+
+    def test_duplicate_json_keys_cannot_discard_a_conflicting_receipt(self):
+        p = packet()
+        raw = json.dumps(p)
+        raw = raw.replace('"outcome": "applied"', '"outcome": "refused", "outcome": "applied"')
+        with tempfile.TemporaryDirectory(prefix="in361-json-ambiguity-") as temporary:
+            source = Path(temporary)/"packet.json"
+            source.write_text(raw)
+            out = io.StringIO()
+            with mock.patch.object(sys, "argv", ["contract", "--packet", str(source)]), \
+                 contextlib.redirect_stdout(out):
+                code = contract.main()
+            self.assertEqual(code, 1)
+            self.assertEqual(json.loads(out.getvalue())["status"], "refused")
+            self.assertIn("duplicate JSON key", json.loads(out.getvalue())["reason"])
 
 
 if __name__ == "__main__":

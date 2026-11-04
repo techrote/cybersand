@@ -196,10 +196,13 @@ button intent, owner acceptance and visible publication. Reopen follows the
 current state, not assumed historical success. The current schema 2 erase event
 cannot encode this state machine.
 
-### Ordinary usable contract
+### Planned U10 metering extension
 
-Reuse [actor-usables](../systems/actor-usables.md), physical U10 selection/aim and
-the existing command lease. Catalogue U10 costs 0.85 charge, has 0.10 s cooldown,
+**Planned.** Extend physical U10 through the Current
+[actor-usable contract](../systems/actor-usables.md) and
+[physical equipment interface](../reference/interfaces-and-message-contracts.md#physical-equipment-actions-and-results).
+Those pages retain ordinary selection, aiming, lifecycle and command authority.
+Catalogue U10 costs 0.85 charge, has 0.10 s cooldown,
 range 29 and radius 4. Runtime bounds are 2048 reads/128 writes per step, charge 100,
 recharge 6/s; the metered experiment adds a stricter 16-cell effect cap without
 changing ordinary U10 defaults. Charge is the fixed 0.85 per accepted U10 activation; power and the 35%
@@ -215,20 +218,16 @@ can use existing `CyberDemoBridge.inspect_cell`, which copies stored material,
 stateA/stateB, body ID and completed tick. Inspect before and after in the same
 exclusive-owner interval and reference actual native construction identity.
 
-The exclusive worker accepts one effect once; main-thread equipment consumes
-the matching receipt once. Keep tool aim distinct from locomotion. A blocked,
-empty, unsupported-policy, exhausted, stale or failed-world pulse spends no new
-effect budget. Release, focus loss, blocking UI, pause and reset cancel held
-input and require release before rearming. Already committed payloads are a
-different lifecycle; the chosen first implementation is U10, avoiding a new
-capsule-flight integration.
-
-Stop/reset retires pending requests. Fresh reconstruction retains only the
-explicit chosen scenario/policy, resets the registered experiment inventory and
-advances identities; an old queued activation cannot affect the new World.
-Ordinary equipment-selection changes must not refill a live experiment budget.
-No actual desktop/gamepad/focus or owner-feel qualification is inferred from the
-native and synthetic tests in this package.
+Keep the Current [equipment cancellation and rearming rules](../systems/actor-usables.md#desktop-controls)
+and [copied action/result fences](../reference/interfaces-and-message-contracts.md#physical-equipment-actions-and-results)
+as dependencies; this proposal does not redefine them. The first slice uses U10
+without adding capsule-flight behavior. Its extra effect budget remains unchanged
+for blocked, empty, unsupported-policy, exhausted, stale or failed-world pulses.
+Ordinary selection must not refill that budget. Fresh reconstruction retains
+only the explicitly chosen scenario/policy, resets the registered experiment
+inventory and advances identities through the existing owner lifecycle; old work
+cannot affect the new World. New metering requires actual desktop/gamepad/focus
+and reset qualification; native and synthetic probes do not supply that evidence.
 
 ## Proposed command and native adapter additions
 

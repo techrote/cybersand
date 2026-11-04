@@ -22,6 +22,33 @@ FAMILIES = {3: {"freemass_v1", "inertial_cellular_v1"},
 OPERATIONS = {"open_valve", "close_valve", "source", "sink"}
 MAX_CELLS = 16
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
+# v1 is the published six-fixture admission, not an arbitrary list that can
+# shrink while retaining the same successful qualification label. These are
+# planned coverage requirements; checking them still executes no host fixture.
+WIDTH_VARIANTS = {"narrow-1", "baseline-2", "wide-4"}
+SOURCE_VARIANTS = {"right-facing-guide", "left-facing-guide", "down-facing-guide"}
+VALVE_EVENTS = {"open": (120, "open_valve"), "close": (600, "close_valve"),
+                "reopen": (900, "open_valve")}
+SINK_EVENTS = {f"sink-{n}": (tick, "sink") for n, tick in enumerate((121, 151, 181, 211, 601, 631))}
+FIXTURES_V1 = {
+    "in-tools.valve-side.v1": (WIDTH_VARIANTS, {"aperture_rect"},
+                               {"vent": (0, "open_valve"), **VALVE_EVENTS}),
+    "in-tools.valve-bottom.v1": (WIDTH_VARIANTS, {"aperture_rect"}, VALVE_EVENTS),
+    "in-tools.sink-bottom.v1": (WIDTH_VARIANTS, {"aperture_rect", "intake_rect"},
+                                {"open": (120, "open_valve"), **SINK_EVENTS}),
+    "in-tools.sink-side.v1": (WIDTH_VARIANTS, {"aperture_rect", "intake_rect"},
+                              {"vent": (0, "open_valve"), "open": (120, "open_valve"), **SINK_EVENTS}),
+    "in-tools.source-channel.v1": (SOURCE_VARIANTS, {"source_rect", "static_wall_rects", "direction"},
+                                   {f"source-{n}": (tick, "source") for n, tick in enumerate((120, 180, 240, 300))}),
+    "in-tools.usable-liquid-drain.v1": (WIDTH_VARIANTS, {"intake_rect"},
+        {"held-pulse": (120, "sink"), "after-stop-refusal": (600, "sink"),
+         "after-reset-stale-refusal": (900, "sink")}),
+}
+COMPARISON_ROWS_V1 = (
+    {(3, family, 3, bits, workers) for family in FAMILIES[3] for bits in (3, 8) for workers in (1, 4)} |
+    {(24, family, 3, 8, workers) for family in FAMILIES[24] for workers in (1, 4)} |
+    {(3, "freemass_v1", 2, 8, workers) for workers in (1, 4)}
+)
 
 
 class ContractError(ValueError):
@@ -31,6 +58,21 @@ class ContractError(ValueError):
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise ContractError(message)
+
+
+def parse_json(raw: str):
+    """A copied proposal must have one unambiguous value for every JSON key."""
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            require(key not in result, f"duplicate JSON key: {key}")
+            result[key] = value
+        return result
+
+    def invalid_constant(value):
+        raise ContractError(f"nonfinite JSON number: {value}")
+
+    return json.loads(raw, object_pairs_hook=unique_object, parse_constant=invalid_constant)
 
 
 def integer(value, name: str, low: int = 0, high: int = (1 << 63) - 1) -> int:
@@ -103,35 +145,54 @@ def validate_plan(plan: dict) -> dict:
     require(plan["schema"] == "in-tools-admission-plan-v1", "unknown plan schema")
     require(plan["status"] == "planned-host-contract", "plan must remain explicitly Planned")
     require(plan["production_changes"] is False, "preparation cannot enable production changes")
-    require(plan["limits"]["cells_per_command"] == MAX_CELLS, "unsupported command bound")
+    integer(plan["limits"]["cells_per_command"], "cells per command", MAX_CELLS, MAX_CELLS)
     command_limit = integer(plan["limits"]["commands_per_fixture"], "command limit", 1, 24)
     horizon_limit = integer(plan["limits"]["horizon_ticks_max"], "horizon limit", 1, 3600)
     require(isinstance(plan["comparison_arms"], list) and 1 <= len(plan["comparison_arms"]) <= 12,
             "invalid comparison arm count")
+    comparison_rows: set[tuple] = set()
     for arm in plan["comparison_arms"]:
         material = integer(arm["material"], "arm material", 0, 255)
         require(material in FAMILIES, "unsupported comparison material")
         require(isinstance(arm["families"], list) and bool(arm["families"]), "missing families")
+        require(all(isinstance(f, str) for f in arm["families"]), "invalid family name")
         require(len(arm["families"]) == len(set(arm["families"])), "duplicate families")
         require(all(f in FAMILIES[material] for f in arm["families"]), "unsupported comparison family")
         radius = integer(arm["radius"], "arm radius", 2, 3)
         require("inertial_cellular_v1" not in arm["families"] or radius == 3, "IN requires radius3")
+        require(isinstance(arm["mass_bits"], list) and bool(arm["mass_bits"]), "missing mass precisions")
         for bits in arm["mass_bits"]:
             integer(bits, "arm mass bits", 3, 8)
-        require(bool(arm["mass_bits"]) and bool(arm["workers"]), "empty comparison arm")
+        require(len(arm["mass_bits"]) == len(set(arm["mass_bits"])), "duplicate mass precisions")
+        require(isinstance(arm["workers"], list) and bool(arm["workers"]), "missing worker arms")
         require(all(type(w) is int and w in (1, 4) for w in arm["workers"]), "unsupported worker arm")
-    require(isinstance(plan["fixtures"], list) and 4 <= len(plan["fixtures"]) <= 24,
-            "invalid fixture count")
+        require(len(arm["workers"]) == len(set(arm["workers"])), "duplicate worker arms")
+        for family in arm["families"]:
+            for bits in arm["mass_bits"]:
+                for workers in arm["workers"]:
+                    row = (material, family, radius, bits, workers)
+                    require(row not in comparison_rows, "duplicate comparison arm")
+                    comparison_rows.add(row)
+    require(comparison_rows == COMPARISON_ROWS_V1, "incomplete or unregistered v1 comparison coverage")
+    require(isinstance(plan["fixtures"], list) and len(plan["fixtures"]) == len(FIXTURES_V1),
+            "v1 requires all six registered host fixtures")
     ids: set[str] = set()
     for fixture in plan["fixtures"]:
         fid = fixture["id"]
         require(isinstance(fid, str) and fid.endswith(".v1") and fid not in ids, "bad fixture ID")
+        require(fid in FIXTURES_V1, "unknown v1 fixture ID")
+        required_variants, geometry_fields, expected_events = FIXTURES_V1[fid]
         ids.add(fid)
         require(fixture["execution"] == "planned_host_only", "host fixtures are not executed here")
         horizon = integer(fixture["horizon_ticks"], fid, 1, horizon_limit)
         rectangle(fixture["domain"], fid)
         variant_ids = set()
+        require(isinstance(fixture["geometry_variants"], list) and
+                1 <= len(fixture["geometry_variants"]) <= 24, "missing/bounded geometry variants")
         for variant in fixture["geometry_variants"]:
+            require(isinstance(variant, dict) and geometry_fields <= set(variant),
+                    "missing operation geometry")
+            require(isinstance(variant["id"], str) and bool(variant["id"]), "invalid geometry variant ID")
             require(variant["id"] not in variant_ids, "duplicate geometry variant")
             variant_ids.add(variant["id"])
             for key in ("aperture_rect", "intake_rect", "source_rect"):
@@ -146,11 +207,22 @@ def validate_plan(plan: dict) -> dict:
                 dx, dy, dw, dh = rectangle(fixture["domain"], fid)
                 require(dx <= vx and dy <= vy and vx + vw <= dx + dw and vy + vh <= dy + dh,
                         "static wall outside domain")
+            if "static_wall_rects" in geometry_fields:
+                require(isinstance(variant["static_wall_rects"], list) and bool(variant["static_wall_rects"]),
+                        "missing source guide walls")
+                direction = variant["direction"]
+                require(isinstance(direction, list) and len(direction) == 2 and
+                        all(type(v) is int for v in direction) and
+                        direction in ([1, 0], [-1, 0], [0, 1]), "unregistered source guide direction")
+        require(isinstance(fixture["variants"], list) and
+                all(isinstance(v, str) for v in fixture["variants"]), "invalid variant list")
+        require(len(fixture["variants"]) == len(set(fixture["variants"])), "duplicate variant list entry")
         require(variant_ids == set(fixture["variants"]), "variant list disagrees with geometry")
+        require(variant_ids == required_variants, "incomplete or unregistered v1 geometry coverage")
         previous_tick = -1
         command_ids: set[str] = set()
-        require(isinstance(fixture["events"], list) and len(fixture["events"]) <= command_limit,
-                "fixture exceeds command limit")
+        require(isinstance(fixture["events"], list) and 1 <= len(fixture["events"]) <= command_limit,
+                "fixture needs a nonempty bounded command schedule")
         for event in fixture["events"]:
             tick = integer(event["tick"], fid, 0, horizon - 1)
             require(tick >= previous_tick, "events out of order")
@@ -159,6 +231,9 @@ def validate_plan(plan: dict) -> dict:
                     event["id"] not in command_ids, "bad/duplicate event ID")
             command_ids.add(event["id"])
             require(event["operation"] in OPERATIONS, "unsupported event operation")
+            require(event["id"] in expected_events and
+                    expected_events[event["id"]] == (tick, event["operation"]),
+                    "event disagrees with registered v1 schedule")
             x, y, w, h = rectangle(event["rect"], fid)
             dx, dy, dw, dh = rectangle(fixture["domain"], fid)
             require(w * h <= MAX_CELLS and dx <= x and dy <= y and
@@ -166,7 +241,8 @@ def validate_plan(plan: dict) -> dict:
             require(event["motion"] == "zero_new_motion", "momentum inlet is unimplemented")
             require(event["on_occupied_close"] == "refuse_preserve_world",
                     "closure must not overwrite occupied cells")
-    require(len(ids) >= 4, "missing tool registrations")
+        require(command_ids == set(expected_events), "incomplete v1 command schedule")
+    require(ids == set(FIXTURES_V1), "missing tool registrations")
     return {"fixtures_checked": len(ids), "host_execution": "NOT_RUN",
             "gameplay_qualified": False}
 
@@ -244,6 +320,7 @@ def validate_receipt(command: dict, receipt: dict, owner: dict) -> dict:
     cells = receipt["cells"]
     require(isinstance(cells, list) and len(cells) == w * h, "incomplete command-local census")
     seen = set()
+    inside_domain_count = 0
     source = sink = wall_added = wall_removed = local_before = local_after = 0
     for cell in cells:
         cx, cy = cell["xy"]
@@ -255,6 +332,10 @@ def validate_receipt(command: dict, receipt: dict, owner: dict) -> dict:
         old_mat = integer(cell["before_material"], "before material", 0, 255)
         new_mat = integer(cell["after_material"], "after material", 0, 255)
         mask = integer(cell["body_id"], "body_id", 0, 65535)
+        if dx <= cx < dx + dw and dy <= cy < dy + dh:
+            inside_domain_count += 1
+        else:
+            require(old_mat == new_mat == 0 and mask == 0, "nonempty cell outside complete World domain")
         old_q = quantity(material, family, bits, cell["before_units"], "before_units")
         new_q = quantity(material, family, bits, cell["after_units"], "after_units")
         require(old_q == 0 if old_mat != material else old_q > 0, "wrong before quantity unit")
@@ -310,7 +391,10 @@ def validate_receipt(command: dict, receipt: dict, owner: dict) -> dict:
             "stored baseline mismatch")
     require(local_before <= before and local_after <= after, "local census exceeds World quantity")
     # owner.domain is the complete finite observed World, never a cropped ROI.
-    other_capacity = (dw * dh - len(cells)) * quantum
+    # A refused footprint may lie partly or wholly outside the finite World.
+    # Only its intersection consumes observed-domain capacity; external Empty
+    # copies cannot stand in for missing cells in the full-world inventory.
+    other_capacity = (dw * dh - inside_domain_count) * quantum
     require(before <= other_capacity + local_before and after <= other_capacity + local_after,
             "World quantity exceeds declared domain capacity")
     if material == 3 and family == "inertial_cellular_v1":
@@ -337,10 +421,10 @@ def main() -> int:
     parser.add_argument("--packet", type=Path, help="Optional copied {command,receipt,owner} proposal")
     args = parser.parse_args()
     try:
-        plan = json.loads(args.plan.read_text(encoding="utf-8"))
+        plan = parse_json(args.plan.read_text(encoding="utf-8"))
         result = {**validate_plan(plan), **source_check(plan, comparison=args.check_comparison)}
         if args.packet:
-            result["packet"] = validate_receipt(**json.loads(args.packet.read_text(encoding="utf-8")))
+            result["packet"] = validate_receipt(**parse_json(args.packet.read_text(encoding="utf-8")))
         print(json.dumps(result, indent=2))
         return 0
     except (ContractError, KeyError, TypeError, ValueError, OSError) as exc:

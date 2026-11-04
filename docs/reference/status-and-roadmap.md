@@ -22,6 +22,8 @@ separate native input admission; upward spray stays #362. Ordinary desktop/Rapie
 placement, new command lifecycle and owner feel remain unqualified. The
 [dated audit](../audits/2026-11-04-in-tools-admission.md) records actual evidence.
 No production implementation, automatic merge or #361 closure is authorized.
+The [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
+records the corrected preparation and integration-approval boundary.
 
 ## Material shadow foundation and integration — 2026-11-04
 

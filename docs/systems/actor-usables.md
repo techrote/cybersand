@@ -4,17 +4,11 @@ status: Current
 document-kind: contract
 scope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority
 canonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-04
 related-documents: [physical-actor-rigs.md, actor-rigs.md, actor-control-prototypes.md, materials-and-rule-kernels.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
 # Actor usables — 32-item catalogue and physical equipment
-
-**Planned #361 extension:** [IN-TOOLS admission](../architecture/in-tools-gameplay-admission.md)
-selects the existing physical `liquid_drain` for opt-in exact Water/Brine metering.
-Sampled counters follow attempted slots; physical counters confirm material
-transitions but still count slots, not Water units. The preparation adds no
-production usable or equipment framework; see its [future qualification](../operations/in-tools-fixtures-and-playtest.md).
 
 ## Current scope
 
@@ -179,7 +173,7 @@ readback and the released body's pose remain observable.
 
 ## Action and readback contract
 
-### Physical actions and copied feedback
+### Physical equipment aim, recoil and item lifecycle
 
 The physical version-2 `physical_wire_action` envelope carries an optional
 `equipment` dictionary. The enclosing run, actor epoch, producer, issued
@@ -282,6 +276,14 @@ inventory/economy, actor health/damage, programmable material-graph items,
 exact thermodynamics/chemistry and target-PC feel acceptance remain outside this
 increment. The physical chassis is a bounded equipment demonstration, not a
 general inventory or arbitrary object-transfer system.
+
+## Planned liquid metering
+
+**Planned #361 extension:** [IN-TOOLS admission](../architecture/in-tools-gameplay-admission.md)
+selects the existing physical `liquid_drain` for opt-in exact Water/Brine metering.
+Sampled counters follow attempted slots; physical counters confirm material
+transitions but still count slots, not Water units. The preparation adds no
+production usable or equipment framework; see its [future qualification](../operations/in-tools-fixtures-and-playtest.md).
 
 ## Validation
 

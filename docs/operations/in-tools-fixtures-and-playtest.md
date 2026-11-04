@@ -125,11 +125,16 @@ instance/body, expired lease, native session mismatch and failed-owner publicati
 
 The native multi-tank test is a different fixture from the six planned host
 registrations. Its wide operation visits 32 targets across eight tanks; it does
-not qualify the proposed 16-cell production command limit. Its `first_flow_tick`
-is the first decrease in the interior reservoir census, excluding the aperture
-row, not measured downstream crossing flux or tail. The native physical hash
-retains liquid motion and quantity accounting but does not establish separate
-IN diagnostic-ledger parity.
+not qualify the proposed 16-cell production command limit. V2 names the first
+interior-reservoir census decrease `first_reservoir_depletion_tick`; the original
+v1 called it `first_flow_tick`. Neither measures downstream crossing flux or tail.
+V2 separately compares IN diagnostic-ledger traces and native restored
+continuation, because the physical hash excludes those diagnostics. Independent
+stored-cell inventories check all 393,216 cells in the 24 resident chunks at
+completed ticks 0/8/24/32/64/224 and both continued Worlds at 232. Exact barrier,
+escape and material-count controls complement per-tick ledger closure. The
+[independent review](../audits/2026-11-04-in-tools-379-independent-review.md)
+keeps original evidence and the corrected-source results separate.
 
 Primary scientific fixtures contain only the selected liquid, Empty and Wall.
 Every source/sink is declared; no chemistry or unobserved outflow is permitted.

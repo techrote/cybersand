@@ -26,9 +26,12 @@ SOURCES = [
     "native/src/scheduler_geometry.cpp", "native/src/settled_world_discovery.cpp",
     "native/tests/test_in_tools_361_contract.cpp",
 ]
-RESULT_SCHEMA = "in-tools-native-primitives-v1"
+RESULT_SCHEMA = "in-tools-native-primitives-v2"
 RECORD_SCHEMA = "in-tools-native-run-v1"
 MAX_U64 = (1 << 64) - 1
+CENSUS_NEGATIVE_CONTROLS = ["water-quantity-mismatch", "material-count-mismatch",
+                            "escaped-liquid", "missing-wall", "extra-chunk"]
+CENSUS_TICKS = [0, 8, 24, 32, 64, 224]
 SINGLETONS = {
     "native.ingress.v1": {"water_quanta": [7, 255], "brine_quantum_cells": 1},
     "native.edit-refusals.v1": {
@@ -45,14 +48,17 @@ SINGLETONS = {
     "native.sink-exhaustion.v1": {"zero_removal_on_second_call": True},
     "native.owner-reconstruction.v1": {
         "restore_and_continue_ticks_per_arm": 8, "fresh_setup_pairs_per_arm": 3,
+        "restore_inertial_ledger_parity": True,
     },
 }
 LEAK = "native.leak-closure-reopen.v1"
 DRAIN = "native.drain-active-stopped-empty.v1"
 FLOW_FIELDS = {
     "case_id", "status", "material", "family", "width", "ticks", "initial_quantity",
-    "remaining_quantity", "removed_quantity", "first_flow_tick", "close_applied_tick",
+    "remaining_quantity", "removed_quantity", "first_reservoir_depletion_tick", "close_applied_tick",
     "close_refusals", "phase_jobs", "workers1_observed", "workers4_observed", "parity",
+    "inertial_ledger_parity", "census_completed_ticks", "census_cells", "census_chunks",
+    "restored_census_completed_tick",
     "inertial_slot_bytes", "inertial_slot_size", "inertial_total_component_bytes",
     "resident_cells_bytes", "instrumented_elapsed_ms_workers1", "instrumented_elapsed_ms_workers4",
 }
@@ -91,11 +97,13 @@ def validate_native_result(result: object) -> None:
     These checks corroborate the executable's assertions; supplied JSON alone
     cannot authenticate a native run, gameplay receipt or physics law.
     """
-    fields(result, {"schema", "scope", "production_tool_implemented", "cases", "checks", "status"}, "result")
+    fields(result, {"schema", "scope", "production_tool_implemented", "cases", "checks", "status",
+                    "census_negative_controls"}, "result")
     literal(result["schema"], RESULT_SCHEMA, "schema")
     literal(result["scope"], "native-core-only", "scope")
     literal(result["production_tool_implemented"], False, "production_tool_implemented")
     literal(result["status"], "pass", "status")
+    literal(result["census_negative_controls"], CENSUS_NEGATIVE_CONTROLS, "census_negative_controls")
     integer(result["checks"], "checks", 32 * 224)
     cases = result["cases"]
     if type(cases) is not list or len(cases) != len(SINGLETONS) + len(EXPECTED_FLOWS):
@@ -128,6 +136,11 @@ def validate_native_result(result: object) -> None:
         seen_flows.add(key)
         literal(case["ticks"], 224, "ticks")
         literal(case["parity"], True, "parity")
+        literal(case["inertial_ledger_parity"], True, "inertial_ledger_parity")
+        literal(case["census_completed_ticks"], CENSUS_TICKS, "census_completed_ticks")
+        literal(case["census_cells"], 768 * 512, "census_cells")
+        literal(case["census_chunks"], 24, "census_chunks")
+        literal(case["restored_census_completed_tick"], 232, "restored_census_completed_tick")
         expected_initial = 8 * 18 * 9 * (255 if case["material"] == "Water" else 1)
         literal(case["initial_quantity"], expected_initial, "initial_quantity")
         remaining = integer(case["remaining_quantity"], "remaining_quantity", 0, expected_initial)
@@ -137,7 +150,7 @@ def validate_native_result(result: object) -> None:
         if case["material"] == "Water" and case["family"] == "inertial_cellular_v1":
             if remaining % 255 or removed % 255:
                 raise ValueError("IN Water flow quantities must contain complete 255-unit cells")
-        first_flow = integer(case["first_flow_tick"], "first_flow_tick", 1, 224)
+        first_flow = integer(case["first_reservoir_depletion_tick"], "first_reservoir_depletion_tick", 1, 224)
         closed = integer(case["close_applied_tick"], "close_applied_tick", 0, 199)
         refusals = integer(case["close_refusals"], "close_refusals", 0, 175)
         if case_id == LEAK:
@@ -296,6 +309,10 @@ def main() -> int:
         record["compile_command"] = compile_args
         record["run_command"] = [str(executable)]
         record["timeouts_seconds"] = {"compile": args.compile_timeout, "run": args.run_timeout}
+        # A successful wrapper/compiler exit is insufficient evidence that it
+        # produced this run's binary. Retire any old output before compiling;
+        # hashing below then fails closed if no fresh executable was written.
+        executable.unlink(missing_ok=True)
         attempted_logs.extend([build/"compile.stdout.log", build/"compile.stderr.log"])
         started = time.monotonic()
         code = command(compile_args, args.compile_timeout, *attempted_logs[-2:])

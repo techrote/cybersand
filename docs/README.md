@@ -16,6 +16,8 @@ IN-TOOLS #361: [bounded gameplay admission](architecture/in-tools-gameplay-admis
 This documentation/test-only candidate prepares metered drains, reversible ports
 and geometric sources; gameplay integration and native momentum inputs remain
 Planned. It does not complete #361 or import unmerged #370/#358.
+The [independent #379 review](audits/2026-11-04-in-tools-379-independent-review.md)
+records retrieval recovery, evidence-tool corrections and the owner approval boundary.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)

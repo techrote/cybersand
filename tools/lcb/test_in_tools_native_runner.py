@@ -27,9 +27,11 @@ def valid_result() -> dict:
             "case_id": case_id, "status": "pass", "material": material, "family": family,
             "width": width, "ticks": 224, "initial_quantity": initial,
             "remaining_quantity": initial - removed, "removed_quantity": removed,
-            "first_flow_tick": 1 if removed else 9,
+            "first_reservoir_depletion_tick": 1 if removed else 9,
             "close_applied_tick": 0 if removed else 24, "close_refusals": 0,
             "phase_jobs": 128, "workers1_observed": 1, "workers4_observed": 4, "parity": True,
+            "inertial_ledger_parity": True, "census_completed_ticks": runner.CENSUS_TICKS.copy(),
+            "census_cells": 393216, "census_chunks": 24, "restored_census_completed_tick": 232,
             "inertial_slot_bytes": 2359296 if family == "inertial_cellular_v1" else 0,
             "inertial_slot_size": 6,
             "inertial_total_component_bytes": 2982945 if family == "inertial_cellular_v1" else 623073,
@@ -38,7 +40,7 @@ def valid_result() -> dict:
         })
     return {"schema": runner.RESULT_SCHEMA, "scope": "native-core-only",
             "production_tool_implemented": False, "status": "pass", "checks": 8761999,
-            "cases": cases}
+            "cases": cases, "census_negative_controls": runner.CENSUS_NEGATIVE_CONTROLS.copy()}
 
 
 def flow(result: dict, case_id: str = runner.LEAK, material: str = "Water",
@@ -100,6 +102,8 @@ class ResultValidationTests(unittest.TestCase):
             ("native.mask-barrier.v1", "barrier_kind", "Rapier"),
             ("native.sink-exhaustion.v1", "zero_removal_on_second_call", False),
             ("native.owner-reconstruction.v1", "fresh_setup_pairs_per_arm", 0),
+            ("native.owner-reconstruction.v1", "restore_inertial_ledger_parity", False),
+            ("native.owner-reconstruction.v1", "restore_inertial_ledger_parity", 1),
             ("native.capacity-quarantine.v1", "extra", True),
         ):
             result = valid_result()
@@ -152,9 +156,33 @@ class ResultValidationTests(unittest.TestCase):
         candidate["remaining_quantity"] = candidate["initial_quantity"] - 1
         runner.validate_native_result(result)
 
+    def test_census_and_diagnostic_ledger_evidence_is_complete(self) -> None:
+        for key, value in (("inertial_ledger_parity", False), ("inertial_ledger_parity", 1),
+                           ("census_completed_ticks", [0, 8, 24, 32, 64]),
+                           ("census_completed_ticks", [0, 8, 24, 32, 64, 64]),
+                           ("census_completed_ticks", [False, 8, 24, 32, 64, 224]),
+                           ("census_cells", 1024), ("census_chunks", 25),
+                           ("restored_census_completed_tick", 224)):
+            result = valid_result()
+            flow(result)[key] = value
+            with self.subTest(key=key, value=value), self.assertRaises(ValueError):
+                runner.validate_native_result(result)
+        for controls in ([], runner.CENSUS_NEGATIVE_CONTROLS[:-1],
+                         runner.CENSUS_NEGATIVE_CONTROLS[:-1] + ["missing-wall"]):
+            result = valid_result()
+            result["census_negative_controls"] = controls
+            with self.subTest(controls=controls), self.assertRaises(ValueError):
+                runner.validate_native_result(result)
+
+    def test_historical_v1_is_not_new_census_or_ledger_evidence(self) -> None:
+        result = valid_result()
+        result["schema"] = "in-tools-native-primitives-v1"
+        with self.assertRaises(ValueError):
+            runner.validate_native_result(result)
+
     def test_leak_must_reach_a_real_close_within_reopen_horizon(self) -> None:
-        for key, value in (("first_flow_tick", 0), ("first_flow_tick", 8),
-                           ("first_flow_tick", 225), ("close_applied_tick", 0),
+        for key, value in (("first_reservoir_depletion_tick", 0), ("first_reservoir_depletion_tick", 8),
+                           ("first_reservoir_depletion_tick", 225), ("close_applied_tick", 0),
                            ("close_applied_tick", 23), ("close_applied_tick", 200),
                            ("close_refusals", 1)):
             result = valid_result()
@@ -169,7 +197,7 @@ class ResultValidationTests(unittest.TestCase):
             runner.validate_native_result(result)
 
     def test_drain_has_no_valve_events_and_empty_intake_is_not_empty_tank(self) -> None:
-        for key, value in (("close_applied_tick", 24), ("close_refusals", 1), ("first_flow_tick", 2)):
+        for key, value in (("close_applied_tick", 24), ("close_refusals", 1), ("first_reservoir_depletion_tick", 2)):
             result = valid_result()
             flow(result, runner.DRAIN)[key] = value
             with self.subTest(key=key), self.assertRaises(ValueError):
@@ -193,7 +221,8 @@ class ResultValidationTests(unittest.TestCase):
 class RunnerRecordTests(unittest.TestCase):
     def invocation(self, raw: str | None = None, *, compile_exit: int = 0, run_exit: int = 0,
                    mutate: str | None = None, compiler_available: bool = True,
-                   raise_on_run: bool = False, existing_unrelated: bool = False) -> tuple:
+                   raise_on_run: bool = False, existing_unrelated: bool = False,
+                   compiler_omits_executable: bool = False) -> tuple:
         with tempfile.TemporaryDirectory(prefix="in361-runner-test-") as temporary:
             root = Path(temporary)/"source"
             for name in [*runner.SOURCES, "native/include/cybersand/probe.hpp", "native/src/probe.inc"]:
@@ -227,7 +256,7 @@ class RunnerRecordTests(unittest.TestCase):
                     initial_records.append(json.loads(output.read_text()))
                     stdout.write_text("")
                     stderr.write_text("")
-                    if compile_exit == 0:
+                    if compile_exit == 0 and not compiler_omits_executable:
                         executable.write_text("new synthetic executable, never executed")
                     return compile_exit
                 stdout.write_text(raw)
@@ -297,6 +326,13 @@ class RunnerRecordTests(unittest.TestCase):
         self.assertNotIn("stdout_sha256", record)
         self.assertNotIn("executable_sha256", record)
         self.assertNotIn("run.stderr.log", record["log_sha256"])
+        self.assertNotIn("results", record)
+
+    def test_successful_compiler_must_create_a_fresh_executable(self) -> None:
+        code, record, _, _, _ = self.invocation(compiler_omits_executable=True)
+        self.assertEqual(code, 1)
+        self.assertEqual(record["status"], "runner-error")
+        self.assertNotIn("run_exit", record)
         self.assertNotIn("results", record)
 
     def test_failure_and_timeout_cannot_be_promoted_by_valid_stdout(self) -> None:

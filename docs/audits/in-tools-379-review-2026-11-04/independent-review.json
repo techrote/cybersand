@@ -1,0 +1,64 @@
+{
+  "schema": "in-tools-379-independent-source-review-v1",
+  "reviewer": "Independent read-only architecture/source subagent; did not author corrections",
+  "reviewed_code_commit": "aec5f95856bd990a7d4fb306d5908fc2be9dd8d5",
+  "reviewed_working_documentation": [
+    "docs/audits/2026-11-04-in-tools-379-independent-review.md",
+    "docs/operations/in-tools-fixtures-and-playtest.md",
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/README.md",
+    "docs/reference/status-and-roadmap.md",
+    "docs/reference/validation-evidence.md"
+  ],
+  "source_disposition": "ACCEPTED for documentation/test-only preparation",
+  "unresolved_blocking_source_findings": [],
+  "independent_checks": {
+    "focused_python_tests": 58,
+    "focused_python_outcome": "pass",
+    "fixture_plans": 6,
+    "current_source_inputs": 25,
+    "pinned_comparison_inputs": 9,
+    "source_check_outcome": "pass",
+    "diff_whitespace": "pass",
+    "protected_production_changes": [],
+    "native_packet_sha256": "5344e9dc8459c2ddfd89c2e4bc0e7770d99c15ce922db4f96fb9d964d3109ae2",
+    "native_packet_inputs_rehashed": 56,
+    "native_packet_input_mismatches": [],
+    "native_runner_matches_packet": true,
+    "native_flow_pairs": 16,
+    "native_flow_arms": 32,
+    "native_ticks_per_arm": 224,
+    "native_repeated_assertions": 215237704,
+    "native_all_four_worker_claimants": true,
+    "native_physical_parity": true,
+    "native_separate_inertial_ledger_parity": true,
+    "native_restore_ledger_parity": true
+  },
+  "accepted_corrections": [
+    "Independent stored-cell census over entire registered resident domain and exact positional controls",
+    "Meaningful wrong-ledger/count/escape/barrier/domain negative controls",
+    "Explicit census checkpoint coverage and restored-owner census",
+    "Separate worker and restored IN diagnostic-ledger parity",
+    "Fresh executable required after successful compilation",
+    "Complete unique fixed-v1 fixture, comparison, geometry and schedule coverage",
+    "Unambiguous copied JSON parsing",
+    "Correct out-of-domain refusal intersection accounting",
+    "Accurate reservoir-depletion naming and v2 result discrimination",
+    "Current/Planned retrieval ownership with substantive metering requirements retained"
+  ],
+  "remaining_conditions": [
+    "Final frozen-head local validation and publication ledger",
+    "Required hosted exact-head documentation and source-scope checks",
+    "Final live base/head check before any integration",
+    "Explicit owner integration approval"
+  ],
+  "not_claimed": [
+    "Human or separate-account GitHub PR approval",
+    "Permission to merge",
+    "Native-issued gameplay command receipt",
+    "Windows/Godot/Rapier gameplay execution",
+    "Owner feel acceptance",
+    "Completion of issue361"
+  ],
+  "record_note": "Integrator transcribes the independent review. Native run retains its actual4e6af91c source identity; later documentation-only heads require source equivalence or their own run. This record does not approve its own future edits."
+}

@@ -17,6 +17,9 @@ Linux native primitive runs, source custody and synthetic proposal-checker
 adversaries. They are separate from the six Planned host fixtures, Windows/Godot
 execution, Rapier-safe terrain insertion and human feel. Existing #370 historical
 results retain their own source, platform and timing exclusions.
+The [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
+reproduces the original head, preserves retrieval failures and records the
+corrected census, diagnostic-ledger and evidence-validation contracts separately.
 
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
 

@@ -23,6 +23,10 @@ Coordinate Main/panel changes with #370, actor lifecycle with PLAY, and any
 mask/coupling change with #347. Do not modify their active branches or import #358.
 Keep this documentation/test-only PR draft and #361 open. See the
 [qualification record](../audits/2026-11-04-in-tools-admission.md) for exact scope.
+The subsequent [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
+owns retrieval recovery, stricter test evidence and the separate Liquid Drain
+handover. It preserves original source locks and requires explicit owner
+integration approval; no parallel implementation is imported.
 
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 

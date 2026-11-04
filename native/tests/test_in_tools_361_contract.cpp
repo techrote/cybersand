@@ -129,8 +129,11 @@ void capacity() {
 }
 struct Tank {int x,y;};
 constexpr std::array<Tank,8> tanks{{{-8,-8},{120,-8},{248,-8},{376,-8},{-8,120},{120,120},{248,120},{376,120}}};
+constexpr RectI64 census_domain{-128,-128,768,512};
+constexpr std::size_t census_chunks=24;
+constexpr std::array<std::uint64_t,6> census_ticks{{0,8,24,32,64,224}};
 void setup(World& w,Material m){
-    w.reserve_region({-128,-128,768,512});w.configure_transient_obstacles({-32,-32,480,256});
+    w.reserve_region(census_domain);w.configure_transient_obstacles({-32,-32,480,256});
     for(const auto t:tanks){
         rect(w,t.x-2,t.y-2,24,1,Material::Wall);rect(w,t.x-2,t.y+48,24,1,Material::Wall);
         rect(w,t.x-2,t.y-2,1,51,Material::Wall);rect(w,t.x+21,t.y-2,1,51,Material::Wall);
@@ -138,6 +141,76 @@ void setup(World& w,Material m){
         rect(w,t.x,t.y,1,19,Material::Wall);rect(w,t.x+19,t.y,1,19,Material::Wall);
         rect(w,t.x+1,t.y+9,18,9,m);
     }
+}
+
+// The registered 24 chunks are reserved before the first edit. The World does
+// not evict chunks during these probes: equality of chunk_count therefore also
+// refuses any new resident chunk outside this complete observed domain.
+enum class ExpectedCell { Empty, Wall, LiquidOrEmpty };
+ExpectedCell expected_cell(std::int64_t x,std::int64_t y,int width,bool port_open) {
+    for(const auto t:tanks) {
+        if(x<t.x-2||x>t.x+21||y<t.y-2||y>t.y+48)continue;
+        const bool outer=x==t.x-2||x==t.x+21||y==t.y-2||y==t.y+48;
+        bool inner=((x==t.x||x==t.x+19)&&y>=t.y&&y<=t.y+18)||
+                   ((y==t.y||y==t.y+18)&&x>=t.x&&x<=t.x+19);
+        if(port_open&&y==t.y+18&&x>=t.x+8&&x<t.x+8+width)inner=false;
+        return outer||inner ? ExpectedCell::Wall : ExpectedCell::LiquidOrEmpty;
+    }
+    return ExpectedCell::Empty;
+}
+void census(const World& w,Material m,int width,bool port_open,const QuantityLedgerSnapshot& ledger) {
+    require(w.config().chunk_size==128&&w.chunk_count()==census_chunks,"census resident domain changed");
+    std::array<std::uint64_t,kQuantityMaterialSlots> counts{};
+    std::uint64_t water=0;
+    const auto maximum=w.config().water_experiment_policy.maximum();
+    for(std::int64_t y=census_domain.y;y<census_domain.y+census_domain.height;++y) {
+        for(std::int64_t x=census_domain.x;x<census_domain.x+census_domain.width;++x) {
+            const auto material=w.stored_material(x,y);
+            require(material==Material::Empty||material==Material::Wall||material==m,"census found foreign material");
+            const auto expected=expected_cell(x,y,width,port_open);
+            if(expected==ExpectedCell::Wall)require(material==Material::Wall,"census barrier changed");
+            else if(expected==ExpectedCell::Empty)require(material==Material::Empty,"census material escaped tank");
+            else require(material==Material::Empty||material==m,"census unexpected interior Wall");
+            if(material!=Material::Empty)++counts[static_cast<std::uint8_t>(material)];
+            if(material==Material::Water) {
+                const auto mass=w.stored_state_a(x,y);
+                require(mass>0&&mass<=maximum,"census invalid Water quantity");
+                require(!w.whole_cell_water_enabled()||mass==maximum,"census fractional whole-cell Water");
+                water+=mass;
+            }
+        }
+    }
+    require(counts==ledger.material_cells,"census disagrees with native material counts");
+    require(water==ledger.water_visible&&ledger.water_overfill==0,"census disagrees with native Water quantity");
+}
+void census(const World& w,Material m,int width,bool port_open) {
+    census(w,m,width,port_open,w.quantity_ledger());
+}
+template<typename Check> void expect_census_refusal(Check check,const char* expected) {
+    try {check();}
+    catch(const std::runtime_error& error) {
+        require(std::string(error.what())==expected,"census control failed for the wrong reason");
+        return;
+    }
+    require(false,"corrupt census control was accepted");
+}
+void census_controls() {
+    auto w=std::make_unique<World>(config(Material::Water,true));setup(*w,Material::Water);
+    census(*w,Material::Water,1,false);
+    auto wrong=w->quantity_ledger();++wrong.water_visible;
+    expect_census_refusal([&]{census(*w,Material::Water,1,false,wrong);},"census disagrees with native Water quantity");
+    wrong=w->quantity_ledger();++wrong.material_cells[static_cast<std::uint8_t>(Material::Water)];
+    expect_census_refusal([&]{census(*w,Material::Water,1,false,wrong);},"census disagrees with native material counts");
+    // The old ledger-closure check still passes after a correctly accounted
+    // but spatially forbidden write. The independent census must reject it.
+    w->set(600,300,Material::Water);conservation(*w);
+    expect_census_refusal([&]{census(*w,Material::Water,1,false);},"census material escaped tank");
+    w->set(600,300,Material::Empty);census(*w,Material::Water,1,false);
+    w->set(tanks[0].x,tanks[0].y+48,Material::Empty);conservation(*w);
+    expect_census_refusal([&]{census(*w,Material::Water,1,false);},"census barrier changed");
+    w->set(tanks[0].x,tanks[0].y+48,Material::Wall);census(*w,Material::Water,1,false);
+    w->reserve_region({768,0,128,128});
+    expect_census_refusal([&]{census(*w,Material::Water,1,false);},"census resident domain changed");
 }
 std::uint64_t reservoir(const World& w,Material m){
     std::uint64_t n=0;
@@ -163,23 +236,25 @@ std::uint64_t drain(World& w,Material m,int width){
         }}
     return removed;
 }
-struct Result {std::vector<std::uint64_t> hashes;std::uint64_t initial=0,remaining=0,removed=0,phase_jobs=0,closed_tick=0,close_refusals=0,flow_tick=0;std::uint32_t observed=0;std::size_t slot_bytes=0,slot_size=0,total_component_bytes=0,resident_cells_bytes=0;double elapsed_ms=0;};
+struct Result {std::vector<std::uint64_t> hashes;std::vector<InertialLedger> inertial_ledgers;std::vector<std::uint64_t> census_completed_ticks;std::uint64_t initial=0,remaining=0,removed=0,phase_jobs=0,closed_tick=0,close_refusals=0,flow_tick=0;std::uint32_t observed=0;std::size_t slot_bytes=0,slot_size=0,total_component_bytes=0,resident_cells_bytes=0;double elapsed_ms=0;};
 Result flow(Material m,bool in,std::uint32_t workers,int width,bool sink){
     auto cfg=config(m,in,workers);auto w=std::make_unique<World>(cfg);setup(*w,m);
-    Result r;r.initial=quantity(*w,m);auto previous=r.initial;
+    Result r;r.initial=quantity(*w,m);auto previous=r.initial;bool port_open=false;
     const auto start=std::chrono::steady_clock::now();
+    census(*w,m,width,port_open);r.census_completed_ticks.push_back(w->completed_tick_index());
     for(int tick=0;tick<224;++tick){
-        if(!sink&&tick==8)open(*w,width);
+        if(!sink&&tick==8){open(*w,width);port_open=true;}
         if(!sink&&tick>=24&&tick<200&&r.closed_tick==0){
             const auto before=w->save_physical_state();
-            if(close(*w,width))r.closed_tick=static_cast<std::uint64_t>(tick);
+            if(close(*w,width)){r.closed_tick=static_cast<std::uint64_t>(tick);port_open=false;}
             else{++r.close_refusals;require(before==w->save_physical_state(),"test-side closure refusal changed authority");}
         }
-        if(!sink&&r.closed_tick!=0&&tick==static_cast<int>(r.closed_tick+8U))open(*w,width);
+        if(!sink&&r.closed_tick!=0&&tick==static_cast<int>(r.closed_tick+8U)){open(*w,width);port_open=true;}
         if(sink&&(tick<16||tick>=24))r.removed+=drain(*w,m,width);
         const auto stats=w->tick();r.observed=std::max(r.observed,stats.worker_threads_observed);
         r.phase_jobs+=std::accumulate(stats.phase_jobs.begin(),stats.phase_jobs.end(),std::uint64_t{0});
         require(!w->has_failed(),"registered flow failed");conservation(*w);
+        require(w->completed_tick_index()==static_cast<std::uint64_t>(tick+1),"completed native tick disagrees with probe");
         require(quantity(*w,m)+r.removed==r.initial,"unexplained liquid source/sink");
         const auto stored=reservoir(*w,m);if(stored<previous&&r.flow_tick==0)r.flow_tick=static_cast<std::uint64_t>(tick+1);
         previous=stored;
@@ -188,15 +263,26 @@ Result flow(Material m,bool in,std::uint32_t workers,int width,bool sink){
             for(int x=-2;x<22;++x){require(w->stored_material(t.x+x,t.y+48)==Material::Wall,"floor changed");require(w->stored_material(t.x+x,t.y+49)==Material::Empty&&w->stored_material(t.x+x,t.y+50)==Material::Empty,"liquid crossed sump floor");}
             for(int y=-2;y<=48;++y){require(w->stored_material(t.x-2,t.y+y)==Material::Wall&&w->stored_material(t.x+21,t.y+y)==Material::Wall,"side wall changed");require(w->stored_material(t.x-3,t.y+y)==Material::Empty&&w->stored_material(t.x+22,t.y+y)==Material::Empty,"liquid crossed sump side");}
         }
+        if(std::find(census_ticks.begin(),census_ticks.end(),w->completed_tick_index())!=census_ticks.end()) {
+            census(*w,m,width,port_open);r.census_completed_ticks.push_back(w->completed_tick_index());
+        }
         r.hashes.push_back(w->physical_state_hash());
+        r.inertial_ledgers.push_back(w->inertial_ledger());
     }
     r.elapsed_ms=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();
     r.remaining=quantity(*w,m);const auto usage=w->inertial_storage_usage();r.slot_bytes=usage.slot_bytes;r.slot_size=usage.slot_size;r.total_component_bytes=usage.total_component_bytes;r.resident_cells_bytes=w->resident_cell_bytes();
     if(sink){const auto before=w->physical_state_hash();for(const auto t:tanks)require(w->stored_material(t.x-1,t.y-1)==Material::Empty,"empty sink control occupied");require(before==w->physical_state_hash(),"read-only empty sink preflight mutated owner");}
     auto saved=w->save_physical_state();auto reconstructed=World::restore_physical_state(cfg,saved);
     require(reconstructed->physical_state_hash()==w->physical_state_hash(),"fresh owner restore lost authority");
+    require(reconstructed->inertial_ledger()==w->inertial_ledger(),"fresh owner restore lost IN diagnostic ledger");
     // Masks are separately host-owned; this fixture's mask is all zero.
-    for(int tick=0;tick<8;++tick){(void)w->tick();(void)reconstructed->tick();require(w->physical_state_hash()==reconstructed->physical_state_hash(),"fresh owner continuation mismatch");}
+    for(int tick=0;tick<8;++tick){
+        (void)w->tick();(void)reconstructed->tick();
+        require(w->physical_state_hash()==reconstructed->physical_state_hash(),"fresh owner continuation mismatch");
+        require(w->inertial_ledger()==reconstructed->inertial_ledger(),"fresh owner continuation IN diagnostic ledger mismatch");
+    }
+    require(w->completed_tick_index()==232&&reconstructed->completed_tick_index()==232,"restored census tick mismatch");
+    census(*w,m,width,port_open);census(*reconstructed,m,width,port_open);
     for(int reset=0;reset<3;++reset){auto a=std::make_unique<World>(cfg);setup(*a,m);auto b=std::make_unique<World>(cfg);setup(*b,m);require(a->physical_state_hash()==b->physical_state_hash(),"fresh setup nondeterministic");}
     return r;
 }
@@ -227,17 +313,21 @@ void exhaustion() {
 }
 
 void flows(){
+    census_controls();
     for(const auto m:{Material::Water,Material::Brine})for(const bool in:{false,true})for(const int width:{1,4})for(const bool sink:{false,true}){
         const auto one=flow(m,in,1,width,sink);const auto four=flow(m,in,4,width,sink);
         require(one.hashes==four.hashes,"one/four complete-state trace differs");
+        require(one.inertial_ledgers==four.inertial_ledgers,"one/four IN diagnostic-ledger trace differs");
+        const std::vector<std::uint64_t> expected_censuses(census_ticks.begin(),census_ticks.end());
+        require(one.census_completed_ticks==expected_censuses&&four.census_completed_ticks==expected_censuses,"independent census checkpoints incomplete");
         require(one.phase_jobs>0&&four.phase_jobs>0,"no native phase participation");
         require(one.remaining==four.remaining&&one.removed==four.removed,"one/four quantities differ");
-        std::cout<<",{\"case_id\":\"native."<<(sink?"drain-active-stopped-empty":"leak-closure-reopen")<<".v1\",\"status\":\"pass\",\"material\":\""<<(m==Material::Water?"Water":"Brine")<<"\",\"family\":\""<<(in?"inertial_cellular_v1":m==Material::Water?"freemass_v1":"cellular_yield_v1")<<"\",\"width\":"<<width<<",\"ticks\":224,\"initial_quantity\":"<<one.initial<<",\"remaining_quantity\":"<<one.remaining<<",\"removed_quantity\":"<<one.removed<<",\"first_flow_tick\":"<<one.flow_tick<<",\"close_applied_tick\":"<<one.closed_tick<<",\"close_refusals\":"<<one.close_refusals<<",\"phase_jobs\":"<<one.phase_jobs<<",\"workers1_observed\":"<<one.observed<<",\"workers4_observed\":"<<four.observed<<",\"parity\":true,\"inertial_slot_bytes\":"<<one.slot_bytes<<",\"inertial_slot_size\":"<<one.slot_size<<",\"inertial_total_component_bytes\":"<<one.total_component_bytes<<",\"resident_cells_bytes\":"<<one.resident_cells_bytes<<",\"instrumented_elapsed_ms_workers1\":"<<one.elapsed_ms<<",\"instrumented_elapsed_ms_workers4\":"<<four.elapsed_ms<<"}";
+        std::cout<<",{\"case_id\":\"native."<<(sink?"drain-active-stopped-empty":"leak-closure-reopen")<<".v1\",\"status\":\"pass\",\"material\":\""<<(m==Material::Water?"Water":"Brine")<<"\",\"family\":\""<<(in?"inertial_cellular_v1":m==Material::Water?"freemass_v1":"cellular_yield_v1")<<"\",\"width\":"<<width<<",\"ticks\":224,\"initial_quantity\":"<<one.initial<<",\"remaining_quantity\":"<<one.remaining<<",\"removed_quantity\":"<<one.removed<<",\"first_reservoir_depletion_tick\":"<<one.flow_tick<<",\"close_applied_tick\":"<<one.closed_tick<<",\"close_refusals\":"<<one.close_refusals<<",\"phase_jobs\":"<<one.phase_jobs<<",\"workers1_observed\":"<<one.observed<<",\"workers4_observed\":"<<four.observed<<",\"parity\":true,\"inertial_ledger_parity\":true,\"census_completed_ticks\":[0,8,24,32,64,224],\"census_cells\":393216,\"census_chunks\":24,\"restored_census_completed_tick\":232,\"inertial_slot_bytes\":"<<one.slot_bytes<<",\"inertial_slot_size\":"<<one.slot_size<<",\"inertial_total_component_bytes\":"<<one.total_component_bytes<<",\"resident_cells_bytes\":"<<one.resident_cells_bytes<<",\"instrumented_elapsed_ms_workers1\":"<<one.elapsed_ms<<",\"instrumented_elapsed_ms_workers4\":"<<four.elapsed_ms<<"}";
     }
-    std::cout<<",{\"case_id\":\"native.owner-reconstruction.v1\",\"status\":\"pass\",\"restore_and_continue_ticks_per_arm\":8,\"fresh_setup_pairs_per_arm\":3}";
+    std::cout<<",{\"case_id\":\"native.owner-reconstruction.v1\",\"status\":\"pass\",\"restore_and_continue_ticks_per_arm\":8,\"fresh_setup_pairs_per_arm\":3,\"restore_inertial_ledger_parity\":true}";
 }
 }
 int main(){
-    try{std::cout<<"{\"schema\":\"in-tools-native-primitives-v1\",\"scope\":\"native-core-only\",\"production_tool_implemented\":false,\"cases\":[";ingress();edit_refusals();capacity();mask_barrier();exhaustion();flows();std::cout<<"],\"checks\":"<<checks<<",\"status\":\"pass\"}\n";return 0;}
+    try{std::cout<<"{\"schema\":\"in-tools-native-primitives-v2\",\"scope\":\"native-core-only\",\"production_tool_implemented\":false,\"cases\":[";ingress();edit_refusals();capacity();mask_barrier();exhaustion();flows();std::cout<<"],\"census_negative_controls\":[\"water-quantity-mismatch\",\"material-count-mismatch\",\"escaped-liquid\",\"missing-wall\",\"extra-chunk\"],\"checks\":"<<checks<<",\"status\":\"pass\"}\n";return 0;}
     catch(const std::exception& e){std::cerr<<"IN-TOOLS native primitive failure: "<<e.what()<<"\n";return 1;}
 }
