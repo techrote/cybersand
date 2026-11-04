@@ -35,13 +35,13 @@ public:
     // rasterization; no caller-supplied count or refusal reason is accepted.
     static std::optional<ConstructionRefusal> validate_initial_pressure_capacity(
         const World& candidate, const setup::SetupDomain& domain,
-        std::uint32_t maximum_side = normalization::kMaximumSetupSide) {
+        std::uint32_t maximum_side = normalization::kMaximumSetupSide, bool retained_workbench = false) {
         const auto refused = [&](LiquidPolicyRefusalCode code, std::string detail) {
             return ConstructionRefusal::for_setup(candidate.liquid_solver_policy(),
                 {code, static_cast<std::uint16_t>(Material::Water), std::move(detail)});
         };
         try {
-            if (initial_pressure_capacity(candidate, domain, maximum_side).exceeds_capacity())
+            if (initial_pressure_capacity(candidate, domain, maximum_side, retained_workbench).exceeds_capacity())
                 return refused(LiquidPolicyRefusalCode::CapacityRefused,
                     "initial pressure gas compartment capacity exceeds 1024");
             return std::nullopt;

@@ -59,10 +59,13 @@ PressureFlowParameters World::pressure_flow_parameters() const noexcept {
     return pressure_ == nullptr ? PressureFlowParameters{} : pressure_->parameters;
 }
 
-World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World& source, bool allow_conversion) {
+World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World& source, RectI64 canvas,
+    bool allow_conversion, bool normalize_water) {
     require_healthy();
     source.require_healthy();
-    if (&source == this || tick_in_progress_ || source.tick_in_progress_ || tick_index_ != 0 ||
+    if (canvas.x != 0 || canvas.y != 0 || canvas.width < 1 || canvas.height < 1 ||
+        canvas.width > setup::kMaximumFiniteSetupSide || canvas.height > setup::kMaximumFiniteSetupSide ||
+        &source == this || tick_in_progress_ || source.tick_in_progress_ || tick_index_ != 0 ||
         !quantity_.construction || quantity_.water_overfill != 0 ||
         config_.chunk_size != source.config_.chunk_size ||
         config_.water_experiment_policy.mass_bits() != source.config_.water_experiment_policy.mass_bits())
@@ -78,36 +81,73 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
     if (!keep_gas && source.pressure_) transfer.discarded_gas = source.pressure_->gas.amount_live;
     if (!allow_conversion && (transfer.discarded_overfill || transfer.discarded_gas))
         throw std::invalid_argument("Pressure overfill or trapped gas requires an explicit workbench policy conversion");
-    if (keep_gas) {
-        // Recover the owner of each gas label and its measured amount. Hulls
-        // may have changed; the normal next pressure pass resolves/vents those
-        // changes against its new masks. Never reuse the old geometry cache.
-        pressure_->compartments = source.pressure_->compartments;
-        for (auto& compartment : pressure_->compartments) compartment.created_tick = 0;
-        pressure_->topology_revision = source.pressure_->topology_revision;
-        pressure_->next_id = source.pressure_->next_id;
-        pressure_->gas = source.pressure_->gas;
-        pressure_->gas_fixed_point = false;
-        if (pressure_->cache) pressure_->cache->cold();
-        transfer.preserved_gas = pressure_->gas.amount_live;
-    }
-    if (!source.pressure_ && !source.inertial_enabled_) return transfer;
+    // Gas amount belongs to a compartment, not independently to each Empty
+    // cell. Preserve its measured amount whenever any of its labels can be
+    // retained. Let the regular next pressure pass resolve the new topology.
+    constexpr std::uint8_t retained_label=1, clipped_label=2;
+    std::array<std::uint8_t,PressureFlowParameters::kCompartmentCapacity> gas_coverage{};
+    const auto size=config_.chunk_size;
+    const auto maximum=config_.water_experiment_policy.maximum();
+    const auto copy_exterior=[&](const Chunk& origin, std::size_t i, std::int64_t x, std::int64_t y, bool resident) {
+        Material material=origin.cells[i].material_value();
+        const auto temperature=origin.temperatures ? (*origin.temperatures)[i] : config_.ambient_temperature;
+        auto a=origin.cells[i].state_a_value();
+        const auto b=origin.cells[i].state_b_value();
+        if (!resident) {
+            if (material!=Material::Empty) ++transfer.clipped_materials[static_cast<std::uint8_t>(material)];
+            if (material==Material::Water) transfer.clipped_visible_water+=a;
+            if (temperature!=config_.ambient_temperature) ++transfer.clipped_thermal_cells;
+            return;
+        }
+        if (material==Material::Water && a!=maximum && (normalize_water || whole_cell_water_enabled())) {
+            const auto rounded=normalization::normalized_visible_water(a,maximum);
+            if (rounded) transfer.halo_normalization_produced+=rounded-a;
+            else transfer.halo_normalization_consumed+=a;
+            a=rounded;
+            if (!a) material=Material::Empty;
+        }
+        if (material!=Material::Empty) {
+            if (!set_cell_state(x,y,material,a,b))
+                throw std::logic_error("Resident halo payload could not be installed");
+            ++transfer.preserved_halo_materials[static_cast<std::uint8_t>(material)];
+            if (material==Material::Water) transfer.preserved_halo_visible_water+=a;
+        }
+        if (temperature!=config_.ambient_temperature) set_temperature(x,y,temperature);
+    };
     for (const auto& [coord, origin] : source.chunks_) {
         auto* destination = find_chunk(coord);
+        const auto first_x=coord.x*size, first_y=coord.y*size;
+        const bool interior_chunk=first_x>=0 && first_y>=0 &&
+            first_x<=canvas.width-size && first_y<=canvas.height-size;
+        if (interior_chunk && !source.pressure_ && !origin->inertial) continue;
         for (std::size_t i=0; i<origin->cells.size(); ++i) {
             const auto material = origin->cells[i].material_value();
+            const auto x=first_x+static_cast<std::int64_t>(i%size);
+            const auto y=first_y+static_cast<std::int64_t>(i/size);
+            const bool exterior=!interior_chunk && (x<0 || y<0 || x>=canvas.width || y>=canvas.height);
+            if (exterior) copy_exterior(*origin,i,x,y,destination!=nullptr);
             if (source.pressure_) {
                 const auto& from = origin->pressure->cells[i];
+                if (!destination) {
+                    transfer.clipped_water_overfill+=from.overfill;
+                    if (from.flow) ++transfer.clipped_pressure_flow_cells;
+                }
+                if (from.gas && from.gas!=kAtmosphereLabel && from.gas!=kVacuumLabel) {
+                    if (const auto* compartment=source.pressure_->find(from.gas)) {
+                        const auto index=static_cast<std::size_t>(compartment-source.pressure_->compartments.data());
+                        gas_coverage[index]|=destination ? retained_label : clipped_label;
+                        if (!destination) ++transfer.clipped_gas_labels;
+                    }
+                }
                 if (!keep_pressure) {
-                    // The global quantity ledger already counts its discarded
-                    // overfill. Flow is motion, recorded as affected cells.
+                    // Its overfill is already counted from the source ledger.
                     if (from.flow) ++transfer.discarded_pressure_flow_cells;
                 } else if (from.overfill || from.flow || (keep_gas && from.gas)) {
                     const bool matching_water = destination && material == Material::Water &&
                         destination->cells[i].material_value() == material &&
                         destination->cells[i].state_a_value() == origin->cells[i].state_a_value();
                     if ((from.flow || from.overfill) && !matching_water) {
-                        if (!allow_conversion)
+                        if (!exterior && !allow_conversion && !normalize_water)
                             throw std::invalid_argument("Pressure state has no matching retained Water cell");
                         transfer.discarded_overfill += from.overfill;
                         if (from.flow) ++transfer.discarded_pressure_flow_cells;
@@ -122,28 +162,50 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
                         destination->pressure->cells[i].flow = from.flow;
                         transfer.preserved_overfill += from.overfill;
                     }
-                    if (keep_gas && from.gas) {
-                        if (destination) destination->pressure->cells[i].gas = from.gas;
-                        else if (from.gas != kAtmosphereLabel && from.gas != kVacuumLabel)
-                            throw std::invalid_argument("Trapped gas extends outside the retained workbench domain");
-                    }
+                    if (keep_gas && from.gas && destination) destination->pressure->cells[i].gas=from.gas;
                 }
             }
             if (!origin->inertial || !source.inertial_family(material)) continue;
             const auto& motion = (*origin->inertial)[i];
             if (!(motion.vx || motion.vy || motion.ax || motion.ay)) continue;
-            if (!inertial_family(material)) {
+            if (!destination) ++transfer.clipped_inertial_cells;
+            if (!inertial_family(material) || (exterior && (!destination || destination->cells[i].material_value()!=material))) {
                 ++transfer.discarded_inertial_cells;
                 continue;
             }
             if (!destination || destination->cells[i].material_value() != material)
                 throw std::invalid_argument("Inertial motion has no matching retained workbench cell");
-            const auto x=coord.x*config_.chunk_size+static_cast<std::int64_t>(i%config_.chunk_size);
-            const auto y=coord.y*config_.chunk_size+static_cast<std::int64_t>(i/config_.chunk_size);
             if (!diagnostic_set_inertial_cell(x,y,motion.vx,motion.vy,motion.ax,motion.ay))
                 throw std::logic_error("Retained inertial motion exceeds the native family bounds");
             ++transfer.preserved_inertial_cells;
         }
+    }
+    if (source.pressure_) {
+        for (std::size_t i=0; i<source.pressure_->compartments.size(); ++i) {
+            const auto& compartment=source.pressure_->compartments[i];
+            if (gas_coverage[i]==clipped_label) {
+                transfer.clipped_gas_amount+=compartment.amount;
+                if (keep_gas) transfer.discarded_gas+=compartment.amount;
+            } else if (keep_gas) {
+                auto& kept=pressure_->compartments.emplace_back(compartment);
+                kept.created_tick=0;
+                transfer.preserved_gas+=kept.amount;
+            }
+        }
+        if (transfer.preserved_gas+transfer.discarded_gas!=source.pressure_->gas.amount_live)
+            throw std::logic_error("Workbench gas amount transfer did not close");
+    }
+    if (keep_gas) {
+        pressure_->topology_revision=source.pressure_->topology_revision;
+        pressure_->next_id=source.pressure_->next_id;
+        if (!transfer.clipped_gas_amount) pressure_->gas=source.pressure_->gas;
+        else {
+            // The new owner starts with the inherited amount; the conversion
+            // receipt records exterior loss separately from simulated venting.
+            pressure_->gas.created=pressure_->gas.amount_live=transfer.preserved_gas;
+        }
+        pressure_->gas_fixed_point=false;
+        if (pressure_->cache) pressure_->cache->cold();
     }
     if (transfer.preserved_overfill + transfer.discarded_overfill != source.quantity_.water_overfill)
         throw std::logic_error("Workbench pressure overfill transfer did not close");
@@ -915,7 +977,6 @@ void World::compute_pressure_heads() {
         });
     }
     const auto put_base = [&](Chunk& chunk, std::size_t index, std::int32_t value) {
-        ++state.optimization.base_cells_written;
         if (!cached) { chunk.pressure->head[index] = value; return; }
         auto& old = chunk.pressure->base_head[index];
         if (old != value) {
@@ -960,21 +1021,15 @@ void World::compute_pressure_heads() {
         }
     };
 
-    std::size_t begin = 0;
-    std::size_t column_task = 0;
-    while (cached ? column_task < cache->dirty_columns.size() : begin < coordinates.size()) {
-        auto end = begin;
-        std::size_t group = 0;
-        if (cached) {
-            group = cache->dirty_columns[column_task++];
-            begin = cache->columns[group].first;
-            end = cache->columns[group].last;
-        } else {
-            while (end < coordinates.size() && coordinates[end].x == coordinates[begin].x) ++end;
-        }
+    using HeadTask = PressureState::HeadColumnTask;
+    const auto prepare_columns = [&](HeadTask& task, std::size_t group) {
+        const auto begin = task.begin, end = task.end;
         for (std::int32_t local_x = 0; local_x < size; ++local_x) {
             if (cached && !cache->columns[group].test(local_x)) continue;
-            ++state.optimization.columns_recomputed;
+            ++task.columns;
+            // Each slot in a visited column receives exactly one base head:
+            // either kNoHead or the result of closing its vertical Water run.
+            task.writes += (end - begin) * static_cast<std::size_t>(size);
             const auto x = coordinates[begin].x * size + local_x;
             // Walk the chunk column; runs never bridge an unallocated chunk.
             bool open = false;
@@ -1002,10 +1057,10 @@ void World::compute_pressure_heads() {
                         } else {
                             put_base(chunk, index, static_cast<std::int32_t>(
                                 kUnknownHeadBase - std::min(compacted, kHeadClamp)));
-                            ++state.diagnostics.unknown_heads;
+                            ++task.unknown;
                         }
                     }
-                    ++state.diagnostics.head_cells;
+                    ++task.heads;
                     if (++local == size) {
                         local = 0;
                         ++chunk_position;
@@ -1052,8 +1107,57 @@ void World::compute_pressure_heads() {
                 close_run(end - 1, size - 1, last.y * size + size - 1, false);
             }
         }
-        if (cached) { cache->columns[group].dirty = {}; cache->columns[group].queued = false; }
+    };
+    const auto merge_counts = [&](const HeadTask& task) {
+        state.optimization.columns_recomputed += task.columns;
+        state.optimization.base_cells_written += task.writes;
+        state.diagnostics.unknown_heads += task.unknown;
+        state.diagnostics.head_cells += task.heads;
+    };
+    const bool pool_columns = !cache && state.column_tasks.capacity() != 0;
+    state.column_tasks.clear();
+    std::size_t begin = 0, column_task = 0;
+    while (cached ? column_task < cache->dirty_columns.size() : begin < coordinates.size()) {
+        std::size_t group = 0, end = begin;
+        if (cached) {
+            group = cache->dirty_columns[column_task++];
+            begin = cache->columns[group].first;
+            end = cache->columns[group].last;
+        } else {
+            while (end < coordinates.size() && coordinates[end].x == coordinates[begin].x) ++end;
+        }
+        HeadTask task{begin,end};
+        if (pool_columns) {
+            if (state.column_tasks.size() == state.column_tasks.capacity())
+                throw std::length_error("Workbench pressure column capacity exhausted");
+            state.column_tasks.push_back(task);
+        } else {
+            prepare_columns(task,group);
+            merge_counts(task);
+            if (cached) { cache->columns[group].dirty = {}; cache->columns[group].queued = false; }
+        }
         begin = end;
+    }
+    if (pool_columns) {
+        // Different chunk columns share neither head storage nor counters.
+        // Gas gauges and transient masks are immutable for this pass. Join
+        // before sorting coordinates or starting row interpolation/wakes.
+        struct Batch { decltype(prepare_columns)& prepare; std::vector<HeadTask>& tasks; };
+        Batch batch{prepare_columns,state.column_tasks};
+        if (batch.tasks.size() >= config_.parallel_job_threshold) {
+            parallel_->pool->dispatch(batch.tasks.size(),&batch,[](void* ptr, std::size_t i) noexcept {
+                auto& run = *static_cast<Batch*>(ptr);
+                auto& task = run.tasks[i];
+                try { run.prepare(task,0); }
+                catch (...) { task.error = std::current_exception(); }
+            });
+        } else {
+            for (auto& task : batch.tasks) prepare_columns(task,0);
+        }
+        for (const auto& task : batch.tasks) {
+            if (task.error) std::rethrow_exception(task.error);
+            merge_counts(task);
+        }
     }
     if (cached) cache->dirty_columns.clear();
 

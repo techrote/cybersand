@@ -65,6 +65,9 @@ struct WorldConfig {
     // assignment is refused at construction and never reaches a kernel.
     LiquidSolverPolicy liquid_solver_policy{};
     PressureOptimizationConfig pressure_optimization{};
+    // Execution-only, opt-in for the finite desktop workbench. Each job owns
+    // complete x-columns of the reference head field before row interpolation.
+    bool workbench_parallel_pressure_heads = false;
 };
 
 struct ChunkCoord {
@@ -345,8 +348,14 @@ public:
         std::uint64_t preserved_overfill = 0, discarded_overfill = 0;
         std::uint64_t preserved_gas = 0, discarded_gas = 0, discarded_pressure_flow_cells = 0;
         std::uint64_t preserved_inertial_cells = 0, discarded_inertial_cells = 0;
+        std::array<std::uint64_t,kQuantityMaterialSlots> preserved_halo_materials{}, clipped_materials{};
+        std::uint64_t preserved_halo_visible_water = 0, clipped_visible_water = 0;
+        std::uint64_t clipped_water_overfill = 0, clipped_gas_amount = 0, clipped_gas_labels = 0;
+        std::uint64_t clipped_pressure_flow_cells = 0, clipped_inertial_cells = 0, clipped_thermal_cells = 0;
+        std::uint64_t halo_normalization_produced = 0, halo_normalization_consumed = 0;
     };
-    WorkbenchLiquidTransfer inherit_workbench_liquid_state(const World& source, bool allow_conversion);
+    WorkbenchLiquidTransfer inherit_workbench_liquid_state(const World& source, RectI64 canvas,
+        bool allow_conversion, bool normalize_water);
     [[nodiscard]] PressureCellState pressure_cell(std::int64_t x, std::int64_t y) const noexcept;
     // Copies the last pre-kernel derived head slot without preparing/allocating.
     // May be stale after transport/writes or unprepared after restore; no

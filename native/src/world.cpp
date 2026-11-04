@@ -1,5 +1,7 @@
 #include "cybersand/world.hpp"
 #include "cybersand/precision_storage.hpp"
+#include "cybersand/water_normalization.hpp"
+#include <exception>
 
 #include "cybersand/material_rules.hpp"
 #include "cybersand/interaction_rules.hpp"
@@ -783,6 +785,9 @@ World::World(WorldConfig config)
                 parallel_->results[i].effects.pressure_work = &pressure_->job_optimization[i];
         }
         const auto selection = config_.liquid_solver_policy.assignment(3U);
+        if (config_.workbench_parallel_pressure_heads && parallel_ && parallel_->pool &&
+            selection->variant == LiquidSolverVariant::Reference)
+            pressure_->column_tasks.reserve(config_.maximum_chunk_count);
         if (selection->variant != LiquidSolverVariant::Reference) {
             if (config_.pressure_optimization.index_chunk_capacity == 0U)
                 throw std::invalid_argument("pressure index capacity must be positive");

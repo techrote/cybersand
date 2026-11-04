@@ -143,13 +143,14 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (seed < 0) throw std::invalid_argument("Negative setup seed");
         const String definition_hash = options.get("definition_hash", String());
         const auto definition_bytes = definition_hash.hex_decode();
-        if (level_payload == nullptr && !default_demo && (definition_hash.length() != 64 || definition_bytes.size() != 32))
+        if (level_payload == nullptr && !default_demo && !retain && (definition_hash.length() != 64 || definition_bytes.size() != 32))
             throw std::invalid_argument("Controlled preparation requires a definition SHA256 claim");
         if ((level_payload != nullptr || default_demo) && options.has("definition_hash"))
             throw std::invalid_argument("Native prepared input does not accept a caller definition hash claim");
         if (default_demo && seed != 0)
             throw std::invalid_argument("The native default demo recipe has fixed seed zero");
         auto config = std::make_unique<cybersand::WorldConfig>(adapter->world_->config());
+        config->workbench_parallel_pressure_heads = workbench;
         // Bound the finite reservation, halo, eligible chunks and active task list.
         // Ordinary controlled/demo replacements keep their established limits.
         if (workbench) {
@@ -211,6 +212,14 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             input = prepared_liquid_detail::level_setup(
                 {level_payload->ptr(), static_cast<std::size_t>(level_payload->size())}, *config,
                 static_cast<std::uint64_t>(seed));
+        } else if (retain) {
+            // A live edit reconstructs the actual paused cells. It does not
+            // compile a dense starting recipe only to discard its contents.
+            input.mass_bits=config->water_experiment_policy.mass_bits();
+            input.ambient_temperature=config->ambient_temperature;
+            input.setup.domain={0,0,static_cast<std::uint32_t>(extent.x),static_cast<std::uint32_t>(extent.y)};
+            input.setup.seed=static_cast<std::uint64_t>(seed);
+            prepared_liquid_detail::workbench_copy_retained_cells(*adapter->world_,input);
         } else {
             // Resolve rectangle and nonzero-fill overwrite order once, before the
             // native normalization law sees any tuple. The dense four-lane staging
@@ -278,7 +287,6 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (workbench) {
             limits.maximum_side = static_cast<std::uint32_t>(std::max(extent.x,extent.y));
             limits.maximum_cells = static_cast<std::size_t>(extent.x) * extent.y;
-            if (retain) prepared_liquid_detail::workbench_copy_retained_cells(*adapter->world_, input);
         }
         const auto water_assignment = config->liquid_solver_policy.assignment(static_cast<std::uint16_t>(cybersand::Material::Water));
         const bool whole_water = water_assignment &&
@@ -382,28 +390,18 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             CyberNativeCellWorld::rasterize_transform_in(*pending->world, extent, nullptr,
                 body.id, body.center, body.rotation, body.half_size);
 
-        // The authored default contains many isolated Water-adjacent voids.
-        // Admit its actual initial topology after body masks, before any token,
-        // applied receipt or authority replacement can escape preparation.
-        if (default_demo || workbench) {
-            if (const auto refused = cybersand::PreparedWorldBuilder::validate_initial_pressure_capacity(
-                    *pending->world, prepared.setup().domain(), limits.maximum_side)) {
-                record_refusal(*refused);
-                return 0;
-            }
-        }
-
         Dictionary conversion_receipt;
         if (retain) {
-            const auto transfer = pending->world->inherit_workbench_liquid_state(*adapter->world_,convert);
+            const auto transfer = pending->world->inherit_workbench_liquid_state(*adapter->world_,
+                {0,0,extent.x,extent.y},convert,normalize_water);
             const auto before = adapter->world_->quantity_ledger();
             const auto after = pending->world->quantity_ledger();
             const auto& norm = prepared.setup().normalization_receipt();
-            const auto produced = norm ? norm->totals().positive_delta : 0U;
-            const auto consumed = norm ? norm->totals().negative_delta : 0U;
+            const auto produced = (norm ? norm->totals().positive_delta : 0U) + transfer.halo_normalization_produced;
+            const auto consumed = (norm ? norm->totals().negative_delta : 0U) + transfer.halo_normalization_consumed;
             const auto water_before = before.water_visible + before.water_overfill;
             const auto water_after = after.water_visible + after.water_overfill;
-            if (water_before + produced != water_after + consumed + transfer.discarded_overfill)
+            if (water_before + produced != water_after + consumed + transfer.discarded_overfill + transfer.clipped_visible_water)
                 throw std::logic_error("Workbench conversion Water balance did not close");
             conversion_receipt["requested"] = convert;
             conversion_receipt["source_policy_sha256"] = prepared_liquid_detail::digest(adapter->world_->liquid_solver_policy().policy_hash());
@@ -415,10 +413,45 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             conversion_receipt["preserved_inertial_cells"] = transfer.preserved_inertial_cells;
             conversion_receipt["discarded_inertial_cells"] = transfer.discarded_inertial_cells;
             conversion_receipt["discarded_pressure_flow_cells"] = transfer.discarded_pressure_flow_cells;
+            Dictionary kept_materials, clipped_materials;
+            std::int64_t kept_cells=0,clipped_cells=0;
+            for (std::size_t i=0;i<transfer.clipped_materials.size();++i) {
+                if (transfer.preserved_halo_materials[i]) {
+                    kept_materials[static_cast<std::int64_t>(i)]=transfer.preserved_halo_materials[i];
+                    kept_cells+=static_cast<std::int64_t>(transfer.preserved_halo_materials[i]);
+                }
+                if (transfer.clipped_materials[i]) {
+                    clipped_materials[static_cast<std::int64_t>(i)]=transfer.clipped_materials[i];
+                    clipped_cells+=static_cast<std::int64_t>(transfer.clipped_materials[i]);
+                }
+            }
+            conversion_receipt["preserved_halo_materials"]=kept_materials;
+            conversion_receipt["clipped_materials"]=clipped_materials;
+            conversion_receipt["preserved_halo_cells"]=kept_cells;
+            conversion_receipt["clipped_material_cells"]=clipped_cells;
+            conversion_receipt["preserved_halo_visible_water"]=transfer.preserved_halo_visible_water;
+            conversion_receipt["clipped_visible_water"]=transfer.clipped_visible_water;
+            conversion_receipt["clipped_water_overfill"]=transfer.clipped_water_overfill;
+            conversion_receipt["clipped_gas_amount"]=transfer.clipped_gas_amount;
+            conversion_receipt["clipped_gas_labels"]=transfer.clipped_gas_labels;
+            conversion_receipt["clipped_thermal_cells"]=transfer.clipped_thermal_cells;
+            conversion_receipt["clipped_pressure_flow_cells"]=transfer.clipped_pressure_flow_cells;
+            conversion_receipt["clipped_inertial_cells"]=transfer.clipped_inertial_cells;
+            conversion_receipt["halo_normalization_produced"]=transfer.halo_normalization_produced;
+            conversion_receipt["halo_normalization_consumed"]=transfer.halo_normalization_consumed;
             conversion_receipt["water_before"] = water_before;
             conversion_receipt["water_after"] = water_after;
             conversion_receipt["normalization_produced"] = produced;
             conversion_receipt["normalization_consumed"] = consumed;
+        }
+        // Census the actual staged topology, including inherited halo cells
+        // and gas labels, before any token or authority replacement escapes.
+        if (default_demo || workbench) {
+            if (const auto refused = cybersand::PreparedWorldBuilder::validate_initial_pressure_capacity(
+                    *pending->world, prepared.setup().domain(), limits.maximum_side, retain)) {
+                record_refusal(*refused);
+                return 0;
+            }
         }
         pending->origin = Vector2i(region[0], region[1]); pending->size = Vector2i(region[2], region[3]);
         pending->window = window;

@@ -194,4 +194,10 @@ struct World::PressureState {
     std::vector<std::uint32_t> member_compartments;
     std::vector<std::uint32_t> member_regions;
     std::vector<ChunkCoord> sorted_coordinates;
+    struct HeadColumnTask {
+        std::size_t begin = 0, end = 0;
+        std::uint64_t columns = 0, writes = 0, heads = 0, unknown = 0;
+        std::exception_ptr error{};
+    };
+    std::vector<HeadColumnTask> column_tasks;
 };

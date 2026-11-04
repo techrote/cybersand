@@ -80,6 +80,12 @@ struct PreparationLimits {
     std::uint32_t maximum_side = kMaximumSetupSide;
 };
 
+// water-normalize-v1 uses the same half-up threshold for the authored domain
+// and any retained native halo cells. Temperature survives down-rounding.
+inline constexpr std::uint16_t normalized_visible_water(std::uint16_t quantity, std::uint16_t maximum) noexcept {
+    return std::uint32_t{2} * quantity >= maximum ? maximum : 0U;
+}
+
 struct NormalizationTotals {
     std::uint64_t cells_up = 0, cells_down = 0, cells_unchanged = 0;
     std::uint64_t positive_delta = 0, negative_delta = 0;
@@ -289,7 +295,7 @@ public:
                     if (!detail::add_u64(totals.cells_unchanged, 1) || !detail::add_u64(totals.water_after, maximum))
                         return refuse(RefusalCode::CapacityRefused, "normalization unchanged counter overflow", std::uint16_t{3});
                     result.cells_.push_back(cell);
-                } else if (std::uint32_t{2} * cell.state_a >= maximum) {
+                } else if (normalized_visible_water(cell.state_a,maximum) != 0) {
                     if (!detail::add_u64(totals.cells_up, 1) ||
                         !detail::add_u64(totals.positive_delta, maximum - cell.state_a) ||
                         !detail::add_u64(totals.water_after, maximum))
