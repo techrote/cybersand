@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [How will selective granular event admission recover falling-grain loading and torque without restoring passive creep?](../operations/gcr-selective-events-registration.md) The preregistered C/E/S successor uses preceding-tick native transport as a consumed witness, not inferred momentum. Qualification and owner review remain open.
+
 - [What does granular-only event omission improve, what response does it lose, and how can I compare it while painting?](../operations/gcr-granular-events-registration.md)
 
 - [How are actuation timing, contact withdrawal and blocked-move events tested causally?](../operations/gcr-causal-registration.md)
@@ -19,20 +21,36 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 - [How do we separate passive creep from powered flyer burrowing?](../operations/gcr-creep-registration.md)
   Use actual actuator output and fresh application ledgers; quiet input can still
   request drag. This investigation does not change structural detachment or sleep.
+## Material catalogue compiler and compatibility guards — 2026-11-04
+
+Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)
+for implemented #353-A scope, commands, deterministic validation, frozen native
+and fallback identities, experimental ID isolation and rollback. It distinguishes
+current shadow tooling from unchanged production authority and the separate
+#353-B cutover decision. The [353-A questions](retrieval-questions-mat-auth-353a.json)
+remain a separate implementation fixture. Version2 corrects MAT353A-01's
+revision-sensitive #357 adoption/merge fact; query wording and canonical routes
+stay fixed. Original version1 and its evidence remain at implementation head
+`6d3737594beb39e83e555f66f2e81184a4bdbf77`.
+
 ## Material-authoring adoption and implementation boundary — 2026-11-04
 
-Use the [owner-adopted Planned status and unstarted compiler boundary](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
-for the current decision, and the [corrected technical contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
-for #353's shadow-first scope, header-byte identity, backend distinctions,
-endpoint effects, experimental IDs and successor gates. The original proposal
-and review retain their dated intake; owner adoption authorizes documentation
-integration, not #353-A implementation or a Current runtime catalogue. The
-[source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
-is dated evidence outside the default corpus. [Supplementary questions](retrieval-questions-mat-auth.json)
+The [adopted Planned architecture](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+and [current A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+distinguish merged #357 documentation, implemented #353-A tooling in #371,
+resulting-head qualification and separately unadmitted #353-B/#354–#356 work.
+The [corrected technical contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+owns header-byte identity, backend distinctions, endpoint effects, experimental
+IDs and successor gates. Original proposal and review statements retain their
+dated scope; the [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+is historical evidence outside the default corpus.
+
+[Supplementary architecture questions](retrieval-questions-mat-auth.json)
 exercise these distinctions separately from unchanged frozen32 and challenge157.
-Version 2 changes only MAT-AUTH-01's revision-sensitive expected adoption fact;
-query wording and canonical routes stay fixed. Its 3 November version-1 fixture
-and evidence remain available at reviewed head `9b776d109e7843fb9b2d25239f9d088181309aa1`.
+Version3 updates only MAT-AUTH-01's revision-sensitive adoption/implementation
+facts and fixture metadata; query wording and canonical routes stay fixed.
+Version1 remains at reviewed head `9b776d109e7843fb9b2d25239f9d088181309aa1`,
+and adoption-only version2 at main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`.
 
 ## LCB current-main reassessment routes — 2026-11-03
 

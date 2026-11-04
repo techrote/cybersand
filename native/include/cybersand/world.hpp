@@ -282,6 +282,16 @@ public:
     [[nodiscard]] std::int64_t transient_granular_impulse_y(std::uint16_t body_id) const noexcept;
     [[nodiscard]] std::int64_t transient_granular_moment2(std::uint16_t body_id) const noexcept;
     [[nodiscard]] bool transient_granular_wrench_refused(std::uint16_t body_id) const noexcept;
+    // GCR-SEL-001 optional, exact preceding-tick cellular transport witness.
+    // Enable/disable only on the serialized healthy owner before its first tick.
+    void enable_granular_arrival_witness(bool enabled);
+    [[nodiscard]] std::size_t granular_arrival_storage_bytes() const noexcept;
+    [[nodiscard]] std::int64_t transient_arrival_impulse_x(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_arrival_impulse_y(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::int64_t transient_arrival_moment2(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::uint64_t transient_arrival_count(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::uint64_t transient_arrival_missing(std::uint16_t body_id) const noexcept;
+    [[nodiscard]] std::uint64_t transient_arrival_misaligned(std::uint16_t body_id) const noexcept;
     [[nodiscard]] bool queue_explosion(std::int64_t x, std::int64_t y,
                                        std::int32_t radius,
                                        std::uint8_t collapse_strength = 255);
@@ -472,6 +482,8 @@ private:
     std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
     std::unique_ptr<PressureState> pressure_;
     bool inertial_enabled_ = false;
+    bool granular_arrival_enabled_ = false;
+    std::size_t granular_arrival_storage_bytes_ = 0;
     std::array<bool,kMaterialDefinitions.size()> inertial_materials_{};
     InertialLedger inertial_ledger_{};
     InertialParameters inertial_parameters_{};

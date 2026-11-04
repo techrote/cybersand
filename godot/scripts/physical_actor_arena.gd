@@ -137,7 +137,7 @@ func configure_granular_experiment(value: Variant, candidate: String, token: Str
 
 func configure_review_fleet(value: Variant, candidate: String, token: String, fleet_index: int,
 		review_options: Dictionary = {}) -> bool:
-	var load_aware: bool = review_options.get("response","") in ["LA","LA-EVENT-OFF"]
+	var load_aware: bool = review_options.get("response","") in ["LA","LA-EVENT-OFF","LA-SELECTIVE"]
 	var expected_candidate: String = "GCR-REST" if load_aware else "GCR"
 	var expected_token: String = "GCR-REST-001-2026-11-02" if load_aware else "GCR-001-2026-11-01"
 	if not Rig.valid_review_options(review_options) or token!=expected_token or candidate!=expected_candidate or not preload("res://scripts/gcr_review_fleet.gd").valid_index(fleet_index):
@@ -153,7 +153,7 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 		return false
 	if not Rig.valid_review_options(review_options) or (not review_options.is_empty() and review_fleet_index==-1): return false
 	if review_fleet_index!=-1:
-		var expected: String = "GCR-REST" if review_options.get("response","") in ["LA","LA-EVENT-OFF"] else "GCR"
+		var expected: String = "GCR-REST" if review_options.get("response","") in ["LA","LA-EVENT-OFF","LA-SELECTIVE"] else "GCR"
 		if granular_candidate!=expected: return false
 	elif granular_candidate=="GCR-REST": return false
 	for actor: Dictionary in validated.actors:
@@ -175,11 +175,16 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 			"gcr_base_budget":float(review_options.budget),"gcr_rest_gravity":38.0},true)
 		if review_options.response=="LA-EVENT-OFF":
 			native_options.merge({"gcr_granular_events":"off","gcr_event_experiment":"GCR-EVT-001-2026-11-04"},true)
+	if review_options.get("response","")=="LA-SELECTIVE":
+		native_options.merge({"gcr_granular_events":"selective","gcr_event_experiment":"GCR-SEL-001-2026-11-04"},true)
 	if not world.diagnostic_reset(native_options):
 		last_error = "native_reset"
 		return false
 	if review_options.get("response","")=="LA-EVENT-OFF" and world.gcr_diagnostics().get("granular_events","")!="off":
 		last_error = "granular_event_runtime_identity_refused"
+		return false
+	if review_options.get("response","")=="LA-SELECTIVE" and (world.gcr_diagnostics().get("granular_events","")!="selective" or not world.gcr_diagnostics().get("arrival_witness",false)):
+		last_error = "selective_event_runtime_identity_refused"
 		return false
 	world.set_simulation_window_enabled(false)
 	world.set_cadence_lod_enabled(false)

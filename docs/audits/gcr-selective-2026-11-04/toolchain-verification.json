@@ -1,0 +1,72 @@
+{
+  "linux": {
+    "files": {
+      "/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496/bin/libgodot-cpp.linux.template_debug.x86_64.a": {
+        "resolved_path": "/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496/bin/libgodot-cpp.linux.template_debug.x86_64.a",
+        "sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
+        "size": 84962728
+      },
+      "/usr/bin/g++-13": {
+        "resolved_path": "/usr/bin/x86_64-linux-gnu-g++-13",
+        "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+        "size": 1027128
+      },
+      "/usr/bin/ld": {
+        "resolved_path": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+        "sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+        "size": 1359128
+      },
+      "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus": {
+        "resolved_path": "/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus",
+        "sha256": "840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d",
+        "size": 32675168
+      }
+    },
+    "godot_cpp_markers": {
+      ".cybersand-source-archive-sha256": "f55d1cd5a2d528a9dc72fc54c1ef2b3d4dd90a0570dd8841d6766cbd4912dad8",
+      ".cybersand-source-revision": "101ae38034304346a46ea9ea84ae156d3e860496"
+    },
+    "versions": {
+      "/usr/bin/g++-13": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "/usr/bin/ld": "GNU ld (GNU Binutils for Ubuntu) 2.42"
+    }
+  },
+  "measured_utc": "2026-11-04T02:55:08.320384+00:00",
+  "scope": "Post-build re-verification of every retained compiler/linker/static-library file hash against the unchanged pinned toolchain record. Not build-time tracing or M11 exact artifact equality.",
+  "windows_files": {
+    "C:\\Users\\_\\lcb-local-toolchain\\env\\godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496\\bin\\libgodot-cpp.windows.template_debug.x86_64.a": {
+      "sha256": "2629ba35adc7b1263deeb1155d674252e1e4188c2c89d1d7158e816d18f957df",
+      "size": 66374316
+    },
+    "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang-23.exe": {
+      "sha256": "981e3fc62c949bad1132a1f5f76428495e69109a7603a1e878aa227cfbf731b7",
+      "size": 96256
+    },
+    "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang.exe": {
+      "sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690",
+      "size": 14336
+    },
+    "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\ld.lld.exe": {
+      "sha256": "284daba5d41833c41d164d3b8b4715a41a11f0c8fd22c19eabc0929cbf081db8",
+      "size": 5184512
+    },
+    "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\libclang-cpp.dll": {
+      "sha256": "b3585afae005a6aa7e576d46de3d37581a9a877d0c11c02010e4a8c3c7aa8dc3",
+      "size": 49632768
+    },
+    "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\x86_64-w64-mingw32-g++.exe": {
+      "sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690",
+      "size": 14336
+    }
+  },
+  "windows_godot_cpp_markers": {
+    ".cybersand-source-archive-sha256": "f55d1cd5a2d528a9dc72fc54c1ef2b3d4dd90a0570dd8841d6766cbd4912dad8",
+    ".cybersand-source-revision": "101ae38034304346a46ea9ea84ae156d3e860496"
+  },
+  "windows_versions": {
+    "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\clang.exe": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)",
+    "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\ld.lld.exe": "LLD 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4) (compatible with GNU linkers)",
+    "C:\\Users\\_\\lcb-local-toolchain\\llvm-mingw-20260826\\bin\\x86_64-w64-mingw32-g++.exe": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)"
+  },
+  "prior_measurement_utc": "2026-11-02T21:24:17.959884+00:00"
+}

@@ -361,6 +361,7 @@ void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     gcr_admission_a1_ = false;
     gcr_load_aware_ = false; gcr_mass_multiplier_=1.; gcr_inertia_multiplier_=1.;
     gcr_granular_events_off_ = false;
+    gcr_granular_events_selective_ = gcr_arrival_witness_ = false;
     gcr_rest_enabled_=false;gcr_rest_mode_="control";gcr_base_budget_=20.;gcr_rest_gravity_=92.12;
     gcr_rest_context_={};gcr_rest_history_={};gcr_rest_cache_.reset();gcr_rest_evaluation_valid_={};
     gcr_compound_mode_ = gcr_preparing_compound_ = false; gcr_compound_count_ = 0;
@@ -1319,7 +1320,7 @@ Dictionary CyberNativeCellWorld::gcr_rest_receipt() const {
     receipt["version"]=1;receipt["mode"]=gcr_rest_mode_;receipt["session"]=gcr_session_id_;
     receipt["sample_native_tick"]=static_cast<std::int64_t>(gcr_sample_tick_);
     receipt["base_budget"]=gcr_base_budget_;receipt["cache_bytes"]=static_cast<std::int64_t>(sizeof(cybersand::gcr::RestCache));
-    receipt["granular_events"]=gcr_granular_events_off_?"off":"control";
+    receipt["granular_events"]=gcr_granular_events_selective_?"selective":(gcr_granular_events_off_?"off":"control");
     receipt["material_revalidated"]=gcr_rest_material_validated_;
     receipt["material_changed_since_prepare"]=gcr_rest_material_changed_;
     receipt["prepared_hard_revision"]=static_cast<std::int64_t>(gcr_rest_prepared_hard_revision_);
@@ -1380,15 +1381,22 @@ CyberNativeCellWorld::GcrEvaluation CyberNativeCellWorld::evaluate_gcr(std::size
     // cells bounds that source, also for an offset COM. Limit the complete
     // moving-event wrench with one factor before spending the shared budget.
     const double radius=static_cast<double>((body.com-body.center).length()+body.half_size.length())+2.;
-    const double cost=std::max(static_cast<double>(out.event_raw.length()),std::abs(out.event_raw_torque)/radius);
+    const Vector2 selected_raw=gcr_granular_events_selective_?Vector2{
+        static_cast<double>(world_->transient_arrival_impulse_x(body_id))*gain,
+        static_cast<double>(world_->transient_arrival_impulse_y(body_id))*gain}:out.event_raw;
+    const double selected_torque=gcr_granular_events_selective_?
+        (static_cast<double>(world_->transient_arrival_moment2(body_id))*.5-
+         body.com.x*static_cast<double>(world_->transient_arrival_impulse_y(body_id))+
+         body.com.y*static_cast<double>(world_->transient_arrival_impulse_x(body_id)))*gain:out.event_raw_torque;
+    const double cost=std::max(static_cast<double>(selected_raw.length()),std::abs(selected_torque)/radius);
     const double scale=gcr_load_aware_ ? cybersand::gcr::load_scale(body.mass):1.;
     const double total=gcr_base_budget_*scale,event_allowance=std::min(20.,total);
     // Keep attempted granular contact diagnostics and the legacy contact gain.
     // This explicit experiment omits only the granular event before the passive
     // solve, including its shared-budget charge and provisional J/L.
     out.event_scale=gcr_granular_events_off_?0.:(cost>event_allowance?event_allowance/cost:1.);
-    out.event=out.event_raw*out.event_scale;
-    out.event_torque=out.event_raw_torque*out.event_scale;
+    out.event=selected_raw*out.event_scale;
+    out.event_torque=selected_torque*out.event_scale;
     out.event_cost=cost*out.event_scale;
     cybersand::gcr::Body state;
     state.velocity={body.velocity.x+out.event.x/body.mass,body.velocity.y+out.event.y/body.mass};
@@ -1481,8 +1489,10 @@ Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
     Dictionary result; result["enabled"]=gcr_enabled_; result["protocol_version"]=1;
     result["candidate"]=gcr_load_aware_ ? "GCR-LA" : gcr_admission_a1_ ? "GCR-A1":"GCR";
     result["load_aware"]=gcr_load_aware_;result["base_budget"]=gcr_base_budget_;result["rest_mode"]=gcr_rest_mode_;
-    result["granular_events"]=gcr_granular_events_off_?"off":"control";
+    result["granular_events"]=gcr_granular_events_selective_?"selective":(gcr_granular_events_off_?"off":"control");
     result["legacy_contact_gain"]=contact_gain_;
+    result["arrival_witness"]=gcr_arrival_witness_;
+    result["arrival_storage_bytes"]=static_cast<int64_t>(world_?world_->granular_arrival_storage_bytes():0);
     result["experiment"]=gcr_load_aware_ ? "GCR-LA-001-2026-11-02" : gcr_admission_a1_ ? "GCR-ADMISSION-001-2026-11-01":"GCR-001-2026-11-01";
     result["admission_variant"]=get_gcr_admission_variant();
     result["evaluator_variant"]="R2-second-moment-quadrature";
@@ -1516,6 +1526,11 @@ Dictionary CyberNativeCellWorld::gcr_diagnostics() const {
         row["overlap_measured"]=gcr_rest_enabled_&&gcr_rest_overlap_measured_;row["cellular_overlap_post"]=gcr_rest_enabled_&&gcr_rest_overlap_measured_?Variant(static_cast<std::int64_t>(rest_overlap(id))):Variant();
         row["normal_cap_hits"]=p.normal_cap_hits; row["tangent_cap_hits"]=p.tangent_cap_hits;
         row["probes"]=body_diagnostics_ ? static_cast<std::int64_t>((*body_diagnostics_)[id].boundaries) : 0;
+        row["arrival_raw"]=Vector2{static_cast<double>(world_->transient_arrival_impulse_x(static_cast<uint16_t>(id)))*contact_gain_/1000.,static_cast<double>(world_->transient_arrival_impulse_y(static_cast<uint16_t>(id)))*contact_gain_/1000.};
+        row["arrival_raw_torque"]=(static_cast<double>(world_->transient_arrival_moment2(static_cast<uint16_t>(id)))*.5-body.com.x*static_cast<double>(world_->transient_arrival_impulse_y(static_cast<uint16_t>(id)))+body.com.y*static_cast<double>(world_->transient_arrival_impulse_x(static_cast<uint16_t>(id))))*contact_gain_/1000.;
+        row["arrival_count"]=static_cast<int64_t>(world_->transient_arrival_count(static_cast<uint16_t>(id)));
+        row["arrival_missing"]=static_cast<int64_t>(world_->transient_arrival_missing(static_cast<uint16_t>(id)));
+        row["arrival_misaligned"]=static_cast<int64_t>(world_->transient_arrival_misaligned(static_cast<uint16_t>(id)));
         row["event_raw"]=evaluation.event_raw; row["event_accepted"]=evaluation.event;
         row["event_raw_torque"]=evaluation.event_raw_torque; row["event_torque"]=evaluation.event_torque;
         row["event_scale"]=evaluation.event_scale; row["event_budget_cost"]=evaluation.event_cost;
@@ -2127,15 +2142,17 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
             base_budget=options.get("gcr_base_budget",20.);rest_gravity=options.get("gcr_rest_gravity",92.12);
             if(!std::isfinite(base_budget)||base_budget<5 || base_budget>80 || !std::isfinite(rest_gravity)||rest_gravity<0 || rest_gravity>368.48)return false;
         }
-        bool events_off=false;
+        bool events_off=false,events_selective=false,arrival_witness=false;
         if(options.has("gcr_granular_events") || options.has("gcr_event_experiment")){
             if(!rest_enabled || rest_mode!="control" ||
                 options.get("gcr_granular_events",Variant()).get_type()!=Variant::STRING ||
                 options.get("gcr_event_experiment",Variant()).get_type()!=Variant::STRING ||
-                String(options["gcr_event_experiment"])!="GCR-EVT-001-2026-11-04")return false;
+                (String(options["gcr_event_experiment"])!="GCR-EVT-001-2026-11-04" &&
+                 String(options["gcr_event_experiment"])!="GCR-SEL-001-2026-11-04"))return false;
             const String events=options["gcr_granular_events"];
-            if(events!="off" && events!="control")return false;
-            events_off=events=="off";
+            arrival_witness=String(options["gcr_event_experiment"])=="GCR-SEL-001-2026-11-04";
+            if(events!="off" && events!="control" && !(events=="selective" && arrival_witness))return false;
+            events_off=events=="off";events_selective=events=="selective";
         }
         const auto workers = static_cast<std::int64_t>(options.get("workers", 1));
         if (workers < 1 || workers > 32) return false;
@@ -2184,6 +2201,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         auto candidate = std::make_unique<cybersand::World>(config);
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
+        candidate->enable_granular_arrival_witness(arrival_witness);
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         auto compound_workspace = gcr && conservative ? std::make_unique<cybersand::gcr::CompoundWorkspace>() : nullptr;
@@ -2199,7 +2217,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         gcr_enabled_ = gcr;
         gcr_admission_a1_ = admission_a1;
         gcr_load_aware_ = load_aware; gcr_mass_multiplier_=mass_multiplier; gcr_inertia_multiplier_=inertia_multiplier;
-        gcr_granular_events_off_=events_off;
+        gcr_granular_events_off_=events_off;gcr_granular_events_selective_=events_selective;gcr_arrival_witness_=arrival_witness;
         gcr_rest_enabled_=rest_enabled;gcr_rest_mode_=rest_mode;gcr_base_budget_=base_budget;gcr_rest_gravity_=rest_gravity;
         gcr_rest_context_={};gcr_rest_history_={};gcr_rest_evaluation_valid_={};
         gcr_rest_cache_=std::move(rest_cache);

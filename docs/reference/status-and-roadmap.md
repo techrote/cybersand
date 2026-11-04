@@ -4,12 +4,19 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-03
 last-reviewed: 2026-11-04
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
+
+Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
+records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
+and late edge rebound miss their gates. Continuous arrival/torque and excavation
+release pass; no rest/default acceptance follows. The painting selector remains
+experimental; source-lock compatibility and owner review remain open.
 # Status and foundational roadmap
+
+**Selective event admission, November4 - preregistered/in progress:** [GCR-SEL-001](../operations/gcr-selective-events-registration.md) tests transport-backed arrivals against LA and event-off over84 bounded Windows/Linux captures. The target is joint creep retention and falling-grain loading/torque recovery with unchanged barrel impact guards. Results are pending; no accepted response law, sleep, compound integration, production promotion or merge follows.
 
 **Experimental granular event successor, November4:** [the qualified comparison](../operations/gcr-granular-events-registration.md) completes48 Windows/Linux captures. Burial reduction generalizes to Sand/Salt/Dust and the tested powered bank; ordinary gentle/high/heavy/angled barrel impact guards pass. The falling-grain loading/torque control fails, and late motion increases in some cases. Event-off is available in the painting playground for owner comparison, with no production promotion, sleep change, compound qualification or merge.
 
@@ -28,7 +35,36 @@ case from quiet-bed vertical cycling and gentle powered sliding. Blocked-move
 event loading and contact/sample phase were its next causal questions, now tested
 in the successor above without an accepted law change. Barrel response and native material laws remain unchanged; sleep,
 structural integration and REM-004 closure are not implied. PRs remain unmerged.
+## Material shadow foundation and integration — 2026-11-04
+
+[#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
+and the [corrected architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
+[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) is already
+implemented in #371 and is undergoing adopted-main reconciliation and guarded
+integration qualification. It provides deterministic candidate metadata,
+independent native parity and frozen source/identity guards; it does not replace
+production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+and [#371 ledger](https://github.com/techrote/cybersand/pull/371) separate code,
+resulting-head acceptance and actual merge status.
+
+| Programme slice | Current disposition |
+|---|---|
+| #357 architecture | Owner-adopted Planned baseline, documentation merged |
+| #353-A / #371 | Shadow implementation exists; reconciled-source qualification and guarded integration are this assignment |
+| #353-B | Separate consumer-migration admission required; no production switch authorized |
+| #354 / #355 | Separate liveness and endpoint-effects work; serialize overlapping World/quantity writes |
+| #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
+| #358 | Independent experimental material work;132–137 not integrated here |
+
+Broad #353 and parent #352 remain open. The original implementation receipts
+retain their tested source; no metadata or source-byte comparison by itself
+establishes fallback simulation, new physics or human gameplay acceptance.
+
 ## Material authoring Planned adoption — 2026-11-04
+
+**Historical documentation-adoption scope.** The assignment statements below
+precede reconciliation of the separately implemented #371 candidate. The
+current A-only status is recorded above; the original adoption remains intact.
 
 The [corrected MAT-AUTH architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The owner approved documentation-only guarded integration of #357 after final
@@ -44,7 +80,7 @@ consumer-cutover, semantics and runtime-editing decisions; parent #352 stays ope
 ## Material authoring review — 2026-11-03
 
 **Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
-supersedes the adoption hold below; implementation remains separately unstarted.
+supersedes the adoption hold below; the later [A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) supersedes its unstarted-assignment status. The retained review describes its original date.
 
 The [MAT-AUTH proposal](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 has a source-qualified **ACCEPT WITH CORRECTIONS** recommendation, not owner

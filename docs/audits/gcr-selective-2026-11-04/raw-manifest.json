@@ -1,0 +1,431 @@
+{
+  "acquisition_source": "b03cd79309c142bef75a7fa0134b5eaf9112881f",
+  "complete_captures": 84,
+  "raws": [
+    {
+      "path": "build/selective-primary-02/windows/bank-sand-C.json",
+      "sha256": "95598de58bec2c89930f7fa39fd3bd4768c22409ff917a27a2abe872d156264b",
+      "bytes": 12559773
+    },
+    {
+      "path": "build/selective-primary-02/windows/bank-sand-E.json",
+      "sha256": "dc934e7c26fe58739737b2f2f752bcb6e199aee2b24e4960bf2abee73dc2af23",
+      "bytes": 12603656
+    },
+    {
+      "path": "build/selective-primary-02/windows/bank-sand-S.json",
+      "sha256": "00d48aa6a6678344571926551c0ce258d7001be0ee0aceb7a55b48690b04ffcd",
+      "bytes": 12623060
+    },
+    {
+      "path": "build/selective-primary-02/windows/bank-salt-C.json",
+      "sha256": "034dc83ec75fbd60b897c4da5a4452a5f5388471a1127f8bbaf42dc247c4c18d",
+      "bytes": 12559774
+    },
+    {
+      "path": "build/selective-primary-02/windows/bank-salt-E.json",
+      "sha256": "383ff39126eb2a1f399442985f71eb3a0ce0c49e3ddb51eb7aeeca3071d9fea4",
+      "bytes": 12603657
+    },
+    {
+      "path": "build/selective-primary-02/windows/bank-salt-S.json",
+      "sha256": "3b2c89918bdde9e9b2cedfd47ca590d2cff212686b176f461453234ce0ead1da",
+      "bytes": 12623061
+    },
+    {
+      "path": "build/selective-primary-02/windows/bank-dust-C.json",
+      "sha256": "d0690e86acbb33173241eac9ce5bafbee100b523ee7c36721b3f7b4a78f4011f",
+      "bytes": 12654433
+    },
+    {
+      "path": "build/selective-primary-02/windows/bank-dust-E.json",
+      "sha256": "6219ce0b9886a9b20d1222583447e2757afdb626e17b1e7af1d35aaa01c82ea9",
+      "bytes": 12609227
+    },
+    {
+      "path": "build/selective-primary-02/windows/bank-dust-S.json",
+      "sha256": "57b7515801d58742dcbbbb65fe8314f9170f78ae8cca78ffe8b631ab99aed68d",
+      "bytes": 12592156
+    },
+    {
+      "path": "build/selective-primary-02/windows/powered-bank-C.json",
+      "sha256": "dd35bf521ff70b9fc823a0cd78f2278d0cf0f37055f5bb5ddde79af800da31e6",
+      "bytes": 12533459
+    },
+    {
+      "path": "build/selective-primary-02/windows/powered-bank-E.json",
+      "sha256": "b2d0b256110eb25f675ed5e8521265c343c6e29c111767d7f484506d1a56a06b",
+      "bytes": 12637587
+    },
+    {
+      "path": "build/selective-primary-02/windows/powered-bank-S.json",
+      "sha256": "bf0b9a1e1ada5e6a152cf1e6dacb3329de4759187223720a990d90e30ab013be",
+      "bytes": 12638376
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-gentle-C.json",
+      "sha256": "2ec3a50be3c7444ac439656eb15bd4987cec99ed39f955200b6a60c58911e16d",
+      "bytes": 12492512
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-gentle-E.json",
+      "sha256": "2b4bfb7988b36c43f1f0758e1fffe664a912b76b6a6489189086a2e2eec05792",
+      "bytes": 12477389
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-gentle-S.json",
+      "sha256": "1ea192db058de780bb250a7e92d652d5790ba5649ba5c536531fa7040e24dc39",
+      "bytes": 12499253
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-high-C.json",
+      "sha256": "897e23fd4664144703c91a63e46313a74b67db20ec7ee9cad4ed365a929d76e2",
+      "bytes": 13217511
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-high-E.json",
+      "sha256": "be05a3f652c69aef63caa29805704325542f558511bf698da6414a8b577d058d",
+      "bytes": 12958245
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-high-S.json",
+      "sha256": "62cbeef1ba9c143bd588cae27bbbb7cd5166b8c36b4b43a4745ab71d1a1d87ce",
+      "bytes": 12972298
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-heavy-C.json",
+      "sha256": "4399956bb41ead68330ba8bc986bf65d5e2b52a829f3e48ab8750ce8027191ef",
+      "bytes": 13141782
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-heavy-E.json",
+      "sha256": "a6108623cf45489605671b9fa7e0c1dd097b80e0dd5ff1895137d4f9dab7a5af",
+      "bytes": 12940006
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-heavy-S.json",
+      "sha256": "ac4fbaf9dae19bb07bed703f614ebdf4ff01cc3294e0842d7b5d7d69420a6e77",
+      "bytes": 12952725
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-angle-C.json",
+      "sha256": "3884bd998f21a314de181e1692ffe1998279583de00e7897e6763e24c40e205c",
+      "bytes": 12368246
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-angle-E.json",
+      "sha256": "6e3931d65904f3cb675148cee5e7890bde5527c8da0a235021fbbfa009fa885c",
+      "bytes": 12354734
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-angle-S.json",
+      "sha256": "c801686af3266152f90b80fbfe8c50b4d8a19aeb95aef4b4f2134036e9af5c9a",
+      "bytes": 12375929
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-edge-C.json",
+      "sha256": "6713383979e5c103928a4b82145039d417cfc04bdb0fbba7a0d243e218f29f03",
+      "bytes": 13278118
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-edge-E.json",
+      "sha256": "9b1e6a3fc43c317b9c84f15efb03de995465619215d8250ce65d17162bf311d8",
+      "bytes": 13516544
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-edge-S.json",
+      "sha256": "2f126af642afa925fcb4b111bc81c6af6114ae4107c9ccad3a2e23c802247af9",
+      "bytes": 13549313
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-horizontal-C.json",
+      "sha256": "897bc2e5cfeb4489e598c35ca96bbfee67791402006d63a4f88d3a7887b23e87",
+      "bytes": 13130839
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-horizontal-E.json",
+      "sha256": "c47e3c62764171f6eaf0b2fbd26a55abafc76a86043910c60cdf5d637f4d82c7",
+      "bytes": 13223581
+    },
+    {
+      "path": "build/selective-primary-02/windows/barrel-horizontal-S.json",
+      "sha256": "01eb3ddc2cc96b5358882b7278ac9ca8f9034e43594a38b8f8e9924e63f8d2d9",
+      "bytes": 13199698
+    },
+    {
+      "path": "build/selective-primary-02/windows/falling-grains-C.json",
+      "sha256": "def7c1ae348a1b40d3b55da61fbf681b1efa63189f5b28755793084583effd58",
+      "bytes": 11168618
+    },
+    {
+      "path": "build/selective-primary-02/windows/falling-grains-E.json",
+      "sha256": "9a0b1266d2fa5a9ad55f04a1128922577c77a34c0120612f6b9e77cca88ab524",
+      "bytes": 10664821
+    },
+    {
+      "path": "build/selective-primary-02/windows/falling-grains-S.json",
+      "sha256": "435b6071e63bd4377bbe95d58faaaa6fa6b194e312d7290eda318635ef569498",
+      "bytes": 11114111
+    },
+    {
+      "path": "build/selective-primary-02/windows/excavate-C.json",
+      "sha256": "6a3c8e1c1e8cf0aa84ecbd13e03ed6b9eee55908e7f31278e439ed7a6ae72e2a",
+      "bytes": 11673765
+    },
+    {
+      "path": "build/selective-primary-02/windows/excavate-E.json",
+      "sha256": "83ace8ca78dd1ef5523991bac5c22b4809e45b20e1b395ce3b9f2f76ec8e7e44",
+      "bytes": 11659429
+    },
+    {
+      "path": "build/selective-primary-02/windows/excavate-S.json",
+      "sha256": "a6df876f403e5d31de9a7f68f47d8a4910faa25543438647ca6f86130c37ecd3",
+      "bytes": 11680375
+    },
+    {
+      "path": "build/selective-primary-02/windows/continuous-grains-C.json",
+      "sha256": "d36f9c96cfe943aac9d3fdfec461318b728338eba5e0fccc8cb9e99e01151e98",
+      "bytes": 13230119
+    },
+    {
+      "path": "build/selective-primary-02/windows/continuous-grains-E.json",
+      "sha256": "dac66bd910a89a387828857ea928bdd13dd0df19b8fc50aba734b04379a7a10f",
+      "bytes": 11084875
+    },
+    {
+      "path": "build/selective-primary-02/windows/continuous-grains-S.json",
+      "sha256": "f7ffa3af3cf693a017a42e2a4073a3c569350644658b4fb5d228eb3eb01f2c4f",
+      "bytes": 11707483
+    },
+    {
+      "path": "build/selective-primary-02/windows/stationary-cap-C.json",
+      "sha256": "588a41f0abb34139fa599a503dbcfcbc56bf4e63c80186a387eca3a806e94079",
+      "bytes": 12138622
+    },
+    {
+      "path": "build/selective-primary-02/windows/stationary-cap-E.json",
+      "sha256": "42a3b6b5d67b6f5141e159a89af7b51ef480674393c8d8adfdd0e20f215abf2a",
+      "bytes": 10667348
+    },
+    {
+      "path": "build/selective-primary-02/windows/stationary-cap-S.json",
+      "sha256": "7c90d3f0c002bd6a8c390c8cd22accabb637dbecd97ca474672e9fe2621edda3",
+      "bytes": 10688729
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-sand-C.json",
+      "sha256": "ac4b970ba95c2a46e7fdf96c0e8a6381e9d563e1112102773ffce11f0134c036",
+      "bytes": 12559980
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-sand-E.json",
+      "sha256": "68fecc768cb3c0a94b7b55089e46972e1fda0392f76d7dabebf7053d86f8d8fc",
+      "bytes": 12603687
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-sand-S.json",
+      "sha256": "bb97606b22ebc00f4e5676ef4d8e15d5b3f2eac47e3b427cbe43635e6fe26bad",
+      "bytes": 12623252
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-salt-C.json",
+      "sha256": "07053ca44e4951227372d9b0d0e94100163304b1b2607a5666d7c8aff481f785",
+      "bytes": 12559981
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-salt-E.json",
+      "sha256": "b6562a17cd5b9042a761a2ebfba6d525d893c7c1ec203b3d6e93a7054f54aeb2",
+      "bytes": 12603688
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-salt-S.json",
+      "sha256": "e17efab07120e8991e277ff3b4cd27cf40a425314f910142d94f5c57e2ba8c48",
+      "bytes": 12623253
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-dust-C.json",
+      "sha256": "cee05f3d01ac410b1bfe5c11df49511cf1b5f3c426fc698e855dc62e58d4a809",
+      "bytes": 12654984
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-dust-E.json",
+      "sha256": "75d803d6519c76994146cfd29caf489932fcf2d8be8403b356fc7f200f541fcf",
+      "bytes": 12609258
+    },
+    {
+      "path": "build/selective-primary-02/linux/bank-dust-S.json",
+      "sha256": "f9a03f6e2f3b8fda3e7005c8d128cc8966fed21d28163efdb44197b947864e86",
+      "bytes": 12592267
+    },
+    {
+      "path": "build/selective-primary-02/linux/powered-bank-C.json",
+      "sha256": "0ed21a688d4f72554b81db61f183706c3458f0da65c3bae91e29d43ea5f5cf00",
+      "bytes": 12533640
+    },
+    {
+      "path": "build/selective-primary-02/linux/powered-bank-E.json",
+      "sha256": "43e22013a161ae3bf81b9a9375bb68e84329096af4e3bf1c4c18933167ab17cb",
+      "bytes": 12637657
+    },
+    {
+      "path": "build/selective-primary-02/linux/powered-bank-S.json",
+      "sha256": "fe31e8293432ac6bdf93d26fd72947d73043d7d51e3808d04bb7d252c499c310",
+      "bytes": 12638092
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-gentle-C.json",
+      "sha256": "c1a45c4bacbde9d4041c997252df51e32e2c572e3741aff877827f471eaf7861",
+      "bytes": 12496418
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-gentle-E.json",
+      "sha256": "c7d8af3b1046be03f5cc5c4e7f8c3021252fa83139264740854ef28a7e834089",
+      "bytes": 12481186
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-gentle-S.json",
+      "sha256": "05b34728cf86389300f20321baedbfeb4c42cadef00856092c1859d0eb2f2776",
+      "bytes": 12502164
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-high-C.json",
+      "sha256": "b9637880b58ef08b31713a073212cdda887b62ae9bcd9c84d3701b5c00badb55",
+      "bytes": 13220615
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-high-E.json",
+      "sha256": "1a272b5ae725e81e11b3e2c9ab01c2f72ff7ae4804afd20ee00da006ea7ae782",
+      "bytes": 12960732
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-high-S.json",
+      "sha256": "a0dffe4502ca0305f817225f66663699d5b6eb3e1f4d752fdc28c9c0c4e16e8b",
+      "bytes": 12974790
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-heavy-C.json",
+      "sha256": "7808ecb62dd41ded495ce6b7bdaa397059d86094af30f566397d690649864db3",
+      "bytes": 13143868
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-heavy-E.json",
+      "sha256": "d6ed313f796cac4a22787ece372d33d8bc9cbf90cce948d35e33a3e880c8af86",
+      "bytes": 12942319
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-heavy-S.json",
+      "sha256": "38aa9eeb8160774118113e70c861ed3b22d391297173be2cf25c181c2d03f49f",
+      "bytes": 12955177
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-angle-C.json",
+      "sha256": "813e717897399b18f7f1de34f97f4e03d9261d02b807608dd9467b2282b41e28",
+      "bytes": 12369955
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-angle-E.json",
+      "sha256": "4f1dd18e104d4efb73434821987749bd5ecaa4d1b9ce3a8e975c8a72f5fc7ae4",
+      "bytes": 12356186
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-angle-S.json",
+      "sha256": "1e83cc3e235c9b4036391c4f60a88f50bd2294cd4ab0434368c095fe58272e51",
+      "bytes": 12376985
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-edge-C.json",
+      "sha256": "b6126f630eb49e39344a22d0a0dc4a99001b0ecee1f276915499e6e3977941c4",
+      "bytes": 13283848
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-edge-E.json",
+      "sha256": "5bad854637b2345dbbc9301bad9b4e7fa4ac2476d44ef5088deac561e9d8056f",
+      "bytes": 13557714
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-edge-S.json",
+      "sha256": "ee7afe7cb37460e355b7a9849b820a4c81aedfcdb3720e8ffe4319882e6b27d6",
+      "bytes": 13624775
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-horizontal-C.json",
+      "sha256": "1d112648c155c7d47ed121fbfe31636235809249ca6a1d4538f8d0bb5616ca27",
+      "bytes": 13132327
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-horizontal-E.json",
+      "sha256": "95f6d2df15e818bd0c444690e84a492d9d79caa4adb16ce9bbbb244ad9c92852",
+      "bytes": 13228336
+    },
+    {
+      "path": "build/selective-primary-02/linux/barrel-horizontal-S.json",
+      "sha256": "d378f9a2af3ca0bf5f5799f09587b68fcf885e1c5668dd0c14bc3e7c8d86064e",
+      "bytes": 13205288
+    },
+    {
+      "path": "build/selective-primary-02/linux/falling-grains-C.json",
+      "sha256": "48bab9b2f9f32f7ea9f1a7bee9dbba0dd50a719c19860656ee7b8776c9dd2007",
+      "bytes": 11170313
+    },
+    {
+      "path": "build/selective-primary-02/linux/falling-grains-E.json",
+      "sha256": "02d9fa3fc0928de02587faf1af24d687d3162197412b9243ae9dda1aea6bd37d",
+      "bytes": 10665297
+    },
+    {
+      "path": "build/selective-primary-02/linux/falling-grains-S.json",
+      "sha256": "4a39e7d6f87fc930b5865781fbeca75265d45f07ab110017fd210cefa0feeadd",
+      "bytes": 11114077
+    },
+    {
+      "path": "build/selective-primary-02/linux/excavate-C.json",
+      "sha256": "0ad97c83c0867ea4097bf2d011d1753c5a80e5ea1fa44f525a40591f81e84b95",
+      "bytes": 11674180
+    },
+    {
+      "path": "build/selective-primary-02/linux/excavate-E.json",
+      "sha256": "91b8e8458a111e97de98fe12531c2dca8fc2ac67a021189e7d1da75d92cb4160",
+      "bytes": 11660166
+    },
+    {
+      "path": "build/selective-primary-02/linux/excavate-S.json",
+      "sha256": "d82de48ce4e4def392153739867cbf0aec6d7a8a4fd19881ac1c94a941527b2c",
+      "bytes": 11681974
+    },
+    {
+      "path": "build/selective-primary-02/linux/continuous-grains-C.json",
+      "sha256": "7615b3bf9f3dfdbb32967729ccdff61174f315f0514156c46c7855d05f8c6236",
+      "bytes": 13233153
+    },
+    {
+      "path": "build/selective-primary-02/linux/continuous-grains-E.json",
+      "sha256": "61e9d1d088b262d1aff489755f709d1d1531ca30a929987ce9a0c105b39e58e6",
+      "bytes": 11085535
+    },
+    {
+      "path": "build/selective-primary-02/linux/continuous-grains-S.json",
+      "sha256": "e1453f6a5f3ba346721342cd9641066ace84ec7087edf78fcc459379db6137ea",
+      "bytes": 11707913
+    },
+    {
+      "path": "build/selective-primary-02/linux/stationary-cap-C.json",
+      "sha256": "545319911883b5f91072cca86d8e7d2f32687d56ec11b3ad3f441360cf165f9a",
+      "bytes": 12139676
+    },
+    {
+      "path": "build/selective-primary-02/linux/stationary-cap-E.json",
+      "sha256": "40107231c30707b27536a8516a6aa0223202b0d7efa4143d2f73b8c2e03192b1",
+      "bytes": 10666814
+    },
+    {
+      "path": "build/selective-primary-02/linux/stationary-cap-S.json",
+      "sha256": "0f9154557efb64c80bb0902dcdf63582301c5b44cf4195cbae5e0446ac465c22",
+      "bytes": 10688219
+    }
+  ],
+  "bundle": "build/gcr-selective-events-20261104-v1.zip",
+  "bundle_bytes": 71748227,
+  "bundle_sha256": "901a0a46804723581539f005460905c1e0f76aa0369d618ca8bc105747aaa96a",
+  "selected_phases_sha256": "2bc214df934f9492a968ae8ae6c4bd5170ef614e7d50f1b9852e33b99e31c3ee",
+  "selected_phases_scope": "Nine rounded human-inspection samples/capture; full precision raw drives decisions. Flyer post-Rapier and barrel post-bridge phases remain distinct. Final-head validation logs are separate."
+}

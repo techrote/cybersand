@@ -260,6 +260,8 @@ private:
     bool gcr_admission_a1_ = false;
     bool gcr_load_aware_ = false;
     bool gcr_granular_events_off_ = false;
+    bool gcr_granular_events_selective_ = false;
+    bool gcr_arrival_witness_ = false;
     bool gcr_rest_enabled_ = false;
     String gcr_rest_mode_ = "control";
     double gcr_base_budget_ = 20., gcr_rest_gravity_ = 92.12;

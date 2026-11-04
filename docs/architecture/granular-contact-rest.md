@@ -8,7 +8,15 @@ last-reviewed: 2026-11-02
 related-documents: [compound-granular-coupling.md, ../operations/gcr-rest-registration.md, ../reference/interfaces-and-message-contracts.md]
 ---
 
+
+Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
+records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
+and late edge rebound miss their gates. Continuous arrival/torque and excavation
+release pass; no rest/default acceptance follows. The painting selector remains
+experimental; source-lock compatibility and owner review remain open.
 # Experimental granular budgets and contact rest
+
+The [selective-arrival successor](../operations/gcr-selective-events-registration.md) is **preregistered and under implementation**, with results pending. It changes event admission only: preceding-tick native transport, directional agreement and one-use provenance distinguish candidate arrivals from repeated blocked attempts. This transient witness supplies no physical momentum or save guarantee. C/E/S share the optional observation history; passive resistance, friction, torque and correction remain controls. Astra aggregate response stays separate; sleep and default promotion remain excluded.
 
 The [granular-only event successor](../operations/gcr-granular-events-registration.md)
 is a separate explicit experiment within control mode. It retains raw attempts,

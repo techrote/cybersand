@@ -4,12 +4,19 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-03
 last-reviewed: 2026-11-04
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
+
+Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
+records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
+and late edge rebound miss their gates. Continuous arrival/torque and excavation
+release pass; no rest/default acceptance follows. The painting selector remains
+experimental; source-lock compatibility and owner review remain open.
 # Development handover
+
+Selective event successor **in progress**, November4: [GCR-SEL-001 registration](gcr-selective-events-registration.md) fixes C/E/S and84 Windows/Linux captures before results. Main7ef4856e is reconciled into the isolated successor; Astra347 remains separately owned. The preceding-tick transport witness is transient coupling history, allocated only for explicitly admitted experimental C/E/S worlds. The proposed fourth painting choice is LA-SELECTIVE; ordinary LA and Restore remain controls. Loading/torque recovery, creep retention and barrel feel require qualification; sleep, default promotion and merges remain excluded.
 
 Current granular-only event successor: [registration](gcr-granular-events-registration.md) and [November4 evidence](../audits/2026-11-04-gcr-granular-event-successor.md) retain the sinking improvement with the legacy contact gain intact. Falling grains produce no measured body motion in the candidate, establishing a loading/torque gap; high/heavy barrels retain late-motion tradeoffs. The painting room adds an explicit experimental choice; LA remains its default. Main3da7e7be is reconciled, Astra347 at5b9b5a98 is separately owned and unmerged; no latest compound-response integration is claimed. Sleep and default promotion remain excluded.
 
@@ -37,7 +44,35 @@ the top of the launcher; see the [fleet guide](../systems/granular-review-flight
 Keep PR351 unmerged. The owner reported default settings for the cropped
 burrowing recording; its source, craft and input history are not verified by the
 crop. Visible exhaust is not an input/force receipt.
-## MAT-AUTH Planned adoption and unstarted compiler — 2026-11-04
+
+## MAT-AUTH adopted-main reconciliation — 2026-11-04
+
+Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
+as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected
+architecture remains an owner-adopted Planned baseline. The separate
+[#353-A shadow compiler](material-catalogue-shadow.md) is implemented in
+[#371](https://github.com/techrote/cybersand/pull/371) at original head
+`6d3737594beb39e83e555f66f2e81184a4bdbf77` and is being reconciled and qualified
+for the owner's guarded A-only integration. Preserve that implementation and
+its evidence in ancestry; do not create another compiler or rewrite its branch.
+
+Use the [current architecture boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+and tool guide. The frozen legacy baseline stays `0fd4af59`; merging adopted
+documentation does not refresh its source lock. Run the resulting-head compiler,
+source/identity, adversarial, native-query, documentation/provenance and applicable
+ready-state CI checks, with independent review. The #371 ledger owns their actual
+results and any merge/post-merge identity; predecessor greens are historical.
+
+Production native/GDScript consumers and material physics remain unchanged.
+Keep #352/#353 open, #353-B migration and #354–#356 separately unadmitted, and
+#358's132–137 experimental/unintegrated. Record any blocker and preserve draft
+state rather than weakening a source lock or acceptance gate.
+
+## MAT-AUTH documentation-adoption handover — 2026-11-04
+
+**Historical adoption-task scope.** The following handover preceded the
+reconciliation of #371's separate implementation. Its unstarted-assignment
+statements apply to the documentation task, not the current A-only candidate.
 
 The owner has [adopted the corrected architecture as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
 and authorized documentation-only guarded integration of #357. Its
@@ -55,7 +90,7 @@ Recapture accepted source and overlapping owners before the implementation begin
 ## MAT-AUTH architecture decision hold — 2026-11-03
 
 **Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
-supersedes the adoption hold below; implementation remains separately unstarted.
+supersedes the adoption hold below; the later [A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) supersedes its unstarted-assignment status. The retained review describes its original date.
 
 [PR #357](https://github.com/techrote/cybersand/pull/357) remains draft and
 unmerged after a documentation-only current-main architecture review. Read the

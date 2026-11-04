@@ -11,7 +11,7 @@ func _run() -> void:
 	root.add_child(scene)
 	scene.set_physics_process(false)
 	await process_frame
-	check(scene.response_select.item_count==3 and scene.response_select.selected==0,"three responses, LA remains default")
+	check(scene.response_select.item_count==4 and scene.response_select.selected==0,"four responses, LA remains default")
 	check(scene.applied_controls.response=="LA","initial applied control")
 	check(scene.event_runtime_identity.contains("verified"),"actual runtime artifact verified against source provenance")
 	scene.response_select.select(2)
