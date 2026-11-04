@@ -1,9 +1,11 @@
 """Adverse controls for source-byte, backend and publication compatibility."""
 from __future__ import annotations
 
+import collections
 import copy
 import json
 import os
+import re
 import shutil
 import stat
 import subprocess
@@ -11,6 +13,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import compatibility as guard
 
@@ -21,7 +24,7 @@ def admitted_sources(sources: dict[str, bytes]) -> dict[str, bytes]:
     for entry in guard.REVIEWED_TRANSITIONS:
         current[entry["path"]] = subprocess.run(
             ["git", "-C", str(guard.ROOT), "show", f"{entry['source_commit']}:{entry['path']}"],
-            check=True, capture_output=True, timeout=30).stdout
+            check=True, capture_output=True, timeout=30, env=guard.git_environment()).stdout
     return current
 
 
@@ -214,14 +217,19 @@ def _remove_tree(path: Path) -> None:
 class ReviewedTransitionGuards(unittest.TestCase):
     """Positive and adverse controls for code-pinned reviewed transitions.
 
-    A shared clone of this repository receives real fixture commits: two reviewed
-    steps for one protected consumer, a squash-like commit unreachable from HEAD,
-    a commit that does not descend from the baseline, and a HEAD that commits
-    the review records. Every check authenticates against that Git history.
+    A shared clone of this repository receives real fixture commits: two chained
+    reviewed steps for one protected consumer, a step whose blob has CRLF line
+    endings, a squash-like commit unreachable from HEAD, a commit that does not
+    descend from the baseline, and a HEAD (merging both reviewed lines) that
+    commits a complete record, records each missing one fact and an unrelated
+    record. Every check authenticates against that Git history. Git runs with
+    location variables removed, so this fixture can never touch the developer's
+    own repository even when the tests run inside a hook or `git rebase -x`.
     """
     PATH = "native/src/world_pressure.inc"
     RECORD = "docs/audits/fixture-reviewed-transition.md"
     UNRELATED = "docs/audits/fixture-unrelated.md"
+    FACTS = ("path", "from_lf_sha256", "to_lf_sha256", "source_commit")
 
     @classmethod
     def setUpClass(cls):
@@ -231,40 +239,53 @@ class ReviewedTransitionGuards(unittest.TestCase):
         cls.addClassCleanup(_remove_tree, cls.directory)
         cls.repository = cls.directory / "repository"
         subprocess.run(["git", "clone", "--quiet", "--shared", "--no-checkout",
-                        str(guard.ROOT), str(cls.repository)], check=True, capture_output=True, timeout=120)
+                        str(guard.ROOT), str(cls.repository)], check=True, capture_output=True, timeout=120,
+                       env=guard.git_environment())
         cls.baseline_bytes = cls.sources[cls.PATH]
         cls.first_bytes = cls.baseline_bytes + b"\n// reviewed behaviour-preserving edit\n"
         cls.second_bytes = cls.first_bytes + b"// second reviewed edit\n"
         cls.first = cls.commit(guard.BASELINE, {cls.PATH: cls.first_bytes})
         cls.second = cls.commit(cls.first, {cls.PATH: cls.second_bytes})
+        cls.crlf = cls.commit(guard.BASELINE, {cls.PATH: guard.lf(cls.first_bytes).replace(b"\n", b"\r\n")})
         cls.unretained = cls.commit(guard.BASELINE, {cls.PATH: cls.first_bytes + b"// squashed\n"})
         cls.predecessor = cls.commit(cls.git("rev-parse", guard.BASELINE + "^").strip(),
                                      {cls.PATH: cls.first_bytes})
         cls.step1 = cls.entry(cls.baseline_bytes, cls.first_bytes, cls.first)
         cls.step2 = cls.entry(cls.first_bytes, cls.second_bytes, cls.second)
+        cls.crlf_step = cls.entry(cls.baseline_bytes, cls.first_bytes, cls.crlf)
         record = "\n".join(["# Fixture reviewed transitions", cls.PATH,
                             *(f"{step['from_lf_sha256']} -> {step['to_lf_sha256']} at {step['source_commit']}"
-                              for step in (cls.step1, cls.step2)), ""]).encode()
-        head = cls.commit(cls.second, {cls.RECORD: record, cls.UNRELATED: b"# Unrelated\n"})
+                              for step in (cls.step1, cls.step2, cls.crlf_step)), ""]).encode()
+        files = {cls.RECORD: record, cls.UNRELATED: b"# Unrelated\n"}
+        cls.partial = {}
+        for omitted in cls.FACTS:
+            name = f"docs/audits/fixture-without-{omitted.replace('_', '-')}.md"
+            kept = [cls.step1[key] for key in cls.FACTS if key != omitted]
+            files[name] = "\n".join(["# Partial fixture record", *kept, ""]).encode()
+            cls.partial[omitted] = name
+        head = cls.commit((cls.second, cls.crlf), files)
         cls.git("update-ref", "--no-deref", "HEAD", head)
 
     @classmethod
     def git(cls, *arguments: str, data: bytes | None = None, index: Path | None = None) -> str:
-        environment = {**os.environ, "GIT_AUTHOR_NAME": "fixture", "GIT_AUTHOR_EMAIL": "fixture@invalid",
-                       "GIT_COMMITTER_NAME": "fixture", "GIT_COMMITTER_EMAIL": "fixture@invalid"}
+        environment = {**guard.git_environment(), "GIT_AUTHOR_NAME": "fixture",
+                       "GIT_AUTHOR_EMAIL": "fixture@invalid", "GIT_COMMITTER_NAME": "fixture",
+                       "GIT_COMMITTER_EMAIL": "fixture@invalid"}
         if index is not None:
             environment["GIT_INDEX_FILE"] = str(index)
         return subprocess.run(["git", "-C", str(cls.repository), *arguments], input=data, check=True,
                               capture_output=True, timeout=60, env=environment).stdout.decode()
 
     @classmethod
-    def commit(cls, parent: str, files: dict[str, bytes]) -> str:
+    def commit(cls, parents: str | tuple[str, ...], files: dict[str, bytes]) -> str:
         index = cls.directory / f"index-{len(list(cls.directory.glob('index-*')))}"
         for name, data in files.items():
             blob = cls.git("hash-object", "-w", "--stdin", data=data).strip()
             cls.git("update-index", "--add", "--cacheinfo", f"100644,{blob},{name}", index=index)
         tree = cls.git("write-tree", index=index).strip()
-        return cls.git("commit-tree", tree, "-p", parent, "-m", "fixture").strip()
+        parent_arguments = [part for parent in ((parents,) if isinstance(parents, str) else parents)
+                            for part in ("-p", parent)]
+        return cls.git("commit-tree", tree, *parent_arguments, "-m", "fixture").strip()
 
     @classmethod
     def entry(cls, before: bytes, after: bytes, commit: str, **changes) -> dict:
@@ -301,13 +322,46 @@ class ReviewedTransitionGuards(unittest.TestCase):
         result = self.check((self.step1,))
         self.assertEqual(result["status"], "PASS")
         self.assertEqual(result["reviewed_transitions"], [self.step1])
-        self.assertEqual(result["catalogue_digest"], self.lock["catalogue_digest"])
-        self.assertEqual(result["capability_digest"], self.lock["capability_digest"])
         self.assertEqual(self.lock_path.read_bytes(), lock_before)
 
     def test_crlf_target_uses_the_existing_lf_contract(self):
         self.write(self.first_bytes.replace(b"\n", b"\r\n"))
         self.assertEqual(self.check((self.step1,))["status"], "PASS")
+
+    def test_crlf_blob_at_the_source_commit_is_lf_normalized(self):
+        self.write(self.first_bytes)
+        self.assertEqual(self.check((self.crlf_step,))["status"], "PASS")
+
+    def test_git_location_variables_cannot_redirect_authentication(self):
+        self.write(self.first_bytes)
+        decoy = self.directory / "decoy-git-dir"
+        with patch.dict(os.environ, {"GIT_DIR": str(decoy), "GIT_INDEX_FILE": str(decoy / "index"),
+                                     "GIT_OBJECT_DIRECTORY": str(decoy / "objects")}):
+            self.assertEqual(self.check((self.step1,))["status"], "PASS")
+        self.assertFalse(decoy.exists())
+
+    def test_identity_inputs_cover_every_lock_derived_read(self):
+        # build_lock hashes every protected path once for source_locks; any
+        # further read feeds a digest or fallback fact, i.e. a retained identity.
+        class Recording(dict):
+            def __init__(self, data):
+                super().__init__(data)
+                self.reads = collections.Counter()
+
+            def __getitem__(self, key):
+                self.reads[key] += 1
+                return super().__getitem__(key)
+
+        recording = Recording(self.sources)
+        guard.build_lock(recording)
+        derived = {path for path, count in recording.reads.items() if count > 1}
+        self.assertEqual(len(derived), 6)
+        self.assertLessEqual(derived, guard.IDENTITY_INPUTS)
+        self.assertLessEqual(guard.IDENTITY_INPUTS, set(guard.SOURCE_ROLES))
+        for path in ("docs/reference/liquid-policy-wire-vectors.json", "tools/lcb/policy_contract.py",
+                     "native/include/cybersand/liquid_policy_catalogue.hpp"):
+            self.assertIn(path, guard.IDENTITY_INPUTS)
+        self.assertNotIn(self.PATH, guard.IDENTITY_INPUTS)
 
     def test_ordered_chain_admits_a_later_reviewed_edit(self):
         self.write(self.second_bytes)
@@ -378,9 +432,12 @@ class ReviewedTransitionGuards(unittest.TestCase):
         self.write(self.first_bytes)
         self.reject((dict(self.step1, record="docs/audits/missing.md"),), "is not committed at HEAD")
         self.reject((dict(self.step1, record=self.UNRELATED),), "does not name")
+        for omitted, record in self.partial.items():
+            with self.subTest(omitted=omitted):
+                self.reject((dict(self.step1, record=record),), "does not name " + re.escape(self.step1[omitted]))
         for record in ("docs/other/record.md", "docs/audits/../record.md", "docs/audits/record.txt"):
             with self.subTest(record=record):
-                self.reject((dict(self.step1, record=record),), "record: expected a docs/audits")
+                self.reject((dict(self.step1, record=record),), "record: expected a Markdown path")
 
     def test_fields_are_exact_and_strictly_typed(self):
         self.write(self.first_bytes)

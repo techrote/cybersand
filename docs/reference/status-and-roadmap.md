@@ -17,9 +17,9 @@ to one protected legacy consumer without refreshing the compatibility lock
 ([decision record](../audits/2026-11-04-mat-auth-reviewed-transitions.md),
 [rules](../operations/material-catalogue-shadow.md#reviewed-per-file-transitions)).
 Entries are code-pinned, authenticated against retained Git history and a
-committed record, and refused for identity inputs. The production table is
-empty; the lock, baseline and digests are unchanged. #382 (#201 P1) is the
-first intended user.
+committed record, and refused for identity inputs. The table starts empty;
+the lock, baseline and digests are unchanged. #382 (#201 P1) is the first PR
+to add an entry, together with its source change.
 
 ## PressureFlow desktop region flip (#201) — 2026-11-04
 
