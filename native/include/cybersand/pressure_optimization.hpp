@@ -99,6 +99,9 @@ struct PressureOptimizationSnapshot {
     std::size_t common_counter_bytes = 0;
     std::size_t gas_components = 0, gas_valid_components = 0, gas_members = 0, gas_member_capacity = 0;
     std::size_t gas_dirty_chunks = 0, gas_capacity_bytes = 0;
+    // #201 P1 derived wake summaries (experimental; not in the 53-counter schema).
+    std::uint64_t wake_segments_scanned = 0, wake_segments_skipped = 0, wake_resets = 0;
+    std::size_t wake_clean_cells = 0, wake_capacity_bytes = 0;
     std::uint64_t gas_invalidation_pair_budget = 0;
     PressureOptimizationCounters counters{};
 };
