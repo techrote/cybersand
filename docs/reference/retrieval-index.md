@@ -19,7 +19,15 @@ and [4 November recovery ledger](../audits/2026-11-04-sol364-recovery.md).
 The [prospective registration](../audits/2026-11-04-sol364-registration.md)
 distinguishes proposed physical limits from immutable energy/ownership/2 ms gates.
 The [SOL364 retrieval questions](retrieval-questions-sol364.json) supplement the
-earlier fixed questions without rewriting their dated claims.
+earlier fixed questions without rewriting their dated claims. Version 2 retains
+the four original questions verbatim and adds the discovered MAT-AUTH integration
+boundary; version 1 remains at executed source `9edc4f8f`.
+For executed source `9edc4f8f` and runtime/evidence child `5f6360a9`, distinguish
+the passing 24-group CPU matrix from 84 failed synchronized clearance cases,
+the preserved two-consumer MAT-AUTH compatibility failure, and the HTTP 500
+documentation dispatch after successful publication. Runtime custody, old
+failures, all-attempt denominators and the remaining bounded recovery task are
+in the current contract and ledger; green execution does not imply merge readiness.
 
 For native terrain support loss, compound Rapier motion, conservative local
 Sand/Water displacement or the diagnostic controls, retrieve

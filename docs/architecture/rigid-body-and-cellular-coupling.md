@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact, plus an opt-in detached-aggregate Sand constraint; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../systems/solid-detachment.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 ---
 
 # Rigid-body and cellular coupling
@@ -44,6 +44,15 @@ falling contact therefore retains zero artificial torque while rotating approach
 cannot disappear at the group's center. Energy nonincrease is preflighted for
 every impulse and checked against actual Rapier readback. No candidate position
 correction, friction gain, ejection radius or native material mutation is added.
+
+The [4 November SOL364 correction](../systems/solid-detachment.md#sol364-bounded-witness-recovery--2026-11-04)
+transports and reclips only the original authenticated exterior segment at the
+present pose. Its old midpoint may have left the cell while a valid span
+remains. All source records and duplicates are checked before cleared spans are
+discarded; current span length and midpoint determine weighting and torque.
+Native scalar payloads are frozen once, with the older recursive fallback
+preserved. Exact-step replay proves that this witness repair still cannot clear
+stationary interior burial; no new granular law or position work is introduced.
 
 This is a bounded dissipative resistance experiment, not a calibrated granular
 momentum law or completed penetration recovery. Deep embedding, residual contact

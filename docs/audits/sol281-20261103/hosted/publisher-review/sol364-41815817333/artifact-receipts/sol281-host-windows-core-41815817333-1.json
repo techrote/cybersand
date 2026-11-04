@@ -1,0 +1,111 @@
+{
+  "id": 13314719334,
+  "name": "sol281-host-windows-core-41815817333-1",
+  "size_in_bytes": 230561,
+  "digest": "sha256:695a6473e28352ffa9dc1e861dee117fec007c114a1b03003203dcbfd41fd3af",
+  "extracted_to": "/workspace/scratch/b45094545f38/sol364-hosted-review-41815817333/cohorts/windows/core",
+  "file_count": 20,
+  "files": [
+    {
+      "path": "checkout-inputs-after.json",
+      "size": 130008,
+      "sha256": "7b6fc674b38e346ea9389629852e6dd81ad86845dc3d4a9ee1c8a8b2349e5ce0"
+    },
+    {
+      "path": "checkout-inputs-before.json",
+      "size": 130008,
+      "sha256": "7b6fc674b38e346ea9389629852e6dd81ad86845dc3d4a9ee1c8a8b2349e5ce0"
+    },
+    {
+      "path": "compound-response.log",
+      "size": 299,
+      "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd"
+    },
+    {
+      "path": "failure-w1.log",
+      "size": 4531,
+      "sha256": "322c3104fe346738872ac364fec53974cfa647758d067ed89486a1170527f9d9"
+    },
+    {
+      "path": "failure-w4.log",
+      "size": 4576,
+      "sha256": "4b133014ceaafb0bd51f8879d48c7b1ba707cc963ed24011c476659fa9c8bb99"
+    },
+    {
+      "path": "import.log",
+      "size": 35925,
+      "sha256": "d9d26c4fb95ccff854f0d498755a02a1fc53987491f08186ecc160fabe709759"
+    },
+    {
+      "path": "inputs-after.json",
+      "size": 130008,
+      "sha256": "533566c60c5e66b90b4329a011a55876c60239fb6f5dc01fcb5f234ff299212c"
+    },
+    {
+      "path": "inputs-before.json",
+      "size": 130008,
+      "sha256": "533566c60c5e66b90b4329a011a55876c60239fb6f5dc01fcb5f234ff299212c"
+    },
+    {
+      "path": "lifecycle.log",
+      "size": 428,
+      "sha256": "72fbd55f39162519ad2bfb356210eaf2778965cfb67f7aa72e86ed3e5d99708b"
+    },
+    {
+      "path": "material-image.log",
+      "size": 441,
+      "sha256": "e53e187224d88518c6f6fcd03a5e7ce66b163848e7822191203575708c5542ac"
+    },
+    {
+      "path": "motion-w1.json",
+      "size": 1957,
+      "sha256": "b4566a77038755aa1d01c7eff9f17e9883c6ed4571c251f16b93d30bec476303"
+    },
+    {
+      "path": "motion-w1.log",
+      "size": 1831,
+      "sha256": "e7094035eb96f7d0f5fe13a2473bd803fce58dbb972fda5a3f7cd82de241102d"
+    },
+    {
+      "path": "motion-w4.json",
+      "size": 1957,
+      "sha256": "7ce1f2b335f01e31643a571c46029f72ca3f2b12249867707910fd03d83393f5"
+    },
+    {
+      "path": "motion-w4.log",
+      "size": 1831,
+      "sha256": "77c72236df6c639361e9eb005f0a20a0d7980dd1e0ed6ab3018c298d75ebd78c"
+    },
+    {
+      "path": "ordinary-capacity.log",
+      "size": 417,
+      "sha256": "bdc11569c0cd527546b01aa400703b2fde723f1a68e98810da0c1c0461cd231a"
+    },
+    {
+      "path": "ordinary-failure.log",
+      "size": 1161,
+      "sha256": "9dfae6c21c7e673c0920911c53058e96cde3505a749917d503efef0af6e87fa2"
+    },
+    {
+      "path": "ordinary-observer.log",
+      "size": 300,
+      "sha256": "d6a816703db80a04567ddd522d21c3d9371b5beb3049313c2831f8c8646e7738"
+    },
+    {
+      "path": "ordinary-rapier.log",
+      "size": 270,
+      "sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4"
+    },
+    {
+      "path": "performance.jsonl",
+      "size": 37898,
+      "sha256": "04429e2f7435c7597731c883563c4ed9c206c26825cf65943d866dab089c62d4"
+    },
+    {
+      "path": "report.json",
+      "size": 55096,
+      "sha256": "e8e2d8210ec47fafb1148da9d39b6865fc284e1c9f984c8221ad5b605c45d5da"
+    }
+  ],
+  "archive_authentication": "Exact GitHub Actions artifact digest and byte size verified before extraction"
+}

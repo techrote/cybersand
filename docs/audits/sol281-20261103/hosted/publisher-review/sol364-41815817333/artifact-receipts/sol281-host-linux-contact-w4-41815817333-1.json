@@ -1,0 +1,221 @@
+{
+  "id": 13315487480,
+  "name": "sol281-host-linux-contact-w4-41815817333-1",
+  "size_in_bytes": 5372698,
+  "digest": "sha256:6567c20185848900b30bc22fde95a27660158455ddc622a7163fd69abca19764",
+  "extracted_to": "/workspace/scratch/b45094545f38/sol364-hosted-review-41815817333/cohorts/linux/contact-w4",
+  "file_count": 42,
+  "files": [
+    {
+      "path": "host/checkout-inputs-after.json",
+      "size": 128899,
+      "sha256": "ddd4296e0ea1f21c3e36d3d994b5b33d53e4c09f6ec7d383859e2a495abacf7d"
+    },
+    {
+      "path": "host/checkout-inputs-before.json",
+      "size": 128899,
+      "sha256": "ddd4296e0ea1f21c3e36d3d994b5b33d53e4c09f6ec7d383859e2a495abacf7d"
+    },
+    {
+      "path": "host/contact-observation-w4.json",
+      "size": 864,
+      "sha256": "8af389fdf0563a0d9b48615a167fdf908783bc0986fc724e1cdc047fbcc5faab"
+    },
+    {
+      "path": "host/contact-observation-w4.log",
+      "size": 965,
+      "sha256": "4c02955ff33c6da3421a59677765bf11b8267b87468a4ab90e1aa842bd276691"
+    },
+    {
+      "path": "host/contact-recovery-w4.json",
+      "size": 12179232,
+      "sha256": "57dad03713c00362ae1d02ff7a6b1c3048754ad4b999732e550b8f8f736e5142"
+    },
+    {
+      "path": "host/contact-recovery-w4.log",
+      "size": 369,
+      "sha256": "d3d88d470abbac94f75b82da25273ec27705e5838c1d35e41830ef01aec4a71d"
+    },
+    {
+      "path": "host/coupling-w4.json",
+      "size": 2997,
+      "sha256": "8c874a72154477bb85b69c0af4318dd30cdcf3ac53e5b46286dc038562d39b52"
+    },
+    {
+      "path": "host/coupling-w4.log",
+      "size": 2825,
+      "sha256": "80003d772ee7af5e1350ef86c67c666051b915bdd712a6de3e0bb6d565933047"
+    },
+    {
+      "path": "host/displacement-w4.json",
+      "size": 26071,
+      "sha256": "e7bb4d4a6638e4a6468dbab6a5557033d6324b524453ed1e42beab03e141dd1a"
+    },
+    {
+      "path": "host/displacement-w4.log",
+      "size": 336,
+      "sha256": "4431a88b4a9d15e849a50ca544a22fdac762f4820509024d073a6d93d0f213fd"
+    },
+    {
+      "path": "host/embedded_sand-baseline-w4.json",
+      "size": 3802,
+      "sha256": "81a5e45203a49844323e2f2199554cee622536c959bcad20f773f44e19c40616"
+    },
+    {
+      "path": "host/embedded_sand-baseline-w4.log",
+      "size": 3428,
+      "sha256": "1718e351161916f16afa9db27326cfee8b7cd457e075e54e657e86de57490963"
+    },
+    {
+      "path": "host/embedded_sand-candidate-w4.json",
+      "size": 3832,
+      "sha256": "ef3aee65c06aed69c86629f6b7d1b5d9d9103e1dee84a5dfd12ae61c9cc6f1d0"
+    },
+    {
+      "path": "host/embedded_sand-candidate-w4.log",
+      "size": 3458,
+      "sha256": "bc1c7d28c3e17e89f8748dac23d810380f372b2d9cd50783f078ca44d8cbedaf"
+    },
+    {
+      "path": "host/host-state/cache/godot/editor_doc_cache-4.7.res",
+      "size": 3268747,
+      "sha256": "c6c2f3946f43f8131fc737c0b9e337b070bb1a38f273db3db93a4b2dc616037a"
+    },
+    {
+      "path": "host/host-state/config/godot/editor_settings-4.7.tres",
+      "size": 17750,
+      "sha256": "14959f0b512b23b310db3741f10c3c67ded6bfac070e1bcf6429c176f72315a6"
+    },
+    {
+      "path": "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "size": 255,
+      "sha256": "60247691cbbb06ab0b062009b091b6c6503eb1feddd66f75043938ccc1f89dbc"
+    },
+    {
+      "path": "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T10.56.52.log",
+      "size": 3314,
+      "sha256": "e98730823ac079f766a9a5b0812024bdbd5a5436aa8eaf35c85dbaf4df2dd881"
+    },
+    {
+      "path": "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T10.57.00.log",
+      "size": 3339,
+      "sha256": "024fcbe574dee8556aa3995a9816fe01125e6c0fa8c7dafed360d081f77c032f"
+    },
+    {
+      "path": "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T10.57.07.log",
+      "size": 3315,
+      "sha256": "4639645bb806fdd66539d689096362b199519cc13b0ea87c9f87875cee722f7d"
+    },
+    {
+      "path": "host/host-state/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-04T10.57.08.log",
+      "size": 851,
+      "sha256": "39d66e6e1289f8de67acb3e056c153aac538128adbafc451bcc060d21c6fc0d7"
+    },
+    {
+      "path": "host/host-state/data/godot/keystores/debug.keystore",
+      "size": 2714,
+      "sha256": "7453eb6b8259e9ef3a3670c76ee4c0b7742059a3c4462bed7551db626161ca4b"
+    },
+    {
+      "path": "host/import.log",
+      "size": 35366,
+      "sha256": "647654b125c8b3f443e86f9bfacd2af660d5a07147256587c332d8dc4d3ba99c"
+    },
+    {
+      "path": "host/inputs-after.json",
+      "size": 128899,
+      "sha256": "5ec1fd8d9c41c9b8ca6aa84b6b2395108a3bfdeeddff88025b7a60da89337557"
+    },
+    {
+      "path": "host/inputs-before.json",
+      "size": 128899,
+      "sha256": "5ec1fd8d9c41c9b8ca6aa84b6b2395108a3bfdeeddff88025b7a60da89337557"
+    },
+    {
+      "path": "host/mixed-baseline-w4.json",
+      "size": 3803,
+      "sha256": "9e4a12722eee9380a2eb30520b539e549b09120d0c00f4339f4344d4694bb554"
+    },
+    {
+      "path": "host/mixed-candidate-w4.json",
+      "size": 3827,
+      "sha256": "3e1f579b7fd52b9236bece70a1117d0a28a26c481f9e09ba72394fc8004e49ec"
+    },
+    {
+      "path": "host/mixed-candidate-w4.log",
+      "size": 3453,
+      "sha256": "e9930c4076c34fa35765a1f849314b1b8d8a2dd9983ffd719c90465213659d4c"
+    },
+    {
+      "path": "host/mixed-baseline-w4.log",
+      "size": 3429,
+      "sha256": "eb85e7a8f4d64551b0aba383021dd4d493116f4393f6a046e6c3538104619324"
+    },
+    {
+      "path": "host/packed_sand-baseline-w4.json",
+      "size": 3799,
+      "sha256": "d1f780b86b51ff00e79c3878d9decc9227cc1d59e0d3137c59eec63385fa5e2b"
+    },
+    {
+      "path": "host/packed_sand-baseline-w4.log",
+      "size": 3425,
+      "sha256": "7b3fd20da17fae52710ea81d5b05c43b8390695e0ced9f38648f6d667ccc027c"
+    },
+    {
+      "path": "host/packed_sand-candidate-w4.json",
+      "size": 3831,
+      "sha256": "f83dbb18fac55ab286913002c00c63220b185ebf725c5284d6646d69a8259101"
+    },
+    {
+      "path": "host/packed_sand-candidate-w4.log",
+      "size": 3457,
+      "sha256": "683905c98f64980197a45eacc897d46a7c6164c33551a24ed0b1e26addce4dc3"
+    },
+    {
+      "path": "host/performance.jsonl",
+      "size": 52067,
+      "sha256": "058939923cac028bdd61b960bef745d0ab777d373b2f5c47f6db618aca0cf1a4"
+    },
+    {
+      "path": "host/report.json",
+      "size": 77722,
+      "sha256": "239d6dffed875e27c676ba3bb8ae225a4a4fb048aabea7aa53bf4252d7dcf1c0"
+    },
+    {
+      "path": "host/terrain-w4.log",
+      "size": 4612,
+      "sha256": "b0033235de82725c02d6d561e2ca24903e0aa195447ac83365f7e981e4262933"
+    },
+    {
+      "path": "prepare-rapier/command.log",
+      "size": 40,
+      "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875"
+    },
+    {
+      "path": "prepare-rapier/performance.jsonl",
+      "size": 2733,
+      "sha256": "f61b4e54476f43407df3784c87a00b271c021889cd1bb0154e751c00f92393a2"
+    },
+    {
+      "path": "prepare-rapier/receipt.json",
+      "size": 2254,
+      "sha256": "0cfcc250e48c92928597f02902eef2fb3e84329d2bb5a098c405608d62fe899f"
+    },
+    {
+      "path": "prepare-engine/command.log",
+      "size": 397,
+      "sha256": "4dda4338c5487d0d1bb13e04d8ff6a48ec1c88f78daf55dfbfd3fb509a0e4a64"
+    },
+    {
+      "path": "prepare-engine/performance.jsonl",
+      "size": 2731,
+      "sha256": "55762b76149ddabf455a1d1926fe056f9acf91cd92798cc0a340813a4144cf06"
+    },
+    {
+      "path": "prepare-engine/receipt.json",
+      "size": 2447,
+      "sha256": "b558ea3b9fe3ea541933f1f19ec7c7865700231f22cecce7b4d182119bdd34ae"
+    }
+  ],
+  "archive_authentication": "Exact GitHub Actions artifact digest and byte size verified before extraction"
+}

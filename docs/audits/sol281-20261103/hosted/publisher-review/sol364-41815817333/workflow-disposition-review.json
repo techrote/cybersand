@@ -1,0 +1,774 @@
+{
+  "schema": "cybersand.sol364.workflow-disposition-review.v1",
+  "run": {
+    "id": 41815817333,
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "failure",
+    "event": "push",
+    "head_sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "head_branch": "sol-detach-001-current-main",
+    "html_url": "https://github.com/techrote/cybersand/actions/runs/41815817333",
+    "created_at": "2026-11-04T10:41:20Z",
+    "updated_at": "2026-11-04T11:00:56Z"
+  },
+  "jobs": [
+    {
+      "id": 126526159669,
+      "name": "pinned native build (windows)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact source without stale runtime objects",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Set pinned build dependency locations",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Authenticate source and qualification reader",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned bindings dependencies with shared watchdog",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned Windows cross compiler",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build source-matched pinned bindings and extension",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Native ownership, relocation and exact contact geometry with sanitizers",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Preserve exact source archive",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Retain build artifacts and every original command receipt",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact source without stale runtime objects",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126526159939,
+      "name": "pinned native build (linux)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact source without stale runtime objects",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Set pinned build dependency locations",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Authenticate source and qualification reader",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned bindings dependencies with shared watchdog",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned Windows cross compiler",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build source-matched pinned bindings and extension",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Native ownership, relocation and exact contact geometry with sanitizers",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve exact source archive",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain build artifacts and every original command receipt",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact source without stale runtime objects",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126531607964,
+      "name": "actual Linux host (mechanism)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve source-matched native library",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Materialize current Linux Rapier runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned Godot host archive",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run complete source-bound actual host cohort",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original Linux logs, results and source inventories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126531608003,
+      "name": "actual Windows host (core)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve canonical source bytes on Windows",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve source-matched native library",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Authenticate MSVC focused source and derive its shared suite allowance",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and execute focused native cases with actual Windows MSVC",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Authenticate unchanged MSVC inputs and retain executable identities",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Retain original MSVC command, source manifests and focused logs",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Materialize current Windows Rapier runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned actual Windows Godot host",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run complete source-bound actual Windows cohort",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original Windows logs, results and source inventories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126531608042,
+      "name": "actual Windows host (contact-w4)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve canonical source bytes on Windows",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve source-matched native library",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Authenticate MSVC focused source and derive its shared suite allowance",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and execute focused native cases with actual Windows MSVC",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Authenticate unchanged MSVC inputs and retain executable identities",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Retain original MSVC command, source manifests and focused logs",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Materialize current Windows Rapier runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned actual Windows Godot host",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run complete source-bound actual Windows cohort",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original Windows logs, results and source inventories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126531608066,
+      "name": "actual Linux host (contact-w1)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve source-matched native library",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Materialize current Linux Rapier runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned Godot host archive",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run complete source-bound actual host cohort",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original Linux logs, results and source inventories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126531608103,
+      "name": "actual Linux host (core)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve source-matched native library",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Materialize current Linux Rapier runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned Godot host archive",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run complete source-bound actual host cohort",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original Linux logs, results and source inventories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126531608384,
+      "name": "actual Windows host (contact-w1)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve canonical source bytes on Windows",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve source-matched native library",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Authenticate MSVC focused source and derive its shared suite allowance",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Build and execute focused native cases with actual Windows MSVC",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Authenticate unchanged MSVC inputs and retain executable identities",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Retain original MSVC command, source manifests and focused logs",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Materialize current Windows Rapier runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned actual Windows Godot host",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run complete source-bound actual Windows cohort",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original Windows logs, results and source inventories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126531608413,
+      "name": "actual Linux host (contact-w4)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve source-matched native library",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Materialize current Linux Rapier runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned Godot host archive",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run complete source-bound actual host cohort",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original Linux logs, results and source inventories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126531608650,
+      "name": "actual Windows host (mechanism)",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve canonical source bytes on Windows",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve source-matched native library",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Authenticate MSVC focused source and derive its shared suite allowance",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build and execute focused native cases with actual Windows MSVC",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Authenticate unchanged MSVC inputs and retain executable identities",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original MSVC command, source manifests and focused logs",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Materialize current Windows Rapier runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Prepare pinned actual Windows Godot host",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run complete source-bound actual Windows cohort",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain original Windows logs, results and source inventories",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact host source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126533192236,
+      "name": "complete two-platform evidence inventory",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out exact qualification reader",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Download every original actual-host artifact",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reopen all eight cohorts and reject absent or incomplete evidence",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain bounded qualification disposition",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out exact qualification reader",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 126533352690,
+      "name": "publish qualified development runtimes on the draft branch",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out the exact qualified source with publication credentials",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve both original build bundles",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retrieve all eight original host bundles",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reverify qualification and prepare truthful runtime provenance",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Publish only against the still-qualified branch head",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "name": "Retain publication decision and failures",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out the exact qualified source with publication credentials",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "interpretation": "Eleven execution/reducer jobs succeeded. Publisher revalidation and runtime/evidence fast-forward push succeeded; its post-push documentation dispatch returned HTTP500, so the twelfth job and whole workflow failed. Never report the whole run as passed."
+}

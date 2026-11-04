@@ -14,6 +14,9 @@ related-documents: [2026-11-03-sol281-dense-contact-registration.md, 2026-11-01-
 [synchronized repair ledger](2026-11-04-sol364-recovery.md) ordinarily merges
 accepted MAT-AUTH main, implements original-segment witness recovery and bounded
 native freezing optimization, and records new replay/cost failures separately.
+Executed `9edc4f8f` / published `5f6360a9` now passes all 24 new hosted cost
+groups, while all 84 synchronized clearance cases fail. The preserved MAT-AUTH
+guard and a post-push documentation-dispatch failure remain explicit blockers.
 The older tables below retain their exact source and thresholds; no later
 execution success erases their physical, CPU or publication failures.
 

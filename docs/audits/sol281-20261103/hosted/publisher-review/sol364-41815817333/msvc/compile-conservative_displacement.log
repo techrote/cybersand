@@ -1,0 +1,90 @@
+Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35229 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+Compiler Passes:
+ C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\cl.exe:        Version 19.44.35229.0
+ C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\c1.dll:        Version 19.44.35229.0
+ C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\c1xx.dll:      Version 19.44.35229.0
+ C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\c2.dll:        Version 19.44.35229.0
+ C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\c1xx.dll:      Version 19.44.35229.0
+ C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\link.exe:      Version 14.44.35229.0
+ C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\mspdb140.dll:  Version 14.44.35229.0
+ C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\1033\clui.dll: Version 19.44.35229.0
+
+world.cpp
+native\src\world.cpp(2868): warning C4244: 'argument': conversion from 'const int' to 'uint16_t', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5310): warning C4244: '=': conversion from 'const _Ty' to '_Ty', possible loss of data
+        with
+        [
+            _Ty=int
+        ]
+        and
+        [
+            _Ty=uint8_t
+        ]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5310): note: the template instantiation context (the oldest one first) is
+native\src\world.cpp(441): note: see reference to function template instantiation 'void std::fill<std::_Span_iterator<_Ty>,int>(const _FwdIt,const _FwdIt,const int &)' being compiled
+        with
+        [
+            _Ty=uint8_t,
+            _FwdIt=std::_Span_iterator<uint8_t>
+        ]
+native\src\world.cpp(80): warning C4333: '>>': right shift by too large amount, data loss
+native\src\world.cpp(80): note: the template instantiation context (the oldest one first) is
+native\src\world.cpp(4728): note: see reference to function template instantiation 'void cybersand::`anonymous-namespace'::hash_integer<uint8_t>(uint64_t &,Integer) noexcept' being compiled
+        with
+        [
+            Integer=uint8_t
+        ]
+D:\a\cybersand\cybersand\native\src\world_pressure.inc(1713): warning C4333: '>>': right shift by too large amount, data loss
+D:\a\cybersand\cybersand\native\src\world_pressure.inc(1713): note: the template instantiation context (the oldest one first) is
+D:\a\cybersand\cybersand\native\src\world_pressure.inc(1767): note: see reference to function template instantiation 'void cybersand::`anonymous-namespace'::StateWriter::put<uint8_t>(Integer)' being compiled
+        with
+        [
+            Integer=uint8_t
+        ]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5264): warning C4244: 'initializing': conversion from 'const _Ty' to 'unsigned char', possible loss of data
+        with
+        [
+            _Ty=int
+        ]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5264): note: the template instantiation context (the oldest one first) is
+native\src\world.cpp(441): note: see reference to function template instantiation 'void std::fill<std::_Span_iterator<_Ty>,int>(const _FwdIt,const _FwdIt,const int &)' being compiled
+        with
+        [
+            _Ty=uint8_t,
+            _FwdIt=std::_Span_iterator<uint8_t>
+        ]
+C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5299): note: see reference to function template instantiation 'void std::_Fill_memset<unsigned char*,_Ty>(_CtgIt,const _Ty,const size_t)' being compiled
+        with
+        [
+            _Ty=int,
+            _CtgIt=unsigned char *
+        ]
+material_rules.cpp
+scheduler_geometry.cpp
+settled_world_discovery.cpp
+D:\a\cybersand\cybersand\native\include\cybersand/settled_regions.hpp(2813): warning C4127: conditional expression is constant
+D:\a\cybersand\cybersand\native\include\cybersand/settled_regions.hpp(2813): note: consider using 'if constexpr' statement instead
+D:\a\cybersand\cybersand\native\include\cybersand/settled_regions.hpp(2813): note: the template instantiation context (the oldest one first) is
+native\src\settled_world_discovery.cpp(153): note: see reference to class template instantiation 'cybersand::soliding::SettledRegions<4096,1024,32,262144,4096,131072,18446744073709551615,18446744073709551615>' being compiled
+D:\a\cybersand\cybersand\native\include\cybersand/settled_regions.hpp(2810): note: while compiling class template member function 'bool cybersand::soliding::SettledRegions<4096,1024,32,262144,4096,131072,18446744073709551615,18446744073709551615>::service_resource_waiter_one(void) noexcept'
+D:\a\cybersand\cybersand\native\include\cybersand/settled_regions.hpp(282): note: see the first reference to 'cybersand::soliding::SettledRegions<4096,1024,32,262144,4096,131072,18446744073709551615,18446744073709551615>::service_resource_waiter_one' in 'cybersand::soliding::SettledRegions<4096,1024,32,262144,4096,131072,18446744073709551615,18446744073709551615>::advance'
+native\src\settled_world_discovery.cpp(989): note: see the first reference to 'cybersand::soliding::SettledRegions<4096,1024,32,262144,4096,131072,18446744073709551615,18446744073709551615>::advance' in 'cybersand::soliding::SettledWorldDiscoveryCoordinator::advance_regions'
+render_snapshot.cpp
+c_api.cpp
+native\src\c_api.cpp(418): warning C4244: 'return': conversion from 'int' to 'uint8_t', possible loss of data
+test_conservative_displacement.cpp
+Generating Code...
+Microsoft (R) Incremental Linker Version 14.44.35229.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/debug 
+/out:build\sol281\msvc-bin\test_conservative_displacement.exe 
+build\sol281\msvc-bin\world.obj 
+build\sol281\msvc-bin\material_rules.obj 
+build\sol281\msvc-bin\scheduler_geometry.obj 
+build\sol281\msvc-bin\settled_world_discovery.obj 
+build\sol281\msvc-bin\render_snapshot.obj 
+build\sol281\msvc-bin\c_api.obj 
+build\sol281\msvc-bin\test_conservative_displacement.obj 

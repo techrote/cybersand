@@ -17,9 +17,12 @@ ordinarily incorporates accepted MAT-AUTH main `7ef4856e`, corrects lost exterio
 contact witnesses and optimizes immutable native observation. Its synchronized
 replay separates initial burial, witness refusal and controlled publication age.
 The [registered gates](audits/2026-11-04-sol364-registration.md) retain persistent
-clearance and all 24 cost groups as separate acceptance requirements. New local
-Linux cost evidence includes a failed 2.012693 ms case; execution success alone
-does not promote draft #347 or unblock #365. Earlier records below keep their
+clearance and all 24 cost groups as separate acceptance requirements. Source
+`9edc4f8f` passes all 24 hosted cost groups but fails all 84 synchronized clearance
+cases. Runtime/evidence child `5f6360a9` is published; the final documentation
+dispatch fails after its push, and the preserved MAT-AUTH source guard remains
+an integration blocker. Historical Windows and local Linux cost failures stay
+retained. These results do not promote draft #347 or unblock #365. Earlier records below keep their
 original source scope.
 
 The opt-in [structural detachment lab](systems/solid-detachment.md) cuts real
@@ -47,7 +50,10 @@ source `749fb8b5` has successful scoped execution/publication, but its full-matr
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
-is being reconciled and qualified for guarded integration in [#371](https://github.com/techrote/cybersand/pull/371).
+is merged through [#371](https://github.com/techrote/cybersand/pull/371) as accepted
+main `7ef4856e`. This SOL branch preserves it and its frozen guard, which rejects
+two historical SOL consumer deltas; the [SOL364 ledger](audits/2026-11-04-sol364-recovery.md#protected-source-compatibility-blocker)
+records the separate composition blocker.
 The [current A-only boundary](architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
 preserves production authority and the frozen legacy compatibility baseline.
 #353-B consumer migration and #354–#356 require separate admission; #358's

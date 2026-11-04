@@ -1,0 +1,151 @@
+{
+  "id": 13315437570,
+  "name": "sol281-host-windows-contact-w4-41815817333-1",
+  "size_in_bytes": 2270276,
+  "digest": "sha256:829aacd50eb1b7f109d2c2c1128512ce9d62b8799a3b41e1db0eaeffd23eba78",
+  "extracted_to": "/workspace/scratch/b45094545f38/sol364-hosted-review-41815817333/cohorts/windows/contact-w4",
+  "file_count": 28,
+  "files": [
+    {
+      "path": "checkout-inputs-after.json",
+      "size": 130008,
+      "sha256": "7b6fc674b38e346ea9389629852e6dd81ad86845dc3d4a9ee1c8a8b2349e5ce0"
+    },
+    {
+      "path": "checkout-inputs-before.json",
+      "size": 130008,
+      "sha256": "7b6fc674b38e346ea9389629852e6dd81ad86845dc3d4a9ee1c8a8b2349e5ce0"
+    },
+    {
+      "path": "contact-observation-w4.json",
+      "size": 866,
+      "sha256": "ad4e76d9ac48caebe23a861ddc0653d9e1483e0cb2badb251e742e4791bc0031"
+    },
+    {
+      "path": "contact-observation-w4.log",
+      "size": 971,
+      "sha256": "fa0ff2da04e6f1710b378e0163fbb804d5fc82e064f1b06eb6564f8eba3686b9"
+    },
+    {
+      "path": "contact-recovery-w4.json",
+      "size": 13488255,
+      "sha256": "c23d37dd77c6209cd3231d7109846a5e69ab4b0f47d02d17df6cea458e5bfe4b"
+    },
+    {
+      "path": "contact-recovery-w4.log",
+      "size": 375,
+      "sha256": "b26773fdd9c8ffa0195cbdafc1b958de819fad195b34ef5f5eb9ac285cf2eea1"
+    },
+    {
+      "path": "coupling-w4.json",
+      "size": 2994,
+      "sha256": "325d18a9bcdc23891282a6b8d7d27ba214d24f434c2e6253adcb8b21004ddc36"
+    },
+    {
+      "path": "coupling-w4.log",
+      "size": 2826,
+      "sha256": "42ba76ef69f6ea022bfec4c958ea00e81b5aba6da97dc7f98fa2e709a3fe8b41"
+    },
+    {
+      "path": "displacement-w4.json",
+      "size": 26073,
+      "sha256": "324e9f37e82b9c670dc8bee9fcc8d4636ebb3abaaf8b7c9e30d296593142dd5d"
+    },
+    {
+      "path": "displacement-w4.log",
+      "size": 342,
+      "sha256": "f63dc1ee0c12c019c3d4017ec51d1a507a102360e2a26b2a447ad3c1c64bdb1b"
+    },
+    {
+      "path": "embedded_sand-baseline-w4.json",
+      "size": 3798,
+      "sha256": "e0c607fb6d3deaf7b6e93d9eb1944da9cb72498f7405cd857779426c1a336438"
+    },
+    {
+      "path": "embedded_sand-baseline-w4.log",
+      "size": 3428,
+      "sha256": "4c0a9ef2027e95890dd3f1e86d7c7c0539de092c343e820e749d862bc68e8df1"
+    },
+    {
+      "path": "embedded_sand-candidate-w4.json",
+      "size": 3831,
+      "sha256": "aac48f9c0ca3863f4f630d8a2c532a1a161864360f562832a36bf65de5e27f4a"
+    },
+    {
+      "path": "embedded_sand-candidate-w4.log",
+      "size": 3461,
+      "sha256": "09858a582d6c1eb6033f74dd332106c8335ab74f8836af206b4ca06f288e4075"
+    },
+    {
+      "path": "import.log",
+      "size": 35925,
+      "sha256": "d9d26c4fb95ccff854f0d498755a02a1fc53987491f08186ecc160fabe709759"
+    },
+    {
+      "path": "inputs-after.json",
+      "size": 130008,
+      "sha256": "533566c60c5e66b90b4329a011a55876c60239fb6f5dc01fcb5f234ff299212c"
+    },
+    {
+      "path": "inputs-before.json",
+      "size": 130008,
+      "sha256": "533566c60c5e66b90b4329a011a55876c60239fb6f5dc01fcb5f234ff299212c"
+    },
+    {
+      "path": "mixed-baseline-w4.json",
+      "size": 3792,
+      "sha256": "27d42722f1c0246247b19c7d0b784f56a578530e257f7aeebfddc278133247ce"
+    },
+    {
+      "path": "mixed-baseline-w4.log",
+      "size": 3422,
+      "sha256": "57276bb323a0a78b5690e87962a983ff17fab1e5836c0a03e42c053bc20d8815"
+    },
+    {
+      "path": "mixed-candidate-w4.json",
+      "size": 3826,
+      "sha256": "3d4e71a40fc91b05e525a102b52597d97c7b4959eb684426874b1abba9676869"
+    },
+    {
+      "path": "mixed-candidate-w4.log",
+      "size": 3456,
+      "sha256": "0e1a82aa0202ff778de7cf6aa37ae466ff0985a0f4f8e15dd489263e5f99f670"
+    },
+    {
+      "path": "packed_sand-baseline-w4.json",
+      "size": 3790,
+      "sha256": "00792f03095da66500bdae31eb6d9e51da40e0d4bc3d2b28f27a88193f5a5313"
+    },
+    {
+      "path": "packed_sand-candidate-w4.json",
+      "size": 3827,
+      "sha256": "6355a19d9bcefca105b7aeb32750aa5e476358daba4ebce2bea27d3c762eaece"
+    },
+    {
+      "path": "packed_sand-baseline-w4.log",
+      "size": 3420,
+      "sha256": "bc6911348452b42397ffa8507dd39075a26a0bc7540ec9a51c42bbf288005688"
+    },
+    {
+      "path": "packed_sand-candidate-w4.log",
+      "size": 3457,
+      "sha256": "4fe0a8d41b4933dc34e3ee08802bfcd509f3bf46201e57cac310b4b8740f9703"
+    },
+    {
+      "path": "performance.jsonl",
+      "size": 51026,
+      "sha256": "42281a9ee80dffa3feac915f5b5dd8eef63767aaa1cd811060c9bfe600c21518"
+    },
+    {
+      "path": "report.json",
+      "size": 79102,
+      "sha256": "e963e70aa5091de0fc1cf87c68947a5b7888088bf16dd99286c92e63b75ce73e"
+    },
+    {
+      "path": "terrain-w4.log",
+      "size": 4601,
+      "sha256": "63ae4f81c5a033b56f85cc63e15825eb1e298a5bdcb01d2e297faeba281b0f47"
+    }
+  ],
+  "archive_authentication": "Exact GitHub Actions artifact digest and byte size verified before extraction"
+}

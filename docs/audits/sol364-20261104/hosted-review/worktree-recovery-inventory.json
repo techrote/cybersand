@@ -1,0 +1,345 @@
+{
+  "schema": "cybersand.sol364.worktree-recovery-inventory.v1",
+  "publication_base": "5f6360a9713ff791f09bc8b05e265b3e626c2ae1",
+  "event": "Observed loss of the entire earlier scratch directory /workspace/scratch/afe774042d19 containing the shared Git repository; surviving handover working files are preserved, and remote publication source is independently verified. Cause not established.",
+  "source_worktree": "/workspace/scratch/b45094545f38/cybersand-sol364-handover",
+  "file_count": 84,
+  "files": {
+    "docs/README.md": {
+      "sha256": "d970bb527b30caf031060b2d412ffe020b7bf64f0fff0bb329915f09dc7c1705",
+      "size": 54097
+    },
+    "docs/architecture/rigid-body-and-cellular-coupling.md": {
+      "sha256": "8854eeece4340b529c181d52f1e0605d78e9a395657694e4479a15acebdf4ce9",
+      "size": 17593
+    },
+    "docs/audits/2026-11-03-sol281-dense-contact.md": {
+      "sha256": "1409c3ae96947a7f303a008c0284d2d17ad4782a70b1f8717d374926061d6eab",
+      "size": 23288
+    },
+    "docs/audits/2026-11-03-sol281-takeover.md": {
+      "sha256": "346752c02cabc8907ad586eb336c576c826006e9932abb66835bfca9d335d19a",
+      "size": 19194
+    },
+    "docs/audits/2026-11-04-sol364-recovery.md": {
+      "sha256": "60459de11b98414a291fd189c3c91a953def5039f7c78e842fabf8dcf6aa98a9",
+      "size": 38933
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-host-linux-contact-w1-41815817333-1.json": {
+      "sha256": "acd0529a7b6cf79e5662be17360702a8eee6b6247101ab1618703c1a6eb295b5",
+      "size": 7678
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-host-linux-contact-w4-41815817333-1.json": {
+      "sha256": "3096f9e230f32c8f186b2211973866a8c0e69dbfd99fd86897af519d433ce69a",
+      "size": 7678
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-host-linux-core-41815817333-1.json": {
+      "sha256": "f283c6152021ab6f4109c121c4b354210ad52f00c5fbc0efcc62d6c643034dc6",
+      "size": 6256
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-host-linux-mechanism-41815817333-1.json": {
+      "sha256": "f03536812f7aca29bdbcd036281a6d25d736e3d27b7380710fcc83b9b8c97f88",
+      "size": 5181
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-host-windows-contact-w1-41815817333-1.json": {
+      "sha256": "c606177e8fd7d63871f5b5e8d5b25c12d7b4fa1db361a4ba136823c0baf6d29d",
+      "size": 4850
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-host-windows-contact-w4-41815817333-1.json": {
+      "sha256": "8b78d49335ddd1f1f83963b6b0f6d1301eac420907dd3124bca633776cbf64a9",
+      "size": 4850
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-host-windows-core-41815817333-1.json": {
+      "sha256": "437b8be73153157d9f05a0154dff0dd8b7ee5d2804e01b828e610dccf38f1e44",
+      "size": 3469
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-host-windows-mechanism-41815817333-1.json": {
+      "sha256": "7e94966c07679bc5fd567a2efa0322eb742ffe5d68313e67d38139770667383c",
+      "size": 2658
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-msvc-41815817333-1.json": {
+      "sha256": "3de98d80076edf969385c04c0450d3e73cc7650569fb84be85eddd8cb8445644",
+      "size": 2591
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/artifact-receipts/sol281-qualified-41815817333-1.json": {
+      "sha256": "a058ac04ce18881bd345282bdf60e9f4098ab803e68c18df802916ae07f98d5d",
+      "size": 573
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/documentation-41815830370-failure-review.json": {
+      "sha256": "9d5f64ccf73320a207ebfab7d7e0ef34074e033f69e805b9073dfb5ed468a196",
+      "size": 4005
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/documentation-41815830370-material-guard-excerpt.log": {
+      "sha256": "0bbba763e77b62fc4bfb9a332c3ac6b1c6c26aad2e4758c36c0040145079d86d",
+      "size": 1526
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/hosted-qualification-review.json": {
+      "sha256": "479eee6f560f86bae3f7c8113d5351930e105f7add2c7bbbbb959c87e40d2233",
+      "size": 104651
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/linux-build-review.json": {
+      "sha256": "f6d36e9a97e38a2142773285b6bfe086a622568eb7170c9de6e4f0d9cc85b4b2",
+      "size": 2693
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/linux-contact-w1-review.json": {
+      "sha256": "fee53f6cc06ca2cfc36d329e8c8229a328b392530c718a2ed3f1d7637ddfbb6b",
+      "size": 4943
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/linux-contact-w4-review.json": {
+      "sha256": "c0f0cf9ac779e0ff43aa6493856c8ab57832189ee9a1ee9b67f00f57776a5c3e",
+      "size": 4943
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/linux-core-review.json": {
+      "sha256": "0ee97a753bc79223dcec2efaa35a51eb87b9e3a22f43d7ed04965f6082748040",
+      "size": 3763
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/linux-mechanism-review.json": {
+      "sha256": "1844cf46d3383fca121bef286b8db6e27c167475342e5d22a5c28c5bace3e4c0",
+      "size": 57364
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/linux-native-suite-review.json": {
+      "sha256": "6b649d46a2433d1e17373bb7b1c47cdb5a954129fa4e46b6b69f2f74a83156f2",
+      "size": 2373
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/mat-consumer-drift-review.json": {
+      "sha256": "64451e62b51bc833f9ef2ae0ce31f0eb77812af340aea8f0b01b813ed411c313",
+      "size": 26927
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/mat-consumer-drift.diff": {
+      "sha256": "d0f53e4ff2b24d5e97220db548d17268cea8e1c15fdabde453b0d6226ddb8d43",
+      "size": 10901
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc-review.json": {
+      "sha256": "f7da86cd2dfaf7327c7f63261f573a21c933d3331d8dba5d290ee9fc205ae637",
+      "size": 4364
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/after.json": {
+      "sha256": "b2687e9918f1b46d4981cd90783fd952c7fb694f10b5a504ced87d56d863ebff",
+      "size": 264828
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/before.json": {
+      "sha256": "51e8d73b52047206f29d5536a2ce2940c7cb742f64a855ac71277354ed3048c3",
+      "size": 264731
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/binary-identities.json": {
+      "sha256": "d4cf106008311e3b8f76ed553638db752eba36b68dc407251c1b72842b6c82bc",
+      "size": 632
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/command.log": {
+      "sha256": "1e28e6d725963ac13c6bf0a0930bb1c11779a1f677fca47071768f26e21494e1",
+      "size": 63
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/command.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/compile-conservative_displacement.log": {
+      "sha256": "966283fcc9da128326ba647c7ed0b7e6b72ce928a1572fc5dc487c7673482c0d",
+      "size": 6572
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/compile-solid_contact_geometry.log": {
+      "sha256": "fa0439efa425ba950f2160a4a0232e2d2671eee21cb9cfe5457d4d8bff75a2f7",
+      "size": 1532
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/compile-solid_detachment.log": {
+      "sha256": "68c90f633796120e903da48390549364ca0557cb2c04bea42c2e11d71cab5c82",
+      "size": 6545
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/compiler-locations.txt": {
+      "sha256": "ffe24ae01684abcfcb0816bd4ff464f54d7f6065395ca7248a11e465816ec1ff",
+      "size": 107
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/receipt.json": {
+      "sha256": "91ebda0eeaa539754ca637aece7e017cca2acf7faecca57e3edb2de81550ea1a",
+      "size": 844
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/run-conservative_displacement.log": {
+      "sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b",
+      "size": 529
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/run-solid_contact_geometry.log": {
+      "sha256": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86",
+      "size": 55
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/run-solid_detachment.log": {
+      "sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306",
+      "size": 652
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/msvc/vs-environment.log": {
+      "sha256": "fe47117de7a4a795156321c3f757fbaf24b630905a44279014aa5c9d56c2dfbb",
+      "size": 247
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/publication-equivalence.json": {
+      "sha256": "faafed9604ab0cbb307c8ddbc4e0acf4db39031b95fa1f919a08ebb39125140b",
+      "size": 8007
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/publication-review.json": {
+      "sha256": "da311177a448474e7a5c1c2d7f4ae4d5b8ead13f5849c85d6b4be45966c024e5",
+      "size": 4518
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/publication/publication.json": {
+      "sha256": "b1d68ce6faf771b9d5fcefdce366e84af1eb70d58a945d367e42a9755481c183",
+      "size": 137696
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/publisher-41815817333-dispatch-failure-excerpt.log": {
+      "sha256": "4f8d046fbb0aa4435c5fec6e0752989ac7c019b46896f0b254cf41615ad3d467",
+      "size": 743
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/qualification-review-selection.json": {
+      "sha256": "0344906112534e52a12c6a77e0fd2a423365020f1ec4454c60f81875724272db",
+      "size": 7885
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/windows-build-review.json": {
+      "sha256": "9de5e7f381de8eb962006dfdebd25f04d97d915b8e480f7de2e992d316b8c56f",
+      "size": 2801
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/windows-contact-w1-review.json": {
+      "sha256": "c127bd81f504b7db8b8742f4cabf258c09650d107073ece561916881dc2efb7c",
+      "size": 5118
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/windows-contact-w4-review.json": {
+      "sha256": "4460e20fc0f3454eb0c176e68b047ad5b2f310cd55174b91751a4679a779d357",
+      "size": 5118
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/windows-core-review.json": {
+      "sha256": "ed4d19a549c8735b88c011f034fc87d3d1c529f3e9421b73a0102be43ee3daf5",
+      "size": 3938
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/windows-mechanism-review.json": {
+      "sha256": "4c1be1a8f2480b22a24877b39ff57610f03e26de7b47b6971a7fd40bc127ba32",
+      "size": 57826
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/workflow-artifact-metadata.json": {
+      "sha256": "1b10c1b13ab425ea909f0d7dd91eb5b083b35e3a87c56940ed4d0190f4f82cf8",
+      "size": 5607
+    },
+    "docs/audits/sol281-20261103/hosted/publisher-review/sol364-41815817333/workflow-disposition-review.json": {
+      "sha256": "486b419c84c5f9f53b6eeef84cfc4b3459fa8bf819f144c494806c483c98771a",
+      "size": 22660
+    },
+    "docs/audits/sol364-20261104/hosted-review/asynchronous-physical-review.json": {
+      "sha256": "70cb244fd8cec8d091ea874688bb2300f29618b14d433af271444cd5230e9dcf",
+      "size": 687487
+    },
+    "docs/audits/sol364-20261104/hosted-review/asynchronous-physical-review.py": {
+      "sha256": "b82a8f76fa919954329721d106591ae481da67b31bc87d1d2014629054c9a80b",
+      "size": 16650
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/before-after-groups.json": {
+      "sha256": "f6711f2198638a5a2464325b003a4e89336b226e56a06e5ba1817cd47fdb87d4",
+      "size": 50570
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/case-accounting-annex.json": {
+      "sha256": "102a2ce18fe4341038ece4b5e8feefd01ad4b74dce759584dafc7e741862b935",
+      "size": 213338
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/cost-review.json": {
+      "sha256": "42e058df5ce6b502d38334e4127dd9aa061c484cc537b9702d373605b7eeecbe",
+      "size": 50578
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/cost-review.md": {
+      "sha256": "aebe901fe0adb6b0311ce01f7cfc5d4979185391b665778b10771be4c490e6ff",
+      "size": 7684
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/findings.md": {
+      "sha256": "bd3fa8f3b123179e28902c69708c3381e3f0133ddb79e9ece21b9d89f89f66e6",
+      "size": 9026
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/github-contact-artifacts.json": {
+      "sha256": "63fb3f512f6c2491f223d6ba5339b4457802f245b9c861387fba118d57bcd4ec",
+      "size": 5187
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/manifest.json": {
+      "sha256": "fd0ca4b301074c885cec8066da0305f2da6393ef5587b753c5f3e00ea2f7e2f5",
+      "size": 2152
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/preserved-cost-failures.json": {
+      "sha256": "2c0d83f725d476d5ac9ce526198bff4271f0fac768793ed239af649666989ba6",
+      "size": 27390
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/repository-analyzer-crosscheck.json": {
+      "sha256": "e44b1a0a58a11833fb659ed5fd53b27ff0b2dc6f6a63fddf57700a90411b9669",
+      "size": 505839
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/review_cost.py": {
+      "sha256": "b4a32be7f67e5692967dbeda8351e6572e268678c866ed852f9a8b397fbb6209",
+      "size": 32877
+    },
+    "docs/audits/sol364-20261104/hosted-review/cpu-review/validation.json": {
+      "sha256": "565a9e1154bdf6d7943f6af089ce91d8ebbc361bf55962cc9ba2e90869a9ed89",
+      "size": 1469
+    },
+    "docs/audits/sol364-20261104/hosted-review/final-composition-checks.json": {
+      "sha256": "f6aabeff21c8a981e76eeb31abead8bcbddd029f66c5fe563c6ca43245b097f5",
+      "size": 2288
+    },
+    "docs/audits/sol364-20261104/hosted-review/final-docs-check.json": {
+      "sha256": "13f2a907682ce02ec14467c00c6f012f9023389e622e279f13ba5607f1ab1d38",
+      "size": 470
+    },
+    "docs/audits/sol364-20261104/hosted-review/final-m11-check.json": {
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "size": 308
+    },
+    "docs/audits/sol364-20261104/hosted-review/final-repository-check.json": {
+      "sha256": "c784699b83e86b9f0ab30af1a8a069986ecbf7c1cd31c80a6f4ba657f800c9bc",
+      "size": 2544
+    },
+    "docs/audits/sol364-20261104/hosted-review/final-retrieval-contact6.json": {
+      "sha256": "c33a43177a0342ca716e76b24ee937d7836b906827079fd6003bc51caf4f57c8",
+      "size": 112252
+    },
+    "docs/audits/sol364-20261104/hosted-review/final-retrieval-frozen32.json": {
+      "sha256": "1c5e4aca7c6da477a75cb4399beed12fec6bc01eff5e6c137fc5665e0de9b9a2",
+      "size": 417910
+    },
+    "docs/audits/sol364-20261104/hosted-review/final-retrieval-sol364.json": {
+      "sha256": "43f0c018486b42d871e64ce2c100e49b93dd610a14e0f0c1ca99d8e081f4f0f1",
+      "size": 104743
+    },
+    "docs/audits/sol364-20261104/hosted-review/handover-input-review.json": {
+      "sha256": "0f71bd4dcceeaaba8b6da9df4636297d7583d3e47f46e93057889a58d8933470",
+      "size": 4315
+    },
+    "docs/audits/sol364-20261104/hosted-review/physical-review.json": {
+      "sha256": "25a93709355e9d301c39bd743a04b7f4e47ce2961099b1cfa906bdcb4e65e14e",
+      "size": 579286
+    },
+    "docs/audits/sol364-20261104/hosted-review/physical-review.md": {
+      "sha256": "0671f806f7fb9a5f84775f40d958449bc6ceee9d5924033ef6a138bfca1cda77",
+      "size": 11710
+    },
+    "docs/audits/sol364-20261104/hosted-review/physical-review.py": {
+      "sha256": "0239d2999080af2bf4d0e883ff4c53900a69a0f68a0560757d151b5c1997cab8",
+      "size": 19627
+    },
+    "docs/audits/sol364-20261104/hosted-review/publication-repository-check.json": {
+      "sha256": "d61e1bd85216fe0bbaa26641a5ff27a29acae74be19e4150dd021ba70c595442",
+      "size": 2544
+    },
+    "docs/operations/cybersand-codex-development-handover.md": {
+      "sha256": "91dcb8e392a91953e4700d1deeb4a521a67ca2ddfe81e672cb72bd36d5205da1",
+      "size": 117487
+    },
+    "docs/operations/soliding-programme.md": {
+      "sha256": "fdd2f4b2c74555ef4dcdfc66a4094e86bfc3ab00f4d4b24f80e92b02e73e7200",
+      "size": 11959
+    },
+    "docs/reference/retrieval-index.md": {
+      "sha256": "0ea2cc7f91406ee6f7034fb8b71d3fe2254cbad0e5bcd58cb7454c6860ebdfbd",
+      "size": 60231
+    },
+    "docs/reference/retrieval-questions-sol364.json": {
+      "sha256": "8e3cadece764c35cd8700aa4fcb739333528d7ae996431d350f4caf6666dea07",
+      "size": 5027
+    },
+    "docs/reference/status-and-roadmap.md": {
+      "sha256": "14cc96e7f1a8438add190ab701f1f99d3021872f9d176b90afec92587a1cc06b",
+      "size": 137301
+    },
+    "docs/systems/solid-detachment.md": {
+      "sha256": "bce448c2e644757d7c0066ffb9f3b507882771164bea9e8734630955242047ee",
+      "size": 33718
+    }
+  }
+}

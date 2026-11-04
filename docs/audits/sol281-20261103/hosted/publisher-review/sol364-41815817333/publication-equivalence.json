@@ -1,0 +1,197 @@
+{
+  "schema": "cybersand.sol364.publication-equivalence.v1",
+  "repository": "techrote/cybersand",
+  "branch": "sol-detach-001-current-main",
+  "method": "Git data API commits after content-addressed tree equality; normal branch update with expected old head and force=false. Commit metadata differs; all source trees and ordered parent ancestry are preserved.",
+  "previous_pr_head": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+  "accepted_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "qualified_source": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+  "qualified_tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe",
+  "workflow_run": 41815817333,
+  "entries": [
+    {
+      "reviewed_local_commit": "9710cde1d63d2dc2eb7faa7ded8eef0e00796741",
+      "published_commit": "354dee236c1af3ba2865bdf3ff44dafb2c35ae5b",
+      "tree": "1e8292d5e847b64b05389cb877947aee162960e4",
+      "local_parents": [
+        "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+        "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+      ],
+      "published_parents": [
+        "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+        "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "Merge accepted MAT-AUTH shadow main into draft SOL364 contact recovery"
+    },
+    {
+      "reviewed_local_commit": "879ff319f42251e8209f8fd99cd68e547ad078e9",
+      "published_commit": "c12d4c3432dda933c953f3adf3af56d6c0367fb8",
+      "tree": "b96ae0fe61bef3fef2351747d7cee136960143e3",
+      "local_parents": [
+        "9710cde1d63d2dc2eb7faa7ded8eef0e00796741"
+      ],
+      "published_parents": [
+        "354dee236c1af3ba2865bdf3ff44dafb2c35ae5b"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "docs(sol364): preregister synchronized contact and unchanged cost gates"
+    },
+    {
+      "reviewed_local_commit": "b6cae1321ff3cd2e9e02104e31c3aca924e52c84",
+      "published_commit": "8b4fd5b5128de1f111daea9e5609c03781d96a30",
+      "tree": "48e6f432d7fd688fbc5b3bfa0eacf8b2543a318e",
+      "local_parents": [
+        "879ff319f42251e8209f8fd99cd68e547ad078e9"
+      ],
+      "published_parents": [
+        "c12d4c3432dda933c953f3adf3af56d6c0367fb8"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "perf(sol364): freeze contact payloads natively and account every stage"
+    },
+    {
+      "reviewed_local_commit": "4e17403c897e293dd18eb7780e47e4f3154aa8da",
+      "published_commit": "f41b73ff7d2843988d09ee50791b3cb0bd9bc593",
+      "tree": "7798fcfb9f279e3c68fdff476acbfa7c4e3097de",
+      "local_parents": [
+        "b6cae1321ff3cd2e9e02104e31c3aca924e52c84"
+      ],
+      "published_parents": [
+        "8b4fd5b5128de1f111daea9e5609c03781d96a30"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "fix(sol364): retain current exterior contact witnesses and complete cost accounting"
+    },
+    {
+      "reviewed_local_commit": "b8a45873b6de823328f1a681308faa8fe37c45be",
+      "published_commit": "372a2519f2a81131b9e12c70124587b0f4a0eca1",
+      "tree": "e8873599c1930a72cfc91fa9689c0b91b886121b",
+      "local_parents": [
+        "4e17403c897e293dd18eb7780e47e4f3154aa8da"
+      ],
+      "published_parents": [
+        "f41b73ff7d2843988d09ee50791b3cb0bd9bc593"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "test(sol364): retain independent rotated witness and native equivalence review"
+    },
+    {
+      "reviewed_local_commit": "2ad964b28488ada86c5088c1c9be96e46f7f4be2",
+      "published_commit": "e4191980371d391b2dfac10377ce381d68825d3e",
+      "tree": "978300c68a1152c4f89155f1b1fc7ab33986c611",
+      "local_parents": [
+        "b8a45873b6de823328f1a681308faa8fe37c45be"
+      ],
+      "published_parents": [
+        "372a2519f2a81131b9e12c70124587b0f4a0eca1"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "docs(sol364): record corrected replay review and retained cost failures"
+    },
+    {
+      "reviewed_local_commit": "32e8b10fc63129e1a9a28ea0af7817c324fcf5d6",
+      "published_commit": "0b865a53f75dacc83e84039f2b8e96ad18378ecd",
+      "tree": "e6f956d96509f487189b97ecde801459c8d2f81b",
+      "local_parents": [
+        "2ad964b28488ada86c5088c1c9be96e46f7f4be2"
+      ],
+      "published_parents": [
+        "e4191980371d391b2dfac10377ce381d68825d3e"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "Add synchronized 520-cell contact replay and retain failed apparatus evidence"
+    },
+    {
+      "reviewed_local_commit": "64e97fb4c3ae136779390e77361cf43644705e6b",
+      "published_commit": "ea8d0103f37ad10a8aaffd53b736ac330561bab6",
+      "tree": "4bbc1eb40fa5ce0c0aaff491638a15de862ecfdb",
+      "local_parents": [
+        "32e8b10fc63129e1a9a28ea0af7817c324fcf5d6"
+      ],
+      "published_parents": [
+        "0b865a53f75dacc83e84039f2b8e96ad18378ecd"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "test(sol364): qualify synchronized contact and preserve complete evidence"
+    },
+    {
+      "reviewed_local_commit": "4c3beaceb5f4ad5a4a72773ba4230bf0b2948ac9",
+      "published_commit": "903b7db8db884cb8ce352b8cdc241154e84ac21f",
+      "tree": "a9a57fd53a95f4727dcae1d0cddbd819b9f5fc0c",
+      "local_parents": [
+        "64e97fb4c3ae136779390e77361cf43644705e6b"
+      ],
+      "published_parents": [
+        "ea8d0103f37ad10a8aaffd53b736ac330561bab6"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "feat(sol364): complete response cost stages and preserve registered recovery failures"
+    },
+    {
+      "reviewed_local_commit": "bf0b08cf3536fb3e16dc3207990b733c5ba39861",
+      "published_commit": "952c8cb0904a351a0e44ee017910239a4f2959c5",
+      "tree": "4350e5e06d299b24b469e3e13cb314fffd5284da",
+      "local_parents": [
+        "4c3beaceb5f4ad5a4a72773ba4230bf0b2948ac9"
+      ],
+      "published_parents": [
+        "903b7db8db884cb8ce352b8cdc241154e84ac21f"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "test(sol364): fail stop native publication after actual Sand impulse"
+    },
+    {
+      "reviewed_local_commit": "c7fe1bb7dcbaa1e2f507f6841803409d568ea9d0",
+      "published_commit": "d4dd8aba9dd231587672e0c9aa98ceeef47be58d",
+      "tree": "963b88e202203990a1d2fb7650bd365eeeb13123",
+      "local_parents": [
+        "bf0b08cf3536fb3e16dc3207990b733c5ba39861"
+      ],
+      "published_parents": [
+        "952c8cb0904a351a0e44ee017910239a4f2959c5"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "test(sol364): distinguish failure wait calls from actual Rapier steps"
+    },
+    {
+      "reviewed_local_commit": "3df6fe40d6f1dcaa93280c7331d7fd231d8db06d",
+      "published_commit": "4fa35012e18ed78868cd31e1ad2360e30ba60935",
+      "tree": "311e233b772f7d8c3879b3f6f4737d6d36311727",
+      "local_parents": [
+        "c7fe1bb7dcbaa1e2f507f6841803409d568ea9d0"
+      ],
+      "published_parents": [
+        "d4dd8aba9dd231587672e0c9aa98ceeef47be58d"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "test(sol364): authenticate retained mask across failed publication"
+    },
+    {
+      "reviewed_local_commit": "11718cd3ab03fe23ee1ad73c9395478bd7c3e7a1",
+      "published_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe",
+      "local_parents": [
+        "3df6fe40d6f1dcaa93280c7331d7fd231d8db06d"
+      ],
+      "published_parents": [
+        "4fa35012e18ed78868cd31e1ad2360e30ba60935"
+      ],
+      "same_tree": true,
+      "mapped_parent_ancestry_preserved": true,
+      "subject": "test(sol364): authenticate post-impulse publication fail-stop evidence"
+    }
+  ]
+}

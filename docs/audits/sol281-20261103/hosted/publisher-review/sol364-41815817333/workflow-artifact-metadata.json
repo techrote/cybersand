@@ -1,0 +1,149 @@
+{
+  "schema": "cybersand.sol364.workflow-artifact-metadata.v1",
+  "run_id": 41815817333,
+  "artifacts": [
+    {
+      "id": 13315971161,
+      "name": "sol281-qualified-41815817333-1",
+      "size_in_bytes": 3116,
+      "digest": "sha256:f14ac5150fd965988b774f0661f69e09d81f564260a75bfe1de79b63a55b4d61",
+      "expired": false,
+      "created_at": "2026-11-04T10:59:48Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13315875713,
+      "name": "sol281-host-linux-mechanism-41815817333-1",
+      "size_in_bytes": 9302738,
+      "digest": "sha256:a8498e32919e2b6ccd06787ea1626b71a2698e73b1d4fdd60237b3435d758538",
+      "expired": false,
+      "created_at": "2026-11-04T10:57:54Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13315846464,
+      "name": "sol281-msvc-41815817333-1",
+      "size_in_bytes": 216861,
+      "digest": "sha256:0240e3d5aa9712ad22652641d69619b7605176de86826478f2571fefaa808136",
+      "expired": false,
+      "created_at": "2026-11-04T10:58:21Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13315721372,
+      "name": "sol281-host-windows-mechanism-41815817333-1",
+      "size_in_bytes": 6000017,
+      "digest": "sha256:dd564cb23061a7aa8697aa1275315ec995de7a38bb779cf9d0e074f58c99636b",
+      "expired": false,
+      "created_at": "2026-11-04T10:59:17Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13315487480,
+      "name": "sol281-host-linux-contact-w4-41815817333-1",
+      "size_in_bytes": 5372698,
+      "digest": "sha256:6567c20185848900b30bc22fde95a27660158455ddc622a7163fd69abca19764",
+      "expired": false,
+      "created_at": "2026-11-04T10:59:03Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13315437570,
+      "name": "sol281-host-windows-contact-w4-41815817333-1",
+      "size_in_bytes": 2270276,
+      "digest": "sha256:829aacd50eb1b7f109d2c2c1128512ce9d62b8799a3b41e1db0eaeffd23eba78",
+      "expired": false,
+      "created_at": "2026-11-04T10:59:20Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13315282406,
+      "name": "sol281-host-linux-core-41815817333-1",
+      "size_in_bytes": 3498121,
+      "digest": "sha256:1a1cb3b8b290aa1c9527cc358711d71a26d46e867396b3b7f82e88d2fc3c49cc",
+      "expired": false,
+      "created_at": "2026-11-04T10:56:46Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13314873550,
+      "name": "sol281-build-linux-41815817333-1",
+      "size_in_bytes": 123060063,
+      "digest": "sha256:a73fdcf2a680dfea8d1ae5cd89e6e6041858edeb1547a3e104e85d35022d1885",
+      "expired": false,
+      "created_at": "2026-11-04T10:55:24Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13314818289,
+      "name": "sol281-host-linux-contact-w1-41815817333-1",
+      "size_in_bytes": 5342805,
+      "digest": "sha256:83cafeaad098efe2563dd222a5d6255f0aac92e1222965428f20e9e88c14468a",
+      "expired": false,
+      "created_at": "2026-11-04T10:59:03Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13314798703,
+      "name": "sol281-publication-41815817333-1",
+      "size_in_bytes": 24933,
+      "digest": "sha256:8784fb88773877f3dc17f40a85dfd69c21cea860d6478df9e8d4a349a12b0062",
+      "expired": false,
+      "created_at": "2026-11-04T11:00:54Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13314719334,
+      "name": "sol281-host-windows-core-41815817333-1",
+      "size_in_bytes": 230561,
+      "digest": "sha256:695a6473e28352ffa9dc1e861dee117fec007c114a1b03003203dcbfd41fd3af",
+      "expired": false,
+      "created_at": "2026-11-04T10:56:57Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13314579026,
+      "name": "sol281-host-windows-contact-w1-41815817333-1",
+      "size_in_bytes": 2109912,
+      "digest": "sha256:ce170939723b50f25aa12a4ae67a9d541331a09218880b35093c977faa359fd1",
+      "expired": false,
+      "created_at": "2026-11-04T10:59:23Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    },
+    {
+      "id": 13314478289,
+      "name": "sol281-build-windows-41815817333-1",
+      "size_in_bytes": 2049222,
+      "digest": "sha256:87cca289a5e1d1ad6dff5e76794fdaf464d4ada806fbfad14db3bedc56fcc04c",
+      "expired": false,
+      "created_at": "2026-11-04T10:45:47Z",
+      "expires_at": "2027-02-02T10:41:20Z",
+      "source_commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "run_id": 41815817333
+    }
+  ]
+}

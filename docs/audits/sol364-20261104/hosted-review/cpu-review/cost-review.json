@@ -1,0 +1,1500 @@
+{
+  "all_case_work_summary": {
+    "accepted_publication_latency_max_ms": 19.99,
+    "accepted_publication_latency_mean_ms": 7.711499763503926,
+    "accepted_publication_latency_total_ms": 81518.264,
+    "candidate_response_per_attempt_means_ms": {
+      "max": 1.4539765100671143,
+      "mean": 0.9686696537951821,
+      "median": 0.9508894255210981,
+      "min": 0.5948846153846153,
+      "n": 36,
+      "sample_standard_deviation": 0.2124860387881284,
+      "sample_variance": 0.04515031667987001
+    },
+    "complete_consumed_observations": 22850,
+    "complete_owner_attempts_not_consumed": 3133,
+    "consumed_refused_observations": 0,
+    "owner_attempt_ms_max": 3.335,
+    "owner_attempts": 26575,
+    "owner_complete_attempts": 25983,
+    "owner_per_attempt_means_ms": {
+      "max": 0.7292981029810298,
+      "mean": 0.2790793675612693,
+      "median": 0.2152666593422691,
+      "min": 0.1265609756097561,
+      "n": 72,
+      "sample_standard_deviation": 0.15506912407374043,
+      "sample_variance": 0.024046433240997103
+    },
+    "owner_ready_latency_max_ms": 17.874,
+    "owner_ready_latency_mean_ms": 6.8114274398249455,
+    "owner_ready_latency_total_ms": 155641.117,
+    "owner_ready_receipts": 22850,
+    "owner_refused_attempts": 592,
+    "owner_stages_ms": {
+      "envelope": 67.948,
+      "native_call": 7347.243,
+      "native_geometry": 7108.83067,
+      "native_payload_freeze": 94.67908100000001
+    },
+    "owner_work_ms": 7415.191,
+    "planner_fraction_of_summed_response_work": 0.9557795604226966,
+    "response_accepts": 10571,
+    "response_attempt_ms_max": 3.797,
+    "response_attempts": 10900,
+    "response_refusals": {
+      "InvalidGeometryWitness": 8,
+      "NonDissipativeResponse": 278,
+      "PoseDrift": 43
+    },
+    "response_stages_ms": {
+      "impulse_apply": 107.97699999999966,
+      "other": 192.59800000000033,
+      "planner": 10052.25,
+      "readback": 139.34199999999979,
+      "rid_state": 25.16400000000002
+    },
+    "response_work_ms": 10517.331,
+    "total_work_ms": 17932.522,
+    "unconsumed_or_setup_owner_attempts": 3725
+  },
+  "baseline_groups_passed": 12,
+  "candidate_groups_passed": 12,
+  "cohort_custody": [
+    {
+      "bindings": {
+        "filename": "libgodot-cpp.linux.template_debug.x86_64.a",
+        "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666"
+      },
+      "build_artifact": {
+        "digest": "sha256:a73fdcf2a680dfea8d1ae5cd89e6e6041858edeb1547a3e104e85d35022d1885",
+        "id": 13314873550,
+        "name": "sol281-build-linux-41815817333-1",
+        "size_in_bytes": 123060063
+      },
+      "build_manifest": "build-linux/build.json",
+      "build_manifest_sha256": "fde3966082ac4b537f066e28a36cd9caf318cfa7afd78606327a398681b74184",
+      "canonical_result": "cohorts/linux/contact-w1/host/contact-recovery-w1.json",
+      "canonical_result_sha256": "e9ef79ec640acd6767e81bc9ef3ed0dc0e1668bf7d483e3be23101756ff3caa2",
+      "cohort_artifact": {
+        "digest": "sha256:83cafeaad098efe2563dd222a5d6255f0aac92e1222965428f20e9e88c14468a",
+        "id": 13314818289,
+        "name": "sol281-host-linux-contact-w1-41815817333-1",
+        "size_in_bytes": 5342805
+      },
+      "cohort_report": "cohorts/linux/contact-w1/host/report.json",
+      "cohort_report_sha256": "64e14f38d770e7e5ce05aee14787595dd81aef45581b7911a4b546b9e7bfcaab",
+      "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "log_sha256": "80049a6f477e86681fd1ec1075651977fa45e2327d1b4ea6bdfbde6f6a1fcf38",
+      "normalized_input_count": 1107,
+      "normalized_inputs_sha256": "5ec1fd8d9c41c9b8ca6aa84b6b2395108a3bfdeeddff88025b7a60da89337557",
+      "platform": "Linux",
+      "process_elapsed_seconds": 113.248,
+      "process_resources": {
+        "available": true,
+        "cpu_seconds": 18.37,
+        "peak_rss_bytes": 340951040,
+        "scope": "direct_process_only"
+      },
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "repository_build_manifest": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/build/linux/build.json",
+      "repository_canonical_result": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/linux/contact-w1/host/contact-recovery-w1.json",
+      "repository_cohort_report": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/linux/contact-w1/host/report.json",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+        "size": 4343256
+      },
+      "runtime_repository_path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "scope": "Runtime bytes and receipt chain independently authenticated; source inputs unchanged.",
+      "source": {
+        "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+        "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+      },
+      "workers": 1,
+      "workflow_run_url": "https://github.com/techrote/cybersand/actions/runs/41815817333"
+    },
+    {
+      "bindings": {
+        "filename": "libgodot-cpp.linux.template_debug.x86_64.a",
+        "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666"
+      },
+      "build_artifact": {
+        "digest": "sha256:a73fdcf2a680dfea8d1ae5cd89e6e6041858edeb1547a3e104e85d35022d1885",
+        "id": 13314873550,
+        "name": "sol281-build-linux-41815817333-1",
+        "size_in_bytes": 123060063
+      },
+      "build_manifest": "build-linux/build.json",
+      "build_manifest_sha256": "fde3966082ac4b537f066e28a36cd9caf318cfa7afd78606327a398681b74184",
+      "canonical_result": "cohorts/linux/contact-w4/host/contact-recovery-w4.json",
+      "canonical_result_sha256": "57dad03713c00362ae1d02ff7a6b1c3048754ad4b999732e550b8f8f736e5142",
+      "cohort_artifact": {
+        "digest": "sha256:6567c20185848900b30bc22fde95a27660158455ddc622a7163fd69abca19764",
+        "id": 13315487480,
+        "name": "sol281-host-linux-contact-w4-41815817333-1",
+        "size_in_bytes": 5372698
+      },
+      "cohort_report": "cohorts/linux/contact-w4/host/report.json",
+      "cohort_report_sha256": "239d6dffed875e27c676ba3bb8ae225a4a4fb048aabea7aa53bf4252d7dcf1c0",
+      "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "engine": {
+        "archive_algorithm": "sha256",
+        "archive_hash": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "log_sha256": "d3d88d470abbac94f75b82da25273ec27705e5838c1d35e41830ef01aec4a71d",
+      "normalized_input_count": 1107,
+      "normalized_inputs_sha256": "5ec1fd8d9c41c9b8ca6aa84b6b2395108a3bfdeeddff88025b7a60da89337557",
+      "platform": "Linux",
+      "process_elapsed_seconds": 113.144,
+      "process_resources": {
+        "available": true,
+        "cpu_seconds": 18.07,
+        "peak_rss_bytes": 349761536,
+        "scope": "direct_process_only"
+      },
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      },
+      "repository_build_manifest": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/build/linux/build.json",
+      "repository_canonical_result": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/linux/contact-w4/host/contact-recovery-w4.json",
+      "repository_cohort_report": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/linux/contact-w4/host/report.json",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+        "size": 4343256
+      },
+      "runtime_repository_path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "scope": "Runtime bytes and receipt chain independently authenticated; source inputs unchanged.",
+      "source": {
+        "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+        "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+      },
+      "workers": 4,
+      "workflow_run_url": "https://github.com/techrote/cybersand/actions/runs/41815817333"
+    },
+    {
+      "bindings": {
+        "filename": "libgodot-cpp.windows.template_debug.x86_64.a",
+        "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "sha256": "c5693178d3e02d3e6a24d13cb46406a63a13e0ab1d261a0e59fc9e5ce927a130"
+      },
+      "build_artifact": {
+        "digest": "sha256:87cca289a5e1d1ad6dff5e76794fdaf464d4ada806fbfad14db3bedc56fcc04c",
+        "id": 13314478289,
+        "name": "sol281-build-windows-41815817333-1",
+        "size_in_bytes": 2049222
+      },
+      "build_manifest": "build-windows/build.json",
+      "build_manifest_sha256": "f084c80860f2be197a1f8e01a885ac91733658293ca14ab1b464f8afad54028e",
+      "canonical_result": "cohorts/windows/contact-w1/contact-recovery-w1.json",
+      "canonical_result_sha256": "ec3d0a3ffbeb64e67e3f3aa6fd95bbb2380e6a9f2f47498d80acb394b5f8ad1c",
+      "cohort_artifact": {
+        "digest": "sha256:ce170939723b50f25aa12a4ae67a9d541331a09218880b35093c977faa359fd1",
+        "id": 13314579026,
+        "name": "sol281-host-windows-contact-w1-41815817333-1",
+        "size_in_bytes": 2109912
+      },
+      "cohort_report": "cohorts/windows/contact-w1/report.json",
+      "cohort_report_sha256": "73e63970909d8990492d0d3d1c85ea29e62ead90285f16c3d119c6cdf18899eb",
+      "compiler": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "log_sha256": "8717b7ffaa7febfda325065684847b0124d8785913e4d3ce6de6880aa7de7616",
+      "normalized_input_count": 1107,
+      "normalized_inputs_sha256": "533566c60c5e66b90b4329a011a55876c60239fb6f5dc01fcb5f234ff299212c",
+      "platform": "Windows",
+      "process_elapsed_seconds": 114.303,
+      "process_resources": {
+        "available": false,
+        "scope": "direct_process_only"
+      },
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "repository_build_manifest": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/build/windows/build.json",
+      "repository_canonical_result": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/contact-w1/contact-recovery-w1.json",
+      "repository_cohort_report": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/contact-w1/report.json",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+        "size": 4925952
+      },
+      "runtime_repository_path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "scope": "Runtime bytes and receipt chain independently authenticated; source inputs unchanged.",
+      "source": {
+        "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+        "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+      },
+      "workers": 1,
+      "workflow_run_url": "https://github.com/techrote/cybersand/actions/runs/41815817333"
+    },
+    {
+      "bindings": {
+        "filename": "libgodot-cpp.windows.template_debug.x86_64.a",
+        "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "sha256": "c5693178d3e02d3e6a24d13cb46406a63a13e0ab1d261a0e59fc9e5ce927a130"
+      },
+      "build_artifact": {
+        "digest": "sha256:87cca289a5e1d1ad6dff5e76794fdaf464d4ada806fbfad14db3bedc56fcc04c",
+        "id": 13314478289,
+        "name": "sol281-build-windows-41815817333-1",
+        "size_in_bytes": 2049222
+      },
+      "build_manifest": "build-windows/build.json",
+      "build_manifest_sha256": "f084c80860f2be197a1f8e01a885ac91733658293ca14ab1b464f8afad54028e",
+      "canonical_result": "cohorts/windows/contact-w4/contact-recovery-w4.json",
+      "canonical_result_sha256": "c23d37dd77c6209cd3231d7109846a5e69ab4b0f47d02d17df6cea458e5bfe4b",
+      "cohort_artifact": {
+        "digest": "sha256:829aacd50eb1b7f109d2c2c1128512ce9d62b8799a3b41e1db0eaeffd23eba78",
+        "id": 13315437570,
+        "name": "sol281-host-windows-contact-w4-41815817333-1",
+        "size_in_bytes": 2270276
+      },
+      "cohort_report": "cohorts/windows/contact-w4/report.json",
+      "cohort_report_sha256": "e963e70aa5091de0fc1cf87c68947a5b7888088bf16dd99286c92e63b75ce73e",
+      "compiler": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+      "engine": {
+        "archive_algorithm": "sha512",
+        "archive_hash": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+          "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+        },
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "log_sha256": "b26773fdd9c8ffa0195cbdafc1b958de819fad195b34ef5f5eb9ac285cf2eea1",
+      "normalized_input_count": 1107,
+      "normalized_inputs_sha256": "533566c60c5e66b90b4329a011a55876c60239fb6f5dc01fcb5f234ff299212c",
+      "platform": "Windows",
+      "process_elapsed_seconds": 114.111,
+      "process_resources": {
+        "available": false,
+        "scope": "direct_process_only"
+      },
+      "rapier": {
+        "lock_sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285",
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "repository_build_manifest": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/build/windows/build.json",
+      "repository_canonical_result": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/contact-w4/contact-recovery-w4.json",
+      "repository_cohort_report": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d/cohorts/windows/contact-w4/report.json",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "a5e616c0e72eee56c84f66151499d401dd3f4fb7faab347adbc6335493fefd61",
+        "size": 4925952
+      },
+      "runtime_repository_path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "scope": "Runtime bytes and receipt chain independently authenticated; source inputs unchanged.",
+      "source": {
+        "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+        "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+      },
+      "workers": 4,
+      "workflow_run_url": "https://github.com/techrote/cybersand/actions/runs/41815817333"
+    }
+  ],
+  "cohort_work_summaries": [
+    {
+      "accepted_publication_latency_max_ms": 18.318,
+      "accepted_publication_latency_mean_ms": 5.355878351340536,
+      "accepted_publication_latency_total_ms": 13384.34,
+      "candidate_response_per_attempt_means_ms": {
+        "max": 1.221689024390247,
+        "mean": 1.0404078242947439,
+        "median": 1.011504854368932,
+        "min": 0.7469498207885304,
+        "n": 9,
+        "sample_standard_deviation": 0.15323998017183982,
+        "sample_variance": 0.023482491523065863
+      },
+      "complete_consumed_observations": 5328,
+      "complete_owner_attempts_not_consumed": 1168,
+      "consumed_refused_observations": 0,
+      "owner_attempt_ms_max": 1.489,
+      "owner_attempts": 6640,
+      "owner_complete_attempts": 6496,
+      "owner_per_attempt_means_ms": {
+        "max": 0.6372655826558266,
+        "mean": 0.3129138813610358,
+        "median": 0.2449696705255096,
+        "min": 0.18675067750677507,
+        "n": 18,
+        "sample_standard_deviation": 0.15524733567146107,
+        "sample_variance": 0.024101735233087306
+      },
+      "owner_ready_latency_max_ms": 16.854,
+      "owner_ready_latency_mean_ms": 4.768029279279279,
+      "owner_ready_latency_total_ms": 25404.06,
+      "owner_ready_receipts": 5328,
+      "owner_refused_attempts": 144,
+      "owner_stages_ms": {
+        "envelope": 15.331999999999999,
+        "native_call": 2062.528,
+        "native_geometry": 2016.277995,
+        "native_payload_freeze": 16.963582
+      },
+      "owner_work_ms": 2077.86,
+      "planner_fraction_of_summed_response_work": 0.9608557005055653,
+      "platform": "Linux",
+      "response_accepts": 2499,
+      "response_attempt_ms_max": 3.599,
+      "response_attempts": 2595,
+      "response_refusals": {
+        "InvalidGeometryWitness": 2,
+        "NonDissipativeResponse": 72,
+        "PoseDrift": 22
+      },
+      "response_stages_ms": {
+        "impulse_apply": 24.39599999999989,
+        "other": 44.15600000000011,
+        "planner": 2587.987,
+        "readback": 30.73599999999999,
+        "rid_state": 6.144000000000003
+      },
+      "response_work_ms": 2693.419000000001,
+      "total_work_ms": 4771.279000000001,
+      "unconsumed_or_setup_owner_attempts": 1312,
+      "workers": 1
+    },
+    {
+      "accepted_publication_latency_max_ms": 18.983,
+      "accepted_publication_latency_mean_ms": 7.4566841269841255,
+      "accepted_publication_latency_total_ms": 18790.843999999997,
+      "candidate_response_per_attempt_means_ms": {
+        "max": 1.3205928338762216,
+        "mean": 0.9536473095237051,
+        "median": 0.9289066666666668,
+        "min": 0.5948846153846153,
+        "n": 9,
+        "sample_standard_deviation": 0.2490518185253135,
+        "sample_variance": 0.06202680831076569
+      },
+      "complete_consumed_observations": 5682,
+      "complete_owner_attempts_not_consumed": 811,
+      "consumed_refused_observations": 0,
+      "owner_attempt_ms_max": 1.276,
+      "owner_attempts": 6637,
+      "owner_complete_attempts": 6493,
+      "owner_per_attempt_means_ms": {
+        "max": 0.700875,
+        "mean": 0.2959709379868557,
+        "median": 0.2395271113173088,
+        "min": 0.1679159891598916,
+        "n": 18,
+        "sample_standard_deviation": 0.14639738851018633,
+        "sample_variance": 0.02143219536260244
+      },
+      "owner_ready_latency_max_ms": 17.055,
+      "owner_ready_latency_mean_ms": 7.318738824357621,
+      "owner_ready_latency_total_ms": 41585.074,
+      "owner_ready_receipts": 5682,
+      "owner_refused_attempts": 144,
+      "owner_stages_ms": {
+        "envelope": 14.694,
+        "native_call": 1949.407,
+        "native_geometry": 1904.9216750000003,
+        "native_payload_freeze": 15.480999
+      },
+      "owner_work_ms": 1964.101,
+      "planner_fraction_of_summed_response_work": 0.9582234931592054,
+      "platform": "Linux",
+      "response_accepts": 2520,
+      "response_attempt_ms_max": 3.797,
+      "response_attempts": 2632,
+      "response_refusals": {
+        "InvalidGeometryWitness": 4,
+        "NonDissipativeResponse": 99,
+        "PoseDrift": 9
+      },
+      "response_stages_ms": {
+        "impulse_apply": 24.10399999999992,
+        "other": 45.08700000000008,
+        "planner": 2418.673,
+        "readback": 30.17599999999998,
+        "rid_state": 6.082000000000005
+      },
+      "response_work_ms": 2524.122,
+      "total_work_ms": 4488.223,
+      "unconsumed_or_setup_owner_attempts": 955,
+      "workers": 4
+    },
+    {
+      "accepted_publication_latency_max_ms": 19.085,
+      "accepted_publication_latency_mean_ms": 8.339015506807867,
+      "accepted_publication_latency_total_ms": 22048.357,
+      "candidate_response_per_attempt_means_ms": {
+        "max": 1.1739825327510915,
+        "mean": 0.8129906401692475,
+        "median": 0.743951951951952,
+        "min": 0.6274426751592357,
+        "n": 9,
+        "sample_standard_deviation": 0.17615397344302172,
+        "sample_variance": 0.0310302223597648
+      },
+      "complete_consumed_observations": 5666,
+      "complete_owner_attempts_not_consumed": 829,
+      "consumed_refused_observations": 0,
+      "owner_attempt_ms_max": 1.382,
+      "owner_attempts": 6648,
+      "owner_complete_attempts": 6495,
+      "owner_per_attempt_means_ms": {
+        "max": 0.7118369565217392,
+        "mean": 0.2648921127981109,
+        "median": 0.18577567567567568,
+        "min": 0.12710027100271,
+        "n": 18,
+        "sample_standard_deviation": 0.16948193804633574,
+        "sample_variance": 0.02872412732394199
+      },
+      "owner_ready_latency_max_ms": 17.526,
+      "owner_ready_latency_mean_ms": 7.046814860571831,
+      "owner_ready_latency_total_ms": 39927.253,
+      "owner_ready_receipts": 5666,
+      "owner_refused_attempts": 153,
+      "owner_stages_ms": {
+        "envelope": 17.647,
+        "native_call": 1742.628,
+        "native_geometry": 1663.1781,
+        "native_payload_freeze": 35.14740000000001
+      },
+      "owner_work_ms": 1760.275,
+      "planner_fraction_of_summed_response_work": 0.945726835087745,
+      "platform": "Windows",
+      "response_accepts": 2644,
+      "response_attempt_ms_max": 3.556,
+      "response_attempts": 2722,
+      "response_refusals": {
+        "InvalidGeometryWitness": 1,
+        "NonDissipativeResponse": 65,
+        "PoseDrift": 12
+      },
+      "response_stages_ms": {
+        "impulse_apply": 25.25799999999994,
+        "other": 50.46500000000002,
+        "planner": 2067.4610000000002,
+        "readback": 36.43699999999994,
+        "rid_state": 6.487000000000007
+      },
+      "response_work_ms": 2186.108,
+      "total_work_ms": 3946.383,
+      "unconsumed_or_setup_owner_attempts": 982,
+      "workers": 1
+    },
+    {
+      "accepted_publication_latency_max_ms": 19.99,
+      "accepted_publication_latency_mean_ms": 9.386080811554333,
+      "accepted_publication_latency_total_ms": 27294.723,
+      "candidate_response_per_attempt_means_ms": {
+        "max": 1.4539765100671143,
+        "mean": 1.0676328411930318,
+        "median": 0.9571129943502824,
+        "min": 0.8889831460674158,
+        "n": 9,
+        "sample_standard_deviation": 0.19148419423969185,
+        "sample_variance": 0.036666196643624034
+      },
+      "complete_consumed_observations": 6174,
+      "complete_owner_attempts_not_consumed": 325,
+      "consumed_refused_observations": 0,
+      "owner_attempt_ms_max": 3.335,
+      "owner_attempts": 6650,
+      "owner_complete_attempts": 6499,
+      "owner_per_attempt_means_ms": {
+        "max": 0.7292981029810298,
+        "mean": 0.2425405380990747,
+        "median": 0.18364864864864866,
+        "min": 0.1265609756097561,
+        "n": 18,
+        "sample_standard_deviation": 0.15175704815623836,
+        "sample_variance": 0.02303020166509485
+      },
+      "owner_ready_latency_max_ms": 17.874,
+      "owner_ready_latency_mean_ms": 7.891922578555231,
+      "owner_ready_latency_total_ms": 48724.729999999996,
+      "owner_ready_receipts": 6174,
+      "owner_refused_attempts": 151,
+      "owner_stages_ms": {
+        "envelope": 20.275,
+        "native_call": 1592.68,
+        "native_geometry": 1524.4529000000002,
+        "native_payload_freeze": 27.0871
+      },
+      "owner_work_ms": 1612.955,
+      "planner_fraction_of_summed_response_work": 0.9564653680112485,
+      "platform": "Windows",
+      "response_accepts": 2908,
+      "response_attempt_ms_max": 3.233,
+      "response_attempts": 2951,
+      "response_refusals": {
+        "InvalidGeometryWitness": 1,
+        "NonDissipativeResponse": 42
+      },
+      "response_stages_ms": {
+        "impulse_apply": 34.21899999999991,
+        "other": 52.89000000000012,
+        "planner": 2978.129,
+        "readback": 41.99299999999988,
+        "rid_state": 6.451000000000006
+      },
+      "response_work_ms": 3113.682,
+      "total_work_ms": 4726.637,
+      "unconsumed_or_setup_owner_attempts": 476,
+      "workers": 4
+    }
+  ],
+  "comparison": "Independent asynchronous repeats are descriptive distributions, not identical-input causal comparisons.",
+  "complete": true,
+  "denominator": "Complete consumed observations; unique complete trace receipts are independently counted.",
+  "expected_cases": 72,
+  "expected_groups": 24,
+  "gate": "Each of 24 groups passes only if all three unrounded repeat means are <= 2 ms.",
+  "generated_utc": "2026-11-04T11:07:08.197635+00:00",
+  "groups": [
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.78131,
+        "mean": 0.5802111565439184,
+        "median": 0.5426371951219513,
+        "min": 0.41668627450980394,
+        "n": 3,
+        "sample_standard_deviation": 0.18519305394720412,
+        "sample_variance": 0.03429646723029205
+      },
+      "depth_range_cells": [
+        3.56782597841346,
+        4.20363076319128
+      ],
+      "fixture": "embedded_sand",
+      "observations_range": [
+        300,
+        357
+      ],
+      "owner_attempts_range": [
+        369,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        0.78131,
+        0.41668627450980394,
+        0.5426371951219513
+      ],
+      "workers": 1,
+      "worst_observations": 300,
+      "worst_owner_ms": 234.393,
+      "worst_repeat": 0,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.4394242424242456,
+        "mean": 1.319521515627461,
+        "median": 1.2828370786516854,
+        "min": 1.2363032258064517,
+        "n": 3,
+        "sample_standard_deviation": 0.10641356955357602,
+        "sample_variance": 0.011323847785133762
+      },
+      "depth_range_cells": [
+        2.59008122581785,
+        2.60412358461134
+      ],
+      "fixture": "embedded_sand",
+      "observations_range": [
+        310,
+        356
+      ],
+      "owner_attempts_range": [
+        369,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        1.2363032258064517,
+        1.2828370786516854,
+        1.4394242424242456
+      ],
+      "workers": 1,
+      "worst_observations": 330,
+      "worst_owner_ms": 74.296,
+      "worst_repeat": 2,
+      "worst_response_ms": 400.714000000001
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.5958076923076923,
+        "mean": 0.37667905612559816,
+        "median": 0.2762585669781932,
+        "min": 0.2579709090909091,
+        "n": 3,
+        "sample_standard_deviation": 0.18999112875084195,
+        "sample_variance": 0.036096629004019
+      },
+      "depth_range_cells": [
+        2.69562433961933,
+        2.7005221150971
+      ],
+      "fixture": "mixed",
+      "observations_range": [
+        260,
+        321
+      ],
+      "owner_attempts_range": [
+        369,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        0.2762585669781932,
+        0.5958076923076923,
+        0.2579709090909091
+      ],
+      "workers": 1,
+      "worst_observations": 260,
+      "worst_owner_ms": 154.91,
+      "worst_repeat": 1,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.2599630996309963,
+        "mean": 1.2194225908495318,
+        "median": 1.2280207612456748,
+        "min": 1.1702839116719244,
+        "n": 3,
+        "sample_standard_deviation": 0.04545366419630512,
+        "sample_variance": 0.00206603558887047
+      },
+      "depth_range_cells": [
+        2.69997636902484,
+        2.70594559508273
+      ],
+      "fixture": "mixed",
+      "observations_range": [
+        271,
+        317
+      ],
+      "owner_attempts_range": [
+        369,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        1.2280207612456748,
+        1.1702839116719244,
+        1.2599630996309963
+      ],
+      "workers": 1,
+      "worst_observations": 271,
+      "worst_owner_ms": 78.317,
+      "worst_repeat": 2,
+      "worst_response_ms": 263.133
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.940604,
+        "mean": 0.6644167621765837,
+        "median": 0.7785814977973569,
+        "min": 0.27406478873239437,
+        "n": 3,
+        "sample_standard_deviation": 0.347625977429523,
+        "sample_variance": 0.12084382018383122
+      },
+      "depth_range_cells": [
+        2.70038705833941,
+        4.20026998876671
+      ],
+      "fixture": "packed_sand",
+      "observations_range": [
+        227,
+        355
+      ],
+      "owner_attempts_range": [
+        368,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        0.27406478873239437,
+        0.940604,
+        0.7785814977973569
+      ],
+      "workers": 1,
+      "worst_observations": 250,
+      "worst_owner_ms": 235.151,
+      "worst_repeat": 1,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.5032304347826086,
+        "mean": 1.2982360903056875,
+        "median": 1.4009742647058823,
+        "min": 0.9905035714285715,
+        "n": 3,
+        "sample_standard_deviation": 0.27136425420554383,
+        "sample_variance": 0.07363855846053101
+      },
+      "depth_range_cells": [
+        2.70523903453679,
+        3.997653443069
+      ],
+      "fixture": "packed_sand",
+      "observations_range": [
+        230,
+        280
+      ],
+      "owner_attempts_range": [
+        368,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        1.4009742647058823,
+        1.5032304347826086,
+        0.9905035714285715
+      ],
+      "workers": 1,
+      "worst_observations": 230,
+      "worst_owner_ms": 92.507,
+      "worst_repeat": 1,
+      "worst_response_ms": 253.236
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.8540463576158941,
+        "mean": 0.5582130015582392,
+        "median": 0.4127843137254902,
+        "min": 0.40780833333333333,
+        "n": 3,
+        "sample_standard_deviation": 0.25621128197733056,
+        "sample_variance": 0.0656442210124672
+      },
+      "depth_range_cells": [
+        3.58292176026315,
+        4.20354394932791
+      ],
+      "fixture": "embedded_sand",
+      "observations_range": [
+        302,
+        360
+      ],
+      "owner_attempts_range": [
+        368,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        0.4127843137254902,
+        0.40780833333333333,
+        0.8540463576158941
+      ],
+      "workers": 4,
+      "worst_observations": 302,
+      "worst_owner_ms": 257.922,
+      "worst_repeat": 2,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.359354929577465,
+        "mean": 1.3137717693583846,
+        "median": 1.3364169611307422,
+        "min": 1.2455434173669468,
+        "n": 3,
+        "sample_standard_deviation": 0.06019027006681698,
+        "sample_variance": 0.0036228686107163638
+      },
+      "depth_range_cells": [
+        2.5864225347519,
+        2.63037323731706
+      ],
+      "fixture": "embedded_sand",
+      "observations_range": [
+        283,
+        357
+      ],
+      "owner_attempts_range": [
+        368,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        1.2455434173669468,
+        1.359354929577465,
+        1.3364169611307422
+      ],
+      "workers": 4,
+      "worst_observations": 355,
+      "worst_owner_ms": 77.149,
+      "worst_repeat": 1,
+      "worst_response_ms": 405.422
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.44511397058823526,
+        "mean": 0.3754295394642564,
+        "median": 0.3900473186119874,
+        "min": 0.2911273291925466,
+        "n": 3,
+        "sample_standard_deviation": 0.07802711728937566,
+        "sample_variance": 0.006088231032489985
+      },
+      "depth_range_cells": [
+        2.7045049405526,
+        2.70564436633132
+      ],
+      "fixture": "mixed",
+      "observations_range": [
+        272,
+        322
+      ],
+      "owner_attempts_range": [
+        368,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        0.3900473186119874,
+        0.44511397058823526,
+        0.2911273291925466
+      ],
+      "workers": 4,
+      "worst_observations": 272,
+      "worst_owner_ms": 121.071,
+      "worst_repeat": 1,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.0029971988795519,
+        "mean": 0.9581201852372367,
+        "median": 0.994575221238938,
+        "min": 0.8767881355932203,
+        "n": 3,
+        "sample_standard_deviation": 0.07056138569584156,
+        "sample_variance": 0.004978909151317312
+      },
+      "depth_range_cells": [
+        2.02776956663853,
+        2.70083997823292
+      ],
+      "fixture": "mixed",
+      "observations_range": [
+        226,
+        357
+      ],
+      "owner_attempts_range": [
+        369,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        0.8767881355932203,
+        0.994575221238938,
+        1.0029971988795519
+      ],
+      "workers": 4,
+      "worst_observations": 357,
+      "worst_owner_ms": 61.961,
+      "worst_repeat": 2,
+      "worst_response_ms": 296.109
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.7396689419795223,
+        "mean": 0.4334875272517129,
+        "median": 0.2809570200573066,
+        "min": 0.27983661971830986,
+        "n": 3,
+        "sample_standard_deviation": 0.2651614750822072,
+        "sample_variance": 0.070310607867772
+      },
+      "depth_range_cells": [
+        2.69775970021853,
+        4.19848730959059
+      ],
+      "fixture": "packed_sand",
+      "observations_range": [
+        293,
+        355
+      ],
+      "owner_attempts_range": [
+        368,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        0.2809570200573066,
+        0.7396689419795223,
+        0.27983661971830986
+      ],
+      "workers": 4,
+      "worst_observations": 293,
+      "worst_owner_ms": 216.723,
+      "worst_repeat": 1,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.233593639575972,
+        "mean": 1.163770024995782,
+        "median": 1.19224584717608,
+        "min": 1.0654705882352942,
+        "n": 3,
+        "sample_standard_deviation": 0.08760419187834564,
+        "sample_variance": 0.007674494434658001
+      },
+      "depth_range_cells": [
+        2.70029783008016,
+        2.70335820714521
+      ],
+      "fixture": "packed_sand",
+      "observations_range": [
+        283,
+        357
+      ],
+      "owner_attempts_range": [
+        369,
+        369
+      ],
+      "passed": true,
+      "platform": "Linux",
+      "repeat_means_ms": [
+        1.19224584717608,
+        1.233593639575972,
+        1.0654705882352942
+      ],
+      "workers": 4,
+      "worst_observations": 283,
+      "worst_owner_ms": 81.617,
+      "worst_repeat": 1,
+      "worst_response_ms": 267.49
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.9223802816901409,
+        "mean": 0.555937910798122,
+        "median": 0.3816084507042254,
+        "min": 0.363825,
+        "n": 3,
+        "sample_standard_deviation": 0.3174729455693198,
+        "sample_variance": 0.1007890711684603
+      },
+      "depth_range_cells": [
+        3.56628227816531,
+        4.20602439322178
+      ],
+      "fixture": "embedded_sand",
+      "observations_range": [
+        284,
+        360
+      ],
+      "owner_attempts_range": [
+        368,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        0.363825,
+        0.3816084507042254,
+        0.9223802816901409
+      ],
+      "workers": 1,
+      "worst_observations": 284,
+      "worst_owner_ms": 261.956,
+      "worst_repeat": 2,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.1485787671232877,
+        "mean": 1.0471657988345613,
+        "median": 1.0042737430167596,
+        "min": 0.9886448863636363,
+        "n": 3,
+        "sample_standard_deviation": 0.08817316991533561,
+        "sample_variance": 0.007774507892918645
+      },
+      "depth_range_cells": [
+        2.59811455604736,
+        2.63460945682525
+      ],
+      "fixture": "embedded_sand",
+      "observations_range": [
+        292,
+        358
+      ],
+      "owner_attempts_range": [
+        369,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        1.1485787671232877,
+        0.9886448863636363,
+        1.0042737430167596
+      ],
+      "workers": 1,
+      "worst_observations": 292,
+      "worst_owner_ms": 66.543,
+      "worst_repeat": 0,
+      "worst_response_ms": 268.842
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.45466666666666666,
+        "mean": 0.32151240197043457,
+        "median": 0.30893286219081273,
+        "min": 0.20093767705382434,
+        "n": 3,
+        "sample_standard_deviation": 0.12733139305877705,
+        "sample_variance": 0.01621328365828878
+      },
+      "depth_range_cells": [
+        2.69854905643589,
+        2.70583725765473
+      ],
+      "fixture": "mixed",
+      "observations_range": [
+        264,
+        353
+      ],
+      "owner_attempts_range": [
+        370,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        0.30893286219081273,
+        0.20093767705382434,
+        0.45466666666666666
+      ],
+      "workers": 1,
+      "worst_observations": 264,
+      "worst_owner_ms": 120.032,
+      "worst_repeat": 2,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 0.9168982300884956,
+        "mean": 0.8821354435180769,
+        "median": 0.8932275449101795,
+        "min": 0.8362805555555557,
+        "n": 3,
+        "sample_standard_deviation": 0.041437644681427896,
+        "sample_variance": 0.0017170783967442693
+      },
+      "depth_range_cells": [
+        2.62817689904062,
+        2.69989991609058
+      ],
+      "fixture": "mixed",
+      "observations_range": [
+        226,
+        360
+      ],
+      "owner_attempts_range": [
+        368,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        0.8932275449101795,
+        0.9168982300884956,
+        0.8362805555555557
+      ],
+      "workers": 1,
+      "worst_observations": 226,
+      "worst_owner_ms": 63.554,
+      "worst_repeat": 1,
+      "worst_response_ms": 143.665
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.7702226720647773,
+        "mean": 0.5394264233309802,
+        "median": 0.6216869009584665,
+        "min": 0.22636969696969697,
+        "n": 3,
+        "sample_standard_deviation": 0.28110336935826497,
+        "sample_variance": 0.07901910426456915
+      },
+      "depth_range_cells": [
+        3.74341631293419,
+        4.20140643730544
+      ],
+      "fixture": "packed_sand",
+      "observations_range": [
+        247,
+        330
+      ],
+      "owner_attempts_range": [
+        368,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        0.7702226720647773,
+        0.6216869009584665,
+        0.22636969696969697
+      ],
+      "workers": 1,
+      "worst_observations": 247,
+      "worst_owner_ms": 190.245,
+      "worst_repeat": 0,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 0.9919401408450704,
+        "mean": 0.8744262867676303,
+        "median": 0.8520561797752809,
+        "min": 0.7792825396825397,
+        "n": 3,
+        "sample_standard_deviation": 0.10807927691369594,
+        "sample_variance": 0.01168113009818737
+      },
+      "depth_range_cells": [
+        2.44946054000278,
+        2.70385683962679
+      ],
+      "fixture": "packed_sand",
+      "observations_range": [
+        284,
+        356
+      ],
+      "owner_attempts_range": [
+        368,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        0.8520561797752809,
+        0.9919401408450704,
+        0.7792825396825397
+      ],
+      "workers": 1,
+      "worst_observations": 284,
+      "worst_owner_ms": 54.44,
+      "worst_repeat": 1,
+      "worst_response_ms": 227.271
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 1.0350423076923077,
+        "mean": 0.6050178373913668,
+        "median": 0.40441456582633056,
+        "min": 0.37559663865546217,
+        "n": 3,
+        "sample_standard_deviation": 0.37269075924257894,
+        "sample_variance": 0.13889840202480994
+      },
+      "depth_range_cells": [
+        3.57459227275172,
+        4.20469751017074
+      ],
+      "fixture": "embedded_sand",
+      "observations_range": [
+        260,
+        357
+      ],
+      "owner_attempts_range": [
+        369,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        0.40441456582633056,
+        0.37559663865546217,
+        1.0350423076923077
+      ],
+      "workers": 4,
+      "worst_observations": 260,
+      "worst_owner_ms": 269.111,
+      "worst_repeat": 2,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.6449498327759198,
+        "mean": 1.3843586596255588,
+        "median": 1.3586573033707865,
+        "min": 1.1494688427299702,
+        "n": 3,
+        "sample_standard_deviation": 0.24873836185685078,
+        "sample_variance": 0.06187077265922964
+      },
+      "depth_range_cells": [
+        2.5920282816711,
+        2.62199390009983
+      ],
+      "fixture": "embedded_sand",
+      "observations_range": [
+        299,
+        356
+      ],
+      "owner_attempts_range": [
+        369,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        1.3586573033707865,
+        1.1494688427299702,
+        1.6449498327759198
+      ],
+      "workers": 4,
+      "worst_observations": 299,
+      "worst_owner_ms": 58.555,
+      "worst_repeat": 2,
+      "worst_response_ms": 433.285
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.23582318840579708,
+        "mean": 0.22215352069325536,
+        "median": 0.22158988764044943,
+        "min": 0.20904748603351955,
+        "n": 3,
+        "sample_standard_deviation": 0.013396746659016084,
+        "sample_variance": 0.0001794728210458586
+      },
+      "depth_range_cells": [
+        2.69874735660754,
+        2.70023833210266
+      ],
+      "fixture": "mixed",
+      "observations_range": [
+        345,
+        358
+      ],
+      "owner_attempts_range": [
+        370,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        0.20904748603351955,
+        0.22158988764044943,
+        0.23582318840579708
+      ],
+      "workers": 4,
+      "worst_observations": 345,
+      "worst_owner_ms": 81.359,
+      "worst_repeat": 2,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.077994382022472,
+        "mean": 1.047738718098947,
+        "median": 1.0479136490250696,
+        "min": 1.0173081232492998,
+        "n": 3,
+        "sample_standard_deviation": 0.030343507569046656,
+        "sample_variance": 0.0009207284515927918
+      },
+      "depth_range_cells": [
+        2.69539834315188,
+        2.69788364354505
+      ],
+      "fixture": "mixed",
+      "observations_range": [
+        356,
+        359
+      ],
+      "owner_attempts_range": [
+        369,
+        369
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        1.077994382022472,
+        1.0479136490250696,
+        1.0173081232492998
+      ],
+      "workers": 4,
+      "worst_observations": 356,
+      "worst_owner_ms": 47.375,
+      "worst_repeat": 0,
+      "worst_response_ms": 336.391
+    },
+    {
+      "candidate": false,
+      "cost_distribution": {
+        "max": 0.4434897959183673,
+        "mean": 0.33583698901961656,
+        "median": 0.3151859756097561,
+        "min": 0.24883519553072625,
+        "n": 3,
+        "sample_standard_deviation": 0.09895681699185122,
+        "sample_variance": 0.009792451629158733
+      },
+      "depth_range_cells": [
+        2.70010501812258,
+        4.20329162594742
+      ],
+      "fixture": "packed_sand",
+      "observations_range": [
+        328,
+        358
+      ],
+      "owner_attempts_range": [
+        369,
+        370
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        0.3151859756097561,
+        0.4434897959183673,
+        0.24883519553072625
+      ],
+      "workers": 4,
+      "worst_observations": 343,
+      "worst_owner_ms": 152.117,
+      "worst_repeat": 1,
+      "worst_response_ms": 0.0
+    },
+    {
+      "candidate": true,
+      "cost_distribution": {
+        "max": 1.09575,
+        "mean": 1.0614041265382557,
+        "median": 1.0773820224719102,
+        "min": 1.011080357142857,
+        "n": 3,
+        "sample_standard_deviation": 0.04453882546990943,
+        "sample_variance": 0.001983706974239053
+      },
+      "depth_range_cells": [
+        2.69374793078703,
+        2.70514987729191
+      ],
+      "fixture": "packed_sand",
+      "observations_range": [
+        336,
+        356
+      ],
+      "owner_attempts_range": [
+        369,
+        369
+      ],
+      "passed": true,
+      "platform": "Windows",
+      "repeat_means_ms": [
+        1.011080357142857,
+        1.0773820224719102,
+        1.09575
+      ],
+      "workers": 4,
+      "worst_observations": 356,
+      "worst_owner_ms": 51.269,
+      "worst_repeat": 2,
+      "worst_response_ms": 338.818
+    }
+  ],
+  "latency": "Owner ready-to-receipt includes observed handoff/scheduling. Accepted publication latency extends to response and uses only accepts; the two must not be added.",
+  "missing_cohorts": [],
+  "missing_observations": "Unconsumed/setup attempts are not all proven overwritten publications; no unobserved overlap is invented.",
+  "numerator": "Cumulative owner observation/envelope work at the final consumed receipt plus all main Sand-response attempts.",
+  "observed_cases": 72,
+  "observed_groups": 24,
+  "passed_groups": 24,
+  "physical_acceptance": "A CPU pass does not establish sustained clearance, merge readiness, graphical acceptance or GPU frame pacing.",
+  "repository_canonical_root": "docs/audits/sol281-20261103/hosted/9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+  "repository_review_directory": "docs/audits/sol364-20261104/hosted-review/",
+  "review_script_sha256": "b4a32be7f67e5692967dbeda8351e6572e268678c866ed852f9a8b397fbb6209",
+  "run_id": 41815817333,
+  "schema": "cybersand.sol364.independent-hosted-cost-review.v1",
+  "source": {
+    "sha": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "stages": "Native call + envelope = inclusive owner. Native geometry/payload freeze are nested in native call; do not add again. Five response stages sum to inclusive response.",
+  "threshold_ms": 2.0,
+  "timing": "Elapsed monotonic work intervals, not operating-system thread CPU time.",
+  "timing_scope": "Registered owner interval covers native observation/value construction plus metadata envelope/freezing; bridge response calls are measured separately. Cumulative metrics bookkeeping occurs after ready timestamp and shared publication is outside the historical contact interval. This is not whole simulation/snapshot CPU or separately measured mutex CPU.",
+  "verdict": "PASS"
+}

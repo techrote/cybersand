@@ -26,31 +26,51 @@ Native observation now seals its scalar-only contact/proxy records and arrays
 before handing values to the worker. The worker seals metadata separately,
 with a safe recursive-freeze fallback for the older runtime contract. Cumulative
 all-attempt stage timings preserve the inclusive cost numerator and complete
-consumed-observation denominator. The synchronized replay and new source-matched
-qualification remain separately required. The
+consumed-observation denominator. Executed source `9edc4f8f`, tree
+`b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe`, completes the scoped Linux/Windows
+qualification with 74 test processes, eight imports, 38,296 structured checks
+and eight ordinary controls. Published runtime/evidence child `5f6360a9` retains
+that executed identity. The
 [SOL364 recovery ledger](../audits/2026-11-04-sol364-recovery.md) records the
 executable interior-burial and lost-midpoint counterexamples, independent
 geometry review, a corrected sleep-controlled replay and complete cost gates.
-These source descriptions do not turn the retained 23/24 cost result, new local
-11/12 cost result or persistent embedding into acceptance.
+All 24 original hosted cost groups now pass, worst 1.6449498327759198 ms per
+complete observation. The old Windows 2.145915178571 ms and local Linux
+2.012693486590038 ms failures remain failed evidence; asynchronous before/after
+histories are not matched causal speedups.
 
 The synchronized replay freezes the native field and measures every declared
 1/60-second Rapier step. Its no-extra-response, frozen-old-planner and repaired
 planner arms share initial conditions, disabled sleeping and exact compound
-geometry. Delayed/missed delivery never suppresses the independent geometry
+geometry, with zero external gravity/damping and declared fixture velocities.
+This causal control is not gravitational settling. Delayed/missed delivery never suppresses the independent geometry
 measurement; only these complete traces use cell-ticks. The ordinary asynchronous
 conservative-displacement sessions retain cell-samples/area-samples and separate
 native worker/publication coverage. Their divergent histories are not paired
 causal comparisons. Fresh stationary contact can be accepted without an impulse:
 the dissipative velocity constraint supplies no work to remove existing burial.
 
-The corrected local replay records 21 failed sustained-clearance cases and 16
-failed depth gates per worker count. One-step delay recovers 11 valid acceptances
+The four source-matched hosted replays record 84 failed sustained-clearance cases
+and 64 failed depth gates: 21 and 16 per OS/worker configuration. One-step delay recovers 11 valid acceptances
 without new impulse or a clearance gain; the rotated case increases safe planner
 refusals. Current response diagnostics separate planner, RID state reads, impulse
 application and guarded readback within the unchanged inclusive attempt cost.
 Complete asynchronous witness JSON remains mandatory even when console output is
 a concise footer; lossless deduplication of evidence does not change gate inputs.
+
+The packed replay's first overlapping Sand column is below the unchanged
+eight-cell support threshold, so positive overlap can precede an eligible face
+witness even with fresh delivery. A separate supported nine-cell interior
+control proves overlap without an exterior crossing. Neither eligibility nor
+stationary burial is repaired by transporting a source segment more accurately.
+
+The current composition fails the preserved MAT-AUTH source guard on two
+historical SOL consumers, `world.cpp` and `world_pressure.inc`. All other 25
+protected consumers match. The frozen lock and catalogue are unchanged; resolving
+the two-consumer compatibility checkpoint remains a merge blocker. Run
+41815817333 also retains a final HTTP 500 documentation-dispatch failure after
+successful runtime/evidence push; it is not an all-green workflow. #347 remains
+draft/unmerged, #364/#281/#12 open and #365 blocked despite cost recovery.
 
 ## Implemented scope and source authority
 
@@ -91,7 +111,7 @@ incorporates accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d` and its
 Planned material-authoring contract. Both topic histories are preserved; all
 1,089 execution and 88 native inputs match the qualified runtime publication.
 The [late reconciliation record](../audits/2026-11-03-sol281-takeover.md#later-accepted-documentation-main--2026-11-04)
-owns document checks. Compiled/executed source remains `749fb8b5` and runtime
+owns document checks. At that preceding checkpoint, compiled/executed source remains `749fb8b5` and runtime
 publication `89d2eb6d`; the new material architecture does not authorize runtime
 changes or clear any SOL281 physical, CPU, lifecycle or merge gate.
 
@@ -429,7 +449,7 @@ Its runtime publication failed on an unchanged correct Linux pointer; no
 runtime-publication child exists for that run. Its independently calculated
 24 cost groups pass the proposed 2 ms gate; sustained clearance remains unresolved.
 
-After the bounded publisher repair, final compiled and executed source is
+At the preceding bounded-publisher-repair checkpoint, compiled and executed source is
 `749fb8b597ad866f7535f26442e904207c4f7611`, tree
 `77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce`. Its fresh run is
 [41746597077](https://github.com/techrote/cybersand/actions/runs/41746597077) — **Scoped execution, reduction and runtime publication PASS (all 12 jobs); full-matrix CPU acceptance NOT MET**, with qualified
@@ -467,15 +487,16 @@ measured overlap but no candidate normal impulse. No moving or sleeping aggregat
 is rasterized back into terrain by this experiment. Sleeping retains native
 aggregate payload ownership and a live Rapier body; it is not native restoration.
 
-The next existing assignment is
-[#364 / SOL-CONTACT-002](https://github.com/techrote/cybersand/issues/364): use the
-latest completed source/runtime receipt, reproduce the embedded failure with
-synchronized exact geometry and controlled publication delays, register new
-depth/persistence/latency limits before tuning, and select one bounded repair for
-the reproduced cause. Retain and diagnose the final Windows four-worker embedded
-baseline CPU miss without relaxing the 2 ms criterion. Preserve all current ownership, pose/sample, energy and
-invalid-readback failure fences. The issue owns its repeated platform and
-negative-fixture requirements.
+The existing
+[#364 / SOL-CONTACT-002](https://github.com/techrote/cybersand/issues/364) now has
+the synchronized reproduction, registered limits, bounded exterior-witness
+repair and a passing new 24-group cost matrix. Its remaining bounded action is
+aggregate-side recovery for already embedded material, including the
+zero-velocity interior case, under an explicit penetration-work and topology
+contract. Reuse the source-matched stationary and rotated counterexamples;
+retain every failed gate and all ownership, pose/sample, kinetic-energy and
+invalid-readback fences. The next correction must qualify its resulting source,
+and the historical CPU failures are not erased by the new matrix pass.
 [#365 / SOL-RESTORE-001](https://github.com/techrote/cybersand/issues/365) remains
 blocked until applicable contact/ownership gates justify its one-aggregate,
 lattice-congruent restoration prototype.

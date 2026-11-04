@@ -21,8 +21,16 @@ with independently measured every-step geometry and explicit delivery schedules.
 First sleep-confounded traces and the new local 2.012693 ms cost failure remain
 failed evidence. Stationary burial needs separate bounded recovery work; neither
 process success nor a candidate-only cost result accepts sustained clearance.
-Use the ledger's exact source/runtime/platform qualification and retained gate
-status before further implementation. #347 stays draft, #365 blocked and #283 frozen.
+Executed source `9edc4f8f` completes 74 actual-host test processes and 38,296
+structured checks; published runtime/evidence child is `5f6360a9`. All 24 original
+hosted cost groups pass, worst 1.644949833 ms, while 84/84 synchronized clearance
+cases fail. The old Windows 2.145915 ms failure remains retained. The unchanged
+MAT-AUTH guard rejects two historical SOL consumer deltas, and the qualification
+workflow ends failed on an HTTP 500 documentation dispatch after its successful
+publication push. Use the ledger's exact source/runtime/platform receipts and
+these distinct gate results. Next is bounded existing-penetration recovery plus
+the separate two-consumer integration decision. #347 stays draft, #365 blocked
+and #283 frozen.
 
 ## SOL281 completed recovery and remaining gates — 2026-11-04
 
@@ -34,7 +42,7 @@ run 41746597077 passes both builds, eight actual Linux/Windows cohorts, reductio
 and runtime publication `89d2eb6d`. The materialized documentation/provenance
 dispatch 41748585125 also passes. Old failed publication receipts remain failed.
 
-**The final full-matrix 2 ms mean CPU criterion is NOT MET:** 23/24 groups pass,
+**At the preceding `749fb8b5` checkpoint, the full-matrix 2 ms mean CPU criterion is NOT MET:** 23/24 groups pass,
 with Windows four-worker embedded baseline r0 at 2.145915178571 ms per complete
 observation. All 12 candidate groups pass, worst 1.782429487179 ms. Candidate
 packed/embedded penetration reaches 4.046731639982 / 2.642792455422 cells, with
@@ -83,9 +91,9 @@ Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#is
 as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected
 architecture remains an owner-adopted Planned baseline. The separate
 [#353-A shadow compiler](material-catalogue-shadow.md) is implemented in
-[#371](https://github.com/techrote/cybersand/pull/371) at original head
-`6d3737594beb39e83e555f66f2e81184a4bdbf77` and is being reconciled and qualified
-for the owner's guarded A-only integration. Preserve that implementation and
+[#371](https://github.com/techrote/cybersand/pull/371), originally at head
+`6d3737594beb39e83e555f66f2e81184a4bdbf77`, and merged as accepted main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. Preserve that implementation and
 its evidence in ancestry; do not create another compiler or rewrite its branch.
 
 Use the [current architecture boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
@@ -93,7 +101,11 @@ and tool guide. The frozen legacy baseline stays `0fd4af59`; merging adopted
 documentation does not refresh its source lock. Run the resulting-head compiler,
 source/identity, adversarial, native-query, documentation/provenance and applicable
 ready-state CI checks, with independent review. The #371 ledger owns their actual
-results and any merge/post-merge identity; predecessor greens are historical.
+results and merge/post-merge identity; predecessor greens are historical.
+The current SOL composition preserves the checker and catalogue but fails its
+frozen guard on two historical consumers. The [SOL364 ledger](../audits/2026-11-04-sol364-recovery.md#protected-source-compatibility-blocker)
+owns that separate integration blocker; #371's accepted-main result does not
+approve a source-lock refresh for this branch.
 
 Production native/GDScript consumers and material physics remain unchanged.
 Keep #352/#353 open, #353-B migration and #354–#356 separately unadmitted, and

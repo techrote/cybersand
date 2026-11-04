@@ -1,0 +1,81 @@
+{
+  "id": 13315721372,
+  "name": "sol281-host-windows-mechanism-41815817333-1",
+  "size_in_bytes": 6000017,
+  "digest": "sha256:dd564cb23061a7aa8697aa1275315ec995de7a38bb779cf9d0e074f58c99636b",
+  "extracted_to": "/workspace/scratch/b45094545f38/sol364-hosted-review-41815817333/cohorts/windows/mechanism",
+  "file_count": 14,
+  "files": [
+    {
+      "path": "checkout-inputs-after.json",
+      "size": 130008,
+      "sha256": "7b6fc674b38e346ea9389629852e6dd81ad86845dc3d4a9ee1c8a8b2349e5ce0"
+    },
+    {
+      "path": "checkout-inputs-before.json",
+      "size": 130008,
+      "sha256": "7b6fc674b38e346ea9389629852e6dd81ad86845dc3d4a9ee1c8a8b2349e5ce0"
+    },
+    {
+      "path": "import.log",
+      "size": 35925,
+      "sha256": "d9d26c4fb95ccff854f0d498755a02a1fc53987491f08186ecc160fabe709759"
+    },
+    {
+      "path": "inputs-after.json",
+      "size": 130008,
+      "sha256": "533566c60c5e66b90b4329a011a55876c60239fb6f5dc01fcb5f234ff299212c"
+    },
+    {
+      "path": "inputs-before.json",
+      "size": 130008,
+      "sha256": "533566c60c5e66b90b4329a011a55876c60239fb6f5dc01fcb5f234ff299212c"
+    },
+    {
+      "path": "performance.jsonl",
+      "size": 14461,
+      "sha256": "dc89220c7efb9e7b007994760ca40736333d3d6501a502941b10542334bb563b"
+    },
+    {
+      "path": "report.json",
+      "size": 81843,
+      "sha256": "e69070b1c2b89a5804220e6e7ed5f521840d126fe1c2d095ccd96c7e8bb3f32e"
+    },
+    {
+      "path": "sand-contact-fences.log",
+      "size": 727,
+      "sha256": "8cf023d07587e6b5d3458cab36c8ad9c0d4121229e0389e2e5bb29cedd824b7f"
+    },
+    {
+      "path": "sand-contact-response.json",
+      "size": 6508,
+      "sha256": "acd096dc41ee0276237e4887baf246a8c0fa8169ac59060ed900302e211085fc"
+    },
+    {
+      "path": "sand-contact-response.log",
+      "size": 5698,
+      "sha256": "4af16b6cb4c2fb7e4a484064eebfcfdac1978dbaaa31311d1373446052068080"
+    },
+    {
+      "path": "synchronized-contact-w1.json",
+      "size": 21979508,
+      "sha256": "6b023bf1ce50efc1ac419c1787f6ca51548859ae7f126564d942406b56726ba3"
+    },
+    {
+      "path": "synchronized-contact-w1.log",
+      "size": 3212,
+      "sha256": "c99067ebe8087d7a233822ab19a9294acb9c56086b6969cca97b36da09d9ee1d"
+    },
+    {
+      "path": "synchronized-contact-w4.json",
+      "size": 21979389,
+      "sha256": "4aee577848d3a8d8b08e433da41945e27695320080da9bc0b86214881b2b69fb"
+    },
+    {
+      "path": "synchronized-contact-w4.log",
+      "size": 3212,
+      "sha256": "942da3ca1c134bf0ae6ac68b438f3ff4c1b18725bb2f8dfabec4b8d10a77799c"
+    }
+  ],
+  "archive_authentication": "Exact GitHub Actions artifact digest and byte size verified before extraction"
+}

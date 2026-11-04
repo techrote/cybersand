@@ -1,0 +1,76 @@
+{
+  "schema": "cybersand.sol364.independent-native-suite-review.v1",
+  "source": {
+    "commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+    "job": "build",
+    "run_attempt": "1",
+    "run_id": "41815817333",
+    "runner_name_sha256": "ac652b150fb7da4bc18e8cd027efa45a052bdce4128380857d165ffa628bdbfe",
+    "tracked_delta_sha256": null,
+    "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+  },
+  "status": "passed-scoped-native-and-sanitizer-verification",
+  "run_id": 41815817333,
+  "processes": 6,
+  "checks": 52872,
+  "compiler": "GCC13.3.0 Ubuntu13.3.0-6ubuntu2~24.04.1",
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "original_log_sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7",
+  "original_receipt_sha256": "56e34e8bc07bd7ff418efe85475e31eebbf41c73766783848f3ef252d83f2f14",
+  "natural_completion": true,
+  "returncode": 0,
+  "records": [
+    {
+      "executable": "./build/test_solid_detachment",
+      "mode": "ordinary",
+      "checks": 19338,
+      "footer": [
+        "SOL-DETACH-001 A1 native precursor: 9 groups, 19338 checks passed."
+      ]
+    },
+    {
+      "executable": "./build/test_solid_detachment_sanitized",
+      "mode": "ASan+UBSan",
+      "checks": 19338,
+      "footer": [
+        "SOL-DETACH-001 A1 native precursor: 9 groups, 19338 checks passed."
+      ]
+    },
+    {
+      "executable": "./build/test_conservative_displacement",
+      "mode": "ordinary",
+      "checks": 281,
+      "footer": [
+        "CONSERVATIVE-DISPLACEMENT native: 6 groups, 281 checks passed."
+      ]
+    },
+    {
+      "executable": "./build/test_conservative_displacement_sanitized",
+      "mode": "ASan+UBSan",
+      "checks": 281,
+      "footer": [
+        "CONSERVATIVE-DISPLACEMENT native: 6 groups, 281 checks passed."
+      ]
+    },
+    {
+      "executable": "./build/test_solid_contact_geometry",
+      "mode": "ordinary",
+      "checks": 6817,
+      "footer": [
+        "SOL281_CONTACT_GEOMETRY 6 groups / 6817 checks passed"
+      ]
+    },
+    {
+      "executable": "./build/test_solid_contact_geometry_sanitized",
+      "mode": "ASan+UBSan",
+      "checks": 6817,
+      "footer": [
+        "SOL281_CONTACT_GEOMETRY 6 groups / 6817 checks passed"
+      ]
+    }
+  ],
+  "scope": "Three focused native programs, each executed normally and under ASan/UBSan; general draft-suppressed native CI is not included."
+}

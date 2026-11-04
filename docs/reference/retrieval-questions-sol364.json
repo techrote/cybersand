@@ -1,7 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "frozen_date": "2026-11-04",
-  "purpose": "Supplementary SOL364 implementation and evidence questions; historical contact query sets remain unchanged. Retrieval success does not imply physical acceptance.",
+  "purpose": "Supplementary SOL364 implementation and evidence questions. Version 2 preserves the original four questions verbatim and adds the discovered MAT-AUTH integration boundary; version 1 remains at executed source 9edc4f8f. Historical contact and frozen32 sets remain unchanged. Retrieval success does not imply physical acceptance.",
   "questions": [
     {
       "id": "SOL364-WITNESS-001",
@@ -46,6 +46,18 @@
         "All 24 original baseline/candidate host groups retain the 2 ms limit; incomplete cohorts and candidate-only success cannot establish the complete gate."
       ],
       "sources": ["../godot/native_extension/solid_contact_adapter.inc", "../godot/scripts/solid_detachment_worker.gd", "../tools/sol281/analyze_contact_recovery.py"]
+    },
+    {
+      "id": "SOL364-INTEGRATION-001",
+      "query": "Why does SOL364 remain blocked for integration after merging MAT-AUTH main and passing the new hosted contact-cost matrix?",
+      "canonical": ["systems/solid-detachment.md"],
+      "facts": [
+        "All 24 new hosted cost groups pass, while sustained clearance still fails and PR347 remains draft and unmerged.",
+        "The preserved MAT-AUTH source guard rejects historical SOL changes in world.cpp and world_pressure.inc; the other 25 protected consumers match.",
+        "The frozen baseline and catalogue remain unchanged. A source-pinned compatibility-checkpoint decision is required for those two existing consumer deltas, rather than a silent hash refresh.",
+        "Runtime and evidence publication succeeded, but the subsequent documentation dispatch failed HTTP 500; execution, publication, workflow completion and physical acceptance have separate outcomes."
+      ],
+      "sources": ["../tools/material_catalogue/compatibility.py", "../native/src/world.cpp", "../native/src/world_pressure.inc", "../.github/workflows/sol281-current-main.yml"]
     }
   ]
 }
