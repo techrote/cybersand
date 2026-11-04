@@ -4,11 +4,22 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Material catalogue compatibility implementation — 2026-11-04
+
+The owner requested implementation of the review corrections and compatibility
+mitigations. [#353-A](../operations/material-catalogue-shadow.md) provides a
+strict shadow compiler, explicit capability metadata, independent native-query
+parity and legacy source/identity guards in an unmerged candidate. Production
+headers, kernels, fallback and policy artifacts remain authoritative and unchanged.
+This supersedes the implementation-permission hold below only for that bounded
+tooling scope; #353-B cutover, #354/#355 semantics, #356 editing and #357 merge
+remain held. Broad #353 is not closed by the shadow checkpoint.
 
 ## Material authoring review — 2026-11-03
 

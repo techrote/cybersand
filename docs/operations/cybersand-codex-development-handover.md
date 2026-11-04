@@ -4,11 +4,23 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## MAT-AUTH compatibility tooling admission — 2026-11-04
+
+The owner now requests implementation of the review corrections and compatibility
+mitigations. The [#353-A tool guide](material-catalogue-shadow.md) owns the
+implemented shadow compiler and independent compatibility checks in a separate
+unmerged candidate based on reviewed #357 head `9b776d10` and main `0fd4af59`.
+Keep #357 documentation-only, draft and unmerged. Do not switch production
+consumers or relax identity guards; #353 remains open beyond this checkpoint.
+Run the guide's compiler, source-identity, adversarial and native-query checks
+before publishing any changed candidate. The following hold is the dated
+pre-implementation review, superseded only for this bounded tooling scope.
 
 ## MAT-AUTH architecture decision hold — 2026-11-03
 

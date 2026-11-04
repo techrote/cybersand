@@ -3,12 +3,18 @@ title: Canonical material catalogue and interaction authoring — proposed progr
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Planned material-authoring programme; sections 1–10 retain the 2026-11-02 intake and section 11 owns the corrected 2026-11-03 proposed admission; no implementation approval
-last-reviewed: 2026-11-03
+scope: Planned production material-authoring migration; sections 1–11 retain their dated intake and review, while section 12 records the separately requested 353-A compatibility tooling; no production cutover or new semantics
+last-reviewed: 2026-11-04
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
 
 # Canonical material catalogue and interaction authoring — proposed programme
+
+**Follow-on instruction, 2026-11-04:** the owner requested implementation of the
+required corrections and compatibility mitigations. [Section 12](#12-bounded-compatibility-tooling--2026-11-04)
+records the admitted #353-A tooling response in a separate candidate. The
+dated review below remains historical; production cutover, new semantics and
+merging documentation PR #357 remain separate decisions.
 
 **Independent review, 2026-11-03: ACCEPT WITH CORRECTIONS, awaiting owner adoption.**
 The [current-main admission correction](#11-current-main-review-and-implementation-admission--2026-11-03)
@@ -38,6 +44,7 @@ Current or authorize #353–#356. The PR remains draft and unmerged.
 9. [Issue dependency and acceptance plan](#9-issue-dependency-and-acceptance-plan) — finite steps, qualification, rollback and write-set separation.
 10. [Decisions held for explicit disposition](#10-decisions-held-for-explicit-disposition) — questions to resolve with evidence rather than guesswork.
 11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions.
+12. [Bounded compatibility tooling](#12-bounded-compatibility-tooling--2026-11-04) — separately requested shadow implementation, preserved production authority and remaining cutover gates.
 
 ## 1. Authority and preserved substrate
 
@@ -505,3 +512,22 @@ scope, same-ID/quantity exceptions, MoltenGlass thermal law and viscous retry/re
 law only if their bounded successors present evidence. Preserve current behavior
 and backend differences until each such decision. This review grants none of
 those semantic changes and does not merge #357.
+
+## 12. Bounded compatibility tooling — 2026-11-04
+
+The owner subsequently requested implementation of the review's required
+corrections and compatibility mitigations. The bounded implementation is
+**#353-A**, recorded in the [shadow compiler guide](../operations/material-catalogue-shadow.md):
+strict JSON authoring, deterministic unconsumed C++/GDScript outputs, explicit
+capability maps, an independent compiled native oracle and immutable-source
+compatibility guards. This supersedes section 11's request for permission to
+start that tooling slice. It does not adopt production cutover or the unchosen
+semantic decisions listed there.
+
+Production material/kernel/fallback/state/transport/save inputs and existing
+generated policy artifacts remain unchanged. PR #357 retains its documentation
+scope; the implementation uses a separate draft candidate. #353 stays open for
+its broader completion scope, and #353-B requires its own consumer/identity
+decision. #354/#355/#356 still obey their dependency and shared-file ownership
+gates. No native behaviour, thermal/retry law or new persistent identity is
+introduced by shadow generation.

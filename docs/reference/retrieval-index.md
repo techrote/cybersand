@@ -4,11 +4,21 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Material catalogue compiler and compatibility guards — 2026-11-04
+
+Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)
+for implemented #353-A scope, commands, deterministic validation, frozen native
+and fallback identities, experimental ID isolation and rollback. It distinguishes
+current candidate tooling from unchanged production authority and the separate
+cutover decision. The [353-A questions](retrieval-questions-mat-auth-353a.json)
+are a separate implementation fixture; earlier review and frozen suites remain
+unchanged.
 
 ## Material-authoring proposal and admission — 2026-11-03
 

@@ -4,11 +4,25 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## MAT-AUTH shadow compatibility qualification — 2026-11-04
+
+The [353-A guide](../operations/material-catalogue-shadow.md) distinguishes
+strict compiler/adversarial checks, immutable-source authentication and compiled
+metadata/pure-query parity from World physics or rendered acceptance. The
+candidate leaves all native/GDScript production inputs and legacy generated
+policy artifacts unchanged. Exact commands, outcomes, source identities and
+remaining gates are recorded in the
+[implementation qualification record](../audits/2026-11-04-mat-auth-353a-compatibility.md)
+and its draft PR. The focused98-test suite, independently compiled native
+metadata/query comparison and pinned Godot metadata readback pass; none is
+World physics or full platform qualification.
+The 3 November review below remains the historical documentation-only checkpoint.
 
 ## MAT-AUTH architecture review — 2026-11-03
 

@@ -1,0 +1,18 @@
+{
+  "backend": "native-metadata-shadow",
+  "candidate_gdscript_sha256": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed",
+  "capability_rows": 256,
+  "checker_sha256": "c5ab2b10300fdf6a6be5673e433df81c3349eea6587b34de9b4b18b11bb3743e",
+  "editor_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+  "editor_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "fallback_physics_qualified": false,
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "material_rows": 132,
+  "native_parity_report_sha256": "006ba60964f50c0a1074ed813e213cec56ae0fd7d6c2dc33781c7438f5efd999",
+  "native_snapshot_sha256": "58d22545a1f29e49a8c141cb1c5df84101e48ed457fbaaaec09937997c2ce802",
+  "pixels_qualified": false,
+  "production_project_loaded": false,
+  "readback_seconds": 0.28286,
+  "status": "PASS",
+  "world_executed": false
+}

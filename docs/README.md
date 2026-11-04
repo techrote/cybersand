@@ -4,11 +4,17 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+Material authoring, 4 November: the owner requested the review corrections and
+compatibility mitigations. The [#353-A shadow compiler](operations/material-catalogue-shadow.md)
+implements bounded authoring/parity tooling in a separate unmerged candidate.
+Production cutover, new semantics and merging #357 remain separate decisions.
+The dated review/admission statements below retain their earlier scope.
 
 Material authoring: the [corrected Planned catalogue proposal](architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 and [independent current-main review](audits/2026-11-03-mat-auth-000-architecture-review.md)
