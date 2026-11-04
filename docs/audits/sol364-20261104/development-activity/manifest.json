@@ -1,0 +1,68 @@
+{
+  "schema": "cybersand.sol364.development-apparatus-failure.v1",
+  "status": "failed_activity_hash_scope_control",
+  "reason": "The independent translated-source mask wakes native activity blocks. Full World state_hash includes activity/quiet metadata as well as cells, so equality here is not a semantic tuple-only conservation oracle. Preserve the failure and compare an existing semantic content hash separately in the corrected test.",
+  "source_scope": "exact checked uncommitted fixture bytes retained; not exact-head qualification",
+  "runtime_native_sha256": "a013aa7148be8716badf41fb2bb1f3ae28e19862b970b390e2f8930493a92a0f",
+  "failures": [
+    "interior measurement preserves complete native state hash"
+  ],
+  "files": [
+    {
+      "path": "scripts__rapier_physics_bridge.gd",
+      "original_path": "godot/scripts/rapier_physics_bridge.gd",
+      "sha256": "2b4186b3e558f96051edded62ea1c4494a6ff018eeee73f3fad715fcdb2f0c5f",
+      "bytes": 45298,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "scripts__solid_contact_response.gd",
+      "original_path": "godot/scripts/solid_contact_response.gd",
+      "sha256": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+      "bytes": 20154,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "tests__fixtures__sol364__synchronized_contacts.json",
+      "original_path": "godot/tests/fixtures/sol364/synchronized_contacts.json",
+      "sha256": "bb00a8b02f6ec345d798faf0f35ffc241dc8435cfc972096dfab2738099203be",
+      "bytes": 3207,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "tests__support__solid_contact_response_749fb8b.gd",
+      "original_path": "godot/tests/support/solid_contact_response_749fb8b.gd",
+      "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+      "bytes": 18934,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "tests__support__solid_contact_synchronized_fixture.gd",
+      "original_path": "godot/tests/support/solid_contact_synchronized_fixture.gd",
+      "sha256": "9ab30d0cd16c3910138c81375b9c8594af855a49764802ff3448dcd8f9ba5436",
+      "bytes": 9549,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "tests__test_solid_contact_synchronized.gd",
+      "original_path": "godot/tests/test_solid_contact_synchronized.gd",
+      "sha256": "b859e0b5af86dd3cb27feb661fcbb115f04f305027090d355678f9163e4982f8",
+      "bytes": 35875,
+      "origin": "execution file retained by hash"
+    },
+    {
+      "path": "sol364-sync-w1-activity-failure.json.gz",
+      "sha256": "65fa0399e910db0e63dbd3d9fa23f505eabc509ccc577b558176c1e5c74fe4a2",
+      "bytes": 2927772,
+      "uncompressed_sha256": "3f73c4696eb7b285fd62919050f1a5a7b7b05b6f5c2220331b4d74718b5069bf",
+      "uncompressed_bytes": 21990877
+    }
+  ],
+  "omitted_console_log_hashes": [
+    {
+      "path": "sol364-sync-w1-qualified.log",
+      "sha256": "8898a16e9e1d20dbe3097c7c630b2ca9eb867fb70c600d80ad4382b219cc7de8",
+      "reason": "redundant console footer; full failed report retained losslessly"
+    }
+  ]
+}

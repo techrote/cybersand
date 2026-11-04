@@ -1,0 +1,29 @@
+{
+  "schema": "cybersand.sol364.synchronized-fixtures.v1",
+  "steps": 180,
+  "fixed_delta": 0.016666666666666666,
+  "can_sleep": false,
+  "sleep_control_note": "Uniformly disabled in every synchronized arm after the retained first development attempt exposed automatic baseline/stale sleep at step31 (kinetic2340 to0 without response). Sleep arrest must not be attributed to contact. No production sleep policy or acceptance threshold changes.",
+  "arms": ["conservative_baseline", "velocity_control", "candidate"],
+  "tree": [[0,72,128,4,1],[50,40,4,32,43],[44,27,29,13,43],[54,40,11,4,43],[8,45,3,27,43],[60,32,1,1,0]],
+  "domain": [32,16,64,64],
+  "anchors": [0,67,128,13],
+  "cut": [50,65,4,2],
+  "seed": [51,34],
+  "hole_cells": [[60,32],[68,50]],
+  "hole_meanings": ["authored enclosed one-cell crown hole", "unoccupied concavity inside the aggregate AABB"],
+  "member_count": 520,
+  "shape_count": 6,
+  "frozen_planner_source": "749fb8b597ad866f7535f26442e904207c4f7611",
+  "frozen_planner_sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+  "scope": "Frozen native material field, actual retained tree extraction and actual Rapier manual steps; native integration and ordinary displacement are held in every arm. Baseline disables the additional Sand response. This isolates contact response and publication, not asynchronous granular motion.",
+  "fixtures": [
+    {"id":"embedded_stationary","surroundings":"embedded_sand","offset":[0,0],"angle":0.255304992198944,"pose_origin":[63.253231048584,41.5955200195312],"velocity":[0,0],"omega":0,"schedule":"fresh","pose_provenance":"749fb8b Linux contact-w1 embedded_sand/candidate/r0 actual Rapier step360 pose; velocity/omega deliberately zero, authored native field frozen rather than pretending to reconstruct unrecorded historical cells"},
+    {"id":"packed_impact","surroundings":"packed_sand","offset":[0,0],"angle":0,"velocity":[3,0],"omega":0,"schedule":"fresh"},
+    {"id":"offcenter_impact","surroundings":"offcenter_sand","offset":[0,0],"angle":0,"velocity":[3,0],"omega":0,"schedule":"fresh"},
+    {"id":"rotated_compound","surroundings":"embedded_sand","offset":[3.25,3.25],"angle":0.37,"velocity":[0,3],"omega":0,"schedule":"fresh"},
+    {"id":"missed_publication","surroundings":"packed_sand","offset":[0,0],"angle":0,"velocity":[3,0],"omega":0,"schedule":"drop_every_fourth"},
+    {"id":"delayed_publication","surroundings":"packed_sand","offset":[0,0],"angle":0,"velocity":[3,0],"omega":0,"schedule":"delay_one"},
+    {"id":"stale_publication","surroundings":"packed_sand","offset":[0,0],"angle":0,"velocity":[3,0],"omega":0,"schedule":"delay_two"}
+  ]
+}
