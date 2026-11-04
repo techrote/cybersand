@@ -1,0 +1,103 @@
+{
+  "schema": "water-contact-impact-registration-v1",
+  "experiment_id": "water_contact.impact.v1",
+  "issue": 362,
+  "registered": "2026-11-04",
+  "registered_before_results": true,
+  "source_main": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+  "purpose": "Phase A discrimination of Rapier-driven Water displacement under the four admitted Water liquid families: collision relocation versus later liquid transport versus retained inertial state versus any true signed upward (ballistic) momentum. Observation only; no coupling, solver, bridge or default change.",
+  "world": {
+    "side": 1024,
+    "basin": {"left": 192, "width": 96, "floor_y": 600, "wall_top_y": 300},
+    "water_experiment_policy": [1, 8, 12, 0],
+    "transport_profile_preset": 0,
+    "simulation_window": "disabled",
+    "fill": "rectangle-constructed whole-cell Water, 255 quantum units per cell, identical in every arm; no normalization rule is required or applied"
+  },
+  "body": {
+    "size": [8, 14],
+    "mass": 1.0,
+    "gravity_scale": 0.094,
+    "linear_damp": 0.15,
+    "angular_damp": 0.35,
+    "friction": 0.78,
+    "ccd": "cast_shape",
+    "initial_gap_cells": 2,
+    "space": "independent manually stepped Rapier space; exactly one Rapier step per native tick; results applied with the tick serial through the unchanged CyberRapierPhysicsBridge",
+    "source": "WEX-001 barrel parameters (godot/scripts/physics_characterisation.gd), reused unchanged"
+  },
+  "arms": [
+    {"id": "FM3", "family": "freemass_v1", "variant": "reference", "radius": 3, "role": "matched"},
+    {"id": "CY3", "family": "cellular_yield_v1", "variant": "reference", "radius": 3, "role": "matched"},
+    {"id": "PF3", "family": "pressure_flow_v1", "variant": "reference", "radius": 3, "role": "matched"},
+    {"id": "IN3", "family": "inertial_cellular_v1", "variant": "reference", "radius": 3, "role": "matched"},
+    {"id": "FM2", "family": "freemass_v1", "variant": "reference", "radius": 2, "role": "original-radius FreeMass control; not a fifth family"}
+  ],
+  "workers": [1, 4],
+  "horizon_ticks": 300,
+  "observation": {
+    "roi_rows_above_surface": 64,
+    "spray_band_rows": 4,
+    "series_stride": 6,
+    "census_stride": 2,
+    "carried_state_check_ticks": 40,
+    "global_stride": 10,
+    "return_quiet_ticks": 30
+  },
+  "cases": [
+    {"id": "S-L-C", "stage": 2, "depth": 24, "velocity_y": 15.0, "purpose": "shallow, low impact, centre"},
+    {"id": "S-H-C", "stage": 1, "depth": 24, "velocity_y": 180.0, "purpose": "shallow, high impact, centre", "stale_duplicate_probe": true},
+    {"id": "D-L-C", "stage": 2, "depth": 72, "velocity_y": 15.0, "purpose": "deep, low impact, centre"},
+    {"id": "D-H-C", "stage": 2, "depth": 72, "velocity_y": 180.0, "purpose": "deep, high impact, centre"},
+    {"id": "S-H-O", "stage": 2, "depth": 24, "velocity_y": 180.0, "offset_x": 24.0, "purpose": "shallow, high impact, off-centre"},
+    {"id": "D-H-R", "stage": 2, "depth": 72, "velocity_y": 180.0, "rotation": 0.6, "angular_velocity": 3.0, "purpose": "deep, high impact, rotated and spinning asymmetric body control"},
+    {"id": "S-H-W", "stage": 2, "depth": 24, "velocity_y": 180.0, "offset_x": 43.0, "purpose": "wall-adjacent hard-wall containment control (body right face one cell from the wall)"},
+    {"id": "N-H-C", "stage": 2, "depth": 8, "velocity_y": 180.0, "purpose": "bounded near-floor impact: body must reach the floor; Water must not cross the barrier"},
+    {"id": "C0S", "stage": 1, "depth": 24, "body": false, "purpose": "body-free shallow Water control"},
+    {"id": "C0D", "stage": 2, "depth": 72, "body": false, "purpose": "body-free deep Water control"},
+    {"id": "C1", "stage": 1, "depth": 0, "water": false, "velocity_y": 180.0, "start_on_floor_gap": true, "start_above_floor": 24.0, "purpose": "no-Water hard-floor collision control"}
+  ],
+  "stages": {
+    "1": "fixture-correctness subset; stage 2 runs only if every stage-1 row passes every invariant",
+    "2": "complete registered matrix"
+  },
+  "kinematic_probe": {
+    "label": "kinematic forcing experiment (prescribed body records, no Rapier dynamics); isolates the adapter relocation law, never substitutes for dynamic coupling acceptance",
+    "free_fall_ticks": 6,
+    "cell_depth_inside_top": 5,
+    "sweep_cells": 20,
+    "modes": [
+      {"id": "overlap-rest", "mode": "overlap", "body_velocity": [0.0, 0.0]},
+      {"id": "overlap-fast-up", "mode": "overlap", "body_velocity": [0.0, -600.0]},
+      {"id": "overlap-fast-side", "mode": "overlap", "body_velocity": [600.0, 0.0]},
+      {"id": "swept-up-20", "mode": "swept", "body_velocity": [0.0, -1200.0]}
+    ]
+  },
+  "invariants": {
+    "I1_quantity": "stored Water quantity (state_a plus PressureFlow overfill) in the interior observation ROI equals the construction quantity after every relocating coupling and every tick; the complete World quantity is checked every global_stride ticks and at the final tick",
+    "I2_containment": "Water quantity outside the interior ROI is zero: implied at every tick by I1 and observed directly on the complete World every global_stride ticks",
+    "I3_identity": "applied family/variant/radius equals the request; backend native-phased; configured workers as requested; loaded native runtime bytes equal the recorded provenance hash; Rapier2D engine setting and server class present",
+    "I4_health": "no tick failure; completed ticks equal the horizon; one Rapier manual step per tick; no stale result rejected in an ordinary run",
+    "I5_relocation_census": "per-tick native BodyDisplacement events equal the coupling displaced count and equal the in-ROI destination/source grid difference",
+    "I6_carried_state": "on bounded contact ticks the multiset of complete stored states of relocation sources (read before coupling) equals that of destinations (read after coupling, before the tick)",
+    "I7_inertial_domain": "no inertial Water cell ever holds vy < 0",
+    "I8_mask": "current-pose body mask equals the documented rasterization at sampled ticks",
+    "I9_worker_parity": "for each case and arm, the configured-1 and configured-4 runs have identical trace digests, final physical state hash and coupling totals",
+    "I10_rejection": "a duplicate result snapshot and an aged result are refused by the unchanged bridge (S-H-C only)",
+    "I11_body_boundary": "maximum Rapier body floor penetration is reported against the retained WEX-001 two-cell characterization tolerance; not a new acceptance threshold"
+  },
+  "discriminators": {
+    "D1_relocation_vs_transport": "sum of positive above-surface and spray-band quantity changes attributed to relocation (B[t-1] to A[t]) versus solver transport (A[t] to B[t])",
+    "D2_upward_relocation": "BodyDisplacement events with dy < 0 versus lateral and downward",
+    "D3_solver_rise": "ticks on which the highest Water row rises during the liquid tick itself (not during coupling)",
+    "D4_true_ballistic": "a genuine ballistic launch would require signed upward retained velocity (IN vy < 0) or a flight carrier; neither exists in current source. Any spray-band Water is classified by D1-D3, never by its pixels alone",
+    "D5_splash_shape": "peak spray-band quantity and tick, peak height above the initial surface, lateral span, isolated and unsupported spray cells, return tick (censored when not returned within the horizon)"
+  },
+  "limits": [
+    "Cells have no stable identity: no per-cell trajectory, launch angle or velocity is reported for FreeMass, CellularYield or PressureFlow",
+    "Destination identification is limited to the observation ROI; mismatches are reported, not repaired",
+    "Relocation distance is bounded by source (first distance ceil(penetration), then up to eight more cells along the outward normal) but per-cell distance is not exported by the adapter",
+    "The IN momentum ledger is not exported to Godot; carried-state identity uses inspect_inertial_cell tuples",
+    "Headless timings are host call durations, not displayed FPS"
+  ]
+}
