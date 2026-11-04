@@ -342,8 +342,12 @@ static func water_region(world: Variant, origin: Vector2i, size: Vector2i) -> Di
 # One registered dynamic run: actual Rapier body in an independently and
 # manually stepped space, one Rapier step per native tick, native results
 # applied back with the tick serial (bridge stale/duplicate rules unchanged).
+# `observer` (optional, default null) is a read-only sampler with
+# sample(world, tick, states, cells_a, geo, body_size, results) and summary().
+# It sees observation A (post-coupling stored bytes; the body mask is unchanged
+# by the tick) and changes nothing. With null, v1 behaviour is unchanged.
 static func run_case(host: Node, bridge: Variant, manifest: Dictionary, case: Dictionary, arm: Dictionary,
-		workers: int) -> Dictionary:
+		workers: int, observer: Variant = null) -> Dictionary:
 	var geo: Dictionary = geometry(manifest, case)
 	var with_water: bool = bool(case.get("water", true)) and int(case.get("depth", 0)) > 0
 	var with_body: bool = bool(case.get("body", true))
@@ -589,6 +593,8 @@ static func run_case(host: Node, bridge: Variant, manifest: Dictionary, case: Di
 			if phase_max.size() <= phase_index: phase_max.append(0)
 			phase_max[phase_index] = maxi(int(phase_max[phase_index]), int(phases[phase_index]))
 		var results: PackedFloat32Array = world.rigid_body_results()
+		if observer != null and with_body:
+			observer.sample(world, tick, states, cells_a, geo, body_size, results)
 		if with_body:
 			if results.size() != CyberRigidBodyCoupling.RESULT_STRIDE:
 				add_violation.call("result_count", tick + 1, results.size())
@@ -764,6 +770,8 @@ static func run_case(host: Node, bridge: Variant, manifest: Dictionary, case: Di
 		record["body_trace"] = sampled
 		record["body_trace_columns"] = ["tick", "x", "y", "vx", "vy", "rotation", "angular_velocity", "contacts", "displaced", "unresolved", "impulse_x", "impulse_y"]
 	record["series"] = series
+	if observer != null:
+		record["observer"] = observer.summary()
 	record["trace_sha256"] = trace_context.finish().hex_encode()
 	record["violations"] = violations
 	if with_body:
