@@ -81,7 +81,7 @@ func fixture_readback(fixture: Dictionary, water_visible: bool, extra: Array = [
 	for material: int in extra:
 		cells[SPARE_CELL.y * width + SPARE_CELL.x] = material
 	return {"area":width * height, "material_cells":cells, "stored_water_cells":stored_water,
-		"carrier_states":carrier_states, "free_water":free_water}
+		"water_dithered":not water_visible, "carrier_states":carrier_states, "free_water":free_water}
 
 func pr358_catalogue() -> Dictionary:
 	var admitted: Array = []
@@ -156,6 +156,14 @@ func check_fixture_adversaries(fixture: Dictionary) -> void:
 	var phantom: Dictionary = fixture_readback(fixture, true)
 	phantom.stored_water_cells = 0
 	expect(not bool(Probe.material_census(phantom, catalogue).complete), "a visible Water byte without stored Water is not complete")
+	var hidden: Dictionary = fixture_readback(fixture, true)
+	hidden.stored_water_cells = 2
+	expect(not bool(Probe.material_census(hidden, catalogue).complete),
+		"an undithered stored copy must show every stored Water cell as Water")
+	hidden.water_dithered = true
+	var reconciled: Dictionary = Probe.material_census(hidden, catalogue)
+	expect(bool(reconciled.complete) and int(reconciled.counts["3"]) == 2 and int(reconciled.counts["0"]) == 1048567,
+		"a dithered copy reconciles a hidden stored Water cell out of the Empty bytes")
 	var surplus: Dictionary = fixture_readback(fixture, true)
 	var full := PackedByteArray()
 	full.resize(int(surplus.area))
@@ -258,17 +266,48 @@ func check_live_world() -> void:
 	var water: Dictionary = Probe.water(world)
 	expect(int(water.water_cells) == 200, "stored Water census counts 200 cells (got %d)" % int(water.water_cells))
 	var cells: PackedByteArray = world.get_cells()
-	var dithered: bool = cells.count(Probe.WATER) < 200
-	expect(dithered, "partial Water is dithered in the copy, exercising the Water/Empty reconciliation")
+	expect(cells.count(Probe.WATER) < 200, "partial Water is dithered in the cached get_cells copy")
 	var started: int = Time.get_ticks_usec()
 	var inventory: Dictionary = Probe.inventory(world, water)
 	var census_us: int = Time.get_ticks_usec() - started
 	expect(bool(inventory.complete) and same_counts(inventory.counts, expected),
 		"live census equals the geometry %s (got %s)" % [JSON.stringify(expected), JSON.stringify(inventory.get("counts", {}))])
+	var source: Dictionary = inventory.get("material_source", {})
+	expect(str(source.get("kind", "")) == "stored" and bool(source.get("uncached", false)) and int(source.get("tiles", 0)) == 4 \
+		and bool(source.get("native_histogram_agrees", false)) and bool(source.get("water_state_a_agrees", false)),
+		"live census reads uncached stored materials in four tiles and agrees with the native histogram and Water state_a")
+	var stored: Dictionary = Probe.stored_material_readback(world)
+	expect(bool(stored.ok) and (stored.cells as PackedByteArray).count(Probe.WATER) == 200,
+		"stored readback shows every stored Water cell (no presentation dither)")
 	expect(bool(inventory.bound_water.complete) and not bool(inventory.bound_water.declared), "native catalogue declares no bound-water carriers")
 	var legacy: Dictionary = legacy_v1(cells, int(water.water_cells))
 	expect(same_counts(legacy.counts, inventory.counts) and bool(legacy.complete),
 		"admitted-only World: corrected census equals the v1 result (original preflight behaviour retained)")
 	var census: Dictionary = Probe.census(world, Rect2i(0, 0, 1, 1))
 	expect(str(census.schema) == "lcb-feel-probe-v2" and bool(census.inventory.complete), "full census reports schema v2 and a complete inventory")
-	report.live = {"census_us":census_us, "copy_water_bytes":cells.count(Probe.WATER), "counts":inventory.counts}
+	report.live = {"census_us":census_us, "cached_copy_water_bytes":cells.count(Probe.WATER), "counts":inventory.counts}
+	check_enclosed_voids(world)
+	# A World without the diagnostic fixture has no uncached stored readback;
+	# the cached render copy is not accepted as a complete inventory.
+	var ordinary: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	var refused: Dictionary = Probe.inventory(ordinary, {"water_cells":0, "visible":0})
+	expect(not bool(refused.complete) and str(refused.material_source.kind) == "unavailable",
+		"non-diagnostic World inventory is incomplete rather than read from the cached copy")
+
+# A 12-cell pocket inside a Water block and a 4-cell dry pocket inside Stone are
+# cavities; the air column under a one-row Water film reaches the region edge
+# and is not, although the column definition counts it as submerged.
+func check_enclosed_voids(world: Variant) -> void:
+	var origin := Vector2i(500, 500)
+	expect(bool(world.water_experiment_fill_rect(origin + Vector2i(10, 10), Vector2i(20, 20), 255, 0)), "fill Water block")
+	expect(bool(world.water_experiment_erase_rect(origin + Vector2i(18, 18), Vector2i(4, 3))), "erase Water pocket")
+	expect(bool(world.diagnostic_fill_rect(origin + Vector2i(32, 2), Vector2i(6, 6), CyberCellWorld.STONE, 0)), "fill Stone block")
+	expect(bool(world.water_experiment_erase_rect(origin + Vector2i(34, 4), Vector2i(2, 2))), "erase dry pocket")
+	expect(bool(world.water_experiment_fill_rect(origin + Vector2i(2, 30), Vector2i(8, 1), 255, 0)), "fill Water film")
+	var voids: Dictionary = Probe.voids(world, Rect2i(origin, Vector2i(40, 40)))
+	var enclosed: Dictionary = voids.enclosed
+	expect(int(enclosed.components) == 2 and int(enclosed.cells) == 16 and int(enclosed.largest_component) == 12 \
+		and int(enclosed.water_bounded_components) == 1 and int(enclosed.water_bounded_cells) == 12,
+		"enclosed cavities are the Water pocket (12, Water-bounded) and the dry Stone pocket (4) (got %s)" % JSON.stringify(enclosed))
+	expect(int(voids.submerged_empty_cells) > int(enclosed.cells), "column definition also counts the open air under the film")
+	report.voids = {"submerged_empty_cells":voids.submerged_empty_cells, "enclosed":enclosed}

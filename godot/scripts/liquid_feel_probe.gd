@@ -146,7 +146,10 @@ static func material_census(readback: Dictionary, catalogue: Dictionary) -> Dict
 	var stored_water: int = int(readback.get("stored_water_cells", -1))
 	var copy_water: int = int(observed.get(WATER, 0))
 	var copy_empty: int = int(observed.get(EMPTY, 0))
-	if stored_water < copy_water or stored_water > copy_water + copy_empty:
+	var dithered: bool = bool(readback.get("water_dithered", false))
+	result.water_reconciliation = "dithered copy: stored Water within copy Water..Water+Empty" if dithered \
+		else "stored copy: Water bytes equal stored Water exactly"
+	if stored_water < copy_water or stored_water > copy_water + copy_empty or (not dithered and stored_water != copy_water):
 		result.error = "inventory sources disagree: stored Water %d, copy Water %d, copy Empty %d" % [stored_water, copy_water, copy_empty]
 		return result
 	var counts: Dictionary = {}
@@ -199,11 +202,59 @@ static func _bound_water(readback: Dictionary, catalogue: Dictionary, counts: Di
 	return {"complete":seen == present, "declared":true, "total":total, "by_material":by_material,
 		"scope":"sum of carrier state_b; never part of free Water"}
 
+# Uncached stored-material bytes. get_cells() is a render cache refreshed only
+# when the adapter revision changes (simulation_tick bumps it only for moved
+# cells or deferred events) and it dithers fractional Water. diagnostic_snapshot
+# reads World::stored_material directly, consumes no dirty state, and is bounded
+# to 512x768 per call, so the World is read as four 512x512 tiles in one owner
+# turn. Tile order is irrelevant to a histogram. Diagnostic-fixture Worlds only.
+const SNAPSHOT_TILE: int = 512
+static func stored_material_readback(world: Variant) -> Dictionary:
+	var bytes := PackedByteArray()
+	var native_counts: Array[int] = []
+	var water_state_a: int = 0
+	var completed: Array[int] = []
+	for tile_y: int in range(0, WORLD_SIDE, SNAPSHOT_TILE):
+		for tile_x: int in range(0, WORLD_SIDE, SNAPSHOT_TILE):
+			var snapshot: Dictionary = world.diagnostic_snapshot(Vector2i(tile_x, tile_y), Vector2i(SNAPSHOT_TILE, SNAPSHOT_TILE), false)
+			if not snapshot.has("cells") or bool(snapshot.get("failed", true)):
+				return {"ok":false, "error":"diagnostic_snapshot unavailable (non-diagnostic or failed World)"}
+			bytes.append_array(snapshot.cells)
+			water_state_a += int(snapshot.water_mass)
+			completed.append(int(snapshot.completed_ticks))
+			var counts: Array = snapshot.counts
+			if native_counts.is_empty(): native_counts.resize(counts.size())
+			for id: int in counts.size(): native_counts[id] += int(counts[id])
+	if completed.min() != completed.max():
+		return {"ok":false, "error":"tiles observed different completed ticks %s" % str(completed)}
+	return {"ok":true, "cells":bytes, "native_counts":native_counts, "water_state_a":water_state_a,
+		"completed_tick":completed[0], "tiles":completed.size()}
+
 # Complete 1024x1024 material inventory of a live World against the loaded
-# native catalogue (v1-compatible fields: complete, area, counts).
+# native catalogue (v1-compatible fields: complete, area, counts). The census is
+# cross-checked against the native per-tile histogram and the stored Water
+# state_a sum of the same observation; any disagreement leaves it incomplete.
 static func inventory(world: Variant, water: Dictionary) -> Dictionary:
-	return material_census({"area":WORLD_SIDE * WORLD_SIDE, "material_cells":world.get_cells(),
-		"stored_water_cells":int(water.get("water_cells", -1))}, native_catalogue())
+	var area: int = WORLD_SIDE * WORLD_SIDE
+	var stored: Dictionary = stored_material_readback(world)
+	if not bool(stored.ok):
+		return {"schema":CENSUS_SCHEMA, "complete":false, "area":area, "error":str(stored.error),
+			"material_source":{"kind":"unavailable", "uncached":false}}
+	var census: Dictionary = material_census({"area":area, "material_cells":stored.cells,
+		"stored_water_cells":int(water.get("water_cells", -1)), "water_dithered":false}, native_catalogue())
+	var histogram_agrees: bool = true
+	var native_counts: Array[int] = stored.native_counts
+	for id: int in native_counts.size():
+		var counted: int = int(census.get("counts", {}).get(str(id), 0))
+		if bool(census.complete) and counted != native_counts[id]: histogram_agrees = false
+	var water_agrees: bool = int(stored.water_state_a) == int(water.get("visible", -2))
+	census.material_source = {"kind":"stored", "api":"diagnostic_snapshot", "tiles":int(stored.tiles), "uncached":true,
+		"completed_tick":int(stored.completed_tick), "native_histogram_agrees":histogram_agrees,
+		"water_state_a_agrees":water_agrees}
+	if bool(census.complete) and not (histogram_agrees and water_agrees):
+		census.complete = false
+		census.error = "stored-material cross-check failed (native histogram %s, Water state_a %s)" % [histogram_agrees, water_agrees]
+	return census
 
 static func water(world: Variant) -> Dictionary:
 	var observed: Dictionary = world.water_experiment_observation(Vector2i.ZERO, Vector2i(WORLD_SIDE, WORLD_SIDE))
@@ -300,7 +351,65 @@ static func voids(world: Variant, region: Rect2i) -> Dictionary:
 		"region":[region.position.x, region.position.y, region.size.x, region.size.y], "water_cells":water_cells,
 		"submerged_empty_cells":submerged, "deepest_submerged_row":deepest,
 		"pressure_gas_labels":labels if pressure_enabled else null,
+		"enclosed":enclosed_voids(world, region),
 		"scope":"Empty cells below stored Water in the same column; PF labels only when PressureFlow is enabled"}
+
+# Connected-region cavity definition (additive to the column definition above,
+# which marks every Empty cell under any Water film or droplet). A cavity is a
+# 4-connected Empty component inside the region that touches no region edge;
+# it is Water-bounded when at least one 4-neighbour of the component is Water.
+# Apparent geometry only: no gas, pressure or bubble-dynamics claim.
+static func enclosed_voids(world: Variant, region: Rect2i) -> Dictionary:
+	var width: int = region.size.x
+	var height: int = region.size.y
+	var grid := PackedByteArray()
+	grid.resize(width * height)
+	for y: int in height:
+		for x: int in width:
+			grid[y * width + x] = int(world.material_at(region.position.x + x, region.position.y + y))
+	var seen := PackedByteArray()
+	seen.resize(width * height)
+	seen.fill(0)
+	var components: int = 0
+	var cells: int = 0
+	var largest: int = 0
+	var water_bounded_components: int = 0
+	var water_bounded_cells: int = 0
+	var stack := PackedInt32Array()
+	for start: int in width * height:
+		if seen[start] != 0 or grid[start] != EMPTY: continue
+		seen[start] = 1
+		stack.clear()
+		stack.append(start)
+		var size: int = 0
+		var touches_edge: bool = false
+		var touches_water: bool = false
+		while not stack.is_empty():
+			var index: int = stack[stack.size() - 1]
+			stack.resize(stack.size() - 1)
+			size += 1
+			var x: int = index % width
+			var y: int = index / width
+			if x == 0 or y == 0 or x == width - 1 or y == height - 1: touches_edge = true
+			for step: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				var nx: int = x + step.x
+				var ny: int = y + step.y
+				if nx < 0 or ny < 0 or nx >= width or ny >= height: continue
+				var neighbour: int = ny * width + nx
+				if grid[neighbour] == WATER: touches_water = true
+				if grid[neighbour] == EMPTY and seen[neighbour] == 0:
+					seen[neighbour] = 1
+					stack.append(neighbour)
+		if touches_edge: continue
+		components += 1
+		cells += size
+		largest = maxi(largest, size)
+		if touches_water:
+			water_bounded_components += 1
+			water_bounded_cells += size
+	return {"definition":"4-connected Empty components touching no region edge", "components":components,
+		"cells":cells, "largest_component":largest, "water_bounded_components":water_bounded_components,
+		"water_bounded_cells":water_bounded_cells}
 
 static func census(world: Variant, region: Rect2i) -> Dictionary:
 	var water_value: Dictionary = water(world)
