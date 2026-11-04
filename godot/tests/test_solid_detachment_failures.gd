@@ -230,8 +230,14 @@ func _post_impulse_publication() -> void:
 	var epoch: int = s.physics_epoch
 	var state_before: Array = _body_state_values(s)
 	var steps_before: int = s.bridge.manual_step_count()
+	var held_snapshot: CyberSimulationSnapshot = s.worker.take_latest_snapshot(-1)
+	var held_states: PackedFloat32Array = held_snapshot.current_rigid_body_states.duplicate() \
+		if held_snapshot != null else PackedFloat32Array()
+	var held_epoch: int = held_snapshot.rigid_body_epoch if held_snapshot != null else -1
 	check(before.get("ok", false) and not before.get("worker_failed", true)
-		and s.physics_paused and not s._failed, "post-impulse owner is healthy and paused before injection")
+		and s.physics_paused and not s._failed and held_snapshot != null and not held_snapshot.simulation_failed
+		and held_epoch == epoch and held_states.size() == 6 * CyberRigidBodyCoupling.INPUT_STRIDE,
+		"post-impulse owner is healthy and paused before injection")
 	check(int(metrics_before.get("proxy_count", 0)) == 6 and int(before.get("aggregate_owned", 0)) == 520
 		and int(before.get("native_source_members", -1)) == 0
 		and before.get("members") == s.source_payload, "pre-fault six-proxy aggregate exclusively owns the exact 520-cell payload")
@@ -242,9 +248,12 @@ func _post_impulse_publication() -> void:
 	check(s.worker.has_failed(), "post-impulse worker publishes the injected failure")
 	var failed: CyberSimulationSnapshot = s.worker.take_latest_snapshot(-1)
 	var failure_published: bool = failed != null and failed.simulation_failed
+	var exact_mask_preserved: bool = failure_published and not held_states.is_empty() \
+		and failed.current_rigid_body_states == held_states and failed.rigid_body_epoch == held_epoch
 	check(failure_published and failed.rigid_body_results.is_empty()
-		and not failed.current_rigid_body_states.is_empty() and failed.solid_contact_observation.is_empty(),
-		"post-impulse failed publication retains the mask and clears force/contact results")
+		and exact_mask_preserved and held_snapshot != null and failed.serial > held_snapshot.serial
+		and failed.solid_contact_observation.is_empty(),
+		"post-impulse failed publication retains exact body-state mask inputs and clears force/contact results")
 	if not failure_published:
 		s.close()
 		return
@@ -310,7 +319,15 @@ func _post_impulse_publication() -> void:
 		"failed_publication_native_tick":failed.tick_index, "failed_snapshot_serial":failed.serial,
 		"failed_snapshot_force_records":failed.rigid_body_results.size(),
 		"failed_snapshot_contact_records":failed.solid_contact_observation.size(),
-		"failed_snapshot_has_last_mask":not failed.current_rigid_body_states.is_empty(),
+		"failed_snapshot_has_last_mask":exact_mask_preserved,
+		"pre_fault_publication_serial":held_snapshot.serial if held_snapshot != null else -1,
+		"pre_fault_publication_native_tick":held_snapshot.tick_index if held_snapshot != null else -1,
+		"pre_fault_publication_failed":held_snapshot.simulation_failed if held_snapshot != null else true,
+		"body_states_before_fault":Array(held_states),
+		"body_states_failed_publication":Array(failed.current_rigid_body_states),
+		"body_state_stride":CyberRigidBodyCoupling.INPUT_STRIDE,
+		"rigid_body_epoch_before_fault":held_epoch,
+		"rigid_body_epoch_failed_publication":failed.rigid_body_epoch,
 		"native_failure_published":failure_published, "worker_failed":bool(after.get("worker_failed", false)),
 		"failure_latched":s._failed, "physics_paused":s.physics_paused, "last_error":s.last_error,
 		"state_before_fault":state_before, "state_after_failstop":state_after,
