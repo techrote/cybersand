@@ -37,7 +37,7 @@ func _build_comparison_controls() -> void:
 	response_select.add_item("RFT / R2 reference · fixed 20")
 	response_select.add_item("LA · events OFF (experimental)")
 	response_select.add_item("LA · selective arrivals (experimental)")
-	response_select.set_item_tooltip(3,"Only fresh native grain transport can supply an event. Experimental arrival witness; compare creep, loading and torque. Applies on reset.")
+	response_select.set_item_tooltip(3,"Retained experiment: misses registered creep, finite-batch loading and late edge-rebound gates. Recovers continuous-stream response. Compare with LA and events OFF; applies on reset.")
 	response_select.set_item_tooltip(2,"Reduces measured bank burial. Moving-grain loading and torque are deficient; late barrel motion can increase. Compare with LA. Applies on reset.")
 	response_select.select(["LA","RFT","LA-EVENT-OFF","LA-SELECTIVE"].find(applied_controls.response))
 	responses.add_child(response_select)

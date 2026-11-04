@@ -8,6 +8,12 @@ last-reviewed: 2026-11-04
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
+
+Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
+records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
+and late edge rebound miss their gates. Continuous arrival/torque and excavation
+release pass; no rest/default acceptance follows. The painting selector remains
+experimental; source-lock compatibility and owner review remain open.
 # Development handover
 
 Selective event successor **in progress**, November4: [GCR-SEL-001 registration](gcr-selective-events-registration.md) fixes C/E/S and84 Windows/Linux captures before results. Main7ef4856e is reconciled into the isolated successor; Astra347 remains separately owned. The preceding-tick transport witness is transient coupling history, allocated only for explicitly admitted experimental C/E/S worlds. The proposed fourth painting choice is LA-SELECTIVE; ordinary LA and Restore remain controls. Loading/torque recovery, creep retention and barrel feel require qualification; sleep, default promotion and merges remain excluded.

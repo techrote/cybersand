@@ -1,0 +1,200 @@
+{
+  "scope": "Native core plus targeted granular arrival provenance; GDExtension hosts are separate",
+  "input_equivalent_native_source": "856c49371b37b3921bf859a67a883336252134ee",
+  "recorded_head": "b03cd79309c142bef75a7fa0134b5eaf9112881f",
+  "inputs_unchanged": true,
+  "native_input_count": 88,
+  "native_input_map_sha256": "3a5154101d5f19efecb29efd5dafe911a581691470054ffa2efd95757eafb57a",
+  "test_input_map_sha256": "4213acd57aae14d7ed851ccbf2278f6bebb21d8b567c7c8bd4fa057de339b44c",
+  "tool_log_sha256": "82a4f3ed37c1fecc7c0f122c2ac4504cd3d7d3f59ff6198c26c93a09d6699912",
+  "normal": {
+    "status": "pass",
+    "groups": 177,
+    "exit": 0,
+    "timeout_seconds": 3600,
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "C:\\Users\\_\\.codex\\worktrees\\gcr-selective\\khybersand",
+      "--",
+      "bash",
+      "-lc",
+      "timeout --signal=TERM --kill-after=10s 3600s build/selective-native-01/core-normal"
+    ],
+    "started_utc": "2026-11-04T02:55:46.663949+00:00",
+    "ended_utc": "2026-11-04T03:04:54.460729+00:00",
+    "elapsed_seconds": 547.7967946000281,
+    "log": "build/selective-native-01/core-normal.log",
+    "sha256": "1df78cfa6ad19a7bd516dd9dcb56a8e4dd8feecd4b97e34ed2d2a9b3e7b2c837",
+    "binary_sha256": "9732a5d6faacf9f2eb138e2d572fbec79b493836bb4d3878db9d0b6c2a9bab49",
+    "compile": {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-selective\\khybersand",
+        "--",
+        "bash",
+        "-lc",
+        "timeout --signal=TERM --kill-after=10s 3600s g++-13 -std=c++20 -pthread -Inative/include -O0 -g native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp -o build/selective-native-01/core-normal"
+      ],
+      "exit": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "sanitizer": {
+    "status": "pass",
+    "groups": 177,
+    "exit": 0,
+    "timeout_seconds": 3600,
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "C:\\Users\\_\\.codex\\worktrees\\gcr-selective\\khybersand",
+      "--",
+      "timeout",
+      "--signal=TERM",
+      "--kill-after=10s",
+      "3600s",
+      "bash",
+      "-lc",
+      "env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 build/selective-native-parallel-asan-01/core-sanitized"
+    ],
+    "started_utc": "2026-11-04T03:06:51.731538+00:00",
+    "ended_utc": "2026-11-04T03:16:15.439583+00:00",
+    "elapsed_seconds": 563.7080599000328,
+    "log": "build/selective-native-parallel-asan-01/execute.log",
+    "sha256": "79b02e84b268d1a9986b463c9f4471d298a7232ecf6b65f612c295689a21bf96",
+    "binary_sha256": "b9cc6a98de3106801716343105c714914701a1bf75bc3798e7ccd6a7f5398782",
+    "compile": {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-selective\\khybersand",
+        "--",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "3600s",
+        "bash",
+        "-lc",
+        "g++-13 -std=c++20 -pthread -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -Inative/include native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp -o build/selective-native-parallel-asan-01/core-sanitized"
+      ],
+      "exit": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "arrivals_normal": {
+    "status": "pass",
+    "exit": 0,
+    "timeout_seconds": 3600,
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "C:\\Users\\_\\.codex\\worktrees\\gcr-selective\\khybersand",
+      "--",
+      "bash",
+      "-lc",
+      "timeout --signal=TERM --kill-after=10s 3600s build/selective-native-01/arrivals-normal"
+    ],
+    "started_utc": "2026-11-04T02:54:56.623428+00:00",
+    "ended_utc": "2026-11-04T02:54:56.914154+00:00",
+    "elapsed_seconds": 0.29074089997448027,
+    "log": "build/selective-native-01/arrivals-normal.log",
+    "sha256": "cbe6b30bd7daca0aeb4d1707f0d9b35951ab197b31fa137dc0c5358b3d6adc55",
+    "binary_sha256": "e8682421dd8c9e96e1e97374abfb6d197e969af2b2f51e5d7f5c8606fee2a59a",
+    "compile": {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-selective\\khybersand",
+        "--",
+        "bash",
+        "-lc",
+        "timeout --signal=TERM --kill-after=10s 3600s g++-13 -std=c++20 -pthread -Inative/include -O1 native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/tests/test_granular_arrivals.cpp -o build/selective-native-01/arrivals-normal"
+      ],
+      "exit": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "checks": 169
+  },
+  "arrivals_sanitizer": {
+    "status": "pass",
+    "exit": 0,
+    "timeout_seconds": 3600,
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "C:\\Users\\_\\.codex\\worktrees\\gcr-selective\\khybersand",
+      "--",
+      "bash",
+      "-lc",
+      "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 timeout --signal=TERM --kill-after=10s 3600s build/selective-native-01/arrivals-sanitized"
+    ],
+    "started_utc": "2026-11-04T03:06:17.617948+00:00",
+    "ended_utc": "2026-11-04T03:06:18.227314+00:00",
+    "elapsed_seconds": 0.6093819999950938,
+    "log": "build/selective-native-01/arrivals-sanitized.log",
+    "sha256": "cbe6b30bd7daca0aeb4d1707f0d9b35951ab197b31fa137dc0c5358b3d6adc55",
+    "binary_sha256": "971015d74689b03e4bbd950e05155d818339804ed5d7373879d3fd548daaf58d",
+    "compile": {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-selective\\khybersand",
+        "--",
+        "bash",
+        "-lc",
+        "timeout --signal=TERM --kill-after=10s 3600s g++-13 -std=c++20 -pthread -Inative/include -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/tests/test_granular_arrivals.cpp -o build/selective-native-01/arrivals-sanitized"
+      ],
+      "exit": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "checks": 169
+  },
+  "sanitizer_options": {
+    "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+    "UBSAN_OPTIONS": "halt_on_error=1"
+  },
+  "tools": [
+    "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "Copyright (C) 2023 Free Software Foundation, Inc.",
+    "This is free software; see the source for copying conditions.  There is NO",
+    "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "",
+    "GNU ld (GNU Binutils for Ubuntu) 2.42",
+    "Copyright (C) 2024 Free Software Foundation, Inc.",
+    "This program is free software; you may redistribute it under the terms of",
+    "the GNU General Public License version 3 or (at your option) a later version.",
+    "This program has absolutely no warranty.",
+    "Linux DESKTOP-JF530LS 6.18.54.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Tue Oct  6 19:13:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux"
+  ],
+  "orchestration": {
+    "status": "intentional deduplication",
+    "receipt": "build/selective-native-01/intentional-deduplication.json",
+    "sha256": "fbd34ae3042a646fa466e12cc9046f9e1f331504ba51d2e3945f029b2bbf38b4",
+    "explanation": "Normal177 and targeted169/169 closed before original orchestrator stopped; full177 sanitizer ran concurrently in its own process/receipt. Redundant later compilation was not an acceptance gate."
+  },
+  "limitations": [
+    "LeakSanitizer and TSAN excluded",
+    "No other-platform sanitizer acceptance",
+    "Godot adapter is not sanitizer-instrumented",
+    "Targeted 1/4-worker scheduled cases and separate isolated friend probes are distinguished in source; single-grain cases do not establish simultaneous multi-source contention",
+    "Native correctness does not establish physical candidate efficacy or owner gameplay acceptance"
+  ]
+}

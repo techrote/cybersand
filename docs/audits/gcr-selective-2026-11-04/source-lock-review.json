@@ -1,0 +1,223 @@
+{
+  "status": "integration-blocked",
+  "original_lock_unchanged": true,
+  "protected_sources": [
+    {
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "expected": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "actual": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "reconciled_parent": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "expected": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "actual": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "reconciled_parent": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "expected": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "actual": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "reconciled_parent": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "docs/reference/water-normalization-vectors.json",
+      "expected": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "actual": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "reconciled_parent": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "expected": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "actual": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "reconciled_parent": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd",
+      "expected": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "actual": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "reconciled_parent": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "expected": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "actual": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "reconciled_parent": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd",
+      "expected": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "actual": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "reconciled_parent": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "expected": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "actual": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "reconciled_parent": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "expected": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "actual": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "reconciled_parent": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "expected": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "actual": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "reconciled_parent": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "expected": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "actual": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "reconciled_parent": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "expected": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "actual": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "reconciled_parent": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "expected": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "actual": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "reconciled_parent": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "expected": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "actual": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "reconciled_parent": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "expected": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "actual": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "reconciled_parent": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "expected": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+      "actual": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+      "reconciled_parent": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "expected": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "actual": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "reconciled_parent": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "expected": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "actual": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "reconciled_parent": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "expected": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+      "actual": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+      "reconciled_parent": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "native/src/world.cpp",
+      "expected": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+      "actual": "83f82bfb062d95a8367a9ff31c23b7c3cdccd67b98000fe848346220501b767f",
+      "reconciled_parent": "b159a750c65721b44dd821204d0294115dfa1543a53e049944d144ae0ecf6513",
+      "matched": false,
+      "selective_changed": true
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "expected": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+      "actual": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5",
+      "reconciled_parent": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5",
+      "matched": false,
+      "selective_changed": false
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "expected": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+      "actual": "79664b238436fff1f10ae6be26fffe55cdab2b3130f24c688cad2f6702b61335",
+      "reconciled_parent": "79664b238436fff1f10ae6be26fffe55cdab2b3130f24c688cad2f6702b61335",
+      "matched": false,
+      "selective_changed": false
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "expected": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "actual": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "reconciled_parent": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "expected": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "actual": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "reconciled_parent": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "expected": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "actual": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "reconciled_parent": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "matched": true,
+      "selective_changed": false
+    },
+    {
+      "path": "tools/lcb/policy_contract.py",
+      "expected": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "actual": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "reconciled_parent": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "matched": true,
+      "selective_changed": false
+    }
+  ],
+  "scope": "Read-only identity comparison, not a compatibility override or sanctioned checkpoint transition"
+}

@@ -1,6 +1,6 @@
 ---
 title: Selective granular event admission registration
-status: Planned
+status: Current
 document-kind: design
 scope: Prospective actual-transport event witness and three-arm independent-body qualification; no sleep or production promotion
 canonical-for: [gcr-selective-event-admission]
@@ -12,7 +12,20 @@ related-documents: [gcr-granular-events-registration.md, ../architecture/granula
 
 ## Recover falling-grain loading and torque without restoring passive creep
 
-The selective granular event-admission successor is a preregistered painting-flyer-playground comparison, not a qualified production response. Its purpose is to recover useful falling-grain loading and torque while preserving the event-off creep reduction and barrel impact behavior. C/control, E/off and S/selective share the same optional native transport observations; only S selects fresh arrivals for the existing response. The developer LA-SELECTIVE choice is displayed as LA · selective arrivals (experimental), alongside unchanged LA, RFT and event-off. LA remains initial/Restore. Qualification and owner gameplay review remain pending; no sleep or merge follows.
+**Current implemented experiment; NO-GO under its registered joint gates.**
+The [dated qualification](../audits/2026-11-04-gcr-selective-events.md) completes
+84 source-matched Windows/Linux captures at b03cd793. Selective arrival admission
+recovers some finite-batch loading and strong continuous-stream torque, but misses
+the creep-preservation, finite-batch recovery and late operational edge-rebound
+gates. Gentle/high/heavy/angled impact guards pass; the edge granular prefix passes
+before later hard interaction. No gain or threshold is retuned after results.
+
+The painting room implements LA-SELECTIVE alongside LA, RFT and event-off, with
+fresh Apply/reset and native readback. LA remains initial/Restore. The tooltip
+discloses failed qualification. Owner review is pending. Current-main source-lock
+compatibility also blocks integration; original locks stay intact. Sleep, default
+promotion, latest-Astra compound acceptance and merging remain excluded.
+
 
 ## Prospective source and ownership
 

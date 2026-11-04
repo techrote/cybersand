@@ -8,6 +8,8 @@ last-reviewed: 2026-11-04
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
+
+[Selective arrival qualification — failed joint gates](audits/2026-11-04-gcr-selective-events.md) records the current experimental comparison and integration blockers.
 # CyberSand documentation
 
 Selective granular event admission: the [preregistered successor](operations/gcr-selective-events-registration.md) compares LA, event-off and selective arrivals. It tests fresh native transport as an admission witness to recover falling-grain loading and torque while retaining creep reduction and barrel impact guards. Implementation and qualification are in progress; no result, owner acceptance or production promotion is claimed.

@@ -8,6 +8,12 @@ last-reviewed: 2026-11-04
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
+
+Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selective-events.md)
+records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
+and late edge rebound miss their gates. Continuous arrival/torque and excavation
+release pass; no rest/default acceptance follows. The painting selector remains
+experimental; source-lock compatibility and owner review remain open.
 # Status and foundational roadmap
 
 **Selective event admission, November4 - preregistered/in progress:** [GCR-SEL-001](../operations/gcr-selective-events-registration.md) tests transport-backed arrivals against LA and event-off over84 bounded Windows/Linux captures. The target is joint creep retention and falling-grain loading/torque recovery with unchanged barrel impact guards. Results are pending; no accepted response law, sleep, compound integration, production promotion or merge follows.
