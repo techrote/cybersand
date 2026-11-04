@@ -1,0 +1,201 @@
+name: MAT-AUTH-002 Phase A native liveness
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/tests/material_liveness_probe.cpp'
+      - 'native/tests/fixtures/material_liveness_campaign_v1.json'
+      - 'tools/material_liveness/**'
+      - '.github/workflows/material-liveness-phase-a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Draft investigation execution is deliberate. This workflow invokes no runtime
+# publisher, Godot build, native family matrix or production-source mutation.
+concurrency:
+  group: mat354-phase-a-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  MAT354_EXPECTED_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  linux:
+    name: Phase A / Linux native
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Check out exact requested source and compatibility history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.MAT354_EXPECTED_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Record exact source and validate the apparatus boundary
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, pathlib, subprocess
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mat354-phase-a'
+          output.mkdir(parents=True, exist_ok=True)
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          context = {'schema': 'mat354.hosted-context.v1', 'source_commit': head,
+                     'expected_source': os.environ['MAT354_EXPECTED_SHA'],
+                     'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+                     'event': os.environ['GITHUB_EVENT_NAME'], 'platform': 'ubuntu-24.04'}
+          (output / 'hosted-context.json').write_text(json.dumps(context, indent=2) + '\n')
+          if head != context['expected_source']:
+              raise SystemExit('execution checkout differs from the requested head')
+          PY
+          python tools/material_catalogue/compatibility.py --check
+          python -m unittest discover -s tools/material_liveness -p 'test_*.py'
+      - name: Run the registered 552-case native campaign
+        id: campaign
+        timeout-minutes: 31
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/material_liveness/run.py \
+            --plan native/tests/fixtures/material_liveness_campaign_v1.json \
+            --output "$RUNNER_TEMP/mat354-phase-a/campaign" \
+            --mode normal --compiler g++-13
+      - name: Independently authenticate every case and worker comparison
+        if: always() && steps.campaign.outcome != 'skipped'
+        timeout-minutes: 3
+        shell: bash
+        run: |
+          python tools/material_liveness/reduce.py \
+            "$RUNNER_TEMP/mat354-phase-a/campaign/campaign.json" \
+            --output "$RUNNER_TEMP/mat354-phase-a/campaign/reduction.json"
+      - name: Package original raw evidence, including failed attempts
+        if: always()
+        timeout-minutes: 3
+        shell: python
+        run: |
+          import os, pathlib, subprocess, sys
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mat354-phase-a'
+          raw = output / 'campaign'
+          if raw.is_dir():
+              subprocess.run([sys.executable, 'tools/material_liveness/pack.py', 'pack',
+                              str(raw), str(output / 'transport'), '--prefix', 'linux-normal'],
+                             check=True, timeout=150)
+          else:
+              print('Campaign did not start; no native execution is claimed.')
+      - name: Retain raw observations, original provenance and transport shards
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat354-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mat354-phase-a/*.json
+            ${{ runner.temp }}/mat354-phase-a/campaign/*.json
+            ${{ runner.temp }}/mat354-phase-a/campaign/*.stdout
+            ${{ runner.temp }}/mat354-phase-a/campaign/*.stderr
+            ${{ runner.temp }}/mat354-phase-a/campaign/*.d
+            ${{ runner.temp }}/mat354-phase-a/campaign/.*.partial
+            ${{ runner.temp }}/mat354-phase-a/transport/*.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    name: Phase A / Windows native
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Preserve source LF bytes during checkout
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+      - name: Check out exact requested source and compatibility history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.MAT354_EXPECTED_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Record exact source and validate the apparatus boundary
+        timeout-minutes: 3
+        shell: python
+        run: |
+          import json, os, pathlib, subprocess, sys
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mat354-phase-a'
+          output.mkdir(parents=True, exist_ok=True)
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          context = {'schema': 'mat354.hosted-context.v1', 'source_commit': head,
+                     'expected_source': os.environ['MAT354_EXPECTED_SHA'],
+                     'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+                     'event': os.environ['GITHUB_EVENT_NAME'], 'platform': 'windows-2022'}
+          (output / 'hosted-context.json').write_text(json.dumps(context, indent=2) + '\n')
+          if head != context['expected_source']:
+              raise SystemExit('execution checkout differs from the requested head')
+          subprocess.run([sys.executable, 'tools/material_catalogue/compatibility.py', '--check'], check=True, timeout=60)
+          subprocess.run([sys.executable, '-m', 'unittest', 'discover', '-s', 'tools/material_liveness', '-p', 'test_*.py'], check=True, timeout=60)
+      - name: Discover installed Visual Studio tools and execute actual Windows native code
+        id: campaign
+        timeout-minutes: 31
+        shell: cmd
+        run: |
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "MAT354_VSROOT=%%i"
+          if not defined MAT354_VSROOT exit /b 1
+          call "%MAT354_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "MAT354_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%MAT354_CXX%" set "MAT354_CXX=%MAT354_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%MAT354_CXX%" exit /b 1
+          python tools/material_liveness/run.py --plan native/tests/fixtures/material_liveness_campaign_v1.json --output "%RUNNER_TEMP%\mat354-phase-a\campaign" --mode normal --compiler "%MAT354_CXX%"
+          exit /b %ERRORLEVEL%
+      - name: Independently authenticate every case and worker comparison
+        if: always() && steps.campaign.outcome != 'skipped'
+        timeout-minutes: 3
+        shell: pwsh
+        run: |
+          python tools/material_liveness/reduce.py "$env:RUNNER_TEMP/mat354-phase-a/campaign/campaign.json" --output "$env:RUNNER_TEMP/mat354-phase-a/campaign/reduction.json"
+          exit $LASTEXITCODE
+      - name: Package original raw evidence, including failed attempts
+        if: always()
+        timeout-minutes: 3
+        shell: python
+        run: |
+          import os, pathlib, subprocess, sys
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mat354-phase-a'
+          raw = output / 'campaign'
+          if raw.is_dir():
+              subprocess.run([sys.executable, 'tools/material_liveness/pack.py', 'pack',
+                              str(raw), str(output / 'transport'), '--prefix', 'windows-normal'],
+                             check=True, timeout=150)
+          else:
+              print('Campaign did not start; no native execution is claimed.')
+      - name: Retain raw observations, original provenance and transport shards
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat354-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mat354-phase-a/*.json
+            ${{ runner.temp }}/mat354-phase-a/campaign/*.json
+            ${{ runner.temp }}/mat354-phase-a/campaign/*.stdout
+            ${{ runner.temp }}/mat354-phase-a/campaign/*.stderr
+            ${{ runner.temp }}/mat354-phase-a/campaign/*.d
+            ${{ runner.temp }}/mat354-phase-a/campaign/.*.partial
+            ${{ runner.temp }}/mat354-phase-a/transport/*.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90

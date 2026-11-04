@@ -263,13 +263,20 @@ above is unchanged from execution 3. The
 controls, mutation checks, cost and the remaining small overhead under
 continuous index churn.
 
-**In-app caveat (2026-11-04).** The desktop worker currently sets the
-simulation region twice per step: first the camera window, then the scenario's
-fixed interest. `World::set_simulation_region` makes the cache cold on every
-selected-core change, so in the shipped host cached/dormant cost more than
-reference. With that flip removed locally, the in-app cached step is ≈0.7 ms.
-The host fix is a separate decision, recorded in the
-[P1 evidence](../audits/2026-11-04-lcb201-p1-wake-summaries.md#full-host-cohort-the-per-step-region-flip).
+**In-app result (2026-11-04).** Before the desktop host fix below, the worker
+made the cache cold twice per step, and in-app cached/dormant cost more than
+reference. With that flip removed, the in-app cached quiet-pool step with P1 is
+≈0.7 ms (local measurement in the
+[P1 evidence](../audits/2026-11-04-lcb201-p1-wake-summaries.md#full-host-cohort-the-per-step-region-flip)).
+
+**Desktop host interaction (2026-11-04).** The desktop worker used to write the
+camera window and then the scenario's fixed interest on every step. Each
+`World::set_simulation_region` selected-core change calls `cache->cold()`, so
+in-app cached/dormant cost more than reference. The worker now leaves a
+fixed-interest scenario's region to the scenario
+([region-flip record](../audits/2026-11-04-lcb201-region-flip.md)). A moving
+camera window still makes the cache cold whenever its selected cores change.
+Narrowing that native invalidation is a separate, unimplemented follow-up.
 
 ## Acceptance and remaining application work
 

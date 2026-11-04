@@ -1,0 +1,24 @@
+{
+  "status": "failed",
+  "documents": 120,
+  "navigation_link_documents": 8,
+  "canonical_claims": 238,
+  "local_links": 3623,
+  "heading_anchors": 700,
+  "questions": 32,
+  "errors": [
+    "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+    "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+    "Q28: missing expected-fact source ../../tools/dev.py",
+    "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+    "Q29: missing expected-fact source ../../tools/dev.py",
+    "Q30: missing expected-fact source ../../validation/browser-results.json"
+  ],
+  "warnings": [],
+  "limitations": [
+    "Does not verify source semantics or runtime claims",
+    "Does not fetch external URLs",
+    "Does not rewrite or reattest historical audits",
+    "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+  ]
+}

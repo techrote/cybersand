@@ -254,10 +254,16 @@ runtime's cached/dormant worker step falls to **0.70 ms** and simulation holds
 its 60 Hz cap, the same as FreeMass. Reference is unchanged. The patch is not
 part of this PR: it is shared host code, outside the pressure-optimization owner.
 
+**Later the same day:** the worker fix merged separately in #390 (main
+`751edc0b495dc85484ad5509a7c95f863651c76b`); see the
+[region-flip record](2026-11-04-lcb201-region-flip.md). The rows above were
+measured before it and are kept as recorded. A combined P1 + #390 rerun from the
+published runtime has not been made.
+
 **Consequences:**
 - P1 is necessary but not sufficient for an in-app benefit.
 - Until the flip is removed, cached/dormant should not be offered as faster
-  variants in the desktop app.
+  variants in the desktop app (removed by #390 for fixed-interest scenarios).
 - Any moving simulation window, for example ordinary camera motion with the
   window enabled, also turns the cache cold whenever the selected cores change.
   That deserves its own decision: either avoid redundant region writes in the

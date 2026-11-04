@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "all_decoded_bytes_match_downloaded_original_files": true,
+      "files": 1122,
+      "label": "linux",
+      "manifest_sha256": "53acdca8ab47e953c62ff2cd206423a04ca92194e2ad687f096a2819099b5ef4",
+      "scientific_qualification": "PASS_SEPARATELY_VERIFIED",
+      "shards": 11,
+      "status": "PASS_TRANSPORT_ONLY",
+      "uncompressed_bytes": 106891240
+    },
+    {
+      "all_decoded_bytes_match_downloaded_original_files": true,
+      "files": 1122,
+      "label": "windows",
+      "manifest_sha256": "b2749b56a2deddf0dfcb2e1b752931cf0414b9160b2c51e638ba0dcf54ded908",
+      "scientific_qualification": "PASS_SEPARATELY_VERIFIED",
+      "shards": 11,
+      "status": "PASS_TRANSPORT_ONLY",
+      "uncompressed_bytes": 107057819
+    },
+    {
+      "all_decoded_bytes_match_downloaded_original_files": true,
+      "files": 1122,
+      "label": "windows-run2",
+      "manifest_sha256": "b72f90b0c443cdc1e7407634cd1a5629fe8edbfacece17d9bc122248b0fe94bc",
+      "scientific_qualification": "FAIL_SOURCE_IDENTITY",
+      "shards": 11,
+      "status": "PASS_TRANSPORT_ONLY",
+      "uncompressed_bytes": 107066702
+    }
+  ],
+  "schema": "mat354.hosted-transport-audit.v1"
+}

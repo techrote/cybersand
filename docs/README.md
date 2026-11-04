@@ -11,14 +11,16 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 # CyberSand documentation
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
-The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
-is being reconciled and qualified for guarded integration in [#371](https://github.com/techrote/cybersand/pull/371).
-The [current A-only boundary](architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
-preserves production authority and the frozen legacy compatibility baseline.
-#353-B consumer migration and #354–#356 require separate admission; #358's
-experimental materials remain unintegrated. Dated architecture and implementation
-receipts keep their original source scope; the PR ledger owns final resulting-head
-checks and merge status.
+The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
+[#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;
+legacy native/fallback definitions remain production authority. The
+[#354 Phase A investigation](operations/material-liveness-investigation.md)
+demonstrates lost isolated MoltenGlass cooling, distinguishes existing mutual
+heating and preserves documented generic yielding rest. Only tests, tooling and
+documentation are admitted. The [current programme boundary](architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
+keeps production correction, #353-B migration and #355/#356 separately gated;
+#354 remains open. Exact source, failed attempts, review and platform outcomes
+belong to the [findings audit](audits/2026-11-04-mat354-findings.md) and PR ledger.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),
