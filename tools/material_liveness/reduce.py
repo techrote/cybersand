@@ -69,8 +69,20 @@ def sha256(value, name):
 def raw_file(info, raw_root=None):
     if type(info) is not dict:
         raise ReductionError('raw file descriptor must be an object')
-    original = Path(text(info.get('path'), 'raw path'))
-    path = (raw_root / original.name) if raw_root else original
+    original = text(info.get('path'), 'raw path')
+    if raw_root is None:
+        path = Path(original)
+    else:
+        # Receipts retain the producing OS's path syntax. Relocation uses only
+        # its final component, including when replaying Windows logs on POSIX.
+        name = re.split(r'[/\\]', original)[-1]
+        if (not re.fullmatch(r'[A-Za-z0-9_.-]{1,160}', name) or name in {'.', '..'} or name.endswith('.') or
+                re.fullmatch(r'(?i:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?', name)):
+            raise ReductionError('invalid relocated raw filename')
+        root = Path(raw_root).resolve()
+        path = root / name
+        if path.resolve().parent != root:
+            raise ReductionError('relocated raw file escapes its directory')
     data = path.read_bytes()
     if integer(info.get('bytes'), 'raw bytes') != len(data) or sha256(info.get('sha256'), 'raw digest') != digest(data):
         raise ReductionError(f'raw identity mismatch: {path}')

@@ -270,6 +270,56 @@ class EvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(reader.ReductionError, 'raw identity'):
             reader.reduce(receipt)
 
+    def test_relocated_reduction_accepts_windows_drive_unc_and_posix_descriptors(self):
+        receipt = self.receipt()
+        expected = reader.reduce(receipt)
+        relocated = self.directory / 'downloaded'
+        relocated.mkdir()
+        for case in receipt['cases']:
+            for stream in ('stdout', 'stderr'):
+                original = Path(case[stream]['path'])
+                (relocated / original.name).write_bytes(original.read_bytes())
+                original.unlink()
+        for prefix, separator in ((r'D:\runner\retained logs', '\\'),
+                                  (r'\\host\share\retained logs', '\\'),
+                                  ('/runner/retained logs', '/')):
+            with self.subTest(prefix=prefix):
+                moved = copy.deepcopy(receipt)
+                for case in moved['cases']:
+                    for stream in ('stdout', 'stderr'):
+                        case[stream]['path'] = prefix + separator + Path(case[stream]['path']).name
+                self.assertEqual(reader.reduce(moved, relocated), expected)
+
+    def test_relocated_raw_still_requires_exact_bytes_and_hash(self):
+        path = self.directory / 'case.stdout'
+        path.write_bytes(b'original\n')
+        info = {**runner.fact(path), 'path': r'D:\retained\case.stdout'}
+        self.assertEqual(reader.raw_file(info, self.directory), b'original\n')
+        for changed in ({**info, 'bytes': info['bytes'] + 1}, {**info, 'sha256': '0' * 64}):
+            with self.assertRaisesRegex(reader.ReductionError, 'raw identity mismatch'):
+                reader.raw_file(changed, self.directory)
+        path.write_bytes(b'modified\n')
+        with self.assertRaisesRegex(reader.ReductionError, 'raw identity mismatch'):
+            reader.raw_file(info, self.directory)
+
+    def test_relocated_raw_refuses_invalid_basename_before_read(self):
+        for name in ('.', '..', '/original/', r'D:\original\..', r'D:\original\.',
+                     'D:case.stdout', '/original/case.stdout:alternate', '/original/NUL.stdout',
+                     '/original/case.stdout.', '/original/bad\0.stdout'):
+            with self.subTest(path=name), patch.object(Path, 'read_bytes') as read:
+                with self.assertRaisesRegex(reader.ReductionError, 'invalid relocated raw filename'):
+                    reader.raw_file({'path': name, 'bytes': 0, 'sha256': reader.digest(b'')}, self.directory)
+                read.assert_not_called()
+
+    def test_relocated_raw_uses_only_basename_inside_requested_directory(self):
+        outside = self.directory / 'case.stdout'
+        outside.write_bytes(b'outside')
+        relocated = self.directory / 'downloaded'
+        relocated.mkdir()
+        (relocated / outside.name).write_bytes(b'inside')
+        info = {'path': '../case.stdout', 'bytes': 6, 'sha256': reader.digest(b'inside')}
+        self.assertEqual(reader.raw_file(info, relocated), b'inside')
+
     def test_missing_tick_is_not_success(self):
         receipt = self.receipt()
         self.rewrite(receipt, lambda rows: rows.pop(1))
