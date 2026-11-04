@@ -10,7 +10,33 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-AUTH-002 Phase A handover — 2026-11-04
+
+Begin with the [material liveness investigation guide](material-liveness-investigation.md),
+[findings](../audits/2026-11-04-mat354-findings.md) and
+[correction admission](../audits/2026-11-04-mat354-correction-admission.md).
+Accepted main `7ef4856e` includes merged #371; its shadow catalogue is unconsumed
+by production, and the original native/fallback definitions remain authoritative.
+Only independent tests, tooling, evidence and documentation are admitted for
+#354 Phase A. Isolated MoltenGlass loses a cooling opportunity under sleep;
+mutual heating remains the existing law and generic yielding rest is preserved.
+
+Keep #354 open and its investigation PR draft/unmerged. Production correction
+requires separate owner admission and a reviewed transition for protected
+`native/src/world.cpp`; do not refresh lock hashes or import #353-B migration.
+Revalidate live main, exact runtime/source evidence and overlapping #355 ownership
+before future writes. Preserve #358/#347/#370/#373/#201 and Water phase/quantity
+boundaries. Use a separately owned worktree and serialize any shared kernel writes.
+PressureFlow #201 continues separately in [draft #374](https://github.com/techrote/cybersand/pull/374);
+do not import its optimization into this investigation.
+The audit/PR ledger carries actual campaign, sanitizer, platform and independent
+review status, including failed or incomplete attempts; no skipped gate is a pass.
+
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
+
+**Historical integration assignment.** #371 subsequently merged at `7ef4856e`.
+The following handover preserves its earlier source and qualification boundary;
+the Phase A section above owns the current liveness assignment.
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected

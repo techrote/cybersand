@@ -10,7 +10,36 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
+
+The [preregistration](../audits/2026-11-04-mat354-preregistration.md),
+[causal findings](../audits/2026-11-04-mat354-findings.md) and
+[correction-admission memo](../audits/2026-11-04-mat354-correction-admission.md)
+bind real native World fixtures to accepted production source `7ef4856e` and
+separate apparatus commits, compiled inputs, executables and retained raw results.
+The [guide](../operations/material-liveness-investigation.md) owns reproduction;
+the findings and linked PR ledger own exact completed, failed and unexecuted gates.
+
+Independent review examines source/observer authority, physical controls, actual
+kernel and worker evidence, conservation, raw identity and minimal deadline design.
+Initial apparatus limitations and the truncated raw output remain retained, as do
+the executable-mode failure and LeakSanitizer environment refusal. A receipt saying
+`EXECUTED` does not override failed raw authentication. Corrections require a new
+source/run identity; draft-skipped jobs remain skipped. This entry asserts no final
+campaign, Windows, independent-hardware or LeakSanitizer pass.
+
+H1's lost isolated cooling opportunity is distinct from H2's executed mutual
+heating law and H3's documented generic yielding rest. Investigation results do
+not authorize production changes or close #354. The 27 protected sources and
+compatibility lock remain unchanged; no production runtime publication is part
+of this tests/tooling/documentation checkpoint.
+
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
+
+**Integration completed:** #371 merged at accepted main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. The original qualification records
+below retain their source and platform scope; their final receipts remain in the
+[#371 ledger](https://github.com/techrote/cybersand/pull/371).
 
 The [integration qualification record](../audits/2026-11-04-mat-auth371-integration.md)
 retains the compiler escaping defect and correction,99 focused regressions,

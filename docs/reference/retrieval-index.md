@@ -10,6 +10,20 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Material liveness Phase A and implementation admission — 2026-11-04
+
+| Question | Canonical route |
+|---|---|
+| What does the real-World investigation establish about cooling, mutual heating and stochastic rest? | [Investigation guide](../operations/material-liveness-investigation.md), [material kernel contract](../systems/materials-and-rule-kernels.md#material-liveness-investigation-boundary--2026-11-04) |
+| What distinguishes an actual visit, worker claimant and authenticated result from configuration or an unchanged image? | [Reproduction and evidence guide](../operations/material-liveness-investigation.md), [validation ledger](validation-evidence.md#mat-auth-002-phase-a-evidence-boundary--2026-11-04) |
+| May the next agent change production cooling, generic retries or protected source hashes? | [Current admission boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04), [shadow compatibility guards](../operations/material-catalogue-shadow.md#compatibility-protection-and-independent-source-authority) |
+| Which resting, mask and region obligations must a correction preserve? | [Activity and deadline boundary](../systems/activity-dirty-regions-and-waking.md#material-liveness-phase-a--2026-11-04) |
+
+[Focused MAT354 questions](retrieval-questions-mat354.json) are additive; frozen32
+and challenge157 remain unchanged. The dated registration, findings and correction
+memo are excluded from default retrieval and reached through these current
+contracts. Their original failed or incomplete attempts remain evidence.
+
 ## Material catalogue compiler and compatibility guards — 2026-11-04
 
 Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)
@@ -27,7 +41,10 @@ stay fixed. Original version1 and its evidence remain at implementation head
 The [adopted Planned architecture](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
 and [current A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
 distinguish merged #357 documentation, implemented #353-A tooling in #371,
-resulting-head qualification and separately unadmitted #353-B/#354–#356 work.
+resulting-head qualification and separately gated successor work. The
+[later Phase A boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
+records merged #371 and the tests/tooling/documentation-only admission for #354;
+production implementation remains pending.
 The [corrected technical contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 owns header-byte identity, backend distinctions, endpoint effects, experimental
 IDs and successor gates. Original proposal and review statements retain their
