@@ -10,7 +10,38 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-AUTH-002 Phase A integration gate — 2026-11-04
+
+The owner now authorizes current-main reconciliation, focused preflight, a
+Ready-for-review transition and one guarded integration of
+[PR #377](https://github.com/techrote/cybersand/pull/377), **only** for its
+investigation tests, tooling, CI, evidence and documentation. The earlier
+draft/unmerged hold below records the completed Phase A recovery assignment;
+this later integration authorization supersedes that hold, not the prohibition
+on production changes. Keep #354 and #352 open. H1 is not repaired by this PR.
+
+The integration intake is published head `58b8d27b003c812aff24152f903b6c6123f71e5c`
+(tree `ace1162ed3b0720407b8a5cd97d6f2b75de6fc91`) and accepted main
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`
+(tree `4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`). Main now includes merged
+[#374](https://github.com/techrote/cybersand/pull/374)'s PressureFlow idle-cost
+evidence and benchmark, with no production-source change. Preserve that accepted
+work and every original MAT354 receipt/source identity in ancestry.
+
+The [material-liveness integration gate](material-liveness-investigation.md#which-gates-control-phase-a-integration)
+and live PR ledger separate final-candidate qualification from historical
+execution. Reconciliation alone is not acceptance. Require source guards,
+fresh focused Linux/Windows evidence after a head change, actual ready-state
+Documentation/materialized provenance, Native, Godot and palette checks, and
+an independent final read-only GO before merging. A failed, pending, stale or
+required-skipped gate blocks integration; the source-scope advisory grants no
+exemption. Recheck current base/head and repository review policy immediately
+before the authorized merge. Do not import #358/#383/#384/#386 or start #354-B.
+
 ## MAT-AUTH-002 Phase A handover — 2026-11-04
+
+**Historical recovery assignment.** Its source-qualified results and limitations
+remain intact; the later integration gate above owns current readiness authority.
 
 Begin with the [material liveness investigation guide](material-liveness-investigation.md),
 [findings](../audits/2026-11-04-mat354-findings.md) and

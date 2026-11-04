@@ -10,6 +10,29 @@ related-documents: [../systems/materials-and-rule-kernels.md, ../systems/activit
 
 # Material liveness investigation
 
+## Which gates control Phase A integration?
+
+On 4 November 2026 the owner separately authorized reconciliation of
+[PR #377](https://github.com/techrote/cybersand/pull/377) with current main,
+Ready-for-review qualification and a guarded evidence-only merge. This
+supersedes the earlier draft/unmerged hold for the investigation; it does not
+authorize the H1 production repair, a compatibility transition or issue closure.
+The intake is published head `58b8d27b003c812aff24152f903b6c6123f71e5c` and main
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`, including merged #374 evidence.
+
+The live PR ledger owns the actual reconciled head/tree, source inventories,
+per-platform executions, checked-out merge parents, artifacts, independent final
+review and integration disposition. Original receipts remain immutable evidence
+of their recorded sources. A new head requires new focused Linux/Windows proof;
+previous draft skips are not passes. The configured ready-state Native, Godot,
+palette and Documentation checks apply, including actual materialized-runtime
+provenance. The scope advisory cannot waive them. Merge requires all applicable
+gates complete and green, an independent final read-only GO, current repository
+review requirements and a final base/head reread. Otherwise record NO-GO and stop.
+
+H1 remains unrepaired. Keep #354 open for the separately admitted deadline and
+protected-source transition; preserve H2 mutual heating and H3 generic rest.
+
 ## What does Phase A establish?
 
 Issue [#354](https://github.com/techrote/cybersand/issues/354) has three separate
@@ -176,5 +199,6 @@ Production implementation requires separate owner authorization and a narrowly
 reviewed #371 compatibility transition, followed by the appropriate runtime
 rebuild, LFS publication and provenance qualification. The present evidence does
 not authorize a thermal profile, generic perpetual retries, a scheduler framework,
-or changes owned by #355/#358/#347/#370/#373/#201. The issue and PR remain open and
-draft until the separately required decisions and work are made.
+or changes owned by #355/#358/#347/#370/#373/#201. Issue #354 remains open for
+those production decisions. The evidence PR's separately authorized readiness
+and integration are governed by the Phase A integration gate above.

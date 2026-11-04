@@ -12,6 +12,12 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 ## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
 
+The later [Phase A integration gate](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration)
+authorizes current-main reconciliation and guarded integration of #377. Its live
+PR ledger owns fresh final-head, ready-state and independent-review results;
+the retained execution records below keep their original sources and limitations.
+No integration permission or passing apparatus result repairs H1 or closes #354.
+
 The [preregistration](../audits/2026-11-04-mat354-preregistration.md),
 [causal findings](../audits/2026-11-04-mat354-findings.md) and
 [correction-admission memo](../audits/2026-11-04-mat354-correction-admission.md)
