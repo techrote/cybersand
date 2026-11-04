@@ -4,13 +4,17 @@
 This is a compatibility checkpoint, not a migration or a generic GDScript
 interpreter. The retained source commit independently authenticates the lock.
 Source changes need an explicitly reviewed new checkpoint; there is deliberately
-no --accept, --refresh or automatic baseline update mode.
+no --accept, --refresh or automatic baseline update mode. A reviewed edit to one
+protected consumer is admitted only by a code-pinned REVIEWED_TRANSITIONS entry,
+authenticated against retained Git history; the lock itself never changes.
 """
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
+import os
 import re
 import struct
 import subprocess
@@ -54,6 +58,42 @@ SOURCE_ROLES = {
     "docs/reference/water-normalization-vectors.json": "retained normalization oracle",
     "docs/reference/liquid-run-receipt-vectors.json": "retained receipt oracle",
 }
+# Files whose bytes are a retained identity: the inputs of the catalogue digest,
+# capability digest and fallback facts, plus the policy identity generators,
+# digest contract and retained oracles. Changing one is a cutover or identity
+# transition, never a reviewed per-file transition.
+IDENTITY_INPUTS = frozenset((
+    *CATALOGUE_SOURCES,
+    "docs/reference/liquid-solver-capability-matrix.json",
+    "godot/scripts/cell_world.gd",
+    "godot/scripts/interaction_policy.gd",
+    "godot/scripts/material_appearance_lut.gd",
+    "native/include/cybersand/liquid_policy_catalogue.hpp",
+    "tools/lcb/policy_contract.py",
+    "tools/lcb/native_policy_artifacts.py",
+    "docs/reference/liquid-policy-wire-vectors.json",
+    "docs/reference/water-normalization-vectors.json",
+    "docs/reference/liquid-run-receipt-vectors.json",
+))
+TRANSITION_FIELDS = frozenset(("path", "from_lf_sha256", "to_lf_sha256", "source_commit",
+                               "record", "issue", "pr"))
+# Git variables that would redirect `git -C <repository>` to another repository
+# or index (they are exported inside hooks and `git rebase -x`).
+GIT_LOCATION_VARIABLES = frozenset(("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_COMMON_DIR",
+                                    "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+                                    "GIT_NAMESPACE"))
+# Owner-approved reviewed per-file transitions, in order. This is code, not lock
+# data, so editing the lock alone can never admit one. Each step moves one
+# protected, non-identity consumer from the hash it is currently admitted at (its
+# baseline lock entry, or the previous step for that path) to the LF bytes of
+# `path` at `source_commit`. That commit must descend from BASELINE (or from the
+# previous step's commit) and stay reachable from HEAD, so a PR adding an entry
+# must merge with a merge commit, not a squash or rebase. `record` is a Markdown
+# record under docs/audits/, committed at HEAD, naming the path, both hashes and
+# the commit. Working bytes must equal the final target after LF normalization; a
+# further edit needs its own reviewed step. The table starts empty; each reviewed
+# PR adds its own entry together with its source change.
+REVIEWED_TRANSITIONS: tuple[dict, ...] = ()
 
 
 class CompatibilityError(ValueError):
@@ -209,12 +249,17 @@ def fallback_facts(sources: dict[str, bytes]) -> dict:
             "slush_density": density[identities["SLUSH"]]}
 
 
+def git_environment() -> dict[str, str]:
+    """The caller's environment without variables that redirect `git -C`."""
+    return {key: value for key, value in os.environ.items() if key not in GIT_LOCATION_VARIABLES}
+
+
 def retained_sources(repository: Path = ROOT) -> dict[str, bytes]:
     sources = {}
     for path in SOURCE_ROLES:
         try:
             result = subprocess.run(["git", "-C", str(repository), "show", f"{BASELINE}:{path}"],
-                                    check=True, capture_output=True, timeout=30)
+                                    check=True, capture_output=True, timeout=30, env=git_environment())
         except (OSError, subprocess.SubprocessError) as exc:
             raise CompatibilityError(f"cannot authenticate {BASELINE}:{path}; complete retained Git history required: {exc}") from exc
         sources[path] = result.stdout
@@ -239,8 +284,91 @@ def build_lock(sources: dict[str, bytes]) -> dict:
             "experimental_claims": expected_claims()}
 
 
+def _git(repository: Path, *arguments: str) -> subprocess.CompletedProcess:
+    try:
+        return subprocess.run(["git", "-C", str(repository), *arguments],
+                              capture_output=True, timeout=30, env=git_environment())
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise CompatibilityError(f"git {' '.join(arguments)}: {exc}") from exc
+
+
+def _stderr(result: subprocess.CompletedProcess) -> str:
+    return result.stderr.decode("utf-8", errors="replace").strip()
+
+
+def _is_ancestor(repository: Path, older: str, newer: str) -> bool:
+    result = _git(repository, "merge-base", "--is-ancestor", older, newer)
+    if result.returncode not in (0, 1):
+        raise CompatibilityError(f"cannot resolve ancestry {older} -> {newer} in {repository}; "
+                                 f"complete retained Git history required: {_stderr(result)}")
+    return result.returncode == 0
+
+
+def admitted_transitions(lock: dict, transitions, repository: Path = ROOT) -> dict[str, str]:
+    """Authenticate reviewed transitions; return each moved path's admitted LF hash.
+
+    Every rule fails closed. Nothing here can change the lock, a baseline hash,
+    an identity input or a path without a committed review record.
+    """
+    if not isinstance(transitions, (tuple, list)):
+        raise CompatibilityError("REVIEWED_TRANSITIONS: expected an ordered sequence")
+    admitted = {entry["path"]: entry["lf_sha256"] for entry in lock["source_locks"]}
+    base_commit: dict[str, str] = {}
+    targets: dict[str, str] = {}
+    for index, entry in enumerate(transitions):
+        where = f"REVIEWED_TRANSITIONS[{index}]"
+        if not isinstance(entry, dict) or set(entry) != TRANSITION_FIELDS:
+            raise CompatibilityError(f"{where}: expected exactly {sorted(TRANSITION_FIELDS)}")
+        name, commit, record = entry["path"], entry["source_commit"], entry["record"]
+        if type(name) is not str or name not in SOURCE_ROLES:
+            raise CompatibilityError(f"{where}: {name!r} is not a protected consumer")
+        if name in IDENTITY_INPUTS:
+            raise CompatibilityError(f"{where}: {name} feeds a retained identity; "
+                                     "changing it is a cutover, not a reviewed transition")
+        for key in ("from_lf_sha256", "to_lf_sha256"):
+            if type(entry[key]) is not str or not re.fullmatch(r"[0-9a-f]{64}", entry[key]):
+                raise CompatibilityError(f"{where}: {key}: expected a lowercase SHA-256")
+        if type(commit) is not str or not re.fullmatch(r"[0-9a-f]{40}", commit):
+            raise CompatibilityError(f"{where}: source_commit: expected a full lowercase commit ID")
+        for key in ("issue", "pr"):
+            if type(entry[key]) is not int or entry[key] <= 0:
+                raise CompatibilityError(f"{where}: {key}: expected a positive integer")
+        if (type(record) is not str or not re.fullmatch(r"docs/audits/[A-Za-z0-9._/-]+\.md", record)
+                or ".." in record.split("/")):
+            raise CompatibilityError(f"{where}: record: expected a Markdown path under docs/audits/")
+        if entry["from_lf_sha256"] != admitted[name]:
+            raise CompatibilityError(f"{where}: {name}: from_lf_sha256 must equal the currently "
+                                     f"admitted {admitted[name]}")
+        if entry["to_lf_sha256"] == entry["from_lf_sha256"]:
+            raise CompatibilityError(f"{where}: {name}: a transition must change the bytes")
+        parent = base_commit.get(name, BASELINE)
+        if not _is_ancestor(repository, parent, commit):
+            raise CompatibilityError(f"{where}: source_commit {commit} does not descend from {parent}")
+        if not _is_ancestor(repository, commit, "HEAD"):
+            raise CompatibilityError(
+                f"{where}: source_commit {commit} is not retained in HEAD's history. Merge a PR that adds "
+                "an entry with a merge commit, not a squash or rebase. If one already landed that way, a "
+                "reviewed follow-up must point source_commit at the merged commit that holds these bytes "
+                "and update the record")
+        shown = _git(repository, "show", f"{commit}:{name}")
+        if shown.returncode:
+            raise CompatibilityError(f"{where}: cannot read {commit}:{name}: {_stderr(shown)}")
+        if sha(shown.stdout) != entry["to_lf_sha256"]:
+            raise CompatibilityError(f"{where}: {name}: to_lf_sha256 is not the authenticated bytes at {commit}")
+        written = _git(repository, "show", f"HEAD:{record}")
+        if written.returncode:
+            raise CompatibilityError(f"{where}: record {record} is not committed at HEAD")
+        text = written.stdout.decode("utf-8", errors="replace")
+        for fact in (name, entry["from_lf_sha256"], entry["to_lf_sha256"], commit):
+            if fact not in text:
+                raise CompatibilityError(f"{where}: record {record} does not name {fact}")
+        admitted[name] = targets[name] = entry["to_lf_sha256"]
+        base_commit[name] = commit
+    return targets
+
+
 def check(root: Path = ROOT, lock_path: Path | None = None,
-          baseline_repository: Path = ROOT) -> dict:
+          baseline_repository: Path = ROOT, transitions=None) -> dict:
     path = lock_path or root / LOCK
     actual_lock = read_lock(path)
     baseline = retained_sources(baseline_repository)
@@ -249,6 +377,8 @@ def check(root: Path = ROOT, lock_path: Path | None = None,
         if _canonical(actual_lock[key]) != _canonical(expected_lock[key]):
             raise CompatibilityError(f"{path}: /{key}: differs from immutable {BASELINE}; "
                                      "do not refresh away a compatibility failure")
+    reviewed = REVIEWED_TRANSITIONS if transitions is None else transitions
+    targets = admitted_transitions(actual_lock, reviewed, baseline_repository)
     current = {}
     for source in actual_lock["source_locks"]:
         name = source["path"]
@@ -257,10 +387,15 @@ def check(root: Path = ROOT, lock_path: Path | None = None,
         except OSError as exc:
             raise CompatibilityError(f"{name}: required legacy consumer unavailable: {exc}") from exc
         actual = sha(current[name])
-        if actual != source["lf_sha256"]:
+        if name in targets and actual != targets[name]:
+            raise CompatibilityError(f"{name}: LF source-byte drift ({source['role']}); expected reviewed "
+                                     f"transition target {targets[name]}, got {actual}. "
+                                     "A further edit needs its own reviewed transition")
+        if name not in targets and actual != source["lf_sha256"]:
             raise CompatibilityError(f"{name}: LF source-byte drift ({source['role']}); "
                                      f"expected {source['lf_sha256']}, got {actual}. "
-                                     "#353-A preserves this consumer; cutover/identity transition needs separate review")
+                                     "#353-A preserves this consumer; cutover/identity transition needs separate review "
+                                     "(a behaviour-preserving edit may use a reviewed REVIEWED_TRANSITIONS entry)")
     for tree in ("native", "godot"):
         for source in sorted((root / tree).rglob("*")):
             if source.suffix not in {".h", ".hh", ".hpp", ".hxx", ".c", ".cc", ".cpp", ".cxx", ".inc", ".gd", ".gdshader"}:
@@ -275,6 +410,7 @@ def check(root: Path = ROOT, lock_path: Path | None = None,
             "catalogue_digest": catalogue_digest(current),
             "capability_digest": capability_digest(current["docs/reference/liquid-solver-capability-matrix.json"]),
             "fallback_slush_density": actual_lock["fallback_source_facts"]["slush_density"],
+            "reviewed_transitions": copy.deepcopy(list(reviewed)),
             "production_cutover": False, "runtime_execution": False}
 
 
