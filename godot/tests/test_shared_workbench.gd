@@ -162,6 +162,8 @@ func author(map: String) -> void:
 		check(bench.open_map(index),"open second map")
 		if not await wait_for(func(): return ready(map,epoch), "map installation"):
 			return
+	check(not bench.paint(Vector2i(151,143),CyberCellWorld.SAND) and bench.applied.edits.is_empty(),
+		"stamp grazing the flyer start footprint cannot create an unloadable setup")
 	canvas_stamp(Vector2i(161,123),0,true)
 	check(bench.applied.edits.has([161,123,CyberCellWorld.SAND]) and bench._drag,"viewport GUI sand stamp starts a held stroke")
 	main._notification(Node.NOTIFICATION_WM_WINDOW_FOCUS_OUT)

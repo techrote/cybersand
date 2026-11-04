@@ -10,6 +10,7 @@ var water_choice := OptionButton.new()
 var file_name := LineEdit.new()
 var status := Label.new()
 var message := ""
+var _footprints: Array[Rect2i] = []
 var pilot_slot := -1
 var step_requested := false
 var step_serial := 0
@@ -136,6 +137,9 @@ func apply(candidate: Dictionary) -> bool:
 func installed(candidate: Dictionary) -> void:
 	applied = candidate.duplicate(true)
 	applied.liquid_policy = Array(host.tower_context.liquid_solver_policy.envelope)
+	_footprints.clear()
+	for actor: Dictionary in Setup.physical_definitions(applied):
+		_footprints.append(Setup.spawn_footprint(actor))
 	starting = true
 	step_requested = false
 	step_pending = false
@@ -229,12 +233,11 @@ func paint(pos: Vector2i, material: int) -> bool:
 			return refuse("Reset before editing the starting terrain.")
 		if applied.edits.size() >= Setup.MAX_STROKES:
 			return refuse("Starting brush history is full.")
-		# Emission cannot install cells in an occupied native body mask.
-		# Exclude the two starting assemblies plus the brush footprint.
-		for slot: int in 2:
-			for part: Dictionary in host.physical_actor_session.observation(slot).parts:
-				var footprint := Rect2(Vector2(part.position) - Vector2(part.size)*0.5,Vector2(part.size))
-				if footprint.grow(Setup.BRUSH_RADIUS + 1).has_point(Vector2(pos)):
+		# A stamp we admit here must also pass the next reset/load clearance check.
+		if material != CyberCellWorld.EMPTY:
+			for footprint: Rect2i in _footprints:
+				var closest := pos.clamp(footprint.position,footprint.end-Vector2i.ONE)
+				if pos.distance_squared_to(closest) <= Setup.BRUSH_RADIUS * Setup.BRUSH_RADIUS:
 					return refuse("Move the brush clear of the starting bodies.")
 	if not host.queue_brush_mutation(pos.x,pos.y,Setup.BRUSH_RADIUS,material):
 		return refuse("The worker refused the brush request.")

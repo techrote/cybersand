@@ -59,12 +59,15 @@ static func physical_definitions(setup: Dictionary) -> Array:
 
 # Compare only the small spawn footprints against the final ordered recipe.
 # Starting an actor inside authored cells would move or mask them on rebuild.
+static func spawn_footprint(actor: Dictionary) -> Rect2i:
+	var rig := CyberPhysicalUsableEquipment.definition(CyberPhysicalActorCatalog.entry(actor.model))
+	var bounds: Rect2 = rig.bounds
+	var origin := Vector2(actor.position) + bounds.position
+	return Rect2i(Vector2i(origin.floor()),Vector2i((origin+bounds.size).ceil()) - Vector2i(origin.floor()))
+
 static func spawn_error(setup: Dictionary, rectangles: Array) -> String:
 	for actor: Dictionary in physical_definitions(setup):
-		var rig := CyberPhysicalUsableEquipment.definition(CyberPhysicalActorCatalog.entry(actor.model))
-		var bounds: Rect2 = rig.bounds
-		var origin := Vector2(actor.position) + bounds.position
-		var footprint := Rect2i(Vector2i(origin.floor()),Vector2i((origin+bounds.size).ceil()) - Vector2i(origin.floor()))
+		var footprint := spawn_footprint(actor)
 		var cells := PackedByteArray()
 		cells.resize(footprint.get_area())
 		for i in range(0,rectangles.size(),5):
