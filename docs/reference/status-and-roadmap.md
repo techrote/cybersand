@@ -28,6 +28,11 @@ records the corrected preparation and integration-approval boundary. The
 preserves that original registration while admitting #390's worker change on
 main `751edc0b`. #379 remains Ready and requires fresh resulting-head gates and
 an independent final review before the owner receives a merge recommendation.
+The resulting b30 qualification is on **HOLD**: the Windows host process printed
+86/0 assertions and then exited0xC0000005, so Windows coverage failed. The
+[bounded exit investigation](../audits/2026-11-04-pr379-windows-exit-investigation.md)
+preserves that failure and admits current-source exception capture. No production
+repair, runtime upgrade or merge approval is inferred from this diagnostic work.
 
 ## PressureFlow desktop region flip (#201) — 2026-11-04
 

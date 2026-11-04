@@ -24,6 +24,11 @@ The [current-main source re-admission](../audits/2026-11-04-in-tools-379-current
 binds the one changed worker input to accepted main `751edc0b` and leaves all
 earlier receipts at their original identities. The live #379 ledger owns fresh
 resulting-head execution; source admission alone supplies no runtime pass.
+The [Windows process investigation](../audits/2026-11-04-pr379-windows-exit-investigation.md)
+retains b30/test-merge d340, the86/0 footer followed by0xC0000005, and the failed
+Windows coverage gate. Its separately admitted exception apparatus preserves
+the fixture and current runtimes; no repair or successful diagnostic is claimed
+by its source checkpoint.
 
 ## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
 

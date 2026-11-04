@@ -20,6 +20,8 @@ for actual source-qualified results. The [six separate retrieval questions](retr
 keep the frozen32 and existing challenges unchanged. Production gameplay remains Planned.
 The [source re-admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
 and runbook distinguish the retained v1 lock from the current-main checker.
+Use the [validation ledger](validation-evidence.md#in-tools-preparation-scope--2026-11-04)
+for the blocking Windows exit and the separately scoped diagnostic continuation.
 
 ## Material liveness Phase A and implementation admission — 2026-11-04
 

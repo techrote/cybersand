@@ -31,6 +31,10 @@ The subsequent [independent #379 review](../audits/2026-11-04-in-tools-379-indep
 owns retrieval recovery, stricter test evidence and the separate Liquid Drain
 handover. It preserves original source locks and requires explicit owner
 integration approval; no parallel implementation is imported.
+The [Windows exit continuation](../audits/2026-11-04-pr379-windows-exit-investigation.md)
+now investigates the required Windows process/coverage failure. Keep the
+original failure and all source locks; diagnostic capture is not a repair
+or merge approval.
 
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
