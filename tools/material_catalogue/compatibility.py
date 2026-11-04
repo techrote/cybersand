@@ -93,7 +93,35 @@ GIT_LOCATION_VARIABLES = frozenset(("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE"
 # the commit. Working bytes must equal the final target after LF normalization; a
 # further edit needs its own reviewed step. The table starts empty; each reviewed
 # PR adds its own entry together with its source change.
-REVIEWED_TRANSITIONS: tuple[dict, ...] = ()
+REVIEWED_TRANSITIONS: tuple[dict, ...] = (
+    {
+        "path": "native/src/world.cpp",
+        "from_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+        "to_lf_sha256": "a47955f79ed5fbc8bc0ca8e2892ed4eb0ddbd728b841bc08ccee14a4c239e4a7",
+        "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+        "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+        "issue": 391,
+        "pr": 394,
+    },
+    {
+        "path": "native/src/world_pressure.inc",
+        "from_lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+        "to_lf_sha256": "a1dd5c486dad16f114cce3b38d292407edb91e5bbaf03d0193dcc4ecd7338e62",
+        "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+        "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+        "issue": 391,
+        "pr": 394,
+    },
+    {
+        "path": "native/src/world_inertial.inc",
+        "from_lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+        "to_lf_sha256": "8a5d3680e96ca47a3f496be5a8b953084d2c6d2e0bd723c3214b87bdbc3580b5",
+        "source_commit": "1ca90de5181953f9ebd95ef19c920d8dee7e17e2",
+        "record": "docs/audits/2026-11-04-workbench394-material-source-transition.md",
+        "issue": 391,
+        "pr": 394,
+    },
+)
 
 
 class CompatibilityError(ValueError):
