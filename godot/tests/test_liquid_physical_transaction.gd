@@ -7,6 +7,9 @@ const Catalogue = preload("res://scripts/microscenario_catalogue.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Worker = preload("res://scripts/simulation_worker.gd")
 const PlayerProfiles = preload("res://scripts/player_environment_profiles.gd")
+const Readback = preload("res://tests/support/physical_retention_readback.gd")
+const Coupling = preload("res://scripts/rigid_body_coupling.gd")
+const WaterContract = preload("res://scripts/water_experiment_contract.gd")
 const DAM: String = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 var assertions: int = 0
 var failures: int = 0
@@ -46,6 +49,27 @@ func command(definition: Dictionary, policy: PackedInt32Array, serial: int, cand
 		"sampled_character_enabled":false,"liquid_policy":policy,
 		"controlled_liquid_setup":{"intent":"exploratory","normalization":"",
 		"physical_owner":{"epoch":17,"instance_id":candidate.get_instance_id(),"initial_bodies":candidate.initial_body_states()}}}
+
+
+func retained_cached_pose(session: CyberPhysicalActorSession) -> PackedFloat32Array:
+	# Same value packing as the original bridge, without incrementing its sample
+	# serial or refreshing PhysicsServer state while waiting for copied feedback.
+	var bridge: CyberRapierPhysicsBridge = session.bridge
+	var states := PackedFloat32Array()
+	if not bridge.is_initialized(): return states
+	for index: int in range(bridge._body_rids.size()):
+		var transform: Transform2D = bridge._transforms[index]
+		Coupling.append_input(states,index+1,transform.origin,transform.get_rotation(),bridge._body_sizes[index],
+			bridge._linear_velocities[index],bridge._angular_velocities[index],bridge._body_masses[index],0)
+	return states
+
+
+func equipment_before_initial_context(equipment: Dictionary) -> Dictionary:
+	# Only the initial readiness interval permits absent -> matching context.
+	# The refused-replacement oracle below continues to compare every byte.
+	var value: Dictionary = equipment.duplicate(true)
+	value.erase("metered_drain")
+	return value
 
 func run() -> void:
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
@@ -174,11 +198,72 @@ func application_route(definition: Dictionary, policy: PackedInt32Array) -> void
 		"actual accepted physical graph carries its prepared native/host observation identity")
 	var accepted_hash: String = desktop.tower_context.liquid_construction_receipt.physical_state_hash
 	var exact_pose: PackedFloat32Array = Candidate._pose_values(staged.session.bridge.pack_body_states())
+	var early_equipment: Dictionary = staged.session._view(0,false).equipment
+	var early_bytes: PackedByteArray = var_to_bytes(early_equipment)
+	var early_without_context: Dictionary = equipment_before_initial_context(early_equipment)
+	var accepted_receipt: Dictionary = desktop.tower_context.liquid_construction_receipt.duplicate(true)
+	var water_defaults: Dictionary = WaterContract.default_policy()
+	var maximum: int = (1 << int(water_defaults.mass_bits))-1
+	var expected_readback: Dictionary = {"run_id":staged.session.run_id,"epoch":staged.session.epoch,"actor_id":0,
+		"instance_id":early_equipment.instance_id,"equipment_epoch":early_equipment.equipment_epoch,
+		"usable_index":early_equipment.usable_index,"body_id":early_equipment.body_id,
+		"native_generation":accepted_receipt.session_generation,"policy_hash":accepted_receipt.policy_hash,
+		"minimum_publication_serial":desktop.latest_snapshot.serial,
+		"minimum_control_generation":int(staged.session._view(0,false).control_generation),
+		"completed_tick":accepted_receipt.completed_tick,
+		"context":{"mass_bits":int(water_defaults.mass_bits),"maximum":maximum,
+			"coherence_ticks":int(water_defaults.coherence_ticks),"initial_construction_receipt_available":true},
+		"ledgers":{"water_units_initial":32*maximum,"water_units_remaining":32*maximum,"water_units_removed":0,
+			"brine_cells_initial":32,"brine_cells_remaining":32,"brine_cells_removed":0}}
+	var settling: Dictionary = {"last":{},"guard_error":""}
+	var readiness_finished: bool = await wait_for(func() -> bool:
+		if desktop.physical_actor_session != staged.session or desktop._accepted_physical_candidate != staged \
+			or staged.viewport.world_2d.space != exact_space or desktop._pending_physical_candidate != null \
+			or not desktop.pending_microscenario_apply.is_empty() or not desktop.paused \
+			or not desktop._physical_terrain_ready or not staged.session._suspended \
+			or retained_cached_pose(staged.session) != exact_pose \
+			or desktop.tower_context.get("liquid_construction_receipt",{}).get("canonical_bytes") != canonical \
+			or desktop.tower_context.get("liquid_host_observation",{}) != retained_observation:
+			settling.guard_error = "accepted owner/space/pose/pause/receipt changed before readiness"
+			return true
+		var view: Dictionary = staged.session._view(0,false)
+		if var_to_bytes(early_equipment) != early_bytes \
+			or not Readback.equipment_unchanged(early_without_context,equipment_before_initial_context(view.equipment)) \
+			or (not early_equipment.get("metered_drain",{}).is_empty() and not Readback.equipment_unchanged(early_bytes,view.equipment)):
+			settling.guard_error = "equipment/resources or retained early payload changed outside initial hydration"
+			settling.last = {"differences":Readback.equipment_differences(early_bytes,view.equipment)}
+			return true
+		settling.last = Readback.evaluate(expected_readback,{"publication_serial":desktop.latest_snapshot.serial,
+			"frame":staged.session.equipment_frame(),"publication":desktop.latest_snapshot.physical_usables,"view":view})
+		return bool(settling.last.ready))
+	var readback_ready: bool = readiness_finished and str(settling.guard_error).is_empty() and bool(settling.last.get("ready",false))
+	if not readback_ready:
+		print("PHYSICAL_RETENTION_READBACK: ",JSON.stringify(settling))
+	expect(readback_ready,"accepted physical equipment receives matching native-owner readback before complete retention baseline")
+	expect(var_to_bytes(early_equipment) == early_bytes,"early copied equipment payload stays immutable through ordinary initial readback")
+	if not readback_ready:
+		desktop.simulation_worker.stop_worker();desktop.queue_free();desktop=null;await process_frame;return
+	expected_readback["world_instance_id"] = int(settling.last.world_instance_id)
+	print("PHYSICAL_RETENTION_READBACK: ",JSON.stringify({"status":"ready","native_generation":expected_readback.native_generation,
+		"policy_hash":expected_readback.policy_hash,"world_instance_id_decimal":str(expected_readback.world_instance_id),
+		"context":settling.last.context,"delivery":settling.last.details,
+		"initial_context_was_empty":early_equipment.get("metered_drain",{}).is_empty()}))
 	var exact_equipment: PackedByteArray = var_to_bytes(staged.session.observation(0).equipment)
 	desktop._prepared_physical_factory = func() -> RefCounted: return TerrainRefusal.new()
 	expect(desktop.microscenario_apply_exploratory_liquid(desktop.microscenario_definition,policy,false,"Play"),
 		"replacement reaches real main terrain refusal before native commit")
-	expect(await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty()),"declared main refusal receives terminal owner acknowledgement")
+	var pending_retention: Dictionary = {"unchanged":true,"first_differences":[]}
+	if not Readback.equipment_unchanged(exact_equipment,staged.session._view(0,false).equipment):
+		pending_retention.unchanged = false
+		pending_retention.first_differences = Readback.equipment_differences(exact_equipment,staged.session._view(0,false).equipment)
+	expect(await wait_for(func() -> bool:
+		var equipment: Dictionary = staged.session._view(0,false).equipment
+		if not Readback.equipment_unchanged(exact_equipment,equipment) and bool(pending_retention.unchanged):
+			pending_retention.unchanged = false
+			pending_retention.first_differences = Readback.equipment_differences(exact_equipment,equipment)
+		return desktop.pending_microscenario_apply.is_empty()),"declared main refusal receives terminal owner acknowledgement")
+	if not bool(pending_retention.unchanged): print("PHYSICAL_RETENTION_READBACK: pending changes ",JSON.stringify(pending_retention.first_differences))
+	expect(bool(pending_retention.unchanged),"complete hydrated equipment stays exact at submission and observed pending/refusal boundaries")
 	expect(desktop.physical_actor_session == staged.session and desktop._accepted_physical_candidate == staged
 		and staged.viewport.world_2d.space == exact_space and desktop._pending_physical_candidate == null
 		and Candidate._pose_values(staged.session.bridge.pack_body_states()) == exact_pose

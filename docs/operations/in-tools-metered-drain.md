@@ -5,7 +5,7 @@ document-kind: guide
 scope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates
 canonical-for: [in-tools-metered-drain]
 last-reviewed: 2026-11-04
-related-documents: [../systems/actor-usables.md, ../architecture/liquid-solver-family-policy.md, ../architecture/liquid-prepared-setup-and-receipts.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../audits/2026-11-04-in-tools-361a-metered-drain.md]
+related-documents: [../systems/actor-usables.md, ../architecture/liquid-solver-family-policy.md, ../architecture/liquid-prepared-setup-and-receipts.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../audits/2026-11-04-in-tools-361a-metered-drain.md, ../audits/2026-11-04-pr383-retention-readback-successor.md]
 ---
 
 # IN-TOOLS #361-A — opt-in metered physical Liquid Drain
@@ -163,6 +163,59 @@ quarantine while allowing an explicit existing clear/prepared reconstruction.
 No liquid repaint or velocity rollback is attempted. Process death or an
 uncatchable native exception cannot be converted into a surviving host receipt.
 
+## Refused-replacement equipment readback readiness
+
+**Current production behavior:** copied native-owner context is published for
+ordinary physical equipment too. A Brick Stamper can therefore carry a
+`metered_drain` context while its selected outer profile remains empty. A new
+actor starts without that cache; matching asynchronous worker readback supplies
+it through the existing validated equipment-feedback path. Until then a metered
+activation refuses with `awaiting_native_owner_context`; it cannot invent stock.
+Context arrival alone changes neither the selected usable nor native liquid.
+Sources are `physical_usable_runtime.gd` `physical_snapshot`,
+`physical_actor_session.gd` `accept_equipment_feedback` and
+`physical_usable_equipment.gd` `accept_readback`.
+
+**Current local test successor:** the refused-replacement regression waits within
+the existing watchdog for delivered readback bound to the accepted actor and
+equipment, the construction receipt's `session_generation` and full
+`policy_hash`, and a nonzero signed opaque World identity. Its predicate reads
+copied values and pure `_view(0, false)` state; it does not refresh native state,
+deliver feedback or advance physics. The complete equipment baseline is captured
+after readiness. All six retention predicates, including exact serialization of
+the entire equipment value and all copied metered fields, remain. Missing
+readback fails the bounded readiness check; context is not removed from the
+refusal comparison. Pending-boundary checks also retain the first observed change.
+
+Production checks the control generation strictly when feedback is delivered.
+Cancellation can subsequently advance Main's control generation while retaining
+that valid copied context. The test therefore requires the live view to match
+the current Main frame, but permits the retained publication's control generation
+within the pinned accepted-to-current interval. Preaccepted and future generations
+refuse readiness. This is not the native World generation: that value and the full
+policy hash remain strictly bound to the accepted construction receipt. Requiring
+every latest worker row to equal the later Main generation would deadlock a
+paused actor after legitimate cancellation.
+
+The successor adds adverse copied-value/readback controls and genuine spent
+Water/Brine ledger retention through the existing Main refusal route. A full
+unused allowance cannot prove absence of refill, so the latter controls start
+from an actual accepted debit. See the [dated local checkpoint](../audits/2026-11-04-pr383-retention-readback-successor.md)
+for source and execution status. These are test changes; production hydration,
+ownership, ABI, capacity and player controls are unchanged.
+
+**Historical Windows evidence:** frozen PR #383 source `73b10f9b` executed all
+240 applicable cases: 239 passed and one transaction-retention case failed.
+Localization found only the sixth predicate changed, from absent to populated
+copied context; the original failure is retained. The local successor is an
+uncommitted delta on that base. Its seven focused Windows Godot cases and two
+additional fresh-process transaction repeats passed in the dated checkpoint.
+The full successor 241-case suite and the strict committed-source runner are
+**NOT RUN**. Linux, rendered and actual physical-device acceptance remain separate;
+these local passes do not qualify a later live PR head.
+The fresh standalone Windows native and parser controls in the dated checkpoint
+have their own narrower scope and do not establish successor Godot acceptance.
+
 ## Reproducing the focused checks
 
 Use the pinned, source-matched native and Rapier runtimes and the repository's
@@ -182,8 +235,9 @@ The native runner requires a **new** output directory, compiles the source, seal
 source/compiler/executable identity and validates a complete typed result census.
 It is a standalone scoped control command, not an additional registered hosted
 Native job. Native-only controls cannot establish actor input or Rapier safety.
-Headless Main plus injected input events cannot establish graphical pacing,
-physical mouse/keyboard operation, Windows execution or owner handling feel.
+A Linux headless run cannot establish Windows execution. Actual Windows headless
+execution qualifies its stated automated scope; injected input cannot establish
+graphical pacing, physical mouse/keyboard operation or owner handling feel.
 
 Controlled quantity arms disable reactions and unrelated sources/edits and check
 `initial + admitted sources - explicit sinks = remaining stored quantity` after
