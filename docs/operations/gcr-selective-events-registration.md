@@ -47,6 +47,9 @@ Workers use the existing exclusive cellular write domain, no Godot APIs or locks
 Report sidecar capacity and admitted counts; ordinary construction allocates none.
 This is transient coupling history, not a new save/replay guarantee; restoring a
 World starts without an arrival witness, like fresh body-contact authority.
+Temperature-only edits preserve the transported tuple's motion witness; they do
+not replace its material/state or create transport. This clarification precedes
+all physical candidate captures. The admitted impulse still uses current material.
 
 Retain raw all-attempt J/L and legacy contact_gain0.025. Keep distinct admitted
 incoming J/L/counts for all experimental arms. Subtract RAW granular sums from

@@ -1,7 +1,7 @@
 """Adversarial identity, quantity, selector and actual-delivery evidence checks."""
 import copy,unittest,json,tempfile
 from pathlib import Path
-from analyze_gcr_selective_events import reduce_capture,EvidenceError,REG,metadata_equal,validate_gates,sha,EXISTING
+from analyze_gcr_selective_events import reduce_capture,EvidenceError,REG,metadata_equal,validate_gates,sha,EXISTING,REQUIRED_GATES
 
 class Evidence(unittest.TestCase):
     def setUp(self):
@@ -91,9 +91,9 @@ class MechanicalGateEvidence(unittest.TestCase):
     def test_original_host_logs_and_unique_population_required(self):
         with tempfile.TemporaryDirectory() as temp:
             folder=Path(temp);platform=folder/'windows';platform.mkdir();gates=[]
-            for name in ['import','test_gcr_granular_events','test_gcr_selective_events']+EXISTING:
+            for name in REQUIRED_GATES:
                 path=platform/(name+'.log')
-                path.write_text('GCR_GRANULAR_EVENT_CHECKS {"checks":59,"failures":[]}\n' if name=='test_gcr_granular_events' else 'GCR_SELECTIVE_EVENT_CHECKS {"checks":1,"failures":[]}\n' if name=='test_gcr_selective_events' else 'unit fixture\n',encoding='utf-8')
+                path.write_text('GCR_GRANULAR_EVENT_CHECKS {"checks":59,"failures":[]}\n' if name=='test_gcr_granular_events' else 'GCR_SELECTIVE_EVENT_CHECKS {"checks":173,"failures":[]}\n' if name=='test_gcr_selective_events' else 'unit fixture\n',encoding='utf-8')
                 gates.append(dict(test=name,ok=True,exit=0,timed_out=False,log_sha256=sha(path)))
             write=lambda value:(platform/'gates.json').write_text(json.dumps(value),encoding='utf-8')
             write(gates);validate_gates(folder,'windows')
@@ -102,4 +102,41 @@ class MechanicalGateEvidence(unittest.TestCase):
                 with self.assertRaises(EvidenceError):validate_gates(folder,'windows')
             write(gates);(platform/'import.log').write_text('changed',encoding='utf-8')
             with self.assertRaises(EvidenceError):validate_gates(folder,'windows')
+
+class PhysicalGateEvidence(unittest.TestCase):
+    def fixture(self):
+        from analyze_gcr_selective_events import technical_gates
+        self.evaluate=lambda cases:technical_gates(cases,'windows')
+        result=[]
+        for name in ('bank-sand','bank-salt','bank-dust','powered-bank','barrel-gentle','barrel-high','barrel-heavy','barrel-angle','barrel-edge','barrel-horizontal','excavate','falling-grains','continuous-grains','stationary-cap'):
+            result.append(dict(case=name,platform='windows',tail_tradeoff=False,
+                bank_preservation=dict(supported=True,event_off_proximity=True,control_benefit=True),
+                loading_recovery=dict(exercised=True,translation_recovered=True,torque_recovered=True),
+                impact_guards=dict(entry=True,overlap=True,rebound=True),prefix_impact_guards=dict(entry=True,overlap=True,rebound=True),prefix_impact_supported=True,
+                excavation=dict(window_supported=True,candidate_fall=1,candidate_clear_window_support_nodes=0),
+                continued_loading=dict(exercised=True),stationary_cap=dict(no_paint_witness=True)))
+        return result
+    def test_complete_physical_gate_fixture(self):
+        cases=self.fixture();value=self.evaluate(cases)
+        self.assertTrue(value['barrel_guards'] and value['excavation_release'])
+    def test_absent_or_empty_prefix_is_not_passing(self):
+        for missing in (None,{}):
+            cases=self.fixture();item=next(x for x in cases if x['case']=='barrel-high')
+            item['prefix_impact_guards']=missing
+            self.assertFalse(self.evaluate(cases)['barrel_guards'])
+        cases=self.fixture();item=next(x for x in cases if x['case']=='barrel-high');item['prefix_impact_supported']=False
+        self.assertFalse(self.evaluate(cases)['barrel_guards'])
+        self.assertEqual(self.evaluate(cases)['barrel_guard_unsupported'],['barrel-high'])
+    def test_excavation_requires_clear_window_falling_and_retirement(self):
+        for key,value in [('window_supported',False),('candidate_fall',0),('candidate_clear_window_support_nodes',1)]:
+            cases=self.fixture();item=next(x for x in cases if x['case']=='excavate')
+            item['excavation'][key]=value
+            self.assertFalse(self.evaluate(cases)['excavation_release'])
+    def test_missing_physical_case_refuses(self):
+        cases=self.fixture()
+        with self.assertRaises(EvidenceError):self.evaluate(cases[:-1])
+    def test_bank_null_cannot_count_as_pass(self):
+        cases=self.fixture();cases[0]['bank_preservation']['supported']=None
+        self.assertFalse(self.evaluate(cases)['creep_preserved'])
+
 if __name__=='__main__':unittest.main()

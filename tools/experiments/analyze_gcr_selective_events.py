@@ -5,6 +5,9 @@ from analyze_gcr_creep import EvidenceError,require,read,sha,same_json,_all_fini
 from run_gcr_causal import EXISTING
 
 REG='GCR-SEL-001-2026-11-04'
+REQUIRED_GATES=['import','test_gcr_granular_events','test_gcr_granular_events_playground','test_gcr_selective_events']+EXISTING+[
+    'test_gcr_detachment','test_solid_detachment_displacement','test_solid_detachment_compound_response',
+    'test_gcr_fleet_emissions','test_gcr_fleet_side_thrusters','test_gcr_review_navigation']
 
 def selector(arm):
     require(arm in ('C','E','S'),'Unknown experiment arm')
@@ -163,6 +166,23 @@ def compare_three(triple,spec):
     result=compare_pair(c,s,cr,sr,spec)
     end=min(x if x is not None else 1800 for r in (c,e,s) for x in (r['first_hard'],r['first_guard']))
     result['common_three_arm_uncensored_end']=end
+    if 'impact_guards' in result:
+        # The event-off reference also participates in the registered common window.
+        result['prefix_impact_guards']=None
+        if end>0:
+            axis='horizontal_depth' if spec['configuration']['layout']=='horizontal-entry' else 'vertical_depth'
+            cp,sp=cr[:end],sr[:end]
+            ca,sa=max(r[axis] for r in cp),max(r[axis] for r in sp)
+            co,so=max(r['post_overlap'] for r in cp),max(r['post_overlap'] for r in sp)
+            cv,sv=max(0,-min(r['velocity'][1] for r in cp)),max(0,-min(r['velocity'][1] for r in sp))
+            result['prefix_impact_guards']=dict(entry=sa<=ca+max(.5,.1*ca),overlap=so<=co+max(1,.1*co),rebound=sv<=cv+max(2,.25*cv))
+        result['prefix_impact_supported']=end>0
+    if spec['id']=='excavate':
+        window_end=min(end,900)
+        supported=window_end>=661
+        result['excavation'].update(window_supported=supported,support_window_end=window_end,
+            candidate_clear_window_support_nodes=max(r['gcr']['nodes'] for r in sr[660:window_end]) if supported else None,
+            scope='Removal at600; fall599..660 and support660..common clear boundary, at most900')
     if spec['kind']=='flyer':
         supported=end>900
         result['bank_preservation']=dict(control=c['descent900'],event_off=e['descent900'],selective=s['descent900'],supported=supported,
@@ -190,7 +210,7 @@ def compare_three(triple,spec):
 def validate_gates(folder,platform):
     folder=Path(folder)/platform;gates=read(folder/'gates.json')
     names=[x.get('test') for x in gates]
-    require(len(names)==len(set(names)) and all(name in names for name in ['import','test_gcr_granular_events','test_gcr_selective_events']+EXISTING),'Missing or duplicate host gates')
+    require(len(names)==len(set(names)) and all(name in names for name in REQUIRED_GATES),'Missing or duplicate host gates')
     for gate in gates:
         log=folder/(gate['test']+'.log')
         require(gate.get('ok') is True and gate.get('exit')==0 and gate.get('timed_out') is False and 'inherited_from' not in gate and gate.get('log_sha256')==sha(log),'Host gate original process/log authentication')
@@ -199,7 +219,29 @@ def validate_gates(folder,platform):
     require(len(reports)==1 and reports[0].get('checks',0)>=59 and reports[0].get('failures')==[],'Granular host mechanical summary')
     prefix='GCR_SELECTIVE_EVENT_CHECKS '
     reports=[json.loads(x[len(prefix):]) for x in (folder/'test_gcr_selective_events.log').read_text(encoding='utf-8').splitlines() if x.startswith(prefix)]
-    require(len(reports)==1 and reports[0].get('checks',0)>0 and reports[0].get('failures')==[],'Selective host mechanical summary')
+    require(len(reports)==1 and reports[0].get('checks',0)>=170 and reports[0].get('failures')==[],'Selective host mechanical summary')
+
+def technical_gates(comparisons,platform):
+    cases={x['case']:x for x in comparisons if x['platform']==platform}
+    bank_ids=('bank-sand','bank-salt','bank-dust','powered-bank')
+    impact_ids=('barrel-gentle','barrel-high','barrel-heavy','barrel-angle','barrel-edge','barrel-horizontal','excavate')
+    require(set(cases)==set(bank_ids+impact_ids+('falling-grains','continuous-grains','stationary-cap')),'Physical gate population incomplete')
+    banks=[cases[x]['bank_preservation'] for x in bank_ids]
+    load=cases['falling-grains']['loading_recovery']
+    impacts=[cases[x] for x in impact_ids]
+    valid_guards=lambda value:isinstance(value,dict) and set(value)=={'entry','overlap','rebound'} and all(x is True for x in value.values())
+    unsupported=[x['case'] for x in impacts if not x.get('prefix_impact_supported',False)]
+    excavation=cases['excavate']['excavation']
+    return dict(platform=platform,creep_preserved=all(x['supported'] is True and x['event_off_proximity'] is True and x['control_benefit'] is True for x in banks),
+        falling_loading_recovered=load['exercised'] is True and load['translation_recovered'] is True and load['torque_recovered'] is True,
+        barrel_guards=not unsupported and all(valid_guards(x['impact_guards']) and valid_guards(x.get('prefix_impact_guards')) for x in impacts),
+        barrel_guard_unsupported=unsupported,
+        excavation_release=excavation['window_supported'] is True and excavation['candidate_fall']>0 and excavation['candidate_clear_window_support_nodes']==0,
+        excavation_window_supported=excavation['window_supported'],
+        continuous_arrivals_exercised=cases['continuous-grains']['continued_loading']['exercised'] is True,
+        direct_paint_not_arrival=cases['stationary-cap']['stationary_cap']['no_paint_witness'] is True,
+        tail_tradeoffs=[x['case'] for x in cases.values() if x['tail_tradeoff']])
+
 
 def reduce_campaign(folder,protocol):
     folder=Path(folder);p=read(protocol);identity=read(folder/'identity.json');done=read(folder/'completion.json')
@@ -218,18 +260,7 @@ def reduce_campaign(folder,protocol):
                 result,rows=reduce_capture(read(path),spec,arm,identity,platform,sha(protocol))
                 result.update(raw_file=path.relative_to(folder).as_posix(),raw_sha256=sha(path));results.append(result);pair.append((result,rows))
             comparisons.append(compare_three(pair,spec))
-    decisions=[]
-    for platform in p['platforms']:
-        cases={x['case']:x for x in comparisons if x['platform']==platform}
-        banks=[cases[x]['bank_preservation'] for x in ('bank-sand','bank-salt','bank-dust','powered-bank')]
-        load=cases['falling-grains']['loading_recovery']
-        impacts=[x for x in cases.values() if 'impact_guards' in x]
-        decisions.append(dict(platform=platform,creep_preserved=all(x['supported'] and x['event_off_proximity'] and x['control_benefit'] for x in banks),
-            falling_loading_recovered=load['exercised'] and load['translation_recovered'] is True and load['torque_recovered'] is True,
-            barrel_guards=all(all(x['impact_guards'].values()) and all(x.get('prefix_impact_guards',{}).values()) for x in impacts),
-            continuous_arrivals_exercised=cases['continuous-grains']['continued_loading']['exercised'],
-            direct_paint_not_arrival=cases['stationary-cap']['stationary_cap']['no_paint_witness'],
-            tail_tradeoffs=[x['case'] for x in cases.values() if x['tail_tradeoff']]))
+    decisions=[technical_gates(comparisons,platform) for platform in p['platforms']]
     return dict(schema='cybersand.gcr-selective-events.v1',source=identity['source'],ok=True,captures=results,comparisons=comparisons,technical_gates=decisions,owner_acceptance=None,production_acceptance=False)
 
 def main():

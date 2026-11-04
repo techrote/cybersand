@@ -14,14 +14,14 @@ func options(arm: String, workers: int = 1) -> Dictionary:
 func witness(arm: String, workers: int, paint_again: bool = false, material: int = 2) -> Array:
 	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
 	check(world.diagnostic_reset(options(arm,workers)),"fresh witness construction")
-	world.diagnostic_fill_rect(Vector2i(128,125),Vector2i.ONE,material)
+	world.diagnostic_fill_rect(Vector2i(128,126),Vector2i.ONE,material)
 	world.diagnostic_fill_rect(Vector2i(127,125),Vector2i(1,3),1)
 	world.diagnostic_fill_rect(Vector2i(129,125),Vector2i(1,3),1)
 	var states := PackedFloat64Array([1,128.5,128.5,0,3,1,0,0,0,.1,1,.975,128.5,128.5,.8,1.0/60.0,1])
 	var rows: Array = []
 	for tick: int in range(4):
-		if paint_again and tick==1: world.diagnostic_fill_rect(Vector2i(128,126),Vector2i.ONE,material)
-		states[16]=tick+1
+		if paint_again and tick==1: world.diagnostic_fill_rect(Vector2i(128,127),Vector2i.ONE,material)
+		states[10]=tick+1
 		check(world.prepare_gcr_coupling(states,false),"fresh mask boundary")
 		check(world.simulation_tick(),"successful native tick")
 		var d: Dictionary = world.gcr_diagnostics()
@@ -43,6 +43,12 @@ func _run() -> void:
 		check(p[1].arrival_count==0 and p[1].event_accepted==Vector2.ZERO,"same-material direct paint retires transport authority")
 		var water: Array = witness("selective",workers,false,3)
 		check(water[1].arrival_count==0 and water[1].event_raw==Vector2.ZERO,"Water grants no granular arrival")
+	var hard_c: Array = witness("control",1,false,1)
+	var hard_e: Array = witness("off",1,false,1)
+	var hard_s: Array = witness("selective",1,false,1)
+	for tick: int in range(4):
+		check(hard_c[tick].event_raw==Vector2.ZERO and hard_e[tick].event_raw==Vector2.ZERO and hard_s[tick].event_raw==Vector2.ZERO and hard_s[tick].arrival_count==0,"hard-only native source grants no granular event")
+		check(hard_c[tick].normal_impulse==hard_s[tick].normal_impulse and hard_e[tick].normal_impulse==hard_s[tick].normal_impulse and hard_c[tick].tangent_impulse==hard_s[tick].tangent_impulse,"hard-only response equivalence")
 	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
 	check(world.diagnostic_reset(options("selective")),"admission initial")
 	var before: String = world.get_physical_state_hash()
