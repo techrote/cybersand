@@ -256,7 +256,7 @@ static func valid_review_options(options: Dictionary) -> bool:
 	if options.size()<4 or options.size()>6: return false
 	for key: Variant in options:
 		if key not in ["response","budget","mass_multiplier","inertia_multiplier","thrust_multiplier","torque_multiplier"]: return false
-	if not options.get("response") is String or options.response not in ["LA","RFT"]: return false
+	if not options.get("response") is String or options.response not in ["LA","LA-EVENT-OFF","RFT"]: return false
 	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
 		if not _finite_number(options.get(key)): return false
 	if float(options.budget)<5.0 or float(options.budget)>80.0: return false

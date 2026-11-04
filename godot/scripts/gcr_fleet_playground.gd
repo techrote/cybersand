@@ -34,7 +34,8 @@ func _build_comparison_controls() -> void:
 	response_select.focus_mode=Control.FOCUS_NONE
 	response_select.add_item("LA / A1 · budget comparison")
 	response_select.add_item("RFT / R2 reference · fixed 20")
-	response_select.select(0 if applied_controls.response=="LA" else 1)
+	response_select.add_item("LA · granular events OFF · experimental")
+	response_select.select(["LA","RFT","LA-EVENT-OFF"].find(applied_controls.response))
 	responses.add_child(response_select)
 	for key: String in ["budget","mass_multiplier","inertia_multiplier"]:
 		var field := VBoxContainer.new()
@@ -85,7 +86,7 @@ func _release_edit_focus() -> void:
 func apply_controls() -> bool:
 	_release_edit_focus()
 	control_error=""
-	var staged: Dictionary = {"response":"LA" if response_select.selected==0 else "RFT"}
+	var staged: Dictionary = {"response":["LA","RFT","LA-EVENT-OFF"][response_select.selected]}
 	for key: String in control_fields: staged[key]=control_fields[key].value
 	if staged.response=="RFT" and staged.budget!=20.0:
 		control_error="RFT reference uses budget 20. Select LA to compare budgets 20 / 40 / 80."
