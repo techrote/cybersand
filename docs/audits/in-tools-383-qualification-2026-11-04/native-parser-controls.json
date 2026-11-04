@@ -1,0 +1,31 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/lcb",
+    "-p",
+    "test_metered_drain_native.py",
+    "-v"
+  ],
+  "elapsed_seconds": 0.23308302499935962,
+  "exit_code": 0,
+  "finished_at_utc": "2026-11-04T14:10:56.469170+00:00",
+  "input_sha256": {
+    "tools/lcb/run_metered_drain_native.py": "0f791222111fef67482f25817b99f708c55c59edf1a9ab410ce963a2983ed8ae",
+    "tools/lcb/test_metered_drain_native.py": "18719fd930486830228e699b5413c70e55537916e63dda60b53cd43b4118fcc1"
+  },
+  "log_sha256": {
+    "parser.stderr.log": "318ddc4321ffb06f7e9a6046b70a3bb38c8d64794fa8eb7b9b301c96da203d27",
+    "parser.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "native_execution": false,
+  "schema": "qualification-383-native-parser-controls-v1",
+  "scope": "synthetic-parser-and-output-custody-only",
+  "source_commit": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "source_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a",
+  "started_at_utc": "2026-11-04T14:10:56.236095+00:00",
+  "timeout_seconds": 120
+}

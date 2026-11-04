@@ -1,0 +1,102 @@
+{
+  "completed_review_status": "PASS",
+  "completed_review_utc": "2026-11-04T14:24:36.839075+00:00",
+  "deliverables": {
+    "Invoke-PR383OwnerPlaytest.ps1": {
+      "bytes": 1438,
+      "sha256": "f415a8f94be50f12098faca222eacb62ccff8889fa1a36ea6531e2477505db97"
+    },
+    "check-completed-packet.py": {
+      "bytes": 8212,
+      "sha256": "938780c4f20edc424f802e206847fa6f0b967673f7810e2c7ccd70dee4c70c78"
+    },
+    "completed-host-review.json": {
+      "bytes": 22488,
+      "sha256": "39be7bc05bd4d7461bf746166bccd06fa79910d2751dd1d495252863da485c4a"
+    },
+    "coverage-review.md": {
+      "bytes": 12109,
+      "sha256": "846e64023480184af0be7a1a0dc63b3803b97233e69297cdee06ef426c7990bc"
+    },
+    "windows-owner-playtest.md": {
+      "bytes": 15414,
+      "sha256": "80dc839168c92f71c7afa82d020c1442b93c95f00daa3426f1d0e727461a08a4"
+    }
+  },
+  "fixtures": {
+    "godot/tests/fixtures/in-tools-metered-desktop.v1.json": {
+      "bytes": 2261,
+      "sha256": "f1f9a606172b7d123f90b3d41c56adcc4e33e770c7da249fd331bd7cd5032d0b"
+    },
+    "godot/tests/fixtures/in-tools-metered-drain.v1.json": {
+      "bytes": 3801,
+      "sha256": "50a5ce0f6fc6d61add58e307e40cf3570849b354a5d61edc9ed8413e254aae12"
+    }
+  },
+  "notes": [
+    "754 retained source entries authenticated at first inspection: 738 actual bytes and 16 matching unmaterialized LFS pointers; materialization is separate.",
+    "All 80 native production source inputs match retained expected/actual SHA256 fields.",
+    "Main focus/aim seams and synthetic InputEventKey are not physical input.",
+    "Gamepad maps movement; equipment still uses pointer/left-or-M/right input.",
+    "Windows PowerShell wrapper is source-reviewed only; PowerShell/Windows execution is UNTESTED."
+  ],
+  "publication_handoff_correction": {
+    "change": "Added exact same-repository pinned companion checkout and nested frozen source setup from the existing Documentation workflow; all Windows execution remains UNTESTED.",
+    "companion_commit": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "reviewed_utc": "2026-11-04T14:38:22.261973+00:00",
+    "scope": "Owner documentation only; no implementation edits, platform execution or runtime rerun",
+    "source_commit": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "workflow": ".github/workflows/documentation.yml",
+    "workflow_sha256": "4d7f88720170e431722598b1a6a99399c7b7786a3ada0baea0b93773e3429d8d",
+    "wrapper_unchanged": true
+  },
+  "recorded_at_utc": "2026-11-04T14:17:35.501143+00:00",
+  "retained_evidence": [
+    {
+      "bytes": 571,
+      "matches": true,
+      "path": "docs/audits/in-tools-361a-2026-11-04/companion-inputs.json",
+      "sha256": "1680e1d76c4d9950cf94aba483b080dd63741690f7fc5767810d15b67122b1d9"
+    },
+    {
+      "bytes": 581911,
+      "matches": true,
+      "path": "docs/audits/in-tools-361a-2026-11-04/host-qualification.json",
+      "sha256": "31d7ab0b150a90bb6fce4152223f521597e6c901060cd7d238a20021357b0a5a"
+    },
+    {
+      "bytes": 111488,
+      "matches": true,
+      "path": "docs/audits/in-tools-361a-2026-11-04/host-source-identity.json",
+      "sha256": "b1fec3c702ae0631b8cb070b296cfbf29ad5b0eb247836b497c3c11a23277eb5"
+    },
+    {
+      "bytes": 32474,
+      "matches": true,
+      "path": "docs/audits/in-tools-361a-2026-11-04/independent-review.json",
+      "sha256": "34a666e53db8ac6657299a3b1952df6f8a12d86642073ee697890aea2136c737"
+    },
+    {
+      "bytes": 57105,
+      "matches": true,
+      "path": "docs/audits/in-tools-361a-2026-11-04/local-validation.json",
+      "sha256": "d052e7281d26fd7ff66868a16a171af083ee40eb0ef4c8bb967123e818b3d8f3"
+    },
+    {
+      "bytes": 1316,
+      "matches": true,
+      "path": "docs/audits/in-tools-361a-2026-11-04/native-parser-controls.json",
+      "sha256": "174d247532b026aafdb8215579a895f7288f74a0569b6b35e27afa1f508c32fc"
+    },
+    {
+      "bytes": 31284,
+      "matches": true,
+      "path": "docs/audits/in-tools-361a-2026-11-04/native-qualification.json",
+      "sha256": "937ce315348fcbf8c065e0227432839b7c5d0c3828f3eafff3f2863b131f269a"
+    }
+  ],
+  "reviewed_commit": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "reviewed_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a",
+  "schema": "pr383-qualification-scope-review-v1",
+  "scope": "read-only source and evidence custody review; no runtime or physical execution"
+}

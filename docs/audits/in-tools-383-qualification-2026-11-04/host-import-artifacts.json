@@ -1,0 +1,2455 @@
+{
+  "scope": "Godot import derived outputs, excluded from production-source census; preserved outside checkout after execution",
+  "files": [
+    {
+      "path": "godot/.godot/global_script_class_cache.cfg",
+      "kind": "generated-class-cache",
+      "sha256": "8825c68169aafba2da3bdd43dcdbffb95be4ebd44e7d3ab66fc6868a50a690c2",
+      "bytes": 23386
+    },
+    {
+      "path": "godot/examples/thunderbowl/controller_base.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "524fda36e0b9712097a83058891fe9428b76fa407c1cb5ac625757e979b47529",
+      "bytes": 19
+    },
+    {
+      "path": "godot/examples/thunderbowl/controller_factory.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2a43341aee775ecab3e573b275a28cbe736acebab91bba3dbb22d913c50cb52a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/emergent.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e2af0dd81ca576754e997c1567a36e69ae640a2b875ebaf2e990543932767135",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/human_devices.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5696c498b5a12c707c429836e19037dfbb364e26e16eb813f2c2913374c6b484",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/human_metal.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "90d1733eb4fd99b67e518b6533402f2cc12e968a8b9567b388b023cdc4dc4057",
+      "bytes": 19
+    },
+    {
+      "path": "godot/examples/thunderbowl/human_wire.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1b941ae79872459133b5b021b4f0a67a21601c6c3832ee20e1781c1817d8547f",
+      "bytes": 19
+    },
+    {
+      "path": "godot/examples/thunderbowl/lemming.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ed32bffb8a085f349ca12642f3f5bd8645f38eae05d55da5548db49fb252f2a2",
+      "bytes": 19
+    },
+    {
+      "path": "godot/examples/thunderbowl/local_swarm.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "65a2c798f0ed6dd66253d25e97f13e0354cc1d867d5cb6d8ac5a313f44734efa",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/metal_pulse.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5a90adf1c3d5cac1c20168a63d5c10f208c9c32abe9d0bb5c4dac9359e026647",
+      "bytes": 19
+    },
+    {
+      "path": "godot/examples/thunderbowl/nca.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "885aff02ed7fb2cfc98c770f0a1dbf395f1b0f7d5683b28b88e79b47781b7834",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/oracle.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "862b85205acfea2c97f0d110d59db8218f3387a0b513c32ad5679ace7b1aa64b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/physical_thunderbowl_scene.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "50549551271b50375ebe91e7e0c3da631c2ab9a3d494dc513fd3c386968a1eba",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/run_physical_thunderbowl.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "314ffa01bb3d7a21fc586704eb06e2cc5b27aab97135969627d03d7b6f85e8b8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/run_thunderbowl.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7dffde9d18dd602d119a64cc32c3bdeb61634b87a0bb48b0cc1b85e165188f02",
+      "bytes": 19
+    },
+    {
+      "path": "godot/examples/thunderbowl/smart_link.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0f615ecf0dfe2ecddca489a9f390fdaa8cc65d18b7e1789f9786c2ad2a4ab998",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/thunderbowl_driver.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f5935809d891f9eaa71d9bcdd3966dd34f07d88fae05b9a51e8ee465d9a4f394",
+      "bytes": 20
+    },
+    {
+      "path": "godot/examples/thunderbowl/thunderbowl_scene.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "32a32b6c541e0a6be46e6f2dc6ad255097263349e719b965ff3da17c5c6971b3",
+      "bytes": 19
+    },
+    {
+      "path": "godot/examples/thunderbowl/wire_seek.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c97f4b6eb1ce48b856aba1a0a3004a70aa428c6d27f642fc75298b4a414e7039",
+      "bytes": 20
+    },
+    {
+      "path": "godot/qualification/4ly003_teacher_qualification.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0f40c29f0c4c04a5847455f4014dd5df4fa5d53294c8ed8073dd50fe5ffdb7ac",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/actor_prototype.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "79acfc9e9cf6124cad876d2f8e57e8ccad057d7a08d5bc6bb3a73db9cfbd50de",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/actor_prototype_overlay.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0240bb883815e4b4c07440aa53589c9e543dea0526a66deaa14cea646ddafb85",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/actor_prototype_panel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2801b05da8bb726ecdb67e276a0d92f4f56497cc2a3f485d2c50d83a75e1b448",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/actor_prototype_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "444f57c439d030cf87c19ec3c4f4ad4c874744a940bda6496eb4f5ee04835d54",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/actor_rig_actuation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a9a5e9c913d178668a5826db95f76cddcd10171f7f87b912478747762e20d34a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/actor_rig_catalog.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "cad27dc11ad3e183e74676bd5e61cbea560fb3f41b77e247457aa4d5143a153b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/actor_rig_effects.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "bb55f012dd542b05fb3272aad907f7437b53d843c6240815949d84e1eb93aa08",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/actor_rig_motor.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "def2e54b3448e844d3914fe2d1f0d77d1da420745aed9f285cb87fc4d250d49b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/blacksite_nine.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f3649f11c6cc8211fb336500c5ec983ec2b8c48bddd1139d140c75060e36a356",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/blacksite_nine_art.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6d96466b7050dc240c7bd79891c8a175c57714ee0101a3218b18b42621347b63",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/blacksite_nine_depths.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a38811e29d84a16547ba1ccc26e6b3bdf503d816e36c5ed3d783a5be2050e9ce",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/blacksite_nine_layout.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "45a2023ada0e3ef1730732fa412034d1a99dd663f39116e2fe96616bf395ad4f",
+      "bytes": 18
+    },
+    {
+      "path": "godot/scripts/blacksite_nine_midworks.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1d9ac1400a4517c142acf7e60b856bcde646b6633f46d1230196f87d66e44136",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/blacksite_nine_presentation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a71b5fafe8a2fce2f1a8cea0903da1f837684bf62bc81031cb392b7f78d83c34",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/blacksite_nine_surface.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "59bf39e51e8cf465d25c2babca9ea96c5163a3f548846afa7c4440b09d0c7cf5",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/decompression_diagnostic.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fbdb1dc487348fa726dba1d452603c8b6ba2b961b9eb182283503cc92efd17a5",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/depth/depth_compositor.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7049fa2b1ddccd58d587ec6a6028fc5563d307785bb911a113b6706a6a997c78",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/depth/depth_lab.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "973d5916c3947dad9062167f6a20fd891c9a29263080c926316bb31ca7bb4986",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/depth/depth_lab_fixture.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fcb004ed994d617c8b930d61088f47b8401330f23a26d721e865031fbf05f1f3",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/depth/depth_layer_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c56f5768bd5f5da18e56864c5cb4cbf08d6e5f0f8caaa45337ef60b3d7ba40b8",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/depth/depth_layer_surface.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "54dda34bb29042c420f3c379f4f38091cad1e9f5bda4a82edd4bbfaf380a61fd",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/depth/semantic_depth_demo.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e09b5e11d77509c9c5985d86e319a4008869ec6076dee8d7f2d0026ed8034cee",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/depth/semantic_plane_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "553e2b213584e7c2c53a12f835ddbf743e545a0f649b94174d541c7630cd895b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/exhibition/deepworks.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f4a7ad93f51103868b31eb6556aaeeee1bbe36a12466502885bfbe340b0f7a8b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/exhibition/deepworks_architecture.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0b0eae269d9624349a8cc7c000fca78ddd004f277d8c7d442549fd7495189b06",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/exhibition/deepworks_exhibits.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "24c75f82852fa73b956f61bffd29a1e16f7dae07b445cd5a9148c05b04a2f220",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/exhibition/deepworks_map.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "cdd00ede3091e7ecc12d1418a8694cb02a79c70bdf0c502534d9d0daa95d362f",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/exhibition/deepworks_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a4c23026be8197c9b4af0229f38da4159e5b00096c5ff6460b5e0976bd818dd7",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/feature_launcher.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f5aedf261c4e7943a73fa99e92863b256bdb226f2a06626ebc9a0d67a71f80ee",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/feature_navigation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0d7c8a82e64e763e915bcbab6d423c23323fb7ba904feee87b555f50b945dd19",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/gameplay_recorder.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c4cd8a742362d57714dc5e8917010bc9e56b1d390f2cf4c3de38938b4fc8c7de",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/liquid_comparison_panel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9c2d789d3347e5515a37e17ab4e07f04f37cbb584053db6dcc2821ef3c16fe63",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/liquid_host_evidence.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "54f943e1b3e6e62b64506abf52dff0845d02ff7c0dbf434092f4a8a7c69ca091",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/liquid_host_web_probe.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1709f9f5d8effd8e65a16fa16651b2c69b65ec1f83674cbddbbdcaafb1e7c2a0",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/metered_liquid_drain.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "987fc71699b759083e77d37f1e35a130f4842fa14bf5ec7d69053bb8d3e7f42b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/palette_shader_selector.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "63977039993c142dc2a4fc3c537f779c15065d6279a64f3a0506cd784f9eddd3",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/physical_actor_arena.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ff2b46756319430694c8e706fefb642cffb0e1045b383026b8d0b99e8a2f874b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_actor_catalog.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4f91910c85947576f5a15591d1aa2b12f50f7335035bf0f7d64b044027d1b2ab",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_actor_effects.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fce43fd01eb19c5025f07032f194d10e20e3f2c0a93997260c1502d160c53892",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_actor_overlay.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a1c19bab0bb4e716b6ae005d1d457a4a05cb2fb91500530617c0eebc5732c6d8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_actor_rig.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "364be48bb47dff6217d8b58d7ec9187a89ca611f4a552365c6d7477b6b944801",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_actor_script.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6006c3e6d94502ad6ba5a3947ae9e80921e8173c001d09543fb4ea22fd90b032",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7a3e9da8a352b81379e69e3f87074e93083034b0db64b9c5ba866e1ef17a3f8c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_actor_trial.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d5f374ee4c5b9dc0af49ea09f7d7e097c0b8c5de6fb8a7b4959e3bdc04a33d8f",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_flight_controller.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5f8a290d7db594fb3552a10d5b99c1730839b15659078afea215065c3fab6460",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_flight_course.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b8311bb5458df96b333142db71115784f396aece8f3913a986d5f46cddc20b95",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_flight_course_view.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "16342d70483f2ea0755f9efcc1e46acf0687d877b613a984f439b1204c9d688b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_flight_development_scoring.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "70a6ba8eb88d7e90718fd95b3b63c76fe9d22fc70bb2163a76821433fe382cd1",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_flight_episode.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ad2bd49be551259e460667dcf03690df02fe205bbfc15a1ef5779c6744203bf6",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/physical_flight_lab_screen.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6999c35fbffe30a924d7b1c583025868d2b22a7c6fa5c060241a3b9a7f8e2622",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/physical_flight_observation_adapter.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "558829965099cb261c40ad1361efb74d58256f15901b1ce4e19e154eb13dd9c7",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_flight_profile.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6b750513a10d9f6598b5544c36ef37a38c80a8bb44cdf40eceaa86c1f50ecc97",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_flight_sealed_suite.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e594b2e51942811c67af2bbc251fbd413c69cea94fbd2308c911e99c7a7bf072",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_flight_teacher.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7b6c78dbfa854456e4c189032c345ed5538d5108c4885785d8d72d4675ba6e0e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_usable_course.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0ff6a19bc4c7824cdb62c5b486c75b29fb55a0e68b1308dcf8c79103d6ad3155",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_usable_equipment.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5cba50ebe003142e41c25fac560dc31305a78bd8e4f5eb47cfe28ac98d5bc06c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_usable_loadouts.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "40fc0b2f9aa1a03b58fd79c868ebcd25e4da5624e2d02a1cb9a8f472a7cfd97c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_usable_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d295fb45eda34eb9d97165f7a8cfea060dcd9d9bcaea61df4174883556f2215d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/physical_usable_script.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "990d000dfd95570057daf88625f0079068fe1c4e91e2ea265bac3403d8755c58",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/playable_course_gamepad_events.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e66662b62c061aedfa0620b1dccf788e21b6f96f191b36bedb41cb355572cb72",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/playable_course_lap.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2e8b9787ae7bdb1918584825f8df7867b312b034ab34611adb9991d568e8776b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/playable_course_overlay.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0185623f139de45b4b2065cdab2c96e9d4cb9fe126f0487b6676ec6b9a5fab59",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/playable_session_panel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ca661778ed96e3294ee2d99d517cdb095c6a7bff198f5d735b5c5e1e1c4dcc67",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/player_acrobat_controller.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2c0d6a2be9aa96759233569b325e29c1514a29304fd77bf306663e1bf6792d0c",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/player_actor_catalog.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7c59517ea319d8792da78029511e4a1644d013a5d22575391a0bb4fbaf99a33b",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/player_environment_panel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8da383102346dfd5a8d5f5763b214763b519567c1346efd4f223f4e6184fbe5b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/player_environment_profiles.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3aa572f5025d65d1f5d28a85c338003323dd44a9ccebf942ba559175343fb053",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/player_playground.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "397479e5d28266072e2ef0c9fc4bdfbd1987b086aef48cd0c87ab9322646d7b9",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/player_playground_course.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8ec30b1b0b7a6487df8e135986718ef6fc89f42d620268d4c29b53dff1b6ee3f",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/player_playground_input.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e44af6d0c529511f9c3faeb7409905312b0f56b173136c29847d4cb270c5a3f2",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/player_playground_overlay.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3dbfcef82412ac7af41095fe73deb682bd30219ecabbfbc5ba74db1737314e66",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/player_playground_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f8e4201fe8de8f269f70d3d179b7371e89b50eb8a489d326edf67664e207fbd1",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/player_representation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "88283ce07dee5c07f800e86c2f93b0c257debc4d52ed4138daad06bcc2018b59",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/player_vehicle_controller.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b4cfc0d13353d02c9880eceee85952b4ff6567c9321c1c0da88a7015a30ce141",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/prepared_level_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b37c70d5dcead802977fcf8ea868ebd0cd11e5cb1d5738287782a68a45f78c34",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/prepared_physical_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e8c97f57a0f5234ae0bf1f11a7a97ab304f8441809adcdf64c5fd3b496e0f5a4",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/prepared_reference_body_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "db3b1d00e325ee633afe019461ae877e4c9c8f1289b4d15c919f6c6800c0d038",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/prepared_sampled_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "37b9ad3140acd9ff689f17f109fd2ecaa372ee5b29daa6d1536d11bc1bf329f2",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/prepared_synchronous_reference_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "36b5e2a4bbe30bb2865bb90800b88384e1022efd49083bbd45e88f189b5f70c1",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/prepared_trial_body_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "402c4d2c38379d5ad1a578442184587a6852e337cd5c46ab739a4de9b536f9d9",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/snapshot_publication_counter.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f1a58cc7d034f036b1966e58112022b9b1b90789a0b015627b9792029524d512",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/thunderbowl_arena.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9e9bf87a3586a496719b3326ec9cb78d0a8f61f7e3a35c05b13980bdb39b4ec0",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/thunderbowl_contract.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "cc2afc49c9b33cc50ad355dbd67b49d17a5e7298c4f15ef0469058e71b38d0c2",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/usable_catalog.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f6696da76ac3b32be18884b6c9e3246c2642c405209a5a9698bde3a609a5dcba",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/usable_overlay.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "50699d23ebeb638ada41f6523786b25db347d619cbd12ae397c7543f759d3085",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/usable_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "04f87bc5d7309513e63587684eda15fb6794a4f6d3d384b0258cb60a43bc0992",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/usable_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b58a6e8e68385ca117f2fa590c63f0af859b4948e3bf8ef7baa3b836c255bcff",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/water_experiment_blind.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a05fdd35b26c76b8198bccbb076654667605ea7be945ffbaac50abfaa3478aaa",
+      "bytes": 19
+    },
+    {
+      "path": "godot/scripts/water_experiment_contract.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "110992e52b459be8e05041d35421ac50530f1e0eac8550beb3fed2a441e0ef05",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/water_experiment_panel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "73e0d1724f1a4e13bea3e9dddb4aa489727cc13187761f73902c8def0dc29deb",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/water_experiment_profiles.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7a2e64cadc65d9da8b8dff86ef277f7535e0705dfd7b9a15d0e6c353c4ee280e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/water_feel_scenarios.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d4f846d4e8ebaaff86b06f1db94ef412553712dd8a7e523bc42419c3cde55111",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/water_feel_web_probe.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fd57943cf70573cb9016a29fcffb39ce8958272252f7f931588cead59e3cc436",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/water_presentation_model.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "001774a1510787b80d98ed143d92c17dd02d916b7b9c1a747744d24499c6036c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/worldgen_preview.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "645a7d6bbf9b6862922ea184ebd98cac8bbc31f7bf2f9659158cd344c6086b99",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/worldgen_qualification.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b87b3101a168f00d59f5288144bcef314cac9e4d980ab7c84e12a033abe75765",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/worldgen_qualification_data.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "404e577317497f46c6a07d54fccaefabb26c9bdc70fbc122131750d06e1b8f51",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/worldgen_workbench.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "99b55cdfa07aa7e7467c1085aa094586a128d8daef552ac6759dd85bac5239c8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/scripts/worldgen_workbench_tools.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "de7fab7d5cecf2a783cdb1859f20fe92445117d0450ad9f01587cccbeb4b7205",
+      "bytes": 20
+    },
+    {
+      "path": "godot/shaders/blacksite_nine_backdrop.gdshader.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e708674a3276b49999f7f47e406738711f22989d62557b330f1d7ccf4da9e107",
+      "bytes": 20
+    },
+    {
+      "path": "godot/shaders/blacksite_nine_grade.gdshader.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8a1e238fc4827d578d4448ec1d10855aa40ba57fda17727fb3232a2195e18d6a",
+      "bytes": 19
+    },
+    {
+      "path": "godot/shaders/depth_composite.gdshader.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a7b0d88f09d5e8d644244062295b051aefb16db1dd8e4a2789cd5253c70fbd35",
+      "bytes": 19
+    },
+    {
+      "path": "godot/shaders/material_vapour_trail.gdshader.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "bf9efda7a9530c3ceeac82b30172848fc1c0dbe1a96d60699a837b0fedcef204",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/bench_render_copy_publication.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "451ff91b109216c17f0c6dc74adaa03ed5beeba49a37ac07374fceca59e903bf",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/capture_controller_scene.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "411697f7138b766c194ca90c3e44f3ce976116da9c024191057c560eb6359dca",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/capture_depth_lab.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5a9f17861c20b31c983a3b1b6a69944030091c72e79cea669c830abbb4c38d3d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/capture_material_review.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1be05da7496cec6eaa9b7a44b88a1f0afd8b13a87fe51d761c997686be775e37",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/export_microscenario_definition.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d572d3035a793c83a7b4e2ec1faea1a8c0a727529405de2fc40617ad3c1323dd",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/desktop_default_commit_barrier.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "549747436eaae2e85ee11ea26b60cb04040a891fa492415d2e7844101c386a21",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/desktop_default_equipment_refusal.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fe0e293e7657163f56d375cfe6a63186dd70c7ee9f4ccb13595f8c205fc84a0f",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/desktop_default_held_owner.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a7afed1faeee29b8745bf3220c82974d82be78c0eafd3b3eb94be4781e4c8689",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/desktop_default_play_observer.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ecb891325b2de65662eb92986d38cee5f313edf4317dfe74a4121be9eec51d9a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/desktop_default_terrain_refusal.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c5853a3ce92960b4a195ca2e6d1191e76f0cfc72b27b6a0af9b0918d1289de37",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/sampled_preparation_apply_call.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "cdb3aea90b43bc307b23805cf848b2de6c40e21edad467dce76e75417a40e58b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/sampled_preparation_barrier.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "65bc1351600f55894a0b25428aab809a82e912f4df061df0146e94f0c40cca7a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/sampled_preparation_equipment_refusal.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f1608d29f55c5de928472f7fbf2c230e47049a8f8bc597a8e5e6a47fd7a14616",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/trial_body_held_owner.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "deaa74db0673f80f179f9e89d1181842a4687c6d6c7f2b5033509a2657fd8fd8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/trial_body_play_observer.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "932f284568c2d66e5aae99d6d28f64fc346bdaa068a44079da25d67475910d72",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/trial_body_subtle_drift.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "232e10ebf049dd38aab63efe0bfae5a8622a307293116d88e24aabb2a7f22567",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/fixtures/lcb/trial_body_terrain_refusal.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "646bcdcc680b6c106537766bf68b23f9c87280aedbf61653b7ca363130360dd8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/helpers/physical_internal_watchdog.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "be4fcc68c31a274b7355ad247d661c77b31cb23915579bc1c16c7bc1007ab9ab",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/helpers/physical_internal_watchdog_probe.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e3e4d21fcb4a082ef3c0a661ccb40e1c22a440dce8bd9462f7fc880f9730e288",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/helpers/physical_progress.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9aa4ad0caa2dba63310418805e87373162d40497637a2860beafe9ec9c72035a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/lcb_physics_metrics.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b1aeddc1a22a4c81bdb9cc49d5c06638c6474bb1a8777b0b8dd91498e8aea8a8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/lcb_scenario_runner.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "31519331bd1894291bcd1cabea3e585dd9491220153789a1d380e2e9e6242c62",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/measure_depth_layer_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c703d6e97c23e9e88ee3a8730efa5a3064cbbdb543de6f5f3cab9a55591b155a",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/measure_material_presentation_cost.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "aa19ef01c45666f3e3a0b396b9c91f46e3ed146bd12fcd170a3c2ae0b383ab8b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/palette_qualification_context.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8451dc0fecb3781a8e499f61c55f8a7a1192171af9111019b80c3535bc5b960d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_busy001_real_phase_shutdown.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4d7a04fe1815852c57738b080d6aa476c485685161dd7f7db813f3e7825fd7ab",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/play_input010_pause_controls_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "efda753990cae4a5aa314ea275ec7d8832787a9f1b70b51db17d1126bdd1a331",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/play_input011_authority_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a5f301cd1986fd563572589d0aeee32ed062a4de966e15a8392ae04318cbbe6e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_life001_shared_host_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d95a47f57961d5607e5e1473a1e3f5438de7c73ba54560912531decc178296b7",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/play_life002_solver_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2e5dc0f29ef39558e6512a9d08e367896d0ae7612141bb4dda54c01e5f6b0e61",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_life003_prepared_shutdown_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "694d60b94d328ed4b7cfea6036d7aa37f4a8de62496f5cc748ada8703971e644",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_life004_populated_retirement_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "cf2e597cc1b897f291d5539a4a35d6f07be1511e2f73d1d5209318afed79fdba",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/play_life009_same_owner_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1cef78f7760939c9a068bb925c1ce58fcb45c656b7598d29d321075311c21f6a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_life010_live_delivery_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5b589cc4124fa2e1277baa8f0c132c6b944d397fad1d60679f9ff29e704108e8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_life010_live_delivery_worker.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "54f49a0d3a940c9630c319ee2db225760c2776d5496cb53653b0945c67f8d685",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_life011_solver_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "aaad9e3f33538dea3230a4d235f24185f1c216e4e601b3084e34747dc880e1df",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_pace001_shared_host_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7ac912ca45bcfc624362a19168208e1630a7dae0d9651b0a1e2c2a79062778b8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_pace002_policy_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "29c68b791ea45c07c783869f717691b11726d8cdf0435f2067d4f5456a9b60fe",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_pace003_palette_atlas.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "dc4a1702d74091c168fb2f55f6a7e4bceb9cbef5e0b37052a22b9c897ec934c5",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_pace004_brush_load.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "dae15516b960faf64f11a3710c592578df9cd8b50128963f9cccca2ac0f400b5",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/play_pace004_capture_buffer.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0f3ed91585ff7d7a255b55f696108cdeffc7641280a2c6ae86a6097376843373",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/play_pace004_input_tape.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "64bf4b933922c76cfba53584c4ddaf9ed682ba22ca4ae097c1878763314bacab",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/play_pace004_worker_probe.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4c1980cd86163154884306577cbc6664af6beb99c254b30a595e54bf96fa1cf4",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_palette_shader_atlas_probe.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b4e2d9cd8efcca170f633add03603a26ddd6f16ffafba2575ddb41256e85eb58",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_palette_shader_main_probe.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0f56d545ea8a857003d201f8b96bdb544a5c7be593b4d6abef755a3ee3109abb",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/play_stopped_session_recovery_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7e6afb6bb9d04a08c5fb2d89a98dad7a0494ab92b67b698a8faa3ef9b7fda148",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_ui007_presentation_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2ebfa55e4f9f91ea0515b1528f9d4829717a0ec3cb9b9bdcea303ec36180a5c3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_wait001_main_mutex_case.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "781a8f73dfe5ddc0352533c711fc276748c9d901ef42cdb3652a1b3c391a0c28",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/play_wait001_snapshot_probe.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e86036a500a81545d71f359e19bfe6edaa2de6642315dffc8ddb312d347d6496",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/run_lcb_mechanism_diagnostics.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a4cdaa30cd771df5092a88f2a4e1d731e0af84f329b8485b118cf12864298377",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/run_lcb_scenario_suite.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4c654c093c773b8ac5c3b7898a2c33651f3ee65906e0f18f781e4ae4453420f3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/run_play_auto_campaign.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9a23d8bf85cd53f92e0655f32118b78ed905789eecc24667bb7a34cdb78d4105",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/support/ci_execution_policy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d64d3a0d19f62bebd9b938c898bdb92e7a121d9ce0b2fe3df842312aeb138328",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/support/render_copy_consumer.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fe80b062bbc79b3efd4507c5af2241c0a843fdec5b809ba613b5b1fc0c4d9862",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/support/render_copy_trace.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d489e8ede8d57012af6c7f8b8790149833a501ccfb42f5c40b9b620f04e4e923",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/support/render_copy_worker.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e458ccaaa777920b53740a57961eb432858aaf37f956892f2953c52fd41f3b3d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_act004_body_capacity.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8de655f60e7c772de0e975d4dfd86cd7668c9396174db89eef69eeda1abf4492",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_actor_actuator_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8e05a53e3a0c11d7b220f77b9d6f56090356236e07c1665c707f666fa4fe9289",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_actor_prototype_integration.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3467290261a07ff95a0b039bcf57ede487a81ce0102fbcbbcf70aa830e121a3a",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_actor_prototype_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "af5aff9692e78a0c24573148480612fb9d5b132333cbae1a4fedd5bbf9ccc176",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_actor_prototypes.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4c350982a52482bde34693d2542925848ac25f128329b9f9d332f95f15200eb9",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_actor_rig_actuation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b9266e4117808136096bb8709741f0430efb0bbe00ca293e1177af65b11ca097",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_actor_rig_integration.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "977540b56b378fe39cca3a7cb73bc93fee1944da94004361ede2609223e5e1c1",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_actor_rig_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f99582e2b30c50fbaf3c69ca3d5dbf431376be6e5f146385b82285e2e5c6028c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_actor_rigs.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8a4e1e00d22a058fe6f875dfdb2701cc0e8681bab9107945e96b273a743bbf9f",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_actor_usables_integration.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ad17dd194b6114c30806d264d3fb9b2696eece57567e60ed6d1668e2f02db976",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_blacksite_nine.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d8523ae3aa656847cdea755c31c875fedeb977aae2b418e6084f5262e4ba664c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_blacksite_nine_integration.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "21b2fc7bbad008f5b81fac58877c973d4a6051dd43f4f6795089f9232d096073",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_blacksite_nine_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "70e99942347c344dc4d6b490c86661f827ef43b6bbd959e0b4ed6f2686ad947b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_brush_owner_commands.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6d55819d9aeb69f9972d02c59806d0e47a40e888834e01d390c8d0f638631220",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_building_material_integration.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d1e69283fb9e4ab79333485dcb423c6479c06de7b5761457def32bd5bd5fcdfd",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_ci_execution_policy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fdb14c46d6c1db7d34b427fea56167422536351376e6cf106633e636153f763a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_deepworks.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "61d2db61bddd3b78269e7a3d1f59477b1e568d3df47ed3a9fe43e2056b3acc7a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_deepworks_controller.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b8c228b8cafd751dbfa7083f0ee730828a64fff661bf8be7ebf9d892f8b746c2",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_deepworks_reactions.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "133ae153ad8371ee5439c57d77ca74fc98ece606c29541fbe643cc31107cd617",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_deepworks_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4e7ca4575b15aa615d4b7d74c5666dfa1bc1d1128c55a49afec52c4e61fdc3e0",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_depth_compositor.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "14c6e41b5d937887039cd286d7d3c0cdd4e5bc953d822a0eb630196a7cd871b6",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_depth_dimensions.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "62fd2c905a70e4f0d32b34d02d32a01dcf2bffb66b879995ddfdb3d430582da8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_depth_dimensions_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2ed60294b855664e506ce32a8830eb03135e6ad96819ebe75090718661fb462c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_depth_lab.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "71a5b92295abee34f70d6a77df56d3ae5815295f457fe57c053c4621fa49e7bc",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_depth_layer_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "96dce3e46da7f8a13576d781a8dc76316fffeaea8a39a34355237962964fbb3d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_depth_surface_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "136618b762695986df26d4f0c6d8b8dc4039471ec62703a8f0149c15c2e48209",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_exploratory_actor_selection.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "255fdb285559a5560a6f9ae090a4b6cf2daaaad20ba33bd6fb2d39a7e9edc6fc",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_feature_launch_arguments.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1d2e23992b206ecce0483b80175b6aa5b813bd3c54b29c2849ecc4b9a473922f",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_feature_launcher.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "42e1906a2969ae4a000b11d868252e1220e4ad5db0b4889f7bcdbc2f333cd557",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_gameplay_recorder.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2658af334d26e1c16b1681b1361b36f057f4d240d97b726e16b5da996bff0311",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_gen007_inspection.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ca4f6931403e27a66c66e4ac341fdb7e0f948b5f5db818cac903202e3052a0fd",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_gen007_qualification.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "46ba918a9542875ec233bebfa104e4f66c047a62b652d70eb25b742b1575dd97",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_gen007_qualification_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fe67becdd644dd97407a82f19bb8ea9b1a5e825c99682ae2647dfbcf2a2dfcd0",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_gen007_reactions.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "90179f280a9df781e1a46e3e4d4d5c69a67c61a59964b6416b1bd944a22c8a73",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_gen007_workbench.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7ce240ac483e3a5fed21d6d1116eaad25888421f37ecb2f8296ddc3def63c527",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_gen007_workbench_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4a7227e6795db9988c6cf9fd8e01842869d5c7539b31279a2c300f6395b775aa",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_lcb_fixture_manifests.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4ffa422fd14198caad8f6fb172882e5f7bfc8aaa85656ce0edf8019669222102",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_lcb_inertial_adapter.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "73eecb8dad422b839933fb1b76e8ca783d1433f1523e8f024f10ddb6bf0d9da2",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_lcb_negative_contracts.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "dc2ea01337f2fd61caa3db66f41519d245ea416d72e8d3dfdf9b8a3d4305abde",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_lcb_physics_contracts.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "11c00221b2db95deb4c1d9940e71f3056d39ae03dd2dfd71ec12e01ba3c25c53",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_lcb_pressure_optimization.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6bc7d2498acdfb81444d9be653b2b17ac635a235ea5092605357701475b95810",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_lcb_pressure_reference.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fa91f0297fba134391209903ceabcd83f3cab1e649d139ffdc512ee1e171121c",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_lcb_scenario_catalogue.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1527cd89ac2308d2d34218ba4dd60a228d161e9214e05b469aa6b123fc68dd1e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_comparison_ui.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ba10a751ac9671efba53076cfc469b7ed8f60f63381560ef62f2bcf67614de78",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_default_demo_preparation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8b0fc135c498a3a561590b82b4f2c8412fa8066dfa4bef1f9d74aee22309f3fb",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_desktop_default_host.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "042b3d56f93458f8623d020d2da091614a3c8546d359c10c9f7992622b6ee32d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_host_evidence.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "54e332037417ff82f04a18c90da680989f3dfb03685ad08cdc785b9d1ae6cf2e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_host_web_probe.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b9455efe55e944fe45b23078538cb453ddd575a344c91f55044f11aa00d58295",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_liquid_inertial_host.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f9be9cabef766112925cc059fd308e5a2d010feb2a2a5281b84323521691074f",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_liquid_level_import_host.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fd9de8c848f898a31a77e79c5f059147292a7632918620b21f48925dad381204",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_liquid_level_preparation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4d7521c3b5177fc4bd618f698beffd38c55d7edb45938afae3a13180f0fc4c4a",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_liquid_ordinary_demo_host.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8e5de4a13a571a8a1977abcd56c14cceb21d378dd2995bbf1029fbb7df4c1f28",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_owner_observation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4cd6d9daf8cbb3726beff4cf86f5b09804ae17d903f1ce0699e9a26eb4dc751e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_physical_preparation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f1dbb3e24fb1054bde4dff9ab501ed00e403febce5ef5225258315e5708ae4e7",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_liquid_physical_transaction.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e0ea2360133e2b954d58dafe7536ee7d66aa9edc2bf77c921f2fcc22abf72d71",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_policy_worker.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1471e6a50b7ca76fa6bb0b053a2fed76fe349b4b2e08217355f562a4cd5f29ce",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_prepared_host.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "082ace8e534055eb74a9b3020679e2003f25f1a3e5adfb96c9febef68d9b3c66",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_pressure_rapier.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2015349613ae61b9acfd263c46652f95fd3685e59159ff93b7c458b560de3c68",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_reference_body_poses.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "128db44c03d0f72e17fb2f1ff5f867a4adcf8937fd73746d4b1706069257a914",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_liquid_sampled_preparation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0cffdaab80b1012f914903156edaa77aa887dcc4bdbcad4fd3892dcc83e96cab",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_solver_policy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "484f05684946bd05e57c630288de22f92528585cba5d34fad6b35b4aa3c10075",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_synchronous_reference_body.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f2806704cce0a4f5c5fff4a1c28b3bf95cb9da96575372566ab861726a339602",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_synchronous_water_reference_body.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1cd082b4e160073e9890715c99eaf459f19a2b34173841e0b45b52ddbe1f1e81",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_tower_host.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ab432c9d655ecce64f12f867bf1c2a42aed30125de0e692ac5063480f0fb6f17",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_trial_body.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0a2f1d913f1b16d1bc671a60a7d4dee04c0703db41aa4fa3683276024cada872",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_water_feel_host.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ed8bfa7f0feeb54f685dbf4459e1b781fcb9b1fe65e0778dd9ea2564d6a343bc",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_liquid_water_reference_body.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2764b3e921fbf2ce395ab1fe6713dfeff34de7aca9681ad1f3dba33df1e0ce72",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_material_glow_control.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f2ed52a68c01d6988436106148aeeef90ab096a5d67618b8165bf077601758e2",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_material_presentation_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "cd1010db5557155c876520dca1b6c8f74088233be0d316ecac0f5be6b2ec53be",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_material_vapour_pipeline_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f66db88bd5546107b6ef3a67b28afe102fd88cb6495194286cec4f452bbc6888",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_microscenario_flood_control.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1b0f977c89eb563c4969b215a0cfabf555afd6a6dfa68f3e51a339d15ee2a954",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_microscenario_materials_lab.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5864fd2988b45120ae78e3a663ee6723495d28ec089a7420625ee99e9df1e7e6",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_microscenario_native_observation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "abd8d67a4691f5d970b033d203240456b288edf61e60a1f669f7d6d5f32d8075",
+      "bytes": 18
+    },
+    {
+      "path": "godot/tests/test_microscenario_reference_contract.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "57dcfd52fe6634ca8361b0255110a961230f5bb9746617bd5dc5acd4f6ee5e37",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_microscenario_reference_pack_ui.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7f03d3efc398785f900d33e7390ec762b92d4974fab8ccef8bca88b69fd4cecc",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_microscenario_stress.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1f056d3adbd66fedafa9c1a9f60b7139bce360515601e599b0eed513cb1e0313",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_microscenario_workbench.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4fe399a140804c630a7079d229ab725bb3825faa026afd2f7c1e682d22ee2a67",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_microscenario_workbench_lifecycle.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ec64a1316384f1219cb91c7596d606dd7dfc20ee25c5902ada54dcf7f4f6f43b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_palette_crossfade_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "33b55d340b5a4d334579b4616d399d80ae99429c8511605c93ba38a9b02fa108",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_palette_shader_compile_bounds.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "436489afa358789ed1730a8b0e7d715b4cec0165cd6202363635e4af05b3fefc",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_pchar001_player_representations.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f73062082ead1e357e9f781011752d2418bf5a23fbd4a04cc250d7a2a136ac55",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_penv001_player_environment.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "919e5bfb9a142a4fbb37364ea6d9f22246a17b4714ae013ba147c437eadc8c90",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_actor_actuation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "52a142025d72393b3b72829279581a34e9e6ef83d1194532f876e9e9b13f60f4",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_actor_arena.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6d903e45a189ba442235ebc59115d114ab1ad3e98c2fa128aa129230f477c202",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_actor_catalog.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "98103b56b7247829387c9d2e60579f590aa1c81ab069e34edf16a051da743fe0",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_actor_effect_admission.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "02c6fae6a889604fdcf3d9026fd5a6c7cc7cee35c4931b2bdec394caeb01ba95",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_actor_effects.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1299ae06d786aabb5f081e2d1913dcef600f9efb4ae2137a8b64ed3733d27886",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_actor_integration.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "258f94f37700b57b4aa80d93a9d0092b3e980b83145f5f8ca9876decb23a7808",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_actor_rigs.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9cfcab46bd1dff16ad6ce741591600f5d226009578b5ec59df02003691f801e6",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_actor_script.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9fbc97cb7507245fd83e582a5c729c0d2b2fc2d4150c29745b0853d273c451e7",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_actor_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "59bc99c9a5ccc34dbc6193c4c376ede63a3c65243e0cfcac9a0bf272fd3ab62b",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_actor_trial.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3c64add07a45e50ba8a921ad881bdd179de258324d689bbb1311dcf89f712240",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_flight_gameplay_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ffc7d733468dfa3d66baf10167f9af0a8e85a7e7e2e22b6b970b10521e7233ca",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_flight_handling.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "344013bfd44ddaaf460432b5e64ba6aabc279689e21dacac6a5e31dc34ccb3ad",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_flight_lab.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "096cc54b80ed4de4629e213ec172228eeb50dd909cb868b5a9af86bd6334fc8b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_flight_lab_scene.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3681442217f6931d8ab907b4ab53230ee7deff6d38e494db127ea3b137e027b7",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_flight_physics.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d137eb1aae130eb7060fb2cd72d7a9a5f649346b92c80c684b9eb413dcb54d83",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_flight_pilot.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "976ddeaae8b64a0c8cc433c6832b14e9cfde0819acc91b5aa1c28f54e290f575",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_flight_profile.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1a72fdb03c72a7cbbeecc8640404552282b8f960f7da1a2efccfc1aa86c01dbf",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_flight_selection.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e1adb0e844470356cb6ecb8460be664f9eb977e0d6c1dae2ae2b0c80682f5d31",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_flight_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6d25c9739f79621e324bf1238fd56392b895cc4bd9e224e83c449a25bb17e4c4",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_flight_teacher_dev_free.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fe4b35d185dc2a4b0ae71f9a4750d3499837ca26ab36328c71d027c328c2facf",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_flight_teacher_dev_obstacle.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8a25a1c139b191067b43a3bac34235f48f8267ff245f3a77fb121d485be5d09a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_metered_desktop.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "bd42c2eec3bebd43b0edcc56d44255bc2813d4a60ec4a22dd603f3d0c506a7c9",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_metered_drain.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ebaec1a561379f571feade10e9085652b7e0ff0a2e9117d37ffe2209e12f7932",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_metered_equipment.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f5f3092589d42419b31a481ac086571826207e18a17a4de366495e96fa539ad1",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_usable_course.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6bb090e1f9a9acf3587a860eb3eb1ff8ae76f2769431ea3da0e607651a424c57",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_usable_equipment.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "34237e7f52347183f410320b6f06dd7775906a01a7f612d87740499d8aacc421",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_physical_usable_lifecycle.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c8fe2d8a0f914b9d91c02ab138b3e4eb478b3846cc807e2eb3224acca52f395d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_usable_script.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3e5801be82d82d4d216e136b16c95cc8c1e5f71bbf925da5e7b068f8cb4f03a0",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_usables_admission.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b0876a1a23dd040da2398129646d299e7cf8f5301cd3e2074d3794943f6bac84",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_usables_desktop.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "19ae4ab6be3fd71e9eb0a0d088811383933a59790f17145b1ab8bd4b49677414",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_physical_usables_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "368e1dc5239c239cfecd1c326304c99810e101affe4bfc3dedfaec249965c03d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_auto001_shared_course.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8f63ca71644ae4d31a600e625506a595cc3dacada6f8e81221c13f363b8eb4a2",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_comp001_existing_host_spike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "19fabc5f1144b4106819e4070cf5cdb8f1d00911634dbaa5b5c13a86072a96c2",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_comp002_five_rig_course.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9bc49db6b4ddfa63c8b7c01ae4f3ace9bf0854f925265691eff6507ca00db28f",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_input010_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "95d4a9535828bc9c5eb8ba31a589598aa2132f6be054853958d33a2cf53a4320",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_input010_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c6eb113caea37c1f1be9f562645c06d268072ad412744817e1714c21d1281fe2",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_input010_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "81a2b51ce18573908c957cd076adfdeb9685de17f29c6906d1e830fcc1c0f679",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_input010_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b8fc4778d436bba4a5f7caa8fb34304e8d677e606eac049f01fd16f6ee4ffe77",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_input010_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d26ac159b4c657ff7a8ae6ab45ed5e95264324f37851f48a350a2f6ae26c46df",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_input011_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b2a29d8b063c75e36ee0fe1a20df3134771d1872c4b2e1ba01a8f290c8e9244d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_input011_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6469feafde1153a9c1abfd915d5eed76d442ed4494aa5b92faf996084f610973",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_input011_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3fe731a58b3772c6d98e69b2358ee6aa17a411f38dbf5db48ffea8b3c6a70db3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_input011_legacy_pause.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "077e525575a8c86ce298994ba60d56d2812a1c12bf67c6fab39a84e5624cbb70",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_input011_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "008c799aee71258379290408344c92515bfc29dfee60d54189fa344dbea06350",
+      "bytes": 18
+    },
+    {
+      "path": "godot/tests/test_play_input011_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1d6f9ce04398934610af2327e27d89c4b0b0d53da95a00f29c321f704d6fcb77",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life001_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "cce1556c859ab7069501e18afea8720b90d1a07ff31b933abb8293277674d7b1",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life001_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "cfc639931f06940ace66a1d6609a24d26b395a20254ff59314daf6cafec160d3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life001_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d7cad55ef897bc5c3c8e226dfc0471c14a863dbc3498862768d2f763237df0e9",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life001_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3e675a1cee1eaa8bf79cf4eb7b3c704aa810303a6f1b670b91815391f118ef2e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life001_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "398d483e4351c5023760657eca62201e555809a9df3d0576ec3ba6e93dc2667c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life002_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b6ac2044d482b2a27de34debd1ab184ff07375299ba893b722652b386aecd1d7",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life002_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "16436bd1e7484026a0fdb727697ed1d403f714e1d9d29d7f6615765ef062240d",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life002_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "bbf23b70dea82ba1005c0eb6e7424dc17e45dd79503449ce101942635c4cc3b1",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life002_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "074af4b9a9378d194d594ca484dcb2c68018c5682a2c1d5958e625c26c002911",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life002_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f0c5e983133bcfbc83ba4aa3d82d1b904a29416fa28ba6207b4777f9d66dae8b",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life003_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "183dc210c8e1cc2cd579594e0f35de45fc52161ac6feec0e5293834755ff8161",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life003_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "728fd00d7d637a010fef905d7966bbfca7298b6f00eee3139e99e0fcea21141a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life003_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "006708e0219443f094e881bc337108476130206b9f8436cfa74c28012e6fccdb",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life003_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "aea15eb8feb7298eb62a6c349123fca85e000d6e7141c6e4eb6018171b600c41",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life003_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "965ad501ec5813c1c0031f20be2ce1ab74aa85b1d0f34e90ed1c4ffe891d41f5",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life004_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "346154c880d6810fdc65f7cf5430b385e3d67f255aa3fbf84178dadca347bfb5",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life004_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5c340def54010ac626f8e07797e2c0d83c1bfcda04ea0a2f04169abd5b18f3d3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life004_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2b8a9592525e4f8e541ec5adda4fb18ddcc07987e5238adb477369e547ad44f5",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life004_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c13993fba97195a585f15ad01ccfdd5bd698c542b58c8bae68fd265d6bbbcdc0",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life004_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "86bc8b31cc1b1e393aa5c941b75f3df3085d1e584551fbd8b5279390365821a3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life005_failure_recovery.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "437592e450f9e5cd150bc85a22f1af4c81ed547d176e45730ab9ef141267e4de",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life007_failed_session_restart.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5013b13c10b86092d417f7ff696d2621cfc5785f1ba1fb139cc01244ef72d6a6",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life008_recovery_navigation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d67d140966046135e7fd2c6ed23a1f02761d5013079e4ffba79d95a306d0698b",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life009_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4bb726dfdac8dd40d868b69121010544c5f22a68a7767e715ba175ba64d48974",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life009_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1d3b627917a2aff4ba566c255dd28639bd47d6029af2171db05549fc7bd574f5",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life009_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d2d740c15050d6c3a4ebda0d57baf06cd682e86a3313753c0cd34130860eb2cf",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life009_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "af97f7c374088e15fc47ff7a4b0291670f556fd5865bf02cd42a47db722075b9",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life009_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "eec246f132be96a33e21cc1ddf2c6b3a6c0b7cfbd8d0da956eebab6f309d4531",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life010_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "6bb66900fc99fe6d55e267905840778ec07b8f6a95003d725a5c0b6a8d0ca5fb",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life010_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3604485ca55ae710bae0af913977f9220564534209fd400b2e443b6731352fdd",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life010_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "507a6ed7adffb1efea4a5e4f4ed5cc1fa0cb6f145aaf99c98f67017388509a10",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_life010_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "bac715f39efe58a2945cc65d6f6ed5876e7fc4c9f5a7341ca7df40f6bee24b78",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life010_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4e634f8c999723cfc690f3e6109ba5e09ead8805a93da372dd44736280535b16",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life011_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "188d6330f3acd189422b84d76ed2a6fe46d3178e5cd93740f92b5b2d9ea5689d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life011_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "d36fff349c02f908d68e8ea1f786b65669553f668f659b0d8108131b3adaeaba",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life011_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "29366f9c9026bf01b9cb5cb72563af7dbff98d8b5a7d317c13ed92ca43f1389b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life011_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0d6eac4d4f5fb801c61bc11008aac225ae8429171238657c0def4540ab05005c",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_life011_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "8f678c3788ef4a394f5aa0a45b2bcf80900eacc0191995eaa2d0156033de4b06",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace001_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ff9db85f67188d61af461b11d25cff41d7325ef513e2470c21ac833353b16729",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace001_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ef45d586bfa91902ba95ed83b331c7d0534e03748284a039c92c06e1b9c4d538",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace001_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "4d4c4805adfaa446bbf0d96e18eec9c66a45d564ce537db66bdaf37796771aa3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace001_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1eea01879eed45de1405cbcc10ff6f9f2cb2eedafd0a8b43380b02e898273f50",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_pace001_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "13722f1dd16ce1505d37cc3168652590073ff0ee6c25dfa1feef433b45c24eba",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace002_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "22293f957e10f449a03a1eb7854b9a6cf2ea928b54c1a8976cb3d80ffded4d37",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace002_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "29fb4506e1f2cfa88b47f7029e42d8fa1f58645b092a207d7af6ded649cc4ced",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace002_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "f3fed5acd82a5069d48c7ee33986eab38fe589e977cf749d0da29b1485dac132",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace002_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "41843b6b657518ff0bf517bba28b73a9d0994fafd8427eb3704f9a8790f80093",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace002_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "09507e39cba6d0c1ed3b66f45cf1007728a985f51396cf9be6454d5086dea1c1",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_pace004_capture_buffer.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e56bbdb4c181bb48e3d88079330b8e985752c26c69b4d0d9d7a5e0a45c1b5f9b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_ui003_lap_clock.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fe35a9b5198fb4c7f6fec24b50f3551647de3e44a2f244c72c122a0b992fcb9b",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_ui003_physics_cadence.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "32a842f4e1ec733824553bbd23b90e7d86a208f2de28ba65e13610a6cdc64135",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_ui004_gamepad_events.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9ef1f01b3849b69e862784946a37942c3b717548b13b3866d93eb37c8af545d3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_ui005_session_selection.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "a3a4b3b47ccda8ac8f853481ebd1c9693a26bd3102210e3d4295fa934a973435",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_ui007_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "252f3d8aebac31e0dd7762ec1ea3000edf84c8105aae725747c5cd68e99b92e8",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_ui007_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "22aa468e62b23295fc60eecf7acd0208ad9b7a8500d6fd2f3f22cdb2e8206749",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_ui007_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ae4520e3982bff2379cff5766f3fa31003853f71475207e0b9c3454be33546ac",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_ui007_overlay_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "1f57f8243ac590ac63e3f894f79a9b23f5be0b53fdb35c5cc632013a590a656e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_ui007_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ffa13379849875355e9a3852180fb5b53b1f2b0d6bc9c49ea85013834a96af1a",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_ui007_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3c237cb5d686fc4db095bcf7feeabf2c24747c573409d649e83ab73eab3b049a",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_wait001_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "31233ba054e70846d74f3039fc54227b3a4ca4290fee71f3c587dd8f6495cdaf",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_play_wait001_arcadelander.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "59cea50896e03400ec7f2a1ae33dcafcfcfa98d2aced2292869b78fcea55fbdf",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_wait001_jetbarrel.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5eebff38d384d73fd2b9de0b7a773dab33a3a026bbf4cab84a11742ff44cc40b",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_wait001_stuntbuggy.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "255e56c8949e5a9aba95d2dbc858e20bed5cf6dec11951f15c56bf80d4e495b8",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_play_wait001_trialsbike.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "608106ffc22955ac719bd828a070cdcf222b18e04f780acddb25aaf45e1354d7",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_player_acrobat.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "57bc10dc01b8259bce3ec3393833fcc553f616fb3ec7a782e8298abd9bab25b3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_player_acrobat_physics.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "941addd4708bb9b0bf7af6b3d829285d891ad0fe2df9b9debe784ffb305d8e71",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_player_material_field.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "186365f7794aa49614b3dbc1c33ddf4435edd333a3771cf2c369b34d582b5e6e",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_player_playground_course.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b15934eb0e69dc309abd584882bd4a43af9bc3874938ae0ba5dfdde3aa032d56",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_player_playground_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "580a7526fa35e3c394e5bf1d3d66425f9928a5bc7c798fac0c70f35a8e221719",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_player_vehicle_controls.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9cd58aa5ffa467a3fb3c0979c26fa7bd787706d5126d085cfdde885fb0b36a86",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_playval001_selectable_player_fixtures.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c79f1c424a1f9ff74cef5f5f65d3d09b5ed5b1ab70b5715324053cb67bda3272",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_prepared_physical_owner.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5e750b76199d18570bb8c32a6dcc543ce69b5a051186304a9aabd981af20ceef",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_rem002_body_granular.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7541cfdc734c3af22e47b1aa571131d13fe8c56b15020d100363a1876350092a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_rem003_player_granular.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "9f32e68bf6c933b4d892273cca41a4a1d9793caf804416abde5a8befc4f88abe",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_render_world_generation.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "74997d2a0903f81e9cd697375d08f69caa1413d65dda69e9fbf6c91caebee4e7",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_semantic_depth_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b1efdd0c027787d9d6db7fed605f25cc77e25eb33e55f42bd2628a6ed61917e3",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_semantic_planes_examples.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "5aeca7a886d97f546e1783ad191ec2bd858fea8ab08a87391652c03e30fe4913",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_semantic_planes_runtime.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "442ec1dce257c97b9e944cae68666f0c31dc3415d0aebce51c81ef5b77b88237",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_showcase_tiles.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "51e7b168bab13733a63ed54d539463f4c86b1ee4cfffb96bbf3b00e910cb8312",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_thunderbowl_arena.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "37c767cdf4450df39a8f7e44408916625e880620d879820dc28133b353fe0999",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_thunderbowl_controllers.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0f1dec53f19345325f8c7e26049514536df78989be05af6f9716f180c35b17ef",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_usable_session.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "23056fd37fa3565aa9f26953141c3367a1fa10f0bbe99c48437d40457e1a2ecc",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_usables.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b8d056498afafb6ed8b8d0a2328271631bdddc0d63f001331e4723847b2ff3ad",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_water_experiment_profiles.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7e181a3645a00703eb16c2733a33d0341c6e1bf1387bc7cf3604711da24f1688",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_water_feel_controller.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "58be238a744ee6f019228a36dc4b147d8582322e0414d58902fc792585c7683a",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_water_feel_integration.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "0ffd1373adce01fc3b48df6241efa7d8f6efa8e19822d675f67a31ca241d97af",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_water_feel_scenarios.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "c236c77ba84966a2d9deaa27f6e27e2bf4405346d46410448a471aaaed8e552a",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_water_presentation_model.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b9a2f054865aa3a5133008cb5509a7703abbe08fe2cac16768517be6cec7d8f5",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_water_presentation_render.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "413b8f75a0919aa2ae33f5a0314f45c3e146168818352e235c75418ef7ee13f8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_wex001_water_body_baseline.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "318cdc7f0dd6fae63fbff11fe70f1f772df6943f6165aa67bc0aafcbd00515c8",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_wex004_decompression.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b4a364f2613a348bf3040688e0af5bdc7119a14f094834c0631e2e0589f0a1fc",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_worldgen_fields.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "7ea5e9cca6ca6df86f0fd79a6df534262573b92cccb4f398de3a0d2be28af3e4",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_worldgen_grammar.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "e3fb6875dc4fe58349f2f3b939e9cf4ed187c4e46e6b8775e53bb1750e2d9227",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_worldgen_planes.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ddfa6771b0f69f8f68418c455d3a838ad875471b752b37f6eca1bc443bb4f6a3",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tests/test_worldgen_typed.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "3aba5126441b0fd0335904061cabf2894d99008c0894188c14ed9079f4ff796d",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tests/test_worldgen_workbench.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "90a37b4e72ad0f261714fabb6fa34719ba0012dbccbe3a1e00bbbc3ad17ba6f2",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tools/capture_blacksite_nine.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "b89154a340410909edbcfab6f92bfe7ffb964ea3358729eea5a00e539284b581",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tools/capture_deepworks.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "ad703810717fcc3e39172589ab49d2b6bc487173c03b4ebce5fac80338faf9f2",
+      "bytes": 19
+    },
+    {
+      "path": "godot/tools/capture_feature_trials.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "fb4089b71c52b0e435ed3fca49931e8466e6f32b61384a197749015cc75eb7df",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tools/capture_gen007.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "067ce476f33e11a3cbb35b979d41cdc857022937c9502a502de7a5f757d6ec71",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tools/capture_player_playground.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "db10eb74cae4663466ef4a80e57d128c5b5746139ac2c6a48990c175e2c6a6fe",
+      "bytes": 20
+    },
+    {
+      "path": "godot/tools/capture_semantic_depth.gd.uid",
+      "kind": "generated-resource-uid",
+      "sha256": "2bdcb9eef684256e7a6a28690ed10fabf876bb420643124f890beb14adacfdcb",
+      "bytes": 19
+    }
+  ],
+  "clean_source_status_after_removal": "",
+  "source_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a"
+}

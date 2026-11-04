@@ -1,0 +1,887 @@
+{
+  "assertion_counts": {
+    "test_actor_rig_session": 8425,
+    "test_liquid_physical_preparation": 62,
+    "test_liquid_solver_policy": 642,
+    "test_liquid_water_reference_body": 75,
+    "test_physical_actor_session": 113,
+    "test_physical_metered_desktop": 148,
+    "test_physical_metered_drain": 1614,
+    "test_physical_metered_equipment": 99,
+    "test_physical_usable_equipment": 307,
+    "test_physical_usable_lifecycle": 39,
+    "test_physical_usables_admission": 35,
+    "test_physical_usables_desktop": 28,
+    "test_physical_usables_runtime": 243,
+    "test_usables": 196
+  },
+  "command_provenance": {
+    "host-local-native-observation-v1": 66
+  },
+  "command_statuses": {
+    "applied": 27,
+    "fault": 2,
+    "refused": 37,
+    "v1-control": 3
+  },
+  "counted_total": 12026,
+  "current_git_status": "",
+  "failures": [],
+  "file_hashes": {
+    "host-attempt-4/identity-after.json": "abc32a46bfc24fc49b5ecd87fcdb4cdf659f8786bf63323dc7dbdfc1837c4f55",
+    "host-attempt-4/identity-before.json": "1ab936ac8588a3c2df75adfcf258e5ed1d580042f171ef899100c30946515865",
+    "host-attempt-4/processes.json": "41f36b715f361f18212b4ac70f4025d269a754aa44fbc5e9b10fd0ccd770494b",
+    "host-attempt-4/xdg-data/godot/app_userdata/Cyber Sand Reference Sandbox/metered-drain-desktop-host.json": "6a857c9282ec6e6829dc7083d3f372517ffa70b9c0baa259b1304cbb3cbadbf8",
+    "host-attempt-4/xdg-data/godot/app_userdata/Cyber Sand Reference Sandbox/metered-drain-native-host.json": "c9fff47fc6c545b52a80bdd86e8b47390f99f928ce2570de6c588e7dfa24d8df"
+  },
+  "final_generated_metadata_record_retained": true,
+  "followup_reduction_review": {
+    "after_tick": 68,
+    "before_tick": 63,
+    "comment": "Read-only review: valid comparison distinguishes advancing observation tick from unchanged native per-position state; no source/fixture/threshold change.",
+    "earlier_reducer_failure_preserved": true,
+    "protected_source_positions": [
+      [
+        100,
+        106
+      ],
+      [
+        97,
+        107
+      ],
+      [
+        98,
+        107
+      ],
+      [
+        99,
+        107
+      ],
+      [
+        100,
+        107
+      ],
+      [
+        101,
+        107
+      ]
+    ],
+    "reducer_sha256": "f72ed519ba9e0be49706244176efb02bf03869f8d18e58de11ff945047bac35a",
+    "result_sha256": "e83bea14f3a6cb2d0be42919fe79a9d586a706cab5ba2c13ac61ecb9047c7ab5",
+    "same_native_fields_except_completed_tick": true,
+    "status": "PASS"
+  },
+  "limits": [
+    "Packet counters omit final packet-write assertion; footer includes it.",
+    "Exact positional/source-body assertions remain checked by the unmodified test; this reducer independently validates arithmetic and custody.",
+    "Actual Main uses synthetic key events and fixed aim/focus seam; unmodified PLAY entry is admission smoke only.",
+    "Source-qualified Linux does not qualify Windows DLL execution.",
+    "Ordinary Main sink is joined endpoint difference, not native-issued per-command quantity receipt."
+  ],
+  "log_hashes": {
+    "import.log": "32582ddf053e9c4b0d472c5e413ac128505707c1f1ff7761557ff470cbcd7f2d",
+    "test_actor_rig_session.log": "a300c49eea8aae9fb1e374428756bdaccd3cb536d08ddc17232d7343962a20d3",
+    "test_liquid_physical_preparation.log": "69b48d9581f29853a6b2c04faaf40a7369450d3ca48b0249fe0eefb0dfdcc6fe",
+    "test_liquid_solver_policy.log": "8058faf919d2b9e9edfbc95bf67155da2b4754d3367c35797355eb919afc90c5",
+    "test_liquid_water_reference_body.log": "c4ad4a59088492900928e16917509cb8c12f216d35681bfbdd0a85cac449572a",
+    "test_physical_actor_session.log": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84",
+    "test_physical_metered_desktop.log": "5b0b8fa905147eaaeeb54af02a6f640e649841f8b187e0ebbad78e9abbde9a3e",
+    "test_physical_metered_drain.log": "0a1796d7288fe69e2b6e16d5e57cccac0b08a816742cd8cf5acb1dcab6999cce",
+    "test_physical_metered_equipment.log": "d17d4f0fd439b713e92aeddde1861fdf4c30f7b38058e9037139685a236b05b0",
+    "test_physical_usable_equipment.log": "9a05ec55192c60ff3c59635de81a35948a603e9b973cfce5a2b4ba21876659bc",
+    "test_physical_usable_lifecycle.log": "62e13d8ae6a6c07cc96705c9c560d5651b8c0f43d267410185945a53338f6ac1",
+    "test_physical_usables_admission.log": "c3000dcf134a28cb1bf39eeae39b7bfd8ec4b3b75d7debffca9236f7ec22ef7c",
+    "test_physical_usables_desktop.log": "7914b7f9cdbd9ddadaadacc53ebb69f01667111c7d8df25ae25089e6f7cdbb69",
+    "test_physical_usables_runtime.log": "2e25934313d27706fa095fec619fc40503fc9722d29b948db7bb931b592f5c0b",
+    "test_tick_failure_regression.log": "ea134a22df455971f7652c6166b0150cd12aa4c0aa2c40a65d4872840353cd1a",
+    "test_usables.log": "aa3a7a8043a1c90bfb7034802f5c1f6fbac81ff25dab19342ed34285601ab5f6"
+  },
+  "main_quantities": [
+    {
+      "case": "water-in-main",
+      "metered_sink": 4080,
+      "native_completed_tick": 92,
+      "native_generation": 3,
+      "ordinary_census_difference": 0,
+      "phase_claimants": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "residual": 0,
+      "source_final": 534480,
+      "source_initial": 538560,
+      "unit": "water units",
+      "world_instance_id": -9223371964897294742
+    },
+    {
+      "case": "water-in-reset",
+      "metered_sink": 2040,
+      "native_completed_tick": 16,
+      "native_generation": 4,
+      "ordinary_census_difference": 0,
+      "phase_claimants": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "residual": 0,
+      "source_final": 536520,
+      "source_initial": 538560,
+      "unit": "water units",
+      "world_instance_id": -9223371964897294742
+    },
+    {
+      "case": "brine-in-main",
+      "metered_sink": 8,
+      "native_completed_tick": 17,
+      "native_generation": 5,
+      "ordinary_census_difference": 0,
+      "phase_claimants": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "residual": 0,
+      "source_final": 2104,
+      "source_initial": 2112,
+      "unit": "brine cells",
+      "world_instance_id": -9223371964897294742
+    },
+    {
+      "case": "water-freemass-main",
+      "metered_sink": 1893,
+      "native_completed_tick": 18,
+      "native_generation": 6,
+      "ordinary_census_difference": 0,
+      "phase_claimants": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "residual": 0,
+      "source_final": 536667,
+      "source_initial": 538560,
+      "unit": "water units",
+      "world_instance_id": -9223371964897294742
+    },
+    {
+      "case": "actual-rapier-wall",
+      "metered_sink": 0,
+      "native_completed_tick": 64,
+      "native_generation": 7,
+      "ordinary_census_difference": 0,
+      "phase_claimants": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "residual": 0,
+      "source_final": 538560,
+      "source_initial": 538560,
+      "unit": "water units",
+      "world_instance_id": -9223371964897294742
+    },
+    {
+      "case": "actual-rapier-under-actor-before",
+      "metered_sink": 0,
+      "native_completed_tick": 63,
+      "native_generation": 8,
+      "ordinary_census_difference": 0,
+      "phase_claimants": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "residual": 0,
+      "source_final": 554880,
+      "source_initial": 554880,
+      "unit": "water units",
+      "world_instance_id": -9223371964897294742
+    },
+    {
+      "case": "actual-rapier-under_actor",
+      "metered_sink": 0,
+      "native_completed_tick": 68,
+      "native_generation": 8,
+      "ordinary_census_difference": 0,
+      "phase_claimants": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "residual": 0,
+      "source_final": 554880,
+      "source_initial": 554880,
+      "unit": "water units",
+      "world_instance_id": -9223371964897294742
+    },
+    {
+      "case": "ordinary-u10-before",
+      "metered_sink": 0,
+      "native_completed_tick": 5,
+      "native_generation": 9,
+      "ordinary_census_difference": 0,
+      "phase_claimants": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "residual": 0,
+      "source_final": 538560,
+      "source_initial": 538560,
+      "unit": "water units",
+      "world_instance_id": -9223371964897294742
+    },
+    {
+      "case": "ordinary-u10-after",
+      "metered_sink": 0,
+      "native_completed_tick": 12,
+      "native_generation": 9,
+      "ordinary_census_difference": 561,
+      "phase_claimants": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "residual": 0,
+      "source_final": 537999,
+      "source_initial": 538560,
+      "unit": "water units",
+      "world_instance_id": -9223371964897294742
+    }
+  ],
+  "native_host_quantities": [
+    {
+      "actual_claimants_max": 1,
+      "bits": 3.0,
+      "command_overhead_usec": 6058,
+      "command_owner_usec": 6869,
+      "configured_workers": 1,
+      "family": 4.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.787545,
+        0.698622,
+        0.706674,
+        0.633524,
+        0.886935,
+        0.898914,
+        0.827856,
+        0.985494
+      ],
+      "permission_remaining": 112,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 112,
+      "requested_quantity": 112,
+      "source_final": 2072,
+      "source_initial": 2184
+    },
+    {
+      "actual_claimants_max": 2,
+      "bits": 3.0,
+      "command_overhead_usec": 7182,
+      "command_owner_usec": 8189,
+      "configured_workers": 4,
+      "family": 4.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.924412,
+        2.313093,
+        2.150958,
+        1.206726,
+        0.725112,
+        0.643228,
+        0.705122,
+        0.61096
+      ],
+      "permission_remaining": 112,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 112,
+      "requested_quantity": 112,
+      "source_final": 2072,
+      "source_initial": 2184
+    },
+    {
+      "actual_claimants_max": 1,
+      "bits": 8.0,
+      "command_overhead_usec": 5521,
+      "command_owner_usec": 6198,
+      "configured_workers": 1,
+      "family": 4.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.704401,
+        0.893065,
+        0.924412,
+        0.655867,
+        1.473478,
+        0.615437,
+        0.622457,
+        0.850531
+      ],
+      "permission_remaining": 4080,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 4080,
+      "requested_quantity": 4080,
+      "source_final": 75480,
+      "source_initial": 79560
+    },
+    {
+      "actual_claimants_max": 2,
+      "bits": 8.0,
+      "command_overhead_usec": 6573,
+      "command_owner_usec": 7338,
+      "configured_workers": 4,
+      "family": 4.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        1.10457,
+        0.783976,
+        0.895719,
+        0.747571,
+        0.997736,
+        0.891202,
+        0.872883,
+        0.92929
+      ],
+      "permission_remaining": 4080,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 4080,
+      "requested_quantity": 4080,
+      "source_final": 75480,
+      "source_initial": 79560
+    },
+    {
+      "actual_claimants_max": 1,
+      "bits": 3.0,
+      "command_overhead_usec": 4887,
+      "command_owner_usec": 5545,
+      "configured_workers": 1,
+      "family": 1.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.35092,
+        0.341586,
+        0.345672,
+        0.342166,
+        0.288595,
+        0.308495,
+        0.313383,
+        0.36344
+      ],
+      "permission_remaining": 112,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 112,
+      "requested_quantity": 112,
+      "source_final": 2072,
+      "source_initial": 2184
+    },
+    {
+      "actual_claimants_max": 2,
+      "bits": 3.0,
+      "command_overhead_usec": 6094,
+      "command_owner_usec": 7005,
+      "configured_workers": 4,
+      "family": 1.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.522989,
+        0.747096,
+        0.492362,
+        0.488576,
+        0.305521,
+        0.361114,
+        0.347955,
+        0.327514
+      ],
+      "permission_remaining": 112,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 112,
+      "requested_quantity": 112,
+      "source_final": 2072,
+      "source_initial": 2184
+    },
+    {
+      "actual_claimants_max": 1,
+      "bits": 8.0,
+      "command_overhead_usec": 5778,
+      "command_owner_usec": 6455,
+      "configured_workers": 1,
+      "family": 1.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.368997,
+        0.39771,
+        0.337789,
+        0.349277,
+        0.297739,
+        0.359322,
+        0.317158,
+        0.324048
+      ],
+      "permission_remaining": 4080,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 4080,
+      "requested_quantity": 4080,
+      "source_final": 75480,
+      "source_initial": 79560
+    },
+    {
+      "actual_claimants_max": 2,
+      "bits": 8.0,
+      "command_overhead_usec": 5078,
+      "command_owner_usec": 5868,
+      "configured_workers": 4,
+      "family": 1.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.388215,
+        0.647767,
+        0.733906,
+        2.34856,
+        0.38482,
+        0.435677,
+        0.342046,
+        0.339872
+      ],
+      "permission_remaining": 4080,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 4080,
+      "requested_quantity": 4080,
+      "source_final": 75480,
+      "source_initial": 79560
+    },
+    {
+      "actual_claimants_max": 1,
+      "bits": 8.0,
+      "command_overhead_usec": 5365,
+      "command_owner_usec": 6153,
+      "configured_workers": 1,
+      "family": 1.0,
+      "fractional": true,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.561906,
+        0.3852,
+        0.57026,
+        0.760967,
+        0.308195,
+        0.31196,
+        0.401005,
+        0.41745
+      ],
+      "permission_remaining": 7152,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 1008,
+      "requested_quantity": 4080,
+      "source_final": 18648,
+      "source_initial": 19656
+    },
+    {
+      "actual_claimants_max": 2,
+      "bits": 8.0,
+      "command_overhead_usec": 6014,
+      "command_owner_usec": 6919,
+      "configured_workers": 4,
+      "family": 1.0,
+      "fractional": true,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.370411,
+        0.458324,
+        1.14826,
+        1.537709,
+        0.400196,
+        0.423591,
+        0.467398,
+        0.450572
+      ],
+      "permission_remaining": 7152,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 1008,
+      "requested_quantity": 4080,
+      "source_final": 18648,
+      "source_initial": 19656
+    },
+    {
+      "actual_claimants_max": 1,
+      "bits": 8.0,
+      "command_overhead_usec": 6429,
+      "command_owner_usec": 10353,
+      "configured_workers": 1,
+      "family": 2.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.351012,
+        0.370381,
+        0.364743,
+        0.346635,
+        0.406897,
+        0.440778,
+        0.44255,
+        0.433546
+      ],
+      "permission_remaining": 4080,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 4080,
+      "requested_quantity": 4080,
+      "source_final": 75480,
+      "source_initial": 79560
+    },
+    {
+      "actual_claimants_max": 2,
+      "bits": 8.0,
+      "command_overhead_usec": 5945,
+      "command_owner_usec": 6930,
+      "configured_workers": 4,
+      "family": 2.0,
+      "fractional": false,
+      "material": 3.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.510503,
+        0.744458,
+        2.479065,
+        0.467458,
+        2.493447,
+        0.612939,
+        0.423792,
+        0.394487
+      ],
+      "permission_remaining": 4080,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 4080,
+      "requested_quantity": 4080,
+      "source_final": 75480,
+      "source_initial": 79560
+    },
+    {
+      "actual_claimants_max": 1,
+      "bits": 8.0,
+      "command_overhead_usec": 5447,
+      "command_owner_usec": 6357,
+      "configured_workers": 1,
+      "family": 2.0,
+      "fractional": false,
+      "material": 24.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.59607,
+        0.361736,
+        0.340704,
+        0.382197,
+        0.359202,
+        0.418923,
+        0.296337,
+        0.320364
+      ],
+      "permission_remaining": 16,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 16,
+      "requested_quantity": 16,
+      "source_final": 296,
+      "source_initial": 312
+    },
+    {
+      "actual_claimants_max": 2,
+      "bits": 8.0,
+      "command_overhead_usec": 4982,
+      "command_owner_usec": 5710,
+      "configured_workers": 4,
+      "family": 2.0,
+      "fractional": false,
+      "material": 24.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.602459,
+        0.955723,
+        0.886077,
+        1.115844,
+        0.280764,
+        0.322918,
+        0.269637,
+        0.27805
+      ],
+      "permission_remaining": 16,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 16,
+      "requested_quantity": 16,
+      "source_final": 296,
+      "source_initial": 312
+    },
+    {
+      "actual_claimants_max": 1,
+      "bits": 8.0,
+      "command_overhead_usec": 6791,
+      "command_owner_usec": 7878,
+      "configured_workers": 1,
+      "family": 4.0,
+      "fractional": false,
+      "material": 24.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.795941,
+        0.935902,
+        0.780098,
+        0.768921,
+        0.648018,
+        0.646316,
+        0.59627,
+        1.103295
+      ],
+      "permission_remaining": 16,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 16,
+      "requested_quantity": 16,
+      "source_final": 296,
+      "source_initial": 312
+    },
+    {
+      "actual_claimants_max": 2,
+      "bits": 8.0,
+      "command_overhead_usec": 5963,
+      "command_owner_usec": 7169,
+      "configured_workers": 4,
+      "family": 4.0,
+      "fractional": false,
+      "material": 24.0,
+      "native_completed_tick_after": 0,
+      "native_completed_tick_before": 0,
+      "native_tick_ms": [
+        0.908261,
+        0.924716,
+        0.971786,
+        1.252291,
+        0.851565,
+        0.855101,
+        0.652365,
+        0.965257
+      ],
+      "permission_remaining": 16,
+      "post_shutoff_ticks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "removed": 16,
+      "requested_quantity": 16,
+      "source_final": 296,
+      "source_initial": 312
+    }
+  ],
+  "natural_completion_without_count": [
+    "import",
+    "test_tick_failure_regression"
+  ],
+  "reviewed_source_input_count": 1109,
+  "reviewed_utc": "2026-11-04T14:22:08.899892+00:00",
+  "runtime_hashes": {
+    "godot/addons/cybersand_native/runtime-provenance.json": {
+      "actual_file_sha256": "ee09f7ab485f817b5f58e767ddb26f2e430439bb3dd4f185019eda028f47199a",
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+    },
+    "godot/addons/cybersand_native/runtime-provenance.linux.json": {
+      "actual_file_sha256": "0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45",
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+    },
+    "godot/addons/godot-rapier2d/runtime-provenance.linux.json": {
+      "actual_file_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "artifact": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+    },
+    "godot/addons/godot-rapier2d/runtime-provenance.windows.json": {
+      "actual_file_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "artifact": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+    }
+  },
+  "schema": "independent-completed-host-custody-review-v1",
+  "scope": "read-only independent reduction of completed Linux run; no test replay; Windows and physical input not executed",
+  "source_drift": [],
+  "source_sha": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "source_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a",
+  "status": "PASS"
+}

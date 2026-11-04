@@ -1,0 +1,10 @@
+{
+  "checked_utc": "2026-11-04T14:37:08.493334+00:00",
+  "git_status": "",
+  "runtime_custody_scope": "All four runtime bytes included in the unchanged 1109-input manifest; all 18 materialized payloads authenticated by repository-validation.json. Windows binaries not executed.",
+  "schema": "pr383-final-source-custody-v1",
+  "source_commit": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "source_input_drift": [],
+  "source_inputs_checked": 1109,
+  "source_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a"
+}

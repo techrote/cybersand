@@ -1,0 +1,53 @@
+{
+  "checks": [
+    "Report quantities, native and application claimant scope, suite/assertion counts, process exits and timing scopes match retained fresh records.",
+    "Independently recomputed every metered command transition sum: 27 applied, 37 refused with zero writes/debit, two injected terminal faults; three v1 controls remain separate.",
+    "Accepted source/sink/allowance ledgers close; the intentional 255-unit unverified difference after injected readback failure remains explicit.",
+    "Completed ticks 63 and 68 advance while all six exact protected position/material/quantity/mask observations remain equal; original failed reducer is retained.",
+    "Native-issued initial construction receipt, World wrapper identity, generation, completed tick and host-local-native-observation-v1 remain separate.",
+    "Compact actual command blocks and replay boundaries are present; packaged host harness is byte-identical to the executed harness.",
+    "Windows checklist now mirrors the existing same-repository pinned companion/source layout; setup and physical rows are explicitly UNTESTED; wrapper bytes remain unchanged.",
+    "Known retrieval LCB03 miss, preparation blocks, generated import metadata and earlier reader failure remain disclosed."
+  ],
+  "executed_source_commit": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "executed_source_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a",
+  "publication_finalization": "Root publication owner will generate the evidence index and independently verify all final byte hashes and relative links before commit. No further source or runtime rerun is required by this report-only review.",
+  "remaining_limits": [
+    "Windows native/Godot execution and PowerShell instructions were not executed on Windows.",
+    "Physical mouse/keyboard/gamepad, real focus/window-manager behavior, rendered pacing and owner acceptance remain UNTESTED.",
+    "Unmodified PLAY establishes admission; actual liquid effects use the labelled controlled Main variation with synthetic input and aim/focus seams.",
+    "Hosted #383 final qualification remains DEFERRED pending #379 sequencing and exact-source reconciliation; skipped jobs and report-only advisory are not runtime passes.",
+    "This review does not replace the separately assigned production audit or grant ready/merge/closure authority."
+  ],
+  "reviewed_files": {
+    "../2026-11-04-in-tools-383-cross-platform-qualification.md": {
+      "bytes": 28259,
+      "sha256": "cb85c6977899cb3eb624ff9b553ab69977176529cbb212df09030cb6f7e535cd"
+    },
+    "Invoke-PR383OwnerPlaytest.ps1": {
+      "bytes": 1438,
+      "sha256": "f415a8f94be50f12098faca222eacb62ccff8889fa1a36ea6531e2477505db97"
+    },
+    "reduce-host-evidence.py": {
+      "bytes": 15875,
+      "sha256": "f72ed519ba9e0be49706244176efb02bf03869f8d18e58de11ff945047bac35a"
+    },
+    "review-custody.json": {
+      "bytes": 4345,
+      "sha256": "dcbea65b38e0026d14311049d01d0665010daa1b015326fce04104c57ce1d118"
+    },
+    "run-host-qualification.py": {
+      "bytes": 9803,
+      "sha256": "e9567001ee72555b90aeda439427fd3ab0ce63295f031603fbb32149eba7bca5"
+    },
+    "windows-owner-playtest.md": {
+      "bytes": 15414,
+      "sha256": "80dc839168c92f71c7afa82d020c1442b93c95f00daa3426f1d0e727461a08a4"
+    }
+  },
+  "reviewed_utc": "2026-11-04T14:39:59.368629+00:00",
+  "reviewer": "independent qualification-review agent; not a GitHub-account approval",
+  "schema": "pr383-publication-review-v1",
+  "scope": "Final report accuracy, retained-evidence consistency, command reproducibility and Windows owner handoff; no additional runtime execution",
+  "status": "PASS"
+}

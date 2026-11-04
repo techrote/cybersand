@@ -1,0 +1,172 @@
+{
+  "byte_basis": "Sealed Linux checkout bytes, verified against canonical Git blobs. Archive members preserve those bytes. Git attributes may convert the .ps1 working file to CRLF on Windows; verify the Git blob or unchanged archive member against this index.",
+  "evidence_branch": "audit/in-tools-383-qualification-20261104",
+  "executed_source_commit": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "executed_source_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a",
+  "files": [
+    {
+      "bytes": 28259,
+      "path": "docs/audits/2026-11-04-in-tools-383-cross-platform-qualification.md",
+      "sha256": "cb85c6977899cb3eb624ff9b553ab69977176529cbb212df09030cb6f7e535cd"
+    },
+    {
+      "bytes": 1438,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/Invoke-PR383OwnerPlaytest.ps1",
+      "sha256": "f415a8f94be50f12098faca222eacb62ccff8889fa1a36ea6531e2477505db97"
+    },
+    {
+      "bytes": 571,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/companion-inputs.json",
+      "sha256": "1680e1d76c4d9950cf94aba483b080dd63741690f7fc5767810d15b67122b1d9"
+    },
+    {
+      "bytes": 22488,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/completed-host-review.json",
+      "sha256": "39be7bc05bd4d7461bf746166bccd06fa79910d2751dd1d495252863da485c4a"
+    },
+    {
+      "bytes": 3310,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/documentation-validation.json",
+      "sha256": "1356410ac63712974344ebbfa9e06247b3b534b851377ff578388e3dd0879509"
+    },
+    {
+      "bytes": 511,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/final-source-custody.json",
+      "sha256": "c8aa69973d0780c50791dbab69f51b4f007e7afb6b6caf787853bc001efbe159"
+    },
+    {
+      "bytes": 56370,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/github-gates.json",
+      "sha256": "884a07648f4cbbff3c53dbd733119fa7a92cf606924c41e9be1bb399c1693e5d"
+    },
+    {
+      "bytes": 5675,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/github-native-advisory.json",
+      "sha256": "7b13a0c20b3c71ecd8edd3efbef8760282beac570c0b53cda3d14fa5acdc58a3"
+    },
+    {
+      "bytes": 89720,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/host-import-artifacts.json",
+      "sha256": "463a68abade5582f440447f2e9ef75cd9d0ebbcf6f3a969bcdfef984d3f2be36"
+    },
+    {
+      "bytes": 68088,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/host-processes.json",
+      "sha256": "41f36b715f361f18212b4ac70f4025d269a754aa44fbc5e9b10fd0ccd770494b"
+    },
+    {
+      "bytes": 235950,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/host-reduction.json",
+      "sha256": "e83bea14f3a6cb2d0be42919fe79a9d586a706cab5ba2c13ac61ecb9047c7ab5"
+    },
+    {
+      "bytes": 21283,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/host-source-after.json",
+      "sha256": "abc32a46bfc24fc49b5ecd87fcdb4cdf659f8786bf63323dc7dbdfc1837c4f55"
+    },
+    {
+      "bytes": 140639,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/host-source-before.json",
+      "sha256": "1ab936ac8588a3c2df75adfcf258e5ed1d580042f171ef899100c30946515865"
+    },
+    {
+      "bytes": 8212,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/independent-host-reader.py",
+      "sha256": "938780c4f20edc424f802e206847fa6f0b967673f7810e2c7ccd70dee4c70c78"
+    },
+    {
+      "bytes": 979,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/live-final-state.json",
+      "sha256": "117cb5fe8a390699a28c556d131f15b2ed3f366a781fb1266473b02ed6ef5688"
+    },
+    {
+      "bytes": 308,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/m11-validation.json",
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+    },
+    {
+      "bytes": 713118,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/metered-drain-desktop-host.json",
+      "sha256": "6a857c9282ec6e6829dc7083d3f372517ffa70b9c0baa259b1304cbb3cbadbf8"
+    },
+    {
+      "bytes": 3968890,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/metered-drain-native-host.json",
+      "sha256": "c9fff47fc6c545b52a80bdd86e8b47390f99f928ce2570de6c588e7dfa24d8df"
+    },
+    {
+      "bytes": 1087,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/native-parser-controls.json",
+      "sha256": "d557d20abf01481d02a9cd4e27b0959205a1f76b162cab7c7f2bface795e6d7e"
+    },
+    {
+      "bytes": 31240,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/native-qualification.json",
+      "sha256": "dd9d5bed290126dd6d1c21d5b3561d95c29cc1344e8d5712b53e8bcda7776944"
+    },
+    {
+      "bytes": 20744,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/native-summary.json",
+      "sha256": "c270906bf15b0b9b59f0a064996ec45208fa4f5a9336dba994a68fb7f2334658"
+    },
+    {
+      "bytes": 2604,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/preparation-and-reader-failures.json",
+      "sha256": "933e07df757e05467b21d9a7488367914427fb6a39f3ed75ea55b84304e527f9"
+    },
+    {
+      "bytes": 3644,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/publication-review.json",
+      "sha256": "6843fedf5d0de6a2124cdb4a612ef0e7a5288e019a521d85e6854896a2760adb"
+    },
+    {
+      "bytes": 12109,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/qualification-coverage-review.md",
+      "sha256": "846e64023480184af0be7a1a0dc63b3803b97233e69297cdee06ef426c7990bc"
+    },
+    {
+      "bytes": 15875,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/reduce-host-evidence.py",
+      "sha256": "f72ed519ba9e0be49706244176efb02bf03869f8d18e58de11ff945047bac35a"
+    },
+    {
+      "bytes": 2544,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/repository-validation.json",
+      "sha256": "ec4d7369c0a03093e9a5050ae9c3f83bbdd1d5daf580ac68a80b5acea3d3318a"
+    },
+    {
+      "bytes": 4345,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/review-custody.json",
+      "sha256": "dcbea65b38e0026d14311049d01d0665010daa1b015326fce04104c57ce1d118"
+    },
+    {
+      "bytes": 9803,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/run-host-qualification.py",
+      "sha256": "e9567001ee72555b90aeda439427fd3ab0ce63295f031603fbb32149eba7bca5"
+    },
+    {
+      "bytes": 8504,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/runtime-materialization.json",
+      "sha256": "7ef989e96eaac47d6d6dec78ad762fa9cea5a404e0bbff3863a5a0062cc206b9"
+    },
+    {
+      "bytes": 15414,
+      "path": "docs/audits/in-tools-383-qualification-2026-11-04/windows-owner-playtest.md",
+      "sha256": "80dc839168c92f71c7afa82d020c1442b93c95f00daa3426f1d0e727461a08a4"
+    }
+  ],
+  "interpretation": "Source and hash custody is distinct from platform execution. Host-local observations are not native-issued per-command transaction receipts.",
+  "path_root": "repository root",
+  "raw_artifact_custody": "Original stdout/stderr, blocked preflight attempts, first failed reader, independent review, Linux native test executable and GitHub snapshots are in the separately sealed downloadable archive. No production binaries, toolchains or logs are committed here.",
+  "schema": "pr383-cross-platform-qualification-index-v1",
+  "sealed_utc": "2026-11-04T14:40:55.373169+00:00",
+  "self_hash_excluded": "docs/audits/in-tools-383-qualification-2026-11-04/evidence-index.json",
+  "status": {
+    "final_hosted_matrix": "DEFERRED",
+    "linux_headless_godot_rapier": "PASS",
+    "linux_native": "PASS",
+    "physical_devices_and_rendered_desktop": "UNTESTED",
+    "ready_merge_decision": "BLOCKED",
+    "windows_native_godot_rapier": "UNTESTED"
+  }
+}

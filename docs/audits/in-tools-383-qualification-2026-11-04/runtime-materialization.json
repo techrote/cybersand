@@ -1,0 +1,131 @@
+{
+  "scope": "18 runtime payload identities only; Linux selected runtime execution separately qualified",
+  "artifacts": [
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "ee09f7ab485f817b5f58e767ddb26f2e430439bb3dd4f185019eda028f47199a",
+      "size": 4824064,
+      "committed_lfs_sha256": "ee09f7ab485f817b5f58e767ddb26f2e430439bb3dd4f185019eda028f47199a",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45",
+      "size": 4222424,
+      "committed_lfs_sha256": "0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+      "size": 2754113,
+      "committed_lfs_sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/godot_rapier.wasm"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "sha256": "d8d71fd6f953972e6b650c1bf53b667433fe5a2461f21d221104d42c45251b86",
+      "size": 10531096,
+      "committed_lfs_sha256": "d8d71fd6f953972e6b650c1bf53b667433fe5a2461f21d221104d42c45251b86",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "sha256": "70d5dfb0dc60b3276047a17bb9824750fa527f1b46759024e23459e232343cd2",
+      "size": 8077888,
+      "committed_lfs_sha256": "70d5dfb0dc60b3276047a17bb9824750fa527f1b46759024e23459e232343cd2",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "sha256": "93709c0b597f801f2a476bf50f4234639cc6f902746a5a7dfbc04ae0c8322467",
+      "size": 11996416,
+      "committed_lfs_sha256": "93709c0b597f801f2a476bf50f4234639cc6f902746a5a7dfbc04ae0c8322467",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "sha256": "fb05e284467399144698b77412196604d136886a164fa881d13e385429607909",
+      "size": 10838824,
+      "committed_lfs_sha256": "fb05e284467399144698b77412196604d136886a164fa881d13e385429607909",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "sha256": "38feab99c6b53e30aa7664afced37c1e11956999d930456fb6df0da552371d54",
+      "size": 8836448,
+      "committed_lfs_sha256": "38feab99c6b53e30aa7664afced37c1e11956999d930456fb6df0da552371d54",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "sha256": "164927dce3772601f75a63a7f587acc0d4e59755598ccb453f21c8dac212c55c",
+      "size": 9540432,
+      "committed_lfs_sha256": "164927dce3772601f75a63a7f587acc0d4e59755598ccb453f21c8dac212c55c",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "sha256": "021a237af3bd99170a7b220369295e69d78f0c57ab6cc8fc93dc9a79be203358",
+      "size": 9872888,
+      "committed_lfs_sha256": "021a237af3bd99170a7b220369295e69d78f0c57ab6cc8fc93dc9a79be203358",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "sha256": "f4e7041aef2a508739688ea67b83802765c2249629288e5ff986079d75aab7f5",
+      "size": 10217600,
+      "committed_lfs_sha256": "f4e7041aef2a508739688ea67b83802765c2249629288e5ff986079d75aab7f5",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "sha256": "9e10814c3ede242b0dc95737aecec4837b9468d170e82a29dea5013614e242bd",
+      "size": 12012020,
+      "committed_lfs_sha256": "9e10814c3ede242b0dc95737aecec4837b9468d170e82a29dea5013614e242bd",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "size": 117275416,
+      "committed_lfs_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "sha256": "7ad1dc7a59a2689f2248ad9f1961574851acae96d1a249b39f0ecd881528569b",
+      "size": 18692816,
+      "committed_lfs_sha256": "7ad1dc7a59a2689f2248ad9f1961574851acae96d1a249b39f0ecd881528569b",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "sha256": "b5de2d56a30cef7d7ef9a1afc7a0fa7e5f2c3e3c12fc31643b60a1729ee901c9",
+      "size": 8677376,
+      "committed_lfs_sha256": "b5de2d56a30cef7d7ef9a1afc7a0fa7e5f2c3e3c12fc31643b60a1729ee901c9",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "sha256": "0e0de310bee74df67e1a5ff0532f51edd27338196c231c81817a938bee48a2ad",
+      "size": 8747008,
+      "committed_lfs_sha256": "0e0de310bee74df67e1a5ff0532f51edd27338196c231c81817a938bee48a2ad",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "size": 9987072,
+      "committed_lfs_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+      "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2",
+      "size": 2751606,
+      "committed_lfs_sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2",
+      "cached_from": "/workspace/scratch/f009d8a99c07/cybersand-361a/godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    }
+  ]
+}

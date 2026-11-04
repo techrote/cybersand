@@ -1,0 +1,31 @@
+{
+  "observed_utc": "2026-11-04T14:32:36.462Z",
+  "pull_requests": [
+    {
+      "number": 383,
+      "url": "https://github.com/techrote/cybersand/pull/383",
+      "head_sha": "73b10f9b800e72f358f22f470e57a4531002c168",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "branch": "feat/in-tools-361a-metered-liquid-drain",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-04T12:56:38Z"
+    },
+    {
+      "number": 379,
+      "url": "https://github.com/techrote/cybersand/pull/379",
+      "head_sha": "1aaab324a9bccbaa7f868798dbb4f9fd9b4a7718",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "branch": "docs/in-tools-361-admission-20261104",
+      "state": "open",
+      "draft": false,
+      "merged": false,
+      "updated_at": "2026-11-04T14:04:19Z"
+    }
+  ],
+  "main": {
+    "sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371"
+  }
+}

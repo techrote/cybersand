@@ -1,0 +1,81 @@
+{
+  "docs_evidence_worktree": {
+    "canonical_claims": 236,
+    "documents": 120,
+    "errors": [],
+    "heading_anchors": 693,
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ],
+    "local_links": 3601,
+    "navigation_link_documents": 8,
+    "questions": 32,
+    "status": "passed",
+    "warnings": []
+  },
+  "limitations": [
+    "Canonical retrieval hits are not answer correctness or runtime acceptance.",
+    "Existing LCB03 challenge miss is retained; no corpus or evaluator change."
+  ],
+  "retrieval": [
+    {
+      "bytes": 416499,
+      "corpus_manifest_sha256": "ac65e23d3905a7e5bc7c0fd27d3ebc02251601e9690e66b62c89aa6a763d2e50",
+      "created_utc": "2026-11-04T14:31:36.992383+00:00",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "misses": [],
+      "path": "retrieval-frozen.json",
+      "sha256": "3b02eff8b5e6515d7048b53107bf96e50cc1afe5874b5a2fed42ab5e5837affc",
+      "summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "questions": 32
+      }
+    },
+    {
+      "bytes": 2585394,
+      "corpus_manifest_sha256": "ac65e23d3905a7e5bc7c0fd27d3ebc02251601e9690e66b62c89aa6a763d2e50",
+      "created_utc": "2026-11-04T14:31:37.903065+00:00",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "fixture_sha256": "6590b94e902079f2545c8886a5131bc7aff58ccb21e2ee987463f0b9ab34e570",
+      "misses": [
+        "LCB03"
+      ],
+      "path": "retrieval-challenges.json",
+      "sha256": "6e6bfc138bdb876bb2a5a100e37ef06ed23702b6cea9688f0814a843a4a6b1c7",
+      "summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8737,
+        "questions": 157
+      }
+    },
+    {
+      "bytes": 80783,
+      "corpus_manifest_sha256": "ac65e23d3905a7e5bc7c0fd27d3ebc02251601e9690e66b62c89aa6a763d2e50",
+      "created_utc": "2026-11-04T14:33:21.368452+00:00",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "fixture_sha256": "d6a31023919a5182bd7c100f479b448f60f6c1393ff80d14ab50fe263a56cd4f",
+      "misses": [],
+      "path": "retrieval-in-tools.json",
+      "sha256": "0fd751cd48a045d383e631b6911b80b0c759c1b4d28d27d2fa35518cb77d0621",
+      "summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 1.0,
+        "questions": 4
+      }
+    }
+  ],
+  "schema": "pr383-documentation-validation-v1",
+  "source_commit": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "source_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a"
+}

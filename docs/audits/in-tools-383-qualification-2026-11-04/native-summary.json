@@ -1,0 +1,616 @@
+{
+  "artifacts": {
+    "attempt-1/compile.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "attempt-1/compile.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "attempt-1/metered_drain": {
+      "bytes": 9337944,
+      "sha256": "0fd0d0008eefa143f8441952919390826ea3e1c0688af078d26190b8b4e43bb4"
+    },
+    "attempt-1/record.json": {
+      "bytes": 31240,
+      "sha256": "dd9d5bed290126dd6d1c21d5b3561d95c29cc1344e8d5712b53e8bcda7776944"
+    },
+    "attempt-1/run.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "attempt-1/run.stdout.log": {
+      "bytes": 10588,
+      "sha256": "2faa3713c424cb08419cf94ed9dd7e2f54e49ade11edd6fb429b2e35f3d2ae9b"
+    },
+    "parser-record.json": {
+      "bytes": 1087,
+      "sha256": "d557d20abf01481d02a9cd4e27b0959205a1f76b162cab7c7f2bface795e6d7e"
+    },
+    "parser.stderr.log": {
+      "bytes": 2655,
+      "sha256": "318ddc4321ffb06f7e9a6046b70a3bb38c8d64794fa8eb7b9b301c96da203d27"
+    },
+    "parser.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "compiler_sha256": "52f1ddb33fe78b9441e0f42e9cd22c571f1101938e046c8a26582494e041cc73",
+  "compiler_version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "configuration": {
+    "active_chunk_capacity": 128,
+    "active_core_capacity": 1024,
+    "coherence_ticks": 12,
+    "initial_chunk_reserve": 16,
+    "maximum_chunk_count": 128,
+    "maximum_rule_radius": 3,
+    "parallel_job_threshold": 1,
+    "special_capacity_fixture": {
+      "backend": "SerialInPlace",
+      "chunk_size": 8,
+      "initial_chunk_reserve": 1,
+      "maximum_chunk_count": 1
+    },
+    "water_mass_bits": [
+      3,
+      8
+    ],
+    "water_quanta": [
+      7,
+      255
+    ],
+    "worker_threads": [
+      1,
+      4
+    ]
+  },
+  "control_rows": [
+    {
+      "case_id": "refusal.complete-preflight",
+      "motion_witness": true,
+      "refusals": 16,
+      "spatial_wall_checks": true,
+      "status": "pass"
+    },
+    {
+      "case_id": "hazard.raw-empty-under-mask",
+      "guarded_refusal_preserves_state": true,
+      "profiles": 8,
+      "raw_erasure_removes_stored_material": true,
+      "status": "pass"
+    },
+    {
+      "case_id": "refusal.policy-and-fractional-whole-cell",
+      "oil_in_refused": true,
+      "pressure_world_refused": true,
+      "status": "pass",
+      "water_cy_full_cells_only": true,
+      "water_quanta": [
+        7,
+        255
+      ]
+    },
+    {
+      "case_id": "capacity.resident-erase-and-failed-tick",
+      "clear_recovery": true,
+      "failed_tick_quarantined": true,
+      "resident_erase_at_chunk_limit": true,
+      "status": "pass"
+    },
+    {
+      "application_lifecycle_tested": false,
+      "case_id": "lifecycle.native-retirement-persistence-reconstruction",
+      "continuation_ticks_per_profile": 8,
+      "inertial_ledger_continuation_parity": true,
+      "native_motion_witness": true,
+      "profiles": 8,
+      "status": "pass"
+    },
+    {
+      "case_id": "oracle.complete-resident-census",
+      "negative_controls": 5,
+      "resident_cells": 131072,
+      "resident_chunks": 8,
+      "status": "pass"
+    }
+  ],
+  "coverage_notes": [
+    "All eight configured-four arms observed four distinct native phase claimants; all configured-one arms observed one. Counts do not establish simultaneous CPU utilization.",
+    "Each material/policy/precision worker arm performed 40 accepted bounded commands per worker setting and 64 completed ticks. Per-operation actual native sink/remaining quantity and per-tick stock closure are executable assertions; per-command trace values are not separately serialized by this existing fixture.",
+    "All eight arms have zero unexplained initial-minus-removed-minus-remaining residual and equal one/four physical-state and separate 65-sample inertial diagnostic-ledger traces.",
+    "Independent complete stored-cell census covers 131072 cells in exactly eight chunks at ticks 0,8,20,32,64, checks each wall position and every forbidden resident coordinate, and rejects five corrupted inventory/domain/geometry controls.",
+    "Refusal controls preserve serialized native state, quantity ledger, native inertial ledger, resident chunk count and local effect allowance. Equipment charge/cooldown, sequence freshness and owner generation are application gates, not native standalone claims.",
+    "Raw Empty edit under a transient body mask is intentionally reproduced as a hazard for eight profiles; guarded test-side preflight refuses without changing native state.",
+    "The capacity fixture triggers an actual native tick failure, verifies completed_tick_index < tick_index, failed-World refusal and explicit clear recovery. It is not an injected host readback fault.",
+    "The existing direct-core fixture does not issue a prepared construction receipt or host-local-native-observation-v1; no World object/generation identity is invented.",
+    "Compilation/test elapsed time includes instrumentation, repeated census and hashing. It is not a per-command overhead, native tick-time or rendered pacing measure.",
+    "Native-only execution does not qualify the production GDScript composition, Rapier, Godot, Windows or physical-device route."
+  ],
+  "exact_quantity_rows": [
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-in-3.1",
+      "cells": 1,
+      "initial_quantity": 7,
+      "mass_bits": 3,
+      "native_water_sink_delta": 7,
+      "policy_hash": "71fd2aa0ae758c5e64a2fcb4931be021be6af9da798107ca2779428bb643cb7b",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 7
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-in-3.16",
+      "cells": 16,
+      "initial_quantity": 112,
+      "mass_bits": 3,
+      "native_water_sink_delta": 112,
+      "policy_hash": "71fd2aa0ae758c5e64a2fcb4931be021be6af9da798107ca2779428bb643cb7b",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 112
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-in-8.1",
+      "cells": 1,
+      "initial_quantity": 255,
+      "mass_bits": 8,
+      "native_water_sink_delta": 255,
+      "policy_hash": "71fd2aa0ae758c5e64a2fcb4931be021be6af9da798107ca2779428bb643cb7b",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 255
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-in-8.16",
+      "cells": 16,
+      "initial_quantity": 4080,
+      "mass_bits": 8,
+      "native_water_sink_delta": 4080,
+      "policy_hash": "71fd2aa0ae758c5e64a2fcb4931be021be6af9da798107ca2779428bb643cb7b",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 4080
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-fm-3.1",
+      "cells": 1,
+      "initial_quantity": 3,
+      "mass_bits": 3,
+      "native_water_sink_delta": 3,
+      "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 3
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-fm-3.16",
+      "cells": 16,
+      "initial_quantity": 54,
+      "mass_bits": 3,
+      "native_water_sink_delta": 54,
+      "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 54
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-fm-8.1",
+      "cells": 1,
+      "initial_quantity": 3,
+      "mass_bits": 8,
+      "native_water_sink_delta": 3,
+      "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 3
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-fm-8.16",
+      "cells": 16,
+      "initial_quantity": 1834,
+      "mass_bits": 8,
+      "native_water_sink_delta": 1834,
+      "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 1834
+    },
+    {
+      "brine_cells": 1,
+      "case_id": "exact.brine-cy-8.1",
+      "cells": 1,
+      "initial_quantity": 1,
+      "mass_bits": 8,
+      "native_water_sink_delta": 0,
+      "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 0
+    },
+    {
+      "brine_cells": 16,
+      "case_id": "exact.brine-cy-8.16",
+      "cells": 16,
+      "initial_quantity": 16,
+      "mass_bits": 8,
+      "native_water_sink_delta": 0,
+      "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 0
+    },
+    {
+      "brine_cells": 1,
+      "case_id": "exact.brine-in-8.1",
+      "cells": 1,
+      "initial_quantity": 1,
+      "mass_bits": 8,
+      "native_water_sink_delta": 0,
+      "policy_hash": "722a2ffa1ebf2d38d26c35185ae1c4081eb64a4ed4efb24162af8e437efde9dd",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 0
+    },
+    {
+      "brine_cells": 16,
+      "case_id": "exact.brine-in-8.16",
+      "cells": 16,
+      "initial_quantity": 16,
+      "mass_bits": 8,
+      "native_water_sink_delta": 0,
+      "policy_hash": "722a2ffa1ebf2d38d26c35185ae1c4081eb64a4ed4efb24162af8e437efde9dd",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 0
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-cy-3.1",
+      "cells": 1,
+      "initial_quantity": 7,
+      "mass_bits": 3,
+      "native_water_sink_delta": 7,
+      "policy_hash": "0c8da8b3ded40789e4c47f54c1ab0d2a8ce4c0e224bc0f9df188dfa9843f5d51",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 7
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-cy-3.16",
+      "cells": 16,
+      "initial_quantity": 112,
+      "mass_bits": 3,
+      "native_water_sink_delta": 112,
+      "policy_hash": "0c8da8b3ded40789e4c47f54c1ab0d2a8ce4c0e224bc0f9df188dfa9843f5d51",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 112
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-cy-8.1",
+      "cells": 1,
+      "initial_quantity": 255,
+      "mass_bits": 8,
+      "native_water_sink_delta": 255,
+      "policy_hash": "0c8da8b3ded40789e4c47f54c1ab0d2a8ce4c0e224bc0f9df188dfa9843f5d51",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 255
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "exact.water-cy-8.16",
+      "cells": 16,
+      "initial_quantity": 4080,
+      "mass_bits": 8,
+      "native_water_sink_delta": 4080,
+      "policy_hash": "0c8da8b3ded40789e4c47f54c1ab0d2a8ce4c0e224bc0f9df188dfa9843f5d51",
+      "remaining_quantity": 0,
+      "remaining_resource": 11,
+      "status": "pass",
+      "water_units": 4080
+    }
+  ],
+  "execution_seconds": {
+    "compile": 25.53054564600461,
+    "instrumented_native_test_process": 4.242950648011174
+  },
+  "final_git_status_porcelain": "?? godot/addons/godot-rapier2d/bin/.libgodot_rapier.linux.x86_64-unknown-linux-gnu.so.7Lp3VH\n?? godot/addons/godot-rapier2d/bin/.libgodot_rapier.linux.x86_64-unknown-linux-gnu.so.7Lp3VH.Actbmz\n",
+  "fixture": {
+    "kind": "hardcoded-native-fixture",
+    "path": "native/tests/test_metered_liquid_drain.cpp",
+    "schema": "metered-drain-native-primitives-v1",
+    "sha256": "ce9ccbe67a6ab6775030efe086f019cbfc9d8c50d1756e778cc633f33b53fc8d"
+  },
+  "generated_at_utc": "2026-11-04T14:12:48.707404+00:00",
+  "git_diff_check_exit": 0,
+  "historical_comparison": {
+    "historical_source_commit": "f4878302fd66975468dd307a94bb035529af5ecd",
+    "meaning": "Only a comparison against historical measurements; this report derives PASS from its fresh compile/run above.",
+    "record": "docs/audits/in-tools-361a-2026-11-04/native-qualification.json",
+    "record_sha256": "937ce315348fcbf8c065e0227432839b7c5d0c3828f3eafff3f2863b131f269a",
+    "same_55_input_bytes": true,
+    "same_results": true
+  },
+  "machine": "x86_64",
+  "native_inputs_unchanged": true,
+  "os_release": "PRETTY_NAME=\"Ubuntu 24.04.3 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.3 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+  "parser_tests": {
+    "count": 23,
+    "native_execution": false,
+    "scope": "synthetic-parser-and-output-custody-only",
+    "status": "PASS"
+  },
+  "passed_cases": 30,
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.39",
+  "repeated_assertions": 14023753,
+  "schema": "in-tools-383-linux-native-reproduction-v1",
+  "scope": "fresh-standalone-native-primitive-and-guarded-test-composition",
+  "source_commit": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "source_file_count": 55,
+  "source_hashes_match_canonical_git": true,
+  "source_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a",
+  "standalone_runtime_sha256": "0fd0d0008eefa143f8441952919390826ea3e1c0688af078d26190b8b4e43bb4",
+  "status": "PASS",
+  "worker_rows": [
+    {
+      "brine_cells": 0,
+      "case_id": "workers.water-in-3",
+      "flow_initial_water_model": "whole-cells-for-matched-geometry",
+      "inertial_ledger_parity": true,
+      "initial_quantity": 9072,
+      "maximum_cells_per_operation": 16,
+      "moved_cells_after_stop_workers1": 2862,
+      "moved_cells_after_stop_workers4": 2862,
+      "operations_per_arm": 40,
+      "phase_jobs_workers4": 1325,
+      "physical_hash_parity": true,
+      "remaining_quantity": 6020,
+      "removed_quantity": 3052,
+      "resident_census_cells": 131072,
+      "resident_census_ticks": [
+        0,
+        8,
+        20,
+        32,
+        64
+      ],
+      "resident_domain_chunk_count": 8,
+      "status": "pass",
+      "ticks_per_arm": 64,
+      "water_units": 3052,
+      "workers1_observed": 1,
+      "workers4_observed": 4
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "workers.water-in-8",
+      "flow_initial_water_model": "whole-cells-for-matched-geometry",
+      "inertial_ledger_parity": true,
+      "initial_quantity": 330480,
+      "maximum_cells_per_operation": 16,
+      "moved_cells_after_stop_workers1": 2862,
+      "moved_cells_after_stop_workers4": 2862,
+      "operations_per_arm": 40,
+      "phase_jobs_workers4": 1325,
+      "physical_hash_parity": true,
+      "remaining_quantity": 219300,
+      "removed_quantity": 111180,
+      "resident_census_cells": 131072,
+      "resident_census_ticks": [
+        0,
+        8,
+        20,
+        32,
+        64
+      ],
+      "resident_domain_chunk_count": 8,
+      "status": "pass",
+      "ticks_per_arm": 64,
+      "water_units": 111180,
+      "workers1_observed": 1,
+      "workers4_observed": 4
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "workers.water-fm-3",
+      "flow_initial_water_model": "whole-cells-for-matched-geometry",
+      "inertial_ledger_parity": true,
+      "initial_quantity": 9072,
+      "maximum_cells_per_operation": 16,
+      "moved_cells_after_stop_workers1": 1275,
+      "moved_cells_after_stop_workers4": 1275,
+      "operations_per_arm": 40,
+      "phase_jobs_workers4": 1145,
+      "physical_hash_parity": true,
+      "remaining_quantity": 4608,
+      "removed_quantity": 4464,
+      "resident_census_cells": 131072,
+      "resident_census_ticks": [
+        0,
+        8,
+        20,
+        32,
+        64
+      ],
+      "resident_domain_chunk_count": 8,
+      "status": "pass",
+      "ticks_per_arm": 64,
+      "water_units": 4464,
+      "workers1_observed": 1,
+      "workers4_observed": 4
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "workers.water-fm-8",
+      "flow_initial_water_model": "whole-cells-for-matched-geometry",
+      "inertial_ledger_parity": true,
+      "initial_quantity": 330480,
+      "maximum_cells_per_operation": 16,
+      "moved_cells_after_stop_workers1": 4627,
+      "moved_cells_after_stop_workers4": 4627,
+      "operations_per_arm": 40,
+      "phase_jobs_workers4": 1679,
+      "physical_hash_parity": true,
+      "remaining_quantity": 167280,
+      "removed_quantity": 163200,
+      "resident_census_cells": 131072,
+      "resident_census_ticks": [
+        0,
+        8,
+        20,
+        32,
+        64
+      ],
+      "resident_domain_chunk_count": 8,
+      "status": "pass",
+      "ticks_per_arm": 64,
+      "water_units": 163200,
+      "workers1_observed": 1,
+      "workers4_observed": 4
+    },
+    {
+      "brine_cells": 638,
+      "case_id": "workers.brine-cy-8",
+      "flow_initial_water_model": "whole-cells-for-matched-geometry",
+      "inertial_ledger_parity": true,
+      "initial_quantity": 1296,
+      "maximum_cells_per_operation": 16,
+      "moved_cells_after_stop_workers1": 2249,
+      "moved_cells_after_stop_workers4": 2249,
+      "operations_per_arm": 40,
+      "phase_jobs_workers4": 1604,
+      "physical_hash_parity": true,
+      "remaining_quantity": 658,
+      "removed_quantity": 638,
+      "resident_census_cells": 131072,
+      "resident_census_ticks": [
+        0,
+        8,
+        20,
+        32,
+        64
+      ],
+      "resident_domain_chunk_count": 8,
+      "status": "pass",
+      "ticks_per_arm": 64,
+      "water_units": 0,
+      "workers1_observed": 1,
+      "workers4_observed": 4
+    },
+    {
+      "brine_cells": 436,
+      "case_id": "workers.brine-in-8",
+      "flow_initial_water_model": "whole-cells-for-matched-geometry",
+      "inertial_ledger_parity": true,
+      "initial_quantity": 1296,
+      "maximum_cells_per_operation": 16,
+      "moved_cells_after_stop_workers1": 2862,
+      "moved_cells_after_stop_workers4": 2862,
+      "operations_per_arm": 40,
+      "phase_jobs_workers4": 1325,
+      "physical_hash_parity": true,
+      "remaining_quantity": 860,
+      "removed_quantity": 436,
+      "resident_census_cells": 131072,
+      "resident_census_ticks": [
+        0,
+        8,
+        20,
+        32,
+        64
+      ],
+      "resident_domain_chunk_count": 8,
+      "status": "pass",
+      "ticks_per_arm": 64,
+      "water_units": 0,
+      "workers1_observed": 1,
+      "workers4_observed": 4
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "workers.water-cy-3",
+      "flow_initial_water_model": "whole-cells-for-matched-geometry",
+      "inertial_ledger_parity": true,
+      "initial_quantity": 9072,
+      "maximum_cells_per_operation": 16,
+      "moved_cells_after_stop_workers1": 3290,
+      "moved_cells_after_stop_workers4": 3290,
+      "operations_per_arm": 40,
+      "phase_jobs_workers4": 1634,
+      "physical_hash_parity": true,
+      "remaining_quantity": 4634,
+      "removed_quantity": 4438,
+      "resident_census_cells": 131072,
+      "resident_census_ticks": [
+        0,
+        8,
+        20,
+        32,
+        64
+      ],
+      "resident_domain_chunk_count": 8,
+      "status": "pass",
+      "ticks_per_arm": 64,
+      "water_units": 4438,
+      "workers1_observed": 1,
+      "workers4_observed": 4
+    },
+    {
+      "brine_cells": 0,
+      "case_id": "workers.water-cy-8",
+      "flow_initial_water_model": "whole-cells-for-matched-geometry",
+      "inertial_ledger_parity": true,
+      "initial_quantity": 330480,
+      "maximum_cells_per_operation": 16,
+      "moved_cells_after_stop_workers1": 3290,
+      "moved_cells_after_stop_workers4": 3290,
+      "operations_per_arm": 40,
+      "phase_jobs_workers4": 1634,
+      "physical_hash_parity": true,
+      "remaining_quantity": 168810,
+      "removed_quantity": 161670,
+      "resident_census_cells": 131072,
+      "resident_census_ticks": [
+        0,
+        8,
+        20,
+        32,
+        64
+      ],
+      "resident_domain_chunk_count": 8,
+      "status": "pass",
+      "ticks_per_arm": 64,
+      "water_units": 161670,
+      "workers1_observed": 1,
+      "workers4_observed": 4
+    }
+  ]
+}

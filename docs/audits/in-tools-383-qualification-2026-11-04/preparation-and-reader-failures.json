@@ -1,0 +1,46 @@
+{
+  "preserve": true,
+  "rows": [
+    {
+      "status": "BLOCKED",
+      "engine_started": false,
+      "reason": "Two untracked completed LFS-download temporary files rejected by clean-checkout fence",
+      "files": [
+        {
+          "path": "cybersand-383/godot/addons/godot-rapier2d/bin/.libgodot_rapier.linux.x86_64-unknown-linux-gnu.so.7Lp3VH.Actbmz",
+          "size": 102498304,
+          "sha256": "848b11947d9743e540cb525f188e7194e81b387dd43406d76b6a152205833a53"
+        },
+        {
+          "path": "cybersand-383/godot/addons/godot-rapier2d/bin/.libgodot_rapier.linux.x86_64-unknown-linux-gnu.so.7Lp3VH",
+          "size": 103809024,
+          "sha256": "1f5c9f3d7fc89ba89657ba5760e26c234651dde5261b56b88e338a0b93c6777b"
+        }
+      ],
+      "resolved_by": "Moved original download leftovers outside frozen checkout; verified source unchanged",
+      "timestamp_utc": "2026-11-04T14:13:32.554449+00:00"
+    },
+    {
+      "status": "BLOCKED",
+      "engine_started": false,
+      "reason": "Historical 754-entry source/runtime census included 16 non-Linux LFS payloads still represented as pointers; identity preflight rejected pointer/payload mismatch",
+      "resolved_by": "Materialized all 18 exact committed LFS payloads from independently hash-verified existing cache; no source edits"
+    },
+    {
+      "status": "BLOCKED",
+      "engine_started": false,
+      "reason": "LFS files manually materialized from verified cache required index refresh; porcelain reported modified despite empty source diff",
+      "resolved_by": "Re-applied LFS clean filter to verified payloads; git write-tree remains exact assignment tree"
+    },
+    {
+      "status": "FAIL",
+      "scope": "external evidence reducer, no application re-execution",
+      "reason": "First reducer compared completed_tick metadata for endpoints63 and68 as identical, rejecting an otherwise stable six-cell body witness",
+      "resolution": "Retained original reducer/log; corrected reader separately requires tick advancement63\u219268 and identical material, quantity, body ID and all other stored-cell fields at exact six expected coordinates",
+      "application_or_fixture_changed": false,
+      "resolved_status": "PASS"
+    }
+  ],
+  "current_source_clean": true,
+  "native_during_materialization_note": "Initial native checkout was clean; two download temporaries appeared during root runtime preparation. All55 compiled source inputs were unchanged and equal canonical Git; the native output records that observation. Godot execution started only after full staging and clean-source verification."
+}

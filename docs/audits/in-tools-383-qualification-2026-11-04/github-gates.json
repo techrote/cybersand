@@ -1,0 +1,654 @@
+{
+  "pr383": {
+    "number": 383,
+    "head": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "tree": "31c5a9a4b986820985658d3ed2228ebe9008828a",
+    "branch": "feat/in-tools-361a-metered-liquid-drain",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeable": true
+  },
+  "main": {
+    "head": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371"
+  },
+  "pr379": {
+    "number": 379,
+    "head": "1aaab324a9bccbaa7f868798dbb4f9fd9b4a7718",
+    "state": "open",
+    "draft": false,
+    "merged": false,
+    "mergeable": true
+  },
+  "runs383": [
+    {
+      "id": 41833090231,
+      "name": "Native C++ validation",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 1813,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090231/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090231/logs",
+      "workflow_id": 344993864
+    },
+    {
+      "id": 41833090216,
+      "name": "Native source-scope advisory (report only)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 175,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090216/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090216/logs",
+      "workflow_id": 402341461
+    },
+    {
+      "id": 41833090317,
+      "name": "Palette shader actual backend qualification",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 68,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090317/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090317/logs",
+      "workflow_id": 403062058
+    },
+    {
+      "id": 41833090642,
+      "name": "GDExtension build and current Godot regression",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 1823,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090642/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090642/logs",
+      "workflow_id": 344993861
+    },
+    {
+      "id": 41833090400,
+      "name": "Documentation and provenance",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1896,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090400/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41833090400/logs",
+      "workflow_id": 344993860
+    }
+  ],
+  "runs379": [
+    {
+      "id": 41839882272,
+      "name": "Native C++ validation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1819,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882272/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882272/logs",
+      "workflow_id": 344993864
+    },
+    {
+      "id": 41839882379,
+      "name": "GDExtension build and current Godot regression",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1829,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882379/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882379/logs",
+      "workflow_id": 344993861
+    },
+    {
+      "id": 41839882211,
+      "name": "Documentation and provenance",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1902,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882211/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882211/logs",
+      "workflow_id": 344993860
+    },
+    {
+      "id": 41839882332,
+      "name": "Native source-scope advisory (report only)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 181,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882332/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882332/logs",
+      "workflow_id": 402341461
+    },
+    {
+      "id": 41839882301,
+      "name": "Palette shader actual backend qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 72,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882301/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41839882301/logs",
+      "workflow_id": 403062058
+    },
+    {
+      "id": 41826019684,
+      "name": "Native source-scope advisory (report only)",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 166,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019684/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019684/logs",
+      "workflow_id": 402341461
+    },
+    {
+      "id": 41826019567,
+      "name": "Documentation and provenance",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1887,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019567/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019567/logs",
+      "workflow_id": 344993860
+    },
+    {
+      "id": 41826019487,
+      "name": "GDExtension build and current Godot regression",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 1814,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019487/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019487/logs",
+      "workflow_id": 344993861
+    },
+    {
+      "id": 41826019279,
+      "name": "Native C++ validation",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 1804,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019279/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019279/logs",
+      "workflow_id": 344993864
+    },
+    {
+      "id": 41826019745,
+      "name": "Palette shader actual backend qualification",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_number": 59,
+      "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019745/jobs",
+      "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/41826019745/logs",
+      "workflow_id": 403062058
+    }
+  ],
+  "comments383": [
+    {
+      "url": "https://github.com/techrote/cybersand/pull/383#issuecomment-6631189639",
+      "created_at": "2026-11-04T12:56:38Z",
+      "body": "## Recorded implementation checkpoint \u2014 stopped, draft retained\n\n**Final head:** `73b10f9b800e72f358f22f470e57a4531002c168`  \n**Final tree:** `31c5a9a4b986820985658d3ed2228ebe9008828a`  \n**Measured implementation:** `f4878302fd66975468dd307a94bb035529af5ecd`, tree `b5743bdb4b7a6c3e8fc6c1f8d331aa08ce21b719`.\n\nThe second commit changes ten documentation/evidence files only. All **754** staged application/source/runtime inputs were rehashed against the final worktree and remain identical. Production, tests, fixtures, runners, runtime binaries and dependency inputs have no delta from the measured implementation.\n\n[Qualification and handover](https://github.com/techrote/cybersand/blob/73b10f9b800e72f358f22f470e57a4531002c168/docs/audits/2026-11-04-in-tools-361a-metered-drain.md) \u00b7 [Evidence index](https://github.com/techrote/cybersand/blob/73b10f9b800e72f358f22f470e57a4531002c168/docs/audits/in-tools-361a-2026-11-04/evidence-index.json) \u00b7 [Usage](https://github.com/techrote/cybersand/blob/73b10f9b800e72f358f22f470e57a4531002c168/docs/operations/in-tools-metered-drain.md)\n\n### Executed results and review\n\n- **Linux Godot:** 15 scoped routes, **12,026 counted assertions**, plus the genuine native failed-tick suite. Clean import, natural completion, no skips/runtime errors, unchanged sealed inputs.\n- **Native primitives:** 30 cases, **14,023,753 repeated assertions**; all eight configured-four arms observed four phase claimants. Exact physical and separate IN-ledger parity, positional census and source/sink closure.\n- **Parser/custody:** 23 synthetic/output-custody tests pass.\n- **Actual Main/Rapier:** 148 assertions. Final metered FreeMass removes **1,561 units**, and ordinary v1's separately measured joined-census difference is **1,572 units**. These run-specific values are not replaced by earlier candidate measurements.\n- **Protection:** six exact Water cells at 255 units beneath native body 1 remain intact at ticks 63\u201369 during native body-occlusion refusal. Wall refusal occurs in existing physical clearance before dispatch and creates no phantom native receipt.\n- **Independent automated production review:** accepted for draft source review; no unresolved blocking source findings. Reviewer authorship of the separate native driver/runner is disclosed. This is not a human/account approval or owner integration permission.\n\n### Hosted result at the final PR head\n\n| Gate | Recorded disposition |\n|---|---|\n| [Documentation workflow](https://github.com/techrote/cybersand/actions/runs/41833090400/job/126584971900) | **PASS** |\n| Hosted materialized runtime provenance step | **SKIPPED because draft**, not a pass; local all-18 materialized check passes separately |\n| [Native scope advisory](https://github.com/techrote/cybersand/actions/runs/41833090216/job/126584970470) | **PASS, report only**; `candidate_native_execution_needed=true`, `native_skip_authorized=false` |\n| Hosted Native, GDExtension/Godot and shader execution | **Draft-skipped**, not execution passes |\n| Applicable scoped Water/actor and standalone metered native hosted execution | Outstanding before any authorized integration |\n\nThe hosted run is associated with head `73b10f9b`. GitHub checked out synthetic merge `a636e914468916b917f682f4947eec67a715f0fc`, whose parents are accepted main `7ef4856e` and this head; its tree is exactly `31c5a9a4`, identical to the published head. Hosted retrieval confirms frozen **32/32**, existing **156/157** top-five and **124/157** top-one; the existing LCB03 miss remains.\n\n**Windows native/Godot, physical-device input, rendered pacing and owner feel remain UNTESTED.** Full #361-A acceptance remains open. No new native ABI, movement, momentum, pressure, shared coupling or equipment framework work is included or authorized.\n\nLive main remains `7ef4856e`; #379 remains separately open/draft at `1aaab324`. #361 remains open. This PR remains open/draft with auto-merge disabled. No merge or issue closure was performed. Progress is recorded; implementation work is stopped."
+    }
+  ],
+  "latest379_comment": {
+    "url": "https://github.com/techrote/cybersand/pull/379#issuecomment-6632657584",
+    "body": "## Owner integration gate \u2014 Ready-for-review qualification\n\n**READY FOR EXPLICIT OWNER MERGE APPROVAL.** PR #379 is **Ready for review**, open and unmerged. Auto-merge is disabled; no GitHub approval review was submitted. This report is a qualification recommendation, not owner merge permission.\n\n### Source and branch authority\n\nBranch: `docs/in-tools-361-admission-20261104`; two commits ahead of main, none behind. The isolated candidate worktree is clean.\n\n| Identity | Commit | Tree |\n|---|---|---|\n| PR head | `1aaab324a9bccbaa7f868798dbb4f9fd9b4a7718` | `7f1a7a0bfaaf416374b9532fdc62fbb5ccc9463e` |\n| Current main | `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` | `36ce5a01e754a141c321f41cac7f1c6b6059c371` |\n| GitHub test merge | `2f0e5e40dd2060daec0365c27944c92d764605ea` | `7f1a7a0bfaaf416374b9532fdc62fbb5ccc9463e` |\n\nThe test merge has exactly main and PR head as its parents; its complete tree equals the head tree. Documentation/Native/GDExtension logs bind execution to this test merge. Shader and the dedicated local #361 tests bind execution directly to the PR head. No historical receipt is reassigned. Final live inspection on 4 November 2026 confirms the same head/main/test-merge, `mergeable=true`, `mergeable_state=clean`, Ready status, no review submissions and auto-merge disabled.\n\nThe [explicitly authorized transition](https://github.com/techrote/cybersand/pull/379#issuecomment-6632097159) invoked existing `ready_for_review` triggers. No dummy commit, manual dispatch, workflow rerun or workflow edit was needed. Main reports `protected=false`, empty status contexts and no repository rulesets. The administration-only protection read is **UNAVAILABLE** to the integration (403); the repository procedural gates below were applied for this decision.\n\n### Exact-source gate matrix\n\n| Gate | Status | Actual source and evidence |\n|---|---|---|\n| Documentation and published runtime provenance | **PASS** | Test merge; [run 41839882211](https://github.com/techrote/cybersand/actions/runs/41839882211), including executed provenance, all 18 materialized runtime identities and retained M11. |\n| Hosted Native C++ / sanitizers | **PASS** | Test merge; [run 41839882272](https://github.com/techrote/cybersand/actions/runs/41839882272), all six families and [aggregate 126618603829](https://github.com/techrote/cybersand/actions/runs/41839882272/job/126618603829). Normal, ASan/UBSan and TSan each pass the same 165-case registry. [Aggregate artifact](https://github.com/techrote/cybersand/actions/runs/41839882272/artifacts/13328439467). |\n| Dedicated #361 native primitive and focused tests | **PASS** | PR head; [fresh full execution and local validation packet](https://github.com/techrote/cybersand/pull/379#issuecomment-6632267280), separate from hosted Native. |\n| Linux GDExtension / Godot | **PASS** | Test merge; [run 41839882379 / Linux aggregate](https://github.com/techrote/cybersand/actions/runs/41839882379/job/126617890272), fresh build, **251 cases / 20 shards**, including 14 rendered cases; [coverage artifact](https://github.com/techrote/cybersand/actions/runs/41839882379/artifacts/13330101352). |\n| Windows extension crossbuild | **PASS** | Test merge; [job 126608396895](https://github.com/techrote/cybersand/actions/runs/41839882379/job/126608396895). This freshly crossbuilt DLL is not the DLL executed in Windows tests. |\n| Actual Windows Godot regression | **PASS** | Candidate test-merge host/tests with retained source-matched DLL; **237 cases / 19 shards**, all 80 native and 836 tested inputs authenticated; [coverage job](https://github.com/techrote/cybersand/actions/runs/41839882379/job/126613749489), [artifact](https://github.com/techrote/cybersand/actions/runs/41839882379/artifacts/13329840588). |\n| Shader registered v3 qualification | **PASS** | PR head; [run 41839882301](https://github.com/techrote/cybersand/actions/runs/41839882301), **19 cases / six Linux-Windows cohorts**, all eight jobs and [independent readback](https://github.com/techrote/cybersand/actions/runs/41839882301/job/126611345486). Retained v2 diagnostic is separate below. |\n| Material compatibility | **PASS** | Test merge; 99 tests, protected-source oracle, deterministic generation and [compiled metadata parity](https://github.com/techrote/cybersand/actions/runs/41839882211/artifacts/13327923939). Frozen baseline identity is preserved. |\n| Retrieval | **PASS** | PR head plus verified test merge for frozen/existing cohorts; [hosted original reports](https://github.com/techrote/cybersand/actions/runs/41839882211/artifacts/13327064170) and fresh six-question head record linked above. |\n| Native source-scope advisory | **PASS**, report only | Test merge; [run 41839882332](https://github.com/techrote/cybersand/actions/runs/41839882332): `candidate_native_execution_needed=true`, `native_skip_authorized=false`. |\n| Retained v2 finished-image identity diagnostic | **FAIL**, non-gating diagnostic | PR-head shader artifact; retained unchanged by the registered v3 authority. See measured limits below. |\n\n\nPrior draft-skipped runs remain historical **SKIPPED** results. The optional GDExtension physical-actor-stress job is **SKIPPED** because this was a PR event and its explicit manual stress option was not selected; it is not required for this preparation scope. Issue49 Water apparatus is **INAPPLICABLE**: none of its scoped solver/header/apparatus paths changed. No skip supplies a pass.\n\n\nIndependent artifact rereading reproduced the hosted Native aggregate and shader readback byte-for-byte. Windows/Linux coverage matched every substantive field and original-log seal, with **256 Windows logs / 271 Linux logs** verified. All current runs succeeded on attempt 1. GitHub lists 19 skipped checks at this unchanged SHA: 18 belong to earlier draft runs and one is the current optional stress job; none is counted as a current required pass.\n\nRuntime custody remains distinct: fresh Linux DLL `0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45`; tested Windows DLL `ee09f7ab485f817b5f58e767ddb26f2e430439bb3dd4f185019eda028f47199a`, with historical build identity `a7ee10f251f647a16dec8a1d7f18c4f299100cba` preserved. The fresh Windows crossbuild produced `70eeb409766b3e58337347c783e7e2643a68dcb805e22358e7c3a6190c2bd16f`. Source-matched reuse does not relabel the retained DLL as a new build.\n\n<details><summary>Independent readback custody hashes</summary>\n\n| Record | SHA-256 |\n|---|---|\n| Hosted and independently reproduced Native aggregate | `e955d96dff3e41d4e2830e536d196849a56c5997a0ac744580e0f190c090add7` |\n| Hosted and independently reproduced shader suite | `bee781fc8fb68c4ae8237cb51bd62e4579dde51ad719fcc55bcf017c1c3aae70` |\n| Independent Windows coverage receipt | `edf5f17f03f315abb5866108bfd1ee15f81b91d9173d59ec69dd2c569976f1c7` |\n| Independent Linux coverage receipt | `488657c02e56e4bbb3b1d60f7a5cae7462bebbc82598f47ca2728fdbe4f05bb7` |\n\nThe coverage receipts retain original source/run/attempt/log identities; only artifact-location paths differ from hosted receipts. The Native, shader and GDExtension detailed independent-review report hashes are respectively `e6ac8561d0b9452c583b39ed1b77e5b00790330f5dc90acd5b0294fc91d1f475`, `958f014634a73e58271e9f0662bc467b77158e328c99e2e1106d36464524d95e` and `339fa243560b2994d19312557e13af105870922faf879b789a6b8a96f86d3754`.\n\n</details>\n\n### Retrieval and evidence integrity\n\n[Complete fresh native/source/retrieval packet](https://github.com/techrote/cybersand/pull/379#issuecomment-6632267280): frozen **32/32**, existing **156/157** top-five and **124/157** top-one, new #361 **6/6** top-five. Hosted frozen/existing artifacts independently reproduce every local question rank.\n\n**USABLE02 retains canonical rank 5** at `reference/interfaces-and-message-contracts.md` \u2192 Physical equipment actions and results. Its interface/lifetime canonical targets and Current actor-usables authority are unchanged. ACT14 remains rank 1. LCB03 remains the historical miss; LCB08 remains rank 3 versus main 2, with existing MRR 0.8723 versus 0.8734. No query, ranking policy, expected route or threshold was weakened.\n\nThe dedicated #361 native test is outside the standard hosted Native matrix; its separate fresh compilation passed **16 pairs / 32 arms / 224 ticks per arm**, **215,237,704 repeated assertions**, 24-chunk/393,216-cell census checkpoints, five negative controls, actual four-worker participation, and distinct physical/IN diagnostic-ledger parity. All 56 compiled inputs match committed bytes; compiler/runner/executable custody passed. Focused proposal/runner tests passed **38+20**, policy tests **15**, material tests **99**. Native assertion totals predominantly reflect repeated census checks.\n\n### Independent findings, remaining limits and changes\n\nNo new in-scope source blocker or correction was found. Current/Planned authority, Water units versus Brine cell counts, finite-domain boundaries, source inventories, M11 history, original fixture/source locks and historical audit bytes remain intact. All 18 runtime payload identities were materialized and verified.\n\nThe **registered shader v3 gate passes**, including unchanged positive bounds and negative controls. Its retained **v2 cross-backend finished-image diagnostic is FAIL**: 11 of 2,304 pixels exceed the original threshold in each nonzero-blend frame, maximum RGBA difference 0.3009393513. The accepted-main and candidate verifier bytes explicitly retain this as a diagnostic, not the v3 acceptance predicate. This task changed neither classification nor thresholds. Do not claim universal Linux/Windows finished-image equality. [Exact-head shader readback](https://github.com/techrote/cybersand/actions/runs/41839882301/artifacts/13329645502).\n\nLinux/Windows hosted evidence has its actual software-renderer/headless boundaries. It does not qualify physical target hardware/input, human feel, the proposed gameplay command cap, authenticated native gameplay-command receipts or #383 Liquid Drain. Material parity is metadata compatibility, not fallback physics execution. Native reservoir depletion is not crossing flux, and census checkpoints are not continuous full-domain observation.\n\nChanges during continuation: Ready transition and PR evidence/status reconciliation; **zero source commits or pushes**. Missing pinned local companion files, LFS/index setup and extraction-only transfer sidecars were recovered without changing committed inputs or original artifact members; initial failed/held local observations were retained, and unchanged checks/readers then passed. The Linux coverage reader additionally required its recorded original checkout path; unchanged source was replayed there in an isolated worktree, without altering logs or predicates.\n\n**Stop here. No merge or auto-merge. #361 remains open; #383 remains isolated and unmerged. Await a fresh explicit owner decision.**\n",
+    "user": {
+      "login": "techrote",
+      "name": "techrote",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/261801702?v=4",
+      "id": 261801702
+    },
+    "id": 6632657584,
+    "pull_request_review_id": null,
+    "in_reply_to_id": null,
+    "created_at": "2026-11-04T14:03:37Z",
+    "updated_at": "2026-11-04T14:03:37Z",
+    "review": null,
+    "side": null,
+    "line": null,
+    "start_line": null,
+    "path": null,
+    "body_html": "<h2 dir=\"auto\">Owner integration gate \u2014 Ready-for-review qualification</h2>\n<p dir=\"auto\"><strong>READY FOR EXPLICIT OWNER MERGE APPROVAL.</strong> PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"6201023492\" data-permission-text=\"Title is private\" data-url=\"https://github.com/techrote/cybersand/issues/379\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/techrote/cybersand/pull/379/hovercard\" href=\"https://github.com/techrote/cybersand/pull/379\">#379</a> is <strong>Ready for review</strong>, open and unmerged. Auto-merge is disabled; no GitHub approval review was submitted. This report is a qualification recommendation, not owner merge permission.</p>\n<h3 dir=\"auto\">Source and branch authority</h3>\n<p dir=\"auto\">Branch: <code class=\"notranslate\">docs/in-tools-361-admission-20261104</code>; two commits ahead of main, none behind. The isolated candidate worktree is clean.</p>\n<markdown-accessiblity-table><table role=\"table\">\n<thead>\n<tr>\n<th>Identity</th>\n<th>Commit</th>\n<th>Tree</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>PR head</td>\n<td><code class=\"notranslate\">1aaab324a9bccbaa7f868798dbb4f9fd9b4a7718</code></td>\n<td><code class=\"notranslate\">7f1a7a0bfaaf416374b9532fdc62fbb5ccc9463e</code></td>\n</tr>\n<tr>\n<td>Current main</td>\n<td><code class=\"notranslate\">7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1</code></td>\n<td><code class=\"notranslate\">36ce5a01e754a141c321f41cac7f1c6b6059c371</code></td>\n</tr>\n<tr>\n<td>GitHub test merge</td>\n<td><code class=\"notranslate\">2f0e5e40dd2060daec0365c27944c92d764605ea</code></td>\n<td><code class=\"notranslate\">7f1a7a0bfaaf416374b9532fdc62fbb5ccc9463e</code></td>\n</tr>\n</tbody>\n</table></markdown-accessiblity-table>\n<p dir=\"auto\">The test merge has exactly main and PR head as its parents; its complete tree equals the head tree. Documentation/Native/GDExtension logs bind execution to this test merge. Shader and the dedicated local <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"6190141382\" data-permission-text=\"Title is private\" data-url=\"https://github.com/techrote/cybersand/issues/361\" data-hovercard-type=\"issue\" data-hovercard-url=\"/techrote/cybersand/issues/361/hovercard\" href=\"https://github.com/techrote/cybersand/issues/361\">#361</a> tests bind execution directly to the PR head. No historical receipt is reassigned. Final live inspection on 4 November 2026 confirms the same head/main/test-merge, <code class=\"notranslate\">mergeable=true</code>, <code class=\"notranslate\">mergeable_state=clean</code>, Ready status, no review submissions and auto-merge disabled.</p>\n<p dir=\"auto\">The <a href=\"https://github.com/techrote/cybersand/pull/379#issuecomment-6632097159\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/techrote/cybersand/pull/379/hovercard\">explicitly authorized transition</a> invoked existing <code class=\"notranslate\">ready_for_review</code> triggers. No dummy commit, manual dispatch, workflow rerun or workflow edit was needed. Main reports <code class=\"notranslate\">protected=false</code>, empty status contexts and no repository rulesets. The administration-only protection read is <strong>UNAVAILABLE</strong> to the integration (403); the repository procedural gates below were applied for this decision.</p>\n<h3 dir=\"auto\">Exact-source gate matrix</h3>\n<markdown-accessiblity-table><table role=\"table\">\n<thead>\n<tr>\n<th>Gate</th>\n<th>Status</th>\n<th>Actual source and evidence</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Documentation and published runtime provenance</td>\n<td><strong>PASS</strong></td>\n<td>Test merge; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882211\">run 41839882211</a>, including executed provenance, all 18 materialized runtime identities and retained M11.</td>\n</tr>\n<tr>\n<td>Hosted Native C++ / sanitizers</td>\n<td><strong>PASS</strong></td>\n<td>Test merge; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882272\">run 41839882272</a>, all six families and <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882272/job/126618603829\">aggregate 126618603829</a>. Normal, ASan/UBSan and TSan each pass the same 165-case registry. <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882272/artifacts/13328439467\">Aggregate artifact</a>.</td>\n</tr>\n<tr>\n<td>Dedicated <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"6190141382\" data-permission-text=\"Title is private\" data-url=\"https://github.com/techrote/cybersand/issues/361\" data-hovercard-type=\"issue\" data-hovercard-url=\"/techrote/cybersand/issues/361/hovercard\" href=\"https://github.com/techrote/cybersand/issues/361\">#361</a> native primitive and focused tests</td>\n<td><strong>PASS</strong></td>\n<td>PR head; <a href=\"https://github.com/techrote/cybersand/pull/379#issuecomment-6632267280\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/techrote/cybersand/pull/379/hovercard\">fresh full execution and local validation packet</a>, separate from hosted Native.</td>\n</tr>\n<tr>\n<td>Linux GDExtension / Godot</td>\n<td><strong>PASS</strong></td>\n<td>Test merge; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882379/job/126617890272\">run 41839882379 / Linux aggregate</a>, fresh build, <strong>251 cases / 20 shards</strong>, including 14 rendered cases; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882379/artifacts/13330101352\">coverage artifact</a>.</td>\n</tr>\n<tr>\n<td>Windows extension crossbuild</td>\n<td><strong>PASS</strong></td>\n<td>Test merge; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882379/job/126608396895\">job 126608396895</a>. This freshly crossbuilt DLL is not the DLL executed in Windows tests.</td>\n</tr>\n<tr>\n<td>Actual Windows Godot regression</td>\n<td><strong>PASS</strong></td>\n<td>Candidate test-merge host/tests with retained source-matched DLL; <strong>237 cases / 19 shards</strong>, all 80 native and 836 tested inputs authenticated; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882379/job/126613749489\">coverage job</a>, <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882379/artifacts/13329840588\">artifact</a>.</td>\n</tr>\n<tr>\n<td>Shader registered v3 qualification</td>\n<td><strong>PASS</strong></td>\n<td>PR head; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882301\">run 41839882301</a>, <strong>19 cases / six Linux-Windows cohorts</strong>, all eight jobs and <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882301/job/126611345486\">independent readback</a>. Retained v2 diagnostic is separate below.</td>\n</tr>\n<tr>\n<td>Material compatibility</td>\n<td><strong>PASS</strong></td>\n<td>Test merge; 99 tests, protected-source oracle, deterministic generation and <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882211/artifacts/13327923939\">compiled metadata parity</a>. Frozen baseline identity is preserved.</td>\n</tr>\n<tr>\n<td>Retrieval</td>\n<td><strong>PASS</strong></td>\n<td>PR head plus verified test merge for frozen/existing cohorts; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882211/artifacts/13327064170\">hosted original reports</a> and fresh six-question head record linked above.</td>\n</tr>\n<tr>\n<td>Native source-scope advisory</td>\n<td><strong>PASS</strong>, report only</td>\n<td>Test merge; <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882332\">run 41839882332</a>: <code class=\"notranslate\">candidate_native_execution_needed=true</code>, <code class=\"notranslate\">native_skip_authorized=false</code>.</td>\n</tr>\n<tr>\n<td>Retained v2 finished-image identity diagnostic</td>\n<td><strong>FAIL</strong>, non-gating diagnostic</td>\n<td>PR-head shader artifact; retained unchanged by the registered v3 authority. See measured limits below.</td>\n</tr>\n</tbody>\n</table></markdown-accessiblity-table>\n<p dir=\"auto\">Prior draft-skipped runs remain historical <strong>SKIPPED</strong> results. The optional GDExtension physical-actor-stress job is <strong>SKIPPED</strong> because this was a PR event and its explicit manual stress option was not selected; it is not required for this preparation scope. Issue49 Water apparatus is <strong>INAPPLICABLE</strong>: none of its scoped solver/header/apparatus paths changed. No skip supplies a pass.</p>\n<p dir=\"auto\">Independent artifact rereading reproduced the hosted Native aggregate and shader readback byte-for-byte. Windows/Linux coverage matched every substantive field and original-log seal, with <strong>256 Windows logs / 271 Linux logs</strong> verified. All current runs succeeded on attempt 1. GitHub lists 19 skipped checks at this unchanged SHA: 18 belong to earlier draft runs and one is the current optional stress job; none is counted as a current required pass.</p>\n<p dir=\"auto\">Runtime custody remains distinct: fresh Linux DLL <code class=\"notranslate\">0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45</code>; tested Windows DLL <code class=\"notranslate\">ee09f7ab485f817b5f58e767ddb26f2e430439bb3dd4f185019eda028f47199a</code>, with historical build identity <code class=\"notranslate\">a7ee10f251f647a16dec8a1d7f18c4f299100cba</code> preserved. The fresh Windows crossbuild produced <code class=\"notranslate\">70eeb409766b3e58337347c783e7e2643a68dcb805e22358e7c3a6190c2bd16f</code>. Source-matched reuse does not relabel the retained DLL as a new build.</p>\n<details><summary>Independent readback custody hashes</summary>\n<markdown-accessiblity-table><table role=\"table\">\n<thead>\n<tr>\n<th>Record</th>\n<th>SHA-256</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Hosted and independently reproduced Native aggregate</td>\n<td><code class=\"notranslate\">e955d96dff3e41d4e2830e536d196849a56c5997a0ac744580e0f190c090add7</code></td>\n</tr>\n<tr>\n<td>Hosted and independently reproduced shader suite</td>\n<td><code class=\"notranslate\">bee781fc8fb68c4ae8237cb51bd62e4579dde51ad719fcc55bcf017c1c3aae70</code></td>\n</tr>\n<tr>\n<td>Independent Windows coverage receipt</td>\n<td><code class=\"notranslate\">edf5f17f03f315abb5866108bfd1ee15f81b91d9173d59ec69dd2c569976f1c7</code></td>\n</tr>\n<tr>\n<td>Independent Linux coverage receipt</td>\n<td><code class=\"notranslate\">488657c02e56e4bbb3b1d60f7a5cae7462bebbc82598f47ca2728fdbe4f05bb7</code></td>\n</tr>\n</tbody>\n</table></markdown-accessiblity-table>\n<p dir=\"auto\">The coverage receipts retain original source/run/attempt/log identities; only artifact-location paths differ from hosted receipts. The Native, shader and GDExtension detailed independent-review report hashes are respectively <code class=\"notranslate\">e6ac8561d0b9452c583b39ed1b77e5b00790330f5dc90acd5b0294fc91d1f475</code>, <code class=\"notranslate\">958f014634a73e58271e9f0662bc467b77158e328c99e2e1106d36464524d95e</code> and <code class=\"notranslate\">339fa243560b2994d19312557e13af105870922faf879b789a6b8a96f86d3754</code>.</p>\n</details>\n<h3 dir=\"auto\">Retrieval and evidence integrity</h3>\n<p dir=\"auto\"><a href=\"https://github.com/techrote/cybersand/pull/379#issuecomment-6632267280\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/techrote/cybersand/pull/379/hovercard\">Complete fresh native/source/retrieval packet</a>: frozen <strong>32/32</strong>, existing <strong>156/157</strong> top-five and <strong>124/157</strong> top-one, new <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"6190141382\" data-permission-text=\"Title is private\" data-url=\"https://github.com/techrote/cybersand/issues/361\" data-hovercard-type=\"issue\" data-hovercard-url=\"/techrote/cybersand/issues/361/hovercard\" href=\"https://github.com/techrote/cybersand/issues/361\">#361</a> <strong>6/6</strong> top-five. Hosted frozen/existing artifacts independently reproduce every local question rank.</p>\n<p dir=\"auto\"><strong>USABLE02 retains canonical rank 5</strong> at <code class=\"notranslate\">reference/interfaces-and-message-contracts.md</code> \u2192 Physical equipment actions and results. Its interface/lifetime canonical targets and Current actor-usables authority are unchanged. ACT14 remains rank 1. LCB03 remains the historical miss; LCB08 remains rank 3 versus main 2, with existing MRR 0.8723 versus 0.8734. No query, ranking policy, expected route or threshold was weakened.</p>\n<p dir=\"auto\">The dedicated <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"6190141382\" data-permission-text=\"Title is private\" data-url=\"https://github.com/techrote/cybersand/issues/361\" data-hovercard-type=\"issue\" data-hovercard-url=\"/techrote/cybersand/issues/361/hovercard\" href=\"https://github.com/techrote/cybersand/issues/361\">#361</a> native test is outside the standard hosted Native matrix; its separate fresh compilation passed <strong>16 pairs / 32 arms / 224 ticks per arm</strong>, <strong>215,237,704 repeated assertions</strong>, 24-chunk/393,216-cell census checkpoints, five negative controls, actual four-worker participation, and distinct physical/IN diagnostic-ledger parity. All 56 compiled inputs match committed bytes; compiler/runner/executable custody passed. Focused proposal/runner tests passed <strong>38+20</strong>, policy tests <strong>15</strong>, material tests <strong>99</strong>. Native assertion totals predominantly reflect repeated census checks.</p>\n<h3 dir=\"auto\">Independent findings, remaining limits and changes</h3>\n<p dir=\"auto\">No new in-scope source blocker or correction was found. Current/Planned authority, Water units versus Brine cell counts, finite-domain boundaries, source inventories, M11 history, original fixture/source locks and historical audit bytes remain intact. All 18 runtime payload identities were materialized and verified.</p>\n<p dir=\"auto\">The <strong>registered shader v3 gate passes</strong>, including unchanged positive bounds and negative controls. Its retained <strong>v2 cross-backend finished-image diagnostic is FAIL</strong>: 11 of 2,304 pixels exceed the original threshold in each nonzero-blend frame, maximum RGBA difference 0.3009393513. The accepted-main and candidate verifier bytes explicitly retain this as a diagnostic, not the v3 acceptance predicate. This task changed neither classification nor thresholds. Do not claim universal Linux/Windows finished-image equality. <a href=\"https://github.com/techrote/cybersand/actions/runs/41839882301/artifacts/13329645502\">Exact-head shader readback</a>.</p>\n<p dir=\"auto\">Linux/Windows hosted evidence has its actual software-renderer/headless boundaries. It does not qualify physical target hardware/input, human feel, the proposed gameplay command cap, authenticated native gameplay-command receipts or <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"6203021385\" data-permission-text=\"Title is private\" data-url=\"https://github.com/techrote/cybersand/issues/383\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/techrote/cybersand/pull/383/hovercard\" href=\"https://github.com/techrote/cybersand/pull/383\">#383</a> Liquid Drain. Material parity is metadata compatibility, not fallback physics execution. Native reservoir depletion is not crossing flux, and census checkpoints are not continuous full-domain observation.</p>\n<p dir=\"auto\">Changes during continuation: Ready transition and PR evidence/status reconciliation; <strong>zero source commits or pushes</strong>. Missing pinned local companion files, LFS/index setup and extraction-only transfer sidecars were recovered without changing committed inputs or original artifact members; initial failed/held local observations were retained, and unchanged checks/readers then passed. The Linux coverage reader additionally required its recorded original checkout path; unchanged source was replayed there in an isolated worktree, without altering logs or predicates.</p>\n<p dir=\"auto\"><strong>Stop here. No merge or auto-merge. <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"6190141382\" data-permission-text=\"Title is private\" data-url=\"https://github.com/techrote/cybersand/issues/361\" data-hovercard-type=\"issue\" data-hovercard-url=\"/techrote/cybersand/issues/361/hovercard\" href=\"https://github.com/techrote/cybersand/issues/361\">#361</a> remains open; <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"6203021385\" data-permission-text=\"Title is private\" data-url=\"https://github.com/techrote/cybersand/issues/383\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/techrote/cybersand/pull/383/hovercard\" href=\"https://github.com/techrote/cybersand/pull/383\">#383</a> remains isolated and unmerged. Await a fresh explicit owner decision.</strong></p>"
+  },
+  "reviews383": {
+    "reviews": []
+  },
+  "reviews379": {
+    "reviews": []
+  },
+  "review_threads383": {
+    "review_threads": []
+  },
+  "queue_read_caveat": "In-progress query returned total_count=4 with workflow_runs=[], so this is not proof of no active repo runs. Queued query returned total_count=0 with empty workflow_runs.",
+  "original_snapshot_created_at_utc": "2026-11-04T14:10:02.910Z",
+  "snapshot_appended_at_utc": "2026-11-04 14:16:56 UTC",
+  "timestamp_custody": {
+    "original_snapshot_created_at_utc": "2026-11-04T14:10:02.910Z",
+    "original_timestamp_source": "JavaScript new Date().toISOString() when serializing the original snapshot; not a GitHub updated_at timestamp and not a per-response retrieval timestamp.",
+    "followup_clock_tool_start_utc": "2026-11-04 14:15:57 UTC",
+    "followup_clock_tool_after_utc": "2026-11-04 14:16:56 UTC",
+    "python_host_clock_observation": "{'utc': '2026-11-04T14:16:03.536677+00:00', 'local': '2026-11-04T15:16:03.536689+01:00', 'TZ': 'Europe/Madrid', 'time_tzname': ('CET', 'CEST')}",
+    "timezone_explanation": "The container's TZ is Europe/Madrid, +01:00 on 2026-11-04. Local 15:16 equals UTC 14:16. User-facing Europe/London on this date equals UTC. Retained GitHub log timestamps describe original CI execution, not retrieval.",
+    "earlier_response_timing": "The all-47-job response and workflow/scope source reads were obtained in the original subtask after original snapshot creation; exact individual retrieval times were not recorded. They are appended unchanged from that stored response, not represented as freshly refetched."
+  },
+  "jobs379_godot_complete": {
+    "total_count": 47,
+    "retained_job_count": 47,
+    "conclusions": {
+      "success": 46,
+      "skipped": 1
+    },
+    "jobs": [
+      {
+        "id": 126608337744,
+        "name": "ready validation scope",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608340044,
+        "name": "physical-actor-stress",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 126608396854,
+        "name": "complete execution budgets",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608396895,
+        "name": "windows x86_64",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608397049,
+        "name": "linux build x86_64",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858184,
+        "name": "windows headless regression shard 0",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858232,
+        "name": "windows headless regression shard 9",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858254,
+        "name": "windows headless regression shard 3",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858261,
+        "name": "windows headless regression shard 4",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858276,
+        "name": "windows headless regression shard 2",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858279,
+        "name": "windows headless regression shard 10",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858285,
+        "name": "windows headless regression shard 8",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858303,
+        "name": "windows headless regression shard 12",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858327,
+        "name": "windows headless regression shard 14",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858369,
+        "name": "windows headless regression shard 13",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858370,
+        "name": "windows headless regression shard 5",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858385,
+        "name": "windows headless regression shard 6",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858411,
+        "name": "windows headless regression shard 17",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858441,
+        "name": "windows headless regression shard 1",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858451,
+        "name": "windows headless regression shard 15",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858452,
+        "name": "windows headless regression shard 11",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608858610,
+        "name": "windows headless regression shard 7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608860706,
+        "name": "windows headless regression shard 16",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126608861416,
+        "name": "windows headless regression shard 18",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589488,
+        "name": "linux regression shard 10",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589504,
+        "name": "linux regression shard 13",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589536,
+        "name": "linux regression shard 5",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589549,
+        "name": "linux regression shard 1",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589574,
+        "name": "linux regression shard 4",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589584,
+        "name": "linux regression shard 2",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589610,
+        "name": "linux regression shard 15",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589634,
+        "name": "linux regression shard 17",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589665,
+        "name": "linux regression shard 8",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589673,
+        "name": "linux regression shard 12",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589679,
+        "name": "linux regression shard 6",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589716,
+        "name": "linux regression shard 11",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589734,
+        "name": "linux regression shard 9",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589743,
+        "name": "linux regression shard 16",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589750,
+        "name": "linux regression shard 14",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589811,
+        "name": "linux regression shard 3",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589832,
+        "name": "linux regression shard 7",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613589865,
+        "name": "linux regression shard 0",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613592511,
+        "name": "linux regression shard 18",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613592621,
+        "name": "linux regression shard 19",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126613749489,
+        "name": "windows sharded execution coverage",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126617890078,
+        "name": "retained execution and physical timing history",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126617890272,
+        "name": "linux x86_64",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "advisory383": {
+    "source_job_id": 126584970470,
+    "source_run_id": 41833090216,
+    "job_url": "https://github.com/techrote/cybersand/actions/runs/41833090216/job/126584970470",
+    "retrieved_in_utc_interval_start": "2026-11-04 14:15:57 UTC",
+    "retrieved_in_utc_interval_end": "2026-11-04 14:16:56 UTC",
+    "parsed_advisory_json": {
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "base_tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371",
+      "candidate_exemption_kind": "none",
+      "candidate_native_execution_needed": true,
+      "classifier_path": "tools/ci/native_scope_classifier.py",
+      "classifier_sha256": "ebbffe10aa6041d6ca7b3e893c3abf839cb6fa2da325bee31cf7a8af2651fccb",
+      "diff_options": [
+        "--name-only",
+        "-z",
+        "--no-renames"
+      ],
+      "disposition": "ADVISORY_ONLY_NO_GATE_CHANGE",
+      "duplicate_paths": false,
+      "existing_native_merge_gate_changed": false,
+      "file_classes": {
+        "docs/README.md": "documentation-only",
+        "docs/architecture/data-ownership-and-lifetimes.md": "documentation-only",
+        "docs/audits/2026-11-04-in-tools-361a-metered-drain.md": "documentation-only",
+        "docs/audits/in-tools-361a-2026-11-04/companion-inputs.json": "documentation-only",
+        "docs/audits/in-tools-361a-2026-11-04/evidence-index.json": "documentation-only",
+        "docs/audits/in-tools-361a-2026-11-04/host-qualification.json": "documentation-only",
+        "docs/audits/in-tools-361a-2026-11-04/host-source-identity.json": "documentation-only",
+        "docs/audits/in-tools-361a-2026-11-04/independent-review.json": "documentation-only",
+        "docs/audits/in-tools-361a-2026-11-04/local-validation.json": "documentation-only",
+        "docs/audits/in-tools-361a-2026-11-04/native-parser-controls.json": "documentation-only",
+        "docs/audits/in-tools-361a-2026-11-04/native-qualification.json": "documentation-only",
+        "docs/operations/cybersand-codex-development-handover.md": "documentation-only",
+        "docs/operations/in-tools-metered-drain.md": "documentation-only",
+        "docs/operations/local-build-and-validation.md": "documentation-only",
+        "docs/reference/configuration-reference.md": "documentation-only",
+        "docs/reference/interfaces-and-message-contracts.md": "documentation-only",
+        "docs/reference/invariants.md": "documentation-only",
+        "docs/reference/retrieval-corpus.json": "documentation-only",
+        "docs/reference/retrieval-index.md": "documentation-only",
+        "docs/reference/retrieval-questions-in-tools-361a.json": "documentation-only",
+        "docs/reference/status-and-roadmap.md": "documentation-only",
+        "docs/reference/validation-evidence.md": "documentation-only",
+        "docs/systems/actor-usables.md": "documentation-only",
+        "godot/scripts/actor_prototype_panel.gd": "presentation-only",
+        "godot/scripts/main.gd": "presentation-only",
+        "godot/scripts/metered_liquid_drain.gd": "presentation-only",
+        "godot/scripts/physical_actor_session.gd": "presentation-only",
+        "godot/scripts/physical_usable_equipment.gd": "presentation-only",
+        "godot/scripts/physical_usable_runtime.gd": "presentation-only",
+        "godot/scripts/simulation_worker.gd": "presentation-only",
+        "godot/tests/fixtures/in-tools-metered-desktop.v1.json": "presentation-only",
+        "godot/tests/fixtures/in-tools-metered-drain.v1.json": "presentation-only",
+        "godot/tests/test_physical_metered_desktop.gd": "presentation-only",
+        "godot/tests/test_physical_metered_drain.gd": "presentation-only",
+        "godot/tests/test_physical_metered_equipment.gd": "presentation-only",
+        "native/tests/test_metered_liquid_drain.cpp": "native-impact",
+        "tools/lcb/run_metered_drain_native.py": "unknown-requires-native",
+        "tools/lcb/test_metered_drain_native.py": "unknown-requires-native"
+      },
+      "files": [
+        "docs/README.md",
+        "docs/architecture/data-ownership-and-lifetimes.md",
+        "docs/audits/2026-11-04-in-tools-361a-metered-drain.md",
+        "docs/audits/in-tools-361a-2026-11-04/companion-inputs.json",
+        "docs/audits/in-tools-361a-2026-11-04/evidence-index.json",
+        "docs/audits/in-tools-361a-2026-11-04/host-qualification.json",
+        "docs/audits/in-tools-361a-2026-11-04/host-source-identity.json",
+        "docs/audits/in-tools-361a-2026-11-04/independent-review.json",
+        "docs/audits/in-tools-361a-2026-11-04/local-validation.json",
+        "docs/audits/in-tools-361a-2026-11-04/native-parser-controls.json",
+        "docs/audits/in-tools-361a-2026-11-04/native-qualification.json",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/operations/in-tools-metered-drain.md",
+        "docs/operations/local-build-and-validation.md",
+        "docs/reference/configuration-reference.md",
+        "docs/reference/interfaces-and-message-contracts.md",
+        "docs/reference/invariants.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/retrieval-index.md",
+        "docs/reference/retrieval-questions-in-tools-361a.json",
+        "docs/reference/status-and-roadmap.md",
+        "docs/reference/validation-evidence.md",
+        "docs/systems/actor-usables.md",
+        "godot/scripts/actor_prototype_panel.gd",
+        "godot/scripts/main.gd",
+        "godot/scripts/metered_liquid_drain.gd",
+        "godot/scripts/physical_actor_session.gd",
+        "godot/scripts/physical_usable_equipment.gd",
+        "godot/scripts/physical_usable_runtime.gd",
+        "godot/scripts/simulation_worker.gd",
+        "godot/tests/fixtures/in-tools-metered-desktop.v1.json",
+        "godot/tests/fixtures/in-tools-metered-drain.v1.json",
+        "godot/tests/test_physical_metered_desktop.gd",
+        "godot/tests/test_physical_metered_drain.gd",
+        "godot/tests/test_physical_metered_equipment.gd",
+        "native/tests/test_metered_liquid_drain.cpp",
+        "tools/lcb/run_metered_drain_native.py",
+        "tools/lcb/test_metered_drain_native.py"
+      ],
+      "head_sha": "a636e914468916b917f682f4947eec67a715f0fc",
+      "head_tree": "31c5a9a4b986820985658d3ed2228ebe9008828a",
+      "native_skip_authorized": false,
+      "schema": "cybersand-native-scope-advisory-v3",
+      "source_mode": "clean-checked-out-commit-diff",
+      "worktree_clean": true
+    },
+    "artifact_metadata": {
+      "artifacts": [
+        {
+          "id": 13324315674,
+          "name": "native-scope-advisory-41833090216-1",
+          "size_in_bytes": 11581,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13324315674",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13324315674/zip",
+          "expired": false,
+          "created_at": "2026-11-04T12:53:12Z",
+          "expires_at": "2027-02-02T12:52:52Z",
+          "updated_at": "2026-11-04T12:53:12Z",
+          "digest": "sha256:e71581bed8d00eebee8e2cab8910f3825e420dff136314b592b71d99b9a79685",
+          "workflow_run": {
+            "id": 41833090216,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feat/in-tools-361a-metered-liquid-drain",
+            "head_sha": "73b10f9b800e72f358f22f470e57a4531002c168"
+          }
+        }
+      ]
+    },
+    "artifact_downloaded": false
+  },
+  "retained_snapshot_sha256": "bd8bcc71b8e5fc35823712ab80dc9a5ea5f139f9e094a672c3377c21f05f997e"
+}
