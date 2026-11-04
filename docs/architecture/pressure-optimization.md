@@ -230,8 +230,15 @@ forces a complete gas pass. Every gas pass marks all columns dirty and makes the
 certificates cold, so frequent boundary or mask changes return the cache to
 roughly reference cost. The numeric results, same-law parity and the
 **Planned** P1/P2 proposals (wake-summary elision; narrowed gas-triggered
-revocation) are owned by that record. Neither is implemented. Execution
-version 3 above remains Current.
+revocation) are owned by that record. Execution version 3 above remains
+Current on main.
+
+An **experimental, unaccepted** P1/P1b implementation exists on draft branch
+`claude/lcb201-p1-wake-summaries`; it is not on main. Its
+[evidence record](../audits/2026-11-04-lcb201-p1-wake-summaries.md) reports
+exact parity, mutation-checked controls and a quiet cached tick of ≈0.32 ms at
+this scale. It still needs the execution-version-4 bump and the full
+acceptance gates. P2 remains Planned.
 
 ## Acceptance and remaining application work
 

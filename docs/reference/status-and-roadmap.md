@@ -24,6 +24,9 @@ masks restore roughly reference cost.
 cached-only proposals (P1 wake-summary elision, P2 narrowed gas revocation) are
 **Planned, not implemented**. No production code, default or host changed; #201
 stays open, and a full-host cohort remains the next practical-cost experiment.
+An [experimental P1 draft](../audits/2026-11-04-lcb201-p1-wake-summaries.md),
+not accepted and not on main, cuts the quiet cached tick to ≈0.32 ms with exact
+parity. It shows a small cost under continuous index churn.
 
 ## Material authoring Planned adoption — 2026-11-04
 
