@@ -97,23 +97,39 @@ so editing the lock alone can never admit one. Each entry names `path`,
 `from_lf_sha256`, `to_lf_sha256`, `source_commit`, `record`, `issue` and `pr`,
 and the checker fails closed unless all of these hold:
 
-- `path` is a protected consumer and not an identity input. The two catalogue
-  headers, the capability matrix and the three fallback-fact GDScript files feed
-  the retained digests and facts; changing them is a cutover.
+- `path` is a protected consumer and not an identity input. Identity inputs are
+  the six files that feed the retained digests and fallback facts (the two
+  catalogue headers, the capability matrix and three fallback GDScript files),
+  plus the policy identity generators and contract
+  (`liquid_policy_catalogue.hpp`, `policy_contract.py`,
+  `native_policy_artifacts.py`) and the three retained oracle vectors. Changing
+  any of them is a cutover or identity transition.
 - `from_lf_sha256` is the hash the path is currently admitted at: its lock entry,
   or the previous step for the same path. Steps for one path form an ordered chain.
 - `source_commit` descends from the baseline (or the previous step's commit) and
-  is an ancestor of `HEAD`. Merge the PR with a merge commit, not a squash.
+  is an ancestor of `HEAD`.
 - `to_lf_sha256` equals the LF-normalized bytes of `path` at `source_commit`, and
-  the working file equals the final target exactly. Old bytes, and any further
-  edit, fail until another reviewed step is added.
-- `record` is a `docs/audits/*.md` file committed at `HEAD` that names the path,
-  both hashes and the commit.
+  the working file's LF-normalized bytes equal the final target. Old bytes, and
+  any further edit, fail until another reviewed step is added.
+- `record` is a Markdown file under `docs/audits/`, committed at `HEAD`, that
+  names the path, both hashes and the commit.
 
 Every other path still requires its baseline hash, and the catalogue and
-capability digests are unchanged. `check()` reports the admitted entries as
-`reviewed_transitions`, so parity receipts carry them. The production tuple is
-empty until a reviewed PR adds its own entry together with its source change.
+capability digests cannot change. `check()` reports the admitted entries as
+`reviewed_transitions`, so parity receipts carry them. The table starts empty;
+each reviewed PR adds its own entry together with its source change. Git runs
+without location variables such as `GIT_DIR`, so hooks or `git rebase -x` cannot
+redirect authentication to another repository.
+
+**Merge with a merge commit.** A PR that adds an entry must not be squashed or
+rebased: its `source_commit` would leave main's history, and the guard would
+then fail on main and on every PR's merge ref. Recovery is a reviewed follow-up
+that points `source_commit` at the merged commit holding the same bytes and
+updates the record.
+
+`--root <candidate>` validates a candidate tree against the entries and `HEAD`
+of the tool's own checkout, so a candidate still at baseline bytes for a moved
+path fails once that path has an entry.
 
 For #354, the [Phase A correction memo](../audits/2026-11-04-mat354-correction-admission.md)
 identifies protected `native/src/world.cpp` as the prospective deadline edit.
