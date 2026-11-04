@@ -19,6 +19,12 @@ identical to native build `f069b439`. The current-main reconciliation preserves
 both audit exclusions and accepted #334/#367/#369. Do not import active
 SOL-DETACH or experimental GCR changes to settle shared-file ownership.
 
+Main later advanced to `3da7e7be` through #357's documentation-only Planned
+adoption. Both complete documentation section sets are retained. No compiler
+implementation is included. The passing Windows/Linux replacement cohort at
+`077f9c52` keeps its original identity; resulting-head checks and the full merge
+gates remain in the live PR ledger.
+
 Preserve original failures, the unrecovered archive's identity, and every new
 execution's actual source/runtime record. The bounded qualification apparatus
 does not replace full Native/GDExtension/Issue49/shader gates. Obtain independent
@@ -27,6 +33,36 @@ results from the [owner packet](paired-materials-owner-playtest.md). PR370 owns
 its observer fix and the joint fixture; original LCB admission stays attached to
 its original source. Publish recoverable progress and stop without merging or
 promoting the candidate automatically.
+
+## MAT-AUTH Planned adoption and unstarted compiler — 2026-11-04
+
+The owner has [adopted the corrected architecture as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+and authorized documentation-only guarded integration of #357. Its
+[PR ledger](https://github.com/techrote/cybersand/pull/357) owns actual final-head,
+merge and post-merge checks. This supersedes the adoption hold in the dated
+3 November record below, while implementation permission remains outstanding.
+
+The [#353-A handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661)
+is prepared for a separate assignment: shadow compiler and independent original-source
+oracle, with current native/GDScript consumers and source-byte identities unchanged.
+No #353-A code has been implemented by this adoption task. Keep #352/#353 open;
+do not start #354–#356 or treat experimental #358 IDs132–137 as production data.
+Recapture accepted source and overlapping owners before the implementation begins.
+
+## MAT-AUTH architecture decision hold — 2026-11-03
+
+**Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+supersedes the adoption hold below; implementation remains separately unstarted.
+
+[PR #357](https://github.com/techrote/cybersand/pull/357) remains draft and
+unmerged after a documentation-only current-main architecture review. Read the
+[corrected proposed admission](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+and [dated evidence](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+before assigning #353–#356. Recommendation is **ACCEPT WITH CORRECTIONS**;
+owner adoption and implementation permission remain pending. Initial #353 work
+is proposed as shadow generation with independent per-consumer oracles, not a
+header/policy/physics migration. Revalidate active #358/#347/#370 and #162/GCR
+heads before overlapping edits. Experimental IDs132–137 are not production data.
 
 ## LCB reassessment and bounded successors — 2026-11-03
 

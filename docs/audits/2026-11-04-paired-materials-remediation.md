@@ -28,6 +28,16 @@ changes are retained; no SOL-DETACH or GCR implementation is imported. Comparing
 the merge with `ffee6cd0` finds no change in `native/src`, `native/include`,
 `godot/native_extension` or `godot/scripts`.
 
+During final verification, main advanced to
+`3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d` through #357's adoption of the
+**Planned** material-authoring architecture. Its delta is nine documentation
+files only. A fresh isolated reconciliation found five additive documentation
+conflicts: the docs index, handover, retrieval index, roadmap and validation
+ledger. Both complete section sets were retained; the corpus merged cleanly and
+still preserves both LCB and paired-material audit exclusions. #357's shadow-first
+compiler and production-cutover boundaries remain unchanged. No compiler work,
+new material semantics, SOL-DETACH or GCR implementation is imported.
+
 ## Historical evidence custody
 
 The original archive remains **unrecovered**, not reconstructed:
@@ -105,7 +115,65 @@ saved precision. The fixed 8-bit paired lab has no level-import/save UI.
 
 ## Execution results and final gates
 
-This section is completed only from retained resulting-source runs. Registration
-is not a pass. Full Native/GDExtension/Issue49/shader gates, final independent
-review, the quantity compatibility decision and owner gameplay acceptance remain
-separate gates. The PR must not be marked ready or merged on skipped draft checks.
+The first published repair source is
+`077f9c5227d970b199521d912114f321268970ec`, tree
+`c4162ff0641760a964c3587ff51566b0326569c4`, identical to local checkpoint
+`f95a97241750fd52cb125d4020ac621051031fab`. Git Data publication used a new commit
+identity because the shell checkout had no push credential; verified Git bundles
+preserve the original local preregistration and component histories.
+
+[Focused run41750280037](https://github.com/techrote/cybersand/actions/runs/41750280037)
+passed both literal hosted jobs on that exact published source. All seven
+headless fixtures pass on both Windows and Linux: catalogue323/0, playground1315/0,
+Workbench206/0, MicroScenario reference557/0, MicroScenarios8871/0 and both
+WaterFeel completion contracts. Actual Crust transitions miss/hit/erase/miss
+after181 ticks with255 bound units and the neighboring collider retained.
+All four diagnostic arms make10 expensive reads across300 callbacks, then11
+at the five-second deadline. Paused play retains zero simulation ticks.
+
+Linux normal and leak-enabled ASan/UBSan each pass55,937 native checks. All eight
+family/precision cases observe a peak of four task claimants and complete-state
+trajectory hashes match between modes. Interest exclusion preserves countdown151
+through45 excluded ticks and resumes at150. The actual Linux opengl3/X11 material
+render passes all138 atlas slots,136 valid nonempty slots,576x288 RGBA8 pixels and
+invalid controls10/138/255 under the unchanged comparison thresholds.
+
+The original Windows artifact has49 members and SHA-256
+`633487c12a7ea492cdbd958274eb089dcae4137d25be5d045f7ed5167f62d8a9`;
+the Linux artifact has127 members and SHA-256
+`d3e8259710fe523b78519e0a37bca3ae21bb8cd14b1f697e80e7b6cbdef3933f`.
+Independent review verifies sizes, CRCs, sealed files, identical source archives,
+runtime identities, exact process completion and all reductions. The first Linux
+reviewer extraction acquired an unexpected extra file and was correctly refused;
+its cause is unconfirmed. That refusal remains retained, and a fresh extraction
+from the authenticated original ZIP passes without ignoring or deleting members.
+Local fixture failure, LeakSanitizer process-inspection failure and truncated-log
+custody failure also retain their original classifications. The new hosted
+leak-enabled pass does not rewrite those local records.
+
+Cross-review of separate owners' changes found and corrected the host-failure
+sample-freshness label, then found no remaining blocking defect in its bounded
+scope. It is not owner gameplay acceptance. Documentation run41750279967 passes
+the synthetic merge `f78f23f3`, whose tree is exactly `c4162ff0`; its draft-only
+runtime-provenance skip stays explicit. Separate local checks verify all18
+materialized runtime objects,18 retained M11 records/28 historical hashes,
+frozen retrieval32/32 top5 and new questions3/3 top1. The challenge set retains
+159/160 with the existing LCB03 miss.
+
+These executions remain attached to `077f9c52`. The later current-main
+documentation reconciliation changes no executable, native compile input or
+Godot test/runtime input; its actual resulting-head status belongs to the
+[live PR qualification ledger](https://github.com/techrote/cybersand/pull/358).
+No prior source is relabelled as a later whole-tree execution.
+
+**Historical graphics classification remains exact:** native-OpenGL growth-pan
+is a failed assertion whose baseline attribution is recorded, not independently
+reproved from the unavailable original images. The six differing finished-image
+pixels are a separate diagnostic under the unchanged comparison contract, not a
+new mandatory pixel-identity gate. The frozen focused driver's loose grouping of
+retained negative results does not change those classifications.
+
+Full Native/GDExtension/Issue49/shader gates, the quantity compatibility decision
+and owner gameplay acceptance remain separate gates. The PR must not be marked
+ready or merged on skipped draft checks. The owner packet remains UNTESTED; no
+migration or automatic promotion is authorized.
