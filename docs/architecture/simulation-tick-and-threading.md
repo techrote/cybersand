@@ -301,3 +301,10 @@ local collision and conservation, and report its policy.
 [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) records that intent.
 Actual platform execution evidence is in the
 [validation ledger](../reference/validation-evidence.md).
+
+
+## Desktop development workbench on Draft #394
+
+The main-thread Rapier owner takes its completion acknowledgement and body wrench from the same immutable worker publication in the physics callback. Render can retain its previous publication independently. Owner epoch, sample and result serial checks still guard delivery. The physics callback confirms the current native hard-surface revision and drains the bounded Rapier collider queue before stepping against edited terrain. This check advances even while the renderer holds a frame. The desktop simulation owner drives the native World, whose persistent pool handles eligible phased material jobs. The workbench also dispatches independent chunk columns for vertical head preparation in reference PressureFlow when the pool has enough work. Columns have disjoint output storage and task-local counters. The owner joins them before row interpolation and wake decisions. Gas topology and the row pass remain serial. The default outside the workbench retains its existing execution policy.
+
+The [dated workbench measurements](../audits/2026-11-04-workbench-boundary-and-pacing.md) separate render cadence, completed physics ticks, fixed-work native throughput and process CPU usage.

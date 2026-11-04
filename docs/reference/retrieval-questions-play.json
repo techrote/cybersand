@@ -167,12 +167,14 @@
       ],
       "facts": [
         "The Draft workbench prepares multiple instances with one World and one physical owner and uses selective arrivals by default. Pilot and Reset act during play; an explicit solver change reports incompatible pressure inventory loss.",
+        "A live solver edit transfers evolved cells in reserved exterior chunks and reports actual clipping. Details exposes completed native worker samples and tick time.",
         "The bounded named starting recipe reconstructs authored cells, spawns, settings and policy across processes. Continuing physics state is omitted."
       ],
       "sources": [
         "../godot/scripts/shared_workbench.gd",
         "../godot/scripts/workbench_setup.gd",
-        "../godot/tests/test_workbench_canvas.gd"
+        "../godot/tests/test_workbench_canvas.gd",
+        "../godot/tests/test_workbench_liquid_edges.gd"
       ]
     }
   ]
