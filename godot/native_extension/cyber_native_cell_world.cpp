@@ -1350,12 +1350,18 @@ Dictionary CyberNativeCellWorld::gcr_rest_receipt() const {
         }else evaluation=evaluate_gcr(id);
         if(evaluation.refused)return Dictionary();
         const auto& p=evaluation.passive;const auto& info=evaluation.rest;
-        const Vector2 uncaught=evaluation.legacy+evaluation.event+Vector2{p.uncaught_impulse.x,p.uncaught_impulse.y};
-        const double uncaught_torque=legacy_torque+evaluation.event_torque+p.uncaught_torque;
+        // No catch means the actual exported wrench is also the uncaught wrench.
+        // Reassembling its double components through Vector2 can otherwise invent
+        // a float32-ULP catch delta, notably for one compound physical response.
+        const Vector2 uncaught=p.catch_applied?
+            evaluation.legacy+evaluation.event+Vector2{p.uncaught_impulse.x,p.uncaught_impulse.y}:evaluation.impulse;
+        const double uncaught_torque=p.catch_applied?
+            legacy_torque+evaluation.event_torque+p.uncaught_torque:evaluation.torque;
         Dictionary row;row["id"]=static_cast<std::int64_t>(id);row["sample"]=b.sample_serial;row["session"]=gcr_session_id_;
         row["catch_applied"]=p.catch_applied;row["catch_admitted"]=p.catch_applied;
         row["correction_mode"]=info.correction_mode;row["uncaught_impulse"]=uncaught;row["uncaught_torque"]=uncaught_torque;
-        row["catch_delta_impulse"]=evaluation.impulse-uncaught;row["catch_delta_torque"]=evaluation.torque-uncaught_torque;
+        row["catch_delta_impulse"]=p.catch_applied?evaluation.impulse-uncaught:Vector2{};
+        row["catch_delta_torque"]=p.catch_applied?evaluation.torque-uncaught_torque:0.;
         row["sample_velocity"]=b.velocity;row["sample_omega"]=b.angular_velocity;row["mass"]=b.mass;row["inertia"]=b.inertia;
         row["gravity"]=gcr_rest_gravity_;row["dt"]=b.dt;row["overlap_measured"]=info.overlap_measured;
         row["post_overlap"]=info.overlap_measured?static_cast<std::int64_t>(info.post_overlap):std::int64_t{-1};

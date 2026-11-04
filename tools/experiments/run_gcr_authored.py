@@ -70,10 +70,11 @@ def main():
                     receipt['ok']=receipt['ok'] and matched and data.get('ok') is True and receipt['rows']==spec['ticks']
                     captures.append(receipt);write(folder/'campaign.json',captures)
                     print(platform,name,receipt['ok'],receipt['rows'],flush=True)
-                    if not receipt['ok']: return {'platform':platform,'ok':False,'failed':name}
+                    # Each capture is a fresh owner/process. Preserve a negative
+                    # control or safety refusal and still acquire the other arms.
         verify_project(project,inputs);assert native_identity(platform,project)==native
         assert all(sha(ROOT/name)==sha(folder/name) for name in protocols)
-        return {'platform':platform,'ok':True,'suites':len(records)-1,'imports':1,'captures':len(captures),
+        return {'platform':platform,'ok':all(r['ok'] for r in captures),'suites':len(records)-1,'imports':1,'captures':len(captures),
                 'gates_sha256':sha(folder/'gates.json'),'campaign_sha256':sha(folder/'campaign.json') if captures else None}
     with concurrent.futures.ThreadPoolExecutor(2) as pool: results=list(pool.map(host,['windows','linux']))
     unchanged=inputs==source_inputs() and not git('diff','--binary','HEAD') and source==git('rev-parse','HEAD').decode().strip()

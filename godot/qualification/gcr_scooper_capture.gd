@@ -124,7 +124,21 @@ func _run() -> void:
 		var before_state: Dictionary=Base.state(body)
 		var snapshot: Dictionary=runtime.step()
 		var elapsed: int=Time.get_ticks_usec()-start
-		if not require(not snapshot.failed,"normal owner step: "+runtime.last_error): break
+		if not require(not snapshot.failed,"normal owner step: "+runtime.last_error):
+			# A stopped owner is itself a qualification outcome. Preserve the
+			# refusal before teardown, including the physical state after any
+			# accepted motor impulse but before a refused Rapier integration.
+			report["failure"]={"tick":tick,"elapsed_us":elapsed,
+				"before_state":before_state,"state_after":Base.state(body),
+				"native_tick_before":native_before,"native_tick_after":world.get_tick_index(),
+				"rapier_step_before":rapier_before,"rapier_step_after":arena.session.bridge.manual_step_count(),
+				"snapshot":snapshot,"native_failed":world.has_failed(),
+				"native_compound":world.gcr_compound_diagnostics(),
+				"native_rest":world.gcr_rest_receipt(),
+				"bridge_application":arena.session.bridge.gcr_application_diagnostics(),
+				"actuation_after_failure":arena.session._rigs[0]._player_controller.observation(),
+				"source":source.receipt()}
+			break
 		var state: Dictionary=Base.state(body)
 		var diag: Dictionary=world.gcr_compound_diagnostics()
 		if not require(diag.get("admission_kind")=="authored" and diag.get("granular_events")==expected_selector,"authored mode/selector readback"): break
