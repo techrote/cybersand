@@ -1,9 +1,14 @@
 extends "res://scripts/player_playground_overlay.gd"
 
 var fleet_index: int = 0
+var room_source_origin := Vector2.INF
 
 func _draw() -> void:
 	super._draw()
+	if room_source_origin.is_finite() and _view_size.x>0 and _view_size.y>0:
+		var outline:=PackedVector2Array()
+		for delta: Vector2 in [Vector2.ZERO,Vector2(4,0),Vector2(4,24),Vector2(0,24),Vector2.ZERO]: outline.append(_point(room_source_origin+delta))
+		draw_polyline(outline,Color("80e9d1"),1.0,false)
 	# Instrument markings/light are decorative; the rectangular outline remains
 	# the actual collider. No extra collision-less solid-looking hull is drawn.
 	for part: Dictionary in _parts:

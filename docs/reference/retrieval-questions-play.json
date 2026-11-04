@@ -247,7 +247,23 @@
       "facts": [
         "The canned powder review implements a fixed Kestrel index2 loading setup: body gravity0, pose(512,256), zero velocity/rotation, Sand2 burst4x24 at(514,224), or4x1 stream before ticks0..599; native material gravity is unchanged.",
         "Burst and Stream reset paused; P resumes, R or Apply/reset reconstructs the same selected setup and applied budget/mass/inertia settings. Automatic1800tick stop and pause freeze the source clock. Pilot leases, Fire and dispensers are disabled; no-command stepping avoids neutral-input drag.",
-        "Actual inserted and blocked source cells are counted. Manual painting pauses/marks modified and requires reset for repeatable comparison; Painting room restores gravity38. Source-only host validation is pending; no physics retuning, sleep, new scientific acceptance or merge follows."
+        "Actual inserted and blocked source cells are counted. Manual painting pauses/marks modified and requires reset for repeatable comparison; Painting room restores gravity38. Source92fa021b Windows/Linux host controls pass; new follow-ups retain their own source qualification; no physics retuning, sleep, new scientific acceptance or merge follows."
+      ],
+      "sources": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "GCRFLIGHT01",
+      "query": "How do I use the configurable Shift thrust multiplier, Ctrl brake and burst or stream sources with all seven flyers in the painting room, and why were edge graphics misaligned?",
+      "canonical": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "facts": [
+        "In the flyer review room Shift holds a staged1..8 propulsion/force-cap multiplier(default2); Ctrl keeps the old brake and takes precedence. Torque, hover compensation and passive damping are unchanged; the optional review port follows the accepted command lease without widening shared actor actions.",
+        "Live sources capture a powder palette material and a fixed origin48 cells above any selected hull, retaining gravity38 and pilot control. Burst4x24 coalesces; stream4x1 stops after600ticks; source starts off, reset/focus disarm, pause freezes, guards prevent overwrites and a256-row recent ledger reports dropped rows plus exact cumulative counts.",
+        "Overlay/painting now use the actual992x480 texture footprint rather than512x256 follow aspect, correcting inward edge drift without changing physics. The owner reported positive LA/A1 feel plus Sand/Rust/Coal burial; relative mass remains unproven and earlier selective NO-GO/sleep/merge boundaries remain."
       ],
       "sources": [
         "systems/granular-review-flight-fleet.md"

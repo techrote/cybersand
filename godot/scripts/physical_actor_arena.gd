@@ -30,6 +30,20 @@ var _world: Object
 var _viewport: SubViewport
 var _effects := Effects.new()
 var _review_emitter := ReviewEmitter.new()
+var _review_boost_binding: Dictionary = {}
+
+func _clear_review_boost() -> void:
+	_review_boost_binding.clear()
+	if session!=null and session._rigs.size()==1:
+		session._rigs[0].set_review_boost_held(false)
+
+func _bind_review_boost() -> void:
+	if not config.has("review_fleet_index") or session==null or session._rigs.size()!=1: return
+	var view: Dictionary=session._view(0,false)
+	var alive: bool=not _review_boost_binding.is_empty() and not bool(view.suspended) and int(view.lease_remaining)>0
+	for key: String in ["epoch","control_generation","last_sequence"]:
+		alive=alive and view.get(key)==_review_boost_binding.get(key)
+	session._rigs[0].set_review_boost_held(alive and bool(_review_boost_binding.get("boost",false)))
 var _usables := UsableRuntime.new()
 var _usable_requests_total: int = 0
 var _usable_accepted_total: int = 0
@@ -407,6 +421,7 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	var accepted: bool = session.submit(command, producer)
 	if accepted:
 		_review_emitter.revoke()
+		_clear_review_boost()
 	if not accepted:
 		last_error = session.last_error
 	return accepted
@@ -422,11 +437,18 @@ func _review_room_active() -> bool:
 func submit_review_command(command: Variant, ports: Dictionary) -> bool:
 	# Port state travels beside the existing command ABI and inherits the exact
 	# accepted lease identity. Invalid room/ports cannot consume a sequence.
-	if not _review_room_active() or not ReviewEmitter.valid_ports(ports):
+	var emission_ports: Dictionary=ports.duplicate(true)
+	if ports.has("boost") and not ports.boost is bool:
+		last_error="review_ports_refused"
+		return false
+	emission_ports.erase("boost")
+	if not _review_room_active() or not ReviewEmitter.valid_ports(emission_ports):
 		last_error="review_ports_refused"
 		return false
 	if not submit(command,&"human"): return false
-	_review_emitter.capture(session._view(0,false),ports)
+	var view: Dictionary=session._view(0,false)
+	_review_emitter.capture(view,emission_ports)
+	_review_boost_binding={"epoch":view.epoch,"control_generation":view.control_generation,"last_sequence":view.last_sequence,"boost":bool(ports.get("boost",false))}
 	return true
 
 
@@ -442,13 +464,17 @@ func configure_review_fire(enabled: bool) -> bool:
 
 func cancel(actor_id: int, producer: StringName) -> bool:
 	var accepted: bool = session != null and session.cancel_input(actor_id, session.epoch, producer)
-	if accepted: _review_emitter.revoke()
+	if accepted:
+		_review_emitter.revoke()
+		_clear_review_boost()
 	return accepted
 
 
 func set_paused(paused: bool) -> void:
 	_paused = paused
-	if paused: _review_emitter.revoke()
+	if paused:
+		_review_emitter.revoke()
+		_clear_review_boost()
 	if session != null:
 		session.set_suspended(paused)
 
@@ -486,6 +512,7 @@ func step(commands: Variant = []) -> Dictionary:
 		var accepted: bool = submit(command, &"policy")
 		_command_receipts.append({"accepted": accepted,
 			"reason": "" if accepted else last_error})
+	_bind_review_boost()
 	session.advance(1.0 / PHYSICS_HZ)
 	if config.has("review_fleet_index"):
 		var rig = session._rigs[0]
@@ -702,6 +729,7 @@ func presentation_cells(view: Rect2i = ARENA_RECT) -> PackedByteArray:
 
 
 func close() -> void:
+	_clear_review_boost()
 	if _world != null and not bool(_world.has_failed()):
 		if config.get("granular_experiment","B0") in ["GCR","GCR-A1","GCR-REST"]:
 			_world.prepare_gcr_coupling(PackedFloat64Array())

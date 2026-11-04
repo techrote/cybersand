@@ -3,10 +3,16 @@ extends "res://scripts/gcr_crash_playground.gd"
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const FleetOverlay = preload("res://scripts/gcr_review_fleet_overlay.gd")
 const PowderTest = preload("res://scripts/gcr_powder_review_test.gd")
+const RoomSource = preload("res://scripts/gcr_painting_powder_source.gd")
+var room_source = RoomSource.new()
+var room_source_enabled: CheckButton
+var room_stream: CheckButton
+var room_source_status: Label
+var room_source_buttons: Array[Button] = []
 var powder_test = PowderTest.new()
 var powder_test_status: Label
 var _restoring_defaults: bool = false
-var applied_controls: Dictionary = {"response":"LA","budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,"thrust_multiplier":1.0,"torque_multiplier":1.0}
+var applied_controls: Dictionary = {"response":"LA","budget":20.0,"mass_multiplier":1.0,"inertia_multiplier":1.0,"thrust_multiplier":1.0,"torque_multiplier":1.0,"boost_multiplier":2.0}
 var control_fields: Dictionary = {}
 var response_select: OptionButton
 var control_status: Label
@@ -62,19 +68,19 @@ func _build_comparison_controls() -> void:
 	var actuator_row := HBoxContainer.new()
 	actuator_row.add_theme_constant_override("separation",12)
 	panel.add_child(actuator_row)
-	for key: String in ["thrust_multiplier","torque_multiplier"]:
+	for key: String in ["thrust_multiplier","torque_multiplier","boost_multiplier"]:
 		var field := VBoxContainer.new()
 		actuator_row.add_child(field)
-		_label(field,"Thrust limit × authored" if key=="thrust_multiplier" else "Torque limit × authored",12,Color("adc0ce"))
+		_label(field,{"thrust_multiplier":"Thrust limit × authored","torque_multiplier":"Torque limit × authored","boost_multiplier":"Shift thrust multiplier"}[key],12,Color("adc0ce"))
 		var input := SpinBox.new()
-		input.min_value=0.0
-		input.max_value=64.0
-		input.step=0.01
-		input.value=float(applied_controls.get(key,1.0))
+		input.min_value=1.0 if key=="boost_multiplier" else 0.0
+		input.max_value=8.0 if key=="boost_multiplier" else 64.0
+		input.step=0.25 if key=="boost_multiplier" else 0.01
+		input.value=float(applied_controls.get(key,2.0 if key=="boost_multiplier" else 1.0))
 		input.custom_minimum_size.x=190
 		field.add_child(input)
 		control_fields[key]=input
-	var explanation := _label(actuator_row,"0 disables that actuator. Limits change; acceleration/speed targets stay authored.",13,Color("adc0ce"))
+	var explanation := _label(actuator_row,"Shift: configured thrust multiplier. Ctrl: brake. Base ceilings stay separately adjustable.",13,Color("adc0ce"))
 	explanation.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	explanation.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	thruster_fire=CheckButton.new()
@@ -92,6 +98,23 @@ func _build_comparison_controls() -> void:
 	_button(powder_row,"Painting room",return_to_painting)
 	powder_test_status=_label(panel,"Repeatable loading tests: Kestrel, body gravity off, pilot off. P starts/pauses; R repeats.",13,Color("adc0ce"))
 	powder_test_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	var source_row := HBoxContainer.new()
+	source_row.add_theme_constant_override("separation",8)
+	panel.add_child(source_row)
+	room_source_enabled=CheckButton.new()
+	room_source_enabled.text="Room powder source"
+	room_source_enabled.focus_mode=Control.FOCUS_NONE
+	room_source_enabled.toggled.connect(_toggle_room_source)
+	source_row.add_child(room_source_enabled)
+	room_source_buttons.append(_button(source_row,"Place above flyer · use palette",place_room_source))
+	room_source_buttons.append(_button(source_row,"Burst",emit_room_burst))
+	room_stream=CheckButton.new()
+	room_stream.text="Stream · up to 10 s"
+	room_stream.focus_mode=Control.FOCUS_NONE
+	room_stream.toggled.connect(set_room_stream)
+	source_row.add_child(room_stream)
+	room_source_status=_label(panel,"Room source off. Choose a powder in the palette, then place above any flyer.",13,Color("adc0ce"))
+	room_source_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	control_status=_label(panel,"",14,Color("f7c579"))
 	control_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var provenance: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://addons/cybersand_native/runtime-provenance.json" if OS.get_name()=="Windows" else "res://addons/cybersand_native/runtime-provenance.linux.json"))
@@ -135,6 +158,7 @@ func restore_controls() -> void:
 	control_fields.inertia_multiplier.value=1.0
 	control_fields.thrust_multiplier.value=1.0
 	control_fields.torque_multiplier.value=1.0
+	control_fields.boost_multiplier.value=2.0
 	_restoring_defaults=true
 	apply_controls()
 	_restoring_defaults=false
@@ -157,11 +181,16 @@ func _review_ports() -> Dictionary:
 		ports.q = ports.q or Input.is_joy_button_pressed(pad,JOY_BUTTON_LEFT_SHOULDER)
 		ports.e = ports.e or Input.is_joy_button_pressed(pad,JOY_BUTTON_RIGHT_SHOULDER)
 		ports.s = ports.s or Input.get_joy_axis(pad,JOY_AXIS_LEFT_Y) > 0.2
+	ports["boost"]=Input.is_physical_key_pressed(KEY_SHIFT) or Input.is_key_pressed(KEY_SHIFT)
 	return ports
 
 func _sample_action() -> Dictionary:
 	if powder_test.active(): return {"move":Vector2.ZERO,"aim":Vector2.RIGHT,"effort":0.0,"trim":0.0,"primary":false,"secondary":false,"auxiliary":false}
 	var action: Dictionary = super._sample_action()
+	var gamepad_brake: bool=false
+	var pads: Array[int]=Input.get_connected_joypads()
+	if not pads.is_empty(): gamepad_brake=Input.is_joy_button_pressed(pads[0],JOY_BUTTON_B)
+	action=remap_fleet_brake(action,Input.is_physical_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_CTRL),gamepad_brake)
 	if selected==2:
 		# Kestrel S is a dispenser rather than reverse. Retain W when both
 		# keys are held; primary/Space independently keeps its normal thrust.
@@ -170,6 +199,11 @@ func _sample_action() -> Dictionary:
 		if _thrust_up_pressed(): move.y=-1.0
 		action.move=move
 	return action
+
+static func remap_fleet_brake(action: Dictionary, control_held: bool, gamepad_brake: bool = false) -> Dictionary:
+	var result: Dictionary=action.duplicate(true)
+	result.secondary=control_held or gamepad_brake
+	return result
 
 func _thrust_up_pressed() -> bool:
 	return Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP)
@@ -200,7 +234,11 @@ func advance_frame(action: Dictionary, allowed: bool) -> void:
 	# A held dispenser must be released after focus/edit/pause cancellation,
 	# even when Q+E cancels the signed trim or Kestrel S leaves move neutral.
 	var ports: Dictionary = _review_ports()
-	if _rearm and (ports.q or ports.e or ports.s): allowed=false
+	if _rearm and (ports.q or ports.e or ports.s or ports.boost): allowed=false
+	if room_source.armed and runtime!=null and runtime.active() and not runtime.paused and not runtime.failed:
+		if not room_source.before_step(runtime._arena):
+			control_error=room_source.error
+			_stop_room_source()
 	super.advance_frame(action,allowed)
 
 func select_preset(index: int) -> bool:
@@ -214,6 +252,7 @@ func select_preset(index: int) -> bool:
 			_pause_button.text="Resume  ·  P"
 		return false
 	powder_test.clear()
+	_reset_room_source(false)
 	if thruster_fire != null: thruster_fire.disabled=false
 	runtime.set_review_thruster_fire(thruster_fire != null and thruster_fire.button_pressed)
 	selected = index
@@ -267,6 +306,7 @@ func _reset_powder_test(mode: String) -> bool:
 		thruster_fire.button_pressed=false
 		thruster_fire.disabled=true
 	runtime.set_review_thruster_fire(false)
+	_reset_room_source(true)
 	var setup_ok: bool = powder_test.setup(runtime._arena,mode,applied_controls)
 	runtime.set_paused(true)
 	_pause_button.text="Resume  ·  P"
@@ -297,6 +337,7 @@ func _toggle_pause() -> void:
 
 func _notification(what: int) -> void:
 	super._notification(what)
+	if what==NOTIFICATION_WM_WINDOW_FOCUS_OUT: _stop_room_source()
 	if what==NOTIFICATION_WM_WINDOW_FOCUS_OUT and powder_test.active() and runtime!=null and runtime.active():
 		runtime.set_paused(true)
 		if _pause_button!=null: _pause_button.text="Resume  ·  P"
@@ -325,8 +366,19 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		var profile: Dictionary = runtime._arena.session._rigs[0]._profile
 		control_status.text="Applied: %s · budget %.0f · mass %.5f (×%.2f) · inertia %.5f (×%.2f) · thrust cap %.3f · torque cap %.3f\nApply/reset rebuilds terrain and craft. Settings persist across craft; material laws and sleep unchanged." % [applied_controls.response,applied_controls.budget,body.mass,applied_controls.mass_multiplier,body.inertia,applied_controls.inertia_multiplier,profile.fleet_force,profile.fleet_torque]
 		if not control_error.is_empty(): control_status.text+="\n"+control_error
+		control_status.text+="\nShift thrust ×%.2f · Ctrl brake" % float(applied_controls.get("boost_multiplier",2.0))
 		control_status.text+="\n"+event_runtime_identity
 		if applied_controls.response=="LA-EVENT-OFF": control_status.text+=" · Experimental: moving-grain loading/torque incomplete."
+	if _overlay is FleetOverlay:
+		_overlay.room_source_origin=Vector2(room_source.origin) if room_source.armed else Vector2.INF
+	if room_source_status!=null:
+		room_source_enabled.set_pressed_no_signal(room_source.armed)
+		room_stream.set_pressed_no_signal(room_source.stream_enabled)
+		if room_source.armed:
+			var material_name: String=MATERIAL_NAMES[MATERIALS.find(room_source.material)]
+			room_source_status.text="Source %s at (%d,%d) · fixed in world · %d inserted / %d attempted (%d blocked) · stream %d/600%s" % [material_name,room_source.origin.x,room_source.origin.y,room_source.inserted,room_source.attempted,room_source.blocked,room_source.stream_ticks," · burst queued" if room_source.burst_queued else ""]
+		else: room_source_status.text="Room source off. Choose powder in the palette; Place above flyer arms at a fixed world position. Focus loss disarms."
+		if not room_source.error.is_empty(): room_source_status.text+=" "+room_source.error
 	if powder_test_status!=null:
 		if powder_test.active():
 			powder_test_status.text="%s · %s · tick %d/%d · inserted %d / attempted %d (%d blocked) · Kestrel, Sand, body gravity OFF, pilot OFF. P run/pause; R repeat." % [powder_test.mode.to_upper(),powder_test.status(runtime.paused),powder_test.ticks,PowderTest.TOTAL_TICKS,powder_test.inserted,powder_test.attempted,powder_test.blocked]
@@ -334,3 +386,57 @@ func _present(state: Dictionary, force: bool = false) -> void:
 			_controls.text="LOADING TEST\nBody gravity OFF · pilot OFF\nSand falls under native rules\nP  Run / pause\nR  Repeat from tick zero\nPainting room  Return to flight"
 		else:
 			powder_test_status.text="Repeatable loading tests: Kestrel, body gravity off, pilot off. P starts/pauses; R repeats."
+
+func _reset_room_source(disabled: bool) -> void:
+	room_source.clear()
+	if room_source_enabled!=null:
+		room_source_enabled.set_pressed_no_signal(false)
+		room_source_enabled.disabled=disabled
+	if room_stream!=null:
+		room_stream.set_pressed_no_signal(false)
+		room_stream.disabled=disabled
+	for button: Button in room_source_buttons: button.disabled=disabled
+
+func _stop_room_source() -> void:
+	room_source.stop()
+	if room_source_enabled!=null: room_source_enabled.set_pressed_no_signal(false)
+	if room_stream!=null: room_stream.set_pressed_no_signal(false)
+
+func _toggle_room_source(enabled: bool) -> void:
+	if enabled: place_room_source()
+	else: _stop_room_source()
+	if runtime!=null and runtime.active(): _present(runtime.snapshot(),true)
+
+func place_room_source() -> bool:
+	if powder_test.active() or runtime==null or runtime._arena==null: return false
+	var rig=runtime._arena.session._rigs[0]
+	var body: RigidBody2D=rig.bodies()[0]
+	var pose: Transform2D=PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM)
+	var half: Vector2=rig.body_sizes()[0]*0.5
+	var top: float=pose.origin.y-absf(sin(pose.get_rotation()))*half.x-absf(cos(pose.get_rotation()))*half.y
+	var point:=Vector2i(floori(pose.origin.x)-2,floori(top)-48)
+	var accepted: bool=room_source.configure(point,paint_material)
+	control_error="" if accepted else room_source.error
+	if room_source_enabled!=null: room_source_enabled.set_pressed_no_signal(accepted)
+	if room_stream!=null: room_stream.set_pressed_no_signal(false)
+	_present(runtime.snapshot(),true)
+	return accepted
+
+func emit_room_burst() -> bool:
+	if powder_test.active(): return false
+	if not room_source.armed and not place_room_source(): return false
+	var accepted: bool=room_source.queue_burst()
+	_present(runtime.snapshot(),true)
+	return accepted
+
+func set_room_stream(enabled: bool) -> bool:
+	if powder_test.active(): return false
+	if enabled and not room_source.armed and not place_room_source():
+		room_stream.set_pressed_no_signal(false)
+		return false
+	var accepted: bool=room_source.set_stream(enabled)
+	if room_stream!=null: room_stream.set_pressed_no_signal(accepted and enabled)
+	_present(runtime.snapshot(),true)
+	return accepted
+
+func room_source_receipt() -> Dictionary: return room_source.receipt()

@@ -58,9 +58,18 @@ func seed_crash_room() -> bool:
 	return true
 
 func _content_rect() -> Rect2:
-	var fit: float = minf(_canvas.size.x / float(_view.size.x),_canvas.size.y / float(_view.size.y))
-	var dimensions: Vector2 = Vector2(_view.size)*maxf(0.0,fit)
-	return Rect2((_canvas.size-dimensions)*0.5,dimensions)
+	# KEEP_ASPECT_CENTERED fits the SubViewport texture, whose output remains
+	# 992x480 even when the shader samples a 512x256 follow view. Overlay and
+	# painting must use that actual texture footprint, not the sampled view's
+	# aspect ratio, or their horizontal error grows toward either camera edge.
+	var texture_size: Vector2 = Vector2(_view.size)
+	var bounds := Rect2(Vector2.ZERO,_canvas.size)
+	if _terrain != null and _terrain.texture != null:
+		texture_size = Vector2(_terrain.texture.get_size())
+		bounds = _terrain.get_rect()
+	var fit: float = minf(bounds.size.x / texture_size.x,bounds.size.y / texture_size.y)
+	var dimensions: Vector2 = texture_size*maxf(0.0,fit)
+	return Rect2(bounds.position+(bounds.size-dimensions)*0.5,dimensions)
 
 func _present(state: Dictionary, force: bool = false) -> void:
 	super._present(state,force)
