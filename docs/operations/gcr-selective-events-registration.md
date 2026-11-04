@@ -10,6 +10,10 @@ related-documents: [gcr-granular-events-registration.md, ../architecture/granula
 
 # Selective granular event admission
 
+## Recover falling-grain loading and torque without restoring passive creep
+
+The selective granular event-admission successor is a preregistered painting-flyer-playground comparison, not a qualified production response. Its purpose is to recover useful falling-grain loading and torque while preserving the event-off creep reduction and barrel impact behavior. C/control, E/off and S/selective share the same optional native transport observations; only S selects fresh arrivals for the existing response. The developer LA-SELECTIVE choice is displayed as LA · selective arrivals (experimental), alongside unchanged LA, RFT and event-off. LA remains initial/Restore. Qualification and owner gameplay review remain pending; no sleep or merge follows.
+
 ## Prospective source and ownership
 
 GCR-SEL-001-2026-11-04 is registered before candidate code or results. Start from

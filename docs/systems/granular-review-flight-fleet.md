@@ -10,6 +10,10 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 
 # Lightweight flight fleet for granular owner review
 
+## Selective arrivals - preregistered comparison in progress
+
+The [selective event registration](../operations/gcr-selective-events-registration.md) plans the fourth response **LA · selective arrivals (experimental)** (LA-SELECTIVE). Use **Apply + reset room** to construct fresh native authority; painted edits are discarded. LA remains initial/Restore, RFT and event-off remain separate references, and existing painting, seven flyers, physical/actuator controls, Fire and dispensers remain intact. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. Loading/torque recovery and creep/barrel guards remain prospective requirements; no passed result or owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
+
 ## Granular-only event comparison — November4
 
 The [registered event successor](../operations/gcr-granular-events-registration.md)

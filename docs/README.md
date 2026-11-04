@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Selective granular event admission: the [preregistered successor](operations/gcr-selective-events-registration.md) compares LA, event-off and selective arrivals. It tests fresh native transport as an admission witness to recover falling-grain loading and torque while retaining creep reduction and barrel impact guards. Implementation and qualification are in progress; no result, owner acceptance or production promotion is claimed.
+
 Granular-only event successor: [registration and disposition](operations/gcr-granular-events-registration.md) and [November4 qualification](audits/2026-11-04-gcr-granular-event-successor.md) record reduced burial across three materials, a demonstrated moving-grain loading/torque gap and the experimental painting-playground selector. No production/default or sleep acceptance follows.
 
 Separate GCR-LA causal tests: [timing/contact and blocked-event registration](operations/gcr-causal-registration.md)

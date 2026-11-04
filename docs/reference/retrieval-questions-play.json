@@ -221,6 +221,22 @@
         "operations/gcr-granular-events-registration.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GCRSEL01",
+      "query": "How will selective granular event admission recover falling-grain loading and torque without restoring passive creep in the painting flyer playground?",
+      "canonical": [
+        "operations/gcr-selective-events-registration.md"
+      ],
+      "facts": [
+        "GCR-SEL-001 preregisters C/control, E/off and S/selective with identical optional transport history before results; preceding-tick native transport, directional agreement and one-use consumption admit S events.",
+        "The bounded eight-byte-per-resident-cell sidecar is allocated only for explicit experimental C/E/S worlds; ordinary and old-token worlds allocate none. Transient history is not a physical save guarantee.",
+        "The fourth proposed LA-SELECTIVE painting response retains initial/Restore LA and existing controls. Creep, barrel, falling-grain loading/torque and continuous-stream gates await measurements; sleep, latest-Astra compound acceptance and merging remain excluded."
+      ],
+      "sources": [
+        "operations/gcr-selective-events-registration.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }

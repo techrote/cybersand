@@ -11,6 +11,8 @@ last-reviewed: 2026-11-02
 
 # Interfaces and message contracts
 
+**Selective event interface under qualification:** the [prospective registration](../operations/gcr-selective-events-registration.md) extends fresh diagnostic construction with gcr_granular_events=selective and exact GCR-SEL-001-2026-11-04 token, requiring GCR-REST/control. C/control and E/off can use that token to observe identical transport history. Native selector/arrival-witness readback must acknowledge the requested mode; old runtimes and unsupported compound preparation refuse. Raw all-attempt J/L remain distinct from admitted arrival J/L/counts and sidecar bytes. Packed body/result strides, main-thread response ownership and sample fences remain unchanged. Transport stamps reset with World construction and are not physical save or complete replay state. Qualification results remain pending.
+
 **Experimental granular event selector, November4:** the
 [registered interface](../operations/gcr-granular-events-registration.md) adds
 fresh diagnostic construction options gcr_granular_events=off/control plus the

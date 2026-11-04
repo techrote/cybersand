@@ -10,6 +10,8 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+**Preregistered selective event comparison, November4:** [GCR-SEL-001](../operations/gcr-selective-events-registration.md) plans the fourth developer response LA-SELECTIVE, displayed as **LA · selective arrivals (experimental)**. Fresh native construction requires gcr_granular_events=selective and exact token GCR-SEL-001-2026-11-04 in GCR-REST/control. That token also admits C/control and E/off with identical observation history. Only these explicit experimental worlds allocate the bounded eight-byte-per-resident-cell transport sidecar; ordinary construction and old-token C/E allocate none. Initial/Restore LA, material laws and physical/actuator settings remain controls. Runtime qualification is pending.
+
 The [granular event successor](../operations/gcr-granular-events-registration.md)
 owns the explicit development selector and current qualification limits. The
 painting playground adds LA-EVENT-OFF beside LA and RFT; initial/Restore remains

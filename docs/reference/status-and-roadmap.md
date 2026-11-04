@@ -4,12 +4,13 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-03
 last-reviewed: 2026-11-04
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+**Selective event admission, November4 - preregistered/in progress:** [GCR-SEL-001](../operations/gcr-selective-events-registration.md) tests transport-backed arrivals against LA and event-off over84 bounded Windows/Linux captures. The target is joint creep retention and falling-grain loading/torque recovery with unchanged barrel impact guards. Results are pending; no accepted response law, sleep, compound integration, production promotion or merge follows.
 
 **Experimental granular event successor, November4:** [the qualified comparison](../operations/gcr-granular-events-registration.md) completes48 Windows/Linux captures. Burial reduction generalizes to Sand/Salt/Dust and the tested powered bank; ordinary gentle/high/heavy/angled barrel impact guards pass. The falling-grain loading/torque control fails, and late motion increases in some cases. Event-off is available in the painting playground for owner comparison, with no production promotion, sleep change, compound qualification or merge.
 

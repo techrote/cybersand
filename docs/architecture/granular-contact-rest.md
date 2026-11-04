@@ -10,6 +10,8 @@ related-documents: [compound-granular-coupling.md, ../operations/gcr-rest-regist
 
 # Experimental granular budgets and contact rest
 
+The [selective-arrival successor](../operations/gcr-selective-events-registration.md) is **preregistered and under implementation**, with results pending. It changes event admission only: preceding-tick native transport, directional agreement and one-use provenance distinguish candidate arrivals from repeated blocked attempts. This transient witness supplies no physical momentum or save guarantee. C/E/S share the optional observation history; passive resistance, friction, torque and correction remain controls. Astra aggregate response stays separate; sleep and default promotion remain excluded.
+
 The [granular-only event successor](../operations/gcr-granular-events-registration.md)
 is a separate explicit experiment within control mode. It retains raw attempts,
 legacy contact gain and the existing passive solver, while omitting accepted
