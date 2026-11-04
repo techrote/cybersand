@@ -418,3 +418,5 @@ Budget sweeps,64× payload overrides, persistent contact and residual-catch
 authority route through [granular contact rest](../architecture/granular-contact-rest.md)
 and its [registration](../operations/gcr-rest-registration.md). These experimental
 routes preserve unknown/failed qualification and do not authorize sleep or merge.
+
+Scooper carried-material leakage: the [fleet guide](../systems/granular-review-flight-fleet.md#why-can-scooper-lose-powder-through-its-thin-deck-while-moving) owns current controls and limits; the [registered diagnosis](../operations/gcr-scooper-leak-registration.md) owns the scientific comparisons and the dated audit retains actual source/runtime results.

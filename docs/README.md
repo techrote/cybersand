@@ -24,6 +24,10 @@ identified; no material-law/sleep/default promotion or merge follows.
 Authored hull admission and Scooper defaults are registered before results in the
 [GCR-AUTHORED-001 plan](operations/gcr-authored-compound-registration.md).
 
+Carried-material leakage has a [registered diagnosis and bounded translation repair](operations/gcr-scooper-leak-registration.md).
+The [fleet guide](systems/granular-review-flight-fleet.md#why-can-scooper-lose-powder-through-its-thin-deck-while-moving)
+owns current behaviour and the separate rotational/open-edge limits.
+
 
 Repeatable powder owner review is available in source in the
 [painting playground](systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review):
