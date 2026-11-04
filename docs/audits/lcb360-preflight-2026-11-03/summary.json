@@ -261,6 +261,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 318.876,
           "construction_receipt": "d8419f3bbdb3f7cc5211a384cb4efb4819ab2bf3ddd181e907ac9e53306ab828",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 1015236,
@@ -269,6 +272,7 @@
           },
           "final_physical_hash": "e7300f4d06731290",
           "final_water_cells": 18496,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 51.839,
             "p50": 20.352,
@@ -346,6 +350,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -354,6 +359,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 335.962,
           "construction_receipt": "479f1bec7237254e837ad9cdaed411d7413329c6ef5945d0918e177b9ecf1206",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 1015236,
@@ -362,6 +370,7 @@
           },
           "final_physical_hash": "e7300f4d06731290",
           "final_water_cells": 18496,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 42.803,
             "p50": 17.647,
@@ -439,6 +448,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -447,6 +457,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 325.167,
           "construction_receipt": "f0c8e187ca137036e65257acb03e970b5418e90e7eb60d911041098de6f3bd50",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 1015300,
@@ -455,6 +468,7 @@
           },
           "final_physical_hash": "7724ea8548e266cc",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 43.476,
             "p50": 19.838,
@@ -532,6 +546,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -540,6 +555,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 319.141,
           "construction_receipt": "878264cc21d8ccd8643573dbc1492c364e05148207352be127116402435f647e",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 1015300,
@@ -548,6 +566,7 @@
           },
           "final_physical_hash": "7724ea8548e266cc",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 40.199,
             "p50": 15.364,
@@ -625,6 +644,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -633,6 +653,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 362.89,
           "construction_receipt": "0daa1630f49b3bab55fd4f196d80cd3f3331d8141e8d5e5aff45e8aa371f4c63",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 1015324,
@@ -641,6 +664,7 @@
           },
           "final_physical_hash": "b76072e2f6b833c2",
           "final_water_cells": 18408,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 64.758,
             "p50": 27.033,
@@ -750,6 +774,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -758,6 +783,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 329.962,
           "construction_receipt": "7bbc8c37303e33e6181f5f1ff614131862a68e3e5a9d4e5f5969812b60cad282",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 1015324,
@@ -766,6 +794,7 @@
           },
           "final_physical_hash": "b76072e2f6b833c2",
           "final_water_cells": 18408,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 60.077,
             "p50": 27.509,
@@ -875,6 +904,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -883,6 +913,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 327.517,
           "construction_receipt": "b1e66efd7138766891d863422243350ea2e1bc33c0bd5a7aacf1af663559c090",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "inertial_cellular_v1",
           "final_inventory": {
             "0": 1015300,
@@ -891,6 +924,7 @@
           },
           "final_physical_hash": "144f09f9f4138fb3",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 47.771,
             "p50": 5.293,
@@ -976,6 +1010,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -984,6 +1019,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 327.234,
           "construction_receipt": "fe24ee9762fcc441088867a03ee483fbaaae02cd2702759694633c1a1120ca7b",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "inertial_cellular_v1",
           "final_inventory": {
             "0": 1015300,
@@ -992,6 +1030,7 @@
           },
           "final_physical_hash": "144f09f9f4138fb3",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 40.388,
             "p50": 5.11,
@@ -1077,6 +1116,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -1085,6 +1125,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 314.382,
           "construction_receipt": "35e30be4ce95252da70045243777da7619d4f275952e5ec87d6c554d4b5be36c",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 1015236,
@@ -1093,6 +1136,7 @@
           },
           "final_physical_hash": "6f2cb1c5603bf379",
           "final_water_cells": 18496,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 48.372,
             "p50": 20.202,
@@ -1170,6 +1214,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -1178,6 +1223,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 315.597,
           "construction_receipt": "bc8234b99a5474912e9a24fbabafe36d86af83231ef1564efff01893ed19cbcb",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 1015236,
@@ -1186,6 +1234,7 @@
           },
           "final_physical_hash": "6f2cb1c5603bf379",
           "final_water_cells": 18496,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 42.806,
             "p50": 17.544,
@@ -1263,6 +1312,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -1271,6 +1321,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 321.355,
           "construction_receipt": "9a36a0a1c79b326191547f482495a6a657f81f2b176f2debc05cfd9bc23dbbc8",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 1015300,
@@ -1279,6 +1332,7 @@
           },
           "final_physical_hash": "baf217f22778e24f",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 43.223,
             "p50": 19.569,
@@ -1356,6 +1410,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -1364,6 +1419,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 325.204,
           "construction_receipt": "4a5032daeeb7e58b5b6f517de95ecb7794ae8f73cbed4484d851d1523d8b17b0",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 1015300,
@@ -1372,6 +1430,7 @@
           },
           "final_physical_hash": "baf217f22778e24f",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 38.641,
             "p50": 15.484,
@@ -1449,6 +1508,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -1457,6 +1517,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 459.145,
           "construction_receipt": "c5f20fcd862ebbe54e2fb7d7fe0e71d9e96ae869e96cdf516bd21fc16ccd833c",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 1015324,
@@ -1465,6 +1528,7 @@
           },
           "final_physical_hash": "aad83107289b35dd",
           "final_water_cells": 18408,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 108.989,
             "p50": 33.168,
@@ -1574,6 +1638,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -1582,6 +1647,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 368.599,
           "construction_receipt": "bc303ad63c3784330a2058e9d549a5189378617ee36898db01b30a33eb369742",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 1015324,
@@ -1590,6 +1658,7 @@
           },
           "final_physical_hash": "aad83107289b35dd",
           "final_water_cells": 18408,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 59.446,
             "p50": 29.488,
@@ -1699,6 +1768,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -1707,6 +1777,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 396.977,
           "construction_receipt": "96f17fdb5950148d1ecb1c292c56bf664f5b6afd939a169714b4ca5eeb6d009d",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 882692,
@@ -1715,6 +1788,7 @@
           },
           "final_physical_hash": "ea638e166b019fc8",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 230.18,
             "p50": 0.107,
@@ -1792,6 +1866,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -1800,6 +1875,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 426.428,
           "construction_receipt": "f036455a0a2e1ccf408e7d43bc5747eec68db5500460bed0362e002b4442e742",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 882692,
@@ -1808,6 +1886,7 @@
           },
           "final_physical_hash": "ea638e166b019fc8",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 70.681,
             "p50": 0.108,
@@ -1885,6 +1964,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -1893,6 +1973,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 456.128,
           "construction_receipt": "3c4fad5c1ca702d69c5d0166410e0374f1cd4a01f97f75abf71edd7bf607c060",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 882692,
@@ -1901,6 +1984,7 @@
           },
           "final_physical_hash": "41aecb1ac082b2fa",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 295.262,
             "p50": 0.113,
@@ -1978,6 +2062,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -1986,6 +2071,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 474.415,
           "construction_receipt": "746c561df80492f1fb981a43ff9b6d8e658efe5e9793083ff339a9721d409e5f",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 882692,
@@ -1994,6 +2082,7 @@
           },
           "final_physical_hash": "41aecb1ac082b2fa",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 67.472,
             "p50": 0.117,
@@ -2071,6 +2160,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -2079,6 +2169,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 474.897,
           "construction_receipt": "d47984365ded37bd57d7b539cd3e9886ce33f679b05d6fc50cf1b1739dcd3c55",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 882692,
@@ -2087,6 +2180,7 @@
           },
           "final_physical_hash": "39f9c508d83922d5",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 252.272,
             "p50": 47.299,
@@ -2196,6 +2290,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -2204,6 +2299,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 450.882,
           "construction_receipt": "cace03207a7048db05c4737043d3aecf2fe74c8975ec2e80e25b4e819e482460",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 882692,
@@ -2212,6 +2310,7 @@
           },
           "final_physical_hash": "39f9c508d83922d5",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 93.714,
             "p50": 37.141,
@@ -2321,6 +2420,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -2329,6 +2429,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 444.571,
           "construction_receipt": "327ab72f65532af59d553306c3254f8b146b4402beda911ddd70bc56aad4da42",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "inertial_cellular_v1",
           "final_inventory": {
             "0": 882692,
@@ -2337,6 +2440,7 @@
           },
           "final_physical_hash": "24d7b5d5eef000f7",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 211.706,
             "p50": 0.105,
@@ -2422,6 +2526,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -2430,6 +2535,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 425.373,
           "construction_receipt": "a144fffb1574721db90633d616a6abfd7da6f983b96da80da1f5a33e67b57771",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "inertial_cellular_v1",
           "final_inventory": {
             "0": 882692,
@@ -2438,6 +2546,7 @@
           },
           "final_physical_hash": "24d7b5d5eef000f7",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 66.432,
             "p50": 0.108,
@@ -2523,6 +2632,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -2531,6 +2641,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 418.082,
           "construction_receipt": "f361f3e767189d5f3a198c7dc2796c2b4b087d12a95102e701ac336d5abe974b",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 882692,
@@ -2539,6 +2652,7 @@
           },
           "final_physical_hash": "fd774bb40afb7e7d",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 229.582,
             "p50": 0.11,
@@ -2616,6 +2730,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -2624,6 +2739,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 480.586,
           "construction_receipt": "883a179955f07677e01bd4ca748978e54c86dc52a7c5e72a6b54c73a0541ed95",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 882692,
@@ -2632,6 +2750,7 @@
           },
           "final_physical_hash": "fd774bb40afb7e7d",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 85.002,
             "p50": 0.106,
@@ -2709,6 +2828,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -2717,6 +2837,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 450.765,
           "construction_receipt": "4414d571a35c50c4d3411cbb174f7abe43fa2cde32eff47d87cac2a8988e5399",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 882692,
@@ -2725,6 +2848,7 @@
           },
           "final_physical_hash": "b0754a819b1f03df",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 219.947,
             "p50": 0.103,
@@ -2802,6 +2926,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -2810,6 +2935,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 415.43,
           "construction_receipt": "3dce7ed4f31db0fe74279e4588dcaa267522c5a571ef3810dc592fc3adcec375",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 882692,
@@ -2818,6 +2946,7 @@
           },
           "final_physical_hash": "b0754a819b1f03df",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 60.011,
             "p50": 0.104,
@@ -2895,6 +3024,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -2903,6 +3033,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 428.216,
           "construction_receipt": "9c4c050a4d8c3ba7a99932d378a588a09007f708c589208ca32589d0657f97b0",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 882692,
@@ -2911,6 +3044,7 @@
           },
           "final_physical_hash": "0662e6393cb0ba66",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 256.197,
             "p50": 34.072,
@@ -3020,6 +3154,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -3028,6 +3163,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 455.684,
           "construction_receipt": "a9f74e3614ea0312f72b4b58caec4d0214dbe8e1e2014788efdbb6c240303ee2",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 882692,
@@ -3036,6 +3174,7 @@
           },
           "final_physical_hash": "0662e6393cb0ba66",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 94.725,
             "p50": 34.846,
@@ -3145,6 +3284,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         }
@@ -3816,6 +3956,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 538.566,
           "construction_receipt": "d8419f3bbdb3f7cc5211a384cb4efb4819ab2bf3ddd181e907ac9e53306ab828",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 1015236,
@@ -3824,6 +3967,7 @@
           },
           "final_physical_hash": "e7300f4d06731290",
           "final_water_cells": 18496,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 34.077,
             "p50": 7.944,
@@ -3901,6 +4045,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -3909,6 +4054,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 535.217,
           "construction_receipt": "479f1bec7237254e837ad9cdaed411d7413329c6ef5945d0918e177b9ecf1206",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 1015236,
@@ -3917,6 +4065,7 @@
           },
           "final_physical_hash": "e7300f4d06731290",
           "final_water_cells": 18496,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 32.115,
             "p50": 6.487,
@@ -3994,6 +4143,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -4002,6 +4152,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 532.989,
           "construction_receipt": "f0c8e187ca137036e65257acb03e970b5418e90e7eb60d911041098de6f3bd50",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 1015300,
@@ -4010,6 +4163,7 @@
           },
           "final_physical_hash": "7724ea8548e266cc",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 32.305,
             "p50": 6.261,
@@ -4087,6 +4241,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -4095,6 +4250,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 490.438,
           "construction_receipt": "878264cc21d8ccd8643573dbc1492c364e05148207352be127116402435f647e",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 1015300,
@@ -4103,6 +4261,7 @@
           },
           "final_physical_hash": "7724ea8548e266cc",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 28.361,
             "p50": 4.764,
@@ -4180,6 +4339,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -4188,6 +4348,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 517.458,
           "construction_receipt": "0daa1630f49b3bab55fd4f196d80cd3f3331d8141e8d5e5aff45e8aa371f4c63",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 1015324,
@@ -4196,6 +4359,7 @@
           },
           "final_physical_hash": "b76072e2f6b833c2",
           "final_water_cells": 18408,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 52.523,
             "p50": 22.006,
@@ -4305,6 +4469,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -4313,6 +4478,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 526.549,
           "construction_receipt": "7bbc8c37303e33e6181f5f1ff614131862a68e3e5a9d4e5f5969812b60cad282",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 1015324,
@@ -4321,6 +4489,7 @@
           },
           "final_physical_hash": "b76072e2f6b833c2",
           "final_water_cells": 18408,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 47.137,
             "p50": 22.203,
@@ -4430,6 +4599,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -4438,6 +4608,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 607.088,
           "construction_receipt": "b1e66efd7138766891d863422243350ea2e1bc33c0bd5a7aacf1af663559c090",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "inertial_cellular_v1",
           "final_inventory": {
             "0": 1015300,
@@ -4446,6 +4619,7 @@
           },
           "final_physical_hash": "144f09f9f4138fb3",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 33.064,
             "p50": 1.666,
@@ -4531,6 +4705,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -4539,6 +4714,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 513.273,
           "construction_receipt": "fe24ee9762fcc441088867a03ee483fbaaae02cd2702759694633c1a1120ca7b",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "inertial_cellular_v1",
           "final_inventory": {
             "0": 1015300,
@@ -4547,6 +4725,7 @@
           },
           "final_physical_hash": "144f09f9f4138fb3",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 29.489,
             "p50": 1.717,
@@ -4632,6 +4811,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -4640,6 +4820,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 533.909,
           "construction_receipt": "35e30be4ce95252da70045243777da7619d4f275952e5ec87d6c554d4b5be36c",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 1015236,
@@ -4648,6 +4831,7 @@
           },
           "final_physical_hash": "6f2cb1c5603bf379",
           "final_water_cells": 18496,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 34.231,
             "p50": 8.025,
@@ -4725,6 +4909,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -4733,6 +4918,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 600.838,
           "construction_receipt": "bc8234b99a5474912e9a24fbabafe36d86af83231ef1564efff01893ed19cbcb",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 1015236,
@@ -4741,6 +4929,7 @@
           },
           "final_physical_hash": "6f2cb1c5603bf379",
           "final_water_cells": 18496,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 38.747,
             "p50": 6.629,
@@ -4818,6 +5007,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -4826,6 +5016,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 522.901,
           "construction_receipt": "9a36a0a1c79b326191547f482495a6a657f81f2b176f2debc05cfd9bc23dbbc8",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 1015300,
@@ -4834,6 +5027,7 @@
           },
           "final_physical_hash": "baf217f22778e24f",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 31.065,
             "p50": 6.143,
@@ -4911,6 +5105,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -4919,6 +5114,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 497.938,
           "construction_receipt": "4a5032daeeb7e58b5b6f517de95ecb7794ae8f73cbed4484d851d1523d8b17b0",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 1015300,
@@ -4927,6 +5125,7 @@
           },
           "final_physical_hash": "baf217f22778e24f",
           "final_water_cells": 18432,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 28.625,
             "p50": 4.515,
@@ -5004,6 +5203,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -5012,6 +5212,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 513.341,
           "construction_receipt": "c5f20fcd862ebbe54e2fb7d7fe0e71d9e96ae869e96cdf516bd21fc16ccd833c",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 1015324,
@@ -5020,6 +5223,7 @@
           },
           "final_physical_hash": "aad83107289b35dd",
           "final_water_cells": 18408,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 55.03,
             "p50": 21.875,
@@ -5129,6 +5333,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 1
         },
@@ -5137,6 +5342,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 555.499,
           "construction_receipt": "bc303ad63c3784330a2058e9d549a5189378617ee36898db01b30a33eb369742",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 1015324,
@@ -5145,6 +5353,7 @@
           },
           "final_physical_hash": "aad83107289b35dd",
           "final_water_cells": 18408,
+          "final_water_quantity": 4700160,
           "host_advance_ms": {
             "max": 49.248,
             "p50": 23.034,
@@ -5254,6 +5463,7 @@
           ],
           "ticks_with_multiple_claimants": 30,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 4700160,
           "workers": 4
         },
@@ -5262,6 +5472,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 623.157,
           "construction_receipt": "96f17fdb5950148d1ecb1c292c56bf664f5b6afd939a169714b4ca5eeb6d009d",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 882692,
@@ -5270,6 +5483,7 @@
           },
           "final_physical_hash": "ea638e166b019fc8",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 79.67,
             "p50": 0.1,
@@ -5347,6 +5561,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -5355,6 +5570,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 584.585,
           "construction_receipt": "f036455a0a2e1ccf408e7d43bc5747eec68db5500460bed0362e002b4442e742",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 882692,
@@ -5363,6 +5581,7 @@
           },
           "final_physical_hash": "ea638e166b019fc8",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 26.739,
             "p50": 0.104,
@@ -5440,6 +5659,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -5448,6 +5668,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 587.213,
           "construction_receipt": "3c4fad5c1ca702d69c5d0166410e0374f1cd4a01f97f75abf71edd7bf607c060",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 882692,
@@ -5456,6 +5679,7 @@
           },
           "final_physical_hash": "41aecb1ac082b2fa",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 48.724,
             "p50": 0.099,
@@ -5533,6 +5757,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -5541,6 +5766,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 589.762,
           "construction_receipt": "746c561df80492f1fb981a43ff9b6d8e658efe5e9793083ff339a9721d409e5f",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 882692,
@@ -5549,6 +5777,7 @@
           },
           "final_physical_hash": "41aecb1ac082b2fa",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 17.619,
             "p50": 0.099,
@@ -5626,6 +5855,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -5634,6 +5864,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 599.29,
           "construction_receipt": "d47984365ded37bd57d7b539cd3e9886ce33f679b05d6fc50cf1b1739dcd3c55",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 882692,
@@ -5642,6 +5875,7 @@
           },
           "final_physical_hash": "39f9c508d83922d5",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 96.103,
             "p50": 30.142,
@@ -5751,6 +5985,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -5759,6 +5994,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 590.422,
           "construction_receipt": "cace03207a7048db05c4737043d3aecf2fe74c8975ec2e80e25b4e819e482460",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 882692,
@@ -5767,6 +6005,7 @@
           },
           "final_physical_hash": "39f9c508d83922d5",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 46.769,
             "p50": 31.287,
@@ -5876,6 +6115,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -5884,6 +6124,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 586.27,
           "construction_receipt": "327ab72f65532af59d553306c3254f8b146b4402beda911ddd70bc56aad4da42",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "inertial_cellular_v1",
           "final_inventory": {
             "0": 882692,
@@ -5892,6 +6135,7 @@
           },
           "final_physical_hash": "24d7b5d5eef000f7",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 56.515,
             "p50": 0.101,
@@ -5977,6 +6221,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -5985,6 +6230,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 575.437,
           "construction_receipt": "a144fffb1574721db90633d616a6abfd7da6f983b96da80da1f5a33e67b57771",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "inertial_cellular_v1",
           "final_inventory": {
             "0": 882692,
@@ -5993,6 +6241,7 @@
           },
           "final_physical_hash": "24d7b5d5eef000f7",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 20.257,
             "p50": 0.098,
@@ -6078,6 +6327,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -6086,6 +6336,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 568.614,
           "construction_receipt": "f361f3e767189d5f3a198c7dc2796c2b4b087d12a95102e701ac336d5abe974b",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 882692,
@@ -6094,6 +6347,7 @@
           },
           "final_physical_hash": "fd774bb40afb7e7d",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 73.607,
             "p50": 0.096,
@@ -6171,6 +6425,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -6179,6 +6434,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 669.735,
           "construction_receipt": "883a179955f07677e01bd4ca748978e54c86dc52a7c5e72a6b54c73a0541ed95",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "freemass_v1",
           "final_inventory": {
             "0": 882692,
@@ -6187,6 +6445,7 @@
           },
           "final_physical_hash": "fd774bb40afb7e7d",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 26.861,
             "p50": 0.101,
@@ -6264,6 +6523,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -6272,6 +6532,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 558.466,
           "construction_receipt": "4414d571a35c50c4d3411cbb174f7abe43fa2cde32eff47d87cac2a8988e5399",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 882692,
@@ -6280,6 +6543,7 @@
           },
           "final_physical_hash": "b0754a819b1f03df",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 53.825,
             "p50": 0.102,
@@ -6357,6 +6621,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -6365,6 +6630,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 582.06,
           "construction_receipt": "3dce7ed4f31db0fe74279e4588dcaa267522c5a571ef3810dc592fc3adcec375",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "cellular_yield_v1",
           "final_inventory": {
             "0": 882692,
@@ -6373,6 +6641,7 @@
           },
           "final_physical_hash": "b0754a819b1f03df",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 17.632,
             "p50": 0.091,
@@ -6450,6 +6719,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         },
@@ -6458,6 +6728,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 584.8,
           "construction_receipt": "9c4c050a4d8c3ba7a99932d378a588a09007f708c589208ca32589d0657f97b0",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 882692,
@@ -6466,6 +6739,7 @@
           },
           "final_physical_hash": "0662e6393cb0ba66",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 97.306,
             "p50": 31.288,
@@ -6575,6 +6849,7 @@
           ],
           "ticks_with_multiple_claimants": 0,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 1
         },
@@ -6583,6 +6858,9 @@
           "chunk_allocations_total": 0,
           "construction_ms": 614.976,
           "construction_receipt": "a9f74e3614ea0312f72b4b58caec4d0214dbe8e1e2014788efdbb6c240303ee2",
+          "declared_observations": [],
+          "explicit_sink": 0,
+          "explicit_source": 0,
           "family": "pressure_flow_v1",
           "final_inventory": {
             "0": 882692,
@@ -6591,6 +6869,7 @@
           },
           "final_physical_hash": "0662e6393cb0ba66",
           "final_water_cells": 151040,
+          "final_water_quantity": 38515200,
           "host_advance_ms": {
             "max": 58.83,
             "p50": 30.932,
@@ -6700,6 +6979,7 @@
           ],
           "ticks_with_multiple_claimants": 3,
           "variant": "reference",
+          "voids": [],
           "water_quantity": 38515200,
           "workers": 4
         }
@@ -7362,6 +7642,11 @@
   },
   "primary_rows_per_platform": 16,
   "primary_rows_total": 32,
+  "reducer": {
+    "head": "c23f63ddfb67c072992047261bbbd93a66fc3cde",
+    "path": "tools/lcb/feel_preflight.py",
+    "sha256": "8bd8d4b33619094a98367b5f66903ea60615a22bf6b0fce9bd4d10b27a710392"
+  },
   "registration": "lcb.feel.preflight.v1",
   "registration_sha256": "0dfcd81b2b1dd76226668a3c1eecef78d148b65fcd9290053f80bc9acde3344b",
   "schema": "lcb-feel-preflight-summary-v1",

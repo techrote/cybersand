@@ -1,0 +1,147 @@
+{
+  "applied": {
+    "maximum_rule_radius": 3,
+    "policy_hash": "f67a65e86df64b4353ec62f20164ac392698c64cc5ff4ce79d8d95abc199a8dc",
+    "session_generation": 3,
+    "water_family": "pressure_flow_v1",
+    "water_variant": "reference"
+  },
+  "catalogue": "lcb.feel.catalogue.v1",
+  "godot_version": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "main_frame_ms": {
+    "count": 1326,
+    "max": 16.964,
+    "p50": 16.678,
+    "p95": 16.787,
+    "p99": 16.86
+  },
+  "os": "Windows",
+  "outcome": {
+    "censored_by_wall_limit": false,
+    "completed_native_ticks": 600,
+    "elapsed_seconds": 22.114287,
+    "native_ticks_per_second": 27.1317813683073,
+    "simulation_failed": false
+  },
+  "owner_capture": {
+    "budget_outcome": "admitted",
+    "completed_tick": 602,
+    "native": {
+      "content_hash": "5dd5b765a0d282cb",
+      "state_hash": "8056f2d41f95d54e",
+      "tick": 602,
+      "water_cells": 151040,
+      "water_integer": 38515200,
+      "water_overfill": 0,
+      "water_visible": 38515200
+    },
+    "native_timing": {
+      "count": 602,
+      "max_ms": 118.1747,
+      "p50_ms": 34.2749,
+      "p95_ms": 45.6763,
+      "p99_ms": 52.8616,
+      "retained_count": 602,
+      "retention": "first-3600-completed-ticks",
+      "scope": "native simulation_tick only; observer and owner costs excluded",
+      "total_ms": 21741.6269,
+      "truncated": false
+    },
+    "observations": [
+      {
+        "id": "total-t0",
+        "metric": "water_integer",
+        "region": [
+          40,
+          32,
+          944,
+          224
+        ],
+        "tick": 0,
+        "value": 38515200
+      },
+      {
+        "id": "total-t600",
+        "metric": "water_integer",
+        "region": [
+          40,
+          32,
+          944,
+          224
+        ],
+        "tick": 600,
+        "value": 38515200
+      }
+    ],
+    "water_ledger": {
+      "available": true,
+      "explicit_sink": 0,
+      "explicit_source": 0,
+      "initial_integer": 38515200,
+      "observed_current_integer": 38515200,
+      "scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+    }
+  },
+  "owner_step_ms": {
+    "count": 601,
+    "max": 118.41,
+    "p50": 34.532,
+    "p95": 46.225,
+    "p99": 53.121
+  },
+  "processor_name": "AMD Ryzen 5 5600X 6-Core Processor",
+  "publication_native_tick_ms": {
+    "count": 601,
+    "max": 118.1747,
+    "p50": 34.301,
+    "p95": 45.6763,
+    "p99": 52.8616
+  },
+  "rapier_step_ms": {
+    "count": 1326,
+    "max": 0.0,
+    "p50": 0.0,
+    "p95": 0.0,
+    "p99": 0.0
+  },
+  "renderer": {
+    "adapter": "NVIDIA TITAN RTX",
+    "display_server": "Windows",
+    "rendering_method": "gl_compatibility",
+    "vsync": 1
+  },
+  "requested": {
+    "family": "pressure_flow_v1",
+    "radius_index": 1,
+    "ticks": 600,
+    "variant": "reference",
+    "workers": 1
+  },
+  "scenario": "lcb.rest.deep-quiet-pool.v1",
+  "schema": "lcb-feel-host-arm-v1",
+  "scope": "Real desktop host. main_frame_ms is the Main callback interval; native tick values are World::tick per publication and the owner capture; rapier_step_ms is the main-thread bridge step (actor-free scenes carry no bodies). Not a feel rating; headless runs are not GPU FPS.",
+  "snapshot_age_ms": {
+    "count": 601,
+    "max": 32.786,
+    "p50": 23.333,
+    "p95": 31.473,
+    "p99": 32.254
+  },
+  "workers": {
+    "configured_capacity": 1,
+    "max_observed": 1,
+    "participation_samples": 82,
+    "requested": 1,
+    "samples_with_multiple": 0
+  }
+}

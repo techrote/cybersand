@@ -15,8 +15,14 @@ related-documents: [../architecture/liquid-solver-family-policy.md, ../architect
 **ADMITTED.** All **32 registered primary rows** (2 scenarios × 4 Water families
 × configured workers 1/4 × Windows/Linux) completed 30 native ticks and passed
 every registered invariant. The 24 supplemental lane-B rows and both
-negative-control packets also passed. No stop condition fired; nothing was
-retried, relaxed, dropped or reclassified.
+negative-control packets also passed. No stop condition fired; no threshold
+was relaxed and no case was dropped or reclassified.
+
+An earlier complete attempt at `2f50d059` (both OSes) is superseded, not
+reused. Its Linux manifest misclassified the two materialized LFS runtimes as
+dirty source and truncated one path, so the reducer could not admit it. The
+driver fix `95e72985` changed no Godot or registration byte. Both OSes were
+then rerun in full at `95e72985`.
 
 This admits the bounded seven-scenario expansion. It is **not** a benchmark,
 a Rapier/desktop-host result, a GitHub-hosted CI result, a feel assessment or
@@ -31,7 +37,11 @@ a preferred-solver decision.
 | Registration | [`lcb.feel.preflight.v1.json`](../../godot/tests/fixtures/lcb/feel/lcb.feel.preflight.v1.json), SHA-256 `0dfcd81b2b1dd76226668a3c1eecef78d148b65fcd9290053f80bc9acde3344b`, committed in `2f50d059` before any qualifying run |
 | Windows native | `cybersand_native.windows.x86_64.dll` SHA-256 `ee09f7ab485f817b5f58e767ddb26f2e430439bb3dd4f185019eda028f47199a` |
 | Linux native | `libcybersand_native.linux.x86_64.so` SHA-256 `0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45` |
-| Runtime binding | Both equal their committed provenance (build `a7ee10f2`, run [41301725876](https://github.com/techrote/cybersand/actions/runs/41301725876)); all 646 recorded native source inputs equal the executed tree. **No native, adapter, policy, default or fixture byte changed.** |
+| Runtime binding | Both equal their committed provenance (build `a7ee10f2`, run [41301725876](https://github.com/techrote/cybersand/actions/runs/41301725876)); all 80 recorded native C/C++ source inputs equal the executed tree. 13 of the
+manifest's 646 broader build inputs (Godot scripts, shaders, tests and one audit,
+none compiled into the library) have changed since `a7ee10f2`. The reducer now
+recomputes this binding from Git at the executed head instead of trusting the
+manifest flag. **No native, adapter, policy, default or fixture byte changed.** |
 | Rapier | Windows `b54e54bd1a03ae90…`, Linux `566e68ae53bfb2eb…` (committed LFS objects) |
 | Godot | `4.7.stable.official.5b4e0cb0f`; Windows `Godot_v4.7-stable_win64.exe` SHA-256 `b2ca888d…`; Linux executable `f85bbc6b…` from the CI-pinned archive `0b1a6c54…` |
 | Machine | One AMD Ryzen 5 5600X (6C/12T), 32 GB. Windows 11 Pro 10.0.26300. Linux is WSL2 Ubuntu 24.04, kernel `6.18.54.1-microsoft-standard-WSL2`, on the **same** hardware |
@@ -74,10 +84,17 @@ Each process used the shared `ordinary_case_seconds` watchdog (1,200 s); the
 slowest took 4.7 s. Windows ran 22:33:27–22:34:39Z and Linux 22:35:01–22:36:20Z.
 The [committed packet](lcb360-preflight-2026-11-03/) holds both `packet.json`
 manifests, all 58 raw receipts and the reduced `summary.json`. Committed
-LF-blob SHA-256: Windows packet `edf179e9…47f1e9` (produced with CRLF as
-`0f2bdb17…12eaa3`; the driver now writes LF on every host), Linux packet
-`1176818f…49f429b`, summary `aebbc0b2…4daec1`. Receipt hashes are unaffected
-because Godot wrote them with LF. Process logs are kept outside
+LF-blob SHA-256 values are pinned by `test_committed_packets_are_pinned`:
+
+- Windows packet `edf179e9…47f1e9`. The run produced it with CRLF as `0f2bdb17…12eaa3`.
+  Commit `8a55263f` corrected only the summary writer. The manifest writer was
+  corrected in `c23f63dd`.
+- Linux packet `1176818f…49f429b`.
+
+The original reduction `aebbc0b2…4daec1` is superseded. After the independent
+review hardened the reducer, `summary.json` was regenerated (`798edea2…dbc2c9a`);
+it records the reducer's own SHA-256 and head. The verdict and every admitted
+value are unchanged. Receipt hashes are unaffected because Godot wrote them with LF. Process logs are kept outside
 Git under the repository log policy. Their SHA-256 values are in the manifests.
 
 ## Correctness
@@ -89,8 +106,10 @@ Every primary and supplemental row satisfied:
   was no silent fallback or leak.
 - Complete stored Water (visible + PF overfill) equals the registered quantity
   at tick 0 and after every one of the 30 ticks. Explicit source/sink totals are 0.
-- The complete 1024² inventory contains only Empty/Wall/Water. Wall changes only
-  by the registered gate edit, so no hard-boundary crossing occurred.
+- The complete 1024² inventory contains only Empty/Wall/Water. The net Wall
+  count changes only by the registered gate edit. Wall *positions* are not
+  separately digested, so this is a count check, not a positional proof against
+  boundary crossing.
 - No World failure, a tick-failure count of 0, and 30 attempted/completed ticks.
 - IN: a complete motion census over all Water cells (the inertial cell count
   equals the Water cell count) with zero negative `vy`. PF: the gas ledger closes.
@@ -112,22 +131,35 @@ by the registration.
 | Pressure for Oil (16) and Brine (24) | Offered only as refused `combination_rejected` |
 | Water variant catalogue | `cached`/`cached_dormant` offered only for `pressure_flow_v1` |
 
-The reducer's 28 hermetic tests confirm that it stops on each violation class:
-quantity loss, a per-tick change, fallback, foreign-material leak, radius
-upgrade, a boolean or float used as an integer, wall corruption, an
-unregistered material, a failed World reported healthy, negative IN `vy`, an
-unclosed gas ledger, an unretired owner, a single worker reporting multiple
-claimants, a short horizon and a nonzero normalization delta.
+The reducer's hermetic tests stop on each violation class. There were 28 at
+admission and 44 after the review hardening. They cover:
+
+- quantity loss and per-tick change;
+- fallback, a foreign-material leak or a missing Water assignment;
+- radius upgrade;
+- a boolean or float used as an integer;
+- Wall count corruption or an unregistered material;
+- a failed World reported healthy or a failed statistics readback;
+- negative IN `vy` or an unclosed gas ledger;
+- an unretired owner;
+- claimants outside 0…configured;
+- a short horizon or a nonzero normalization delta;
+- a skipped, mistimed or out-of-bound scheduled edit;
+- an unrelated refusal code;
+- tampered manifest provenance;
+- receipts copied under another platform.
 
 ## Observations
 
 Native `World::tick()` milliseconds are from 30-tick cold windows in a fresh
-process. They are **not** a benchmark. Windows and WSL builds differ in compiler
+process. Full-World probe scans run between the timed ticks, so the caches are
+cold, and the p95 of 30 samples is the second-largest value. These numbers are
+**not** a benchmark. Windows and WSL builds differ in compiler
 and environment, so cross-OS ratios are not meaningful. Claimants are the maximum
 distinct task-claiming participants in one dispatch, **not** utilization or proof
 of simultaneous overlap.
 
-| Scenario / lane | Family | Win w1 p50/p95 | Win w4 p50/p95 | Linux w1 p50/p95 | Linux w4 p50/p95 | w4 claimants (ticks >1) | Cells moved (30 ticks) |
+| Scenario / lane | Family | Win w1 p50/p95 | Win w4 p50/p95 | Linux w1 p50/p95 | Linux w4 p50/p95 | w4 max claimants (ticks with >1) | Cells moved (30 ticks) |
 |---|---|---|---|---|---|---|---:|
 | Dam A r3 | FM | 7.85 / 11.02 | 6.35 / 7.18 | 20.23 / 25.28 | 17.52 / 18.53 | 4 (30/30) | 104,089 |
 | Dam A r3 | CY | 6.14 / 9.18 | 4.62 / 6.46 | 19.67 / 25.94 | 15.24 / 16.26 | 4 (30/30) | 144,187 |
@@ -140,18 +172,28 @@ of simultaneous overlap.
 | Pool A r3 | PF ref | 30.01 / 91.63 | 31.16 / 44.46 | 47.11 / 247.48 | 37.01 / 89.07 | 4 (3/30) | 0 |
 | Pool B r2 | PF ref | 31.14 / 94.62 | 30.80 / 44.38 | 33.95 / 246.92 | 34.71 / 93.92 | 4 (3/30) | 0 |
 
-- **Distributed work exists.** The dam dispatched 46 phase jobs in a tick, and
-  every configured-four arm had 4 claimants on all 30 ticks. The quiet pool had
-  4 claimants only during its first three settling ticks before FM/CY/IN slept.
-  Configured four therefore observed four. These counts do not establish scaling
-  or simultaneous execution.
-- **PressureFlow reference does not rest.** It costs about 30 ms per tick on a
-  motionless pool where the other families cost about 0.01 ms. Four workers do
-  not reduce PF time, consistent with the documented serial owner preparation.
+- **Distributed work exists.** The dam dispatched 46 phase jobs in a tick.
+  Every configured-four dam arm had **more than one** claimant on all 30 ticks.
+  Exactly 4 claimants:
+  - CY: 30/30 ticks (Linux lane-B CY 29/30);
+  - FM and PF: 8/30;
+  - IN: 7/30;
+  - minimum 2–3.
+
+  The quiet pool reached 4 claimants only during its first three settling
+  ticks, before FM/CY/IN slept. These counts do not establish scaling or
+  simultaneous execution.
+- **PressureFlow reference was expensive at rest in these windows.** It cost
+  about 30 ms per tick on a motionless pool, where the other families cost
+  about 0.01 ms. Four workers did not reduce PF time in these single cold
+  windows, consistent with the documented serial owner preparation. The windowed
+  [host cohort](2026-11-04-lcb360-feel-campaign.md#desktop-host-cohort-windows-windowed)
+  repeats this observation with three rotated repeats.
   The cached/cached_dormant comparison belongs to the secondary
   optimisation-variant arm, not to this four-family count.
-- **IN starts slowly by design.** It moved 13,173 cells in 30 dam ticks, against
-  104k–144k for the other families. Its retained velocity was 762 moving cells,
+- **IN moved fewer cells early.** It moved 13,173 cells in 30 dam ticks, against
+  104k–144k for the other families, while retained velocity built up. This is
+  consistent with its accumulator/unit-travel law, but no design source claims it. Its retained velocity was 762 moving cells,
   Σ|vx| 7,139 and Σvy 10,517 (16 quanta per cell), with maximum vy 30. It does
   not yet show leak or drain appearance.
 - **FM splits whole cells.** The dam ended with 18,496 FreeMass cells for the

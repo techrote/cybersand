@@ -4,11 +4,24 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-04
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## LCB-FEEL #360 four-family comparison — 2026-11-04
+
+**Current on draft PR #370, not on main:**
+
+- The ordinary desktop app has a playable sequential A/B route through the existing comparison panel and Main's prepared-session owner. It covers four Water families, matched or preferred geometry, worker capacity 1/4/Auto through a fresh-owner reload, readback, capture and export ([route guide](../operations/lcb-feel-comparison-route.md)).
+- Correctness is qualified natively at configured workers 1/4 on local Windows and WSL2 Linux:
+  - the [32-row admission preflight](../audits/2026-11-03-lcb360-feel-preflight.md);
+  - the [96-row six-slot campaign](../audits/2026-11-04-lcb360-feel-campaign.md), with worker and cross-OS hash parity;
+  - a windowed Windows desktop-host cohort.
+- On that host, PF reference cannot sustain the 60 Hz owner: 24–39 native ticks/s.
+- Gaps: slot 7 Rapier impact, GitHub-hosted exact-head gates, and the owner playtest sheet (UNTESTED).
+- No default, policy, native or ABI change. No preferred solver is selected; #363 owns that decision.
 
 ## Stopped PLAY recovery — 2026-11-02
 

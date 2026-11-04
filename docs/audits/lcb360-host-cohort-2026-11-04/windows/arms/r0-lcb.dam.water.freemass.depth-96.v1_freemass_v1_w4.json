@@ -1,0 +1,243 @@
+{
+  "applied": {
+    "maximum_rule_radius": 3,
+    "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+    "session_generation": 3,
+    "water_family": "freemass_v1",
+    "water_variant": "reference"
+  },
+  "catalogue": "lcb.feel.catalogue.v1",
+  "godot_version": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "main_frame_ms": {
+    "count": 607,
+    "max": 16.96,
+    "p50": 16.679,
+    "p95": 16.783,
+    "p99": 16.848
+  },
+  "os": "Windows",
+  "outcome": {
+    "censored_by_wall_limit": false,
+    "completed_native_ticks": 601,
+    "elapsed_seconds": 10.121866,
+    "native_ticks_per_second": 59.3764035208528,
+    "simulation_failed": false
+  },
+  "owner_capture": {
+    "budget_outcome": "admitted",
+    "completed_tick": 604,
+    "native": {
+      "content_hash": "a1d0ed50006d6191",
+      "state_hash": "f073feaab9f5e82d",
+      "tick": 604,
+      "water_cells": 18564,
+      "water_integer": 4700160,
+      "water_overfill": 0,
+      "water_visible": 4700160
+    },
+    "native_timing": {
+      "count": 604,
+      "max_ms": 11.5901,
+      "p50_ms": 6.8406,
+      "p95_ms": 8.7437,
+      "p99_ms": 9.9197,
+      "retained_count": 604,
+      "retention": "first-3600-completed-ticks",
+      "scope": "native simulation_tick only; observer and owner costs excluded",
+      "total_ms": 4273.248,
+      "truncated": false
+    },
+    "observations": [
+      {
+        "id": "total-t0",
+        "metric": "water_integer",
+        "region": [
+          40,
+          32,
+          944,
+          224
+        ],
+        "tick": 0,
+        "value": 4700160
+      },
+      {
+        "id": "reservoir-t60",
+        "metric": "water_integer",
+        "region": [
+          40,
+          64,
+          192,
+          192
+        ],
+        "tick": 60,
+        "value": 4338552
+      },
+      {
+        "id": "reservoir-t240",
+        "metric": "water_integer",
+        "region": [
+          40,
+          64,
+          192,
+          192
+        ],
+        "tick": 240,
+        "value": 4313511
+      },
+      {
+        "id": "band1-t240",
+        "metric": "water_integer",
+        "region": [
+          240,
+          64,
+          124,
+          192
+        ],
+        "tick": 240,
+        "value": 276496
+      },
+      {
+        "id": "band2-t240",
+        "metric": "water_integer",
+        "region": [
+          364,
+          64,
+          124,
+          192
+        ],
+        "tick": 240,
+        "value": 0
+      },
+      {
+        "id": "band3-t240",
+        "metric": "water_integer",
+        "region": [
+          488,
+          64,
+          124,
+          192
+        ],
+        "tick": 240,
+        "value": 0
+      },
+      {
+        "id": "band4-t240",
+        "metric": "water_integer",
+        "region": [
+          612,
+          64,
+          124,
+          192
+        ],
+        "tick": 240,
+        "value": 0
+      },
+      {
+        "id": "band5-t240",
+        "metric": "water_integer",
+        "region": [
+          736,
+          64,
+          124,
+          192
+        ],
+        "tick": 240,
+        "value": 0
+      },
+      {
+        "id": "band6-t240",
+        "metric": "water_integer",
+        "region": [
+          860,
+          64,
+          124,
+          192
+        ],
+        "tick": 240,
+        "value": 0
+      },
+      {
+        "id": "reservoir-t600",
+        "metric": "water_integer",
+        "region": [
+          40,
+          64,
+          192,
+          192
+        ],
+        "tick": 600,
+        "value": 4226772
+      }
+    ],
+    "water_ledger": {
+      "available": true,
+      "explicit_sink": 0,
+      "explicit_source": 0,
+      "initial_integer": 4700160,
+      "observed_current_integer": 4700160,
+      "scope": "scheduled edits only; reactions, user tools and ROI outflow are NOT inferred"
+    }
+  },
+  "owner_step_ms": {
+    "count": 598,
+    "max": 32.114,
+    "p50": 7.093,
+    "p95": 9.18,
+    "p99": 10.383
+  },
+  "processor_name": "AMD Ryzen 5 5600X 6-Core Processor",
+  "publication_native_tick_ms": {
+    "count": 598,
+    "max": 11.5901,
+    "p50": 6.8406,
+    "p95": 8.7957,
+    "p99": 9.9829
+  },
+  "rapier_step_ms": {
+    "count": 607,
+    "max": 0.0,
+    "p50": 0.0,
+    "p95": 0.0,
+    "p99": 0.0
+  },
+  "renderer": {
+    "adapter": "NVIDIA TITAN RTX",
+    "display_server": "Windows",
+    "rendering_method": "gl_compatibility",
+    "vsync": 1
+  },
+  "requested": {
+    "family": "freemass_v1",
+    "radius_index": 1,
+    "ticks": 600,
+    "variant": "reference",
+    "workers": 4
+  },
+  "scenario": "lcb.dam.water.freemass.depth-96.v1",
+  "schema": "lcb-feel-host-arm-v1",
+  "scope": "Real desktop host. main_frame_ms is the Main callback interval; native tick values are World::tick per publication and the owner capture; rapier_step_ms is the main-thread bridge step (actor-free scenes carry no bodies). Not a feel rating; headless runs are not GPU FPS.",
+  "snapshot_age_ms": {
+    "count": 598,
+    "max": 31.359,
+    "p50": 23.537,
+    "p95": 30.138,
+    "p99": 31.068
+  },
+  "workers": {
+    "configured_capacity": 4,
+    "max_observed": 4,
+    "participation_samples": 39,
+    "requested": 4,
+    "samples_with_multiple": 39
+  }
+}
