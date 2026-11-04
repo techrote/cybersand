@@ -196,7 +196,7 @@ def load_packet(path: Path) -> tuple[list[dict], dict | None, dict | None, list[
             probes = value
         elif file.name == "packet.json":
             wrapper = value
-        elif file.name == "index.json":
+        elif file.name in ("index.json", "reduction.json"):
             continue
         elif value.get("schema") == RECORD_SCHEMA:
             records.append(value)

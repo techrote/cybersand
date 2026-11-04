@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## WATER-CONTACT #362 Phase A — 2026-11-04
+
+Draft PR only; no coupling, solver, bridge, default or #347/#370 path changed.
+The [Phase A report](../audits/2026-11-04-water-contact-362-phase-a.md) and its
+[registration](../audits/2026-11-04-water-contact-362-registration.md) own the
+evidence: `water_contact.impact.v1`, Windows and Linux (WSL2) 110-row packets,
+strict reducer and focused regression. Current splash is bounded relocation;
+genuine upward ballistic motion is absent. Next is a read-only
+submerged-overlap characterization sequenced with #347. Phase B (IN signed-`vy`
+law, #20 flight, nonphysical presentation) needs explicit owner authorization;
+keep #362 open pending independent review.
+
 ## MAT-AUTH Planned adoption and unstarted compiler — 2026-11-04
 
 The owner has [adopted the corrected architecture as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)

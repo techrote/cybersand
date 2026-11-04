@@ -1,0 +1,1007 @@
+{
+ "failures": 0,
+ "manifest_sha256": "8ed2f478b99fd79f2afbd9e32bbc4f472fd2b91f8f2855bf3fecbfe915b4218b",
+ "options": {
+  "arms": "",
+  "cases": "",
+  "out": "/home/i/wc362-evidence/stage2-linux",
+  "probes": true,
+  "runs": true,
+  "stage": "2",
+  "workers": "1,4"
+ },
+ "runs": [
+  {
+   "arm": "FM3",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "S-L-C",
+   "error": "",
+   "file": "S-L-C_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "S-H-C",
+   "error": "",
+   "file": "S-H-C_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "D-L-C",
+   "error": "",
+   "file": "D-L-C_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "D-H-C",
+   "error": "",
+   "file": "D-H-C_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "S-H-O",
+   "error": "",
+   "file": "S-H-O_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "D-H-R",
+   "error": "",
+   "file": "D-H-R_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "S-H-W",
+   "error": "",
+   "file": "S-H-W_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "N-H-C",
+   "error": "",
+   "file": "N-H-C_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "C0S",
+   "error": "",
+   "file": "C0S_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "C0D",
+   "error": "",
+   "file": "C0D_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "C1",
+   "error": "",
+   "file": "C1_FM3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "C1",
+   "error": "",
+   "file": "C1_FM3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "C1",
+   "error": "",
+   "file": "C1_CY3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "C1",
+   "error": "",
+   "file": "C1_CY3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "C1",
+   "error": "",
+   "file": "C1_PF3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "C1",
+   "error": "",
+   "file": "C1_PF3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "C1",
+   "error": "",
+   "file": "C1_IN3_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "C1",
+   "error": "",
+   "file": "C1_IN3_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  },
+  {
+   "arm": "FM2",
+   "case": "C1",
+   "error": "",
+   "file": "C1_FM2_w1.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 1
+  },
+  {
+   "arm": "FM2",
+   "case": "C1",
+   "error": "",
+   "file": "C1_FM2_w4.json",
+   "ok": true,
+   "violations": 0,
+   "workers": 4
+  }
+ ],
+ "schema": "water-contact-campaign-index-v1",
+ "stage": 2
+}
