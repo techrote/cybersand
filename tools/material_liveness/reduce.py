@@ -97,6 +97,21 @@ def state(row):
     return {key: row[key] for key in ('material', 'state_a', 'state_b', 'temperature', 'physical_hash', 'state_hash') if key in row}
 
 
+def physical_group(plan):
+    """Independently derive matched args; do not trust runner group labels."""
+    argv = plan.get('argv')
+    if type(argv) is not list or len(argv) % 2:
+        raise ReductionError('probe arguments must be flag/value pairs')
+    parameters = {}
+    for index in range(0, len(argv), 2):
+        flag, value = argv[index:index + 2]
+        if type(flag) is not str or not flag.startswith('--') or type(value) is not str or flag in parameters:
+            raise ReductionError('invalid or duplicated probe argument')
+        parameters[flag] = value
+    identity = {key: value for key, value in parameters.items() if key not in ('--workers', '--repeat')}
+    return plan.get('parity_group') or 'physical-' + canonical_sha(identity)
+
+
 def reduce_case(result, plan, raw_root=None):
     if result.get('id') != plan.get('id'):
         raise ReductionError('executed case order/identity differs from plan')
@@ -114,19 +129,21 @@ def reduce_case(result, plan, raw_root=None):
     if any(row.get('type') != 'tick' for row in ticks):
         raise ReductionError('unexpected non-tick row inside execution')
     case_id = text(metadata.get('case_id'), 'metadata.case_id')
-    if summary.get('case_id') != case_id:
-        raise ReductionError('metadata/summary case identity mismatch')
+    if summary.get('case_id') != case_id or case_id != plan['id']:
+        raise ReductionError('metadata/summary/registered case identity mismatch')
     workers = integer(metadata.get('workers'), 'workers', 1)
     if workers not in (1, 4):
         raise ReductionError('unregistered worker capacity')
-    if 'expected_workers' in plan and (type(plan['expected_workers']) is not int or workers != plan['expected_workers']):
-        raise ReductionError('worker configuration differs from plan')
+    for field in ('expected_workers', 'workers'):
+        if field in plan and (type(plan[field]) is not int or workers != plan[field]):
+            raise ReductionError('worker configuration differs from plan')
     horizon = integer(metadata.get('horizon'), 'horizon', 1)
     if len(ticks) != horizon:
         raise ReductionError(f'incomplete tick coverage: {len(ticks)}/{horizon}')
     for flag, field in (('--fixture', 'fixture'), ('--quiet', 'quiet'), ('--workers', 'workers'),
                         ('--x', 'x'), ('--y', 'y'), ('--ticks', 'horizon'),
-                        ('--variant', 'variant'), ('--active-neighbour', 'active_neighbour')):
+                        ('--variant', 'variant'), ('--active-neighbour', 'active_neighbour'),
+                        ('--repeat', 'repeat')):
         if flag in plan['argv']:
             index = plan['argv'].index(flag)
             if index + 1 == len(plan['argv']):
@@ -142,17 +159,28 @@ def reduce_case(result, plan, raw_root=None):
                    'raw_sha256': digest(data), 'ticks': horizon, 'workers_configured': workers,
                    'workers_observed_max': 0, 'first_kernel_visit': None, 'last_kernel_visit': None,
                    'first_state_change': None, 'last_state_change': None, 'state_changes': 0,
-                   'kernel_visit_observation_complete': True}
+                   'kernel_visit_observation_complete': True, 'reset_events': []}
     last_world_tick = -1
+    last_reset_epoch = 0
     hashes = []
     prior_state = None
     for index, row in enumerate(ticks, 1):
         if integer(row.get('tick'), 'tick', 1) != index:
             raise ReductionError('tick index must start at 1 and be contiguous')
         world_tick = integer(row.get('world_tick'), 'world_tick')
-        if world_tick < last_world_tick:
-            raise ReductionError('world_tick regressed without a separate reconstruction run')
+        reset_epoch = integer(row.get('reset_epoch'), 'reset_epoch')
+        if reset_epoch == last_reset_epoch:
+            if world_tick < last_world_tick:
+                raise ReductionError('world_tick regressed without a registered reset epoch transition')
+            if row.get('wake_cause') == 'reset':
+                raise ReductionError('reset cause lacks an epoch increment')
+        else:
+            if (reset_epoch != last_reset_epoch + 1 or metadata.get('variant') != 'reset' or
+                    index != 17 or world_tick != 1 or row.get('wake_cause') != 'reset'):
+                raise ReductionError('invalid or unregistered reset epoch transition')
+            observation['reset_events'].append({'step': index, 'reset_epoch': reset_epoch, 'world_tick': world_tick})
         last_world_tick = world_tick
+        last_reset_epoch = reset_epoch
         if boolean(row.get('has_failed'), 'has_failed') or not boolean(row.get('quantity_ok'), 'quantity_ok'):
             raise ReductionError(f'health/accounting stop at tick {index}')
         if 'unexpected_conversion' in row and boolean(row['unexpected_conversion'], 'unexpected_conversion'):
@@ -184,6 +212,9 @@ def reduce_case(result, plan, raw_root=None):
             observation['last_state_change'] = index
         prior_state = current_state
         hashes.append(text(row.get('physical_hash'), 'physical_hash'))
+    expected_resets = 1 if metadata.get('variant') == 'reset' and horizon >= 17 else 0
+    if len(observation['reset_events']) != expected_resets:
+        raise ReductionError('registered reset event is missing')
     if boolean(summary.get('has_failed'), 'summary.has_failed') or not boolean(summary.get('quantity_ok'), 'summary.quantity_ok'):
         raise ReductionError('summary health/accounting violation')
     if summary.get('physical_hash') != hashes[-1]:
@@ -225,7 +256,7 @@ def reduce(receipt, raw_root=None):
     if receipt.get('input_inventory_sha256') != canonical_sha(inventory):
         raise ReductionError('input inventory digest mismatch')
     plan = receipt.get('plan')
-    if type(plan) is not dict or plan.get('schema') != 'mat354.plan.v1' or canonical_sha(plan) != receipt.get('plan_sha256'):
+    if type(plan) is not dict or plan.get('schema') not in {'mat354.plan.v1', 'mat354.campaign.v1'} or canonical_sha(plan) != receipt.get('plan_sha256'):
         raise ReductionError('registered plan identity mismatch')
     planned = plan.get('cases')
     cases = receipt.get('cases')
@@ -238,8 +269,7 @@ def reduce(receipt, raw_root=None):
     for actual, expected in zip(cases, planned):
         observation, hashes = reduce_case(actual, expected, raw_root)
         observations.append(observation)
-        if expected.get('parity_group'):
-            groups[expected['parity_group']].append((observation, hashes))
+        groups[physical_group(expected)].append((observation, hashes))
     parity = []
     for name, arms in sorted(groups.items()):
         reference = arms[0][1]
@@ -257,7 +287,7 @@ def reduce(receipt, raw_root=None):
             'executable': receipt['executable'], 'mode': receipt['mode'], 'host': receipt['host'],
             'cases': observations, 'parity': parity,
             'limits': ['Native source-matched fixture evidence only; no graphical/gameplay acceptance.',
-                       'Timing includes instrumented observation; not a production scheduler benchmark.',
+                       'Raw process timing includes observation; tick-only timing remains descriptive, not a controlled production benchmark.',
                        'A configured pool capacity does not establish actual worker participation.',
                        'Thermal or stochastic behavior classification requires source-contract review.']}
 

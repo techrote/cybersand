@@ -3,7 +3,7 @@
 
 All outputs must be outside the checkout. No production/runtime file is written.
 Every attempt, including compiler/run failure and timeout, gets a retained receipt.
-A plan contains schema=mat354.plan.v1 and cases=[{id, argv, parity_group?}].
+A plan contains schema=mat354.campaign.v1 and a finite cases array.
 """
 from __future__ import annotations
 
@@ -126,15 +126,29 @@ def inventory(root, sources, extra_paths=()):
     return [fact(root / path, root) for path in sorted(paths)]
 
 
+def physical_arguments(argv):
+    """Identify matched physical configuration without execution capacity/repeat."""
+    if len(argv) % 2 or any(not argv[i].startswith('--') for i in range(0, len(argv), 2)):
+        raise EvidenceError('probe arguments must be flag/value pairs')
+    arguments = {}
+    for flag, value in zip(argv[::2], argv[1::2]):
+        if flag in arguments:
+            raise EvidenceError(f'duplicate probe flag {flag}')
+        arguments[flag] = value
+    return {flag: value for flag, value in arguments.items() if flag not in {'--workers', '--repeat'}}
+
+
 def validate_plan(plan):
-    if type(plan) is not dict or plan.get('schema') != 'mat354.plan.v1':
-        raise EvidenceError('plan schema must be mat354.plan.v1')
+    if type(plan) is not dict or plan.get('schema') not in {'mat354.plan.v1', 'mat354.campaign.v1'}:
+        raise EvidenceError('plan schema must be mat354.campaign.v1 or mat354.plan.v1')
     cases = plan.get('cases')
     if type(cases) is not list or not 1 <= len(cases) <= 4096:
         raise EvidenceError('plan must contain 1..4096 cases')
-    seen = set()
+    seen, normalized = set(), []
+    allowed = {'id', 'argv', 'parity_group', 'expected_workers', 'workers', 'fixture',
+               'x', 'y', 'ticks', 'quiet', 'active_neighbour', 'variant', 'repeat', 'selection'}
     for case in cases:
-        if type(case) is not dict or set(case) - {'id', 'argv', 'parity_group', 'expected_workers'}:
+        if type(case) is not dict or set(case) - allowed:
             raise EvidenceError('unknown case field')
         name = case.get('id')
         if type(name) is not str or not re.fullmatch(r'[a-zA-Z0-9_.-]{1,120}', name) or name in seen:
@@ -145,11 +159,63 @@ def validate_plan(plan):
         argv = case.get('argv')
         if type(argv) is not list or len(argv) > 64 or any(type(v) is not str or len(v) > 1024 for v in argv):
             raise EvidenceError('case argv must contain at most 64 bounded strings')
+        config = physical_arguments(argv)
+        actual_flags = dict(zip(argv[::2], argv[1::2]))
         if 'parity_group' in case and (type(case['parity_group']) is not str or not case['parity_group']):
             raise EvidenceError('parity_group must be a nonempty string')
-        if 'expected_workers' in case and (type(case['expected_workers']) is not int or case['expected_workers'] not in (1, 4)):
-            raise EvidenceError('expected_workers must be integer 1 or 4')
-    return cases
+        for field in ('workers', 'expected_workers'):
+            if field in case and (type(case[field]) is not int or case[field] not in (1, 4)):
+                raise EvidenceError(f'{field} must be integer 1 or 4')
+        if 'workers' in case and 'expected_workers' in case and case['workers'] != case['expected_workers']:
+            raise EvidenceError('workers and expected_workers aliases disagree')
+        for field in ('x', 'y', 'ticks', 'quiet', 'repeat'):
+            if field in case and type(case[field]) is not int:
+                raise EvidenceError(f'{field} must be an integer')
+        for field in ('ticks', 'quiet'):
+            if field in case and case[field] < 1:
+                raise EvidenceError(f'{field} must be positive')
+        if 'active_neighbour' in case and type(case['active_neighbour']) is not bool:
+            raise EvidenceError('active_neighbour must be boolean')
+        for field in ('fixture', 'variant', 'selection'):
+            if field in case and (type(case[field]) is not str or not case[field]):
+                raise EvidenceError(f'{field} must be nonempty text')
+        for field in ('fixture', 'x', 'y', 'ticks', 'quiet', 'workers', 'active_neighbour', 'variant', 'repeat'):
+            if field not in case:
+                continue
+            flag = '--' + field.replace('_', '-')
+            expected = int(case[field]) if field == 'active_neighbour' else case[field]
+            if actual_flags.get(flag) != str(expected):
+                raise EvidenceError(f'case {field} differs from its argv')
+        item = dict(case)
+        if 'expected_workers' not in item and 'workers' in item:
+            item['expected_workers'] = item['workers']
+        item.setdefault('parity_group', 'physical-' + canonical_sha(config))
+        normalized.append(item)
+    return normalized
+
+
+def time_budgets(plan, args):
+    result = {}
+    for name, field, option, maximum in (
+        ('build', 'build_timeout_seconds', 'compile_timeout', 900),
+        ('case', 'case_timeout_seconds', 'case_timeout', 60),
+        ('campaign', 'campaign_timeout_seconds', 'campaign_timeout', 1800),
+    ):
+        registered = plan.get(field, maximum)
+        if type(registered) is not int or not 1 <= registered <= maximum:
+            raise EvidenceError(f'{field} must be integer in 1..{maximum}')
+        requested = getattr(args, option, None)
+        if requested is not None and (type(requested) is not int or not 1 <= requested <= registered):
+            raise EvidenceError(f'{option} cannot exceed registered {registered}-second limit')
+        result[name] = registered if requested is None else requested
+    return result
+
+
+def remaining_budget(*deadlines):
+    remaining = min(deadlines) - time.monotonic()
+    if remaining <= 0:
+        raise EvidenceError('registered campaign/build time budget exhausted; unfinished work is unexecuted')
+    return remaining
 
 
 def process(argv, cwd, prefix, timeout, environment=None):
@@ -194,6 +260,7 @@ def cpu_identity():
 
 
 def run(args):
+    campaign_started = time.monotonic()
     root = args.root.resolve()
     out = output_directory(args.output, root)
     receipt = {'schema': SCHEMA, 'status': 'INITIALIZING', 'started_utc': now(),
@@ -203,6 +270,9 @@ def run(args):
     try:
         plan = load_json(args.plan)
         cases = validate_plan(plan)
+        budgets = time_budgets(plan, args)
+        receipt['time_budgets_seconds'] = budgets
+        campaign_deadline = campaign_started + budgets['campaign']
         sources = plan.get('compile_sources', list(DEFAULT_SOURCES))
         if type(sources) is not list or not sources or any(type(v) is not str for v in sources):
             raise EvidenceError('compile_sources must be a nonempty list of relative paths')
@@ -214,6 +284,15 @@ def run(args):
         if type(extra_flags) is not list or any(type(v) is not str for v in extra_flags):
             raise EvidenceError('compile_flags must be a string array')
         receipt['source_commit'] = git(root, 'rev-parse', 'HEAD')
+        if 'accepted_source' in plan:
+            accepted = plan['accepted_source']
+            if type(accepted) is not str or not re.fullmatch('[0-9a-f]{40}', accepted):
+                raise EvidenceError('accepted_source must be a complete commit SHA')
+            git(root, 'merge-base', '--is-ancestor', accepted, 'HEAD')
+            receipt['accepted_source'] = accepted
+            receipt['production_accepted_delta'] = git(root, 'diff', '--name-only', accepted, 'HEAD', '--', 'native/src', 'native/include')
+            if receipt['production_accepted_delta']:
+                raise EvidenceError('production source differs from the accepted investigation baseline')
         receipt['production_worktree_delta'] = git(root, 'diff', '--name-only', 'HEAD', '--', 'native/src', 'native/include')
         if receipt['production_worktree_delta']:
             raise EvidenceError('production input worktree mutation is forbidden even for diagnostics')
@@ -233,7 +312,10 @@ def run(args):
             raise EvidenceError(f'compiler unavailable: {args.compiler}')
         compiler = str(Path(compiler).resolve())
         receipt['compiler'] = fact(Path(compiler))
-        version = process([compiler, '--version'], root, out / 'compiler-version', 30)
+        build_deadline = time.monotonic() + budgets['build']
+        receipt['build_started_utc'] = now()
+        version = process([compiler, '--version'], root, out / 'compiler-version',
+                          min(30, remaining_budget(build_deadline, campaign_deadline)))
         receipt['compiler_version'] = version
         if version['returncode'] != 0 or version['timed_out']:
             raise EvidenceError('compiler identity command failed')
@@ -244,7 +326,8 @@ def run(args):
             obj = out / f'input-{index:02d}.o'
             dep = out / f'input-{index:02d}.d'
             command = [compiler, *flags, '-MMD', '-MF', str(dep), '-c', str(root / source), '-o', str(obj)]
-            step = process(command, out, out / f'compile-{index:02d}', args.compile_timeout)
+            step = process(command, out, out / f'compile-{index:02d}',
+                           remaining_budget(build_deadline, campaign_deadline))
             step['input'] = source
             receipt['build_steps'].append(step)
             write_json(receipt_path, receipt)
@@ -253,10 +336,12 @@ def run(args):
             objects.append(obj)
         executable = out / ('material_liveness_probe.exe' if os.name == 'nt' else 'material_liveness_probe')
         link = process([compiler, *flags, *(str(obj) for obj in objects), '-o', str(executable)],
-                       out, out / 'link', args.compile_timeout)
+                       out, out / 'link', remaining_budget(build_deadline, campaign_deadline))
         receipt['build_steps'].append(link)
         if link['returncode'] != 0 or link['timed_out']:
             raise EvidenceError('link failure retained')
+        remaining_budget(build_deadline, campaign_deadline)
+        receipt['build_finished_utc'] = now()
         receipt['executable'] = fact(executable)
         receipt['dependency_files'] = [fact(path) for path in sorted(out.glob('input-*.d'))]
         dependencies = set()
@@ -283,7 +368,8 @@ def run(args):
         for case in cases:
             if sha(executable) != receipt['executable']['sha256']:
                 raise EvidenceError('source/runtime identity mismatch: executable changed before case')
-            result = process([str(executable), *case['argv']], root, out / case['id'], args.case_timeout, environment)
+            result = process([str(executable), *case['argv']], root, out / case['id'],
+                             min(budgets['case'], remaining_budget(campaign_deadline)), environment)
             result.update({key: case[key] for key in ('id', 'parity_group', 'expected_workers') if key in case})
             receipt['cases'].append(result)
             write_json(receipt_path, receipt)
@@ -294,12 +380,14 @@ def run(args):
         if sha(executable) != receipt['executable']['sha256']:
             raise EvidenceError('source/runtime identity mismatch: executable changed during campaign')
         receipt['post_run_guard'] = protected_check(root)
+        remaining_budget(campaign_deadline)
         receipt['status'] = 'EXECUTED'
     except (EvidenceError, ValueError, OSError, subprocess.SubprocessError) as exc:
         receipt['status'] = 'FAILED'
         receipt['failure'] = str(exc)
     finally:
         receipt['finished_utc'] = now()
+        receipt['duration_seconds'] = time.monotonic() - campaign_started
         receipt['executed_case_count'] = len(receipt['cases'])
         write_json(receipt_path, receipt)
     print(json.dumps({'receipt': str(receipt_path), 'status': receipt['status'], 'cases': len(receipt['cases'])}))
@@ -313,12 +401,11 @@ def main(argv=None):
     parser.add_argument('--plan', type=Path, required=True)
     parser.add_argument('--mode', choices=MODES, default='normal')
     parser.add_argument('--compiler', default='g++')
-    parser.add_argument('--compile-timeout', type=int, default=300)
-    parser.add_argument('--case-timeout', type=int, default=60)
+    parser.add_argument('--compile-timeout', type=int, help='optional shorter bound for the complete build')
+    parser.add_argument('--case-timeout', type=int, help='optional shorter per-process bound')
+    parser.add_argument('--campaign-timeout', type=int, help='optional shorter end-to-end campaign bound')
     parser.add_argument('--allow-dirty-apparatus', action='store_true', help='diagnostic execution only; receipt cannot claim source-qualified')
     args = parser.parse_args(argv)
-    if not 1 <= args.compile_timeout <= 900 or not 1 <= args.case_timeout <= 600:
-        parser.error('timeouts must be bounded: compile 1..900, case 1..600 seconds')
     try:
         return run(args)
     except (EvidenceError, OSError) as exc:

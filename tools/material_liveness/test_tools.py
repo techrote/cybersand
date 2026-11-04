@@ -8,6 +8,8 @@ from pathlib import Path
 import tempfile
 import sys
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 import reduce as reader
 import run as runner
@@ -20,12 +22,12 @@ class EvidenceTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
 
     def payload(self, workers):
-        common = {'case_id': 'isolated:q3:x8:y8', 'workers': workers, 'quiet': 3,
+        common = {'case_id': f'case-w{workers}', 'workers': workers, 'quiet': 3,
                   'fixture': 'isolated', 'x': 8, 'y': 8, 'horizon': 2,
                   'variant': 'base', 'active_neighbour': False}
         ticks = []
         for tick in (1, 2):
-            ticks.append({'type': 'tick', 'tick': tick, 'world_tick': tick,
+            ticks.append({'type': 'tick', 'tick': tick, 'world_tick': tick, 'reset_epoch': 0, 'wake_cause': 'none',
                           'has_failed': False, 'quantity_ok': True,
                           'worker_threads_observed': 1, 'phase_jobs': [1, 0, 0, 0],
                           'visited_cells': 1, 'scheduled_cores': 1, 'active_blocks_after': 1,
@@ -65,6 +67,118 @@ class EvidenceTests(unittest.TestCase):
         mutate(rows)
         path.write_text(''.join(json.dumps(row) + '\n' for row in rows))
         record['stdout'] = runner.fact(path)
+
+    def reset_case(self):
+        receipt = self.receipt()
+        for index, (result, plan) in enumerate(zip(receipt['cases'], receipt['plan']['cases'])):
+            plan['argv'][plan['argv'].index('--ticks') + 1] = '18'
+            plan['argv'][plan['argv'].index('--variant') + 1] = 'reset'
+            result['argv'] = ['probe', *plan['argv']]
+            def change(rows):
+                metadata, summary = rows[0], rows[-1]
+                metadata['horizon'] = 18
+                metadata['variant'] = 'reset'
+                ticks = []
+                for step in range(1, 19):
+                    row = dict(rows[1])
+                    row.update(tick=step, world_tick=step if step < 17 else step - 16,
+                               reset_epoch=0 if step < 17 else 1,
+                               wake_cause='reset' if step == 17 else 'none', physical_hash=str(step))
+                    ticks.append(row)
+                summary['physical_hash'] = '18'
+                rows[:] = [metadata, *ticks, summary]
+            self.rewrite(receipt, change, index)
+        receipt['plan_sha256'] = reader.canonical_sha(receipt['plan'])
+        return receipt
+
+    def test_current_committed_manifest_loads_without_executing(self):
+        path = runner.ROOT / 'native/tests/fixtures/material_liveness_campaign_v1.json'
+        manifest = runner.load_json(path)
+        cases = runner.validate_plan(manifest)
+        self.assertEqual(len(cases), 552)
+        self.assertEqual(sum(row['ticks'] for row in cases), 88384)
+        self.assertTrue(all(row['expected_workers'] == row['workers'] for row in cases))
+        self.assertTrue(all(row['parity_group'] == reader.physical_group(row) for row in cases))
+        self.assertEqual(cases[0]['parity_group'], cases[1]['parity_group'])
+        self.assertNotEqual(cases[0]['parity_group'], cases[2]['parity_group'])
+        repeated = [row for row in cases if row['repeat'] == 1]
+        self.assertTrue(repeated)
+        for repeat in repeated:
+            matches = [row for row in cases if row['parity_group'] == repeat['parity_group'] and row['repeat'] == 0]
+            self.assertTrue(matches)
+        self.assertNotIn('expected_workers', manifest['cases'][0], 'normalization must not rewrite the registration')
+
+    def test_worker_aliases_cannot_disagree(self):
+        with self.assertRaisesRegex(runner.EvidenceError, 'aliases disagree'):
+            runner.validate_plan({'schema': 'mat354.campaign.v1', 'cases': [
+                {'id': 'one', 'argv': ['--workers', '1'], 'workers': 1, 'expected_workers': 4}]})
+
+    def test_case_metadata_cannot_disagree_with_invocation(self):
+        with self.assertRaisesRegex(runner.EvidenceError, 'differs from its argv'):
+            runner.validate_plan({'schema': 'mat354.campaign.v1', 'cases': [
+                {'id': 'one', 'argv': ['--workers', '4'], 'workers': 1}]})
+
+    def test_registration_budgets_are_inherited_and_cannot_be_extended(self):
+        plan = runner.load_json(runner.ROOT / 'native/tests/fixtures/material_liveness_campaign_v1.json')
+        args = SimpleNamespace(compile_timeout=None, case_timeout=None, campaign_timeout=None)
+        self.assertEqual(runner.time_budgets(plan, args), {'build': 900, 'case': 60, 'campaign': 1800})
+        args.case_timeout = 61
+        with self.assertRaisesRegex(runner.EvidenceError, 'cannot exceed'):
+            runner.time_budgets(plan, args)
+        args.case_timeout = 30
+        self.assertEqual(runner.time_budgets(plan, args)['case'], 30)
+        with self.assertRaises(runner.EvidenceError):
+            runner.time_budgets({**plan, 'build_timeout_seconds': True}, args)
+
+    def test_build_steps_share_one_decreasing_budget(self):
+        with patch.object(runner.time, 'monotonic', return_value=100):
+            self.assertEqual(runner.remaining_budget(900, 1800), 800)
+        with patch.object(runner.time, 'monotonic', return_value=899):
+            self.assertEqual(runner.remaining_budget(900, 1800), 1)
+        with patch.object(runner.time, 'monotonic', return_value=900):
+            with self.assertRaisesRegex(runner.EvidenceError, 'exhausted'):
+                runner.remaining_budget(900, 1800)
+
+    def test_reset_epoch_authorizes_only_registered_step17_reconstruction(self):
+        result = reader.reduce(self.reset_case())
+        self.assertEqual(result['cases'][0]['reset_events'], [{'step': 17, 'reset_epoch': 1, 'world_tick': 1}])
+        self.assertTrue(result['parity'][0]['matching'])
+
+    def test_world_tick_regression_without_epoch_fails(self):
+        receipt = self.receipt()
+        self.rewrite(receipt, lambda rows: rows[2].update(world_tick=0))
+        with self.assertRaisesRegex(reader.ReductionError, 'regressed'):
+            reader.reduce(receipt)
+
+    def test_reset_epoch_without_reset_cause_fails(self):
+        receipt = self.reset_case()
+        self.rewrite(receipt, lambda rows: rows[17].update(wake_cause='none'))
+        with self.assertRaisesRegex(reader.ReductionError, 'invalid or unregistered reset'):
+            reader.reduce(receipt)
+
+    def test_skipped_reset_epoch_fails(self):
+        receipt = self.reset_case()
+        self.rewrite(receipt, lambda rows: rows[17].update(reset_epoch=2))
+        with self.assertRaisesRegex(reader.ReductionError, 'invalid or unregistered reset'):
+            reader.reduce(receipt)
+
+    def test_reset_at_unregistered_step_fails(self):
+        receipt = self.reset_case()
+        self.rewrite(receipt, lambda rows: rows[16].update(reset_epoch=1, world_tick=1, wake_cause='reset'))
+        with self.assertRaisesRegex(reader.ReductionError, 'invalid or unregistered reset'):
+            reader.reduce(receipt)
+
+    def test_reset_cause_without_epoch_increment_fails(self):
+        receipt = self.receipt()
+        self.rewrite(receipt, lambda rows: rows[1].update(wake_cause='reset'))
+        with self.assertRaisesRegex(reader.ReductionError, 'lacks an epoch'):
+            reader.reduce(receipt)
+
+    def test_owner_pause_does_not_require_world_tick_advance(self):
+        receipt = self.receipt()
+        for index in (0, 1):
+            self.rewrite(receipt, lambda rows: rows[2].update(world_tick=1), index)
+        self.assertEqual(reader.reduce(receipt)['status'], 'PASS')
 
     def test_complete_evidence_parity_and_actual_workers(self):
         result = reader.reduce(self.receipt())
