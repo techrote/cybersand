@@ -56,7 +56,7 @@ def main():
         cv = lambda path: str(Path(path).resolve()) if platform == 'windows' else linux(path)
         prefix = engine + ['--headless', '--audio-driver', 'Dummy', '--path', cv(project)]
         records = []
-        for test in ['import', 'test_gcr_scooper_leak_capture', 'test_gcr_scooper_ejection_replay']:
+        for test in ['import', 'test_gcr_scooper_leak_capture', 'test_gcr_scooper_ejection_replay', 'test_gcr_scooper_entry_side']:
             command = prefix + (['--editor', '--quit'] if test == 'import' else ['--script', 'res://tests/' + test + '.gd'])
             if test == 'test_gcr_scooper_leak_capture':
                 command += ['--', '--protocol=' + cv(destination)]
