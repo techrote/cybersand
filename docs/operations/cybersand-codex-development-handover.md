@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SOL364 synchronized repair continuation — 2026-11-04
+
+Continue from the [SOL364 source and evidence ledger](../audits/2026-11-04-sol364-recovery.md),
+which ordinarily merges accepted MAT-AUTH main `7ef4856e` into existing draft
+#347. It retains exterior witness spans at the current pose, freezes scalar
+native contact payloads once and accounts every owner/response attempt. The
+synchronized fixture preserves 520 members, six shapes and both geometric voids,
+with independently measured every-step geometry and explicit delivery schedules.
+First sleep-confounded traces and the new local 2.012693 ms cost failure remain
+failed evidence. Stationary burial needs separate bounded recovery work; neither
+process success nor a candidate-only cost result accepts sustained clearance.
+Use the ledger's exact source/runtime/platform qualification and retained gate
+status before further implementation. #347 stays draft, #365 blocked and #283 frozen.
+
 ## SOL281 completed recovery and remaining gates — 2026-11-04
 
 The [recovery handover](../audits/2026-11-03-sol281-takeover.md) preserves the

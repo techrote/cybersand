@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL364 bounded witness and CPU repair — 2026-11-04
+
+The [SOL364 ledger](../audits/2026-11-04-sol364-recovery.md) records ordinary
+reconciliation of accepted main `7ef4856e`, including merged MAT-AUTH #371,
+the existing exterior-witness repair, immutable native observation optimization
+and synchronized 520-cell/six-proxy replay. Stationary initial burial remains
+unresolved by the velocity-only response. The new local Linux cost cohorts pass
+11/12 groups, with embedded candidate worker 1 at 2.012693486590038 ms; final
+actual-host 24-group acceptance remains separate. Historical Windows 2.145915 ms
+and publication failures remain unchanged. #347 stays draft/unmerged; #364,
+#281 and #12 stay open, #365 stays blocked, and Y1/GCR policy is unchanged.
+
 ## SOL281 completed recovery and remaining physics — 2026-11-04
 
 The [takeover record](../audits/2026-11-03-sol281-takeover.md) preserves earlier

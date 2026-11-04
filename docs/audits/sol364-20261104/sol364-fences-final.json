@@ -1,0 +1,21 @@
+{
+  "checks": 135,
+  "failures": [],
+  "platform": "Linux",
+  "readback_failure_cases": [
+    "velocity_x_nan",
+    "velocity_y_inf",
+    "velocity_negative_inf",
+    "omega_nan",
+    "omega_inf",
+    "omega_negative_inf",
+    "energy_nan",
+    "energy_inf",
+    "energy_negative_inf",
+    "momentum_nan",
+    "angular_momentum_inf",
+    "finite_energy_increase"
+  ],
+  "readback_failure_scope": "copied readback injection after finite real Rapier impulses; actual session fail-stop, not backend fault generation",
+  "schema": "cybersand.sol281.contact-fences.v1"
+}

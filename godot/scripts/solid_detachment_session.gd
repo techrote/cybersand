@@ -109,6 +109,9 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 		"owner_ready_receipts":0, "owner_ready_latency_ms_total":0.0, "owner_ready_latency_ms_max":0.0,
 		"worker_geometry_probes":0, "worker_support_probes":0, "response_attempts":0,
 		"response_ms_all_attempts":0.0, "response_ms_max_attempt":0.0,
+		"response_rid_state_ms_all_attempts":0.0, "response_planner_ms_all_attempts":0.0,
+		"response_impulse_apply_ms_all_attempts":0.0, "response_readback_ms_all_attempts":0.0,
+		"response_other_ms_all_attempts":0.0,
 		"response_ms_total":0.0, "latency_ms_total":0.0, "energy_violations":0}
 	surroundings_kind = surroundings
 	var owner_generation: int = generation
@@ -542,6 +545,14 @@ func _consume_compound_results() -> void:
 		_contact_metrics.response_attempts += 1
 		_contact_metrics.response_ms_all_attempts += contact_ms
 		_contact_metrics.response_ms_max_attempt = maxf(_contact_metrics.response_ms_max_attempt, contact_ms)
+		var stage_sum: float = 0.0
+		for stage: String in ["rid_state_ms", "planner_ms", "impulse_apply_ms", "readback_ms"]:
+			var stage_ms: float = float(last_contact_response.get(stage, 0.0))
+			stage_sum += stage_ms
+			_contact_metrics["response_" + stage + "_all_attempts"] += stage_ms
+		# Includes early identity refusals, wrapper calls and stage instrumentation;
+		# it is retained rather than silently dropped from the original numerator.
+		_contact_metrics.response_other_ms_all_attempts += contact_ms - stage_sum
 		_record_contact_response(last_contact_response)
 
 func _record_contact_observation(observation: Dictionary, work: Dictionary) -> void:

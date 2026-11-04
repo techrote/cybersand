@@ -27,8 +27,30 @@ before handing values to the worker. The worker seals metadata separately,
 with a safe recursive-freeze fallback for the older runtime contract. Cumulative
 all-attempt stage timings preserve the inclusive cost numerator and complete
 consumed-observation denominator. The synchronized replay and new source-matched
-qualification remain separately required; these source descriptions do not
-turn the retained 23/24 cost result or persistent embedding into acceptance.
+qualification remain separately required. The
+[SOL364 recovery ledger](../audits/2026-11-04-sol364-recovery.md) records the
+executable interior-burial and lost-midpoint counterexamples, independent
+geometry review, a corrected sleep-controlled replay and complete cost gates.
+These source descriptions do not turn the retained 23/24 cost result, new local
+11/12 cost result or persistent embedding into acceptance.
+
+The synchronized replay freezes the native field and measures every declared
+1/60-second Rapier step. Its no-extra-response, frozen-old-planner and repaired
+planner arms share initial conditions, disabled sleeping and exact compound
+geometry. Delayed/missed delivery never suppresses the independent geometry
+measurement; only these complete traces use cell-ticks. The ordinary asynchronous
+conservative-displacement sessions retain cell-samples/area-samples and separate
+native worker/publication coverage. Their divergent histories are not paired
+causal comparisons. Fresh stationary contact can be accepted without an impulse:
+the dissipative velocity constraint supplies no work to remove existing burial.
+
+The corrected local replay records 21 failed sustained-clearance cases and 16
+failed depth gates per worker count. One-step delay recovers 11 valid acceptances
+without new impulse or a clearance gain; the rotated case increases safe planner
+refusals. Current response diagnostics separate planner, RID state reads, impulse
+application and guarded readback within the unchanged inclusive attempt cost.
+Complete asynchronous witness JSON remains mandatory even when console output is
+a concise footer; lossless deduplication of evidence does not change gate inputs.
 
 ## Implemented scope and source authority
 

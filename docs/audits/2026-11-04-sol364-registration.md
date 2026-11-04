@@ -107,3 +107,16 @@ build. Keep all failed attempts and every skipped/unavailable gate explicit.
 #347 stays draft and unmerged. #364/#281/#12 remain open, and #365 stays blocked
 until contact and ownership acceptance justify it. A successful process or
 publication does not override a failed physical or performance criterion.
+
+## Recorded apparatus correction after first execution
+
+The first synchronized development reports allowed automatic Rapier sleeping.
+Author review, independently confirmed, found zero-response free-flight arms
+stopping at step 31 while contact impulses kept some candidate arms awake.
+Those reports remain failed apparatus evidence. Before the qualified comparison,
+all synchronized arms disable sleeping equally and record sleep state plus
+energy change across each Rapier step. This removes a demonstrated control
+confound; it changes no production behavior, response parameter, geometry,
+registered depth/clearance threshold or CPU denominator. The
+[recovery ledger](2026-11-04-sol364-recovery.md) preserves the failed attempt and
+the corrected source-bound comparison separately.

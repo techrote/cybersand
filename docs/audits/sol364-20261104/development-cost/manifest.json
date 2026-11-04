@@ -1,0 +1,92 @@
+{
+  "schema": "cybersand.sol364.local-development-cost.v1",
+  "scope": "Actual local Linux asynchronous development cohorts; component identities verified, not final exact-head Windows/Linux qualification. Failed limits retained.",
+  "source_components_commit": "4e17403c897e293dd18eb7780e47e4f3154aa8da",
+  "native_build_source": "b6cae1321ff3cd2e9e02104e31c3aca924e52c84",
+  "runtime": {
+    "platform": "Linux x86_64",
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "backend": "Rapier2D v0.35.2",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "baseline_native_source": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "baseline_native_sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+    "candidate_native_sha256": "a013aa7148be8716badf41fb2bb1f3ae28e19862b970b390e2f8930493a92a0f",
+    "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "linker": "GNU ld (GNU Binutils for Ubuntu) 2.42",
+    "bindings_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "bindings_sha256": "b99b8868348f0018b9cdbbb186c10dabad13610e537945290e91b69040c7e5e0",
+    "python": "3.12.14"
+  },
+  "cohorts": [
+    {
+      "workers": 1,
+      "checks": 290,
+      "failures": [],
+      "cases": 18,
+      "original_bytes": 17045620,
+      "original_sha256": "5dae387bcca0c1b4b30f9b0ae637d9fac03146551ad663c61c78ce5ccc129584",
+      "gzip": "contact-recovery-w1.json.gz",
+      "gzip_bytes": 1943977,
+      "gzip_sha256": "3df335e4ef22912574b7276c034c0ba20390c22943cdcbc1fbce6c3d8b9c917b",
+      "command": "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script res://tests/test_solid_detachment_contact_recovery.gd -- --workers=1 ABSOLUTE_REPORT.json",
+      "original_log_sha256": "d87b2f8e61cbfb7b315fadf691cd342296ce0c440208b1bccb1f4493b890fb29"
+    },
+    {
+      "workers": 4,
+      "checks": 290,
+      "failures": [],
+      "cases": 18,
+      "original_bytes": 16891772,
+      "original_sha256": "c10fe0b4d1f4e69685676de9b199bc269ac93350dae43360677c359618e4806a",
+      "gzip": "contact-recovery-w4.json.gz",
+      "gzip_bytes": 1943778,
+      "gzip_sha256": "44708d34402c64571c1898dfa05d661f12a35e5b9d5fee859c44c27f4a03be98",
+      "command": "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script res://tests/test_solid_detachment_contact_recovery.gd -- --workers=4 ABSOLUTE_REPORT.json",
+      "original_log_sha256": "88332f3e09a597aa8cc0652391a83e084f1fd1d664e3a5b3866a5ff8c4b83649"
+    }
+  ],
+  "source_component_hashes": {
+    "godot/scripts/solid_contact_response.gd": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+    "godot/scripts/rapier_physics_bridge.gd": "1988bbfe56a91c35a27a91726345358e26ee39839c747a131151e9a53f6b28a6",
+    "godot/scripts/solid_detachment_worker.gd": "ef22cff62370a86537ed77af5306ddedb3f0e3255b53f6053c86432b6ec608ea",
+    "godot/scripts/solid_detachment_session.gd": "045500969c4aeb9ae839b393c3ec3c587a0b90b79224c67dfef97f76306f4e62",
+    "godot/tests/test_solid_detachment_contact_recovery.gd": "4898cd41af3c4aa929cb2619ff54bd3a4c17bec4faa6142dd19a098934285c9a",
+    "godot/native_extension/solid_contact_adapter.inc": "87c3bafd3701e636851c22f660767ee3d5b34d13a73f5eee94290907114bd355"
+  },
+  "qualification_limit": "No complete before/after working-tree manifest was captured for this development invocation. Concurrent source work was confined to other apparatus/evidence paths; subsequently added response-stage timers were not executed in these reports.",
+  "analysis_sha256": "35c1f31ad56ae0adac065c38d9a5a284b63b0e22e0575696c063d5a98f4491c6",
+  "full_matrix_cost_gate": {
+    "baseline_groups_passed": 6,
+    "candidate_groups_passed": 5,
+    "complete": false,
+    "denominator": "complete consumed observations; each group uses the largest of its three repeat means",
+    "expected_groups": 24,
+    "failed_groups": [
+      {
+        "candidate": true,
+        "maximum_repeat_mean_ms": 2.012693486590038,
+        "passed": false,
+        "platform": "Linux",
+        "surroundings": "embedded_sand",
+        "workers": 1
+      }
+    ],
+    "limit_ms": 2.0,
+    "missing_cohorts": [
+      {
+        "platform": "Windows",
+        "workers": 1
+      },
+      {
+        "platform": "Windows",
+        "workers": 4
+      }
+    ],
+    "numerator": "all owner observation/envelope attempts plus all main response attempts",
+    "observed_groups": 12,
+    "passed_groups": 11,
+    "timing": "elapsed monotonic work intervals; not operating-system thread CPU time",
+    "verdict": "INCOMPLETE"
+  }
+}

@@ -12,6 +12,16 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Native structural detachment
 
+The [4 November SOL364 continuation](audits/2026-11-04-sol364-recovery.md)
+ordinarily incorporates accepted MAT-AUTH main `7ef4856e`, corrects lost exterior
+contact witnesses and optimizes immutable native observation. Its synchronized
+replay separates initial burial, witness refusal and controlled publication age.
+The [registered gates](audits/2026-11-04-sol364-registration.md) retain persistent
+clearance and all 24 cost groups as separate acceptance requirements. New local
+Linux cost evidence includes a failed 2.012693 ms case; execution success alone
+does not promote draft #347 or unblock #365. Earlier records below keep their
+original source scope.
+
 The opt-in [structural detachment lab](systems/solid-detachment.md) cuts real
 native RedBrick terrain into a hole-preserving Rapier aggregate and uses bounded
 conservative local Sand/Water displacement. The [dated gate ledger](audits/2026-11-01-sol281-current-main.md)

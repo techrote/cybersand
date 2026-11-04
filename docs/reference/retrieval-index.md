@@ -12,6 +12,15 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 ## Structural detachment routing
 
+For the current SOL364 continuation, retained-witness reclip, initial stationary
+burial, synchronized every-step evidence and unchanged all-attempt cost accounting,
+retrieve the [current contract](../systems/solid-detachment.md#sol364-bounded-witness-recovery--2026-11-04)
+and [4 November recovery ledger](../audits/2026-11-04-sol364-recovery.md).
+The [prospective registration](../audits/2026-11-04-sol364-registration.md)
+distinguishes proposed physical limits from immutable energy/ownership/2 ms gates.
+The [SOL364 retrieval questions](retrieval-questions-sol364.json) supplement the
+earlier fixed questions without rewriting their dated claims.
+
 For native terrain support loss, compound Rapier motion, conservative local
 Sand/Water displacement or the diagnostic controls, retrieve
 [Native structural detachment](../systems/solid-detachment.md). For historical

@@ -121,12 +121,19 @@ func _case(kind: String, candidate: bool, repeat: int) -> void:
 	var failed_responses: int = 0
 	for count: int in physical.get("response_failures", {}).values():
 		failed_responses += count
+	var response_stages: float = 0.0
+	var stages_valid: bool = true
+	for stage: String in ["rid_state", "planner", "impulse_apply", "readback", "other"]:
+		var value: float = float(physical.get("response_" + stage + "_ms_all_attempts", -1.0))
+		stages_valid = stages_valid and is_finite(value) and value >= -0.000001
+		response_stages += value
 	check(int(physical.get("worker_observation_attempts", 0)) >= int(physical.get("observations", 0)) + int(physical.get("refused_observations", 0))
 		and float(physical.get("worker_contact_ms_total", 0.0)) >= float(physical.get("geometry_ms_total", 0.0))
 		and int(physical.get("worker_complete_attempts", -1)) + int(physical.get("worker_refused_attempts", -1)) == int(physical.get("worker_observation_attempts", 0))
 		and absf(float(physical.get("worker_native_call_ms_all_attempts", -1.0)) + float(physical.get("worker_envelope_ms_all_attempts", -1.0)) - float(physical.get("worker_contact_ms_total", 0.0))) <= 0.000001
 		and int(physical.get("owner_ready_receipts", -1)) == int(physical.get("observations", 0)) + int(physical.get("refused_observations", 0))
 		and int(physical.get("response_attempts", -1)) == int(physical.get("response_accepts", 0)) + refused_responses + failed_responses
+		and stages_valid and absf(response_stages - float(physical.get("response_ms_all_attempts", 0.0))) <= 0.000001
 		and float(physical.get("response_ms_all_attempts", 0.0)) >= float(physical.get("response_ms_total", 0.0)),
 		label + ": cost includes every owner attempt and response refusal")
 	records.append({"id":label, "surroundings":kind, "candidate":candidate, "repeat":repeat,
@@ -152,7 +159,7 @@ func _run() -> void:
 				await _case(kind, candidate, repeat)
 	check(records.size() == 18, "all three environments, two policies and three repetitions complete")
 	var report := {"schema":"cybersand.sol281.contact-recovery.v1", "platform":OS.get_name(),
-		"workers":workers, "checks":checks, "failures":failures, "cases":records,
+		"workers":workers, "checks":checks, "failures":failures, "cases":records, "case_count":records.size(),
 		"denominator":"geometry observations are unique consumed native publications, not every native tick",
 		"scope":"repeated asynchronous conservation/geometry/response; unmatched trajectories and no GPU or human acceptance"}
 	if not output.is_empty():
@@ -160,6 +167,11 @@ func _run() -> void:
 		if file == null:
 			check(false, "report output opens")
 		else:
-			file.store_string(JSON.stringify(report, "\t"))
-	print("SOL281_CONTACT_RECOVERY ", JSON.stringify(report))
+			# One complete canonical trace; no witness or attempted work is removed.
+			# Repeating it in both console and the host report exceeds the existing
+			# bounded evidence publication when synchronized replay is included.
+			file.store_string(JSON.stringify(report))
+	print("SOL281_CONTACT_RECOVERY ", JSON.stringify({"schema":report.schema,
+		"platform":report.platform,"workers":workers,"checks":checks,
+		"failures":failures,"case_count":records.size()}))
 	quit(0 if failures.is_empty() else 1)

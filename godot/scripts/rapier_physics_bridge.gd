@@ -435,6 +435,7 @@ func apply_solid_sand_contact(observation: Dictionary, body_index: int,
 			or delta == 0 or delta > SAMPLE_SERIAL_LIMIT / 2:
 			refused.outcome = "DuplicateOrOldContact"
 			return refused
+	var state_started: int = Time.get_ticks_usec()
 	var body_rid: RID = _body_rids[body_index]
 	var transform: Transform2D = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
 	var velocity: Vector2 = PhysicsServer2D.body_get_state(body_rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
@@ -444,8 +445,17 @@ func apply_solid_sand_contact(observation: Dictionary, body_index: int,
 	var started: int = Time.get_ticks_usec()
 	var plan: Dictionary = _plan_solid_contact(observation, transform, velocity,
 		omega, mass, inertia, local_centers, sizes)
+	var planned: int = Time.get_ticks_usec()
+	# Disjoint stage intervals are diagnostics inside the existing inclusive
+	# response attempt. Refused plans retain their evaluation work too; early
+	# identity refusals remain in the caller's inclusive/residual work.
+	plan["rid_state_ms"] = float(started - state_started) / 1000.0
+	plan["planner_ms"] = float(planned - started) / 1000.0
+	plan["impulse_apply_ms"] = 0.0
+	plan["readback_ms"] = 0.0
 	if not plan.get("accepted", false):
 		return plan
+	var apply_started: int = Time.get_ticks_usec()
 	_solid_contact_applied[body_index] = {"snapshot":expected_snapshot, "tick":expected_tick,
 		"sample":accepted_sample}
 	for action: Dictionary in plan.impulses:
@@ -453,6 +463,8 @@ func apply_solid_sand_contact(observation: Dictionary, body_index: int,
 	if not plan.impulses.is_empty():
 		PhysicsServer2D.body_set_state(body_rid, PhysicsServer2D.BODY_STATE_SLEEPING, false)
 		refresh_all_states()
+	var readback_started: int = Time.get_ticks_usec()
+	plan["impulse_apply_ms"] = float(readback_started - apply_started) / 1000.0
 	var readback: Dictionary = _read_solid_contact_result(body_rid, velocity, omega, mass, inertia)
 	plan.merge(readback, true)
 	plan["sample_age"] = age
@@ -474,6 +486,7 @@ func apply_solid_sand_contact(observation: Dictionary, body_index: int,
 		plan["accepted"] = false
 		plan["failed"] = true
 		plan["outcome"] = failure
+	plan["readback_ms"] = float(Time.get_ticks_usec() - readback_started) / 1000.0
 	return plan
 
 

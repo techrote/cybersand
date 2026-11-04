@@ -1,0 +1,71 @@
+{
+  "scope": "Size projection using actual new Linux worker1/4 files for each OS and unchanged retained749fb8 cohort files for other cases; Windows observation variance is not measured here. New compact async serialization and concise footer; full canonical witness JSON retained.",
+  "cap_bytes": 268435456,
+  "retained_evidence_bytes": 124275742,
+  "projected_evidence_bytes": 145866719,
+  "conservative_runtime_plus_added_metadata_allowance_bytes": 16777216,
+  "projected_with_allowance_bytes": 162643935,
+  "changes": [
+    {
+      "path": "cohorts/linux/contact-w1/host/contact-recovery-w1.json",
+      "old": 9010667,
+      "projected": 12133535
+    },
+    {
+      "path": "cohorts/linux/contact-w1/host/contact-recovery-w1.log",
+      "old": 6088943,
+      "projected": 369
+    },
+    {
+      "path": "cohorts/linux/contact-w1/host/report.json",
+      "old": 13617398,
+      "projected": 71058
+    },
+    {
+      "path": "cohorts/linux/contact-w4/host/contact-recovery-w4.json",
+      "old": 8465301,
+      "projected": 12063798
+    },
+    {
+      "path": "cohorts/linux/contact-w4/host/contact-recovery-w4.log",
+      "old": 5728177,
+      "projected": 369
+    },
+    {
+      "path": "cohorts/linux/contact-w4/host/report.json",
+      "old": 12785612,
+      "projected": 71044
+    },
+    {
+      "path": "cohorts/windows/contact-w1/contact-recovery-w1.json",
+      "old": 9253488,
+      "projected": 12133537
+    },
+    {
+      "path": "cohorts/windows/contact-w1/contact-recovery-w1.log",
+      "old": 6251244,
+      "projected": 371
+    },
+    {
+      "path": "cohorts/windows/contact-w1/report.json",
+      "old": 14378387,
+      "projected": 70204
+    },
+    {
+      "path": "cohorts/windows/contact-w4/contact-recovery-w4.json",
+      "old": 9164397,
+      "projected": 12063800
+    },
+    {
+      "path": "cohorts/windows/contact-w4/contact-recovery-w4.log",
+      "old": 6176899,
+      "projected": 371
+    },
+    {
+      "path": "cohorts/windows/contact-w4/report.json",
+      "old": 14264575,
+      "projected": 70215
+    }
+  ],
+  "remaining_bytes": 105791521
+}

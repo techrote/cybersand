@@ -10,6 +10,13 @@ related-documents: [2026-11-03-sol281-dense-contact-registration.md, 2026-11-01-
 
 # SOL281 dense contact continuation
 
+**Successor routing — SOL364, 4 November:** the
+[synchronized repair ledger](2026-11-04-sol364-recovery.md) ordinarily merges
+accepted MAT-AUTH main, implements original-segment witness recovery and bounded
+native freezing optimization, and records new replay/cost failures separately.
+The older tables below retain their exact source and thresholds; no later
+execution success erases their physical, CPU or publication failures.
+
 **Latest source routing — 2026-11-04:** the [recovery handover](2026-11-03-sol281-takeover.md)
 records final executed `749fb8b5`, successful run 41746597077 and runtime/evidence
 publication `89d2eb6d`. Its full-matrix CPU criterion is **NOT MET**: 23/24 groups

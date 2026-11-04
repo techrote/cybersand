@@ -136,6 +136,17 @@ def analyze(paths: list[Path]) -> dict:
                                "owner_ready_latency_ms_max": physical.get("owner_ready_latency_ms_max", 0.0),
                                "owner_ready_latency_ms_per_receipt": physical.get("owner_ready_latency_ms_total", 0.0)
                                    / max(1, physical.get("owner_ready_receipts", 0))})
+            if "response_planner_ms_all_attempts" in physical:
+                response_stages = [f"response_{stage}_ms_all_attempts" for stage in
+                                   ("rid_state", "planner", "impulse_apply", "readback", "other")]
+                if any(type(physical.get(field)) not in (int, float)
+                       or not math.isfinite(physical[field]) or physical[field] < -1e-6
+                       for field in response_stages):
+                    raise ValueError("Incomplete or invalid all-attempt response stages")
+                if abs(sum(physical[field] for field in response_stages)
+                       - physical["response_ms_all_attempts"]) > 1e-6:
+                    raise ValueError("Response stage sum differs from inclusive all-attempt work")
+                values.update({field: physical[field] for field in response_stages})
             groups.setdefault(key, []).append({"values": values, "case": case})
         expected = {(kind, arm, repeat) for kind in ("packed_sand", "embedded_sand", "mixed")
                     for arm in (False, True) for repeat in range(3)}
