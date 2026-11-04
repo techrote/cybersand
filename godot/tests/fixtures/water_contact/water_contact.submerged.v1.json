@@ -1,0 +1,96 @@
+{
+  "schema": "water-contact-submerged-registration-v1",
+  "experiment_id": "water_contact.submerged.v1",
+  "issue": 362,
+  "registered": "2026-11-04",
+  "registered_before_results": true,
+  "source_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "parent_experiment": "water_contact.impact.v1",
+  "purpose": "Read-only characterization of the submerged-body overlap gap found by water_contact.impact.v1: how much stored Water stays under a body mask, for how long, why the current ejection rule finds no target, and what reach or push-chain length would be needed. No coupling, solver, bridge, #347 or default change.",
+  "owner_authorization": "Owner chose the read-only study over spray work on 2026-11-04 (conversation, PR #376).",
+  "world": {
+    "side": 1024,
+    "basin": {"left": 192, "width": 96, "floor_y": 600, "wall_top_y": 300},
+    "water_experiment_policy": [1, 8, 12, 0],
+    "transport_profile_preset": 0,
+    "simulation_window": "disabled",
+    "fill": "rectangle-constructed whole-cell Water, 255 per cell, identical in every arm; no normalization"
+  },
+  "body": {
+    "size": [8, 14],
+    "mass": 1.0,
+    "gravity_scale": 0.094,
+    "linear_damp": 0.15,
+    "angular_damp": 0.35,
+    "friction": 0.78,
+    "ccd": "cast_shape",
+    "initial_gap_cells": 2,
+    "source": "unchanged water_contact.impact.v1 / WEX-001 barrel"
+  },
+  "arms": [
+    {"id": "FM3", "family": "freemass_v1", "variant": "reference", "radius": 3},
+    {"id": "CY3", "family": "cellular_yield_v1", "variant": "reference", "radius": 3},
+    {"id": "PF3", "family": "pressure_flow_v1", "variant": "reference", "radius": 3},
+    {"id": "IN3", "family": "inertial_cellular_v1", "variant": "reference", "radius": 3}
+  ],
+  "horizon_ticks": 240,
+  "observation": {
+    "roi_rows_above_surface": 64,
+    "spray_band_rows": 4,
+    "series_stride": 12,
+    "census_stride": 4,
+    "carried_state_check_ticks": 20,
+    "return_quiet_ticks": 30,
+    "global_stride": 20,
+    "classifier_stride": 4
+  },
+  "dynamic_cases": [
+    {"id": "G-D12-V60", "stage": 2, "depth": 12, "velocity_y": 60.0, "arms": ["FM3", "IN3"]},
+    {"id": "G-D12-V360", "stage": 2, "depth": 12, "velocity_y": 360.0, "arms": ["FM3", "IN3"]},
+    {"id": "G-D24-V15", "stage": 2, "depth": 24, "velocity_y": 15.0, "arms": ["FM3", "IN3"]},
+    {"id": "G-D24-V60", "stage": 2, "depth": 24, "velocity_y": 60.0, "arms": ["FM3", "CY3", "PF3", "IN3"]},
+    {"id": "G-D24-V180", "stage": 1, "depth": 24, "velocity_y": 180.0, "arms": ["FM3", "IN3"]},
+    {"id": "G-D24-V360", "stage": 2, "depth": 24, "velocity_y": 360.0, "arms": ["FM3", "CY3", "PF3", "IN3"]},
+    {"id": "G-D48-V60", "stage": 2, "depth": 48, "velocity_y": 60.0, "arms": ["FM3", "IN3"]},
+    {"id": "G-D48-V180", "stage": 2, "depth": 48, "velocity_y": 180.0, "arms": ["FM3", "IN3"]},
+    {"id": "G-D96-V60", "stage": 2, "depth": 96, "velocity_y": 60.0, "arms": ["FM3", "CY3", "PF3", "IN3"]},
+    {"id": "G-D96-V360", "stage": 2, "depth": 96, "velocity_y": 360.0, "arms": ["FM3", "CY3", "PF3", "IN3"]},
+    {"id": "S-WIDE", "stage": 2, "depth": 48, "velocity_y": 180.0, "body_size": [16, 8], "arms": ["FM3", "IN3"]},
+    {"id": "S-TALL", "stage": 2, "depth": 48, "velocity_y": 180.0, "body_size": [4, 24], "arms": ["FM3", "IN3"]}
+  ],
+  "workers": [1],
+  "parity_cases": {"cases": ["G-D24-V180", "G-D96-V360"], "workers": [1, 4]},
+  "kinematic_descents": [
+    {"id": "K-R1-T", "stage": 1, "depth": 96, "rate": 1.0, "tick_liquid": true, "arms": ["FM3", "IN3"]},
+    {"id": "K-R1-N", "stage": 2, "depth": 96, "rate": 1.0, "tick_liquid": false, "arms": ["FM3"]},
+    {"id": "K-R3-T", "stage": 2, "depth": 96, "rate": 3.0, "tick_liquid": true, "arms": ["FM3", "CY3", "PF3", "IN3"]},
+    {"id": "K-R3-N", "stage": 2, "depth": 96, "rate": 3.0, "tick_liquid": false, "arms": ["FM3"]},
+    {"id": "K-R8-T", "stage": 2, "depth": 96, "rate": 8.0, "tick_liquid": true, "arms": ["FM3", "IN3"]},
+    {"id": "K-WIDE-R1-T", "stage": 2, "depth": 96, "rate": 1.0, "tick_liquid": true, "body_size": [16, 8], "arms": ["FM3"]},
+    {"id": "K-TALL-R1-T", "stage": 2, "depth": 96, "rate": 1.0, "tick_liquid": true, "body_size": [4, 24], "arms": ["FM3"]}
+  ],
+  "stages": {
+    "1": "classifier shakeout: G-D24-V180 and K-R1-T; stage 2 only if every stage-1 row passes every invariant with zero oracle disagreement",
+    "2": "complete registered matrix"
+  },
+  "questions": {
+    "Q1_amount": "masked stored Water (cells) and its persistence against depth, entry speed and body shape",
+    "Q2_cause": "classification of every residual masked Water cell by the replayed ejection rule: no_empty_within_reach, empty_only_under_mask, empty_path_blocked, hard_or_bounds_only (admissible = oracle disagreement)",
+    "Q3_geometry": "the same classification split by the cell's overlap normal (top_local / bottom_local / lateral_local)",
+    "Q4_required_reach": "straight probe-fan reach that would first meet an unmasked Empty cell, bucketed, versus adapter reach ceil(penetration)+8",
+    "Q5_push_chain": "shortest four-connected chain through unmasked Water to an unmasked Empty cell, bucketed; compare with a <=4-move vacancy chain such as #347's (which itself refuses PF/IN/CY Worlds and is detachment-only)",
+    "Q6_threshold": "kinematic descent: deepest body-top depth below the surface at which any cell is still relocated, per rate and shape"
+  },
+  "predictions": {
+    "P1": "oracle_admissible is zero in every row (classifier agrees with the adapter); a nonzero count is an apparatus failure, not a physics result",
+    "P2": "no_empty_within_reach dominates residual reasons once the body top is more than about ten rows below the surface",
+    "P3": "kinematic relocation stops at a body-top depth of roughly 2 to 12 rows for the 8x14 body; recorded, not asserted"
+  },
+  "invariants": "All water_contact.impact.v1 invariants apply unchanged to dynamic rows (quantity, containment, identity, relocation census, carried state on the bounded ticks, IN domain, mask, Rapier step order). Kinematic rows must conserve quantity and show zero oracle disagreement. Parity rows must have identical configured-1/4 traces.",
+  "limits": [
+    "The classifier replays the documented rule in GDScript; the adapter's own per-cell reason is not exported",
+    "Body-top depth is measured against the initial surface, not the deformed local surface",
+    "Push-chain length is a geometric lower bound, not an implementation proposal",
+    "Kinematic descents are forcing experiments and never substitute for dynamic coupling acceptance"
+  ]
+}

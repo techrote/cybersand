@@ -93,6 +93,17 @@ gameplay tools; #362 investigates impacts/upward spray after baseline reuse;
 implementation merge is part of #359. Original LCB issues stay open. Coordinate
 shared host changes with PLAY and native contact changes with #347.
 
+**#362 Phase A (2026-11-04, draft, unmerged):** the [four-family impact
+discrimination](../audits/2026-11-04-water-contact-362-phase-a.md) finds Current
+splash is collision relocation (at most 6 rows, at most 4 spray-band cells);
+no family launches Water ballistically and IN `vy < 0` stays refused. A
+submerged body leaves up to 112 masked Water cells unresolved. Phase B spray
+laws are DEFERRED pending owner authorization. The follow-up read-only
+[submerged-overlap study](../audits/2026-11-04-water-contact-362-submerged.md)
+finds the overlay structural: no Empty lies within relocation reach, and #347's
+detachment-only vacancy chain does not apply. Only a separately admitted
+non-local displacement design could close it.
+
 ## Stopped PLAY recovery — 2026-11-02
 
 [PR #332](https://github.com/techrote/cybersand/pull/332) preserves the reviewed

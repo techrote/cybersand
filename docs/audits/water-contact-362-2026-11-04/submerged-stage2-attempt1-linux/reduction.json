@@ -1,0 +1,2232 @@
+{
+ "descents": [
+  {
+   "arm": "FM3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 80.0,
+   "descent": "K-R1-N",
+   "displaced_by_top_depth": {
+    "-2.0": 0,
+    "0.0": 0,
+    "10.0": 8,
+    "12.0": 8,
+    "16.0": 8,
+    "2.0": 4,
+    "24.0": 8,
+    "4.0": 8,
+    "48.0": 8,
+    "6.0": 8,
+    "72.0": 8,
+    "8.0": 8
+   },
+   "displaced_total": 660,
+   "final_residual_masked": 92,
+   "push_chain_length": {
+    "1-4": 6,
+    "17-32": 548,
+    "33+": 1056,
+    "5-8": 64,
+    "9-16": 318,
+    "unreachable": 5880
+   },
+   "rate": 1.0,
+   "reasons": {
+    "no_empty_within_reach": 7872
+   },
+   "steps": 97,
+   "tick_liquid": false
+  },
+  {
+   "arm": "FM3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 80.0,
+   "descent": "K-R1-T",
+   "displaced_by_top_depth": {
+    "-2.0": 0,
+    "0.0": 2,
+    "10.0": 8,
+    "12.0": 8,
+    "16.0": 8,
+    "2.0": 4,
+    "24.0": 8,
+    "4.0": 8,
+    "48.0": 8,
+    "6.0": 8,
+    "72.0": 8,
+    "8.0": 8
+   },
+   "displaced_total": 660,
+   "final_residual_masked": 92,
+   "push_chain_length": {
+    "1-4": 6,
+    "17-32": 509,
+    "33+": 1056,
+    "5-8": 51,
+    "9-16": 274,
+    "unreachable": 5996
+   },
+   "rate": 1.0,
+   "reasons": {
+    "no_empty_within_reach": 7892
+   },
+   "steps": 97,
+   "tick_liquid": true
+  },
+  {
+   "arm": "IN3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 80.0,
+   "descent": "K-R1-T",
+   "displaced_by_top_depth": {
+    "-2.0": 0,
+    "0.0": 0,
+    "10.0": 8,
+    "12.0": 8,
+    "16.0": 8,
+    "2.0": 4,
+    "24.0": 8,
+    "4.0": 8,
+    "48.0": 8,
+    "6.0": 8,
+    "72.0": 8,
+    "8.0": 8
+   },
+   "displaced_total": 660,
+   "final_residual_masked": 92,
+   "push_chain_length": {
+    "1-4": 6,
+    "17-32": 488,
+    "33+": 1062,
+    "5-8": 64,
+    "9-16": 308,
+    "unreachable": 5944
+   },
+   "rate": 1.0,
+   "reasons": {
+    "no_empty_within_reach": 7872
+   },
+   "steps": 97,
+   "tick_liquid": true
+  },
+  {
+   "arm": "FM3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 80.0,
+   "descent": "K-R3-N",
+   "displaced_by_top_depth": {
+    "2.0": 6,
+    "8.0": 18
+   },
+   "displaced_total": 506,
+   "final_residual_masked": 92,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 278,
+    "5-8": 176,
+    "9-16": 476,
+    "unreachable": 1724
+   },
+   "rate": 3.0,
+   "reasons": {
+    "no_empty_within_reach": 2656
+   },
+   "steps": 33,
+   "tick_liquid": false
+  },
+  {
+   "arm": "CY3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 20.0,
+   "descent": "K-R3-T",
+   "displaced_by_top_depth": {
+    "2.0": 6,
+    "8.0": 14
+   },
+   "displaced_total": 93,
+   "final_residual_masked": 112,
+   "push_chain_length": {
+    "1-4": 14,
+    "17-32": 127,
+    "33+": 402,
+    "5-8": 62,
+    "9-16": 172,
+    "unreachable": 2341
+   },
+   "rate": 3.0,
+   "reasons": {
+    "empty_only_under_mask": 75,
+    "no_empty_within_reach": 3043
+   },
+   "steps": 33,
+   "tick_liquid": true
+  },
+  {
+   "arm": "FM3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 17.0,
+   "descent": "K-R3-T",
+   "displaced_by_top_depth": {
+    "2.0": 8,
+    "8.0": 8
+   },
+   "displaced_total": 72,
+   "final_residual_masked": 112,
+   "push_chain_length": {
+    "1-4": 14,
+    "17-32": 152,
+    "33+": 426,
+    "5-8": 50,
+    "9-16": 139,
+    "unreachable": 2361
+   },
+   "rate": 3.0,
+   "reasons": {
+    "empty_only_under_mask": 61,
+    "no_empty_within_reach": 3081
+   },
+   "steps": 33,
+   "tick_liquid": true
+  },
+  {
+   "arm": "IN3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 80.0,
+   "descent": "K-R3-T",
+   "displaced_by_top_depth": {
+    "2.0": 6,
+    "8.0": 18
+   },
+   "displaced_total": 506,
+   "final_residual_masked": 92,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 278,
+    "5-8": 176,
+    "9-16": 476,
+    "unreachable": 1724
+   },
+   "rate": 3.0,
+   "reasons": {
+    "no_empty_within_reach": 2656
+   },
+   "steps": 33,
+   "tick_liquid": true
+  },
+  {
+   "arm": "PF3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 17.0,
+   "descent": "K-R3-T",
+   "displaced_by_top_depth": {
+    "2.0": 8,
+    "8.0": 8
+   },
+   "displaced_total": 76,
+   "final_residual_masked": 112,
+   "push_chain_length": {
+    "1-4": 16,
+    "17-32": 146,
+    "33+": 410,
+    "5-8": 52,
+    "9-16": 154,
+    "unreachable": 2360
+   },
+   "rate": 3.0,
+   "reasons": {
+    "empty_only_under_mask": 72,
+    "no_empty_within_reach": 3066
+   },
+   "steps": 33,
+   "tick_liquid": true
+  },
+  {
+   "arm": "FM3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 8.0,
+   "descent": "K-R8-T",
+   "displaced_by_top_depth": {
+    "0.0": 6,
+    "16.0": 0,
+    "24.0": 0,
+    "48.0": 0,
+    "72.0": 0,
+    "8.0": 6
+   },
+   "displaced_total": 38,
+   "final_residual_masked": 112,
+   "push_chain_length": {
+    "17-32": 72,
+    "33+": 152,
+    "5-8": 14,
+    "9-16": 54,
+    "unreachable": 924
+   },
+   "rate": 8.0,
+   "reasons": {
+    "empty_only_under_mask": 34,
+    "no_empty_within_reach": 1182
+   },
+   "steps": 13,
+   "tick_liquid": true
+  },
+  {
+   "arm": "IN3",
+   "body_size": [
+    8.0,
+    14.0
+   ],
+   "deepest_relocating_body_top": 8.0,
+   "descent": "K-R8-T",
+   "displaced_by_top_depth": {
+    "0.0": 6,
+    "16.0": 0,
+    "24.0": 0,
+    "48.0": 0,
+    "72.0": 0,
+    "8.0": 8
+   },
+   "displaced_total": 40,
+   "final_residual_masked": 112,
+   "push_chain_length": {
+    "17-32": 86,
+    "33+": 160,
+    "5-8": 14,
+    "9-16": 62,
+    "unreachable": 892
+   },
+   "rate": 8.0,
+   "reasons": {
+    "empty_only_under_mask": 32,
+    "no_empty_within_reach": 1182
+   },
+   "steps": 13,
+   "tick_liquid": true
+  },
+  {
+   "arm": "FM3",
+   "body_size": [
+    4.0,
+    24.0
+   ],
+   "deepest_relocating_body_top": 70.0,
+   "descent": "K-TALL-R1-T",
+   "displaced_by_top_depth": {
+    "-2.0": 0,
+    "0.0": 0,
+    "10.0": 4,
+    "12.0": 4,
+    "16.0": 4,
+    "2.0": 0,
+    "24.0": 4,
+    "4.0": 4,
+    "48.0": 4,
+    "6.0": 4,
+    "8.0": 4
+   },
+   "displaced_total": 286,
+   "final_residual_masked": 90,
+   "push_chain_length": {
+    "1-4": 6,
+    "17-32": 762,
+    "33+": 1578,
+    "5-8": 90,
+    "9-16": 406,
+    "unreachable": 4314
+   },
+   "rate": 1.0,
+   "reasons": {
+    "no_empty_within_reach": 7156
+   },
+   "steps": 97,
+   "tick_liquid": true
+  },
+  {
+   "arm": "FM3",
+   "body_size": [
+    16.0,
+    8.0
+   ],
+   "deepest_relocating_body_top": 86.0,
+   "descent": "K-WIDE-R1-T",
+   "displaced_by_top_depth": {
+    "-2.0": 14,
+    "0.0": 10,
+    "10.0": 16,
+    "12.0": 16,
+    "16.0": 16,
+    "2.0": 12,
+    "24.0": 16,
+    "4.0": 16,
+    "48.0": 16,
+    "6.0": 16,
+    "72.0": 16,
+    "8.0": 16
+   },
+   "displaced_total": 1428,
+   "final_residual_masked": 76,
+   "push_chain_length": {
+    "1-4": 6,
+    "17-32": 431,
+    "33+": 924,
+    "5-8": 47,
+    "9-16": 196,
+    "unreachable": 5294
+   },
+   "rate": 1.0,
+   "reasons": {
+    "no_empty_within_reach": 6898
+   },
+   "steps": 97,
+   "tick_liquid": true
+  }
+ ],
+ "dynamic_rows": 38,
+ "errors": [
+  "G-D96-V360/IN3/w1: recorded invariant violations: ['mask_mismatch']",
+  "G-D96-V360/IN3/w1: body mask differs from current-pose rasterization or was not checked",
+  "('G-D96-V360', 'IN3', 1): runner study_ok false",
+  "G-D96-V360/IN3/w4: recorded invariant violations: ['mask_mismatch']",
+  "G-D96-V360/IN3/w4: body mask differs from current-pose rasterization or was not checked",
+  "('G-D96-V360', 'IN3', 4): runner study_ok false"
+ ],
+ "kinematic_rows": 12,
+ "manifest_sha256": "82ac385f0cce7da1833419962349f546cf83d0d313f28e684d9413cdd83423c5",
+ "parity": [
+  {
+   "arm": "FM3",
+   "case": "G-D24-V180",
+   "identical": true
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D24-V180",
+   "identical": true
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D96-V360",
+   "identical": true
+  },
+  {
+   "arm": "CY3",
+   "case": "G-D96-V360",
+   "identical": true
+  },
+  {
+   "arm": "PF3",
+   "case": "G-D96-V360",
+   "identical": true
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D96-V360",
+   "identical": true
+  }
+ ],
+ "positive_controls": [
+  {
+   "arm": "FM3",
+   "detail": {
+    "actual": [
+     240,
+     397
+    ],
+    "arm": "FM3",
+    "ok": true,
+    "predicted": {
+     "distance": 3,
+     "reason": "admissible",
+     "target": [
+      240,
+      397
+     ]
+    }
+   },
+   "file": "positive_controls.json",
+   "kind": "positive_control",
+   "ok": true
+  },
+  {
+   "arm": "CY3",
+   "detail": {
+    "actual": [
+     240,
+     397
+    ],
+    "arm": "CY3",
+    "ok": true,
+    "predicted": {
+     "distance": 3,
+     "reason": "admissible",
+     "target": [
+      240,
+      397
+     ]
+    }
+   },
+   "file": "positive_controls.json",
+   "kind": "positive_control",
+   "ok": true
+  },
+  {
+   "arm": "PF3",
+   "detail": {
+    "actual": [
+     240,
+     397
+    ],
+    "arm": "PF3",
+    "ok": true,
+    "predicted": {
+     "distance": 3,
+     "reason": "admissible",
+     "target": [
+      240,
+      397
+     ]
+    }
+   },
+   "file": "positive_controls.json",
+   "kind": "positive_control",
+   "ok": true
+  },
+  {
+   "arm": "IN3",
+   "detail": {
+    "actual": [
+     240,
+     397
+    ],
+    "arm": "IN3",
+    "ok": true,
+    "predicted": {
+     "distance": 3,
+     "reason": "admissible",
+     "target": [
+      240,
+      397
+     ]
+    }
+   },
+   "file": "positive_controls.json",
+   "kind": "positive_control",
+   "ok": true
+  }
+ ],
+ "rows": [
+  {
+   "arm": "FM3",
+   "case": "G-D12-V360",
+   "chain_within_4_share": 0.0,
+   "classifier_samples": 60,
+   "displaced": 48,
+   "final_physical_state_hash": "b10f6d13f68f6040",
+   "floor_contact_tick": 3,
+   "lateral_share": 0.755,
+   "masked_water_max": 66,
+   "masked_water_p50": 64,
+   "no_empty_within_reach_share": 0.7581,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 924,
+    "bottom_local:no_empty_within_reach": 12,
+    "lateral_local:no_empty_within_reach": 2884
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "5-8": 232,
+    "9-16": 753,
+    "unreachable": 2835
+   },
+   "reasons": {
+    "hard_or_bounds_only": 924,
+    "no_empty_within_reach": 2896
+   },
+   "required_straight_reach": {
+    "17-32": 72,
+    "33+": 136,
+    "beyond_64": 3612
+   },
+   "residual_cell_samples": 3820,
+   "trace_sha256": "0582462bf2210ea624cbf2e9497c0e2bb20c0cbb87ac653886ea3f43a1a118b0",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 15421,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D12-V360",
+   "chain_within_4_share": 0.0162,
+   "classifier_samples": 60,
+   "displaced": 163,
+   "final_physical_state_hash": "00105df08d55d37d",
+   "floor_contact_tick": 3,
+   "lateral_share": 0.7371,
+   "masked_water_max": 64,
+   "masked_water_p50": 62,
+   "no_empty_within_reach_share": 0.7405,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 915,
+    "bottom_local:no_empty_within_reach": 12,
+    "lateral_local:no_empty_within_reach": 2599
+   },
+   "peak_height": 5,
+   "push_chain_length": {
+    "1-4": 57,
+    "17-32": 24,
+    "5-8": 191,
+    "9-16": 650,
+    "unreachable": 2604
+   },
+   "reasons": {
+    "hard_or_bounds_only": 915,
+    "no_empty_within_reach": 2611
+   },
+   "required_straight_reach": {
+    "17-32": 16,
+    "33+": 26,
+    "9-16": 28,
+    "beyond_64": 3456
+   },
+   "residual_cell_samples": 3526,
+   "trace_sha256": "94ed2b07e41ec9459c0d42ce694a02690d0593d38e2f647080bfdab4a8974ddb",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 14218,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D12-V60",
+   "chain_within_4_share": 0.0294,
+   "classifier_samples": 60,
+   "displaced": 58,
+   "final_physical_state_hash": "844328476a2a5170",
+   "floor_contact_tick": 15,
+   "lateral_share": 0.5162,
+   "masked_water_max": 67,
+   "masked_water_p50": 5,
+   "no_empty_within_reach_share": 0.932,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 44,
+    "bottom_local:no_empty_within_reach": 269,
+    "lateral_local:no_empty_within_reach": 334
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 19,
+    "17-32": 16,
+    "5-8": 134,
+    "9-16": 135,
+    "unreachable": 343
+   },
+   "reasons": {
+    "hard_or_bounds_only": 44,
+    "no_empty_within_reach": 603
+   },
+   "required_straight_reach": {
+    "17-32": 33,
+    "33+": 2,
+    "9-16": 2,
+    "beyond_64": 610
+   },
+   "residual_cell_samples": 647,
+   "trace_sha256": "574ffcd78e6610b2f90ccf8ad3d7da4ffb9a1e4b5214bebec1f665a8f1532c9d",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 2596,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D12-V60",
+   "chain_within_4_share": 0.0297,
+   "classifier_samples": 60,
+   "displaced": 98,
+   "final_physical_state_hash": "e2a22d581588a103",
+   "floor_contact_tick": 15,
+   "lateral_share": 0.4992,
+   "masked_water_max": 64,
+   "masked_water_p50": 1,
+   "no_empty_within_reach_share": 0.8998,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 64,
+    "bottom_local:no_empty_within_reach": 256,
+    "lateral_local:no_empty_within_reach": 319
+   },
+   "peak_height": 12,
+   "push_chain_length": {
+    "1-4": 19,
+    "17-32": 22,
+    "5-8": 61,
+    "9-16": 200,
+    "unreachable": 337
+   },
+   "reasons": {
+    "hard_or_bounds_only": 64,
+    "no_empty_within_reach": 575
+   },
+   "required_straight_reach": {
+    "17-32": 1,
+    "9-16": 2,
+    "beyond_64": 636
+   },
+   "residual_cell_samples": 639,
+   "trace_sha256": "9aedd4a9bd2a6b91c2d7830d829ef8a886ff522dbb215c4aa07c1c8fada9e0c7",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 2559,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D24-V15",
+   "chain_within_4_share": 0.108,
+   "classifier_samples": 60,
+   "displaced": 32,
+   "final_physical_state_hash": "6b9c27dd773bb565",
+   "floor_contact_tick": -1,
+   "lateral_share": 0.0,
+   "masked_water_max": 18,
+   "masked_water_p50": 0,
+   "no_empty_within_reach_share": 1.0,
+   "normal_kind_reasons": {
+    "bottom_local:no_empty_within_reach": 213
+   },
+   "peak_height": 2,
+   "push_chain_length": {
+    "1-4": 23,
+    "5-8": 124,
+    "9-16": 26,
+    "unreachable": 40
+   },
+   "reasons": {
+    "no_empty_within_reach": 213
+   },
+   "required_straight_reach": {
+    "beyond_64": 213
+   },
+   "residual_cell_samples": 213,
+   "trace_sha256": "4c62f9fd6e3add613313aaf7596517787f3aa417c938c8e05b6dce1e0694b33e",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 859,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D24-V15",
+   "chain_within_4_share": 0.135,
+   "classifier_samples": 60,
+   "displaced": 38,
+   "final_physical_state_hash": "582c321a9d902955",
+   "floor_contact_tick": -1,
+   "lateral_share": 0.0,
+   "masked_water_max": 18,
+   "masked_water_p50": 1,
+   "no_empty_within_reach_share": 1.0,
+   "normal_kind_reasons": {
+    "bottom_local:no_empty_within_reach": 163
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 22,
+    "5-8": 80,
+    "9-16": 24,
+    "unreachable": 37
+   },
+   "reasons": {
+    "no_empty_within_reach": 163
+   },
+   "required_straight_reach": {
+    "beyond_64": 163
+   },
+   "residual_cell_samples": 163,
+   "trace_sha256": "5a2d20898613cdeca16009f17d242881959b9d3d80c0dec659a749f432cb406b",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 694,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D24-V180",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 75,
+   "final_physical_state_hash": "1af54f39809fb722",
+   "floor_contact_tick": 9,
+   "lateral_share": 0.8025,
+   "masked_water_max": 105,
+   "masked_water_p50": 99,
+   "no_empty_within_reach_share": 0.8363,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 949,
+    "bottom_local:no_empty_within_reach": 26,
+    "lateral_local:no_empty_within_reach": 4678,
+    "top_local:empty_only_under_mask": 5,
+    "top_local:no_empty_within_reach": 171
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 1151,
+    "5-8": 14,
+    "9-16": 430,
+    "unreachable": 4232
+   },
+   "reasons": {
+    "empty_only_under_mask": 5,
+    "hard_or_bounds_only": 949,
+    "no_empty_within_reach": 4875
+   },
+   "required_straight_reach": {
+    "9-16": 177,
+    "beyond_64": 5652
+   },
+   "residual_cell_samples": 5829,
+   "trace_sha256": "d4110f091744de16c301d6c41f01f2065aa62615b4e700ab51231a17e5588dce",
+   "trail_cell_samples": 6,
+   "trail_reasons": {
+    "empty_only_under_mask": 6
+   },
+   "unresolved_overlap_ticks": 23448,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D24-V180",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 75,
+   "final_physical_state_hash": "1af54f39809fb722",
+   "floor_contact_tick": 9,
+   "lateral_share": 0.8025,
+   "masked_water_max": 105,
+   "masked_water_p50": 99,
+   "no_empty_within_reach_share": 0.8363,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 949,
+    "bottom_local:no_empty_within_reach": 26,
+    "lateral_local:no_empty_within_reach": 4678,
+    "top_local:empty_only_under_mask": 5,
+    "top_local:no_empty_within_reach": 171
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 1151,
+    "5-8": 14,
+    "9-16": 430,
+    "unreachable": 4232
+   },
+   "reasons": {
+    "empty_only_under_mask": 5,
+    "hard_or_bounds_only": 949,
+    "no_empty_within_reach": 4875
+   },
+   "required_straight_reach": {
+    "9-16": 177,
+    "beyond_64": 5652
+   },
+   "residual_cell_samples": 5829,
+   "trace_sha256": "d4110f091744de16c301d6c41f01f2065aa62615b4e700ab51231a17e5588dce",
+   "trail_cell_samples": 6,
+   "trail_reasons": {
+    "empty_only_under_mask": 6
+   },
+   "unresolved_overlap_ticks": 23448,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D24-V180",
+   "chain_within_4_share": 0.0009,
+   "classifier_samples": 60,
+   "displaced": 80,
+   "final_physical_state_hash": "9d464df30c385484",
+   "floor_contact_tick": 9,
+   "lateral_share": 0.8281,
+   "masked_water_max": 100,
+   "masked_water_p50": 95,
+   "no_empty_within_reach_share": 0.8327,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 936,
+    "bottom_local:no_empty_within_reach": 26,
+    "lateral_local:no_empty_within_reach": 4633
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 5,
+    "17-32": 1083,
+    "5-8": 27,
+    "9-16": 464,
+    "unreachable": 4016
+   },
+   "reasons": {
+    "hard_or_bounds_only": 936,
+    "no_empty_within_reach": 4659
+   },
+   "required_straight_reach": {
+    "beyond_64": 5595
+   },
+   "residual_cell_samples": 5595,
+   "trace_sha256": "efe69886f94a668054abb84790c73ac022fc1107385c337575638d00a5607097",
+   "trail_cell_samples": 6,
+   "trail_reasons": {
+    "empty_only_under_mask": 6
+   },
+   "unresolved_overlap_ticks": 22524,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D24-V180",
+   "chain_within_4_share": 0.0009,
+   "classifier_samples": 60,
+   "displaced": 80,
+   "final_physical_state_hash": "9d464df30c385484",
+   "floor_contact_tick": 9,
+   "lateral_share": 0.8281,
+   "masked_water_max": 100,
+   "masked_water_p50": 95,
+   "no_empty_within_reach_share": 0.8327,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 936,
+    "bottom_local:no_empty_within_reach": 26,
+    "lateral_local:no_empty_within_reach": 4633
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 5,
+    "17-32": 1083,
+    "5-8": 27,
+    "9-16": 464,
+    "unreachable": 4016
+   },
+   "reasons": {
+    "hard_or_bounds_only": 936,
+    "no_empty_within_reach": 4659
+   },
+   "required_straight_reach": {
+    "beyond_64": 5595
+   },
+   "residual_cell_samples": 5595,
+   "trace_sha256": "efe69886f94a668054abb84790c73ac022fc1107385c337575638d00a5607097",
+   "trail_cell_samples": 6,
+   "trail_reasons": {
+    "empty_only_under_mask": 6
+   },
+   "unresolved_overlap_ticks": 22524,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "G-D24-V360",
+   "chain_within_4_share": 0.0,
+   "classifier_samples": 60,
+   "displaced": 59,
+   "final_physical_state_hash": "a44c7665ab4a6952",
+   "floor_contact_tick": 5,
+   "lateral_share": 0.732,
+   "masked_water_max": 100,
+   "masked_water_p50": 99,
+   "no_empty_within_reach_share": 0.844,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 902,
+    "bottom_local:no_empty_within_reach": 12,
+    "lateral_local:no_empty_within_reach": 4289,
+    "top_local:empty_only_under_mask": 12,
+    "top_local:no_empty_within_reach": 644
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "17-32": 1095,
+    "5-8": 2,
+    "9-16": 809,
+    "unreachable": 3953
+   },
+   "reasons": {
+    "empty_only_under_mask": 12,
+    "hard_or_bounds_only": 902,
+    "no_empty_within_reach": 4945
+   },
+   "required_straight_reach": {
+    "9-16": 656,
+    "beyond_64": 5203
+   },
+   "residual_cell_samples": 5859,
+   "trace_sha256": "fdf7fe1a78b7051a23af6a3583e3f043530d322ab22311eac7dd682aff96f30a",
+   "trail_cell_samples": 20,
+   "trail_reasons": {
+    "empty_only_under_mask": 20
+   },
+   "unresolved_overlap_ticks": 23713,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D24-V360",
+   "chain_within_4_share": 0.0002,
+   "classifier_samples": 60,
+   "displaced": 54,
+   "final_physical_state_hash": "89b04de45b8f5df7",
+   "floor_contact_tick": 5,
+   "lateral_share": 0.723,
+   "masked_water_max": 104,
+   "masked_water_p50": 104,
+   "no_empty_within_reach_share": 0.8492,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 910,
+    "bottom_local:no_empty_within_reach": 12,
+    "lateral_local:no_empty_within_reach": 4429,
+    "top_local:empty_only_under_mask": 14,
+    "top_local:no_empty_within_reach": 761
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 1,
+    "17-32": 1164,
+    "5-8": 3,
+    "9-16": 774,
+    "unreachable": 4184
+   },
+   "reasons": {
+    "empty_only_under_mask": 14,
+    "hard_or_bounds_only": 910,
+    "no_empty_within_reach": 5202
+   },
+   "required_straight_reach": {
+    "9-16": 775,
+    "beyond_64": 5351
+   },
+   "residual_cell_samples": 6126,
+   "trace_sha256": "d7d601ee515899e4fec1c4802fddc577ccc68257734657cf7986ff30be1f6f26",
+   "trail_cell_samples": 20,
+   "trail_reasons": {
+    "empty_only_under_mask": 20
+   },
+   "unresolved_overlap_ticks": 24786,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D24-V360",
+   "chain_within_4_share": 0.0,
+   "classifier_samples": 60,
+   "displaced": 69,
+   "final_physical_state_hash": "d4b1dbfb93c79d9a",
+   "floor_contact_tick": 5,
+   "lateral_share": 0.7567,
+   "masked_water_max": 89,
+   "masked_water_p50": 89,
+   "no_empty_within_reach_share": 0.8249,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 910,
+    "bottom_local:no_empty_within_reach": 12,
+    "lateral_local:no_empty_within_reach": 3975,
+    "top_local:empty_only_under_mask": 10,
+    "top_local:no_empty_within_reach": 346
+   },
+   "peak_height": 5,
+   "push_chain_length": {
+    "17-32": 1048,
+    "5-8": 2,
+    "9-16": 711,
+    "unreachable": 3492
+   },
+   "reasons": {
+    "empty_only_under_mask": 10,
+    "hard_or_bounds_only": 910,
+    "no_empty_within_reach": 4333
+   },
+   "required_straight_reach": {
+    "9-16": 356,
+    "beyond_64": 4897
+   },
+   "residual_cell_samples": 5253,
+   "trace_sha256": "bd3051ba0ebc99c7a7ca8e1e08f2e1294d8e2d044299daca869d2489f159f984",
+   "trail_cell_samples": 20,
+   "trail_reasons": {
+    "empty_only_under_mask": 20
+   },
+   "unresolved_overlap_ticks": 21269,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "G-D24-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 54,
+   "final_physical_state_hash": "577cce0c5aa79c2c",
+   "floor_contact_tick": 5,
+   "lateral_share": 0.7225,
+   "masked_water_max": 104,
+   "masked_water_p50": 104,
+   "no_empty_within_reach_share": 0.8487,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 912,
+    "bottom_local:no_empty_within_reach": 12,
+    "lateral_local:no_empty_within_reach": 4427,
+    "top_local:empty_only_under_mask": 15,
+    "top_local:no_empty_within_reach": 761
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 1156,
+    "5-8": 3,
+    "9-16": 782,
+    "unreachable": 4184
+   },
+   "reasons": {
+    "empty_only_under_mask": 15,
+    "hard_or_bounds_only": 912,
+    "no_empty_within_reach": 5200
+   },
+   "required_straight_reach": {
+    "9-16": 776,
+    "beyond_64": 5351
+   },
+   "residual_cell_samples": 6127,
+   "trace_sha256": "064bd0157e66a53733d41edcd2b1e7f38a2a82953728a4b66224b0f0d5bc6975",
+   "trail_cell_samples": 20,
+   "trail_reasons": {
+    "empty_only_under_mask": 20
+   },
+   "unresolved_overlap_ticks": 24787,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "G-D24-V60",
+   "chain_within_4_share": 0.0018,
+   "classifier_samples": 60,
+   "displaced": 93,
+   "final_physical_state_hash": "1d43737a9fd18ff1",
+   "floor_contact_tick": 32,
+   "lateral_share": 0.8176,
+   "masked_water_max": 103,
+   "masked_water_p50": 97,
+   "no_empty_within_reach_share": 0.8485,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 832,
+    "bottom_local:no_empty_within_reach": 112,
+    "lateral_local:no_empty_within_reach": 4491,
+    "top_local:no_empty_within_reach": 58
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 10,
+    "17-32": 1003,
+    "5-8": 39,
+    "9-16": 510,
+    "unreachable": 3931
+   },
+   "reasons": {
+    "hard_or_bounds_only": 832,
+    "no_empty_within_reach": 4661
+   },
+   "required_straight_reach": {
+    "33+": 2,
+    "9-16": 63,
+    "beyond_64": 5428
+   },
+   "residual_cell_samples": 5493,
+   "trace_sha256": "7e2752707ff170e26dd54c9a7687cab3298dd692c933ee58bf4c001cfeb7408a",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 22096,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D24-V60",
+   "chain_within_4_share": 0.0008,
+   "classifier_samples": 60,
+   "displaced": 72,
+   "final_physical_state_hash": "5c4dd71655248056",
+   "floor_contact_tick": 32,
+   "lateral_share": 0.7236,
+   "masked_water_max": 111,
+   "masked_water_p50": 111,
+   "no_empty_within_reach_share": 0.8664,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 832,
+    "bottom_local:no_empty_within_reach": 108,
+    "lateral_local:no_empty_within_reach": 4505,
+    "top_local:no_empty_within_reach": 781
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 5,
+    "17-32": 968,
+    "5-8": 28,
+    "9-16": 872,
+    "unreachable": 4353
+   },
+   "reasons": {
+    "hard_or_bounds_only": 832,
+    "no_empty_within_reach": 5394
+   },
+   "required_straight_reach": {
+    "17-32": 6,
+    "9-16": 782,
+    "beyond_64": 5438
+   },
+   "residual_cell_samples": 6226,
+   "trace_sha256": "26848aea5a0339f7b21ff8a9fb993c6ad6d4f64cbd1be429ebdceea13a1ff66a",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 25076,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D24-V60",
+   "chain_within_4_share": 0.0024,
+   "classifier_samples": 60,
+   "displaced": 97,
+   "final_physical_state_hash": "a3304ba4f4725d77",
+   "floor_contact_tick": 32,
+   "lateral_share": 0.8246,
+   "masked_water_max": 96,
+   "masked_water_p50": 95,
+   "no_empty_within_reach_share": 0.8454,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 832,
+    "bottom_local:no_empty_within_reach": 112,
+    "lateral_local:no_empty_within_reach": 4439
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 13,
+    "17-32": 878,
+    "5-8": 51,
+    "9-16": 596,
+    "unreachable": 3845
+   },
+   "reasons": {
+    "hard_or_bounds_only": 832,
+    "no_empty_within_reach": 4551
+   },
+   "required_straight_reach": {
+    "beyond_64": 5383
+   },
+   "residual_cell_samples": 5383,
+   "trace_sha256": "22191d2eca2bbf2045a540ead2452d5271e1ed9f445d0a1cf6f56e893a040e1b",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 21684,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "G-D24-V60",
+   "chain_within_4_share": 0.0009,
+   "classifier_samples": 60,
+   "displaced": 89,
+   "final_physical_state_hash": "b89bb786a8ad9d57",
+   "floor_contact_tick": 32,
+   "lateral_share": 0.8196,
+   "masked_water_max": 100,
+   "masked_water_p50": 97,
+   "no_empty_within_reach_share": 0.8487,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 832,
+    "bottom_local:no_empty_within_reach": 108,
+    "lateral_local:no_empty_within_reach": 4508,
+    "top_local:no_empty_within_reach": 52
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 5,
+    "17-32": 1070,
+    "5-8": 27,
+    "9-16": 459,
+    "unreachable": 3939
+   },
+   "reasons": {
+    "hard_or_bounds_only": 832,
+    "no_empty_within_reach": 4668
+   },
+   "required_straight_reach": {
+    "17-32": 8,
+    "9-16": 54,
+    "beyond_64": 5438
+   },
+   "residual_cell_samples": 5500,
+   "trace_sha256": "b10f204ee0f8abec982d89b585239a3e51582eac2ec25124dbfc285c765f111e",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 22154,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D48-V180",
+   "chain_within_4_share": 0.0006,
+   "classifier_samples": 60,
+   "displaced": 72,
+   "final_physical_state_hash": "edfa55f453a55280",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.7142,
+   "masked_water_max": 112,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.8612,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 58,
+    "lateral_local:no_empty_within_reach": 4693,
+    "top_local:empty_only_under_mask": 16,
+    "top_local:no_empty_within_reach": 908
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 4,
+    "17-32": 40,
+    "33+": 1926,
+    "5-8": 14,
+    "9-16": 32,
+    "unreachable": 4555
+   },
+   "reasons": {
+    "empty_only_under_mask": 16,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5659
+   },
+   "required_straight_reach": {
+    "17-32": 12,
+    "33+": 896,
+    "9-16": 17,
+    "beyond_64": 5646
+   },
+   "residual_cell_samples": 6571,
+   "trace_sha256": "7265759c85e2f492b0619cbae624355407c20ba55dff3aeb30f02c1ad9784c26",
+   "trail_cell_samples": 54,
+   "trail_reasons": {
+    "empty_only_under_mask": 6,
+    "no_empty_within_reach": 48
+   },
+   "unresolved_overlap_ticks": 26619,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D48-V180",
+   "chain_within_4_share": 0.0009,
+   "classifier_samples": 60,
+   "displaced": 194,
+   "final_physical_state_hash": "dff0dd04913debca",
+   "floor_contact_tick": 18,
+   "lateral_share": 0.8277,
+   "masked_water_max": 100,
+   "masked_water_p50": 95,
+   "no_empty_within_reach_share": 0.8409,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 880,
+    "bottom_local:no_empty_within_reach": 74,
+    "lateral_local:no_empty_within_reach": 4639,
+    "top_local:empty_only_under_mask": 12
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 5,
+    "17-32": 262,
+    "33+": 1139,
+    "5-8": 38,
+    "9-16": 145,
+    "unreachable": 4016
+   },
+   "reasons": {
+    "empty_only_under_mask": 12,
+    "hard_or_bounds_only": 880,
+    "no_empty_within_reach": 4713
+   },
+   "required_straight_reach": {
+    "17-32": 4,
+    "9-16": 8,
+    "beyond_64": 5593
+   },
+   "residual_cell_samples": 5605,
+   "trace_sha256": "a04795a1cc2b33c15cb2892fbd1b2ec7e02266d19ed5ffb0f9dbdc96196d0044",
+   "trail_cell_samples": 24,
+   "trail_reasons": {
+    "empty_only_under_mask": 24
+   },
+   "unresolved_overlap_ticks": 22634,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D48-V60",
+   "chain_within_4_share": 0.0008,
+   "classifier_samples": 60,
+   "displaced": 80,
+   "final_physical_state_hash": "511a28b2617aca8c",
+   "floor_contact_tick": 56,
+   "lateral_share": 0.7186,
+   "masked_water_max": 112,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.8826,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 736,
+    "bottom_local:no_empty_within_reach": 200,
+    "lateral_local:no_empty_within_reach": 4505,
+    "top_local:no_empty_within_reach": 828
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 5,
+    "17-32": 170,
+    "33+": 1640,
+    "5-8": 28,
+    "9-16": 111,
+    "unreachable": 4315
+   },
+   "reasons": {
+    "hard_or_bounds_only": 736,
+    "no_empty_within_reach": 5533
+   },
+   "required_straight_reach": {
+    "17-32": 70,
+    "33+": 740,
+    "9-16": 25,
+    "beyond_64": 5434
+   },
+   "residual_cell_samples": 6269,
+   "trace_sha256": "868c76534597a6d53df0f6cea155be33ffb878ef8a73557a11af0148097660c7",
+   "trail_cell_samples": 24,
+   "trail_reasons": {
+    "no_empty_within_reach": 24
+   },
+   "unresolved_overlap_ticks": 25438,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D48-V60",
+   "chain_within_4_share": 0.0054,
+   "classifier_samples": 60,
+   "displaced": 269,
+   "final_physical_state_hash": "da3470306711614c",
+   "floor_contact_tick": 72,
+   "lateral_share": 0.8256,
+   "masked_water_max": 100,
+   "masked_water_p50": 95,
+   "no_empty_within_reach_share": 0.8748,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 676,
+    "bottom_local:no_empty_within_reach": 264,
+    "lateral_local:no_empty_within_reach": 4459,
+    "top_local:no_empty_within_reach": 2
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 29,
+    "17-32": 316,
+    "33+": 818,
+    "5-8": 117,
+    "9-16": 331,
+    "unreachable": 3790
+   },
+   "reasons": {
+    "hard_or_bounds_only": 676,
+    "no_empty_within_reach": 4725
+   },
+   "required_straight_reach": {
+    "33+": 1,
+    "9-16": 1,
+    "beyond_64": 5399
+   },
+   "residual_cell_samples": 5401,
+   "trace_sha256": "4de506b92d9c7c73e51f96073c7e02382f7d2a030b5286bfc3444d2438ca91f7",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 21749,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "G-D96-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 47,
+   "final_physical_state_hash": "27abfbfb8854472d",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.7131,
+   "masked_water_max": 113,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.863,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 72,
+    "lateral_local:no_empty_within_reach": 4721,
+    "top_local:empty_only_under_mask": 11,
+    "top_local:no_empty_within_reach": 920
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 18,
+    "33+": 55,
+    "5-8": 5,
+    "9-16": 20,
+    "unreachable": 6520
+   },
+   "reasons": {
+    "empty_only_under_mask": 11,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5713
+   },
+   "required_straight_reach": {
+    "33+": 24,
+    "9-16": 11,
+    "beyond_64": 6585
+   },
+   "residual_cell_samples": 6620,
+   "trace_sha256": "4ee91688efb57714b99d8505942ecd997e2ac077f9b4ca62498527426ec181f2",
+   "trail_cell_samples": 172,
+   "trail_reasons": {
+    "empty_only_under_mask": 28,
+    "no_empty_within_reach": 144
+   },
+   "unresolved_overlap_ticks": 27295,
+   "workers": 1
+  },
+  {
+   "arm": "CY3",
+   "case": "G-D96-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 47,
+   "final_physical_state_hash": "27abfbfb8854472d",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.7131,
+   "masked_water_max": 113,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.863,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 72,
+    "lateral_local:no_empty_within_reach": 4721,
+    "top_local:empty_only_under_mask": 11,
+    "top_local:no_empty_within_reach": 920
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 18,
+    "33+": 55,
+    "5-8": 5,
+    "9-16": 20,
+    "unreachable": 6520
+   },
+   "reasons": {
+    "empty_only_under_mask": 11,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5713
+   },
+   "required_straight_reach": {
+    "33+": 24,
+    "9-16": 11,
+    "beyond_64": 6585
+   },
+   "residual_cell_samples": 6620,
+   "trace_sha256": "4ee91688efb57714b99d8505942ecd997e2ac077f9b4ca62498527426ec181f2",
+   "trail_cell_samples": 172,
+   "trail_reasons": {
+    "empty_only_under_mask": 28,
+    "no_empty_within_reach": 144
+   },
+   "unresolved_overlap_ticks": 27295,
+   "workers": 4
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D96-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 46,
+   "final_physical_state_hash": "b9d9c3ab8d96b51b",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.713,
+   "masked_water_max": 113,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.8629,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 72,
+    "lateral_local:no_empty_within_reach": 4721,
+    "top_local:empty_only_under_mask": 12,
+    "top_local:no_empty_within_reach": 920
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 18,
+    "33+": 54,
+    "5-8": 6,
+    "9-16": 20,
+    "unreachable": 6521
+   },
+   "reasons": {
+    "empty_only_under_mask": 12,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5713
+   },
+   "required_straight_reach": {
+    "33+": 24,
+    "9-16": 12,
+    "beyond_64": 6585
+   },
+   "residual_cell_samples": 6621,
+   "trace_sha256": "b5cac399aefd2079abae81fd3c4075ccfa36200489dc950b47880397596cfc1c",
+   "trail_cell_samples": 172,
+   "trail_reasons": {
+    "empty_only_under_mask": 6,
+    "no_empty_within_reach": 166
+   },
+   "unresolved_overlap_ticks": 27297,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D96-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 46,
+   "final_physical_state_hash": "b9d9c3ab8d96b51b",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.713,
+   "masked_water_max": 113,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.8629,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 72,
+    "lateral_local:no_empty_within_reach": 4721,
+    "top_local:empty_only_under_mask": 12,
+    "top_local:no_empty_within_reach": 920
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 18,
+    "33+": 54,
+    "5-8": 6,
+    "9-16": 20,
+    "unreachable": 6521
+   },
+   "reasons": {
+    "empty_only_under_mask": 12,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5713
+   },
+   "required_straight_reach": {
+    "33+": 24,
+    "9-16": 12,
+    "beyond_64": 6585
+   },
+   "residual_cell_samples": 6621,
+   "trace_sha256": "b5cac399aefd2079abae81fd3c4075ccfa36200489dc950b47880397596cfc1c",
+   "trail_cell_samples": 172,
+   "trail_reasons": {
+    "empty_only_under_mask": 6,
+    "no_empty_within_reach": 166
+   },
+   "unresolved_overlap_ticks": 27297,
+   "workers": 4
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D96-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 50,
+   "final_physical_state_hash": "f24c4ac3b68dca3d",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.7132,
+   "masked_water_max": 112,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.8631,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 72,
+    "lateral_local:no_empty_within_reach": 4720,
+    "top_local:empty_only_under_mask": 10,
+    "top_local:no_empty_within_reach": 920
+   },
+   "peak_height": 5,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 46,
+    "33+": 53,
+    "5-8": 4,
+    "9-16": 20,
+    "unreachable": 6493
+   },
+   "reasons": {
+    "empty_only_under_mask": 10,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5712
+   },
+   "required_straight_reach": {
+    "17-32": 12,
+    "33+": 12,
+    "9-16": 10,
+    "beyond_64": 6584
+   },
+   "residual_cell_samples": 6618,
+   "trace_sha256": "47dc0e98b3bcc9ad3cfbdb857c4cd14c4b8662f62455af1f07c3be593c0c133b",
+   "trail_cell_samples": 172,
+   "trail_reasons": {
+    "empty_only_under_mask": 32,
+    "no_empty_within_reach": 140
+   },
+   "unresolved_overlap_ticks": 27288,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D96-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 50,
+   "final_physical_state_hash": "f24c4ac3b68dca3d",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.7132,
+   "masked_water_max": 112,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.8631,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 72,
+    "lateral_local:no_empty_within_reach": 4720,
+    "top_local:empty_only_under_mask": 10,
+    "top_local:no_empty_within_reach": 920
+   },
+   "peak_height": 5,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 46,
+    "33+": 53,
+    "5-8": 4,
+    "9-16": 20,
+    "unreachable": 6493
+   },
+   "reasons": {
+    "empty_only_under_mask": 10,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5712
+   },
+   "required_straight_reach": {
+    "17-32": 12,
+    "33+": 12,
+    "9-16": 10,
+    "beyond_64": 6584
+   },
+   "residual_cell_samples": 6618,
+   "trace_sha256": "47dc0e98b3bcc9ad3cfbdb857c4cd14c4b8662f62455af1f07c3be593c0c133b",
+   "trail_cell_samples": 172,
+   "trail_reasons": {
+    "empty_only_under_mask": 32,
+    "no_empty_within_reach": 140
+   },
+   "unresolved_overlap_ticks": 27288,
+   "workers": 4
+  },
+  {
+   "arm": "PF3",
+   "case": "G-D96-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 47,
+   "final_physical_state_hash": "e944b7349a445019",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.7131,
+   "masked_water_max": 112,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.863,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 68,
+    "lateral_local:no_empty_within_reach": 4720,
+    "top_local:empty_only_under_mask": 11,
+    "top_local:no_empty_within_reach": 924
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 18,
+    "33+": 56,
+    "5-8": 5,
+    "9-16": 20,
+    "unreachable": 6518
+   },
+   "reasons": {
+    "empty_only_under_mask": 11,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5712
+   },
+   "required_straight_reach": {
+    "33+": 28,
+    "9-16": 11,
+    "beyond_64": 6580
+   },
+   "residual_cell_samples": 6619,
+   "trace_sha256": "b18d4e45afc8b75d9a24ddc74e63dd88a0d00e83fd56bce4992c410879c736b2",
+   "trail_cell_samples": 172,
+   "trail_reasons": {
+    "empty_only_under_mask": 28,
+    "no_empty_within_reach": 144
+   },
+   "unresolved_overlap_ticks": 27294,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "G-D96-V360",
+   "chain_within_4_share": 0.0003,
+   "classifier_samples": 60,
+   "displaced": 47,
+   "final_physical_state_hash": "e944b7349a445019",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.7131,
+   "masked_water_max": 112,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.863,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 896,
+    "bottom_local:no_empty_within_reach": 68,
+    "lateral_local:no_empty_within_reach": 4720,
+    "top_local:empty_only_under_mask": 11,
+    "top_local:no_empty_within_reach": 924
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 18,
+    "33+": 56,
+    "5-8": 5,
+    "9-16": 20,
+    "unreachable": 6518
+   },
+   "reasons": {
+    "empty_only_under_mask": 11,
+    "hard_or_bounds_only": 896,
+    "no_empty_within_reach": 5712
+   },
+   "required_straight_reach": {
+    "33+": 28,
+    "9-16": 11,
+    "beyond_64": 6580
+   },
+   "residual_cell_samples": 6619,
+   "trace_sha256": "b18d4e45afc8b75d9a24ddc74e63dd88a0d00e83fd56bce4992c410879c736b2",
+   "trail_cell_samples": 172,
+   "trail_reasons": {
+    "empty_only_under_mask": 28,
+    "no_empty_within_reach": 144
+   },
+   "unresolved_overlap_ticks": 27294,
+   "workers": 4
+  },
+  {
+   "arm": "CY3",
+   "case": "G-D96-V60",
+   "chain_within_4_share": 0.0011,
+   "classifier_samples": 60,
+   "displaced": 86,
+   "final_physical_state_hash": "1bd62bfc2ac340e7",
+   "floor_contact_tick": 93,
+   "lateral_share": 0.7183,
+   "masked_water_max": 112,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.9055,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 592,
+    "bottom_local:no_empty_within_reach": 352,
+    "lateral_local:no_empty_within_reach": 4500,
+    "top_local:no_empty_within_reach": 821
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 7,
+    "17-32": 165,
+    "33+": 272,
+    "5-8": 35,
+    "9-16": 119,
+    "unreachable": 5667
+   },
+   "reasons": {
+    "hard_or_bounds_only": 592,
+    "no_empty_within_reach": 5673
+   },
+   "required_straight_reach": {
+    "17-32": 57,
+    "33+": 103,
+    "9-16": 30,
+    "beyond_64": 6075
+   },
+   "residual_cell_samples": 6265,
+   "trace_sha256": "ca8faa085c2aebaae2e5919dfeeb01e83163edfa93b98c43e3a1b2fcbf83370f",
+   "trail_cell_samples": 206,
+   "trail_reasons": {
+    "hard_or_bounds_only": 5,
+    "no_empty_within_reach": 201
+   },
+   "unresolved_overlap_ticks": 25851,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "G-D96-V60",
+   "chain_within_4_share": 0.0008,
+   "classifier_samples": 60,
+   "displaced": 73,
+   "final_physical_state_hash": "b6be60a6fad6af6d",
+   "floor_contact_tick": 89,
+   "lateral_share": 0.718,
+   "masked_water_max": 113,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.9031,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 608,
+    "bottom_local:no_empty_within_reach": 328,
+    "lateral_local:no_empty_within_reach": 4506,
+    "top_local:no_empty_within_reach": 834
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 5,
+    "17-32": 167,
+    "33+": 252,
+    "5-8": 30,
+    "9-16": 115,
+    "unreachable": 5707
+   },
+   "reasons": {
+    "hard_or_bounds_only": 608,
+    "no_empty_within_reach": 5668
+   },
+   "required_straight_reach": {
+    "17-32": 63,
+    "33+": 92,
+    "9-16": 38,
+    "beyond_64": 6083
+   },
+   "residual_cell_samples": 6276,
+   "trace_sha256": "dc7f9a27e1a5317ee9ce31e50dd1a8b8b4cce65787f014ba6e0191dc10cb6195",
+   "trail_cell_samples": 166,
+   "trail_reasons": {
+    "no_empty_within_reach": 166
+   },
+   "unresolved_overlap_ticks": 25877,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "G-D96-V60",
+   "chain_within_4_share": 0.0096,
+   "classifier_samples": 60,
+   "displaced": 616,
+   "final_physical_state_hash": "d0b49c9d199f8901",
+   "floor_contact_tick": 141,
+   "lateral_share": 0.8261,
+   "masked_water_max": 100,
+   "masked_water_p50": 95,
+   "no_empty_within_reach_share": 0.9269,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 396,
+    "bottom_local:no_empty_within_reach": 524,
+    "lateral_local:no_empty_within_reach": 4475,
+    "top_local:no_empty_within_reach": 22
+   },
+   "peak_height": 4,
+   "push_chain_length": {
+    "1-4": 52,
+    "17-32": 451,
+    "33+": 459,
+    "5-8": 175,
+    "9-16": 464,
+    "unreachable": 3816
+   },
+   "reasons": {
+    "hard_or_bounds_only": 396,
+    "no_empty_within_reach": 5021
+   },
+   "required_straight_reach": {
+    "17-32": 4,
+    "33+": 11,
+    "9-16": 1,
+    "beyond_64": 5401
+   },
+   "residual_cell_samples": 5417,
+   "trace_sha256": "1975fd161a58ac6af7217be79728bb9c4ac026b5fc4a5c11bd22e81fc2932a93",
+   "trail_cell_samples": 0,
+   "trail_reasons": {},
+   "unresolved_overlap_ticks": 21900,
+   "workers": 1
+  },
+  {
+   "arm": "PF3",
+   "case": "G-D96-V60",
+   "chain_within_4_share": 0.0027,
+   "classifier_samples": 60,
+   "displaced": 105,
+   "final_physical_state_hash": "752605dd39d09045",
+   "floor_contact_tick": 92,
+   "lateral_share": 0.7199,
+   "masked_water_max": 112,
+   "masked_water_p50": 112,
+   "no_empty_within_reach_share": 0.9055,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 592,
+    "bottom_local:no_empty_within_reach": 356,
+    "lateral_local:no_empty_within_reach": 4508,
+    "top_local:no_empty_within_reach": 806
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 17,
+    "17-32": 137,
+    "33+": 254,
+    "5-8": 46,
+    "9-16": 130,
+    "unreachable": 5678
+   },
+   "reasons": {
+    "hard_or_bounds_only": 592,
+    "no_empty_within_reach": 5670
+   },
+   "required_straight_reach": {
+    "17-32": 59,
+    "33+": 100,
+    "9-16": 21,
+    "beyond_64": 6082
+   },
+   "residual_cell_samples": 6262,
+   "trace_sha256": "dce63774965d43d1b030b65211229bf739351ae0a5ce6f3479db6f73ca4bd60a",
+   "trail_cell_samples": 118,
+   "trail_reasons": {
+    "no_empty_within_reach": 118
+   },
+   "unresolved_overlap_ticks": 25748,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "S-TALL",
+   "chain_within_4_share": 0.0,
+   "classifier_samples": 60,
+   "displaced": 28,
+   "final_physical_state_hash": "82a1654d010d58d8",
+   "floor_contact_tick": 17,
+   "lateral_share": 0.9169,
+   "masked_water_max": 97,
+   "masked_water_p50": 96,
+   "no_empty_within_reach_share": 0.9598,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 225,
+    "bottom_local:no_empty_within_reach": 12,
+    "lateral_local:no_empty_within_reach": 5130,
+    "top_local:no_empty_within_reach": 228
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "17-32": 886,
+    "33+": 1988,
+    "5-8": 10,
+    "9-16": 36,
+    "unreachable": 2675
+   },
+   "reasons": {
+    "hard_or_bounds_only": 225,
+    "no_empty_within_reach": 5370
+   },
+   "required_straight_reach": {
+    "17-32": 226,
+    "9-16": 2,
+    "beyond_64": 5367
+   },
+   "residual_cell_samples": 5595,
+   "trace_sha256": "f6a5920b36adbc7d559cdb243f302c16f19a7b80f30c3c03bf93d3a66cb2aead",
+   "trail_cell_samples": 12,
+   "trail_reasons": {
+    "no_empty_within_reach": 12
+   },
+   "unresolved_overlap_ticks": 22570,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "S-TALL",
+   "chain_within_4_share": 0.0004,
+   "classifier_samples": 60,
+   "displaced": 42,
+   "final_physical_state_hash": "f2b4759b499910bc",
+   "floor_contact_tick": 16,
+   "lateral_share": 0.94,
+   "masked_water_max": 94,
+   "masked_water_p50": 92,
+   "no_empty_within_reach_share": 0.9423,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 310,
+    "bottom_local:no_empty_within_reach": 12,
+    "lateral_local:no_empty_within_reach": 5047
+   },
+   "peak_height": 3,
+   "push_chain_length": {
+    "1-4": 2,
+    "17-32": 755,
+    "33+": 1932,
+    "5-8": 12,
+    "9-16": 48,
+    "unreachable": 2620
+   },
+   "reasons": {
+    "hard_or_bounds_only": 310,
+    "no_empty_within_reach": 5059
+   },
+   "required_straight_reach": {
+    "beyond_64": 5369
+   },
+   "residual_cell_samples": 5369,
+   "trace_sha256": "e5df77279c9610b28296607a5c90ba14c80b9d10969d5887d8799e3d9472cfb7",
+   "trail_cell_samples": 10,
+   "trail_reasons": {
+    "empty_only_under_mask": 10
+   },
+   "unresolved_overlap_ticks": 21656,
+   "workers": 1
+  },
+  {
+   "arm": "FM3",
+   "case": "S-WIDE",
+   "chain_within_4_share": 0.0009,
+   "classifier_samples": 60,
+   "displaced": 174,
+   "final_physical_state_hash": "79ec20e4e7b37e35",
+   "floor_contact_tick": 18,
+   "lateral_share": 0.2512,
+   "masked_water_max": 128,
+   "masked_water_p50": 128,
+   "no_empty_within_reach_share": 0.6433,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 2640,
+    "bottom_local:no_empty_within_reach": 210,
+    "lateral_local:no_empty_within_reach": 1888,
+    "top_local:empty_only_under_mask": 41,
+    "top_local:no_empty_within_reach": 2737
+   },
+   "peak_height": 5,
+   "push_chain_length": {
+    "1-4": 7,
+    "17-32": 43,
+    "33+": 1717,
+    "5-8": 21,
+    "9-16": 32,
+    "unreachable": 5696
+   },
+   "reasons": {
+    "empty_only_under_mask": 41,
+    "hard_or_bounds_only": 2640,
+    "no_empty_within_reach": 4835
+   },
+   "required_straight_reach": {
+    "17-32": 90,
+    "33+": 2688,
+    "beyond_64": 4738
+   },
+   "residual_cell_samples": 7516,
+   "trace_sha256": "79fefd1bdc79259c4912d75636de31d80ffee43947638ae8f8ce1a216ef798b1",
+   "trail_cell_samples": 147,
+   "trail_reasons": {
+    "empty_only_under_mask": 26,
+    "hard_or_bounds_only": 35,
+    "no_empty_within_reach": 86
+   },
+   "unresolved_overlap_ticks": 30771,
+   "workers": 1
+  },
+  {
+   "arm": "IN3",
+   "case": "S-WIDE",
+   "chain_within_4_share": 0.0015,
+   "classifier_samples": 60,
+   "displaced": 564,
+   "final_physical_state_hash": "1f536528d0738010",
+   "floor_contact_tick": 18,
+   "lateral_share": 0.3896,
+   "masked_water_max": 95,
+   "masked_water_p50": 79,
+   "no_empty_within_reach_share": 0.4342,
+   "normal_kind_reasons": {
+    "bottom_local:hard_or_bounds_only": 2640,
+    "bottom_local:no_empty_within_reach": 210,
+    "lateral_local:no_empty_within_reach": 1835,
+    "top_local:empty_only_under_mask": 25
+   },
+   "peak_height": 6,
+   "push_chain_length": {
+    "1-4": 7,
+    "17-32": 160,
+    "33+": 581,
+    "5-8": 43,
+    "9-16": 112,
+    "unreachable": 3807
+   },
+   "reasons": {
+    "empty_only_under_mask": 25,
+    "hard_or_bounds_only": 2640,
+    "no_empty_within_reach": 2045
+   },
+   "required_straight_reach": {
+    "17-32": 14,
+    "33+": 9,
+    "9-16": 2,
+    "beyond_64": 4685
+   },
+   "residual_cell_samples": 4710,
+   "trace_sha256": "bba291146bff38ebfc498243d1c7508036a7cfb6c09e24d8065a1aa835c81910",
+   "trail_cell_samples": 42,
+   "trail_reasons": {
+    "empty_only_under_mask": 42
+   },
+   "unresolved_overlap_ticks": 19090,
+   "workers": 1
+  }
+ ],
+ "schema": "water-contact-submerged-reduction-v1",
+ "stage": 2,
+ "status": "failed"
+}
