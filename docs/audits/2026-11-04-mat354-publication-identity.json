@@ -1,0 +1,24 @@
+{
+  "schema": "mat354.h1.publication-identity.v1",
+  "reason": "Direct shell git push lacks credentials; authenticated GitHub Git-data publication creates new commit metadata. Native source bytes and tree are identical, not reclassified.",
+  "local_source_commit": "ca11dd4f4a98e819ed043a19fd63bf2ac89810b1",
+  "published_source_commit": "16533ff81c561677308665357eb1d0d5f65e85bc",
+  "identical_source_tree": "c0545655f190f0c9e990010873d24b1e702385a5",
+  "identical_parent": "751edc0b495dc85484ad5509a7c95f863651c76b",
+  "identical_world_lf_sha256": "df0bb080084972c49ca400b7bfc6504f7ec27fa474112bc2bd56abe5d3d21539",
+  "immutable_historical_authority": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "qualified_local_head": "9d218bb179e72e9fa68b755d82680dbd739fb85e",
+  "qualified_local_tree": "d025ee050b8c782873161443428f804dd1622cfb",
+  "retained_prepublication_head": "2f13a126953ff745d793793f12783c387bfe19a0",
+  "retained_prepublication_tree": "d1dfa7ca55e9d924b5d1460ed99df3dc447a9619",
+  "rebound_paths": [
+    "docs/audits/2026-11-04-mat354-h1-preregistration.md",
+    "docs/audits/2026-11-04-mat354-h1-qualification.md",
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/operations/material-catalogue-shadow.md",
+    "materials/catalogue/h1-source-transition.json",
+    "native/tests/fixtures/material_liveness_h1_v1.json",
+    "tools/material_catalogue/h1_transition.py"
+  ],
+  "scope": "Published source anchor only; old/new World digests, all other protected sources, production delta, benchmark workloads, thresholds and original receipts remain unchanged. Published-source checks must run afresh; no receipt is relabelled."
+}

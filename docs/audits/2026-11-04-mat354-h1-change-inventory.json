@@ -1,0 +1,667 @@
+{
+  "schema": "mat354.h1.changed-path-purposes.v1",
+  "comparison_base": "751edc0b495dc85484ad5509a7c95f863651c76b",
+  "comparison_base_tree": "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6",
+  "identity_scope": "The resulting-head ledger identifies the actual Git commit/tree. This inventory intentionally contains no self-referential expected candidate hash.",
+  "historical_lock_modified": false,
+  "protected_production_paths": [
+    "native/src/world.cpp"
+  ],
+  "paths": [
+    {
+      "path": ".github/workflows/mat354-h1-runtime-publication.yml",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Explicit branch/request-leased candidate runtime build, complete compiled-input custody, native sanitizer gate, actual target-OS execution and established LFS/provenance publication."
+    },
+    {
+      "path": ".github/workflows/material-cooling-h1.yml",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Bounded actual Linux head/merge and Windows head native qualification with immutable source contexts and original artifacts."
+    },
+    {
+      "path": "docs/README.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Route readers to the bounded H1 qualification and preregistration records."
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Record the proposed one-source admission without changing the adopted catalogue architecture or authorizing migration."
+    },
+    {
+      "path": "docs/audits/2026-11-04-mat354-h1-change-inventory.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Exact changed-path purpose inventory; Git at the reported candidate head owns bytes and hashes, avoiding a self-referential source identity."
+    },
+    {
+      "path": "docs/audits/2026-11-04-mat354-h1-final-status.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Append dated resulting-head runtime, CI and independent disposition; keep original frozen admission record intact."
+    },
+    {
+      "path": "docs/audits/2026-11-04-mat354-h1-preregistration.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Frozen pre-run correctness/performance plan, unchanged baseline and scope/acceptance policy."
+    },
+    {
+      "path": "docs/audits/2026-11-04-mat354-h1-qualification.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Frozen build-admission record, source history, measured performance, actual execution boundaries, ownership and unresolved blockers."
+    },
+    {
+      "path": "docs/audits/2026-11-04-mat354-publication-identity.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Preserve original local qualification commit identities and exact public source-only tree/parent equivalence without relabeling receipts."
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/archive-only-inventory.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: archive-only-inventory.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/evidence-index.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: evidence-index.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/later-appendix-index.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: later-appendix-index.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/noncodec-original-files.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: noncodec-original-files.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p000/p000.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p000.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p000/p000.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p000.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p001/p001.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p001.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p001/p001.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p001.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p002/p002.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p002.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p002/p002.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p002.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p003/p003.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p003.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p003/p003.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p003.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p004/p004.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p004.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p004/p004.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p004.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p005/p005.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p005.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p005/p005.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p005.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p006/p006.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p006.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p006/p006.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p006.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p007/p007.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p007.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p007/p007.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p007.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.001.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.001.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.002.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.002.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.003.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.003.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.004.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.004.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.005.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.005.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.006.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.006.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.007.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.007.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.008.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.008.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p008/p008.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p008.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p009/p009.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p009.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p009/p009.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p009.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p010/p010.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p010.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p010/p010.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p010.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p011/p011.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p011.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p011/p011.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p011.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p012/p012.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p012.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p012/p012.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p012.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p013/p013.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p013.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p013/p013.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p013.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.001.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.001.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.002.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.002.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.003.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.003.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.004.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.004.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.005.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.005.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.006.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.006.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.007.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.007.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.008.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.008.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.009.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.009.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.010.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.010.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.011.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.011.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p014/p014.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p014.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p015/p015.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p015.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p015/p015.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p015.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p016/p016.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p016.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p016/p016.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p016.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p017/p017.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p017.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p017/p017.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p017.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p018/p018.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p018.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p018/p018.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p018.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p019/p019.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p019.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p019/p019.001.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p019.001.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p019/p019.002.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p019.002.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p019/p019.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p019.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p020/p020.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p020.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p020/p020.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p020.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p021/p021.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p021.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p021/p021.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p021.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p022/p022.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p022.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p022/p022.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p022.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p023/p023.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p023.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p023/p023.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p023.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p024/p024.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p024.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p024/p024.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p024.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p025/p025.000.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p025.000.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/packets/p025/p025.manifest.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: p025.manifest.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-source-index.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: textual-source-index.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-evidence/execution-audit/audit.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: audit.py"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-evidence/performance-audit/audit.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: audit.py"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-evidence/performance-audit/primary/performance-audit.md",
+      "category": "retained-evidence",
+      "purpose": "Unchanged textual independent audit or reproduction instructions accompanying raw evidence: performance-audit.md"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-evidence/performance-empty-supplement/analysis-1/repository-results-section.md",
+      "category": "retained-evidence",
+      "purpose": "Unchanged textual independent audit or reproduction instructions accompanying raw evidence: repository-results-section.md"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-evidence/performance-empty-supplement/analysis-1/supplement-report.md",
+      "category": "retained-evidence",
+      "purpose": "Unchanged textual independent audit or reproduction instructions accompanying raw evidence: supplement-report.md"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-evidence/performance-empty-supplement/reduce.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: reduce.py"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-evidence/performance-empty-supplement/run.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: run.py"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-evidence/sanitize-h1.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: sanitize-h1.py"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-independent-review/derive_causal_review.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: derive_causal_review.py"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-independent-review/derive_idle_supplement_review.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: derive_idle_supplement_review.py"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-independent-review/derive_performance_review.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: derive_performance_review.py"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/textual-sources/mat354-independent-review/local-evidence-v1-readback-addendum.json",
+      "category": "retained-evidence",
+      "purpose": "Immutable evidence transport manifest/index or unchanged original JSON audit; binds the identified raw packet and retained source/status facts: local-evidence-v1-readback-addendum.json"
+    },
+    {
+      "path": "docs/audits/mat354-h1-2026-11-04/verify_transport.py",
+      "category": "retained-evidence",
+      "purpose": "Unchanged transport/reproduction verification helper for lossless recovery and hash authentication: verify_transport.py"
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Identify the single existing H1 owner, current B disposition, preserved history and next integration constraints."
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Document historical-vs-H1 source authority and fresh receipt requirements without refreshing the lock."
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Keep Phase A evidence immutable and route the separately authorized correction to its own bounded lane."
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Register focused canonical H1 documentation in the existing retrieval corpus."
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Add focused H1 source/compatibility/performance evidence routes."
+    },
+    {
+      "path": "docs/reference/retrieval-questions-mat354-h1.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Six focused retrieval questions covering H1 scope, identities, rest/heat preservation and qualification gates."
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Report the proposed H1 implementation with mandatory adoption blockers and no merge/default-law claim."
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Describe the exact narrow coalesced cooling-deadline continuation and retirement contract."
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Separate restored H1 scheduling from unchanged H2 heat-reset and H3 liquid-rest laws."
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Source-matched candidate Windows runtime through Git LFS; actual source/build/execution identity recorded in companion provenance."
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Source-matched candidate Linux runtime through Git LFS; actual source/build/execution identity recorded in companion provenance."
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Exact Windows compiler/source/runtime/workflow/execution provenance for the candidate DLL, generated by the reviewed publisher."
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Exact Linux compiler/source/runtime/workflow/execution provenance for the candidate SO, generated by the reviewed publisher."
+    },
+    {
+      "path": "godot/tests/test_material_cooling_h1.gd",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Actual loaded GDExtension four-phase cooling/conversion, worker-state equality and hot180 retirement proof."
+    },
+    {
+      "path": "materials/catalogue/h1-source-transition.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Explicit one-path old/new source identity record, pinned original authority, source-only anchor and canonical admitted helper delta."
+    },
+    {
+      "path": "native/src/world.cpp",
+      "category": "protected-production",
+      "purpose": "Sole protected production edit: preserve strictly future legitimate MoltenGlass cooling/reset/conversion visits in the existing coalesced block-deadline helper; preserve thermal and generic rest laws."
+    },
+    {
+      "path": "native/tests/fixtures/material_liveness_h1_v1.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Registered small Phase A fixture reuse, deterministic controls and source-qualified H1 cases."
+    },
+    {
+      "path": "native/tests/test_mat354_h1.cpp",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Real World H1 regression, edit/mask/seam/region/deadline/save/worker fixtures and bounded benchmark observations."
+    },
+    {
+      "path": "tools/ci/mat354_h1_publish_request.json",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Explicit sequence2 authorization marker for only this source-leased H1 candidate runtime workflow; not adoption."
+    },
+    {
+      "path": "tools/ci/mat354_h1_runtime_dependencies.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Capture every emitted input for all fourteen original compiler translation units, preserve original code-generation argv, retain payloads and verify exact receipts."
+    },
+    {
+      "path": "tools/ci/mat354_h1_runtime_publication.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "H1-specific strict source/trace/runtime/custody profile around the unchanged existing publication engine."
+    },
+    {
+      "path": "tools/ci/test_mat354_h1_runtime_dependencies.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Positive and corruption tests for complete dependency streams, payloads, source, environment and invocation binding."
+    },
+    {
+      "path": "tools/ci/test_mat354_h1_runtime_publication.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Adversarial admission, complete native/Godot trace and actual command-path custody verification tests."
+    },
+    {
+      "path": "tools/material_catalogue/check_gdscript_shadow.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Require current source-qualified native parity receipt for fresh Godot shadow evidence; retain stale-identity refusal."
+    },
+    {
+      "path": "tools/material_catalogue/check_native_parity.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Fresh receipt schema2 inventories and authenticates the source-transition verifier and record."
+    },
+    {
+      "path": "tools/material_catalogue/compatibility.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Invoke the narrow H1 source authenticator while retaining all original legacy source locks and digest checks."
+    },
+    {
+      "path": "tools/material_catalogue/h1_transition.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Authenticate the historical lock and exact source-only H1 successor from independent Git objects; reject unknown, mixed, stale or broadened sources."
+    },
+    {
+      "path": "tools/material_catalogue/test_gdscript_shadow.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Verify fresh successor receipt binding without rewriting historical schema1 evidence."
+    },
+    {
+      "path": "tools/material_catalogue/test_h1_transition.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Positive and adversarial real-Git tests for the one-source admission and retained historical reproducibility."
+    },
+    {
+      "path": "tools/material_catalogue/test_parity_tools.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Verify schema2 input inventory, stale/missing/corrupt receipt refusal and parity scope."
+    },
+    {
+      "path": "tools/material_cooling_h1/qualify.py",
+      "category": "qualification-compatibility-documentation-or-runtime",
+      "purpose": "Run untouched-baseline/successor native correctness and frozen paired performance with retained raw dependencies, traces and source identities."
+    }
+  ]
+}

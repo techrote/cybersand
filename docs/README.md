@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+MoltenGlass H1: the separately authorized [#354-B candidate](operations/material-liveness-investigation.md#h1-candidate-and-adoption-boundary)
+retains finite cooling deadlines and proposes one exact protected-source
+transition. It is unmerged and not runtime-adopted; measured performance,
+cross-platform binaries, complete CI and independent review remain gates.
+Original #377 evidence and #371 authority are unchanged.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;

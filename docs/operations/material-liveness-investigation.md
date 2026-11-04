@@ -2,13 +2,45 @@
 title: Material liveness investigation and implementation admission
 status: Current
 document-kind: guide
-scope: MAT-AUTH-002 Phase A real-World evidence, reproduction and bounded future scheduler admission; production behavior remains unchanged
+scope: Immutable Phase A real-World evidence and separately authorized unmerged H1 cooling-deadline candidate with compatibility, performance and runtime adoption gates
 canonical-for: [material-liveness-investigation, material-liveness-reproduction, material-liveness-admission]
 last-reviewed: 2026-11-04
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/activity-dirty-regions-and-waking.md, material-catalogue-shadow.md, ../architecture/material-authoring-catalogue-plan.md, ../audits/2026-11-04-mat354-findings.md, ../audits/2026-11-04-mat354-correction-admission.md]
 ---
 
 # Material liveness investigation
+
+## H1 candidate and adoption boundary
+
+The owner has separately admitted #354-B after merged evidence-only #377.
+The candidate changes only `World::schedule_pending_reaction_wake` in protected
+`native/src/world.cpp`. Cold visible unchanged MoltenGlass retains its next
+period-four, stream-192 thermal visit, including countdown zero. Visible Fire,
+Lava or MoltenGlass with a countdown other than 180 retains the next existing-law
+reset; hot-at-180 fixed points add no thermal deadline. Spark is excluded.
+All eight visible neighbours are inspected despite a discovered pair reaction.
+The existing strictly-future lane calculation, minimum coalescing, source epoch,
+body masks and owner/barrier publication remain unchanged.
+
+The [candidate record](../audits/2026-11-04-mat354-h1-qualification.md) and
+[frozen benchmark registration](../audits/2026-11-04-mat354-h1-preregistration.md)
+separate executed evidence from missing gates. Expected finite cooling work can
+also admit movement opportunities; preserving the thermal formula does not
+establish identical historical trajectories. Hot pools and finished regions must
+return to idle. H2 heating and H3 Paste/Slush/Brine/Mercury rest remain controls.
+
+The [source guard](material-catalogue-shadow.md#h1-proposed-source-transition)
+preserves all 27 historical locks and admits only the pinned proposed H1 World
+source as a separate identity. Passing it is not performance approval, runtime
+execution or adoption. CYPS formats do not encode a kernel-source version;
+same-source continuation and historical-save import are distinct tests. No
+automatic source migration or cross-source strict replay is asserted.
+
+There is no H1-specific numeric performance limit in the existing advisory
+policy. Owner performance disposition, source-matched Windows/Linux runtimes,
+applicable complete CI and independent review remain adoption gates. Keep the
+implementation Draft whenever any required gate is incomplete. No merge or issue
+closure is authorized. The Phase A sections below retain their original scope.
 
 ## Which gates control Phase A integration?
 

@@ -249,6 +249,19 @@ def check(root: Path = ROOT, lock_path: Path | None = None,
         if _canonical(actual_lock[key]) != _canonical(expected_lock[key]):
             raise CompatibilityError(f"{path}: /{key}: differs from immutable {BASELINE}; "
                                      "do not refresh away a compatibility failure")
+    # One separately source-pinned H1 proposal. Load this checker beside the
+    # trusted guard, never from the candidate root supplied to --root. The
+    # historical lock/authentication above and import guard below remain intact.
+    import importlib.util
+    transition_spec = importlib.util.spec_from_file_location(
+        "mat354_h1_transition", Path(__file__).with_name("h1_transition.py"))
+    transition_module = importlib.util.module_from_spec(transition_spec)
+    transition_spec.loader.exec_module(transition_module)
+    try:
+        transition = transition_module.check_transition(
+            root, baseline_repository, baseline, SOURCE_ROLES, path)
+    except transition_module.TransitionError as exc:
+        raise CompatibilityError(str(exc)) from exc
     current = {}
     for source in actual_lock["source_locks"]:
         name = source["path"]
@@ -257,9 +270,12 @@ def check(root: Path = ROOT, lock_path: Path | None = None,
         except OSError as exc:
             raise CompatibilityError(f"{name}: required legacy consumer unavailable: {exc}") from exc
         actual = sha(current[name])
-        if actual != source["lf_sha256"]:
+        expected = (transition["source"]["successor_lf_sha256"]
+                    if transition is not None and name == transition_module.WORLD
+                    else source["lf_sha256"])
+        if actual != expected:
             raise CompatibilityError(f"{name}: LF source-byte drift ({source['role']}); "
-                                     f"expected {source['lf_sha256']}, got {actual}. "
+                                     f"expected {expected}, got {actual}. "
                                      "#353-A preserves this consumer; cutover/identity transition needs separate review")
     for tree in ("native", "godot"):
         for source in sorted((root / tree).rglob("*")):
@@ -272,6 +288,8 @@ def check(root: Path = ROOT, lock_path: Path | None = None,
                 raise CompatibilityError(f"{source.relative_to(root)}: production/native test imports shadow output; "
                                          "#353-A permits tooling consumers only")
     return {"status": "PASS", "baseline": BASELINE, "protected_sources": len(SOURCE_ROLES),
+            "source_authority": transition_module.TRANSITION_ID if transition else "historical-legacy",
+            "source_transition": transition,
             "catalogue_digest": catalogue_digest(current),
             "capability_digest": capability_digest(current["docs/reference/liquid-solver-capability-matrix.json"]),
             "fallback_slush_density": actual_lock["fallback_source_facts"]["slush_density"],

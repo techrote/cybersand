@@ -1,0 +1,1259 @@
+{
+  "codec": {
+    "file": {
+      "bytes": 6725,
+      "path": "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+      "sha256": "6410eba5d26ce1e94710213dc04477b4fd1a71c3728e7e7c97b8f5f27e150608"
+    },
+    "git_blob": "75f78b8de4b595e182b5536e687cb4f973b79e41",
+    "repository_path": "tools/material_liveness/pack.py",
+    "source_checkout": "/workspace/scratch/53686e322277/mat354-published-source-1",
+    "source_commit": "573ef13fee7797153722611fa81225ea03abfb57",
+    "source_tree": "75fa5dfc353c5e69d18bd6d08fe40f1bba807640"
+  },
+  "complete_local_archive_v1": {
+    "library_file_id": "libfile_eaa703d5e51481918721faca364bac58",
+    "materialized_readback": {
+      "original_receipt": {
+        "bytes": 516,
+        "path": "/workspace/scratch/53686e322277/mat354-library-readback-v1/mat354-h1-local-evidence-v1.readback.json",
+        "sha256": "42964eb6dab40b3818c8f7401875c7b420605ead9a48ca87fdddbf8355c40541"
+      },
+      "readback_zip": {
+        "bytes": 74588389,
+        "path": "/workspace/scratch/53686e322277/mat354-library-readback-v1/mat354-h1-local-evidence-v1.zip",
+        "sha256": "c3ae3024d85e8d152e5065ae38e5b2aa549c8167ad942cfaa2150b4b04bdbb82"
+      },
+      "relation": "Exact same archive container SHA-256 and byte length; no claim of new original members.",
+      "transport_manifest": {
+        "bytes": 439,
+        "path": "packets/p025/p025.manifest.json",
+        "sha256": "17ec4e18211bae574ea72f596e8614d6adffc5125ce22ef7c45b17ef512ecb7e"
+      }
+    },
+    "original_bytes": 604113219,
+    "original_files": 2473,
+    "owner_url": "https://chatgpt.com/library?file_id=libfile_eaa703d5e51481918721faca364bac58&account_id=personal",
+    "scope": "Original tested executables/build objects/source bundle and other completed local evidence. Snapshot predates analysis-1 and later final/hosted writes; later appendix index is explicit.",
+    "sha256": "c3ae3024d85e8d152e5065ae38e5b2aa549c8167ad942cfaa2150b4b04bdbb82",
+    "snapshot_utc": "2026-11-04T21:17:25.994407+00:00",
+    "zip_bytes": 74588389
+  },
+  "created_utc": "2026-11-04T21:31:26.993096+00:00",
+  "disposition": "TRANSPORT_VERIFIED_ONLY \u2014 original evidence outcomes unchanged; no qualification, adoption or merge decision",
+  "inventories": [
+    {
+      "bytes": 18681,
+      "path": "noncodec-original-files.json",
+      "sha256": "867593bc1c3024119408ab8d3e2ca87071573a758d5c2169c435382babbea4f5"
+    },
+    {
+      "bytes": 63054,
+      "path": "archive-only-inventory.json",
+      "sha256": "6c07288ace13e1703a863da9fee6aeeba90fd996dc4a2db6c07025cb425b4389"
+    },
+    {
+      "bytes": 6220,
+      "path": "later-appendix-index.json",
+      "sha256": "3ba547591f46392f10cd8ff7b9b74de34ec8f70d0911380b07a05087269a979c"
+    },
+    {
+      "bytes": 6204,
+      "path": "textual-source-index.json",
+      "sha256": "71d1c4ad7946f5c34e86a6a2cdeaa21110f8d3033c91f43d2dca6e1fcbbed992"
+    }
+  ],
+  "limitations": [
+    "Codec permits only original .json/.stdout/.stderr/.d members. Excluded files retain explicit archive/appendix custody.",
+    "A failed/truncated/skipped/diagnostic receipt is not repaired or promoted by lossless transport.",
+    "Unpack verifies bytes only. Execute the original source-qualified validation procedure separately when qualification is required."
+  ],
+  "original_workspace": "/workspace/scratch/53686e322277",
+  "packets": [
+    {
+      "archive_exact_members": 11,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 1662,
+        "path": "packets/p000/p000.manifest.json",
+        "sha256": "d6bdf3ed7aa8112ba07f6862aa8d09cfdf7b994d03b8feaefaa65d65ec9c7a49"
+      },
+      "member_inventory_sha256": "a395858e19409481d5273ca06d646e2fca06c18ed895a0b50bafd499d40412bc",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-evidence",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p000",
+        "--prefix",
+        "p000"
+      ],
+      "packet_id": "p000",
+      "raw_bytes": 674428,
+      "raw_files": 11,
+      "shards": 1,
+      "transport_bytes": 209326,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p000/p000.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 19,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 2482,
+        "path": "packets/p001/p001.manifest.json",
+        "sha256": "7c690ec16f9f94be7b3f2f40ab79b8f3aad7ffc2202dc3724b5845fecc2e4bf5"
+      },
+      "member_inventory_sha256": "ea51310cd423482d7afa1dbf98b1da2dcd8d80088f12f2c0afb7b637ada217e2",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/asan-ubsan-attempt-1",
+      "original_receipts": [
+        {
+          "mode": "asan-ubsan",
+          "name": "receipt.json",
+          "original_failure": "EvidenceError: sanitizer execution failed: full-h1-regressions; original stdout/stderr retained",
+          "original_status": "FAILED",
+          "schema": "mat354.h1.local-sanitizers.v1",
+          "source_identity": {
+            "commit": "ef1ff0b439cb75dc5deb2002d186882aea74ea7a",
+            "tree": "ae6560e813fb863990ad2d995eabc1317e82bac2"
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/asan-ubsan-attempt-1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/asan-ubsan-attempt-1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p001",
+        "--prefix",
+        "p001"
+      ],
+      "packet_id": "p001",
+      "raw_bytes": 44608,
+      "raw_files": 19,
+      "shards": 1,
+      "transport_bytes": 18388,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p001/p001.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/asan-ubsan-attempt-1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 31,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 4345,
+        "path": "packets/p002/p002.manifest.json",
+        "sha256": "cee14612605cc80de1098a111d4b8db42fa46589c9cbf0cf443773c5f0b507a6"
+      },
+      "member_inventory_sha256": "f01b0d6297d831733c4bd2e4ec44a1c548eb5cf108b4db4003ca78869030d0c9",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/asan-ubsan-attempt-2-no-leaks",
+      "original_receipts": [
+        {
+          "mode": "asan-ubsan",
+          "name": "receipt.json",
+          "original_status": "EXECUTED",
+          "schema": "mat354.h1.local-sanitizers.v1",
+          "source_identity": {
+            "commit": "9d218bb179e72e9fa68b755d82680dbd739fb85e",
+            "tree": "d025ee050b8c782873161443428f804dd1622cfb"
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/asan-ubsan-attempt-2-no-leaks",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/asan-ubsan-attempt-2-no-leaks",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p002",
+        "--prefix",
+        "p002"
+      ],
+      "packet_id": "p002",
+      "raw_bytes": 12159145,
+      "raw_files": 31,
+      "shards": 1,
+      "transport_bytes": 465758,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p002/p002.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/asan-ubsan-attempt-2-no-leaks"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 1,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 413,
+        "path": "packets/p003/p003.manifest.json",
+        "sha256": "43455797638d14e5504815d24c0afd18ecf5fcc3371e6d10d0fb82b8c2f90904"
+      },
+      "member_inventory_sha256": "99246a6244017cf55045e18092eeb1ed3fe5553b1ce41756ab2443a9a974b86b",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/core-build",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "receipt.json",
+          "original_status": "launch_error",
+          "schema": "execution-command-v1",
+          "source_identity": {
+            "commit": "ca11dd4f4a98e819ed043a19fd63bf2ac89810b1",
+            "tree": "c0545655f190f0c9e990010873d24b1e702385a5"
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/core-build",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/core-build",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p003",
+        "--prefix",
+        "p003"
+      ],
+      "packet_id": "p003",
+      "raw_bytes": 2096,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 1818,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p003/p003.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/core-build"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 2,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 538,
+        "path": "packets/p004/p004.manifest.json",
+        "sha256": "44eff1f8dab0ca90c6a553f4d032456fcb4244d429d24f568056b0e522816f45"
+      },
+      "member_inventory_sha256": "0acdb2b60cb0ae5395f854785da1e799f9c8352f8c19f458f5aa171d3de53a19",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/core-local",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-evidence/core-local",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/core-local",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p004",
+        "--prefix",
+        "p004"
+      ],
+      "packet_id": "p004",
+      "raw_bytes": 16233,
+      "raw_files": 2,
+      "shards": 1,
+      "transport_bytes": 10508,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p004/p004.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/core-local"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 6,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 1032,
+        "path": "packets/p005/p005.manifest.json",
+        "sha256": "440d84019bdbcb82f598b82bd75283e55857f6c9e3d87cd8700ce0c010be369e"
+      },
+      "member_inventory_sha256": "0b256c45b5581d92e5190828074229bda03310820648dc18d216f6d9021446c9",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-1",
+      "original_receipts": [
+        {
+          "mode": "correctness",
+          "name": "qualification.json",
+          "original_failure": "EvidenceError: process failed: h1-regress-r0; original raw files retained",
+          "original_status": "FAILED",
+          "schema": "mat354.h1.qualification.v1",
+          "source_identities": {
+            "baseline": {
+              "commit": "751edc0b495dc85484ad5509a7c95f863651c76b",
+              "tree": "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6",
+              "world_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+            },
+            "successor": {
+              "commit": "ef1ff0b439cb75dc5deb2002d186882aea74ea7a",
+              "tree": "ae6560e813fb863990ad2d995eabc1317e82bac2",
+              "world_lf_sha256": "df0bb080084972c49ca400b7bfc6504f7ec27fa474112bc2bd56abe5d3d21539"
+            }
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/correctness-attempt-1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p005",
+        "--prefix",
+        "p005"
+      ],
+      "packet_id": "p005",
+      "raw_bytes": 86964,
+      "raw_files": 6,
+      "shards": 1,
+      "transport_bytes": 20659,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p005/p005.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/correctness-attempt-1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 15,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 1983,
+        "path": "packets/p006/p006.manifest.json",
+        "sha256": "540ba5e653febeda563dcdd98b8a6b980efaa0ac3a883568e52905baa9fc57de"
+      },
+      "member_inventory_sha256": "dc7faec77466ea43d3053ed135d9e64fce9c5f714403fba0710c7e04f117abf8",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-1/baseline-build",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-evidence/correctness-attempt-1/baseline-build",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-1/baseline-build",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p006",
+        "--prefix",
+        "p006"
+      ],
+      "packet_id": "p006",
+      "raw_bytes": 23883,
+      "raw_files": 15,
+      "shards": 1,
+      "transport_bytes": 10767,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p006/p006.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/correctness-attempt-1/baseline-build"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 15,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 1983,
+        "path": "packets/p007/p007.manifest.json",
+        "sha256": "c3e800032ad30fda6059a3500856a4236ef29a24ac8398511d2b3e22b849fa63"
+      },
+      "member_inventory_sha256": "980fcbdbfae76372b24f9f52ad396895b27690167f05c4b04bae2a6d1c2c4419",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-1/successor-build",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-evidence/correctness-attempt-1/successor-build",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-1/successor-build",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p007",
+        "--prefix",
+        "p007"
+      ],
+      "packet_id": "p007",
+      "raw_bytes": 24382,
+      "raw_files": 15,
+      "shards": 1,
+      "transport_bytes": 10787,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p007/p007.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/correctness-attempt-1/successor-build"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 759,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 127149,
+        "path": "packets/p008/p008.manifest.json",
+        "sha256": "2a682305cf636d1f70b3eef8f35e48c4c8b3371d284bf02046cf577eec79cf75"
+      },
+      "member_inventory_sha256": "e9cbc715664d39c89996b5228b94365c9c438d73cfa8a8bd8a0a0ee296d47bf9",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-2",
+      "original_receipts": [
+        {
+          "mode": "correctness",
+          "name": "qualification.json",
+          "original_status": "EXECUTED",
+          "schema": "mat354.h1.qualification.v1",
+          "source_identities": {
+            "baseline": {
+              "commit": "751edc0b495dc85484ad5509a7c95f863651c76b",
+              "tree": "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6",
+              "world_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+            },
+            "successor": {
+              "commit": "9d218bb179e72e9fa68b755d82680dbd739fb85e",
+              "tree": "d025ee050b8c782873161443428f804dd1622cfb",
+              "world_lf_sha256": "df0bb080084972c49ca400b7bfc6504f7ec27fa474112bc2bd56abe5d3d21539"
+            }
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/correctness-attempt-2",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-2",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p008",
+        "--prefix",
+        "p008"
+      ],
+      "packet_id": "p008",
+      "raw_bytes": 89440675,
+      "raw_files": 759,
+      "shards": 9,
+      "transport_bytes": 4287346,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p008/p008.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/correctness-attempt-2"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 15,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 1983,
+        "path": "packets/p009/p009.manifest.json",
+        "sha256": "fd7a1ca7838007c450d624847d769e8a00a8ff9148b3f113a84f0bbb9e0e2a79"
+      },
+      "member_inventory_sha256": "165c3aef14bd2b74693c6c215136b3d244e192a603a9508d5081d85a1335ce6b",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-2/baseline-build",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-evidence/correctness-attempt-2/baseline-build",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-2/baseline-build",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p009",
+        "--prefix",
+        "p009"
+      ],
+      "packet_id": "p009",
+      "raw_bytes": 23889,
+      "raw_files": 15,
+      "shards": 1,
+      "transport_bytes": 10775,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p009/p009.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/correctness-attempt-2/baseline-build"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 15,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 1983,
+        "path": "packets/p010/p010.manifest.json",
+        "sha256": "1a6c48bd1df6637947e5464c84136e6740881c284c63b432b2cc97943b43168e"
+      },
+      "member_inventory_sha256": "c2832fedc7911dda122a261ddf4e8ea369c3aed688f2893387c9772938ac1e72",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-2/successor-build",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-evidence/correctness-attempt-2/successor-build",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/correctness-attempt-2/successor-build",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p010",
+        "--prefix",
+        "p010"
+      ],
+      "packet_id": "p010",
+      "raw_bytes": 24521,
+      "raw_files": 15,
+      "shards": 1,
+      "transport_bytes": 10791,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p010/p010.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/correctness-attempt-2/successor-build"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 1,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 423,
+        "path": "packets/p011/p011.manifest.json",
+        "sha256": "b3e8fb1bcd3b6edd0a3869371ce1d4da67fea5b256441557d683376ebf608ef0"
+      },
+      "member_inventory_sha256": "620d3abb0f7b50d3712f5a7d17619f73283652f7f9c23d7d569f906e36465550",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/execution-audit",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "execution-audit.json",
+          "original_status": "PASS_WITH_EXPLICIT_SCOPE_LIMITS",
+          "schema": "mat354.h1.execution-audit.v1"
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/execution-audit",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/execution-audit",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p011",
+        "--prefix",
+        "p011"
+      ],
+      "packet_id": "p011",
+      "raw_bytes": 22375,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 7621,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p011/p011.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/execution-audit"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 5,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 905,
+        "path": "packets/p012/p012.manifest.json",
+        "sha256": "50fe208952f2441cdec14e47b8e31659032331a370c7af9808852d6de8e05a96"
+      },
+      "member_inventory_sha256": "f720389aeebcea4ec2209feed5741eae419d0be005f60d3e0479b70e196d56bd",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/godot-h1-attempt-1",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "receipt.json",
+          "original_status": "EXECUTED",
+          "schema": "mat354.h1.local-godot.v1"
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/godot-h1-attempt-1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/godot-h1-attempt-1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p012",
+        "--prefix",
+        "p012"
+      ],
+      "packet_id": "p012",
+      "raw_bytes": 189965,
+      "raw_files": 5,
+      "shards": 1,
+      "transport_bytes": 62247,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p012/p012.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/godot-h1-attempt-1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 8,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 1209,
+        "path": "packets/p013/p013.manifest.json",
+        "sha256": "bad448c6311fa2f326386a692cdf2152364a9db27c4e2e8abd59a76992c8a277"
+      },
+      "member_inventory_sha256": "4544d631beb49470287e909243d5a5c6e1a7d48e61650bbd32d0bb08a6594745",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/h1-diagnostic-setupfix-1",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "diagnostic.json",
+          "original_status": "UNCOMMITTED_DIAGNOSTIC_EXECUTED",
+          "schema": "mat354.h1.diagnostic.v1"
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/h1-diagnostic-setupfix-1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/h1-diagnostic-setupfix-1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p013",
+        "--prefix",
+        "p013"
+      ],
+      "packet_id": "p013",
+      "raw_bytes": 11373136,
+      "raw_files": 8,
+      "shards": 1,
+      "transport_bytes": 408383,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p013/p013.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/h1-diagnostic-setupfix-1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 1011,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 136469,
+        "path": "packets/p014/p014.manifest.json",
+        "sha256": "e17a905abd219ed87fd74e91863b8f264563c3b9b3db9f4115e2dd913f431168"
+      },
+      "member_inventory_sha256": "3b47f60f64fcc7aae25e1aa44d264ebc0101a2fda6b7b1e34ff5292451514dc3",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/performance-attempt-1",
+      "original_receipts": [
+        {
+          "mode": "performance",
+          "name": "qualification.json",
+          "original_status": "EXECUTED",
+          "schema": "mat354.h1.qualification.v1",
+          "source_identities": {
+            "baseline": {
+              "commit": "751edc0b495dc85484ad5509a7c95f863651c76b",
+              "tree": "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6",
+              "world_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+            },
+            "successor": {
+              "commit": "9d218bb179e72e9fa68b755d82680dbd739fb85e",
+              "tree": "d025ee050b8c782873161443428f804dd1622cfb",
+              "world_lf_sha256": "df0bb080084972c49ca400b7bfc6504f7ec27fa474112bc2bd56abe5d3d21539"
+            }
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/performance-attempt-1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/performance-attempt-1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p014",
+        "--prefix",
+        "p014"
+      ],
+      "packet_id": "p014",
+      "raw_bytes": 142002682,
+      "raw_files": 1011,
+      "shards": 12,
+      "transport_bytes": 6277058,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p014/p014.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/performance-attempt-1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 1,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 434,
+        "path": "packets/p015/p015.manifest.json",
+        "sha256": "58d5dec02d1dc7cff26b35a4e5b116394e082ee3160858c9be88824452dc8e90"
+      },
+      "member_inventory_sha256": "81d4f09beabb6a341d6e3e4de63e0e52d1e2f0c92a450b6db588fd7f13021b38",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/performance-audit",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-evidence/performance-audit",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/performance-audit",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p015",
+        "--prefix",
+        "p015"
+      ],
+      "packet_id": "p015",
+      "raw_bytes": 8338,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 3540,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p015/p015.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/performance-audit"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 1,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 431,
+        "path": "packets/p016/p016.manifest.json",
+        "sha256": "aabf0d1ef6c8afb90aba287a06e024b0ae0ecd85d6e5f501512af9a262177281"
+      },
+      "member_inventory_sha256": "2846ae0887876be7c763a8487eee78635b184d5f04a7c7278b9a72e4d7e7f522",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/performance-audit/primary",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "performance-audit.json",
+          "original_status": "EXECUTION_AND_BOUNDED_WORK_VERIFIED_PERFORMANCE_DISPOSITION_PENDING",
+          "schema": "mat354.h1.performance-audit.v1",
+          "source_identities": {
+            "baseline": {
+              "commit": "751edc0b495dc85484ad5509a7c95f863651c76b",
+              "tree": "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6",
+              "world_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+            },
+            "successor": {
+              "commit": "9d218bb179e72e9fa68b755d82680dbd739fb85e",
+              "tree": "d025ee050b8c782873161443428f804dd1622cfb",
+              "world_lf_sha256": "df0bb080084972c49ca400b7bfc6504f7ec27fa474112bc2bd56abe5d3d21539"
+            }
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/performance-audit/primary",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/performance-audit/primary",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p016",
+        "--prefix",
+        "p016"
+      ],
+      "packet_id": "p016",
+      "raw_bytes": 3301591,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 371501,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p016/p016.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/performance-audit/primary"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 6,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 1015,
+        "path": "packets/p017/p017.manifest.json",
+        "sha256": "374d91057192a4634fcb21328fdcbcf682e63927a6463e3b813b49dc07fe48b4"
+      },
+      "member_inventory_sha256": "2d3268439e716da6b056d993abdc4a69397a53358ccd2152a5e5d4a0a7526579",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-evidence/performance-empty-supplement",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p017",
+        "--prefix",
+        "p017"
+      ],
+      "packet_id": "p017",
+      "raw_bytes": 10714,
+      "raw_files": 6,
+      "shards": 1,
+      "transport_bytes": 8866,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p017/p017.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/performance-empty-supplement"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 0,
+      "later_or_changed_members": 1,
+      "manifest": {
+        "bytes": 427,
+        "path": "packets/p018/p018.manifest.json",
+        "sha256": "55654f2ef9a5b6f42abcdadd8a8d0bba00a31cebacecbe8c16b7735534b84015"
+      },
+      "member_inventory_sha256": "bb17ca2a98e2b9a895a9fae3496af08944b24fd6b75fa2f409d721783ea00151",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement/analysis-1",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "supplement-audit.json",
+          "original_status": "EXECUTION_VERIFIED_PERSISTENT_WRAP_COST_REQUIRES_DISPOSITION",
+          "schema": "mat354.h1.empty-supplement-audit.v1",
+          "source_identities": {
+            "baseline": {
+              "commit": "751edc0b495dc85484ad5509a7c95f863651c76b",
+              "tree": "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6",
+              "world_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+            },
+            "successor": {
+              "commit": "9d218bb179e72e9fa68b755d82680dbd739fb85e",
+              "tree": "d025ee050b8c782873161443428f804dd1622cfb",
+              "world_lf_sha256": "df0bb080084972c49ca400b7bfc6504f7ec27fa474112bc2bd56abe5d3d21539"
+            }
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/performance-empty-supplement/analysis-1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement/analysis-1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p018",
+        "--prefix",
+        "p018"
+      ],
+      "packet_id": "p018",
+      "raw_bytes": 362317,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 55303,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p018/p018.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/performance-empty-supplement/analysis-1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 241,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 32017,
+        "path": "packets/p019/p019.manifest.json",
+        "sha256": "fb9b005a45202a13a8dcc04d93dbba7f5d5c76ad3007c432720b0d9a0a8ef9fa"
+      },
+      "member_inventory_sha256": "189bfbed58452f966e8f748d6b6a3b2af6b74a73fba4f7714b7d04b8d464ab72",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement/attempt-1",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "supplement.json",
+          "original_status": "EXECUTED_PERFORMANCE_DISPOSITION_PENDING",
+          "schema": "mat354.h1.empty-performance-supplement.v1",
+          "source_identities": {
+            "baseline": {
+              "commit": "751edc0b495dc85484ad5509a7c95f863651c76b",
+              "tree": "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6",
+              "world_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+            },
+            "successor": {
+              "commit": "9d218bb179e72e9fa68b755d82680dbd739fb85e",
+              "tree": "d025ee050b8c782873161443428f804dd1622cfb",
+              "world_lf_sha256": "df0bb080084972c49ca400b7bfc6504f7ec27fa474112bc2bd56abe5d3d21539"
+            }
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/performance-empty-supplement/attempt-1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/performance-empty-supplement/attempt-1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p019",
+        "--prefix",
+        "p019"
+      ],
+      "packet_id": "p019",
+      "raw_bytes": 34705117,
+      "raw_files": 241,
+      "shards": 3,
+      "transport_bytes": 1343874,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p019/p019.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/performance-empty-supplement/attempt-1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 1,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 413,
+        "path": "packets/p020/p020.manifest.json",
+        "sha256": "36048e9590eb014376db39c5796205f0b469872e1619daa573a03326f570149c"
+      },
+      "member_inventory_sha256": "425af6dc7ba753ea0afa3f44c8db4be6d161d436982a9d4ad676c853747a8746",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/policy-checks",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "receipt.json",
+          "original_status": null,
+          "schema": null
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/policy-checks",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/policy-checks",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p020",
+        "--prefix",
+        "p020"
+      ],
+      "packet_id": "p020",
+      "raw_bytes": 2498,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 1646,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p020/p020.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/policy-checks"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 1,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 413,
+        "path": "packets/p021/p021.manifest.json",
+        "sha256": "d9a17013ca3c90c50fb09f6e8f17d50f17ef3e54b385ca16641e1ad9710e132c"
+      },
+      "member_inventory_sha256": "4949b3d393862c5992d63a4f1bcd4b5648b6e155b4c18ae95b868c549eb83c21",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/source-custody",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "receipt.json",
+          "original_status": null,
+          "schema": "mat354.h1.local-history-custody.v1"
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/source-custody",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/source-custody",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p021",
+        "--prefix",
+        "p021"
+      ],
+      "packet_id": "p021",
+      "raw_bytes": 1128,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 1486,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p021/p021.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/source-custody"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 31,
+      "later_or_changed_members": 0,
+      "manifest": {
+        "bytes": 4345,
+        "path": "packets/p022/p022.manifest.json",
+        "sha256": "12470673abb1e6fa0fe5cc8f63b3460605cf22321a08f3b7c9c8e5ab8c0342af"
+      },
+      "member_inventory_sha256": "4408c8d92eb087c5d64d341e2ab6d6670820c599555a25cc230a4fdffbcd3ef0",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-evidence/tsan-attempt-1",
+      "original_receipts": [
+        {
+          "mode": "tsan",
+          "name": "receipt.json",
+          "original_status": "EXECUTED",
+          "schema": "mat354.h1.local-sanitizers.v1",
+          "source_identity": {
+            "commit": "9d218bb179e72e9fa68b755d82680dbd739fb85e",
+            "tree": "d025ee050b8c782873161443428f804dd1622cfb"
+          }
+        }
+      ],
+      "original_relative_directory": "mat354-evidence/tsan-attempt-1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-evidence/tsan-attempt-1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p022",
+        "--prefix",
+        "p022"
+      ],
+      "packet_id": "p022",
+      "raw_bytes": 12157150,
+      "raw_files": 31,
+      "shards": 1,
+      "transport_bytes": 465198,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p022/p022.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-evidence/tsan-attempt-1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 0,
+      "later_or_changed_members": 1,
+      "manifest": {
+        "bytes": 413,
+        "path": "packets/p023/p023.manifest.json",
+        "sha256": "c8686691ff77233bc94359715057d47c6160349d5ca1049a2f5e85251d835e02"
+      },
+      "member_inventory_sha256": "8c008ecbc2686fbc6e9fcb0696a1504dad81a0a90f56e5cc05339a9fa1f21e8a",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-h1-compatibility-preliminary",
+      "original_receipts": [
+        {
+          "mode": null,
+          "name": "receipt.json",
+          "original_status": null,
+          "schema": null
+        }
+      ],
+      "original_relative_directory": "mat354-h1-compatibility-preliminary",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-h1-compatibility-preliminary",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p023",
+        "--prefix",
+        "p023"
+      ],
+      "packet_id": "p023",
+      "raw_bytes": 1665,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 1614,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p023/p023.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-h1-compatibility-preliminary"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 11,
+      "later_or_changed_members": 2,
+      "manifest": {
+        "bytes": 2021,
+        "path": "packets/p024/p024.manifest.json",
+        "sha256": "f0559b2d4076df4497c91bcab639a88c1d354d9bb2d994bcbae6653f9bfbe82c"
+      },
+      "member_inventory_sha256": "71bef1e0e74a20718ebf281b22709da8d0b2e6e6435cd4a835f3da9be69ec76c",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-independent-review",
+      "original_receipts": [],
+      "original_relative_directory": "mat354-independent-review",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-independent-review",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p024",
+        "--prefix",
+        "p024"
+      ],
+      "packet_id": "p024",
+      "raw_bytes": 1435419,
+      "raw_files": 13,
+      "shards": 1,
+      "transport_bytes": 216185,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p024/p024.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-independent-review"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    },
+    {
+      "archive_exact_members": 0,
+      "later_or_changed_members": 1,
+      "manifest": {
+        "bytes": 439,
+        "path": "packets/p025/p025.manifest.json",
+        "sha256": "17ec4e18211bae574ea72f596e8614d6adffc5125ce22ef7c45b17ef512ecb7e"
+      },
+      "member_inventory_sha256": "3f1d90097ee7eb16db75490b952b7270312bfb2b52cc2531d4b1abfc7e048dfc",
+      "original_directory": "/workspace/scratch/53686e322277/mat354-library-readback-v1",
+      "original_receipts": [
+        {
+          "name": "mat354-h1-local-evidence-v1.readback.json",
+          "original_exact_archive_match": true,
+          "schema": "mat354.h1.library-readback.v1"
+        }
+      ],
+      "original_relative_directory": "mat354-library-readback-v1",
+      "pack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "pack",
+        "/workspace/scratch/53686e322277/mat354-library-readback-v1",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p025",
+        "--prefix",
+        "p025"
+      ],
+      "packet_id": "p025",
+      "raw_bytes": 516,
+      "raw_files": 1,
+      "shards": 1,
+      "transport_bytes": 1064,
+      "unpack_command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/53686e322277/mat354-published-source-1/tools/material_liveness/pack.py",
+        "unpack",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/publish/packets/p025/p025.manifest.json",
+        "/workspace/scratch/53686e322277/mat354-public-evidence-prep/verified/mat354-library-readback-v1"
+      ],
+      "verification": "ALL_MEMBERS_MATCH_CAPTURED_AND_CURRENT_ORIGINAL_BYTES"
+    }
+  ],
+  "readback_appendix": {
+    "independent_readback_addendum": {
+      "bytes": 1250,
+      "path": "textual-sources/mat354-independent-review/local-evidence-v1-readback-addendum.json",
+      "sha256": "d051acf1e2e8002d7a007efe3efe0aae60f4163880ff00e0d77dcc76796136b3"
+    },
+    "note": "Unpublished transport metadata appended only; all preceding packets and original evidence bytes remain unchanged.",
+    "preceding_index": {
+      "bytes": 54714,
+      "path": "/workspace/scratch/53686e322277/mat354-public-evidence-prep/operations/pre-readback-metadata/evidence-index.json",
+      "sha256": "e580e0ba5a7ded77d33439dc713fa99dc91c058627488fa746f6478dbb27dcac"
+    }
+  },
+  "reproduce_all": [
+    "python verify_transport.py --index evidence-index.json --codec /PATH/TO/cybersand/tools/material_liveness/pack.py --destination /NEW/EMPTY/verification-root"
+  ],
+  "schema": "mat354.h1.public-evidence-transport-index.v1",
+  "selection": {
+    "direct_roots": [
+      "mat354-evidence",
+      "mat354-independent-review",
+      "mat354-h1-compatibility-preliminary",
+      "mat354-library-readback-v1"
+    ],
+    "excluded_in_progress_roots": [
+      "mat354-evidence/publication",
+      "mat354-evidence/public-head-custody-1",
+      "mat354-evidence/public-head-build-1",
+      "mat354-publication-prep",
+      "mat354-hosted-*",
+      "mat354-independent-review/tmp"
+    ],
+    "recursive_roots": [
+      "mat354-evidence/correctness-attempt-1",
+      "mat354-evidence/correctness-attempt-2",
+      "mat354-evidence/asan-ubsan-attempt-1",
+      "mat354-evidence/asan-ubsan-attempt-2-no-leaks",
+      "mat354-evidence/tsan-attempt-1",
+      "mat354-evidence/performance-attempt-1",
+      "mat354-evidence/performance-empty-supplement",
+      "mat354-evidence/execution-audit",
+      "mat354-evidence/performance-audit",
+      "mat354-evidence/h1-diagnostic-setupfix-1",
+      "mat354-evidence/source-custody",
+      "mat354-evidence/policy-checks",
+      "mat354-evidence/core-local",
+      "mat354-evidence/core-build",
+      "mat354-evidence/godot-h1-attempt-1"
+    ]
+  },
+  "source_root_mapping": "Each packet original_relative_directory restores underneath the chosen new verification root. Absolute paths inside original receipts remain byte-for-byte unchanged; resolve them through this mapping rather than editing receipts.",
+  "totals": {
+    "archive_exact_raw_members": 2207,
+    "later_or_changed_raw_members": 5,
+    "packet_transport_bytes": 14282509,
+    "packets": 26,
+    "raw_bytes": 308095435,
+    "raw_files": 2212,
+    "shards": 47,
+    "textual_bytes": 145571,
+    "textual_files": 12
+  },
+  "verification_helper": {
+    "bytes": 3114,
+    "path": "verify_transport.py",
+    "sha256": "573a785edb08a2591bdbdb60df38180d2c6ce445ce03852f5b275ce7524c63a4"
+  }
+}

@@ -646,6 +646,15 @@ law, production ID, runtime pack, hot reload or later implementation stage.
 
 ## 14. Material liveness Phase A and production admission — 2026-11-04
 
+**Later H1 admission:** after #377 merged, the owner authorized #354-B's narrow
+cooling-deadline patch and a reviewed one-source transition. The
+[candidate boundary](../operations/material-liveness-investigation.md#h1-candidate-and-adoption-boundary)
+supersedes this section's earlier implementation hold, without changing H2/H3,
+the original lock, consumer migration or other physics ownership. It grants no
+runtime adoption or merge. Numerical H1 performance acceptance needs an owner
+disposition after measurements; exact platform/CI evidence and final independent
+review remain mandatory. The original Phase A design below stays historical.
+
 **Current foundation; bounded investigation only.** Accepted main
 `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` includes merged #371. The shadow
 compiler remains unconsumed by production; legacy native/fallback definitions

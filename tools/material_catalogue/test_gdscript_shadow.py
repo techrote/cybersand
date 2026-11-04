@@ -22,8 +22,9 @@ class GodotReceiptGuards(unittest.TestCase):
         self.root = Path(temporary.name)
         self.protected = {"unit_test_only": True}
         self.receipt = {
-            "schema_id": "cybersand.material-catalogue.native-parity", "schema_version": 1,
+            "schema_id": "cybersand.material-catalogue.native-parity", "schema_version": 2,
             "status": "PASS", "source_commit": check.compatibility.BASELINE,
+            "source_commit_role": "immutable-metadata-baseline-not-candidate-head",
             "protected_sources": self.protected, "native_authored_compiled_shadow_facts_equal": True,
             "world_executed": False, "physics_qualification": False, "production_cutover": False,
         }
@@ -51,7 +52,7 @@ class GodotReceiptGuards(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "inspection.json.*sha256"):
             self.validate()
         self.receipt["inputs"] = [row for row in self.receipt["inputs"] if row["path"] != str(path.relative_to(self.root))]
-        with self.assertRaisesRegex(ValueError, "complete 5-path custody inventory"):
+        with self.assertRaisesRegex(ValueError, "complete 6-path custody inventory"):
             self.validate()
 
     def test_each_tool_and_input_is_mandatory(self):
@@ -89,6 +90,40 @@ class GodotReceiptGuards(unittest.TestCase):
         (self.root / check.RECEIPT_PATHS["tool_sources"][0]).write_text("changed oracle")
         with self.assertRaisesRegex(ValueError, "native_oracle.cpp"):
             self.validate()
+
+    def test_h1_checker_and_source_record_are_each_required_and_current(self):
+        for group, name in (
+                ("tool_sources", "tools/material_catalogue/h1_transition.py"),
+                ("inputs", "materials/catalogue/h1-source-transition.json")):
+            with self.subTest(path=name):
+                original = (self.root / name).read_bytes()
+                (self.root / name).write_bytes(original + b"stale")
+                with self.assertRaisesRegex(ValueError, "native receipt.*(sha256|bytes)"):
+                    self.validate()
+                changed = copy.deepcopy(self.receipt)
+                changed[group] = [row for row in changed[group] if row["path"] != name]
+                with self.assertRaisesRegex(ValueError, "complete.*custody inventory"):
+                    self.validate(changed)
+                (self.root / name).write_bytes(original)
+
+    def test_version1_receipts_are_historical_not_implicitly_upgraded(self):
+        changed = copy.deepcopy(self.receipt)
+        changed["schema_version"] = 1
+        changed.pop("source_commit_role")
+        changed["tool_sources"] = [row for row in changed["tool_sources"]
+                                   if row["path"] != "tools/material_catalogue/h1_transition.py"]
+        changed["inputs"] = [row for row in changed["inputs"]
+                             if row["path"] != "materials/catalogue/h1-source-transition.json"]
+        self.assertEqual(len(changed["tool_sources"]), 3)
+        self.assertEqual(len(changed["inputs"]), 5)
+        with self.assertRaisesRegex(ValueError, "native receipt version"):
+            self.validate(changed)
+
+    def test_baseline_cannot_be_relabelled_as_the_candidate_head(self):
+        changed = copy.deepcopy(self.receipt)
+        changed["source_commit_role"] = "candidate-head"
+        with self.assertRaisesRegex(ValueError, "native receipt baseline role"):
+            self.validate(changed)
 
     def test_receipt_must_assert_complete_shadow_equality_and_no_cutover(self):
         for field, bad in (("native_authored_compiled_shadow_facts_equal", False),
