@@ -173,7 +173,7 @@ def inventory(cohort):
         return [
             *(Spec(f"motion-w{w}", "test_solid_detachment", "SOL281_ACTUAL_RAPIER", 22,
                    (f"--workers={w}",), w) for w in (1, 4)),
-            *(Spec(f"failure-w{w}", "test_solid_detachment_failures", "SOL281_HOST_FAILURES", 40,
+            *(Spec(f"failure-w{w}", "test_solid_detachment_failures", "SOL281_HOST_FAILURES", 58,
                    (f"--workers={w}",), w) for w in (1, 4)),
             Spec("lifecycle", "test_solid_detachment_lifecycle", "SOL281_LIFECYCLE", 328),
             Spec("compound-response", "test_solid_detachment_compound_response", "SOL281_COMPOUND_RESPONSE", 33),
@@ -235,6 +235,79 @@ def verify_footer(spec, text, expected_platform):
                 and type(result.get("checks")) is int and result["checks"] > 0
                 and type(result.get("workers")) is int,
                 "Incomplete synchronized contact execution footer")
+    if spec.script == "test_solid_detachment_failures":
+        require(result.get("actual_rapier") is True and type(result.get("publication_faults")) is int
+                and result["publication_faults"] == 3,
+                "Dry controls or combined post-impulse publication fault are missing")
+        fault = result.get("post_impulse_publication", {})
+        require(isinstance(fault, dict) and fault.get("fixture") == "packed_sand"
+                and type(fault.get("workers")) is int and fault["workers"] == spec.workers
+                and all(fault.get(key) is True for key in ("candidate", "complete", "pre_fault_response_accepted",
+                    "pre_fault_readback_valid", "native_failure_published", "worker_failed", "failure_latched",
+                    "physics_paused", "failed_snapshot_has_last_mask", "exact_payload_preserved", "body_rid_unchanged")),
+                "Unexercised or incomplete post-impulse publication failure")
+        for key in ("wait_physics_calls", "pre_fault_impulse_applications", "pre_fault_response_snapshot",
+                    "pre_fault_response_sample", "pre_fault_publication_serial", "failed_snapshot_serial"):
+            require(type(fault.get(key)) is int and fault[key] > 0, "Missing real pre-fault application/receipt: " + key)
+        require(fault["wait_physics_calls"] <= 360
+                and fault["failed_snapshot_serial"] > fault["pre_fault_publication_serial"] >= fault["pre_fault_response_snapshot"],
+                "Publication failure did not follow the real contact response")
+        for key, expected in (("failed_snapshot_force_records", 0), ("failed_snapshot_contact_records", 0),
+                              ("aggregate_owned_after", 520), ("native_source_members_after", 0), ("proxy_count", 6)):
+            require(type(fault.get(key)) is int and fault[key] == expected,
+                    "Failed publication lost collision ownership or retained response records: " + key)
+        mask = fault.get("body_states_before_fault")
+        failed_mask = fault.get("body_states_failed_publication")
+        require(type(fault.get("body_state_stride")) is int and fault["body_state_stride"] == 11
+                and isinstance(mask, list) and len(mask) == 6 * fault["body_state_stride"]
+                and isinstance(failed_mask, list) and len(failed_mask) == len(mask)
+                and all(type(value) in (int, float) and math.isfinite(value) for value in mask + failed_mask)
+                and failed_mask == mask and fault.get("pre_fault_publication_failed") is False,
+                "Failed publication did not preserve the complete healthy six-proxy mask")
+        for key in ("rigid_body_epoch_before_fault", "rigid_body_epoch_failed_publication"):
+            require(type(fault.get(key)) is int and fault[key] > 0 and fault[key] == fault.get("physics_epoch_before"),
+                    "Retained native collision-mask epoch changed")
+        require(type(fault.get("pre_fault_publication_native_tick")) is int
+                and fault["pre_fault_publication_native_tick"] == fault.get("native_ticks_before_fault"),
+                "Healthy pre-fault publication has a different native tick")
+        for stem in ("response_attempts", "response_accepts", "compound_impulse_applications", "compound_corrections",
+                     "rapier_steps", "native_ticks"):
+            before, after = fault.get(stem + "_before_fault"), fault.get(stem + "_after_failstop")
+            require(type(before) is int and before >= 0 and type(after) is int and after == before,
+                    "Response or simulation continued after publication failure: " + stem)
+        require(fault["response_attempts_before_fault"] >= fault["response_accepts_before_fault"] > 0
+                and 0 < fault["rapier_steps_before_fault"] <= fault["wait_physics_calls"]
+                and type(fault.get("failed_publication_native_tick")) is int
+                and fault["failed_publication_native_tick"] == fault["native_ticks_before_fault"],
+                "Missing accepted response or wrong failed native tick")
+        for stem in ("impulse_magnitude", "torque_impulse"):
+            before, after = fault.get(stem + "_before_fault"), fault.get(stem + "_after_failstop")
+            require(type(before) in (int, float) and math.isfinite(before)
+                    and type(after) in (int, float) and math.isfinite(after) and after == before,
+                    "Impulse/torque was invalid or duplicated after failed publication")
+        require(fault["impulse_magnitude_before_fault"] > 0, "Publication fault never followed a nonzero Sand impulse")
+        energy_before, energy_after = fault.get("pre_fault_energy_before"), fault.get("pre_fault_energy_after")
+        require(type(energy_before) in (int, float) and math.isfinite(energy_before) and energy_before >= 0
+                and type(energy_after) in (int, float) and math.isfinite(energy_after) and energy_after >= 0
+                and energy_after <= energy_before + 0.0001 * max(1, energy_before),
+                "Pre-fault actual response violated its energy bound")
+        state = fault.get("state_before_fault")
+        require(isinstance(state, list) and len(state) == 9
+                and all(type(value) in (int, float) and math.isfinite(value) for value in state)
+                and isinstance(fault.get("state_after_failstop"), list)
+                and all(type(value) in (int, float) and math.isfinite(value) for value in fault["state_after_failstop"])
+                and fault["state_after_failstop"] == state
+                and fault.get("state_layout") == "basis_x.x,basis_x.y,basis_y.x,basis_y.y,origin.x,origin.y,velocity.x,velocity.y,omega",
+                "Actual Rapier pose or velocity changed after fail-stop")
+        for stem in ("payload_digest", "token"):
+            require(isinstance(fault.get(stem + "_before"), str) and fault[stem + "_before"]
+                    and fault.get(stem + "_after") == fault[stem + "_before"],
+                    "Post-impulse failure changed payload or owner identity")
+        for stem in ("generation", "physics_epoch"):
+            require(type(fault.get(stem + "_before")) is int and fault[stem + "_before"] > 0
+                    and type(fault.get(stem + "_after")) is int and fault[stem + "_after"] == fault[stem + "_before"],
+                    "Post-impulse failure replaced ownership generation/epoch")
+        require(isinstance(fault.get("last_error"), str) and fault["last_error"], "Owner failure did not latch an error")
     if spec.name == "lifecycle":
         require(result.get("actual_host_replacement_cycles") == 20, "Incomplete actual-owner lifecycle inventory")
     if spec.script == "test_solid_detachment_populated":

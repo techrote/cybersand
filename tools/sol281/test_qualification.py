@@ -23,6 +23,29 @@ def payload(spec, platform="Linux"):
         result["workers"] = spec.workers
     if spec.script == "test_solid_contact_synchronized":
         result.update(schema="cybersand.sol364.synchronized-contact.v1", case_count=21, steps=180, complete_replay=True)
+    if spec.script == "test_solid_detachment_failures":
+        fault = {"fixture": "packed_sand", "workers": spec.workers, "wait_physics_calls": 3,
+            "pre_fault_impulse_applications": 2, "pre_fault_response_snapshot": 10, "pre_fault_response_sample": 3,
+            "pre_fault_publication_serial": 11, "pre_fault_publication_native_tick": 4, "pre_fault_publication_failed": False,
+            "body_state_stride": 11, "body_states_before_fault": list(range(66)), "body_states_failed_publication": list(range(66)),
+            "rigid_body_epoch_before_fault": 1, "rigid_body_epoch_failed_publication": 1,
+            "failed_snapshot_serial": 12, "failed_snapshot_force_records": 0, "failed_snapshot_contact_records": 0,
+            "aggregate_owned_after": 520, "native_source_members_after": 0, "proxy_count": 6,
+            "failed_publication_native_tick": 4, "impulse_magnitude_before_fault": 10.0,
+            "impulse_magnitude_after_failstop": 10.0, "torque_impulse_before_fault": 1.0, "torque_impulse_after_failstop": 1.0,
+            "pre_fault_energy_before": 100.0, "pre_fault_energy_after": 90.0,
+            "state_before_fault": [1, 0, 0, 1, 58, 38, 0, 1, 0], "state_after_failstop": [1, 0, 0, 1, 58, 38, 0, 1, 0],
+            "state_layout": "basis_x.x,basis_x.y,basis_y.x,basis_y.y,origin.x,origin.y,velocity.x,velocity.y,omega",
+            "payload_digest_before": "123", "payload_digest_after": "123", "token_before": "1:1", "token_after": "1:1",
+            "generation_before": 2, "generation_after": 2, "physics_epoch_before": 1, "physics_epoch_after": 1,
+            "last_error": "native owner failure is latched"}
+        fault.update(dict.fromkeys(("candidate", "complete", "pre_fault_response_accepted", "pre_fault_readback_valid",
+            "native_failure_published", "worker_failed", "failure_latched", "physics_paused",
+            "failed_snapshot_has_last_mask", "exact_payload_preserved", "body_rid_unchanged"), True))
+        for stem, value in (("response_attempts", 3), ("response_accepts", 3), ("compound_impulse_applications", 3),
+                            ("compound_corrections", 0), ("rapier_steps", 3), ("native_ticks", 4)):
+            fault[stem + "_before_fault"] = fault[stem + "_after_failstop"] = value
+        result.update(actual_rapier=True, publication_faults=3, post_impulse_publication=fault)
     if spec.name == "lifecycle":
         result["actual_host_replacement_cycles"] = 20
     if spec.script == "test_solid_detachment_displacement":
@@ -297,6 +320,52 @@ class QualificationReader(unittest.TestCase):
                        lambda d: d.update({stage_names[1]: float("inf")}), lambda d: d.update({stage_names[1]: 0.1})):
             value = copy.deepcopy(original)
             mutate(value["cases"][0]["metrics"]["physical_contact"])
+            with self.assertRaises(RuntimeError):
+                q.verify_footer(spec, spec.footer + " " + json.dumps(value), "Linux")
+
+    def test_post_impulse_publication_requires_actual_impulse_and_fail_stop(self):
+        spec = next(x for x in q.inventory("core") if x.script == "test_solid_detachment_failures")
+        original = payload(spec)
+        q.verify_footer(spec, spec.footer + " " + json.dumps(original), "Linux")
+        mutations = {
+            "no-actual-impulse": lambda d: d.update(impulse_magnitude_before_fault=0, impulse_magnitude_after_failstop=0),
+            "no-actual-application": lambda d: d.update(pre_fault_impulse_applications=0),
+            "invalid-readback": lambda d: d.update(pre_fault_readback_valid=False),
+            "energy-increase": lambda d: d.update(pre_fault_energy_after=1000),
+            "wrong-worker": lambda d: d.update(workers=4),
+            "missing-fault": lambda d: d.update(native_failure_published=False),
+            "old-fault": lambda d: d.update(failed_snapshot_serial=9),
+            "retained-force": lambda d: d.update(failed_snapshot_force_records=1),
+            "retained-contact": lambda d: d.update(failed_snapshot_contact_records=1),
+            "unhealthy-before-fault": lambda d: d.update(pre_fault_publication_failed=True),
+            "old-mask-publication": lambda d: d.update(failed_snapshot_serial=11),
+            "incomplete-mask": lambda d: d["body_states_failed_publication"].pop(),
+            "changed-mask": lambda d: d["body_states_failed_publication"].__setitem__(7, 2),
+            "mask-epoch": lambda d: d.update(rigid_body_epoch_failed_publication=2),
+            "healthy-native-tick": lambda d: d.update(pre_fault_publication_native_tick=3),
+            "continuing-attempt": lambda d: d.update(response_attempts_after_failstop=4),
+            "duplicate-impulse": lambda d: d.update(impulse_magnitude_after_failstop=11),
+            "duplicate-torque": lambda d: d.update(torque_impulse_after_failstop=2),
+            "ordinary-response": lambda d: d.update(compound_impulse_applications_after_failstop=4),
+            "native-tick": lambda d: d.update(native_ticks_after_failstop=5),
+            "rapier-step": lambda d: d.update(rapier_steps_after_failstop=4),
+            "unobserved-steps": lambda d: d.update(rapier_steps_before_fault=4, rapier_steps_after_failstop=4),
+            "boolean-state": lambda d: d["state_after_failstop"].__setitem__(0, True),
+            "velocity-change": lambda d: d["state_after_failstop"].__setitem__(7, 2),
+            "nonfinite-state": lambda d: d["state_before_fault"].__setitem__(8, float("nan")),
+            "payload-change": lambda d: d.update(exact_payload_preserved=False),
+            "double-owner": lambda d: d.update(native_source_members_after=520),
+            "owner-replaced": lambda d: d.update(generation_after=3),
+            "unlatched-session": lambda d: d.update(physics_paused=False),
+        }
+        for label, mutate in mutations.items():
+            value = copy.deepcopy(original)
+            mutate(value["post_impulse_publication"])
+            with self.assertRaises(RuntimeError, msg=label):
+                q.verify_footer(spec, spec.footer + " " + json.dumps(value), "Linux")
+        for count in (2, True):
+            value = copy.deepcopy(original)
+            value["publication_faults"] = count
             with self.assertRaises(RuntimeError):
                 q.verify_footer(spec, spec.footer + " " + json.dumps(value), "Linux")
 
