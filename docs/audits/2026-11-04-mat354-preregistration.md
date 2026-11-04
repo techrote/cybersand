@@ -74,9 +74,15 @@ execution settings. The IN control uses its existing required radius3.
   in every core containing tested material. It cannot contact or heat the source
   and outlives all registered horizons. Its source-specific counters are separate.
 - Source/destination/neighbor masks are inserted before step9 and removed before
-  step17. Region exclusion uses those same steps, with no catch-up expectation.
+  step17. The neighbor-mask variant uses an enclosed two-cell MoltenGlass pair
+  starting at4, so it actually hides a thermal partner. The source-mask variant
+  follows the actual generic carrier at insertion; destination masks name the
+  registered fixed side. Region exclusion uses those same steps, with no catch-up expectation.
   Owner pause omits tick calls at steps9–16. Source/neighbor edits occur at17.
   Reset clears and reconstructs at17; a fresh reference must agree afterward.
+  Source edits follow the actual generic carrier and preserve its count. A
+  molten neighbor insertion is enclosed by a prebuilt two-cell room whose
+  right interior starts as Wall; it cannot escape the census domain.
 - Distributed fixtures place64 independent chambers in distinct same-phase
   cores, spaced128 cells. They exercise job claiming; configured4 alone cannot
   establish concurrency. Record any run that does not observe multiple claimants.
@@ -100,8 +106,12 @@ selected visit is not a kernel call when a body mask rejects the source. Existin
 source-specific PhysicsTotals provide per-tick (not cumulative-summed) downward
 rejections, lateral probes, moves, conversions, block wakes/sleeps and overflow.
 For stationary nonreactive generic/MoltenGlass sources, downward-rejection
-triples identify actual flow execution. Conversion can bypass flow and is
+triples (or the central downward rejection alone) identify actual flow execution. Conversion can bypass flow and is
 recorded separately. Mixed reactive controls do not invent per-cell visits.
+The counters are whole-World subject-material totals. Only singleton fixtures
+bind that total to the traced source; pool/distributed rows retain aggregate
+scope. RNG-reference values are potential draws, with explicit applicability;
+they do not imply a kernel consumed a draw after an earlier conversion/refusal.
 
 Record exact stored material/a/b/temperature, source location, thermal phase and
 due opportunity, independently calculated mobility byte/threshold, legal side,
@@ -114,10 +124,14 @@ for all future time without an explicit source-derived closed-state argument.
 At every completed step independently census the bounded fixture domains and
 compare their material counts and Water quantity to the native ledger. Retain
 source/sink kinds and conversions, not a fictitious conserved chemical mass.
+Independently conserve species counts (MoltenGlass+Glass, Cement+Concrete and
+Ice+Water conversion groups), allowing only named external edits. Closed Water
+controls conserve exact quantity, not the number of fractional carriers.
 Worker/repeat comparisons use exact per-step physical-state identity at matching
 configuration; quiet3/1024 comparisons use stored physical tuples rather than
 requiring scheduling-inclusive hashes to match. Time only `World::tick`, with
-observer/census/reduction cost excluded and separately acknowledged. Report
+external observation/census/reduction cost excluded. The enabled native
+histogram's in-tick cost remains included; no timing neutrality is claimed. Report
 descriptive work and idle costs, not a controlled benchmark or counterfactual
 deadline-fix overhead. No future fix is executed in Phase A.
 
