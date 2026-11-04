@@ -4,6 +4,9 @@ extends SceneTree
 const Runtime=preload("res://scripts/player_playground_runtime.gd")
 const Fleet=preload("res://scripts/gcr_review_fleet.gd")
 const Rig=preload("res://scripts/physical_actor_rig.gd")
+const U_SHAPE_COUNT: int=5
+const U_COM:=Vector2(1.5,0.28125)
+const U_INERTIA: float=253851.0/10240.0
 var checks: int=0
 var failures: Array[String]=[]
 func _init() -> void: call_deferred("_run")
@@ -25,7 +28,13 @@ func _run() -> void:
 	var definition: Dictionary=Fleet.definition(scooper)
 	check(Rig.validate_definition(definition).is_empty(),"compound definition validates")
 	var rectangles: Array=Fleet.collision_rects(scooper)
-	check(rectangles.size()==6,"registered six-piece physical hull")
+	check(rectangles.size()==U_SHAPE_COUNT,"registered five-piece U physical hull")
+	check(absf(float(definition.parts[0].inertia)-U_INERTIA)<0.0001,"actual U definition uses independent area-derived inertia")
+	check(not overlaps(rectangles,Vector2(1.5,-4)-U_COM),"U has an empty central cavity")
+	for point: Vector2 in [Vector2(-11,-2),Vector2(14,-2)]:
+		check(overlaps(rectangles,point-U_COM),"inside-corner reserve is actual collision geometry")
+	for x: int in range(-15,18):
+		check(overlaps(rectangles,Vector2(x+0.5,1)-U_COM),"the complete floor row is continuously represented")
 	var bad: Dictionary=definition.duplicate(true)
 	bad.parts[0].collision_rects.append(bad.parts[0].collision_rects[0].duplicate(true))
 	check(not Rig.validate_definition(bad).is_empty(),"positive-area duplicate shape refuses")
@@ -42,16 +51,16 @@ func _run() -> void:
 		var bodies: Array[RigidBody2D]=arena.session.bodies()
 		check(bodies.size()==1 and arena.session._rigs.size()==1,"all hull pieces share one actual body")
 		var body: RigidBody2D=bodies[0]
-		check(body.get_child_count()==6,"six hard colliders on the same physical RID")
+		check(body.get_child_count()==U_SHAPE_COUNT,"all five U colliders share the physical RID")
 		check(body.center_of_mass_mode==RigidBody2D.CENTER_OF_MASS_MODE_CUSTOM and body.center_of_mass==Vector2.ZERO,"COM is the authored physical origin")
 		check(is_equal_approx(body.mass,0.18) and is_equal_approx(body.inertia,float(definition.parts[0].inertia)),"actual mass and parallel-axis inertia installed once")
 		check(is_equal_approx(rig._total_mass,body.mass) and is_equal_approx(rig._inertias[0],body.inertia),"actuation caches use the same actual mass and inertia")
-		check(arena._authored_compound_centers.size()==6 and arena._authored_compound_geometry.size()==24,"native geometry is the same bounded union")
+		check(arena._authored_compound_centers.size()==U_SHAPE_COUNT and arena._authored_compound_geometry.size()==U_SHAPE_COUNT*4,"native geometry is the same complete U union")
 		check(arena.gcr_stats.prepared==1,"construction publishes exactly one union sample, no AABB prime")
 		check(runtime.snapshot().authored_compound and runtime.snapshot().review_definition_hash==Fleet.definition_hash(scooper),"receipt labels actual frozen definition and compound owner")
 		var rendered: Array=runtime.render_parts()
-		check(rendered.size()==6,"graphics contain the actual six shapes")
-		for index: int in range(6):
+		check(rendered.size()==U_SHAPE_COUNT,"graphics contain every actual U shape")
+		for index: int in range(U_SHAPE_COUNT):
 			var collider: CollisionShape2D=body.get_child(index)
 			check(collider.shape is RectangleShape2D and collider.shape.size.is_equal_approx(rectangles[index].size),"hard collider size matches authored/native rectangle")
 			check(collider.position.is_equal_approx(rectangles[index].center),"hard collider is placed at its actual COM-relative offset")

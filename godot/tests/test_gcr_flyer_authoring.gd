@@ -4,6 +4,12 @@ const Fleet=preload("res://scripts/gcr_review_fleet.gd")
 const Authoring=preload("res://scripts/gcr_flyer_authoring.gd")
 const Controller=preload("res://scripts/gcr_review_fleet_controller.gd")
 const FrozenController=preload("res://tests/fixtures/gcr_review_fleet_controller_b759.gd")
+const STEPPED_SCOOPER_FIXTURE: String="res://tests/fixtures/gcr_scooper_stepped_350a.json"
+const STEPPED_SCOOPER_SHA: String="01c41a1fb37489aa017bf39bffdf42557cd78a8000fb3dfae51b26c8d059603f"
+const U_RECTS: Array=[[-15,0,33,4],[-15,-8,3,8],[15,-8,3,8],[-12,-3,2,3],[13,-3,2,3]]
+const U_AREA: float=192.0
+const U_COM:=Vector2(1.5,0.28125)
+const U_INERTIA: float=253851.0/10240.0
 const LEGACY_ROWS: Array=[
 	[Vector2(4,3),.035,180.,115.,8.,38.,8.,.22,8.,3.],
 	[Vector2(7,3),.065,160.,130.,6.,28.,6.,.16,12.,10.],
@@ -46,6 +52,32 @@ func mock(index: int) -> MockRig:
 func action(move:=Vector2.ZERO,trim: float=0.0,brake: bool=false,assist: bool=false,primary: bool=false) -> Dictionary:
 	return {"move":move,"aim":Vector2.UP,"effort":1.0,"trim":trim,"primary":primary,"secondary":brake,"auxiliary":assist}
 
+func _scooper_geometry_checks(record: Dictionary) -> void:
+	# The original six-piece profile stays an authenticated historical fixture;
+	# changing today's active hull must not rewrite its recorded mass properties.
+	var text: String=FileAccess.get_file_as_string(STEPPED_SCOOPER_FIXTURE).replace("\r\n","\n")
+	check(text.sha256_text()==STEPPED_SCOOPER_SHA,"historical stepped Scooper retains exact parent JSON bytes")
+	var parsed: Variant=JSON.parse_string(text)
+	check(parsed is Dictionary,"historical Scooper fixture is a record")
+	if not parsed is Dictionary: return
+	var frozen: Dictionary=Authoring.resolve_record(parsed)
+	check(not frozen.has("error"),"historical six-piece fixture still validates")
+	if frozen.has("error"): return
+	check(frozen.resolved_rects.size()==6 and frozen.resolved_area==85.0,"historical six-piece area remains85")
+	check(Vector2(frozen.resolved_com).distance_to(Vector2(-39.0/170.0,333.0/170.0))<0.00001,"historical raw COM remains independently known")
+	check(absf(float(frozen.resolved_inertia)-3193431.0/144500.0)<0.0001,"historical inertia remains22.0998685121")
+	var old_fields: Dictionary=parsed.duplicate(true)
+	var current_fields: Dictionary=record.duplicate(true)
+	for fields: Dictionary in [old_fields,current_fields]:
+		fields.erase("hull");fields.erase("description")
+	check(current_fields==old_fields,"only Scooper geometry and description change; motors/mass/capabilities remain exact")
+	check(record.hull.kind=="rect_union" and record.hull.rects==U_RECTS,"active U uses the five prospectively registered nonoverlapping rectangles")
+	var resolved: Dictionary=Authoring.resolve_record(record)
+	check(not resolved.has("error"),"active U profile validates without overlap exceptions")
+	if resolved.has("error"): return
+	check(resolved.resolved_area==U_AREA and Vector2(resolved.resolved_com).is_equal_approx(U_COM),"U area192 and raw COM(3/2,9/32) match independent arithmetic")
+	check(absf(float(resolved.resolved_inertia)-U_INERTIA)<0.0001,"U actual inertia is253851/10240 rather than the old stepped value")
+
 func _catalog_checks() -> void:
 	check(Fleet.count()==8 and Fleet.last_error().is_empty(),"eight bounded authoring files load")
 	check(Fleet.stable_id(7)=="scooper" and Fleet.index_for_id("scooper")==7,"stable Scooper identity")
@@ -57,8 +89,8 @@ func _catalog_checks() -> void:
 		check(Fleet.stable_id(index)==Authoring.LEGACY_IDS[index] and Fleet.definition_hash(index).length()==64,"legacy stable identity and resolved hash")
 		check(definition.profile.fleet_attitude_gain==10.0 and definition.profile.fleet_attitude_damping==4.0 and definition.profile.fleet_trim_angle==.4,"legacy stabilization defaults unchanged")
 	var scoop: Dictionary=Fleet.definition(7)
-	check(Fleet.uses_compound(7) and Fleet.collision_rects(7).size()==6 and scoop.parts.size()==1,"Scooper has six shapes on one physical chassis")
-	check(scoop.parts[0].mass==.18 and scoop.parts[0].inertia>22.0 and scoop.parts[0].inertia<22.2,"actual lightweight mass and uniform union inertia")
+	check(Fleet.uses_compound(7) and Fleet.collision_rects(7).size()==U_RECTS.size() and scoop.parts.size()==1,"U Scooper has five shapes on one physical chassis")
+	check(scoop.parts[0].mass==.18 and absf(float(scoop.parts[0].inertia)-U_INERTIA)<0.0001,"actual lightweight mass and independently derived U inertia")
 	check(scoop.profile.fleet_torque==1200 and scoop.profile.fleet_attitude_gain==40 and scoop.profile.fleet_attitude_damping==12.5 and scoop.profile.fleet_turn_accel==48 and scoop.profile.fleet_trim_angle==1.2,"registered Scooper angular defaults")
 	var moment:=Vector2.ZERO
 	var area: float=0.0
@@ -66,12 +98,13 @@ func _catalog_checks() -> void:
 		var parcel: float=Vector2(rectangle.size).x*Vector2(rectangle.size).y
 		moment+=Vector2(rectangle.center)*parcel
 		area+=parcel
-	check(area==85.0 and moment.length()<.0001,"compound rectangles are recentered on physical COM")
+	check(area==U_AREA and moment.length()<.0001,"U rectangles are recentered on their new physical COM")
 	check(Fleet.is_hoverboard(3) and Fleet.is_hoverboard(7) and not Fleet.is_hoverboard(4),"control mode is authored independently of roster index")
 	var returned: Array=Fleet.collision_rects(7)
 	returned[0].center=Vector2(999,999)
 	check(Fleet.collision_rects(7)[0].center!=Vector2(999,999),"geometry accessor cannot mutate cached authoring")
 	var record: Dictionary=Fleet.authoring_record(7)
+	_scooper_geometry_checks(record)
 	for mutation: Dictionary in [{"unknown":true},{"physics":{"mass":NAN}},{"flight":{"torque_limit":INF}},{"control_mode":"sleep"}]:
 		var bad: Dictionary=record.duplicate(true)
 		for key: String in mutation:

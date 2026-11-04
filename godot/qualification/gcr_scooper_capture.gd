@@ -7,6 +7,7 @@ const Fleet=preload("res://scripts/gcr_review_fleet.gd")
 const Source=preload("res://scripts/gcr_painting_powder_source.gd")
 const Base=preload("res://qualification/gcr_creep_capture.gd")
 const REGISTRATION="GCR-AUTHORED-001"
+const Historical=preload("res://tests/support/gcr_historical_scooper.gd")
 const WORLD_RECT=Rect2i(0,0,1024,512)
 var errors: Array[String]=[]
 
@@ -67,6 +68,8 @@ func action(spec: Dictionary, tick: int) -> Dictionary:
 	return result
 
 func _run() -> void:
+	if not require(Historical.install(),"retain registered stepped Scooper definition"):
+		quit(1);return
 	var args: Dictionary={}
 	for item: String in OS.get_cmdline_user_args():
 		var pair:=item.trim_prefix("--").split("=",true,1)

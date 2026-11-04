@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "scooper",
   "name": "Scooper",
-  "description": "Open scoop with a rear stop and stepped penetrator. Afterglow flight controls with stronger bounded stabilization.",
+  "description": "U-shaped scoop with a thick continuous floor, side walls and inside-corner reserves. Afterglow flight controls with stronger bounded stabilization.",
   "color": "ff6787",
   "control_mode": "hoverboard",
   "markings": "scoop",
@@ -37,39 +37,33 @@
     "kind": "rect_union",
     "rects": [
       [
-        -13,
-        2,
-        26,
-        2
+        -15,
+        0,
+        33,
+        4
       ],
       [
         -15,
-        -5,
-        2,
-        9
-      ],
-      [
-        13,
-        1,
-        2,
-        3
+        -8,
+        3,
+        8
       ],
       [
         15,
-        0,
-        1,
+        -8,
+        3,
+        8
+      ],
+      [
+        -12,
+        -3,
+        2,
         3
       ],
       [
-        16,
-        -1,
-        1,
-        3
-      ],
-      [
-        17,
-        -2,
-        1,
+        13,
+        -3,
+        2,
         3
       ]
     ]

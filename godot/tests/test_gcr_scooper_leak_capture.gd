@@ -1,4 +1,5 @@
 extends SceneTree
+const Historical=preload("res://tests/support/gcr_historical_scooper.gd")
 
 # Diagnostic validity controls: distinguishes sample/current frames, hull
 # penetration versus true far-side escape, and exact packed-byte coordinates.
@@ -13,6 +14,9 @@ func check(ok: bool,reason: String) -> void:
 	if not ok: failures.append(reason)
 
 func _run() -> void:
+	var installed: bool=Historical.install()
+	check(installed,"retain registered stepped classifier fixture")
+	if not installed: quit(1);return
 	var index: int=Fleet.index_for_id("scooper")
 	var rectangles: Array=Fleet.collision_rects(index)
 	var resolved: Dictionary=Authoring.resolve_record(Fleet.authoring_record(index))

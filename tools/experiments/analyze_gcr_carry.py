@@ -15,7 +15,7 @@ from pathlib import Path
 from analyze_gcr_authored import (CODE, DEFINITION, DEFINITION_HASH,
     FROZEN_DEFINITION_SOURCE, EvidenceError, archived, bundle_path, digest,
     distribution, finite, integer, norm, read, require, same, source_scope,
-    state_metrics, verify_source_map)
+    state_metrics, verify_source_map, registered_definition_path)
 
 ROOT=Path(__file__).resolve().parents[2]
 REG="GCR-CARRY-002"
@@ -258,7 +258,7 @@ def analyze(output,summary_dir):
     protocol_bytes=subprocess.check_output(["git","-C",str(ROOT),"show",source+":"+PROTOCOL],timeout=60).replace(b'\r\n',b'\n')
     protocol=json.loads(protocol_bytes);require(protocol["registration"]==REG and protocol["ticks"]==450 and len(protocol["cases"])==10,"Frozen protocol population")
     frozen=archived(FROZEN_DEFINITION_SOURCE)["retained"][DEFINITION]
-    require(archive["retained"][DEFINITION]==frozen,"Registered Scooper definition")
+    require(archive["retained"][registered_definition_path(archive)]==frozen,"Registered Scooper definition")
     completion=None
     if (output/'completion.json').is_file():watch(output/'completion.json',"runner completion");completion=read(output/'completion.json')
     for platform in PLATFORMS:

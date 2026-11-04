@@ -7,6 +7,7 @@ const Fleet=preload("res://scripts/gcr_review_fleet.gd")
 const Authoring=preload("res://scripts/gcr_flyer_authoring.gd")
 const Base=preload("res://qualification/gcr_creep_capture.gd")
 const REGISTRATION: String="GCR-CARRY-002"
+const Historical=preload("res://tests/support/gcr_historical_scooper.gd")
 const WORLD_RECT:=Rect2i(0,0,1024,512)
 const ROI_SIZE: int=128
 const GLOBAL_PERIOD: int=60
@@ -148,6 +149,8 @@ static func pose_from_state(value: Dictionary) -> Transform2D:
 	return Transform2D(float(value.rotation),Vector2(value.position))
 
 func _run() -> void:
+	if not require(Historical.install(),"retain registered stepped Scooper definition"):
+		quit(1);return
 	var args: Dictionary={}
 	for item: String in OS.get_cmdline_user_args():
 		var pair:=item.trim_prefix("--").split("=",true,1)

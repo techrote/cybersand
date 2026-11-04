@@ -1,4 +1,5 @@
 extends SceneTree
+const Historical=preload("res://tests/support/gcr_historical_scooper.gd")
 
 # The actual registered stream exposed a fictitious one-ULP catch delta after
 # compound double-precision summation. Exercise the strict bridge unchanged.
@@ -22,6 +23,8 @@ func quantity(world: Object) -> Dictionary:
 	for index: int in range(left.counts.size()): left.counts[index]=int(left.counts[index])+int(right.counts[index])
 	return {"counts":left.counts,"water_mass":int(left.water_mass)+int(right.water_mass)}
 func _run() -> void:
+	if not check(Historical.install(),"retain registered stepped stream fixture"):
+		quit(1);return
 	var protocol_path: String=ProjectSettings.globalize_path("res://../docs/audits/gcr-authored-2026-11-04/protocol.json")
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--protocol="): protocol_path=arg.trim_prefix("--protocol=")

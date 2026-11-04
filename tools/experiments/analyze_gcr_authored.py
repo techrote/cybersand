@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REG = "GCR-AUTHORED-001"
 PROTOCOL = "docs/audits/gcr-authored-2026-11-04/protocol.json"
 DEFINITION = "godot/authoring/flyers/scooper.json"
+HISTORICAL_DEFINITION = "godot/tests/fixtures/gcr_scooper_stepped_350a.json"
 FROZEN_DEFINITION_SOURCE = "6015cd3753bcb7929e3fa576e42d39304fcbe0c3"
 # Actual Godot4.7 JSON.stringify(raw,"",true,true) content identity for the
 # frozen definition. Its complete file is authenticated against Git below;
@@ -120,7 +121,7 @@ def archived(source):
                 if relevant:
                     data = archive.extractfile(member).read().replace(b"\r\n", b"\n")
                     hashes[str(path)] = digest(data)
-                    if str(path) in (DEFINITION, PROTOCOL):
+                    if str(path) in (DEFINITION, HISTORICAL_DEFINITION, PROTOCOL):
                         retained[str(path)] = data
         ARCHIVES[source] = {"hashes": hashes, "retained": retained}
     return ARCHIVES[source]
@@ -130,6 +131,15 @@ def bundle_path(root, path):
     name = PurePosixPath(path)
     require(not name.is_absolute() and ".." not in name.parts and "\\" not in path, "Unsafe evidence path")
     return root.joinpath(*name.parts)
+
+
+def registered_definition_path(archive):
+    """Keep old producers bound to their old active file; new ones freeze it."""
+    if HISTORICAL_DEFINITION not in archive["retained"]:
+        return DEFINITION
+    require("godot/tests/support/gcr_historical_scooper.gd" in archive["hashes"],
+            "Historical definition requires its authenticated setup helper")
+    return HISTORICAL_DEFINITION
 
 
 def verify_source_map(actual, expected, label):
@@ -331,7 +341,8 @@ def analyze(output, summary_dir):
         completion = read(output / "completion.json")
         require(completion.get("source") == source, "Runner completion source mismatch")
     frozen_definition = archived(FROZEN_DEFINITION_SOURCE)["retained"][DEFINITION]
-    require(archive["retained"][DEFINITION] == frozen_definition, "Scooper definition changed from registered source profile")
+    definition_path = registered_definition_path(archive)
+    require(archive["retained"][definition_path] == frozen_definition, "Scooper definition changed from registered source profile")
     protocol = None
     for platform in PLATFORMS:
         folder = output / platform
@@ -357,7 +368,7 @@ def analyze(output, summary_dir):
                 require(path.startswith("godot/"), "Foreign project input path")
                 file = bundle_path(project, path[len("godot/"):])
                 require(digest(file.read_bytes().replace(b"\r\n", b"\n")) == expected, "Copied source input mismatch: " + path)
-            copied_definition = bundle_path(project, DEFINITION[len("godot/"):]).read_bytes().replace(b"\r\n", b"\n")
+            copied_definition = bundle_path(project, definition_path[len("godot/"):]).read_bytes().replace(b"\r\n", b"\n")
             require(copied_definition == frozen_definition, "Copied registered definition differs")
             suffix = "" if platform == "windows" else ".linux"
             native = read(project / ("addons/cybersand_native/runtime-provenance" + suffix + ".json"))
@@ -429,7 +440,7 @@ def analyze(output, summary_dir):
     mechanical = full and not global_errors and all(row.get("mechanical_complete_pass") for row in summaries)
     runner_custody = completion is not None and completion.get("ok") is True and completion.get("inputs_unchanged") is True
     result = {"schema": 1, "registration": REG, "source": source, "tree": identity.get("tree"), "protocol_sha256": identity["protocol_sha256"],
-              "definition_identity": {"frozen_source": FROZEN_DEFINITION_SOURCE, "path": DEFINITION, "source_file_sha256_lf": digest(frozen_definition), "godot_canonical_hash": DEFINITION_HASH},
+              "definition_identity": {"frozen_source": FROZEN_DEFINITION_SOURCE, "path": definition_path, "source_file_sha256_lf": digest(frozen_definition), "godot_canonical_hash": DEFINITION_HASH},
               "capture_population_complete": full, "mechanical_population_pass": mechanical, "runner_current_head_custody_pass": runner_custody,
               "runner_completion": completion, "integrity_errors": global_errors, "mechanisms": summaries, "negative_controls": negative,
               "scope": ["Passive energy excludes motors, event impulses, correction/zeroing, gravity and hard contact.", "Centroids use stored cell grid-y coordinates without adding0.5; Water cell centroid is not mass-weighted.", "Repeated events/boundaries are diagnostic counts, not independent efficacy populations.", "Primary current-pose cavity counts are never replaced by auxiliary sample-pose counts.", "Owner gameplay acceptance and production/default promotion remain outside this analyzer."]}
