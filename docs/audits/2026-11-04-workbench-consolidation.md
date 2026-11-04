@@ -150,9 +150,11 @@ headless checks) and its ordinary launcher opened a responsive workbench window.
 Windows and Linux at this code each passed 83/83 checks while authoring. Windows
 passed 24/24 in a separate NVIDIA graphical reopen. The final Linux headless
 reopen passed 23/23; the first X11/llvmpipe graphical repeat at this code
-hit the 180-second limit. The earlier X11 author/reopen passed 83/83 and 24/24
+hit the 180-second limit. A four-raster-thread repeat also timed out. A separate 1280 × 720 traced diagnostic entered Main after 7.859 seconds but did not reach the installed-canvas observation before the same timeout. The earlier X11 author/reopen passed 83/83 and 24/24
 before display alignment, and the final rendered Scooper fixture passed 38/38.
 The results retain separate logs for each run and do not convert a timeout into
 a successful receipt. See the [portable participation probe](workbench-391/participation_probe.gd)
 for the seven-second material-pool workload. Execute it with `--headless --path
 godot --script ../docs/audits/workbench-391/participation_probe.gd`.
+
+The automatic Draft consistency job stopped at the protected World.cpp hash, as observed locally. Its [job log](https://github.com/techrote/cybersand/actions/runs/41905953051/job/126840533067) retains the refusal. The packaged Windows application and the independent review verdict refer to the unchanged 5c241d8e application tree.

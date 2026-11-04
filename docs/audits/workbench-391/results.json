@@ -593,7 +593,40 @@
           "workers_observed": 6,
           "world_generation": 3
         }
-      }
+      },
+      "reopen_followups": [
+        {
+          "log": "linux-5c24-reopen-headless.log",
+          "sha256": "e3a33ef1a405f37318946659fce3f28a3a9c0179c8958844f7406744798b96f0",
+          "result": "23 checks, zero failures, fresh process",
+          "display": "headless"
+        },
+        {
+          "log": "linux-5c24-reopen-graphical-retry.log",
+          "sha256": "d6f31b146c3e63e45871729db7b8405fd8f67e0f864f8cc291a120c51e187546",
+          "result": "timeout",
+          "timeout_seconds": 180,
+          "display": "WSL X11 / llvmpipe, exact application fixture",
+          "lp_num_threads": 4
+        },
+        {
+          "log": "linux-review-1280.log",
+          "sha256": "56ccd855f732f09b377aa1218a9a2c0c09c198b4832a8923ad89fc293bcdb26b",
+          "result": "timeout",
+          "timeout_seconds": 180,
+          "display": "WSL X11 / llvmpipe, 1280 x 720 diagnostic fixture",
+          "last_observation": "Main scene entered at 7859 ms; no installed-canvas observation before timeout"
+        }
+      ]
+    }
+  },
+  "package": {
+    "package_source": "5c241d8ef520a67c4d37cfdbf814496344102056",
+    "readback": {
+      "log": "packaged-engine.log",
+      "sha256": "ce599245e85d65761241f938aaf05f1aa9a6929e692c3addf8706cd0fc945e43",
+      "result": "23 checks, zero failures",
+      "display": "packaged Windows engine/project, separate headless process"
     }
   }
 }
