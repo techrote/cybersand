@@ -68,6 +68,23 @@ func reset_key() -> void:
 func changed(epoch: int) -> bool:
 	return main._physical_epoch>epoch and main.pending_microscenario_apply.is_empty() and not ui.busy()
 
+func check_tuning(id: int, expected: Dictionary, context: String) -> void:
+	var a: Dictionary = ui.actor(ui.applied,id)
+	for key: String in expected:
+		check(is_equal_approx(float(a.options[key]),float(expected[key])),context+" saved "+key)
+		check(is_equal_approx(ui._fields[key].value,float(expected[key])),context+" displayed "+key)
+	var state: Dictionary = ui.body_state(id)
+	var definition: Dictionary = Fleet.definition(Fleet.index_for_id(str(state.model)))
+	var part: Dictionary = definition.parts[0]
+	var authored_inertia: float = float(part.inertia) if part.has("inertia") else float(part.mass)*Vector2(part.size).length_squared()/12.0
+	check(is_equal_approx(state.mass,float(part.mass)*expected.mass_multiplier),context+" actual mass")
+	check(is_equal_approx(state.inertia,authored_inertia*expected.mass_multiplier*expected.inertia_multiplier),context+" actual inertia")
+	check(is_equal_approx(state.budget,float(expected.budget)),context+" actual response budget")
+	check(is_equal_approx(state.force_limit,float(definition.profile.fleet_force)*expected.thrust_multiplier),context+" actual thrust limit")
+	check(is_equal_approx(state.torque_limit,float(definition.profile.fleet_torque)*expected.torque_multiplier),context+" actual torque limit")
+	var slot: int = main.physical_actor_session.slot_for_instance(id)
+	check(is_equal_approx(main.physical_actor_session._rigs[slot]._profile.fleet_boost_multiplier,float(expected.boost_multiplier)),context+" configured boost")
+
 func test_roster() -> void:
 	var epoch: int = main._physical_epoch
 	check(ui.applied.actors.is_empty() and ui.pilot_slot == -1,"empty canvas")
@@ -79,6 +96,20 @@ func test_roster() -> void:
 	var wall := Vector2i(1120,1100)
 	check(ui.paint(wall,58),"paint remote terrain")
 	if not await until(func()->bool: return main.image.get_pixelv(wall).r8==58,"real painted pixel"): return
+	# Switching the missing model must retain the selected flyer's applied
+	# comparison settings, while independently placed bodies start at defaults.
+	var tuned := {"budget":40.0,"mass_multiplier":1.5,"inertia_multiplier":1.75,
+		"thrust_multiplier":1.6,"torque_multiplier":1.3,"boost_multiplier":2.75}
+	for key: String in tuned: ui._fields[key].value=tuned[key]
+	epoch=main._physical_epoch
+	await mouse_click(button_named("Apply settings"))
+	if not await until(func()->bool: return changed(epoch),"nondefault flyer tuning accepted"): return
+	check_tuning(scoop_id,tuned,"tuned Scooper")
+	var accepted_epoch: int = main._physical_epoch
+	ui._requested_response="RFT"
+	check(not ui.apply_settings() and main._physical_epoch==accepted_epoch and ui.applied.response=="LA-SELECTIVE",
+		"RFT fixed-budget admission still refuses a tuned 40 budget without replacing the owner")
+	ui._requested_response="LA-SELECTIVE"
 
 	# The placement model has no side effects on a pilot. Place a second,
 	# independently selectable flyer far outside the initial view.
@@ -91,9 +122,11 @@ func test_roster() -> void:
 	if not await until(func()->bool: return changed(epoch),"second flyer placement"): return
 	var needle_id: int = ui.selected_id()
 	check(ui.body_state(needle_id).model=="needle" and Rect2(main.camera_origin,main.current_view_size).has_point(Vector2(1450,1400)),"distant placement revealed")
+	check_tuning(needle_id,ui.Setup.DEFAULT_OPTIONS,"independent new Needle")
 	epoch=main._physical_epoch
 	await pick(ui._roster,Fleet.index_for_id("scooper")+1)
 	check(main._physical_epoch==epoch and ui.selected_id()==scoop_id and ui.pilot_slot==0,"existing flyer handover uses same physical session")
+	check_tuning(scoop_id,tuned,"reselected existing Scooper")
 	check(Rect2(main.camera_origin,main.current_view_size).has_point(saved),"selected pilot visible after handover")
 	await mouse_click(button_named("Reset selected [R]"))
 	if not await until(func()->bool: return changed(epoch),"stationary reset accepted"): return
@@ -119,6 +152,14 @@ func test_roster() -> void:
 	check(not main.paused and kestrel_id!=scoop_id and ui.body_state(kestrel_id).model=="kestrel" and ui.body_state(scoop_id).is_empty(),"replaced actual old pilot")
 	check(ui.body_state(needle_id).model=="needle" and ui.applied.actors.size()==2 and main.image.get_pixelv(wall).r8==58,"other flyer and terrain retained")
 	check(main.tower_context.workbench_gcr.response=="LA-SELECTIVE","response retained on reset and replacement")
+	check_tuning(kestrel_id,tuned,"missing-model Kestrel replacement")
+	var replacement_epoch: int = main._physical_epoch
+	await pick(ui._roster,Fleet.index_for_id("needle")+1)
+	check(ui.selected_id()==needle_id and main._physical_epoch==replacement_epoch,"existing Needle selection does not reconstruct or inherit another pilot's tuning")
+	check_tuning(needle_id,ui.Setup.DEFAULT_OPTIONS,"reselected existing Needle")
+	await pick(ui._roster,Fleet.index_for_id("kestrel")+1)
+	check(ui.selected_id()==kestrel_id and main._physical_epoch==replacement_epoch,"existing tuned Kestrel selection retains its instance")
+	check_tuning(kestrel_id,tuned,"reselected tuned Kestrel")
 	var capture := OS.get_environment("CYBERSAND_WORKBENCH_PILOT_CAPTURE")
 	if not capture.is_empty() and DisplayServer.get_name()!="headless":
 		await until(func()->bool: return "Switched to Kestrel" in ui._status.text,"visible acknowledged pilot label")
@@ -130,7 +171,7 @@ func test_roster() -> void:
 	await mouse_click(button_named("Move to X/Y"))
 	if not await until(func()->bool: return changed(epoch),"move accepted during play"): return
 	check(not main.paused and ui.body_state(kestrel_id).position.distance_to(Vector2(480,160))<2,"moved body and resumed")
-	var base_mass: float = ui.body_state(kestrel_id).mass
+	var base_mass: float = float(Fleet.authoring_record(Fleet.index_for_id("kestrel")).physics.mass)
 	ui._fields.mass_multiplier.value=2.0
 	epoch=main._physical_epoch
 	await mouse_click(button_named("Apply settings"))
@@ -140,6 +181,7 @@ func test_roster() -> void:
 	await mouse_click(button_named("Defaults"))
 	if not await until(func()->bool: return changed(epoch),"Defaults accepted during play"): return
 	check(not main.paused and is_equal_approx(ui.body_state(kestrel_id).mass,base_mass),"Defaults reached Rapier")
+	check_tuning(kestrel_id,ui.Setup.DEFAULT_OPTIONS,"explicit Defaults")
 	# This test owns a unique user:// name and removes only that file.
 	var label := "pilot-ui-%d-%d" % [OS.get_process_id(),Time.get_ticks_msec()]
 	ui._name.text=label

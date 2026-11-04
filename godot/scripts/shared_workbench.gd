@@ -117,7 +117,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
 	_picker(row,_tool,TOOL_NAMES)
-	var names: Array = Fleet.NAMES.duplicate()
+	var names: Array = Fleet.names()
 	names.append("Passive barrel")
 	_label(row,"Place model")
 	_picker(row,_model,names)
@@ -192,7 +192,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 func _fill_roster() -> void:
 	_roster.clear()
 	_roster.add_item("Observer / choose flyer",0)
-	for index: int in range(Fleet.count()): _roster.add_item(Fleet.NAMES[index],index+1)
+	for index: int in range(Fleet.count()): _roster.add_item(Fleet.names()[index],index+1)
 	_roster.tooltip_text = "Pilot an existing flyer. If absent, switch the selected flyer at its saved spawn or place a flyer at X/Y."
 
 
@@ -295,7 +295,7 @@ func installed(candidate: Dictionary) -> void:
 	applied = candidate.duplicate(true)
 	var roster_choice := _model.selected
 	_model.clear()
-	for name_text: String in Fleet.NAMES: _model.add_item(name_text)
+	for name_text: String in Fleet.names(): _model.add_item(name_text)
 	_model.add_item("Passive barrel")
 	_model.select(clampi(roster_choice,0,_model.item_count-1))
 	_fill_roster()
@@ -493,6 +493,9 @@ func _replace_actor(model: String) -> bool:
 	var next := applied.duplicate(true)
 	var old := actor(next,selected_id())
 	var replacement := Setup.instance(model,int(next.next_id),Setup.point(old.spawn))
+	# A model change keeps the selected instance's applied comparison tuning.
+	# Independent placement and the explicit Defaults action still use defaults.
+	replacement.options = old.options.duplicate(true)
 	next.actors[next.actors.find(old)] = replacement
 	next.selected = next.next_id
 	next.next_id = int(next.next_id)+1

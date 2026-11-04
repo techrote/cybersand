@@ -20,6 +20,56 @@ func check(ok: bool, message: String) -> void:
 		failures += 1
 
 
+# A main-loop-lifetime cache must contain copied authored values, not owners of
+# scene, script, physics or callable lifetimes.
+func value_only(value: Variant) -> bool:
+	if typeof(value) in [TYPE_OBJECT, TYPE_CALLABLE, TYPE_SIGNAL, TYPE_RID]: return false
+	if value is Array:
+		for item: Variant in value:
+			if not value_only(item): return false
+	elif value is Dictionary:
+		for key: Variant in value:
+			if not value_only(key) or not value_only(value[key]): return false
+	return true
+
+
+func registry_contract() -> void:
+	var original: Dictionary = Fleet.registry_snapshot()
+	var original_hash: String = Fleet.registry_hash()
+	var original_name: String = Fleet.names()[0]
+	var original_mass: float = float(Fleet.authoring_record(0).physics.mass)
+	var names: Array[String] = Fleet.names()
+	var descriptions: Array[String] = Fleet.descriptions()
+	var colors: Array[Color] = Fleet.colors()
+	var rows: Array = Fleet.rows()
+	names[0] = "mutated copy"
+	descriptions[0] = "mutated copy"
+	colors[0] = Color.TRANSPARENT
+	rows[0][1] = 64.0
+	check(Fleet.names()[0] == original_name and Fleet.descriptions()[0] != descriptions[0]
+		and Fleet.colors()[0] != colors[0] and is_equal_approx(float(Fleet.rows()[0][1]),original_mass),
+		"compatibility getters isolate copies from shared registry")
+	var changed: Dictionary = Fleet.registry_snapshot()
+	changed.records[0].name = original_name + " reload probe"
+	check(Fleet.restore_registry(changed) and Fleet.registry_hash() != original_hash,
+		"validated reload replaces value cache")
+	changed.records[0].name = "mutated caller snapshot"
+	check(Fleet.names()[0] == original_name + " reload probe", "reload owns a defensive copy")
+	var accepted_hash: String = Fleet.registry_hash()
+	changed.records[0].physics.mass = -1.0
+	check(not Fleet.restore_registry(changed) and Fleet.registry_hash() == accepted_hash,
+		"invalid reload preserves accepted cache")
+	check(not Fleet.reload_definitions("res://authoring/flyers/missing-lifetime-probe.json")
+		and Fleet.registry_hash() == accepted_hash and not Fleet.last_error().is_empty(),
+		"failed file reload preserves registry and records refusal")
+	check(Fleet.restore_registry(original) and Fleet.registry_hash() == original_hash
+		and Fleet.last_error().is_empty(), "restore resets refusal and exact authored values")
+	original.records[0].physics.mass = -1.0
+	check(is_equal_approx(float(Fleet.authoring_record(0).physics.mass),original_mass),
+		"snapshot mutation cannot change active registry")
+	check(value_only(Engine.get_main_loop().get_meta(Fleet.CACHE_KEY)), "main-loop cache owns values only")
+
+
 func actor(model: String, identity: int, position: Vector2) -> Dictionary:
 	return {"model":model,"instance_id":identity,"position":position,"canvas_extent":Vector2i(2048,2048),
 		"producer":"passive" if model == "reference_barrel" else "human",
@@ -46,6 +96,8 @@ func packet_for(sample: Dictionary) -> Dictionary:
 
 
 func run() -> void:
+	registry_contract()
+	var registry_hash: String = Fleet.registry_hash()
 	host = Node2D.new()
 	root.add_child(host)
 	var fleet: Array = []
@@ -126,5 +178,8 @@ func run() -> void:
 	host.free()
 	await process_frame
 	await process_frame
+	check(Fleet.registry_hash() == registry_hash and Fleet.count() == 8,
+		"retiring stepped sessions preserves shared authored registry")
+	check(value_only(Engine.get_main_loop().get_meta(Fleet.CACHE_KEY)), "stepping never installs live owners in main-loop cache")
 	print("WORKBENCH_FLEET checks=",checks," failures=",failures)
 	quit(int(failures>0))
