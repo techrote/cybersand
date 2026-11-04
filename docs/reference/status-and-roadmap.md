@@ -37,7 +37,7 @@ An [experimental P1 draft](../audits/2026-11-04-lcb201-p1-wake-summaries.md),
 not accepted and not on main, cuts the quiet cached tick to ≈0.32 ms with exact
 parity. It shows a small cost under continuous index churn. In the real desktop
 host, a per-step simulation-region flip erased the gain (cached ≈34 ms); with
-the flip removed (now fixed on main, above), the in-app cached step was ≈0.7 ms.
+the flip fixed on main (above), the committed in-app cached step is ≈0.9 ms at 60 Hz.
 
 ## Material shadow foundation and integration — 2026-11-04
 

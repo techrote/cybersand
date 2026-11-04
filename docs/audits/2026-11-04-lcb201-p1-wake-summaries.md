@@ -257,8 +257,27 @@ part of this PR: it is shared host code, outside the pressure-optimization owner
 **Later the same day:** the worker fix merged separately in #390 (main
 `751edc0b495dc85484ad5509a7c95f863651c76b`); see the
 [region-flip record](2026-11-04-lcb201-region-flip.md). The rows above were
-measured before it and are kept as recorded. A combined P1 + #390 rerun from the
-published runtime has not been made.
+measured before it and are kept as recorded.
+
+**Combined rerun (committed P1 + #390).** The same host case was run from this
+branch's merge head `12e4043e9aff41a9ecba21e79c00e3a1aefa0c49`, with the
+published execution-4 Windows DLL (`ebd6d555…2cd36ff`) and the merged #390
+worker: 64 settle ticks and 240 measured, once per row, with Water applied as the
+requested variant in every row.
+
+| Runtime / worker | Variant | Native Hz | Worker step p50 / p95 / max ms | Main process interval p50 / p95 ms | Snapshot age p50 / p95 ms | Failures |
+|---|---|---:|---|---|---|---:|
+| P1 runtime + #390 worker (`12e4043e`) | reference | 21.6 | 44.79 / 56.49 / 85.92 | 6.91 / 8.34 | 4.64 / 8.43 | 0 |
+| P1 runtime + #390 worker (`12e4043e`) | cached | 60.0 | 0.93 / 1.94 / 6.94 | 6.86 / 15.01 | 1.89 / 14.85 | 0 |
+| P1 runtime + #390 worker (`12e4043e`) | cached_dormant | 60.0 | 0.93 / 1.58 / 7.78 | 6.94 / 17.52 | 1.85 / 16.45 | 0 |
+| P1 runtime + #390 worker (`12e4043e`) | freemass | 59.7 | 0.36 / 0.70 / 2.17 | 5.26 / 14.80 | 1.50 / 3.13 | 0 |
+
+Cached and cached_dormant hold the 60 Hz cap at ≈0.9 ms per worker step, against
+0.70 ms with the earlier scratch worker. Reference is higher than in the earlier
+rows (≈45 ms against ≈30–35 ms) because another local session was running on the
+same machine. Treat these rows as a functional confirmation that the committed
+code keeps the gain, not as a cost comparison with the earlier rows. Receipts
+are kept outside Git (`combined/`).
 
 **Consequences:**
 - P1 is necessary but not sufficient for an in-app benefit.

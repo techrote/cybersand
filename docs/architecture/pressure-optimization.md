@@ -265,8 +265,8 @@ continuous index churn.
 
 **In-app result (2026-11-04).** Before the desktop host fix below, the worker
 made the cache cold twice per step, and in-app cached/dormant cost more than
-reference. With that flip removed, the in-app cached quiet-pool step with P1 is
-≈0.7 ms (local measurement in the
+reference. With the committed #390 fix and P1, the in-app cached quiet-pool
+step is ≈0.9 ms at the 60 Hz cap (one headless Windows run per variant, in the
 [P1 evidence](../audits/2026-11-04-lcb201-p1-wake-summaries.md#full-host-cohort-the-per-step-region-flip)).
 
 **Desktop host interaction (2026-11-04).** The desktop worker used to write the
