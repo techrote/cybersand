@@ -1,0 +1,305 @@
+{
+  "schema": "in-tools-383-successor-final-local-validation-v1",
+  "source_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+  "source_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+  "working_delta_scope": "Post-execution documentation/evidence addendum; all measured executable sources unchanged. Exact validation input hashes follow.",
+  "inputs_unchanged": true,
+  "status": "passed",
+  "input_sha256": {
+    "tools/ci/check_docs.py": "3509bba9904b0134c81eccd825162b62251655e4bfdc67bd0e106edf671e9ac9",
+    "tools/ci/check_repository.py": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+    "tools/ci/check_m11_consistency.py": "8d1e3ce2f92c02b388b243082b08a8b27fac2e0e02d652935a7a7cb6b9885a7c",
+    "tools/docs/retrieval_eval.py": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+    "docs/reference/retrieval-corpus.json": "ac65e23d3905a7e5bc7c0fd27d3ebc02251601e9690e66b62c89aa6a763d2e50",
+    "docs/reference/retrieval-questions.json": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+    "docs/reference/retrieval-challenges.json": "6590b94e902079f2545c8886a5131bc7aff58ccb21e2ee987463f0b9ab34e570",
+    "docs/reference/retrieval-questions-in-tools-361a.json": "d6a31023919a5182bd7c100f479b448f60f6c1393ff80d14ab50fe263a56cd4f",
+    "docs/audits/in-tools-383-successor-2026-11-04/retrieval-questions-successor.json": "456acf544b634800ebe87e9aaf5708aa20e23e556f59991d6212d3c03f9591f8",
+    "docs/operations/in-tools-metered-drain.md": "4220bd6df0b6a6a6a11458a678e0f255b9811dc6dfd22c5ca9e3a4ba5f714cb9",
+    "docs/operations/cybersand-codex-development-handover.md": "61284000e80455ff3e652dbee68cfe13c391e6b19166ed3b5a3858f867565fac",
+    "docs/reference/configuration-reference.md": "a32c0e5ac4f6ee7e3cf04025f4b31762593468ec58dfdbc146c20e4da296789b",
+    "docs/reference/interfaces-and-message-contracts.md": "c2efd18b7ce410c188cb6e9a0530f5cedd3de993577ab8c6171e962850cecc28",
+    "docs/audits/2026-11-04-in-tools-383-successor-correction.md": "4396cf83678241dd51b4361dc0fd7caa9d4c13dc043821cf03609a827cd43bb6"
+  },
+  "repository": {
+    "status": "passed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 120,
+      "navigation_link_documents": 8,
+      "canonical_claims": 236,
+      "local_links": 3605,
+      "heading_anchors": 695,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "unmaterialized_runtime_files": [],
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "m11": {
+    "status": "passed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": false,
+    "working_tree_differences": [],
+    "errors": []
+  },
+  "retrieval": {
+    "retrieval-frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval-challenges": {
+      "questions": 157,
+      "canonical_hit_at_1": 124,
+      "canonical_hit_at_k": 156,
+      "mrr_at_k": 0.8737,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval-metered": {
+      "questions": 4,
+      "canonical_hit_at_1": 4,
+      "canonical_hit_at_k": 4,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "retrieval-successor": {
+      "questions": 2,
+      "canonical_hit_at_1": 2,
+      "canonical_hit_at_k": 2,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "results": [
+    {
+      "name": "docs",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:15.248303+00:00",
+      "finished_utc": "2026-11-04T20:11:16.588721+00:00",
+      "returncode": 0,
+      "stdout_sha256": "6562696809a8b550e108d299c2a7705a9e444802da572ff14a9946b6d2cd8802",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": false,
+      "stderr_empty": true
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/validation-final-02/repository.json"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:15.248662+00:00",
+      "finished_utc": "2026-11-04T20:11:16.976328+00:00",
+      "returncode": 0,
+      "stdout_sha256": "48db64f0e4e24d469e7533842675f1685c96209139b74555f7f600e0eb4dad32",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": false,
+      "stderr_empty": true
+    },
+    {
+      "name": "m11",
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/validation-final-02/m11.json"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:15.249304+00:00",
+      "finished_utc": "2026-11-04T20:11:15.409767+00:00",
+      "returncode": 0,
+      "stdout_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": false,
+      "stderr_empty": true
+    },
+    {
+      "name": "retrieval-frozen",
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/validation-final-02/retrieval-frozen.json"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:15.250106+00:00",
+      "finished_utc": "2026-11-04T20:11:15.775793+00:00",
+      "returncode": 0,
+      "stdout_sha256": "b1285baabefff424209a3eef32784ac4def4bf287e808db4e3ca4711fba0c2d3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": false,
+      "stderr_empty": true
+    },
+    {
+      "name": "retrieval-challenges",
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/validation-final-02/retrieval-challenges.json"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:15.409874+00:00",
+      "finished_utc": "2026-11-04T20:11:17.144261+00:00",
+      "returncode": 0,
+      "stdout_sha256": "661b41ee8e68def850e08da44548c2945d26a9e9f7d35ef633cdd34bf0fef922",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": false,
+      "stderr_empty": true
+    },
+    {
+      "name": "retrieval-metered",
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions-in-tools-361a.json",
+        "--output",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/validation-final-02/retrieval-metered.json"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:15.775884+00:00",
+      "finished_utc": "2026-11-04T20:11:16.097846+00:00",
+      "returncode": 0,
+      "stdout_sha256": "787224427c4b45c61c8cfa48af718a59efd2be53e9527837c385124aced9afa1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": false,
+      "stderr_empty": true
+    },
+    {
+      "name": "retrieval-successor",
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/audits/in-tools-383-successor-2026-11-04/retrieval-questions-successor.json",
+        "--output",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/validation-final-02/retrieval-successor.json"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:16.097951+00:00",
+      "finished_utc": "2026-11-04T20:11:16.406132+00:00",
+      "returncode": 0,
+      "stdout_sha256": "824f99e1268435d6d2a58b1e8caf3f191fb01999f19bca82381e9e32e5028bc3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": false,
+      "stderr_empty": true
+    },
+    {
+      "name": "lfs",
+      "command": [
+        "git",
+        "lfs",
+        "fsck"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:16.406190+00:00",
+      "finished_utc": "2026-11-04T20:11:16.841827+00:00",
+      "returncode": 0,
+      "stdout_sha256": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": false,
+      "stderr_empty": true
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "timeout_seconds": 180,
+      "started_utc": "2026-11-04T20:11:16.588802+00:00",
+      "finished_utc": "2026-11-04T20:11:16.610379+00:00",
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_empty": true,
+      "stderr_empty": true
+    }
+  ],
+  "docs": {
+    "status": "passed",
+    "documents": 120,
+    "navigation_link_documents": 8,
+    "canonical_claims": 236,
+    "local_links": 3605,
+    "heading_anchors": 695,
+    "questions": 32,
+    "errors": [],
+    "warnings": [],
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ]
+  },
+  "raw_validation_record_sha256": "ffb17f2998f64aa6e2acb179e304dfec299a39f4bf81368ff009062d62b3432f",
+  "prior_validation_record_sha256": "805e536ebcc2aa1e2a59ca1ff2702e10e08148606205c9a472cecf3fcc427986",
+  "prior_validation_scope": "Same source and canonical corpus, before final excluded-audit prose precision corrections; retained unchanged locally.",
+  "post_validation_audit_only_change": {
+    "observed_utc": "2026-11-04T20:14:24.248554+00:00",
+    "path": "docs/audits/2026-11-04-in-tools-383-successor-correction.md",
+    "previous_sha256": "4396cf83678241dd51b4361dc0fd7caa9d4c13dc043821cf03609a827cd43bb6",
+    "current_sha256": "873ccb5dccc8813e6db304ce7b98025381794f6665156a104f1f3185052f17ef",
+    "reason": "New #379 exclusive owner continuation reports current-main source re-admission STOP after #390 worker lock changed. Added exact authority link and handoff limitation, with existing source/test and canonical documentation unchanged.",
+    "source": "https://github.com/techrote/cybersand/pull/379#issuecomment-6640850821",
+    "all_other_validation_input_hashes_unchanged": true,
+    "audit_local_links_inspected": 25,
+    "pending_publication_review_link": [
+      "in-tools-383-successor-2026-11-04/publication-qualification.json"
+    ],
+    "whitespace_check_returncode": 0,
+    "qualification": "Canonical documentation/retrieval checks remain source-identical; new excluded-audit prose is separately independently reviewed before commit. Final publication record closes the one pending self-reference."
+  }
+}

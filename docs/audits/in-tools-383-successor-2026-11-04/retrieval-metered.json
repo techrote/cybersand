@@ -1,0 +1,898 @@
+{
+  "created_utc": "2026-11-04T20:11:16.073598+00:00",
+  "corpus_root": "/workspace/scratch/dc49a0ed2f07/pr383-successor/source",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+  },
+  "fixture_sha256": "d6a31023919a5182bd7c100f479b448f60f6c1393ff80d14ab50fe263a56cd4f",
+  "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+  "corpus_manifest_sha256": "ac65e23d3905a7e5bc7c0fd27d3ebc02251601e9690e66b62c89aa6a763d2e50",
+  "corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "aaa9671c20d06d65cd0e6b2306a53cd6ea89ba64dde50ac2948abffc92f170bf",
+      "bytes": 12759
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "d378c7b703a163f0390281fba2760fb12e603c9238b72a904b53320c188f7407",
+      "bytes": 39291
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a",
+      "bytes": 7295
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "231b1dec6ee5993a6c399d235c669534a90c44f292fbe19576113f9ab1f1566c",
+      "bytes": 82558
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "2f47a361564cf4a9f9ab4acd59f7968776a7c5b3ba3c3bea6b53bbf86bd24f6b",
+      "bytes": 65640
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "43d73ffea957d6da8c84799bd4a69d1e2897f932da4f1ada3ce2b4c603e68b92",
+      "bytes": 54011
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "98cb68fb1f7d808cd0b00b1f70c81021d1b608a0432c16d0a3d2aa32d8f9ffcd",
+      "bytes": 29887
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "775199fd0f696dc455c5305b6c9788a2d2c3dd7c467b6472ab398619efbdb444",
+      "bytes": 15426
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "56b23c211e679342ac8800c8b133f2734db92e7138629bf73d45fa1d83f271d5",
+      "bytes": 13608
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "41d571eb23b50322c8964be66e7af7226d0796f982500dbf66e4677bdeefb6ca",
+      "bytes": 19202
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "bytes": 19320
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "67402f42648e34c95c98afa59dc03de57a7dd56d087e9e8d680540c73e4051d1",
+      "bytes": 13537
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "f874fc79105848b921964c5b5dcdb5d04fbe984b25cbcdb1b8b8b4bb8e72226d",
+      "bytes": 12639
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "61284000e80455ff3e652dbee68cfe13c391e6b19166ed3b5a3858f867565fac",
+      "bytes": 114495
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5f646c5eed80101d8bdc36be38985ee34898ed145ed28f2aa01d3ae1bbb3ffc7",
+      "bytes": 17395
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "923a9f27fa09241f198fe149d56dbf6c228255e3fdfdd90b17d2b656b6992dde",
+      "bytes": 16874
+    },
+    {
+      "path": "docs/operations/in-tools-metered-drain.md",
+      "sha256": "4220bd6df0b6a6a6a11458a678e0f255b9811dc6dfd22c5ca9e3a4ba5f714cb9",
+      "bytes": 16189
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "aeba17125c1d0ddbdd349db5acc2bd6b460a015577405d772a0227ce85821586",
+      "bytes": 112424
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "331364c480f4ea6dc8b8ad9dbe34f90c45fef75db482f36d8acfe292749bcfb6",
+      "bytes": 14823
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820",
+      "bytes": 16807
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "536521336ace40ddbfc713f789b91bd6af785eddad891e03dd5754583534ac8e",
+      "bytes": 10947
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "bytes": 10536
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "e5e5a9528fe8e0fd0327c8bddc6d0d8edbe235e1b4b6d264687e661960aeccd7",
+      "bytes": 29266
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "a32c0e5ac4f6ee7e3cf04025f4b31762593468ec58dfdbc146c20e4da296789b",
+      "bytes": 87272
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "c2efd18b7ce410c188cb6e9a0530f5cedd3de993577ab8c6171e962850cecc28",
+      "bytes": 96339
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "fe0ec1587567e62b679599714e411a71f76c9a74488dbed84ec3d40e516f2756",
+      "bytes": 46795
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "1d1b1d91b406d62e6de05266d662b83135e179aefa011c8af8b59ca815c2a3c0",
+      "bytes": 13257
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "b2865c060ae1130f09b90d545a65cd5b70ce1d50824ba37f0c82e7d1ebc2aa6d",
+      "bytes": 19657
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "aa71cc6160b2d19b93cadece9d404f0757185abbf225383b4698f231d0090f8a",
+      "bytes": 134314
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "21175ed65aa27b825c45b2fba4606324ddf4998510b0d4f4be799e8465517037",
+      "bytes": 74962
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "372ef8d576bfc265d28dcea6be754d938c717e790adc678823904f70df98db8f",
+      "bytes": 11757
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "be26e90e584305b29296a4b698c25dd3c74deb274554d428830c6243bcbbec55",
+      "bytes": 17533
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "c9aef9a878d100bcf61a4d8c01e752487b3056a6e16a6763fcf8c159fe4a5503",
+      "bytes": 21430
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "d3e619b3737e810de3543cb66a0738d7a527a1cc862758835a1796acc8b2c919",
+      "bytes": 12999
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "c313c6c6de8c3e3e541e9879d69ff2e4a8567f62998120f079cca760251ca1ec",
+      "bytes": 53035
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "c3ba36a03a706d64b1a1fe697526a931814d4ca0a3980bddb73a45d3d9ca216e",
+      "bytes": 27978
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "3aa36c9771645fe972228d9d4144cc46b2d05a3d14401bc72c94e659e48c9ba9",
+      "bytes": 12383
+    }
+  ],
+  "document_count": 120,
+  "chunk_count": 1607,
+  "summary": {
+    "questions": 4,
+    "canonical_hit_at_1": 4,
+    "canonical_hit_at_k": 4,
+    "mrr_at_k": 1.0,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "IN-TOOLS-361A-01",
+      "query": "How do I select the opt-in metered Liquid Drain in ordinary physical gameplay and does it change U10 charge or cooldown?",
+      "canonical": [
+        "systems/actor-usables.md",
+        "operations/in-tools-metered-drain.md"
+      ],
+      "facts": [
+        "Select physical U10 in F5, explicitly select Metered Water or Brine v1, and Equip only; hold left/M and release to stop, right is one 35% precision pulse.",
+        "Ordinary U10 stays default; range29 radius4 fixed cost0.85 cooldown0.10 charge100 recharge6/s remain.",
+        "Prepared IN physical gameplay uses the existing PLAY physical rig/policy/radius3 construction; native default-demo articulated owners are unsupported."
+      ],
+      "sources": [
+        "../godot/scripts/actor_prototype_panel.gd",
+        "../godot/scripts/physical_usable_equipment.gd",
+        "../godot/scripts/main.gd"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 38.464869,
+          "path": "systems/actor-usables.md",
+          "title": "Actor usables — 32-item catalogue and physical equipment",
+          "heading": "Actor usables — 32-item catalogue and physical equipment > U01–U12: material deposition and destruction tools > Opt-in exact metered Liquid Drain",
+          "part": 1,
+          "text": "Document: Actor usables — 32-item catalogue and physical equipment\nPath: systems/actor-usables.md\ndocument-kind: contract\nstatus: Current\nscope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority\ncanonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]\nlast-reviewed: 2026-11-04\nSection: Actor usables — 32-item catalogue and physical equipment > U01–U12: material deposition and destruction tools > Opt-in exact metered Liquid Drain\n**Current candidate, #361-A:** physical U10 additionally offers the explicitly selected `metered-drain-v1` profile for Water or Brine. Ordinary U10 and every existing preset retain their behavior. The profile keeps range 29, radius 4, accepted cost 0.85, cooldown 0.10 seconds and shared equipment charge/recharge. It limits an accepted pulse to at most 16 cells and meters actual stored Water units or separate Brine cells. Selection does not refill its finite allowance. The [metered-drain guide](../operations/in-tools-metered-drain.md) owns supported policies, exact Q7/Q255 and fractional FreeMass contracts, controls, bounded before/after observations, refusal versus terminal fault, and reproducible qualification. Its results are host-local native observations, not new native-issued command receipts. The [dated evidence](../audits/2026-11-04-in-tools-361a-metered-drain.md) keeps actual Linux execution separate from Windows, graphical and human acceptance. No reversible valve, pressure change or momentum input is supplied by this profile."
+        },
+        {
+          "rank": 2,
+          "score": 36.694488,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Selecting and operating the profile",
+          "part": 1,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Selecting and operating the profile\nUse an existing supported physical actor with held equipment. Open **F5**, choose **Liquid Drain**, then explicitly choose **Metered Water v1 — experimental** or **Metered Brine v1 — experimental** and **Equip only**. The profile selector is available only for physical U10. **Ordinary U10** selects the retained behavior. Changing equipment requires the existing chassis to be held and the previous pending use to be retired. Aim with the pointer independently of movement. Hold left mouse or **M** to request repeated pulses; release stops future uncommitted pulses. Right mouse requests one precision pulse at 35% of selected equipment power. Opening a blocking panel, losing focus, pausing or retiring control cancels the pending intake. Release the buttons before rearming after cancellation or a new owner. Stopping the worker retires pending equipment and its retained control generation. A direct stop/start cannot revive that lease; a normal fresh control boundary or reconstruction must precede another activation. Main ordinarily stops the worker on scene exit; qualification joins for read-only census and then explicitly establishes fresh control before resuming. Healthy restart preserves the selected physical-owner mode. It does not enable the sampled character or run sampled spawn recovery inside that physical World. The actor status shows the cumulative registered sink and remaining allowance in **Water units** or **Brine cells**. Its tooltip identifies the last applied, refused or fault outcome, selected material, native generation and policy. A refusal produces no accepted drain effect or recoil. The displayed allowance is a finite permission to remove material, not an inventory of recovered liquid. Current FreeMass Water and CY Brine work in ordinary native physical gameplay. For IN, use the existing **PLAY** session panel: choose a physical rig, select **Water: inertial**, set radius **3**, **Build selected session**, then play/resume and equip metered U10 through F5. The existing **Mixed Current Water + inertial Brine** preset similarly supplies a supported no-PF Brine owner. Authored exploratory maps also support prepared physical actors. The native-default-demo Liquids route excludes articulated equipment owners and is not this route. A legacy/imported IN World without its initial native construction receipt refuses this profile. The metered selector does not itself change solver policy or normalize liquid."
+        },
+        {
+          "rank": 3,
+          "score": 35.065009,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Ownership, observations and failure semantics",
+          "part": 1,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Ownership, observations and failure semantics\n[`physical_usable_runtime.gd`](../../godot/scripts/physical_usable_runtime.gd) calls the owner-local [`metered_liquid_drain.gd`](../../godot/scripts/metered_liquid_drain.gd) helper only inside the existing worker consumption interval. The cancellation mutex linearizes admission and the entire finite operation. Main supplies copied equipment/body values; the worker prepares native masks from its captured physical frame before consumption. No main-thread World writer, global state or additional queue is introduced. The version-2 request extends the ordinary request with `profile`, `material`, `native_generation`, `policy_hash`, `world_instance_id` and `quantity_budget`. The physical frame echoes these values plus the current `metered_request_id`. Release retires that token immediately; latest held-state admission prevents a quick press/release from reappearing through the ordinary edge replay. Existing run/epoch, control generation, equipment epoch/instance, body, strictly increasing sequence and lease checks still apply. Native ObjectIDs are signed opaque values; nonzero identity, rather than positivity, is required. All destructive preflight finishes before the first writer: equipment identity, owner policy and health, finite positive bounds, charge/cooldown, full selected target quantities, body masks, visibility, adapter bounds and reserved read/write capacity. The helper uses `CyberDemoBridge.inspect_cell` for **stored** material, quantity and mask state, then the existing radius-zero Empty edit. A void writer or unchanged health flag is never counted as success. Every attempted edit has copied native post-readback; positive totals come only from verified transitions. Results are labelled **`host-local-native-observation-v1`**. They bind the command and captured frame to native World object/generation, applied policy, completed native tick and hard-surface revision. Initial native construction receipts remain separately labelled; IN admission checks their canonical byte hash. They are not per-command native receipts. The adapter exposes no separate native pose revision: the result says so and records the captured physical-frame/mask provenance instead. Whole-World censuses in the fixtures independently check the local transition ledger; production does not run a full-World scan for every pulse. A **normal refusal** performs no destructive edit, consumes no effect allowance, charges no activation cost and starts no new cooldown. Ordinary simulation time may still recharge charge and age an existing cooldown. A command consumed as refused cannot later retry because its intake becomes clear. Admission-only refusals are labelled `not_dispatched`; they do not fabricate an inspected target set or fresh native per-command receipt. An **unexpected execution fault** is distinct. The helper latches terminal *before* the first writer. It retains attempted transitions, verified partial quantity and whether quantity verification is complete. The worker then pauses, retires pending effects/brush commands and publishes failure evidence alongside the last valid render/cell publication. It cannot continue a native tick, retry the command or publish partial cells as a healthy frame. Restart preserves that quarantine while allowing an explicit existing clear/prepared reconstruction. No liquid repaint or"
+        },
+        {
+          "rank": 4,
+          "score": 34.689286,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Reproducing the focused checks",
+          "part": 2,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Reproducing the focused checks\nexisting counter and does not change the ordinary-v1 U10 allowance. Unexpected faults after an attempted write retain partial/unknown quantity and terminal quarantine, even if read capacity remains. Owner-command timings in the fixture include runtime work; the helper's `command_overhead_usec` is narrower and excludes queue/input, source clearance, native ticking and graphical presentation. Neither is a frame-time guarantee."
+        },
+        {
+          "rank": 5,
+          "score": 34.171523,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > IN-TOOLS #361-A metered drain candidate — 2026-11-04",
+          "part": 1,
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\ndocument-kind: reference\nstatus: Current\nscope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-04\nSection: Status and foundational roadmap > IN-TOOLS #361-A metered drain candidate — 2026-11-04\nThe [opt-in physical U10 profile](../operations/in-tools-metered-drain.md) now has application source for exact Water/Brine removal, resource/cooldown outcomes, exclusive native-owner dispatch and fault quarantine. Ordinary U10, FreeMass, solver defaults and native/coupling APIs remain intact. The [dated qualification](../audits/2026-11-04-in-tools-361a-metered-drain.md) records the executed scope and untested gates. Keep the implementation draft and #361 open; source implementation is not full platform or human gameplay acceptance. Reversible valves (#361-B), geometric sources and momentum interfaces remain separate work after the drain acceptance gates."
+        }
+      ]
+    },
+    {
+      "id": "IN-TOOLS-361A-02",
+      "query": "Does metered drain count partial FreeMass Water as 255, how are 3-bit IN Water and Brine measured, and can reselecting equipment refill the budget?",
+      "canonical": [
+        "operations/in-tools-metered-drain.md"
+      ],
+      "facts": [
+        "Water uses actual stored state_a, Q=(1<<bits)-1; full IN/CY Water requires Q7 or Q255 at the qualified endpoints and fractional live whole-cell input refuses.",
+        "FreeMass fractional cells debit their actual units; Brine is a separate whole-cell population, not its state byte.",
+        "At most16 targets; separate32Q Water and32Brine allowances persist per native generation/actor slot across equipment and actor-session churn."
+      ],
+      "sources": [
+        "../godot/scripts/metered_liquid_drain.gd",
+        "../godot/tests/test_physical_metered_drain.gd"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 40.931133,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Quantity, resource and footprint contracts",
+          "part": 1,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Quantity, resource and footprint contracts\n| Property | Metered v1 behavior | |---|---| | Identity | Existing U10, catalogue index 9, ID `liquid_drain` | | Range / radius | Authored range 29 and radius 4; existing power scaling shortens reach to `29 × lerp(0.35, 1, effective_power)` | | Pulse bound | At most `ceil(16 × effective_power)` target cells, clamped to 1–16 for positive power | | Precision | Effective power is selected power × 0.35 for the single alternate pulse | | Accepted charge / cooldown | Fixed 0.85 charge and 0.10 seconds, independent of power and actual dose | | Equipment capacity / recharge | Existing 100 charge and 6 charge per simulation second | | Shared runtime bound | Existing 2,048 **material-work read units** and 128 writes per step; complete metered pre/postflight capacity is reserved before editing. This is not an all-native-call or all-getter cap. | | Experimental allowance | Per native World generation and actor slot: 32 × Q Water units and, separately, 32 Brine cells | | Per-command quantity request | Positive integer, at most 16 × Q Water units or 16 Brine cells; removal also fits the remaining allowance | | Refill | Only a verified replacement of the native World/generation; equipment selection, material switching, pickup and actor-session reset do not refill live stock | | Owner lifetime bound | A completed native tick above 2^31 refuses with `fresh_owner_required`; explicit reconstruction is required | Here `Q = (1 << mass_bits) - 1`, read from the actual native Water policy. Thus Q is 7 at three bits and 255 at eight bits. The profile accepts native precision 3–8; the executable endpoint controls qualify three and eight bits. | Selected material / applied family | Quantity authority and eligibility | |---|---| | Water / FreeMass | Sum actual stored `state_a`; partial cells are valid. Removing a cell with two units debits two units, not Q or 255. | | Water / IN or CY reference | Every selected live Water cell must contain exactly Q. Fractional live input refuses; possible construction normalization is not permission to erase it. | | Brine / IN or CY reference | Count actual stored Brine cells. Never interpret Brine `state_a` as Water quantity. | | Any World containing PressureFlow | Refused by this version, including a Brine request in a PF Water World. Its extra state transitions are outside the restricted erase qualification. | | Other materials, variants or invalid/radius-mismatched policies | Refused with no effect debit. IN requires applied radius three. | The footprint starts"
+        },
+        {
+          "rank": 2,
+          "score": 32.888427,
+          "path": "systems/actor-usables.md",
+          "title": "Actor usables — 32-item catalogue and physical equipment",
+          "heading": "Actor usables — 32-item catalogue and physical equipment > U01–U12: material deposition and destruction tools > Opt-in exact metered Liquid Drain",
+          "part": 1,
+          "text": "Document: Actor usables — 32-item catalogue and physical equipment\nPath: systems/actor-usables.md\ndocument-kind: contract\nstatus: Current\nscope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority\ncanonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]\nlast-reviewed: 2026-11-04\nSection: Actor usables — 32-item catalogue and physical equipment > U01–U12: material deposition and destruction tools > Opt-in exact metered Liquid Drain\n**Current candidate, #361-A:** physical U10 additionally offers the explicitly selected `metered-drain-v1` profile for Water or Brine. Ordinary U10 and every existing preset retain their behavior. The profile keeps range 29, radius 4, accepted cost 0.85, cooldown 0.10 seconds and shared equipment charge/recharge. It limits an accepted pulse to at most 16 cells and meters actual stored Water units or separate Brine cells. Selection does not refill its finite allowance. The [metered-drain guide](../operations/in-tools-metered-drain.md) owns supported policies, exact Q7/Q255 and fractional FreeMass contracts, controls, bounded before/after observations, refusal versus terminal fault, and reproducible qualification. Its results are host-local native observations, not new native-issued command receipts. The [dated evidence](../audits/2026-11-04-in-tools-361a-metered-drain.md) keeps actual Linux execution separate from Windows, graphical and human acceptance. No reversible valve, pressure change or momentum input is supplied by this profile."
+        },
+        {
+          "rank": 3,
+          "score": 28.706634,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Selecting and operating the profile",
+          "part": 1,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Selecting and operating the profile\nUse an existing supported physical actor with held equipment. Open **F5**, choose **Liquid Drain**, then explicitly choose **Metered Water v1 — experimental** or **Metered Brine v1 — experimental** and **Equip only**. The profile selector is available only for physical U10. **Ordinary U10** selects the retained behavior. Changing equipment requires the existing chassis to be held and the previous pending use to be retired. Aim with the pointer independently of movement. Hold left mouse or **M** to request repeated pulses; release stops future uncommitted pulses. Right mouse requests one precision pulse at 35% of selected equipment power. Opening a blocking panel, losing focus, pausing or retiring control cancels the pending intake. Release the buttons before rearming after cancellation or a new owner. Stopping the worker retires pending equipment and its retained control generation. A direct stop/start cannot revive that lease; a normal fresh control boundary or reconstruction must precede another activation. Main ordinarily stops the worker on scene exit; qualification joins for read-only census and then explicitly establishes fresh control before resuming. Healthy restart preserves the selected physical-owner mode. It does not enable the sampled character or run sampled spawn recovery inside that physical World. The actor status shows the cumulative registered sink and remaining allowance in **Water units** or **Brine cells**. Its tooltip identifies the last applied, refused or fault outcome, selected material, native generation and policy. A refusal produces no accepted drain effect or recoil. The displayed allowance is a finite permission to remove material, not an inventory of recovered liquid. Current FreeMass Water and CY Brine work in ordinary native physical gameplay. For IN, use the existing **PLAY** session panel: choose a physical rig, select **Water: inertial**, set radius **3**, **Build selected session**, then play/resume and equip metered U10 through F5. The existing **Mixed Current Water + inertial Brine** preset similarly supplies a supported no-PF Brine owner. Authored exploratory maps also support prepared physical actors. The native-default-demo Liquids route excludes articulated equipment owners and is not this route. A legacy/imported IN World without its initial native construction receipt refuses this profile. The metered selector does not itself change solver policy or normalize liquid."
+        },
+        {
+          "rank": 4,
+          "score": 28.046749,
+          "path": "reference/interfaces-and-message-contracts.md",
+          "title": "Interfaces and message contracts",
+          "heading": "Interfaces and message contracts > Physical actor control and effects > Metered U10 request and outcome extension",
+          "part": 1,
+          "text": "Document: Interfaces and message contracts\nPath: reference/interfaces-and-message-contracts.md\ndocument-kind: contract\nstatus: Current\nscope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct\ncanonical-for: [public-and-adapter-interface-layouts]\nlast-reviewed: 2026-10-25\nSection: Interfaces and message contracts > Physical actor control and effects > Metered U10 request and outcome extension\nThe opt-in [#361-A profile](../operations/in-tools-metered-drain.md) uses request version 2 and adds exactly `profile=\"metered-drain-v1\"`, selected `material` (Water 3 or Brine 24), `native_generation`, `policy_hash`, `world_instance_id` and integer `quantity_budget`. The physical frame remains version 1; its metered actor row echoes those fields and the current `metered_request_id`. No arbitrary target position, footprint, writer or velocity enters the request. Signed nonzero native ObjectIDs are opaque identity values. A current profile refuses a version-1 downgrade and a retired pending token cannot dispatch. Each actor readback adds copied `metered_drain` owner context and separate `water_units_{initial,remaining,removed}` and `brine_cells_{initial,remaining,removed}` ledgers. Command results add `metered_drain.status` (`applied`, `refused`, `fault`), reason, requested budget, applied policy, before/after completed tick, target observations/transitions, actual quantity, sink debit, remaining allowance and charge/cooldown outcome. Results carry `provenance=\"host-local-native-observation-v1\"`; an initial native construction receipt is separately labelled. No native per-command receipt or unexposed native pose revision is claimed. Admission-only refusals say `observation_status=\"not_dispatched\"` rather than inventing inspected targets. `read_accounting=\"material-work-units-v1\"` qualifies `reads_used`: helper cell inspections plus reserved helper identity work, within the shared material-work allowance. Caller lifecycle refresh and mask preparation are outside that counter; it is not an all-native-getter limit. The [profile accounting contract](../operations/in-tools-metered-drain.md#reproducing-the-focused-checks) defines the counted work and pre-write reservations. `metered_terminal` and `metered_fault` expose an unexpected execution fault. Verified partial quantities remain evidence, while uncertain quantity is marked incomplete. Faulted owners stop editing/ticking and publish failure with the last valid cellular/render frame until explicit native reconstruction. Normal refusals have zero removal, zero new allowance debit and no accepted activation. The ordinary request/result fields and sampled equipment interface remain intact."
+        },
+        {
+          "rank": 5,
+          "score": 26.517747,
+          "path": "reference/configuration-reference.md",
+          "title": "Configuration reference",
+          "heading": "Configuration reference > Actor usable values",
+          "part": 2,
+          "text": "Document: Configuration reference\nPath: reference/configuration-reference.md\ndocument-kind: reference\nstatus: Current\nscope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema\ncanonical-for: [current-configuration-values, adapter-worker-policy]\nlast-reviewed: 2026-10-25\nSection: Configuration reference > Actor usable values\n0.35; early projectile activation adds no launch recoil | | Physical pickup / release grace | Owning grip within eight cells with clear path; released-body self-collision grace 0.2 seconds | Capacity exhaustion refuses or defers bounded work. It does not silently replace an existing projectile/device or authorize an unbounded catch-up queue. Exact per-item speeds, fuses, recipes and controls belong to the [usable contract](../systems/actor-usables.md). Metered Water uses actual `Q=(1<<mass_bits)-1` (7 at three bits, 255 at eight). FreeMass partial cells debit their stored units; IN/CY Water must be whole cells. The metered operation conservatively reserves metadata and cell readback within the effect read budget, including complete postflight before the first write. Owner lifecycle metadata refresh and existing scalar setup/health calls are outside the historical material-read counter. Exact admission and fault bounds belong to the [metered profile](../operations/in-tools-metered-drain.md)."
+        }
+      ]
+    },
+    {
+      "id": "IN-TOOLS-361A-03",
+      "query": "Are metered drain outcomes native command receipts, can raw Empty erasure bypass body masks, and what happens after a partial edit fault?",
+      "canonical": [
+        "operations/in-tools-metered-drain.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Outcomes are host-local-native-observation-v1 from copied before/after native observations under exclusive ownership; initial construction receipts are separate.",
+        "Raw erasure can remove stored material under a mask; complete target/path/mask/capacity preflight precedes every mutation.",
+        "Normal refusal edits nothing and costs no activation; unexpected partial effects latch terminal quarantine, preserve evidence and last-valid publication, forbid retries and require explicit native reconstruction."
+      ],
+      "sources": [
+        "../godot/scripts/metered_liquid_drain.gd",
+        "../godot/scripts/simulation_worker.gd"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 38.141041,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Ownership, observations and failure semantics",
+          "part": 1,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Ownership, observations and failure semantics\n[`physical_usable_runtime.gd`](../../godot/scripts/physical_usable_runtime.gd) calls the owner-local [`metered_liquid_drain.gd`](../../godot/scripts/metered_liquid_drain.gd) helper only inside the existing worker consumption interval. The cancellation mutex linearizes admission and the entire finite operation. Main supplies copied equipment/body values; the worker prepares native masks from its captured physical frame before consumption. No main-thread World writer, global state or additional queue is introduced. The version-2 request extends the ordinary request with `profile`, `material`, `native_generation`, `policy_hash`, `world_instance_id` and `quantity_budget`. The physical frame echoes these values plus the current `metered_request_id`. Release retires that token immediately; latest held-state admission prevents a quick press/release from reappearing through the ordinary edge replay. Existing run/epoch, control generation, equipment epoch/instance, body, strictly increasing sequence and lease checks still apply. Native ObjectIDs are signed opaque values; nonzero identity, rather than positivity, is required. All destructive preflight finishes before the first writer: equipment identity, owner policy and health, finite positive bounds, charge/cooldown, full selected target quantities, body masks, visibility, adapter bounds and reserved read/write capacity. The helper uses `CyberDemoBridge.inspect_cell` for **stored** material, quantity and mask state, then the existing radius-zero Empty edit. A void writer or unchanged health flag is never counted as success. Every attempted edit has copied native post-readback; positive totals come only from verified transitions. Results are labelled **`host-local-native-observation-v1`**. They bind the command and captured frame to native World object/generation, applied policy, completed native tick and hard-surface revision. Initial native construction receipts remain separately labelled; IN admission checks their canonical byte hash. They are not per-command native receipts. The adapter exposes no separate native pose revision: the result says so and records the captured physical-frame/mask provenance instead. Whole-World censuses in the fixtures independently check the local transition ledger; production does not run a full-World scan for every pulse. A **normal refusal** performs no destructive edit, consumes no effect allowance, charges no activation cost and starts no new cooldown. Ordinary simulation time may still recharge charge and age an existing cooldown. A command consumed as refused cannot later retry because its intake becomes clear. Admission-only refusals are labelled `not_dispatched`; they do not fabricate an inspected target set or fresh native per-command receipt. An **unexpected execution fault** is distinct. The helper latches terminal *before* the first writer. It retains attempted transitions, verified partial quantity and whether quantity verification is complete. The worker then pauses, retires pending effects/brush commands and publishes failure evidence alongside the last valid render/cell publication. It cannot continue a native tick, retry the command or publish partial cells as a healthy frame. Restart preserves that quarantine while allowing an explicit existing clear/prepared reconstruction. No liquid repaint or"
+        },
+        {
+          "rank": 2,
+          "score": 29.304024,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Reproducing the focused checks",
+          "part": 2,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Reproducing the focused checks\nexisting counter and does not change the ordinary-v1 U10 allowance. Unexpected faults after an attempted write retain partial/unknown quantity and terminal quarantine, even if read capacity remains. Owner-command timings in the fixture include runtime work; the helper's `command_overhead_usec` is narrower and excludes queue/input, source clearance, native ticking and graphical presentation. Neither is a frame-time guarantee."
+        },
+        {
+          "rank": 3,
+          "score": 26.836543,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Remaining boundary for #361-B",
+          "part": 1,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Remaining boundary for #361-B\nReversible valves are not implemented or authorized by this profile. A successor must separately qualify opening **and** closing, exact aperture geometry, unoccupied/unmasked closure, partial-edit faults, current physical ownership and zero new momentum. Resident liquid removal does not prove safe solid insertion, multi-cell closure atomicity or rollback. If the existing API cannot preflight those mutations without uncertainty, propose a separate minimal native contract instead of broadening this application helper. Directed nozzles, arbitrary velocity, pressure algorithms and production-policy changes remain outside scope."
+        },
+        {
+          "rank": 4,
+          "score": 26.658159,
+          "path": "reference/interfaces-and-message-contracts.md",
+          "title": "Interfaces and message contracts",
+          "heading": "Interfaces and message contracts > Physical actor control and effects > Metered U10 request and outcome extension",
+          "part": 1,
+          "text": "Document: Interfaces and message contracts\nPath: reference/interfaces-and-message-contracts.md\ndocument-kind: contract\nstatus: Current\nscope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct\ncanonical-for: [public-and-adapter-interface-layouts]\nlast-reviewed: 2026-10-25\nSection: Interfaces and message contracts > Physical actor control and effects > Metered U10 request and outcome extension\nThe opt-in [#361-A profile](../operations/in-tools-metered-drain.md) uses request version 2 and adds exactly `profile=\"metered-drain-v1\"`, selected `material` (Water 3 or Brine 24), `native_generation`, `policy_hash`, `world_instance_id` and integer `quantity_budget`. The physical frame remains version 1; its metered actor row echoes those fields and the current `metered_request_id`. No arbitrary target position, footprint, writer or velocity enters the request. Signed nonzero native ObjectIDs are opaque identity values. A current profile refuses a version-1 downgrade and a retired pending token cannot dispatch. Each actor readback adds copied `metered_drain` owner context and separate `water_units_{initial,remaining,removed}` and `brine_cells_{initial,remaining,removed}` ledgers. Command results add `metered_drain.status` (`applied`, `refused`, `fault`), reason, requested budget, applied policy, before/after completed tick, target observations/transitions, actual quantity, sink debit, remaining allowance and charge/cooldown outcome. Results carry `provenance=\"host-local-native-observation-v1\"`; an initial native construction receipt is separately labelled. No native per-command receipt or unexposed native pose revision is claimed. Admission-only refusals say `observation_status=\"not_dispatched\"` rather than inventing inspected targets. `read_accounting=\"material-work-units-v1\"` qualifies `reads_used`: helper cell inspections plus reserved helper identity work, within the shared material-work allowance. Caller lifecycle refresh and mask preparation are outside that counter; it is not an all-native-getter limit. The [profile accounting contract](../operations/in-tools-metered-drain.md#reproducing-the-focused-checks) defines the counted work and pre-write reservations. `metered_terminal` and `metered_fault` expose an unexpected execution fault. Verified partial quantities remain evidence, while uncertain quantity is marked incomplete. Faulted owners stop editing/ticking and publish failure with the last valid cellular/render frame until explicit native reconstruction. Normal refusals have zero removal, zero new allowance debit and no accepted activation. The ordinary request/result fields and sampled equipment interface remain intact."
+        },
+        {
+          "rank": 5,
+          "score": 24.964589,
+          "path": "systems/actor-usables.md",
+          "title": "Actor usables — 32-item catalogue and physical equipment",
+          "heading": "Actor usables — 32-item catalogue and physical equipment > U01–U12: material deposition and destruction tools > Opt-in exact metered Liquid Drain",
+          "part": 1,
+          "text": "Document: Actor usables — 32-item catalogue and physical equipment\nPath: systems/actor-usables.md\ndocument-kind: contract\nstatus: Current\nscope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority\ncanonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]\nlast-reviewed: 2026-11-04\nSection: Actor usables — 32-item catalogue and physical equipment > U01–U12: material deposition and destruction tools > Opt-in exact metered Liquid Drain\n**Current candidate, #361-A:** physical U10 additionally offers the explicitly selected `metered-drain-v1` profile for Water or Brine. Ordinary U10 and every existing preset retain their behavior. The profile keeps range 29, radius 4, accepted cost 0.85, cooldown 0.10 seconds and shared equipment charge/recharge. It limits an accepted pulse to at most 16 cells and meters actual stored Water units or separate Brine cells. Selection does not refill its finite allowance. The [metered-drain guide](../operations/in-tools-metered-drain.md) owns supported policies, exact Q7/Q255 and fractional FreeMass contracts, controls, bounded before/after observations, refusal versus terminal fault, and reproducible qualification. Its results are host-local native observations, not new native-issued command receipts. The [dated evidence](../audits/2026-11-04-in-tools-361a-metered-drain.md) keeps actual Linux execution separate from Windows, graphical and human acceptance. No reversible valve, pressure change or momentum input is supplied by this profile."
+        }
+      ]
+    },
+    {
+      "id": "IN-TOOLS-361A-04",
+      "query": "Do native four-worker controls or Linux headless Main/Rapier input tests establish Windows metered drain, graphical pacing or human gameplay acceptance?",
+      "canonical": [
+        "operations/in-tools-metered-drain.md",
+        "reference/validation-evidence.md"
+      ],
+      "facts": [
+        "Native core, actual native-backed worker, synthetic copied outcomes and Main/Rapier injected input have distinct evidence scopes.",
+        "Actual phase claimants accompany configured worker count; command overhead and native tick cost remain separate from graphical pacing.",
+        "Windows, physical input and human/graphical acceptance require their own execution; draft-skipped jobs are not passes and #361 remains open."
+      ],
+      "sources": [
+        "../tools/lcb/run_metered_drain_native.py",
+        "../godot/tests/test_physical_metered_desktop.gd"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 42.229524,
+          "path": "reference/validation-evidence.md",
+          "title": "Validation evidence ledger",
+          "heading": "Validation evidence ledger > IN-TOOLS #361-A exact metered drain — 2026-11-04",
+          "part": 1,
+          "text": "Document: Validation evidence ledger\nPath: reference/validation-evidence.md\ndocument-kind: reference\nstatus: Current\nscope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates\ncanonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]\nlast-reviewed: 2026-11-04\nSection: Validation evidence ledger > IN-TOOLS #361-A exact metered drain — 2026-11-04\nThe [implementation qualification record](../audits/2026-11-04-in-tools-361a-metered-drain.md) binds the opt-in physical U10 source to independent native controls, source-matched Linux Godot/worker/Rapier tests, actual measured Water/Brine balances and retained negative results. Native primitive, synthetic copied-result and actual headless Main/input evidence are distinct. Windows, graphical pacing, physical input and owner feel require their own execution. Draft-skipped hosted jobs are not passes, and the implementation remains unmerged."
+        },
+        {
+          "rank": 2,
+          "score": 40.550598,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Reproducing the focused checks",
+          "part": 1,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Reproducing the focused checks\nUse the pinned, source-matched native and Rapier runtimes and the repository's Godot version. The three `test_physical_metered_*.gd` files are discovered by the existing Godot regression route. A direct focused run uses: ```sh godot --headless --path godot --editor --import godot --headless --path godot --script res://tests/test_physical_metered_drain.gd godot --headless --path godot --script res://tests/test_physical_metered_equipment.gd godot --headless --path godot --script res://tests/test_physical_metered_desktop.gd python3 tools/lcb/run_metered_drain_native.py --output-dir build/metered-drain-native-run python3 -m unittest discover -s tools/lcb -p test_metered_drain_native.py -v ``` The native runner requires a **new** output directory, compiles the source, seals source/compiler/executable identity and validates a complete typed result census. It is a standalone scoped control command, not an additional registered hosted Native job. Native-only controls cannot establish actor input or Rapier safety. Headless Main plus injected input events cannot establish graphical pacing, physical mouse/keyboard operation, Windows execution or owner handling feel. Controlled quantity arms disable reactions and unrelated sources/edits and check `initial + admitted sources - explicit sinks = remaining stored quantity` after accepted operations and drain shutoff. Water units and Brine populations remain separate. Wall positions, forbidden-side cells and actual native masks accompany quantity totals. Command-owner timing and native tick timing are separate; configured worker count is accompanied by observed native phase claimants. Each of the eight registered large standalone native four-worker arms must observe exactly four distinct phase claimants, with exactly one in its one-worker control. The smaller 312-cell Godot fixture intentionally observes at most two claimants with four configured workers; it is a separate application proof host. The result's `read_accounting = material-work-units-v1` names the narrower historical contract. `reads_used` charges each actual `inspect_cell` preflight or post-write call once, plus conservative helper identity reservations: ten units for refresh/tick/revision setup, six for the pre-write identity check and eight for final identity/tick/revision readback. Cached preflight cells are reused; post-write inspections are fresh and charged separately. Short-circuit refusals may use fewer native calls than their reserved units. Writes have their own capacity and are not counted as reads. The shared runtime adds every existing source-clearance material/body-mask read and each optional observation read. Repeated source-mask reads remain separate charged calls; they are not silently deduplicated. Optional 81-cell patches run only when all 81 read units remain. Before the first erase, the helper retains capacity for every intended post-readback and both required identity checks; insufficient capacity refuses the entire effect without an attempted write. Caller lifecycle refreshes, existing scalar setup/health probes, and captured body-mask/geometry preparation are outside this material-work counter. **No aggregate 2,048 limit on all native calls or getters is claimed.** This scope does not remove any safety-relevant cell inspection from the"
+        },
+        {
+          "rank": 3,
+          "score": 31.352329,
+          "path": "operations/in-tools-metered-drain.md",
+          "title": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain",
+          "heading": "IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Implementation and acceptance boundary",
+          "part": 1,
+          "text": "Document: IN-TOOLS #361-A — opt-in metered physical Liquid Drain\nPath: operations/in-tools-metered-drain.md\ndocument-kind: guide\nstatus: Current\nscope: Experimental U10 metered-drain-v1 candidate, supported quantity contracts, exclusive-owner execution, refusal and fault recovery, reproducible qualification and remaining acceptance gates\ncanonical-for: [in-tools-metered-drain]\nlast-reviewed: 2026-11-04\nSection: IN-TOOLS #361-A — opt-in metered physical Liquid Drain > Implementation and acceptance boundary\n**Current candidate source:** `metered-drain-v1` adds exact quantity accounting to the existing physical U10 `liquid_drain`. It uses the existing equipment, physical actor session, worker admission and native World. Ordinary U10 remains the default. Sampled usables, material IDs, production solver defaults, native movement laws, the adapter ABI and Rapier coupling are unchanged. The [dated qualification record](../audits/2026-11-04-in-tools-361a-metered-drain.md) separates native primitive controls, actual Godot/worker execution, synthetic desktop input and untested platform/human acceptance. This candidate does not claim full #361-A acceptance until its remaining gates pass. Parent [#361](https://github.com/techrote/cybersand/issues/361) stays open. The [successor correction and fresh qualification](../audits/2026-11-04-in-tools-383-successor-correction.md) records A01's exact four-claimant admission and A02's explicitly limited material-work contract at measured implementation `e11b452f`. Earlier `f4878302`/`73b10f9b` and frozen independent `c83984c0` results retain their own historical source identities. PR #383 remains Draft. Planning authority is [#379 at `24d0e612`](https://github.com/techrote/cybersand/blob/24d0e612ae986edbdc48e5b94f52315d9c3d8421/docs/architecture/in-tools-gameplay-admission.md), including its `in-tools.usable-liquid-drain.v1` registration. This implementation does not require merging that preparation branch. The executable [physical fixture v1](../../godot/tests/fixtures/in-tools-metered-drain.v1.json) registers its own geometry and measured quantities; it does not relabel the planned #379 tank or #370 comparison recorder as executed."
+        },
+        {
+          "rank": 4,
+          "score": 30.162146,
+          "path": "operations/local-build-and-validation.md",
+          "title": "Local build and validation",
+          "heading": "Local build and validation > Physical usable validation",
+          "part": 1,
+          "text": "Document: Local build and validation\nPath: operations/local-build-and-validation.md\ndocument-kind: guide\nstatus: Current\nscope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits\ncanonical-for: [build-entry-points, dependency-pins, build-freshness]\nlast-reviewed: 2026-10-31\nSection: Local build and validation > Physical usable validation\nFor the opt-in U10 extension, run the [metered-drain focused commands and fixture](in-tools-metered-drain.md#reproducing-the-focused-checks). The existing Godot discovery route includes its three `test_physical_metered_*` cases. Preserve ordinary physical/sampled usable regressions. The standalone native driver, native-backed worker test, synthetic equipment-result test and actual Main/Rapier injected-input test have distinct scopes; the [dated #361-A evidence](../audits/2026-11-04-in-tools-361a-metered-drain.md) owns source/runtime identities and missing platform/display/human gates. ACT-005 extends the [32-item usable catalogue](../systems/actor-usables.md) onto the [physical actor owner](../systems/physical-actor-rigs.md). Use the pinned Godot runtime and materialized Linux CyberSand/Rapier libraries. Verify native `source_inputs` against the retained runtime provenance before attributing a Godot result to the current native source. A matching native input manifest allows GDScript-only changes to use that binary; its historical `build_inputs` do not establish acceptance of changed scripts or newly added tests. The focused regression groups are: | Group | Runner and evidence scope | |---|---| | Physical mount and lifecycle | [`test_physical_usable_equipment.gd`](../../godot/tests/test_physical_usable_equipment.gd), [`test_physical_usable_lifecycle.gd`](../../godot/tests/test_physical_usable_lifecycle.gd): real part/body identity, joint-driven aim, equipment epochs, receipt fencing, release/settle/fix and explicit nearby pickup | | Native usable work and worker admission | [`test_physical_usables_runtime.gd`](../../godot/tests/test_physical_usables_runtime.gd), [`test_physical_usables_admission.gd`](../../godot/tests/test_physical_usables_admission.gd): physical source/target masks, bounded actual-cell work, processor lifecycle, atomic queue capacity and stale/cancelled requests | | Scripted loadouts | [`test_physical_usable_script.gd`](../../godot/tests/test_physical_usable_script.gd): all 46 explicit loadout policies, including five empty SetP mounts, and bounded, observation-driven equipment intent | | Integrated hosts | [`test_physical_usable_course.gd`](../../godot/tests/test_physical_usable_course.gd), [`test_physical_usables_desktop.gd`](../../godot/tests/test_physical_usables_desktop.gd): the standalone usable course and desktop physical-owner handoff | | Retained sampled compatibility | [`test_usables.gd`](../../godot/tests/test_usables.gd), [`test_usable_session.gd`](../../godot/tests/test_usable_session.gd), [`test_actor_usables_integration.gd`](../../godot/tests/test_actor_usables_integration.gd): the original catalogue, sampled command/session and sampled owner integration | Run any focused runner directly after a clean headless project import, for example: ```sh godot --headless --path godot --editor --quit godot --headless --path godot --script res://tests/test_physical_usables_runtime.gd godot --headless --path godot --script res://tests/test_physical_usables_desktop.gd godot --headless --path godot --script res://examples/thunderbowl/run_physical_thunderbowl.gd -- --course=usables-v1 --rig=digger --actors=8 --ticks=600 --seed=0 --output=physical-usable-result.json ``` Set writable Godot user/config/cache directories on a restricted host and retain import failures separately from successful test execution. A process exit code alone is insufficient: reject script/native error output, require each runner's explicit completion marker, and bound execution time. The headless course result reports an authored scenario, not visual usability or target-machine performance. The [automatic Godot suite](../../tools/ci/run_godot_regressions.py) discovers all these `test_*.gd` files without a manual registry. It also retains the ACT-004 capacity, articulation, actuation, session, initial-terrain, effects, arena and trial regressions. Native tests, ASan/UBSan and TSan establish separate native evidence; a disabled leak detector must be reported explicitly. The [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md) records tested source/runtime identities, local results, remaining limitations and exact-head hosted gates. Earlier ACT-004 or sampled USABLE-001 results do not certify this changed physical integration."
+        },
+        {
+          "rank": 5,
+          "score": 29.663814,
+          "path": "systems/actor-usables.md",
+          "title": "Actor usables — 32-item catalogue and physical equipment",
+          "heading": "Actor usables — 32-item catalogue and physical equipment > U01–U12: material deposition and destruction tools > Opt-in exact metered Liquid Drain",
+          "part": 1,
+          "text": "Document: Actor usables — 32-item catalogue and physical equipment\nPath: systems/actor-usables.md\ndocument-kind: contract\nstatus: Current\nscope: Experimental U01-U32 catalogue, physical equipment and deployed processors; retained sampled equipment compatibility, copied control and native material authority\ncanonical-for: [actor-usables-catalogue, actor-usable-behaviour, actor-usable-control]\nlast-reviewed: 2026-11-04\nSection: Actor usables — 32-item catalogue and physical equipment > U01–U12: material deposition and destruction tools > Opt-in exact metered Liquid Drain\n**Current candidate, #361-A:** physical U10 additionally offers the explicitly selected `metered-drain-v1` profile for Water or Brine. Ordinary U10 and every existing preset retain their behavior. The profile keeps range 29, radius 4, accepted cost 0.85, cooldown 0.10 seconds and shared equipment charge/recharge. It limits an accepted pulse to at most 16 cells and meters actual stored Water units or separate Brine cells. Selection does not refill its finite allowance. The [metered-drain guide](../operations/in-tools-metered-drain.md) owns supported policies, exact Q7/Q255 and fractional FreeMass contracts, controls, bounded before/after observations, refusal versus terminal fault, and reproducible qualification. Its results are host-local native observations, not new native-issued command receipts. The [dated evidence](../audits/2026-11-04-in-tools-361a-metered-drain.md) keeps actual Linux execution separate from Windows, graphical and human acceptance. No reversible valve, pressure change or momentum input is supplied by this profile."
+        }
+      ]
+    }
+  ]
+}

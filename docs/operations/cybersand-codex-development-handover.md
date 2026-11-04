@@ -10,7 +10,30 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## IN-TOOLS #383 successor correction — 2026-11-04
+
+The existing #383 branch now has a bounded [A01/A02 correction and fresh Linux
+qualification](../audits/2026-11-04-in-tools-383-successor-correction.md), measured at
+`e11b452f1e90a8a014ab4d721b7c65724a508597`, tree
+`22a35293c7373ea4583b78121778b00ecdf6eeee`. A01 requires exactly four observed
+claimants in every registered large native four-worker arm. A02 explicitly names
+the historical **material-work** accounting contract; no all-native-getter cap is
+claimed. Instrumented exact-capacity, pre-write refusal and post-edit fault
+controls supplement the retained application routes.
+
+All 30 native cases, 28 parser controls and 15 scoped Godot suites passed.
+The fresh cohort has 12,223 counted Godot assertions plus the separate genuine
+failed-tick suite. Earlier implementation and frozen independent evidence remain
+historical and unchanged. Live main at this checkpoint is `751edc0b`, including
+#377 and #390; neither it nor separately owned #379 at `1aaab324` is integrated.
+Keep #383 Draft. Windows, physical input, rendered pacing, owner acceptance,
+current-main reconciliation and applicable final hosted gates remain outstanding.
+
 ## IN-TOOLS #361-A implementation candidate — 2026-11-04
+
+**Historical initial implementation checkpoint:** the successor correction above
+supersedes the admission/accounting claims affected by A01/A02, without reassigning
+the following measurements.
 
 The [metered Liquid Drain](in-tools-metered-drain.md) extends existing physical
 U10 behind an explicit profile, with exact stored quantity, finite native-owner

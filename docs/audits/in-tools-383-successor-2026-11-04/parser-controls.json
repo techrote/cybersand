@@ -1,0 +1,77 @@
+{
+  "schema": "in-tools-383-successor-parser-custody-v1",
+  "final": {
+    "schema": "pr383-successor-parser-controls-v1",
+    "scope": "synthetic parser and output-custody tests; not native execution",
+    "source_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+    "source_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+    "started_utc": "2026-11-04T19:58:33.913794+00:00",
+    "finished_utc": "2026-11-04T19:58:34.234405+00:00",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/lcb",
+      "-p",
+      "test_metered_drain_native.py",
+      "-v"
+    ],
+    "timeout_seconds": 60,
+    "returncode": 0,
+    "source_sha256": {
+      "tools/lcb/test_metered_drain_native.py": "b21cbdf9bccf6b4ad72e644e83ff9d027557cf5153721b7c726ec2dfe39a82f8",
+      "tools/lcb/run_metered_drain_native.py": "0cac0bebfd42bf8fdd19647b4d98e8dfab203abdde471992ae70920137dd6cc1",
+      "native/tests/test_metered_liquid_drain.cpp": "6f8d827eca527395f2d8bcfffc75430d289a47d62cf3b1f047503163b76e5b2b"
+    },
+    "inputs_unchanged": true,
+    "logs": {
+      "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr.log": "5a3188e48ee3f0780d12ee7650e715e234de97f28bd97f8f5fa3edbd88c4a89c"
+    }
+  },
+  "historical_negative_control": {
+    "scope": "synthetic parser/custody controls only; pre-fix oracle negative-control reproduction, no native/Godot execution",
+    "started_utc": "2026-11-04T19:47:21.547661+00:00",
+    "head": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "working_delta": " tools/lcb/test_metered_drain_native.py | 34 ++++++++++++++++++++++++++++++++--\n 1 file changed, 32 insertions(+), 2 deletions(-)\n",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/lcb",
+      "-p",
+      "test_metered_drain_native.py",
+      "-v"
+    ],
+    "timeout_seconds": 60,
+    "seconds": 0.3754631710035028,
+    "exit_code": 1,
+    "source_sha256": {
+      "native/tests/test_metered_liquid_drain.cpp": "ce9ccbe67a6ab6775030efe086f019cbfc9d8c50d1756e778cc633f33b53fc8d",
+      "tools/lcb/run_metered_drain_native.py": "0f791222111fef67482f25817b99f708c55c59edf1a9ab410ce963a2983ed8ae",
+      "tools/lcb/test_metered_drain_native.py": "b21cbdf9bccf6b4ad72e644e83ff9d027557cf5153721b7c726ec2dfe39a82f8"
+    },
+    "source_sha256_after": {
+      "native/tests/test_metered_liquid_drain.cpp": "ce9ccbe67a6ab6775030efe086f019cbfc9d8c50d1756e778cc633f33b53fc8d",
+      "tools/lcb/run_metered_drain_native.py": "0f791222111fef67482f25817b99f708c55c59edf1a9ab410ce963a2983ed8ae",
+      "tools/lcb/test_metered_drain_native.py": "b21cbdf9bccf6b4ad72e644e83ff9d027557cf5153721b7c726ec2dfe39a82f8"
+    },
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "fddc1bb741c07145d1c566e4c6ea6a9b4d4390590d5e31698c1f6076857900c0"
+  },
+  "negative_control_summary": {
+    "tests": 28,
+    "failed_subtests": 16,
+    "scope": "New synthetic controls against original73 parser; two and three claimants incorrectly accepted in each eight worker rows. This deliberate expected failure precedes the fix and is not an e11 execution.",
+    "stderr_footer": "Ran 28 tests in 0.208s\n\nFAILED (failures=16)"
+  },
+  "final_summary": {
+    "tests": 28,
+    "status": "PASS",
+    "scope": "synthetic parser/custody controls; actual native execution is separate"
+  }
+}

@@ -24,6 +24,12 @@ desktop input and untested platform/human acceptance. This candidate does not
 claim full #361-A acceptance until its remaining gates pass. Parent
 [#361](https://github.com/techrote/cybersand/issues/361) stays open.
 
+The [successor correction and fresh qualification](../audits/2026-11-04-in-tools-383-successor-correction.md)
+records A01's exact four-claimant admission and A02's explicitly limited
+material-work contract at measured implementation `e11b452f`. Earlier
+`f4878302`/`73b10f9b` and frozen independent `c83984c0` results retain their own
+historical source identities. PR #383 remains Draft.
+
 Planning authority is [#379 at `24d0e612`](https://github.com/techrote/cybersand/blob/24d0e612ae986edbdc48e5b94f52315d9c3d8421/docs/architecture/in-tools-gameplay-admission.md),
 including its `in-tools.usable-liquid-drain.v1` registration. This implementation
 does not require merging that preparation branch. The executable
@@ -191,6 +197,10 @@ accepted operations and drain shutoff. Water units and Brine populations remain
 separate. Wall positions, forbidden-side cells and actual native masks accompany
 quantity totals. Command-owner timing and native tick timing are separate;
 configured worker count is accompanied by observed native phase claimants.
+Each of the eight registered large standalone native four-worker arms must
+observe exactly four distinct phase claimants, with exactly one in its one-worker
+control. The smaller 312-cell Godot fixture intentionally observes at most two
+claimants with four configured workers; it is a separate application proof host.
 
 The result's `read_accounting = material-work-units-v1` names the narrower
 historical contract. `reads_used` charges each actual `inspect_cell` preflight or

@@ -1,0 +1,96 @@
+{
+  "schema": "in-tools-383-successor-evidence-index-v1",
+  "measured_source_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+  "measured_source_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+  "scope": "New Linux e11 execution cohort only; historical artifacts remain unchanged; this index excludes itself. Addendum source equivalence is separately reviewed.",
+  "records": {
+    "../2026-11-04-in-tools-383-successor-correction.md": {
+      "bytes": 23755,
+      "sha256": "873ccb5dccc8813e6db304ce7b98025381794f6665156a104f1f3185052f17ef"
+    },
+    "check-published.py": {
+      "bytes": 36725,
+      "sha256": "aa18d87ea5a4b625d53ac82f0fc1bdee081c972535a86310ff02f94e67d63261"
+    },
+    "check-raw-cohort.py": {
+      "bytes": 33251,
+      "sha256": "3fd651c0c3541106a929143a129617fad22a59ca0030cce58cb42d1b59ba9065"
+    },
+    "custody.json": {
+      "bytes": 518465,
+      "sha256": "13d95c4893fc53a1a18c0b1afb8288599aafe716bc7bf96d7ca4c0fef093d7b6"
+    },
+    "final-validation.json": {
+      "bytes": 14028,
+      "sha256": "8bed8987f9e224d7d17e424f5d1dfe7a40ec7f964178be91aa45a59b59fbeecf"
+    },
+    "host-after.json": {
+      "bytes": 21283,
+      "sha256": "d190e65c8457c81191a106c659e74077a0af3c009345c07a0ae343225840eed5"
+    },
+    "host-qualification.json": {
+      "bytes": 68202,
+      "sha256": "94e420ea9977a5f0d87b8904503d8c350eb43208ef3ae38e4b2b785a6bbacd40"
+    },
+    "host-source-identity.json": {
+      "bytes": 141298,
+      "sha256": "86225fd875e99ef256eb84752976c555b0a1c58bb00c96d98edb61745266565c"
+    },
+    "independent-review.json": {
+      "bytes": 38460,
+      "sha256": "7a4f546d6d42cd9ce089d8c4886c2ac614acc6edf1bef2f516257a5460dd51c7"
+    },
+    "metered-drain-desktop-host.json": {
+      "bytes": 615772,
+      "sha256": "22337c4caeb5aa68ec5121b3af28c9f2e869b4fdec926563280c9a22b92db68b"
+    },
+    "metered-drain-native-host.json": {
+      "bytes": 3968311,
+      "sha256": "99a2cd33817b710b25e8a0a2499e5430a932daaa5508db11229df07a66c17898"
+    },
+    "native-qualification.json": {
+      "bytes": 31239,
+      "sha256": "df7088ebfad0226be971c254244856de9e444ccab8d6486c42be5e51ad2d3d7a"
+    },
+    "parser-controls.json": {
+      "bytes": 3443,
+      "sha256": "54faeb4a1b04baf63809793275e95228d07c5ac0f5e0a554573ee73fd0d21160"
+    },
+    "retrieval-challenges.json": {
+      "bytes": 2583923,
+      "sha256": "868351b58b4c47d6438a4230177ffb6e7c5b25c8c8984803db73695d1bb56ee3"
+    },
+    "retrieval-frozen.json": {
+      "bytes": 416501,
+      "sha256": "9da8ec284fb79c196a9a8e46baa2a5ec0718db1a03c3b90beef757735855e1da"
+    },
+    "retrieval-metered.json": {
+      "bytes": 80656,
+      "sha256": "336ef91201dcaa6c21199591a7a0d90987fc5afe60d8d0669de1f7c515d300bb"
+    },
+    "retrieval-questions-successor.json": {
+      "bytes": 1989,
+      "sha256": "456acf544b634800ebe87e9aaf5708aa20e23e556f59991d6212d3c03f9591f8"
+    },
+    "retrieval-successor.json": {
+      "bytes": 52107,
+      "sha256": "8e440695fc565a325426473411975151a914ec99a3e1937598707e4a12afdff5"
+    },
+    "run-host-successor.py": {
+      "bytes": 10481,
+      "sha256": "02284042a583a325b6bd47528b03dbe74d0c7b3e8573688986c5afa942e0e69e"
+    },
+    "../../operations/cybersand-codex-development-handover.md": {
+      "bytes": 114495,
+      "sha256": "61284000e80455ff3e652dbee68cfe13c391e6b19166ed3b5a3858f867565fac"
+    },
+    "../../operations/in-tools-metered-drain.md": {
+      "bytes": 16189,
+      "sha256": "4220bd6df0b6a6a6a11458a678e0f255b9811dc6dfd22c5ca9e3a4ba5f714cb9"
+    },
+    "publication-qualification.json": {
+      "bytes": 20821,
+      "sha256": "b02fad813def8f8ac3a22ffd087b30909784efbf0df8ecaf51c0e4c555408bfe"
+    }
+  }
+}

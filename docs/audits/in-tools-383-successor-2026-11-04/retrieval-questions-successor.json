@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-04",
+  "purpose": "Separate additive A01/A02 questions; original frozen, challenge and four metered queries unchanged. Route hits are not correctness proof.",
+  "questions": [
+    {
+      "id": "IN-TOOLS-383-A01",
+      "query": "Does metered Liquid Drain four-worker qualification require four actual claimants in the native large-tank arms and in the small Godot fixture?",
+      "canonical": [
+        "operations/in-tools-metered-drain.md"
+      ],
+      "facts": [
+        "Exactly four distinct phase claimants are required in each of eight large standalone four-worker arms and exactly one in controls.",
+        "The small 312-cell Godot fixture observes at most two with four configured workers; no four-claimant application claim."
+      ],
+      "sources": [
+        "../native/tests/test_metered_liquid_drain.cpp",
+        "../tools/lcb/run_metered_drain_native.py"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "IN-TOOLS-383-A02",
+      "query": "Does the metered drain 2048 read budget include every native getter, what material work is reserved, and can capacity refusal follow a destructive edit?",
+      "canonical": [
+        "operations/in-tools-metered-drain.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "The contract is material-work-units-v1, not an all-native-call or all-getter cap.",
+        "Every helper preflight/post inspection plus10/6/8 identity reserves and original source/mask and optional observation reads remain counted.",
+        "All intended post-readbacks and required identity checks are reserved before writes; unexpected post-write faults retain partial unknown evidence and terminal quarantine."
+      ],
+      "sources": [
+        "../godot/scripts/metered_liquid_drain.gd",
+        "../godot/scripts/physical_usable_runtime.gd",
+        "../godot/tests/test_physical_metered_drain.gd"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}
