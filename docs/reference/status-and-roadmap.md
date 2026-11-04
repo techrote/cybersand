@@ -1877,3 +1877,7 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+## WORKBENCH-001 / #391 integration candidate
+
+The [desktop development workbench](../systems/player-control-playground.md#development-workbench-on-desktop) is being qualified on a separate Draft branch from main 751edc0b. The required baseline includes the eight-flyer fleet, five-piece Scooper and actual multi-body granular response. The preserved #392 attempt covers an earlier assignment. Review the [dated evidence and source compatibility disposition](../audits/2026-11-04-workbench-consolidation.md) before making a platform, physics or promotion claim.

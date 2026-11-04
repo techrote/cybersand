@@ -1714,3 +1714,7 @@ Use the [physical actor programme](physical-actor-programme.md) for the combined
 ## Reconstructed depth prototype — 2026-10-18
 
 PR #169 integrates [Strata Theatre](../systems/depth-layers-and-parallax.md) with the feature branches. Use its [fresh validation record](../audits/2026-10-18-depth-integration-validation.md); old local evidence does not certify the reconstructed source. F4 opens the separate lab; it does not attach four new owners to the ordinary gameplay World.
+
+## WORKBENCH-001 shared desktop destination
+
+The revised #391 candidate starts at main 751edc0b, which includes #390. For fresh work on playable engine capabilities, use the [shared desktop workbench](../systems/player-control-playground.md#development-workbench-on-desktop) and the [dated intake and qualification record](../audits/2026-11-04-workbench-consolidation.md). Keep the separate #389 experience reference and #392 first attempt recoverable. The linked Draft branch and its protected-source disposition determine current integration status.

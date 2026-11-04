@@ -1,0 +1,599 @@
+{
+  "date": "2026-11-04",
+  "application_commit": "5c241d8ef520a67c4d37cfdbf814496344102056",
+  "application_tree": "4719dd35bdb141bab4e8af9900389d17f4b162ab",
+  "native_commit": "a1e209199a4876e0e85cf7da1e6017e1fae97d80",
+  "platforms": {
+    "win": {
+      "author": {
+        "status": 0,
+        "seconds": 28.59,
+        "log": "win-5c24-author-test_workbench_canvas.log",
+        "sha256": "00ed20e64932c4f675a8b0011e237f7c763598401fc013cffb2c4eed836dd730",
+        "script_errors": 0,
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--max-fps",
+          "120",
+          "--headless",
+          "--path",
+          "godot",
+          "--script",
+          "res://tests/test_workbench_canvas.gd",
+          "--",
+          "--workbench"
+        ],
+        "env": {
+          "CYBERSAND_WORKBENCH_TEST_NAME": "wb391-win-5c24"
+        }
+      },
+      "reopen": {
+        "status": 0,
+        "seconds": 5.92,
+        "log": "win-5c24-reopen-test_workbench_canvas.log",
+        "sha256": "4673baf0ecfef7604a83cbc5cbadede781ceba4a669368c89dcf3534ea6be65e",
+        "script_errors": 0,
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--max-fps",
+          "120",
+          "--resolution",
+          "1920x1080",
+          "--path",
+          "godot",
+          "--script",
+          "res://tests/test_workbench_canvas.gd",
+          "--",
+          "--workbench"
+        ],
+        "env": {
+          "CYBERSAND_WORKBENCH_TEST_NAME": "wb391-win-5c24",
+          "CYBERSAND_WORKBENCH_REOPEN": "1",
+          "CYBERSAND_WORKBENCH_CAPTURE": "C:\\Users\\_\\.codex\\worktrees\\workbench-retry\\khybersand\\build\\wb/win-review.png"
+        }
+      },
+      "regressions": [
+        {
+          "case": "test_workbench_desktop_interest",
+          "seconds": 14.37,
+          "status": 0,
+          "sha256": "7966f900ccb998d9eb5007c23634d3bf7af3991f0f182ffda5b572f55349c147",
+          "script_errors": 0
+        },
+        {
+          "case": "test_workbench_fleet_session",
+          "seconds": 1.21,
+          "status": 0,
+          "sha256": "c21dd54785c5781bde950ed264114d3b5e40ce02cbf0698d383fc3df67b97025",
+          "script_errors": 0
+        },
+        {
+          "case": "test_physics_async",
+          "seconds": 4.16,
+          "status": 0,
+          "sha256": "917f1fc06b5a9a978c779aef1c66394ce66af5eeed841685d1a43b662befc1d3",
+          "script_errors": 0
+        },
+        {
+          "case": "test_interaction_async",
+          "seconds": 14.45,
+          "status": 0,
+          "sha256": "169e2b78a3627b9bef858705aabf32e14ac876572994c9451afd42beb5b12ccf",
+          "script_errors": 0
+        },
+        {
+          "case": "test_prepared_physical_owner",
+          "seconds": 1.64,
+          "status": 0,
+          "sha256": "1909b3b5b7a7afe47ac8d5984f464a6ebc0e80114311a2e38120b16d34cd8ece",
+          "script_errors": 0
+        },
+        {
+          "case": "test_liquid_physical_transaction",
+          "seconds": 24.25,
+          "status": 0,
+          "sha256": "234afa492e64088ce9be1de28e09cc4e63de9b8d2a774e77eed62b44038d69e2",
+          "script_errors": 0
+        },
+        {
+          "case": "test_wex001_water_body_baseline",
+          "seconds": 110.89,
+          "status": 0,
+          "sha256": "b40e7ca54c6e64cc1690ea005532a8fe42f3f5e7b35a26c877aeed5a5468eb37",
+          "script_errors": 0
+        },
+        {
+          "case": "test_rem002_body_granular",
+          "seconds": 3.94,
+          "status": 0,
+          "sha256": "9679fb4f7e8478d7bf8a1218ac266b1396f09936a00efe5e8dda5debd8d93288",
+          "script_errors": 0
+        },
+        {
+          "case": "test_rem003_player_granular",
+          "seconds": 104.94,
+          "status": 0,
+          "sha256": "29a32f5669eff11c919e9a94c573b3e654a6a63d1e433394671c8f00e67b9991",
+          "script_errors": 0
+        },
+        {
+          "case": "test_render_patch_handoff_regression",
+          "seconds": 3.04,
+          "status": 0,
+          "sha256": "325147e1b802ac53e9980a91624e4d3ec2cce2b806c26e44559d9979be49ec75",
+          "script_errors": 0
+        },
+        {
+          "case": "test_brush_owner_commands",
+          "seconds": 3.03,
+          "status": 0,
+          "sha256": "b43e1e188bf11305e50b466f94182c5e864d83514936ab2aae0c3fb324f2e275",
+          "script_errors": 0
+        },
+        {
+          "case": "test_simulation_worker_interest_ownership",
+          "seconds": 3.89,
+          "status": 0,
+          "sha256": "a9f5fc113dc3758c10bfd9ab76fbaa3fde023ce9a0289703636267ed0797ac91",
+          "script_errors": 0
+        }
+      ],
+      "physics": {
+        "receipt_sha256": "5aed25f381a883def85e3d977034646433d4f1e4aaf50bae34fb55c173800b0d",
+        "assertions": 72,
+        "failures": [],
+        "cases": [
+          {
+            "case": "Sand burial",
+            "landed_y": 235.916000366211,
+            "force": 31.1201610565186,
+            "arrivals": 7,
+            "delivered": 3.44956803321838,
+            "delivered_torque": 0.352940839535202,
+            "burial_grains": {
+              "left": 57,
+              "overhead": 70,
+              "right": 43,
+              "under": 89
+            },
+            "source": {
+              "armed": true,
+              "attempted": 416,
+              "blocked": 4,
+              "burst_queued": false,
+              "inserted": 412,
+              "material": 2,
+              "max_stream_ticks": 600,
+              "origin": "(241, 176)",
+              "stream_enabled": true,
+              "stream_ticks": 80
+            }
+          },
+          {
+            "case": "Dust burial",
+            "landed_y": 235.916000366211,
+            "force": 31.1234931945801,
+            "arrivals": 7,
+            "delivered": 3.44956803321838,
+            "delivered_torque": 0.44421908749307,
+            "burial_grains": {
+              "left": 57,
+              "overhead": 70,
+              "right": 43,
+              "under": 89
+            },
+            "source": {
+              "armed": true,
+              "attempted": 416,
+              "blocked": 4,
+              "burst_queued": false,
+              "inserted": 412,
+              "material": 14,
+              "max_stream_ticks": 600,
+              "origin": "(241, 176)",
+              "stream_enabled": true,
+              "stream_ticks": 80
+            }
+          },
+          {
+            "case": "Scooper native load and tilt",
+            "force": 23.0,
+            "arrivals": 7,
+            "delivered": 0.280000001192093,
+            "delivered_torque": 0.83332275390625,
+            "lift_distance": 12.8652191162109,
+            "carry_x": 60.62158203125,
+            "tip_rotation": 1.20905947685242,
+            "native_mask_cavity": {
+              "loaded": 13,
+              "lifted": 13,
+              "carried": 10,
+              "after_tip": 8
+            },
+            "carry_join": {
+              "completed_tick": 198,
+              "epoch": 3,
+              "frame_tick": 198,
+              "generation": 3,
+              "instance": 1,
+              "render_serial": 436,
+              "render_tick": 198,
+              "revision": 2124,
+              "sample": 200,
+              "sample_tick": 197,
+              "session": 3,
+              "uploaded_generation": 5,
+              "uploaded_revision": 2124,
+              "uploaded_serial": 436,
+              "world_generation": 5
+            },
+            "below_after_tip": 5
+          },
+          {
+            "case": "mixed body impact",
+            "force": 184.0,
+            "arrivals": 0,
+            "delivered": 0.0,
+            "delivered_torque": 0.0,
+            "barrel_contact_samples": 144,
+            "barrel_lift": 9.1414794921875
+          }
+        ]
+      },
+      "thread_probe": {
+        "log_sha256": "5d1d69224ce7aca6d018dc20c791022845f8232893d81b4856825824ab0b552e",
+        "logical_processors": 12,
+        "sample": {
+          "backend": "native-phased",
+          "collection_usec": 38,
+          "completed_tick": 19,
+          "elapsed_ms": 847,
+          "phase_jobs": [
+            90,
+            90,
+            61,
+            62
+          ],
+          "physical_bodies": 3,
+          "sampled_usec": 10290545,
+          "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+          "sequence": 4,
+          "worker_capacity": 6,
+          "worker_request": 0,
+          "workers_observed": 6,
+          "world_generation": 3
+        },
+        "sustained_log_sha256": "ae02c1c5a87231328ab7c025d554b6af4cd4383ce13997c6d0c5baa38fa118c9",
+        "sustained_samples": 27,
+        "sustained_min_observed": 6,
+        "sustained_last_sample": {
+          "backend": "native-phased",
+          "collection_usec": 39,
+          "completed_tick": 156,
+          "elapsed_ms": 6876,
+          "phase_jobs": [
+            24,
+            24,
+            17,
+            17
+          ],
+          "physical_bodies": 3,
+          "sampled_usec": 14528688,
+          "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+          "sequence": 27,
+          "worker_capacity": 6,
+          "worker_request": 0,
+          "workers_observed": 6,
+          "world_generation": 3
+        },
+        "sixty_stamp_followup": {
+          "log_sha256": "9b5b342fb2f8fbc6e6f68e734b6eab289c193c85dcd2aa721bdbd3e1601b2039",
+          "last_completed_tick": 19,
+          "refusal": "active scheduling-core capacity exhausted"
+        }
+      }
+    },
+    "linux": {
+      "author": {
+        "status": 0,
+        "seconds": 33.76,
+        "log": "linux-5c24-author-test_workbench_canvas.log",
+        "sha256": "13d7d07a17c23a058c9133b94510ae6064534270c24b5d304d16645883e08172",
+        "script_errors": 0,
+        "command": [
+          "wsl",
+          "--",
+          "env",
+          "CYBERSAND_WORKBENCH_TEST_NAME=wb391-linux-5c24",
+          "timeout",
+          "180",
+          "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+          "--max-fps",
+          "120",
+          "--headless",
+          "--path",
+          "godot",
+          "--script",
+          "res://tests/test_workbench_canvas.gd",
+          "--",
+          "--workbench"
+        ],
+        "env": {
+          "CYBERSAND_WORKBENCH_TEST_NAME": "wb391-linux-5c24"
+        }
+      },
+      "reopen": {
+        "status": 124,
+        "seconds": 182.05,
+        "log": "linux-5c24-reopen-test_workbench_canvas.log",
+        "sha256": "a7966f54aa86469636fd7a08414b233d152360997240c96a44f8f98ed29249ee",
+        "script_errors": 0,
+        "command": [
+          "wsl",
+          "--",
+          "env",
+          "CYBERSAND_WORKBENCH_TEST_NAME=wb391-linux-5c24",
+          "CYBERSAND_WORKBENCH_REOPEN=1",
+          "CYBERSAND_WORKBENCH_CAPTURE=/mnt/c/Users/_/.codex/worktrees/workbench-retry/khybersand/build/wb/linux-review.png",
+          "timeout",
+          "180",
+          "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+          "--max-fps",
+          "120",
+          "--resolution",
+          "1920x1080",
+          "--display-driver",
+          "x11",
+          "--rendering-method",
+          "gl_compatibility",
+          "--path",
+          "godot",
+          "--script",
+          "res://tests/test_workbench_canvas.gd",
+          "--",
+          "--workbench"
+        ],
+        "env": {
+          "CYBERSAND_WORKBENCH_TEST_NAME": "wb391-linux-5c24",
+          "CYBERSAND_WORKBENCH_REOPEN": "1",
+          "CYBERSAND_WORKBENCH_CAPTURE": "/mnt/c/Users/_/.codex/worktrees/workbench-retry/khybersand/build/wb/linux-review.png"
+        }
+      },
+      "regressions": [
+        {
+          "case": "test_workbench_desktop_interest",
+          "seconds": 45.3,
+          "status": 0,
+          "sha256": "1bb127ade41d1d03223e29ae0c2ee11270fc3c463c8b7d66c0b3ef517daf6502",
+          "script_errors": 0
+        },
+        {
+          "case": "test_workbench_fleet_session",
+          "seconds": 1.88,
+          "status": 0,
+          "sha256": "29c5cf6660ed5eae2acd5cadb0de62ad47b789fc753dc4820b96c1fbaae3903a",
+          "script_errors": 0
+        },
+        {
+          "case": "test_physics_async",
+          "seconds": 6.36,
+          "status": 0,
+          "sha256": "6615b861293e09095abfb7e6e7b1f4d869a00c1b0c1c9abbebdca6dc52d4ae3a",
+          "script_errors": 0
+        },
+        {
+          "case": "test_interaction_async",
+          "seconds": 16.77,
+          "status": 0,
+          "sha256": "720daf657f474799751114fa540ba86d20876008b7396848b0175420097e9fe2",
+          "script_errors": 0
+        },
+        {
+          "case": "test_prepared_physical_owner",
+          "seconds": 2.28,
+          "status": 0,
+          "sha256": "bcaa81dcf05a8b4f68fdad8b2ff7c7e5c7a402a3f45fe8a73b9343303d3bf32a",
+          "script_errors": 0
+        },
+        {
+          "case": "test_liquid_physical_transaction",
+          "seconds": 76.78,
+          "status": 0,
+          "sha256": "aed4fbc99ba75eb4d4bea431db663b069b294db0c46dab483df7014b328125d4",
+          "script_errors": 0
+        },
+        {
+          "case": "test_wex001_water_body_baseline",
+          "seconds": 157.97,
+          "status": 0,
+          "sha256": "86715b7e7340e5c3708ae82846d5207db41d7ffc4896cf97bfc1df8af0dd05f3",
+          "script_errors": 0
+        },
+        {
+          "case": "test_rem002_body_granular",
+          "seconds": 11.65,
+          "status": 0,
+          "sha256": "f8a4682de50aa128224ca2d907d0ce63524f1b82f5ec99b94c7b42e0a57ab55f",
+          "script_errors": 0
+        },
+        {
+          "case": "test_rem003_player_granular",
+          "seconds": 66.62,
+          "status": 0,
+          "sha256": "7a582af957e81499baa746749f86902d31e76ef5a5114612f54453850acd912e",
+          "script_errors": 0
+        },
+        {
+          "case": "test_render_patch_handoff_regression",
+          "seconds": 5.98,
+          "status": 0,
+          "sha256": "08263aedb595ff899a3fe56ccdf61b3337c034a5b930b1214bc9b8d008a7a51a",
+          "script_errors": 0
+        },
+        {
+          "case": "test_brush_owner_commands",
+          "seconds": 6.17,
+          "status": 0,
+          "sha256": "9888fa192bfe50f3856e2f4cd9317eebfab8b1c84246235dde221a14e9dbad5a",
+          "script_errors": 0
+        },
+        {
+          "case": "test_simulation_worker_interest_ownership",
+          "seconds": 7.33,
+          "status": 0,
+          "sha256": "ac86b84029e4b986221237a5857296c1bd6d88ac33fe7cdbc3e6333ae597de07",
+          "script_errors": 0
+        }
+      ],
+      "physics": {
+        "receipt_sha256": "3cab3f03bbeef7fdb3d7afdd1aeda1cc8040359ff6ef179ff4ae391dcd06e7a2",
+        "assertions": 72,
+        "failures": [],
+        "cases": [
+          {
+            "case": "Sand burial",
+            "landed_y": 235.916000366211,
+            "force": 31.1201610565186,
+            "arrivals": 7,
+            "delivered": 3.44956803321838,
+            "delivered_torque": 0.352940849958903,
+            "burial_grains": {
+              "left": 57,
+              "overhead": 70,
+              "right": 43,
+              "under": 89
+            },
+            "source": {
+              "armed": true,
+              "attempted": 416,
+              "blocked": 4,
+              "burst_queued": false,
+              "inserted": 412,
+              "material": 2,
+              "max_stream_ticks": 600,
+              "origin": "(241, 176)",
+              "stream_enabled": true,
+              "stream_ticks": 80
+            }
+          },
+          {
+            "case": "Dust burial",
+            "landed_y": 235.916000366211,
+            "force": 31.1202507019043,
+            "arrivals": 7,
+            "delivered": 3.44956803321838,
+            "delivered_torque": 0.440015357446025,
+            "burial_grains": {
+              "left": 57,
+              "overhead": 69,
+              "right": 43,
+              "under": 89
+            },
+            "source": {
+              "armed": true,
+              "attempted": 412,
+              "blocked": 4,
+              "burst_queued": false,
+              "inserted": 408,
+              "material": 14,
+              "max_stream_ticks": 600,
+              "origin": "(241, 176)",
+              "stream_enabled": true,
+              "stream_ticks": 79
+            }
+          },
+          {
+            "case": "Scooper native load and tilt",
+            "force": 23.0,
+            "arrivals": 7,
+            "delivered": 0.280000001192093,
+            "delivered_torque": 1.207939453125,
+            "lift_distance": 12.8652191162109,
+            "carry_x": 60.62158203125,
+            "tip_rotation": 1.20744061470032,
+            "native_mask_cavity": {
+              "loaded": 13,
+              "lifted": 13,
+              "carried": 10,
+              "after_tip": 8
+            },
+            "carry_join": {
+              "completed_tick": 200,
+              "epoch": 3,
+              "frame_tick": 200,
+              "generation": 3,
+              "instance": 1,
+              "render_serial": 433,
+              "render_tick": 200,
+              "revision": 2138,
+              "sample": 201,
+              "sample_tick": 199,
+              "session": 3,
+              "uploaded_generation": 5,
+              "uploaded_revision": 2138,
+              "uploaded_serial": 433,
+              "world_generation": 5
+            },
+            "below_after_tip": 5
+          },
+          {
+            "case": "mixed body impact",
+            "force": 184.0,
+            "arrivals": 0,
+            "delivered": 0.0,
+            "delivered_torque": 0.0,
+            "barrel_contact_samples": 144,
+            "barrel_lift": 9.1414794921875
+          }
+        ]
+      },
+      "thread_probe": {
+        "log_sha256": "df88c88eb54897ea9b682ce5ceeb050626aa8c1d18457b4d3d7578cb80b05f08",
+        "logical_processors": 12,
+        "sample": {
+          "backend": "native-phased",
+          "collection_usec": 42,
+          "completed_tick": 19,
+          "elapsed_ms": 1106,
+          "phase_jobs": [
+            90,
+            90,
+            61,
+            62
+          ],
+          "physical_bodies": 3,
+          "sampled_usec": 9742223,
+          "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+          "sequence": 5,
+          "worker_capacity": 6,
+          "worker_request": 0,
+          "workers_observed": 6,
+          "world_generation": 3
+        },
+        "sustained_log_sha256": "3e1564f336dd530d90c4af5e7c8aeaf052e5922ee68cea20368551a057627a07",
+        "sustained_samples": 27,
+        "sustained_min_observed": 6,
+        "sustained_last_sample": {
+          "backend": "native-phased",
+          "collection_usec": 26,
+          "completed_tick": 209,
+          "elapsed_ms": 6975,
+          "phase_jobs": [
+            16,
+            18,
+            17,
+            17
+          ],
+          "physical_bodies": 3,
+          "sampled_usec": 19981857,
+          "scope": "maximum distinct task-claiming participants in one phase dispatch of this completed tick; an inline nonempty phase counts the owner as one; not utilization or simultaneous execution",
+          "sequence": 27,
+          "worker_capacity": 6,
+          "worker_request": 0,
+          "workers_observed": 6,
+          "world_generation": 3
+        }
+      }
+    }
+  }
+}

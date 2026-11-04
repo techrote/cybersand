@@ -158,6 +158,22 @@
         "../godot/scripts/playable_course_gamepad_events.gd",
         "../godot/tests/play_input010_pause_controls_case.gd"
       ]
+    },
+    {
+      "id": "PLAY-WORKBENCH-391",
+      "query": "How do I place eight authored flyers including Scooper and a passive barrel in a blank 2048 canvas, compare native granular and liquid response and save a starting setup?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "The Draft workbench prepares multiple instances with one World and one physical owner and uses selective arrivals by default.",
+        "The bounded named starting recipe reconstructs authored cells, spawns, settings and policy across processes. Continuing physics state is omitted."
+      ],
+      "sources": [
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/tests/test_workbench_canvas.gd"
+      ]
     }
   ]
 }

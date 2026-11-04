@@ -399,3 +399,7 @@ GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-b
 
 For authored checkpoint visibility, Return to launcher, sampled task participants and
 coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).
+
+## Development application
+
+How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md).
