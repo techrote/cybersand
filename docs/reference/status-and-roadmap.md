@@ -10,7 +10,36 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Material shadow foundation and integration — 2026-11-04
+
+[#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
+and the [corrected architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
+[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) is already
+implemented in #371 and is undergoing adopted-main reconciliation and guarded
+integration qualification. It provides deterministic candidate metadata,
+independent native parity and frozen source/identity guards; it does not replace
+production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+and [#371 ledger](https://github.com/techrote/cybersand/pull/371) separate code,
+resulting-head acceptance and actual merge status.
+
+| Programme slice | Current disposition |
+|---|---|
+| #357 architecture | Owner-adopted Planned baseline, documentation merged |
+| #353-A / #371 | Shadow implementation exists; reconciled-source qualification and guarded integration are this assignment |
+| #353-B | Separate consumer-migration admission required; no production switch authorized |
+| #354 / #355 | Separate liveness and endpoint-effects work; serialize overlapping World/quantity writes |
+| #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
+| #358 | Independent experimental material work;132–137 not integrated here |
+
+Broad #353 and parent #352 remain open. The original implementation receipts
+retain their tested source; no metadata or source-byte comparison by itself
+establishes fallback simulation, new physics or human gameplay acceptance.
+
 ## Material authoring Planned adoption — 2026-11-04
+
+**Historical documentation-adoption scope.** The assignment statements below
+precede reconciliation of the separately implemented #371 candidate. The
+current A-only status is recorded above; the original adoption remains intact.
 
 The [corrected MAT-AUTH architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The owner approved documentation-only guarded integration of #357 after final
@@ -26,7 +55,7 @@ consumer-cutover, semantics and runtime-editing decisions; parent #352 stays ope
 ## Material authoring review — 2026-11-03
 
 **Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
-supersedes the adoption hold below; implementation remains separately unstarted.
+supersedes the adoption hold below; the later [A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) supersedes its unstarted-assignment status. The retained review describes its original date.
 
 The [MAT-AUTH proposal](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 has a source-qualified **ACCEPT WITH CORRECTIONS** recommendation, not owner

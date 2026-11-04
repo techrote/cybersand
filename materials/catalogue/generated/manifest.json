@@ -1,0 +1,27 @@
+{
+  "artifacts": [
+    {
+      "bytes": 53002,
+      "name": "catalogue.shadow.hpp",
+      "sha256": "03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12"
+    },
+    {
+      "bytes": 180360,
+      "name": "catalogue_shadow.gd",
+      "sha256": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed"
+    },
+    {
+      "bytes": 215517,
+      "name": "inspection.json",
+      "sha256": "0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2"
+    }
+  ],
+  "authority": "shadow-only",
+  "generator_sha256": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+  "generator_version": 1,
+  "normalized_source_sha256": "491eb2248049014956b8a4fcc1e63e36c5e2ca6824b9d3c366ce94b1fd5d147f",
+  "schema_id": "cybersand.material-catalogue.output-manifest",
+  "schema_version": 1,
+  "scope": "current-shadow",
+  "source_schema_version": 1
+}
