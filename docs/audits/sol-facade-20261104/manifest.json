@@ -1,0 +1,181 @@
+{
+  "schema": "sol-public-facade-evidence-index-v1",
+  "created_at": "2026-11-04T19:37:54.176787+00:00",
+  "scope": "Corrected source-qualified Linux checkpoint. Subsequent exact published-head/Windows evidence is separate, linked from the dependent PR and final handoff. No integration admission.",
+  "branch": "fix/sol347-facade-refusal-20261104-095628",
+  "target_branch": "sol-detach-001-current-main",
+  "base": {
+    "commit": "1598115c9065239cc1eaec11e99077274b457be1",
+    "tree": "eff31c3597347f06a4b23193cd64b58350386c29"
+  },
+  "tested_source": {
+    "commit": "2aca1bb250cde4ff7b0bcc668c2898ac897cfd13",
+    "tree": "ead90c43eb12293c99500cc8d3839a566dce7069"
+  },
+  "reference_dossier": "b661a6f354f8c51e79759d22ad4573a875964b43",
+  "accepted_main_control": "0103de80d11304388868f89f7b26c672ad6100ad",
+  "frozen_authority": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "all_27_roles_unchanged_from_base": true,
+  "files": [
+    {
+      "path": "before-after.json",
+      "sha256": "d567e014058fdb5f7bfc59d33a3a63a0058b868b2d1793cffb53dd3f87e1af5b",
+      "bytes": 220656
+    },
+    {
+      "path": "candidate2-manifest.json",
+      "sha256": "a674c9e9b57f07311daa90962c7037bfe06923911b6435da46da082190280594",
+      "bytes": 192153
+    },
+    {
+      "path": "source-publication-map.json",
+      "sha256": "dace64ffd55decf1b62c58ecb4cc23f06f74957a0f7e4a953578b1e95d901000",
+      "bytes": 981
+    }
+  ],
+  "external_receipts": {
+    "baseline_manifest": {
+      "packet_relative_path": "baseline-prep/manifest.json",
+      "sha256": "ced91482b2d363a4e5b36286e830da302ac4cbb984d133f08ecf317ecd4ccaf7",
+      "bytes": 21721
+    },
+    "baseline_matrix": {
+      "packet_relative_path": "baseline-prep/baseline-matrix.json",
+      "sha256": "b92b4baba73cb10f6e47ef27113a372c60d89b81076497beb627926e4dc09745",
+      "bytes": 232697
+    },
+    "baseline_identity": {
+      "packet_relative_path": "baseline-prep/identity.json",
+      "sha256": "b6cd60219f6769dca995c4b1dfaa18eb008f50635fb5a3e9998ef61c43786aff",
+      "bytes": 26867
+    },
+    "first_candidate_manifest": {
+      "packet_relative_path": "candidate-qualification/candidate1-manifest.json",
+      "sha256": "95ed1b2df84f185cd6b0ad5d897d38f74dc562b8ac2e93576d0c9e7231ae8dd1",
+      "bytes": 193497
+    },
+    "first_extended_failure": {
+      "packet_relative_path": "candidate-qualification/linux-extended/extended.json",
+      "sha256": "2dde43d05957a9444f29391ae8aaa23200d4d6d9686c5d17c03789c061094917",
+      "bytes": 33913
+    },
+    "import_diagnosis": {
+      "packet_relative_path": "facade-import-diagnosis/manifest.json",
+      "sha256": "78ef0b1293df804af5223112e7cc915edf107a8bc84f59b59d5fd56397beef91",
+      "bytes": 6620
+    },
+    "linux_build": {
+      "packet_relative_path": "candidate-qualification-v2/linux-build/build.json",
+      "sha256": "72e8baa43972b794dc0aa248155258f8b921acafdee772826a406fcc8a631c4d",
+      "bytes": 28088
+    },
+    "linux_original": {
+      "packet_relative_path": "candidate-qualification-v2/linux-original/matrix.json",
+      "sha256": "fb1b164635225fe77516f0b95eb39024a1202f6b0a05bba948bb5e9863a5ed7a",
+      "bytes": 390863
+    },
+    "linux_status": {
+      "packet_relative_path": "candidate-qualification-v2/linux-status/matrix.json",
+      "sha256": "24c60a9b7798af8a8821af3fab3eb0d82a8133d999c57b5439a19fc5143a5d64",
+      "bytes": 458911
+    },
+    "linux_extended": {
+      "packet_relative_path": "candidate-qualification-v2/linux-extended/extended.json",
+      "sha256": "875d45b71935241ff1a5fa220f66817ab88f52b7e7befecf25d71fcf796a968f",
+      "bytes": 42107
+    },
+    "native_final": {
+      "packet_relative_path": "native-qualification-final/qualification.json",
+      "sha256": "ec7908c3ed41420fe0e2ba08b25ca07ec7d748649d41815ea4f72283408d5644",
+      "bytes": 86584
+    },
+    "gates": {
+      "packet_relative_path": "checks/source2aca/gates.json",
+      "sha256": "85a530661020714d628b1099cde60f219fb8079dafbbd9aca8c5869a454cbc88",
+      "bytes": 14912
+    },
+    "guard_preservation": {
+      "packet_relative_path": "checks/source2aca/protected-source-preservation.json",
+      "sha256": "d239cfde2fce385c0136068222f2909a16863b6454ec1fc00cf9ce199795f0a3",
+      "bytes": 7788
+    },
+    "accepted_main_metadata_parity": {
+      "packet_relative_path": "checks/accepted-main-parity/result.json",
+      "sha256": "b4c8669b6adb2bb52d48f0b8c5cfd98b327677e30dcf15178959f977c2da264b",
+      "bytes": 11532
+    },
+    "remote_lease": {
+      "packet_relative_path": "intake/remote-lease-prequalification.json",
+      "sha256": "7c11c531d0010dee08445475f9e1cafa7b5c4487160172cfb926b3ad0a4aa9e9",
+      "bytes": 1675
+    }
+  },
+  "qualified": {
+    "platform": "Linux x86_64",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "compiler": "GCC 13.3.0",
+    "runtime_sha256": "7a76def6d85f3a3187fc8c58ea467797490caada06eb6972b887670be33ce57b",
+    "runtime_bytes": 4375952,
+    "build_inputs": 103,
+    "build_inputs_canonical_json_sha256": "f9caee8379dc4f228a4475b1018c620d1b88c25646373682a0c4b125ae924d87",
+    "matrix": {
+      "unchanged_probe_processes": 122,
+      "instrumented_processes": 122,
+      "positive_controls_exact": 66,
+      "safe_export_refusals_exact": 10,
+      "explicit_former_failure_refusals": 46,
+      "formerly_aborting_now_safe": 38,
+      "native_adhesion_disagreements": 0
+    },
+    "extended": {
+      "workers": [
+        1,
+        4
+      ],
+      "cases_per_worker": 16,
+      "checks_per_worker": 3259,
+      "failures": 0
+    },
+    "native": {
+      "optimized_executions": 5,
+      "strict_asan_ubsan_executions": 4,
+      "all_exit_codes": 0,
+      "all_stderr_empty": true,
+      "core_tests": "165/165",
+      "native_inputs": 93
+    }
+  },
+  "not_qualified_here": [
+    "Windows/MSVC and Windows Godot (requested branch-only workflow, not yet run at this checkpoint)",
+    "Actual Godot SOL phase7 Quarantined: no deterministic public injection",
+    "Live Rapier or asynchronous trajectory/ownership requalification",
+    "Physical clearance/depth, positional recovery, complete 24-group 2ms CPU gate",
+    "LeakSanitizer: actual environment failure retained; disabled explicitly for supported ASan/UBSan",
+    "MAT-AUTH source transition, Ready, merge, composition or restoration",
+    "Retained checked-in runtime publication/provenance: repository checker still fails eight source mismatches"
+  ],
+  "retained_failures": {
+    "before": {
+      "SIGABRT": 38,
+      "authority_disagreements": 8
+    },
+    "first_extended_candidate": {
+      "source": "1caffe16c21bc411e7219ed7a6157d8b17a6ff51",
+      "failures_per_worker": 15,
+      "reason": "Unsupported imported-mask/full-hash premise, real falsely applied coupling status, and incorrect finite-disabled-region expectation"
+    },
+    "source_archive_publication": {
+      "bytes": 144679823,
+      "capacity_bytes": 134217728,
+      "status": "FAIL unchanged"
+    },
+    "physical": {
+      "sustained_clearance_failures": "84/84",
+      "depth_failures": 64,
+      "async_final_overlaps": 36,
+      "criteria": "120+60 steps; unchanged"
+    },
+    "guard_sol": "REFUSES unchanged; expected exit1, no self-admitted compatibility"
+  },
+  "independent_handoff": "Preliminary read-only parallel source/apparatus review found no remaining blocker; a separate independent read-only audit and explicit owner admission remain required."
+}

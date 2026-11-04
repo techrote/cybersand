@@ -20,6 +20,11 @@ This bounded implementation starts from verified draft #347 head
 `1caffe16c21bc411e7219ed7a6157d8b17a6ff51`, tree
 `2bfa829513b0ea4a363f3c4d89e909b0c5dab2c3`, with the verified #347 head as its sole
 parent. The worktree and object store are separate from every earlier worker.
+The [Git API source map](sol-facade-20261104/source-publication-map.json)
+records metadata-only publication as `f4f2adf99f63375f296632948e607f6d1cc5ffd9`
+and `bb2daad5cb22054bd69bba94cbf3016c43cd422a`. Their exact trees and ordered
+parents are independently read back; local qualification is not silently
+relabeled as execution of different Git metadata.
 The current accepted main control is `0103de80d11304388868f89f7b26c672ad6100ad`,
 tree `0ba07dc799afca43716bbab966f48266fa924718`; it is not merged here.
 
@@ -163,6 +168,63 @@ empty stderr. LeakSanitizer's separate capability invocation aborted on
 unavailable `/proc` task access; it is **UNAVAILABLE**, not passed. The four
 strict ASan/UBSan runs explicitly used `detect_leaks=0` and fatal sanitizer
 settings. These receipts remain bound to their original checkpoint.
+
+### Corrected Linux checkpoint
+
+Fresh source `2aca1bb250cde4ff7b0bcc668c2898ac897cfd13`, tree
+`ead90c43eb12293c99500cc8d3839a566dce7069`, passes a new Linux build and all
+three actual Godot arms. This source is a child of `1caffe16`; it includes the
+mask-publication refusal, corrected independent witness and explicit selection
+of the authenticated godot-cpp library in the build environment. All 103 build
+inputs, dependency bytes, compiler/linker and engine identities remain unchanged
+across the execution. The new library is 4,375,952 bytes, SHA-256
+`7a76def6d85f3a3187fc8c58ea467797490caada06eb6972b887670be33ce57b`.
+
+| Original matrix class | Reproduced before | Corrected instrumented after |
+|---|---:|---|
+| Physical and liquid hash boundary | 30 SIGABRT | 30 explicit native refusals; no value/hash fabricated |
+| Window enable boundary | 8 SIGABRT | 8 explicit native refusals; state preserved |
+| Adhesion authority | 8 disagreements | 8 explicit request refusals; 8 native CYPS witnesses agree |
+| Successful controls | 66 | 66 exact returned results preserved |
+| Safe export refusals | 10 | 10 exact returned results preserved |
+| Total | 122 processes | 122 processes; zero aborts and zero authority disagreements |
+
+The unchanged original-probe arm also executes all 122 cases; it deliberately
+labels the 46 repaired outcomes `RETURNED_REQUIRES_STATUS` until the separate
+instrumented arm proves the status contract. The extended suite passes all
+16 named cases and 3,259 assertions at each of workers 1 and 4, including the
+new imported-mask refusals, overlap arbitration and escaped-body controls.
+
+Fresh native GCC execution at this same checkpoint passes nine executables:
+the four focused suites both optimized and under strict ASan/UBSan, plus the
+unfiltered existing core suite (165/165 tests, including material/policy,
+physical-hash/CYPS, quantity and native receipt oracles). The receipt subset has
+70 assertions and seven canonical vectors. All nine exits are zero, all stderr
+is empty, and all 93 native/test/oracle inputs match their committed bytes before
+and after. LeakSanitizer remains unavailable; the original actual capability
+failure is retained, not retried or relabelled as a pass. Native manifest SHA-256:
+`ec7908c3ed41420fe0e2ba08b25ca07ec7d748649d41815ea4f72283408d5644`.
+
+Local documentation, historical M11, provider/scheduling policy, whitespace,
+22 guard adverse tests and 15 policy-contract tests pass. Frozen retrieval is
+19/32 at rank 1 and 32/32 at rank 5; supplementary facade retrieval is 3/3 at
+rank 1. The earlier supplementary 2/3 rank-1 result remains retained separately;
+the added canonical scope qualifiers do not establish unseen answer quality.
+Repository/provenance exits 1 for eight old-runtime source mismatches: the four
+changed facade files in each retained Linux/Windows runtime manifest. No runtime
+pointer or historical provenance is refreshed to suppress those failures.
+
+The new [branch-only hosted workflow](../../.github/workflows/sol-facade-refusal.yml)
+requests a pinned Windows cross-build, three actual Windows Godot arms and four
+actual MSVC native cases. At this local evidence checkpoint those hosted results
+are **NOT RUN**. Publication and any later exact-published-head execution are
+separate receipts, reported in the dependent PR and final handoff. The workflow
+has read-only repository permissions and no publisher, Ready or merge operation.
+
+The [evidence index](sol-facade-20261104/manifest.json),
+[all 122 before/after rows](sol-facade-20261104/before-after.json), and
+[complete Linux receipt inventory](sol-facade-20261104/candidate2-manifest.json)
+bind the raw packet without committing binaries, caches or log archives.
 
 Example fresh Linux build, with a previously absent output outside the checkout:
 
