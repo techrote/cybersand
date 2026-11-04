@@ -1,0 +1,103 @@
+{
+  "version": 2,
+  "reviewed": "2026-11-04",
+  "scope": "Separate MAT-AUTH-001 353-A implementation questions; version2 updates only MAT353A-01's revision-sensitive357 adoption/merge fact and fixture metadata. Query wording and canonical routes, frozen32 and challenge157 remain unchanged. Current shadow tooling must not be described as production catalogue cutover.",
+  "questions": [
+    {
+      "id": "MAT353A-01",
+      "query": "What material catalogue compatibility fixes were implemented after the architecture review, and does the engine now consume generated materials?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "Owner-authorized353-A is a shadow compiler, independent native parity and compatibility guard candidate.",
+        "Production consumers, material physics and existing policy artifacts remain unchanged;357 is merged as the owner-adopted Planned architecture, while371 undergoes separate resulting-head integration qualification.",
+        "The broad353 issue and production cutover remain separate from this checkpoint."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353A-02",
+      "query": "How does the material compiler prevent a formatting-only header rewrite or refreshed hash from silently invalidating old liquid policies and saves?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "Compatibility guard authenticates27 legacy source inputs against immutable main0fd4af59 before comparing working LF bytes.",
+        "Changing both source and editable lock is not accepted as a new baseline.",
+        "The existing catalogue/capability identities and stale-identity refusal remain unchanged; production identity migration needs separate review."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353A-03",
+      "query": "Does generated GDScript material metadata replace the fallback's Slush density and movement rules?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The generated GDScript shadow describes native metadata and is not consumed by the fallback.",
+        "Native Slush1080 and fallback1100 are preserved separately.",
+        "Fallback facts are source-observed, with no claim of movement or rendered-pixel parity."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353A-04",
+      "query": "What independently proves generated material descriptors, reaction ordinals and capability maps match current native behaviour?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The standalone oracle compiles original native metadata and pure queries rather than deriving expected values from the compiler.",
+        "Candidate C++ is compiled and compared against actual native descriptors, capabilities and reaction outcomes with preserved slots.",
+        "This is metadata and pure-query execution, not World physics or platform qualification."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353A-05",
+      "query": "How are ambiguous material defaults, JSON errors and output drift handled without array-order-dependent inheritance?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The first schema has one explicit input, no imports, inherited defaults, expressions or nonempty active layers.",
+        "Strict validation reports file plus JSON pointer, both conflict origins and syntax line/column.",
+        "Stable identity/legacy-slot sorting yields deterministic output;check is nonwriting and validation failures preserve accepted outputs."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353A-06",
+      "query": "Can a future powder at ID132 accidentally become hard terrain or overwrite paired-wall experimental identities?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The isolated synthetic registry explicitly authors hard_surface=false and granular support=true;candidate capabilities do not inherit from a range.",
+        "It cannot publish to the committed candidate directory or export a production/save/receipt identity.",
+        "PR358 IDs132–137 remain branch-qualified experimental claims, not accepted production materials or reservations."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353A-07",
+      "query": "What is the rollback and next gate after the353-A material shadow compiler?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "Revert unused candidate tools/data/docs/CI as a unit;no World or save conversion is needed.",
+        "353-B separately reviews each consumer switch and exact-byte compatibility or an approved identity transition.",
+        "Liveness, endpoint semantics, effective UI editing and new production IDs retain separate gates and shared-file ownership."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353A-08",
+      "query": "Which commands check the material shadow compiler, and do they run expensive physics scenarios?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "Run compatibility.py--check,compiler.py--check,the focused Python tests andcheck_native_parity.py.",
+        "Generation uses Python stdlib;the metadata/query oracle requires C++20.",
+        "The existing Documentation workflow runs bounded tooling checks without enabling draft physics matrices."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    }
+  ]
+}

@@ -10,7 +10,43 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-AUTH shadow adopted-main qualification — 2026-11-04
+
+The [integration qualification record](../audits/2026-11-04-mat-auth371-integration.md)
+retains the compiler escaping defect and correction,99 focused regressions,
+new native/Godot metadata receipts and independent review. Its final hosted,
+merge and post-merge outcomes remain source-bound in the PR ledger.
+
+The [#371 ledger](https://github.com/techrote/cybersand/pull/371) owns exact
+reconciled source/tree, new checks, independent review, hosted artifacts and any
+guarded merge/post-merge result. The [353-A guide](../operations/material-catalogue-shadow.md)
+separates strict compiler/adversarial validation, immutable-source authentication
+and compiled metadata/pure-query parity from actual World physics or rendered
+acceptance. All production owners and existing generated policies remain unchanged.
+
+The [original implementation qualification](../audits/2026-11-04-mat-auth-353a-compatibility.md)
+belongs to published head `6d3737594beb39e83e555f66f2e81184a4bdbf77`, tree
+`936e81b364b3977cdf06248607bc20b2f85f04ba`. Its98 focused tests, native parity
+and pinned Godot metadata readback are historical source-bound passes, as is
+[Documentation run41749294625](https://github.com/techrote/cybersand/actions/runs/41749294625)
+and parity artifact13285826248. They are not acceptance of a reconciled or edited
+head. The lock still authenticates27 production owners against immutable legacy
+main `0fd4af5987e77db4da3e37c757cf2c0917ae9e15`; it is not regenerated to
+match newly accepted documentation. No resulting-head pass is inferred here.
+
+The independent #357 documentation adoption completed at accepted main
+`3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`. Its
+[completion record](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
+reports final ready-state Documentation41750027943 and post-merge41750496206
+PASS, including18 materialized runtime payload identities. That evidence does
+not qualify #371. The older adoption/readiness and architecture records below
+retain their original scope, including actual draft-state skips and limitations.
+
 ## MAT-AUTH documentation adoption boundary — 2026-11-04
+
+**Historical adoption/readiness scope.** This decision and the older draft
+checkpoint below preceded #357's completed integration and #371 reconciliation.
+Their original source identities and evidence remain unchanged.
 
 The [owner decision](https://github.com/techrote/cybersand/pull/357#issuecomment-6619407158)
 adopts the corrected architecture as Planned and permits documentation-only
