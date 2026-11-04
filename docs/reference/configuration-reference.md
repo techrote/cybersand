@@ -656,6 +656,7 @@ Sources: [main.gd](../../godot/scripts/main.gd),
 | `VIEW_SIZE_PRESETS` | 320×180; 480×270; 640×360; 960×540; default first |
 | `SIMULATION_MARGIN_PRESETS` | Per side: 0×0; 32×36; 128×128; 256×256; default second |
 | Output/window viewport | 1920×1080, logical view aspect-fitted |
+| Launch window placement | [`CyberWindowPlacement`](../../godot/scripts/window_placement.gd), from the feature launcher: a window not entirely on one usable screen is centred on the primary if it fits, else the screen that holds it, else shrunk to the largest. Skipped for `--script`, headless, editor-embedded and non-windowed runs |
 | `SIMULATION_HZ` / `FIXED_TIMESTEP` | 60 / 1÷60 s |
 | `TICK_INTERVAL_USEC` / `MAX_BACKLOG_TICKS` | 16667 / 3 |
 | Render publication choices/default | 30/45/60 Hz; default 45 |
