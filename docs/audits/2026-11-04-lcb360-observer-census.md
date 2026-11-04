@@ -98,7 +98,8 @@ remains the authority.
 |---|---|
 | Accepted main at start | `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; `origin/main` later advanced to `7ef4856e` (#371, docs/materials/tools only) and is not merged here |
 | Base | #370 local head `d99daed81f19a70f46bdb169ba123705d23431b9` (published head `9a7436aa…` + host-cohort driver) |
-| Repair commits | `22ed127d23bcf884229bfda1daa57273cdf1bf07` (catalogue census) → **`4bd7560aaa6a213b966516176b238a8c1bd6fcb7`** (uncached source, cavities), tree `c169f498a41c7940174ae12cdcef881f9e9ea96a`, branch `claude/lcb360-observer-census` |
+| Repair commits (first execution) | `22ed127d23bcf884229bfda1daa57273cdf1bf07` (catalogue census) → `4bd7560aaa6a213b966516176b238a8c1bd6fcb7` (uncached source, cavities), tree `c169f498a41c7940174ae12cdcef881f9e9ea96a`, on `d99daed8`. Superseded by the rebase below and no longer in branch history |
+| **Rebased, re-executed source** | `78e89bec…` → `fe5bc23f162e8b866257017be4887a871e2cb4d3` → **`2b7e521299a2a8f005566e7e7fbca80249b6c1ae`**, tree `b29c50fd618e52b11899a256e699ee617f0965a0`, on #370 head `e432470bc32302b359449ae63a339ac50e9c634c` (with hardened reducer `c23f63dd`), branch `claude/lcb360-observer-census`. Observer and test bytes are identical to `4bd7560a` |
 | #358 fixture | [`pr358.observer-fixture.json`](../../godot/tests/fixtures/lcb/feel/pr358.observer-fixture.json): byte-identical Git blob `3619d3a2…` at #358 `077f9c52` and `7383946a`, SHA-256 `0b487ede7608d83f…22c1438`; the test pins this digest |
 | Native runtimes (unchanged) | Windows DLL `ee09f7ab…`, Linux SO `0f60213c…`, both matching provenance; Rapier Windows `b54e54bd…`, Linux `566e68ae…` |
 | Godot 4.7.stable.official.5b4e0cb0f | Windows `Godot_v4.7-stable_win64.exe` `b2ca888d…`, console wrapper `d8055fb8…`; Linux `f85bbc6b…` |
@@ -197,8 +198,9 @@ The strict reducer returns **ADMITTED**:
 - all 28 cross-platform cases with equal tick and final hashes;
 - summary SHA-256 `17d3cc3c…7e4ffc`;
 - Windows packet committed LF blob `ead5a653…7fb958`. The driver wrote it with
-  CRLF as `35cbc821…8550e1`, because its `packet.json` write still uses
-  platform newline translation;
+  CRLF as `35cbc821…8550e1`, because the pre-`c23f63dd` driver's
+  `packet.json` write used platform newline translation. This is fixed in the
+  rebased base;
 - Linux packet `90fcd95c…3d756ae`.
 
 Receipt hashes are unaffected, because Godot writes receipts with LF.
@@ -209,6 +211,32 @@ These are committed under [`lcb360-observer-2026-11-04/`](lcb360-observer-2026-1
 Raw receipts and logs are retained outside Git in WSL
 `~/cybersand-lcb360-evidence/observer-4bd7560a/`. Their hashes are in the
 committed packet manifests.
+
+### Re-execution at rebased source `2b7e5212`
+
+After the rebase onto `e432470b`, everything was re-run once on both hosts
+under the hardened 44-test reducer `c23f63dd`. That reducer recomputes runtime
+and tree binding from Git and binds registration, OS, scheduled edits,
+statistics, claimant bounds and refusal codes.
+
+- **Census test:** 79/0 on Windows (log `bbbfa7b6…`) and Linux (log `3043be97…`).
+- **Parity:** 29/29 jobs per host, zero mismatches against the committed packet
+  ([comparison](lcb360-observer-2026-11-04/rebased-2b7e5212/parity-comparison.txt)).
+- **Reducer:** **ADMITTED**, 32 primary rows, 28/28 cross-platform hash-equal.
+- **Packet binding:** both packets bind head `2b7e5212`, tree `b29c50fd`, no
+  dirty source paths, runtimes matching provenance.
+- **Unit tests:** `test_feel_preflight.py` 44/44.
+
+Committed hashes, all LF:
+
+- summary `70b22ab9…b44b43`;
+- Windows packet `07ad0864…d4d4f5`, LF as written;
+- Linux packet `2dfff3aa…847b31`.
+
+These are committed under [`rebased-2b7e5212/`](lcb360-observer-2026-11-04/rebased-2b7e5212/).
+Raw evidence is retained in WSL `~/cybersand-lcb360-evidence/observer-2b7e5212/`.
+This re-execution is the qualifying observer result. The `4bd7560a` results
+above are retained as its first execution.
 
 ## Gaps and observations
 

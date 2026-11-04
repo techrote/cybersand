@@ -1,0 +1,15 @@
+# python -I tools/lcb/feel_observer_parity.py docs/audits/lcb360-preflight-2026-11-03/<platform> <fresh 2b7e5212 packet>
+## windows
+compared=29 mismatches=0 new_inventory_keys=['bound_water', 'catalogue', 'counted_cells', 'material_source', 'schema', 'sources', 'water_reconciliation'] unexpected=[]
+PF-OVERFILL lcb.feel.dam-release.d96.v1_A_pressure_flow_v1.reference_r3_w1.json 4679482 20678 4700160 {'1': 14844, '3': 18408, '0': 1015324}
+PF-OVERFILL lcb.feel.dam-release.d96.v1_A_pressure_flow_v1.reference_r3_w4.json 4679482 20678 4700160 {'1': 14844, '3': 18408, '0': 1015324}
+PF-OVERFILL lcb.feel.dam-release.d96.v1_B_pressure_flow_v1.reference_r2_w1.json 4679482 20678 4700160 {'1': 14844, '3': 18408, '0': 1015324}
+PF-OVERFILL lcb.feel.dam-release.d96.v1_B_pressure_flow_v1.reference_r2_w4.json 4679482 20678 4700160 {'1': 14844, '3': 18408, '0': 1015324}
+exit=0
+## linux
+compared=29 mismatches=0 new_inventory_keys=['bound_water', 'catalogue', 'counted_cells', 'material_source', 'schema', 'sources', 'water_reconciliation'] unexpected=[]
+PF-OVERFILL lcb.feel.dam-release.d96.v1_A_pressure_flow_v1.reference_r3_w1.json 4679482 20678 4700160 {'1': 14844, '3': 18408, '0': 1015324}
+PF-OVERFILL lcb.feel.dam-release.d96.v1_A_pressure_flow_v1.reference_r3_w4.json 4679482 20678 4700160 {'1': 14844, '3': 18408, '0': 1015324}
+PF-OVERFILL lcb.feel.dam-release.d96.v1_B_pressure_flow_v1.reference_r2_w1.json 4679482 20678 4700160 {'1': 14844, '3': 18408, '0': 1015324}
+PF-OVERFILL lcb.feel.dam-release.d96.v1_B_pressure_flow_v1.reference_r2_w4.json 4679482 20678 4700160 {'1': 14844, '3': 18408, '0': 1015324}
+exit=0
