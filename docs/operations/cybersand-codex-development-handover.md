@@ -23,6 +23,8 @@ identified; no material-law/sleep/default promotion or merge follows.
 
 Current [Scooper qualification](../audits/2026-11-04-authored-compound-scooper.md) retains48 source-bound desktop captures: mechanical controls pass, LA fails the carry demonstration, and E/S pass its literal lift/spill thresholds with an explicit pre-tip cavity-count gap. Loaded selective stability remains bounded and owner review is pending. Corrected native source0206b540 changes only no-catch receipt accounting. Sleep, production promotion and merges remain excluded.
 
+The [carried-material follow-up](../audits/2026-11-04-scooper-carried-material-leak.md) isolates wrong-side ejection through a moving thin deck and qualifies an authored-only unchanged-angle entry-side repair. Level full/boost carry no longer shows persistent far-side loss; rotational/edge scope, source/runtime and final owner acceptance remain explicit. Controls, response laws, sleep and merge boundaries stay unchanged.
+
 Authored hull admission and Scooper defaults are registered before results in the
 [GCR-AUTHORED-001 plan](gcr-authored-compound-registration.md).
 

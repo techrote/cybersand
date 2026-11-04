@@ -1,0 +1,576 @@
+{
+  "groups": [
+    {
+      "local_folder": "build/carry-native-01",
+      "completion": {
+        "ok": true,
+        "source": "3df1279f799230bafdc7a34766eb2995bf4ae69b",
+        "native_inputs_unchanged": true
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 108,
+          "sha256": "d6a88abb93c770a839837eff869742de6d9a5139e950b93f20453c3b64544806"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 10962,
+          "sha256": "0e58dac21c72bf1dd2091db8a934a06601db494cc2528e947fa06d61fbec782d"
+        },
+        {
+          "path": "linux.json",
+          "bytes": 11987,
+          "sha256": "08723c9c82e68a9c287c01fac8223c5bd0846be75f67ff3fb08d5cc9e4fc3b59"
+        },
+        {
+          "path": "linux.log",
+          "bytes": 51420,
+          "sha256": "fb9bc5bcf62fd896ae4f08c4434ffc59d319f0123264bef9a56abacfb22b776c"
+        },
+        {
+          "path": "windows.json",
+          "bytes": 11517,
+          "sha256": "44914c3a041c4a17d65456521539485a16ac5340c6fe95b397f8ec9780f8b7b4"
+        },
+        {
+          "path": "windows.log",
+          "bytes": 2452,
+          "sha256": "c949f01b06f3cc53732511a1a43ae3971d8ccb7a889a1776dc36f9dc0aa03bcb"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/carry-baseline-01",
+      "completion": {
+        "source": "fa6de57e56cbd953005418c0835a3d1befb56816",
+        "ok": true,
+        "inputs_unchanged": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "captures": 10,
+            "gates_sha256": "ed5260588bcaa996b08d19eb85fe12594b500b6ee48dc8e30ac0e705e9cec654",
+            "campaign_sha256": "5a23eb3abc4cec2a11d8afe3c5b4f6c4780c6817d82cbba02f9efa6c7861dc45"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "captures": 10,
+            "gates_sha256": "6a8fa1365d71e0fcca0d78691e32292ddb182004abe862df5352983a0d1b8d55",
+            "campaign_sha256": "e20f0c1618be40ba08f91dcbd469ad468e90a50320d98e2f9dcfadee026ff7fd"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 646,
+          "sha256": "e5ecf0ce3adb416bf16ec3d364dbd49c95a0a702638e8777623c00e7009f2096"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 82951,
+          "sha256": "f90548d44b502ae250c82007d80e8db5bef8716cdbf57a477be6b5b5adc2a55f"
+        },
+        {
+          "path": "linux/campaign.json",
+          "bytes": 15296,
+          "sha256": "e20f0c1618be40ba08f91dcbd469ad468e90a50320d98e2f9dcfadee026ff7fd"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 3448,
+          "sha256": "6a8fa1365d71e0fcca0d78691e32292ddb182004abe862df5352983a0d1b8d55"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11159,
+          "sha256": "ae183281b1ba754dfc435a21259f63a608ec31f12cd69d3d32bb2641fb96673b"
+        },
+        {
+          "path": "linux/test_gcr_scooper_ejection_replay.log",
+          "bytes": 63653,
+          "sha256": "4c3c6bf785f8cd4d0665af44d9637f8d0c4c621d988513d4577360c5e0c954f8"
+        },
+        {
+          "path": "linux/test_gcr_scooper_leak_capture.log",
+          "bytes": 393,
+          "sha256": "b22b6c624674f6db93ca15be588c4c621d6c257ede6ea5346a0c24b844cc7b9c"
+        },
+        {
+          "path": "windows/campaign.json",
+          "bytes": 12145,
+          "sha256": "5a23eb3abc4cec2a11d8afe3c5b4f6c4780c6817d82cbba02f9efa6c7861dc45"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 2467,
+          "sha256": "ed5260588bcaa996b08d19eb85fe12594b500b6ee48dc8e30ac0e705e9cec654"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11159,
+          "sha256": "56f8bbd88772be0f1565ddd60eee0592ebc6cce3bfc756c4daba7b9475cc2ded"
+        },
+        {
+          "path": "windows/test_gcr_scooper_ejection_replay.log",
+          "bytes": 63659,
+          "sha256": "10594cbfafe634ac7da24801e7470811a8062641c933b6259afdddd3bc4dba9f"
+        },
+        {
+          "path": "windows/test_gcr_scooper_leak_capture.log",
+          "bytes": 397,
+          "sha256": "f7dd1956b6a076d1c5d856f3c3a02d28c5982e3e13a519f9c8ef21dadcbcd0bd"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/carry-candidate-01",
+      "completion": {
+        "source": "e625c6f287a19cc12b46b0925100b91174fb4eb4",
+        "ok": false,
+        "inputs_unchanged": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": false,
+            "failed": "test_gcr_scooper_entry_side"
+          },
+          {
+            "platform": "linux",
+            "ok": false,
+            "failed": "test_gcr_scooper_entry_side"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 333,
+          "sha256": "75e2027c63210d2e66d0894efb262d146ac177c2870955580b6a5c0f4285f6a0"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 83069,
+          "sha256": "c1b1adb135e307528249f2f64c77c583fe72e37faea58ef02a684816809e43e9"
+        },
+        {
+          "path": "linux/ejection-replay.json",
+          "bytes": 63427,
+          "sha256": "c042ad0174c953bf2b293943e655e96baaade599a33851c5f605575a0fdb3da7"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 4513,
+          "sha256": "5881ffc12bb965da63308ffada315a8f01286a01a4a076a8ff6bc2e39fb9167f"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38846,
+          "sha256": "12e492579eb0d06c0a98011dda0930232ba958a141a012323e34322fbea84c68"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11159,
+          "sha256": "699ffb47d56c0ce525f92385f2b664bf73c949e3b711a8904a211c24af3a08db"
+        },
+        {
+          "path": "linux/test_gcr_scooper_ejection_replay.log",
+          "bytes": 63677,
+          "sha256": "e44ba6f987acc7f757971b58ee938e8a1f29c76e04bcc702c8c7fc56a6c7346f"
+        },
+        {
+          "path": "linux/test_gcr_scooper_entry_side.log",
+          "bytes": 12215,
+          "sha256": "7beac9d53d44e533511219038774592e3b8cd1c3b3f066fcbec7f9bf785f1c70"
+        },
+        {
+          "path": "linux/test_gcr_scooper_leak_capture.log",
+          "bytes": 393,
+          "sha256": "b22b6c624674f6db93ca15be588c4c621d6c257ede6ea5346a0c24b844cc7b9c"
+        },
+        {
+          "path": "windows/ejection-replay.json",
+          "bytes": 63429,
+          "sha256": "11d170ed3d224b3c70250bf3454d6a107e34c84edf7499143ae54a10bb5a4013"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 3199,
+          "sha256": "58228203e5bf5b97d2055b7c8b0e051bd473c6806e0956dc49e8419c0ee0d85d"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39465,
+          "sha256": "d8ed816c41d053dd2bc92f3e135f9dff672d4118aa9576dfbd0b4989d6ffdfb9"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11159,
+          "sha256": "8ac99b45046815fd98b8f3804af9119e9a15eeea3e65962af151434320cfc412"
+        },
+        {
+          "path": "windows/test_gcr_scooper_ejection_replay.log",
+          "bytes": 63683,
+          "sha256": "c4688a225ea1fb2c89d0085fa2a7d320cf8670f04989bb11b6e4a9928a4bbef4"
+        },
+        {
+          "path": "windows/test_gcr_scooper_entry_side.log",
+          "bytes": 12223,
+          "sha256": "89875faa96a65e4ea7ba1b17186876fa69f7761384217b3fb293d91f20200ad5"
+        },
+        {
+          "path": "windows/test_gcr_scooper_leak_capture.log",
+          "bytes": 397,
+          "sha256": "f7dd1956b6a076d1c5d856f3c3a02d28c5982e3e13a519f9c8ef21dadcbcd0bd"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/carry-candidate-02",
+      "completion": {
+        "source": "68aef83c16857347fe16efaffd9bffdb65d95c11",
+        "ok": true,
+        "inputs_unchanged": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "captures": 10,
+            "gates_sha256": "b700eddca911782a9824f07974ba9f0a3854de5f9017dab94519929aed87d0fb",
+            "campaign_sha256": "c51f53ce9b4c11d36aa675804ec9a321d19c91a813ace7f84a9fb0e9d93aa59d"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "captures": 10,
+            "gates_sha256": "59e84a98339991d692a7df0a5fcaf8c4d1cafef525b4a7a88363cc53a05a4b64",
+            "campaign_sha256": "86047695c20f1a0e335e436b9b147d6823df94927577be0f927fcfeb2a0d5b5d"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 646,
+          "sha256": "248df651458b8a48f00c6b056b3e2e8cb0e416d91c599d2764f9b76bd2e5cb60"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 83069,
+          "sha256": "3ee54c7eeb783ab25ec926bf914033e917150225927a7b6d6de1ded473f5f54a"
+        },
+        {
+          "path": "linux/campaign.json",
+          "bytes": 15329,
+          "sha256": "86047695c20f1a0e335e436b9b147d6823df94927577be0f927fcfeb2a0d5b5d"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 4515,
+          "sha256": "59e84a98339991d692a7df0a5fcaf8c4d1cafef525b4a7a88363cc53a05a4b64"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11159,
+          "sha256": "699ffb47d56c0ce525f92385f2b664bf73c949e3b711a8904a211c24af3a08db"
+        },
+        {
+          "path": "linux/test_gcr_scooper_ejection_replay.log",
+          "bytes": 63677,
+          "sha256": "f6bca341e037ad12b8c00204bc218d2ce1a7c905ab208389ba23b19e4e3cf4f3"
+        },
+        {
+          "path": "linux/test_gcr_scooper_entry_side.log",
+          "bytes": 12919,
+          "sha256": "890d76c2dac6c5a324884034738ecaf879d531210f0341df0d804313957dcfbb"
+        },
+        {
+          "path": "linux/test_gcr_scooper_leak_capture.log",
+          "bytes": 393,
+          "sha256": "b22b6c624674f6db93ca15be588c4c621d6c257ede6ea5346a0c24b844cc7b9c"
+        },
+        {
+          "path": "windows/campaign.json",
+          "bytes": 12175,
+          "sha256": "c51f53ce9b4c11d36aa675804ec9a321d19c91a813ace7f84a9fb0e9d93aa59d"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 3196,
+          "sha256": "b700eddca911782a9824f07974ba9f0a3854de5f9017dab94519929aed87d0fb"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11159,
+          "sha256": "8ac99b45046815fd98b8f3804af9119e9a15eeea3e65962af151434320cfc412"
+        },
+        {
+          "path": "windows/test_gcr_scooper_ejection_replay.log",
+          "bytes": 63683,
+          "sha256": "d83582a2938bca0bc8280ce7e362555aaf5d3a5713b78c53765c4660c56fed5a"
+        },
+        {
+          "path": "windows/test_gcr_scooper_entry_side.log",
+          "bytes": 12923,
+          "sha256": "309760ecefe2cf8c719d086a334faa1c405026902573ce8e58c7cf1dd09a30c9"
+        },
+        {
+          "path": "windows/test_gcr_scooper_leak_capture.log",
+          "bytes": 397,
+          "sha256": "f7dd1956b6a076d1c5d856f3c3a02d28c5982e3e13a519f9c8ef21dadcbcd0bd"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/carry-adapter-sanitizer-01",
+      "completion": {
+        "source": "68aef83c16857347fe16efaffd9bffdb65d95c11",
+        "compiled_source": "e625c6f287a19cc12b46b0925100b91174fb4eb4",
+        "ok": true,
+        "native_inputs_unchanged": true,
+        "identity_sha256": "ab660ea8afe92ea68f19e1baee4ecef5ccd65821f7df37fc3d4db4f187b46aaa",
+        "processes_sha256": "5901ef9339387095cb5e183602ff9007b808c96bf8acc6fbd54c048617c8f5bc",
+        "instrumented_sha256": "9993d33a9941c2d891c66af7429604e2561dbe557e5d867d5fe106dfa14f70eb",
+        "leak_detection": true,
+        "scope": "Explicitly instrumented local loader qualification. Not ordinary pinned-host pass or shipping SDK."
+      },
+      "files": [
+        {
+          "path": "build-identity.json",
+          "bytes": 11280,
+          "sha256": "bac0fd9eeb95b17f52249da8d605376d2c7ee88ed29bc45286740b7c472c89d2"
+        },
+        {
+          "path": "compile-process.json",
+          "bytes": 2159,
+          "sha256": "8b8c090ea389e8cf291df87a0960975bc42d47e001479561652f92cb7c8de344"
+        },
+        {
+          "path": "compile.log",
+          "bytes": 43760,
+          "sha256": "6a45f9d15502683599cb7c1633eef2426bd369dcf403590ee39d86e5420595b9"
+        },
+        {
+          "path": "completion.json",
+          "bytes": 584,
+          "sha256": "1e7c01b67cadb8e60614d17d0986d200fa6746f7c5396599ef337778e96fce0c"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 95314,
+          "sha256": "ab660ea8afe92ea68f19e1baee4ecef5ccd65821f7df37fc3d4db4f187b46aaa"
+        },
+        {
+          "path": "import.log",
+          "bytes": 39047,
+          "sha256": "225a69623b8c2ea6e382693f953a23b6e00668a27bbba6de72e94f9f35417232"
+        },
+        {
+          "path": "lsan-external-fontconfig.supp",
+          "bytes": 131,
+          "sha256": "04dd86534ae37de400401b8a99ff5c283b7addf1082069119acc799b14b11ff8"
+        },
+        {
+          "path": "original-unsuppressed-import.log",
+          "bytes": 45117,
+          "sha256": "31bf81460a35ddba69bc63a64eafd246b825ad4ae07f4911ade0f7919afe0c5d"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 9329,
+          "sha256": "5901ef9339387095cb5e183602ff9007b808c96bf8acc6fbd54c048617c8f5bc"
+        },
+        {
+          "path": "strip_deepbind.c",
+          "bytes": 506,
+          "sha256": "8dc66bd4707d09c0f71c51ff7ad3884cdb678d75e5f0303ea95b076f658a9e71"
+        },
+        {
+          "path": "test_gcr_authored_compound_native.log",
+          "bytes": 366,
+          "sha256": "1a8df822d3cefa6da33fd55add77d1f2bd33f6ff50757455c05bf9d504c75a2b"
+        },
+        {
+          "path": "test_gcr_detachment.log",
+          "bytes": 378,
+          "sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60"
+        },
+        {
+          "path": "test_gcr_nocatch_receipt.log",
+          "bytes": 1425,
+          "sha256": "63b062ac64d953558811fd3b199cc7d6093ff30dd5fa6eb2a128b3c7a22852b5"
+        },
+        {
+          "path": "test_gcr_scooper_body.log",
+          "bytes": 412,
+          "sha256": "01bc75f3a181035c4be9681eeb266967f02104be27594d35192e63d0c130f526"
+        },
+        {
+          "path": "test_gcr_scooper_entry_side.log",
+          "bytes": 12919,
+          "sha256": "890d76c2dac6c5a324884034738ecaf879d531210f0341df0d804313957dcfbb"
+        }
+      ]
+    }
+  ],
+  "core_record_local_folder": "C:\\Users\\_\\.codex\\worktrees\\gcr-scooper\\khybersand\\build\\scooper-core-02",
+  "core_completion_sha256": "623e80afb95187fc272f3c00678b06e4ee8b4438b1ea848671ffbd4f895769cd",
+  "current_core_inputs_match": 136,
+  "shipping_native": {
+    "windows": {
+      "native_build_source": "3df1279f799230bafdc7a34766eb2995bf4ae69b",
+      "native_sha256": "c3b1f28f155d6bb871e596ad69df3cdec355ac7dd83e87aad362ce1ee883e2e1",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "linux": {
+      "native_build_source": "3df1279f799230bafdc7a34766eb2995bf4ae69b",
+      "native_sha256": "dc5be7edb7bb2b42fb8b793cf320f9bb1dffcf82dd755a58e4227ab512ce87d8",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  },
+  "protected_material_consumers": [
+    {
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "docs/reference/water-normalization-vectors.json",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/src/world.cpp",
+      "changed_from_parent": false,
+      "matches_immutable_lock": false
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "changed_from_parent": false,
+      "matches_immutable_lock": false
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "changed_from_parent": false,
+      "matches_immutable_lock": false
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "tools/lcb/policy_contract.py",
+      "changed_from_parent": false,
+      "matches_immutable_lock": true
+    }
+  ],
+  "reducer_sha256": "61ae8d7e8fc0affcca599dc0d8829c71c5f3b8d5a70b9dd9d55e5078ca3db0c6",
+  "owner_acceptance": "Positive selective Scooper handling feedback with unresolved carrying defect; no acceptance of the new candidate yet.",
+  "final_head_ledger": "Recorded separately after final source commit; no prior run is relabelled.",
+  "companion_bindings_sha256": "02a800600a28a3dcdd83d1b8a9d754d236160f8bb634156acd20d20319923987",
+  "companion_preflight": "Initial six missing expected-fact sources resolved by verified companion snapshot binding, not source/fixture changes."
+}

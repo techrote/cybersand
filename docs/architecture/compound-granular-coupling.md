@@ -62,6 +62,21 @@ remain separately identified in the registration and final source-bound ledger.
 
 ## What is composed, and what stays experimental?
 
+The authored-only [entry-side follow-up](../operations/gcr-scooper-leak-registration.md)
+preserves a uniquely witnessed ejection face for unchanged-angle translation,
+instead of selecting a far-side nearest face after a thin piece crosses a cell.
+It requires consecutive samples, unchanged size, valid previous geometry within
+the existing32-cell sweep bound and a source outside the entire previous union.
+Corner/tangent ties or intersection with another proxy refuse that witness;
+missing/rotating/ambiguous histories keep the original rule. Existing endpoint,
+hard/foreign-mask and whole-union path checks stay authoritative. At most eight
+proxy slab checks are added per overlap; there is no new allocation or impulse
+owner. Independent bodies and conservative payloads retain their old selection.
+This traces the current cell centre through hull transforms, not a persistent
+grain trajectory or a complete concave/rotational contact manifold. The
+[dated proof](../audits/2026-11-04-scooper-carried-material-leak.md) owns actual
+baseline/candidate, source/runtime, quantity, cost and remaining edge limitations.
+
 The owner authorizes shared coupling reconciliation and detached-object response
 qualification. The [registration](../operations/gcr-detachment-integration-plan.md)
 precedes candidate execution and owns the frozen laws, mechanical prerequisites,

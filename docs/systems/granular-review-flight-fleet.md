@@ -67,13 +67,33 @@ owns the new admission and the separate structural-detachment boundary.
 The new native implementation requires source-matched Windows/Linux runtimes
 with89 production inputs; the earlier88-input libraries cannot supply this API.
 The current build cohort is native source
-`0206b5406a22ba668f02018516ff4723f3b3fc6d`. It includes a no-catch receipt
-accounting correction; the physical wrench and bridge guards are unchanged.
+`3df1279f799230bafdc7a34766eb2995bf4ae69b`. It retains the no-catch receipt
+accounting correction and adds bounded authored translation entry-side ejection;
+the response law and bridge guards are unchanged.
 The [dated Scooper record](../audits/2026-11-04-authored-compound-scooper.md)
 keeps original failures, source-matched builds, mechanical controls and the
 48-case Windows/Linux physical population separate from final-head execution
 and owner gameplay acceptance. No sleep, material-law tuning, production
 promotion or merge follows from adding the authoring workflow.
+
+## Why can Scooper lose powder through its thin deck while moving?
+
+The [carried-material diagnosis](../operations/gcr-scooper-leak-registration.md)
+separates temporary native/current-pose overlap, open-rim spill and genuine
+far-side relocation. When a2-cell deck moves across a grain, the current nearest
+face can become its bottom; the old ejection then pushes carried material down
+through the deck. Current experimental source preserves a unique translated
+entry side in explicitly authored compounds, using valid consecutive samples,
+unchanged orientation/size and the existing sweep bound. Previous-union overlap,
+rotation, another crossed proxy or seam ambiguity retains the old rule.
+
+The [source-bound qualification](../audits/2026-11-04-scooper-carried-material-leak.md)
+reproduces the defect and eliminates persistent through-deck escape in selective
+full/boost and event-off full level rises on Windows/Linux at unchanged peak
+speeds. Independent-body controls retain their old outcomes. Diagonal/corner
+and open-edge carrying remain distinct; this is not general rotational collision
+detection or guaranteed load retention. Source-sensitive tests and owner review
+remain separate. No friction, motor, sleep or production-default change follows.
 
 ## Saved spawn, Burst key and compact comparison controls
 

@@ -1,0 +1,142 @@
+{
+  "schema": 1,
+  "registration": "GCR-CARRY-002",
+  "dt": 0.016666666666666666,
+  "workers": 1,
+  "ticks": 450,
+  "spawn": [
+    512,
+    250
+  ],
+  "material": 2,
+  "grains": 16,
+  "material_rects": [
+    [
+      504,
+      249,
+      16,
+      1
+    ]
+  ],
+  "walls": [
+    [
+      16,
+      396,
+      992,
+      6
+    ],
+    [
+      16,
+      16,
+      6,
+      386
+    ],
+    [
+      1002,
+      16,
+      6,
+      386
+    ],
+    [
+      16,
+      16,
+      992,
+      6
+    ]
+  ],
+  "move_from": 120,
+  "move_to": 240,
+  "brake_to": 330,
+  "cases": [
+    {
+      "id": "stationary",
+      "response": "LA-SELECTIVE",
+      "move": [
+        0,
+        0
+      ],
+      "boost": false
+    },
+    {
+      "id": "rise-slow",
+      "response": "LA-SELECTIVE",
+      "move": [
+        0,
+        -0.1
+      ],
+      "boost": false
+    },
+    {
+      "id": "rise-moderate",
+      "response": "LA-SELECTIVE",
+      "move": [
+        0,
+        -0.5
+      ],
+      "boost": false
+    },
+    {
+      "id": "rise-full",
+      "response": "LA-SELECTIVE",
+      "move": [
+        0,
+        -1
+      ],
+      "boost": false
+    },
+    {
+      "id": "rise-boost",
+      "response": "LA-SELECTIVE",
+      "move": [
+        0,
+        -1
+      ],
+      "boost": true
+    },
+    {
+      "id": "closed-end",
+      "response": "LA-SELECTIVE",
+      "move": [
+        1,
+        0
+      ],
+      "boost": false
+    },
+    {
+      "id": "open-end",
+      "response": "LA-SELECTIVE",
+      "move": [
+        -1,
+        0
+      ],
+      "boost": false
+    },
+    {
+      "id": "diagonal",
+      "response": "LA-SELECTIVE",
+      "move": [
+        1,
+        -1
+      ],
+      "boost": false
+    },
+    {
+      "id": "rise-full-LA",
+      "response": "LA",
+      "move": [
+        0,
+        -1
+      ],
+      "boost": false
+    },
+    {
+      "id": "rise-full-LA-EVENT-OFF",
+      "response": "LA-EVENT-OFF",
+      "move": [
+        0,
+        -1
+      ],
+      "boost": false
+    }
+  ]
+}

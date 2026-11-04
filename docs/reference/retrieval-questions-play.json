@@ -273,6 +273,22 @@
         "systems/granular-review-flight-fleet.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GCRCARRY02",
+      "query": "Why does Scooper leak carried powder through its thin hull while moving, and what does the entry-side repair cover?",
+      "canonical": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "facts": [
+        "Native current-nearest-face ejection can choose the far side after a thin moving deck crosses a grain. A temporary sampled/current-pose overlap is distinct from persistent through-deck escape.",
+        "The authored-only repair preserves a unique entry face for consecutive unchanged-angle/size translation within the existing sweep bound and outside the previous whole union. Another crossed proxy, corner/seam or rotation retains the original rule; independent and structural routes keep their selection.",
+        "Matched Windows/Linux captures eliminate persistent deck-side escape in level selective full/boost and events-off full rises at unchanged peak speeds. Diagonal/corner/open-edge limitations and zero primary cavity minima remain; no universal carry, sleep, material-law tuning, promotion or merge follows."
+      ],
+      "sources": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }
