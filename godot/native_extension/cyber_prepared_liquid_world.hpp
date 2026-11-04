@@ -105,9 +105,14 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             extent = options["workbench_extent"];
             if (extent.x < 256 || extent.y < 256 || extent.x > 2048 || extent.y > 2048 || extent.x % 64 || extent.y % 64)
                 throw std::invalid_argument("Workbench extent must be a multiple of 64 in 256..2048");
-        } else if (options.has("workbench_extent") || options.has("workbench_sample") || options.has("workbench_retain_cells")) {
+        } else if (options.has("workbench_extent") || options.has("workbench_sample") || options.has("workbench_retain_cells") ||
+                   options.has("workbench_convert_liquid_inventory")) {
             throw std::invalid_argument("Incomplete workbench configuration");
         }
+        if (options.has("workbench_convert_liquid_inventory") &&
+            options["workbench_convert_liquid_inventory"].get_type() != Variant::BOOL)
+            throw std::invalid_argument("Workbench inventory conversion intent must be boolean");
+        const bool convert = options.get("workbench_convert_liquid_inventory",false);
         const bool retain = options.get("workbench_retain_cells",false);
         if (retain && (!adapter->workbench_ || adapter->extent_ != extent))
             throw std::invalid_argument("Live content requires the retained workbench extent");
@@ -125,6 +130,9 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (!window && (region[0] != 0 || region[1] != 0 ||
             region[2] != extent.x || region[3] != extent.y))
             throw std::invalid_argument("Disabled simulation window requires the full finite World region");
+        if (convert && (!retain || intent != "exploratory" ||
+            adapter->world_->liquid_solver_policy().policy_hash() == decoded.policy->policy_hash()))
+            throw std::invalid_argument("Explicit inventory conversion requires a retained workbench and changed liquid policy");
         const String rule = options.get("normalization", String());
         if (!rule.is_empty() && rule != "water-normalize-v1")
             throw std::invalid_argument("Unknown normalization rule");
@@ -270,7 +278,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             if (retain) prepared_liquid_detail::workbench_copy_retained_cells(*adapter->world_, input);
         }
         auto result = std::make_unique<cybersand::PreparedWorldBuilder::Result>(cybersand::PreparedWorldBuilder::prepare(
-            *config, input, rule.is_empty() ? cybersand::normalization::NormalizationOptIn::None :
+            *config, input, rule.is_empty() && !convert ? cybersand::normalization::NormalizationOptIn::None :
                 cybersand::normalization::NormalizationOptIn::WaterNormalizeV1, limits));
         if (const auto* refused = std::get_if<cybersand::ConstructionRefusal>(result.get())) {
             record_refusal(*refused);
@@ -323,8 +331,6 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 identity.integer(static_cast<std::uint8_t>(owner.external_drive));
             }
             pending->workbench_initial_digest=prepared_liquid_detail::digest(cybersand::Sha256::of(identity.bytes));
-            CyberNativeCellWorld::validate_workbench_terrain(*pending->world, extent, initial,
-                retain ? adapter->world_.get() : nullptr, retain ? &adapter->workbench_->sample : nullptr);
             pending->workbench->sample = initial;
             pending->world->enable_transient_granular_wrenches(true);
             pending->world->enable_granular_arrival_witness(response == "LA-SELECTIVE");
@@ -379,6 +385,32 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             }
         }
 
+        Dictionary conversion_receipt;
+        if (retain) {
+            const auto transfer = pending->world->inherit_workbench_liquid_state(*adapter->world_,convert);
+            const auto before = adapter->world_->quantity_ledger();
+            const auto after = pending->world->quantity_ledger();
+            const auto& norm = prepared.setup().normalization_receipt();
+            const auto produced = norm ? norm->totals().positive_delta : 0U;
+            const auto consumed = norm ? norm->totals().negative_delta : 0U;
+            const auto water_before = before.water_visible + before.water_overfill;
+            const auto water_after = after.water_visible + after.water_overfill;
+            if (water_before + produced != water_after + consumed + transfer.discarded_overfill)
+                throw std::logic_error("Workbench conversion Water balance did not close");
+            conversion_receipt["requested"] = convert;
+            conversion_receipt["source_policy_sha256"] = prepared_liquid_detail::digest(adapter->world_->liquid_solver_policy().policy_hash());
+            conversion_receipt["target_policy_sha256"] = prepared_liquid_detail::digest(pending->world->liquid_solver_policy().policy_hash());
+            conversion_receipt["discarded_water_overfill"] = transfer.discarded_overfill;
+            conversion_receipt["discarded_gas_amount"] = transfer.discarded_gas;
+            conversion_receipt["preserved_water_overfill"] = transfer.preserved_overfill;
+            conversion_receipt["preserved_gas_amount"] = transfer.preserved_gas;
+            conversion_receipt["preserved_inertial_cells"] = transfer.preserved_inertial_cells;
+            conversion_receipt["discarded_inertial_cells"] = transfer.discarded_inertial_cells;
+            conversion_receipt["water_before"] = water_before;
+            conversion_receipt["water_after"] = water_after;
+            conversion_receipt["normalization_produced"] = produced;
+            conversion_receipt["normalization_consumed"] = consumed;
+        }
         pending->origin = Vector2i(region[0], region[1]); pending->size = Vector2i(region[2], region[3]);
         pending->window = window;
         pending->cadence = options.get("cadence_lod_enabled", false);
@@ -401,6 +433,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->receipt["session_generation"] = static_cast<std::int64_t>(adapter->liquid_policy_session_generation_+1);
         if (workbench) {
             pending->receipt["workbench_response"] = response;
+            if (retain) pending->receipt["workbench_conversion"] = conversion_receipt;
             pending->receipt["workbench_extent"] = extent;
             pending->receipt["workbench_initial_sample_sha256"] = pending->workbench_initial_digest;
         }

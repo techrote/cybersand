@@ -338,6 +338,15 @@ public:
     // liquid policy assigns Water to it. Serialized owner queries between ticks.
     [[nodiscard]] bool pressure_flow_enabled() const noexcept;
     [[nodiscard]] PressureFlowParameters pressure_flow_parameters() const noexcept;
+    // Starting-setup reconstruction only, between healthy exclusive owners.
+    // The destination is an unexposed, fresh prepared World with the final
+    // cell tuples and new hull masks installed. No solver may call this in tick().
+    struct WorkbenchLiquidTransfer {
+        std::uint64_t preserved_overfill = 0, discarded_overfill = 0;
+        std::uint64_t preserved_gas = 0, discarded_gas = 0;
+        std::uint64_t preserved_inertial_cells = 0, discarded_inertial_cells = 0;
+    };
+    WorkbenchLiquidTransfer inherit_workbench_liquid_state(const World& source, bool allow_conversion);
     [[nodiscard]] PressureCellState pressure_cell(std::int64_t x, std::int64_t y) const noexcept;
     // Copies the last pre-kernel derived head slot without preparing/allocating.
     // May be stale after transport/writes or unprepared after restore; no

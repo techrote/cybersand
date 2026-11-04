@@ -115,55 +115,6 @@ bool CyberNativeCellWorld::parse_workbench_sample(WorkbenchSample& next, const W
     return true;
 }
 
-void CyberNativeCellWorld::validate_workbench_terrain(const cybersand::World& candidate, Vector2i extent,
-        const WorkbenchSample& sample, const cybersand::World* retained, const WorkbenchSample* previous) {
-    // A centre-only occupancy mask misses partial-pixel intersections of thin
-    // rotated pieces. All four separating axes must overlap strictly.
-    const auto penetration=[](const BodyState& b,int x,int y) {
-        const double c=std::cos(b.rotation),s=std::sin(b.rotation);
-        const double dx=x+.5-b.center.x,dy=y+.5-b.center.y;
-        const double cell_projection=.5*(std::abs(c)+std::abs(s));
-        return std::min({
-            std::abs(c)*b.half_size.x+std::abs(s)*b.half_size.y+.5-std::abs(dx),
-            std::abs(s)*b.half_size.x+std::abs(c)*b.half_size.y+.5-std::abs(dy),
-            b.half_size.x+cell_projection-std::abs(c*dx+s*dy),
-            b.half_size.y+cell_projection-std::abs(-s*dx+c*dy)
-        });
-    };
-    const double tolerance=4.*std::numeric_limits<real_t>::epsilon()*std::max(extent.x,extent.y);
-    for (const auto& owner : sample.owners) {
-        if (!owner.instance) continue;
-        const WorkbenchBody* old=nullptr;
-        if (previous) for (const auto& prior : previous->owners) {
-            if (prior.instance==owner.instance && prior.count==owner.count) { old=&prior; break; }
-        }
-        for (int piece=0; piece<owner.count; ++piece) {
-            const auto proxy=owner.first+piece;
-            const auto& b=sample.proxies[proxy];
-            const double c=std::abs(std::cos(b.rotation)),s=std::abs(std::sin(b.rotation));
-            const double ex=c*b.half_size.x+s*b.half_size.y,ey=s*b.half_size.x+c*b.half_size.y;
-            const int left=std::max(0,static_cast<int>(std::floor(b.center.x-ex)));
-            const int right=std::min(extent.x,static_cast<int>(std::ceil(b.center.x+ex)));
-            const int top=std::max(0,static_cast<int>(std::floor(b.center.y-ey)));
-            const int bottom=std::min(extent.y,static_cast<int>(std::ceil(b.center.y+ey)));
-            const bool retained_piece=old && previous->geometry[old->first+piece]==sample.geometry[proxy];
-            for (int y=top; y<bottom; ++y) for (int x=left; x<right; ++x) {
-                if (!cybersand::MaterialRules::is_hard_surface(candidate.stored_material(x,y))) continue;
-                const double depth=penetration(b,x,y);
-                if (depth<=tolerance) continue;
-                // Reconstruction can observe a resting Rapier contact with slight
-                // penetration. Only an existing shallow contact in this same cell
-                // can survive; moving deeper or into fresh terrain never qualifies.
-                if (retained_piece && depth<=.5+tolerance &&
-                    cybersand::MaterialRules::is_hard_surface(retained->stored_material(x,y)) &&
-                    depth<=penetration(previous->proxies[old->first+piece],x,y)+tolerance) continue;
-                throw std::invalid_argument("Workbench body "+std::to_string(owner.instance)+
-                    " intersects hard terrain at ("+std::to_string(x)+","+std::to_string(y)+")");
-            }
-        }
-    }
-}
-
 bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& states,
         const PackedFloat64Array& geometry, const Array& owners, std::int64_t session,
         std::int64_t epoch, bool resolve_overlaps) {

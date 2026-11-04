@@ -59,6 +59,92 @@ PressureFlowParameters World::pressure_flow_parameters() const noexcept {
     return pressure_ == nullptr ? PressureFlowParameters{} : pressure_->parameters;
 }
 
+World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World& source, bool allow_conversion) {
+    require_healthy();
+    source.require_healthy();
+    if (&source == this || tick_in_progress_ || source.tick_in_progress_ || tick_index_ != 0 ||
+        !quantity_.construction || quantity_.water_overfill != 0 ||
+        config_.chunk_size != source.config_.chunk_size ||
+        config_.water_experiment_policy.mass_bits() != source.config_.water_experiment_policy.mass_bits())
+        throw std::logic_error("Workbench liquid inheritance requires an unexposed prepared destination");
+    if (allow_conversion && liquid_solver_policy().policy_hash() == source.liquid_solver_policy().policy_hash())
+        throw std::invalid_argument("Inventory conversion requires a changed liquid policy");
+
+    WorkbenchLiquidTransfer transfer;
+    const bool keep_pressure = source.pressure_ && pressure_;
+    const bool keep_gas = keep_pressure && source.pressure_->parameters.gas_enabled && pressure_->parameters.gas_enabled;
+    if (!keep_pressure) transfer.discarded_overfill = source.quantity_.water_overfill;
+    if (!keep_gas && source.pressure_) transfer.discarded_gas = source.pressure_->gas.amount_live;
+    if (!allow_conversion && (transfer.discarded_overfill || transfer.discarded_gas))
+        throw std::invalid_argument("Pressure overfill or trapped gas requires an explicit workbench policy conversion");
+    if (keep_gas) {
+        // Recover the owner of each gas label and its measured amount. Hulls
+        // may have changed; the normal next pressure pass resolves/vents those
+        // changes against its new masks. Never reuse the old geometry cache.
+        pressure_->compartments = source.pressure_->compartments;
+        for (auto& compartment : pressure_->compartments) compartment.created_tick = 0;
+        pressure_->topology_revision = source.pressure_->topology_revision;
+        pressure_->next_id = source.pressure_->next_id;
+        pressure_->gas = source.pressure_->gas;
+        pressure_->gas_fixed_point = false;
+        if (pressure_->cache) pressure_->cache->cold();
+        transfer.preserved_gas = pressure_->gas.amount_live;
+    }
+    if (!keep_pressure && !source.inertial_enabled_) return transfer;
+    for (const auto& [coord, origin] : source.chunks_) {
+        auto* destination = find_chunk(coord);
+        for (std::size_t i=0; i<origin->cells.size(); ++i) {
+            const auto material = origin->cells[i].material_value();
+            if (keep_pressure) {
+                const auto& from = origin->pressure->cells[i];
+                if (from.overfill || from.flow || (keep_gas && from.gas)) {
+                    if (!destination) {
+                        if (from.overfill || from.flow ||
+                            (from.gas && from.gas != kAtmosphereLabel && from.gas != kVacuumLabel))
+                            throw std::invalid_argument("Pressure inventory extends outside the retained workbench domain");
+                    } else {
+                        auto& to = destination->pressure->cells[i];
+                        if (from.overfill || from.flow) {
+                            const auto visible = destination->cells[i].state_a_value();
+                            if (material != Material::Water || destination->cells[i].material_value() != material ||
+                                visible != origin->cells[i].state_a_value())
+                                throw std::invalid_argument("Pressure inventory has no matching retained Water cell");
+                            // The prepared tuple baseline already accounts for
+                            // visible Water. Record exactly the inherited sidecar
+                            // as an external input into this new World's ledger.
+                            if (from.overfill)
+                                record_quantity_transition(material,visible,0,material,visible,from.overfill,nullptr,
+                                    {QuantityKind::ExternalEdit,kQuantityNoRule},true);
+                            to.overfill = from.overfill;
+                            to.flow = from.flow;
+                            transfer.preserved_overfill += from.overfill;
+                        }
+                        if (keep_gas) to.gas = from.gas;
+                    }
+                }
+            }
+            if (!source.inertial_family(material)) continue;
+            const auto& motion = (*origin->inertial)[i];
+            if (!(motion.vx || motion.vy || motion.ax || motion.ay)) continue;
+            if (!inertial_family(material)) {
+                ++transfer.discarded_inertial_cells;
+                continue;
+            }
+            if (!destination || destination->cells[i].material_value() != material)
+                throw std::invalid_argument("Inertial motion has no matching retained workbench cell");
+            const auto x=coord.x*config_.chunk_size+static_cast<std::int64_t>(i%config_.chunk_size);
+            const auto y=coord.y*config_.chunk_size+static_cast<std::int64_t>(i/config_.chunk_size);
+            if (!diagnostic_set_inertial_cell(x,y,motion.vx,motion.vy,motion.ax,motion.ay))
+                throw std::logic_error("Retained inertial motion exceeds the native family bounds");
+            ++transfer.preserved_inertial_cells;
+        }
+    }
+    if (transfer.preserved_overfill + transfer.discarded_overfill != source.quantity_.water_overfill)
+        throw std::logic_error("Workbench pressure overfill transfer did not close");
+    validate_quantity_ledger(true);
+    return transfer;
+}
+
 PressureCellState World::pressure_cell(std::int64_t x, std::int64_t y) const noexcept {
     PressureCellState out;
     if (pressure_ == nullptr) return out;
