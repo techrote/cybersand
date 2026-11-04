@@ -52,6 +52,17 @@ func mock(index: int) -> MockRig:
 func action(move:=Vector2.ZERO,trim: float=0.0,brake: bool=false,assist: bool=false,primary: bool=false) -> Dictionary:
 	return {"move":move,"aim":Vector2.UP,"effort":1.0,"trim":trim,"primary":primary,"secondary":brake,"auxiliary":assist}
 
+func _exact_rectangles(actual: Variant, expected: Array) -> bool:
+	# JSON numbers are Float Variants; nested Array equality also compares their
+	# Variant types. Compare every numeric coordinate exactly, without epsilon.
+	if not actual is Array or actual.size()!=expected.size(): return false
+	for index: int in range(expected.size()):
+		if not actual[index] is Array or actual[index].size()!=4: return false
+		for field: int in range(4):
+			var scalar: Variant=actual[index][field]
+			if not (scalar is int or scalar is float) or float(scalar)!=float(expected[index][field]): return false
+	return true
+
 func _scooper_geometry_checks(record: Dictionary) -> void:
 	# The original six-piece profile stays an authenticated historical fixture;
 	# changing today's active hull must not rewrite its recorded mass properties.
@@ -71,7 +82,10 @@ func _scooper_geometry_checks(record: Dictionary) -> void:
 	for fields: Dictionary in [old_fields,current_fields]:
 		fields.erase("hull");fields.erase("description")
 	check(current_fields==old_fields,"only Scooper geometry and description change; motors/mass/capabilities remain exact")
-	check(record.hull.kind=="rect_union" and record.hull.rects==U_RECTS,"active U uses the five prospectively registered nonoverlapping rectangles")
+	check(record.hull.kind=="rect_union" and _exact_rectangles(record.hull.rects,U_RECTS),"active U uses the five prospectively registered nonoverlapping rectangles")
+	var changed_rects: Array=record.hull.rects.duplicate(true)
+	changed_rects[0][0]=float(changed_rects[0][0])+0.25
+	check(not _exact_rectangles(changed_rects,U_RECTS),"registered rectangle comparison rejects an actual coordinate change")
 	var resolved: Dictionary=Authoring.resolve_record(record)
 	check(not resolved.has("error"),"active U profile validates without overlap exceptions")
 	if resolved.has("error"): return
