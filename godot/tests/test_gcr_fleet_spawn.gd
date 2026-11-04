@@ -44,7 +44,7 @@ func _run() -> void:
 			check(not runtime.configure_review_fleet(index,options(),bad),"nonfinite/outside/hull-crossing spawn refused")
 			check(runtime._arena==owner and owner.session.epoch==epoch and runtime.active(),"invalid spawn preserves existing live owner")
 			check(pose(owner).origin==position_before and owner._world.get_physical_state_hash()==hash_before,"refused spawn does not move body or edit material")
-	check(not Arena.valid_review_fleet_spawn(Vector2(178,304),-1) and not Arena.valid_review_fleet_spawn(Vector2(178,304),7),"invalid roster indices refused before footprint lookup")
+	check(not Arena.valid_review_fleet_spawn(Vector2(178,304),-1) and not Arena.valid_review_fleet_spawn(Vector2(178,304),Fleet.count()),"invalid roster indices refused before footprint lookup")
 	# The expanded rectangle belongs only to the normal developer fleet route.
 	var ordinary=runtime._arena
 	var ordinary_config: Dictionary={"version":Arena.VERSION,"seed":0,"max_ticks":100,"local_patch_radius":0,
