@@ -10,6 +10,8 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+**Owner gameplay acceptance, 4 November:** current LA-SA is accepted for production gameplay, including useful small-load U-Scooper carrying with residual drips. The [dated verdict](../audits/2026-11-04-gcr-la-sa-owner-acceptance.md) closes the current hands-on comparison; scientific negatives, compatibility, integration/default selection and release gates remain separate. PRs stay draft/unmerged.
+
 Flyer review controls: [saved spawn, Burst key and compact toolbars](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
 extend the room-only Shift/Ctrl, live powder sources and edge-alignment repair.
 The current authoring successor adds eight named JSON definitions, atomic
@@ -21,7 +23,7 @@ E. Earlier registered selective failures remain open. New native89-input builds,
 mechanical controls, physical qualification and owner review are separately
 identified; no material-law/sleep/default promotion or merge follows.
 
-Current [Scooper qualification](../audits/2026-11-04-authored-compound-scooper.md) retains48 source-bound desktop captures: mechanical controls pass, LA fails the carry demonstration, and E/S pass its literal lift/spill thresholds with an explicit pre-tip cavity-count gap. Loaded selective stability remains bounded and owner review is pending. Corrected native source0206b540 changes only no-catch receipt accounting. Sleep, production promotion and merges remain excluded.
+Current [Scooper qualification](../audits/2026-11-04-authored-compound-scooper.md) retains48 source-bound desktop captures: mechanical controls pass, LA fails the carry demonstration, and E/S pass its literal lift/spill thresholds with an explicit pre-tip cavity-count gap. Loaded selective stability remains bounded; the later owner verdict accepts current LA-SA gameplay with known limitations. Corrected native source0206b540 changes only no-catch receipt accounting. Sleep, production promotion and merges remain excluded.
 
 The [carried-material follow-up](../audits/2026-11-04-scooper-carried-material-leak.md) isolates wrong-side ejection through a moving thin deck and qualifies an authored-only unchanged-angle entry-side repair. Level full/boost carry no longer shows persistent far-side loss; rotational/edge scope, source/runtime and final owner acceptance remain explicit. Controls, response laws, sleep and merge boundaries stay unchanged.
 
@@ -42,7 +44,8 @@ Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selec
 records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
 and late edge rebound miss their gates. Continuous arrival/torque and excavation
 release pass; no rest/default acceptance follows. The painting selector remains
-experimental; source-lock compatibility and owner review remain open.
+experimental; source-lock compatibility and integration remain open. The later
+owner verdict above accepts current LA-SA gameplay with known limitations.
 
 Selective event successor **implemented, registered NO-GO**, November4: [GCR-SEL-001 registration](gcr-selective-events-registration.md) fixes C/E/S and84 Windows/Linux captures before results. Main7ef4856e is reconciled into the isolated successor; Astra347 remains separately owned. The preceding-tick transport witness is transient coupling history, allocated only for explicitly admitted experimental C/E/S worlds. The fourth painting choice is LA-SELECTIVE; ordinary LA and Restore remain controls. All84 captures complete, but joint creep preservation, finite-batch recovery and late operational edge-rebound gates fail. Continuous-stream response and excavation release pass; sleep, default promotion and merges remain excluded.
 

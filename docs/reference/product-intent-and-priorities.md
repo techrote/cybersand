@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-11-04
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -14,6 +14,24 @@ This page carries forward owner direction recorded in the
 [pre-rewrite handover](../audits/pre-rag-rewrite-2026-09-08/cybersand-codex-development-handover.md.txt)
 at checkpoint `126175c`. It preserves intent separately from source and dated
 validation; later approved decisions should update this canonical reference.
+
+## Granular gameplay and cohesive review tools — 2026-11-04
+
+**Approved owner verdict:** current LA-SA gameplay is acceptable for production.
+In the supplied source52f19b51 U-Scooper review, small loads can be lifted,
+carried and dumped; remaining drips are accepted. The
+[dated acceptance record](../audits/2026-11-04-gcr-la-sa-owner-acceptance.md)
+preserves source/runtime scope, earlier registered failures and separate
+integration/compatibility/release obligations. This is actual owner acceptance,
+not a production-default change, arbitrary-shape guarantee or merge authority.
+
+**Owner workflow preference:** retain the current compact, coherent painting-room
+UX as the starting point for more cohesive future hands-on testing. Separate
+playable mechanics tests, content browsing and explanatory demonstrations by
+purpose, while sharing useful controls and engine/session infrastructure.
+Preserve the engine's reuse across game types. Specific modularisation and
+implementation remain proposals; do not create another coupling/physics owner
+or treat an exploratory test preset as exact continuing-state replay.
 
 ## PLAY convergence and acceptance boundary — 2026-10-30
 

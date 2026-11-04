@@ -10,6 +10,22 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 
 # Lightweight flight fleet for granular owner review
 
+## Owner acceptance and campaign closeout — 4 November 2026
+
+**Owner gameplay acceptance: ACCEPTED.** After testing review source52f19b51,
+the owner explicitly accepts current LA-SA for production: the U Scooper can
+lift, carry and dump small loads, and residual drips are acceptable. The
+[dated verdict](../audits/2026-11-04-gcr-la-sa-owner-acceptance.md) records the
+supplied source/runtime and the absence of a new full settings/trajectory receipt.
+The current hands-on comparison campaign can stop; preserve its build and fixtures.
+
+The earlier registered selective NO-GO and fast U retention failures remain
+unchanged scientific outcomes. Acceptance of the observed gameplay tradeoffs
+does not erase those results or establish arbitrary-load/shape support.
+Production integration/default selection, protected-source compatibility,
+resulting-head qualification and REM-004 closure remain separate. No default,
+sleep, material law or merge changes in this documentation checkpoint.
+
 ## How do I author or reload a flyer, including Scooper?
 
 **Current experimental source:** eight bundled flyers use named definitions in
@@ -98,6 +114,8 @@ counts remain16; left/right tip results differ. The U is available as an
 authoring prototype, **not a qualified powered-carrying fix**. Motion/contact
 relocation across the union remains a separate mechanism gap; material laws,
 friction, sleep, production defaults and merge boundaries stay unchanged.
+The later owner review above accepts the U's practical small-load gameplay and
+residual drips; it does not change this automated fast-carrying result.
 
 ## Why can Scooper lose powder through its thin deck while moving?
 
@@ -293,11 +311,12 @@ Current selective arrival result: [qualification](../audits/2026-11-04-gcr-selec
 records84 captures and a registered NO-GO: creep preservation, finite-batch recovery
 and late edge rebound miss their gates. Continuous arrival/torque and excavation
 release pass; no rest/default acceptance follows. The painting selector remains
-experimental; source-lock compatibility and owner review remain open.
+experimental; source-lock compatibility and integration remain open. The later
+owner verdict above accepts LA-SA gameplay with known limitations.
 
 ## Selective arrivals — implemented comparison with failed joint gates
 
-The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals** (LA-SELECTIVE; experimental). Use **Apply + reset** to construct fresh native authority; painted edits are discarded. LA remains initial/Defaults, RFT and event-off remain separate references, and the retained seven-flyer population, painting, physical/actuator controls, Fire and dispensers remain intact; Scooper has its own authored admission and qualification. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. The candidate is retained for comparison under a registered NO-GO; no owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
+The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals** (LA-SELECTIVE; experimental). Use **Apply + reset** to construct fresh native authority; painted edits are discarded. LA remains initial/Defaults, RFT and event-off remain separate references, and the retained seven-flyer population, painting, physical/actuator controls, Fire and dispensers remain intact; Scooper has its own authored admission and qualification. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. That registered NO-GO is preserved alongside the later actual owner gameplay acceptance above. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain separate; none is performed here.
 
 ## Granular-only event comparison — November4
 

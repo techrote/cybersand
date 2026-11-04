@@ -422,3 +422,5 @@ routes preserve unknown/failed qualification and do not authorize sleep or merge
 Scooper carried-material leakage: the [fleet guide](../systems/granular-review-flight-fleet.md#why-can-scooper-lose-powder-through-its-thin-deck-while-moving) owns current controls and limits; the [registered diagnosis](../operations/gcr-scooper-leak-registration.md) owns the scientific comparisons and the dated audit retains actual source/runtime results.
 
 Braced U Scooper: [current authoring and retention limits](../systems/granular-review-flight-fleet.md#does-the-braced-u-shaped-scooper-eliminate-leakage-at-box-seams), [registration](../operations/gcr-scooper-u-hull-registration.md), and dated source/runtime evidence remain separate.
+
+LA-SA gameplay acceptance and campaign closeout: [actual owner verdict](../systems/granular-review-flight-fleet.md#owner-acceptance-and-campaign-closeout--4-november-2026) distinguishes accepted small-load gameplay from retained scientific failures and pending production integration.

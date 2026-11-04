@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**Owner gameplay acceptance, 4 November:** current LA-SA is accepted for production gameplay, including useful small-load U-Scooper carrying with residual drips. The [dated verdict](audits/2026-11-04-gcr-la-sa-owner-acceptance.md) closes the current hands-on comparison; scientific negatives, compatibility, integration/default selection and release gates remain separate. PRs stay draft/unmerged.
+
 Flyer review controls: [saved spawn, Burst key and compact toolbars](systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
 extend the room-only Shift/Ctrl, live powder sources and edge-alignment repair.
 The current authoring successor adds eight named JSON definitions, atomic

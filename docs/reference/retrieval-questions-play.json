@@ -305,6 +305,21 @@
         "systems/granular-review-flight-fleet.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "GCRACCEPT04",
+      "query": "Has the owner accepted current LA-SA gameplay, and can the granular testing campaign close?",
+      "canonical": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "facts": [
+        "The owner explicitly accepts current LA-SA for production gameplay after the supplied source52f19b51 U-Scooper review: small loads can be lifted, carried and dumped; residual drips are acceptable. The current hands-on comparison campaign can stop.",
+        "The prior selective joint-criteria NO-GO and automated fast U retention failures remain their original scientific results. Production integration/default selection, source-lock compatibility, resulting-head qualification, REM004 issue closure and merge remain separate; no default or merge is changed."
+      ],
+      "sources": [
+        "systems/granular-review-flight-fleet.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }
