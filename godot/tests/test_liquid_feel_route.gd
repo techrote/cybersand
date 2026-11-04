@@ -129,8 +129,23 @@ func run() -> void:
 	expect(controls._table.size() == rows_before + FAMILIES.size(), "every family adds one sequential A/B row")
 	expect(str(controls._table.back().capture).begins_with(directory), "captures stay in the isolated directory")
 	var exported: String = controls.export_table()
-	expect(not exported.is_empty() and FileAccess.get_file_as_string(exported).begins_with("scenario,family,variant"),
-		"A/B table exports as CSV")
+	expect(not exported.is_empty() and FileAccess.get_file_as_string(exported).begins_with("scenario,definition_hash,family,variant"),
+		"A/B table exports as CSV with definition and preparation identity")
+	expect(str(controls._table.back().normalization_net) == "0" and int(controls._table.back().window_last_tick) > 0,
+		"A/B rows record normalization and the sampled tick window")
+
+	# Fresh reset rebuilds the same comparison under a new native generation;
+	# tracking, opt-in sampling and the relaunch envelope must survive it.
+	var before_reset: int = panel.comparison_generation
+	controls.reset_button.pressed.emit()
+	expect(await wait_for(func() -> bool: return acknowledged(desktop) \
+		and int(desktop.tower_context.liquid_solver_policy.session_generation) > before_reset), "Fresh reset acknowledges")
+	desktop.microscenario_panel.liquid_dialog.hide()
+	desktop.microscenario_panel.refresh(desktop.tower_context)
+	expect(panel.comparison_generation == int(desktop.tower_context.liquid_solver_policy.session_generation)
+		and desktop.liquid_feel_sampling_requested and not panel.relaunch_envelope().is_empty(),
+		"Fresh reset keeps comparison tracking, sampling and the relaunch envelope")
+	desktop.microscenario_panel.open_liquids()
 
 	panel.geometry_picker.select(2)
 	controls.select_water_family("freemass_v1")
@@ -147,7 +162,13 @@ func run() -> void:
 
 	# A fresh owner at configured capacity one retains the accepted comparison.
 	var envelope: Dictionary = panel.relaunch_envelope()
-	expect(not envelope.is_empty() and envelope.definition.id == DRAIN, "accepted comparison yields a copied relaunch envelope")
+	expect(not envelope.is_empty() and envelope.definition.id == DRAIN and envelope.intent == "controlled",
+		"accepted comparison yields a copied Controlled relaunch envelope")
+	var exploratory: Dictionary = envelope.duplicate(true)
+	exploratory.intent = "exploratory"
+	expect(not desktop.liquid_feel_relaunch(4, exploratory)
+		and int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0)) == original_workers,
+		"Exploratory worker change refuses without touching the worker setting")
 	var previous_id: int = desktop.get_instance_id()
 	expect(desktop.liquid_feel_relaunch(1, envelope), "worker change is admitted")
 	expect(await wait_for(func() -> bool: return current_scene != null and current_scene.get_instance_id() != previous_id \
@@ -155,6 +176,8 @@ func run() -> void:
 	desktop = current_scene
 	expect(int(desktop.latest_snapshot.native_worker_request) == 1 and int(desktop.latest_snapshot.scheduler_thread_capacity_hint) == 1,
 		"fresh owner reports the requested capacity one")
+	expect(int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0)) == original_workers,
+		"the prior in-memory worker setting is restored once the fresh owner exists")
 	expect(desktop.microscenario_definition.id == DRAIN and water(desktop.tower_context).applied_family == "inertial_cellular_v1"
 		and int(desktop.tower_context.liquid_solver_policy.maximum_rule_radius) == 3, "fresh owner reapplies the accepted family and geometry")
 	panel = panel_of(desktop)

@@ -276,7 +276,8 @@ def command_run(arguments: argparse.Namespace) -> int:
         print(f"[{index + 1}/{len(jobs)}] {job['case_id']} exit={process['exit_code']} "
               f"{process['wall_seconds']:.1f}s rss={process['peak_rss_bytes']}", flush=True)
     manifest["finished_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    (output / "packet.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    # Byte-stable LF output on every host, so committed bytes equal produced bytes.
+    (output / "packet.json").write_bytes((json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     return 0
 
 
@@ -307,7 +308,36 @@ def percentile(values: list[float], fraction: float) -> float | None:
     return ordered[index]
 
 
-def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict) -> dict:
+def fixture_events(scenario: dict) -> list[dict]:
+    """The registered fixture's own scheduled edits, read independently of any receipt."""
+    path = ROOT / "godot" / scenario["fixture"].removeprefix("res://")
+    return json.loads(path.read_text(encoding="utf-8"))["events"]
+
+
+def verify_edits(label: str, history: list, events: list[dict], horizon: int) -> list[tuple[int, int]]:
+    """Every registered edit before the horizon was applied exactly once, in order, within bounds."""
+    due = [event for event in events if event["tick"] < horizon]
+    if len(history) != len(due):
+        raise StopCondition(f"{label}: {len(history)} scheduled edits applied, fixture registers {len(due)} before the horizon")
+    edits = []
+    for entry, event in zip(history, due):
+        action = entry.get("action", {})
+        applied = strict_int(entry["tick"], label + " edit tick")
+        if applied != event["tick"] or any(action.get(key) != event[key] for key in ("kind", "x", "y", "width", "height")):
+            raise StopCondition(f"{label}: applied edit {action} at {applied} differs from registered {event}")
+        delta = strict_int(entry["after_water_integer"], label) - strict_int(entry["before_water_integer"], label)
+        cells = event["width"] * event["height"]
+        # A whole-cell fill adds at most one maximum per cell; an erase removes at
+        # most one maximum plus PressureFlow overfill (bounded by the maximum) per cell.
+        if (event["kind"] == "fill" and not 0 <= delta <= cells * 255) or \
+                (event["kind"] == "erase" and not -2 * cells * 255 <= delta <= 0) or \
+                (event["kind"] not in ("fill", "erase") and delta != 0):
+            raise StopCondition(f"{label}: {event['kind']} edit at tick {applied} changed Water by {delta}, outside its bound")
+        edits.append((applied, delta))
+    return edits
+
+
+def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict, events: list[dict] | None = None) -> dict:
     """Return per-case findings; raise StopCondition for an invariant breach."""
     label = case["case_id"]
     expected = scenario["expected"]
@@ -339,6 +369,8 @@ def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict)
             raise StopCondition(f"{label}: material {key} applied {actual}, expected {wanted} (silent fallback or leak)")
     if seen != set(defaults):
         raise StopCondition(f"{label}: applied assignment set differs from the default catalogue")
+    if material not in seen:
+        raise StopCondition(f"{label}: no applied assignment for registered material {material}")
     if strict_int(applied["maximum_rule_radius"], label + " applied radius") != case["radius"] \
             or strict_int(receipt["construction"]["maximum_rule_radius"], label + " receipt radius") != case["radius"]:
         raise StopCondition(f"{label}: applied radius differs from requested")
@@ -350,9 +382,12 @@ def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict)
     normalization = receipt["construction"]["normalization"]
     if normalization.get("rule") != registration["normalization"]:
         raise StopCondition(f"{label}: normalization rule not applied")
-    for key in ("net_delta", "positive_delta", "negative_delta"):
-        if strict_int(normalization[key], f"{label} normalization {key}") != expected["normalization_net_delta"]:
-            raise StopCondition(f"{label}: normalization {key} {normalization[key]} differs from registration")
+    registered = {"net_delta": expected["normalization_net_delta"],
+                  "positive_delta": expected.get("normalization_positive_delta", 0),
+                  "negative_delta": expected.get("normalization_negative_delta", 0)}
+    for key, wanted in registered.items():
+        if strict_int(normalization[key], f"{label} normalization {key}") != wanted:
+            raise StopCondition(f"{label}: normalization {key} {normalization[key]} differs from registered {wanted}")
     initial_quantity = expected["initial_water_quantity"]
     if strict_int(normalization["water_after"], label + " normalized water") != initial_quantity:
         raise StopCondition(f"{label}: normalized Water {normalization['water_after']} != {initial_quantity}")
@@ -361,9 +396,8 @@ def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict)
     ledger = receipt["host_ledger"]
     # Scheduled-edit deltas, independently re-summed from the owner's action
     # history: an edit recorded at tick k is applied before tick k + 1 completes.
-    edits = [(strict_int(entry["tick"], label + " edit tick"),
-              strict_int(entry["after_water_integer"], label) - strict_int(entry["before_water_integer"], label))
-             for entry in ledger.get("action_history", [])]
+    edits = verify_edits(label, ledger.get("action_history", []),
+                         fixture_events(scenario) if events is None else events, horizon)
     if rule == "constant":
         if strict_int(ledger["source"], label) != expected["water_sources"] or strict_int(ledger["sink"], label) != expected["water_sinks"]:
             raise StopCondition(f"{label}: explicit Water source/sink differ from registration")
@@ -433,9 +467,11 @@ def evaluate_case(receipt: dict, case: dict, scenario: dict, registration: dict)
             raise StopCondition(f"{label}: tick {tick['tick']} hash presence differs from the registered interval")
     if not strict_bool(receipt["retirement"]["world_released"], label):
         raise StopCondition(f"{label}: World owner not retired")
+    if not all(strict_bool(t["statistics_ok"], label) for t in ticks):
+        raise StopCondition(f"{label}: a native statistics readback failed")
     observed = [strict_int(t["worker_threads_observed"], label) for t in ticks]
-    if case["workers"] == 1 and max(observed) > 1:
-        raise StopCondition(f"{label}: one configured worker but {max(observed)} claimants observed")
+    if min(observed) < 0 or max(observed) > case["workers"]:
+        raise StopCondition(f"{label}: claimants {min(observed)}..{max(observed)} outside 0..{case['workers']} configured")
     native = [float(t["native_tick_ms"]) for t in ticks]
     host = [strict_int(t["host_advance_us"], label) / 1000.0 for t in ticks]
     jobs = [sum(strict_int(job, label) for job in t["phase_jobs"]) for t in ticks]
@@ -485,6 +521,10 @@ def evaluate_negative(receipt: dict) -> list[dict]:
             raise StopCondition(f"negative control {identifier} missing")
         if strict_bool(control["accepted"], identifier) or not strict_bool(control["previous_world_retained"], identifier):
             raise StopCondition(f"negative control {identifier}: accepted or did not retain the previous World")
+        code = (control.get("refusal") or {}).get("code")
+        wanted = "malformed_policy" if identifier == "inertial-water-radius-2" else "normalization_required"
+        if code != wanted:
+            raise StopCondition(f"negative control {identifier}: refusal code {code!r}, expected {wanted!r}")
         results.append({"id": identifier, "refused": True, "previous_world_retained": True,
                         "refusal": control.get("refusal") or control.get("error")})
     normalized = controls.get("fractional-with-normalization-cellular_yield_v1")
@@ -507,6 +547,8 @@ def evaluate_negative(receipt: dict) -> list[dict]:
         control = controls.get(f"pressure-for-material-{material}")
         if control is None or any(strict_bool(entry["accepted"], "pressure offer") for entry in control["offered"]):
             raise StopCondition(f"negative control: pressure admitted for material {material}")
+        if any((entry.get("refusal") or {}).get("code") != "combination_rejected" for entry in control["offered"]):
+            raise StopCondition(f"negative control: pressure for material {material} refused for an unexpected reason")
         results.append({"id": control["id"], "refused_or_absent": True, "offered": len(control["offered"])})
     catalogue = controls.get("water-variant-catalogue")
     if catalogue is None:
@@ -518,6 +560,27 @@ def evaluate_negative(receipt: dict) -> list[dict]:
     return results
 
 
+def verify_runtime_binding(directory: Path, manifest: dict) -> None:
+    """Recompute, from Git at the executed head, what the manifest self-reports."""
+    head = manifest["source"]["head"]
+    if git("rev-parse", head + "^{tree}") != manifest["source"]["tree"]:
+        raise StopCondition(f"{directory}: recorded tree differs from {head}^{{tree}}")
+    runtime = manifest["runtime"]
+    native, provenance_path, _ = RUNTIMES[manifest["platform"]]
+    if runtime["native_artifact"] != native or runtime["provenance_path"] != provenance_path:
+        raise StopCondition(f"{directory}: runtime paths differ from the {manifest['platform']} registration")
+    provenance = json.loads(subprocess.run(["git", "-C", str(ROOT), "show", f"{head}:{provenance_path}"],
+                                           check=True, capture_output=True).stdout)
+    pointer = LFS_POINTER.fullmatch(subprocess.run(["git", "-C", str(ROOT), "show", f"{head}:{native}"],
+                                                   check=True, capture_output=True).stdout)
+    if pointer is None or pointer[1].decode() != provenance["sha256"] or runtime["native_sha256"] != provenance["sha256"]:
+        raise StopCondition(f"{directory}: executed native bytes are not the committed, provenance-recorded artifact")
+    for relative, expected in provenance["source_inputs"].items():
+        blob = subprocess.run(["git", "-C", str(ROOT), "show", f"{head}:{relative}"], capture_output=True)
+        if blob.returncode != 0 or sha256_bytes(blob.stdout.replace(b"\r\n", b"\n")) != expected:
+            raise StopCondition(f"{directory}: native source input {relative} at {head} differs from the runtime provenance")
+
+
 def load_packet(directory: Path, registration_path: Path, development: bool = False, logs_external: bool = False) -> dict:
     manifest = json.loads((directory / "packet.json").read_text(encoding="utf-8"))
     if manifest.get("schema") != PACKET_SCHEMA:
@@ -527,6 +590,7 @@ def load_packet(directory: Path, registration_path: Path, development: bool = Fa
     runtime = manifest["runtime"]
     if not runtime["source_matched_runtime"] or not runtime["native_matches_provenance"]:
         raise StopCondition(f"{directory}: executed native runtime was not source-matched")
+    verify_runtime_binding(directory, manifest)
     if not manifest["source"]["executed_tree_matches_head"] and not development:
         raise StopCondition(f"{directory}: executed tree had uncommitted source changes {manifest['source']['dirty_source_paths']}")
     receipts = {}
@@ -543,6 +607,10 @@ def load_packet(directory: Path, registration_path: Path, development: bool = Fa
         elif not logs_external:
             raise StopCondition(f"{directory}: {execution['case_id']} log missing (use --logs-external for a committed packet)")
         receipt = json.loads(path.read_text(encoding="utf-8"))
+        if receipt.get("registration_sha256") != manifest["registration_sha256"]:
+            raise StopCondition(f"{directory}: {execution['case_id']} executed different registration bytes")
+        if receipt.get("os", {}).get("name") != {"windows": "Windows", "linux": "Linux"}[manifest["platform"]]:
+            raise StopCondition(f"{directory}: {execution['case_id']} receipt OS differs from the {manifest['platform']} packet")
         if receipt.get("source_sha_argument") != manifest["source"]["head"]:
             raise StopCondition(f"{directory}: {execution['case_id']} executed a different source argument")
         version = receipt.get("godot_version", {})
@@ -603,7 +671,10 @@ def reduce_packets(registration_path: Path, directories: list[Path], development
                               "final_physical_hash_equal": base["final_physical_hash"] == case["final_physical_hash"],
                               "tick_hashes_equal": base["tick_hashes"] == case["tick_hashes"]})
     primary = [case for case in expected_cases if case["role"] == "primary"]
+    reducer = Path(__file__).read_bytes()
     return {"schema": SUMMARY_SCHEMA, "registration": registration["id"],
+            "reducer": {"path": "tools/lcb/feel_preflight.py", "sha256": sha256_bytes(reducer.replace(b"\r\n", b"\n")),
+                        "head": git("rev-parse", "HEAD")},
             "registration_sha256": sha256_file(registration_path),
             "primary_rows_per_platform": len(primary), "platforms": platforms,
             "primary_rows_total": len(primary) * len(platforms),

@@ -91,8 +91,14 @@ def command_reduce(arguments: argparse.Namespace) -> int:
             continue
         record = json.loads(path.read_text(encoding="utf-8"))
         if record["applied"]["water_family"] != execution["family"] \
-                or record["workers"]["configured_capacity"] != execution["workers"]:
+                or record["workers"]["configured_capacity"] != execution["workers"] \
+                or record["applied"]["maximum_rule_radius"] != 3:
             failures.append({"arm": execution["arm"], "repeat": execution["repeat"], "error": "applied identity mismatch"})
+            continue
+        ledger = record["owner_capture"].get("water_ledger", {})
+        values = [ledger.get(key) for key in ("initial_integer", "explicit_source", "explicit_sink", "observed_current_integer")]
+        if not all(type(value) is int for value in values) or values[3] != values[0] + values[1] - values[2]:
+            failures.append({"arm": execution["arm"], "repeat": execution["repeat"], "error": "owner capture missing or Water not conserved"})
             continue
         grouped.setdefault(execution["arm"], []).append(record)
     rows = []
@@ -105,7 +111,6 @@ def command_reduce(arguments: argparse.Namespace) -> int:
                     value = value[key]
                 values.append(float(value))
             return statistics.median(values)
-        ledger = [record["owner_capture"]["water_ledger"] for record in records]
         rows.append({"arm": arm, "repeats": len(records),
                      "applied_family": records[0]["applied"]["water_family"], "radius": records[0]["applied"]["maximum_rule_radius"],
                      "configured_capacity": records[0]["workers"]["configured_capacity"],
@@ -119,7 +124,7 @@ def command_reduce(arguments: argparse.Namespace) -> int:
                      "main_frame_ms_p95_median": median(("main_frame_ms", "p95")),
                      "snapshot_age_ms_p50_median": median(("snapshot_age_ms", "p50")),
                      "rapier_step_ms_p95_median": median(("rapier_step_ms", "p95")),
-                     "water_conserved_all": all(entry.get("observed_current_integer") == entry.get("initial_integer") for entry in ledger),
+                     "water_conserved_all": True,  # every admitted record passed the strict integer ledger check above
                      "simulation_failed": any(record["outcome"]["simulation_failed"] for record in records)})
     summary = {"schema": SCHEMA + "-summary", "platform": manifest["platform"], "source": manifest["source"],
                "runtime": {key: manifest["runtime"][key] for key in ("native_sha256", "rapier_sha256", "source_matched_runtime")},

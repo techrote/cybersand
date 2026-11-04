@@ -678,8 +678,8 @@ func _reload_failed_playable_scene(request: Dictionary) -> void:
 # in-memory project setting is the same input the constructor already reads;
 # nothing is saved to project.godot. Refusal keeps the running owner.
 func liquid_feel_relaunch(workers: int, envelope: Dictionary) -> bool:
-	if workers not in [0, 1, 4] or envelope.is_empty():
-		microscenario_error = "Unsupported comparison worker selection"
+	if workers not in [0, 1, 4] or envelope.is_empty() or str(envelope.get("intent", "")) != "controlled":
+		microscenario_error = "Worker changes support accepted Controlled comparisons only"
 		return false
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty() \
 		or not water_blind_set.is_empty() or not water_active_blind_label.is_empty() \
@@ -689,20 +689,33 @@ func liquid_feel_relaunch(workers: int, envelope: Dictionary) -> bool:
 	if not is_inside_tree() or get_tree().current_scene != self:
 		microscenario_error = "Comparison worker change requires the active desktop scene"
 		return false
+	var request: Dictionary = envelope.duplicate(true)
+	request["restore_workers"] = int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0))
 	ProjectSettings.set_setting("cybersand/native_worker_threads", workers)
 	paused = true
 	cancel_playable_course_input()
-	get_tree().set_meta(LIQUID_FEEL_RELAUNCH_META, envelope.duplicate(true))
+	get_tree().set_meta(LIQUID_FEEL_RELAUNCH_META, request)
 	_reload_for_liquid_feel.call_deferred()
 	return true
 
 
 func _reload_for_liquid_feel() -> void:
-	if not is_inside_tree() or get_tree().current_scene != self: return
+	var request: Dictionary = get_tree().get_meta(LIQUID_FEEL_RELAUNCH_META, {}) if is_inside_tree() else {}
+	if not is_inside_tree() or get_tree().current_scene != self:
+		_abandon_liquid_feel_relaunch(request, "Comparison worker change was superseded by navigation")
+		return
 	var error: Error = get_tree().reload_current_scene()
 	if error != OK:
+		_abandon_liquid_feel_relaunch(request,
+			"Fresh comparison owner failed to start (%d); the previous owner and worker setting are retained." % error)
+
+
+func _abandon_liquid_feel_relaunch(request: Dictionary, message: String) -> void:
+	if not request.is_empty():
+		ProjectSettings.set_setting("cybersand/native_worker_threads", int(request.get("restore_workers", 0)))
+	if is_inside_tree() and get_tree().has_meta(LIQUID_FEEL_RELAUNCH_META):
 		get_tree().remove_meta(LIQUID_FEEL_RELAUNCH_META)
-		microscenario_error = "Fresh comparison owner failed to start (%d); the previous owner is retained." % error
+	microscenario_error = message
 
 
 func _restore_failed_playable_selection(request: Dictionary) -> void:
@@ -1657,7 +1670,12 @@ func _ready() -> void:
 	if not recovery.is_empty(): paused = true
 	_liquid_feel_relaunch = get_tree().get_meta(LIQUID_FEEL_RELAUNCH_META, {})
 	if get_tree().has_meta(LIQUID_FEEL_RELAUNCH_META): get_tree().remove_meta(LIQUID_FEEL_RELAUNCH_META)
-	if not _liquid_feel_relaunch.is_empty(): paused = true
+	if not _liquid_feel_relaunch.is_empty():
+		paused = true
+		# This scene's owner was constructed with the requested capacity when
+		# Main was instantiated. Restore the prior in-memory setting so later,
+		# unrelated owners (PLAY recovery, ordinary sessions) keep their input.
+		ProjectSettings.set_setting("cybersand/native_worker_threads", int(_liquid_feel_relaunch.get("restore_workers", 0)))
 	if OS.get_cmdline_user_args().has("--depth-lab") and not get_tree().has_meta("cybersand_depth_lab_visited"):
 		set_process(false)
 		call_deferred("open_depth_lab")

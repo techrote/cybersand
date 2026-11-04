@@ -8,7 +8,9 @@ from __future__ import annotations
 
 import copy
 import json
+import shutil
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -21,6 +23,8 @@ DEFAULTS = [{"material": 3, "name": "water", "applied_family": "freemass_v1", "a
             {"material": 16, "name": "oil", "applied_family": "cellular_yield_v1", "applied_variant": "reference"},
             {"material": 24, "name": "brine", "applied_family": "cellular_yield_v1", "applied_variant": "reference"}]
 QUANTITY = SCENARIO["expected"]["initial_water_quantity"]
+GATE = {"tick": 0, "kind": "erase", "x": 232, "y": 64, "width": 8, "height": 192,
+        "material": 0, "normalized_mass": 0, "coherence": 0}
 
 
 def census(walls: int, family: str) -> dict:
@@ -46,7 +50,8 @@ def receipt(case: dict) -> dict:
     walls = 16380
     initial = census(walls, case["family"])
     final = census(walls + SCENARIO["expected"]["wall_delta_after_tick_zero_events"], case["family"])
-    ticks = [{"tick": index, "water_quantity": QUANTITY, "failed": False, "worker_threads_observed": min(case["workers"], 4),
+    ticks = [{"tick": index, "water_quantity": QUANTITY, "failed": False, "statistics_ok": True,
+              "worker_threads_observed": min(case["workers"], 4),
               "native_tick_ms": 1.0, "host_advance_us": 1500, "phase_jobs": [4, 4], "scheduler_parallel_phases": 2,
               "moved_cells": 10, "chunk_allocations": 0, "physical_state_hash": f"h{index}"} for index in range(1, 31)]
     return {"schema": fp.RECEIPT_SCHEMA, "kind": "arm", "case_id": case["case_id"], "outcome": "completed",
@@ -59,7 +64,9 @@ def receipt(case: dict) -> dict:
                              "receipt_hash": "r", "normalization": {"rule": "water-normalize-v1", "net_delta": 0, "positive_delta": 0,
                                                                     "negative_delta": 0, "water_before": QUANTITY, "water_after": QUANTITY}},
             "construction_us": 1000, "initial": initial, "final": final, "ticks": ticks,
-            "host_ledger": {"source": 0, "sink": 0}, "retirement": {"world_released": True}}
+            "host_ledger": {"source": 0, "sink": 0, "action_history": [
+                {"tick": 0, "action": dict(GATE), "before_water_integer": 0, "after_water_integer": 0}]},
+            "retirement": {"world_released": True}}
 
 
 def arm_case(family: str = "inertial_cellular_v1", workers: int = 4) -> dict:
@@ -68,16 +75,18 @@ def arm_case(family: str = "inertial_cellular_v1", workers: int = 4) -> dict:
 
 
 def negative() -> dict:
-    refused = {"accepted": False, "previous_world_retained": True, "refusal": {"code": "x"}}
+    def refused(code):
+        return {"accepted": False, "previous_world_retained": True, "refusal": {"code": code}}
     return {"schema": fp.RECEIPT_SCHEMA, "kind": "negative", "outcome": "completed", "baseline_installed": True,
-            "controls": [{"id": "inertial-water-radius-2", **refused},
-                         {"id": "fractional-without-normalization-cellular_yield_v1", **refused},
-                         {"id": "fractional-without-normalization-inertial_cellular_v1", **refused},
+            "controls": [{"id": "inertial-water-radius-2", **refused("malformed_policy")},
+                         {"id": "fractional-without-normalization-cellular_yield_v1", **refused("normalization_required")},
+                         {"id": "fractional-without-normalization-inertial_cellular_v1", **refused("normalization_required")},
                          {"id": "fractional-with-normalization-cellular_yield_v1", "accepted": True, "cells": 18432,
                           "requested_fill_numerator_per_cell": 128, "maximum": 255,
                           "normalization": {"water_before": 128 * 18432, "water_after": 255 * 18432,
                                             "positive_delta": 127 * 18432, "negative_delta": 0}},
-                         {"id": "pressure-for-material-16", "offered": [{"variant": "reference", "accepted": False}]},
+                         {"id": "pressure-for-material-16", "offered": [
+                             {"variant": "reference", "accepted": False, "refusal": {"code": "combination_rejected"}}]},
                          {"id": "pressure-for-material-24", "offered": []},
                          {"id": "water-variant-catalogue", "offered": [
                              {"family": "pressure_flow_v1", "variant": "cached", "accepted": True},
@@ -154,6 +163,28 @@ class CaseEvaluation(unittest.TestCase):
     def test_short_horizon_stops(self):
         self.assertIn("horizon", self.stops(lambda r: r["ticks"].pop()))
 
+    def test_skipped_scheduled_edit_stops(self):
+        self.assertIn("scheduled edits applied", self.stops(lambda r: r["host_ledger"]["action_history"].clear()))
+
+    def test_edit_at_wrong_tick_stops(self):
+        self.assertIn("differs from registered", self.stops(
+            lambda r: r["host_ledger"]["action_history"][0].update(tick=1)))
+
+    def test_missing_water_assignment_stops(self):
+        def drop(value):
+            value["applied"]["assignments"] = value["applied"]["assignments"][1:]
+            value["default_policy"] = value["default_policy"][1:]
+        self.assertIn("no applied assignment", self.stops(drop))
+
+    def test_failed_statistics_readback_stops(self):
+        self.assertIn("statistics", self.stops(lambda r: r["ticks"][3].update(statistics_ok=False)))
+
+    def test_claimants_above_configured_workers_stop(self):
+        self.assertIn("outside", self.stops(lambda r: r["ticks"][3].update(worker_threads_observed=5)))
+
+    def test_unobserved_claimants_stop(self):
+        self.assertIn("outside", self.stops(lambda r: r["ticks"][3].update(worker_threads_observed=-1)))
+
     def test_nonzero_normalization_delta_stops(self):
         self.assertIn("normalization", self.stops(lambda r: r["construction"]["normalization"].update(positive_delta=5)))
 
@@ -166,31 +197,42 @@ class LedgerRule(unittest.TestCase):
         self.scenario["expected"]["quantity_rule"] = "host_ledger"
         self.case = arm_case("cellular_yield_v1", 4)
         self.receipt = receipt(self.case)
+        self.fill = {"tick": 10, "kind": "fill", "x": 48, "y": 124, "width": 4, "height": 4,
+                     "material": 3, "normalized_mass": 255, "coherence": 0}
+        self.events = [dict(GATE), dict(self.fill)]
         self.receipt["host_ledger"].update(source=255 * 16, sink=0, action_history=[
-            {"tick": 10, "before_water_integer": 0, "after_water_integer": 255 * 16}])
+            {"tick": 0, "action": dict(GATE), "before_water_integer": 0, "after_water_integer": 0},
+            {"tick": 10, "action": dict(self.fill), "before_water_integer": 0, "after_water_integer": 255 * 16}])
         for tick in self.receipt["ticks"]:
             if tick["tick"] > 10:
                 tick["water_quantity"] = QUANTITY + 255 * 16
         self.receipt["final"]["water"].update(quantity=QUANTITY + 255 * 16, visible=QUANTITY + 255 * 16)
 
     def test_consistent_scheduled_source_passes(self):
-        result = fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION)
+        result = fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION, self.events)
         self.assertEqual(result["final_water_quantity"], QUANTITY + 255 * 16)
 
     def test_change_before_the_edit_applies_stops(self):
         self.receipt["ticks"][9]["water_quantity"] = QUANTITY + 255 * 16
         with self.assertRaises(fp.StopCondition):
-            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION)
+            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION, self.events)
 
     def test_ledger_that_disagrees_with_edits_stops(self):
         self.receipt["host_ledger"]["source"] = 255 * 15
         with self.assertRaises(fp.StopCondition):
-            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION)
+            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION, self.events)
+
+    def test_fill_above_its_cell_bound_stops(self):
+        history = self.receipt["host_ledger"]["action_history"]
+        history[1]["after_water_integer"] = 255 * 17
+        self.receipt["host_ledger"]["source"] = 255 * 17
+        with self.assertRaises(fp.StopCondition):
+            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION, self.events)
 
     def test_constant_rule_rejects_water_changing_edit(self):
         self.scenario["expected"]["quantity_rule"] = "constant"
         with self.assertRaises(fp.StopCondition):
-            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION)
+            fp.evaluate_case(self.receipt, self.case, self.scenario, REGISTRATION, self.events)
 
 
 class NegativeControls(unittest.TestCase):
@@ -212,6 +254,12 @@ class NegativeControls(unittest.TestCase):
     def test_normalization_delta_must_match_independent_rule(self):
         value = negative()
         value["controls"][3]["normalization"]["positive_delta"] -= 1
+        with self.assertRaises(fp.StopCondition):
+            fp.evaluate_negative(value)
+
+    def test_refusal_for_an_unrelated_reason_stops(self):
+        value = negative()
+        value["controls"][0]["refusal"]["code"] = "fixture_rejected"
         with self.assertRaises(fp.StopCondition):
             fp.evaluate_negative(value)
 
@@ -263,6 +311,40 @@ class Registration(unittest.TestCase):
         self.assertEqual(summary["verdict"], "ADMITTED")
         self.assertEqual(summary["primary_rows_total"], 32)
         self.assertTrue(all(row["tick_hashes_equal"] for row in summary["cross_platform_observation"]))
+
+    def test_committed_packets_are_pinned(self):
+        evidence = fp.ROOT / "docs/audits"
+        pinned = {
+            "lcb360-preflight-2026-11-03/windows/packet.json": "edf179e9335dab79657fda52c05107a4b78081e2bc7fafaaf661915a6347f1e9",
+            "lcb360-preflight-2026-11-03/linux/packet.json": "1176818fc280d4dcbae67f9a1250db001cfe32824cbd91299c6d1788249f429b",
+        }
+        for relative, digest in pinned.items():
+            data = (evidence / relative).read_bytes().replace(b"\r\n", b"\n")
+            self.assertEqual(fp.sha256_bytes(data), digest, relative)
+
+    def test_manifest_tampering_is_recomputed_not_trusted(self):
+        source = fp.ROOT / "docs/audits/lcb360-preflight-2026-11-03/windows"
+        with tempfile.TemporaryDirectory() as temporary:
+            target = Path(temporary) / "windows"
+            shutil.copytree(source, target)
+            manifest = json.loads((target / "packet.json").read_text(encoding="utf-8"))
+            manifest["source"]["tree"] = "0" * 40
+            (target / "packet.json").write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaises(fp.StopCondition):
+                fp.load_packet(target, fp.ROOT / fp.DEFAULT_REGISTRATION, logs_external=True)
+
+    def test_receipts_copied_under_another_platform_stop(self):
+        source = fp.ROOT / "docs/audits/lcb360-preflight-2026-11-03/windows"
+        with tempfile.TemporaryDirectory() as temporary:
+            target = Path(temporary) / "linux"
+            shutil.copytree(source, target)
+            manifest = json.loads((target / "packet.json").read_text(encoding="utf-8"))
+            linux = json.loads((fp.ROOT / "docs/audits/lcb360-preflight-2026-11-03/linux/packet.json").read_text(encoding="utf-8"))
+            manifest["platform"] = "linux"
+            manifest["runtime"] = linux["runtime"]
+            (target / "packet.json").write_text(json.dumps(manifest), encoding="utf-8")
+            with self.assertRaises(fp.StopCondition):
+                fp.load_packet(target, fp.ROOT / fp.DEFAULT_REGISTRATION, logs_external=True)
 
     def test_independent_normalization_rule(self):
         self.assertEqual(fp.normalized_water(128, 255), 255)

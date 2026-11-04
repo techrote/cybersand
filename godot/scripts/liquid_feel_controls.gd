@@ -96,7 +96,9 @@ func setup(owner_panel: Control, controller: Control) -> void:
 	status = Label.new()
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(status)
-	var requested: int = int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0))
+	# The running owner's construction-time request, not the mutable setting.
+	var requested: int = int(host.latest_snapshot.native_worker_request) if host.latest_snapshot != null \
+		else int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0))
 	var index: int = WORKER_OPTIONS.find(requested)
 	if index >= 0: worker_picker.select(index)
 	_table = _load_table()
@@ -125,6 +127,9 @@ func apply_workers() -> bool:
 	if envelope.is_empty():
 		_message = "Choose and apply a comparison scenario before changing worker capacity."
 		return false
+	if str(envelope.get("intent", "")) != "controlled":
+		_message = "Worker changes support Controlled comparisons only; Exploratory owners must be restaged after the change."
+		return false
 	if not host.liquid_feel_relaunch(workers, envelope):
 		_message = "Worker change refused; running owner retained. " + str(host.microscenario_error)
 		return false
@@ -138,6 +143,7 @@ func request_capture() -> void:
 
 # Called with every published context while the comparison controls exist.
 func observe(context: Dictionary) -> void:
+	panel.track_comparison(context)
 	var applied: Dictionary = context.get("liquid_solver_policy", {})
 	var generation: int = int(applied.get("session_generation", -1))
 	if generation != _generation:
@@ -275,7 +281,14 @@ func _accept_capture(context: Dictionary, report: Dictionary) -> void:
 	file.close()
 	var timing: Dictionary = report.get("timing", {})
 	var ledger: Dictionary = report.get("water_ledger", {})
-	_table.append({"scenario":record.scenario, "family":str(water.get("applied_family", "")),
+	var typed: Dictionary = context.get("liquid_construction_receipt", {})
+	var inertial: Dictionary = applied.get("family_parameters", {}).get("inertial_cellular_v1", {})
+	_table.append({"scenario":record.scenario, "definition_hash":str(report.get("definition_hash", "")).left(16),
+		"normalization_net":str(typed.get("normalization", {}).get("net_delta", "none")),
+		"in_damping":str(inertial.get("damping_numerator", "-")),
+		"window_first_tick":int(_samples.front().tick) if not _samples.is_empty() else -1,
+		"window_last_tick":int(_samples.back().tick) if not _samples.is_empty() else -1,
+		"family":str(water.get("applied_family", "")),
 		"variant":str(water.get("applied_variant", "")), "radius":int(applied.get("maximum_rule_radius", 0)),
 		"capacity":int(record.workers.configured_capacity), "claimants_max":int(record.workers.participation.max_observed),
 		"ticks":int(report.get("completed_tick", 0)), "native_p50_ms":float(timing.get("p50_ms", -1.0)),
@@ -316,7 +329,8 @@ func export_table() -> String:
 	if file == null:
 		_message = "Could not export the A/B table."
 		return ""
-	var columns: PackedStringArray = ["scenario", "family", "variant", "radius", "capacity", "claimants_max", "ticks",
+	var columns: PackedStringArray = ["scenario", "definition_hash", "family", "variant", "radius", "normalization_net",
+		"in_damping", "capacity", "claimants_max", "ticks", "window_first_tick", "window_last_tick",
 		"native_p50_ms", "native_p95_ms", "water_initial", "water_current", "source", "sink", "capture"]
 	file.store_line(",".join(columns))
 	for row: Dictionary in _table:

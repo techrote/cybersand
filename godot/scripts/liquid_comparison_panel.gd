@@ -48,6 +48,7 @@ var feel_controls: Control
 # optional comparison sampling is tied to it, never to ordinary sessions.
 var comparison_generation: int = -1
 var _comparison_pending: bool = false
+var _comparison_identity: Dictionary = {}
 
 func _button(row: Node, text: String, action: Callable) -> Button:
 	var button := Button.new()
@@ -286,7 +287,27 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 
 func _accept_comparison(context: Dictionary) -> void:
 	comparison_generation = int(context.get("liquid_solver_policy",{}).get("session_generation",-1)) if _comparison_pending else -1
+	_comparison_identity = _identity(context) if comparison_generation >= 0 else {}
 	_comparison_pending = false
+
+func _identity(context: Dictionary) -> Dictionary:
+	var applied: Dictionary = context.get("liquid_solver_policy",{})
+	var typed: Dictionary = context.get("liquid_construction_receipt",{})
+	return {"definition_hash":str(context.get("microscenario",{}).get("definition_hash","")),
+		"policy_hash":str(applied.get("policy_hash","")), "radius":int(applied.get("maximum_rule_radius",0)),
+		"normalization":str(typed.get("normalization",{}).get("rule","")), "typed":not typed.is_empty()}
+
+# A Fresh reset rebuilds the same accepted comparison under a new native
+# generation. Adopt it only when the definition, applied policy, geometry and
+# typed preparation are unchanged; any other session ends comparison tracking.
+func track_comparison(context: Dictionary) -> void:
+	if comparison_generation < 0 or _comparison_pending: return
+	var generation: int = int(context.get("liquid_solver_policy",{}).get("session_generation",-1))
+	if generation == comparison_generation or not host.pending_microscenario_apply.is_empty(): return
+	if _identity(context) == _comparison_identity: comparison_generation = generation
+	else:
+		comparison_generation = -1
+		_comparison_identity = {}
 
 # Explicit request geometry. Preferred resolves to each family's native radius:
 # three when any selected assignment requires it, otherwise two.
@@ -324,6 +345,7 @@ func relaunch_envelope() -> Dictionary:
 	if comparison_generation < 0 or int(applied.get("session_generation",-2)) != comparison_generation: return {}
 	if host.microscenario_definition.is_empty() or not applied.has("envelope"): return {}
 	return {"definition":host.microscenario_definition.duplicate(true), "policy":PackedInt32Array(applied.envelope),
+		"intent":str(host.microscenario_liquid_setup.get("intent","controlled")),
 		"normalization":str(host.microscenario_liquid_setup.get("normalization","")),
 		"radius":int(applied.get("maximum_rule_radius",2)), "mode":str(host.microscenario_mode),
 		"setup_index":setup_picker.selected, "geometry_index":geometry_picker.selected}
@@ -343,7 +365,12 @@ func restore_relaunch(envelope: Dictionary) -> bool:
 		_comparison_pending = false
 		_refusal = str(host.microscenario_error)
 		return false
-	if not host.pending_microscenario_apply.is_empty(): _waiting_serial = int(host.pending_microscenario_apply.serial)
+	if not host.pending_microscenario_apply.is_empty():
+		_waiting_serial = int(host.pending_microscenario_apply.serial)
+	else:
+		_dirty = false
+		_sync_applied(host.tower_context)
+		_accept_comparison(host.tower_context)
 	return true
 
 func apply_active() -> bool:
@@ -466,3 +493,4 @@ func refresh(context: Dictionary) -> void:
 			status.text += " IN Brine requires the explicit matched geometry selection."
 	else: status.text = "Applied setup is ready. Reset keeps its accepted policy and normalization selection."
 	if feel_controls != null: feel_controls.observe(context)
+	else: track_comparison(context)

@@ -128,7 +128,7 @@ func run() -> void:
 		"applied":{"water_family":str(water.get("applied_family", "")), "water_variant":str(water.get("applied_variant", "")),
 			"maximum_rule_radius":int(applied.maximum_rule_radius), "policy_hash":str(applied.policy_hash),
 			"session_generation":int(applied.session_generation)},
-		"renderer":{"display_server":DisplayServer.get_name(), "rendering_method":str(ProjectSettings.get_setting("rendering/renderer/rendering_method", "")),
+		"renderer":{"display_server":DisplayServer.get_name(), "rendering_method":str(RenderingServer.get_current_rendering_method()),
 			"adapter":RenderingServer.get_video_adapter_name(), "vsync":DisplayServer.window_get_vsync_mode()},
 		"godot_version":Engine.get_version_info(), "os":OS.get_name(), "processor_name":OS.get_processor_name(),
 		"workers":{"requested":int(desktop.latest_snapshot.native_worker_request),
