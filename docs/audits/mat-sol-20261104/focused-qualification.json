@@ -1,0 +1,84 @@
+[
+  {
+    "name": "main-compiler",
+    "command": [
+      "python3",
+      "tools/material_catalogue/compiler.py",
+      "--check"
+    ],
+    "source": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "exit_code": 0,
+    "status": "PASS",
+    "stdout": "shadow material catalogue matches authored source; production authority unchanged\n",
+    "stderr": "",
+    "elapsed_seconds": 0.0740357549948385,
+    "timeout_seconds": 120
+  },
+  {
+    "name": "sol-compiler",
+    "command": [
+      "python3",
+      "tools/material_catalogue/compiler.py",
+      "--check"
+    ],
+    "source": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+    "exit_code": 0,
+    "status": "PASS",
+    "stdout": "shadow material catalogue matches authored source; production authority unchanged\n",
+    "stderr": "",
+    "elapsed_seconds": 0.07583975499437656,
+    "timeout_seconds": 120
+  },
+  {
+    "name": "main-mat-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/material_catalogue",
+      "-p",
+      "test_*.py"
+    ],
+    "source": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "exit_code": 0,
+    "status": "PASS",
+    "stdout": "",
+    "stderr": "...................................................................................................\n----------------------------------------------------------------------\nRan 99 tests in 6.419s\n\nOK\n",
+    "elapsed_seconds": 6.532806613991852,
+    "timeout_seconds": 300
+  },
+  {
+    "name": "main-native-parity",
+    "command": [
+      "python3",
+      "tools/material_catalogue/check_native_parity.py",
+      "--output",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/results/main-native-parity.json"
+    ],
+    "source": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "exit_code": 0,
+    "status": "PASS",
+    "stdout": "{\n  \"commands\": {\n    \"candidate_compile\": [\n      \"c++\",\n      \"-std=c++20\",\n      \"-O2\",\n      \"-Wall\",\n      \"-Wextra\",\n      \"-Werror\",\n      \"-I\",\n      \"${REPO_ROOT}/native/include\",\n      \"-DCYBERSAND_MATERIAL_CANDIDATE_HEADER=\\\"${REPO_ROOT}/materials/catalogue/generated/catalogue.shadow.hpp\\\"\",\n      \"${REPO_ROOT}/tools/material_catalogue/native_oracle.cpp\",\n      \"${REPO_ROOT}/native/src/material_rules.cpp\",\n      \"-o\",\n      \"${BUILD_DIRECTORY}/candidate-parity\"\n    ],\n    \"candidate_snapshot\": [\n      \"${BUILD_DIRECTORY}/candidate-parity\",\n      \"--candidate-snapshot\"\n    ],\n    \"candidate_validation\": [\n      \"${BUILD_DIRECTORY}/candidate-parity\",\n      \"--parity\"\n    ],\n    \"native_compile\": [\n      \"c++\",\n      \"-std=c++20\",\n      \"-O2\",\n      \"-Wall\",\n      \"-Wextra\",\n      \"-Werror\",\n      \"-I\",\n      \"${REPO_ROOT}/native/include\",\n      \"${REPO_ROOT}/tools/material_catalogue/native_oracle.cpp\",\n      \"${REPO_ROOT}/native/src/material_rules.cpp\",\n      \"-o\",\n      \"${BUILD_DIRECTORY}/native-oracle\"\n    ],\n    \"native_snapshot\": [\n      \"${BUILD_DIRECTORY}/native-oracle\",\n      \"--snapshot\"\n    ]\n  },\n  \"compiled_queries\": {\n    \"appearance_projection_cases\": 17170432,\n    \"capability_byte_ids\": 256,\n    \"density_exchange_cases\": 327680,\n    \"descriptor_byte_ids\": 256,\n    \"family_membership_cases\": 2048,\n    \"lateral_rate_cases\": 65536,\n    \"layer_kind_byte_ids\": 256,\n    \"pair_roll_cases\": 16777216,\n    \"pair_wrapper_cases\": 16777216,\n    \"physics_qualification\": false,\n    \"status\": \"PASS\",\n    \"validity_uint16_inputs\": 65536,\n    \"viscosity_cases\": 16777216,\n    \"world_executed\": false\n  },\n  \"compiler_version\": \"c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\\nCopyright (C) 2023 Free Software Foundation, Inc.\\nThis is free software; see the source for copying conditions.  There is NO\\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\",\n  \"cost_qualification\": \"One local standalone metadata compile/probe run; not a simulation or performance benchmark. Timings vary by host and load.\",\n  \"fallback\": {\n    \"godot_executed\": false,\n    \"granular_support_ids_equal\": 9,\n    \"hard_surface_ids_equal\": 101,\n    \"other_fallback_density_equality_asserted\": false,\n    \"palette_rgba8_rows_equal\": 132,\n    \"retained_slush_density\": {\n      \"fallback\": 1100,\n      \"native\": 1080\n    },\n    \"source_qualified_only\": true,\n    \"valid_identity_id_set_equal\": 131\n  },\n  \"generated_mirrors\": {\n    \"gdscript_literal_facts_equal\": true,\n    \"godot_executed\": false,\n    \"inspection_facts_equal\": true,\n    \"qualification\": \"The generated GDScript literal is compared as JSON-compatible metadata; no Godot parser or fallback physics execution.\"\n  },\n  \"godot_executed\": false,\n  \"inputs\": [\n    {\n      \"bytes\": 195969,\n      \"path\": \"materials/catalogue/catalogue.json\",\n      \"sha256\": \"3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14\"\n    },\n    {\n      \"bytes\": 53002,\n      \"path\": \"materials/catalogue/generated/catalogue.shadow.hpp\",\n      \"sha256\": \"03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12\"\n    },\n    {\n      \"bytes\": 180360,\n      \"path\": \"materials/catalogue/generated/catalogue_shadow.gd\",\n      \"sha256\": \"f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed\"\n    },\n    {\n      \"bytes\": 215517,\n      \"path\": \"materials/catalogue/generated/inspection.json\",\n      \"sha256\": \"0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2\"\n    },\n    {\n      \"bytes\": 15569,\n      \"path\": \"materials/catalogue/compatibility-lock.json\",\n      \"sha256\": \"8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc\"\n    }\n  ],\n  \"measured_tool_costs\": {\n    \"candidate_compile_seconds\": 2.92676,\n    \"candidate_executable_bytes\": 148992,\n    \"candidate_snapshot_seconds\": 0.004422,\n    \"candidate_validation_seconds\": 3.694516,\n    \"native_compile_seconds\": 1.938862,\n    \"native_executable_bytes\": 78168,\n    \"native_snapshot_seconds\": 0.004585\n  },\n  \"metadata\": {\n    \"coverage_records\": 10,\n    \"descriptor_fields_per_slot\": 15,\n    \"granular_support_ids\": 9,\n    \"hard_surface_ids\": 101,\n    \"material_slots\": 132,\n    \"memberships\": 33,\n    \"pair_rules\": 56,\n    \"semantic_families\": 7,\n    \"specialized_mechanisms\": 19,\n    \"tuning_passes\": 2,\n    \"valid_ids\": 131\n  },\n  \"native_authored_compiled_shadow_facts_equal\": true,\n  \"physics_qualification\": false,\n  \"production_cutover\": false,\n  \"protected_sources\": {\n    \"baseline\": \"0fd4af5987e77db4da3e37c757cf2c0917ae9e15\",\n    \"capability_digest\": \"33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237\",\n    \"catalogue_digest\": \"82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3\",\n    \"fallback_slush_density\": 1100,\n    \"production_cutover\": false,\n    \"protected_sources\": 27,\n    \"runtime_execution\": false,\n    \"status\": \"PASS\"\n  },\n  \"schema_id\": \"cybersand.material-catalogue.native-parity\",\n  \"schema_version\": 1,\n  \"scope\": \"353-A shadow metadata; no production cutover\",\n  \"snapshot_sha256\": \"58d22545a1f29e49a8c141cb1c5df84101e48ed457fbaaaec09937997c2ce802\",\n  \"source_commit\": \"0fd4af5987e77db4da3e37c757cf2c0917ae9e15\",\n  \"source_locks\": [\n    {\n      \"lf_sha256\": \"cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31\",\n      \"path\": \"docs/reference/liquid-policy-wire-vectors.json\",\n      \"role\": \"retained policy wire oracle\"\n    },\n    {\n      \"lf_sha256\": \"5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8\",\n      \"path\": \"docs/reference/liquid-run-receipt-vectors.json\",\n      \"role\": \"retained receipt oracle\"\n    },\n    {\n      \"lf_sha256\": \"3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb\",\n      \"path\": \"docs/reference/liquid-solver-capability-matrix.json\",\n      \"role\": \"capability identity bytes\"\n    },\n    {\n      \"lf_sha256\": \"ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17\",\n      \"path\": \"docs/reference/water-normalization-vectors.json\",\n      \"role\": \"retained normalization oracle\"\n    },\n    {\n      \"lf_sha256\": \"763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035\",\n      \"path\": \"godot/scripts/cell_world.gd\",\n      \"role\": \"fallback identity, capabilities and separate physics\"\n    },\n    {\n      \"lf_sha256\": \"ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742\",\n      \"path\": \"godot/scripts/interaction_policy.gd\",\n      \"role\": \"fallback granular support\"\n    },\n    {\n      \"lf_sha256\": \"1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a\",\n      \"path\": \"godot/scripts/material_appearance_lut.gd\",\n      \"role\": \"palette bytes and Godot appearance calculations\"\n    },\n    {\n      \"lf_sha256\": \"5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0\",\n      \"path\": \"godot/scripts/transport_profiles.gd\",\n      \"role\": \"transport ownership, precedence and validation\"\n    },\n    {\n      \"lf_sha256\": \"f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1\",\n      \"path\": \"godot/shaders/material_palette.gdshader\",\n      \"role\": \"hand-coded appearance programme\"\n    },\n    {\n      \"lf_sha256\": \"aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5\",\n      \"path\": \"native/include/cybersand/interaction_rules.hpp\",\n      \"role\": \"reaction, family and ordinal identity\"\n    },\n    {\n      \"lf_sha256\": \"ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303\",\n      \"path\": \"native/include/cybersand/liquid_policy_catalogue.hpp\",\n      \"role\": \"generated native policy identities\"\n    },\n    {\n      \"lf_sha256\": \"c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e\",\n      \"path\": \"native/include/cybersand/liquid_solver_policy.hpp\",\n      \"role\": \"native stale-identity refusal\"\n    },\n    {\n      \"lf_sha256\": \"3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375\",\n      \"path\": \"native/include/cybersand/material.hpp\",\n      \"role\": \"stable IDs and descriptor bytes\"\n    },\n    {\n      \"lf_sha256\": \"512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0\",\n      \"path\": \"native/include/cybersand/material_appearance.hpp\",\n      \"role\": \"visual state projection\"\n    },\n    {\n      \"lf_sha256\": \"175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362\",\n      \"path\": \"native/include/cybersand/material_rules.hpp\",\n      \"role\": \"material query interface\"\n    },\n    {\n      \"lf_sha256\": \"7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266\",\n      \"path\": \"native/include/cybersand/precision_storage.hpp\",\n      \"role\": \"Cell layout and state widths\"\n    },\n    {\n      \"lf_sha256\": \"4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad\",\n      \"path\": \"native/include/cybersand/quantity_ledger.hpp\",\n      \"role\": \"quantity schema and positional slots\"\n    },\n    {\n      \"lf_sha256\": \"5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29\",\n      \"path\": \"native/include/cybersand/transport_policy.hpp\",\n      \"role\": \"transport v1 dimensions and wire contract\"\n    },\n    {\n      \"lf_sha256\": \"60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf\",\n      \"path\": \"native/include/cybersand/water_experiment_policy.hpp\",\n      \"role\": \"Water quantity defaults and bounds\"\n    },\n    {\n      \"lf_sha256\": \"8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3\",\n      \"path\": \"native/src/material_rules.cpp\",\n      \"role\": \"capability and pair-query semantics\"\n    },\n    {\n      \"lf_sha256\": \"b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1\",\n      \"path\": \"native/src/world.cpp\",\n      \"role\": \"legacy movement, chemistry, thermal and scheduling authority\"\n    },\n    {\n      \"lf_sha256\": \"f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd\",\n      \"path\": \"native/src/world_inertial.inc\",\n      \"role\": \"IN sidecar and state authority\"\n    },\n    {\n      \"lf_sha256\": \"c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b\",\n      \"path\": \"native/src/world_pressure.inc\",\n      \"role\": \"policy admission, physical hash and CYPS restoration\"\n    },\n    {\n      \"lf_sha256\": \"627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074\",\n      \"path\": \"native/src/world_quantity.inc\",\n      \"role\": \"quantity codec, endpoints and specialized ordinal mapping\"\n    },\n    {\n      \"lf_sha256\": \"8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea\",\n      \"path\": \"tools/lcb/derive_capability_matrix.py\",\n      \"role\": \"literal-source parser contract\"\n    },\n    {\n      \"lf_sha256\": \"1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230\",\n      \"path\": \"tools/lcb/native_policy_artifacts.py\",\n      \"role\": \"existing native identity generator\"\n    },\n    {\n      \"lf_sha256\": \"3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2\",\n      \"path\": \"tools/lcb/policy_contract.py\",\n      \"role\": \"catalogue, capability and policy digest contract\"\n    }\n  ],\n  \"status\": \"PASS\",\n  \"tool_sources\": [\n    {\n      \"bytes\": 23316,\n      \"path\": \"tools/material_catalogue/native_oracle.cpp\",\n      \"sha256\": \"a9ef69fedea104d8838360ba274cfcc28c6cd0131ce3f0e98988fd83754e4256\"\n    },\n    {\n      \"bytes\": 22748,\n      \"path\": \"tools/material_catalogue/check_native_parity.py\",\n      \"sha256\": \"2b85883db43858aed7e535b441dd66c82efd532b83a38ae3becca3d0f3dee967\"\n    },\n    {\n      \"bytes\": 15167,\n      \"path\": \"tools/material_catalogue/compatibility.py\",\n      \"sha256\": \"32c6c4c289a91a1e19498b21bfbca9dcc2b58e1040489653942fd7160ec1bd5a\"\n    }\n  ],\n  \"world_executed\": false\n}\n",
+    "stderr": "",
+    "elapsed_seconds": 8.988512279989664,
+    "timeout_seconds": 180
+  },
+  {
+    "name": "sol-native-parity-original-refusal",
+    "command": [
+      "python3",
+      "tools/material_catalogue/check_native_parity.py",
+      "--output",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/results/sol-native-parity.json"
+    ],
+    "source": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+    "exit_code": 1,
+    "status": "FAIL",
+    "stdout": "",
+    "stderr": "native parity: native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1, got 91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6. #353-A preserves this consumer; cutover/identity transition needs separate review\n",
+    "elapsed_seconds": 0.12894288799725473,
+    "timeout_seconds": 180
+  }
+]

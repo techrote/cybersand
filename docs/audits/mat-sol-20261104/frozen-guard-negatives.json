@@ -1,0 +1,182 @@
+{
+  "qualification": "original unchanged frozen A-only guard; no SOL checkpoint exists or is admitted",
+  "count": 35,
+  "all_refused": true,
+  "records": [
+    {
+      "case": "drift:native/include/cybersand/material.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/material.hpp: LF source-byte drift (stable IDs and descriptor bytes); expected 3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375, got c5e554831fc4110b77bcabc3249ec14d07bf4b28c57cb109300a98b524e17345. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/interaction_rules.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/interaction_rules.hpp: LF source-byte drift (reaction, family and ordinal identity); expected aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5, got d8a759a581659e8020893ea1907014baf67557541803f2cccfdcd8ee8d5ff06b. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/material_rules.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/material_rules.hpp: LF source-byte drift (material query interface); expected 175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362, got a41f96fb247d784fbb8eb74413f2cb9724810a9a190d6a9bbb7549a975edfc50. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/src/material_rules.cpp",
+      "status": "REFUSED",
+      "reason": "native/src/material_rules.cpp: LF source-byte drift (capability and pair-query semantics); expected 8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3, got d935654a4d9ca51cf44a166cc886e877030daaf21517ff876cc283e3ccacf1cf. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/material_appearance.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/material_appearance.hpp: LF source-byte drift (visual state projection); expected 512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0, got e556e4b202ca71e7d5a2cd75e3acc9e9d31a8e49bfde36b0b04d72ecba00414f. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/precision_storage.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/precision_storage.hpp: LF source-byte drift (Cell layout and state widths); expected 7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266, got cafe5f09d9d1c4ad5efb9f7cffe68bad046d09b48268a6db9cc80598d95de566. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/quantity_ledger.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/quantity_ledger.hpp: LF source-byte drift (quantity schema and positional slots); expected 4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad, got fef257be396d78f62ad1df6efd25302d3be18a9edf6bb7d1c41f13d762eb0142. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/src/world_quantity.inc",
+      "status": "REFUSED",
+      "reason": "native/src/world_quantity.inc: LF source-byte drift (quantity codec, endpoints and specialized ordinal mapping); expected 627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074, got a64092f1677404bbc3fff1a6ff635f0092c897b6d35581e109748bc8d9ceee9b. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/src/world.cpp",
+      "status": "REFUSED",
+      "reason": "native/src/world.cpp: LF source-byte drift (legacy movement, chemistry, thermal and scheduling authority); expected b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1, got 9ce928c3238717c56e134f6ab2eed268636e07b4b96082a37f571d80a2993a03. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/src/world_pressure.inc",
+      "status": "REFUSED",
+      "reason": "native/src/world_pressure.inc: LF source-byte drift (policy admission, physical hash and CYPS restoration); expected c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b, got ca04a20b4aef9a67acefc671f76b926606400ccc6e4c03a2ff486249b60dd69b. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/src/world_inertial.inc",
+      "status": "REFUSED",
+      "reason": "native/src/world_inertial.inc: LF source-byte drift (IN sidecar and state authority); expected f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd, got eafff9e594bc9aba82f980e051cdf628458c885f4ea291af4121ee64d12c45c8. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/transport_policy.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/transport_policy.hpp: LF source-byte drift (transport v1 dimensions and wire contract); expected 5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29, got 386142e7497deb719c5243da035acb530ba38901e23fcc8b228a8ccb9920f160. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/liquid_solver_policy.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/liquid_solver_policy.hpp: LF source-byte drift (native stale-identity refusal); expected c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e, got 7a9b881a5080a798412bd319acef33bff4043d6ae32c7a9e594b76e6ed709925. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/liquid_policy_catalogue.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/liquid_policy_catalogue.hpp: LF source-byte drift (generated native policy identities); expected ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303, got 5395fbf6bf4d6a78781aff81d7a81929957ee7d3056f09ac6c1aabe13448c6a8. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:native/include/cybersand/water_experiment_policy.hpp",
+      "status": "REFUSED",
+      "reason": "native/include/cybersand/water_experiment_policy.hpp: LF source-byte drift (Water quantity defaults and bounds); expected 60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf, got 08ebb1f965cd44c65898eaa18470dc2bad0bc006602d42474a187499a172d2a8. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:godot/scripts/cell_world.gd",
+      "status": "REFUSED",
+      "reason": "godot/scripts/cell_world.gd: LF source-byte drift (fallback identity, capabilities and separate physics); expected 763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035, got b8dea3941f796e93b2720ab24e9a791febc06bf4ea0ad1550caf04dfa07eff36. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:godot/scripts/interaction_policy.gd",
+      "status": "REFUSED",
+      "reason": "godot/scripts/interaction_policy.gd: LF source-byte drift (fallback granular support); expected ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742, got 1a898dddfc63aa793baa726795a07d1afb3d4e2d2d02a0b506e99231c9fef228. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:godot/scripts/material_appearance_lut.gd",
+      "status": "REFUSED",
+      "reason": "godot/scripts/material_appearance_lut.gd: LF source-byte drift (palette bytes and Godot appearance calculations); expected 1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a, got 4bcd1b3d0456fc103571e556f3438413b34a469bd5d5d37c7092f7631b9e69f4. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:godot/scripts/transport_profiles.gd",
+      "status": "REFUSED",
+      "reason": "godot/scripts/transport_profiles.gd: LF source-byte drift (transport ownership, precedence and validation); expected 5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0, got 45b150cae24b37450ac5534df489175f0b906f881b9ab2a01ed536f8080034d1. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:godot/shaders/material_palette.gdshader",
+      "status": "REFUSED",
+      "reason": "godot/shaders/material_palette.gdshader: LF source-byte drift (hand-coded appearance programme); expected f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1, got 60fa2f8e73e770df3cbab21796a5422b830f3ef234fa8d340d9cce73e803e06e. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:tools/lcb/derive_capability_matrix.py",
+      "status": "REFUSED",
+      "reason": "tools/lcb/derive_capability_matrix.py: LF source-byte drift (literal-source parser contract); expected 8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea, got 9e4335736d20554cc71002b9d7b91ad8a94086cccc788753cb386868fb4792f2. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:tools/lcb/policy_contract.py",
+      "status": "REFUSED",
+      "reason": "tools/lcb/policy_contract.py: LF source-byte drift (catalogue, capability and policy digest contract); expected 3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2, got 265db6a437ebcbb37a135c720528ac77e57fb07bd5a631e6cca8d1879e745dab. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:tools/lcb/native_policy_artifacts.py",
+      "status": "REFUSED",
+      "reason": "tools/lcb/native_policy_artifacts.py: LF source-byte drift (existing native identity generator); expected 1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230, got 519f2c70157d2a46c07c9d717d203fbdb41ae57d539bc66302c690349476e5bd. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:docs/reference/liquid-solver-capability-matrix.json",
+      "status": "REFUSED",
+      "reason": "docs/reference/liquid-solver-capability-matrix.json: LF source-byte drift (capability identity bytes); expected 3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb, got 76fd8d0261915f7fad2189c98ced77bd02adb7cae70112bf9f8fc525c208db2b. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:docs/reference/liquid-policy-wire-vectors.json",
+      "status": "REFUSED",
+      "reason": "docs/reference/liquid-policy-wire-vectors.json: LF source-byte drift (retained policy wire oracle); expected cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31, got 66551d790f91c153147dbd1134cf9a42f46a0d0d144c7db695eb15605be21c52. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:docs/reference/water-normalization-vectors.json",
+      "status": "REFUSED",
+      "reason": "docs/reference/water-normalization-vectors.json: LF source-byte drift (retained normalization oracle); expected ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17, got fafef6821cf18ed02fa3886c9bbf7d07fda17cb60dd11d380ec9bfd3662c9c59. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "drift:docs/reference/liquid-run-receipt-vectors.json",
+      "status": "REFUSED",
+      "reason": "docs/reference/liquid-run-receipt-vectors.json: LF source-byte drift (retained receipt oracle); expected 5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8, got a196d423796a56d38570ad0426a419195362e2fee2733676c841a289bf29d8c1. #353-A preserves this consumer; cutover/identity transition needs separate review"
+    },
+    {
+      "case": "lock:schema_version",
+      "status": "REFUSED",
+      "reason": "/tmp/mat-sol-frozen-guard-buq9uv0_/source/materials/catalogue/compatibility-lock.json: /schema_version: supported version is integer 1"
+    },
+    {
+      "case": "lock:source_commit",
+      "status": "REFUSED",
+      "reason": "/tmp/mat-sol-frozen-guard-buq9uv0_/source/materials/catalogue/compatibility-lock.json: /source_commit: expected retained 0fd4af5987e77db4da3e37c757cf2c0917ae9e15; an identity transition requires separate review"
+    },
+    {
+      "case": "lock:catalogue_digest",
+      "status": "REFUSED",
+      "reason": "/tmp/mat-sol-frozen-guard-buq9uv0_/source/materials/catalogue/compatibility-lock.json: /catalogue_digest: differs from immutable 0fd4af5987e77db4da3e37c757cf2c0917ae9e15; do not refresh away a compatibility failure"
+    },
+    {
+      "case": "lock:capability_digest",
+      "status": "REFUSED",
+      "reason": "/tmp/mat-sol-frozen-guard-buq9uv0_/source/materials/catalogue/compatibility-lock.json: /capability_digest: differs from immutable 0fd4af5987e77db4da3e37c757cf2c0917ae9e15; do not refresh away a compatibility failure"
+    },
+    {
+      "case": "source_and_expected_hash_changed_together",
+      "status": "REFUSED",
+      "reason": "/tmp/mat-sol-frozen-guard-buq9uv0_/source/materials/catalogue/compatibility-lock.json: /source_locks: differs from immutable 0fd4af5987e77db4da3e37c757cf2c0917ae9e15; do not refresh away a compatibility failure"
+    },
+    {
+      "case": "shadow_import:native/src/unapproved.cpp",
+      "status": "REFUSED",
+      "reason": "native/src/unapproved.cpp: production/native test imports shadow output; #353-A permits tooling consumers only"
+    },
+    {
+      "case": "shadow_import:godot/scripts/unapproved.gd",
+      "status": "REFUSED",
+      "reason": "godot/scripts/unapproved.gd: production/native test imports shadow output; #353-A permits tooling consumers only"
+    },
+    {
+      "case": "missing_historical_git_objects",
+      "status": "REFUSED",
+      "reason": "cannot authenticate 0fd4af5987e77db4da3e37c757cf2c0917ae9e15:native/include/cybersand/material.hpp; complete retained Git history required: Command '['git', '-C', '/tmp/mat-sol-frozen-guard-buq9uv0_/empty-git', 'show', '0fd4af5987e77db4da3e37c757cf2c0917ae9e15:native/include/cybersand/material.hpp']' returned non-zero exit status 128."
+    }
+  ]
+}

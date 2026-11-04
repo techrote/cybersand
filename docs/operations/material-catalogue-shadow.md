@@ -10,6 +10,28 @@ related-documents: [../architecture/material-authoring-catalogue-plan.md, ../sys
 
 # Material catalogue shadow compiler and compatibility guards
 
+## SOL protected-consumer transition remains blocked — 2026-11-04
+
+The independent [MAT-AUTH/SOL investigation](../audits/2026-11-04-mat-sol-protected-consumer-review.md)
+pins accepted main `7ef4856e` and draft PR #347 source `957ce67d`. The original
+27-consumer guard passes main and correctly rejects SOL's two historical additive
+changes in `world.cpp` and `world_pressure.inc`; the other 25 remain byte-identical.
+The frozen lock, baseline `0fd4af59`, compiler and generated shadow data stay unchanged.
+
+The disposition is **REPAIR**, with no separately admitted executable checkpoint.
+Bounded inactive native material/persistence comparisons pass, but actual pinned
+Linux Godot probes reproduce uncaught physical/comparison-hash and simulation-window
+exceptions plus adhesion readback that disagrees with native authority during SOL
+transaction fences. The dated dossier preserves exact source/runtime identities,
+raw failed and successful controls, independent reproduction and unavailable
+Windows qualification. Safe save refusal is distinct from a process abort.
+
+The owning SOL branch must repair and qualify those facade boundaries before a
+reviewed source-scoped two-receipt transition is considered. Direct original
+`compatibility.py --check` must continue refusing the changed SOL bytes. This is
+not a #353-B generated-consumer cutover and does not change physical clearance,
+CPU or #365 restoration gates. Do not refresh hashes or suppress the guard.
+
 The [adopted-main integration record](../audits/2026-11-04-mat-auth371-integration.md)
 records the escaping correction, independent review and resulting-head gate
 requirements. The PR ledger carries final hosted checks and merge identity.

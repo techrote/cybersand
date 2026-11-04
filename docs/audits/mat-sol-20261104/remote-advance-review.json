@@ -1,0 +1,18 @@
+{
+  "schema": "mat-sol-remote-advance-review-v1",
+  "reviewed_utc": "2026-11-04T14:19:30.564216+00:00",
+  "accepted_main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "tested_sol_sha": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+  "tested_sol_tree": "4ae59cb4021b0cc20e957261ead22e317292fe5e",
+  "observed_pr347_sha": "c0f48c4ad2a168a56d7feaaf25cb743b8ef03006",
+  "observed_pr347_tree": "d7f87bd1212ba258b07ec3ce4c207b782237458a",
+  "parent_shas": [
+    "957ce67df859315ed238b6bbec1eebc9a743aaba"
+  ],
+  "changed_paths": [
+    "A\tdocs/audits/2026-11-04-sol364b-corridor-registration.md"
+  ],
+  "native_source_inputs_compared": 88,
+  "native_source_input_differences": [],
+  "qualification": "Independent comparison establishes document-only advance and equal 88 runtime inputs, not a new physical execution or acceptance. PR remains draft; no branch import or write."
+}

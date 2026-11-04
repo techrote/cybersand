@@ -1,0 +1,148 @@
+{
+  "qualification": "bounded native inactive-SOL fixtures only; no global gameplay equivalence claim",
+  "comparisons": [
+    {
+      "baseline": "main-1-disabled",
+      "candidate": "sol-1-disabled",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "main-1-disabled",
+      "candidate": "sol-1-idle",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "main-1-disabled",
+      "candidate": "sol-1-invalid",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "main-1-reset",
+      "candidate": "sol-1-reset",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "main-4-disabled",
+      "candidate": "sol-4-disabled",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "main-4-disabled",
+      "candidate": "sol-4-idle",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "main-4-disabled",
+      "candidate": "sol-4-invalid",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "main-4-reset",
+      "candidate": "sol-4-reset",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "main-1-disabled",
+      "candidate": "main-4-disabled",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "sol-1-disabled",
+      "candidate": "sol-4-disabled",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "sol-1-idle",
+      "candidate": "sol-4-idle",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "sol-1-invalid",
+      "candidate": "sol-4-invalid",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    },
+    {
+      "baseline": "sol-1-reset",
+      "candidate": "sol-4-reset",
+      "exact_fields_excluded": [
+        "workers_observed"
+      ],
+      "records": 413,
+      "same_length": true,
+      "status": "PASS",
+      "mismatching_indices": []
+    }
+  ]
+}

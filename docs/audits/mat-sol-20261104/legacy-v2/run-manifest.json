@@ -1,0 +1,230 @@
+[
+  {
+    "case": "main-1-disabled",
+    "source": "main",
+    "configured_workers": 1,
+    "mode": "disabled",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/main-legacy-v2",
+      "1",
+      "disabled"
+    ],
+    "exit_code": 0,
+    "stdout_file": "main-1-disabled.jsonl",
+    "stdout_sha256": "16c43dc01cd7ef12022900368bff22d7bc29f816435b9a253bec76508b2daa02",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 5.233712119006668,
+    "timeout_seconds": 180,
+    "max_workers_observed": 1
+  },
+  {
+    "case": "main-1-reset",
+    "source": "main",
+    "configured_workers": 1,
+    "mode": "reset",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/main-legacy-v2",
+      "1",
+      "reset"
+    ],
+    "exit_code": 0,
+    "stdout_file": "main-1-reset.jsonl",
+    "stdout_sha256": "49079a065e0d968a08d165678c9157341d6bcd395a60995e1f8935196a15200d",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 4.652445641011582,
+    "timeout_seconds": 180,
+    "max_workers_observed": 1
+  },
+  {
+    "case": "main-4-disabled",
+    "source": "main",
+    "configured_workers": 4,
+    "mode": "disabled",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/main-legacy-v2",
+      "4",
+      "disabled"
+    ],
+    "exit_code": 0,
+    "stdout_file": "main-4-disabled.jsonl",
+    "stdout_sha256": "dc33abfc2b273c9b4d586d5723a4b88255aa157648f4975aa0cea6ce2b638876",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 4.839641459999257,
+    "timeout_seconds": 180,
+    "max_workers_observed": 4
+  },
+  {
+    "case": "main-4-reset",
+    "source": "main",
+    "configured_workers": 4,
+    "mode": "reset",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/main-legacy-v2",
+      "4",
+      "reset"
+    ],
+    "exit_code": 0,
+    "stdout_file": "main-4-reset.jsonl",
+    "stdout_sha256": "6a47acd3ee4896cca54a35bb81794502d7857c63ce931a892ca6319deb19d8aa",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 4.761622453996097,
+    "timeout_seconds": 180,
+    "max_workers_observed": 4
+  },
+  {
+    "case": "sol-1-disabled",
+    "source": "sol",
+    "configured_workers": 1,
+    "mode": "disabled",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy-v2",
+      "1",
+      "disabled"
+    ],
+    "exit_code": 0,
+    "stdout_file": "sol-1-disabled.jsonl",
+    "stdout_sha256": "16c43dc01cd7ef12022900368bff22d7bc29f816435b9a253bec76508b2daa02",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 4.516608870995697,
+    "timeout_seconds": 180,
+    "max_workers_observed": 1
+  },
+  {
+    "case": "sol-1-idle",
+    "source": "sol",
+    "configured_workers": 1,
+    "mode": "idle",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy-v2",
+      "1",
+      "idle"
+    ],
+    "exit_code": 0,
+    "stdout_file": "sol-1-idle.jsonl",
+    "stdout_sha256": "16c43dc01cd7ef12022900368bff22d7bc29f816435b9a253bec76508b2daa02",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 4.018506826992962,
+    "timeout_seconds": 180,
+    "max_workers_observed": 1
+  },
+  {
+    "case": "sol-1-invalid",
+    "source": "sol",
+    "configured_workers": 1,
+    "mode": "invalid",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy-v2",
+      "1",
+      "invalid"
+    ],
+    "exit_code": 0,
+    "stdout_file": "sol-1-invalid.jsonl",
+    "stdout_sha256": "16c43dc01cd7ef12022900368bff22d7bc29f816435b9a253bec76508b2daa02",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 4.146675730997231,
+    "timeout_seconds": 180,
+    "max_workers_observed": 1
+  },
+  {
+    "case": "sol-1-reset",
+    "source": "sol",
+    "configured_workers": 1,
+    "mode": "reset",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy-v2",
+      "1",
+      "reset"
+    ],
+    "exit_code": 0,
+    "stdout_file": "sol-1-reset.jsonl",
+    "stdout_sha256": "49079a065e0d968a08d165678c9157341d6bcd395a60995e1f8935196a15200d",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 4.590238388002035,
+    "timeout_seconds": 180,
+    "max_workers_observed": 1
+  },
+  {
+    "case": "sol-4-disabled",
+    "source": "sol",
+    "configured_workers": 4,
+    "mode": "disabled",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy-v2",
+      "4",
+      "disabled"
+    ],
+    "exit_code": 0,
+    "stdout_file": "sol-4-disabled.jsonl",
+    "stdout_sha256": "dc33abfc2b273c9b4d586d5723a4b88255aa157648f4975aa0cea6ce2b638876",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 5.365678444999503,
+    "timeout_seconds": 180,
+    "max_workers_observed": 4
+  },
+  {
+    "case": "sol-4-idle",
+    "source": "sol",
+    "configured_workers": 4,
+    "mode": "idle",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy-v2",
+      "4",
+      "idle"
+    ],
+    "exit_code": 0,
+    "stdout_file": "sol-4-idle.jsonl",
+    "stdout_sha256": "dc33abfc2b273c9b4d586d5723a4b88255aa157648f4975aa0cea6ce2b638876",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 5.000617901008809,
+    "timeout_seconds": 180,
+    "max_workers_observed": 4
+  },
+  {
+    "case": "sol-4-invalid",
+    "source": "sol",
+    "configured_workers": 4,
+    "mode": "invalid",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy-v2",
+      "4",
+      "invalid"
+    ],
+    "exit_code": 0,
+    "stdout_file": "sol-4-invalid.jsonl",
+    "stdout_sha256": "dc33abfc2b273c9b4d586d5723a4b88255aa157648f4975aa0cea6ce2b638876",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 5.308844619998126,
+    "timeout_seconds": 180,
+    "max_workers_observed": 4
+  },
+  {
+    "case": "sol-4-reset",
+    "source": "sol",
+    "configured_workers": 4,
+    "mode": "reset",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy-v2",
+      "4",
+      "reset"
+    ],
+    "exit_code": 0,
+    "stdout_file": "sol-4-reset.jsonl",
+    "stdout_sha256": "e8cbe5d33c075634c8eda6497ea4075a2fc0b0134f727f72d805ab2c8bae3acd",
+    "stderr": "",
+    "records": 413,
+    "elapsed_seconds": 4.998234541009879,
+    "timeout_seconds": 180,
+    "max_workers_observed": 4
+  }
+]

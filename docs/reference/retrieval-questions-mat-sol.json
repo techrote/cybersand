@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-04",
+  "scope": "Separate source-qualified MAT-AUTH/SOL admission questions; no frozen fixture or original material lock is changed.",
+  "questions": [
+    {
+      "id": "MATSOL-01",
+      "query": "Why does the material compatibility guard reject the two protected SOL source consumers, and can their hashes simply be refreshed?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The original 27-consumer lock remains authenticated against 0fd4af59; accepted main passes and pinned SOL 957ce67d changes world.cpp and world_pressure.inc.",
+        "The other 25 complete consumer byte identities remain unchanged.",
+        "The disposition is REPAIR, with no ignore-list, hash refresh or admitted executable transition."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSOL-02",
+      "query": "Which native Godot facade failures block the SOL protected-consumer transition despite unchanged material query results?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "Pinned Linux Godot probes reproduce uncaught physical/comparison-hash and simulation-window exceptions during SOL lifecycle phases.",
+        "Adhesion facade readback disagrees with native authority when a fenced update is refused.",
+        "Safe save refusal is distinct from process abort; Windows qualification is unavailable for these new probes."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSOL-03",
+      "query": "What must happen before MAT-AUTH and SOL can use a source-scoped two-receipt compatibility transition?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The owning SOL branch must repair and qualify the facade boundaries, then obtain independent review.",
+        "The original frozen guard remains intact; separate future admission and resulting-source qualification are required.",
+        "This work does not authorize 353-B consumer migration or change physical clearance, CPU or 365 restoration gates."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    }
+  ]
+}

@@ -1,0 +1,1313 @@
+{
+  "schema": "mat-sol-source-investigation-v1",
+  "qualification": "inventory only; no compatibility admission",
+  "refs": {
+    "frozen": {
+      "commit": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+      "tree": "48f3ab7332b0dfddfb699b251f7e114453b1f3d4"
+    },
+    "main": {
+      "commit": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371"
+    },
+    "old_sol": {
+      "commit": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+      "tree": "e396ed539370e1a2a95f9ef9eca932a7ec5d6546"
+    },
+    "prior_executed": {
+      "commit": "749fb8b597ad866f7535f26442e904207c4f7611",
+      "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+    },
+    "executed": {
+      "commit": "9edc4f8f7d8cd8fc65119d176c9e1981ab6ea77d",
+      "tree": "b5baf8b23ff947c2d7b70e69745c10f18fbe9ebe"
+    },
+    "sol_head": {
+      "commit": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+      "tree": "4ae59cb4021b0cc20e957261ead22e317292fe5e"
+    }
+  },
+  "consumers": [
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "role": "stable IDs and descriptor bytes",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "bytes": 29262
+        },
+        "main": {
+          "git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "bytes": 29262
+        },
+        "old_sol": {
+          "git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "bytes": 29262
+        },
+        "prior_executed": {
+          "git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "bytes": 29262
+        },
+        "executed": {
+          "git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "bytes": 29262
+        },
+        "sol_head": {
+          "git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+          "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "bytes": 29262
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "role": "reaction, family and ordinal identity",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "bytes": 73581
+        },
+        "main": {
+          "git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "bytes": 73581
+        },
+        "old_sol": {
+          "git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "bytes": 73581
+        },
+        "prior_executed": {
+          "git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "bytes": 73581
+        },
+        "executed": {
+          "git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "bytes": 73581
+        },
+        "sol_head": {
+          "git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+          "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "bytes": 73581
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "role": "material query interface",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "bytes": 1975
+        },
+        "main": {
+          "git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "bytes": 1975
+        },
+        "old_sol": {
+          "git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "bytes": 1975
+        },
+        "prior_executed": {
+          "git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "bytes": 1975
+        },
+        "executed": {
+          "git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "bytes": 1975
+        },
+        "sol_head": {
+          "git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+          "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "bytes": 1975
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "role": "capability and pair-query semantics",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+          "bytes": 5056
+        },
+        "main": {
+          "git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+          "bytes": 5056
+        },
+        "old_sol": {
+          "git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+          "bytes": 5056
+        },
+        "prior_executed": {
+          "git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+          "bytes": 5056
+        },
+        "executed": {
+          "git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+          "bytes": 5056
+        },
+        "sol_head": {
+          "git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+          "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+          "bytes": 5056
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "role": "visual state projection",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "bytes": 8354
+        },
+        "main": {
+          "git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "bytes": 8354
+        },
+        "old_sol": {
+          "git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "bytes": 8354
+        },
+        "prior_executed": {
+          "git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "bytes": 8354
+        },
+        "executed": {
+          "git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "bytes": 8354
+        },
+        "sol_head": {
+          "git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+          "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "bytes": 8354
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "role": "Cell layout and state widths",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "bytes": 2800
+        },
+        "main": {
+          "git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "bytes": 2800
+        },
+        "old_sol": {
+          "git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "bytes": 2800
+        },
+        "prior_executed": {
+          "git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "bytes": 2800
+        },
+        "executed": {
+          "git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "bytes": 2800
+        },
+        "sol_head": {
+          "git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+          "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "bytes": 2800
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "role": "quantity schema and positional slots",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+          "bytes": 3739
+        },
+        "main": {
+          "git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+          "bytes": 3739
+        },
+        "old_sol": {
+          "git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+          "bytes": 3739
+        },
+        "prior_executed": {
+          "git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+          "bytes": 3739
+        },
+        "executed": {
+          "git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+          "bytes": 3739
+        },
+        "sol_head": {
+          "git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+          "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+          "bytes": 3739
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "role": "quantity codec, endpoints and specialized ordinal mapping",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+          "bytes": 24249
+        },
+        "main": {
+          "git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+          "bytes": 24249
+        },
+        "old_sol": {
+          "git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+          "bytes": 24249
+        },
+        "prior_executed": {
+          "git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+          "bytes": 24249
+        },
+        "executed": {
+          "git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+          "bytes": 24249
+        },
+        "sol_head": {
+          "git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+          "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+          "bytes": 24249
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/src/world.cpp",
+      "role": "legacy movement, chemistry, thermal and scheduling authority",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "a6afd8cad4264ac2eca0362d14711158e3606760",
+          "lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+          "bytes": 248310
+        },
+        "main": {
+          "git_blob": "a6afd8cad4264ac2eca0362d14711158e3606760",
+          "lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+          "bytes": 248310
+        },
+        "old_sol": {
+          "git_blob": "d55f59ad6ae1d88c7e0aa7f3fb5ebe787b0b9eca",
+          "lf_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+          "bytes": 249754
+        },
+        "prior_executed": {
+          "git_blob": "d55f59ad6ae1d88c7e0aa7f3fb5ebe787b0b9eca",
+          "lf_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+          "bytes": 249754
+        },
+        "executed": {
+          "git_blob": "d55f59ad6ae1d88c7e0aa7f3fb5ebe787b0b9eca",
+          "lf_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+          "bytes": 249754
+        },
+        "sol_head": {
+          "git_blob": "d55f59ad6ae1d88c7e0aa7f3fb5ebe787b0b9eca",
+          "lf_sha256": "91cecf308d01ef214f491f3dc1f353f10c9db17a55162b983fc4ecf80e6363e6",
+          "bytes": 249754
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": false
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "role": "policy admission, physical hash and CYPS restoration",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "1218ae4931708d78eb7b5f5c202587808487a577",
+          "lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+          "bytes": 117612
+        },
+        "main": {
+          "git_blob": "1218ae4931708d78eb7b5f5c202587808487a577",
+          "lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+          "bytes": 117612
+        },
+        "old_sol": {
+          "git_blob": "d42a2403dac5705540bceeaf96a2b0dd2b3bc3b4",
+          "lf_sha256": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947",
+          "bytes": 117988
+        },
+        "prior_executed": {
+          "git_blob": "d42a2403dac5705540bceeaf96a2b0dd2b3bc3b4",
+          "lf_sha256": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947",
+          "bytes": 117988
+        },
+        "executed": {
+          "git_blob": "d42a2403dac5705540bceeaf96a2b0dd2b3bc3b4",
+          "lf_sha256": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947",
+          "bytes": 117988
+        },
+        "sol_head": {
+          "git_blob": "d42a2403dac5705540bceeaf96a2b0dd2b3bc3b4",
+          "lf_sha256": "0e6c8b916d9a457fc09d63f496b9acb5b8b61f55c3c09311d8bcf90bbf92b947",
+          "bytes": 117988
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": false
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "role": "IN sidecar and state authority",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+          "bytes": 21123
+        },
+        "main": {
+          "git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+          "bytes": 21123
+        },
+        "old_sol": {
+          "git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+          "bytes": 21123
+        },
+        "prior_executed": {
+          "git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+          "bytes": 21123
+        },
+        "executed": {
+          "git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+          "bytes": 21123
+        },
+        "sol_head": {
+          "git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+          "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+          "bytes": 21123
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "role": "transport v1 dimensions and wire contract",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "bytes": 3861
+        },
+        "main": {
+          "git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "bytes": 3861
+        },
+        "old_sol": {
+          "git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "bytes": 3861
+        },
+        "prior_executed": {
+          "git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "bytes": 3861
+        },
+        "executed": {
+          "git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "bytes": 3861
+        },
+        "sol_head": {
+          "git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+          "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "bytes": 3861
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "role": "native stale-identity refusal",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "bytes": 36727
+        },
+        "main": {
+          "git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "bytes": 36727
+        },
+        "old_sol": {
+          "git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "bytes": 36727
+        },
+        "prior_executed": {
+          "git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "bytes": 36727
+        },
+        "executed": {
+          "git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "bytes": 36727
+        },
+        "sol_head": {
+          "git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+          "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "bytes": 36727
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "role": "generated native policy identities",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "bytes": 3430
+        },
+        "main": {
+          "git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "bytes": 3430
+        },
+        "old_sol": {
+          "git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "bytes": 3430
+        },
+        "prior_executed": {
+          "git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "bytes": 3430
+        },
+        "executed": {
+          "git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "bytes": 3430
+        },
+        "sol_head": {
+          "git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+          "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "bytes": 3430
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "role": "Water quantity defaults and bounds",
+      "owner": "native",
+      "refs": {
+        "frozen": {
+          "git_blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "bytes": 3527
+        },
+        "main": {
+          "git_blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "bytes": 3527
+        },
+        "old_sol": {
+          "git_blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "bytes": 3527
+        },
+        "prior_executed": {
+          "git_blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "bytes": 3527
+        },
+        "executed": {
+          "git_blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "bytes": 3527
+        },
+        "sol_head": {
+          "git_blob": "009664f99889797242522b3a76240ebde8867316",
+          "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "bytes": 3527
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "role": "fallback identity, capabilities and separate physics",
+      "owner": "Godot",
+      "refs": {
+        "frozen": {
+          "git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+          "bytes": 78760
+        },
+        "main": {
+          "git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+          "bytes": 78760
+        },
+        "old_sol": {
+          "git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+          "bytes": 78760
+        },
+        "prior_executed": {
+          "git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+          "bytes": 78760
+        },
+        "executed": {
+          "git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+          "bytes": 78760
+        },
+        "sol_head": {
+          "git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+          "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+          "bytes": 78760
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd",
+      "role": "fallback granular support",
+      "owner": "Godot",
+      "refs": {
+        "frozen": {
+          "git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+          "bytes": 1964
+        },
+        "main": {
+          "git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+          "bytes": 1964
+        },
+        "old_sol": {
+          "git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+          "bytes": 1964
+        },
+        "prior_executed": {
+          "git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+          "bytes": 1964
+        },
+        "executed": {
+          "git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+          "bytes": 1964
+        },
+        "sol_head": {
+          "git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+          "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+          "bytes": 1964
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "role": "palette bytes and Godot appearance calculations",
+      "owner": "Godot",
+      "refs": {
+        "frozen": {
+          "git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+          "bytes": 22597
+        },
+        "main": {
+          "git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+          "bytes": 22597
+        },
+        "old_sol": {
+          "git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+          "bytes": 22597
+        },
+        "prior_executed": {
+          "git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+          "bytes": 22597
+        },
+        "executed": {
+          "git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+          "bytes": 22597
+        },
+        "sol_head": {
+          "git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+          "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+          "bytes": 22597
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd",
+      "role": "transport ownership, precedence and validation",
+      "owner": "Godot",
+      "refs": {
+        "frozen": {
+          "git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "bytes": 6774
+        },
+        "main": {
+          "git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "bytes": 6774
+        },
+        "old_sol": {
+          "git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "bytes": 6774
+        },
+        "prior_executed": {
+          "git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "bytes": 6774
+        },
+        "executed": {
+          "git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "bytes": 6774
+        },
+        "sol_head": {
+          "git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+          "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+          "bytes": 6774
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "role": "hand-coded appearance programme",
+      "owner": "Godot",
+      "refs": {
+        "frozen": {
+          "git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "bytes": 125331
+        },
+        "main": {
+          "git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "bytes": 125331
+        },
+        "old_sol": {
+          "git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "bytes": 125331
+        },
+        "prior_executed": {
+          "git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "bytes": 125331
+        },
+        "executed": {
+          "git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "bytes": 125331
+        },
+        "sol_head": {
+          "git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+          "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "bytes": 125331
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "role": "literal-source parser contract",
+      "owner": "identity tooling/oracle",
+      "refs": {
+        "frozen": {
+          "git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+          "bytes": 11313
+        },
+        "main": {
+          "git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+          "bytes": 11313
+        },
+        "old_sol": {
+          "git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+          "bytes": 11313
+        },
+        "prior_executed": {
+          "git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+          "bytes": 11313
+        },
+        "executed": {
+          "git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+          "bytes": 11313
+        },
+        "sol_head": {
+          "git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+          "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+          "bytes": 11313
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "tools/lcb/policy_contract.py",
+      "role": "catalogue, capability and policy digest contract",
+      "owner": "identity tooling/oracle",
+      "refs": {
+        "frozen": {
+          "git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+          "bytes": 28177
+        },
+        "main": {
+          "git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+          "bytes": 28177
+        },
+        "old_sol": {
+          "git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+          "bytes": 28177
+        },
+        "prior_executed": {
+          "git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+          "bytes": 28177
+        },
+        "executed": {
+          "git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+          "bytes": 28177
+        },
+        "sol_head": {
+          "git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+          "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+          "bytes": 28177
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "role": "existing native identity generator",
+      "owner": "identity tooling/oracle",
+      "refs": {
+        "frozen": {
+          "git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+          "bytes": 8072
+        },
+        "main": {
+          "git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+          "bytes": 8072
+        },
+        "old_sol": {
+          "git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+          "bytes": 8072
+        },
+        "prior_executed": {
+          "git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+          "bytes": 8072
+        },
+        "executed": {
+          "git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+          "bytes": 8072
+        },
+        "sol_head": {
+          "git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+          "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+          "bytes": 8072
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "role": "capability identity bytes",
+      "owner": "identity tooling/oracle",
+      "refs": {
+        "frozen": {
+          "git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+          "bytes": 32989
+        },
+        "main": {
+          "git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+          "bytes": 32989
+        },
+        "old_sol": {
+          "git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+          "bytes": 32989
+        },
+        "prior_executed": {
+          "git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+          "bytes": 32989
+        },
+        "executed": {
+          "git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+          "bytes": 32989
+        },
+        "sol_head": {
+          "git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+          "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+          "bytes": 32989
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "role": "retained policy wire oracle",
+      "owner": "identity tooling/oracle",
+      "refs": {
+        "frozen": {
+          "git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+          "bytes": 40264
+        },
+        "main": {
+          "git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+          "bytes": 40264
+        },
+        "old_sol": {
+          "git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+          "bytes": 40264
+        },
+        "prior_executed": {
+          "git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+          "bytes": 40264
+        },
+        "executed": {
+          "git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+          "bytes": 40264
+        },
+        "sol_head": {
+          "git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+          "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+          "bytes": 40264
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "docs/reference/water-normalization-vectors.json",
+      "role": "retained normalization oracle",
+      "owner": "identity tooling/oracle",
+      "refs": {
+        "frozen": {
+          "git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+          "bytes": 28434
+        },
+        "main": {
+          "git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+          "bytes": 28434
+        },
+        "old_sol": {
+          "git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+          "bytes": 28434
+        },
+        "prior_executed": {
+          "git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+          "bytes": 28434
+        },
+        "executed": {
+          "git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+          "bytes": 28434
+        },
+        "sol_head": {
+          "git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+          "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+          "bytes": 28434
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    },
+    {
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "role": "retained receipt oracle",
+      "owner": "identity tooling/oracle",
+      "refs": {
+        "frozen": {
+          "git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+          "bytes": 101719
+        },
+        "main": {
+          "git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+          "bytes": 101719
+        },
+        "old_sol": {
+          "git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+          "bytes": 101719
+        },
+        "prior_executed": {
+          "git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+          "bytes": 101719
+        },
+        "executed": {
+          "git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+          "bytes": 101719
+        },
+        "sol_head": {
+          "git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+          "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+          "bytes": 101719
+        }
+      },
+      "main_equal_frozen": true,
+      "sol_equal_frozen": true
+    }
+  ],
+  "protected_sources": 27,
+  "sol_identical": 25,
+  "lock_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+  "lock_equal_on_sol": true,
+  "origin_commits": [
+    {
+      "commit": "83a12466f624780a2455e8adafa70e26719ccf59",
+      "changes": "20\t0\tnative/src/world.cpp\n4\t0\tnative/src/world_pressure.inc"
+    },
+    {
+      "commit": "3e9749854a9bf52a0efd7e017dad901bdfae5b6d",
+      "changes": "14\t0\tnative/src/world.cpp"
+    }
+  ],
+  "ancestry": {
+    "frozen->main": {
+      "is_ancestor": true,
+      "exit_code": 0,
+      "stderr": ""
+    },
+    "main->sol_head": {
+      "is_ancestor": true,
+      "exit_code": 0,
+      "stderr": ""
+    },
+    "old_sol->sol_head": {
+      "is_ancestor": true,
+      "exit_code": 0,
+      "stderr": ""
+    },
+    "prior_executed->sol_head": {
+      "is_ancestor": true,
+      "exit_code": 0,
+      "stderr": ""
+    },
+    "executed->sol_head": {
+      "is_ancestor": true,
+      "exit_code": 0,
+      "stderr": ""
+    }
+  },
+  "hunks": [
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -1603,6 +1603,20 @@ bool World::granular_support_at(std::int64_t x, std::int64_t y, bool side,",
+      "added": [
+        "bool World::contact_cell_available(std::int64_t x, std::int64_t y) const noexcept {",
+        "    constexpr std::int64_t limit = 1'000'000'000;",
+        "    if (has_failed() || x < -limit || x > limit || y < -limit || y > limit ||",
+        "        selected_core_region_ != applied_core_region_) return false;",
+        "    if (find_chunk(address(x, y).chunk) == nullptr) return false;",
+        "    if (selected_core_region_) {",
+        "        const auto core = scheduler_geometry_.core_for_cell(x, y);",
+        "        const auto& region = *selected_core_region_;",
+        "        if (core.x < region.min_x || core.x > region.max_x ||",
+        "            core.y < region.min_y || core.y > region.max_y) return false;",
+        "    }",
+        "    return true;",
+        "}",
+        ""
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -1934,6 +1948,7 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -1997,6 +2012,7 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate",
+      "added": [
+        "    if (solid_detachment_fenced()) return false;"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2020,6 +2036,7 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2047,6 +2064,7 @@ void World::set_simulation_region(std::optional<RectI64> region) {",
+      "added": [
+        "    if (solid_detachment_fenced()) return;"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2060,6 +2078,7 @@ bool World::liquid_surface_adhesion_enabled() const noexcept {",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2084,6 +2103,7 @@ void World::configure_transient_obstacles(RectI64 region) {",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2126,6 +2146,7 @@ std::uint16_t World::transient_obstacle_at(std::int64_t x, std::int64_t y) const",
+      "added": [
+        "    if (solid_detachment_fenced()) return false;"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2154,6 +2175,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,",
+      "added": [
+        "    if (solid_detachment_fenced()) return false;"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2166,6 +2188,7 @@ bool World::relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,",
+      "added": [
+        "    if (solid_detachment_fenced()) return {};"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2370,6 +2393,7 @@ void World::record_transient_contact(std::uint16_t body_id, Material material,",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2392,6 +2416,7 @@ void World::set_temperature(std::int64_t x, std::int64_t y, std::int16_t value)",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2409,6 +2434,7 @@ void World::paint_disc(std::int64_t centre_x, std::int64_t centre_y, std::int32_",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2448,6 +2474,7 @@ void World::reserve_region(RectI64 region) {",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2462,6 +2489,7 @@ void World::reserve_temperature_region(RectI64 region) {",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2519,6 +2547,7 @@ ChunkInstallOutcome World::install_generated_chunk(",
+      "added": [
+        "    if (solid_detachment_fenced()) return false;"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -2609,6 +2638,7 @@ void World::apply_pending_explosions(TickStats& stats) {",
+      "added": [
+        "    solid_detachment_.reset();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -4625,6 +4655,7 @@ TickStats World::tick_phased() {",
+      "added": [
+        "    require_solid_mutation_allowed();"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world.cpp",
+      "hunk_header": "@@ -4968,4 +4999,7 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::",
+      "added": [
+        "#include \"world_solid_detachment.inc\"",
+        "#include \"world_conservative_displacement.inc\"",
+        ""
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "hunk_header": "@@ -1526,6 +1526,8 @@ std::uint64_t World::liquid_comparison_hash(LiquidStateProjection projection) co",
+      "added": [
+        "    if (solid_detachment_ && solid_detachment_->snapshot.phase != soliding::SolidPhase::Idle)",
+        "        throw std::logic_error(\"solid aggregate/transaction is not serializable in CYPS2/3\");"
+      ],
+      "deleted": []
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "hunk_header": "@@ -1744,6 +1746,8 @@ void refuse_state(const char* detail) {",
+      "added": [
+        "    if (solid_detachment_ && solid_detachment_->snapshot.phase != soliding::SolidPhase::Idle)",
+        "        throw std::logic_error(\"solid aggregate/transaction is not serializable in CYPS2/3\");"
+      ],
+      "deleted": []
+    }
+  ]
+}

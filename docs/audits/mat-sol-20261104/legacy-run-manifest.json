@@ -1,0 +1,21 @@
+[
+  {
+    "case": "main-1-disabled",
+    "source": "main",
+    "configured_workers": 1,
+    "mode": "disabled",
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/main-legacy",
+      "1",
+      "disabled"
+    ],
+    "exit_code": 1,
+    "stdout_file": "main-1-disabled.jsonl",
+    "stdout_sha256": "dfccbd8a6aab9c96402ff5b6010b6aa33c6c2ca4dfd11d2e982267a720c38229",
+    "stderr": "mat-sol legacy probe: restored physical hash must match\n",
+    "records": 393,
+    "elapsed_seconds": 3.098041817997,
+    "timeout_seconds": 180,
+    "max_workers_observed": 1
+  }
+]
