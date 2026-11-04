@@ -34,6 +34,7 @@ class FailureSession:
 var checks: int = 0
 var workers: int = 4
 var failures: Array[String] = []
+var post_impulse_publication: Dictionary = {}
 func check(value: bool, message: String) -> void:
 	checks += 1
 	if not value:
@@ -123,8 +124,10 @@ func _run() -> void:
 	s.close()
 	await process_frame
 	await _failure_publication()
+	await _post_impulse_publication()
 	print("SOL281_HOST_FAILURES ",JSON.stringify({"checks":checks,"failures":failures,"platform":OS.get_name(), "workers":workers,
-		"actual_rapier":true,"publication_faults":2,"native_solver_failure":"separate ordinary tick-failure regression"}))
+		"actual_rapier":true,"publication_faults":3,"post_impulse_publication":post_impulse_publication,
+		"native_solver_failure":"separate ordinary tick-failure regression"}))
 	quit(0 if failures.is_empty() else 1)
 
 func _failure_publication() -> void:
@@ -170,4 +173,156 @@ func _failure_publication() -> void:
 		"failure before priming leaves actual body held and inactive")
 	check(prime.bridge != null and prime.bridge.manual_step_count() == 0, "unprimed aggregate never receives a Rapier step")
 	prime.close()
+	await process_frame
+
+func _body_state_values(s: Session) -> Array:
+	# Read the real backend state, including velocity: an unchanged pose alone
+	# would not detect an impulse applied while the manual space is held.
+	var rid: RID = s.body.get_rid()
+	var pose: Transform2D = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
+	var velocity: Vector2 = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+	var omega: float = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY)
+	return [pose.x.x, pose.x.y, pose.y.x, pose.y.y, pose.origin.x, pose.origin.y,
+		velocity.x, velocity.y, omega]
+
+func _post_impulse_publication() -> void:
+	# Combine the real packed-Sand response with the existing failure publisher.
+	# No replayed or manufactured impulse can satisfy the pre-fault condition.
+	var s := FailureSession.new()
+	var opened: bool = await s.open(root, workers, "packed_sand", true, true, true)
+	check(opened, "post-impulse packed-Sand candidate owner opens")
+	if not opened:
+		s.close()
+		return
+	var released: bool = await s.cut_and_release()
+	check(released, "post-impulse packed-Sand actual handoff completes")
+	if not released:
+		s.close()
+		return
+	var physical: Dictionary = {}
+	var response: Dictionary = {}
+	var waited: int = 0
+	for step: int in range(360):
+		await physics_frame
+		s.physics_step()
+		waited = step + 1
+		physical = s.coupling_metrics().get("physical_contact", {})
+		if float(physical.get("impulse_magnitude_sum", 0.0)) > 0.0:
+			response = s.last_contact_response.duplicate(true)
+			break
+		if s._failed:
+			break
+	var actual_impulse: bool = float(physical.get("impulse_magnitude_sum", 0.0)) > 0.0 \
+		and int(response.get("impulse_applications", 0)) > 0
+	check(actual_impulse, "post-impulse fault requires a real nonzero packed-Sand impulse")
+	check(response.get("accepted", false) and response.get("readback_valid", false)
+		and not response.get("failed", false) and s.last_error.is_empty(),
+		"pre-fault Sand response has accepted finite actual Rapier readback")
+	if not actual_impulse:
+		s.close()
+		return
+	s.set_paused(true)
+	var before: Dictionary = await s.inspect_active()
+	var metrics_before: Dictionary = s.coupling_metrics()
+	physical = metrics_before.get("physical_contact", {})
+	var body_rid: RID = s.body.get_rid()
+	var generation: int = s.generation
+	var epoch: int = s.physics_epoch
+	var state_before: Array = _body_state_values(s)
+	var steps_before: int = s.bridge.manual_step_count()
+	check(before.get("ok", false) and not before.get("worker_failed", true)
+		and s.physics_paused and not s._failed, "post-impulse owner is healthy and paused before injection")
+	check(int(metrics_before.get("proxy_count", 0)) == 6 and int(before.get("aggregate_owned", 0)) == 520
+		and int(before.get("native_source_members", -1)) == 0
+		and before.get("members") == s.source_payload, "pre-fault six-proxy aggregate exclusively owns the exact 520-cell payload")
+	(s.worker as FailurePublicationWorker).request_failure_publication()
+	var deadline: int = Time.get_ticks_msec() + Session.Watchdogs.milliseconds("operation_seconds")
+	while not s.worker.has_failed() and Time.get_ticks_msec() < deadline:
+		await process_frame
+	check(s.worker.has_failed(), "post-impulse worker publishes the injected failure")
+	var failed: CyberSimulationSnapshot = s.worker.take_latest_snapshot(-1)
+	var failure_published: bool = failed != null and failed.simulation_failed
+	check(failure_published and failed.rigid_body_results.is_empty()
+		and not failed.current_rigid_body_states.is_empty() and failed.solid_contact_observation.is_empty(),
+		"post-impulse failed publication retains the mask and clears force/contact results")
+	if not failure_published:
+		s.close()
+		return
+	s.set_paused(false)
+	s.physics_step()
+	check(s._failed and s.physics_paused and not s.last_error.is_empty(),
+		"post-impulse publication failure latches the complete session")
+	for _i: int in range(3):
+		s.set_paused(false)
+		s.physics_step()
+	check(s._failed and s.physics_paused and s.bridge.manual_step_count() == steps_before,
+		"repeated unpause cannot advance Rapier after post-impulse failure")
+	var after: Dictionary = await s.inspect_active()
+	var metrics_after: Dictionary = s.coupling_metrics()
+	var physical_after: Dictionary = metrics_after.get("physical_contact", {})
+	var state_after: Array = _body_state_values(s)
+	var exact_payload: bool = after.get("members") == before.get("members") \
+		and after.get("members") == s.source_payload
+	check(state_after == state_before, "post-failure pose, linear velocity and angular velocity remain exactly held")
+	check(int(physical_after.get("response_attempts", -1)) == int(physical.get("response_attempts", -2))
+		and int(physical_after.get("response_accepts", -1)) == int(physical.get("response_accepts", -2)),
+		"failed publications cannot evaluate or accept a continuing Sand response")
+	check(float(physical_after.get("impulse_magnitude_sum", -1.0)) == float(physical.get("impulse_magnitude_sum", -2.0))
+		and float(physical_after.get("torque_impulse_sum", -1.0)) == float(physical.get("torque_impulse_sum", -2.0)),
+		"no duplicate Sand impulse or torque follows the failed publication")
+	check(metrics_after.get("impulse_applications") == metrics_before.get("impulse_applications")
+		and metrics_after.get("correction_applications") == metrics_before.get("correction_applications"),
+		"ordinary compound response also remains held after failure")
+	check(after.get("ok", false) and after.get("worker_failed", false)
+		and int(after.get("actual_native_tick", -1)) == int(before.get("actual_native_tick", -2))
+		and failed.tick_index == int(before.get("actual_native_tick", -2)),
+		"paused native tick cannot cross the injected failure boundary")
+	check(exact_payload and after.get("payload_digest") == before.get("payload_digest")
+		and after.get("token") == before.get("token"), "post-impulse failure preserves exact payload, digest and owner token")
+	check(int(after.get("aggregate_owned", 0)) == 520 and int(after.get("native_source_members", -1)) == 0,
+		"post-impulse failure preserves exclusive aggregate collision ownership")
+	check(s.body.get_rid() == body_rid and s.physics_epoch == epoch and s.generation == generation,
+		"post-impulse failure cannot replace the retained RID, epoch or generation")
+	post_impulse_publication = {"fixture":"packed_sand", "candidate":s.sand_resistance_enabled,
+		"workers":workers, "wait_rapier_steps":waited, "complete":true,
+		"pre_fault_response_accepted":bool(response.get("accepted", false)),
+		"pre_fault_readback_valid":bool(response.get("readback_valid", false)),
+		"pre_fault_impulse_applications":int(response.get("impulse_applications", 0)),
+		"pre_fault_response_snapshot":int(response.get("snapshot_serial", -1)),
+		"pre_fault_response_sample":int(response.get("source_sample_serial", -1)),
+		"pre_fault_energy_before":float(response.get("energy_before", -1.0)),
+		"pre_fault_energy_after":float(response.get("actual_energy_after", -1.0)),
+		"impulse_magnitude_before_fault":float(physical.get("impulse_magnitude_sum", 0.0)),
+		"impulse_magnitude_after_failstop":float(physical_after.get("impulse_magnitude_sum", 0.0)),
+		"torque_impulse_before_fault":float(physical.get("torque_impulse_sum", 0.0)),
+		"torque_impulse_after_failstop":float(physical_after.get("torque_impulse_sum", 0.0)),
+		"response_attempts_before_fault":int(physical.get("response_attempts", 0)),
+		"response_attempts_after_failstop":int(physical_after.get("response_attempts", 0)),
+		"response_accepts_before_fault":int(physical.get("response_accepts", 0)),
+		"response_accepts_after_failstop":int(physical_after.get("response_accepts", 0)),
+		"compound_impulse_applications_before_fault":int(metrics_before.get("impulse_applications", 0)),
+		"compound_impulse_applications_after_failstop":int(metrics_after.get("impulse_applications", 0)),
+		"compound_corrections_before_fault":int(metrics_before.get("correction_applications", 0)),
+		"compound_corrections_after_failstop":int(metrics_after.get("correction_applications", 0)),
+		"rapier_steps_before_fault":steps_before, "rapier_steps_after_failstop":s.bridge.manual_step_count(),
+		"native_ticks_before_fault":int(before.get("actual_native_tick", -1)),
+		"native_ticks_after_failstop":int(after.get("actual_native_tick", -1)),
+		"failed_publication_native_tick":failed.tick_index, "failed_snapshot_serial":failed.serial,
+		"failed_snapshot_force_records":failed.rigid_body_results.size(),
+		"failed_snapshot_contact_records":failed.solid_contact_observation.size(),
+		"failed_snapshot_has_last_mask":not failed.current_rigid_body_states.is_empty(),
+		"native_failure_published":failure_published, "worker_failed":bool(after.get("worker_failed", false)),
+		"failure_latched":s._failed, "physics_paused":s.physics_paused, "last_error":s.last_error,
+		"state_before_fault":state_before, "state_after_failstop":state_after,
+		"state_layout":"basis_x.x,basis_x.y,basis_y.x,basis_y.y,origin.x,origin.y,velocity.x,velocity.y,omega",
+		"payload_digest_before":str(before.get("payload_digest", "")),
+		"payload_digest_after":str(after.get("payload_digest", "")), "exact_payload_preserved":exact_payload,
+		"token_before":str(before.get("token", "")), "token_after":str(after.get("token", "")),
+		"aggregate_owned_after":int(after.get("aggregate_owned", -1)),
+		"native_source_members_after":int(after.get("native_source_members", -1)),
+		"proxy_count":int(metrics_after.get("proxy_count", 0)), "body_rid_unchanged":s.body.get_rid() == body_rid,
+		"generation_before":generation, "generation_after":s.generation,
+		"physics_epoch_before":epoch, "physics_epoch_after":s.physics_epoch,
+		"scope":"Injected worker publication failure after a real packed-Sand impulse; not native solver corruption."}
+	s.close()
 	await process_frame
