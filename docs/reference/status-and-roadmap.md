@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## PressureFlow desktop region flip (#201) — 2026-11-04
+
+The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a
+desktop worker ordering that discarded the PressureFlow cache twice per step in
+fixed-interest scenarios. In the real host on main's runtime, the cached quiet
+pool improves from ≈36 ms to ≈10 ms per worker step and reaches the 60 Hz cap;
+reference and FreeMass are unchanged. Camera-motion invalidation remains a
+separate follow-up.
+
 ## PressureFlow idle cost (#201) — 2026-11-04
 
 The [#201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
@@ -42,10 +51,11 @@ GO is historical and does not approve the later candidate.
 
 Accepted #377 advanced main to `0103de80` with tests, tooling, CI and retained
 liveness evidence only; H1 remains unrepaired and #354 open. Its new native
-probe requires a [B inventory transition](../operations/material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04).
-The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
-keeps the frozen `0fd4af59` compatibility authority, historical `7ef4856e` display
-oracle and accepted `0103de80` B admission distinct. The reconciled #384 candidate
+probe required a [historical B inventory transition](../operations/material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04).
+Accepted #390 then advanced main to `751edc0b`, preserving fixed-interest worker
+ownership and adding two GDScript tests. The [post-#390 record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+keeps frozen `0fd4af59` compatibility, historical `7ef4856e` display output and
+current `751edc0b` B admission distinct. The reconciled #384 candidate
 requires fresh published-head proof and independent admission **before Ready**.
 The [Phase A boundary](../architecture/material-authoring-catalogue-plan.md#15-material-liveness-phase-a-and-production-admission--2026-11-04)
 and #377 ledger preserve its separate source-qualified findings, failures and
@@ -55,7 +65,7 @@ integration status; acceptance of that evidence does not repair production.
 |---|---|
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
 | #353-A / #371 | Accepted A-only foundation at main `7ef4856e`; complete shadows remain unconsumed |
-| #353-B Main labels / #384 | Reconciled with accepted #377/main `0103de80`; fresh exact-head proof and independent GO TO READY / CONDITIONAL / NO-GO required; old `c6d1603f` GO remains source-bound; stays Draft, no merge |
+| #353-B Main labels / #384 | Reconciled with accepted #390/main `751edc0b`; exact worker/two-test preservation and 663/664 executable inventories; fresh exact-head proof and independent GO TO READY / CONDITIONAL / NO-GO required; old `c6d1603f` GO remains source-bound; stays Draft, no merge |
 | Other #353-B consumers | Separate admission required; no additional production migration |
 | #354 / #377 | Phase A tests/tooling/CI/evidence merged at `0103de80` on 4 November 2026, 18:14:18 UTC; H1 remains unrepaired, H2/H3 preserved, production correction separately gated and issue open |
 | #355 | Separate endpoint-effects implementation programme; serialize any overlapping World/quantity writes |

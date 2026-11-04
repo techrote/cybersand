@@ -19,11 +19,11 @@ migrates only Main display names, scopes current proof receipts and records the
 new apparatus dependency. Its [guide](operations/material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
 and [original evidence](audits/2026-11-04-mat-auth353b-display-names.md) distinguish
 static checks from the mandatory actual B consumer report. The
-[#377 reconciliation](operations/material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04)
-updates only B's accepted executable baseline to `0103de80`, including the
-accepted native liveness probe, while preserving the `7ef4856e` display oracle
-and `0fd4af59` compatibility authority. The
-[new-source record](audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+[#390 reconciliation](operations/material-catalogue-shadow.md#current-main-b-admission-after-390--2026-11-04)
+advances only B's executable admission to accepted `751edc0b`, including the exact
+worker ownership fix and both new GDScript tests, while retaining the accepted
+#377 probe, `7ef4856e` display oracle and `0fd4af59` compatibility authority. The
+[new-source record](audits/2026-11-04-mat-auth384-post390-reconciliation.md)
 ends at fresh independent admission review **before Ready**, with #384 Draft
 and no merge. The earlier #374/c6d checkpoint and source-bound GO remain
 historical; they do not approve this new candidate. Other production consumers

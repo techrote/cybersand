@@ -21,11 +21,12 @@ against `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`; its
 [independent GO report](https://chatgpt.com/library?file_id=libfile_d3ee9e7f5e108191905cc6560fffe1f1&account_id=personal)
 applies only to that source pair and is not merge authorization.
 
-After #377 merged, the owner assigned the existing #384 branch to reconcile
-accepted main `0103de80d11304388868f89f7b26c672ad6100ad`. Its native liveness
-probe is ordinary accepted executable source, requiring a new B admission
-identity and fresh proof. The [three-baseline contract](material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04)
-and [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+The post-#377 candidate `87418298e95def37ec86b83c543c2aa2d1d7c398` is now
+reconciled with accepted #390/main `751edc0b495dc85484ad5509a7c95f863651c76b`.
+Preserve the worker's fixed-interest ownership fix and both new GDScript tests
+exactly; they require a new B admission identity and fresh behavioral proof.
+The [three-baseline contract](material-catalogue-shadow.md#current-main-b-admission-after-390--2026-11-04)
+and [post-#390 record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
 preserve the old display oracle, frozen compatibility lock, original B evidence
 and [#374 reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md).
 Accepted #377 tests/tooling/CI/evidence remain intact; H1 is not repaired.
@@ -41,7 +42,7 @@ acceptance of its experimental 132–137 requires a new scope decision.
 
 Retain the 27-owner lock against `0fd4af59`, display oracle at `7ef4856e`,
 full-shadow outputs, native/fallback behavior and original receipts. The
-separate B admission authenticates accepted `0103de80` and refuses extra or
+separate B admission authenticates accepted `751edc0b` and refuses extra or
 indirect consumers; another Main/source integration such as #370 needs a
 reviewed B transition. Run fresh source checks and distinct schema-v2 native,
 shadow and actual four-stage Main/inherited-Web B reports at the published

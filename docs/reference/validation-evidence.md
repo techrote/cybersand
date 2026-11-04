@@ -10,7 +10,31 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-AUTH 384 post-390 B admission — 2026-11-04
+
+The [post-#390 record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+defines the ancestry-preserving transition from prior #384 `87418298` to accepted
+main `751edc0b495dc85484ad5509a7c95f863651c76b`, tree
+`b0d42a256285e6049a6d3bdd1613d7ecd89f43c6`. Eight incoming paths include the
+exact worker ownership fix and two new executable tests. Independent inventories
+measure 663 accepted-main entries and 664 candidate entries. The historical
+compatibility lock and display oracle do not advance.
+
+Fresh actual published-head receipts belong to the [#384 ledger](https://github.com/techrote/cybersand/pull/384)
+and new portable packet: complete inventories and refusal diagnostics, native
+query/shadow parity, all four raw Godot B stages, worker preservation controls,
+documentation/retrieval checks and actual Draft hosted checkouts/steps/artifacts.
+The prior `87418298` packet, old `c6d1603f` independent GO and original #390
+measurements remain source-qualified history. None is relabelled as new execution.
+Required failed controls, unexecuted gates and runtime limitations stay explicit.
+
+The candidate remains open, Draft and unmerged, requiring a fresh independent
+read-only admission review. Advisory success grants no Native exemption; normal
+Draft skips remain unexecuted. No Ready transition or merge is authorized.
+
 ## MAT-AUTH 384 post-377 B admission — 2026-11-04
+
+**Historical `87418298` / `0103de80` checkpoint; current B admission is above.**
 
 The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
 separates the source-bound independent GO for `c6d1603f` / `01f9b7c8` from the

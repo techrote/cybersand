@@ -1,7 +1,7 @@
 {
-  "version": 3,
+  "version": 4,
   "reviewed": "2026-11-04",
-  "scope": "Separate six-question MAT-AUTH-001 #353-B Main-label consumer fixture. Version 3 updates only revision-sensitive MAT353B-04/05/06 facts and metadata for the accepted #377/main 0103de80 B admission and stop-before-Ready handoff. All six queries, canonical/source routes and MAT353B-01/02/03 facts remain unchanged; version 2 remains at c6d1603f. Frozen32 and challenge157 are unchanged. The earlier c6d1603f/01f9b7c8 GO remains source-bound; lexical canonical hits are not runtime or answer-sufficiency proof.",
+  "scope": "Separate six-question MAT-AUTH-001 #353-B Main-label consumer fixture. Version 4 updates only revision-sensitive MAT353B-04/05/06 facts and metadata for accepted #390/main 751edc0b B admission and stop-before-Ready handoff. All six queries, canonical/source routes and MAT353B-01/02/03 facts remain unchanged; version 3 remains at 87418298 and version 2 at c6d1603f. Frozen32 and challenge157 are unchanged. The earlier c6d1603f/01f9b7c8 GO remains source-bound; lexical canonical hits are not runtime or answer-sufficiency proof.",
   "questions": [
     {
       "id": "MAT353B-01",
@@ -46,7 +46,7 @@
       "facts": [
         "The original 27 legacy owners remain authenticated against frozen 0fd4af59; their lock, catalogue/capability digests and stale-policy refusal are not refreshed.",
         "The canonical catalogue, original compiler, all four full-shadow outputs and native/fallback behavior remain unchanged; full native-shadow metadata stays unconsumed by production.",
-        "The separate B executable-source admission authenticates accepted #377/main 0103de80, including exact bytes of its native liveness probe and the unchanged #374 benchmark, while the historical display oracle remains at 7ef4856e. The unchanged 16-suffix rule excludes the JSON fixture as separately authenticated data. It still allows only the generated resource, exact Main consumer and identity dependency; extra or indirect consumers require a reviewed transition, not an A-lock or oracle refresh."
+        "The separate B executable-source admission authenticates accepted #390/main 751edc0b, including exact bytes of its worker ownership fix, both new GDScript tests, the #377 native liveness probe and #374 benchmark, while the historical display oracle remains at 7ef4856e. The unchanged 16-suffix rule excludes the JSON fixture as separately authenticated data. It still allows only the generated resource, exact Main consumer and identity dependency; extra or indirect consumers require a reviewed transition, not an A-lock or oracle refresh."
       ],
       "sources": ["operations/material-catalogue-shadow.md"],
       "revision_sensitive": true
@@ -59,7 +59,7 @@
         "The generated executable resource is added to microscenario_identity.gd::SOURCES, so current apparatus source hashes deliberately change.",
         "Historical captures and receipts retain their original source sets; comparisons between old and new sets remain refused or explicitly ineligible.",
         "Native binary hashes must be measured from actual artifacts; unchanged native source alone does not prove equal binary hashes.",
-        "The complete B executable inventory and narrower MicroScenario SOURCES list are distinct; the accepted #374 benchmark and #377 native liveness probe enter B admission without entering the apparatus source list."
+        "The complete B executable inventory and narrower MicroScenario SOURCES list are distinct; the accepted #374 benchmark, #377 native liveness probe and both #390 GDScript tests enter B admission without entering the apparatus source list. The #390 worker is already in that list, so its changed bytes alter current fingerprints; historical source maps remain unchanged."
       ],
       "sources": ["operations/material-catalogue-shadow.md"],
       "revision_sensitive": true
@@ -69,7 +69,7 @@
       "query": "Does this #353-B assignment allow merging, migrating other consumers, adding ID132 or implementing Materials Lab editing?",
       "canonical": ["architecture/material-authoring-catalogue-plan.md", "operations/material-catalogue-shadow.md"],
       "facts": [
-        "The owner admits only Main display names, scoped current proofs and the apparatus dependency transition, plus reconciliation with accepted #377/main 0103de80 on the existing #384 branch. The resulting candidate stays Draft before a fresh separate GO TO READY / CONDITIONAL / NO-GO admission review; no Ready transition or merge is authorized by this assignment.",
+        "The owner admits only Main display names, scoped current proofs and the apparatus dependency transition, plus reconciliation with accepted #390/main 751edc0b on the existing #384 branch. The resulting candidate stays Draft before a fresh separate GO TO READY / CONDITIONAL / NO-GO admission review; no Ready transition or merge is authorized by this assignment.",
         "Broad #353/#352 remain open; other consumers, #356 editing and unrelated active-branch imports are not authorized. The original bbed081b audit and later c6d1603f/01f9b7c8 independent GO and receipts remain historical and do not qualify the new reconciled head.",
         "The domain remains 132 slots with invalid10. If accepted main incorporates #358's experimental 132–137 or another expanded catalogue, stop for a new scope decision."
       ],

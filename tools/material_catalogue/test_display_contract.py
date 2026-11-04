@@ -14,8 +14,10 @@ import presentation
 from consumer_test_support import copy_b_inputs
 
 
-ACCEPTED_MAIN = "0103de80d11304388868f89f7b26c672ad6100ad"
-ACCEPTED_TREE = "0ba07dc799afca43716bbab966f48266fa924718"
+ACCEPTED_MAIN = "751edc0b495dc85484ad5509a7c95f863651c76b"
+ACCEPTED_TREE = "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6"
+PRE390_MAIN = "0103de80d11304388868f89f7b26c672ad6100ad"
+PRE390_TREE = "0ba07dc799afca43716bbab966f48266fa924718"
 PRE377_MAIN = "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
 PRE377_TREE = "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204"
 LEGACY_MAIN = "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
@@ -29,6 +31,17 @@ PROBE_BLOB = "5185801e469cfed975b901243a42f3a02a0e1ee4"
 PROBE_SHA256 = "26e421d2b9de3e4e6c0c6e7e74f503f3f26f7baf17b02c6d02712eb15dcc9bb9"
 PROBE_FIXTURE = "native/tests/fixtures/material_liveness_campaign_v1.json"
 PROBE_FIXTURE_SHA256 = "320bd76b5bc69d68fe7ed21324999f9f1b9272109da646138a2b31820f1f2b4b"
+WORKER = "godot/scripts/simulation_worker.gd"
+REGION_TESTS = ("godot/tests/lcb201_pressure_host_case.gd",
+                "godot/tests/test_simulation_worker_interest_ownership.gd")
+REGION_SOURCE_IDENTITIES = {
+    WORKER: ("ff5ddf9026476c52717650e747f367bb1f6bd5e5",
+             "6b1c27ff4e0013db58436079834ceae2c26589a752ee166462437c9aff2dbdbf"),
+    REGION_TESTS[0]: ("31a213fb6edeff23a403de8309e45262c75768d4",
+                      "420ffd9afb23f7b7cd0198c4de4671e92c391f3ac170d681bb7ebd3f848f5532"),
+    REGION_TESTS[1]: ("b422610c5119fef79ea5309e0bdd4ac00953149e",
+                      "aaf52310f6d73fd3fb469996eea4938334b0fed96da23a888562e54b24766d2d"),
+}
 LOCK_SHA256 = "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
 ORACLE_SHA256 = "f7c27a60ddd6185c78b2fcc1fab956a0496021024090b467b8071305239d30a1"
 
@@ -67,11 +80,16 @@ class DisplayContractTests(unittest.TestCase):
         self.assertEqual((self.root / BENCHMARK).read_bytes(), accepted)
         inventory = contract.script_inventory()
         self.assertEqual(inventory[BENCHMARK], BENCHMARK_BLOB)
+        with patch.object(contract, "B_ADMISSION_BASELINE", PRE377_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", PRE377_TREE):
+            benchmark_inventory = contract.script_inventory()
         with patch.object(contract, "B_ADMISSION_BASELINE", LEGACY_MAIN), \
                 patch.object(contract, "B_ADMISSION_TREE", LEGACY_TREE):
             old_inventory = contract.script_inventory()
-        self.assertEqual(set(inventory) - set(old_inventory), {BENCHMARK, PROBE})
-        self.assertEqual({name: inventory[name] for name in old_inventory}, old_inventory)
+        # Keep the accepted #374 transition independently checked at its own
+        # source; later #377/#390 additions do not rewrite that historical delta.
+        self.assertEqual(set(benchmark_inventory) - set(old_inventory), {BENCHMARK})
+        self.assertEqual({name: benchmark_inventory[name] for name in old_inventory}, old_inventory)
         self.assertNotIn("tools/lcb/pressure_idle_cost.py", inventory)
         report = self.check()
         self.assertEqual(report["status"], "PASS")
@@ -90,15 +108,18 @@ class DisplayContractTests(unittest.TestCase):
                 self.check()
         self.assertIn("unapproved executable source inventory", str(refusal.exception))
         self.assertIn("missing=[]", str(refusal.exception))
-        self.assertIn("extra=" + repr(sorted((BENCHMARK, PROBE))), str(refusal.exception))
+        self.assertIn("extra=" + repr(sorted((BENCHMARK, PROBE, *REGION_TESTS))), str(refusal.exception))
 
     def test_377_probe_and_fixture_are_authenticated_as_accepted_source(self):
         inventory = contract.script_inventory()
+        with patch.object(contract, "B_ADMISSION_BASELINE", PRE390_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", PRE390_TREE):
+            probe_inventory = contract.script_inventory()
         with patch.object(contract, "B_ADMISSION_BASELINE", PRE377_MAIN), \
                 patch.object(contract, "B_ADMISSION_TREE", PRE377_TREE):
             previous = contract.script_inventory()
-        self.assertEqual(set(inventory) - set(previous), {PROBE})
-        self.assertEqual({name: inventory[name] for name in previous}, previous)
+        self.assertEqual(set(probe_inventory) - set(previous), {PROBE})
+        self.assertEqual({name: probe_inventory[name] for name in previous}, previous)
         self.assertEqual(inventory[PROBE], PROBE_BLOB)
         for relative, digest in ((PROBE, PROBE_SHA256), (PROBE_FIXTURE, PROBE_FIXTURE_SHA256)):
             accepted = subprocess.run(
@@ -121,7 +142,105 @@ class DisplayContractTests(unittest.TestCase):
                 self.check()
         self.assertIn("unapproved executable source inventory", str(refusal.exception))
         self.assertIn("missing=[]", str(refusal.exception))
-        self.assertIn("extra=['" + PROBE + "']", str(refusal.exception))
+        self.assertIn("extra=" + repr(sorted((PROBE, *REGION_TESTS))), str(refusal.exception))
+
+    def test_390_worker_and_tests_are_authenticated_as_accepted_source(self):
+        inventory = contract.script_inventory()
+        with patch.object(contract, "B_ADMISSION_BASELINE", PRE390_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", PRE390_TREE):
+            previous = contract.script_inventory()
+        self.assertEqual(set(inventory) - set(previous), set(REGION_TESTS))
+        self.assertEqual(set(previous) - set(inventory), set())
+        self.assertEqual({name for name in previous if inventory[name] != previous[name]}, {WORKER})
+        for relative, (blob, digest) in REGION_SOURCE_IDENTITIES.items():
+            with self.subTest(path=relative):
+                accepted = subprocess.run(
+                    ["git", "-C", str(contract.ROOT), "show", ACCEPTED_MAIN + ":" + relative],
+                    check=True, capture_output=True, timeout=30).stdout
+                self.assertEqual(hashlib.sha256(accepted).hexdigest(), digest)
+                self.assertEqual(inventory[relative], blob)
+                self.assertEqual((self.root / relative).read_bytes(), accepted)
+        # The new tests are ordinary authenticated executables. Neither their
+        # directory nor their suffix is an exclusion or a count-only allowance.
+        self.assertEqual(contract.EXECUTABLE_ROOTS, ("godot", "native"))
+        self.assertEqual(contract.EXECUTABLE_SUFFIXES,
+                         {".gd", ".tscn", ".tres", ".godot", ".gdshader", ".gdextension", ".cfg",
+                          ".h", ".hh", ".hpp", ".hxx", ".c", ".cc", ".cpp", ".cxx", ".inc"})
+        report = self.check()
+        self.assertEqual(report["admission_source_commit"], ACCEPTED_MAIN)
+        self.assertEqual(report["admission_source_tree"], ACCEPTED_TREE)
+        self.assertEqual(report["executable_source_count"], len(inventory) + 1)
+
+    def test_pre390_admission_refuses_both_accepted_gd_tests(self):
+        with patch.object(contract, "B_ADMISSION_BASELINE", PRE390_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", PRE390_TREE):
+            with self.assertRaises(ValueError) as refusal:
+                self.check()
+        self.assertIn("unapproved executable source inventory", str(refusal.exception))
+        self.assertIn("missing=[]", str(refusal.exception))
+        self.assertIn("extra=" + repr(sorted(REGION_TESTS)), str(refusal.exception))
+
+    def test_390_test_tamper_removal_rename_and_copy_fail_closed(self):
+        for relative in REGION_TESTS:
+            path = self.root / relative
+            original = path.read_bytes()
+            alternate = path.with_name("unadmitted_" + path.name)
+            for mutation in ("tamper", "remove", "rename", "copy"):
+                with self.subTest(path=relative, mutation=mutation):
+                    try:
+                        if mutation == "tamper":
+                            path.write_bytes(original + b"\n# unapproved test change\n")
+                        elif mutation == "remove":
+                            path.unlink()
+                        elif mutation == "rename":
+                            path.rename(alternate)
+                        else:
+                            alternate.write_bytes(original)
+                        with self.assertRaises(ValueError) as refusal:
+                            self.check()
+                        if mutation == "tamper":
+                            self.assertIn(relative + ": executable source drift", str(refusal.exception))
+                        else:
+                            missing = [relative] if mutation in ("remove", "rename") else []
+                            extra = [alternate.relative_to(self.root).as_posix()] if mutation in ("rename", "copy") else []
+                            self.assertIn("unapproved executable source inventory", str(refusal.exception))
+                            self.assertIn("missing=" + repr(missing), str(refusal.exception))
+                            self.assertIn("extra=" + repr(extra), str(refusal.exception))
+                    finally:
+                        alternate.unlink(missing_ok=True)
+                        path.write_bytes(original)
+
+    def test_390_worker_tamper_and_rollback_are_refused(self):
+        path = self.root / WORKER
+        original = path.read_bytes()
+        old_worker = subprocess.run(
+            ["git", "-C", str(contract.ROOT), "show", PRE390_MAIN + ":" + WORKER],
+            check=True, capture_output=True, timeout=30).stdout
+        self.assertNotEqual(original, old_worker)
+        for payload in (original + b"\n# unapproved worker change\n", old_worker):
+            with self.subTest(rollback=payload == old_worker):
+                try:
+                    path.write_bytes(payload)
+                    with self.assertRaisesRegex(ValueError, WORKER + ": executable source drift"):
+                        self.check()
+                finally:
+                    path.write_bytes(original)
+
+    def test_pre390_admission_still_refuses_worker_when_new_tests_are_hidden(self):
+        # Isolate the changed worker from the first inventory-set failure. An
+        # attempt to hide the two new tests cannot make a stale worker baseline
+        # authenticate the accepted #390 production source.
+        for relative in REGION_TESTS:
+            (self.root / relative).unlink()
+        with patch.object(contract, "B_ADMISSION_BASELINE", PRE390_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", PRE390_TREE):
+            with self.assertRaisesRegex(ValueError, WORKER + ": executable source drift"):
+                self.check()
+
+    def test_wrong_b_admission_commit_is_refused(self):
+        with patch.object(contract, "B_ADMISSION_BASELINE", PRE390_MAIN):
+            with self.assertRaisesRegex(ValueError, "B admission tree differs"):
+                self.check()
 
     def test_accepted_probe_tamper_removal_rename_and_copy_fail_closed(self):
         path = self.root / PROBE
@@ -254,7 +373,8 @@ class DisplayContractTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(before[0]).hexdigest(), ORACLE_SHA256)
         # These intentionally invalid inputs must be irrelevant to the old
         # display oracle. Only the separate B/presentation guards consume them.
-        for relative in (BENCHMARK, PROBE, presentation.PRESENTATION, contract.RESOURCE):
+        for relative in (BENCHMARK, PROBE, WORKER, *REGION_TESTS,
+                         presentation.PRESENTATION, contract.RESOURCE):
             (self.root / relative).write_bytes(b"not a legacy oracle input\n")
         with patch.object(legacy, "git_bytes", wraps=legacy.git_bytes) as historical_reads:
             report = legacy.check(self.root, contract.ROOT)
@@ -264,6 +384,20 @@ class DisplayContractTests(unittest.TestCase):
         self.assertEqual(report["fixture_sha256"], ORACLE_SHA256)
         self.assertEqual(report["cases"], 277)
         self.assertEqual(before, (fixture.read_bytes(), fixture.stat().st_mtime_ns))
+
+    def test_historical_display_authority_cannot_follow_current_b_baseline(self):
+        # Even when accepted Main/CellWorld still have their historical bytes,
+        # moving their oracle identity would rewrite the frozen source authority.
+        with patch.object(legacy, "BASELINE", ACCEPTED_MAIN), \
+                patch.object(legacy, "BASELINE_TREE", ACCEPTED_TREE):
+            with self.assertRaisesRegex(ValueError, "frozen legacy-name fixture"):
+                self.check()
+        path = self.root / legacy.FIXTURE
+        original = json.loads(path.read_bytes())
+        original.update({"source_commit": ACCEPTED_MAIN, "source_tree": ACCEPTED_TREE})
+        path.write_text(json.dumps(original, sort_keys=True, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "frozen legacy-name fixture"):
+            self.check()
 
     def test_missing_stale_and_poisoned_generated_resource_fail_closed(self):
         path = self.root / contract.RESOURCE

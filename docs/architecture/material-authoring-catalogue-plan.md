@@ -3,7 +3,7 @@ title: Canonical material catalogue and interaction authoring — adopted Planne
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Owner-adopted Planned material-authoring baseline; section 14 records the draft 353-B Main-label consumer and post-377 admission, section 15 retains accepted Phase A and its production boundary; sections 1–13 preserve historical proposal, review, adoption and A-only integration
+scope: Owner-adopted Planned material-authoring baseline; section 14 records the draft 353-B Main-label consumer and post-390 admission, section 15 retains accepted Phase A and its production boundary; sections 1–13 preserve historical proposal, review, adoption and A-only integration
 last-reviewed: 2026-11-04
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
@@ -20,8 +20,8 @@ tests/tooling/evidence-only liveness investigation as `0103de80`; the
 preserves its findings and separately pending production correction.
 [Section 14](#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04)
 records the owner-assigned generated Main labels, scoped current proofs and
-apparatus source transition. Its post-#377 reconciliation changes only the
-accepted B executable baseline to `0103de80`; the display oracle and 27-owner
+apparatus source transition. Its post-#390 reconciliation preserves the accepted
+worker ownership fix and advances B executable admission to `751edc0b`; the display oracle and 27-owner
 authority stay frozen. Fresh independent admission review must precede Ready.
 No #384 merge or other production consumer migration is authorized.
 
@@ -661,7 +661,8 @@ owns implementation details and commands; the
 original source, runtime and artifact qualification. The later
 [#374 reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
 keeps its evidence historical. The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
-records the later accepted-main admission and fresh proof. The deliverable stays a draft PR for
+retains that source pair. The [post-#390 record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+owns the current transition and fresh proof. The deliverable stays a draft PR for
 independent admission review, before Ready, with no merge, issue closure or
 import of other active branches.
 
@@ -705,7 +706,7 @@ keeps this change separate from the historical display oracle and immutable A
 lock. The allowed consumer delta remains only the Main preload/method,
 generated labels resource and apparatus dependency entry.
 
-**Current post-#377 reconciliation:** accepted main is
+**Historical post-#377 reconciliation:** accepted main was
 `0103de80d11304388868f89f7b26c672ad6100ad`, tree
 `0ba07dc799afca43716bbab966f48266fa924718`. Its single new executable-inventory
 entry is `native/tests/material_liveness_probe.cpp`; the existing 16-suffix
@@ -718,6 +719,16 @@ entry remain the only approved production consumer deviations. The
 keeps `0103de80` admission separate from frozen `0fd4af59` compatibility and
 historical `7ef4856e` display output. The earlier `c6d1603f` / `01f9b7c8`
 independent GO remains historical and does not approve this new head.
+
+**Current post-#390 reconciliation:** accepted main is
+`751edc0b495dc85484ad5509a7c95f863651c76b`, tree
+`b0d42a256285e6049a6d3bdd1613d7ecd89f43c6`. Its exact worker ownership fix and
+two GDScript tests are preserved. Accepted executable inventory grows 661→663;
+the candidate has 664, with unchanged roots and 16 suffixes. No test exemption
+or second consumer is allowed. The [current three-baseline contract](../operations/material-catalogue-shadow.md#current-main-b-admission-after-390--2026-11-04)
+keeps the frozen lock and display oracle unchanged and requires fresh actual
+worker, native/shadow and four-stage Godot proof. The `87418298` packet and
+older `c6d1603f` GO do not qualify this new pair.
 
 Extra, renamed and indirect consumers remain refused. Later integrations
 touching the B inventory, including another Main writer such as #370, require
@@ -742,7 +753,9 @@ source sets and mixed-source refusal remains in force. Binary identities are
 measured from actual artifacts; source equality alone is not binary equality.
 The accepted #374 benchmark and #377 probe belong to the complete B inventory,
 not the narrower MicroScenario `SOURCES` list; their admission does not change
-that apparatus list.
+that apparatus list. The accepted #390 worker is already in `SOURCES`, so its
+new bytes change current fingerprints; its two new tests belong only to the
+complete B inventory. Historical captures keep their original source maps.
 Rollback restores the consumer, generated dependency and matching proof boundary
 together, without save or World conversion.
 

@@ -33,22 +33,22 @@ and fallback identities, experimental ID isolation and rollback. Its
 owns the separately assigned #353-B labels-only consumer, exact five exceptions,
 scoped v2 receipts, unchanged A locks and mandatory actual consumer proof.
 Static `--check` is not a runtime B report. The
-[#377/current-main admission section](../operations/material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04)
-distinguishes B baseline `0103de80`, historical display oracle `7ef4856e` and
-frozen 27-owner authority `0fd4af59`. The accepted native liveness probe adds one
-executable under the unchanged suffix policy; its JSON fixture is separately
-authenticated data. #384 stays Draft before a new independent
+[#390/current-main admission section](../operations/material-catalogue-shadow.md#current-main-b-admission-after-390--2026-11-04)
+distinguishes B baseline `751edc0b`, historical display oracle `7ef4856e` and
+frozen 27-owner authority `0fd4af59`. The accepted worker and both new GDScript
+tests are authenticated under the unchanged suffix policy; earlier #374/#377
+executables and separately authenticated fixture data remain intact. #384 stays Draft before a new independent
 GO TO READY / CONDITIONAL / NO-GO review. The old `c6d1603f` / `01f9b7c8` GO is
 historical and does not qualify the new source.
 
-The [six B questions](retrieval-questions-mat-auth-353b.json) version3 update only
-MAT353B-04/05/06 facts and fixture metadata for this post-#377 transition; query
-wording and canonical/source routes stay fixed. Version2 remains at `c6d1603f`
+The [six B questions](retrieval-questions-mat-auth-353b.json) version4 update only
+MAT353B-04/05/06 facts and metadata for the post-#390 transition; query wording
+and canonical/source routes stay fixed. Version3 remains at `87418298`, version2 at `c6d1603f`
 and original version1 at `bbed081b`.
 The [353-A questions](retrieval-questions-mat-auth-353a.json) remain a separate
-implementation fixture. Version5 updates only MAT353A-01's revision-sensitive
-facts and metadata to retain both the merged Phase A and current B admission;
-all queries, canonical/source routes and other questions stay fixed. Version4
+implementation fixture. Version6 updates only MAT353A-01's revision-sensitive
+facts and metadata for post-#390 B admission; all queries, canonical/source
+routes and other questions stay fixed. Version5 remains at `87418298`. Version4
 remains at `c6d1603f`, branch-specific version3 at `bbed081b` and accepted #377,
 and version2 in accepted `7ef4856e`. Original version1 and its evidence remain
 at implementation head `6d3737594beb39e83e555f66f2e81184a4bdbf77`.
@@ -73,9 +73,9 @@ is historical evidence outside the default corpus.
 
 [Supplementary architecture questions](retrieval-questions-mat-auth.json)
 exercise these distinctions separately from unchanged frozen32 and challenge157.
-Version6 updates only MAT-AUTH-01's revision-sensitive facts and metadata for
-the accepted #377/current B reconciliation and before-Ready review boundary;
-all queries, canonical/source routes and other questions stay fixed. Version5
+Version7 updates only MAT-AUTH-01's revision-sensitive facts and metadata for
+accepted #390/current B reconciliation and the before-Ready boundary; all queries,
+canonical/source routes and other questions stay fixed. Version6 remains at `87418298`. Version5
 remains at `c6d1603f`; branch-specific version4 remains at `bbed081b` and accepted
 #377; version3 remains in accepted `7ef4856e`.
 Version1 remains at reviewed head `9b776d109e7843fb9b2d25239f9d088181309aa1`,
@@ -221,7 +221,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Which liquid solver families exist, which materialÃ—family combinations are allowed, and how is a family selected? | [Solver-family policy](../architecture/liquid-solver-family-policy.md), [capability matrix](liquid-solver-capability-matrix.json), [materials and rule kernels](../systems/materials-and-rule-kernels.md) |
 | Is the native liquid policy API implemented, what does this build accept or refuse, and what does readback report? | [Native policy foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24), [roadmap](status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24), [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md) |
 | Is the pressure_flow_v1 Water family implemented, how do its gas compartments, heads and kernel work, and what did it measure? | [`pressure_flow_v1` reference](../architecture/pressure-flow-v1.md), [roadmap](status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24), [dated evidence](../audits/2026-10-24-lcb001-pressure-reference-publication.md), [handoff requirements](../architecture/lcb-pressure-inertial-handoff.md#pressure-pressure_flow_v1-water-only-200) |
-| Why does a quiet PressureFlow pool cost tens of milliseconds per tick when FreeMass sleeps, and do cached/dormant variants fix it? | [#201 idle-cost diagnosis, measurements and Planned P1/P2](../audits/2026-11-04-lcb201-pressure-idle-cost.md), [current-main cost at host scale](../architecture/pressure-optimization.md#current-main-cost-at-host-scale). Native only; no full-host or default claim. |
+| Why does a quiet PressureFlow pool cost tens of milliseconds per tick when FreeMass sleeps, and do cached/dormant variants fix it? | [#201 idle-cost diagnosis, measurements and Planned P1/P2](../audits/2026-11-04-lcb201-pressure-idle-cost.md), [current-main cost at host scale](../architecture/pressure-optimization.md#current-main-cost-at-host-scale), [desktop region-flip fix and in-app before/after](../audits/2026-11-04-lcb201-region-flip.md). |
 | When may an optimized pressure pool skip Water motion, how do distant head or gas changes wake it, and what do identity and total cost actually prove? | [Bounded #201 head/gas/motion obligations, cost admission and execution identity](../architecture/pressure-optimization.md), [source-qualified evidence and remaining gates](../audits/2026-10-25-lcb002-pressure-variants.md). Native mask parity is not real Rapier displacement or global speedup. |
 | What happens to gas labels hidden beneath a moving body when their compartment retires, and can a closing ledger make a quarantined World acceptable? | [Gas topology and masked-label retirement](../architecture/pressure-flow-v1.md#gas-compartments), [source-qualified failure and repair](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md). Still-live labels retain identity; retired hidden labels become vacuum, and merge acceptance remains a separate gate. |
 | How can pressure variants be compared at one tick, or a static pool observed across ticks, without changing complete continuation hashes? | [Named liquid comparison projections](../architecture/pressure-flow-v1.md#liquid-comparison-projections). A static-content diagnostic does not authorize dormant motion skips. |

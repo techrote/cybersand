@@ -16,9 +16,10 @@ records accepted A-only main
 the [bounded Main display-name migration](#bounded-main-display-name-authority--2026-11-04):
 one labels-only generated consumer, scoped current proofs and an explicit
 apparatus source transition. The
-[#377/current-main reconciliation](#current-main-b-admission-after-377--2026-11-04)
-authenticates accepted main `0103de80d11304388868f89f7b26c672ad6100ad` for the
-B executable inventory, including its native liveness probe. The historical
+[#390/current-main reconciliation](#current-main-b-admission-after-390--2026-11-04)
+authenticates accepted main `751edc0b495dc85484ad5509a7c95f863651c76b` for the
+B executable inventory, including the exact worker ownership fix and both new
+GDScript tests. The accepted #374 benchmark and #377 liveness probe stay admitted. The historical
 display oracle and 27-owner lock stay fixed. **PR #384 stays Draft; fresh
 independent admission review precedes Ready-for-review.** No merge is authorized.
 Native and fallback physics retain their existing authority. The
@@ -384,7 +385,70 @@ and native sources, are refused. This B inventory is separate from the unchanged
 executable source, including active #370, needs a reviewed B transition and fresh
 proofs; it must not refresh the A lock or silently import an active branch.
 
+### Current-main B admission after #390 — 2026-11-04
+
+**Current source transition; STOP BEFORE READY.** Accepted main is
+`751edc0b495dc85484ad5509a7c95f863651c76b`, tree
+`b0d42a256285e6049a6d3bdd1613d7ecd89f43c6`. Its ordered parents are
+`0103de80d11304388868f89f7b26c672ad6100ad` and
+`9a9e63a0091f3a64e038892e651d0591d135241a`. The owner assigned an ordinary
+ancestry-preserving merge into existing #384 head `87418298e95def37ec86b83c543c2aa2d1d7c398`.
+The [post-#390 reconciliation record](../audits/2026-11-04-mat-auth384-post390-reconciliation.md)
+and [PR ledger](https://github.com/techrote/cybersand/pull/384) identify the
+resulting published head, fresh receipts and normal Draft hosted execution.
+
+| Authority | Immutable source | Treatment |
+|---|---|---|
+| Frozen 27-owner compatibility | `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` | Original lock, catalogue and full-shadow outputs remain unchanged |
+| Historical 277-case display oracle | `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` | Original Main/CellWorld outputs, 132 slots and invalid-ID fallbacks remain unchanged |
+| Current B executable admission | `751edc0b495dc85484ad5509a7c95f863651c76b` | Exact accepted tree and complete native/Godot inventory, without test exemptions |
+
+The accepted delta has eight paths. Its three executable changes are
+[`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd),
+[`test_simulation_worker_interest_ownership.gd`](../../godot/tests/test_simulation_worker_interest_ownership.gd)
+and [`lcb201_pressure_host_case.gd`](../../godot/tests/lcb201_pressure_host_case.gd).
+All three preserve accepted Git bytes. Fixed-interest MicroScenarios alone
+write their region/window flag; the worker still applies cadence, adhesion and
+interest-center settings, and non-fixed-interest operation retains its camera
+window writes. The [accepted #390 record](../audits/2026-11-04-lcb201-region-flip.md)
+owns original measurements. A compatibility pass alone does not prove this
+worker behavior; fresh executable ownership and real-native cache controls
+must be reported separately, with unavailable prerequisites stated explicitly.
+
+Reconstructed accepted inventory grows **661→663** and the candidate has **664**
+entries. The unchanged 16 suffixes and `godot`/`native` roots authenticate both
+new tests and the changed worker. The old post-#377 baseline actually refuses
+the two new paths; a retained old inventory cannot be treated as current.
+There are no test, benchmark, directory or extension exemptions. The only B
+consumer deviations remain the Main preload/method, generated labels resource
+and existing MicroScenario resource-list addition. The worker was already in
+the apparatus source list, so its accepted byte change also changes the current
+apparatus fingerprint. The two tests enter the complete B inventory, not that
+narrower list. Old captures and native/shadow/B receipts keep their source sets.
+
+Fresh final-head checks must cover exact baseline/tree and complete inventory,
+tamper/remove/rename/copy controls for both new tests, stale worker admission,
+unadmitted executable/indirect consumer, producer/receipt/source-map corruption,
+and attempts to retarget either historical authority. Preserve the real
+legacy/candidate/poison/rollback Godot proof, native query parity and separate
+GDScript shadow v2 proof. A poison must fail the actual consumer probe and
+rollback must restore the historical source map. Stage counts are observations,
+not hard-coded admission thresholds. Linux inherited-Web method execution does
+not establish browser/Wasm, full application, rendered pixels or Windows proof.
+
+The previous `87418298` / `0103de80` packet and older `c6d1603f` / `01f9b7c8`
+independent GO remain historical. The new owner cannot self-issue admission.
+Keep #384 open, Draft and unmerged for a new strictly read-only **GO TO READY /
+CONDITIONAL / NO-GO** decision on the exact new pair. Normal Draft CI supplies
+only its actually executed jobs/steps: advisory success grants no Native waiver;
+Draft-skipped Native, sanitizers, GDExtension, palette and Web gates remain
+unexecuted. Ready-state materialized provenance, remaining runtime/export and
+measurement gates require a later separately authorized assignment.
+
 ### Current-main B admission after #377 — 2026-11-04
+
+**Historical post-#377 transition for `87418298` / `0103de80`; superseded only
+for current B admission by the #390 section above.**
 
 **Current candidate source transition; fresh independent admission required.**
 The [independent read-only GO report](https://chatgpt.com/library?file_id=libfile_d3ee9e7f5e108191905cc6560fffe1f1&account_id=personal)
