@@ -103,6 +103,10 @@ func open(parent: Node, workers: int = 4, surroundings: String = "empty",
 		"impulse_x_sum":0.0, "impulse_y_sum":0.0, "max_impulse_magnitude":0.0,
 		"angular_momentum_change_sum":0.0,
 		"worker_observation_attempts":0, "worker_contact_ms_total":0.0, "worker_contact_ms_max":0.0,
+		"worker_complete_attempts":0, "worker_refused_attempts":0,
+		"worker_native_geometry_ms_all_attempts":0.0, "worker_native_payload_freeze_ms_all_attempts":0.0,
+		"worker_native_call_ms_all_attempts":0.0, "worker_envelope_ms_all_attempts":0.0,
+		"owner_ready_receipts":0, "owner_ready_latency_ms_total":0.0, "owner_ready_latency_ms_max":0.0,
 		"worker_geometry_probes":0, "worker_support_probes":0, "response_attempts":0,
 		"response_ms_all_attempts":0.0, "response_ms_max_attempt":0.0,
 		"response_ms_total":0.0, "latency_ms_total":0.0, "energy_violations":0}
@@ -503,6 +507,11 @@ func _consume_compound_results() -> void:
 	var applied: Dictionary = bridge.apply_compound_cellular_results(
 		snapshot.serial, snapshot.rigid_body_results, 0, _coupling_sample_serial,
 		_coupling_local_centers, _coupling_masses, COUPLING_IMPULSE_CAP, COUPLING_CORRECTION_CAP)
+	last_contact_response = {"accepted":false, "evaluated":false,
+		"outcome":"ResponseDisabled" if not sand_resistance_enabled else "CompoundResponseRefused",
+		"compound_outcome":applied.get("outcome", "Unknown"), "snapshot_serial":snapshot.serial,
+		"source_sample_serial":snapshot.solid_contact_observation.get("sample_serial", -1),
+		"current_sample_serial":_coupling_sample_serial}
 	_coupling_stale_results += int(applied.get("stale_records", 0))
 	if not applied.get("accepted", false):
 		return
@@ -523,6 +532,13 @@ func _consume_compound_results() -> void:
 			generation, int(applied.sample_serial), _coupling_sample_serial,
 			_coupling_local_centers, _coupling_sizes)
 		var contact_ms: float = float(Time.get_ticks_usec() - contact_started) / 1000.0
+		# Receipt identity accompanies refusals as well as successful responses.
+		# It does not turn a prior accepted response into this sample's result.
+		last_contact_response["snapshot_serial"] = snapshot.serial
+		last_contact_response["evaluated"] = true
+		last_contact_response["source_sample_serial"] = int(applied.sample_serial)
+		last_contact_response["current_sample_serial"] = _coupling_sample_serial
+		last_contact_response["receipt_usec"] = contact_started
 		_contact_metrics.response_attempts += 1
 		_contact_metrics.response_ms_all_attempts += contact_ms
 		_contact_metrics.response_ms_max_attempt = maxf(_contact_metrics.response_ms_max_attempt, contact_ms)
@@ -537,6 +553,23 @@ func _record_contact_observation(observation: Dictionary, work: Dictionary) -> v
 	_contact_metrics.worker_contact_ms_max = float(work.get("max_usec", 0)) / 1000.0
 	_contact_metrics.worker_geometry_probes = int(work.get("geometry_probes", 0))
 	_contact_metrics.worker_support_probes = int(work.get("support_probes", 0))
+	_contact_metrics.worker_complete_attempts = int(work.get("complete_attempts", 0))
+	_contact_metrics.worker_refused_attempts = int(work.get("refused_attempts", 0))
+	_contact_metrics.worker_native_geometry_ms_all_attempts = float(work.get("native_geometry_ms", 0.0))
+	_contact_metrics.worker_native_payload_freeze_ms_all_attempts = float(work.get("native_payload_freeze_ms", 0.0))
+	_contact_metrics.worker_native_call_ms_all_attempts = float(work.get("native_call_usec", 0)) / 1000.0
+	_contact_metrics.worker_envelope_ms_all_attempts = float(work.get("envelope_usec", 0)) / 1000.0
+	# This timestamp is after the owner's envelope is sealed, immediately before
+	# the ordinary mutex publication. It includes handoff/scheduling delay, and
+	# is measured for the baseline and every refused observation too. It is not
+	# a claim about unobserved publications or operating-system thread CPU time.
+	var ready: int = int(work.get("ready_usec", -1))
+	var receipt: int = Time.get_ticks_usec()
+	if ready >= 0 and ready <= receipt:
+		var latency: float = float(receipt - ready) / 1000.0
+		_contact_metrics.owner_ready_receipts += 1
+		_contact_metrics.owner_ready_latency_ms_total += latency
+		_contact_metrics.owner_ready_latency_ms_max = maxf(_contact_metrics.owner_ready_latency_ms_max, latency)
 	if not observation.get("ok", false) or not observation.get("complete", false):
 		_contact_metrics.refused_observations += 1
 		return

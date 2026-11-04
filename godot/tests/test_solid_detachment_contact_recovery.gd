@@ -66,6 +66,10 @@ func _case(kind: String, candidate: bool, repeat: int) -> void:
 		if observation.get("ok", false) and int(observation.get("snapshot_serial", -1)) != observation_serial:
 			observation_serial = int(observation.snapshot_serial)
 			var source_pose: Transform2D = observation.source_transform
+			var response: Dictionary = session.last_contact_response
+			var current_velocity: Vector2 = PhysicsServer2D.body_get_state(session.body.get_rid(), PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY)
+			var mass: float = PhysicsServer2D.body_get_param(session.body.get_rid(), PhysicsServer2D.BODY_PARAM_MASS)
+			var inertia: float = PhysicsServer2D.body_get_param(session.body.get_rid(), PhysicsServer2D.BODY_PARAM_INERTIA)
 			trace.append({"rapier_step":step + 1, "snapshot":observation_serial,
 				"native_tick":observation.tick, "sample_serial":observation.sample_serial,
 				"revision":observation.revision, "physics_epoch":observation.physics_epoch,
@@ -77,6 +81,12 @@ func _case(kind: String, candidate: bool, repeat: int) -> void:
 				"max_penetration":observation.max_penetration,
 				"max_sand_penetration":observation.max_sand_penetration,
 				"contact_count":observation.contacts.size(), "observation_ms":observation.observation_ms,
+				"native_geometry_ms":observation.get("native_geometry_ms", 0.0),
+				"native_payload_freeze_ms":observation.get("native_payload_freeze_ms", 0.0),
+				"response_matches_observation":int(response.get("snapshot_serial", -1)) == observation_serial,
+				"response":response if int(response.get("snapshot_serial", -1)) == observation_serial else {},
+				"velocity_x":current_velocity.x, "velocity_y":current_velocity.y, "mass":mass, "inertia":inertia,
+				"kinetic_energy":0.5 * mass * current_velocity.length_squared() + 0.5 * inertia * session.angular_velocity() * session.angular_velocity(),
 				"source_x":source_pose.origin.x, "source_y":source_pose.origin.y,
 				"source_angle":source_pose.get_rotation(),
 				"current_x":pose.origin.x, "current_y":pose.origin.y, "current_angle":pose.get_rotation(),
@@ -113,6 +123,9 @@ func _case(kind: String, candidate: bool, repeat: int) -> void:
 		failed_responses += count
 	check(int(physical.get("worker_observation_attempts", 0)) >= int(physical.get("observations", 0)) + int(physical.get("refused_observations", 0))
 		and float(physical.get("worker_contact_ms_total", 0.0)) >= float(physical.get("geometry_ms_total", 0.0))
+		and int(physical.get("worker_complete_attempts", -1)) + int(physical.get("worker_refused_attempts", -1)) == int(physical.get("worker_observation_attempts", 0))
+		and absf(float(physical.get("worker_native_call_ms_all_attempts", -1.0)) + float(physical.get("worker_envelope_ms_all_attempts", -1.0)) - float(physical.get("worker_contact_ms_total", 0.0))) <= 0.000001
+		and int(physical.get("owner_ready_receipts", -1)) == int(physical.get("observations", 0)) + int(physical.get("refused_observations", 0))
 		and int(physical.get("response_attempts", -1)) == int(physical.get("response_accepts", 0)) + refused_responses + failed_responses
 		and float(physical.get("response_ms_all_attempts", 0.0)) >= float(physical.get("response_ms_total", 0.0)),
 		label + ": cost includes every owner attempt and response refusal")

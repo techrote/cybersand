@@ -10,6 +10,26 @@ related-documents: [../operations/soliding-programme.md, ../architecture/solidin
 
 # Native structural detachment
 
+## SOL364 bounded witness recovery — 2026-11-04
+
+The [prospective SOL364 registration](../audits/2026-11-04-sol364-registration.md)
+continues existing #364 on draft #347 and ordinarily reconciles accepted
+MAT-AUTH shadow main `7ef4856e`. The compiler and its frozen compatibility locks
+remain unchanged. New code retains and reclips the original exterior witness
+at the current pose when its old midpoint has left a cell. A fully cleared
+record no longer suppresses other valid records, but every source witness and
+duplicate is checked before filtering. No new face area, native mutation,
+positional correction, impulse energy or relaxed pose/identity bound is added.
+Stationary initial burial remains a distinct clearance gate.
+
+Native observation now seals its scalar-only contact/proxy records and arrays
+before handing values to the worker. The worker seals metadata separately,
+with a safe recursive-freeze fallback for the older runtime contract. Cumulative
+all-attempt stage timings preserve the inclusive cost numerator and complete
+consumed-observation denominator. The synchronized replay and new source-matched
+qualification remain separately required; these source descriptions do not
+turn the retained 23/24 cost result or persistent embedding into acceptance.
+
 ## Implemented scope and source authority
 
 **Current experimental source:** the `sol-detach-001-current-main` branch starts
@@ -229,7 +249,10 @@ does not resolve initial burial by deleting material or correcting body position
 ### Immutable publication and main-thread response
 
 The exclusive worker copies the observation into `solid_contact_observation`
-before publishing its snapshot and recursively freezes the payload. Native tick,
+before publishing its snapshot. The native value constructor freezes every
+scalar-only contact/proxy record and both arrays; the worker adds identity/timing
+metadata and freezes the envelope. Older native contracts use the original
+recursive freezer. Native tick,
 World revision, body sample, aggregate token/generation, snapshot serial and
 physics epoch bind that copy to its enclosing publication. Failed publications
 clear the channel. Main reads no live native cells.
@@ -239,8 +262,14 @@ the complete identity against that publication, including exact revision
 equality, forward sample ordering and the last applied snapshot/tick. Duplicated,
 old, out-of-order, incomplete and wrong-session observations perform no new RID
 mutation. A contact sample may be at most one sample old. Every proxy corner must
-remain within 0.25 cells of the observed pose, and the current geometry must still
-intersect the recorded cell. These are refusal fences, not inflation of geometry.
+remain within 0.25 cells of the observed pose. Each source segment is first
+authenticated against the exact source face, cell, weight, area and depth,
+including absence of sibling-covered seams. After all source records and
+duplicates pass, the same segment is transported and clipped to its original
+cell at the current pose. Only its remaining length and midpoint supply current
+weight and torque. A cleared segment is discarded; an entirely cleared nonempty
+observation refuses. The current full proxy face cannot substitute previously
+unobserved support. These are bounded witness checks, not inflation of geometry.
 
 [`solid_contact_response.gd`](../../godot/scripts/solid_contact_response.gd)
 plans the complete response before any impulse is applied. For inward normal
@@ -291,6 +320,17 @@ measurements, independently of workflow status; the execution checks do not enfo
 the 2 ms threshold. Report native-worker, Rapier-step, synchronization and
 publication latency separately. Headless CPU results do not
 establish GPU frame pacing or human gameplay acceptance.
+
+SOL364 records cumulative native-call and worker-envelope time separately;
+their sum equals the inclusive owner total. Native geometry/value-construction
+and native payload freezing are nested stages of the native call, so they are
+not added again. Complete and refused owner attempt totals remain visible,
+including attempts not represented in the consumed trace. Time from the sealed
+owner envelope to main receipt is measured for baseline and refused observations
+as well as accepted candidates. These are elapsed monotonic work/latency
+intervals, not operating-system thread CPU counters. The analysis reports
+per-repeat means, variance and all 24 original groups; an absent platform or
+worker cohort is INCOMPLETE, never a passing full matrix.
 
 ## Diagnostic scene and controls
 

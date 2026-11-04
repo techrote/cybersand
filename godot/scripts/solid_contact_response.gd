@@ -114,11 +114,11 @@ static func _intersection(pose: Transform2D, center: Vector2, size: Vector2,
 	return {"gap":gap, "depth":maxf(0.0, -gap), "area":absf(twice_area) * 0.5}
 
 
-static func _face_segment(pose: Transform2D, center: Vector2, size: Vector2,
-		face: int, cell: Vector2i) -> Dictionary:
-	var corners: PackedVector2Array = _corners(center, size)
-	var a: Vector2 = pose * corners[face]
-	var b: Vector2 = pose * corners[(face + 1) % 4]
+static func _clip_witness_segment(a: Vector2, b: Vector2, cell: Vector2i) -> Dictionary:
+	# Only transport and trim the already authenticated exterior witness. Using
+	# the whole current proxy face here could invent support across a sibling
+	# seam or on a portion the native owner never observed. The old midpoint
+	# can leave a cell while part of this exact segment is still inside it.
 	var delta: Vector2 = b - a
 	var low: float = 0.0
 	var high: float = 1.0
@@ -220,7 +220,7 @@ static func plan(observation: Dictionary, transform: Transform2D, velocity: Vect
 	if not is_finite(maximum_drift) or maximum_drift > MAX_VERTEX_DRIFT:
 		return _refuse("PoseDrift")
 	var source_inverse: Transform2D = source.affine_inverse()
-	var contacts: Array[Dictionary] = []
+	var source_contacts: Array[Dictionary] = []
 	# Validate EVERY record before planning even the first impulse. A malformed
 	# last record therefore cannot produce a usable partial response.
 	for raw: Variant in records:
@@ -265,24 +265,40 @@ static func plan(observation: Dictionary, transform: Transform2D, velocity: Vect
 			or absf(weight - endpoint_a.distance_to(endpoint_b)) > WITNESS_EPSILON \
 			or not _exterior_segment(local_a, local_b, proxy, face, local_centers, sizes):
 			return _refuse("InvalidGeometryWitness")
-		var current_point: Vector2 = transform * (source_inverse * point)
 		var current_intersection: Dictionary = _intersection(transform, local_centers[proxy], sizes[proxy], cell)
-		if not current_point.is_finite() or not _in_cell(current_point, cell, CONTACT_EPSILON) \
-			or float(current_intersection.gap) > CONTACT_EPSILON \
-			or _face_segment(transform, local_centers[proxy], sizes[proxy], face, cell).is_empty():
-			return _refuse("ClearedContact")
-		contacts.append({"proxy":proxy + 1, "face":face, "cell":cell,
-			"offset":current_point - transform.origin,
-			"normal":transform.basis_xform(_face_normal(face)).normalized(), "weight":weight,
+		if not _number(current_intersection.get("gap")) or not _number(current_intersection.get("area")):
+			return _refuse("InvalidCurrentGeometry")
+		var current_segment: Dictionary = {}
+		if float(current_intersection.gap) <= CONTACT_EPSILON:
+			current_segment = _clip_witness_segment(transform * local_a, transform * local_b, cell)
+		if not current_segment.is_empty() and (not (current_segment.point as Vector2).is_finite() \
+			or not _in_cell(current_segment.point, cell, CONTACT_EPSILON)):
+			return _refuse("InvalidCurrentGeometry")
+		source_contacts.append({"proxy":proxy + 1, "face":face, "cell":cell,
+			"current_segment":current_segment,
+			"normal":transform.basis_xform(_face_normal(face)).normalized(),
 			"begin":minf(local_a[0 if face == 0 or face == 2 else 1], local_b[0 if face == 0 or face == 2 else 1]),
 			"end":maxf(local_a[0 if face == 0 or face == 2 else 1], local_b[0 if face == 0 or face == 2 else 1])})
-	contacts.sort_custom(_contact_before)
-	for i: int in range(1, contacts.size()):
-		if contacts[i].proxy == contacts[i - 1].proxy and contacts[i].face == contacts[i - 1].face \
-			and contacts[i].cell == contacts[i - 1].cell \
-			and ((contacts[i].begin == contacts[i - 1].begin and contacts[i].end == contacts[i - 1].end) \
-				or float(contacts[i].begin) < float(contacts[i - 1].end) - CONTACT_EPSILON):
+	# Validate every source record and duplicates before filtering contacts that
+	# really cleared. A cleared early witness cannot hide a malformed/duplicated
+	# later witness or discard a valid contact elsewhere in the same compound.
+	source_contacts.sort_custom(_contact_before)
+	for i: int in range(1, source_contacts.size()):
+		if source_contacts[i].proxy == source_contacts[i - 1].proxy and source_contacts[i].face == source_contacts[i - 1].face \
+			and source_contacts[i].cell == source_contacts[i - 1].cell \
+			and ((source_contacts[i].begin == source_contacts[i - 1].begin and source_contacts[i].end == source_contacts[i - 1].end) \
+				or float(source_contacts[i].begin) < float(source_contacts[i - 1].end) - CONTACT_EPSILON):
 			return _refuse("DuplicateContact")
+	var contacts: Array[Dictionary] = []
+	for contact: Dictionary in source_contacts:
+		var segment: Dictionary = contact.current_segment
+		if segment.is_empty():
+			continue
+		contacts.append({"proxy":contact.proxy, "face":contact.face, "cell":contact.cell,
+			"offset":(segment.point as Vector2) - transform.origin,
+			"normal":contact.normal, "weight":float(segment.weight)})
+	if not source_contacts.is_empty() and contacts.is_empty():
+		return _refuse("ClearedContact")
 	var groups: Array[Dictionary] = []
 	for contact: Dictionary in contacts:
 		var found: int = -1
@@ -368,6 +384,8 @@ static func plan(observation: Dictionary, transform: Transform2D, velocity: Vect
 		"energy_before":before, "energy_after":after, "energy_tolerance":tolerance,
 		"total_impulse":total_impulse, "torque_impulse":torque_impulse,
 		"approaching_count":approaching_count, "contact_count":contacts.size(),
+		"source_contact_count":source_contacts.size(),
+		"cleared_contact_count":source_contacts.size() - contacts.size(),
 		"group_count":groups.size(), "solver_sweeps":SOLVER_SWEEPS,
 		"maximum_remaining_approach_speed":maximum_remaining_approach,
 		"remaining_approaching_contacts":remaining_approaching_contacts,

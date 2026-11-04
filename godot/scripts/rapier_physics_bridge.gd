@@ -442,7 +442,7 @@ func apply_solid_sand_contact(observation: Dictionary, body_index: int,
 	var mass: float = PhysicsServer2D.body_get_param(body_rid, PhysicsServer2D.BODY_PARAM_MASS)
 	var inertia: float = PhysicsServer2D.body_get_param(body_rid, PhysicsServer2D.BODY_PARAM_INERTIA)
 	var started: int = Time.get_ticks_usec()
-	var plan: Dictionary = SolidContactResponse.plan(observation, transform, velocity,
+	var plan: Dictionary = _plan_solid_contact(observation, transform, velocity,
 		omega, mass, inertia, local_centers, sizes)
 	if not plan.get("accepted", false):
 		return plan
@@ -475,6 +475,16 @@ func apply_solid_sand_contact(observation: Dictionary, body_index: int,
 		plan["failed"] = true
 		plan["outcome"] = failure
 	return plan
+
+
+func _plan_solid_contact(observation: Dictionary, transform: Transform2D,
+		velocity: Vector2, omega: float, mass: float, inertia: float,
+		local_centers: PackedVector2Array, sizes: PackedVector2Array) -> Dictionary:
+	# Pure value seam for the source-pinned comparison fixture. Both control and
+	# candidate still pass through this bridge's complete identity, replay and
+	# terminal post-application readback guards; production has one planner.
+	return SolidContactResponse.plan(observation, transform, velocity, omega,
+		mass, inertia, local_centers, sizes)
 
 
 func _read_solid_contact_result(body_rid: RID, velocity: Vector2, omega: float,

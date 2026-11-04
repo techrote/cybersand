@@ -78,6 +78,7 @@ func _pure_cases() -> void:
 		cases["central"] = {"impulse_y":(central.total_impulse as Vector2).y,
 			"energy_before":central.energy_before, "energy_after":central.energy_after}
 	check(input == untouched, "planner retains all immutable observation bytes/values")
+	_reclip_cases()
 	var separating: Dictionary = _plan(input, Vector2(0, -4))
 	check(separating.get("accepted", false) and separating.impulses.is_empty()
 		and separating.velocity == Vector2(0, -4), "separating face gets no impulse")
@@ -269,6 +270,70 @@ func _pure_cases() -> void:
 		_empty_refusal(Response.plan(_observation(hole_pose, [false_contact]), hole_pose,
 			Vector2(0, 12), 0.0, 23.0, 100.0, hole_centers, hole_sizes),
 			"rotated interior hole is not filled by proxy validation: " + str(hole))
+
+
+func _reclip_cases() -> void:
+	# SOL364: the same source-witnessed segment survives inside this cell even
+	# though its transported midpoint leaves. This is a matched geometry input,
+	# separate from the existing frozen whole-body physical controls below.
+	var source := Transform2D(0.0, Vector2(22.75, 20.25))
+	var partial := {"proxy":1, "face":2, "cell":Vector2i(20, 21),
+		"point":Vector2(20.875, 21.25), "normal":Vector2.DOWN,
+		"a":Vector2(21.0, 21.25), "b":Vector2(20.75, 21.25),
+		"depth":0.25, "area":0.0625, "weight":0.25}
+	var current := Transform2D(0.0, source.origin + Vector2(0.1875, 0))
+	var observation: Dictionary = _observation(source, [partial])
+	var saved: Dictionary = observation.duplicate(true)
+	var reclip: Dictionary = _plan(observation, Vector2(0, 12), 0.0, current)
+	check(reclip.get("accepted", false), "retained exterior subsegment survives a lost old midpoint")
+	if reclip.get("accepted", false):
+		check(reclip.impulses.size() == 1 and int(reclip.source_contact_count) == 1 \
+			and int(reclip.contact_count) == 1 and int(reclip.cleared_contact_count) == 0,
+			"reclip applies exactly the one validated source contact")
+		check((reclip.impulses[0].offset as Vector2).distance_to(Vector2(-1.96875, 1.0)) < 0.00001,
+			"reclip lever uses the surviving segment midpoint, not the old midpoint or full face")
+		check(float(reclip.energy_after) <= float(reclip.energy_before) + float(reclip.energy_tolerance),
+			"reclipped impulse preserves the unchanged response-energy bound")
+	check(observation == saved, "reclip does not mutate source witnesses")
+	var clearing := Transform2D(0.0, source.origin + Vector2(0.25, 0))
+	var complete_clear: Dictionary = _plan(observation, Vector2(0, 12), 0.0, clearing)
+	check(not complete_clear.get("accepted", true) and complete_clear.get("outcome") == "ClearedContact",
+		"an actually cleared source segment still refuses")
+	var interior: Dictionary = _bottom(21, 22.75)
+	var mixed: Dictionary = _plan(_observation(source, [partial, interior]), Vector2(0, 12), 0.0, clearing)
+	check(mixed.get("accepted", false) and int(mixed.get("cleared_contact_count", -1)) == 1 \
+		and int(mixed.get("contact_count", -1)) == 1 and int(mixed.get("source_contact_count", -1)) == 2,
+		"one cleared record cannot suppress a different still-valid contact")
+	var malformed: Dictionary = interior.duplicate(true)
+	malformed.point = Vector2(NAN, 21.25)
+	var later_invalid: Dictionary = _plan(_observation(source, [partial, malformed]), Vector2(0, 12), 0.0, clearing)
+	check(not later_invalid.get("accepted", true) and later_invalid.get("outcome") == "InvalidContact" \
+		and later_invalid.get("impulses", [1]).is_empty(),
+		"cleared-record filtering cannot hide a later malformed witness")
+	var duplicated_clear: Dictionary = _plan(_observation(source, [partial, partial.duplicate(true), interior]),
+		Vector2(0, 12), 0.0, clearing)
+	check(not duplicated_clear.get("accepted", true) and duplicated_clear.get("outcome") == "DuplicateContact" \
+		and duplicated_clear.get("impulses", [1]).is_empty(),
+		"duplicate source records refuse before cleared-contact filtering")
+	var narrow_source := Transform2D(0.0, Vector2(20.5, 20.25))
+	var narrow: Dictionary = _bottom(20)
+	narrow.a = Vector2(21, 21.25)
+	narrow.b = Vector2(20.9, 21.25)
+	narrow.point = (narrow.a + narrow.b) * 0.5
+	narrow.weight = (narrow.a as Vector2).distance_to(narrow.b)
+	var full_face_still_present: Dictionary = _plan(_observation(narrow_source, [narrow]), Vector2(0, 12),
+		0.0, Transform2D(0.0, narrow_source.origin + Vector2(0.25, 0)))
+	check(not full_face_still_present.get("accepted", true) \
+		and full_face_still_present.get("outcome") == "ClearedContact",
+		"reclip cannot extend a cleared source subset to previously unobserved portions of the face")
+	var stale: Dictionary = _plan(observation, Vector2(0, 12), 0.0,
+		Transform2D(0.0, source.origin + Vector2(0.25001, 0)))
+	check(not stale.get("accepted", true) and stale.get("outcome") == "PoseDrift",
+		"reclip retains the quarter-cell pose-drift fence")
+	cases["transported_original_segment"] = {"source_length":0.25, "remaining_length":0.0625,
+		"current_area":0.015625, "current_depth":0.0625, "vertex_drift":0.1875,
+		"outcome":reclip.get("outcome"), "mixed_clearance_outcome":mixed.get("outcome"),
+		"position_work":0.0}
 
 
 func _body(parent: Node, x: float) -> RigidBody2D:
