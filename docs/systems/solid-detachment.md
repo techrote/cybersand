@@ -44,6 +44,15 @@ source `749fb8b597ad866f7535f26442e904207c4f7611`. Earlier binaries and platform
 passes keep their original source scope. PR #347 remains draft and unmerged;
 #281 and #12 remain open.
 
+Later documentation-only merge `04274706616a8d61b628272a6320ecc28d25362c`
+incorporates accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d` and its
+Planned material-authoring contract. Both topic histories are preserved; all
+1,089 execution and 88 native inputs match the qualified runtime publication.
+The [late reconciliation record](../audits/2026-11-03-sol281-takeover.md#later-accepted-documentation-main--2026-11-04)
+owns document checks. Compiled/executed source remains `749fb8b5` and runtime
+publication `89d2eb6d`; the new material architecture does not authorize runtime
+changes or clear any SOL281 physical, CPU, lifecycle or merge gate.
+
 The frozen archive remains at `254235ec4c3d58782bba44b478caca86bf57c856`.
 Documentation predecessor #282 remains unmerged. Neither branch is rebased,
 merged or used as the production baseline. Historical B=289 ejection is still

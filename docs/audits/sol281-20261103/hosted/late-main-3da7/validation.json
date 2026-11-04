@@ -1,0 +1,125 @@
+{
+  "schema": "cybersand.sol281.late-documentation-main-validation.v1",
+  "status": "passed",
+  "date_utc": "2026-11-04",
+  "accepted_main": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+  "published_merge": "04274706616a8d61b628272a6320ecc28d25362c",
+  "local_reviewed_merge": "cd376452ef2a6c2f1dc4f2fc097692b3e4245252",
+  "merge_tree": "9aaa6b2efc578dcf5ca0f2bbb6d535cbca79cad9",
+  "scope": "Resulting merged documentation plus two explicitly hashed source-authority/addendum edits; no new physics execution.",
+  "document_delta": [
+    {
+      "path": "docs/audits/2026-11-03-sol281-takeover.md",
+      "sha256": "aa24251cf0d6c007dbb3cfd727b0440a0d075fdcd4818735dbd5317ddd3d6629",
+      "bytes": 18553
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "sha256": "ef8e051715791541269edbeb4e6c510305b503b8f9da505221697c225091ba66",
+      "bytes": 28008
+    }
+  ],
+  "validation_checkout": "/workspace/scratch/fc488e61157a/cybersand-validation-workspace/source-final",
+  "companion_workspace_commit": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "checks": [
+    {
+      "receipt": "docs.json",
+      "sha256": "92c47e8e2b794b2ef6d6296fe9aa7df4b2df4273520d4a67a00327b5410bc765",
+      "exit_code": 0,
+      "summary": {
+        "status": "passed",
+        "documents": 119,
+        "navigation_link_documents": 8,
+        "canonical_claims": 235,
+        "local_links": 3600,
+        "heading_anchors": 684,
+        "questions": 32
+      }
+    },
+    {
+      "receipt": "m11.json",
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "exit_code": 0,
+      "summary": {
+        "status": "passed",
+        "records_checked": 18,
+        "source_hashes_checked": 28
+      }
+    },
+    {
+      "receipt": "provenance.json",
+      "sha256": "f69d79c83b02485895ca2e5d43cce7dcef85d31639cd5def2f8cb3884bbb67af",
+      "exit_code": 0,
+      "summary": {
+        "status": "passed"
+      }
+    },
+    {
+      "receipt": "retrieval-contact.json",
+      "sha256": "85d8636fb5ba0366d1033ca12c1ab80eab3bbffacbc04ae8bb34391912c07268",
+      "exit_code": 0,
+      "summary": {
+        "questions": 6,
+        "canonical_hit_at_1": 6,
+        "canonical_hit_at_k": 6,
+        "mrr_at_k": 1.0
+      }
+    },
+    {
+      "receipt": "retrieval-default.json",
+      "sha256": "d4e1f3117300ac80ac34dade135382383c3167f1980ea7099787848093debe77",
+      "exit_code": 0,
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536
+      }
+    },
+    {
+      "receipt": "retrieval-mat-auth.json",
+      "sha256": "58efdb76b4df3f7d8e16789b7a77c202d889218d7cfea9311139e70f5b72f368",
+      "exit_code": 0,
+      "summary": {
+        "questions": 10,
+        "canonical_hit_at_1": 8,
+        "canonical_hit_at_k": 10,
+        "mrr_at_k": 0.9
+      }
+    },
+    {
+      "receipt": "retrieval-structural.json",
+      "sha256": "167d3fc50707009713024b8e99c3bb0b464c3008683611b71e6b59377cbdfa66",
+      "exit_code": 0,
+      "summary": {
+        "questions": 3,
+        "canonical_hit_at_1": 3,
+        "canonical_hit_at_k": 3,
+        "mrr_at_k": 1.0
+      }
+    }
+  ],
+  "commands": [
+    "python3 tools/ci/check_docs.py --json <receipt>",
+    "python3 tools/ci/check_repository.py --json <receipt>",
+    "python3 tools/ci/check_m11_consistency.py --json <receipt>",
+    "python3 tools/docs/retrieval_eval.py --output <receipt>",
+    "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-sol281-contact.json --output <receipt>",
+    "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-sol281.json --output <receipt>",
+    "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-mat-auth.json --output <receipt>"
+  ],
+  "unchanged_inputs": {
+    "broad": 1089,
+    "native": 88,
+    "all_equal_to_89d2_publication": true,
+    "canonical_json_sha256": "c43b11ff7e0700ce8068577020d8e7bb55e93188e4504c78125b1307d7abda16"
+  },
+  "executed_source": "749fb8b597ad866f7535f26442e904207c4f7611",
+  "runtime_publication": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+  "limits": [
+    "Local provenance verifies18unmaterialized runtime pointers; materialized publication dispatch41748585125 passed separately and no runtime inputs changed.",
+    "Retrieval reports are lexical routing evidence, not a new semantic acceptance of material-authoring design or physical claims.",
+    "Full-matrix CPU criterion stays failed (23/24 groups, all12 candidate groups pass); no thresholds or failed repeats changed.",
+    "Final metadata-head CI and local/API commit mapping are linked in PR347; this receipt binds the merge tree and exact2-document delta, not a self-referential commit."
+  ]
+}

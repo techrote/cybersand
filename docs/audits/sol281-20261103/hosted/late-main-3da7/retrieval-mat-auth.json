@@ -1,0 +1,1269 @@
+{
+  "created_utc": "2026-11-04T01:02:59.049330+00:00",
+  "corpus_root": "/workspace/scratch/fc488e61157a/cybersand-validation-workspace/source-final",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+  },
+  "fixture_sha256": "1bd5f538d3d20a840d4f33485825cb825fdc252e0ed4435b10b490efec428379",
+  "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+  "corpus_manifest_sha256": "717892bf2b8511f45558b556ed2ac56c15d59ce38e5496269ec8f6b0eb4f7f7d",
+  "corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "aaa9671c20d06d65cd0e6b2306a53cd6ea89ba64dde50ac2948abffc92f170bf",
+      "bytes": 12759
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "97c0dfe83f6495eba9a1cbe5dd3b6f6d273987756c13041dae7ef6df0c40628b",
+      "bytes": 38828
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a",
+      "bytes": 7295
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "231b1dec6ee5993a6c399d235c669534a90c44f292fbe19576113f9ab1f1566c",
+      "bytes": 82558
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "2f47a361564cf4a9f9ab4acd59f7968776a7c5b3ba3c3bea6b53bbf86bd24f6b",
+      "bytes": 65640
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "853b787065381d3fbbd52060f18b33c4f64c9b8da3242934adf8afaa2352833a",
+      "bytes": 49418
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "98cb68fb1f7d808cd0b00b1f70c81021d1b608a0432c16d0a3d2aa32d8f9ffcd",
+      "bytes": 29887
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "775199fd0f696dc455c5305b6c9788a2d2c3dd7c467b6472ab398619efbdb444",
+      "bytes": 15426
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "924e1cb33287721409dfb02c147b8625111e9709c62ddf2c573446e0fcd5fede",
+      "bytes": 16939
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "41d571eb23b50322c8964be66e7af7226d0796f982500dbf66e4677bdeefb6ca",
+      "bytes": 19202
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "f1ebc92ea8145ffe71dbf2980f2bd78ae987cb16005d46e1cda1f85e6e796eae",
+      "bytes": 20059
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "67402f42648e34c95c98afa59dc03de57a7dd56d087e9e8d680540c73e4051d1",
+      "bytes": 13537
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "f874fc79105848b921964c5b5dcdb5d04fbe984b25cbcdb1b8b8b4bb8e72226d",
+      "bytes": 12639
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "74b9ff2806d41e3df95483b3eaedbb29192efd5ee5768f25ded1804a110884d0",
+      "bytes": 113595
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5f646c5eed80101d8bdc36be38985ee34898ed145ed28f2aa01d3ae1bbb3ffc7",
+      "bytes": 17395
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "923a9f27fa09241f198fe149d56dbf6c228255e3fdfdd90b17d2b656b6992dde",
+      "bytes": 16874
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "dfaa83efa876f59bf355316ff050f71ab9db6d096ee4abf47136804d64d168ca",
+      "bytes": 112630
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820",
+      "bytes": 16807
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "536521336ace40ddbfc713f789b91bd6af785eddad891e03dd5754583534ac8e",
+      "bytes": 10947
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "ae7b525ffbde463dbbccda8173375d7d3f127690fc4ac29d60abb86ed487034e",
+      "bytes": 11400
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "e5e5a9528fe8e0fd0327c8bddc6d0d8edbe235e1b4b6d264687e661960aeccd7",
+      "bytes": 29266
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "0f2b29f121a8080b5436617aa932c3018381d2b63fc6847f9759decefc60762b",
+      "bytes": 86690
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "c0b7e0b26725cfbc2e6a5c4ce4c4cf08628bc5ab6eca63f8d0bf3e8eb25fb0b2",
+      "bytes": 94746
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "c135744916f021c23296df4d3f6cbcc1cc4283fff07c8050044092a77ad88081",
+      "bytes": 46406
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "1d1b1d91b406d62e6de05266d662b83135e179aefa011c8af8b59ca815c2a3c0",
+      "bytes": 13257
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "b2865c060ae1130f09b90d545a65cd5b70ce1d50824ba37f0c82e7d1ebc2aa6d",
+      "bytes": 19657
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "5984f4f8ca28000372d31e5f88be5ccb33fbfeb22d828e42262f883c5b9c8561",
+      "bytes": 133943
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "43c827f8c58c0f2bcfd848004e4ff4c3b1ddbb3456ad81967a13b2b80ccf9a22",
+      "bytes": 72008
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "372ef8d576bfc265d28dcea6be754d938c717e790adc678823904f70df98db8f",
+      "bytes": 11757
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "c9aef9a878d100bcf61a4d8c01e752487b3056a6e16a6763fcf8c159fe4a5503",
+      "bytes": 21430
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "d3e619b3737e810de3543cb66a0738d7a527a1cc862758835a1796acc8b2c919",
+      "bytes": 12999
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "c313c6c6de8c3e3e541e9879d69ff2e4a8567f62998120f079cca760251ca1ec",
+      "bytes": 53035
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "c3ba36a03a706d64b1a1fe697526a931814d4ca0a3980bddb73a45d3d9ca216e",
+      "bytes": 27978
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/solid-detachment.md",
+      "sha256": "ef8e051715791541269edbeb4e6c510305b503b8f9da505221697c225091ba66",
+      "bytes": 28008
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "3aa36c9771645fe972228d9d4144cc46b2d05a3d14401bc72c94e659e48c9ba9",
+      "bytes": 12383
+    }
+  ],
+  "document_count": 119,
+  "chunk_count": 1603,
+  "summary": {
+    "questions": 10,
+    "canonical_hit_at_1": 8,
+    "canonical_hit_at_k": 10,
+    "mrr_at_k": 0.9,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "MAT-AUTH-01",
+      "query": "Does the material authoring architecture review approve implementation, and what should be the first bounded compiler checkpoint?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "The owner adopted the corrected design as Planned and authorized documentation-only guarded integration of PR357 on 2026-11-04; this does not authorize or start353-A implementation, and actual merge/CI status belongs to the PR ledger.",
+        "Proposed353-A compiles shadow metadata against independent old-source and backend-qualified oracles without changing runtime authority.",
+        "The broad353 issue remains open after a narrow checkpoint unless the owner explicitly changes its completion scope."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 2,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 21.526634,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > Material authoring review — 2026-11-03",
+          "part": 1,
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\ndocument-kind: reference\nstatus: Current\nscope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-04\nSection: Status and foundational roadmap > Material authoring review — 2026-11-03\n**Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) supersedes the adoption hold below; implementation remains separately unstarted. The [MAT-AUTH proposal](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03) has a source-qualified **ACCEPT WITH CORRECTIONS** recommendation, not owner adoption. #357 stays draft/unmerged. The recommended first #353 checkpoint generates shadow metadata while preserving native/fallback behavior, header-byte LCB identities and positional quantity ledgers. Production cutover and new semantics remain separately gated. #354/#355 serialize shared kernel writes; #356 exposes only real consumers. The [review](../audits/2026-11-03-mat-auth-000-architecture-review.md) preserves #162/#358/#347/#370 and GCR ownership and the original intake."
+        },
+        {
+          "rank": 2,
+          "score": 19.557392,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03\n**Dated status correction, 2026-11-04:** the owner has adopted the corrected design as Planned and authorized documentation integration. The 3 November review text below is preserved; its adoption hold is superseded by [section 12](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04). #353-A implementation and production consumer replacement remain unstarted and require separate assignment and their own qualification. **Planned correction; owner decision pending.** Review of accepted main `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` confirms the original material counts and supports the six orthogonal classifications. It also establishes compatibility hazards that the first proposal did not specify sufficiently. This section governs the *recommended* next implementation scope; it does not itself grant it. The [dated review](../audits/2026-11-03-mat-auth-000-architecture-review.md) records source identities, consumer inventory, evidence and independent review."
+        },
+        {
+          "rank": 3,
+          "score": 17.99747,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 12. Owner adoption and shadow-compiler handover — 2026-11-04",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 12. Owner adoption and shadow-compiler handover — 2026-11-04\n**Approved direction, retained Planned status.** The owner explicitly authorized adopting this corrected architecture and merging only the documentation after final checks. The [recorded decision](https://github.com/techrote/cybersand/pull/357#issuecomment-6619407158) supersedes the earlier adoption hold. It does not assign #353-A or any later implementation. Current native and GDScript definitions remain authoritative; no material behavior, default, Cell layout, transport, quantity, save, policy, receipt identity or runtime binary changes follow from accepting the plan. The [#353-A handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661) defines the next separately assigned task: strict versioned JSON, a Python-stdlib compiler, deterministic shadow outputs/source maps, an independent pre-generator source/backend oracle, strict and adversarial validation, read-only `--check`, unchanged-output preservation and no partial publication after validation failure. The architecture-adoption prerequisite is now satisfied; the implementation assignment remains outstanding. Broad #353 and parent #352 remain open. The first implementation compares all existing identities/descriptors, all 256 byte-ID predicate outcomes, semantic families, ordered compact/specialized rules, relevant ordering/threshold/orientation/no-op semantics, original source bytes and known-answer tests. It must preserve backend differences and complete material/ interaction header-byte identities. Semantic equality does not establish source-byte compatibility. Production consumer cutover requires its own exact-byte review or an explicitly authorized identity transition, with rollback and appropriate gates. At adoption intake, accepted main was `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` and the reviewed proposal was `9b776d109e7843fb9b2d25239f9d088181309aa1`. The [integration ledger](https://github.com/techrote/cybersand/pull/357) owns final-head, merge and post-merge documentation results. The earlier [readiness checkpoint](https://github.com/techrote/cybersand/pull/357#issuecomment-6619191972) preserves its actual tested tree, draft-state provenance skip and retrieval limits; its green runs are not claims about a later edited head. Ready-state and post-merge Documentation checks must validate materialized runtime identity; this does not require Native/GDExtension/gameplay execution for a documentation-only change. Before implementing A, independently recapture newly accepted main and active file ownership. PR #358's IDs132–137 remain experimental at this decision; if that work lands first, baseline the accepted result instead of importing its unmerged candidate. Keep #353 → (#354 and #355, serializing overlapping writes) → #356. Identity transition, production ID allocation, Spark membership, endpoint/ quantity exceptions, MoltenGlass thermal law, viscous retry/rest and runtime editing remain separate decisions. This adoption grants no new material physics or automatic inheritance."
+        },
+        {
+          "rank": 4,
+          "score": 17.610501,
+          "path": "operations/cybersand-codex-development-handover.md",
+          "title": "Development handover",
+          "heading": "Development handover > MAT-AUTH architecture decision hold — 2026-11-03",
+          "part": 1,
+          "text": "Document: Development handover\nPath: operations/cybersand-codex-development-handover.md\ndocument-kind: guide\nstatus: Current\nscope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes\ncanonical-for: [development-onboarding]\nlast-reviewed: 2026-11-04\nSection: Development handover > MAT-AUTH architecture decision hold — 2026-11-03\n**Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) supersedes the adoption hold below; implementation remains separately unstarted. [PR #357](https://github.com/techrote/cybersand/pull/357) remains draft and unmerged after a documentation-only current-main architecture review. Read the [corrected proposed admission](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03) and [dated evidence](../audits/2026-11-03-mat-auth-000-architecture-review.md) before assigning #353–#356. Recommendation is **ACCEPT WITH CORRECTIONS**; owner adoption and implementation permission remain pending. Initial #353 work is proposed as shadow generation with independent per-consumer oracles, not a header/policy/physics migration. Revalidate active #358/#347/#370 and #162/GCR heads before overlapping edits. Experimental IDs132–137 are not production data."
+        },
+        {
+          "rank": 5,
+          "score": 17.36521,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents\n1. [Authority and preserved substrate](#1-authority-and-preserved-substrate) — what already exists, and what the programme may not overwrite. 2. [Source findings and fault hypotheses](#2-source-findings-and-fault-hypotheses) — exact observations, ownership and required reproductions. 3. [Orthogonal material classification](#3-orthogonal-material-classification) — browsing, physics, semantics and presentation stay independent. 4. [Canonical source model and compiler](#4-canonical-source-model-and-compiler) — source layout, generated outputs and hard validation. 5. [Interaction effects and effective parameters](#5-interaction-effects-and-effective-parameters) — explicit endpoint semantics, threshold representation and real kernel consumers. 6. [Scheduling and liveness qualification](#6-scheduling-and-liveness-qualification) — bounded wake obligations and gameplay-decision gates. 7. [Identity, compatibility and resource budgets](#7-identity-compatibility-and-resource-budgets) — do not change saves, cells, runtime authority or replay claims accidentally. 8. [Materials Lab authoring workflow](#8-materials-lab-authoring-workflow) — usable editing without fake live sliders or fallback claims. 9. [Issue dependency and acceptance plan](#9-issue-dependency-and-acceptance-plan) — finite steps, qualification, rollback and write-set separation. 10. [Decisions held for explicit disposition](#10-decisions-held-for-explicit-disposition) — questions to resolve with evidence rather than guesswork. 11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions. 12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates."
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-02",
+      "query": "Would reformatting material headers into generated includes preserve old liquid policies, receipts and CYPS saves?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Catalogue identity hashes complete LF-normalized paths and header bytes; capability derivation also parses literal header shapes.",
+        "A formatting-only rewrite can change policy, receipt and physical-hash identity and cause CYPS admission refusal.",
+        "Initial shadow generation must preserve those inputs; a later non-byte-identical cutover needs separate identity-transition admission."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 18.235527,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority\n**Proposed #353-A admission** is a small JSON/Python-stdlib compiler and independent frozen source oracle. It does not need the entire illustrative directory tree. Start with an identity registry, material records, explicit capability/family records and one consumer/provenance manifest; split files only for reviewability. Represent all 15 descriptor fields, alias identity, existing capability results, ordered pair/specialized records, backend exceptions and supported appearance facts. The short Wood example in section 4 is illustrative, not a complete lossless record or a schema acceptance fixture. Generate a deterministic inspection manifest and shadow C++/GDScript metadata in a separate candidate output directory. Compare them against independent source-derived facts and existing consumers. Production includes, kernels, fallback functions, policies, receipts, saves, shader algorithms and current generated artifacts remain untouched in this first checkpoint. Canonical authorship is *proposed/shadow* until a consumer switches; do not create two simultaneously authoritative catalogues. **Conditional #353-B cutover:** migrate one constant consumer at a time only after exact parity and file ownership are reviewed. Digest-bound headers must retain their complete LF bytes and the current parser-compatible literal form. If that is impractical, stop at A and request a separately specified identity transition; do not regenerate away stale-policy refusals or relax comparisons. #353 remains open until its full accepted scope is delivered or the owner explicitly accepts the narrower checkpoint. A shadow demonstrator does not silently complete the original broad generator issue. The generator contract must include: - Explicit source schema, generator and output-manifest versions; immutable numeric IDs and namespaced keys; stable aliases such as `Gas` → `Smoke` at ID4. Display labels are non-authoritative. Alias/key collisions are errors; a label collision must be disambiguated by key, never resolve material identity. - Unknown-field, duplicate-object-key, invalid-reference, alias-cycle and out-of-range rejection. Integer fields reject booleans and lossy numeric coercion. Existing byte values, enum numbers, `uint16_t` density and state register widths remain exact; future non-integer fields need their own canonical encoding contract before admission. - Errors identify file plus JSON pointer and both origins of a conflict; syntax errors additionally include parser line/column. Unsupported schema versions, non-finite numbers and invalid optional-state contracts fail before any output swap. Keep existing Godot appearance expressions/float calculations unchanged until their literal/precision contract and parity are reviewed. - Stable ordering by identity and explicit legacy slot, deterministic escaping, UTF-8/LF bytes and final newline; no timestamps, absolute paths, locale or directory-enumeration order in generated content. Two clean output roots and permuted authoring-file discovery must produce byte-identical outputs. - Complete validation before replacing output files, no partial publication on failure, and `--check` that does not write. Retain last accepted"
+        },
+        {
+          "rank": 2,
+          "score": 17.934324,
+          "path": "architecture/liquid-prepared-setup-and-receipts.md",
+          "title": "Native liquid prepared setup, receipts and quantity accounting",
+          "heading": "Native liquid prepared setup, receipts and quantity accounting > Quantity aggregates, producers and continuation",
+          "part": 2,
+          "text": "Document: Native liquid prepared setup, receipts and quantity accounting\nPath: architecture/liquid-prepared-setup-and-receipts.md\ndocument-kind: design\nstatus: Current\nscope: Accepted main LCB-001 native construction contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and source-matched Windows/Linux acceptance; application-host proof and downstream family work remain open\ncanonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]\nlast-reviewed: 2026-10-25\nSection: Native liquid prepared setup, receipts and quantity accounting > Quantity aggregates, producers and continuation\nis already part of the snapshot layout. These are accounting storage costs, not total World memory or a performance qualification. Checked counters reject external/generated overflow before authority or a new chunk changes. Worker/reduction overflow quarantines the partially advanced World and prevents a completed accounting read. CYPS2 retains exact accounting and construction bindings, validates source roles and aggregates, and scans restored stored authority before returning a new World. Unknown quantity schema and historical CYPS1 are explicitly refused. Complete physical hash v2 includes the ledger and continuation state. Historical content/state definitions are preserved; cross-tick rest is not equality of a tick-inclusive continuation hash. The accepted pressure continuation also retains ordinary pending-event ingress bounds on restore and a non-wrapping gas-ID allocator for creation and split. Exhausted gas identities use an explicit sentinel and the existing failed-tick quarantine. Direct quantity rectangles validate their inclusive endpoints and preserve zero-area reads; none of these readback checks mutate the World or its ledger. The [pressure contract](pressure-flow-v1.md#persistence-cyps-v2) owns these concrete limits and the residual audit preserves their failing controls."
+        },
+        {
+          "rank": 3,
+          "score": 15.508154,
+          "path": "reference/level-saves-and-replay.md",
+          "title": "Level saves and exact replay",
+          "heading": "Level saves and exact replay > How does CYPS2 differ from CYSD1?",
+          "part": 1,
+          "text": "Document: Level saves and exact replay\nPath: reference/level-saves-and-replay.md\ndocument-kind: contract\nstatus: Current\nscope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps\ncanonical-for: [cysd1-level-format, save-import-export, replay-persistence]\nlast-reviewed: 2026-10-25\nSection: Level saves and exact replay > How does CYPS2 differ from CYSD1?\n**Current on main through accepted PR #246 (`ec58d919`, 2026-10-25).** `World::save_physical_state()`/`restore_physical_state()` and the bridge's `export_physical_state`/`import_physical_state` write and read **CYPS2** (`kPhysicalStateFormatVersion` 2), an exact tick-boundary continuation for LCB comparison Worlds. Its canonical description is the [pressure persistence contract](../architecture/pressure-flow-v1.md#persistence-cyps-v2) and [shared native setup/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md). | | CYSD1 | CYPS2 | |---|---|---| | Purpose | finite level exchange | exact continuation of a comparison World | | Liquid policy | not stored; import always reconstructs on default families (NC-10) | policy envelope stored and re-admitted by the running build | | Clock, epochs, regions, pending events, activity blocks | omitted | stored | | Pressure sidecars and gas table | n/a (lossy; never a continuation) | stored | | Shared quantity accounting and construction binding | omitted | exact source/sink and rule totals, visible+overfill, separate material cell counts, prepared/normalization identities | | Integrity | codec checksum and native validation | SHA-256 of the body, then range and invariant checks | | Failure | live World intact | `invalid_argument`/`LiquidPolicyRefused`; live World intact (\"running world preserved\") | | Continuation | none claimed | bit-identical physical and state hash, including at another worker count | CYPS omits execution settings (workers, capacities come from the caller), host-owned transient body masks and Rapier state, and requires settled discovery to be disabled. It is not general sparse-world persistence, replay input capture or full application replay. The owner-requested native codec freeze does not freeze production Cell/global ABI or those missing host contracts; CYSD1 is unchanged. Historical CYPS1 belongs to the #245 source/artifact evidence and is explicitly refused by this decoder. A valid digest does not excuse inconsistent accounting: restore validates closure, roles, quanta and actual stored authority. The native prepared builder can normalize final setup tuples only with explicit opt-in and a bound receipt. It cannot normalize a live World. Godot's normal level import still reconstructs defaults; native candidate CYSD1 ingress preflights nonzero fractional W-CY Water and returns `normalization_required` rather than silently rounding. The old Godot dictionary run getter is not the typed native receipt and provides no full host-replay proof."
+        },
+        {
+          "rank": 4,
+          "score": 15.104404,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Identity compatibility is stronger than descriptor equality",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Identity compatibility is stronger than descriptor equality\n**Current:** [`catalogue_digest`](../../tools/lcb/policy_contract.py) hashes LF-normalized paths and complete bytes of `material.hpp` and `interaction_rules.hpp`. [`derive_capability_matrix.py`](../../tools/lcb/derive_capability_matrix.py) also parses their literal enum/table shapes. Formatting, generated banners, includes or row reordering can change admitted policy/receipt identities or break derivation while preserving C++ values. CYPS restoration re-admits its stored policy against the running catalogue; a mismatch is an actual refusal boundary. Preserve these guards and the existing generation order in the [policy contract](liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit). Preserve both pair and specialized-record indices. The [`quantity ledger`](../../native/include/cybersand/quantity_ledger.hpp) has schema 1, 56 pair slots and 19 kernel slots; `quantity_kernel_rule` selects the first matching specialized-record slot and the codec serializes arrays in that order. Stable names alone do not preserve positional accounting. Explicit `legacy_slot` values may preserve that order without making input-file order a hidden semantic rule. **Required:** freeze each consumer's existing output independently. Native Slush density is 1080; the GDScript fallback uses 1100. This is a source-level difference, not a newly reproduced physics defect. Preserve it as an explicit backend override or leave that fallback consumer hand-maintained. Shared IDs/names and the verified common RGBA tuples may share authorship; shared metadata is not fallback movement/chemistry parity. Never silently normalize either backend."
+        },
+        {
+          "rank": 5,
+          "score": 14.364023,
+          "path": "architecture/liquid-prepared-setup-and-receipts.md",
+          "title": "Native liquid prepared setup, receipts and quantity accounting",
+          "heading": "Native liquid prepared setup, receipts and quantity accounting > Inertial application readback and explicit geometry",
+          "part": 1,
+          "text": "Document: Native liquid prepared setup, receipts and quantity accounting\nPath: architecture/liquid-prepared-setup-and-receipts.md\ndocument-kind: design\nstatus: Current\nscope: Accepted main LCB-001 native construction contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and source-matched Windows/Linux acceptance; application-host proof and downstream family work remain open\ncanonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]\nlast-reviewed: 2026-10-25\nSection: Native liquid prepared setup, receipts and quantity accounting > Inertial application readback and explicit geometry\nThe integrated #202 branch exposes actual immutable IN parameters through `get_liquid_solver_policy().family_parameters.inertial_cellular_v1`, including the applied numerator, denominator16, block version2 and native effective-law identity. `readback_source` distinguishes `applied_world` from `validated_policy`. The physical hash and CYPS format getters query the actual World instance: IN uses version3; non-IN keeps version2. Copied construction readback includes the native-captured family4/state1/identity1 extension and actual rule radius. The canonical outer native receipt-v1 bytes, qualifications and false full-match eligibility remain unchanged. The native `liquid_policy_with_inertial_damping(request, numerator)` helper edits the explicit optional family4/block2 using the native schema and validator. It accepts integers0..16 only when the policy uses IN; it changes no World. Assignment editing retains foreign assignments/blocks, retires unused family blocks and retires a material block when its owner changes families. GDScript never edits wire offsets or interprets illustrative blockv1 as the running law. Prepared application construction takes explicit `maximum_rule_radius`2 or3, default2. Brine IN refuses radius2 and retains the old World/receipt. The normal Liquids panel offers a separate matched radius3 selection and native damping control; choosing IN never silently changes geometry. Current comparator arms can explicitly use the same radius3. **Original Current control** and ordinary default reconstruction restore protected radius2 even after an IN World. Reset retains accepted geometry, policy, normalization and damping. The local regression exercises all17 applied damping values against independent canonical parameter vectors; three genuine families interacting in one World under workers1/4; actual CYPS3 continuation; and normal UI and articulated actor/equipment adoption with initial masks. This is scoped Windows native headless proof. Remaining constructors, complete versioned host evidence, source-matched published runtimes, Linux and actual Web profiles remain open."
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-03",
+      "query": "Can one generated native density table replace the GDScript fallback table without changing behaviour?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Native Slush density is1080 and fallback1100; native and fallback behavior are not interchangeable.",
+        "Preserve per-backend values or leave fallback physical code hand-maintained; share only verified common facts.",
+        "The discrepancy is source-level evidence, not an independently reproduced physics defect."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 17.144794,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 7. Identity, compatibility and resource budgets",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 7. Identity, compatibility and resource budgets\n**Hard invariants:** existing byte IDs, reserved 10, material products, default C64/E8 Cell/storage contract, `state_a/state_b` meaning, full-physical state hash/version, current save/level formats, generic World ownership, native/Godot worker separation, source-matched runtime publication, LCB policy compatibility and non-kinetic interaction ownership. Avoid conflating four independent identities: - **Material registry identity:** stable authored content keys and numeric ID table. - **Compiled catalogue/effective policy identity:** exact schema, resolved parameters, families, interactions, generator version. - **Source/runtime/artifact identity:** commit, build/dependencies, native library bytes and platform. - **World state identity:** actual active material cells, state, auxiliary solver state, schedule, mutable quantities. The current transport schema v1 has 81 material entries and six pair settings for every old 81×81 slot; extension must be schema-versioned rather than silently changing that profile's serialized shape. Later material defaults need explicit acknowledgement in the inspector. The initial generator is **build-time**. A later approved immutable per-World tuning overlay can be admitted at a validate → reconstruct same setup → atomic owner swap boundary; a malformed policy leaves the previous World untouched. Never mutate the global compiled descriptor table during worker execution. Current GDScript fallback uses only a subset of native behaviours: generated IDs do not establish native-fallback chemistry parity. No unmeasured compile-time or runtime performance claims. Benchmark generated lookup and table size against Current; maintain bounded hot-path cost."
+        },
+        {
+          "rank": 2,
+          "score": 16.567491,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler\n**Proposed authoring tree** (final names/schema require #352 review): ```text materials/ schema/material-v1.schema.json registry/identities.json definitions/{legacy,reactive,construction,building}/*.json behaviours/presets.json interactions/{families,pairs,specialized}.json appearances/{recipes,overrides}.json browse/{categories,tags}.json tools/materials/compile_catalogue.py tools/materials/test_catalogue.py ``` Prefer simple JSON plus a deterministic Python-stdlib compiler in v1, because the current repo already maintains portable Python CI tools. Using several author-friendly source files is acceptable **only if** they compile to one validated immutable effective catalogue. The canonical source should contain identity, type, constraints, owned parameters, family memberships, aliases and status. Free-form comments in JSON may be replaced with dedicated `description` fields or adjacent documentation. **Illustrative proposed material record** (not executable today): ```json { \"schema_version\": 1, \"key\": \"cybersand:wood\", \"id\": 7, \"display\": {\"name\": \"Wood\", \"category\": \"Organics/Wood\", \"tags\": [\"timber\"]}, \"physical\": {\"phase\": \"Solid\", \"density_rank\": 720, \"hard_surface\": true, \"granular_support\": false}, \"behaviour\": {\"preset\": \"legacy.wood.v1\"}, \"appearance\": {\"rgba8\": [116, 78, 48, 255], \"recipe\": \"timber.v1\"} } ``` **Generated outputs** should include `material.hpp` descriptors/identity, explicit native capability lookup, compact sparse interaction table/partner sets, stable GDScript IDs and names, picker/browse metadata, RGBA and flair arrays, condition projection and versioned source-derived catalogue manifest. Keep expensive shader algorithms and native kernel implementations hand-coded initially; generate their *metadata*, not a new universal interpreter. **Hard validator gates:** - Stable, non-reused byte IDs; slot 10 remains invalid; `Gas` is a label alias for Smoke=4, not another material ID; reserve/unallocated slots fail cleanly. - Unique keys, names and aliases; valid family references, endpoint/product IDs, kernel enum, radius, state width/meaning, type ranges and support matrix. - Family overlap, duplicate pair, conflicting ordered/unordered matches, cross-rule precedence, invalid supersession, invalid probability representations, uninitiable pair-only definitions and unsupported optional-state contracts fail with understandable source location. - Generate a baseline exact-value oracle from the pinned Current source before replacing hand-authored tables. `--check` regenerates without modifying the tree and fails on drift. Generated files are deterministic, diffable and compatible with repository documentation policies. - Current 132-slot catalogue, all 56 rule identities/indexes/roll cases and 19 specialised mechanisms are identical after the migration. Synthetic new non-hard powder at ID 132 is a compiler-only fixture—not a shipped byte-ID addition—to prove future IDs are not auto-collision-hard. **Intentionally not implemented in v1:** a runtime DSL, hot-loop schema evaluation, user scripts, dynamic pack ID reassignment, or a per-cell behaviour object."
+        },
+        {
+          "rank": 3,
+          "score": 16.109234,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Identity compatibility is stronger than descriptor equality",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Identity compatibility is stronger than descriptor equality\n**Current:** [`catalogue_digest`](../../tools/lcb/policy_contract.py) hashes LF-normalized paths and complete bytes of `material.hpp` and `interaction_rules.hpp`. [`derive_capability_matrix.py`](../../tools/lcb/derive_capability_matrix.py) also parses their literal enum/table shapes. Formatting, generated banners, includes or row reordering can change admitted policy/receipt identities or break derivation while preserving C++ values. CYPS restoration re-admits its stored policy against the running catalogue; a mismatch is an actual refusal boundary. Preserve these guards and the existing generation order in the [policy contract](liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit). Preserve both pair and specialized-record indices. The [`quantity ledger`](../../native/include/cybersand/quantity_ledger.hpp) has schema 1, 56 pair slots and 19 kernel slots; `quantity_kernel_rule` selects the first matching specialized-record slot and the codec serializes arrays in that order. Stable names alone do not preserve positional accounting. Explicit `legacy_slot` values may preserve that order without making input-file order a hidden semantic rule. **Required:** freeze each consumer's existing output independently. Native Slush density is 1080; the GDScript fallback uses 1100. This is a source-level difference, not a newly reproduced physics defect. Preserve it as an explicit backend override or leave that fallback consumer hand-maintained. Shared IDs/names and the verified common RGBA tuples may share authorship; shared metadata is not fallback movement/chemistry parity. Never silently normalize either backend."
+        },
+        {
+          "rank": 4,
+          "score": 13.623894,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 2. Source findings and fault hypotheses",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 2. Source findings and fault hypotheses\n| Finding | Classification | Source/effect | Required action | |---|---|---|---| | Hard-terrain classification uses IDs `38..kLastMaterial` | **Current source risk** | [`MaterialRules::is_hard_surface`](../../native/src/material_rules.cpp) would classify a future appended non-hard ID as hard if `kLastMaterial` advances | Generate an explicit capability map; freeze identical outcomes for current 101 hard members | | Transport schema v1 addresses only IDs 0–80 | **Current compatibility boundary** | [`TransportPolicy`](../../native/include/cybersand/transport_policy.hpp) returns fixed defaults for later IDs | Preserve v1 byte format, advertise fallback; separately version any extension | | Semantic `hot-source` omits Spark but runtime `is_hot` includes Spark | **Current metadata/predicate inconsistency** | [`interaction_rules.hpp`](../../native/include/cybersand/interaction_rules.hpp) vs [`world.cpp`](../../native/src/world.cpp) | Audit intentional scope; correct metadata or context predicate only with approved tests | | Lava/Acid/Oil movement ignores generic descriptor viscosity gating | **Current behaviour, recognised in prior characterisation** | Specialised [`world.cpp`](../../native/src/world.cpp) paths vs descriptor `viscosity_index` | Do not expose these as effective editable viscosity sliders; retune only via an admitted policy | | Same-material pair products reset state; Water products can be initialised full | **Current documented semantics and quantity sources/sinks** | `World` pair writes plus [quantity ledger](../../native/tests/test_quantity_ledger.cpp) | Preserve in legacy policy; add explicit endpoint effect kinds and truthful accounting. Coordinate #160/#162 | | Isolated MoltenGlass cooling may become stranded across quiet block sleep | **Source-derived hypothesis; fresh native proof missing** | Four-tick thermal lane vs ordinary three-quiet-tick threshold | Controlled actual-World default/high-quiet/active-neighbour reproduction before change | | Adjacent MoltenGlass resets cooling to 180 | **Current source behaviour; intended law unresolved** | `RuleKernel::MoltenGlass` hot-neighbour condition | Distinct thermal-model/feel decision, not a scheduling fix | | Yielding-liquid failed mobility draw returns before retry/deadline retention | **Current source condition; retained prior sleep sensitivity** | `flow_as_yielding_liquid`; [issue-15 coverage](../audits/2026-09-11-issue-15-coverage.md) | Reproduce source-matched resting/eligible cases; any changed trajectories require versioned acceptance | | Pair rules need a scheduled active initiator | **Current execution constraint** | Pre-kernel chemistry is reached through active World cells | Validate generated participants/initiator or document explicit non-running rule | | Native descriptors, appearance LUT, picker and GDScript fallback are separately maintained | **Current duplication risk** | [material contract](../systems/materials-and-rule-kernels.md) | Generate shared facts; never falsely claim fallback native-rule parity | A source-review finding is not a runtime pass. In particular, the proposed cooling and stochastic-retry reproducers are **not** evidence that changing those laws will improve game feel, performance or scheduler correctness on the actual native host."
+        },
+        {
+          "rank": 5,
+          "score": 13.546588,
+          "path": "architecture/determinism-and-boundary-transfers.md",
+          "title": "Determinism and boundary transfers",
+          "heading": "Determinism and boundary transfers > What does native worker parity guarantee?",
+          "part": 1,
+          "text": "Document: Determinism and boundary transfers\nPath: architecture/determinism-and-boundary-transfers.md\ndocument-kind: contract\nstatus: Current\nscope: Native scheduling and hash semantics for declared fixture inputs; explicitly excludes complete replay guarantees\ncanonical-for: [native-determinism-and-hash-coverage]\nlast-reviewed: 2026-09-09\nSection: Determinism and boundary transfers > What does native worker parity guarantee?\n**Current:** one-worker and multiworker PhasedInPlace runs use the same coordinate/tick-derived phase, scan, random and merge semantics. Exact fixture comparisons test that worker execution changes throughput without changing those specified results. They do not establish equivalence with SerialInPlace, the GDScript fallback, a different controller order or the coupled Rapier world. Executed cases and platforms belong in the [validation ledger](../reference/validation-evidence.md). Source: [World `tick_phased`, `scan_rect`, `deterministic_random`, `merge_job_effects`](../../native/src/world.cpp), [SchedulerGeometry](../../native/src/scheduler_geometry.cpp) and [native fixtures](../../native/tests/test_world.cpp)."
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-04",
+      "query": "Does a same-material reaction product keep its Water amount, temperature, solver state and mutation state?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Legacy same-ID products do not automatically preserve quantity or solver state; Water defaults come from the active World policy maximum.",
+        "Pressure and IN state retirement, optional coordinate temperature retention and existing no-op epoch/dirty behavior must all remain explicit.",
+        "Gross produced/consumed quantities and selected pair-event accounting are preserved; keep_existing requires separate admission."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 19.118338,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts\nFor #355, section 5's `replace_with_defaults` is only shorthand for the actual legacy World path, **not** a generic reset of every field. Freeze: - Four-tick contact cadence, neighbour/random-stream order, one shared roll, `roll <= threshold` and target-then-source writes; threshold0 means 1/256, while a disabled rule is a distinct future declaration. - Water product quantity from the active World policy maximum, other products' descriptor-initialized state and the existing pressure/IN state retirement. Same-ID products do not automatically preserve quantity or solver state. - Existing optional temperature retention, body-mask/refusal behavior, no-op epoch/dirty semantics and gross produced/consumed plus pair-event accounting. A selected event can be recorded even when the write returns unchanged. - Existing specialized thermal, Acid, ignition, electrical and lifecycle paths remain hand-coded; their catalogue records describe them without replacing execution. #160/#162 retain ownership of their unmerged quantity correction. New `keep_existing`, `set_state` or quantity-aware effects require explicit field, sidecar, temperature, event, mutation and quantity-ledger contracts plus separate owner admission before use in production. Their design or synthetic tests do not authorize applying them to legacy same-material products. For #354, static metadata describes a kernel's obligations, not whether a cell is due, masked, active or waiting now. Preserve inert `RuleKernel::None` reaction targets: 26 of the 41 pair participants use that kernel and can be acted on by an active partner. A compiler must not reject or activate them merely for being inert. Reproduce MoltenGlass quiet-block cooling and yielding-liquid failed-roll retry hypotheses against fixed source before proposing any scheduler repair. Mutual MoltenGlass heating and desired viscous rest are separate gameplay-law decisions. Section 6's `KernelOutcome` is illustrative; first prefer the smallest repair using existing coalesced activity wakes. No blanket always-awake policy."
+        },
+        {
+          "rank": 2,
+          "score": 16.517406,
+          "path": "architecture/liquid-solver-family-policy.md",
+          "title": "Liquid solver family policy and API specification",
+          "heading": "Liquid solver family policy and API specification > State ownership per family",
+          "part": 1,
+          "text": "Document: Liquid solver family policy and API specification\nPath: architecture/liquid-solver-family-policy.md\ndocument-kind: design\nstatus: Approved design\nscope: Current-main four-family identities, immutable per-World per-material policy, material/variant admission and readback, W-CY material block v2 and IN family block v2; historical design checkpoints and source/platform qualification remain separately scoped\ncanonical-for: [liquid-solver-family-policy]\nlast-reviewed: 2026-11-03\nSection: Liquid solver family policy and API specification > State ownership per family\nField-level needs, placed into optional storage by the accepted bounded Gate B handoff. Widths, capacities and save fields are frozen by #200/#212 within that handoff; no Cell layout change is implied. | Family | Authoritative state beyond material/state_a/state_b | Current/Proposed | |---|---|---| | `freemass_v1` | none: `state_a` = Water mass (policy-scaled), `state_b` = coherence delay | Current | | `cellular_yield_v1` | none beyond kernel use: Oil `state_b` burn, Cement/Molten Glass lifecycle, `initial_state_a` per descriptor | Current | | `pressure_flow_v1` | overfill quantity, signed horizontal velocity, gas pocket identity/generation and amount, derived per-tick head (scratch, not state) | Current in source: a per-chunk solver-owned `PressureChunk` (`overfill u16`, `flow i16`, `gas u32`) plus the World gas table; no Cell bits ([storage](pressure-flow-v1.md#storage-gate-b-handoff-kept)). 7ef2aac's bits 40–55 are not used | | `inertial_cellular_v1` | signed vx/vy (or momentum), subcell accumulator, saturation/rounding rules | Proposed (#212) | Rules every family must meet, which become Gate B and #200 acceptance: - every authoritative field is covered by a **versioned complete physical-state hash**; historical `content_hash`/`state_hash` are not redefined; - move, swap, density exchange, paint, erase, reaction product and phase conversion each define the family-state result. A product cell always starts with **its** family's default state (velocity 0, no overfill), and no state is silently copied across materials; - conversions between families never truncate quantity without a declared, versioned rule (see the Water normalization in the [comparison contract](../operations/lcb-water-comparison-and-fixtures.md#water-quantity-normalization)); - saves reject unknown or incompatible family state before replacing the World. CYSD1 levels load with every liquid on its default family."
+        },
+        {
+          "rank": 3,
+          "score": 16.496756,
+          "path": "architecture/liquid-state-transition-matrix.md",
+          "title": "Liquid material and solver state-transition matrix",
+          "heading": "Liquid material and solver state-transition matrix > Status and inputs",
+          "part": 1,
+          "text": "Document: Liquid material and solver state-transition matrix\nPath: architecture/liquid-state-transition-matrix.md\ndocument-kind: design\nstatus: Approved design\nscope: Operation-by-operation rules for default liquids, accepted native W-CY/pressure variants/Brine IN and isolated published Water IN; historical Proposed requirements retain their source qualification — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice\ncanonical-for: [liquid-state-transition-matrix]\nlast-reviewed: 2026-10-25\nSection: Liquid material and solver state-transition matrix > Status and inputs\n- **Default-family baseline rows** retain the historical prepass at `9012425`/`4caa2c3`. Current PF and W-CY refinements are identified separately below. - **Proposed rows** are the contract that #200 (policy, `pressure_flow_v1`, whole-cell Water) and #212 (`inertial_cellular_v1`) must implement and test. - **PF rows are implemented (2026-10-24)** by the opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md), Current on main since #245 merged at `03785c3`. Its [lifecycle table](pressure-flow-v1.md#lifecycle-per-mutation-path) owns the Current per-path result. Refinements of the Proposed PF text: the overfill bound is `maximum()`; a kernel-vacated cell carries a vacuum label (volume, not amount); `transfer_water` throws in a pressure World; vented and collapsed gas amounts are booked in `GasLedger`. Accepted [PR #246](../audits/2026-10-25-lcb001-shared-contract-acceptance.md) advances main to exact hash/persistence version **2** with the shared quantity ledger and construction bindings. Main explicitly refuses historical CYPS1; its #245 evidence is retained. CYSD1 stays a default-family reconstruction. - **W-CY rows are Current on main through #246** at merge `ec58d919`: whole-cell Water law version 1 and optional viscosity material block v2, with retained cadence/stochastic liveness. [Native prepared setup and receipts](liquid-prepared-setup-and-receipts.md) owns normalization, native-issued outcomes, typed receipt and accounting codecs. This owner-requested narrow native freeze is not a production Cell or global ABI freeze. Brine IN/reference and #201 caches/dormancy are Current in the combined #212 source, with [IN](inertial-cellular-v1.md) and [pressure](pressure-optimization.md) qualifications separately retained; fresh combined-source qualification remains required. - **Storage** follows the [Gate B bounded handoff](../audits/2026-10-23-lcb000-gate-b-state-handoff.md) (accepted; [refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)): - the C64-E8 Cell is unchanged; - family state lives in **optional, versioned, solver-owned storage**, plus a **World-owned gas-compartment table**; - no spare-bit allocation; - numeric widths are frozen by #200/#212 before code. - **Not a schema or layout decision.** **Family columns:** | Column | Meaning | |---|---| | FM | `freemass_v1` (Current Water) | | CY | `cellular_yield_v1` (Current other liquids; experimental whole-cell Water in W-CY) | | PF | `pressure_flow_v1` (Water only, v1) | | IN | `inertial_cellular_v1` (Water whole-cell v1; Brine) | **Common state tuple** (Current, moves as one unit): material, `state_a`, `state_b`, and optional chunk temperature. Optional family state is: | Family | Optional state | |---|---| | PF | overfill quantity, signed flow/velocity, optional wake/history | | IN | signed vx/vy (or momentum), subcell accumulators | | World gas table | per compartment: id, generation, ancestry, amount, free volume, vent/seal state, topology revision | **Cross-cutting rules** applying to every row: - **R1** Optional family state belongs to exactly one cell. It moves with that cell and is **retired** (never left behind or duplicated) when the cell becomes Empty or another material. - **R2** A product or newly painted cell starts at its own"
+        },
+        {
+          "rank": 4,
+          "score": 16.080195,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 5. Interaction effects and effective parameters > Endpoint effect language",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 5. Interaction effects and effective parameters > Endpoint effect language\nToday, a selected pair writes both products using their new material's initial state. This includes same-identity outputs; it is not implicit preservation. The proposed authoring effect model must therefore distinguish: | Proposed effect | Explicit semantics | Default compatibility | |---|---|---| | `replace_with_defaults` | Replace material identity/state with descriptor-initialised product; retire incompatible optional solver state | Maps **all existing** pair rules to this effect initially | | `keep_existing` | Preserve selected participant's identity and allowed state/quantity (with defined epoch/mutation semantics) | **Not** automatically selected for same-material outputs | | `set_state` | Narrow, validated update to declared state register | Synthetic tests first; never write undeclared register bits | | Named quantity-aware effect | Explicit product, consumed/produced quantity and permitted carry/overshoot | **Existing #160/#162 owns its source branch and acceptance**, not this programme | | `disabled` | No rule selected by author intent | Distinct from old threshold 0, which still succeeds on 1 of 256 rolls | Keep the Current probability rule `roll <= stored_threshold`, so the probability of a single eligible opportunity is `(threshold+1)/256`. Preserve the shared roll and first-selected-contact scheduling/order in the compatibility profile. A new inspector can display `matched`, `roll_failed`, `not_due`, `source_inactive`, `masked`, or `conflict` **only if the relevant layer actually observes that reason**. Resolver-only code cannot claim World-level facts it has not checked."
+        },
+        {
+          "rank": 5,
+          "score": 16.058212,
+          "path": "architecture/lcb-pressure-inertial-handoff.md",
+          "title": "LCB pressure and inertial implementation handoff",
+          "heading": "LCB pressure and inertial implementation handoff > Shared integration points (both families)",
+          "part": 1,
+          "text": "Document: LCB pressure and inertial implementation handoff\nPath: architecture/lcb-pressure-inertial-handoff.md\ndocument-kind: design\nstatus: Approved design\nscope: LCB-001 pressure/W-CY and shared-native handoff plus Planned LCB-005 inertial requirements — material hooks, state, laws, boundaries, invalidating failures and campaign APIs; detailed setup/receipt/accounting codecs have their own canonical owner\ncanonical-for: [lcb-pressure-inertial-handoff]\nlast-reviewed: 2026-10-25\nSection: LCB pressure and inertial implementation handoff > Shared integration points (both families)\n| Need | Where today | Requirement | |---|---|---| | Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). **Current on main:** Water × `pressure_flow_v1/reference` with one optional family block. Accepted main also qualifies Water × `cellular_yield_v1/reference` with its v2 viscosity block. Further candidate families must extend the running build's qualified cells and schemas. | | Construction | Native `PreparedWorldBuilder`; bridge `build_liquid_policy_world`; other #202 constructors | Native explicit normalization and actual payload/quantity checks occur on an unexposed candidate. Native-issued outcome preserves retained World/generation. Godot typed normalization opt-in and remaining #202 constructors are Planned. | | Family dispatch | `update_rule_kernel` L2829 (`RuleKernel` switch), after generic pair chemistry L2797 | Dispatch motion by family only for liquids with a non-default assignment. Keep stages 1, 2, 4 and 5 from the [material hooks](liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23) unchanged. **Current on main:** `RuleKernel::Water` calls `update_water_pressure` in a pressure World; accepted main also dispatches W-CY explicitly. | | Moves and swaps | `move_cell` L2323, `try_move` L2446, `transfer_water` L2481, `relocate_stored_cell` L1840 | Optional state moves atomically with its tuple; retired on Empty/conversion (R1). | | Writes and products | `write_cell`, `set_cell_state`, generic pair products | Current native: reset family state even for same-material products, retain family-only mutation witnesses, book gross visible+overfill Water and initialized output per catalogue rule; separate material populations. | | Transport coupling | `mix_after_motion` L2568 | Called with the real moved quantity (`maximum()` for a whole cell). | | Body masks | `transient_obstacle_at`, `update_cell` L3500 skip | Masks are solid for motion and head. No new Rapier force. | | Scheduling | `begin_tick` L3524+, block sleep after 3 quiet ticks | Sleep only when family state is at rest. Count work by visited cells and scheduled cores, not active-chunk flags (mechanism report §C). | | Hashing/persistence | `physical_state_hash`, `save_physical_state`, `restore_physical_state` | Current main native hash2/CYPS2 include shared accounting and construction bindings; historical content/state hashes unchanged; old CYPS1 explicitly refuses ([definition](pressure-flow-v1.md#physical-state-hash-v2)). | **APIs required to unblock the registered tests** (in `lcb-physics-contracts.json`): - policy readback (Current foundation; the #245 pressure adapter adds `family_parameters`); - versioned physical-state hash (`get_physical_state_hash()`, Current main version 2); - `inspect_cell` extended with family state (`family_state` in pressure Worlds, Current on main); - `inspect_gas_compartments()` returning id, generation, ancestry, amount, volume, vent state and topology revision (Current on main); - native bounded per-reaction quantity aggregates and separate material-cell counts (not ordered replay); #202 owns their complete host collection; - a front/centroid observation metric (optional; the tests currently scan with `material_at`)."
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-05",
+      "query": "Is material ID132 available for a new production powder during the catalogue compiler work?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Draft358 experimentally uses132–137, including StoneWall132; these remain unmerged candidate identities, not production Current data.",
+        "The proposed non-hard132 test is allowed only in a private synthetic registry with no production output, save or receipt export.",
+        "An owner integration decision is required before allocating new production IDs."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 22.629348,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority",
+          "part": 2,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority\noutputs, source/schema/compiler identities and actionable drift diagnostics. Do not rewrite unchanged output files and thereby force unnecessary rebuilds. - Compile-time fixed arrays/bitsets and initialization-time policy validation; no tick-time JSON, strings, family search, maps, allocation, per-cell objects or added state. Keep the existing partner-bitset fast rejection and bounded sparse resolver. Treat host-side authoring source maps separately from native hot-path metadata. No performance benefit is claimed without measurement. IDs 0–131 and invalid10 stay unchanged. Draft #358 has experimental claims on 132–137; these are **not production Current reservations or accepted materials**. Record those branch-qualified claims so a source author does not reuse them accidentally. The ID132 non-hard-powder test in the original issues is valid only inside an explicitly isolated synthetic registry, with no generated production output, save, receipt or experiment export. It must not overwrite #358's experimental StoneWall132 identity. New production ID allocation still requires an explicit integration decision."
+        },
+        {
+          "rank": 2,
+          "score": 17.731394,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 9. Issue dependency and acceptance plan > Per-stage acceptance",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 9. Issue dependency and acceptance plan > Per-stage acceptance\n| Issue | Bounded result | Required proof | |---|---|---| | [#352](https://github.com/techrote/cybersand/issues/352) | Proposed design and source-linked compatibility contract | Real source/owner inventory, frozen baseline, decision points and documented non-goals; **no production implementation** | | [#353](https://github.com/techrote/cybersand/issues/353) | Canonical authored catalogue and exact source mirror generator | All IDs/descriptors, 56 pairs, 19 mechanisms, 7 families / 33 memberships and visual data match. 256×256 pair checks; deterministic generation; fake ID132 negative case | | [#354](https://github.com/techrote/cybersand/issues/354) | Controlled liveness corrections or documented no-go disposition | Default/awake/active-neighbour native reproductions, narrow scheduler wake proof, workload/worker parity; optional gameplay profiles gated | | [#355](https://github.com/techrote/cybersand/issues/355) | Explicit endpoint effects and truthful eligibility inspection | Legacy 56-pair results unchanged, orientation/roll boundaries/ledger equivalence, synthetic new-effect validation, Acid priority checks | | [#356](https://github.com/techrote/cybersand/issues/356) | Practical source-authoring and effective material inspector | Search, applicability warnings, safe restart/refusal, synthetic new-material workflow, actual desktop test and scope-appropriate Web checks | **Gates:** Each implementation writer checks current `main`, previous accepted exact-head tests, active PRs and actual World/Godot ownership. No merged candidate from a stale source-only summary. Before ready/merge, run affected Documentation/provenance, Native + sanitizers, actual GDExtension/Godot and focused Water/LCB suites; publish source-matched runtimes where changed native behaviour requires them. Retain actual failures and identify unexecuted Windows graphical, Web/browser or manual feel acceptance. Draft PRs are appropriate during iteration; no automatic merges. **Write-set contention:** #354 and #355 may share `native/src/world.cpp`; their research can proceed in parallel but source writes, reconciliation and final merge should be serialized. #356 should consume accepted inspection APIs rather than invent a second World observer. **Rollback:** Source-generated catalogue #353 must be independently revertible without losing old IDs, data or fixtures. Changed physics in #354/#355 is a separately versioned policy/disposition, not entangled with mechanical generated-table parity. If validation proves unresolved source/ABI/behaviour differences, leave implementation draft and report a blocker; do not relax oracle comparisons."
+        },
+        {
+          "rank": 3,
+          "score": 14.309789,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler\n**Proposed authoring tree** (final names/schema require #352 review): ```text materials/ schema/material-v1.schema.json registry/identities.json definitions/{legacy,reactive,construction,building}/*.json behaviours/presets.json interactions/{families,pairs,specialized}.json appearances/{recipes,overrides}.json browse/{categories,tags}.json tools/materials/compile_catalogue.py tools/materials/test_catalogue.py ``` Prefer simple JSON plus a deterministic Python-stdlib compiler in v1, because the current repo already maintains portable Python CI tools. Using several author-friendly source files is acceptable **only if** they compile to one validated immutable effective catalogue. The canonical source should contain identity, type, constraints, owned parameters, family memberships, aliases and status. Free-form comments in JSON may be replaced with dedicated `description` fields or adjacent documentation. **Illustrative proposed material record** (not executable today): ```json { \"schema_version\": 1, \"key\": \"cybersand:wood\", \"id\": 7, \"display\": {\"name\": \"Wood\", \"category\": \"Organics/Wood\", \"tags\": [\"timber\"]}, \"physical\": {\"phase\": \"Solid\", \"density_rank\": 720, \"hard_surface\": true, \"granular_support\": false}, \"behaviour\": {\"preset\": \"legacy.wood.v1\"}, \"appearance\": {\"rgba8\": [116, 78, 48, 255], \"recipe\": \"timber.v1\"} } ``` **Generated outputs** should include `material.hpp` descriptors/identity, explicit native capability lookup, compact sparse interaction table/partner sets, stable GDScript IDs and names, picker/browse metadata, RGBA and flair arrays, condition projection and versioned source-derived catalogue manifest. Keep expensive shader algorithms and native kernel implementations hand-coded initially; generate their *metadata*, not a new universal interpreter. **Hard validator gates:** - Stable, non-reused byte IDs; slot 10 remains invalid; `Gas` is a label alias for Smoke=4, not another material ID; reserve/unallocated slots fail cleanly. - Unique keys, names and aliases; valid family references, endpoint/product IDs, kernel enum, radius, state width/meaning, type ranges and support matrix. - Family overlap, duplicate pair, conflicting ordered/unordered matches, cross-rule precedence, invalid supersession, invalid probability representations, uninitiable pair-only definitions and unsupported optional-state contracts fail with understandable source location. - Generate a baseline exact-value oracle from the pinned Current source before replacing hand-authored tables. `--check` regenerates without modifying the tree and fails on drift. Generated files are deterministic, diffable and compatible with repository documentation policies. - Current 132-slot catalogue, all 56 rule identities/indexes/roll cases and 19 specialised mechanisms are identical after the migration. Synthetic new non-hard powder at ID 132 is a compiler-only fixture—not a shipped byte-ID addition—to prove future IDs are not auto-collision-hard. **Intentionally not implemented in v1:** a runtime DSL, hot-loop schema evaluation, user scripts, dynamic pack ID reassignment, or a per-cell behaviour object."
+        },
+        {
+          "rank": 4,
+          "score": 12.145384,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 12. Owner adoption and shadow-compiler handover — 2026-11-04",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 12. Owner adoption and shadow-compiler handover — 2026-11-04\n**Approved direction, retained Planned status.** The owner explicitly authorized adopting this corrected architecture and merging only the documentation after final checks. The [recorded decision](https://github.com/techrote/cybersand/pull/357#issuecomment-6619407158) supersedes the earlier adoption hold. It does not assign #353-A or any later implementation. Current native and GDScript definitions remain authoritative; no material behavior, default, Cell layout, transport, quantity, save, policy, receipt identity or runtime binary changes follow from accepting the plan. The [#353-A handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661) defines the next separately assigned task: strict versioned JSON, a Python-stdlib compiler, deterministic shadow outputs/source maps, an independent pre-generator source/backend oracle, strict and adversarial validation, read-only `--check`, unchanged-output preservation and no partial publication after validation failure. The architecture-adoption prerequisite is now satisfied; the implementation assignment remains outstanding. Broad #353 and parent #352 remain open. The first implementation compares all existing identities/descriptors, all 256 byte-ID predicate outcomes, semantic families, ordered compact/specialized rules, relevant ordering/threshold/orientation/no-op semantics, original source bytes and known-answer tests. It must preserve backend differences and complete material/ interaction header-byte identities. Semantic equality does not establish source-byte compatibility. Production consumer cutover requires its own exact-byte review or an explicitly authorized identity transition, with rollback and appropriate gates. At adoption intake, accepted main was `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` and the reviewed proposal was `9b776d109e7843fb9b2d25239f9d088181309aa1`. The [integration ledger](https://github.com/techrote/cybersand/pull/357) owns final-head, merge and post-merge documentation results. The earlier [readiness checkpoint](https://github.com/techrote/cybersand/pull/357#issuecomment-6619191972) preserves its actual tested tree, draft-state provenance skip and retrieval limits; its green runs are not claims about a later edited head. Ready-state and post-merge Documentation checks must validate materialized runtime identity; this does not require Native/GDExtension/gameplay execution for a documentation-only change. Before implementing A, independently recapture newly accepted main and active file ownership. PR #358's IDs132–137 remain experimental at this decision; if that work lands first, baseline the accepted result instead of importing its unmerged candidate. Keep #353 → (#354 and #355, serializing overlapping writes) → #356. Identity transition, production ID allocation, Spark membership, endpoint/ quantity exceptions, MoltenGlass thermal law, viscous retry/rest and runtime editing remain separate decisions. This adoption grants no new material physics or automatic inheritance."
+        },
+        {
+          "rank": 5,
+          "score": 11.9363,
+          "path": "operations/soliding-stage3b-production-plan.md",
+          "title": "Issue 12 Stage 3B production implementation plan",
+          "heading": "Issue 12 Stage 3B production implementation plan > Issue #69 registered campaign contract",
+          "part": 1,
+          "text": "Document: Issue 12 Stage 3B production implementation plan\nPath: operations/soliding-stage3b-production-plan.md\ndocument-kind: runbook\nstatus: Approved design\nscope: Dependency, ownership, gate and validation routing for Stage-3B locality/scalability implementation\ncanonical-for: [soliding-stage3b-production-plan]\nlast-reviewed: 2026-09-24\nSection: Issue 12 Stage 3B production implementation plan > Issue #69 registered campaign contract\nThe candidate-independent #69 apparatus freezes the experiment shape before the final candidate exists. - Arms are explicit for Current/discovery-off, untouched Stage 3A, runtime-sized Stage-3A-equivalent, optional sparse-producer/indexed-graph intermediates and the complete Stage-3B candidate. Missing arms are marked unavailable rather than silently dropped. - The fixture catalogue has 168 versioned logical fixtures. Each carries a canonical declarative fixture-protocol hash binding exact geometry/generator parameters and operation schedule into every run/result provenance record. Historical `local-edit` remains an 8x8 patch and historical `bridge` remains a whole column; separate genuine one-cell tuple and topology fixtures carry an exact one-cell mutation contract. - Workers are exactly 1 and 4. Drain-to-completion and fixed primitive budgets `1, 8, 64, 256, 1024` are registered. A whole-region loop is never counted as one primitive and the new primitive count is not equated to Stage-3A abstract work units. - Paired drain cells and interruption-sensitive fixed-budget cells use five sequential process repeats. Correctness-only drain qualifications are single deterministic processes unless a pre-results amendment is registered. - A fixed SHA-256 cell shuffle and balanced normal/reversed arm order are recorded. Final benchmark processes are sequential/uncontended and warm-up/qualification output remains separate. - The default generated final plan has 6,488 run records. This is a deliberately bounded matrix rather than a wasteful Cartesian duplication of semantically meaningless Current/historical fixed-budget cases. - Result schema v1 retains explicit success, correctness failure, refusal, timeout, source failure, failed-world, unavailable and not-applicable states plus exact source/compiler/runtime/hardware/order provenance. Slow performance remains a measurement, not a threshold-derived failure state. - Reducer schema v1 preserves terminal states, high-water/refusal evidence and an exact provenance index; flags missing/insufficient samples; summarizes declared numeric metric populations directly; and encodes no candidate winner or universal percentage-speedup threshold. - The #58 replacement-failure fixture uses retire-first lifecycle semantics: a failed replacement leaves discovery unavailable, does not mark the World failed, and a later successful clear creates a fresh observer incarnation. - The #57 event-halo fixture binds the additive pending footprint `P = (R + 2) + maximum_rule_radius`; #63 retains implementation ownership for the sparse event/coverage producer. #70 must freeze one authoritative simulation/material baseline, exact source/runtime identity for every available arm, final capacities, compiler/artifact identity, target host/OS/power mode and any interface-driven pre-results amendment before executing the registered plan. Untouched historical Stage 3A remains a separately identified reference series when it cannot share the matched authority."
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-06",
+      "query": "Can construction, metal, wood or glass categories automatically give a new material physical or chemical behaviour?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "The six dimensions are stable identity, browsing, explicit physical capabilities, native behavior/state contracts, semantic memberships and appearance.",
+        "Browse labels and visual similarity never assign physics, conduction, combustion, biological substrate, solver eligibility or interaction inheritance.",
+        "Overlapping semantic membership is explicit and gives no physical defaults in the first compiler slice."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 33.378436,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 3. Orthogonal material classification",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 3. Orthogonal material classification\n**Decision proposed:** no single inheritance hierarchy should control all simulation fields. Use six independent dimensions. | Dimension | Example | Effects | |---|---|---| | Stable identity | `cybersand:wood` ↔ frozen byte 7 | Save/content references and compatibility | | Browse category and tags | `Organics / Wood`, `construction`, `timber` | Search/picker only; can belong to many filtered collections | | Physical capabilities | `hard_surface`, `granular_support`, density target exchange | Native collision/transport predicates; explicit flags | | Behaviour preset and state contract | `legacy.wood.v1`, current `Combustible` kernel | Only tested native mechanism and valid parameter consumers | | Semantic interaction membership | `int.family.combustible-kernel`, `aqueous-contact` | Rule selectors, not inferred from colour/name/category | | Appearance programme | RGBA, flair, projection, procedural finish | Godot shader/display only; never physics or per-cell extra paint by implication | **Proposed browse taxonomy:** Natural media (powders, liquids, vapours, ice), Organics/life (woods/fibres, plants/fungi, agents), Construction (masonry, earth/clay, concrete, roofing), Metals (base, alloys, fabricated, weathered), Glass/ceramic/crystal, Polymers/composites, Reactive/energetic, Devices/special. Browsing taxonomy is deliberately **not** mechanical inheritance. Wrought Iron and Copper do not automatically gain base-Metal charge; Chemical Glass does not automatically gain base-Glass phase reactions; building woods do not automatically become Fungus/Mite timber substrates. Even two visually identical materials may have different native capabilities. Overlapping semantic families are allowed. If a future authored family sets an effective parameter that overlaps another, compilation must require a unique explicit override or fail with the conflicting source locations—not rely on array insertion order."
+        },
+        {
+          "rank": 2,
+          "score": 27.164562,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Accepted direction and explicit field ownership",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Accepted direction and explicit field ownership\nRetain stable IDs, presentation-only categories/tags, explicit physical capabilities, named native behaviour/state contracts, explicit semantic family memberships and independent appearance programmes. Construction, metal, wood, glass or liquid labels never imply conduction, hardness, combustion, biological substrate, quantity semantics or solver eligibility. Membership can overlap; membership itself supplies **no physical parameter defaults in the first slice**. An effective field has a qualified owner: native descriptor, selected solver policy, transport pair policy, fallback-specific implementation or presentation. Record its actual consumer, units, integer/encoding limits, applicability, origin, change boundary and state effects. Material density is a comparison rank; native `uint16_t` storage does not turn it into calibrated physical density. World Water-CY viscosity, Mercury's diagnostic override and IN's radius-3 admission cannot be inferred from the base descriptor alone."
+        },
+        {
+          "rank": 3,
+          "score": 22.909649,
+          "path": "systems/material-appearance-and-rendering.md",
+          "title": "Material appearance and rendering",
+          "heading": "Material appearance and rendering > Palette and bounded program > Wet and liquid families",
+          "part": 1,
+          "text": "Document: Material appearance and rendering\nPath: systems/material-appearance-and-rendering.md\ndocument-kind: contract\nstatus: Current\nscope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation\ncanonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]\nlast-reviewed: 2026-10-19\nSection: Material appearance and rendering > Palette and bounded program > Wet and liquid families\n**Current since 2026-10-18:** the former shared wet finish is split by family (`FLAIR_OIL`, `FLAIR_PASTE`, `FLAIR_SLUSH`, `FLAIR_WET_SURFACE` in the [LUT](../../godot/scripts/material_appearance_lut.gd)). Oil keeps its approved wave/streak pattern at the named `OIL_WAVE_RATE` (the same expression it previously derived from its ID); Paste and wet Cement use heavy matte clumps with a very slow settle, Cement's settle scaled by its cure-remaining condition; Slush shows icy granules in slowly shifting meltwater; Brine uses the Water finish plus fixed salt motes; Wet Asphalt/Cobblestone keep their solid substrate under a fixed, world-anchored film. These phases are decorative presentation, not measured flow. Glass, Chemical Glass, Dark Glass and Ice sheens are time-independent so still glazing stays still. **Current since the 2026-10-18 detail pass:** shared `value_noise`/`fbm3`, `heat_ramp` and `lattice_particle` helpers drive richer animated finishes (heat-ramped Fire and Lava, advected Smoke/Steam, Water caustics, Oil iridescence, burn-progress embers, striated neon) and presentation-only pixel particles. `apply_ambient_particles` draws embers above hot or burning cells and fumes above Acid/Toxic Sludge in Empty cells; a candidate particle reads at most three cells below it. Particles are lattice-anchored in world space and never become per-cell objects, lights or simulation state. They raise the measured world-pass GPU cost (see the review record). `material_colour` gathers the four neighbour IDs once per evaluated snapshot and shares them between `apply_volume_and_contact` and the structural relief. That stage adds liquid depth shading (three extra upward reads for liquid pixels only), exposed-surface froth/skin, soft gas and foam boundaries, neighbour contact effects (molten/water flashes, boiling, acid fizz, fire flaring on fuel), emitter rim light on adjacent solids and soft ambient occlusion in Empty cells. Shape-aware construction fills (`uses_structured_fill`, `region_extent`, `apply_structured_fill`) give pipes, hazard stripes, insulation, cables, timber, corrugation, stained glass, neon, brick, tile and reinforced concrete orientation, cross-section and edge treatment from a bounded per-direction run length (at most 16 extra reads, those materials only). Since the fourth iteration this covers Wall, Cloner, Wood, Ice, Metal, Concrete, Glass and every construction ID 38–80. They remain time-independent apart from cable data pulses, neon plasma, pipe steam leaks, the Chemical Glass tank bubbles, the Rubber conveyor, the LED display and Cloner trace pulses. The `structured_detail` uniform (default 1) disables them as a quality-tier hook. The [2026-10-18 review](../audits/2026-10-18-material-readability-pass.md) records the paired captures and limits. The [construction catalogue](themed-construction-materials.md) owns exact themed ID-to-finish mappings. **Approved owner intent:** distinguish liquid motion, use restrained glints on smooth/manufactured metals, and leave rough/hammered metals matte. **Owner direction 2026-10-18 (second pass):** slowly scrolling hatched bands read badly, especially on Oil and Mercury bulk; liquid bulk should swirl pseudorandomly. This supersedes the earlier \"preserve Oil's"
+        },
+        {
+          "rank": 4,
+          "score": 21.193673,
+          "path": "MATERIAL_LAB.md",
+          "title": "1024² material lab",
+          "heading": "1024² material lab > Construction recipes",
+          "part": 1,
+          "text": "Document: 1024² material lab\nPath: MATERIAL_LAB.md\ndocument-kind: runbook\nstatus: Current\nscope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits\ncanonical-for: [material-lab-controls, manual-material-recipes]\nlast-reviewed: 2026-10-18\nSection: 1024² material lab > Construction recipes\nThese are authoring suggestions using the [complete themed catalogue](systems/themed-construction-materials.md) and the [building catalogue](systems/building-material-catalogue.md). | Scene | Suggested composition | |---|---| | Castle wall/gate | Granite foundation; Limestone/Sandstone walls; Oak gate; Wrought Iron fittings; Slate/Lead roof details; Stained Glass; localized Mossy Cobblestone | | Village house | Oak frame; Wattle and Daub/Lime Plaster infill; Thatch/Terracotta roof; Red Brick chimney; Packed Earth path | | Chemical bay | Reinforced Concrete/Ceramic shell; Steel Plate tanks; Painted Steel panels; Steel/Copper Pipes; Cable/Rubber/Insulation; Chemical Glass inspection zones | | Rainy alley | Industrial Brick; Wet Asphalt/Cobblestone; Rusted/Corrugated Steel; Chainlink; narrow cyan/magenta neon; Smoke/Steam/reactive liquids | | Forest lodge | Rough Oak/Birch logs as posts; Pine Planks and Cedar Shingles; Moss Wall foundations; Paper Screen windows; Plant beds with flowers and vines | | Pottery kiln yard | Firebrick kiln around Lava; Raw Clay and Adobe ware that fires to Terracotta/Red Brick; Sandbags; Rammed Earth walls | | Alchemist lab | Marble/Terrazzo floor; Glass Block and Frosted Glass; Uranium Glass and Phosphor accents; Sulfur, Wax, Quicklime and Thermite stores | | Spaceport | Heat-Shield Tile, Carbon Fibre, Aluminium and Solar Panel cladding; Polymer and Acrylic fittings; Gold Leaf trim | Chainlink and grating collide as solid cells despite visual holes. Decorative metal/glass names do not inherit every reaction of base Metal/Glass. Use Empty cells for actual holes, and use the [appearance contract](systems/material-appearance-and-rendering.md) when evaluating GPU finish, glow, and temporal motion."
+        },
+        {
+          "rank": 5,
+          "score": 20.740098,
+          "path": "reference/material-effects-register.md",
+          "title": "Material effects register",
+          "heading": "Material effects register > Implemented (Current) > Static construction (shape-aware unless noted)",
+          "part": 1,
+          "text": "Document: Material effects register\nPath: reference/material-effects-register.md\ndocument-kind: reference\nstatus: Current\nscope: Register of presentation effects — implemented (Current), planned, potential and rejected — with stage, materials, inputs, motion, cost class and evidence\ncanonical-for: [material-effects-register]\nlast-reviewed: 2026-10-18\nSection: Material effects register > Implemented (Current) > Static construction (shape-aware unless noted)\n| Effect | Materials | Since | |---|---|---| | World-anchored wet film over a solid substrate; puddle sheen on top | Wet Asphalt, Wet Cobblestone | P1/P5 | | Time-independent sheens, fractures, frozen bubbles (flair) | Glass, Chemical/Dark Glass, Ice | P1/P2 | | Frames, mullions, reflected lit windows | Glass, Dark Glass | P5 | | Frosted top, icicles carved into undersides | Ice | P5 | | Brick chips and grime; soldier course and quoins | Wall/masonry; Red, Industrial Brick | P2/P4 | | Block seams, caps, drips, machined edges | Wall, Concrete, Metal | P5 | | Ashlar caps, quoins, drips, bedding, flecks | Limestone, Sandstone, Granite | P5 | | Polished tops, moss on tops and joints | Cobblestone, Mossy Cobblestone | P5 | | Spalling that reveals brick | Lime Plaster | P5 | | Half-timbered posts, rails, braces | Wattle and Daub | P5 | | Ridge binding, ragged eave fringe | Thatch | P5 | | Ridge cap, eave shadow, lichen | Terracotta Tile, Slate | P5 | | Balusters with collars and finials; riveted plate | Wrought Iron | P5 | | Standing seams, bloom | Lead Sheet | P5 | | Patina runs, polished/rubbed edges | Bronze, Copper, Verdigris | P5 | | Strata, grassy top | Packed Earth | P5 | | Tar-sealed cracks | Asphalt | P5 | | Rivet rows, grime gradient, scratches, paint chips, rust runs | Steel Plate, Painted Steel | P2/P5 | | Organic corrosion spills from edges and seams, perforation only inside corrosion | Rusted Steel | P5/P6 | | Organic blotches, flaking scale, spill runs, clustered pits | Rust, Rusted Steel | P6 | | 51 building finishes (woods, bark, stone, metals, glass, chemical/industrial) | IDs 81–131, see the [building catalogue](../systems/building-material-catalogue.md) | P6 | | Frames, posts | Grating, Chainlink | P5 | | Cylinder shading, flanges and bolts, couplings, patina | Steel Pipe, Copper Pipe | P4 | | Diagonal stripes with trim; chevrons on strips; worn paint | Hazard Stripe | P4 | | Quilted batts, stitches, foil faces | Insulation | P4 | | Round cables with ties | Cable Bundle | P4 | | Planks with staggered joints and nails | Oak Timber, Wood | P4/P5 | | Ridges following the sheet run | Corrugated Steel | P4 | | Voronoi leaded panes | Stained Glass | P4 | | Bullnose trim | Ceramic Tile | P4 | | Tie holes, exposed rebar | Reinforced Concrete | P4 |"
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-07",
+      "query": "How should overlapping material families and presets resolve conflicting effective parameters?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Use explicit field ownership and authorized overrides; reject unresolved overlaps with both source origins.",
+        "No file order, array order or mixin traversal decides precedence; finite selector intersections must be checked.",
+        "Existing transport directed-source, grain-target and liquid-owned semantics remain in their own resolver;353 adds no new active generic layers."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 24.661254,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Conflicting material families and behaviour presets",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Conflicting material families and behaviour presets\nFor future preset defaults, use one versioned behaviour preset plus explicit material overrides with declared ownership. Reject overlapping owners unless the schema names a unique authorized override. No mixin traversal, file order, array order or display category resolves a conflict. Semantic interaction layers retain the existing fixed precedence and conflict validation; #353 authors no new active layers. Transport keeps its own directed-source, grain-target and liquid-owned parameter rules and refusal checks. A universal per-material effective-value merge must not replace those distinct resolvers. Validate finite selector intersections as well as duplicate selector text: overlapping families, orientations or contexts with unresolved equal-precedence assignments fail with both origins. Overlapping membership alone remains valid."
+        },
+        {
+          "rank": 2,
+          "score": 15.170686,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 3. Orthogonal material classification",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 3. Orthogonal material classification\n**Decision proposed:** no single inheritance hierarchy should control all simulation fields. Use six independent dimensions. | Dimension | Example | Effects | |---|---|---| | Stable identity | `cybersand:wood` ↔ frozen byte 7 | Save/content references and compatibility | | Browse category and tags | `Organics / Wood`, `construction`, `timber` | Search/picker only; can belong to many filtered collections | | Physical capabilities | `hard_surface`, `granular_support`, density target exchange | Native collision/transport predicates; explicit flags | | Behaviour preset and state contract | `legacy.wood.v1`, current `Combustible` kernel | Only tested native mechanism and valid parameter consumers | | Semantic interaction membership | `int.family.combustible-kernel`, `aqueous-contact` | Rule selectors, not inferred from colour/name/category | | Appearance programme | RGBA, flair, projection, procedural finish | Godot shader/display only; never physics or per-cell extra paint by implication | **Proposed browse taxonomy:** Natural media (powders, liquids, vapours, ice), Organics/life (woods/fibres, plants/fungi, agents), Construction (masonry, earth/clay, concrete, roofing), Metals (base, alloys, fabricated, weathered), Glass/ceramic/crystal, Polymers/composites, Reactive/energetic, Devices/special. Browsing taxonomy is deliberately **not** mechanical inheritance. Wrought Iron and Copper do not automatically gain base-Metal charge; Chemical Glass does not automatically gain base-Glass phase reactions; building woods do not automatically become Fungus/Mite timber substrates. Even two visually identical materials may have different native capabilities. Overlapping semantic families are allowed. If a future authored family sets an effective parameter that overlaps another, compilation must require a unique explicit override or fail with the conflicting source locations—not rely on array insertion order."
+        },
+        {
+          "rank": 3,
+          "score": 14.18253,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler\n**Proposed authoring tree** (final names/schema require #352 review): ```text materials/ schema/material-v1.schema.json registry/identities.json definitions/{legacy,reactive,construction,building}/*.json behaviours/presets.json interactions/{families,pairs,specialized}.json appearances/{recipes,overrides}.json browse/{categories,tags}.json tools/materials/compile_catalogue.py tools/materials/test_catalogue.py ``` Prefer simple JSON plus a deterministic Python-stdlib compiler in v1, because the current repo already maintains portable Python CI tools. Using several author-friendly source files is acceptable **only if** they compile to one validated immutable effective catalogue. The canonical source should contain identity, type, constraints, owned parameters, family memberships, aliases and status. Free-form comments in JSON may be replaced with dedicated `description` fields or adjacent documentation. **Illustrative proposed material record** (not executable today): ```json { \"schema_version\": 1, \"key\": \"cybersand:wood\", \"id\": 7, \"display\": {\"name\": \"Wood\", \"category\": \"Organics/Wood\", \"tags\": [\"timber\"]}, \"physical\": {\"phase\": \"Solid\", \"density_rank\": 720, \"hard_surface\": true, \"granular_support\": false}, \"behaviour\": {\"preset\": \"legacy.wood.v1\"}, \"appearance\": {\"rgba8\": [116, 78, 48, 255], \"recipe\": \"timber.v1\"} } ``` **Generated outputs** should include `material.hpp` descriptors/identity, explicit native capability lookup, compact sparse interaction table/partner sets, stable GDScript IDs and names, picker/browse metadata, RGBA and flair arrays, condition projection and versioned source-derived catalogue manifest. Keep expensive shader algorithms and native kernel implementations hand-coded initially; generate their *metadata*, not a new universal interpreter. **Hard validator gates:** - Stable, non-reused byte IDs; slot 10 remains invalid; `Gas` is a label alias for Smoke=4, not another material ID; reserve/unallocated slots fail cleanly. - Unique keys, names and aliases; valid family references, endpoint/product IDs, kernel enum, radius, state width/meaning, type ranges and support matrix. - Family overlap, duplicate pair, conflicting ordered/unordered matches, cross-rule precedence, invalid supersession, invalid probability representations, uninitiable pair-only definitions and unsupported optional-state contracts fail with understandable source location. - Generate a baseline exact-value oracle from the pinned Current source before replacing hand-authored tables. `--check` regenerates without modifying the tree and fails on drift. Generated files are deterministic, diffable and compatible with repository documentation policies. - Current 132-slot catalogue, all 56 rule identities/indexes/roll cases and 19 specialised mechanisms are identical after the migration. Synthetic new non-hard powder at ID 132 is a compiler-only fixture—not a shipped byte-ID addition—to prove future IDs are not auto-collision-hard. **Intentionally not implemented in v1:** a runtime DSL, hot-loop schema evaluation, user scripts, dynamic pack ID reassignment, or a per-cell behaviour object."
+        },
+        {
+          "rank": 4,
+          "score": 13.556037,
+          "path": "systems/procedural-generation-fields-and-modifiers.md",
+          "title": "Procedural generation fields and masked modifiers",
+          "heading": "Procedural generation fields and masked modifiers > How do masks, guidance and hard overrides combine?",
+          "part": 1,
+          "text": "Document: Procedural generation fields and masked modifiers\nPath: systems/procedural-generation-fields-and-modifiers.md\ndocument-kind: contract\nstatus: Current\nscope: GEN-002 deterministic scalar sidechains, finite curve tiles, immutable proposal context, masked guidance, aggregate realization and copied diagnostics\ncanonical-for: [generation-field-graph, generation-masked-modifiers, generation-aggregate-materials, generation-context-and-diagnostics]\nlast-reviewed: 2026-10-21\nSection: Procedural generation fields and masked modifiers > How do masks, guidance and hard overrides combine?\nA modifier has a stable ID and priority, optional application/exclusion field names, strength, a context predicate and a shape. Shape is either a half-open `bounds` rectangle, a point/polyline with `radius` and `falloff`, or the whole admitted world. Bounds and points are mutually exclusive. Its effective influence is calculated once per initial cell: ```text alpha = application * (1 - exclusion) * strength * context_predicate * shape ``` An omitted application is 1; an omitted exclusion is 0. All factors are normalized. Strength accepts `[0,1]`. Point/polyline geometry uses the existing smooth radial brush influence, with radius in cells and falloff in `0.1..8`. Zero influence is an exact no-op and full influence preserves exact targets. Intermediate geometry and theme edits interpolate; discrete material replacement uses a deterministic global-coordinate selection with the same influence. It does not create a new fractional material state. Each modifier may contain theme weights/exclusions, direct parameter edits, `mappings`, and one material or aggregate output. A mapping names a generation `parameter`, source `field` and valid `low`/`high` target values. Descending maps are valid. A parameter may occur once within the modifier's direct edits and mappings combined. `district_size` remains global-only and cannot be spatially mapped or edited. | Stage | Evaluation and authority | |---|---| | Initial proposal | Original theme/brush/parameter/candidate controls establish the immutable context | | Scalar graph and masks | Evaluate every field once; capture every modifier influence once | | Theme guidance | Apply all modifier theme blends in ascending priority, then lexical ID | | Geometry guidance | Reblend theme parameters and old brush parameters; apply modifier direct edits and mappings in the same stable order | | Hard geometry and raster | Reapply hard parameter/candidate overrides, then produce the updated candidate material | | Feature modules | Run prepared samplers under bounds, field masks and declared dependency order | | Material guidance | Apply material/aggregate modifier outputs using their original captured influences | | Connecting geometry | Restore the shared network, then apply explicit guide paths | | Hard material | Apply final exact material overrides | Array order never acts as priority. Higher priority and then later lexical ID win overlapping edits within their stage. Global theme exclusions remain eligibility constraints under all later theme guidance. A wholly excluded modifier target rejects compilation; a group that retains eligible descendants can still resolve. Hard parameter controls remain exact after guidance, and final hard materials can deliberately block routes or replace any earlier output. Feature instances add `application`, `exclusion` and `strength` to the existing module schema."
+        },
+        {
+          "rank": 5,
+          "score": 13.070523,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents\n1. [Authority and preserved substrate](#1-authority-and-preserved-substrate) — what already exists, and what the programme may not overwrite. 2. [Source findings and fault hypotheses](#2-source-findings-and-fault-hypotheses) — exact observations, ownership and required reproductions. 3. [Orthogonal material classification](#3-orthogonal-material-classification) — browsing, physics, semantics and presentation stay independent. 4. [Canonical source model and compiler](#4-canonical-source-model-and-compiler) — source layout, generated outputs and hard validation. 5. [Interaction effects and effective parameters](#5-interaction-effects-and-effective-parameters) — explicit endpoint semantics, threshold representation and real kernel consumers. 6. [Scheduling and liveness qualification](#6-scheduling-and-liveness-qualification) — bounded wake obligations and gameplay-decision gates. 7. [Identity, compatibility and resource budgets](#7-identity-compatibility-and-resource-budgets) — do not change saves, cells, runtime authority or replay claims accidentally. 8. [Materials Lab authoring workflow](#8-materials-lab-authoring-workflow) — usable editing without fake live sliders or fallback claims. 9. [Issue dependency and acceptance plan](#9-issue-dependency-and-acceptance-plan) — finite steps, qualification, rollback and write-set separation. 10. [Decisions held for explicit disposition](#10-decisions-held-for-explicit-disposition) — questions to resolve with evidence rather than guesswork. 11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions. 12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates."
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-08",
+      "query": "Has the architecture review proved MoltenGlass cooling or yielding-liquid retry failures and approved an always-awake fix?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "These are source-supported hypotheses requiring source-matched reproduction; this review runs no new physics qualification.",
+        "354 uses quiet3/1024, active-neighbor and boundary/phase/worker controls while preserving existing MAT001 and Water-CY behavior.",
+        "Mutual MoltenGlass heating and viscous rest are separate law decisions; no blanket always-awake policy is admitted."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 31.78442,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Legacy endpoints and scheduling must remain executable contracts\nFor #355, section 5's `replace_with_defaults` is only shorthand for the actual legacy World path, **not** a generic reset of every field. Freeze: - Four-tick contact cadence, neighbour/random-stream order, one shared roll, `roll <= threshold` and target-then-source writes; threshold0 means 1/256, while a disabled rule is a distinct future declaration. - Water product quantity from the active World policy maximum, other products' descriptor-initialized state and the existing pressure/IN state retirement. Same-ID products do not automatically preserve quantity or solver state. - Existing optional temperature retention, body-mask/refusal behavior, no-op epoch/dirty semantics and gross produced/consumed plus pair-event accounting. A selected event can be recorded even when the write returns unchanged. - Existing specialized thermal, Acid, ignition, electrical and lifecycle paths remain hand-coded; their catalogue records describe them without replacing execution. #160/#162 retain ownership of their unmerged quantity correction. New `keep_existing`, `set_state` or quantity-aware effects require explicit field, sidecar, temperature, event, mutation and quantity-ledger contracts plus separate owner admission before use in production. Their design or synthetic tests do not authorize applying them to legacy same-material products. For #354, static metadata describes a kernel's obligations, not whether a cell is due, masked, active or waiting now. Preserve inert `RuleKernel::None` reaction targets: 26 of the 41 pair participants use that kernel and can be acted on by an active partner. A compiler must not reject or activate them merely for being inert. Reproduce MoltenGlass quiet-block cooling and yielding-liquid failed-roll retry hypotheses against fixed source before proposing any scheduler repair. Mutual MoltenGlass heating and desired viscous rest are separate gameplay-law decisions. Section 6's `KernelOutcome` is illustrative; first prefer the smallest repair using existing coalesced activity wakes. No blanket always-awake policy."
+        },
+        {
+          "rank": 2,
+          "score": 31.680775,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 2. Source findings and fault hypotheses",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 2. Source findings and fault hypotheses\n| Finding | Classification | Source/effect | Required action | |---|---|---|---| | Hard-terrain classification uses IDs `38..kLastMaterial` | **Current source risk** | [`MaterialRules::is_hard_surface`](../../native/src/material_rules.cpp) would classify a future appended non-hard ID as hard if `kLastMaterial` advances | Generate an explicit capability map; freeze identical outcomes for current 101 hard members | | Transport schema v1 addresses only IDs 0–80 | **Current compatibility boundary** | [`TransportPolicy`](../../native/include/cybersand/transport_policy.hpp) returns fixed defaults for later IDs | Preserve v1 byte format, advertise fallback; separately version any extension | | Semantic `hot-source` omits Spark but runtime `is_hot` includes Spark | **Current metadata/predicate inconsistency** | [`interaction_rules.hpp`](../../native/include/cybersand/interaction_rules.hpp) vs [`world.cpp`](../../native/src/world.cpp) | Audit intentional scope; correct metadata or context predicate only with approved tests | | Lava/Acid/Oil movement ignores generic descriptor viscosity gating | **Current behaviour, recognised in prior characterisation** | Specialised [`world.cpp`](../../native/src/world.cpp) paths vs descriptor `viscosity_index` | Do not expose these as effective editable viscosity sliders; retune only via an admitted policy | | Same-material pair products reset state; Water products can be initialised full | **Current documented semantics and quantity sources/sinks** | `World` pair writes plus [quantity ledger](../../native/tests/test_quantity_ledger.cpp) | Preserve in legacy policy; add explicit endpoint effect kinds and truthful accounting. Coordinate #160/#162 | | Isolated MoltenGlass cooling may become stranded across quiet block sleep | **Source-derived hypothesis; fresh native proof missing** | Four-tick thermal lane vs ordinary three-quiet-tick threshold | Controlled actual-World default/high-quiet/active-neighbour reproduction before change | | Adjacent MoltenGlass resets cooling to 180 | **Current source behaviour; intended law unresolved** | `RuleKernel::MoltenGlass` hot-neighbour condition | Distinct thermal-model/feel decision, not a scheduling fix | | Yielding-liquid failed mobility draw returns before retry/deadline retention | **Current source condition; retained prior sleep sensitivity** | `flow_as_yielding_liquid`; [issue-15 coverage](../audits/2026-09-11-issue-15-coverage.md) | Reproduce source-matched resting/eligible cases; any changed trajectories require versioned acceptance | | Pair rules need a scheduled active initiator | **Current execution constraint** | Pre-kernel chemistry is reached through active World cells | Validate generated participants/initiator or document explicit non-running rule | | Native descriptors, appearance LUT, picker and GDScript fallback are separately maintained | **Current duplication risk** | [material contract](../systems/materials-and-rule-kernels.md) | Generate shared facts; never falsely claim fallback native-rule parity | A source-review finding is not a runtime pass. In particular, the proposed cooling and stochastic-retry reproducers are **not** evidence that changing those laws will improve game feel, performance or scheduler correctness on the actual native host."
+        },
+        {
+          "rank": 3,
+          "score": 22.224107,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 6. Scheduling and liveness qualification",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 6. Scheduling and liveness qualification\nThe existing World kernel has one authoritative tick/owner and spatially staggered deterministic lanes. The desired extension is an explicit result such as: ```text KernelOutcome { state_changed; retained_next_eligible_tick?; waiting_reason; // cadence, stochastic_retry, intrinsic_countdown, blocked, ... mechanism_id; } ``` This describes a **proposed scheduling interface**, not a new return type already implemented. Bounded deadline retention must use the existing activity-block mechanism; no new per-cell queue, extra per-cell allocations or fake dirty writes. A quiet/ineligible block may sleep. Before implementation, run retained real-`World` fixtures at default quiet=3 and deliberately extended quiet=1024 (plus an always-active neighbour control), across all relevant temporal phases, positions/translations, 1/4 actual worker execution, source/target changed/unchanged, body masks, region pause/re-entry, reset and core/chunk edges. Distinguish: 1. **Missing due opportunity** (potential scheduler correction); 2. **Stochastic mobility discarded by sleeping** (may be intentional legacy resting approximation); 3. **MoltenGlass mutually maintaining temperature** (distinct proposed thermal law decision); 4. **Valid blocked/rest state** (should not cause endless reevaluation). A fix to category (1) should not silently implement new rules for (2) or (3). Any changed trajectory, rate or pool lifetime requires versioned optional experiments, independent source-matched evidence and owner gameplay acceptance before changing defaults. Keep all MAT-001, Water and unrelated liquid controls as negative tests."
+        },
+        {
+          "rank": 4,
+          "score": 19.384781,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 10. Decisions held for explicit disposition",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 10. Decisions held for explicit disposition\n- Is the registered `hot-source` family deliberately narrower than `is_hot` with respect to Spark, or a documentation/membership bug? Confirm use cases before changing semantics. - Should MoltenGlass neighbours count as perpetually hot? If not, register a specific cooling model, explicit target and before/after fixture with no claim of global heat conservation. - Should the existing quiet-dependent whole-cell viscous-liquid rest remain a desired gameplay yield approximation? Distinguish stochastic retry scheduling from an intentionally bounded rest/yield law. - When should a same-ID product preserve state? **Current default is full replacement**. Every exception needs an endpoint-effect contract and separate quantity/source-sink ledger; #160/#162 remains a separate owner. - Which parameters can actually be changed without compiling a new native module? Mark all others source-edit-required; never silently report that a slider worked. - Can authoring fully rely on `constexpr` built output until demand justifies runtime user packs? **Proposed yes**; runtime GUID migration is not admitted here. - Does any new material require widening beyond a byte? The current registry does not: IDs 132–255 are still unallocated, subject to further reservations. Any future widening belongs to an explicit storage/save/adapters decision, not this chain. **This page is the planning contract, not the Current runtime catalogue.** Exact ongoing material numbers and behaviour remain owned by [materials-and-rule-kernels](../systems/materials-and-rule-kernels.md), [intermaterial-interactions](../systems/intermaterial-interactions.md), and their source files. Do not add a second competing Current source of truth."
+        },
+        {
+          "rank": 5,
+          "score": 16.542218,
+          "path": "systems/materials-and-rule-kernels.md",
+          "title": "Materials and rule kernels",
+          "heading": "Materials and rule kernels > Completed liquid specialization evidence",
+          "part": 1,
+          "text": "Document: Materials and rule kernels\nPath: systems/materials-and-rule-kernels.md\ndocument-kind: contract\nstatus: Current\nscope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries\ncanonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]\nlast-reviewed: 2026-10-19\nSection: Materials and rule kernels > Completed liquid specialization evidence\nThe [eleven-liquid review](../audits/2026-09-11-issue-15-coverage.md#per-liquid-final-coverage) distinguishes generic mobility from Oil/Acid/Lava exceptions, lifecycle cadence, Water partial redistribution and exchange. [Controlled sleep evidence](../operations/liquid-characterization.md#does-keeping-water-awake-fix-residual-leveling-or-films) does not establish a stress/yield law or approve liquid unification. Production semantics are unchanged; observation counters remain on the research branch."
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-09",
+      "query": "What does exact catalogue migration parity need beyond stable material names and pair products?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Freeze every descriptor, byte ID and capability result, backend distinction, aliases and shared appearance facts against independent old-source consumers.",
+        "Preserve pair and specialized-record legacy indices because quantity accounting is positional.",
+        "Protect complete digest-bound header bytes and parser form, deterministic outputs, explicit validation errors, rollback and source-matched gates for any later runtime cutover."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 2,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 20.428427,
+          "path": "systems/intermaterial-interactions.md",
+          "title": "Intermaterial interaction substrate",
+          "heading": "Intermaterial interaction substrate > Participant semantics and precedence",
+          "part": 1,
+          "text": "Document: Intermaterial interaction substrate\nPath: systems/intermaterial-interactions.md\ndocument-kind: contract\nstatus: Current\nscope: Versioned sparse authoring, resolution, provenance, coverage and migration contract for non-kinetic intermaterial semantics\ncanonical-for: [intermaterial-interactions, interaction-schema, interaction-provenance, interaction-coverage]\nlast-reviewed: 2026-10-19\nSection: Intermaterial interaction substrate > Participant semantics and precedence\nCurrent compact rules use **unordered matching with role-preserving effects**. Reversing source/target therefore reverses role-specific products; it does not make the effects symmetric. The production Current pair resolver remains intentionally simple: explicit sparse pair match, stored probability boundary, then role-specific products plus stable rule/channel provenance. The authoring/compiler substrate additionally defines five independent layer classes with fixed precedence: channel default < family default < material adjustment < pair override < context modifier. Current behavior deliberately authors **zero** implicit layer defaults/adjustments/modifiers; this proves the infrastructure without fabricating semantics. Ordered, symmetric and unordered-role-preserving pair matching are all explicit schema choices and are covered by synthetic native regressions. Equal-precedence matching layers are a validation conflict rather than \"last write wins\". Catalogue validation also rejects duplicate rule identities, pair-override conflicts, invalid family references and self-supersession. Specialized neighbourhood/lifecycle entries are represented in the same profile catalogue but remain authoritative in their existing world.cpp kernels unless a later bounded migration proves exact separation from movement/contact code. This is an explicit limitation, not a second authority."
+        },
+        {
+          "rank": 2,
+          "score": 18.856716,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 7. Identity, compatibility and resource budgets",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 7. Identity, compatibility and resource budgets\n**Hard invariants:** existing byte IDs, reserved 10, material products, default C64/E8 Cell/storage contract, `state_a/state_b` meaning, full-physical state hash/version, current save/level formats, generic World ownership, native/Godot worker separation, source-matched runtime publication, LCB policy compatibility and non-kinetic interaction ownership. Avoid conflating four independent identities: - **Material registry identity:** stable authored content keys and numeric ID table. - **Compiled catalogue/effective policy identity:** exact schema, resolved parameters, families, interactions, generator version. - **Source/runtime/artifact identity:** commit, build/dependencies, native library bytes and platform. - **World state identity:** actual active material cells, state, auxiliary solver state, schedule, mutable quantities. The current transport schema v1 has 81 material entries and six pair settings for every old 81×81 slot; extension must be schema-versioned rather than silently changing that profile's serialized shape. Later material defaults need explicit acknowledgement in the inspector. The initial generator is **build-time**. A later approved immutable per-World tuning overlay can be admitted at a validate → reconstruct same setup → atomic owner swap boundary; a malformed policy leaves the previous World untouched. Never mutate the global compiled descriptor table during worker execution. Current GDScript fallback uses only a subset of native behaviours: generated IDs do not establish native-fallback chemistry parity. No unmeasured compile-time or runtime performance claims. Benchmark generated lookup and table size against Current; maintain bounded hot-path cost."
+        },
+        {
+          "rank": 3,
+          "score": 17.739211,
+          "path": "systems/building-material-catalogue.md",
+          "title": "Building material catalogue",
+          "heading": "Building material catalogue > Catalogue",
+          "part": 3,
+          "text": "Document: Building material catalogue\nPath: systems/building-material-catalogue.md\ndocument-kind: reference\nstatus: Current\nscope: Stable IDs 81–131 (MAT-002), their kernels, versioned pair reactions, shader finishes and limitations\ncanonical-for: [building-material-ids, building-material-reactions-and-finish]\nlast-reviewed: 2026-10-19\nSection: Building material catalogue > Catalogue\naluminium-panel | Inert | None beyond broad Acid corrosion | Brushed panels, rivets, moving glint | | 115 | magnesium-plate | Pair rules | Fire (96/255): Fire + Fire; Spark (255/255): Empty + Fire | Bright sheet with white oxide bloom | | 116 | thermite-brick | Pair rules | Spark (255/255): Empty + Lava; Fire (64/255): Lava + Lava | Red oxide grain with silver flecks | | 117 | bare-iron | Pair rules | Water (3/255): Water + Rusted Steel; Brine (12/255): Brine + Rusted Steel; Acid (160/255): Smoke + Rust | Mill-scale mottle, heat tint, early flash rust | | 118 | gold-leaf | Inert | None beyond broad Acid corrosion | Overlapping gilded squares, crinkles, sparkle | | 119 | brass-panel | Inert | None beyond broad Acid corrosion | Brushed brass, tarnish, moving glint | | 120 | glass-block | Pair rules | Lava (255/255): Lava + Molten Glass | Rippled lenses in mortar joints | | 121 | frosted-glass | Pair rules | Lava (255/255): Lava + Molten Glass | Diffuse frost with clear borders | | 122 | quartz-crystal | Pair rules | Lava (8/255): Lava + Molten Glass | Prismatic facets with rainbow edges | | 123 | uranium-glass | Pair rules | Lava (255/255): Lava + Molten Glass | Fluorescent green body, bright edges, low glow | | 124 | sugar-glass | Pair rules | Water (48/255): Water + Paste; Fire (64/255): Smoke + Coal | Amber with bubbles and stress cracks | | 125 | wax-block | Pair rules | Fire (64/255): Fire + Oil; Lava (255/255): Lava + Oil | Soft translucent body, under-edge drips | | 126 | sulfur-block | Pair rules | Fire (96/255): Smoke + Fire; Lava (64/255): Lava + Fire | Needle-crystal clusters | | 127 | phosphor-panel | Pair rules | Fire (128/255): Fire + Fire | Hex dots with slow breathing afterglow | | 128 | polymer-panel | Pair rules | Lava (255/255): Lava + Oil; Fire (32/255): Smoke + Oil | Moulded ribs, sprue marks, gloss band | | 129 | solar-panel | Inert | None beyond broad Acid corrosion | Blue cells, silver busbars, frame, reflection | | 130 | carbon-fibre | Inert | None beyond broad Acid corrosion | 2x2 twill weave with alternating sheen | | 131 | heat-shield-tile | Inert | None beyond broad Acid corrosion | Black tiles, pale gap filler |"
+        },
+        {
+          "rank": 4,
+          "score": 17.221933,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Identity compatibility is stronger than descriptor equality",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Identity compatibility is stronger than descriptor equality\n**Current:** [`catalogue_digest`](../../tools/lcb/policy_contract.py) hashes LF-normalized paths and complete bytes of `material.hpp` and `interaction_rules.hpp`. [`derive_capability_matrix.py`](../../tools/lcb/derive_capability_matrix.py) also parses their literal enum/table shapes. Formatting, generated banners, includes or row reordering can change admitted policy/receipt identities or break derivation while preserving C++ values. CYPS restoration re-admits its stored policy against the running catalogue; a mismatch is an actual refusal boundary. Preserve these guards and the existing generation order in the [policy contract](liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit). Preserve both pair and specialized-record indices. The [`quantity ledger`](../../native/include/cybersand/quantity_ledger.hpp) has schema 1, 56 pair slots and 19 kernel slots; `quantity_kernel_rule` selects the first matching specialized-record slot and the codec serializes arrays in that order. Stable names alone do not preserve positional accounting. Explicit `legacy_slot` values may preserve that order without making input-file order a hidden semantic rule. **Required:** freeze each consumer's existing output independently. Native Slush density is 1080; the GDScript fallback uses 1100. This is a source-level difference, not a newly reproduced physics defect. Preserve it as an explicit backend override or leave that fallback consumer hand-maintained. Shared IDs/names and the verified common RGBA tuples may share authorship; shared metadata is not fallback movement/chemistry parity. Never silently normalize either backend."
+        },
+        {
+          "rank": 5,
+          "score": 17.104163,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler\n**Proposed authoring tree** (final names/schema require #352 review): ```text materials/ schema/material-v1.schema.json registry/identities.json definitions/{legacy,reactive,construction,building}/*.json behaviours/presets.json interactions/{families,pairs,specialized}.json appearances/{recipes,overrides}.json browse/{categories,tags}.json tools/materials/compile_catalogue.py tools/materials/test_catalogue.py ``` Prefer simple JSON plus a deterministic Python-stdlib compiler in v1, because the current repo already maintains portable Python CI tools. Using several author-friendly source files is acceptable **only if** they compile to one validated immutable effective catalogue. The canonical source should contain identity, type, constraints, owned parameters, family memberships, aliases and status. Free-form comments in JSON may be replaced with dedicated `description` fields or adjacent documentation. **Illustrative proposed material record** (not executable today): ```json { \"schema_version\": 1, \"key\": \"cybersand:wood\", \"id\": 7, \"display\": {\"name\": \"Wood\", \"category\": \"Organics/Wood\", \"tags\": [\"timber\"]}, \"physical\": {\"phase\": \"Solid\", \"density_rank\": 720, \"hard_surface\": true, \"granular_support\": false}, \"behaviour\": {\"preset\": \"legacy.wood.v1\"}, \"appearance\": {\"rgba8\": [116, 78, 48, 255], \"recipe\": \"timber.v1\"} } ``` **Generated outputs** should include `material.hpp` descriptors/identity, explicit native capability lookup, compact sparse interaction table/partner sets, stable GDScript IDs and names, picker/browse metadata, RGBA and flair arrays, condition projection and versioned source-derived catalogue manifest. Keep expensive shader algorithms and native kernel implementations hand-coded initially; generate their *metadata*, not a new universal interpreter. **Hard validator gates:** - Stable, non-reused byte IDs; slot 10 remains invalid; `Gas` is a label alias for Smoke=4, not another material ID; reserve/unallocated slots fail cleanly. - Unique keys, names and aliases; valid family references, endpoint/product IDs, kernel enum, radius, state width/meaning, type ranges and support matrix. - Family overlap, duplicate pair, conflicting ordered/unordered matches, cross-rule precedence, invalid supersession, invalid probability representations, uninitiable pair-only definitions and unsupported optional-state contracts fail with understandable source location. - Generate a baseline exact-value oracle from the pinned Current source before replacing hand-authored tables. `--check` regenerates without modifying the tree and fails on drift. Generated files are deterministic, diffable and compatible with repository documentation policies. - Current 132-slot catalogue, all 56 rule identities/indexes/roll cases and 19 specialised mechanisms are identical after the migration. Synthetic new non-hard powder at ID 132 is a compiler-only fixture—not a shipped byte-ID addition—to prove future IDs are not auto-collision-hard. **Intentionally not implemented in v1:** a runtime DSL, hot-loop schema evaluation, user scripts, dynamic pack ID reassignment, or a per-cell behaviour object."
+        }
+      ]
+    },
+    {
+      "id": "MAT-AUTH-10",
+      "query": "Can the Materials Lab offer viscosity and runtime reaction status controls from catalogue descriptors alone?",
+      "canonical": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "facts": [
+        "Effective fields require the selected native consumer and applied policy; Water-CY and Mercury overrides differ from base descriptors.",
+        "Lava/Acid/Oil descriptor viscosity is not an effective generic slider; unsupported edits are disabled or source-edit-required.",
+        "Resolver-only inspection cannot invent World activity, mask or due-opportunity observations; editing requires validated owner reconstruction and preservation on refusal."
+      ],
+      "sources": [
+        "architecture/material-authoring-catalogue-plan.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 25.719751,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Materials Lab effective inspection and editing",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline as of 2026-11-04; documentation integration approved, but shadow compiler 353-A and all production changes remain unstarted and require separate assignment; sections 1–11 preserve dated proposal and review boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Materials Lab effective inspection and editing\n**Planned #356:** catalogue descriptors alone cannot supply effective viscosity controls or runtime reaction status. Reuse the material-info v1–v4 native C API, the native bridge's interaction catalogue/inspection, and the applied liquid policy readback. Report the selected backend and solver beside each value. Lava, Acid and Oil bypass descriptor viscosity in specialized movement, so that declared field is read-only or explicitly unused there. Water-CY consumes its versioned material-block viscosity; generic yielding liquids use descriptor viscosity except for Mercury's diagnostic override. A descriptor-only radius display must also distinguish IN's applied radius-3 geometry. An interaction resolver sees matches and rolls, not the live World's sleep, mask or due-opportunity state. Existing specialized inspection explicitly marks records `evaluated=false`. Show unsupported/unobserved status rather than inventing reasons. A future World observation must be produced by its real owner and preserve the bounded copied-observation contract. Source-edit-required fields can be exported as validated authoring changes for rebuild; existing construction-policy fields can be edited only through their actual validated restart/preparation API. A slider is enabled only when a consumer, owner and applied readback exist. Failed validation or reconstruction preserves the old source/profile/World, and a successful preview does not claim that a production policy was changed. Read-only inspection can precede new reaction semantics; editing cannot bypass #355 or relevant #354 dispositions."
+        },
+        {
+          "rank": 2,
+          "score": 17.512759,
+          "path": "systems/materials-and-rule-kernels.md",
+          "title": "Materials and rule kernels",
+          "heading": "Materials and rule kernels > Which penetration explanations have been measured?",
+          "part": 1,
+          "text": "Document: Materials and rule kernels\nPath: systems/materials-and-rule-kernels.md\ndocument-kind: contract\nstatus: Current\nscope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries\ncanonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]\nlast-reviewed: 2026-10-19\nSection: Materials and rule kernels > Which penetration explanations have been measured?\n**Historical issue #9:** the [dated physics baseline](../audits/2026-09-09-physics-characterisation.md) reproduces ordered powder density exchange in packed layers and Mercury's rapid downward passage through Sand. Mercury viscosity 96/160/224/248 produces identical states in the confined vertical controls; the gate affects lateral movement. Oil's specialized path declines the otherwise density-eligible Dust exchange. Lava/Dust and Water/Salt require reaction accounting, not a transport-only label. The [bounded measurement API](../operations/physics-characterisation.md) records actual stored pairs for swaps and kernel-visible sources for contact attempts. Its immutable construction overrides leave the shared descriptor table and production defaults unchanged. A diagnostic target-wide exchange veto proves causality; issue #10 now implements the [versioned granular policy](granular-interaction-policy.md). Barrel bearing and feedback correction remain **Planned** for #11."
+        },
+        {
+          "rank": 3,
+          "score": 17.351878,
+          "path": "systems/materials-and-rule-kernels.md",
+          "title": "Materials and rule kernels",
+          "heading": "Materials and rule kernels > Current material families",
+          "part": 1,
+          "text": "Document: Materials and rule kernels\nPath: systems/materials-and-rule-kernels.md\ndocument-kind: contract\nstatus: Current\nscope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries\ncanonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]\nlast-reviewed: 2026-10-19\nSection: Materials and rule kernels > Current material families\nThe table summarizes compiled behavior, not a complete pair-interaction matrix. Exact triggering and writes are in `update_rule_kernel` and [material_rules.cpp](../../native/src/material_rules.cpp). | Family | Representative behavior | |---|---| | Sand, Stone, Dust | Gravity/settling; brace-aware or granular Stone; ignitable Dust | | Water | Conserved pairwise mass; [Water contract](water-design.md) owns numeric semantics | | Smoke, Steam, Foam | Buoyancy and distinct decay/phase behavior | | Fire, Wood, Oil, Coal | Ignition/burn state, emission and selected extinguishing reactions | | Lava, Ice, Glass, Molten Glass | Material/compact-state melting, freezing, cooling and quenching | | Acid, Metal, Rust, Spark | Finite corrosion, local charge propagation, reactions with Water | | Plant, Fungus, Seed | Bounded energy/growth, substrate rules, germination, combustion | | Cloner, Mite, Rocket | Capture/emission, feeding/movement, payload/launch/trail/impact | | Salt, Brine, Sodium, Gunpowder | Dissolution and energetic contact reactions | | Cement, Concrete | Flowing wet Cement and environment-dependent cure | | Toxic Sludge, Mercury | Purification reaction and high-density liquid exchange | | Paste, Slush | Viscous whole-cell yield that can retain heaps | Water alone uses `FreeMass`; `CellularYield` liquids retain whole-cell movement. Viscosity is dimensionless gameplay tuning, separate from yield and adhesion."
+        },
+        {
+          "rank": 4,
+          "score": 16.346629,
+          "path": "systems/materials-and-rule-kernels.md",
+          "title": "Materials and rule kernels",
+          "heading": "Materials and rule kernels > Boundaries and extension obligations",
+          "part": 1,
+          "text": "Document: Materials and rule kernels\nPath: systems/materials-and-rule-kernels.md\ndocument-kind: contract\nstatus: Current\nscope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries\ncanonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]\nlast-reviewed: 2026-10-19\nSection: Materials and rule kernels > Boundaries and extension obligations\n**Approved:** retain immutable descriptor data, World-owned mutable state, bounded kernels, and explicit wake/dirty/conservation behavior. Coordinator-owned explosions may exceed kernel radius only at the serialized tick boundary; that does not enlarge worker write permission. **Rejected in hot kernels:** growing containers, per-cell allocation, material threads, Godot calls, schema parsing, and unbounded event creation. Lazy World preparation can still allocate outside individual kernels during a tick; measure that separately from kernel policy. **Current duplication risk:** [CyberCellWorld](../../godot/scripts/cell_world.gd) mirrors IDs manually and implements a narrower fallback. It treats themed and building surfaces as static but does not reproduce native combustion or pair reactions. Native descriptors, fallback constants, and appearance tables are not generated from one catalogue. Before adding/changing a material, identify state-byte meaning, numeric units, radii, conversion/source-sink accounting, cadence, wake/dirty, save/hash impact, and fallback behavior. Add meaningful reference, edge, worker-parity, and capacity tests; update controls only if the UI changes. Follow the [documentation checklist](../../AGENTS.md#documentation-obligations). **Planned:** validated/versioned external packs, schema migration, generated pair tables, a bounded rule context, broader reaction accounting and complete interaction coverage. The JSON attribution ledger is research/provenance input, not a runtime modding format or proof that every pair has been tested."
+        },
+        {
+          "rank": 5,
+          "score": 14.564351,
+          "path": "MATERIAL_LAB.md",
+          "title": "1024² material lab",
+          "heading": "1024² material lab > Construction recipes",
+          "part": 1,
+          "text": "Document: 1024² material lab\nPath: MATERIAL_LAB.md\ndocument-kind: runbook\nstatus: Current\nscope: Desktop and Web manual controls, repeatable interaction observations, construction recipes, and finite-demo limits\ncanonical-for: [material-lab-controls, manual-material-recipes]\nlast-reviewed: 2026-10-18\nSection: 1024² material lab > Construction recipes\nThese are authoring suggestions using the [complete themed catalogue](systems/themed-construction-materials.md) and the [building catalogue](systems/building-material-catalogue.md). | Scene | Suggested composition | |---|---| | Castle wall/gate | Granite foundation; Limestone/Sandstone walls; Oak gate; Wrought Iron fittings; Slate/Lead roof details; Stained Glass; localized Mossy Cobblestone | | Village house | Oak frame; Wattle and Daub/Lime Plaster infill; Thatch/Terracotta roof; Red Brick chimney; Packed Earth path | | Chemical bay | Reinforced Concrete/Ceramic shell; Steel Plate tanks; Painted Steel panels; Steel/Copper Pipes; Cable/Rubber/Insulation; Chemical Glass inspection zones | | Rainy alley | Industrial Brick; Wet Asphalt/Cobblestone; Rusted/Corrugated Steel; Chainlink; narrow cyan/magenta neon; Smoke/Steam/reactive liquids | | Forest lodge | Rough Oak/Birch logs as posts; Pine Planks and Cedar Shingles; Moss Wall foundations; Paper Screen windows; Plant beds with flowers and vines | | Pottery kiln yard | Firebrick kiln around Lava; Raw Clay and Adobe ware that fires to Terracotta/Red Brick; Sandbags; Rammed Earth walls | | Alchemist lab | Marble/Terrazzo floor; Glass Block and Frosted Glass; Uranium Glass and Phosphor accents; Sulfur, Wax, Quicklime and Thermite stores | | Spaceport | Heat-Shield Tile, Carbon Fibre, Aluminium and Solar Panel cladding; Polymer and Acrylic fittings; Gold Leaf trim | Chainlink and grating collide as solid cells despite visual holes. Decorative metal/glass names do not inherit every reaction of base Metal/Glass. Use Empty cells for actual holes, and use the [appearance contract](systems/material-appearance-and-rendering.md) when evaluating GPU finish, glow, and temporal motion."
+        }
+      ]
+    }
+  ]
+}
