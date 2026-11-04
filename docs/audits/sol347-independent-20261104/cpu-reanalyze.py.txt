@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+"""Read-only independent reduction of the four 749fb8b5 contact recovery reports.
+
+Does not import the candidate's reducer and writes only its named scratch output.
+Run: python cpu-reanalyze.py <frozen-worktree> <scratch-output.json>
+"""
+import collections
+import hashlib
+import json
+from pathlib import Path
+import statistics
+import sys
+
+SOURCE = "749fb8b597ad866f7535f26442e904207c4f7611"
+root = Path(sys.argv[1])
+base = root / "docs/audits/sol281-20261103/hosted" / SOURCE / "cohorts"
+cases, inputs = [], []
+totals = collections.Counter()
+refusals = collections.Counter()
+by_environment = collections.defaultdict(collections.Counter)
+groups = collections.defaultdict(list)
+for path in sorted(base.rglob("contact-recovery-w*.json")):
+    raw = path.read_bytes()
+    report = json.loads(raw)
+    assert report["schema"] == "cybersand.sol281.contact-recovery.v1"
+    assert report["failures"] == [] and report["checks"] == 290
+    assert len(report["cases"]) == 18
+    inputs.append({"path": str(path.relative_to(root)), "sha256": hashlib.sha256(raw).hexdigest()})
+    seen = set()
+    for case in report["cases"]:
+        identity = (case["surroundings"], case["candidate"], case["repeat"])
+        assert identity not in seen
+        seen.add(identity)
+        assert case["steps"] == 360
+        assert case["sand_before"] == case["sand_after"]
+        assert case["water_before"] == case["water_after"]
+        m = case["metrics"]
+        f = m["physical_contact"]
+        trace = case["trace"]
+        attempts, complete = f["worker_observation_attempts"], f["observations"]
+        assert complete == len(trace)
+        assert attempts >= complete + f["refused_observations"]
+        assert f["response_attempts"] == f["response_accepts"] + sum(f["response_refusals"].values()) + sum(f["response_failures"].values())
+        start, longest, positives = None, 0, 0
+        for point in trace:
+            if point["sand_overlap_area"] > 1e-9:
+                positives += 1
+                if start is None:
+                    start = point["source_published_usec"]
+                longest = max(longest, point["source_published_usec"] - start)
+            else:
+                start = None
+        row = {
+            "platform": report["platform"], "workers": report["workers"],
+            "id": case["id"], "candidate": case["candidate"],
+            "cost": (f["worker_contact_ms_total"] + f["response_ms_all_attempts"]) / complete,
+            "owner_ms": f["worker_contact_ms_total"], "owner_attempts": attempts,
+            "observations": complete, "attempts_per_complete": attempts / complete,
+            "owner_ms_per_attempt": f["worker_contact_ms_total"] / attempts,
+            "consumed_native_ms": f["geometry_ms_total"],
+            "consumed_native_ms_per_complete": f["geometry_ms_total"] / complete,
+            "depth": f["max_sand_penetration"],
+            "first_depth": trace[0]["max_sand_penetration"],
+            "last_depth": trace[-1]["max_sand_penetration"],
+            "last_area": trace[-1]["sand_overlap_area"],
+            "first_step": trace[0]["rapier_step"], "last_step": trace[-1]["rapier_step"],
+            "positive_samples": positives,
+            "sampled_positive_span_seconds": longest / 1e6,
+            "max_native_tick_gap": max(b["native_tick"] - a["native_tick"] for a, b in zip(trace, trace[1:])),
+            "max_rapier_step_gap": max(b["rapier_step"] - a["rapier_step"] for a, b in zip(trace, trace[1:])),
+            "mean_contacts_per_complete": statistics.mean(p["contact_count"] for p in trace),
+            "geometry_probes_all_attempts": f["worker_geometry_probes"],
+            "support_probes_all_attempts": f["worker_support_probes"],
+            "geometry_probes_per_attempt": f["worker_geometry_probes"] / attempts,
+            "support_probes_per_attempt": f["worker_support_probes"] / attempts,
+            "main_sync_ms": m["main_sync_ms_total"], "main_sync_segments": m["main_sync_segments"],
+            "rapier_ms": m["rapier_step_ms_total"], "rapier_steps": m["timed_rapier_steps"],
+            "observed_native_ms": m["observed_native_tick_ms_total"],
+            "observed_worker_ms": m["observed_worker_step_ms_total"],
+            "response_ms": f["response_ms_all_attempts"],
+            "response_attempts": f["response_attempts"], "response_accepts": f["response_accepts"],
+            "response_refusals": f["response_refusals"], "response_failures": f["response_failures"],
+            "no_response_attempt": complete - f["response_attempts"],
+            "duplicate_sample_observations": len(trace) - len({p["sample_serial"] for p in trace}),
+            "zero_contact_observations": sum(p["contact_count"] == 0 for p in trace),
+            "accepted_response_latency_mean_ms": f["latency_ms_total"] / max(1, f["response_accepts"]),
+            "trace_age_mean_ms": statistics.mean(p["observed_usec"] - p["source_published_usec"] for p in trace) / 1000,
+            "trace_age_max_ms": max(p["observed_usec"] - p["source_published_usec"] for p in trace) / 1000,
+        }
+        cases.append(row)
+        group = (report["platform"], report["workers"], case["surroundings"], case["candidate"])
+        groups[group].append(row["cost"])
+        totals.update({k: f.get(k, 0) for k in ["observations", "worker_observation_attempts", "response_attempts", "response_accepts", "refused_observations", "energy_violations"]})
+        refusals.update(f["response_refusals"])
+        if case["candidate"]:
+            assert row["no_response_attempt"] == row["duplicate_sample_observations"]
+            census = by_environment[case["surroundings"]]
+            census.update(f["response_refusals"])
+            census.update({k: row[k] for k in ["observations", "response_attempts", "response_accepts", "no_response_attempt", "duplicate_sample_observations", "zero_contact_observations"]})
+    assert seen == {(kind, arm, repeat) for kind in ("packed_sand", "embedded_sand", "mixed") for arm in (False, True) for repeat in range(3)}
+assert len(inputs) == 4 and len(cases) == 72 and len(groups) == 24
+summary = {"source": SOURCE, "inputs": inputs, "totals": dict(totals), "refusals": dict(refusals),
+    "groups": [{"platform": p, "workers": w, "surroundings": s, "candidate": a,
+                "case_means": values, "passed_2ms": max(values) <= 2}
+               for (p, w, s, a), values in groups.items()],
+    "candidate_census_by_environment": {k: dict(v) for k, v in by_environment.items()}, "cases": cases,
+    "limits": ["Unmatched asynchronous trajectories; no causal treatment estimate.",
+               "Native and owner timers measure elapsed time, not thread CPU time.",
+               "Positive sampled spans do not imply continuous overlap.",
+               "Accepted-response counts include possible zero-impulse plans.",
+               "Observed native and owner timings use different populations; their difference does not isolate freezing."]}
+Path(sys.argv[2]).write_text(json.dumps(summary, indent=2) + "\n")
+print(json.dumps({"cases": len(cases), "groups": len(groups), "passed_groups": sum(max(v) <= 2 for v in groups.values()),
+                  "candidate_groups_passed": sum(max(v) <= 2 for k, v in groups.items() if k[-1]),
+                  "totals": dict(totals), "refusals": dict(refusals)}, indent=2))

@@ -1,0 +1,107 @@
+# Independent GCR evidence review for SOL281 / PR347
+
+Review date: 2026-11-04. Read-only analysis of immutable published source. No implementation, branch, CI, coefficient, selector or default mutation. This note is an intermediate input to the parent review, not a new qualification run.
+
+## Disposition
+
+**The GCR chain does not justify changing PR347's aggregate response.** It supports a causal hypothesis about the generic independent-body blocked-attempt channel and demonstrates why removing that entire channel loses material loading. The selective successor fails its registered joint criteria. These are separately owned physics and separately sourced fixtures; their measurements cannot be pooled with the 520-cell SOL281 aggregate.
+
+The appropriate next SOL281 action remains a source-matched synchronous/replayed #364 observation/response discriminator. No event-gain tuning, withdrawal removal, arrival-history import, new force term, compound admission expansion, GCR default promotion or stacked-source merge follows from the GCR results.
+
+## Source and runtime authority
+
+| PR | Published head | Actual physical / feature acquisition | Compiled native authority |
+|---|---|---|---|
+| #368 | `43028e4999c3038d5d83d77140461329f16364d3` | `9a0434915821256d34347d9115961ba4f26d4136` (40 captures / 72,000 steps) | `181a8257a93f82d64fbeb97e9c413ef52d44f13d` |
+| #372 | `23bd83abf64e741764e02a8fa0eb4ca15a50aa24` | `5235cec255f0c2ffde0c2b25f04c8ae656f6b381` (48 captures / 86,400 steps) | `e2fa9960bdd750562bfca93b141579bfdf8ccdf9` |
+| #373 | `22fb5026edda2ea95e620ad4c15b491f4fc115a8` | `b03cd79309c142bef75a7fa0134b5eaf9112881f` (84 captures / 151,200 steps) | `856c49371b37b3921bf859a67a883336252134ee` |
+| #375 | `7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63` | `92fa021ba0cd80a6da2a15b8604a68afdb61c64a` (powder-review feature tests; no new efficacy experiment) | unchanged `856c49371b37b3921bf859a67a883336252134ee` |
+
+All use recorded Godot 4.7.stable.official.5b4e0cb0f and Rapier addon 0.35.2/core 0.35.1. The physical GCR matrices are synchronous, one native worker, manual main-thread Rapier stepping, 1,800 steps at 60 Hz. Separate 1/4-worker mechanical tests in #373 are not four-worker physical or simultaneous contention qualification.
+
+Independent verification in this review: for each of the four published heads, all 88 production-native source hashes match each of the two platform runtime provenance manifests; all eight LFS runtime pointers match the corresponding declared SHA256 and size. Results are in `gcr-input-verification.json`. This verifies recorded identity; the binaries were not materialized or executed here.
+
+Runtime hashes:
+
+| PR | Windows SHA256 | Linux SHA256 |
+|---|---|---|
+| #368 | `65c1d2a35134c44aea539a0e8441d66b3b4db92cba7c5477d038b842fe7c889e` | `8bfe51214643c626dd5800f66ecff86f3348a166b55551e0674d1b4f762cfbf5` |
+| #372 | `0ef13fbb63090608fb7c544708eea6b7de4dcb8c8ee619ad3a192a682ee57d18` | `46ba044d48bc698cecf8c5b41b977d2c4c7e5e6c47e5958ebe3a2512623a73ff` |
+| #373 / #375 | `f4f788c44d1b7e0271555725dea0d92ac257a69abb52f1f9a6daa4d1d47f9b30` | `69356eb582558b1c2006c7ccdd4dbeed04f361ebbead6d9f35b60d9d6b3f643a` |
+
+Evidence sources: each PR's immutable `docs/audits/2026-11-03-gcr-causal-tests.md`, `2026-11-04-gcr-granular-event-successor.md`, `2026-11-04-gcr-selective-events.md`, and `2026-11-04-repeatable-powder-review.md`; `godot/addons/cybersand_native/runtime-provenance*.json`; the corresponding compact qualification summaries and registrations.
+
+## Physical findings and causal scope
+
+### #368: three distinct interventions, not a combined repair
+
+Registration was committed at `0cd09be4` before implementation/results. The unactuated before-actuation timing control T/C matches exactly. Held late travel changes 4.57666 to approximately 4.894 cells, below its 1.14417-cell reporting threshold; node duty changes 23.6667% to 15%, below the 10-percentage-point threshold. This rejects that specific synchronous timing explanation as a reported primary remedy; it says nothing decisive about asynchronous #347 publication latency.
+
+Identity transform setter S/C is an adequate sham within the registered Float32 tolerance (maximum angle difference about 4e-9 rad). Withdrawal cancellation X retains the original velocity zeroing and corrected-COM impulse/torque; it is not a recomputed physically consistent no-correction law. X increases gentle peak entry 0.02798 to 7.51959 cells (overlap 0 to 51), and high entry 6.69016 to 32.55262 (22 to 113), failing the guards. Therefore blanket removal of correction is specifically unsupported.
+
+Event-gain-zero E0 reduces zero-actuator Sand and Salt bank descent at tick900 from 154.26651 to 1.072906 cells. Both arms are hard-clear at tick900 (control first hard proximity 1123), native blocked attempts still occur, and flat/no-event C/E0 is an exact null. This is causal evidence for the event-channel bundle in that population. The intervention jointly removes event impulse/torque, its budget charge and post-event provisional velocity before the passive solve; it does not separate these three mechanisms.
+
+The E0 bank still has six tail overlap cells and correction in 150/300 tail observations. High-barrel tail spans increase roughly 0.831 x 0.476 to 1.715 x 0.918 cells. Thus prevention of large burial is not cleared or quiet rest.
+
+Sources: [#368 registration](https://github.com/techrote/cybersand/blob/43028e4999c3038d5d83d77140461329f16364d3/docs/operations/gcr-causal-registration.md), [audit](https://github.com/techrote/cybersand/blob/43028e4999c3038d5d83d77140461329f16364d3/docs/audits/2026-11-03-gcr-causal-tests.md), [compact results](https://github.com/techrote/cybersand/blob/43028e4999c3038d5d83d77140461329f16364d3/docs/audits/gcr-causal-2026-11-03/qualification-summary.json).
+
+### #372: event-off helps burial but fails moving-grain adequacy
+
+Registration `7286a67f` precedes acquisition. Event-off preserves contact gain 0.025 for non-granular legacy response and suppresses only granular event J/L plus its charge/provisional contribution. Sand/Salt descent remains 154.26651 to 1.072906; Dust 4.779388 to 1.072906 (77.55% reduction passes 75%); powered Sand 146.984924 to 1.004791. The powered case is an actuated penetration experiment, not quiet rest.
+
+The off-centre falling-grain body has gravity zero and actual incoming native moves/events. Control sampled path is 14.797510 cells and angular travel 0.425977 rad; E has zero in both. This is an exercised loading/torque gap, not an absent stimulus. The source explains why: the remaining passive law opposes existing body point velocities; it is not independently a grain-momentum transfer model.
+
+Six bank overlap cells/correction duty 0.5 remain. High-barrel tail p95 speed rises 1.825360 to 3.039590 cells/s. Hard-terrain contact censors direct attribution at tick107 in edge/horizontal cases; later outcomes are operational guards.
+
+Sources: [#372 registration](https://github.com/techrote/cybersand/blob/23bd83abf64e741764e02a8fa0eb4ca15a50aa24/docs/operations/gcr-granular-events-registration.md), [audit](https://github.com/techrote/cybersand/blob/23bd83abf64e741764e02a8fa0eb4ca15a50aa24/docs/audits/2026-11-04-gcr-granular-event-successor.md), [results](https://github.com/techrote/cybersand/blob/23bd83abf64e741764e02a8fa0eb4ca15a50aa24/docs/audits/gcr-events-2026-11-04/qualification-summary.json).
+
+### #373: genuine selective-arrival mechanism, registered joint NO-GO
+
+Registration `9617b5cf` precedes implementation. The optional native sidecar stamps successful preceding-tick transport; one aligned blocked contact may consume that stamp. Failed attempts cannot refresh it. Direct tuple replacement, painting and out-of-tick relocation retire it; temperature-only updates preserve motion provenance. These are discrete transport witnesses, not calibrated grain velocities/momenta.
+
+Independent arithmetic from the committed compact comparison records reproduces the outcomes on both OSes:
+
+| Registered comparison | Value / decision |
+|---|---|
+| Sand/Salt S versus E proximity | 2.07351685 cells exceeds E + max(0.5,25%E) = 1.57290649; fails despite 98.6559% reduction against C |
+| Dust benefit | 73.690226% < 75%; fails |
+| Powered Sand E proximity | S 1.85671997 > ceiling 1.50479126; fails |
+| Finite batch travel | 1.295275855 / 14.797510037 = 8.753337% < 25%; fails |
+| Finite batch angular travel | 0.091654561 / 0.425977248 = 21.516304% < 25%; fails |
+| Edge operational rebound | S 9.617020 > C 7.297835 + 2 = 9.297835 cells/s; fails after hard interaction; pre-hard granular prefix passes |
+
+**Continuous-stream censoring matters.** The audit headline totals (C/S travel 101.185253/42.179992; angular travel 1.594810/1.557880) are full-capture descriptions. The actual reducer's common hard-clear prefix ends at tick275. Within that prefix C/S travel is 88.067039147/23.962036751 (27.208859% recovery) and angular travel 0.754913449/1.335913301 (176.962445%, still below the registered 2*C+0.05 upper guard). Both prefix adequacy gates pass. Do not use the headline 41.69% and 97.68% ratios as purely granular causal effects after hard contact. Fresh stream admission is exercised after tick120. Continuous success cannot substitute for failed finite-batch loading.
+
+Finite-batch C has no raw contact event after tick39. Its later motion is therefore not evidence of continuing static blocked forcing or a missing static-load law. Neither the control travel nor its angular travel is a calibrated physical target. Do not fix the arbitrary adequacy deficit by turning the contact gain up.
+
+The summary's top-level `ok:true` means successful capture/reduction. Both platform `technical_gates` explicitly set `creep_preserved:false`, `falling_loading_recovered:false`, `barrel_guards:false`; `production_acceptance:false`, `owner_acceptance:null`.
+
+Sources: [#373 registration](https://github.com/techrote/cybersand/blob/22fb5026edda2ea95e620ad4c15b491f4fc115a8/docs/operations/gcr-selective-events-registration.md), [audit](https://github.com/techrote/cybersand/blob/22fb5026edda2ea95e620ad4c15b491f4fc115a8/docs/audits/2026-11-04-gcr-selective-events.md), [compact comparison records](https://github.com/techrote/cybersand/blob/22fb5026edda2ea95e620ad4c15b491f4fc115a8/docs/audits/gcr-selective-2026-11-04/qualification-summary.json).
+
+### #375: review apparatus, no overturning evidence
+
+This changes frontend/construction/test source, not the 88 native inputs, native runtime bytes, bridge or detachment worker. Kestrel resets at (512,256), zero pose/motion, gravity zero, pilot/Fire/dispenser disabled. Burst is 96 Sand cells in 4x24 at (514,224); stream attempts four cells per tick for 0..599, with actual insertion/refusal ledger. Empty/native-mask/current-hull checks mean 2,400 attempts are not automatically 2,400 inserted grains. Both stop at 1,800 fixed ticks. Same-response 120-step pose/source replay and UI correctness do not establish efficacy, long-term coupled save/replay or human acceptance.
+
+Sources: [#375 audit](https://github.com/techrote/cybersand/blob/7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63/docs/audits/2026-11-04-repeatable-powder-review.md), [test setup source](https://github.com/techrote/cybersand/blob/7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63/godot/scripts/gcr_powder_review_test.gd), [host summary](https://github.com/techrote/cybersand/blob/7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63/docs/audits/gcr-powder-review-2026-11-04/host-summary.json).
+
+## Why this does not transfer to PR347
+
+At #347's published head, no `evaluate_gcr` exists. `godot/native_extension/solid_contact_adapter.inc` publishes immutable aggregate observations and `godot/scripts/solid_contact_response.gd` (lines3–29) plans four normal-only, zero-restitution, dissipative sweeps, with no position correction or added gravity. This remains owned by #281/#347/#364. Generic independent-body coupling remains the #83 / REM-004 owner (with its GCR experimental chain).
+
+At #375, `godot/native_extension/cyber_native_cell_world.cpp:1367–1418` computes GCR raw event J/L, selects control/off/arrival, spends shared budget, updates provisional velocity/omega, subtracts raw granular contributions from legacy, then executes passive normal/friction/torque solve. `native/src/world.cpp:2536–2588` derives event contributions from blocked direction and clamped density, adding optional arrival admission; `2954–2963` stamps real native transport. `native/include/cybersand/granular_contact_response.hpp:203–274` is the bounded passive solver. This is not SOL281's contact law.
+
+`godot/native_extension/gcr_compound_adapter.inc:11–15` explicitly refuses event-off OR arrival-witness compound preparation. Retained older compound-control tests do not qualify the newest SOL281 aggregate. The bank body is approximately mass0.1/inertia0.975; barrel/loading bodies mass1/inertia21.66667 (heavy control2); they are neither the aggregate's geometry nor its mass/inertia. Quantities, observation phases (flyer post-Rapier versus barrel post-bridge), hard boundaries, source and response owner differ.
+
+Source links: [GCR evaluator](https://github.com/techrote/cybersand/blob/7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63/godot/native_extension/cyber_native_cell_world.cpp#L1367-L1418), [compound refusal](https://github.com/techrote/cybersand/blob/7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63/godot/native_extension/gcr_compound_adapter.inc#L11-L15), [native contact witness](https://github.com/techrote/cybersand/blob/7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63/native/src/world.cpp#L2536-L2588), [SOL281 response](https://github.com/techrote/cybersand/blob/5b9b5a982e4638f4609309f996b92825d3dc36e4/godot/scripts/solid_contact_response.gd#L3-L29).
+
+## Compatibility, preservation and evidence limits
+
+Independent hashing of #375's 27 protected sources exactly reproduces the committed #373 source-lock review: 24 match; `native/src/world.cpp`, `native/src/world_inertial.inc`, and `native/src/world_pressure.inc` mismatch the #371 frozen bytes. All three already drift at reconciled parent `e993aa67`; selective arrival further changes only world.cpp among those paths. #375 introduces no new protected-source drift. Original locks/checker remain unchanged. A scientifically accepted physics candidate would still need the relevant coupling/World owner and MAT-AUTH compatibility owner to admit an independently reviewed source-checkpoint transition; refreshing lock hashes or overriding the guard is not a transition.
+
+[Exact locked-source review](https://github.com/techrote/cybersand/blob/22fb5026edda2ea95e620ad4c15b491f4fc115a8/docs/audits/gcr-selective-2026-11-04/source-lock-review.json).
+
+Preserved failures are distinct: #368 Float32 setter/setup/harness lookup failures precede its complete capture; #372 unavailable make, incomplete sanitizer attempt, metadata rounding and missing copied protocol navigation failure precede final rerun; #373 invalid UTF-8 acquisition abort, wrong sample-serial fixture and reader-prefix weaknesses were repaired before/alongside valid acquisition and the original failures retained. #373/#375 hosted source-lock failures are current integration blockers. Neither a later local host pass nor top-level reducer success erases failed physical gates.
+
+Large GCR originals (raw full-precision observations, process logs, original failure logs and full final-head receipts) are deliberately hash-bound local archives, not committed Git data. This review inspected the committed registrations, exact source, compact records, retained source-lock report and selected evidence; it did not rehash those inaccessible original archives or rerun physics. Claims of their independent raw validation belong to the dated source-qualified records, not to this review. Repeated 1,800 observations are not independent repeated efficacy trials. Diagnostic timing is not uncontended CPU/FPS qualification, nor is one-worker age-zero acquisition asynchronous latency proof.
+
+One minor documentation contradiction exists at #375 `docs/architecture/granular-contact-rest.md:19`: a stale 'under implementation, results pending' sentence remains directly below the current NO-GO summary at lines12–16. The dated audit and explicit machine gates take precedence for this review. No documentation or production file was changed.

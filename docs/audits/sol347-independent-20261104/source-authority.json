@@ -1,0 +1,162 @@
+{
+  "schema": "cybersand.sol347.independent-review-source-map.v1",
+  "review_date": "2026-11-04",
+  "main": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "prs": [
+    {
+      "number": 347,
+      "head": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+      "base_reported_by_api": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/347"
+    },
+    {
+      "number": 368,
+      "head": "43028e4999c3038d5d83d77140461329f16364d3",
+      "base_reported_by_api": "029c214e7e3530ebbee63927c725f832d18ff34a",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/368"
+    },
+    {
+      "number": 371,
+      "head": "d9284cc72a52dc46b5c73f182843d5d0c1602df1",
+      "base_reported_by_api": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+      "state": "closed",
+      "draft": false,
+      "merged": true,
+      "url": "https://github.com/techrote/cybersand/pull/371"
+    },
+    {
+      "number": 372,
+      "head": "23bd83abf64e741764e02a8fa0eb4ca15a50aa24",
+      "base_reported_by_api": "43028e4999c3038d5d83d77140461329f16364d3",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/372"
+    },
+    {
+      "number": 373,
+      "head": "22fb5026edda2ea95e620ad4c15b491f4fc115a8",
+      "base_reported_by_api": "23bd83abf64e741764e02a8fa0eb4ca15a50aa24",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/373"
+    },
+    {
+      "number": 375,
+      "head": "7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63",
+      "base_reported_by_api": "22fb5026edda2ea95e620ad4c15b491f4fc115a8",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/375"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+      "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce",
+      "parents": [
+        "f0c9d39e90d0b4993e443ca303fdc482a923fbdf"
+      ]
+    },
+    {
+      "sha": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+      "tree": "2c52766489573a7db8dcba162d17daac4dbe6acc",
+      "parents": [
+        "749fb8b597ad866f7535f26442e904207c4f7611"
+      ]
+    },
+    {
+      "sha": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+      "tree": "e396ed539370e1a2a95f9ef9eca932a7ec5d6546",
+      "parents": [
+        "04274706616a8d61b628272a6320ecc28d25362c"
+      ]
+    }
+  ],
+  "workflow_runs": [
+    {
+      "id": 41746597077,
+      "head_sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/41746597077"
+    },
+    {
+      "id": 41748585125,
+      "head_sha": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/41748585125"
+    },
+    {
+      "id": 41751723998,
+      "head_sha": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/techrote/cybersand/actions/runs/41751723998"
+    }
+  ],
+  "tree_comparison": {
+    "source_to_runtime": {
+      "changed": 207,
+      "non_document": [
+        {
+          "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "old": {
+            "sha": "b42fcd3dafaa14ef5f6642660b1047628a888c50",
+            "mode": "100644",
+            "size": 132
+          },
+          "new": {
+            "sha": "8de23f500606fcb7739628c3e826a13c1e4b840f",
+            "mode": "100644",
+            "size": 132
+          }
+        },
+        {
+          "path": "godot/addons/cybersand_native/runtime-provenance.json",
+          "old": {
+            "sha": "8e247548092565b0d081d8e6ad90dc4136eb091a",
+            "mode": "100644",
+            "size": 130516
+          },
+          "new": {
+            "sha": "323ea96f35c7d2fdaf05dff63ce6b5157e24d23f",
+            "mode": "100644",
+            "size": 131875
+          }
+        },
+        {
+          "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+          "old": {
+            "sha": "fcbfdb0d1184d327b03eba3a945d45852c21cb16",
+            "mode": "100644",
+            "size": 130408
+          },
+          "new": {
+            "sha": "f922f32449586f3f516838742a80b2b2c5e47b06",
+            "mode": "100644",
+            "size": 131767
+          }
+        }
+      ]
+    },
+    "runtime_to_head": {
+      "changed": 61,
+      "non_document": []
+    },
+    "head_blob_count": 2782
+  },
+  "scope": "Read-only source, manifest and pointer verification; historical actual-host execution remains separately attributed. New diagnostic is unchanged Godot pure planner only."
+}

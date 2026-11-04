@@ -1,0 +1,36 @@
+"""Reanalyse the fixed registered grid without rerunning or modifying the planner."""
+import json
+from pathlib import Path
+
+base = Path(__file__).resolve().parent
+data = json.loads((base / "results.json").read_text())
+mass = 520.0
+inertia = 109907693.0 / 1560.0
+rows = []
+for row in data["records"]:
+    if row["result"]["outcome"] != "NonDissipativeResponse":
+        continue
+    actual = row["first_arithmetic"]
+    before = 0.5 * mass * (row["vx"] ** 2 + row["vy"] ** 2) + 0.5 * inertia * row["omega"] ** 2
+    after = 0.5 * mass * (actual["source_next_vx"] ** 2 + actual["source_next_vy"] ** 2) + 0.5 * inertia * actual["source_next_omega"] ** 2
+    rows.append({
+        "omega": row["omega"], "delta": row["delta"], "vx": row["vx"], "vy": row["vy"],
+        "source_energy_change": actual["source_delta"],
+        "scalar64_energy_before": before, "scalar64_energy_after": after,
+        "scalar64_energy_change": after - before,
+        "registered_tolerance": actual["tolerance"],
+        "within_registered_bound_under_scalar64": after <= before + actual["tolerance"],
+        "source_first_step_guard_would_refuse": actual["first_step_guard_would_refuse"],
+        "ideal_unrounded_impulse_energy_change": actual["ideal_delta"],
+    })
+report = {
+    "registration": data["registration"], "grid_cases": data["grid_cases"],
+    "census": data["census"], "determinism_and_controls_failures": data["failures"],
+    "refusals": len(rows),
+    "refused_but_scalar64_within_registered_bound": sum(row["within_registered_bound_under_scalar64"] for row in rows),
+    "refused_and_scalar64_outside_registered_bound": sum(not row["within_registered_bound_under_scalar64"] for row in rows),
+    "rows": rows,
+    "scope": "Scalar64 energy of the unchanged planner's actually rounded proposed state, not actual Rapier execution. JSON decimals retain the runtime output precision; guard gaps are orders above conversion uncertainty. No attribution of live refusals without frozen live inputs.",
+}
+(base / "scalar_reanalysis.json").write_text(json.dumps(report, indent=2) + "\n")
+print(json.dumps({key: value for key, value in report.items() if key != "rows"}, indent=2))

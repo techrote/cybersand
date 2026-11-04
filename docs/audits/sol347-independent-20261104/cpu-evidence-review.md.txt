@@ -1,0 +1,100 @@
+# Independent CPU and physical-evidence reanalysis
+
+Scope: read-only source and retained JSON inspection at PR #347 head `5b9b5a982e4638f4609309f996b92825d3dc36e4`. Executed-source authority for every newly reduced number below is `749fb8b597ad866f7535f26442e904207c4f7611`, runtime/evidence child `89d2eb6d280183e495a94b559776dfd8f1cdc196`, run 41746597077 attempt 1. No new runtime trial, source edit, CI dispatch or production qualification was performed. The seven inspected instrumentation/response/test files have zero Git diff between executed source and the reviewed head.
+
+Reproduce with `python review-evidence/cpu-reanalyze.py sol347-review review-evidence/cpu-reanalysis-full.json` from the review workspace. The reducer is independent of the candidate's reducer, authenticates each retained raw JSON with SHA-256, checks complete 72-case inventory and quantities, and preserves every repeat and denominator.
+
+## Confirmed cost result and immediate classification
+
+There are 24 groups (2 OS × 2 configured workers × 3 environments × 2 arms), each three repeats. Using the largest of each group's individual case means, 23/24 groups pass the unchanged 2 ms criterion; all 12 candidate groups pass. The only failure is Windows, four workers, embedded-Sand baseline r0. It is not a candidate-wide CPU failure and must not be removed as an outlier.
+
+Its original metric is `(all owner observation+metadata+freezing elapsed + all main Sand-response elapsed) / complete consumed geometry observations`:
+
+`(480.685 ms + 0.000 ms) / 224 = 2.145915178571 ms`, 7.295759% above 2 ms.
+
+An exact algebraic diagnostic factorization is `1.302669376694 ms per owner attempt × 369/224 attempts per complete observation = 2.145915178571`. This is an explanation of the preserved metric, not a replacement denominator. No Sand-response call occurred in that baseline; neither accepted nor refused Sand-response work causes this failed numerator. The original conservative-displacement and ordinary cellular coupling still run in the baseline.
+
+| Windows four-worker embedded baseline repeat | Owner ms/attempt | Attempts / complete | Original ms/complete | Support probes/attempt | Mean contacts/complete |
+|---|---:|---:|---:|---:|---:|
+| r0 | 1.302669 | 369 / 224 | **2.145915 FAIL** | 3663.975610 | 125.339286 |
+| r1 | 0.725227 | 370 / 339 | 0.791546 | 1215.778378 | 73.997050 |
+| r2 | 0.652653 | 369 / 358 | 0.672707 | 1006.731707 | 64.930168 |
+
+r0's 645,867 geometry probes and 1,352,007 support probes show a substantially heavier realized owner workload; native sampling performs nine support-residency checks for each qualifying overlapping ambient-Sand cell before constructing exterior-face contact dictionaries. At r0's last observation the aggregate overlaps 469.162326 cell² of Sand, versus 176.684177 and 131.087910 in r1/r2. These are unmatched physical trajectories. The differences support workload dependence; they do not establish why one trajectory buried further or what portion of time came from contention.
+
+Producer/consumer amplification is directly visible: the r0 trace retains 224 observations spanning native ticks 2–360 and snapshots 11–369; consecutive native/snapshot gaps are 1 on 88 occasions and 2 on 135 occasions. There are 135 unretained publication slots inside that observed span, plus setup/leading work in the cumulative numerator. This is latest-value asynchronous consumption, not proof of 135 missed simulation steps or a broken queue. The 145 attempt-minus-complete difference must not all be labelled overwritten publications without their outcomes.
+
+**Causal classification:** confirmed owner contact-observation workload/consumption-cost overrun in the baseline control; high realized Sand-support/contact work and low consumption efficiency are measured contributors. Pure geometry algorithm cost versus Dictionary construction/freezing versus scheduling preemption is not identified. A four-worker contention defect is unproven. Contact observation itself is a serial exclusive-owner callback, with no pool-parallel work in its loops. Configured workers=4 is not measured four-way participation; participation telemetry is not retained in this contact report.
+
+## What the existing timers do and do not separate
+
+| Timer/data | Actual scope | Interpretation limit |
+|---|---|---|
+| Native `observation_ms` | `steady_clock` over the full native adapter callback, including identity checks, rectangle/exterior-span reconstruction, cell queries/SAT/clipping/support, Dictionary/Array construction and final metrics | It is not pure geometry arithmetic or CPU-thread time; only consumed successful samples are summed in `geometry_ms_total`. |
+| `worker_contact_ms_total` | Cumulative owner wall time over every native observation call plus metadata attachment and recursive contact freezing | Includes refused/unconsumed/setup work up to last consumption; ends before actual publication mutex assignment. There is no cumulative all-attempt native subtotal or separate freeze subtotal. |
+| `response_ms_all_attempts` | Outer main-thread wall time for every Sand-response call, including identity preflight, accepted or refused planning, RID operations and readback | Accepted `response_ms_total` is a narrower inner interval and cannot replace this numerator. |
+| `main_sync_ms_total` | Consumption/ordinary coupling/Sand response plus compound-state publication, two measured segments per Rapier step | Nests Sand response; do not add it to the existing cost numerator or call it isolated lock waiting. |
+| `observed_worker_step_ms_total` / `observed_native_tick_ms_total` | Consumed snapshots' normal owner step and nested native simulation time | Different populations and timers from contact work; owner step is timed before `_publish_snapshot`, hence before contact sampling. Not all native ticks or all worker CPU. |
+| `rapier_step_ms_total` | Whole bridge `step()`: backend manual step, active transforms, callback flush and dynamic-state refresh | Distinct from main response and owner contact sampling; no collision-only subtotal in these reports. |
+| `published_usec`, response latency | Contact timestamp is set after the native callback but before freezing/publication; accepted-response latency is sampled after planning, impulses and readback | End-to-end age, not isolated publication wait; baseline zero latency total means no accepted responses, not zero observation latency. Refused/non-attempted age is missing. |
+
+For the failed baseline, native-observation elapsed summed only over 224 consumed observations is 209.3049 ms (0.934396875 ms/complete). Subtracting it from 480.685 yields 271.3801 ms containing both all unconsumed native work and metadata/freezing/overhead. Calling that difference a freeze cost would be invalid.
+
+Separate r0 costs: Rapier bridge 68.308 ms / 360 steps = 0.189744444 ms/step; main synchronization 40.230 ms / 720 segments = 0.055875 ms/segment (two segments/step); observed native 67.9881 ms / 224 snapshots = 0.303518304 ms; observed worker 140.765 ms / 224 = 0.628415179 ms. These do not enter the registered 2 ms contact-work numerator. Both native and owner timers are monotonic elapsed-time proxies; operating-system preemption can inflate them. There is no thread CPU/idle/lock trace to prove scheduling contention.
+
+## Physical results, stronger endpoint evidence and scope
+
+Independently reproduced maxima are packed candidate 4.04673163998175 cells (Linux, four workers, r2), embedded candidate 2.64279245542222 cells (Linux, four workers, r0), and positive sampled spans 5.933745–5.984297 seconds. These are SAT per-square/proxy minimum separating depths at copied publication poses, not aggregate COM burial depths or between-step sweep penetration.
+
+All 36 candidate runs still have positive Sand overlap at their last retained observation, corresponding to Rapier step 359 or 360. Final observed maximum Sand depth ranges 2.06773082286146–3.82840517343631 cells and final Sand area 8.56134990662176–64.7206886850061 cell². There are 12,077 positive candidate observations among 12,087; the ten nonpositive observations are the first record of their respective cases. This is strong sampled endpoint evidence against a claim of clearance during the tested interval; it remains insufficient to prove continuous overlap between all unobserved steps.
+
+The environment named `embedded_sand` authors the bank around native solids, skipping every nonempty cell. It does not stamp Sand into the initial RedBrick payload. Embedded uses 2,016 Sand cells, packed uses 1,176; both Water mass zero. Across all candidate runs, the first retained depth is 0–0.0159912109375 cells. Multi-cell overlap is therefore acquired during the recorded moving session, rather than explained solely by the name of the initial fixture. A replay that starts at a deeply buried sampled pose must explicitly identify that as its replay initial state.
+
+The test observes native publications asynchronously after each actual Rapier step. It does not record every native step, full contact dictionaries, all native cell tuples, per-step body linear velocities, per-response outcomes/impulses, or post-impulse energies. Historical trace data alone cannot deterministically reconstruct the full physical state or attach each peak-depth event to its response disposition. A new frozen capture is necessary for synchronized replay.
+
+No general live maximum-depth or clearance-duration number was preregistered. The original >=25% controlled added-overlap improvement and energy gates can pass while sustained gameplay clearance remains unqualified. Do not retroactively turn 4.05 or 2.64 cells into a numerical failure criterion that never existed, and do not treat that absence as physical acceptance.
+
+## Response census and falsifiable hypotheses
+
+| Candidate environment, all hosts/workers/repeats | Complete observations | Response attempts | Accepted | ClearedContact | NonDissipativeResponse | PoseDrift | InvalidGeometryWitness | No new response attempt |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Embedded Sand | 3936 | 3673 | 3509 | 75 | 89 | 0 | 0 | 263 |
+| Packed Sand | 4039 | 3867 | 3538 | 207 | 111 | 9 | 2 | 172 |
+| Mixed | 4112 | 3914 | 3674 | 99 | 132 | 8 | 1 | 198 |
+| Total | 12087 | 11454 | 10721 | 381 | 332 | 17 | 3 | 633 |
+
+No live post-application failure or response-energy violation was recorded. In every individual candidate case, `complete observations - response attempts` equals exactly `trace length - unique source sample_serial count`. The 633 non-attempts therefore match repeated sample observations retired by the existing ordinary coupling fence before the optional Sand channel; these must not be reported as missing unique contacts or treated by disabling duplicate protection.
+
+The three witness refusals occur only at Windows packed w1 r1, packed w4 r2, and mixed w4 r0. Neither `InvalidGeometryWitness` nor `PoseDrift` appears in the embedded-Sand responses. They cannot currently explain the embedded failure as a dominant observed category. Nevertheless bounded publication delay can affect when a valid response is applied, even without these specific refusal codes.
+
+`Accepted` includes zero-impulse plans when there are no approaching contacts. The 10,721 accepts must not be described as 10,721 physical pushes. Each of the 36 candidate cases has a positive total impulse sum, proving some real response, but the archive cannot split accepted-no-op versus accepted-mutating applications. There are 42 source observations with zero contact records; no event-level join proves their final response categories.
+
+`NonDissipativeResponse` is a pure-planner rejection before RID writes. It is distinct from actual backend energy growth, of which none is recorded. Its 332 events, including 89 embedded, justify retaining the exact rejected value inputs for diagnosis. The existing trace does not determine whether a rejected planned step is numerical precision, an interacting contact/rotation case or another reason; it must not be fixed by relaxing energy tolerance without evidence.
+
+Deep overlap can coexist with few or no contact records because the observer only admits supported ambient Sand crossing actual exterior edges; interior Sand squares contribute overlap metrics but no exterior face segment. The velocity-only dissipative response cannot by itself remove pre-existing depth when no approaching motion remains. Four fixed sweeps and grouped resultant contacts also do not prove every local approach speed is eliminated. These are plausible/contact-law limitations from source, not a source-matched causal verdict on every live failure.
+
+## Minimum useful new measurement
+
+Keep the exact old fixture, runtime and physics parameters. For an isolated #364 test instrument a new source-identified test harness around unchanged production code, first capturing one source-matched embedded session and full replay state. A replay must include native material/state/temperature and owner revisions/epochs/leases, full native contact values, source and current body pose/linear/angular velocity, mass/inertia, ordinary coupling result and displacement transactions, every planned/applied impulse and returned outcome, and actual readback energy. Record source/capture/publication/consumption/application times and every per-step overlap phase.
+
+Compare identical captured contact inputs at zero logical age, ordinary arrival and fixed 1-/2-step delay/withholding, preserving existing age/pose/identity fences. The over-age arm should refuse according to contract, never apply a forced old sample. Separate a pure frozen-value planner replay (geometric witness/energy/refusal determinism) from closed-loop native/Rapier replay (material evacuation and evolving contact). Reusing frozen contacts forever in a changing native world is not an admissible physical repair.
+
+Cost additions should be cumulative across **all attempts**: native callback time, payload construction if feasible without production edits, metadata/freezing time, publication mutex wait, snapshot overwrite counts/outcomes, main mutex wait, preflight/planning/RID/readback time, and worker participation/host context. Keep the original combined-cost denominator and 2 ms threshold alongside these new diagnostic subtotals. Record thread CPU separately if available; never substitute it for the historical elapsed-time gate. Match contact inputs/observation count when testing worker effects, otherwise changed physical workload remains confounded.
+
+This supports **CONTINUE #364 — specific evidence gap**, while keeping integration NO-GO. There is a confirmed failed cost criterion and unqualified physical clearance, but this reanalysis alone has not confirmed a single implementation defect that explains them. Do not repair contact gains, force laws or guards based on aggregate averages.
+
+## Stable source citations
+
+- Raw failing report: `docs/audits/sol281-20261103/hosted/749fb8b597ad866f7535f26442e904207c4f7611/cohorts/windows/contact-w4/contact-recovery-w4.json`, lines 137174–137225 (at reviewed head or publication child).
+- Raw packed/embedded maxima: corresponding `cohorts/linux/contact-w4/host/contact-recovery-w4.json`, lines 114384–114418 and 145756–145790.
+- Registration: `docs/audits/2026-11-03-sol281-dense-contact-registration.md`, lines 26–79.
+- Worker timing/freeze: `godot/scripts/solid_detachment_worker.gd`, lines 19–41.
+- Native callback/timer and bounded scanning: `godot/native_extension/solid_contact_adapter.inc`, lines 35–50 and 193–270.
+- Consumption accounting and response calls: `godot/scripts/solid_detachment_session.gd`, lines 472–577; main and Rapier timing 579–607; fixture 145–163.
+- Asynchronous test trace and counters: `godot/tests/test_solid_detachment_contact_recovery.gd`, lines 23–123 and 134–144.
+- Shared worker timing/publication: `godot/scripts/simulation_worker.gd`, lines 1884–1901, 2004–2027, 2193–2197; optional participation 850–909; consume mutex 1536–1542.
+- Ordinary duplicate retirement: `godot/scripts/rapier_physics_bridge.gd`, lines 347–357; Sand-response identity/age/planner/application/readback 402–477.
+- Pure planner's geometry refusal, cleared-contact refusal, energy rejection, accepted empty plans and residuals: `godot/scripts/solid_contact_response.gd`, lines 190–375.
+- Historical source separation: `docs/audits/2026-11-03-sol281-takeover.md`, lines 75–105 versus 131–166. Historical `2457f5ec` had 24/24 cost groups pass and failed runtime publication; it cannot substitute for `749fb8b5`. Historical differences are not a causal effect estimate.
+
+Use `https://github.com/techrote/cybersand/blob/749fb8b597ad866f7535f26442e904207c4f7611/` for execution-source links and `https://github.com/techrote/cybersand/blob/89d2eb6d280183e495a94b559776dfd8f1cdc196/` for published raw evidence; later dated takeover documentation is available at `5b9b5a982e4638f4609309f996b92825d3dc36e4`.

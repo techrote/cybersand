@@ -1,0 +1,54 @@
+{
+  "diagnostic": "SOL347-REVIEW-NUMERIC-001",
+  "inspected_head": "5b9b5a982e4638f4609309f996b92825d3dc36e4",
+  "qualified_physics_source": "749fb8b597ad866f7535f26442e904207c4f7611",
+  "runtime_scope": "Godot pure planner only; no native/Rapier execution",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "files": {
+    "registration.md": {
+      "sha256": "63d8b79b3518a6c3934cf4c54cc9fccfd8a23c6fb03de0daef310a96f36fa426",
+      "bytes": 2929
+    },
+    "response_original.gd": {
+      "sha256": "d5bebb75d81cf5bc0dce756f7a844f19ad9f145fbd9ca96775ad8f999a061d6d",
+      "bytes": 18934
+    },
+    "project.godot": {
+      "sha256": "8efd031ee9b6baad9d256c69c58d9807fdaa7fec266cb82239a878afd2b62e73",
+      "bytes": 131
+    },
+    "probe.gd": {
+      "sha256": "94cb00d85bf6f18e7785e38026609760f632a345e6f0c01c13c839e67edb0523",
+      "bytes": 5277
+    },
+    "execution.log": {
+      "sha256": "b773992ed31b6981675aa9dffbf16bc4d652362ca97aa8e4635d2fc39e88cb09",
+      "bytes": 6499
+    },
+    "results.json": {
+      "sha256": "71686adf10b77809a19a0ff20b7caaaa3c79c85c37fd1f5676d48c473b1653aa",
+      "bytes": 113041
+    },
+    "scalar_reanalysis.py": {
+      "sha256": "6cccd59b9e064be6ffd8f91358c89a4a2c151336144d3c039c3cf538090fcf07",
+      "bytes": 2169
+    },
+    "scalar_reanalysis.json": {
+      "sha256": "9100b66725ac11a7400d83fc676c956577abaae3ff5be175fcbdc2787c27bf71",
+      "bytes": 5988
+    },
+    "replay_one.gd": {
+      "sha256": "366a173bf5d0ab048d4d6a9a8857cca8606c23f069df8084dd006e7b2bc44e89",
+      "bytes": 3386
+    },
+    "exact_case_replay.log": {
+      "sha256": "303180c60687e16fa6951516ca70e44b5addaed0aedfaa0a10504be0656341d1",
+      "bytes": 1087
+    },
+    "exact_case_replay.json": {
+      "sha256": "db6ec160dff55873144a371060ae767a1824f2b5a7b446352a243b9689f74e83",
+      "bytes": 1090
+    }
+  }
+}

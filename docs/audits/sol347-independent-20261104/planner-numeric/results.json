@@ -1,0 +1,3717 @@
+{
+	"census": {
+		"Accepted": 74,
+		"NonDissipativeResponse": 10
+	},
+	"centers": "[(1.169231, -8.375), (-5.330769, -5.375), (9.669231, -5.375), (1.169231, -1.375), (0.169231, 4.125), (-5.330769, 16.625)]",
+	"contact_offset": "(-4.830769, 27.125)",
+	"controls": {
+		"approaching": {
+			"accepted": true,
+			"approaching_count": 1,
+			"contact_count": 1,
+			"energy_after": 5501.12919156252,
+			"energy_before": 37440.0,
+			"energy_tolerance": 0.0003744,
+			"group_count": 1,
+			"impulses": [
+				{
+					"impulse": "(0.0, -5323.145)",
+					"offset": "(-4.830769, 27.125)"
+				}
+			],
+			"maximum_remaining_approach_speed": 0.000000119209289550781,
+			"maximum_vertex_drift": 0.0,
+			"omega": 0.364990047972575,
+			"outcome": "Accepted",
+			"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+			"remaining_approaching_contacts": 0,
+			"solver_sweeps": 4,
+			"torque_impulse": 25714.880859375,
+			"total_impulse": "(0.0, -5323.145)",
+			"velocity": "(0.0, 1.763183)"
+		},
+		"separating": {
+			"accepted": true,
+			"approaching_count": 0,
+			"contact_count": 1,
+			"energy_after": 37440.0,
+			"energy_before": 37440.0,
+			"energy_tolerance": 0.0003744,
+			"group_count": 1,
+			"impulses": [],
+			"maximum_remaining_approach_speed": 0.0,
+			"maximum_vertex_drift": 0.0,
+			"omega": 0.0,
+			"outcome": "Accepted",
+			"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+			"remaining_approaching_contacts": 0,
+			"solver_sweeps": 4,
+			"torque_impulse": 0.0,
+			"total_impulse": "(0.0, 0.0)",
+			"velocity": "(0.0, -12.0)"
+		},
+		"stationary": {
+			"accepted": true,
+			"approaching_count": 0,
+			"contact_count": 1,
+			"energy_after": 0.0,
+			"energy_before": 0.0,
+			"energy_tolerance": 0.00000001,
+			"group_count": 1,
+			"impulses": [],
+			"maximum_remaining_approach_speed": 0.0,
+			"maximum_vertex_drift": 0.0,
+			"omega": 0.0,
+			"outcome": "Accepted",
+			"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+			"remaining_approaching_contacts": 0,
+			"solver_sweeps": 4,
+			"torque_impulse": 0.0,
+			"total_impulse": "(0.0, 0.0)",
+			"velocity": "(0.0, 0.0)"
+		}
+	},
+	"failures": [],
+	"grid_cases": 84,
+	"inertia": 70453.6493589744,
+	"mass": 520.0,
+	"pose": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (57.33077, 38.125)]",
+	"records": [
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": 0.0,
+				"ideal_delta": 0.0,
+				"source_after": 4129426.93572216,
+				"source_approach": 0.0,
+				"source_before": 4129426.93572216,
+				"source_delta": 0.0,
+				"source_impulse_y": 0.0,
+				"source_j": 0.0,
+				"source_next_omega": -10.0,
+				"source_next_vx": 0.0,
+				"source_next_vy": -48.3076858520508,
+				"tolerance": 0.0412942693572216
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 4129426.93572216,
+				"energy_before": 4129426.93572216,
+				"energy_tolerance": 0.0412942693572216,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -10.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(0.0, -48.30769)"
+			},
+			"vx": 0.0,
+			"vy": -48.3076858520508
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": 0.0,
+				"ideal_delta": 0.0,
+				"source_after": 4131766.93572216,
+				"source_approach": 0.0,
+				"source_before": 4131766.93572216,
+				"source_delta": 0.0,
+				"source_impulse_y": 0.0,
+				"source_j": 0.0,
+				"source_next_omega": -10.0,
+				"source_next_vx": 3.0,
+				"source_next_vy": -48.3076858520508,
+				"tolerance": 0.0413176693572216
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 4131766.93572216,
+				"energy_before": 4131766.93572216,
+				"energy_tolerance": 0.0413176693572216,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -10.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(3.0, -48.30769)"
+			},
+			"vx": 3.0,
+			"vy": -48.3076858520508
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.000011444091796875,
+				"ideal_delta": -0.0000000290482334839782,
+				"source_after": 4129426.69048595,
+				"source_approach": -0.000011444091796875,
+				"source_before": 4129426.61833934,
+				"source_delta": 0.0721466024406254,
+				"source_impulse_y": -0.0050765466876328,
+				"source_j": 0.00507654674561599,
+				"source_next_omega": -9.99999965191837,
+				"source_next_vx": 0.0,
+				"source_next_vy": -48.3076858520508,
+				"tolerance": 0.0412942661833934
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 0.0,
+			"vy": -48.307674407959
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.000011444091796875,
+				"ideal_delta": -0.0000000290482334839782,
+				"source_after": 4131766.69048595,
+				"source_approach": -0.000011444091796875,
+				"source_before": 4131766.61833934,
+				"source_delta": 0.0721466024406254,
+				"source_impulse_y": -0.0050765466876328,
+				"source_j": 0.00507654674561599,
+				"source_next_omega": -9.99999965191837,
+				"source_next_vx": 3.0,
+				"source_next_vy": -48.3076858520508,
+				"tolerance": 0.0413176661833934
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 3.0,
+			"vy": -48.307674407959
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00009918212890625,
+				"ideal_delta": -0.00000218184509279659,
+				"source_after": 4129424.42948247,
+				"source_approach": -0.00009918212890625,
+				"source_before": 4129424.46013622,
+				"source_delta": -0.0306537519209087,
+				"source_impulse_y": -0.0439967401325703,
+				"source_j": 0.0439967384620053,
+				"source_next_omega": -9.99999698329234,
+				"source_next_vx": 0.0,
+				"source_next_vy": -48.3076705932617,
+				"tolerance": 0.0412942446013622
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4129424.42948247,
+				"energy_before": 4129424.46013622,
+				"energy_tolerance": 0.0412942446013622,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.043997)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -9.99999698329234,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.212538063526154,
+				"total_impulse": "(0.0, -0.043997)",
+				"velocity": "(0.0, -48.30767)"
+			},
+			"vx": 0.0,
+			"vy": -48.3075866699219
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00009918212890625,
+				"ideal_delta": -0.00000218184509279659,
+				"source_after": 4131764.42948247,
+				"source_approach": -0.00009918212890625,
+				"source_before": 4131764.46013622,
+				"source_delta": -0.0306537519209087,
+				"source_impulse_y": -0.0439967401325703,
+				"source_j": 0.0439967384620053,
+				"source_next_omega": -9.99999698329234,
+				"source_next_vx": 3.0,
+				"source_next_vy": -48.3076705932617,
+				"tolerance": 0.0413176446013622
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4131764.42948247,
+				"energy_before": 4131764.46013622,
+				"energy_tolerance": 0.0413176446013622,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.043997)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -9.99999698329234,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.212538063526154,
+				"total_impulse": "(0.0, -0.043997)",
+				"velocity": "(3.0, -48.30767)"
+			},
+			"vx": 3.0,
+			"vy": -48.3075866699219
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00099945068359375,
+				"ideal_delta": -0.0002215541043638,
+				"source_after": 4129401.83681815,
+				"source_approach": -0.00099945068359375,
+				"source_before": 4129401.79900341,
+				"source_delta": 0.0378147452138364,
+				"source_impulse_y": -0.443351745605469,
+				"source_j": 0.44335174911713,
+				"source_next_omega": -9.99996960087075,
+				"source_next_vx": 0.0,
+				"source_next_vy": -48.3075408935547,
+				"tolerance": 0.0412940179900341
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4129401.83681815,
+				"energy_before": 4129401.79900341,
+				"energy_tolerance": 0.0412940179900341,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443352)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -9.99996960087075,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14172959327698,
+				"total_impulse": "(0.0, -0.443352)",
+				"velocity": "(0.0, -48.30754)"
+			},
+			"vx": 0.0,
+			"vy": -48.3066864013672
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00099945068359375,
+				"ideal_delta": -0.0002215541043638,
+				"source_after": 4131741.83681815,
+				"source_approach": -0.00099945068359375,
+				"source_before": 4131741.79900341,
+				"source_delta": 0.0378147452138364,
+				"source_impulse_y": -0.443351745605469,
+				"source_j": 0.44335174911713,
+				"source_next_omega": -9.99996960087075,
+				"source_next_vx": 3.0,
+				"source_next_vy": -48.3075408935547,
+				"tolerance": 0.0413174179900341
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4131741.83681815,
+				"energy_before": 4131741.79900341,
+				"energy_tolerance": 0.0413174179900341,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443352)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -9.99996960087075,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14172959327698,
+				"total_impulse": "(0.0, -0.443352)",
+				"velocity": "(3.0, -48.30754)"
+			},
+			"vx": 3.0,
+			"vy": -48.3066864013672
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.00999832153320312,
+				"ideal_delta": -0.0221723261910122,
+				"source_after": 4129175.80437457,
+				"source_approach": -0.00999832153320312,
+				"source_before": 4129175.75896434,
+				"source_delta": 0.0454102265648544,
+				"source_impulse_y": -4.43520975112915,
+				"source_j": 4.43520967341984,
+				"source_next_omega": -9.99969589265489,
+				"source_next_vx": 0.0,
+				"source_next_vy": -48.3062171936035,
+				"tolerance": 0.0412917575896434
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 0.0,
+			"vy": -48.2976875305176
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.00999832153320312,
+				"ideal_delta": -0.0221723261910122,
+				"source_after": 4131515.80437457,
+				"source_approach": -0.00999832153320312,
+				"source_before": 4131515.75896434,
+				"source_delta": 0.0454102265648544,
+				"source_impulse_y": -4.43520975112915,
+				"source_j": 4.43520967341984,
+				"source_next_omega": -9.99969589265489,
+				"source_next_vx": 3.0,
+				"source_next_vy": -48.3062171936035,
+				"tolerance": 0.0413151575896434
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 3.0,
+			"vy": -48.2976875305176
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0999984741210938,
+				"ideal_delta": -2.21790943003107,
+				"source_after": 4126915.33487641,
+				"source_approach": -0.0999984741210938,
+				"source_before": 4126917.58025341,
+				"source_delta": -2.2453769906424,
+				"source_impulse_y": -44.3588638305664,
+				"source_j": 44.3588654631926,
+				"source_next_omega": -9.99695846274477,
+				"source_next_vx": 0.0,
+				"source_next_vy": -48.2929916381836,
+				"tolerance": 0.0412691758025341
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 2,
+				"contact_count": 1,
+				"energy_after": 4126915.31663243,
+				"energy_before": 4126917.58025341,
+				"energy_tolerance": 0.0412691758025341,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35886)",
+						"offset": "(-4.830769, 27.125)"
+					},
+					{
+						"impulse": "(0.0, -0.001692)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -9.99695834671755,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.295573833399,
+				"total_impulse": "(0.0, -44.36056)",
+				"velocity": "(0.0, -48.293)"
+			},
+			"vx": 0.0,
+			"vy": -48.2076873779297
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0999984741210938,
+				"ideal_delta": -2.21790943003107,
+				"source_after": 4129255.33487641,
+				"source_approach": -0.0999984741210938,
+				"source_before": 4129257.58025341,
+				"source_delta": -2.2453769906424,
+				"source_impulse_y": -44.3588638305664,
+				"source_j": 44.3588654631926,
+				"source_next_omega": -9.99695846274477,
+				"source_next_vx": 3.0,
+				"source_next_vy": -48.2929916381836,
+				"tolerance": 0.0412925758025341
+			},
+			"omega": -10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 2,
+				"contact_count": 1,
+				"energy_after": 4129255.31663243,
+				"energy_before": 4129257.58025341,
+				"energy_tolerance": 0.0412925758025341,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35886)",
+						"offset": "(-4.830769, 27.125)"
+					},
+					{
+						"impulse": "(0.0, -0.001692)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -9.99695834671755,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.295573833399,
+				"total_impulse": "(0.0, -44.36056)",
+				"velocity": "(3.0, -48.293)"
+			},
+			"vx": 3.0,
+			"vy": -48.2076873779297
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.00000095367431640625,
+				"ideal_delta": -0.000000000201723843638738,
+				"source_after": 41294.2670557127,
+				"source_approach": -0.00000095367431640625,
+				"source_before": 41294.2666197948,
+				"source_delta": 0.000435917900176719,
+				"source_impulse_y": -0.00042304556700401,
+				"source_j": 0.000423045562134666,
+				"source_next_omega": -0.999999970993194,
+				"source_next_vx": 0.0,
+				"source_next_vy": -4.83076858520508,
+				"tolerance": 0.000412942666197948
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 41294.2666197948,
+				"energy_before": 41294.2666197948,
+				"energy_tolerance": 0.000412942666197948,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.00000095367431640625,
+				"maximum_vertex_drift": 0.0,
+				"omega": -1.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(0.0, -4.830768)"
+			},
+			"vx": 0.0,
+			"vy": -4.83076763153076
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.00000095367431640625,
+				"ideal_delta": -0.000000000201723843638738,
+				"source_after": 43634.2675516233,
+				"source_approach": -0.00000095367431640625,
+				"source_before": 43634.2666197948,
+				"source_delta": 0.000931828544707969,
+				"source_impulse_y": -0.00042304556700401,
+				"source_j": 0.000423045562134666,
+				"source_next_omega": -0.999999970993194,
+				"source_next_vx": 3.0,
+				"source_next_vy": -4.83076858520508,
+				"tolerance": 0.000436342666197948
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 43634.2666197948,
+				"energy_before": 43634.2666197948,
+				"energy_tolerance": 0.000436342666197948,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.00000095367431640625,
+				"maximum_vertex_drift": 0.0,
+				"omega": -1.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(3.0, -4.830768)"
+			},
+			"vx": 3.0,
+			"vy": -4.83076763153076
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0000100135803222656,
+				"ideal_delta": -0.0000000222400537611708,
+				"source_after": 41294.2441698073,
+				"source_approach": -0.0000100135803222656,
+				"source_before": 41294.2443038158,
+				"source_delta": -0.000134008463646751,
+				"source_impulse_y": -0.00444197840988636,
+				"source_j": 0.00444197840241399,
+				"source_next_omega": -0.99999969542856,
+				"source_next_vx": 0.0,
+				"source_next_vy": -4.8307671546936,
+				"tolerance": 0.000412942443038158
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41294.2441698073,
+				"energy_before": 41294.2443038158,
+				"energy_tolerance": 0.000412942443038158,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.004442)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.99999969542856,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0214581694453955,
+				"total_impulse": "(0.0, -0.004442)",
+				"velocity": "(0.0, -4.830767)"
+			},
+			"vx": 0.0,
+			"vy": -4.83075857162476
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0000100135803222656,
+				"ideal_delta": -0.0000000222400537611708,
+				"source_after": 43634.2441698073,
+				"source_approach": -0.0000100135803222656,
+				"source_before": 43634.2438079051,
+				"source_delta": 0.000361902180884499,
+				"source_impulse_y": -0.00444197840988636,
+				"source_j": 0.00444197840241399,
+				"source_next_omega": -0.99999969542856,
+				"source_next_vx": 3.0,
+				"source_next_vy": -4.8307671546936,
+				"tolerance": 0.000436342438079051
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43634.2441698073,
+				"energy_before": 43634.2438079051,
+				"energy_tolerance": 0.000436342438079051,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.004442)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.99999969542856,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0214581694453955,
+				"total_impulse": "(0.0, -0.004442)",
+				"velocity": "(3.0, -4.830767)"
+			},
+			"vx": 3.0,
+			"vy": -4.83075857162476
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000100135803222656,
+				"ideal_delta": -0.00000222400537611708,
+				"source_after": 41294.0173246783,
+				"source_approach": -0.000100135803222656,
+				"source_before": 41294.0176726512,
+				"source_delta": -0.000347972963936627,
+				"source_impulse_y": -0.0444197840988636,
+				"source_j": 0.0444197840241399,
+				"source_next_omega": -0.999996954285546,
+				"source_next_vx": 0.0,
+				"source_next_vy": -4.83075380325317,
+				"tolerance": 0.000412940176726512
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41294.0173246783,
+				"energy_before": 41294.0176726512,
+				"energy_tolerance": 0.000412940176726512,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.04442)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.999996954285546,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214581698179245,
+				"total_impulse": "(0.0, -0.04442)",
+				"velocity": "(0.0, -4.830754)"
+			},
+			"vx": 0.0,
+			"vy": -4.83066844940186
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000100135803222656,
+				"ideal_delta": -0.00000222400537611708,
+				"source_after": 43634.0173246783,
+				"source_approach": -0.000100135803222656,
+				"source_before": 43634.0176726512,
+				"source_delta": -0.000347972963936627,
+				"source_impulse_y": -0.0444197840988636,
+				"source_j": 0.0444197840241399,
+				"source_next_omega": -0.999996954285546,
+				"source_next_vx": 3.0,
+				"source_next_vy": -4.83075380325317,
+				"tolerance": 0.000436340176726512
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43634.0173246783,
+				"energy_before": 43634.0176726512,
+				"energy_tolerance": 0.000436340176726512,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.04442)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.999996954285546,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214581698179245,
+				"total_impulse": "(0.0, -0.04442)",
+				"velocity": "(3.0, -4.830754)"
+			},
+			"vx": 3.0,
+			"vy": -4.83066844940186
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000999927520751953,
+				"ideal_delta": -0.000221765561382895,
+				"source_after": 41291.7574229576,
+				"source_approach": -0.000999927520751953,
+				"source_before": 41291.7578078441,
+				"source_delta": -0.000384886501706205,
+				"source_impulse_y": -0.443563282489777,
+				"source_j": 0.443563271898197,
+				"source_next_omega": -0.999969586366713,
+				"source_next_vx": 0.0,
+				"source_next_vy": -4.83062171936035,
+				"tolerance": 0.000412917578078441
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41291.7574229576,
+				"energy_before": 41291.7578078441,
+				"energy_tolerance": 0.000412917578078441,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443563)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.999969586366713,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14275145530701,
+				"total_impulse": "(0.0, -0.443563)",
+				"velocity": "(0.0, -4.830622)"
+			},
+			"vx": 0.0,
+			"vy": -4.82976865768433
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000999927520751953,
+				"ideal_delta": -0.000221765561382895,
+				"source_after": 43631.7579188683,
+				"source_approach": -0.000999927520751953,
+				"source_before": 43631.7583037548,
+				"source_delta": -0.000384886501706205,
+				"source_impulse_y": -0.443563282489777,
+				"source_j": 0.443563271898197,
+				"source_next_omega": -0.999969586366713,
+				"source_next_vx": 3.0,
+				"source_next_vy": -4.83062171936035,
+				"tolerance": 0.000436317583037548
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43631.7579188683,
+				"energy_before": 43631.7583037548,
+				"energy_tolerance": 0.000436317583037548,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443563)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.999969586366713,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14275145530701,
+				"total_impulse": "(0.0, -0.443563)",
+				"velocity": "(3.0, -4.830622)"
+			},
+			"vx": 3.0,
+			"vy": -4.82976865768433
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0100002288818359,
+				"ideal_delta": -0.0221807864890144,
+				"source_after": 41269.1532254167,
+				"source_approach": -0.0100002288818359,
+				"source_before": 41269.1745330028,
+				"source_delta": -0.0213075860883691,
+				"source_impulse_y": -4.4360556602478,
+				"source_j": 4.43605576454411,
+				"source_next_omega": -0.999695834665837,
+				"source_next_vx": 0.0,
+				"source_next_vy": -4.82929944992065,
+				"tolerance": 0.000412691745330028
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41269.1532254167,
+				"energy_before": 41269.1745330028,
+				"energy_tolerance": 0.000412691745330028,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.436056)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.999695834665837,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.429557800293,
+				"total_impulse": "(0.0, -4.436056)",
+				"velocity": "(0.0, -4.829299)"
+			},
+			"vx": 0.0,
+			"vy": -4.82076835632324
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0100002288818359,
+				"ideal_delta": -0.0221807864890144,
+				"source_after": 43609.1537213274,
+				"source_approach": -0.0100002288818359,
+				"source_before": 43609.1745330028,
+				"source_delta": -0.0208116754438379,
+				"source_impulse_y": -4.4360556602478,
+				"source_j": 4.43605576454411,
+				"source_next_omega": -0.999695834665837,
+				"source_next_vx": 3.0,
+				"source_next_vy": -4.82929944992065,
+				"tolerance": 0.000436091745330028
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43609.1537213274,
+				"energy_before": 43609.1745330028,
+				"energy_tolerance": 0.000436091745330028,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.436056)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.999695834665837,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.429557800293,
+				"total_impulse": "(0.0, -4.436056)",
+				"velocity": "(3.0, -4.829299)"
+			},
+			"vx": 3.0,
+			"vy": -4.82076835632324
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0999999046325684,
+				"ideal_delta": -2.21797288635099,
+				"source_after": 41043.451405072,
+				"source_approach": -0.0999999046325684,
+				"source_before": 41045.6695891551,
+				"source_delta": -2.21818408314721,
+				"source_impulse_y": -44.3595008850098,
+				"source_j": 44.3595000315358,
+				"source_next_omega": -0.996958418995792,
+				"source_next_vx": 0.0,
+				"source_next_vy": -4.81607532501221,
+				"tolerance": 0.000410456695891551
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41043.451405072,
+				"energy_before": 41045.6695891551,
+				"energy_tolerance": 0.000410456695891551,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.3595)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.996958418995792,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290481567383,
+				"total_impulse": "(0.0, -44.3595)",
+				"velocity": "(0.0, -4.816075)"
+			},
+			"vx": 0.0,
+			"vy": -4.73076868057251
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0999999046325684,
+				"ideal_delta": -2.21797288635099,
+				"source_after": 43383.4509091614,
+				"source_approach": -0.0999999046325684,
+				"source_before": 43385.6695891551,
+				"source_delta": -2.21867999379174,
+				"source_impulse_y": -44.3595008850098,
+				"source_j": 44.3595000315358,
+				"source_next_omega": -0.996958418995792,
+				"source_next_vx": 3.0,
+				"source_next_vy": -4.81607532501221,
+				"tolerance": 0.000433856695891552
+			},
+			"omega": -1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43383.4509091614,
+				"energy_before": 43385.6695891551,
+				"energy_tolerance": 0.000433856695891552,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.3595)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.996958418995792,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290481567383,
+				"total_impulse": "(0.0, -44.3595)",
+				"velocity": "(3.0, -4.816075)"
+			},
+			"vx": 3.0,
+			"vy": -4.73076868057251
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00000100135803227097,
+				"ideal_delta": -0.000000000222400537631435,
+				"source_after": 412.942441313149,
+				"source_approach": -0.00000101327896118164,
+				"source_before": 412.942441488437,
+				"source_delta": -0.000000175288050741074,
+				"source_impulse_y": -0.000449485902208835,
+				"source_j": 0.000449485909768083,
+				"source_next_omega": -0.0999999691802724,
+				"source_next_vx": 0.0,
+				"source_next_vy": -0.483076721429825,
+				"tolerance": 0.00000412942441488437
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 412.942441313149,
+				"energy_before": 412.942441488437,
+				"energy_tolerance": 0.00000412942441488437,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.000449)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0999999691802724,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.00217136228457093,
+				"total_impulse": "(0.0, -0.000449)",
+				"velocity": "(0.0, -0.483077)"
+			},
+			"vx": 0.0,
+			"vy": -0.483075857162476
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.00000100135803227097,
+				"ideal_delta": -0.000000000222400537631435,
+				"source_after": 2752.94244906175,
+				"source_approach": -0.00000101327896118164,
+				"source_before": 2752.94241824263,
+				"source_delta": 0.0000308191274598357,
+				"source_impulse_y": -0.000449485902208835,
+				"source_j": 0.000449485909768083,
+				"source_next_omega": -0.0999999691802724,
+				"source_next_vx": 3.0,
+				"source_next_vy": -0.483076721429825,
+				"tolerance": 0.0000275294241824263
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 3.0,
+			"vy": -0.483075857162476
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.000010001659393355,
+				"ideal_delta": -0.0000000221871327717633,
+				"source_after": 412.940183320005,
+				"source_approach": -0.0000100135803222656,
+				"source_before": 412.940178896122,
+				"source_delta": 0.00000442388352439593,
+				"source_impulse_y": -0.00444197840988636,
+				"source_j": 0.00444197840241399,
+				"source_next_omega": -0.0999996954285599,
+				"source_next_vx": 0.0,
+				"source_next_vy": -0.48307541012764,
+				"tolerance": 0.00000412940178896122
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 0.0,
+			"vy": -0.483066856861115
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.000010001659393355,
+				"ideal_delta": -0.0000000221871327717633,
+				"source_after": 2752.94027242895,
+				"source_approach": -0.0000100135803222656,
+				"source_before": 2752.94018664473,
+				"source_delta": 0.000085784223756491,
+				"source_impulse_y": -0.00444197840988636,
+				"source_j": 0.00444197840241399,
+				"source_next_omega": -0.0999996954285599,
+				"source_next_vx": 3.0,
+				"source_next_vy": -0.48307541012764,
+				"tolerance": 0.0000275294018664473
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 3.0,
+			"vy": -0.483066856861115
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000100004673004195,
+				"ideal_delta": -0.0000022181844139754,
+				"source_after": 412.917572683885,
+				"source_approach": -0.000100016593933105,
+				"source_before": 412.917572344474,
+				"source_delta": 0.000000339410746619251,
+				"source_impulse_y": -0.0443669036030769,
+				"source_j": 0.0443669033288731,
+				"source_next_omega": -0.0999969579113428,
+				"source_next_vx": 0.0,
+				"source_next_vy": -0.4830621778965,
+				"tolerance": 0.00000412917572344474
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 412.917572683885,
+				"energy_before": 412.917572344474,
+				"energy_tolerance": 0.00000412917572344474,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.044367)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0999969579113428,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214326247572899,
+				"total_impulse": "(0.0, -0.044367)",
+				"velocity": "(0.0, -0.483062)"
+			},
+			"vx": 0.0,
+			"vy": -0.482976853847504
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000100004673004195,
+				"ideal_delta": -0.0000022181844139754,
+				"source_after": 2752.91751456936,
+				"source_approach": -0.000100016593933105,
+				"source_before": 2752.9176227104,
+				"source_delta": -0.000108141042346688,
+				"source_impulse_y": -0.0443669036030769,
+				"source_j": 0.0443669033288731,
+				"source_next_omega": -0.0999969579113428,
+				"source_next_vx": 3.0,
+				"source_next_vy": -0.4830621778965,
+				"tolerance": 0.000027529176227104
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2752.91751456936,
+				"energy_before": 2752.9176227104,
+				"energy_tolerance": 0.000027529176227104,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.044367)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0999969579113428,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214326247572899,
+				"total_impulse": "(0.0, -0.044367)",
+				"velocity": "(3.0, -0.483062)"
+			},
+			"vx": 3.0,
+			"vy": -0.482976853847504
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00100000500679021,
+				"ideal_delta": -0.000221799932675241,
+				"source_after": 412.691532742541,
+				"source_approach": -0.00100001692771912,
+				"source_before": 412.691750909023,
+				"source_delta": -0.000218166481829485,
+				"source_impulse_y": -0.443602919578552,
+				"source_j": 0.443602932419648,
+				"source_next_omega": -0.0999695836459383,
+				"source_next_vx": 0.0,
+				"source_next_vy": -0.482929944992065,
+				"tolerance": 0.00000412691750909023
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 412.691532742541,
+				"energy_before": 412.691750909023,
+				"energy_tolerance": 0.00000412691750909023,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443603)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0999695836459383,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.1429431438446,
+				"total_impulse": "(0.0, -0.443603)",
+				"velocity": "(0.0, -0.48293)"
+			},
+			"vx": 0.0,
+			"vy": -0.482076853513718
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00100000500679021,
+				"ideal_delta": -0.000221799932675241,
+				"source_after": 2752.6914591308,
+				"source_approach": -0.00100001692771912,
+				"source_before": 2752.69173541181,
+				"source_delta": -0.000276281010428647,
+				"source_impulse_y": -0.443602919578552,
+				"source_j": 0.443602932419648,
+				"source_next_omega": -0.0999695836459383,
+				"source_next_vx": 3.0,
+				"source_next_vy": -0.482929944992065,
+				"tolerance": 0.0000275269173541182
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2752.6914591308,
+				"energy_before": 2752.69173541181,
+				"energy_tolerance": 0.0000275269173541182,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443603)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0999695836459383,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.1429431438446,
+				"total_impulse": "(0.0, -0.443603)",
+				"velocity": "(3.0, -0.48293)"
+			},
+			"vx": 3.0,
+			"vy": -0.482076853513718
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0100000083446503,
+				"ideal_delta": -0.0221798081845483,
+				"source_after": 410.434513626522,
+				"source_approach": -0.0100000202655792,
+				"source_before": 410.456689382724,
+				"source_delta": -0.0221757562022731,
+				"source_impulse_y": -4.43596315383911,
+				"source_j": 4.43596322332739,
+				"source_next_omega": -0.0996958410007759,
+				"source_next_vx": 0.0,
+				"source_next_vy": -0.481607556343079,
+				"tolerance": 0.00000410456689382724
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 410.434513626522,
+				"energy_before": 410.456689382724,
+				"energy_tolerance": 0.00000410456689382724,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.435963)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0996958410007759,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.4291114807129,
+				"total_impulse": "(0.0, -4.435963)",
+				"velocity": "(0.0, -0.481608)"
+			},
+			"vx": 0.0,
+			"vy": -0.473076850175858
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0100000083446503,
+				"ideal_delta": -0.0221798081845483,
+				"source_after": 2750.43455236954,
+				"source_approach": -0.0100000202655792,
+				"source_before": 2750.45666613691,
+				"source_delta": -0.022113767371593,
+				"source_impulse_y": -4.43596315383911,
+				"source_j": 4.43596322332739,
+				"source_next_omega": -0.0996958410007759,
+				"source_next_vx": 3.0,
+				"source_next_vy": -0.481607556343079,
+				"tolerance": 0.0000275045666613691
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2750.43455236954,
+				"energy_before": 2750.45666613691,
+				"energy_tolerance": 0.0000275045666613691,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.435963)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0996958410007759,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.4291114807129,
+				"total_impulse": "(0.0, -4.435963)",
+				"velocity": "(3.0, -0.481608)"
+			},
+			"vx": 3.0,
+			"vy": -0.473076850175858
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.100000011920929,
+				"ideal_delta": -2.21797764561158,
+				"source_after": 388.204714498824,
+				"source_approach": -0.100000023841858,
+				"source_before": 390.422693575553,
+				"source_delta": -2.21797907672931,
+				"source_impulse_y": -44.3595542907715,
+				"source_j": 44.359552912231,
+				"source_next_omega": -0.0969584153139471,
+				"source_next_vx": 0.0,
+				"source_next_vy": -0.46838366985321,
+				"tolerance": 0.00000390422693575553
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 388.204714498824,
+				"energy_before": 390.422693575553,
+				"energy_tolerance": 0.00000390422693575553,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35955)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0969584153139471,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290740966797,
+				"total_impulse": "(0.0, -44.35955)",
+				"velocity": "(0.0, -0.468384)"
+			},
+			"vx": 0.0,
+			"vy": -0.383076846599579
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.100000011920929,
+				"ideal_delta": -2.21797764561158,
+				"source_after": 2728.20470675022,
+				"source_approach": -0.100000023841858,
+				"source_before": 2730.42261996382,
+				"source_delta": -2.2179132135966,
+				"source_impulse_y": -44.3595542907715,
+				"source_j": 44.359552912231,
+				"source_next_omega": -0.0969584153139471,
+				"source_next_vx": 3.0,
+				"source_next_vy": -0.46838366985321,
+				"tolerance": 0.0000273042261996382
+			},
+			"omega": -0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2728.20470675022,
+				"energy_before": 2730.42261996382,
+				"energy_tolerance": 0.0000273042261996382,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35955)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": -0.0969584153139471,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290740966797,
+				"total_impulse": "(0.0, -44.35955)",
+				"velocity": "(3.0, -0.468384)"
+			},
+			"vx": 3.0,
+			"vy": -0.383076846599579
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000000999999997475243,
+				"ideal_delta": -0.000000000221797710560489,
+				"source_after": 0.0000000000382022900848992,
+				"source_approach": -0.000000999999997475243,
+				"source_before": 0.000000000259999998961091,
+				"source_delta": -0.000000000221797708876192,
+				"source_impulse_y": -0.000443595432443544,
+				"source_j": 0.000443595422240949,
+				"source_next_omega": 0.0000000304158394484048,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.000000146931881772616,
+				"tolerance": 0.00000001
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 0.000000000259999998961091,
+				"energy_before": 0.000000000259999998961091,
+				"energy_tolerance": 0.00000001,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.000000999999997475243,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(0.0, 0.000001)"
+			},
+			"vx": 0.0,
+			"vy": 0.000000999999997475243
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000000999999997475243,
+				"ideal_delta": -0.000000000221797710560489,
+				"source_after": 2340.00000000003,
+				"source_approach": -0.000000999999997475243,
+				"source_before": 2340.0,
+				"source_delta": 0.0000000000327418092638254,
+				"source_impulse_y": -0.000443595432443544,
+				"source_j": 0.000443595422240949,
+				"source_next_omega": 0.0000000304158394484048,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.000000146931881772616,
+				"tolerance": 0.0000234
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 2340.0,
+				"energy_before": 2340.0,
+				"energy_tolerance": 0.0000234,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.000000999999997475243,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(3.0, 0.000001)"
+			},
+			"vx": 3.0,
+			"vy": 0.000000999999997475243
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00000999999974737875,
+				"ideal_delta": -0.0000000221797700474297,
+				"source_after": 0.00000000382022849373231,
+				"source_approach": -0.00000999999974737875,
+				"source_before": 0.0000000259999985430248,
+				"source_delta": -0.0000000221797700492925,
+				"source_impulse_y": -0.00443595414981246,
+				"source_j": 0.00443595412154757,
+				"source_next_omega": 0.000000304158374655638,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.00000146931870403932,
+				"tolerance": 0.00000001
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 0.00000000382022849373231,
+				"energy_before": 0.0000000259999985430248,
+				"energy_tolerance": 0.00000001,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.004436)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.000000304158374655638,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0214290674775839,
+				"total_impulse": "(0.0, -0.004436)",
+				"velocity": "(0.0, 0.000001)"
+			},
+			"vx": 0.0,
+			"vy": 0.00000999999974737875
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00000999999974737875,
+				"ideal_delta": -0.0000000221797700474297,
+				"source_after": 2340.00000000326,
+				"source_approach": -0.00000999999974737875,
+				"source_before": 2340.0,
+				"source_delta": 0.0000000032587195164524,
+				"source_impulse_y": -0.00443595414981246,
+				"source_j": 0.00443595412154757,
+				"source_next_omega": 0.000000304158374655638,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.00000146931870403932,
+				"tolerance": 0.0000234
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2340.00000000326,
+				"energy_before": 2340.0,
+				"energy_tolerance": 0.0000234,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.004436)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.000000304158374655638,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0214290674775839,
+				"total_impulse": "(0.0, -0.004436)",
+				"velocity": "(3.0, 0.000001)"
+			},
+			"vx": 3.0,
+			"vy": 0.00000999999974737875
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0000999999974737875,
+				"ideal_delta": -0.00000221797700474297,
+				"source_after": 0.000000382022848751768,
+				"source_approach": -0.0000999999974737875,
+				"source_before": 0.00000259999975327219,
+				"source_delta": -0.00000221797690452042,
+				"source_impulse_y": -0.0443595424294472,
+				"source_j": 0.0443595412154757,
+				"source_next_omega": 0.00000304158379943214,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.0000146931852214038,
+				"tolerance": 0.00000001
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 0.000000382022848751768,
+				"energy_before": 0.00000259999975327219,
+				"energy_tolerance": 0.00000001,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.04436)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.00000304158379943214,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214290678501129,
+				"total_impulse": "(0.0, -0.04436)",
+				"velocity": "(0.0, 0.000015)"
+			},
+			"vx": 0.0,
+			"vy": 0.0000999999974737875
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0000999999974737875,
+				"ideal_delta": -0.00000221797700474297,
+				"source_after": 2340.00000032589,
+				"source_approach": -0.0000999999974737875,
+				"source_before": 2340.0,
+				"source_delta": 0.000000325891505781328,
+				"source_impulse_y": -0.0443595424294472,
+				"source_j": 0.0443595412154757,
+				"source_next_omega": 0.00000304158379943214,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.0000146931852214038,
+				"tolerance": 0.0000234
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2340.00000032589,
+				"energy_before": 2340.0,
+				"energy_tolerance": 0.0000234,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.04436)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.00000304158379943214,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214290678501129,
+				"total_impulse": "(0.0, -0.04436)",
+				"velocity": "(3.0, 0.000015)"
+			},
+			"vx": 3.0,
+			"vy": 0.0000999999974737875
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00100000004749745,
+				"ideal_delta": -0.000221797732750112,
+				"source_after": 0.0000382022929463604,
+				"source_approach": -0.00100000004749745,
+				"source_before": 0.000260000028902141,
+				"source_delta": -0.000221797735955781,
+				"source_impulse_y": -0.443595439195633,
+				"source_j": 0.443595444430572,
+				"source_next_omega": 0.0000304158396863458,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.000146931910421699,
+				"tolerance": 0.00000001
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 0.0000382022929463604,
+				"energy_before": 0.000260000028902141,
+				"energy_tolerance": 0.00000001,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443595)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0000000000291038304567337,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.0000304158396863458,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14290690422058,
+				"total_impulse": "(0.0, -0.443595)",
+				"velocity": "(0.0, 0.000147)"
+			},
+			"vx": 0.0,
+			"vy": 0.00100000004749745
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00100000004749745,
+				"ideal_delta": -0.000221797732750112,
+				"source_after": 2340.00003258916,
+				"source_approach": -0.00100000004749745,
+				"source_before": 2340.00024795532,
+				"source_delta": -0.000215366165775777,
+				"source_impulse_y": -0.443595439195633,
+				"source_j": 0.443595444430572,
+				"source_next_omega": 0.0000304158396863458,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.000146931910421699,
+				"tolerance": 0.0000234000024795532
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2340.00003258916,
+				"energy_before": 2340.00024795532,
+				"energy_tolerance": 0.0000234000024795532,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443595)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0000000000291038304567337,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.0000304158396863458,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14290690422058,
+				"total_impulse": "(0.0, -0.443595)",
+				"velocity": "(3.0, 0.000147)"
+			},
+			"vx": 3.0,
+			"vy": 0.00100000004749745
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00999999977648258,
+				"ideal_delta": -0.022179770176533,
+				"source_after": 0.0038202285805749,
+				"source_approach": -0.00999999977648258,
+				"source_before": 0.0259999993431848,
+				"source_delta": -0.0221797707626099,
+				"source_impulse_y": -4.43595409393311,
+				"source_j": 4.43595413445789,
+				"source_next_omega": 0.000304158376559166,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.00146931875497103,
+				"tolerance": 0.00000001
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 0.0038202285805749,
+				"energy_before": 0.0259999993431848,
+				"energy_tolerance": 0.00000001,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.435954)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.000000000116415321826935,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.000304158376559166,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.4290676116943,
+				"total_impulse": "(0.0, -4.435954)",
+				"velocity": "(0.0, 0.001469)"
+			},
+			"vx": 0.0,
+			"vy": 0.00999999977648258
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00999999977648258,
+				"ideal_delta": -0.022179770176533,
+				"source_after": 2340.00375482585,
+				"source_approach": -0.00999999977648258,
+				"source_before": 2340.02603530884,
+				"source_delta": -0.0222804829854795,
+				"source_impulse_y": -4.43595409393311,
+				"source_j": 4.43595413445789,
+				"source_next_omega": 0.000304158376559166,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.00146931875497103,
+				"tolerance": 0.0000234002603530884
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2340.00375482585,
+				"energy_before": 2340.02603530884,
+				"energy_tolerance": 0.0000234002603530884,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.435954)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.000000000116415321826935,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.000304158376559166,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.4290676116943,
+				"total_impulse": "(0.0, -4.435954)",
+				"velocity": "(3.0, 0.001469)"
+			},
+			"vx": 3.0,
+			"vy": 0.00999999977648258
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.100000001490116,
+				"ideal_delta": -2.21797718290547,
+				"source_after": 0.382022857363843,
+				"source_approach": -0.100000001490116,
+				"source_before": 2.60000018402934,
+				"source_delta": -2.2179773266655,
+				"source_impulse_y": -44.3595428466797,
+				"source_j": 44.3595429971007,
+				"source_next_omega": 0.00304158381973643,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.0146931856870651,
+				"tolerance": 0.0000000260000018402934
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 0.382022857363843,
+				"energy_before": 2.60000018402934,
+				"energy_tolerance": 0.0000000260000018402934,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35954)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.00304158381973643,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290679931641,
+				"total_impulse": "(0.0, -44.35954)",
+				"velocity": "(0.0, 0.014693)"
+			},
+			"vx": 0.0,
+			"vy": 0.100000001490116
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.100000001490116,
+				"ideal_delta": -2.21797718290547,
+				"source_after": 2340.38192943523,
+				"source_approach": -0.100000001490116,
+				"source_before": 2342.60005950928,
+				"source_delta": -2.21813007404489,
+				"source_impulse_y": -44.3595428466797,
+				"source_j": 44.3595429971007,
+				"source_next_omega": 0.00304158381973643,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.0146931856870651,
+				"tolerance": 0.0000234260005950928
+			},
+			"omega": 0.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2340.38192943523,
+				"energy_before": 2342.60005950928,
+				"energy_tolerance": 0.0000234260005950928,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35954)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.00304158381973643,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290679931641,
+				"total_impulse": "(0.0, -44.35954)",
+				"velocity": "(3.0, 0.014693)"
+			},
+			"vx": 3.0,
+			"vy": 0.100000001490116
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000000995397567704615,
+				"ideal_delta": -0.000000000219760791981983,
+				"source_after": 412.942942811005,
+				"source_approach": -0.000000983476638793945,
+				"source_before": 412.942941273384,
+				"source_delta": 0.00000153762175614247,
+				"source_impulse_y": -0.000436265749158338,
+				"source_j": 0.000436265735951374,
+				"source_next_omega": 0.100000029913269,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.483077019453049,
+				"tolerance": 0.00000412942941273384
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 412.942941273384,
+				"energy_before": 412.942941273384,
+				"energy_tolerance": 0.00000412942941273384,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.000000983476638793945,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.1,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(0.0, 0.483078)"
+			},
+			"vx": 0.0,
+			"vy": 0.483077853918076
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000000995397567704615,
+				"ideal_delta": -0.000000000219760791981983,
+				"source_after": 2752.94287694787,
+				"source_approach": -0.000000983476638793945,
+				"source_before": 2752.94291415327,
+				"source_delta": -0.0000372053973478614,
+				"source_impulse_y": -0.000436265749158338,
+				"source_j": 0.000436265735951374,
+				"source_next_omega": 0.100000029913269,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.483077019453049,
+				"tolerance": 0.0000275294291415327
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 2752.94291415327,
+				"energy_before": 2752.94291415327,
+				"energy_tolerance": 0.0000275294291415327,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.000000983476638793945,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.1,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(3.0, 0.483078)"
+			},
+			"vx": 3.0,
+			"vy": 0.483077853918076
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0000099956989287886,
+				"ideal_delta": -0.00000002216069591608,
+				"source_after": 412.945200810671,
+				"source_approach": -0.00000998377799987793,
+				"source_before": 412.945203865699,
+				"source_delta": -0.00000305502874198282,
+				"source_impulse_y": -0.00442875828593969,
+				"source_j": 0.00442875822859729,
+				"source_next_omega": 0.100000303664991,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.483078330755234,
+				"tolerance": 0.00000412945203865699
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 412.945200810671,
+				"energy_before": 412.945203865699,
+				"energy_tolerance": 0.00000412945203865699,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.004429)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.100000303664991,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0213943067938089,
+				"total_impulse": "(0.0, -0.004429)",
+				"velocity": "(0.0, 0.483078)"
+			},
+			"vx": 0.0,
+			"vy": 0.483086854219437
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.0000099956989287886,
+				"ideal_delta": -0.00000002216069591608,
+				"source_after": 2752.94530154252,
+				"source_approach": -0.00000998377799987793,
+				"source_before": 2752.94514575117,
+				"source_delta": 0.00015579134969812,
+				"source_impulse_y": -0.00442875828593969,
+				"source_j": 0.00442875822859729,
+				"source_next_omega": 0.100000303664991,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.483078330755234,
+				"tolerance": 0.0000275294514575117
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 3.0,
+			"vy": 0.483086854219437
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0000999987125396284,
+				"ideal_delta": -0.00000221792000601938,
+				"source_after": 412.967812091707,
+				"source_approach": -0.0000999867916107178,
+				"source_before": 412.967814291648,
+				"source_delta": -0.00000219994132066859,
+				"source_impulse_y": -0.0443536825478077,
+				"source_j": 0.0443536831550564,
+				"source_next_omega": 0.100003041182155,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.483091562986374,
+				"tolerance": 0.00000412967814291648
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 412.967812091707,
+				"energy_before": 412.967814291648,
+				"energy_tolerance": 0.00000412967814291648,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.044354)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.100003041182155,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214262381196022,
+				"total_impulse": "(0.0, -0.044354)",
+				"velocity": "(0.0, 0.483092)"
+			},
+			"vx": 0.0,
+			"vy": 0.483176857233047
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.0000999987125396284,
+				"ideal_delta": -0.00000221792000601938,
+				"source_after": 2752.96781209171,
+				"source_approach": -0.0000999867916107178,
+				"source_before": 2752.9677096855,
+				"source_delta": 0.000102406210316985,
+				"source_impulse_y": -0.0443536825478077,
+				"source_j": 0.0443536831550564,
+				"source_next_omega": 0.100003041182155,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.483091562986374,
+				"tolerance": 0.000027529677096855
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 3.0,
+			"vy": 0.483176857233047
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000999999046325639,
+				"ideal_delta": -0.00022179728863508,
+				"source_after": 413.193928179745,
+				"source_approach": -0.000999987125396729,
+				"source_before": 413.194151009254,
+				"source_delta": -0.000222829508572886,
+				"source_impulse_y": -0.443589717149734,
+				"source_j": 0.443589712245831,
+				"source_next_omega": 0.100030415447137,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.483223795890808,
+				"tolerance": 0.00000413194151009254
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 413.193928179745,
+				"energy_before": 413.194151009254,
+				"energy_tolerance": 0.00000413194151009254,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.44359)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.100030415447137,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14287924766541,
+				"total_impulse": "(0.0, -0.44359)",
+				"velocity": "(0.0, 0.483224)"
+			},
+			"vx": 0.0,
+			"vy": 0.484076857566833
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000999999046325639,
+				"ideal_delta": -0.00022179728863508,
+				"source_after": 2753.19393205405,
+				"source_approach": -0.000999987125396729,
+				"source_before": 2753.19409289473,
+				"source_delta": -0.000160840677835949,
+				"source_impulse_y": -0.443589717149734,
+				"source_j": 0.443589712245831,
+				"source_next_omega": 0.100030415447137,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.483223795890808,
+				"tolerance": 0.0000275319409289473
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2753.19393205405,
+				"energy_before": 2753.19409289473,
+				"energy_tolerance": 0.0000275319409289473,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.44359)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.100030415447137,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14287924766541,
+				"total_impulse": "(0.0, -0.44359)",
+				"velocity": "(3.0, 0.483224)"
+			},
+			"vx": 3.0,
+			"vy": 0.484076857566833
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0100000023841857,
+				"ideal_delta": -0.0221797817441861,
+				"source_after": 415.458511783849,
+				"source_approach": -0.00999999046325684,
+				"source_before": 415.480694259338,
+				"source_delta": -0.0221824754889894,
+				"source_impulse_y": -4.43594980239868,
+				"source_j": 4.43595000315358,
+				"source_next_omega": 0.100304158078763,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.484546184539795,
+				"tolerance": 0.00000415480694259338
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 415.458511783849,
+				"energy_before": 415.480694259338,
+				"energy_tolerance": 0.00000415480694259338,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.43595)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0000000298023223876953,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.100304158078763,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.4290466308594,
+				"total_impulse": "(0.0, -4.43595)",
+				"velocity": "(0.0, 0.484546)"
+			},
+			"vx": 0.0,
+			"vy": 0.493076860904694
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0100000023841857,
+				"ideal_delta": -0.0221797817441861,
+				"source_after": 2755.45853115536,
+				"source_approach": -0.00999999046325684,
+				"source_before": 2755.48073687666,
+				"source_delta": -0.0222057213004518,
+				"source_impulse_y": -4.43594980239868,
+				"source_j": 4.43595000315358,
+				"source_next_omega": 0.100304158078763,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.484546184539795,
+				"tolerance": 0.0000275548073687666
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2755.45853115536,
+				"energy_before": 2755.48073687666,
+				"energy_tolerance": 0.0000275548073687666,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.43595)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0000000298023223876953,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.100304158078763,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.4290466308594,
+				"total_impulse": "(0.0, -4.43595)",
+				"velocity": "(3.0, 0.484546)"
+			},
+			"vx": 3.0,
+			"vy": 0.493076860904694
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.099999976158142,
+				"ideal_delta": -2.21797605919082,
+				"source_after": 438.444704767224,
+				"source_approach": -0.0999999642372131,
+				"source_before": 440.662684227161,
+				"source_delta": -2.2179794599374,
+				"source_impulse_y": -44.3595275878906,
+				"source_j": 44.3595264718834,
+				"source_next_omega": 0.10304158295342,
+				"source_next_vx": 0.0,
+				"source_next_vy": 0.497770041227341,
+				"tolerance": 0.00000440662684227161
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 438.444704767224,
+				"energy_before": 440.662684227161,
+				"energy_tolerance": 0.00000440662684227161,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35953)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.10304158295342,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290618896484,
+				"total_impulse": "(0.0, -44.35953)",
+				"velocity": "(0.0, 0.49777)"
+			},
+			"vx": 0.0,
+			"vy": 0.58307683467865
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.099999976158142,
+				"ideal_delta": -2.21797605919082,
+				"source_after": 2778.44472026443,
+				"source_approach": -0.0999999642372131,
+				"source_before": 2780.66258349531,
+				"source_delta": -2.21786323087963,
+				"source_impulse_y": -44.3595275878906,
+				"source_j": 44.3595264718834,
+				"source_next_omega": 0.10304158295342,
+				"source_next_vx": 3.0,
+				"source_next_vy": 0.497770041227341,
+				"tolerance": 0.0000278066258349531
+			},
+			"omega": 0.1,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 2778.44472026443,
+				"energy_before": 2780.66258349531,
+				"energy_tolerance": 0.0000278066258349531,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35953)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 0.10304158295342,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290618896484,
+				"total_impulse": "(0.0, -44.35953)",
+				"velocity": "(3.0, 0.49777)"
+			},
+			"vx": 3.0,
+			"vy": 0.58307683467865
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00000095367431640625,
+				"ideal_delta": -0.000000000201723843638738,
+				"source_after": 41294.2711429834,
+				"source_approach": -0.00000095367431640625,
+				"source_before": 41294.2715789012,
+				"source_delta": -0.000435917827417143,
+				"source_impulse_y": -0.00042304556700401,
+				"source_j": 0.000423045562134666,
+				"source_next_omega": 1.00000002900681,
+				"source_next_vx": 0.0,
+				"source_next_vy": 4.83076858520508,
+				"tolerance": 0.000412942715789012
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 41294.2715789012,
+				"energy_before": 41294.2715789012,
+				"energy_tolerance": 0.000412942715789012,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.00000095367431640625,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(0.0, 4.83077)"
+			},
+			"vx": 0.0,
+			"vy": 4.83076953887939
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00000095367431640625,
+				"ideal_delta": -0.000000000201723843638738,
+				"source_after": 43634.2716388941,
+				"source_approach": -0.00000095367431640625,
+				"source_before": 43634.2715789012,
+				"source_delta": 0.0000599928171141073,
+				"source_impulse_y": -0.00042304556700401,
+				"source_j": 0.000423045562134666,
+				"source_next_omega": 1.00000002900681,
+				"source_next_vx": 3.0,
+				"source_next_vy": 4.83076858520508,
+				"tolerance": 0.000436342715789012
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 43634.2715789012,
+				"energy_before": 43634.2715789012,
+				"energy_tolerance": 0.000436342715789012,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.00000095367431640625,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(3.0, 4.83077)"
+			},
+			"vx": 3.0,
+			"vy": 4.83076953887939
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0000100135803222656,
+				"ideal_delta": -0.0000000222400537611708,
+				"source_after": 41294.2940288952,
+				"source_approach": -0.0000100135803222656,
+				"source_before": 41294.2943907909,
+				"source_delta": -0.000361895647074562,
+				"source_impulse_y": -0.00444197840988636,
+				"source_j": 0.00444197840241399,
+				"source_next_omega": 1.00000030457144,
+				"source_next_vx": 0.0,
+				"source_next_vy": 4.83077001571655,
+				"tolerance": 0.000412942943907909
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41294.2940288952,
+				"energy_before": 41294.2943907909,
+				"energy_tolerance": 0.000412942943907909,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.004442)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00000030457144,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0214581694453955,
+				"total_impulse": "(0.0, -0.004442)",
+				"velocity": "(0.0, 4.83077)"
+			},
+			"vx": 0.0,
+			"vy": 4.8307785987854
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0000100135803222656,
+				"ideal_delta": -0.0000000222400537611708,
+				"source_after": 43634.2940288952,
+				"source_approach": -0.0000100135803222656,
+				"source_before": 43634.2943907909,
+				"source_delta": -0.000361895647074562,
+				"source_impulse_y": -0.00444197840988636,
+				"source_j": 0.00444197840241399,
+				"source_next_omega": 1.00000030457144,
+				"source_next_vx": 3.0,
+				"source_next_vy": 4.83077001571655,
+				"tolerance": 0.000436342943907909
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43634.2940288952,
+				"energy_before": 43634.2943907909,
+				"energy_tolerance": 0.000436342943907909,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.004442)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00000030457144,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0214581694453955,
+				"total_impulse": "(0.0, -0.004442)",
+				"velocity": "(3.0, 4.83077)"
+			},
+			"vx": 3.0,
+			"vy": 4.8307785987854
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000100135803222656,
+				"ideal_delta": -0.00000222400537611708,
+				"source_after": 41294.5208746713,
+				"source_approach": -0.000100135803222656,
+				"source_before": 41294.5205260448,
+				"source_delta": 0.000348626512277406,
+				"source_impulse_y": -0.0444197840988636,
+				"source_j": 0.0444197840241399,
+				"source_next_omega": 1.00000304571445,
+				"source_next_vx": 0.0,
+				"source_next_vy": 4.83078336715698,
+				"tolerance": 0.000412945205260448
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41294.5208746713,
+				"energy_before": 41294.5205260448,
+				"energy_tolerance": 0.000412945205260448,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.04442)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00000304571445,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214581698179245,
+				"total_impulse": "(0.0, -0.04442)",
+				"velocity": "(0.0, 4.830783)"
+			},
+			"vx": 0.0,
+			"vy": 4.8308687210083
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000100135803222656,
+				"ideal_delta": -0.00000222400537611708,
+				"source_after": 43634.5208746713,
+				"source_approach": -0.000100135803222656,
+				"source_before": 43634.5205260448,
+				"source_delta": 0.000348626512277406,
+				"source_impulse_y": -0.0444197840988636,
+				"source_j": 0.0444197840241399,
+				"source_next_omega": 1.00000304571445,
+				"source_next_vx": 3.0,
+				"source_next_vy": 4.83078336715698,
+				"tolerance": 0.000436345205260448
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43634.5208746713,
+				"energy_before": 43634.5205260448,
+				"energy_tolerance": 0.000436345205260448,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.04442)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00000304571445,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.214581698179245,
+				"total_impulse": "(0.0, -0.04442)",
+				"velocity": "(3.0, 4.830783)"
+			},
+			"vx": 3.0,
+			"vy": 4.8308687210083
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000999927520751953,
+				"ideal_delta": -0.000221765561382895,
+				"source_after": 41296.7808409073,
+				"source_approach": -0.000999927520751953,
+				"source_before": 41296.7813826732,
+				"source_delta": -0.000541765926755033,
+				"source_impulse_y": -0.443563282489777,
+				"source_j": 0.443563271898197,
+				"source_next_omega": 1.00003041363329,
+				"source_next_vx": 0.0,
+				"source_next_vy": 4.8309154510498,
+				"tolerance": 0.000412967813826732
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41296.7808409073,
+				"energy_before": 41296.7813826732,
+				"energy_tolerance": 0.000412967813826732,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443563)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00003041363329,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14275145530701,
+				"total_impulse": "(0.0, -0.443563)",
+				"velocity": "(0.0, 4.830915)"
+			},
+			"vx": 0.0,
+			"vy": 4.83176851272583
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": true,
+				"ideal_approach": -0.000999927520751953,
+				"ideal_delta": -0.000221765561382895,
+				"source_after": 43636.7813368179,
+				"source_approach": -0.000999927520751953,
+				"source_before": 43636.7808867626,
+				"source_delta": 0.000450055362307467,
+				"source_impulse_y": -0.443563282489777,
+				"source_j": 0.443563271898197,
+				"source_next_omega": 1.00003041363329,
+				"source_next_vx": 3.0,
+				"source_next_vy": 4.8309154510498,
+				"tolerance": 0.000436367808867626
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": false,
+				"impulses": [],
+				"outcome": "NonDissipativeResponse"
+			},
+			"vx": 3.0,
+			"vy": 4.83176851272583
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0100002288818359,
+				"ideal_delta": -0.0221807864890144,
+				"source_after": 41319.3929791399,
+				"source_approach": -0.0100002288818359,
+				"source_before": 41319.4157363109,
+				"source_delta": -0.0227571710420307,
+				"source_impulse_y": -4.4360556602478,
+				"source_j": 4.43605576454411,
+				"source_next_omega": 1.00030416533416,
+				"source_next_vx": 0.0,
+				"source_next_vy": 4.8322377204895,
+				"tolerance": 0.000413194157363109
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41319.3929791399,
+				"energy_before": 41319.4157363109,
+				"energy_tolerance": 0.000413194157363109,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.436056)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00030416533416,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.429557800293,
+				"total_impulse": "(0.0, -4.436056)",
+				"velocity": "(0.0, 4.832238)"
+			},
+			"vx": 0.0,
+			"vy": 4.84076881408691
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0100002288818359,
+				"ideal_delta": -0.0221807864890144,
+				"source_after": 43659.3929791399,
+				"source_approach": -0.0100002288818359,
+				"source_before": 43659.4162322216,
+				"source_delta": -0.0232530816865619,
+				"source_impulse_y": -4.4360556602478,
+				"source_j": 4.43605576454411,
+				"source_next_omega": 1.00030416533416,
+				"source_next_vx": 3.0,
+				"source_next_vy": 4.8322377204895,
+				"tolerance": 0.000436594162322216
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43659.3929791399,
+				"energy_before": 43659.4162322216,
+				"energy_tolerance": 0.000436594162322216,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.436056)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00030416533416,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.429557800293,
+				"total_impulse": "(0.0, -4.436056)",
+				"velocity": "(3.0, 4.832238)"
+			},
+			"vx": 3.0,
+			"vy": 4.84076881408691
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0999999046325684,
+				"ideal_delta": -2.21797288635099,
+				"source_after": 41545.8511471985,
+				"source_approach": -0.0999999046325684,
+				"source_before": 41548.0687285594,
+				"source_delta": -2.21758136097924,
+				"source_impulse_y": -44.3595008850098,
+				"source_j": 44.3595000315358,
+				"source_next_omega": 1.00304158100421,
+				"source_next_vx": 0.0,
+				"source_next_vy": 4.84546184539795,
+				"tolerance": 0.000415480687285594
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 41545.8511471985,
+				"energy_before": 41548.0687285594,
+				"energy_tolerance": 0.000415480687285594,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.3595)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00304158100421,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290481567383,
+				"total_impulse": "(0.0, -44.3595)",
+				"velocity": "(0.0, 4.845462)"
+			},
+			"vx": 0.0,
+			"vy": 4.93076848983765
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0999999046325684,
+				"ideal_delta": -2.21797288635099,
+				"source_after": 43885.8511471985,
+				"source_approach": -0.0999999046325684,
+				"source_before": 43888.0687285594,
+				"source_delta": -2.21758136097924,
+				"source_impulse_y": -44.3595008850098,
+				"source_j": 44.3595000315358,
+				"source_next_omega": 1.00304158100421,
+				"source_next_vx": 3.0,
+				"source_next_vy": 4.84546184539795,
+				"tolerance": 0.000438880687285594
+			},
+			"omega": 1.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 43885.8511471985,
+				"energy_before": 43888.0687285594,
+				"energy_tolerance": 0.000438880687285594,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.3595)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 1.00304158100421,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.290481567383,
+				"total_impulse": "(0.0, -44.3595)",
+				"velocity": "(3.0, 4.845462)"
+			},
+			"vx": 3.0,
+			"vy": 4.93076848983765
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": 0.0,
+				"ideal_delta": 0.0,
+				"source_after": 4129426.93572216,
+				"source_approach": 0.0,
+				"source_before": 4129426.93572216,
+				"source_delta": 0.0,
+				"source_impulse_y": 0.0,
+				"source_j": 0.0,
+				"source_next_omega": 10.0,
+				"source_next_vx": 0.0,
+				"source_next_vy": 48.3076858520508,
+				"tolerance": 0.0412942693572216
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 4129426.93572216,
+				"energy_before": 4129426.93572216,
+				"energy_tolerance": 0.0412942693572216,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(0.0, 48.30769)"
+			},
+			"vx": 0.0,
+			"vy": 48.3076858520508
+		},
+		{
+			"delta": 0.000001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": 0.0,
+				"ideal_delta": 0.0,
+				"source_after": 4131766.93572216,
+				"source_approach": 0.0,
+				"source_before": 4131766.93572216,
+				"source_delta": 0.0,
+				"source_impulse_y": 0.0,
+				"source_j": 0.0,
+				"source_next_omega": 10.0,
+				"source_next_vx": 3.0,
+				"source_next_vy": 48.3076858520508,
+				"tolerance": 0.0413176693572216
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 0,
+				"contact_count": 1,
+				"energy_after": 4131766.93572216,
+				"energy_before": 4131766.93572216,
+				"energy_tolerance": 0.0413176693572216,
+				"group_count": 1,
+				"impulses": [],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0,
+				"total_impulse": "(0.0, 0.0)",
+				"velocity": "(3.0, 48.30769)"
+			},
+			"vx": 3.0,
+			"vy": 48.3076858520508
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000011444091796875,
+				"ideal_delta": -0.0000000290482334839782,
+				"source_after": 4129427.18095837,
+				"source_approach": -0.000011444091796875,
+				"source_before": 4129427.18962841,
+				"source_delta": -0.00867003109306097,
+				"source_impulse_y": -0.0050765466876328,
+				"source_j": 0.00507654674561599,
+				"source_next_omega": 10.0000003480816,
+				"source_next_vx": 0.0,
+				"source_next_vy": 48.3076858520508,
+				"tolerance": 0.0412942718962841
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4129427.18095837,
+				"energy_before": 4129427.18962841,
+				"energy_tolerance": 0.0412942718962841,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.005077)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0000003480816,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0245236214250326,
+				"total_impulse": "(0.0, -0.005077)",
+				"velocity": "(0.0, 48.30769)"
+			},
+			"vx": 0.0,
+			"vy": 48.3076972961426
+		},
+		{
+			"delta": 0.00001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.000011444091796875,
+				"ideal_delta": -0.0000000290482334839782,
+				"source_after": 4131767.18095837,
+				"source_approach": -0.000011444091796875,
+				"source_before": 4131767.18962841,
+				"source_delta": -0.00867003109306097,
+				"source_impulse_y": -0.0050765466876328,
+				"source_j": 0.00507654674561599,
+				"source_next_omega": 10.0000003480816,
+				"source_next_vx": 3.0,
+				"source_next_vy": 48.3076858520508,
+				"tolerance": 0.0413176718962841
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4131767.18095837,
+				"energy_before": 4131767.18962841,
+				"energy_tolerance": 0.0413176718962841,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.005077)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0000003480816,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.0245236214250326,
+				"total_impulse": "(0.0, -0.005077)",
+				"velocity": "(3.0, 48.30769)"
+			},
+			"vx": 3.0,
+			"vy": 48.3076972961426
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00009918212890625,
+				"ideal_delta": -0.00000218184509279659,
+				"source_after": 4129429.44196249,
+				"source_approach": -0.00009918212890625,
+				"source_before": 4129429.41130809,
+				"source_delta": 0.0306543931365013,
+				"source_impulse_y": -0.0439967401325703,
+				"source_j": 0.0439967384620053,
+				"source_next_omega": 10.0000030167077,
+				"source_next_vx": 0.0,
+				"source_next_vy": 48.3077011108398,
+				"tolerance": 0.0412942941130809
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4129429.44196249,
+				"energy_before": 4129429.41130809,
+				"energy_tolerance": 0.0412942941130809,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.043997)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0000030167077,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.212538063526154,
+				"total_impulse": "(0.0, -0.043997)",
+				"velocity": "(0.0, 48.3077)"
+			},
+			"vx": 0.0,
+			"vy": 48.3077850341797
+		},
+		{
+			"delta": 0.0001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00009918212890625,
+				"ideal_delta": -0.00000218184509279659,
+				"source_after": 4131769.44196249,
+				"source_approach": -0.00009918212890625,
+				"source_before": 4131769.41130809,
+				"source_delta": 0.0306543931365013,
+				"source_impulse_y": -0.0439967401325703,
+				"source_j": 0.0439967384620053,
+				"source_next_omega": 10.0000030167077,
+				"source_next_vx": 3.0,
+				"source_next_vy": 48.3077011108398,
+				"tolerance": 0.0413176941130809
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4131769.44196249,
+				"energy_before": 4131769.41130809,
+				"energy_tolerance": 0.0413176941130809,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.043997)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0000030167077,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 0.212538063526154,
+				"total_impulse": "(0.0, -0.043997)",
+				"velocity": "(3.0, 48.3077)"
+			},
+			"vx": 3.0,
+			"vy": 48.3077850341797
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00099945068359375,
+				"ideal_delta": -0.0002215541043638,
+				"source_after": 4129451.9712147,
+				"source_approach": -0.00099945068359375,
+				"source_before": 4129452.00896434,
+				"source_delta": -0.0377496383152902,
+				"source_impulse_y": -0.443351745605469,
+				"source_j": 0.44335174911713,
+				"source_next_omega": 10.0000303991293,
+				"source_next_vx": 0.0,
+				"source_next_vy": 48.3078308105469,
+				"tolerance": 0.0412945200896434
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4129451.9712147,
+				"energy_before": 4129452.00896434,
+				"energy_tolerance": 0.0412945200896434,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443352)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0000303991293,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14172959327698,
+				"total_impulse": "(0.0, -0.443352)",
+				"velocity": "(0.0, 48.30783)"
+			},
+			"vx": 0.0,
+			"vy": 48.3086853027344
+		},
+		{
+			"delta": 0.001,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00099945068359375,
+				"ideal_delta": -0.0002215541043638,
+				"source_after": 4131791.9712147,
+				"source_approach": -0.00099945068359375,
+				"source_before": 4131792.00896434,
+				"source_delta": -0.0377496383152902,
+				"source_impulse_y": -0.443351745605469,
+				"source_j": 0.44335174911713,
+				"source_next_omega": 10.0000303991293,
+				"source_next_vx": 3.0,
+				"source_next_vy": 48.3078308105469,
+				"tolerance": 0.0413179200896434
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4131791.9712147,
+				"energy_before": 4131792.00896434,
+				"energy_tolerance": 0.0413179200896434,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -0.443352)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0000303991293,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 2.14172959327698,
+				"total_impulse": "(0.0, -0.443352)",
+				"velocity": "(3.0, 48.30783)"
+			},
+			"vx": 3.0,
+			"vy": 48.3086853027344
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00999832153320312,
+				"ideal_delta": -0.0221723261910122,
+				"source_after": 4129678.07358538,
+				"source_approach": -0.00999832153320312,
+				"source_before": 4129678.11247997,
+				"source_delta": -0.0388945830054581,
+				"source_impulse_y": -4.43520975112915,
+				"source_j": 4.43520967341984,
+				"source_next_omega": 10.0003041073451,
+				"source_next_vx": 0.0,
+				"source_next_vy": 48.309154510498,
+				"tolerance": 0.0412967811247997
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4129678.07358538,
+				"energy_before": 4129678.11247997,
+				"energy_tolerance": 0.0412967811247997,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.43521)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0003041073451,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.4254722595215,
+				"total_impulse": "(0.0, -4.43521)",
+				"velocity": "(0.0, 48.30915)"
+			},
+			"vx": 0.0,
+			"vy": 48.317684173584
+		},
+		{
+			"delta": 0.01,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.00999832153320312,
+				"ideal_delta": -0.0221723261910122,
+				"source_after": 4132018.07358538,
+				"source_approach": -0.00999832153320312,
+				"source_before": 4132018.11247997,
+				"source_delta": -0.0388945830054581,
+				"source_impulse_y": -4.43520975112915,
+				"source_j": 4.43520967341984,
+				"source_next_omega": 10.0003041073451,
+				"source_next_vx": 3.0,
+				"source_next_vy": 48.309154510498,
+				"tolerance": 0.0413201811247997
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 1,
+				"contact_count": 1,
+				"energy_after": 4132018.07358538,
+				"energy_before": 4132018.11247997,
+				"energy_tolerance": 0.0413201811247997,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -4.43521)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0003041073451,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 21.4254722595215,
+				"total_impulse": "(0.0, -4.43521)",
+				"velocity": "(3.0, 48.30915)"
+			},
+			"vx": 3.0,
+			"vy": 48.317684173584
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0999984741210938,
+				"ideal_delta": -2.21790943003107,
+				"source_after": 4131939.31528413,
+				"source_approach": -0.0999984741210938,
+				"source_before": 4131941.49626903,
+				"source_delta": -2.18098490079865,
+				"source_impulse_y": -44.3588638305664,
+				"source_j": 44.3588654631926,
+				"source_next_omega": 10.0030415372552,
+				"source_next_vx": 0.0,
+				"source_next_vy": 48.322380065918,
+				"tolerance": 0.0413194149626903
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 2,
+				"contact_count": 1,
+				"energy_after": 4131939.27010128,
+				"energy_before": 4131941.49626903,
+				"energy_tolerance": 0.0413194149626903,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35886)",
+						"offset": "(-4.830769, 27.125)"
+					},
+					{
+						"impulse": "(0.0, -0.001692)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0030416532825,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.295573833399,
+				"total_impulse": "(0.0, -44.36056)",
+				"velocity": "(0.0, 48.32238)"
+			},
+			"vx": 0.0,
+			"vy": 48.4076843261719
+		},
+		{
+			"delta": 0.1,
+			"first_arithmetic": {
+				"first_step_guard_would_refuse": false,
+				"ideal_approach": -0.0999984741210938,
+				"ideal_delta": -2.21790943003107,
+				"source_after": 4134279.31528413,
+				"source_approach": -0.0999984741210938,
+				"source_before": 4134281.49626903,
+				"source_delta": -2.18098490079865,
+				"source_impulse_y": -44.3588638305664,
+				"source_j": 44.3588654631926,
+				"source_next_omega": 10.0030415372552,
+				"source_next_vx": 3.0,
+				"source_next_vy": 48.322380065918,
+				"tolerance": 0.0413428149626903
+			},
+			"omega": 10.0,
+			"result": {
+				"accepted": true,
+				"approaching_count": 2,
+				"contact_count": 1,
+				"energy_after": 4134279.27010128,
+				"energy_before": 4134281.49626903,
+				"energy_tolerance": 0.0413428149626903,
+				"group_count": 1,
+				"impulses": [
+					{
+						"impulse": "(0.0, -44.35886)",
+						"offset": "(-4.830769, 27.125)"
+					},
+					{
+						"impulse": "(0.0, -0.001692)",
+						"offset": "(-4.830769, 27.125)"
+					}
+				],
+				"maximum_remaining_approach_speed": 0.0,
+				"maximum_vertex_drift": 0.0,
+				"omega": 10.0030416532825,
+				"outcome": "Accepted",
+				"pressure_distribution": "approaching-parallel-face-contact-length-weighted-resultant",
+				"remaining_approaching_contacts": 0,
+				"solver_sweeps": 4,
+				"torque_impulse": 214.295573833399,
+				"total_impulse": "(0.0, -44.36056)",
+				"velocity": "(3.0, 48.32238)"
+			},
+			"vx": 3.0,
+			"vy": 48.4076843261719
+		}
+	],
+	"registration": "SOL347-REVIEW-NUMERIC-001",
+	"replays_per_case": 3,
+	"runtime": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"sizes": "[(29.0, 5.0), (16.0, 1.0), (12.0, 1.0), (29.0, 7.0), (15.0, 4.0), (4.0, 21.0)]",
+	"source_center": "(57.33077, 37.875)"
+}
