@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "scope": "active CI provider and runner routing",
+  "errors": [],
+  "policy": {
+    "routine_provider": "GitHub-hosted Actions",
+    "external_provider_config": "forbidden unless policy is explicitly changed",
+    "runner_indirection": "forbidden"
+  }
+}

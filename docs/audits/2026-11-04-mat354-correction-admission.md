@@ -97,6 +97,12 @@ before conversion from180. This is a measured comparison, not a measurement of
 the unimplemented fix. The design does not claim only180 total visits. Reducing
 off-lane work would be a separate optimization with its own evidence.
 
+Retaining a cold MoltenGlass block's cooling work may also admit additional
+ordinary movement opportunities while that source remains eligible. Preserving
+the thermal formula does not imply byte-identical old trajectories. The
+successor must explicitly qualify those movement and workload consequences,
+while preserving the generic Paste/Slush/Brine/Mercury retry policies.
+
 ## Required successor acceptance
 
 Freeze the approved mechanism, source transition and expected invariants before

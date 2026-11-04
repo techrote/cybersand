@@ -29,6 +29,28 @@ or refresh #371's protected source hashes. Source/partner edits, unmasking and r
 restore actual visits in the registered cases; no additional missed mandatory wake is
 demonstrated. Negative and inconclusive evidence remains in the dated report.
 
+Preserving generic legacy rest does not establish owner approval of every
+material's late-rest behavior. Historical Brine desirability remains unresolved;
+the evidence supplies no new constitutive heap/stress law.
+
+## Where are the recovered evidence and final qualification?
+
+The [recovery qualification](../audits/2026-11-04-mat354-recovery-qualification.md)
+and [current evidence index](../audits/mat354-2026-11-04/evidence-index.json)
+identify durable raw transport, independent reviews and exact execution sources.
+Hosted run41817101140 executed source `1a06a0d88d295ed99983e7b1f6149b9fff84f1b3`
+on Windows and Linux. Both552-case campaigns are independently authenticated,
+and all88,384 per-step physical identities match across the two OSes. This is
+cross-OS evidence; independent physical hardware is not established.
+
+The stalled session's local raw files were never published and are unavailable
+in the recovered workspace. Their failure diagnoses, identities and prior
+reported results are preserved as historical records, without a claim of fresh
+authentication. The current packet contains recovered hosted evidence and fresh
+recovery runs. A new passing run does not repair an old missing or failed file.
+LeakSanitizer, full Godot/Web/graphics, human gameplay acceptance and production
+implementation remain outside the claims; no draft-skipped job is a pass.
+
 ## How is the actual World exercised?
 
 The [native probe](../../native/tests/material_liveness_probe.cpp) includes the
@@ -126,12 +148,13 @@ parity are separate evidence claims.
 
 ## What is preserved when a run fails?
 
-Every process outcome, partial raw output, original receipt and independently
-detected integrity failure is retained. Do not update an old receipt to match
+For each new attempt, retain every process outcome, partial raw output, original
+receipt and independently detected integrity failure. Do not update an old receipt to match
 changed raw bytes. A corrected apparatus gets a new source identity and output
 directory. The first complete ordinary attempt's truncated distributed-Paste
 output, the separate executable-mode loss and the LeakSanitizer environment
-failure remain failed attempts in the [dated ledger](../audits/2026-11-04-mat354-findings.md).
+failure remain historical failures in the [dated ledger](../audits/2026-11-04-mat354-findings.md),
+with the missing-original custody limitation stated explicitly.
 
 Versioned transport shards hold zlib/base64-encoded original bytes, inventories
 and hashes. Unpacking authenticates the entire bundle before writing new files.

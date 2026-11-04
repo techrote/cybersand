@@ -1,0 +1,227 @@
+{
+  "schema": "mat354.recovery-local-qualification.v1",
+  "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+  "runs": [
+    {
+      "id": "recovery-asan-ubsan",
+      "status": "PASS",
+      "receipt": {
+        "path": "/workspace/scratch/56386914071b/recovery-runs/asan-ubsan-1a06a0d/campaign.json",
+        "bytes": 1364160,
+        "sha256": "2431dce10a4ab1f8ccd5889816afd1c2f54f17997601c959a0e8786befd7cb85"
+      },
+      "reduction": {
+        "path": "/workspace/scratch/56386914071b/recovery-runs/asan-ubsan-1a06a0d/reduction.json",
+        "bytes": 2077255,
+        "sha256": "3eeb8e7c57d69115680c6c31c1c3ff98b0af1d4f1aae3be52780318dbdcf2558"
+      },
+      "analysis": {
+        "path": "/workspace/scratch/56386914071b/recovery-runs/asan-ubsan-1a06a0d/analysis.json",
+        "bytes": 6221846,
+        "sha256": "3067f45a12e028b8f71e66f55a2de821bba6a99e9efd305b48294ce0c5e9bf6d"
+      },
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+      "mode": "asan-ubsan",
+      "started_utc": "2026-11-04T13:03:17.775801+00:00",
+      "finished_utc": "2026-11-04T13:08:44.189568+00:00",
+      "duration_seconds": 326.41412218500045,
+      "executed_cases": 552,
+      "owner_steps": 88384,
+      "worker_repeat_groups": 261,
+      "all_worker_repeat_parity": true,
+      "distributed_configured_four_cases": 8,
+      "distributed_observed_four_cases": 8,
+      "compiled_input_count": 67,
+      "actual_dependency_count": 38,
+      "compiled_inventory_sha256": "fc9086a283492fd51cd08e101606d62a59688dbd5c617f792982e618478e8796",
+      "raw_verification": {
+        "files": 1116,
+        "inventory_sha256": "30b0b35ecfdc497b9eae5a0304ee65f8fbf6afb42b735d193a2c0ce232d9dc91",
+        "status": "PASS",
+        "verified_utc": "2026-11-04T13:08:44.187645+00:00"
+      },
+      "executable": {
+        "bytes": 43128000,
+        "path": "/workspace/scratch/56386914071b/recovery-runs/asan-ubsan-1a06a0d/material_liveness_probe",
+        "sha256": "f6b0af5f4706d1b65c31f082eb967d32bf5da81dae855ecd2859f52a50bfb0da"
+      },
+      "compiler_version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+      "compile_flags": [
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wshadow",
+        "-pthread",
+        "-O1",
+        "-g",
+        "-fno-omit-frame-pointer",
+        "-fsanitize=address,undefined",
+        "-I/workspace/scratch/56386914071b/cybersand-354-execution/native/include"
+      ],
+      "sanitizer_environment": {
+        "ASAN_OPTIONS": "halt_on_error=1:detect_leaks=0",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+      },
+      "leak_check": {
+        "reason": "explicit --disable-leak-check; separate ASan/UBSan execution",
+        "status": "unexecuted"
+      },
+      "host": {
+        "cpu": "AMD EPYC 9V74 80-Core Processor",
+        "hostname": "2587e82ee78d",
+        "logical_cpus": 9,
+        "machine": "x86_64",
+        "os": "Linux-6.18.57-x86_64-with-glibc2.39",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "limits": [
+        "Native source-matched fixture evidence only; no graphical/gameplay acceptance.",
+        "Raw process timing includes observation; tick-only timing remains descriptive, not a controlled production benchmark.",
+        "A configured pool capacity does not establish actual worker participation.",
+        "Thermal or stochastic behavior classification requires source-contract review.",
+        "LeakSanitizer was explicitly disabled; leak checking is unexecuted. This result covers ASan/UBSan only."
+      ]
+    },
+    {
+      "id": "recovery-tsan",
+      "status": "PASS",
+      "receipt": {
+        "path": "/workspace/scratch/56386914071b/recovery-runs/tsan-1a06a0d/campaign.json",
+        "bytes": 1353813,
+        "sha256": "c55dfca0944ffb902952c79fe1209f2d055f29c40e8c6d589edefdbc14b91092"
+      },
+      "reduction": {
+        "path": "/workspace/scratch/56386914071b/recovery-runs/tsan-1a06a0d/reduction.json",
+        "bytes": 2077015,
+        "sha256": "cba8b13b118a643956c6734b05a562d2f88215f7a807b48b46e20bf8a612be2f"
+      },
+      "analysis": {
+        "path": "/workspace/scratch/56386914071b/recovery-runs/tsan-1a06a0d/analysis.json",
+        "bytes": 6221514,
+        "sha256": "580a24643f3015144954980a072bf09d5c746fa12f0ddea62521e0b64875f15c"
+      },
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+      "mode": "tsan",
+      "started_utc": "2026-11-04T13:05:11.481307+00:00",
+      "finished_utc": "2026-11-04T13:09:39.099205+00:00",
+      "duration_seconds": 267.6180797749985,
+      "executed_cases": 552,
+      "owner_steps": 88384,
+      "worker_repeat_groups": 261,
+      "all_worker_repeat_parity": true,
+      "distributed_configured_four_cases": 8,
+      "distributed_observed_four_cases": 8,
+      "compiled_input_count": 67,
+      "actual_dependency_count": 38,
+      "compiled_inventory_sha256": "fc9086a283492fd51cd08e101606d62a59688dbd5c617f792982e618478e8796",
+      "raw_verification": {
+        "files": 1116,
+        "inventory_sha256": "32522612e9ea1d0f1d6b1794f8a72152a20868050826d7c445adfc5f40f2231e",
+        "status": "PASS",
+        "verified_utc": "2026-11-04T13:09:39.097962+00:00"
+      },
+      "executable": {
+        "bytes": 9694448,
+        "path": "/workspace/scratch/56386914071b/recovery-runs/tsan-1a06a0d/material_liveness_probe",
+        "sha256": "260674fb1ad7e53ebb454abffc1bdd13dd1076280e616a3e34cdcf6fa1cc26dd"
+      },
+      "compiler_version": "x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+      "compile_flags": [
+        "-std=c++20",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Wshadow",
+        "-pthread",
+        "-O1",
+        "-g",
+        "-fno-omit-frame-pointer",
+        "-fsanitize=thread",
+        "-I/workspace/scratch/56386914071b/cybersand-354-execution/native/include"
+      ],
+      "sanitizer_environment": {
+        "TSAN_OPTIONS": "halt_on_error=1"
+      },
+      "leak_check": {
+        "reason": "build does not enable AddressSanitizer",
+        "status": "not-applicable"
+      },
+      "host": {
+        "cpu": "AMD EPYC 9V74 80-Core Processor",
+        "hostname": "2587e82ee78d",
+        "logical_cpus": 9,
+        "machine": "x86_64",
+        "os": "Linux-6.18.57-x86_64-with-glibc2.39",
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+      },
+      "limits": [
+        "Native source-matched fixture evidence only; no graphical/gameplay acceptance.",
+        "Raw process timing includes observation; tick-only timing remains descriptive, not a controlled production benchmark.",
+        "A configured pool capacity does not establish actual worker participation.",
+        "Thermal or stochastic behavior classification requires source-contract review."
+      ]
+    }
+  ],
+  "cross_execution_comparisons": [
+    {
+      "id": "hosted-linux-vs-recovery-asan-ubsan",
+      "status": "PASS",
+      "reference": {
+        "path": "/workspace/scratch/56386914071b/ci-audit/linux-reduction-verified.json",
+        "bytes": 2076937,
+        "sha256": "4c4093bbcd23d6fc2a956aab7d00c364f372f90b49c88c610ee3ba047656f971"
+      },
+      "candidate": {
+        "path": "/workspace/scratch/56386914071b/recovery-runs/asan-ubsan-1a06a0d/reduction.json",
+        "bytes": 2077255,
+        "sha256": "3eeb8e7c57d69115680c6c31c1c3ff98b0af1d4f1aae3be52780318dbdcf2558"
+      },
+      "source_and_inputs_exact_match": true,
+      "matched_case_configuration_count": 552,
+      "full_raw_tick_tuple_fields": [
+        "tick",
+        "world_tick",
+        "reset_epoch",
+        "physical_hash",
+        "tuple_hash"
+      ],
+      "compared_tick_rows": 88384,
+      "mismatches": [],
+      "comparison_scope": "Every raw owner-step state hash and complete tuple-census hash; independent reduction trajectory digests also compared. Timing and task claimant order not compared."
+    },
+    {
+      "id": "hosted-linux-vs-recovery-tsan",
+      "status": "PASS",
+      "reference": {
+        "path": "/workspace/scratch/56386914071b/ci-audit/linux-reduction-verified.json",
+        "bytes": 2076937,
+        "sha256": "4c4093bbcd23d6fc2a956aab7d00c364f372f90b49c88c610ee3ba047656f971"
+      },
+      "candidate": {
+        "path": "/workspace/scratch/56386914071b/recovery-runs/tsan-1a06a0d/reduction.json",
+        "bytes": 2077015,
+        "sha256": "cba8b13b118a643956c6734b05a562d2f88215f7a807b48b46e20bf8a612be2f"
+      },
+      "source_and_inputs_exact_match": true,
+      "matched_case_configuration_count": 552,
+      "full_raw_tick_tuple_fields": [
+        "tick",
+        "world_tick",
+        "reset_epoch",
+        "physical_hash",
+        "tuple_hash"
+      ],
+      "compared_tick_rows": 88384,
+      "mismatches": [],
+      "comparison_scope": "Every raw owner-step state hash and complete tuple-census hash; independent reduction trajectory digests also compared. Timing and task claimant order not compared."
+    }
+  ],
+  "historical_custody_limit": "These are new exact-1a06 recovery campaigns. They do not recover or upgrade earlier missing local receipts, traces or failed attempts.",
+  "production_change_authorized": false
+}

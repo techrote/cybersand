@@ -1,0 +1,90 @@
+{
+  "actual_dependency_mismatch_count": 7,
+  "artifact_id": 13312958982,
+  "broad_input_mismatch_count": 8,
+  "committed_input_check_present": false,
+  "files_checked": 67,
+  "mismatch_count": 8,
+  "mismatches": [
+    {
+      "actual_compiler_dependency": false,
+      "crlf_transformation_exactly_matches_recorded_bytes_and_hash": true,
+      "path": "Makefile",
+      "raw_git_bytes": 23504,
+      "raw_git_sha256": "4d0bbc857c8dffbd3e7267144ab50680ce1ec9191ede5efd2a00acb5c32adbbd",
+      "recorded_bytes": 23788,
+      "recorded_sha256": "db30d632ff5a28c6f93b30ea3240f0a9b12885430e5861f2d8797e70594a5fd4"
+    },
+    {
+      "actual_compiler_dependency": true,
+      "crlf_transformation_exactly_matches_recorded_bytes_and_hash": true,
+      "path": "native/src/world_inertial.inc",
+      "raw_git_bytes": 21123,
+      "raw_git_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+      "recorded_bytes": 21603,
+      "recorded_sha256": "890e1d578f26a071160d57e07cb06384ac4222b97b1afaa5aba10b9c3d82342e"
+    },
+    {
+      "actual_compiler_dependency": true,
+      "crlf_transformation_exactly_matches_recorded_bytes_and_hash": true,
+      "path": "native/src/world_pressure.inc",
+      "raw_git_bytes": 117612,
+      "raw_git_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+      "recorded_bytes": 119828,
+      "recorded_sha256": "ca3f9cc22e9f1b87cb20466b0ea453f9597b3a0496630c75b175fcf9647114c1"
+    },
+    {
+      "actual_compiler_dependency": true,
+      "crlf_transformation_exactly_matches_recorded_bytes_and_hash": true,
+      "path": "native/src/world_pressure_cache.inc",
+      "raw_git_bytes": 23322,
+      "raw_git_sha256": "e1c7d24a4aff4827ce1d55de3120523b63428c38b0ac350d6aa94132389113fc",
+      "recorded_bytes": 23719,
+      "recorded_sha256": "3b57ca9bea9e787dcbed7d223ce1bcc625fcbf133606ee78c7861b9f0fba7ca0"
+    },
+    {
+      "actual_compiler_dependency": true,
+      "crlf_transformation_exactly_matches_recorded_bytes_and_hash": true,
+      "path": "native/src/world_pressure_cache_state.inc",
+      "raw_git_bytes": 5678,
+      "raw_git_sha256": "91da78af36e78e07f1cc3de2c9899b0ad98c171df9b418a6170f6372816279e0",
+      "recorded_bytes": 5793,
+      "recorded_sha256": "7d547ddaef77b58c415949c6fa9f31afed1aef4f52130b1dcc9d9510ed3e34b9"
+    },
+    {
+      "actual_compiler_dependency": true,
+      "crlf_transformation_exactly_matches_recorded_bytes_and_hash": true,
+      "path": "native/src/world_pressure_gas_cache.inc",
+      "raw_git_bytes": 9797,
+      "raw_git_sha256": "1372e7696d14653ddfd099bb07c24f9255080ce0d09b4304e267162d7d53e2d8",
+      "recorded_bytes": 9958,
+      "recorded_sha256": "4c9c2c9cd4d44468f6e46f6b51fd2d002b3062385b3f502813adfea8799fbc92"
+    },
+    {
+      "actual_compiler_dependency": true,
+      "crlf_transformation_exactly_matches_recorded_bytes_and_hash": true,
+      "path": "native/src/world_pressure_state.inc",
+      "raw_git_bytes": 8105,
+      "raw_git_sha256": "4a70898ee23d1fbcb07a7771498156049113816f8699322001d847087336b50c",
+      "recorded_bytes": 8302,
+      "recorded_sha256": "cde0777f1674cd566a8f73e80a095ddebeae6d7ee99b2b1b7121546d7c6a05fb"
+    },
+    {
+      "actual_compiler_dependency": true,
+      "crlf_transformation_exactly_matches_recorded_bytes_and_hash": true,
+      "path": "native/src/world_quantity.inc",
+      "raw_git_bytes": 24249,
+      "raw_git_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "recorded_bytes": 24679,
+      "recorded_sha256": "628f4c39fd14092b167093ac408fcf68002c82a9f7ca8ed62a2811684367649a"
+    }
+  ],
+  "original_receipt_unchanged": true,
+  "raw_runtime_observations_separately_authenticated": true,
+  "reason": "Eight recorded raw source inventory files differ from committed Git bytes: Makefile plus seven actually compiled includes. Every mismatch exactly matches LF-to-CRLF conversion. Normalized agreement does not qualify raw source bytes.",
+  "schema": "mat354.prior-windows-source-audit.v1",
+  "source_commit": "594a79bf184df60d0c2b61b63cc68ebf8e5af887",
+  "source_tree": "1204a1e8842bcddfa9785a37c143ec30aca11f6c",
+  "status": "FAIL",
+  "workflow_run": 41813960884
+}

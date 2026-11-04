@@ -32,6 +32,14 @@ do not import its optimization into this investigation.
 The audit/PR ledger carries actual campaign, sanitizer, platform and independent
 review status, including failed or incomplete attempts; no skipped gate is a pass.
 
+The stalled session has a separate
+[recovery qualification and custody record](../audits/2026-11-04-mat354-recovery-qualification.md).
+Use its indexed retained packet and fresh independent reviews. The original
+unpublished local raw directory is unavailable; preserve that limitation instead
+of treating new passing runs as recovery of the old bytes. Hosted Windows/Linux
+source1a06a0d is independently qualified; the final PR ledger owns the later
+documentation/evidence head and its resulting checks.
+
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
 **Historical integration assignment.** #371 subsequently merged at `7ef4856e`.

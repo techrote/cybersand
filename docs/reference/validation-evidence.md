@@ -22,11 +22,19 @@ the findings and linked PR ledger own exact completed, failed and unexecuted gat
 
 Independent review examines source/observer authority, physical controls, actual
 kernel and worker evidence, conservation, raw identity and minimal deadline design.
-Initial apparatus limitations and the truncated raw output remain retained, as do
-the executable-mode failure and LeakSanitizer environment refusal. A receipt saying
+Initial apparatus limitations, the truncated-output failure, executable-mode
+failure and LeakSanitizer environment refusal retain their published identities
+and diagnoses. **Recovery correction:** their unpublished original local raw
+files are unavailable. The
+[recovery qualification record](../audits/2026-11-04-mat354-recovery-qualification.md)
+distinguishes them from recovered hosted failures and newly retained executions.
+A receipt saying
 `EXECUTED` does not override failed raw authentication. Corrections require a new
-source/run identity; draft-skipped jobs remain skipped. This entry asserts no final
-campaign, Windows, independent-hardware or LeakSanitizer pass.
+source/run identity; draft-skipped jobs remain skipped. Hosted run41817101140
+at `1a06a0d88d295ed99983e7b1f6149b9fff84f1b3` now has independently authenticated
+Windows/Linux552-case evidence and exact88,384-step cross-OS parity. The current
+index records fresh local sanitizer/protected-control results separately.
+Independent physical hardware and LeakSanitizer are not qualified.
 
 H1's lost isolated cooling opportunity is distinct from H2's executed mutual
 heating law and H3's documented generic yielding rest. Investigation results do

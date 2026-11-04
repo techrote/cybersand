@@ -1,0 +1,16 @@
+{
+  "actual_dependency_count": 38,
+  "authenticated_process_streams": 1116,
+  "dependency_files": 4,
+  "latest_source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "matching_cases_against_latest_windows": 552,
+  "matching_owner_steps_against_latest_windows": 88384,
+  "original_receipts_unchanged": true,
+  "run": 41813960884,
+  "schema": "mat354.prior-windows-observation-audit.v1",
+  "source_audit": "windows-run2-source-audit.json",
+  "source_commit": "594a79bf184df60d0c2b61b63cc68ebf8e5af887",
+  "source_qualification": "FAIL",
+  "status": "OBSERVATIONS_ONLY_SOURCE_UNQUALIFIED",
+  "trajectory_mismatches": []
+}

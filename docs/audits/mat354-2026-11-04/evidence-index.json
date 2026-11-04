@@ -1,13 +1,19 @@
 {
-  "schema": "mat354.evidence-index.v1",
-  "publication_status": "PACKAGING_IN_PROGRESS; draft investigation checkpoint",
+  "schema": "mat354.evidence-index.v2",
+  "publication_status": "RECOVERY_PACKET_COMPLETE; draft Phase A handover, final publication-head checks in PR377 ledger",
   "accepted_source": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
-  "cases": 552,
-  "owner_steps": 88384,
-  "attempts": [
+  "execution_source": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "execution_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+  "cases_per_campaign": 552,
+  "owner_steps_per_campaign": 88384,
+  "historical_checkpoint": {
+    "path": "recovery/historical-stalled-evidence-index.json",
+    "bytes": 5138,
+    "sha256": "86b8d442ea97d32bb393b269aa20b14c1934c3f738cc816e8a2bd6c72047d14b"
+  },
+  "historical_local_attempts": [
     {
       "id": "original-normal",
-      "qualification": "FAIL: retained raw identity mismatch",
       "receipt_sha256": "b43cf232e1bdf1b1222cce569d76ddc2db39d4e88bfd8a6ff9c6153cb63adf63",
       "source_commit": "23ca80747a3475f31d54246e05a1bcbbd7afcfd3",
       "source_tree": "afd8232d6ec8fddd7fe3f546574d2e1bba51aacd",
@@ -18,11 +24,13 @@
         "sha256": "00b8599f98d53da9321daa557545657b6adce6810a78941a6f25761b38a2672f"
       },
       "mode": "normal",
-      "transport_manifest": null
+      "transport_manifest": null,
+      "reported_qualification": "FAIL: retained raw identity mismatch",
+      "current_custody": "ORIGINAL_RAW_UNAVAILABLE",
+      "current_qualification": "Historical reported outcome only; original receipt/raw cannot be reauthenticated during recovery"
     },
     {
       "id": "original-repeat",
-      "qualification": "FAIL: executable mode/spawn",
       "receipt_sha256": "522aac1824250358d66b58ec89a7b28853ce4b21d2902db44e4b018d1c95e692",
       "source_commit": "23ca80747a3475f31d54246e05a1bcbbd7afcfd3",
       "source_tree": "afd8232d6ec8fddd7fe3f546574d2e1bba51aacd",
@@ -33,11 +41,13 @@
         "sha256": "b38b3ff59088d33bd066d7d07f78ff9eee35fca378f83ee40a8eedd2d97d6f1d"
       },
       "mode": "normal",
-      "transport_manifest": null
+      "transport_manifest": null,
+      "reported_qualification": "FAIL: executable mode/spawn",
+      "current_custody": "ORIGINAL_RAW_UNAVAILABLE",
+      "current_qualification": "Historical reported outcome only; original receipt/raw cannot be reauthenticated during recovery"
     },
     {
       "id": "original-leak-check",
-      "qualification": "FAIL: LeakSanitizer environment",
       "receipt_sha256": "e010f9fb27dcfa6c47f30b7b3fd4573c675f1781638ddb13bc19020698b2a4f2",
       "source_commit": "23ca80747a3475f31d54246e05a1bcbbd7afcfd3",
       "source_tree": "afd8232d6ec8fddd7fe3f546574d2e1bba51aacd",
@@ -48,22 +58,26 @@
         "sha256": "d23831bb8b577332b24b96b83abee28fbe64fd274ff1dfeaabaafc441a4c4cfe"
       },
       "mode": "asan-ubsan",
-      "transport_manifest": null
+      "transport_manifest": null,
+      "reported_qualification": "FAIL: LeakSanitizer environment",
+      "current_custody": "ORIGINAL_RAW_UNAVAILABLE",
+      "current_qualification": "Historical reported outcome only; original receipt/raw cannot be reauthenticated during recovery"
     },
     {
       "id": "checkout-refusal",
-      "qualification": "FAIL: source preflight, no native execution",
       "receipt_sha256": "1cf0c2ab941ebfeb526b899e913456091f1090ecb7d489a231b6d79f0d853650",
       "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
       "source_tree": "f76be408acdafdfcfbb4ceeaed071808d85e8344",
       "processes_recorded": 0,
       "executable": null,
       "mode": "normal",
-      "transport_manifest": null
+      "transport_manifest": null,
+      "reported_qualification": "FAIL: source preflight, no native execution",
+      "current_custody": "ORIGINAL_RAW_UNAVAILABLE",
+      "current_qualification": "Historical reported outcome only; original receipt/raw cannot be reauthenticated during recovery"
     },
     {
       "id": "local-normal",
-      "qualification": "PASS",
       "receipt_sha256": "8fae37791ed4d4487c507e5c70a0841cba1367683b0701c6c73060915e6c6619",
       "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
       "source_tree": "f76be408acdafdfcfbb4ceeaed071808d85e8344",
@@ -74,11 +88,13 @@
         "sha256": "3c5ba1e8c49b95c0b34a9c1ced672a8b5231f8861f21332254ff530dd6ff6ce0"
       },
       "mode": "normal",
-      "transport_manifest": null
+      "transport_manifest": null,
+      "reported_qualification": "PASS",
+      "current_custody": "ORIGINAL_RAW_UNAVAILABLE",
+      "current_qualification": "Historical reported outcome only; original receipt/raw cannot be reauthenticated during recovery"
     },
     {
       "id": "local-asan-ubsan",
-      "qualification": "PASS; leak checking unexecuted",
       "receipt_sha256": "0a14624ae52a1f3a47f06fbeedbbe7f9a07da265b0792f78f0c4028a6cce0ce7",
       "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
       "source_tree": "f76be408acdafdfcfbb4ceeaed071808d85e8344",
@@ -89,11 +105,13 @@
         "sha256": "ce9b302d4ef88ce44836770b30142b34bb7dcda71fc6718e63e9c6c740e3cc93"
       },
       "mode": "asan-ubsan",
-      "transport_manifest": null
+      "transport_manifest": null,
+      "reported_qualification": "PASS; leak checking unexecuted",
+      "current_custody": "ORIGINAL_RAW_UNAVAILABLE",
+      "current_qualification": "Historical reported outcome only; original receipt/raw cannot be reauthenticated during recovery"
     },
     {
       "id": "local-tsan",
-      "qualification": "pending independent reduction",
       "receipt_sha256": "65c2cc6095b37ef35be84545e20f43795ac123a43ed6f158cd33d08f4213eccb",
       "source_commit": "c7af583b10889e1fe15631368af7b12ac593e299",
       "source_tree": "f76be408acdafdfcfbb4ceeaed071808d85e8344",
@@ -104,18 +122,294 @@
         "sha256": "3a3f3c437b7ee2e446155d938459b964689f3d1ebf47b06ee2ee20f753daaae3"
       },
       "mode": "tsan",
-      "transport_manifest": null
+      "transport_manifest": null,
+      "reported_qualification": "pending independent reduction",
+      "current_custody": "ORIGINAL_RAW_UNAVAILABLE",
+      "current_qualification": "Historical reported outcome only; original receipt/raw cannot be reauthenticated during recovery"
     }
   ],
-  "hosted_first_run": {
-    "run_id": 41812690658,
-    "source_commit": "cabc93ee40bf8afb9d5adba5a95d4640101b96b3",
-    "linux": "PASS552 independently downloaded and reduced",
-    "windows": "FAIL apparatus preflight,0 native cases; retained full job log"
-  },
+  "retained_attempts": [
+    {
+      "id": "hosted-linux",
+      "qualification": "PASS",
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+      "mode": "normal",
+      "receipt_sha256": "b9f49386b96a09f70ce8cc6028f695e13512e04d4e6ccac90db27e24f1ca2820",
+      "receipt_member": "campaign.json",
+      "processes_recorded": 552,
+      "input_inventory_sha256": "fc9086a283492fd51cd08e101606d62a59688dbd5c617f792982e618478e8796",
+      "source_inputs": 67,
+      "actual_dependencies": 38,
+      "executable": {
+        "bytes": 8789872,
+        "path": "/home/runner/work/_temp/mat354-phase-a/campaign/material_liveness_probe",
+        "sha256": "639e33d63a047855cf3b9b0db4124575a07e1c296624c5edc602c1fecec24738"
+      },
+      "leak_check": {
+        "reason": "build does not enable AddressSanitizer",
+        "status": "not-applicable"
+      },
+      "transport_manifest": {
+        "path": "recovery/hosted-linux/transport/linux-normal.manifest.json",
+        "bytes": 173668,
+        "sha256": "53acdca8ab47e953c62ff2cd206423a04ca92194e2ad687f096a2819099b5ef4"
+      },
+      "transport_files": 1122,
+      "transport_uncompressed_bytes": 106891240,
+      "workflow_run": 41817101140,
+      "artifact_id": 13315146918
+    },
+    {
+      "id": "hosted-windows",
+      "qualification": "PASS",
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+      "mode": "normal",
+      "receipt_sha256": "ec94c3fca7384b9e2de59d47173f04c71ecdb39cf4dedfaa3d2343a9f7f22cc1",
+      "receipt_member": "campaign.json",
+      "processes_recorded": 552,
+      "input_inventory_sha256": "fc9086a283492fd51cd08e101606d62a59688dbd5c617f792982e618478e8796",
+      "source_inputs": 67,
+      "actual_dependencies": 38,
+      "executable": {
+        "bytes": 2247680,
+        "path": "D:\\a\\_temp\\mat354-phase-a\\campaign\\material_liveness_probe.exe",
+        "sha256": "76dd3acd904e9e6fe2e45d0ec61814cf350b8a529a15c2809867125c5843f0b7"
+      },
+      "leak_check": {
+        "reason": "build does not enable AddressSanitizer",
+        "status": "not-applicable"
+      },
+      "transport_manifest": {
+        "path": "recovery/hosted-windows/transport/windows-normal.manifest.json",
+        "bytes": 173688,
+        "sha256": "b2749b56a2deddf0dfcb2e1b752931cf0414b9160b2c51e638ba0dcf54ded908"
+      },
+      "transport_files": 1122,
+      "transport_uncompressed_bytes": 107057819,
+      "workflow_run": 41817101140,
+      "artifact_id": 13315116917
+    },
+    {
+      "id": "hosted-windows-source-byte-failure",
+      "qualification": "FAIL_RAW_SOURCE_BYTES; observations independently authenticate",
+      "source_commit": "594a79bf184df60d0c2b61b63cc68ebf8e5af887",
+      "source_tree": "1204a1e8842bcddfa9785a37c143ec30aca11f6c",
+      "mode": "normal",
+      "receipt_sha256": "2c93957924974cd5b47196fbd45c0365eb73e024bd9db78452e9ec89f6ba92ab",
+      "receipt_member": "campaign.json",
+      "processes_recorded": 552,
+      "input_inventory_sha256": "fb71e2641732ea4e2bf1083589c5a9ab3619f96c4559062f357cd2d33b7b4fd9",
+      "source_inputs": 67,
+      "actual_dependencies": 38,
+      "executable": {
+        "bytes": 2247680,
+        "path": "D:\\a\\_temp\\mat354-phase-a\\campaign\\material_liveness_probe.exe",
+        "sha256": "569b6f7abc3343a13e4d524d08d887fd652bb19eb5f86125d5918ba41cfa80d7"
+      },
+      "leak_check": {
+        "reason": "build does not enable AddressSanitizer",
+        "status": "not-applicable"
+      },
+      "transport_manifest": {
+        "path": "recovery/hosted-windows-source-byte-failure/transport/windows-normal.manifest.json",
+        "bytes": 173690,
+        "sha256": "b72f90b0c443cdc1e7407634cd1a5629fe8edbfacece17d9bc122248b0fe94bc"
+      },
+      "transport_files": 1122,
+      "transport_uncompressed_bytes": 107066702,
+      "workflow_run": 41813960884,
+      "artifact_id": 13312958982
+    },
+    {
+      "id": "recovery-asan-ubsan",
+      "qualification": "PASS_ASAN_UBSAN; LeakSanitizer unexecuted",
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+      "mode": "asan-ubsan",
+      "receipt_sha256": "2431dce10a4ab1f8ccd5889816afd1c2f54f17997601c959a0e8786befd7cb85",
+      "receipt_member": "campaign.json",
+      "processes_recorded": 552,
+      "input_inventory_sha256": "fc9086a283492fd51cd08e101606d62a59688dbd5c617f792982e618478e8796",
+      "source_inputs": 67,
+      "actual_dependencies": 38,
+      "executable": {
+        "bytes": 43128000,
+        "path": "/workspace/scratch/56386914071b/recovery-runs/asan-ubsan-1a06a0d/material_liveness_probe",
+        "sha256": "f6b0af5f4706d1b65c31f082eb967d32bf5da81dae855ecd2859f52a50bfb0da"
+      },
+      "leak_check": {
+        "reason": "explicit --disable-leak-check; separate ASan/UBSan execution",
+        "status": "unexecuted"
+      },
+      "transport_manifest": {
+        "path": "recovery/local-asan-ubsan/transport/recovered-asan-ubsan.manifest.json",
+        "bytes": 174005,
+        "sha256": "09100478b8ed7d3ad75d45c808d55155c3f6145da1707178131848e3cfc91d31"
+      },
+      "transport_files": 1123,
+      "transport_uncompressed_bytes": 113239714,
+      "workflow_run": null,
+      "artifact_id": null
+    },
+    {
+      "id": "recovery-tsan",
+      "qualification": "PASS_TSAN",
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+      "mode": "tsan",
+      "receipt_sha256": "c55dfca0944ffb902952c79fe1209f2d055f29c40e8c6d589edefdbc14b91092",
+      "receipt_member": "campaign.json",
+      "processes_recorded": 552,
+      "input_inventory_sha256": "fc9086a283492fd51cd08e101606d62a59688dbd5c617f792982e618478e8796",
+      "source_inputs": 67,
+      "actual_dependencies": 38,
+      "executable": {
+        "bytes": 9694448,
+        "path": "/workspace/scratch/56386914071b/recovery-runs/tsan-1a06a0d/material_liveness_probe",
+        "sha256": "260674fb1ad7e53ebb454abffc1bdd13dd1076280e616a3e34cdcf6fa1cc26dd"
+      },
+      "leak_check": {
+        "reason": "build does not enable AddressSanitizer",
+        "status": "not-applicable"
+      },
+      "transport_manifest": {
+        "path": "recovery/local-tsan/transport/recovered-tsan.manifest.json",
+        "bytes": 173933,
+        "sha256": "a8a9e8a2657dc96f68f6147f242ef46710e75e5a4c85bf5f39fc2327b40187a7"
+      },
+      "transport_files": 1123,
+      "transport_uncompressed_bytes": 113228687,
+      "workflow_run": null,
+      "artifact_id": null
+    },
+    {
+      "id": "hosted-windows-precompile-failure",
+      "qualification": "FAIL_BEFORE_NATIVE_COMPILATION",
+      "source_commit": "cabc93ee40bf8afb9d5adba5a95d4640101b96b3",
+      "native_cases": 0,
+      "workflow_run": 41812690658,
+      "artifact_id": 13312609131,
+      "context": {
+        "path": "recovery/hosted-windows-precompile-failure/hosted-context.json",
+        "bytes": 286,
+        "sha256": "5dbfbdf05bb4e5c087fae65cb2e079a82fc225c0fd830b84237c0e69997558a5"
+      },
+      "original_job_log_member": "hosted-windows-run1-original.stdout",
+      "job_log_transport": "recovery/independent-derived/independent-derived.manifest.json",
+      "review": "recovery/independent-review.json"
+    },
+    {
+      "id": "recovery-protected-controls",
+      "qualification": "PASS_14_NAMED_TESTS_IN_12_INVOCATIONS",
+      "source_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+      "source_tree": "b1991936cd998e0c0f6caed04d6fc06150e0a559",
+      "receipt_sha256": "a6ae969f7e2984659ec0c519dd68db40af50a81a86fb92b45c5ae2e8546dee38",
+      "receipt_member": "protected-controls.json",
+      "executable": {
+        "bytes": 19759928,
+        "path": "/workspace/scratch/56386914071b/recovery-runs/protected-controls-1a06a0d/tests",
+        "sha256": "7e55b18a769aab093c059522b2791e90b71b84cf1d0a9d29991a0f65891187b0"
+      },
+      "source_inputs": 88,
+      "actual_dependencies": 70,
+      "transport_manifest": {
+        "path": "recovery/protected-controls/transport/recovered-protected-controls.manifest.json",
+        "bytes": 10259,
+        "sha256": "307bcb62517e321c1cc52f19f6b9c04b461fefdcf15891eb2cde78e7828ed004"
+      },
+      "authentication": {
+        "path": "recovery/protected-controls-authentication.json",
+        "bytes": 900,
+        "sha256": "f249e38f7376cc3cf51d38f0c2f3a92c8bd53494eec5d0cb5783a9cc2dd92e5a"
+      }
+    }
+  ],
+  "independent_records": [
+    {
+      "path": "recovery/hosted-independent-audit-rerun.json",
+      "bytes": 9134,
+      "sha256": "7c13be4b56455381a930619fb85ebf5f2dd0bbd9595b4ab20344c1bf90f63b81"
+    },
+    {
+      "path": "recovery/independent-review.json",
+      "bytes": 24239,
+      "sha256": "939bfb5c7bdbda95bed94782336a9f68d5b34c3a25997ee3c0279f81538eb408"
+    },
+    {
+      "path": "recovery/scientific-review-data.json",
+      "bytes": 8312,
+      "sha256": "2d391d6cb14920043d048a55d781122ed39386b6a4978327afeb4c1998389e6d"
+    },
+    {
+      "path": "recovery/local-qualification-summary.json",
+      "bytes": 9461,
+      "sha256": "44d642b737d55e13c33a5beda91b24347d31b3938d05992d988ed434e0101919"
+    },
+    {
+      "path": "recovery/transport-roundtrip-verification.json",
+      "bytes": 1544,
+      "sha256": "94f555fdc7cfea0cb912bf62efd0d9157efaa366613852e423eb30e3f1b2d93c"
+    },
+    {
+      "path": "recovery/protected-controls-authentication.json",
+      "bytes": 900,
+      "sha256": "f249e38f7376cc3cf51d38f0c2f3a92c8bd53494eec5d0cb5783a9cc2dd92e5a"
+    },
+    {
+      "path": "recovery/windows-run2-source-audit.json",
+      "bytes": 4179,
+      "sha256": "1110b5947db308a1469f54a2b077b10cb6726318b6107755b7083d9c8b018f38"
+    },
+    {
+      "path": "recovery/windows-run2-observation-audit.json",
+      "bytes": 626,
+      "sha256": "c35bce0d6220506dbbef80d827c2e8e76bfec75c5d8cea611f348c1162c9e845"
+    },
+    {
+      "path": "recovery/transport-authentication.json",
+      "bytes": 1200,
+      "sha256": "e44f11a712720ab4b12dd3a4b7790ec894324bea64b0519875bb6210e5c2989e"
+    },
+    {
+      "path": "recovery/publication-source-equivalence.json",
+      "bytes": 947,
+      "sha256": "257be07502e9d949e0248b4acb259f184fe06c8a9e0729897230297b0c57a4b0"
+    },
+    {
+      "path": "recovery/custody-inventory.json",
+      "bytes": 2988,
+      "sha256": "c0a142c42b82d3b2382221ba2159337168ce81406ae08d9895b5f335c4698481"
+    },
+    {
+      "path": "recovery/final-independent-review.json",
+      "bytes": 7326,
+      "sha256": "767b6fd8eb455ebe631caafde91ae6615158f59941b7a682d7f2db6353160706"
+    },
+    {
+      "path": "recovery/validation-summary.json",
+      "bytes": 6072,
+      "sha256": "64c4950a476689153d6a09471635fef94f697a32912fcff74c0ffc64a6743b34"
+    }
+  ],
   "limits": [
-    "No production implementation authorization",
-    "Original failed receipts remain unchanged",
-    "Raw transport shards are being added; original outputs remain retained outside the source checkout at this interim checkpoint"
-  ]
+    "Phase A investigation only; no production or compatibility transition authorization.",
+    "Original unpublished prior-session local raw receipts/traces are unavailable; published hashes/reviews are historical reported evidence only.",
+    "Fresh recovery runs do not upgrade or recover original failed/missing evidence.",
+    "LeakSanitizer explicitly unexecuted; no leak-freedom claim.",
+    "Broad Native/Godot/graphics/Web/human acceptance and independent physical hardware not qualified.",
+    "Transport authentication is distinct from raw-source and scientific qualification."
+  ],
+  "derived_analysis_and_logs": {
+    "path": "recovery/independent-derived/independent-derived.manifest.json",
+    "bytes": 1944,
+    "sha256": "9e58b6301a98d151637a673f93f5800cef553909300b07cb8df9cf88dfe00237"
+  },
+  "publication_validation": "recovery/validation-summary.json; exact resulting-head remote status in PR377 ledger",
+  "validation_transport": {
+    "path": "recovery/validation-transport/validation.manifest.json",
+    "bytes": 1195,
+    "sha256": "52016b4da0aded96e2b18ec4a553f3240e9febca6035b32c4a819e3f8f12741e"
+  }
 }

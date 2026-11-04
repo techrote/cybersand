@@ -1,0 +1,196 @@
+{
+  "schema": "mat354.recovery-final-independent-review.v1",
+  "reviewed_execution_source": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "reviewed_index_sha256": "dac5d225a556373d383246df0c96ac8a27d8fdc50dfcb1100135c6f0eb4cc27b",
+  "status": "PASS_DOCUMENTATION_AND_PACKET_REVIEW",
+  "verified_index_file_references": 20,
+  "verified_files": [
+    {
+      "path": "recovery/historical-stalled-evidence-index.json",
+      "bytes": 5138,
+      "sha256": "86b8d442ea97d32bb393b269aa20b14c1934c3f738cc816e8a2bd6c72047d14b"
+    },
+    {
+      "path": "recovery/hosted-independent-audit-rerun.json",
+      "bytes": 9134,
+      "sha256": "7c13be4b56455381a930619fb85ebf5f2dd0bbd9595b4ab20344c1bf90f63b81"
+    },
+    {
+      "path": "recovery/independent-review.json",
+      "bytes": 24239,
+      "sha256": "939bfb5c7bdbda95bed94782336a9f68d5b34c3a25997ee3c0279f81538eb408"
+    },
+    {
+      "path": "recovery/scientific-review-data.json",
+      "bytes": 8312,
+      "sha256": "2d391d6cb14920043d048a55d781122ed39386b6a4978327afeb4c1998389e6d"
+    },
+    {
+      "path": "recovery/local-qualification-summary.json",
+      "bytes": 9461,
+      "sha256": "44d642b737d55e13c33a5beda91b24347d31b3938d05992d988ed434e0101919"
+    },
+    {
+      "path": "recovery/transport-roundtrip-verification.json",
+      "bytes": 1544,
+      "sha256": "94f555fdc7cfea0cb912bf62efd0d9157efaa366613852e423eb30e3f1b2d93c"
+    },
+    {
+      "path": "recovery/protected-controls-authentication.json",
+      "bytes": 900,
+      "sha256": "f249e38f7376cc3cf51d38f0c2f3a92c8bd53494eec5d0cb5783a9cc2dd92e5a"
+    },
+    {
+      "path": "recovery/windows-run2-source-audit.json",
+      "bytes": 4179,
+      "sha256": "1110b5947db308a1469f54a2b077b10cb6726318b6107755b7083d9c8b018f38"
+    },
+    {
+      "path": "recovery/windows-run2-observation-audit.json",
+      "bytes": 626,
+      "sha256": "c35bce0d6220506dbbef80d827c2e8e76bfec75c5d8cea611f348c1162c9e845"
+    },
+    {
+      "path": "recovery/transport-authentication.json",
+      "bytes": 1200,
+      "sha256": "e44f11a712720ab4b12dd3a4b7790ec894324bea64b0519875bb6210e5c2989e"
+    },
+    {
+      "path": "recovery/publication-source-equivalence.json",
+      "bytes": 947,
+      "sha256": "257be07502e9d949e0248b4acb259f184fe06c8a9e0729897230297b0c57a4b0"
+    },
+    {
+      "path": "recovery/custody-inventory.json",
+      "bytes": 2988,
+      "sha256": "c0a142c42b82d3b2382221ba2159337168ce81406ae08d9895b5f335c4698481"
+    },
+    {
+      "path": "recovery/independent-derived/independent-derived.manifest.json",
+      "bytes": 1944,
+      "sha256": "9e58b6301a98d151637a673f93f5800cef553909300b07cb8df9cf88dfe00237"
+    },
+    {
+      "path": "recovery/hosted-linux/transport/linux-normal.manifest.json",
+      "bytes": 173668,
+      "sha256": "53acdca8ab47e953c62ff2cd206423a04ca92194e2ad687f096a2819099b5ef4"
+    },
+    {
+      "path": "recovery/hosted-windows/transport/windows-normal.manifest.json",
+      "bytes": 173688,
+      "sha256": "b2749b56a2deddf0dfcb2e1b752931cf0414b9160b2c51e638ba0dcf54ded908"
+    },
+    {
+      "path": "recovery/hosted-windows-source-byte-failure/transport/windows-normal.manifest.json",
+      "bytes": 173690,
+      "sha256": "b72f90b0c443cdc1e7407634cd1a5629fe8edbfacece17d9bc122248b0fe94bc"
+    },
+    {
+      "path": "recovery/local-asan-ubsan/transport/recovered-asan-ubsan.manifest.json",
+      "bytes": 174005,
+      "sha256": "09100478b8ed7d3ad75d45c808d55155c3f6145da1707178131848e3cfc91d31"
+    },
+    {
+      "path": "recovery/local-tsan/transport/recovered-tsan.manifest.json",
+      "bytes": 173933,
+      "sha256": "a8a9e8a2657dc96f68f6147f242ef46710e75e5a4c85bf5f39fc2327b40187a7"
+    },
+    {
+      "path": "recovery/hosted-windows-precompile-failure/hosted-context.json",
+      "bytes": 286,
+      "sha256": "5dbfbdf05bb4e5c087fae65cb2e079a82fc225c0fd830b84237c0e69997558a5"
+    },
+    {
+      "path": "recovery/protected-controls/transport/recovered-protected-controls.manifest.json",
+      "bytes": 10259,
+      "sha256": "307bcb62517e321c1cc52f19f6b9c04b461fefdcf15891eb2cde78e7828ed004"
+    }
+  ],
+  "packets": [
+    {
+      "id": "hosted-linux",
+      "files": 1122,
+      "uncompressed_bytes": 106891240,
+      "receipt_sha256": "b9f49386b96a09f70ce8cc6028f695e13512e04d4e6ccac90db27e24f1ca2820",
+      "source_mismatches": [],
+      "status": "PASS_TRANSPORT_AND_INDEX_BINDING",
+      "qualification": "PASS"
+    },
+    {
+      "id": "hosted-windows",
+      "files": 1122,
+      "uncompressed_bytes": 107057819,
+      "receipt_sha256": "ec94c3fca7384b9e2de59d47173f04c71ecdb39cf4dedfaa3d2343a9f7f22cc1",
+      "source_mismatches": [],
+      "status": "PASS_TRANSPORT_AND_INDEX_BINDING",
+      "qualification": "PASS"
+    },
+    {
+      "id": "hosted-windows-source-byte-failure",
+      "files": 1122,
+      "uncompressed_bytes": 107066702,
+      "receipt_sha256": "2c93957924974cd5b47196fbd45c0365eb73e024bd9db78452e9ec89f6ba92ab",
+      "source_mismatches": [
+        "Makefile",
+        "native/src/world_inertial.inc",
+        "native/src/world_pressure.inc",
+        "native/src/world_pressure_cache.inc",
+        "native/src/world_pressure_cache_state.inc",
+        "native/src/world_pressure_gas_cache.inc",
+        "native/src/world_pressure_state.inc",
+        "native/src/world_quantity.inc"
+      ],
+      "status": "PASS_TRANSPORT_AND_INDEX_BINDING",
+      "qualification": "FAIL_RAW_SOURCE_BYTES; observations independently authenticate"
+    },
+    {
+      "id": "recovery-asan-ubsan",
+      "files": 1123,
+      "uncompressed_bytes": 113239714,
+      "receipt_sha256": "2431dce10a4ab1f8ccd5889816afd1c2f54f17997601c959a0e8786befd7cb85",
+      "source_mismatches": [],
+      "status": "PASS_TRANSPORT_AND_INDEX_BINDING",
+      "qualification": "PASS_ASAN_UBSAN; LeakSanitizer unexecuted"
+    },
+    {
+      "id": "recovery-tsan",
+      "files": 1123,
+      "uncompressed_bytes": 113228687,
+      "receipt_sha256": "c55dfca0944ffb902952c79fe1209f2d055f29c40e8c6d589edefdbc14b91092",
+      "source_mismatches": [],
+      "status": "PASS_TRANSPORT_AND_INDEX_BINDING",
+      "qualification": "PASS_TSAN"
+    },
+    {
+      "id": "recovery-protected-controls",
+      "files": 87,
+      "uncompressed_bytes": 138270,
+      "receipt_sha256": "a6ae969f7e2984659ec0c519dd68db40af50a81a86fb92b45c5ae2e8546dee38",
+      "source_mismatches": [],
+      "status": "PASS_TRANSPORT_AND_INDEX_BINDING",
+      "qualification": "PASS_14_NAMED_TESTS_IN_12_INVOCATIONS"
+    }
+  ],
+  "derived_analysis_pack": {
+    "members": 10,
+    "uncompressed_bytes": 25150027
+  },
+  "historical_stalled_index_exact_git_blob": true,
+  "continuation_changed_paths_all_docs": true,
+  "continuation_changed_files": 103,
+  "native_source_equivalence_checked": {
+    "campaign_inputs": 67,
+    "protected_control_inputs": 88
+  },
+  "original_fixture_questions_unchanged": true,
+  "historical_raw_custody_overclaim_found": false,
+  "pending_publication_steps": [
+    "validation-summary.json is still being generated by root; explicitly outside this snapshot review"
+  ],
+  "errors": [],
+  "limits": [
+    "No native experiments were rerun for this review.",
+    "The review binds this local documentation/evidence snapshot, not a future publication commit.",
+    "Missing original local raw data remains unavailable; replacement runs are separately identified."
+  ]
+}
