@@ -1,0 +1,94 @@
+{
+  "schema": "cybersand.sol281.source-checkpoint-validation.v1",
+  "local_commit": "8e5c9ddb7958401e96ad9a10b13949daf3aac2a6",
+  "published_commit": "2457f5ecb945c60cd5118526f48734e82576ba49",
+  "shared_tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a",
+  "companion_commit": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "layout": "Pinned companion workspace with source in its source/ child; this resolves actual required parent links without changing checker policy.",
+  "commands": [
+    {
+      "command": "python3 tools/ci/check_docs.py --json <output>",
+      "status": "passed",
+      "report": "final-source-docs.json"
+    },
+    {
+      "command": "python3 tools/ci/check_repository.py --json <output>",
+      "status": "passed",
+      "report": "final-source-provenance.json",
+      "scope": "LFS pointer identities; all18 runtime files remain unmaterialized in this validation checkout. This is not new host execution."
+    },
+    {
+      "command": "python3 tools/ci/check_m11_consistency.py",
+      "status": "passed",
+      "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+      "records_checked": 18,
+      "source_hashes_checked": 28,
+      "evidence_kind": "Summary transcribed from original tool output; not an original saved process log."
+    },
+    {
+      "command": "python3 tools/sol281/test_qualification.py",
+      "status": "passed",
+      "tests": 11,
+      "evidence_kind": "Summary transcribed from original tool output."
+    },
+    {
+      "command": "python3 tools/sol281/test_publish_runtime.py",
+      "status": "passed",
+      "tests": 9,
+      "evidence_kind": "Summary transcribed from original tool output."
+    },
+    {
+      "command": "python3 tools/ci/check_ci_provider_policy.py",
+      "status": "passed",
+      "evidence_kind": "Summary transcribed from original tool output."
+    },
+    {
+      "command": "git diff --check 3ac7701",
+      "status": "passed",
+      "scope": "Includes narrow attributes for authentic compiler/runner logs; no original evidence bytes edited."
+    },
+    {
+      "command": "git diff --exit-code 8e5c9ddb7958401e96ad9a10b13949daf3aac2a6 2457f5ecb945c60cd5118526f48734e82576ba49",
+      "status": "passed",
+      "scope": "Complete published/local tree equivalence, not merely implementation paths."
+    }
+  ],
+  "retrieval": [
+    {
+      "set": "frozen32",
+      "hit_at_1": 19,
+      "hit_at_5": 32,
+      "mrr_at_5": 0.7536,
+      "report": "source-retrieval-default.json",
+      "sufficiency": "Ranking only; this task did not re-review all32 unrelated answers."
+    },
+    {
+      "set": "contact6",
+      "hit_at_1": 6,
+      "hit_at_5": 6,
+      "mrr_at_5": 1.0,
+      "report": "source-retrieval-contact.json",
+      "sufficiency": "Independent semantic review supports all18 expected facts."
+    },
+    {
+      "set": "structural3",
+      "hit_at_1": 3,
+      "hit_at_5": 3,
+      "mrr_at_5": 1.0,
+      "report": "source-retrieval-sol281.json"
+    }
+  ],
+  "limits": [
+    "Local checks are bounded iteration/documentation/provenance validation, not the new hosted runtime matrix.",
+    "Original locally reviewed source and published source have different commit metadata; every corresponding tree is identical."
+  ],
+  "graphical_environment": {
+    "checked_utc": "2026-11-03T23:59:52Z",
+    "drm_device_directory": false,
+    "render_nodes": [],
+    "display_configured": false,
+    "wayland_display_configured": false,
+    "xvfb_run_available": false,
+    "disposition": "No actual graphical or representative GPU/human-acceptance execution performed in this environment."
+  }
+}

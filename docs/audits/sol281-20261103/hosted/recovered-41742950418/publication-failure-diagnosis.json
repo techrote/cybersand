@@ -1,0 +1,23 @@
+{
+  "schema": "cybersand.sol281.publication-failure-diagnosis.v1",
+  "run_id": 41742950418,
+  "run_attempt": 1,
+  "source": {
+    "sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a"
+  },
+  "workflow_conclusion": "failure",
+  "failed_job_id": 126296327496,
+  "failed_step": "Reverify qualification and prepare truthful runtime provenance",
+  "error": "Staged path set differs from exact publication inventory",
+  "prepared_receipt_status": "prepared",
+  "planned_publication_paths": 208,
+  "planned_outputs_identical_to_qualified_head": [
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+  ],
+  "expected_changed_path_count": 207,
+  "cause": "verify_index requires every planned output to appear in git diff --cached; Git correctly omits the byte-identical Linux LFS pointer. The full expected-output byte checks must remain mandatory while unchanged correct index entries become admissible.",
+  "scope": "Head/plan byte comparison and original CI failure log. The failed job did not retain its index; expected changed-path count is an inference, reproduced independently with real Git staging in the corrective regression.",
+  "original_log_sha256": "b2f3ab7db90055ac9a3e2b11bd99520a6b1e6c2d2046cae511971d5df71c700f",
+  "original_receipt_sha256": "cf6a6272adf410510399bcd34bde3a5849e200ca92bb79813fde064d0b671587"
+}

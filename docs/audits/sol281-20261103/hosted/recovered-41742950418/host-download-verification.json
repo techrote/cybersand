@@ -1,0 +1,90 @@
+[
+  {
+    "id": 13283386426,
+    "name": "sol281-host-linux-contact-w1-41742950418-1",
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/successor-41742950418/host-artifact-zips/sol281-host-linux-contact-w1-41742950418-1.zip",
+    "size": 7205525,
+    "sha256": "50ce5e5428741032538dc4283fe72c649d3c4f0316811cb7a72faa4ee64de094",
+    "github_digest": "sha256:50ce5e5428741032538dc4283fe72c649d3c4f0316811cb7a72faa4ee64de094",
+    "workflow_head_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "github_created_at": "2026-11-04T00:13:02Z",
+    "github_updated_at": "2026-11-04T00:13:02Z"
+  },
+  {
+    "id": 13282164646,
+    "name": "sol281-host-linux-contact-w4-41742950418-1",
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/successor-41742950418/host-artifact-zips/sol281-host-linux-contact-w4-41742950418-1.zip",
+    "size": 7000331,
+    "sha256": "0aeacffdf37a5e4adb4dcdac1b6c60ade24bdccfa89779d48d1227c2d5822761",
+    "github_digest": "sha256:0aeacffdf37a5e4adb4dcdac1b6c60ade24bdccfa89779d48d1227c2d5822761",
+    "workflow_head_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "github_created_at": "2026-11-04T00:13:02Z",
+    "github_updated_at": "2026-11-04T00:13:02Z"
+  },
+  {
+    "id": 13282754437,
+    "name": "sol281-host-linux-core-41742950418-1",
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/successor-41742950418/host-artifact-zips/sol281-host-linux-core-41742950418-1.zip",
+    "size": 3490702,
+    "sha256": "b027c8afa31e064576a7ea1c40acfdac3a1a4a94e3d6228a2c4ce77ef24b16fd",
+    "github_digest": "sha256:b027c8afa31e064576a7ea1c40acfdac3a1a4a94e3d6228a2c4ce77ef24b16fd",
+    "workflow_head_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "github_created_at": "2026-11-04T00:10:44Z",
+    "github_updated_at": "2026-11-04T00:10:44Z"
+  },
+  {
+    "id": 13283355667,
+    "name": "sol281-host-linux-mechanism-41742950418-1",
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/successor-41742950418/host-artifact-zips/sol281-host-linux-mechanism-41742950418-1.zip",
+    "size": 3486404,
+    "sha256": "471b96b88ba67c3d5b639c120599f33852e68945ac15748384976855f2dedb78",
+    "github_digest": "sha256:471b96b88ba67c3d5b639c120599f33852e68945ac15748384976855f2dedb78",
+    "workflow_head_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "github_created_at": "2026-11-04T00:11:17Z",
+    "github_updated_at": "2026-11-04T00:11:17Z"
+  },
+  {
+    "id": 13283032722,
+    "name": "sol281-host-windows-contact-w1-41742950418-1",
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/successor-41742950418/host-artifact-zips/sol281-host-windows-contact-w1-41742950418-1.zip",
+    "size": 2928247,
+    "sha256": "c1234cca3ae1525e73fe6e1fc29a5c07b1b45ab5556c63f814e3090687e39c87",
+    "github_digest": "sha256:c1234cca3ae1525e73fe6e1fc29a5c07b1b45ab5556c63f814e3090687e39c87",
+    "workflow_head_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "github_created_at": "2026-11-04T00:13:10Z",
+    "github_updated_at": "2026-11-04T00:13:10Z"
+  },
+  {
+    "id": 13283545518,
+    "name": "sol281-host-windows-contact-w4-41742950418-1",
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/successor-41742950418/host-artifact-zips/sol281-host-windows-contact-w4-41742950418-1.zip",
+    "size": 2944411,
+    "sha256": "c77b502450e47fdd4c7bb079dae08f8d72527e5e504f7dbd62398df6bb66bfb9",
+    "github_digest": "sha256:c77b502450e47fdd4c7bb079dae08f8d72527e5e504f7dbd62398df6bb66bfb9",
+    "workflow_head_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "github_created_at": "2026-11-04T00:13:02Z",
+    "github_updated_at": "2026-11-04T00:13:02Z"
+  },
+  {
+    "id": 13283655217,
+    "name": "sol281-host-windows-core-41742950418-1",
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/successor-41742950418/host-artifact-zips/sol281-host-windows-core-41742950418-1.zip",
+    "size": 222582,
+    "sha256": "f8137e9867104d62b4ce78927f6beae2a7f0d1cf7a02beec27250904136fb789",
+    "github_digest": "sha256:f8137e9867104d62b4ce78927f6beae2a7f0d1cf7a02beec27250904136fb789",
+    "workflow_head_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "github_created_at": "2026-11-04T00:10:48Z",
+    "github_updated_at": "2026-11-04T00:10:48Z"
+  },
+  {
+    "id": 13282253837,
+    "name": "sol281-host-windows-mechanism-41742950418-1",
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/successor-41742950418/host-artifact-zips/sol281-host-windows-mechanism-41742950418-1.zip",
+    "size": 218523,
+    "sha256": "3e0b969acd00f5b2a7d33c3b0647a39f08abd7e2edc616141e8baa7e4a747224",
+    "github_digest": "sha256:3e0b969acd00f5b2a7d33c3b0647a39f08abd7e2edc616141e8baa7e4a747224",
+    "workflow_head_sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "github_created_at": "2026-11-04T00:12:23Z",
+    "github_updated_at": "2026-11-04T00:12:23Z"
+  }
+]

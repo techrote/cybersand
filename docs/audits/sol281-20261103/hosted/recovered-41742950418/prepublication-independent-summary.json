@@ -1,0 +1,44 @@
+{
+  "all_24_cost_groups_passed": true,
+  "failed_cost_groups": [],
+  "qualification_sha256": "e03c4331fec82b1b9e62298def55161464110a2b42dc3ca9ecdd18936f07264d",
+  "source": {
+    "sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a"
+  },
+  "strict_reducer_byte_identical_to_hosted": true,
+  "totals": {
+    "candidate_cases": 36,
+    "energy_violations": 0,
+    "live_cases": 72,
+    "observations": 23807,
+    "refusal_ClearedContact": 400,
+    "refusal_InvalidGeometryWitness": 12,
+    "refusal_NonDissipativeResponse": 360,
+    "refusal_PoseDrift": 9,
+    "response_accepts": 10621,
+    "response_attempts": 11402,
+    "steps": 25920,
+    "worker_observation_attempts": 26557
+  },
+  "worst_candidate_penetration_case": {
+    "candidate": true,
+    "id": "packed_sand/candidate/r2",
+    "max_sand_penetration_cells": 3.36908873881087,
+    "mean_contact_ms": 0.7832825278810408,
+    "platform": "Linux",
+    "repeat": 2,
+    "surroundings": "packed_sand",
+    "workers": 4
+  },
+  "worst_mean_cost_case": {
+    "candidate": false,
+    "id": "embedded_sand/baseline/r0",
+    "max_sand_penetration_cells": 4.20683269999237,
+    "mean_contact_ms": 1.7657478632478631,
+    "platform": "Windows",
+    "repeat": 0,
+    "surroundings": "embedded_sand",
+    "workers": 1
+  }
+}

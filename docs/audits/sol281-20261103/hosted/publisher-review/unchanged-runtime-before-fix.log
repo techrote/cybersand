@@ -1,0 +1,33 @@
+EE
+======================================================================
+ERROR: test_real_git_index_allows_unchanged_runtime (__main__.PublicationTests.test_real_git_index_allows_unchanged_runtime) (case='new-metadata')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/test_publish_runtime.py", line 288, in test_real_git_index_allows_unchanged_runtime
+    subject.verify_index(sorted(plan), identities)
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/publish_runtime.py", line 508, in verify_index
+    require(changed == set(paths), "Staged path set differs from exact publication inventory")
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/publish_runtime.py", line 48, in require
+    qualification.require(value, message)
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/run_qualification.py", line 36, in require
+    raise RuntimeError(message)
+RuntimeError: Staged path set differs from exact publication inventory
+
+======================================================================
+ERROR: test_real_git_index_allows_unchanged_runtime (__main__.PublicationTests.test_real_git_index_allows_unchanged_runtime) (case='same-metadata')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/test_publish_runtime.py", line 288, in test_real_git_index_allows_unchanged_runtime
+    subject.verify_index(sorted(plan), identities)
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/publish_runtime.py", line 508, in verify_index
+    require(changed == set(paths), "Staged path set differs from exact publication inventory")
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/publish_runtime.py", line 48, in require
+    qualification.require(value, message)
+  File "/workspace/scratch/fc488e61157a/cybersand-publisher-review/tools/sol281/run_qualification.py", line 36, in require
+    raise RuntimeError(message)
+RuntimeError: Staged path set differs from exact publication inventory
+
+----------------------------------------------------------------------
+Ran 1 test in 0.059s
+
+FAILED (errors=2)

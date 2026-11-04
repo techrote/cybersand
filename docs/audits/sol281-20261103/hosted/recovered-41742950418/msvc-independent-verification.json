@@ -1,0 +1,56 @@
+{
+  "schema": "cybersand.sol281.msvc-independent-verification.v1",
+  "source": {
+    "sha": "2457f5ecb945c60cd5118526f48734e82576ba49",
+    "tree": "42b4926b3e15dcbf34b436eff41de50fad54c50a"
+  },
+  "run_id": 41742950418,
+  "run_attempt": 1,
+  "artifact_id": 13283490729,
+  "artifact_sha256": "82afef91fda931054fda6ca5e8b71b01d21df1c7bbaf08b46f0fab2730f2b5b6",
+  "artifact_original": "originals/sol281-msvc-41742950418-1.zip",
+  "status": "passed",
+  "natural_completion": true,
+  "inputs_authenticated": 1089,
+  "raw_before_after_inputs_equal": true,
+  "command_and_stderr_hashes_match": true,
+  "checks": {
+    "solid_detachment": {
+      "checks": 19338,
+      "run_log_sha256": "d9148d6b0607fb45082ee0a85b0c663a01b6879f69090402e20866e04ae1e306"
+    },
+    "conservative_displacement": {
+      "checks": 281,
+      "run_log_sha256": "ddce6479d8b7b74e644b25d6c27228274dd13e504dd54aadcee55f9c19648e6b"
+    },
+    "solid_contact_geometry": {
+      "checks": 6817,
+      "run_log_sha256": "459f51c9128d03da1bf61b8bdc6db3626faece86b6682af438de6af941c99b86"
+    }
+  },
+  "compiler_linker_versions": [
+    "14.44.35229.0",
+    "19.44.35229"
+  ],
+  "retained_binary_identities": {
+    "solid_detachment": {
+      "size": 2883072,
+      "sha256": "EAF71A25E2EDFF158C2B5A9920EEB071559B33AE1D7288481B48FDDA108722F8",
+      "path": "build/sol281/msvc-bin/test_solid_detachment.exe"
+    },
+    "conservative_displacement": {
+      "size": 2863104,
+      "sha256": "7DF775979BC119EC83AE44FE69B228D5D6A04AD76D5564A493EAB6737313288D",
+      "path": "build/sol281/msvc-bin/test_conservative_displacement.exe"
+    },
+    "solid_contact_geometry": {
+      "size": 1431040,
+      "sha256": "F197DE42A19C956C4AE0E4510CF0E1D6285462201FA3A24F31D5BA7727F196E0",
+      "path": "build/sol281/msvc-bin/test_solid_contact_geometry.exe"
+    }
+  },
+  "limitations": [
+    "Compiler-produced native executable identities are retained; executable files were not included in the MSVC artifact.",
+    "Actual Windows native tests and the LLVM-MinGW Windows GDExtension build are distinct checks."
+  ]
+}

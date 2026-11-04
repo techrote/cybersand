@@ -1,0 +1,14 @@
+{
+  "scope": "Real Git staging regression; unchanged original publisher at source2457f5ec with added regression test only. Synthetic metadata, no physics qualification.",
+  "command": [
+    "python3",
+    "tools/sol281/test_publish_runtime.py",
+    "PublicationTests.test_real_git_index_allows_unchanged_runtime"
+  ],
+  "cwd": "/workspace/scratch/fc488e61157a/cybersand-publisher-review",
+  "returncode": 1,
+  "elapsed_seconds": 0.23369788600030006,
+  "log": "unchanged-runtime-before-fix.log",
+  "log_sha256": "cc59a769026f4db646961dcb894ddc43dbb82e8b3b54daa53bc3b29f6ddf1cfc",
+  "expected_reproduction_failure": true
+}
