@@ -282,14 +282,27 @@ def reduce(receipt, raw_root=None):
                        'one_four_comparison': capacities == [1, 4],
                        'workers_observed_max': max(arm['workers_observed_max'] for arm, _ in arms),
                        'trajectory_sha256': arms[0][0]['trajectory_sha256']})
+    disabled_leaks = boolean(receipt.get('disable_leak_check', False), 'disable_leak_check')
+    leak_check = receipt.get('leak_check')
+    if disabled_leaks:
+        asan = receipt.get('sanitizer_environment', {}).get('ASAN_OPTIONS', '')
+        values = [part.partition('=')[2] for part in asan.split(':') if part.partition('=')[0] == 'detect_leaks']
+        if receipt.get('mode') != 'asan-ubsan' or not isinstance(leak_check, dict) or leak_check.get('status') != 'unexecuted' or values != ['0']:
+            raise ReductionError('explicit leak-check exclusion has inconsistent mode/options/provenance')
+    limits = ['Native source-matched fixture evidence only; no graphical/gameplay acceptance.',
+              'Raw process timing includes observation; tick-only timing remains descriptive, not a controlled production benchmark.',
+              'A configured pool capacity does not establish actual worker participation.',
+              'Thermal or stochastic behavior classification requires source-contract review.']
+    if disabled_leaks:
+        limits.append('LeakSanitizer was explicitly disabled; leak checking is unexecuted. This result covers ASan/UBSan only.')
     return {'schema': 'mat354.reduction.v1', 'status': 'PASS', 'source_commit': receipt['source_commit'],
             'source_tree': receipt['source_tree'], 'input_inventory_sha256': receipt['input_inventory_sha256'],
             'executable': receipt['executable'], 'mode': receipt['mode'], 'host': receipt['host'],
-            'cases': observations, 'parity': parity,
-            'limits': ['Native source-matched fixture evidence only; no graphical/gameplay acceptance.',
-                       'Raw process timing includes observation; tick-only timing remains descriptive, not a controlled production benchmark.',
-                       'A configured pool capacity does not establish actual worker participation.',
-                       'Thermal or stochastic behavior classification requires source-contract review.']}
+            'cases': observations, 'parity': parity, 'disable_leak_check': disabled_leaks,
+            'leak_check': leak_check, 'sanitizer_environment': receipt.get('sanitizer_environment', {}),
+            'artifact_mode_repairs': receipt.get('artifact_mode_repairs', []),
+            'final_raw_verification': receipt.get('final_raw_verification'), 'limits': limits}
+
 
 
 def main(argv=None):

@@ -23,14 +23,35 @@ python3 tools/material_liveness/reduce.py \
 ```
 
 Use a new output directory for each attempt. `asan-ubsan` and `tsan` build modes
-are available. Sanitizer environment settings are recorded, including any operator
-override. A process timeout, nonzero exit, source/binary identity change or
+are available. Sanitizer environment settings are recorded. Leak detection is
+requested by default for ASan/UBSan. A separately recorded run may use
+`--mode asan-ubsan --disable-leak-check` after a retained LeakSanitizer environment
+failure; it explicitly sets `ASAN_OPTIONS` to `detect_leaks=0` and records leak
+checking as **unexecuted**. The reducer preserves that limitation. The flag is
+invalid for normal/TSan builds, and an implicit `detect_leaks=0` environment
+override without the flag is refused. A process timeout, nonzero exit, source/binary identity change or
 compatibility failure terminates the attempt and preserves its failure receipt.
 The manifest supplies the time limits:60 seconds per case,900 seconds for the
 complete build including every compiler/link step, and1800 seconds for the
 whole campaign. Optional CLI bounds may shorten these limits, never extend them.
 Remaining cases are unexecuted, not passing. No causal campaign should run before
 its registration is committed.
+
+Each process writes stdout/stderr to unique private temporary files. The driver
+flushes, fsyncs and closes both files, then atomically publishes final names
+without overwriting existing artifacts. Linux uses `RENAME_NOREPLACE`; Windows
+uses its nonoverwriting rename; the portable fallback uses atomic hard-link
+publication followed by temporary-name removal. Raw identity is recorded only
+after publication, and all case/build raw hashes are rechecked before a campaign
+can become `EXECUTED`. A later independently detected change remains an evidence
+failure; no durability procedure can qualify bytes that subsequently differ.
+
+Immediately before invoking its own generated binary, the driver verifies the
+recorded bytes. If that unchanged, owned regular file has lost every executable
+mode bit, it may restore only owner-execute and records an `artifact-mode-repair`.
+An already executable file is never chmod-ed after an access denial, and there
+is no alternate execution route or retry. Source mismatch, another owner,
+symlinked output or a different artifact directory refuses repair.
 
 `--allow-dirty-apparatus` permits explicitly unqualified diagnostic executions
 for apparatus development. It never permits an uncommitted production source

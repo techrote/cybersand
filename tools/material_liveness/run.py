@@ -8,6 +8,8 @@ A plan contains schema=mat354.campaign.v1 and a finite cases array.
 from __future__ import annotations
 
 import argparse
+import ctypes
+import errno
 from datetime import datetime, timezone
 import hashlib
 import importlib.util
@@ -18,8 +20,10 @@ import platform
 import re
 import shutil
 import signal
+import stat
 import subprocess
 import sys
+import tempfile
 import time
 
 SCHEMA = 'mat354.campaign.v1'
@@ -82,11 +86,136 @@ def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def sync_directory(path):
+    if os.name == 'posix':
+        descriptor = os.open(path, os.O_RDONLY | getattr(os, 'O_DIRECTORY', 0))
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+
+
 def write_json(path, value):
     path = Path(path)
-    temporary = path.with_suffix(path.suffix + '.tmp')
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + '\n', encoding='utf-8')
-    temporary.replace(path)
+    with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=path.parent,
+                                     prefix='.' + path.name + '.', suffix='.partial', delete=False) as handle:
+        temporary = Path(handle.name)
+        json.dump(value, handle, indent=2, sort_keys=True, allow_nan=False)
+        handle.write('\n')
+        handle.flush()
+        os.fsync(handle.fileno())
+    # A progress receipt intentionally supersedes its own preceding version.
+    os.replace(temporary, path)
+    sync_directory(path.parent)
+
+
+def publish_no_replace(temporary, destination):
+    """Atomically expose a complete raw file, refusing every existing name."""
+    temporary, destination = Path(temporary), Path(destination)
+    if temporary.parent != destination.parent:
+        raise EvidenceError('raw temporary and final paths must share one directory')
+    method = None
+    if sys.platform.startswith('linux'):
+        library = ctypes.CDLL(None, use_errno=True)
+        operation = getattr(library, 'renameat2', None)
+        if operation is not None:
+            operation.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_uint]
+            operation.restype = ctypes.c_int
+            # Linux RENAME_NOREPLACE is an atomic rename that cannot overwrite.
+            if operation(-100, os.fsencode(temporary), -100, os.fsencode(destination), 1) == 0:
+                method = 'renameat2(RENAME_NOREPLACE)'
+            else:
+                code = ctypes.get_errno()
+                if code not in (errno.ENOSYS, errno.EINVAL, getattr(errno, 'EOPNOTSUPP', errno.ENOSYS)):
+                    raise OSError(code, os.strerror(code), str(destination))
+    if method is None and os.name == 'nt':
+        # Windows rename already refuses an existing destination.
+        os.rename(temporary, destination)
+        method = 'rename-no-replace'
+    if method is None:
+        # Portable same-filesystem fallback: atomic no-overwrite publication,
+        # followed by removal of the private temporary name.
+        os.link(temporary, destination)
+        temporary.unlink()
+        method = 'link-unlink-no-replace'
+    sync_directory(destination.parent)
+    return method
+
+
+def verify_retained_outputs(processes):
+    """Reauthenticate all raw bytes immediately before campaign completion."""
+    checked = []
+    for result in processes:
+        for stream in ('stdout', 'stderr'):
+            expected = result[stream]
+            actual = fact(Path(expected['path']))
+            if actual['bytes'] != expected['bytes'] or actual['sha256'] != expected['sha256']:
+                raise EvidenceError(f"retained raw identity mismatch: {expected['path']}; "
+                                    f"expected {expected['bytes']} bytes/{expected['sha256']}, "
+                                    f"found {actual['bytes']} bytes/{actual['sha256']}")
+            checked.append(actual)
+    return {'status': 'PASS', 'files': len(checked), 'verified_utc': now(),
+            'inventory_sha256': canonical_sha(checked)}
+
+
+def restore_generated_executable(path, expected, output_directory):
+    """Restore only a lost owner-execute bit on our unchanged generated binary.
+
+An already executable file is never chmod-ed or retried after an access denial.
+No directory, ACL, ownership or other permission bit is changed.
+"""
+    path, output_directory = Path(path), Path(output_directory).resolve()
+    if path.is_symlink() or path.resolve().parent != output_directory or str(path) != expected['path']:
+        raise EvidenceError('executable mode check is limited to this build output')
+    with path.open('rb') as handle:
+        before = os.fstat(handle.fileno())
+        if not stat.S_ISREG(before.st_mode):
+            raise EvidenceError('generated executable is not a regular file')
+        actual_hash = hashlib.file_digest(handle, 'sha256').hexdigest()
+        if before.st_size != expected['bytes'] or actual_hash != expected['sha256']:
+            raise EvidenceError('source/runtime identity mismatch: executable changed before case')
+        mode = stat.S_IMODE(before.st_mode)
+        # A present execute bit means any EACCES has another cause. Do not try
+        # permission broadening or an alternate execution route.
+        if os.name != 'posix' or mode & (stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH):
+            return None
+        if before.st_uid != os.geteuid():
+            raise EvidenceError('generated executable is not owned by this process; mode repair refused')
+        repaired_mode = mode | stat.S_IXUSR
+        os.fchmod(handle.fileno(), repaired_mode)
+        os.fsync(handle.fileno())
+        handle.seek(0)
+        if hashlib.file_digest(handle, 'sha256').hexdigest() != expected['sha256']:
+            raise EvidenceError('executable bytes changed during owner-mode repair')
+        after = path.stat()
+        if (after.st_dev, after.st_ino) != (before.st_dev, before.st_ino) or stat.S_IMODE(after.st_mode) != repaired_mode:
+            raise EvidenceError('generated executable changed during owner-mode repair')
+    return {'kind': 'artifact-mode-repair', 'path': str(path), 'before_mode': oct(mode),
+            'after_mode': oct(repaired_mode), 'sha256': expected['sha256'], 'at_utc': now(),
+            'scope': 'restore owner execute bit on unchanged owned build artifact only'}
+
+
+def sanitizer_configuration(mode, disable_leak_check, base_environment):
+    if disable_leak_check and mode != 'asan-ubsan':
+        raise EvidenceError('--disable-leak-check is valid only with --mode asan-ubsan')
+    environment = dict(base_environment)
+    leak_check = {'status': 'not-applicable', 'reason': 'build does not enable AddressSanitizer'}
+    if mode == 'asan-ubsan':
+        options = environment.get('ASAN_OPTIONS', 'halt_on_error=1')
+        parts = [part for part in options.split(':') if part]
+        leak_values = [part.partition('=')[2] for part in parts if part.partition('=')[0] == 'detect_leaks']
+        if not disable_leak_check and any(value not in ('1', 'true', 'yes') for value in leak_values):
+            raise EvidenceError('disabled leak detection requires explicit --disable-leak-check')
+        parts = [part for part in parts if part.partition('=')[0] != 'detect_leaks']
+        parts.append('detect_leaks=' + ('0' if disable_leak_check else '1'))
+        environment['ASAN_OPTIONS'] = ':'.join(parts)
+        environment.setdefault('UBSAN_OPTIONS', 'halt_on_error=1:print_stacktrace=1')
+        leak_check = {'status': 'unexecuted' if disable_leak_check else 'requested',
+                      'reason': 'explicit --disable-leak-check; separate ASan/UBSan execution' if disable_leak_check else 'LeakSanitizer requested with detect_leaks=1'}
+    if mode == 'tsan':
+        environment.setdefault('TSAN_OPTIONS', 'halt_on_error=1')
+    metadata = {key: environment[key] for key in ('ASAN_OPTIONS', 'UBSAN_OPTIONS', 'TSAN_OPTIONS', 'LSAN_OPTIONS') if key in environment}
+    return environment, metadata, leak_check
 
 
 def output_directory(value, root):
@@ -218,14 +347,25 @@ def remaining_budget(*deadlines):
     return remaining
 
 
-def process(argv, cwd, prefix, timeout, environment=None):
+def process(argv, cwd, prefix, timeout, environment=None, *, generated_executable=None,
+            artifact_directory=None):
     stdout = Path(str(prefix) + '.stdout')
     stderr = Path(str(prefix) + '.stderr')
+    if os.path.lexists(stdout) or os.path.lexists(stderr):
+        raise EvidenceError(f'raw output already exists; refusing overwrite for {prefix}')
     started = now()
     begin = time.monotonic()
     result = {'argv': [str(v) for v in argv], 'cwd': str(cwd), 'started_utc': started,
               'timeout_seconds': timeout, 'timed_out': False}
-    with stdout.open('wb') as out, stderr.open('wb') as err:
+    out = tempfile.NamedTemporaryFile(mode='w+b', dir=stdout.parent, prefix='.' + stdout.name + '.', suffix='.partial', delete=False)
+    err = tempfile.NamedTemporaryFile(mode='w+b', dir=stderr.parent, prefix='.' + stderr.name + '.', suffix='.partial', delete=False)
+    temporary_stdout, temporary_stderr = Path(out.name), Path(err.name)
+    # Partial files intentionally remain discoverable if publication itself fails.
+    with out, err:
+        if generated_executable is not None:
+            repair = restore_generated_executable(Path(argv[0]), generated_executable, artifact_directory)
+            if repair is not None:
+                result['artifact_mode_repair'] = repair
         try:
             proc = subprocess.Popen(argv, cwd=cwd, stdout=out, stderr=err, env=environment,
                                     start_new_session=(os.name == 'posix'))
@@ -233,14 +373,25 @@ def process(argv, cwd, prefix, timeout, environment=None):
                 result['returncode'] = proc.wait(timeout=timeout)
             except subprocess.TimeoutExpired:
                 result['timed_out'] = True
-                if os.name == 'posix':
-                    os.killpg(proc.pid, signal.SIGKILL)
-                else:
-                    proc.kill()
+                try:
+                    if os.name == 'posix':
+                        os.killpg(proc.pid, signal.SIGKILL)
+                    else:
+                        proc.kill()
+                except ProcessLookupError:
+                    pass
                 result['returncode'] = proc.wait(timeout=15)
         except OSError as exc:
             result['spawn_error'] = str(exc)
             result['returncode'] = None
+        for handle in (out, err):
+            handle.flush()
+            os.fsync(handle.fileno())
+    result['output_publication'] = {
+        'stdout': publish_no_replace(temporary_stdout, stdout),
+        'stderr': publish_no_replace(temporary_stderr, stderr),
+        'flushed_and_fsynced_before_publication': True,
+    }
     result['duration_seconds'] = time.monotonic() - begin
     result['finished_utc'] = now()
     result['stdout'] = fact(stdout)
@@ -264,10 +415,15 @@ def run(args):
     root = args.root.resolve()
     out = output_directory(args.output, root)
     receipt = {'schema': SCHEMA, 'status': 'INITIALIZING', 'started_utc': now(),
-               'root': str(root), 'mode': args.mode, 'host': cpu_identity(), 'cases': [], 'build_steps': []}
+               'root': str(root), 'mode': args.mode, 'host': cpu_identity(), 'cases': [], 'build_steps': [],
+               'disable_leak_check': bool(getattr(args, 'disable_leak_check', False)), 'artifact_mode_repairs': []}
     receipt_path = out / 'campaign.json'
     write_json(receipt_path, receipt)
     try:
+        environment, sanitizer_metadata, leak_check = sanitizer_configuration(
+            args.mode, bool(getattr(args, 'disable_leak_check', False)), os.environ)
+        receipt['sanitizer_environment'] = sanitizer_metadata
+        receipt['leak_check'] = leak_check
         plan = load_json(args.plan)
         cases = validate_plan(plan)
         budgets = time_budgets(plan, args)
@@ -357,19 +513,12 @@ def run(args):
             raise EvidenceError('source/runtime identity mismatch: inputs changed during build')
         receipt['status'] = 'RUNNING'
         write_json(receipt_path, receipt)
-        environment = dict(os.environ)
-        # Explicit strict defaults, recorded even when an operator supplies overrides.
-        if args.mode == 'asan-ubsan':
-            environment.setdefault('ASAN_OPTIONS', 'detect_leaks=1:halt_on_error=1')
-            environment.setdefault('UBSAN_OPTIONS', 'halt_on_error=1:print_stacktrace=1')
-        if args.mode == 'tsan':
-            environment.setdefault('TSAN_OPTIONS', 'halt_on_error=1')
-        receipt['sanitizer_environment'] = {k: environment[k] for k in ('ASAN_OPTIONS', 'UBSAN_OPTIONS', 'TSAN_OPTIONS') if k in environment}
         for case in cases:
-            if sha(executable) != receipt['executable']['sha256']:
-                raise EvidenceError('source/runtime identity mismatch: executable changed before case')
             result = process([str(executable), *case['argv']], root, out / case['id'],
-                             min(budgets['case'], remaining_budget(campaign_deadline)), environment)
+                             min(budgets['case'], remaining_budget(campaign_deadline)), environment,
+                             generated_executable=receipt['executable'], artifact_directory=out)
+            if result.get('artifact_mode_repair'):
+                receipt['artifact_mode_repairs'].append({'case_id': case['id'], **result['artifact_mode_repair']})
             result.update({key: case[key] for key in ('id', 'parity_group', 'expected_workers') if key in case})
             receipt['cases'].append(result)
             write_json(receipt_path, receipt)
@@ -380,6 +529,8 @@ def run(args):
         if sha(executable) != receipt['executable']['sha256']:
             raise EvidenceError('source/runtime identity mismatch: executable changed during campaign')
         receipt['post_run_guard'] = protected_check(root)
+        receipt['final_raw_verification'] = verify_retained_outputs([
+            receipt['compiler_version'], *receipt['build_steps'], *receipt['cases']])
         remaining_budget(campaign_deadline)
         receipt['status'] = 'EXECUTED'
     except (EvidenceError, ValueError, OSError, subprocess.SubprocessError) as exc:
@@ -401,11 +552,15 @@ def main(argv=None):
     parser.add_argument('--plan', type=Path, required=True)
     parser.add_argument('--mode', choices=MODES, default='normal')
     parser.add_argument('--compiler', default='g++')
+    parser.add_argument('--disable-leak-check', action='store_true',
+                        help='ASan/UBSan only: explicitly leave LeakSanitizer unexecuted')
     parser.add_argument('--compile-timeout', type=int, help='optional shorter bound for the complete build')
     parser.add_argument('--case-timeout', type=int, help='optional shorter per-process bound')
     parser.add_argument('--campaign-timeout', type=int, help='optional shorter end-to-end campaign bound')
     parser.add_argument('--allow-dirty-apparatus', action='store_true', help='diagnostic execution only; receipt cannot claim source-qualified')
     args = parser.parse_args(argv)
+    if args.disable_leak_check and args.mode != 'asan-ubsan':
+        parser.error('--disable-leak-check is valid only with --mode asan-ubsan')
     try:
         return run(args)
     except (EvidenceError, OSError) as exc:
