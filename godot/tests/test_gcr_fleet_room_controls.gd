@@ -19,7 +19,7 @@ func _run() -> void:
 	root.add_child(scene);scene.set_physics_process(false);await process_frame
 	check(not scene.room_source.armed and not scene.room_source_enabled.button_pressed,"room source initially off")
 	check(scene.control_fields.boost_multiplier.value==2.0,"visible default Shift multiplier")
-	check(scene._canvas.get_parent().get_parent().get_child(0) is ScrollContainer,"roster help cannot force map below window")
+	check(scene._canvas.get_parent().get_parent().get_combined_minimum_size().y<=480.0,"roster/help cannot force map below available review height")
 	for keys: Dictionary in [{KEY_SHIFT:true},{KEY_CTRL:true},{KEY_SHIFT:true,KEY_CTRL:true}]:
 		var action: Dictionary=scene.remap_fleet_brake(PlayerInput.from_state(keys),bool(keys.get(KEY_CTRL,false)),false)
 		check(action.secondary==bool(keys.get(KEY_CTRL,false)) and not action.has("boost"),"fleet remap preserves shared action schema; Ctrl is brake")
