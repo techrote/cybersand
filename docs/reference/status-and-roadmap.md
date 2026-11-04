@@ -26,7 +26,10 @@ cached-only proposals (P1 wake-summary elision, P2 narrowed gas revocation) are
 stays open, and a full-host cohort remains the next practical-cost experiment.
 An [experimental P1 draft](../audits/2026-11-04-lcb201-p1-wake-summaries.md),
 not accepted and not on main, cuts the quiet cached tick to ≈0.32 ms with exact
-parity. It shows a small cost under continuous index churn.
+parity. It shows a small cost under continuous index churn. In the real desktop
+host, a per-step simulation-region flip makes the cache cold every tick and
+erases the gain (cached ≈34 ms); a local no-flip worker reaches ≈0.7 ms. That
+host fix is a separate, pending decision.
 
 ## Material shadow foundation and integration — 2026-11-04
 

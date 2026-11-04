@@ -263,6 +263,14 @@ above is unchanged from execution 3. The
 controls, mutation checks, cost and the remaining small overhead under
 continuous index churn.
 
+**In-app caveat (2026-11-04).** The desktop worker currently sets the
+simulation region twice per step: first the camera window, then the scenario's
+fixed interest. `World::set_simulation_region` makes the cache cold on every
+selected-core change, so in the shipped host cached/dormant cost more than
+reference. With that flip removed locally, the in-app cached step is ≈0.7 ms.
+The host fix is a separate decision, recorded in the
+[P1 evidence](../audits/2026-11-04-lcb201-p1-wake-summaries.md#full-host-cohort-the-per-step-region-flip).
+
 ## Acceptance and remaining application work
 
 The [dated branch evidence](../audits/2026-10-25-lcb002-pressure-variants.md) owns

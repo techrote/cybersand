@@ -183,16 +183,94 @@ The unchanged LCB-002 small-scale apparatus at the same P1 head gives:
 (cached 15,082,780 → 15,344,980 B). Peak RSS is 273.2–275.3 MiB per
 four-World process.
 
+## Execution4 runtime publication
+
+The temporary branch-scoped publisher
+([workflow](../../.github/workflows/lcb201-p1-runtime-publication.yml),
+[profile](../../tools/ci/lcb201_p1_runtime_publication.py), request sequence 1)
+reuses the approved four-path engine, derived from the render-copy profile.
+[Run 41829294378](https://github.com/techrote/cybersand/actions/runs/41829294378)
+built source `2f9faabdbc1f085b24b5da7e72efd6c640c288a0`, which already contained
+execution identity 4. All seven jobs passed:
+
+- the publisher guards and the explicit request admission;
+- the native `LCB-002` (16, including the P1 control) and `LCB-001 pressure` (18)
+  groups, built with the Makefile under g++-13;
+- Linux and Windows builds, each executing import plus the pressure-optimization,
+  pressure-reference and actual-Rapier pressure cases on its target OS;
+- the publish job.
+
+The publish job appended `6817e008`, whose only parent is the built source and
+whose only changes are the two runtime LFS pointers and their manifests. The
+Windows DLL SHA-256 is
+`ebd6d55506cbf74826b11ce072217c1060f22fabecd0bdc4002d6576cd2c36ff`, and
+`check_repository.py` now passes. The guard suite caught one design error: six
+focused cases exceed a hosted job's watchdog budget, so the publisher runs three
+pressure cases. Policy, worker and Water Feel coverage stays in the full PR gates.
+The existing render-copy guard test independently fails the same budget check
+on main (15,420 s > 14,400 s); this change does not touch it.
+
+## Full-host cohort: the per-step region flip
+
+`godot/tests/lcb201_pressure_host_case.gd` reuses the merged PACE-001 recorder
+(actual `main.tscn` + `CyberSimulationWorker` + main-thread Rapier, headless
+Windows, Godot 4.7). It installs the #370 quiet pool through the ordinary
+controlled prepared-liquid route under each Water variant, settles 64 native
+ticks and measures 240. It runs once per row (the pre-P1 rows measure 120
+ticks); it asserts no threshold, and no row failed. With no bodies present,
+Rapier has nothing to simulate. Worker step is `worker_step_time_ms`; desktop
+simulation is paced at 60 Hz.
+
+| Runtime / worker | Variant | Native Hz | Worker step p50 / p95 / max ms | Main process interval p50 / p95 ms | Snapshot age p50 / p95 ms | Failures |
+|---|---|---:|---|---|---|---:|
+| main runtime (pre-P1), as shipped | reference | 28.7 | 33.38 / 41.90 / 46.06 | 5.95 / 15.26 | 6.28 / 14.78 | 0 |
+| main runtime (pre-P1), as shipped | cached | 24.3 | 40.74 / 47.17 / 49.47 | 8.27 / 14.18 | 5.50 / 10.79 | 0 |
+| main runtime (pre-P1), as shipped | cached_dormant | 27.1 | 35.02 / 44.36 / 48.06 | 5.86 / 14.98 | 8.03 / 14.87 | 0 |
+| main runtime (pre-P1), as shipped | freemass | 60.0 | 0.29 / 0.41 / 0.52 | 8.38 / 15.30 | 1.19 / 2.17 | 0 |
+| P1 runtime, as shipped | reference | 32.4 | 29.62 / 36.30 / 42.26 | 8.72 / 14.74 | 5.57 / 12.37 | 0 |
+| P1 runtime, as shipped | cached | 27.8 | 34.31 / 42.68 / 49.44 | 8.89 / 14.60 | 5.62 / 12.10 | 0 |
+| P1 runtime, as shipped | cached_dormant | 27.9 | 34.04 / 43.15 / 59.91 | 8.72 / 15.19 | 5.58 / 12.96 | 0 |
+| P1 runtime, as shipped | freemass | 60.2 | 0.22 / 0.35 / 0.98 | 7.05 / 15.66 | 1.04 / 1.98 | 0 |
+| P1 runtime, scratch no-flip worker | reference | 31.5 | 30.40 / 37.81 / 55.97 | 6.79 / 15.41 | 8.05 / 14.51 | 0 |
+| P1 runtime, scratch no-flip worker | cached | 60.0 | 0.70 / 0.98 / 1.35 | 5.61 / 15.40 | 1.12 / 2.38 | 0 |
+| P1 runtime, scratch no-flip worker | cached_dormant | 60.0 | 0.70 / 0.98 / 1.43 | 5.60 / 15.42 | 1.21 / 15.18 | 0 |
+| P1 runtime, scratch no-flip worker | freemass | 60.0 | 0.26 / 0.38 / 1.31 | 6.71 / 15.37 | 1.11 / 1.91 | 0 |
+
+**Finding: the shipped desktop worker defeats the pressure cache.** Every step,
+`simulation_worker.gd` calls `_world.set_simulation_window(...)` (camera window
+or whole world). With a fixed-interest scenario, `_scenario_host.apply_interest()`
+then calls `set_simulation_window` again with the scenario region. Whenever the
+selected cores differ, `World::set_simulation_region` makes the pressure cache
+`cold()`, which happens twice per step. Cached and dormant then pay a full
+reference preparation plus an index rebuild every tick, which is slower than
+reference. This is source-qualified and reproduced natively: a scratch bench
+variant that applies the same two region changes before every tick takes cached
+from 0.35 ms to ≈36.6 ms (reference ≈30.5 ms), with full parity. The receipts
+are kept outside Git (`host-flip/`).
+
+A **local, uncommitted** worker patch skips the camera-window call while a
+fixed-interest scenario is active (`host/scratch-noflip.patch`). With it, the P1
+runtime's cached/dormant worker step falls to **0.70 ms** and simulation holds
+its 60 Hz cap, the same as FreeMass. Reference is unchanged. The patch is not
+part of this PR: it is shared host code, outside the pressure-optimization owner.
+
+**Consequences:**
+- P1 is necessary but not sufficient for an in-app benefit.
+- Until the flip is removed, cached/dormant should not be offered as faster
+  variants in the desktop app.
+- Any moving simulation window, for example ordinary camera motion with the
+  window enabled, also turns the cache cold whenever the selected cores change.
+  That deserves its own decision: either avoid redundant region writes in the
+  host, or narrow the native `cold()` on region change. The latter lives in
+  `world.cpp` and needs its own proof.
+
 ## Limits
 
-- **Not accepted.** Execution identity, the Godot adapter test, runtime
-  republication and the full ready-PR Native/GDExtension/Water gates remain
-  outstanding.
-- **`check_repository.py` fails by design on this draft.** It reports that the
-  committed Windows and Linux Godot runtimes require a rebuild for the four
-  changed pressure source inputs. The runtimes were deliberately not republished
-  from an experimental branch. `check_docs.py` and `check_m11_consistency.py`
-  pass, and retrieval MRR@k is 0.7536, unchanged.
-- **Native Windows timing only;** no WSL timing rerun and no full-host cohort.
+- **Not accepted.** The execution-4 identity, Godot adapter test and
+  source-matched runtime republication are done. The full ready-PR
+  Native/GDExtension/Water gates and the owner's review remain.
+- **`check_repository.py` failed on the pre-publication draft**, because the
+  committed runtimes were stale. After the execution-4 publication it passes.
+- **Native timing is Windows only,** with no WSL rerun. The host cohort is a single headless Windows run per row, with no moving body.
 - **The redundant active-block clear** is argued from source, not from a failing
   control.
