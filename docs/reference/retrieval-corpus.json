@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-03",
+  "reviewed": "2026-11-04",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -120,7 +120,8 @@
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
-    "operations/ci-execution-and-performance.md"
+    "operations/ci-execution-and-performance.md",
+    "operations/material-catalogue-shadow.md"
   ],
   "navigation": [
     "README.md",
@@ -133,6 +134,10 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "audits/2026-11-04-mat-auth371-integration.md",
+      "reason": "Dated A-only adopted-main reconciliation, compiler repair and integration evidence. Retrieve through the shadow guide and validation ledger with exact source/backend limits; final hosted and merge outcomes belong to PR371."
+    },
     {
       "path": "audits/2026-11-03-lcb-reassessment.md",
       "reason": "Dated #359 current-main source/evidence reassessment and bounded successor handovers. Retrieve through policy, IN, comparison, scenario, validation and onboarding contracts; historical performance/platform receipts retain exact source qualification."
