@@ -1,0 +1,748 @@
+{
+  "schema_version": 1,
+  "qualification": "exact_committed_head",
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "pyyaml": "6.0.2",
+    "dependency": "tools/requirements-ci-audit.txt; installed with --require-hashes"
+  },
+  "source_before": {
+    "commit": "b7bae090fea4061ee322748da348a2beba593f15",
+    "tree": "1788e01da002a675b1711f66c138d664aacc4030",
+    "status": "",
+    "changed_file_sha256": {
+      "docs/README.md": "5644df00046f02df8f8c3a8a8d2fe7b5e292bd2fd0fd1974eef8fab41d506e7e",
+      "docs/audits/2026-11-04-active-ledger-001.md": "b7ce0d3777e5ebfd7043d1e874ed86b95a46068a6fd262aceaecfa7d883e5a6b",
+      "docs/audits/active-ledger-001-20261104/independent-review.json": "076872c2cff4a324c81bffaf56276f7176fd866774c36128dd96c379ffc520de",
+      "docs/audits/active-ledger-001-20261104/reconciliation.json": "391c325680a8fe81cc70bf6b95435843e56f9f493731914f9ee342e06ca51791",
+      "docs/audits/active-ledger-001-20261104/retrieval-review.json": "a158935c7b7a4ea5a8b84c7e69e1e74917973dd4cf6454760513c4fe1d4285f6",
+      "docs/operations/active-work-ledger-maintenance.md": "c95f86df2202b565053aa235b8c8362f05b6ad43cc24fcd513eaf4bbd0959ef3",
+      "docs/operations/cybersand-active-work-ledger.md": "0a32bdfa25b54a574ce54cec2e02fa9ee94157ef4f269e68357e4a87aa47a30f",
+      "docs/operations/cybersand-active-work-ledger.yaml": "554aade8383d17dd64685e8b157f5acf48ad15e653451a6690a067985ed9d126",
+      "docs/operations/cybersand-codex-development-handover.md": "b7b1661eb66cfea829a2fd63e29953770353a85908b8422c80b0fd5d94ab7aea",
+      "docs/reference/retrieval-corpus.json": "361f894eac4ed25f816718857fdcc73c97b4f9d73f815186952241bb98eadeec",
+      "tools/operations/active_work_ledger.py": "caf5422d7c30462eb7a4992c8dc02fb388c261541cfbaaf3fb207df5bc3e2a2b",
+      "tools/operations/tests/fixtures/seed_template.yaml": "3fbf7e4df8b9a6c62a300f073379137455c9edfc83b91cf6589f1c2459d5a869",
+      "tools/operations/tests/test_active_work_ledger.py": "f052721866df82526ece3b34f549d290cf0acc4544f4d07cd420479607edbb22"
+    }
+  },
+  "source_after": {
+    "commit": "b7bae090fea4061ee322748da348a2beba593f15",
+    "tree": "1788e01da002a675b1711f66c138d664aacc4030",
+    "status": "",
+    "changed_file_sha256": {
+      "docs/README.md": "5644df00046f02df8f8c3a8a8d2fe7b5e292bd2fd0fd1974eef8fab41d506e7e",
+      "docs/audits/2026-11-04-active-ledger-001.md": "b7ce0d3777e5ebfd7043d1e874ed86b95a46068a6fd262aceaecfa7d883e5a6b",
+      "docs/audits/active-ledger-001-20261104/independent-review.json": "076872c2cff4a324c81bffaf56276f7176fd866774c36128dd96c379ffc520de",
+      "docs/audits/active-ledger-001-20261104/reconciliation.json": "391c325680a8fe81cc70bf6b95435843e56f9f493731914f9ee342e06ca51791",
+      "docs/audits/active-ledger-001-20261104/retrieval-review.json": "a158935c7b7a4ea5a8b84c7e69e1e74917973dd4cf6454760513c4fe1d4285f6",
+      "docs/operations/active-work-ledger-maintenance.md": "c95f86df2202b565053aa235b8c8362f05b6ad43cc24fcd513eaf4bbd0959ef3",
+      "docs/operations/cybersand-active-work-ledger.md": "0a32bdfa25b54a574ce54cec2e02fa9ee94157ef4f269e68357e4a87aa47a30f",
+      "docs/operations/cybersand-active-work-ledger.yaml": "554aade8383d17dd64685e8b157f5acf48ad15e653451a6690a067985ed9d126",
+      "docs/operations/cybersand-codex-development-handover.md": "b7b1661eb66cfea829a2fd63e29953770353a85908b8422c80b0fd5d94ab7aea",
+      "docs/reference/retrieval-corpus.json": "361f894eac4ed25f816718857fdcc73c97b4f9d73f815186952241bb98eadeec",
+      "tools/operations/active_work_ledger.py": "caf5422d7c30462eb7a4992c8dc02fb388c261541cfbaaf3fb207df5bc3e2a2b",
+      "tools/operations/tests/fixtures/seed_template.yaml": "3fbf7e4df8b9a6c62a300f073379137455c9edfc83b91cf6589f1c2459d5a869",
+      "tools/operations/tests/test_active_work_ledger.py": "f052721866df82526ece3b34f549d290cf0acc4544f4d07cd420479607edbb22"
+    }
+  },
+  "source_changed_during_execution": false,
+  "results": [
+    {
+      "gate": "unit-tests",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/operations/tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-11-04T15:53:19.653545+00:00",
+      "elapsed_seconds": 7.515,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "99f778ee1ec00c3890e7518c3a9bb6172cfb86612a3c9c5a6ec23a7c24938f09",
+      "tests_run": 99,
+      "tests": [
+        {
+          "name": "test_another_lane_pr_does_not_establish_published_activity (test_active_work_ledger.ActivityAndOwnershipTests.test_another_lane_pr_does_not_establish_published_activity)",
+          "result": "ok"
+        },
+        {
+          "name": "test_collision_must_hold (test_active_work_ledger.ActivityAndOwnershipTests.test_collision_must_hold)",
+          "result": "ok"
+        },
+        {
+          "name": "test_distinct_lanes_can_share_a_pr (test_active_work_ledger.ActivityAndOwnershipTests.test_distinct_lanes_can_share_a_pr)",
+          "result": "ok"
+        },
+        {
+          "name": "test_historical_artifact_does_not_become_running_chat (test_active_work_ledger.ActivityAndOwnershipTests.test_historical_artifact_does_not_become_running_chat)",
+          "result": "ok"
+        },
+        {
+          "name": "test_merged_pr_not_a_stop_report (test_active_work_ledger.ActivityAndOwnershipTests.test_merged_pr_not_a_stop_report)",
+          "result": "ok"
+        },
+        {
+          "name": "test_ownership_claim_needs_handover (test_active_work_ledger.ActivityAndOwnershipTests.test_ownership_claim_needs_handover)",
+          "result": "ok"
+        },
+        {
+          "name": "test_pr_not_a_user_started_chat_claim (test_active_work_ledger.ActivityAndOwnershipTests.test_pr_not_a_user_started_chat_claim)",
+          "result": "ok"
+        },
+        {
+          "name": "test_same_writer_duplicate_scope_is_rejected (test_active_work_ledger.ActivityAndOwnershipTests.test_same_writer_duplicate_scope_is_rejected)",
+          "result": "ok"
+        },
+        {
+          "name": "test_shared_one_writer_is_not_duplicate_ownership (test_active_work_ledger.ActivityAndOwnershipTests.test_shared_one_writer_is_not_duplicate_ownership)",
+          "result": "ok"
+        },
+        {
+          "name": "test_start_report_cannot_establish_an_explicit_stop (test_active_work_ledger.ActivityAndOwnershipTests.test_start_report_cannot_establish_an_explicit_stop)",
+          "result": "ok"
+        },
+        {
+          "name": "test_started_status_requires_explicit_report_disposition (test_active_work_ledger.ActivityAndOwnershipTests.test_started_status_requires_explicit_report_disposition)",
+          "result": "ok"
+        },
+        {
+          "name": "test_approval_requires_reference (test_active_work_ledger.AuthorityTests.test_approval_requires_reference)",
+          "result": "ok"
+        },
+        {
+          "name": "test_changing_confidence_cannot_manufacture_a_published_artifact (test_active_work_ledger.AuthorityTests.test_changing_confidence_cannot_manufacture_a_published_artifact)",
+          "result": "ok"
+        },
+        {
+          "name": "test_checkpoint_choice_is_not_merge_approval (test_active_work_ledger.AuthorityTests.test_checkpoint_choice_is_not_merge_approval)",
+          "result": "ok"
+        },
+        {
+          "name": "test_conditional_review_is_not_pass (test_active_work_ledger.AuthorityTests.test_conditional_review_is_not_pass)",
+          "result": "ok"
+        },
+        {
+          "name": "test_draft_does_not_become_ready_from_passes (test_active_work_ledger.AuthorityTests.test_draft_does_not_become_ready_from_passes)",
+          "result": "ok"
+        },
+        {
+          "name": "test_earlier_head_approval_cannot_transfer (test_active_work_ledger.AuthorityTests.test_earlier_head_approval_cannot_transfer)",
+          "result": "ok"
+        },
+        {
+          "name": "test_explicit_owner_approval_positive (test_active_work_ledger.AuthorityTests.test_explicit_owner_approval_positive)",
+          "result": "ok"
+        },
+        {
+          "name": "test_issue_cannot_be_closed_by_unrelated_pr_metadata (test_active_work_ledger.AuthorityTests.test_issue_cannot_be_closed_by_unrelated_pr_metadata)",
+          "result": "ok"
+        },
+        {
+          "name": "test_merge_conflict_blocks_ready (test_active_work_ledger.AuthorityTests.test_merge_conflict_blocks_ready)",
+          "result": "ok"
+        },
+        {
+          "name": "test_merged_child_does_not_close_its_verified_open_parent (test_active_work_ledger.AuthorityTests.test_merged_child_does_not_close_its_verified_open_parent)",
+          "result": "ok"
+        },
+        {
+          "name": "test_no_phantom_approval_reference (test_active_work_ledger.AuthorityTests.test_no_phantom_approval_reference)",
+          "result": "ok"
+        },
+        {
+          "name": "test_no_required_gates_is_not_ready (test_active_work_ledger.AuthorityTests.test_no_required_gates_is_not_ready)",
+          "result": "ok"
+        },
+        {
+          "name": "test_nonowner_cannot_grant_owner_merge (test_active_work_ledger.AuthorityTests.test_nonowner_cannot_grant_owner_merge)",
+          "result": "ok"
+        },
+        {
+          "name": "test_not_started_cannot_be_published_from_a_user_report (test_active_work_ledger.AuthorityTests.test_not_started_cannot_be_published_from_a_user_report)",
+          "result": "ok"
+        },
+        {
+          "name": "test_old_base_blocks_ready (test_active_work_ledger.AuthorityTests.test_old_base_blocks_ready)",
+          "result": "ok"
+        },
+        {
+          "name": "test_other_pr_approval_cannot_transfer (test_active_work_ledger.AuthorityTests.test_other_pr_approval_cannot_transfer)",
+          "result": "ok"
+        },
+        {
+          "name": "test_ready_is_not_approval (test_active_work_ledger.AuthorityTests.test_ready_is_not_approval)",
+          "result": "ok"
+        },
+        {
+          "name": "test_ready_without_independent_review (test_active_work_ledger.AuthorityTests.test_ready_without_independent_review)",
+          "result": "ok"
+        },
+        {
+          "name": "test_recommendation_is_not_owner_approval (test_active_work_ledger.AuthorityTests.test_recommendation_is_not_owner_approval)",
+          "result": "ok"
+        },
+        {
+          "name": "test_reported_execution_is_not_verified_readiness (test_active_work_ledger.AuthorityTests.test_reported_execution_is_not_verified_readiness)",
+          "result": "ok"
+        },
+        {
+          "name": "test_same_source_review_for_another_pr_is_not_acceptance (test_active_work_ledger.AuthorityTests.test_same_source_review_for_another_pr_is_not_acceptance)",
+          "result": "ok"
+        },
+        {
+          "name": "test_self_review_cannot_be_independent_pass (test_active_work_ledger.AuthorityTests.test_self_review_cannot_be_independent_pass)",
+          "result": "ok"
+        },
+        {
+          "name": "test_unbacked_integrated (test_active_work_ledger.AuthorityTests.test_unbacked_integrated)",
+          "result": "ok"
+        },
+        {
+          "name": "test_verified_linux_cannot_promote_reported_windows_to_ready (test_active_work_ledger.AuthorityTests.test_verified_linux_cannot_promote_reported_windows_to_ready)",
+          "result": "ok"
+        },
+        {
+          "name": "test_verified_merge_is_integrated_without_invented_approval (test_active_work_ledger.AuthorityTests.test_verified_merge_is_integrated_without_invented_approval)",
+          "result": "ok"
+        },
+        {
+          "name": "test_coordination_cycles_are_not_integration_cycles (test_active_work_ledger.DependencyTests.test_coordination_cycles_are_not_integration_cycles)",
+          "result": "ok"
+        },
+        {
+          "name": "test_hard_cycles (test_active_work_ledger.DependencyTests.test_hard_cycles)",
+          "result": "ok"
+        },
+        {
+          "name": "test_invalid_dependency_kind (test_active_work_ledger.DependencyTests.test_invalid_dependency_kind)",
+          "result": "ok"
+        },
+        {
+          "name": "test_missing_dependency (test_active_work_ledger.DependencyTests.test_missing_dependency)",
+          "result": "ok"
+        },
+        {
+          "name": "test_ready_cannot_bypass_prerequisite (test_active_work_ledger.DependencyTests.test_ready_cannot_bypass_prerequisite)",
+          "result": "ok"
+        },
+        {
+          "name": "test_real_stack_requires_ordered_edge (test_active_work_ledger.DependencyTests.test_real_stack_requires_ordered_edge)",
+          "result": "ok"
+        },
+        {
+          "name": "test_self_dependency (test_active_work_ledger.DependencyTests.test_self_dependency)",
+          "result": "ok"
+        },
+        {
+          "name": "test_wrong_stack_base (test_active_work_ledger.DependencyTests.test_wrong_stack_base)",
+          "result": "ok"
+        },
+        {
+          "name": "test_all_six_results_survive_rendering (test_active_work_ledger.QualificationTests.test_all_six_results_survive_rendering)",
+          "result": "ok"
+        },
+        {
+          "name": "test_analysis_is_not_an_executed_pass (test_active_work_ledger.QualificationTests.test_analysis_is_not_an_executed_pass)",
+          "result": "ok"
+        },
+        {
+          "name": "test_equal_name_does_not_prove_equal_tree (test_active_work_ledger.QualificationTests.test_equal_name_does_not_prove_equal_tree)",
+          "result": "ok"
+        },
+        {
+          "name": "test_historical_pass_cannot_qualify_ready (test_active_work_ledger.QualificationTests.test_historical_pass_cannot_qualify_ready)",
+          "result": "ok"
+        },
+        {
+          "name": "test_historical_pass_retains_its_source (test_active_work_ledger.QualificationTests.test_historical_pass_retains_its_source)",
+          "result": "ok"
+        },
+        {
+          "name": "test_inapplicable_requires_evidenced_rationale (test_active_work_ledger.QualificationTests.test_inapplicable_requires_evidenced_rationale)",
+          "result": "ok"
+        },
+        {
+          "name": "test_no_go_cannot_hide_its_blocker (test_active_work_ledger.QualificationTests.test_no_go_cannot_hide_its_blocker)",
+          "result": "ok"
+        },
+        {
+          "name": "test_pass_cannot_be_reattached_to_another_sha (test_active_work_ledger.QualificationTests.test_pass_cannot_be_reattached_to_another_sha)",
+          "result": "ok"
+        },
+        {
+          "name": "test_pass_cannot_claim_unexecuted_runtime (test_active_work_ledger.QualificationTests.test_pass_cannot_claim_unexecuted_runtime)",
+          "result": "ok"
+        },
+        {
+          "name": "test_pass_without_evidence (test_active_work_ledger.QualificationTests.test_pass_without_evidence)",
+          "result": "ok"
+        },
+        {
+          "name": "test_pass_without_source (test_active_work_ledger.QualificationTests.test_pass_without_source)",
+          "result": "ok"
+        },
+        {
+          "name": "test_pass_without_tree (test_active_work_ledger.QualificationTests.test_pass_without_tree)",
+          "result": "ok"
+        },
+        {
+          "name": "test_physical_347_no_go_survives_cpu_pass (test_active_work_ledger.QualificationTests.test_physical_347_no_go_survives_cpu_pass)",
+          "result": "ok"
+        },
+        {
+          "name": "test_platform_overclaim (test_active_work_ledger.QualificationTests.test_platform_overclaim)",
+          "result": "ok"
+        },
+        {
+          "name": "test_scope_overclaim (test_active_work_ledger.QualificationTests.test_scope_overclaim)",
+          "result": "ok"
+        },
+        {
+          "name": "test_skipped_workflow_not_pass (test_active_work_ledger.QualificationTests.test_skipped_workflow_not_pass)",
+          "result": "ok"
+        },
+        {
+          "name": "test_synthetic_merge_needs_explicit_equivalence (test_active_work_ledger.QualificationTests.test_synthetic_merge_needs_explicit_equivalence)",
+          "result": "ok"
+        },
+        {
+          "name": "test_unknown_and_not_run_cannot_borrow_pass (test_active_work_ledger.QualificationTests.test_unknown_and_not_run_cannot_borrow_pass)",
+          "result": "ok"
+        },
+        {
+          "name": "test_verified_tree_equivalence (test_active_work_ledger.QualificationTests.test_verified_tree_equivalence)",
+          "result": "ok"
+        },
+        {
+          "name": "test_bad_staleness_timestamp_is_diagnostic (test_active_work_ledger.SerializationAndCliTests.test_bad_staleness_timestamp_is_diagnostic)",
+          "result": "ok"
+        },
+        {
+          "name": "test_canonical_output_cannot_overwrite_yaml (test_active_work_ledger.SerializationAndCliTests.test_canonical_output_cannot_overwrite_yaml)",
+          "result": "ok"
+        },
+        {
+          "name": "test_cli_malformed_yaml_returns_error_without_traceback (test_active_work_ledger.SerializationAndCliTests.test_cli_malformed_yaml_returns_error_without_traceback)",
+          "result": "ok"
+        },
+        {
+          "name": "test_cli_roundtrip_and_check_are_nonmutating (test_active_work_ledger.SerializationAndCliTests.test_cli_roundtrip_and_check_are_nonmutating)",
+          "result": "ok"
+        },
+        {
+          "name": "test_deep_yaml_is_bounded (test_active_work_ledger.SerializationAndCliTests.test_deep_yaml_is_bounded)",
+          "result": "ok"
+        },
+        {
+          "name": "test_default_has_no_network_or_current_clock (test_active_work_ledger.SerializationAndCliTests.test_default_has_no_network_or_current_clock)",
+          "result": "ok"
+        },
+        {
+          "name": "test_invalid_ledger_never_renders (test_active_work_ledger.SerializationAndCliTests.test_invalid_ledger_never_renders)",
+          "result": "ok"
+        },
+        {
+          "name": "test_invalid_nested_types_produce_diagnostics_not_tracebacks (test_active_work_ledger.SerializationAndCliTests.test_invalid_nested_types_produce_diagnostics_not_tracebacks)",
+          "result": "ok"
+        },
+        {
+          "name": "test_malformed_container_shapes_report_errors (test_active_work_ledger.SerializationAndCliTests.test_malformed_container_shapes_report_errors)",
+          "result": "ok"
+        },
+        {
+          "name": "test_markdown_injection_is_escaped (test_active_work_ledger.SerializationAndCliTests.test_markdown_injection_is_escaped)",
+          "result": "ok"
+        },
+        {
+          "name": "test_oversized_input_is_bounded (test_active_work_ledger.SerializationAndCliTests.test_oversized_input_is_bounded)",
+          "result": "ok"
+        },
+        {
+          "name": "test_repeated_render_is_byte_identical (test_active_work_ledger.SerializationAndCliTests.test_repeated_render_is_byte_identical)",
+          "result": "ok"
+        },
+        {
+          "name": "test_stable_entity_order (test_active_work_ledger.SerializationAndCliTests.test_stable_entity_order)",
+          "result": "ok"
+        },
+        {
+          "name": "test_staleness_warns_without_mutating_status_or_render (test_active_work_ledger.SerializationAndCliTests.test_staleness_warns_without_mutating_status_or_render)",
+          "result": "ok"
+        },
+        {
+          "name": "test_strict_yaml_negative_controls (test_active_work_ledger.SerializationAndCliTests.test_strict_yaml_negative_controls)",
+          "result": "ok"
+        },
+        {
+          "name": "test_boolean_is_not_an_integer (test_active_work_ledger.StructureTests.test_boolean_is_not_an_integer)",
+          "result": "ok"
+        },
+        {
+          "name": "test_change_log_covers_all_lanes (test_active_work_ledger.StructureTests.test_change_log_covers_all_lanes)",
+          "result": "ok"
+        },
+        {
+          "name": "test_complete_seed_roundtrip (test_active_work_ledger.StructureTests.test_complete_seed_roundtrip)",
+          "result": "ok"
+        },
+        {
+          "name": "test_coverage_count_mismatch (test_active_work_ledger.StructureTests.test_coverage_count_mismatch)",
+          "result": "ok"
+        },
+        {
+          "name": "test_coverage_missing_open_pr (test_active_work_ledger.StructureTests.test_coverage_missing_open_pr)",
+          "result": "ok"
+        },
+        {
+          "name": "test_duplicate_coverage (test_active_work_ledger.StructureTests.test_duplicate_coverage)",
+          "result": "ok"
+        },
+        {
+          "name": "test_duplicate_evidence (test_active_work_ledger.StructureTests.test_duplicate_evidence)",
+          "result": "ok"
+        },
+        {
+          "name": "test_duplicate_workstream (test_active_work_ledger.StructureTests.test_duplicate_workstream)",
+          "result": "ok"
+        },
+        {
+          "name": "test_exhaustion_not_guessed (test_active_work_ledger.StructureTests.test_exhaustion_not_guessed)",
+          "result": "ok"
+        },
+        {
+          "name": "test_future_observation_rejected (test_active_work_ledger.StructureTests.test_future_observation_rejected)",
+          "result": "ok"
+        },
+        {
+          "name": "test_index_without_classification (test_active_work_ledger.StructureTests.test_index_without_classification)",
+          "result": "ok"
+        },
+        {
+          "name": "test_lane_missing_from_pr_index (test_active_work_ledger.StructureTests.test_lane_missing_from_pr_index)",
+          "result": "ok"
+        },
+        {
+          "name": "test_merged_pr_not_open_inventory (test_active_work_ledger.StructureTests.test_merged_pr_not_open_inventory)",
+          "result": "ok"
+        },
+        {
+          "name": "test_missing_or_unsafe_evidence_links (test_active_work_ledger.StructureTests.test_missing_or_unsafe_evidence_links)",
+          "result": "ok"
+        },
+        {
+          "name": "test_pagination_gap (test_active_work_ledger.StructureTests.test_pagination_gap)",
+          "result": "ok"
+        },
+        {
+          "name": "test_seed_retention_is_not_optional (test_active_work_ledger.StructureTests.test_seed_retention_is_not_optional)",
+          "result": "ok"
+        },
+        {
+          "name": "test_terminal_pagination_required (test_active_work_ledger.StructureTests.test_terminal_pagination_required)",
+          "result": "ok"
+        },
+        {
+          "name": "test_unknown_safety_field_not_ignored (test_active_work_ledger.StructureTests.test_unknown_safety_field_not_ignored)",
+          "result": "ok"
+        },
+        {
+          "name": "test_unknown_stage_and_invalid_shapes (test_active_work_ledger.StructureTests.test_unknown_stage_and_invalid_shapes)",
+          "result": "ok"
+        },
+        {
+          "name": "test_unreferenced_pr (test_active_work_ledger.StructureTests.test_unreferenced_pr)",
+          "result": "ok"
+        },
+        {
+          "name": "test_wrong_pagination_source (test_active_work_ledger.StructureTests.test_wrong_pagination_source)",
+          "result": "ok"
+        }
+      ]
+    },
+    {
+      "gate": "ledger-validate",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/operations/active_work_ledger.py",
+        "validate"
+      ],
+      "started_at_utc": "2026-11-04T15:53:19.653956+00:00",
+      "elapsed_seconds": 0.553,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "18701f027fecaaca7798da17f97e6901f00fcccac987f0ba697318f84c54cca3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "ledger-render",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/operations/active_work_ledger.py",
+        "render",
+        "--output",
+        "/workspace/scratch/8139d15aa159/evidence/api-committed-gates/dashboard.md"
+      ],
+      "started_at_utc": "2026-11-04T15:53:19.654155+00:00",
+      "elapsed_seconds": 0.557,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "edfaf50cc6372a37f0e0cd6245cd538f98ef0e99d7461004600ffc3a085d94bb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "ledger-check",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/operations/active_work_ledger.py",
+        "check"
+      ],
+      "started_at_utc": "2026-11-04T15:53:19.654523+00:00",
+      "elapsed_seconds": 0.584,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "7bb1ec9aa0ae83d8438cf5f6853ceb617b9dada536ac8297cae42789fca8e7be",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "ledger-summary",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/operations/active_work_ledger.py",
+        "summary"
+      ],
+      "started_at_utc": "2026-11-04T15:53:19.654792+00:00",
+      "elapsed_seconds": 0.527,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "d34827fe44d668ac17d2e3df35faab18d71e52dae9f039e4ad146639ecc8c494",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "staleness",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/operations/active_work_ledger.py",
+        "validate",
+        "--as-of",
+        "2026-11-07T15:30:00Z"
+      ],
+      "started_at_utc": "2026-11-04T15:53:19.657954+00:00",
+      "elapsed_seconds": 0.529,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "18701f027fecaaca7798da17f97e6901f00fcccac987f0ba697318f84c54cca3",
+      "stderr_sha256": "4f98cc9dde05bb64d25c9576ae63281fef14ce942b460c2099e6e1769415b95c"
+    },
+    {
+      "gate": "docs",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/ci/check_docs.py",
+        "--json",
+        "/workspace/scratch/8139d15aa159/evidence/api-committed-gates/docs.json"
+      ],
+      "started_at_utc": "2026-11-04T15:53:19.658666+00:00",
+      "elapsed_seconds": 1.479,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "b0d81df545cd250efd8eec9ca470c7a64cf59b23604bd75a1dc3731a22b9105e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "repository",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/ci/check_repository.py",
+        "--json",
+        "/workspace/scratch/8139d15aa159/evidence/api-committed-gates/repository.json"
+      ],
+      "started_at_utc": "2026-11-04T15:53:19.659087+00:00",
+      "elapsed_seconds": 1.598,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "ad2c0f1d90758ed533abcf048099bf9f14daa14146807bcd97708e096792fcff",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "repository-materialized",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "/workspace/scratch/8139d15aa159/evidence/api-committed-gates/repository-materialized.json"
+      ],
+      "started_at_utc": "2026-11-04T15:53:20.182234+00:00",
+      "elapsed_seconds": 1.415,
+      "return_code": 1,
+      "status": "FAIL",
+      "stdout_sha256": "7e721b31427f1670401cf238e1a1527deb8c8693b7bf26ae7f0eb87992387265",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "m11",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "/workspace/scratch/8139d15aa159/evidence/api-committed-gates/m11.json"
+      ],
+      "started_at_utc": "2026-11-04T15:53:20.186728+00:00",
+      "elapsed_seconds": 0.167,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "material-compatibility",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/material_catalogue/compatibility.py",
+        "--check"
+      ],
+      "started_at_utc": "2026-11-04T15:53:20.206867+00:00",
+      "elapsed_seconds": 0.251,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "d2396ee9d4e553aacaae6abf881f4eb7da275a3508517c04d415c67091888a8d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "material-compiler",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/material_catalogue/compiler.py",
+        "--check"
+      ],
+      "started_at_utc": "2026-11-04T15:53:20.212056+00:00",
+      "elapsed_seconds": 0.091,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "bc00bbaa8af2e9783c6242fdca6a311bfd422d439248b0952bf8c94199f76acc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "retrieval-frozen",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "/workspace/scratch/8139d15aa159/evidence/api-committed-gates/frozen.json"
+      ],
+      "started_at_utc": "2026-11-04T15:53:20.238378+00:00",
+      "elapsed_seconds": 0.564,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "67ace3ea3f18466a4009c40e22508c33baeaad6daeb471d2e369279044105fdd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "retrieval-challenges",
+      "command": [
+        "/workspace/scratch/8139d15aa159/evidence/ledger-venv/bin/python",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "/workspace/scratch/8139d15aa159/evidence/api-committed-gates/challenges.json"
+      ],
+      "started_at_utc": "2026-11-04T15:53:20.303640+00:00",
+      "elapsed_seconds": 1.98,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "1b481c95be56889214dd51a080b7d8ebcbbf6849ace6985ddf3539ab39f16554",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "gate": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+      ],
+      "started_at_utc": "2026-11-04T15:53:20.353757+00:00",
+      "elapsed_seconds": 0.015,
+      "return_code": 0,
+      "status": "PASS",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "render_equals_canonical": true,
+  "ledger_sha256": "554aade8383d17dd64685e8b157f5acf48ad15e653451a6690a067985ed9d126",
+  "dashboard_sha256": "0a32bdfa25b54a574ce54cec2e02fa9ee94157ef4f269e68357e4a87aa47a30f",
+  "retrieval": {
+    "frozen": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "fixture_unchanged": true,
+      "evaluator_unchanged": true,
+      "canonical_rank_changes": [],
+      "returned_context_changes": [],
+      "before_chunks": 1593,
+      "after_chunks": 1594,
+      "misses": []
+    },
+    "challenges": {
+      "summary": {
+        "questions": 157,
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8734,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "6590b94e902079f2545c8886a5131bc7aff58ccb21e2ee987463f0b9ab34e570",
+      "fixture_unchanged": true,
+      "evaluator_unchanged": true,
+      "canonical_rank_changes": [],
+      "returned_context_changes": [],
+      "before_chunks": 1593,
+      "after_chunks": 1594,
+      "misses": [
+        "LCB03"
+      ]
+    }
+  },
+  "materialized_runtime_errors": [
+    "runtime object is not materialized: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "runtime object is not materialized: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "runtime object is not materialized: godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+  ],
+  "limitations": [
+    "No native/Godot/Web gameplay execution was performed for this documentation/tooling change.",
+    "Repository pointer/provenance PASS does not qualify the 18 unmaterialized runtime payloads.",
+    "USABLE02 remains rank5. Full canonical/source expansion is needed for the cancellation/lease/recoil fact, as on baseline.",
+    "Snapshot validation checks declared provenance consistency offline; it does not authenticate URLs or current GitHub state."
+  ]
+}

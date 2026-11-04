@@ -170,6 +170,16 @@ The independent read-only gate run and coordinator rerun agree. Runs use Python
 3.12.14 with the repository's hash-pinned PyYAML 6.0.2. The exact-commit receipt and
 publication PR body identify the resulting commit/tree and repeated gates.
 
+The committed [validation receipt](active-ledger-001-20261104/validation.json)
+records a clean, unchanged execution at
+[`b7bae090fea4061ee322748da348a2beba593f15`](https://github.com/techrote/cybersand/commit/b7bae090fea4061ee322748da348a2beba593f15),
+tree `1788e01da002a675b1711f66c138d664aacc4030`, including exact commands, return
+codes, all 99 test names, log hashes and changed-file content hashes. This later
+receipt-publication commit changes only this audit and adds the receipt; the
+reviewed nine-file manifest remains unchanged. The complete gate set is repeated
+on the final publication head and reported in the PR body, avoiding a
+self-referential commit hash inside its own receipt.
+
 `check_repository.py --require-materialized` **fails** with exactly 18 absent LFS
 payloads and no other errors. Gameplay/native/Godot/Web execution is **NOT RUN**
 for this documentation/tooling change. Automatically triggered hosted checks have
