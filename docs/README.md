@@ -18,15 +18,28 @@ at main `7ef4856e`. The separately assigned
 migrates only Main display names, scopes current proof receipts and records the
 new apparatus dependency. Its [guide](operations/material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
 and [original evidence](audits/2026-11-04-mat-auth353b-display-names.md) distinguish
-static checks from the mandatory actual B consumer report. The later
-[#374 reconciliation](operations/material-catalogue-shadow.md#current-main-b-admission-after-374--2026-11-04)
-updates only B's accepted executable baseline to `01f9b7c8`, preserving the
-`7ef4856e` display oracle and `0fd4af59` compatibility authority. Its
-[new-source record](audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
-ends at independent admission review **before Ready**, with #384 Draft and no
-merge. Other consumers and #354–#356 keep their separate gates;
-native/fallback physics, the original legacy lock and historical evidence remain
-unchanged. #358's experimental IDs remain unintegrated.
+static checks from the mandatory actual B consumer report. The
+[#377 reconciliation](operations/material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04)
+updates only B's accepted executable baseline to `0103de80`, including the
+accepted native liveness probe, while preserving the `7ef4856e` display oracle
+and `0fd4af59` compatibility authority. The
+[new-source record](audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+ends at fresh independent admission review **before Ready**, with #384 Draft
+and no merge. The earlier #374/c6d checkpoint and source-bound GO remain
+historical; they do not approve this new candidate. Other production consumers
+remain separately gated; native/fallback physics, the legacy lock and historical
+evidence are unchanged. #358's experimental IDs remain unintegrated.
+
+The [#354 Phase A investigation](operations/material-liveness-investigation.md)
+merged through [#377](https://github.com/techrote/cybersand/pull/377) at
+`0103de80d11304388868f89f7b26c672ad6100ad` on 4 November 2026, 18:14:18 UTC.
+It demonstrates lost isolated MoltenGlass cooling, distinguishes existing mutual
+heating and preserves documented generic yielding rest. Its tests, tooling, CI,
+documentation and retained evidence change no production behavior. The
+[Phase A boundary](architecture/material-authoring-catalogue-plan.md#15-material-liveness-phase-a-and-production-admission--2026-11-04)
+keeps the H1 correction and #355/#356 separately gated; #354 remains open and H1
+unrepaired. Exact source, failed attempts, review and platform outcomes remain
+in the [findings audit](audits/2026-11-04-mat354-findings.md) and #377 ledger.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),

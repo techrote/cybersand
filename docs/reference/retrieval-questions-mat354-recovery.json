@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-04",
+  "scope": "Additive stalled-session recovery questions; original MAT354 eight, frozen general and challenge fixtures remain unchanged. Fresh source-qualified evidence must not relabel unavailable historical raw files.",
+  "questions": [
+    {
+      "id": "MAT354-RECOVERY-01",
+      "query": "Where are the recovered material liveness evidence and final Windows/Linux qualification, and does the packet recover the stalled session's original local raw files?",
+      "canonical": ["operations/material-liveness-investigation.md"],
+      "facts": [
+        "The recovery qualification and current evidence index identify retained transports, exact sources and independent reviews.",
+        "Hosted run41817101140 at source1a06a0d has authenticated552-case Windows/Linux execution with88,384 matching steps.",
+        "Original prior-session local raw files were unpublished and unavailable; their historical identities and diagnoses are preserved, but fresh passing runs do not recover them."
+      ],
+      "sources": ["operations/material-liveness-investigation.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354-RECOVERY-02",
+      "query": "Does preserving generic liquid legacy rest establish owner approval of Brine late-rest behavior or authorize production implementation?",
+      "canonical": ["operations/material-liveness-investigation.md"],
+      "facts": [
+        "Preserve the current generic resting policy; desired Brine late rest remains unresolved.",
+        "The investigation establishes no new constitutive heap or stress law and grants no production implementation authorization."
+      ],
+      "sources": ["operations/material-liveness-investigation.md"],
+      "revision_sensitive": true
+    }
+  ]
+}

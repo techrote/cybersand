@@ -10,7 +10,42 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-AUTH 384 post-377 B admission — 2026-11-04
+
+The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+separates the source-bound independent GO for `c6d1603f` / `01f9b7c8` from the
+new candidate reconciled against accepted main
+`0103de80d11304388868f89f7b26c672ad6100ad`, tree
+`0ba07dc799afca43716bbab966f48266fa924718`. The old 32-command qualification,
+four-stage B runtime proof and terminal hosted runs41863226175/41863226196 remain
+historical receipts. They are not execution at the new published head.
+
+Accepted #377's 145-path delta adds one B executable, the native liveness probe.
+The existing suffix policy excludes its JSON fixture; both retain authenticated
+accepted bytes. The measured accepted inventory grows 660→661, and the new
+candidate has 662 entries. Frozen compatibility stays at `0fd4af59`, the
+277-case display oracle stays at `7ef4856e`, and only B admission moves to
+`0103de80`. No production/native/material authority or MicroScenario source-list
+entry changes in this reconciliation.
+
+Fresh exact-published-head compatibility, native/shadow v2 and four-stage actual
+B reports, source manifests, raw process output and hashes belong to the
+[#384 ledger](https://github.com/techrote/cybersand/pull/384) and retained packet.
+Normal Draft Documentation/provenance and report-only advisory require terminal
+step evidence and an actual checkout SHA/tree. A tree-equivalent synthetic merge
+is recorded distinctly from the candidate. No Native skip authority follows.
+
+The endpoint is **Draft before Ready**, with a fresh strictly read-only
+**GO TO READY / CONDITIONAL / NO-GO** request for the new candidate plus accepted
+main. No Ready transition, merge, broad issue closure or imported active branch
+is authorized. Later Ready-state matrices, materialized provenance, pinned-template
+Web export/package loading, lookup/startup/memory measurements and final independent
+integration review remain separate. Required poison failures and all historical
+failed, missing or skipped evidence remain explicitly qualified.
+
 ## MAT-AUTH 384 current-main B admission — 2026-11-04
+
+**Historical #374/c6d reconciliation checkpoint; superseded for current B admission above.**
 
 The [reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
 separates reviewed #384 `bbed081b`, accepted #374/main `01f9b7c8` and the resulting
@@ -49,6 +84,52 @@ or rendered pixels. Old/new apparatus sets cannot be compared as identical;
 binary hashes come from actual artifacts. Historical v1 reports/readers remain
 unchanged and do not qualify this candidate. The authorized endpoint is a draft
 independent-review handoff with no merge or broad issue closure.
+
+## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
+
+**Accepted integration update:** #377 merged as
+`0103de80d11304388868f89f7b26c672ad6100ad` on 4 November 2026, 18:14:18 UTC;
+tree `0ba07dc799afca43716bbab966f48266fa924718`. Its [PR ledger](https://github.com/techrote/cybersand/pull/377)
+owns the final-candidate platform/provenance gates and separate independent GO.
+The retained chronology below describes the earlier evidence and integration
+assignment. It is not a new run at the reconciled #384 head; historical failures,
+unavailable raw files and proof limits remain unchanged. H1 remains unrepaired.
+
+The later [Phase A integration gate](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration)
+authorizes current-main reconciliation and guarded integration of #377. Its live
+PR ledger owns fresh final-head, ready-state and independent-review results;
+the retained execution records below keep their original sources and limitations.
+No integration permission or passing apparatus result repairs H1 or closes #354.
+
+The [preregistration](../audits/2026-11-04-mat354-preregistration.md),
+[causal findings](../audits/2026-11-04-mat354-findings.md) and
+[correction-admission memo](../audits/2026-11-04-mat354-correction-admission.md)
+bind real native World fixtures to accepted production source `7ef4856e` and
+separate apparatus commits, compiled inputs, executables and retained raw results.
+The [guide](../operations/material-liveness-investigation.md) owns reproduction;
+the findings and linked PR ledger own exact completed, failed and unexecuted gates.
+
+Independent review examines source/observer authority, physical controls, actual
+kernel and worker evidence, conservation, raw identity and minimal deadline design.
+Initial apparatus limitations, the truncated-output failure, executable-mode
+failure and LeakSanitizer environment refusal retain their published identities
+and diagnoses. **Recovery correction:** their unpublished original local raw
+files are unavailable. The
+[recovery qualification record](../audits/2026-11-04-mat354-recovery-qualification.md)
+distinguishes them from recovered hosted failures and newly retained executions.
+A receipt saying
+`EXECUTED` does not override failed raw authentication. Corrections require a new
+source/run identity; draft-skipped jobs remain skipped. Hosted run41817101140
+at `1a06a0d88d295ed99983e7b1f6149b9fff84f1b3` now has independently authenticated
+Windows/Linux552-case evidence and exact88,384-step cross-OS parity. The current
+index records fresh local sanitizer/protected-control results separately.
+Independent physical hardware and LeakSanitizer are not qualified.
+
+H1's lost isolated cooling opportunity is distinct from H2's executed mutual
+heating law and H3's documented generic yielding rest. Investigation results do
+not authorize production changes or close #354. The 27 protected sources and
+compatibility lock remain unchanged; no production runtime publication is part
+of this tests/tooling/documentation checkpoint.
 
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
 

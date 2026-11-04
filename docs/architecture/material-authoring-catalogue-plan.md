@@ -3,24 +3,27 @@ title: Canonical material catalogue and interaction authoring — adopted Planne
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Owner-adopted Planned material-authoring baseline; section 14 records the separately assigned draft 353-B Main display-name consumer and scoped proof transition; sections 1–13 retain their historical proposal, review, adoption and A-only integration boundaries
+scope: Owner-adopted Planned material-authoring baseline; section 14 records the draft 353-B Main-label consumer and post-377 admission, section 15 retains accepted Phase A and its production boundary; sections 1–13 preserve historical proposal, review, adoption and A-only integration
 last-reviewed: 2026-11-04
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
 
 # Canonical material catalogue and interaction authoring — adopted Planned baseline
 
-**Owner-adopted Planned baseline; accepted #353-A foundation and one separately
-assigned #353-B candidate consumer — 2026-11-04.** Documentation #357 and A-only
-implementation #371 are merged. [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
-records accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`.
+**Owner-adopted Planned baseline; accepted #353-A and #354 Phase A, with one
+separately assigned draft #353-B consumer — 2026-11-04.** Documentation #357 and
+A-only implementation #371 are merged. [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
+records accepted A-only main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`.
+[#377](https://github.com/techrote/cybersand/pull/377) subsequently merged the
+tests/tooling/evidence-only liveness investigation as `0103de80`; the
+[Phase A boundary](#15-material-liveness-phase-a-and-production-admission--2026-11-04)
+preserves its findings and separately pending production correction.
 [Section 14](#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04)
-records the owner's later assignment: generated Main labels, scoped current
-proofs and an apparatus source transition, ending at a draft independent-review
-handoff. The later #374/current-main reconciliation changes only the accepted
-B executable-source baseline; its old display oracle and 27-owner authority
-remain frozen. Independent admission review must precede Ready-for-review.
-No merge or other production consumer migration is authorized.
+records the owner-assigned generated Main labels, scoped current proofs and
+apparatus source transition. Its post-#377 reconciliation changes only the
+accepted B executable baseline to `0103de80`; the display oracle and 27-owner
+authority stay frozen. Fresh independent admission review must precede Ready.
+No #384 merge or other production consumer migration is authorized.
 
 The [current-main admission correction](#11-current-main-review-and-implementation-admission--2026-11-03)
 and [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
@@ -29,8 +32,10 @@ retain the technical design and its evidence. Sections 1–10 retain the origina
 Sections 11–13 preserve the later review, documentation-adoption and A-only
 integration boundaries, including their original assignment statements.
 Their source identities and evidence remain historical even where reverified;
-section 14 owns this candidate's narrower current admission. The broader design
-and #354–#356 remain separately gated.
+section 14 owns the draft Main-label admission and section 15 retains accepted
+Phase A's separate production boundary. The broader migration, H1 correction
+and #355/#356 remain separately gated. The [#371 ledger](https://github.com/techrote/cybersand/pull/371)
+owns its final-head, merge and post-merge receipts.
 
 **Status: Planned broader migration; one implemented labels-only candidate.**
 The new Main presentation authority changes no native or fallback material
@@ -58,6 +63,7 @@ source checks alone do not establish actual UI or gameplay acceptance.
 12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates.
 13. [Bounded compatibility tooling and adopted-main reconciliation](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) — implemented shadow foundation, source-preserving integration and separate consumer-migration gates.
 14. [Bounded Main display-name consumer and proof transition](#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04) — the separately assigned labels-only candidate, scoped current proof and draft review boundary.
+15. [Material liveness Phase A and production admission](#15-material-liveness-phase-a-and-production-admission--2026-11-04) — merged foundation, three distinct findings and separately pending scheduler implementation.
 
 ## 1. Authority and preserved substrate
 
@@ -597,6 +603,11 @@ or automatic inheritance.
 
 ## 13. Bounded compatibility tooling and adopted-main reconciliation — 2026-11-04
 
+**Historical integration assignment.** #371 subsequently merged at `7ef4856e`.
+The following qualification and unstarted-successor statements retain their
+original scope; section 14 records the separate Main-label candidate and section
+15 retains the accepted #354 investigation boundary.
+
 **Current shadow implementation; guarded integration under qualification.**
 The owner separately requested implementation of the review corrections and
 compatibility mitigations. [PR #371](https://github.com/techrote/cybersand/pull/371)
@@ -649,7 +660,8 @@ owns implementation details and commands; the
 [dated B evidence](../audits/2026-11-04-mat-auth353b-display-names.md) owns the
 original source, runtime and artifact qualification. The later
 [#374 reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
-keeps new-source evidence separate. The deliverable stays a draft PR for
+keeps its evidence historical. The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+records the later accepted-main admission and fresh proof. The deliverable stays a draft PR for
 independent admission review, before Ready, with no merge, issue closure or
 import of other active branches.
 
@@ -661,8 +673,9 @@ bounded indexing replaces the old Main table; all public callers remain on the
 same method. Picker membership/order, semantic-family grouping, cycling,
 secondary material behavior, Worldgen, transport v1, shaders and saves have no
 cutover. The original compiler, catalogue, four full-shadow artifacts and native
-production owners stay unchanged. The accepted #374 benchmark is preserved as
-research apparatus through the source-admission transition below.
+production owners stay unchanged. The accepted #374 benchmark and #377
+liveness probe remain research apparatus through the source-admission transition
+below; #377 adds no production behavior or material authority.
 
 This admission also authorizes current schema-v2 compatibility/native/shadow
 receipts that separately identify unchanged native runtime authority, complete
@@ -678,19 +691,33 @@ digests and stale-policy refusal. The old display-output oracle independently
 remains at `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`, tree
 `36ce5a01e754a141c321f41cac7f1c6b6059c371`.
 
-**Current #374 reconciliation:** accepted main advanced to
+**Historical #374 reconciliation:** accepted main advanced to
 `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`, tree
 `4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`, after the original `bbed081b`
 independent review. Its added `native/bench/lcb201_pressure_idle_cost.cpp`
 correctly fails the original B path-set guard, although the protected owners,
-material domain and old Main/CellWorld source remain unchanged. The separate
-B admission now authenticates accepted native/Godot executable and routing
+material domain and old Main/CellWorld source remain unchanged. That separate
+B admission authenticated accepted native/Godot executable and routing
 sources against `01f9b7c8`. The benchmark's accepted bytes are included in that
 inventory; there is no benchmark exemption or permission for unknown files.
 The [three-baseline contract](../operations/material-catalogue-shadow.md#current-main-b-admission-after-374--2026-11-04)
 keeps this change separate from the historical display oracle and immutable A
 lock. The allowed consumer delta remains only the Main preload/method,
 generated labels resource and apparatus dependency entry.
+
+**Current post-#377 reconciliation:** accepted main is
+`0103de80d11304388868f89f7b26c672ad6100ad`, tree
+`0ba07dc799afca43716bbab966f48266fa924718`. Its single new executable-inventory
+entry is `native/tests/material_liveness_probe.cpp`; the existing 16-suffix
+policy excludes the new JSON fixture as test data. Accepted inventory grows
+660→661 and the reconciled candidate has 662 entries, including generated labels.
+The probe's accepted Git bytes must be authenticated, with no test-file or
+filename exemption. Main, the generated labels and the one apparatus source-list
+entry remain the only approved production consumer deviations. The
+[current three-baseline contract](../operations/material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04)
+keeps `0103de80` admission separate from frozen `0fd4af59` compatibility and
+historical `7ef4856e` display output. The earlier `c6d1603f` / `01f9b7c8`
+independent GO remains historical and does not approve this new head.
 
 Extra, renamed and indirect consumers remain refused. Later integrations
 touching the B inventory, including another Main writer such as #370, require
@@ -713,8 +740,9 @@ Adding the generated resource to `microscenario_identity.gd::SOURCES` deliberate
 changes current apparatus source hashes. Previous captures retain their original
 source sets and mixed-source refusal remains in force. Binary identities are
 measured from actual artifacts; source equality alone is not binary equality.
-#374's benchmark belongs to the complete B inventory, not the narrower
-MicroScenario `SOURCES` list; its admission does not change that apparatus list.
+The accepted #374 benchmark and #377 probe belong to the complete B inventory,
+not the narrower MicroScenario `SOURCES` list; their admission does not change
+that apparatus list.
 Rollback restores the consumer, generated dependency and matching proof boundary
 together, without save or World conversion.
 
@@ -723,3 +751,50 @@ remain separate. #358's unmerged experimental 132–137 are not accepted here.
 If accepted main expands the material domain, stop for a new scope decision.
 Broad #353/#352 remain open; other consumers, liveness/endpoint semantics and
 #356 editing require their separate assignments.
+
+<a id="14-material-liveness-phase-a-and-production-admission--2026-11-04"></a>
+
+## 15. Material liveness Phase A and production admission — 2026-11-04
+
+**Accepted Phase A integration — 4 November 2026, 18:14:18 UTC.**
+[#377](https://github.com/techrote/cybersand/pull/377) merged as
+`0103de80d11304388868f89f7b26c672ad6100ad`, with accepted tree
+`0ba07dc799afca43716bbab966f48266fa924718`. The integration preserves tests,
+tooling, CI, documentation and original evidence only. H1 remains unrepaired;
+#354 and #352 remain open. Neither this acceptance nor the separate draft
+Main-label candidate in section 14 authorizes a production liveness correction.
+The #377 ledger owns its exact-head qualification and independent final review.
+
+**Historical Phase A admission, preserved below.** Its earlier draft/unmerged
+hold was superseded by the separate guarded integration and completed merge.
+The technical boundaries, findings and source-qualified failures still apply;
+its old hold is not the current status of #377. The old section-14 anchor remains
+available for links in the untouched accepted investigation documents.
+
+**Current foundation; bounded investigation only.** Accepted main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` includes merged #371. The shadow
+compiler remains unconsumed by production; legacy native/fallback definitions
+and the 27-source compatibility lock remain authoritative and unchanged.
+The owner separately admits #354 Phase A tests, tooling, evidence and a draft
+PR. No production scheduler, thermal-law or generic retry change is admitted.
+
+| Mechanism | Phase A disposition | Next boundary |
+|---|---|---|
+| H1 isolated MoltenGlass cooling | Actual World controls demonstrate loss of a valid cooling opportunity after sleep | Recommend a narrowly scoped existing-block-deadline correction; implementation authorization pending |
+| H2 touching MoltenGlass retention | Executed neighboring heat resets the countdown to 180 under the current law | Preserve Current; any different pool lifetime needs an owner-admitted thermal experiment |
+| H3 generic CellularYield retry suppression | Current-source reproduction preserves the documented legacy resting approximation | Preserve Current; different trajectories need a separately versioned policy, not an assumed perpetual retry |
+
+The [investigation guide](../operations/material-liveness-investigation.md) owns
+reproduction; the [findings](../audits/2026-11-04-mat354-findings.md) retain exact
+source/executable identities, independent review, failed attempts and platform
+limits. The [correction memo](../audits/2026-11-04-mat354-correction-admission.md)
+targets the earliest eligible existing block deadline, with hot-at-180 and inert rest,
+shared obligations, masks, region pause, worker ownership and bounded work
+preserved. It does not introduce the illustrative section 6 `KernelOutcome` API.
+
+A future edit to protected `native/src/world.cpp` requires explicit owner
+authorization, a separately reviewed compatibility transition and appropriate
+runtime rebuild/publication/provenance. Updating expected hashes cannot replace
+that review. Keep #354 open and its Phase A PR draft/unmerged. #353-B migration,
+#355 reaction effects and #358/#347/#370/#373/#201 and Water phase/quantity work
+retain separate ownership; serialize any later shared production writes.

@@ -34,23 +34,31 @@ through [#371's final ledger](https://github.com/techrote/cybersand/pull/371#iss
 at main `7ef4856e`. The owner separately assigned the
 [bounded Main display-name candidate](../architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04).
 It replaces one presentation table with generated labels, scopes current proofs
-and authenticates the new apparatus dependency. Native/fallback physics and the
-original source locks remain unchanged. The [original B record](../audits/2026-11-04-mat-auth353b-display-names.md)
-retains that candidate's source and local proof. After accepted #374 advanced
-main to `01f9b7c8`, its new native benchmark required a separate
-[B inventory reconciliation](../operations/material-catalogue-shadow.md#current-main-b-admission-after-374--2026-11-04).
-The [new record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
-keeps the compatibility authority at `0fd4af59`, old display oracle at `7ef4856e`
-and current B admission at `01f9b7c8` distinct. The reconciled #384 candidate
-requires fresh proof and independent admission review **before Ready**.
+and authenticates the apparatus dependency. Native/fallback physics and original
+source locks remain unchanged. The [original B record](../audits/2026-11-04-mat-auth353b-display-names.md)
+and [#374 reconciliation](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+keep their tested sources and receipts. The `c6d1603f` / `01f9b7c8` independent
+GO is historical and does not approve the later candidate.
+
+Accepted #377 advanced main to `0103de80` with tests, tooling, CI and retained
+liveness evidence only; H1 remains unrepaired and #354 open. Its new native
+probe requires a [B inventory transition](../operations/material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04).
+The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+keeps the frozen `0fd4af59` compatibility authority, historical `7ef4856e` display
+oracle and accepted `0103de80` B admission distinct. The reconciled #384 candidate
+requires fresh published-head proof and independent admission **before Ready**.
+The [Phase A boundary](../architecture/material-authoring-catalogue-plan.md#15-material-liveness-phase-a-and-production-admission--2026-11-04)
+and #377 ledger preserve its separate source-qualified findings, failures and
+integration status; acceptance of that evidence does not repair production.
 
 | Programme slice | Current disposition |
 |---|---|
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
 | #353-A / #371 | Accepted A-only foundation at main `7ef4856e`; complete shadows remain unconsumed |
-| #353-B Main labels / #384 | Reconciled with accepted #374/main `01f9b7c8`; fresh source-bound proof and independent GO TO READY / CONDITIONAL / NO-GO admission handoff; stays Draft, no merge |
+| #353-B Main labels / #384 | Reconciled with accepted #377/main `0103de80`; fresh exact-head proof and independent GO TO READY / CONDITIONAL / NO-GO required; old `c6d1603f` GO remains source-bound; stays Draft, no merge |
 | Other #353-B consumers | Separate admission required; no additional production migration |
-| #354 / #355 | Separate liveness and endpoint-effects work; serialize overlapping World/quantity writes |
+| #354 / #377 | Phase A tests/tooling/CI/evidence merged at `0103de80` on 4 November 2026, 18:14:18 UTC; H1 remains unrepaired, H2/H3 preserved, production correction separately gated and issue open |
+| #355 | Separate endpoint-effects implementation programme; serialize any overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
 | #358 | Independent experimental material work;132–137 not integrated here |
 
@@ -65,6 +73,12 @@ GDExtension/current Godot, palette/backend and applicable Water/LCB gates remain
 pending on the reconciled candidate. Web export/package loading,
 startup/lookup measurement and final independent integration review remain later
 work; draft skips and the original source's passes do not satisfy these gates.
+
+The [liveness guide](../operations/material-liveness-investigation.md) routes
+reproduction and the [ranked correction design](../audits/2026-11-04-mat354-correction-admission.md).
+No scheduler or physical-law patch is part of Phase A. Source-qualified execution,
+retained failures, actual worker participation and unexecuted platform gates remain
+in the [findings](../audits/2026-11-04-mat354-findings.md) and live PR ledger.
 
 ## Material authoring Planned adoption — 2026-11-04
 

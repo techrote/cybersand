@@ -14,14 +14,21 @@ import presentation
 from consumer_test_support import copy_b_inputs
 
 
-ACCEPTED_MAIN = "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
-ACCEPTED_TREE = "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204"
+ACCEPTED_MAIN = "0103de80d11304388868f89f7b26c672ad6100ad"
+ACCEPTED_TREE = "0ba07dc799afca43716bbab966f48266fa924718"
+PRE377_MAIN = "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
+PRE377_TREE = "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204"
 LEGACY_MAIN = "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1"
 LEGACY_TREE = "36ce5a01e754a141c321f41cac7f1c6b6059c371"
 FROZEN_AUTHORITY = "0fd4af5987e77db4da3e37c757cf2c0917ae9e15"
 BENCHMARK = "native/bench/lcb201_pressure_idle_cost.cpp"
 BENCHMARK_BLOB = "d251777990a137d42264275e7eb25a6ab6760af7"
 BENCHMARK_SHA256 = "872c65fdc684a01ace9b55bfb6e92181070c21b34503f4460e4d8f8cf0297e6d"
+PROBE = "native/tests/material_liveness_probe.cpp"
+PROBE_BLOB = "5185801e469cfed975b901243a42f3a02a0e1ee4"
+PROBE_SHA256 = "26e421d2b9de3e4e6c0c6e7e74f503f3f26f7baf17b02c6d02712eb15dcc9bb9"
+PROBE_FIXTURE = "native/tests/fixtures/material_liveness_campaign_v1.json"
+PROBE_FIXTURE_SHA256 = "320bd76b5bc69d68fe7ed21324999f9f1b9272109da646138a2b31820f1f2b4b"
 LOCK_SHA256 = "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
 ORACLE_SHA256 = "f7c27a60ddd6185c78b2fcc1fab956a0496021024090b467b8071305239d30a1"
 
@@ -63,7 +70,7 @@ class DisplayContractTests(unittest.TestCase):
         with patch.object(contract, "B_ADMISSION_BASELINE", LEGACY_MAIN), \
                 patch.object(contract, "B_ADMISSION_TREE", LEGACY_TREE):
             old_inventory = contract.script_inventory()
-        self.assertEqual(set(inventory) - set(old_inventory), {BENCHMARK})
+        self.assertEqual(set(inventory) - set(old_inventory), {BENCHMARK, PROBE})
         self.assertEqual({name: inventory[name] for name in old_inventory}, old_inventory)
         self.assertNotIn("tools/lcb/pressure_idle_cost.py", inventory)
         report = self.check()
@@ -83,7 +90,66 @@ class DisplayContractTests(unittest.TestCase):
                 self.check()
         self.assertIn("unapproved executable source inventory", str(refusal.exception))
         self.assertIn("missing=[]", str(refusal.exception))
-        self.assertIn("extra=['" + BENCHMARK + "']", str(refusal.exception))
+        self.assertIn("extra=" + repr(sorted((BENCHMARK, PROBE))), str(refusal.exception))
+
+    def test_377_probe_and_fixture_are_authenticated_as_accepted_source(self):
+        inventory = contract.script_inventory()
+        with patch.object(contract, "B_ADMISSION_BASELINE", PRE377_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", PRE377_TREE):
+            previous = contract.script_inventory()
+        self.assertEqual(set(inventory) - set(previous), {PROBE})
+        self.assertEqual({name: inventory[name] for name in previous}, previous)
+        self.assertEqual(inventory[PROBE], PROBE_BLOB)
+        for relative, digest in ((PROBE, PROBE_SHA256), (PROBE_FIXTURE, PROBE_FIXTURE_SHA256)):
+            accepted = subprocess.run(
+                ["git", "-C", str(contract.ROOT), "show", ACCEPTED_MAIN + ":" + relative],
+                check=True, capture_output=True, timeout=30).stdout
+            self.assertEqual(hashlib.sha256(accepted).hexdigest(), digest)
+            self.assertEqual((contract.ROOT / relative).read_bytes(), accepted)
+        self.assertEqual((self.root / PROBE).read_bytes(), (contract.ROOT / PROBE).read_bytes())
+        # JSON is separately authenticated data, not an executable-suffix exemption.
+        self.assertNotIn(".json", contract.EXECUTABLE_SUFFIXES)
+        self.assertNotIn(PROBE_FIXTURE, inventory)
+        report = self.check()
+        self.assertEqual(report["admission_source_commit"], ACCEPTED_MAIN)
+        self.assertEqual(report["executable_source_count"], len(inventory) + 1)
+
+    def test_pre377_admission_refuses_the_accepted_probe(self):
+        with patch.object(contract, "B_ADMISSION_BASELINE", PRE377_MAIN), \
+                patch.object(contract, "B_ADMISSION_TREE", PRE377_TREE):
+            with self.assertRaises(ValueError) as refusal:
+                self.check()
+        self.assertIn("unapproved executable source inventory", str(refusal.exception))
+        self.assertIn("missing=[]", str(refusal.exception))
+        self.assertIn("extra=['" + PROBE + "']", str(refusal.exception))
+
+    def test_accepted_probe_tamper_removal_rename_and_copy_fail_closed(self):
+        path = self.root / PROBE
+        original = path.read_bytes()
+        alternate = self.root / "native/tests/unadmitted_liveness_probe.cpp"
+        for mutation in ("tamper", "remove", "rename", "copy"):
+            with self.subTest(mutation=mutation):
+                try:
+                    if mutation == "tamper":
+                        path.write_bytes(original + b"\n// unapproved probe change\n")
+                    elif mutation == "remove":
+                        path.unlink()
+                    elif mutation == "rename":
+                        path.rename(alternate)
+                    else:
+                        alternate.write_bytes(original)
+                    with self.assertRaises(ValueError) as refusal:
+                        self.check()
+                    if mutation == "tamper":
+                        self.assertIn(PROBE + ": executable source drift", str(refusal.exception))
+                    else:
+                        missing = [PROBE] if mutation in ("remove", "rename") else []
+                        extra = [alternate.relative_to(self.root).as_posix()] if mutation in ("rename", "copy") else []
+                        self.assertIn("missing=" + repr(missing), str(refusal.exception))
+                        self.assertIn("extra=" + repr(extra), str(refusal.exception))
+                finally:
+                    alternate.unlink(missing_ok=True)
+                    path.write_bytes(original)
 
     def test_accepted_benchmark_bytes_cannot_change(self):
         path = self.root / BENCHMARK
@@ -181,14 +247,14 @@ class DisplayContractTests(unittest.TestCase):
         with self.assertRaisesRegex(compatibility.CompatibilityError, "source_commit: expected retained"):
             compatibility.check(self.root, baseline_repository=contract.ROOT)
 
-    def test_legacy_oracle_stays_frozen_and_ignores_374_and_candidate_inputs(self):
+    def test_legacy_oracle_stays_frozen_and_ignores_accepted_apparatus_and_candidate_inputs(self):
         self.assertEqual((legacy.BASELINE, legacy.BASELINE_TREE), (LEGACY_MAIN, LEGACY_TREE))
         fixture = self.root / legacy.FIXTURE
         before = (fixture.read_bytes(), fixture.stat().st_mtime_ns)
         self.assertEqual(hashlib.sha256(before[0]).hexdigest(), ORACLE_SHA256)
         # These intentionally invalid inputs must be irrelevant to the old
         # display oracle. Only the separate B/presentation guards consume them.
-        for relative in (BENCHMARK, presentation.PRESENTATION, contract.RESOURCE):
+        for relative in (BENCHMARK, PROBE, presentation.PRESENTATION, contract.RESOURCE):
             (self.root / relative).write_bytes(b"not a legacy oracle input\n")
         with patch.object(legacy, "git_bytes", wraps=legacy.git_bytes) as historical_reads:
             report = legacy.check(self.root, contract.ROOT)

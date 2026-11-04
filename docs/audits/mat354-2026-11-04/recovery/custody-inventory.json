@@ -1,0 +1,51 @@
+{
+  "schema": "mat354.recovery-custody-inventory.v1",
+  "reviewed_at_utc": "2026-11-04T13:02:46.833705+00:00",
+  "reviewed_commit": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "review_scope": "Read-only inventory of surviving scratch sessions and committed #354 evidence; no old checkout or remote state modified",
+  "prior_raw_workspace": "/workspace/scratch/95fff40249c9",
+  "prior_raw_workspace_present": false,
+  "committed_evidence_files": [
+    {
+      "path": "docs/audits/mat354-2026-11-04/companion-validation-context.json",
+      "bytes": 1147,
+      "sha256": "81bfb067c6d50d7516017cf2fbdf3468764732825911408ca629d3a31914d5b0"
+    },
+    {
+      "path": "docs/audits/mat354-2026-11-04/cross-execution-parity.json",
+      "bytes": 1231,
+      "sha256": "266cf775b8eb217729af5dc110d2370ac39f52b6e868154ce710c40f8a799b0d"
+    },
+    {
+      "path": "docs/audits/mat354-2026-11-04/evidence-index.json",
+      "bytes": 5138,
+      "sha256": "86b8d442ea97d32bb393b269aa20b14c1934c3f738cc816e8a2bd6c72047d14b"
+    },
+    {
+      "path": "docs/audits/mat354-2026-11-04/hosted-windows-run1-failure.json",
+      "bytes": 69773,
+      "sha256": "83670f141e51c4252c7819782856508c901ba12e34573049533aed58384e503f"
+    },
+    {
+      "path": "docs/audits/mat354-2026-11-04/independent-thermal-review.json",
+      "bytes": 21055,
+      "sha256": "2bfe2b5912d2d34897386f2eef67e090fe20ac820b9ba47d0653540a97dc7606"
+    },
+    {
+      "path": "docs/audits/mat354-2026-11-04/source-intake.json",
+      "bytes": 3747,
+      "sha256": "f990b1f785a7023fc27a2b779310b074164e2dfac0c431621ea742c492073db6"
+    }
+  ],
+  "committed_evidence_total_bytes": 102091,
+  "findings": [
+    "Causal findings report, correction admission, preregistration, probe, campaign, reader/reducer/transport codec and thermal review are already committed.",
+    "No original local campaign.json receipts, raw trace bytes or transport manifest/shards are committed at reviewed head.",
+    "The index records packaging in progress, all seven transport_manifest values null, and local TSan reduction pending.",
+    "Existing parity record covers local ASan and first hosted Linux; no final hosted Windows or TSan comparison present.",
+    "Current hosted ZIPs retain original campaign, context and transport for each platform of latest run, but contain no earlier local or sanitizer campaign.",
+    "Historical truncated ordinary run and other local failures have recorded identities but cannot be reauthenticated from the presently retained tree and scratch files.",
+    "Protected native controls receipt and second independent yielding review are not retained as separate receipt/review files at reviewed head."
+  ],
+  "recovery_recommendation": "Authenticate and retain hosted raw evidence and source inventories, preserve old failures/identity metadata with explicit custody limitation, rerun only lost required qualifications if warranted, update dated ledger and issue/PR handover. No production changes or merge."
+}

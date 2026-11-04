@@ -1,0 +1,42 @@
+{
+  "artifacts": [
+    {
+      "id": 13315146918,
+      "name": "mat354-linux-41817101140-1",
+      "size_in_bytes": 8249249,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13315146918",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13315146918/zip",
+      "expired": false,
+      "created_at": "2026-11-04T10:54:33Z",
+      "expires_at": "2027-02-02T10:52:41Z",
+      "updated_at": "2026-11-04T10:54:33Z",
+      "digest": "sha256:07897edcf0c30f763e68db56f8cf5a6c29177db7efeedaae8fbeaf67f562332a",
+      "workflow_run": {
+        "id": 41817101140,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "investigation/mat-auth-002-liveness-20261104",
+        "head_sha": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3"
+      }
+    },
+    {
+      "id": 13315116917,
+      "name": "mat354-windows-41817101140-1",
+      "size_in_bytes": 7905128,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13315116917",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/13315116917/zip",
+      "expired": false,
+      "created_at": "2026-11-04T10:54:09Z",
+      "expires_at": "2027-02-02T10:52:41Z",
+      "updated_at": "2026-11-04T10:54:09Z",
+      "digest": "sha256:88259c361f917f4e71ae62bb36411c8d9e86f3b2ee32a6a37d0f2e7d7dc0baaf",
+      "workflow_run": {
+        "id": 41817101140,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "investigation/mat-auth-002-liveness-20261104",
+        "head_sha": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3"
+      }
+    }
+  ]
+}

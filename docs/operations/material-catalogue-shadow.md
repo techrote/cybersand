@@ -15,15 +15,17 @@ records accepted A-only main
 `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. The owner separately assigned
 the [bounded Main display-name migration](#bounded-main-display-name-authority--2026-11-04):
 one labels-only generated consumer, scoped current proofs and an explicit
-apparatus source transition. The later
-[#374/current-main reconciliation](#current-main-b-admission-after-374--2026-11-04)
-authenticates accepted main `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc` for the
-B executable inventory while preserving the historical display oracle and
-27-owner lock. **PR #384 stays Draft; independent admission review precedes
-Ready-for-review.** No merge is authorized. Native and fallback physics retain
-their existing authority. The [original B evidence](../audits/2026-11-04-mat-auth353b-display-names.md)
-and [reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
-keep their source, measured artifacts, runtime results and remaining gates distinct.
+apparatus source transition. The
+[#377/current-main reconciliation](#current-main-b-admission-after-377--2026-11-04)
+authenticates accepted main `0103de80d11304388868f89f7b26c672ad6100ad` for the
+B executable inventory, including its native liveness probe. The historical
+display oracle and 27-owner lock stay fixed. **PR #384 stays Draft; fresh
+independent admission review precedes Ready-for-review.** No merge is authorized.
+Native and fallback physics retain their existing authority. The
+[original B evidence](../audits/2026-11-04-mat-auth353b-display-names.md),
+[#374 reconciliation](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md)
+and [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+keep each source, measured artifact, runtime result and remaining gate distinct.
 
 **Historical A-only integration framing:** the following adoption/reconciliation
 paragraphs retain the scope that preceded accepted #371 and this separate B
@@ -33,20 +35,22 @@ The [adopted-main integration record](../audits/2026-11-04-mat-auth371-integrati
 records the escaping correction, independent review and resulting-head gate
 requirements. The PR ledger carries final hosted checks and merge identity.
 
-**Current shadow tooling; guarded integration under qualification.** On
+**Current merged shadow tooling.** [PR #371](https://github.com/techrote/cybersand/pull/371)
+merged at accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. On
 4 November the owner separately requested implementation of the architecture
 review's corrections and compatibility mitigations. [PR #371](https://github.com/techrote/cybersand/pull/371)
 contains that #353-A response: authored metadata, deterministic candidate outputs,
 independent native parity and source-identity guards. Documentation PR #357 is
 now merged and its corrected architecture is owner-adopted as Planned. The
 shadow output remains unconsumed by production; broad #353 and parent #352
-stay open, and #353-B consumer migration and #354–#356 remain separately
-unadmitted.
+stay open. #353-B consumer migration and #355/#356 retain their own admission.
+The separately authorized [#354 Phase A investigation](material-liveness-investigation.md)
+adds tests, tooling and documentation only; production corrections remain pending.
 
 The [architecture review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
 and [corrected migration contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 explain why matching values alone is insufficient. The
-[current A-only reconciliation boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+[retained A-only reconciliation boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
 preserves original implementation `6d3737594beb39e83e555f66f2e81184a4bdbf77`
 and its reviewed parent `9b776d109e7843fb9b2d25239f9d088181309aa1`, while
 merging adopted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d` normally.
@@ -102,6 +106,13 @@ appearance code and retained policy/normalization/receipt vectors. This is an
 explicitly frozen compatibility checkpoint, not a promise that these owners
 can never change. A future source update needs a separately reviewed baseline
 or cutover transition, with the old evidence retained.
+
+For #354, the [Phase A correction memo](../audits/2026-11-04-mat354-correction-admission.md)
+identifies protected `native/src/world.cpp` as the prospective deadline edit.
+Investigation changes only separate tests/tooling/docs. Any production repair
+still needs owner authorization, a reviewed compatibility transition and matching
+runtime rebuild/publication/provenance; refreshing expected hashes or disabling
+the guard is not an implementation-admission substitute.
 
 The existing catalogue digest remains
 `82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3`;
@@ -373,9 +384,92 @@ and native sources, are refused. This B inventory is separate from the unchanged
 executable source, including active #370, needs a reviewed B transition and fresh
 proofs; it must not refresh the A lock or silently import an active branch.
 
+### Current-main B admission after #377 — 2026-11-04
+
+**Current candidate source transition; fresh independent admission required.**
+The [independent read-only GO report](https://chatgpt.com/library?file_id=libfile_d3ee9e7f5e108191905cc6560fffe1f1&account_id=personal)
+qualified #384 head `c6d1603f3c144f6730e2014ab32b98b0240f1e37`, tree
+`63ccd60e6e1943bdbcd19fe48e4e0fc28508b6b1`, against accepted main
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc` only. It authorized the next Ready
+qualification, not a merge. That source-bound report, the original 32-command
+qualification and hosted runs41863226175/41863226196 remain historical.
+
+[#377](https://github.com/techrote/cybersand/pull/377) then merged at
+`0103de80d11304388868f89f7b26c672ad6100ad` on 4 November 2026, 18:14:18 UTC;
+its tree is `0ba07dc799afca43716bbab966f48266fa924718`. Its 145-path accepted
+delta adds tests, tooling, CI, documentation and retained research evidence,
+with no changes to `native/src`, `native/include`, `godot` or `materials`.
+H1 remains unrepaired and #354 remains open. This reconciliation preserves the
+accepted #377 source/evidence bytes except the documented shared-page resolutions;
+it does not rerun the full liveness campaign or upgrade historical failed evidence.
+
+| Source role | Retained commit | Meaning |
+|---|---|---|
+| Frozen 27-owner compatibility authority | `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` | Unchanged original legacy lock and protected owners |
+| Historical display-output oracle | `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` | Unchanged Main/CellWorld source and 277-case display fixture |
+| Current B executable admission | `0103de80d11304388868f89f7b26c672ad6100ad` | Accepted native/Godot executable and routing inventory before the same bounded Main migration |
+
+[`display_contract.py`](../../tools/material_catalogue/display_contract.py)'s
+`B_ADMISSION_BASELINE` and `B_ADMISSION_TREE` authenticate this accepted source.
+The accepted Main and apparatus-identity files must still equal their historical
+pre-cutover bytes. The permitted candidate deviations remain exactly Main's
+preload/name method, generated `material_ui_names.gd` and that resource's one
+MicroScenario source-list entry. No native or additional naming consumer is
+admitted, and the unchanged #374 benchmark remains an ordinary inventory member.
+
+The new [`native/tests/material_liveness_probe.cpp`](../../native/tests/material_liveness_probe.cpp)
+is an accepted executable translation unit, not an exemption: Git blob
+`5185801e469cfed975b901243a42f3a02a0e1ee4`, 28,669 bytes, SHA-256
+`26e421d2b9de3e4e6c0c6e7e74f503f3f26f7baf17b02c6d02712eb15dcc9bb9`.
+It includes `world.cpp` once for test instrumentation through existing observer
+access; the separate MAT354 tooling builds it outside production targets. It
+does not consume generated UI labels or modify production World source.
+Authenticating its accepted Git bytes, rather than its name or test intent,
+admits it under the unchanged inventory policy.
+
+The `godot`/`native` roots and 16 suffixes remain unchanged. The measured accepted
+inventory grows 660→661; the old #384 inventory has 661 and the reconciled
+candidate has 662 entries because it retains the generated label resource.
+The `.json` suffix is not admitted by this executable policy, so
+[`material_liveness_campaign_v1.json`](../../native/tests/fixtures/material_liveness_campaign_v1.json)
+is authenticated separately as retained fixture data. Its exclusion is the
+existing suffix rule, not a new path exception. Neither the probe nor fixture
+enters the narrower MicroScenario `SOURCES` list.
+
+Probe tampering, removal, rename or copying, additional executable/routing
+source, the old `01f9b7c8` inventory, a mismatched accepted tree, indirect/alias
+consumers, missing apparatus source and unauthorized routing must still fail
+closed. Focused regression controls reuse the existing B apparatus and generic
+suffix tests; the frozen compatibility lock and old oracle are never refreshed.
+
+Fresh checks must run again at the actual published candidate: compatibility
+and raw protected-source authentication, deterministic compiler/presentation and
+277-case oracle, all material tests, native parity v2, GDScript shadow v2 and
+the pinned Godot 4.7 legacy/candidate/`sand`→`SAND`/rollback B proof. Static,
+native and shadow receipts remain separate from actual B runtime proof. Retain
+all four manifests, raw reports, process outputs, tool identities and source
+hashes; the poison must fail in actual Main and inherited Web-controller routes,
+and rollback must restore old output and apparatus fingerprint.
+
+The [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+and [#384 ledger](https://github.com/techrote/cybersand/pull/384) own the exact
+published head/tree, executed results, normal Draft hosted checkouts/steps and
+remaining gates. **STOP BEFORE READY.** Request a distinct strictly read-only
+**GO TO READY / CONDITIONAL / NO-GO** for the new head plus `0103de80`;
+the old GO does not transfer. No Ready transition, expensive Draft-policy
+bypass, merge, broad issue closure or unmerged-branch import is authorized.
+After a new GO, a separately authorized agent must complete Ready-state
+provenance, full Native/sanitizers, Linux/Windows Godot/GDExtension,
+palette/backend and applicable Water/LCB gates. Pinned export-template
+provenance must precede reproducible Godot 4.7 Web export/package loading;
+old/new lookup/startup/memory measurements and final independent integration
+review remain later work.
+
 ### Current-main B admission after #374 — 2026-11-04
 
-**Current candidate source transition; independent admission review pending.**
+**Historical #374 reconciliation for `c6d1603f` / `01f9b7c8`.** The later
+source-bound GO is recorded above; this earlier transition and its remaining
+gates are retained separately from the new post-#377 candidate.
 After the original #384 review, [#374](https://github.com/techrote/cybersand/pull/374)
 landed on main at `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`, tree
 `4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`. It adds
@@ -436,8 +530,9 @@ and receipts retain their old source sets, and old/new comparisons remain
 refused or explicitly ineligible. Native artifact hashes must be measured from
 the actual files; unchanged native source alone proves no binary-hash equality.
 The complete B executable inventory and this narrower apparatus list are
-different scopes: #374's native benchmark enters B admission, but it does not
-enter `SOURCES` or redefine the already reviewed Main-label apparatus transition.
+different scopes: the accepted #374 benchmark and #377 probe enter B admission,
+but neither enters `SOURCES` or redefines the already reviewed Main-label
+apparatus transition.
 
 Rollback restores the old consumer, removes its generated dependency from the
 apparatus source set and restores the matching A-only proof/admission boundary

@@ -1,7 +1,7 @@
 {
-  "version": 5,
+  "version": 6,
   "reviewed": "2026-11-04",
-  "scope": "Supplementary MAT-AUTH architecture/admission questions; frozen32 and challenge157 remain unchanged. Version5 updates only MAT-AUTH-01's revision-sensitive facts and fixture metadata for the accepted374/current-main B reconciliation and before-Ready admission handoff. All query wording, canonical/source routes and other questions remain unchanged; version4 remains at bbed081b. A-only acceptance stays historical7ef4856e, broader migration stays Planned, and no merge or other consumer/later-stage implementation is authorized.",
+  "scope": "Supplementary MAT-AUTH architecture/admission questions; frozen32 and challenge157 remain unchanged. Version 6 updates only MAT-AUTH-01's revision-sensitive facts and fixture metadata for accepted #377/main 0103de80 and the current B reconciliation. Both the accepted evidence-only Phase A boundary and separately assigned Main-label consumer remain explicit; no H1 repair is implied. Query wording, canonical/source routes and all other questions remain unchanged; version 5 remains at c6d1603f. The new candidate stops Draft before fresh independent admission and Ready; no merge or other consumer/later-stage implementation is authorized.",
   "questions": [
     {
       "id": "MAT-AUTH-01",
@@ -10,7 +10,7 @@
         "architecture/material-authoring-catalogue-plan.md"
       ],
       "facts": [
-        "The corrected architecture remains owner-adopted Planned; PR357 and353-A PR371 are merged, with A-only main7ef4856e recorded in the371 final ledger. The owner assigned the bounded Main-label B consumer and later reconciliation with accepted374/main01f9b7c8. That B inventory transition preserves the old7ef4856e display oracle and frozen0fd4af59 compatibility authority, and stops Draft before independent admission review and Ready; no merge or other consumer/later-stage implementation is authorized.",
+        "The corrected architecture remains owner-adopted Planned; PR #357 and #353-A PR #371 are merged, with A-only main 7ef4856e in the #371 ledger. Accepted #377/main 0103de80 adds Phase A tests/tooling/CI/evidence only; H1 remains unrepaired and #354 open. The owner assigned Main-label B reconciliation with 0103de80, preserving the historical 7ef4856e display oracle and frozen 0fd4af59 compatibility authority. The new candidate stays Draft before fresh independent admission and Ready; the old c6d1603f/01f9b7c8 GO does not transfer, and no #384 merge or other production consumer/later-stage implementation is authorized.",
         "Accepted353-A retains independently checked, unconsumed full-shadow metadata and unchanged native/fallback physics and policy authority. The separate B candidate changes only Main's generated display-name authority and requires its own actual consumer report.",
         "The broad353 issue remains open after a narrow checkpoint unless the owner explicitly changes its completion scope."
       ],

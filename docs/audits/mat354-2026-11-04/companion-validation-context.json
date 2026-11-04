@@ -1,0 +1,36 @@
+{
+  "companion_commit": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "scope": "five exact expected-source context files for local docs/retrieval; complete companion checkout had unavailable unrelated blobs and is not claimed complete",
+  "files": [
+    {
+      "path": "SOURCE-PROVENANCE.json",
+      "exact": true,
+      "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+      "bytes": 74804
+    },
+    {
+      "path": "docs/WEB_THREADING.md",
+      "exact": true,
+      "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+      "bytes": 540
+    },
+    {
+      "path": "tools/dev.py",
+      "exact": true,
+      "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+      "bytes": 10390
+    },
+    {
+      "path": "docs/LOCAL_DEVELOPMENT.md",
+      "exact": true,
+      "sha256": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d",
+      "bytes": 6224
+    },
+    {
+      "path": "validation/browser-results.json",
+      "exact": true,
+      "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839",
+      "bytes": 5978
+    }
+  ]
+}

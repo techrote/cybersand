@@ -20,10 +20,10 @@ import legacy_display_names as legacy
 import presentation
 
 ROOT = Path(__file__).resolve().parents[2]
-# Reviewed #374 integration: ordinary accepted source, never a path exemption.
+# Accepted #374 and #377 integrations: ordinary source, never path exemptions.
 # This is distinct from legacy.BASELINE and compatibility.BASELINE.
-B_ADMISSION_BASELINE = "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc"
-B_ADMISSION_TREE = "4cf99921dc2b33233c3a254f4b6f27ed7cb0f204"
+B_ADMISSION_BASELINE = "0103de80d11304388868f89f7b26c672ad6100ad"
+B_ADMISSION_TREE = "0ba07dc799afca43716bbab966f48266fa924718"
 RESOURCE = "godot/scripts/generated/material_ui_names.gd"
 MAIN = "godot/scripts/main.gd"
 IDENTITY = "godot/scripts/microscenario_identity.gd"
@@ -77,7 +77,7 @@ def check(root: Path = ROOT, baseline_repository: Path = ROOT) -> dict:
     # Full old return table is authenticated independently of presentation.
     legacy.check(root, baseline_repository)
     accepted = script_inventory(baseline_repository)
-    # #374 changes neither pre-cutover Main nor the apparatus source list.
+    # #374/#377 change neither pre-cutover Main nor the apparatus source list.
     # Authenticate that premise independently; a later Main/routing transition
     # cannot be admitted merely by moving the executable inventory baseline.
     for name in (MAIN, IDENTITY):

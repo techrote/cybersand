@@ -16,36 +16,122 @@ The original [#353-B consumer](material-catalogue-shadow.md#bounded-main-display
 was reviewed at `bbed081b9aa09ebf21823ac19ba3bd68e9133be1`, based on A-only main
 `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` from
 [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829).
-After #374 merged, the owner assigned reconciliation with accepted main
-`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`. The added native benchmark requires
-a new B executable-source admission; it does not move the historical display
-oracle or the frozen compatibility lock. Read the
-[three-baseline contract](material-catalogue-shadow.md#current-main-b-admission-after-374--2026-11-04)
-and [dated reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md).
-The [original B evidence](../audits/2026-11-04-mat-auth353b-display-names.md)
-retains its original source and proof limits.
+The #374 reconciliation produced `c6d1603f3c144f6730e2014ab32b98b0240f1e37`
+against `01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`; its
+[independent GO report](https://chatgpt.com/library?file_id=libfile_d3ee9e7f5e108191905cc6560fffe1f1&account_id=personal)
+applies only to that source pair and is not merge authorization.
+
+After #377 merged, the owner assigned the existing #384 branch to reconcile
+accepted main `0103de80d11304388868f89f7b26c672ad6100ad`. Its native liveness
+probe is ordinary accepted executable source, requiring a new B admission
+identity and fresh proof. The [three-baseline contract](material-catalogue-shadow.md#current-main-b-admission-after-377--2026-11-04)
+and [post-#377 record](../audits/2026-11-04-mat-auth384-post377-reconciliation.md)
+preserve the old display oracle, frozen compatibility lock, original B evidence
+and [#374 reconciliation record](../audits/2026-11-04-mat-auth384-current-main-reconciliation.md).
+Accepted #377 tests/tooling/CI/evidence remain intact; H1 is not repaired.
 
 Work remains on isolated branch `feat/mat-auth-353b-display-names-20261104`.
 The authorized endpoint is **Draft, before Ready-for-review, with a fresh
 independent admission handoff**. Request **GO TO READY / CONDITIONAL / NO-GO**
-from a separate strictly read-only reviewer; the original `bbed081b` audit does
-not approve the reconciled head. Do not merge, reconcile other active branches,
-close #353/#352, implement #356 or
-increase the 132-slot domain. Recheck current main and #358 before integration;
+from a separate strictly read-only reviewer for the new exact head and main.
+Neither old audit nor the `c6d1603f` GO approves this source. Do not merge,
+reconcile other active branches, close #353/#352, implement #356 or increase
+the 132-slot domain. Recheck current main and #358 before integration;
 acceptance of its experimental 132–137 requires a new scope decision.
 
-Retain the 27-owner lock against `0fd4af59`, the old display oracle at `7ef4856e`,
-full-shadow outputs, native/fallback behavior and old receipts. The separate
-B executable-source admission authenticates accepted `01f9b7c8` and refuses
-extra or indirect consumers; another Main/source integration such as #370 needs
-a reviewed B transition, not a lock refresh. Run the guide's source checks and
-retain a distinct schema-v2 report from actual candidate Main/inherited-Web
-methods. Static `--check` and native/Godot-shadow receipts cannot supply that
-runtime report. Current apparatus hashes change; mixed-source comparison
-refusal and actual artifact-hash measurement remain required.
-Full ready-state runtime/provenance gates, Web export/package loading,
-startup/lookup measurement and the final independent integration audit remain
-pending. Do not manually bypass Draft suppression.
+Retain the 27-owner lock against `0fd4af59`, display oracle at `7ef4856e`,
+full-shadow outputs, native/fallback behavior and original receipts. The
+separate B admission authenticates accepted `0103de80` and refuses extra or
+indirect consumers; another Main/source integration such as #370 needs a
+reviewed B transition. Run fresh source checks and distinct schema-v2 native,
+shadow and actual four-stage Main/inherited-Web B reports at the published
+candidate. Static `--check` and native/shadow receipts cannot replace B runtime
+proof. Preserve the required poison failure, rollback, source-map fingerprint
+and actual artifact-hash measurement; the probe adds no apparatus-list entry.
+
+Observe only normal Draft Documentation/provenance and source-scope advisory
+checks, authenticating terminal steps and actual checkout tree equivalence.
+Full Ready-state runtime/provenance gates, pinned-template Web export/package
+loading, old/new startup/lookup/memory measurements and the final independent
+integration audit remain later work. Do not manually bypass Draft suppression.
+
+## MAT-AUTH-002 accepted Phase A — 2026-11-04
+
+[#377](https://github.com/techrote/cybersand/pull/377) merged on
+4 November 2026 at 18:14:18 UTC as
+`0103de80d11304388868f89f7b26c672ad6100ad`, tree
+`0ba07dc799afca43716bbab966f48266fa924718`. It accepts the investigation's tests,
+fixture, CI, tooling, documentation and retained evidence. H1 is not repaired;
+#354 and #352 remain open. Preserve the original scientific results, failed
+attempts and qualification limits. No repeat of the full liveness campaign or
+new liveness pass is implied by the separate #384 admission reconciliation.
+
+The following integration and recovery handovers are historical. The #377
+ledger records their later final review and completed integration; original
+queued/blocked, failed, unavailable and draft-skipped evidence is not rewritten.
+
+## MAT-AUTH-002 Phase A integration gate — 2026-11-04
+
+**Historical guarded-integration assignment, completed by the merge above.**
+
+The owner now authorizes current-main reconciliation, focused preflight, a
+Ready-for-review transition and one guarded integration of
+[PR #377](https://github.com/techrote/cybersand/pull/377), **only** for its
+investigation tests, tooling, CI, evidence and documentation. The earlier
+draft/unmerged hold below records the completed Phase A recovery assignment;
+this later integration authorization supersedes that hold, not the prohibition
+on production changes. Keep #354 and #352 open. H1 is not repaired by this PR.
+
+The integration intake is published head `58b8d27b003c812aff24152f903b6c6123f71e5c`
+(tree `ace1162ed3b0720407b8a5cd97d6f2b75de6fc91`) and accepted main
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`
+(tree `4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`). Main now includes merged
+[#374](https://github.com/techrote/cybersand/pull/374)'s PressureFlow idle-cost
+evidence and benchmark, with no production-source change. Preserve that accepted
+work and every original MAT354 receipt/source identity in ancestry.
+
+The [material-liveness integration gate](material-liveness-investigation.md#which-gates-control-phase-a-integration)
+and live PR ledger separate final-candidate qualification from historical
+execution. Reconciliation alone is not acceptance. Require source guards,
+fresh focused Linux/Windows evidence after a head change, actual ready-state
+Documentation/materialized provenance, Native, Godot and palette checks, and
+an independent final read-only GO before merging. A failed, pending, stale or
+required-skipped gate blocks integration; the source-scope advisory grants no
+exemption. Recheck current base/head and repository review policy immediately
+before the authorized merge. Do not import #358/#383/#384/#386 or start #354-B.
+
+## MAT-AUTH-002 Phase A handover — 2026-11-04
+
+**Historical recovery assignment.** Its source-qualified results and limitations
+remain intact; the later integration gate above owns current readiness authority.
+
+Begin with the [material liveness investigation guide](material-liveness-investigation.md),
+[findings](../audits/2026-11-04-mat354-findings.md) and
+[correction admission](../audits/2026-11-04-mat354-correction-admission.md).
+Accepted main `7ef4856e` includes merged #371; its shadow catalogue is unconsumed
+by production, and the original native/fallback definitions remain authoritative.
+Only independent tests, tooling, evidence and documentation are admitted for
+#354 Phase A. Isolated MoltenGlass loses a cooling opportunity under sleep;
+mutual heating remains the existing law and generic yielding rest is preserved.
+
+Keep #354 open and its investigation PR draft/unmerged. Production correction
+requires separate owner admission and a reviewed transition for protected
+`native/src/world.cpp`; do not refresh lock hashes or import #353-B migration.
+Revalidate live main, exact runtime/source evidence and overlapping #355 ownership
+before future writes. Preserve #358/#347/#370/#373/#201 and Water phase/quantity
+boundaries. Use a separately owned worktree and serialize any shared kernel writes.
+PressureFlow #201 continues separately in [draft #374](https://github.com/techrote/cybersand/pull/374);
+do not import its optimization into this investigation.
+The audit/PR ledger carries actual campaign, sanitizer, platform and independent
+review status, including failed or incomplete attempts; no skipped gate is a pass.
+
+The stalled session has a separate
+[recovery qualification and custody record](../audits/2026-11-04-mat354-recovery-qualification.md).
+Use its indexed retained packet and fresh independent reviews. The original
+unpublished local raw directory is unavailable; preserve that limitation instead
+of treating new passing runs as recovery of the old bytes. Hosted Windows/Linux
+source1a06a0d is independently qualified; the final PR ledger owns the later
+documentation/evidence head and its resulting checks.
 
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
