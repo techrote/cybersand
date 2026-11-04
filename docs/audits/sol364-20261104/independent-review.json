@@ -1,0 +1,203 @@
+{
+  "schema": "cybersand.sol364.independent-review.v1",
+  "date": "2026-11-04",
+  "reviewer_role": "cpu_accounting agent independently reviewing response/bridge and synchronized evidence; author of CPU adapter/worker changes",
+  "source_base_commit_at_review": "4e17403c897e293dd18eb7780e47e4f3154aa8da",
+  "native_compiled_source_commit": "b6cae1321ff3cd2e9e02104e31c3aca924e52c84",
+  "native_compiled_source_tree": "48e6f432d7fd688fbc5b3bfa0eacf8b2543a318e",
+  "response_and_bridge_match_recorded_commit": true,
+  "code_sha256": {
+    "godot/scripts/solid_contact_response.gd": "4fa2e74e5cef1f5b211e1a71287acc358d2984e6fb8bdb03cd977adbed473be1",
+    "godot/scripts/rapier_physics_bridge.gd": "1988bbfe56a91c35a27a91726345358e26ee39839c747a131151e9a53f6b28a6",
+    "godot/scripts/solid_detachment_worker.gd": "ef22cff62370a86537ed77af5306ddedb3f0e3255b53f6053c86432b6ec608ea",
+    "godot/native_extension/solid_contact_adapter.inc": "87c3bafd3701e636851c22f660767ee3d5b34d13a73f5eee94290907114bd355",
+    "godot/tests/test_solid_contact_observation.gd": "58ec34f166b7c547afb3ddba53a0c44cfe6a618fe62c586a4264b6f13e473ffa",
+    "godot/tests/support/sol364_independent_reclip.gd": "7d51fae7edb76e010ed1b40f0ca15991dba0e4efe8217e869b39b4564af80bf0",
+    "godot/tests/support/sol364_observer_equivalence.gd": "8ecee06e17e1a32c058b55f366d9239c5ad88e22455f9b01e548722304030a60",
+    "tools/sol281/independent_reclip_oracle.py": "fd9f41ed4fd18e666a7176c90c2d3632fc3e5d1b42cdfe9910e2edff15e97bff",
+    "tools/sol281/compare_observer_equivalence.py": "60d83be4fee387fe542573d1db0a3d2513ec7f0e0047462ed52b3eccd1158cc7"
+  },
+  "runtime": {
+    "platform": "Linux x86_64",
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "backend": "Rapier2D v0.35.2",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "baseline_native_source": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "baseline_native_sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+    "candidate_native_sha256": "a013aa7148be8716badf41fb2bb1f3ae28e19862b970b390e2f8930493a92a0f",
+    "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "linker": "GNU ld (GNU Binutils for Ubuntu) 2.42",
+    "bindings_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "bindings_sha256": "b99b8868348f0018b9cdbbb186c10dabad13610e537945290e91b69040c7e5e0",
+    "python": "3.12.14"
+  },
+  "reclip_geometry": {
+    "schema": "sol364.independent-reclip-oracle.v1",
+    "cases": 144,
+    "outcomes": {
+      "Accepted": 144
+    },
+    "source_segments": 7074,
+    "retained_current_segments": 6835,
+    "valid_segments_with_lost_old_midpoint": 235,
+    "cases_with_lost_old_midpoint": 75,
+    "maximum_first_impulse_lever_error_cells": 4.984000939394577e-06,
+    "audit_lever_tolerance_cells": 5e-05,
+    "geometry_match": true,
+    "failures": [],
+    "exact_520_cell_six_shape_partition": true,
+    "empty_witness_cells": [
+      [
+        60,
+        32
+      ],
+      [
+        68,
+        50
+      ]
+    ],
+    "scope": "Independent rational current segment intersection, torque lever and dissipative value-plan review; frozen native inputs, not live Rapier/physical clearance acceptance."
+  },
+  "reclip_fixture_groups": [
+    {
+      "source_rotation": -0.79,
+      "cases": 36,
+      "status": "passed",
+      "failed_cases": 0
+    },
+    {
+      "source_rotation": 0.13,
+      "cases": 36,
+      "status": "passed",
+      "failed_cases": 0
+    },
+    {
+      "source_rotation": 0.37,
+      "cases": 36,
+      "status": "passed",
+      "failed_cases": 0
+    },
+    {
+      "source_rotation": 1.11,
+      "cases": 36,
+      "status": "passed",
+      "failed_cases": 0
+    }
+  ],
+  "immutable_publication": {
+    "workers": [
+      1,
+      4
+    ],
+    "checks_per_process": 142,
+    "failures": [],
+    "all_attempt_count_case": {
+      "attempts": 3,
+      "complete_attempts": 2,
+      "refused_attempts": 1,
+      "stages_accounted": true
+    }
+  },
+  "observer_equivalence": {
+    "status": "passed",
+    "observations": 40,
+    "checks_per_runtime": 129,
+    "runtime_workers": 1,
+    "exact_report_bytes_equal": true,
+    "frozen_input_helper_sha256": "8ecee06e17e1a32c058b55f366d9239c5ad88e22455f9b01e548722304030a60",
+    "scope": "Native contact geometry, ordering, metric/counter and refusal equality; excludes only explicit timing/immutability fields."
+  },
+  "reader_adversarial_checks": {
+    "changed_retained_contact_count_refused": true,
+    "changed_contact_depth_refused": true
+  },
+  "review_findings": [
+    {
+      "id": "reclip-authenticated-segment",
+      "status": "passed",
+      "finding": "Transport and clip only the authenticated exterior subsegment; all source records and duplicate checks precede cleared filtering. Current clipped length and midpoint drive the unchanged dissipative planner. No new native mutation, position work, replay or readback guard bypass was found."
+    },
+    {
+      "id": "sync-auto-sleep",
+      "status": "correction_in_progress",
+      "origin": "synchronized-apparatus author self-review; independently confirmed by this reviewer",
+      "finding": "First replay reports stop conservative/stale moving bodies at step31 through default Rapier sleeping while candidate impulses wake them. The zero-gravity free-flight comparison was confounded even though execution assertions passed.",
+      "required_correction": "Disable sleeping identically for every test body, expose per-step sleeping/energy changes and re-execute the corrected apparatus. Preserve first reports as failed apparatus; no production parameter or physical threshold changes."
+    },
+    {
+      "id": "sustained-clearance",
+      "status": "failed_not_promoted",
+      "finding": "Stationary overlap is not removed by a velocity-only dissipative planner; geometric witness repair does not create penetration work. Synchronized execution success is not a sustained-clearance acceptance."
+    },
+    {
+      "id": "cost-threshold",
+      "status": "not_qualified_here",
+      "finding": "The retained Windows workers4 embedded baseline remains 480.685 ms /224 consumed complete observations =2.145915178571 ms with369 attempts. Frozen geometry equality and local unit tests do not establish the unchanged24-group actual-host cost pass."
+    }
+  ],
+  "synchronized_review": {
+    "source_review": "explicit fixed material field, exact520 payload/six-shape partition, main-thread manual Rapier stepping, explicit queue delays, no native worker publication claim",
+    "initial_report_bookkeeping": "Independently recomputed contiguous180 post-step observations per case, cell/area-tick sums, geometry references, native state conservation, and matched initial state/native field across all21 cases at workers1 and4.",
+    "first_reports_status": "failed apparatus: automatic sleep confounds moving baseline; final physical comparison requires corrected rerun",
+    "reports": [
+      {
+        "workers": 1,
+        "sha256": "a3b444b92b2b7245ce6af3771b31588d6cbbab14ecab904cd89d21f9c4b6cd86",
+        "checks": 8272,
+        "execution_failures": 0,
+        "reported_clearance_passes": 0,
+        "reported_clearance_failures": 21
+      },
+      {
+        "workers": 4,
+        "sha256": "0fdaeba8a9ffe10cf38f7a28f539e42647c4d70e7ce1a10831576a2273957dcd",
+        "checks": 8272,
+        "execution_failures": 0,
+        "reported_clearance_passes": 0,
+        "reported_clearance_failures": 21
+      }
+    ]
+  },
+  "artifacts": {
+    "independent-reclip-raw.json": {
+      "sha256": "0dad94ea28408b5c6f921198529377e89e0468d5d19ed434d01ce3d4b81de565",
+      "bytes": 2269220
+    },
+    "independent-reclip-oracle.json": {
+      "sha256": "1207621762cdd9da1f616283f4452aed066523326365a5701fdfb6ebcabecf16",
+      "bytes": 21041
+    },
+    "observer-equivalence-baseline.json": {
+      "sha256": "765aa32e3f07f23785c566547d3dff79ded21445fe16b0046bad2b32d0da4f17",
+      "bytes": 299554
+    },
+    "observer-equivalence-candidate.json": {
+      "sha256": "765aa32e3f07f23785c566547d3dff79ded21445fe16b0046bad2b32d0da4f17",
+      "bytes": 299554
+    },
+    "observer-equivalence-comparison.json": {
+      "sha256": "3d2526b19d8c2958436b295ceffd2d3971d5ed917f569fededf8306767ce491b",
+      "bytes": 815
+    },
+    "observer-immutability-w1.json": {
+      "sha256": "bd3423d27fe014820b8e2e15723356b164931626837b5dbf94d2e79fdd20ecf7",
+      "bytes": 864
+    },
+    "observer-immutability-w4.json": {
+      "sha256": "8af389fdf0563a0d9b48615a167fdf908783bc0986fc724e1cdc047fbcc5faab",
+      "bytes": 864
+    }
+  },
+  "commands": [
+    "GODOT --headless --path godot --script res://tests/support/sol364_independent_reclip.gd -- --report=docs/audits/sol364-20261104/independent-reclip-raw.json (report path must be absolute from repository shell)",
+    "python3 tools/sol281/independent_reclip_oracle.py docs/audits/sol364-20261104/independent-reclip-raw.json --output docs/audits/sol364-20261104/independent-reclip-oracle.json",
+    "GODOT --headless --path godot --script res://tests/support/sol364_observer_equivalence.gd -- --workers=1 --report=ABSOLUTE_REPORT_PATH (same helper against each recorded native runtime)",
+    "python3 tools/sol281/compare_observer_equivalence.py docs/audits/sol364-20261104/observer-equivalence-baseline.json docs/audits/sol364-20261104/observer-equivalence-candidate.json --output docs/audits/sol364-20261104/observer-equivalence-comparison.json",
+    "GODOT --headless --path godot --script res://tests/test_solid_contact_observation.gd -- --workers=1 --report=ABSOLUTE_REPORT_PATH (repeat workers4)"
+  ],
+  "qualification_limits": [
+    "Local development runtime/source-component identity only; final exact-head Linux/Windows and sanitizer qualification belongs to the separate combined-source run.",
+    "No human graphical acceptance, representative GPU frame pacing, live CPU threshold acceptance or sustained penetration clearance is claimed by this review."
+  ]
+}
