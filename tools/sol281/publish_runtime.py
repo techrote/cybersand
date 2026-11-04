@@ -504,8 +504,12 @@ def verify_prepared(args, *, staged):
 
 
 def verify_index(paths, files):
-    changed = set(qualification.git("diff", "--cached", "--name-only", "-z").decode().split("\0")) - {""}
-    require(changed == set(paths), "Staged path set differs from exact publication inventory")
+    changed = set(qualification.git("diff", "--cached", "--no-renames", "--name-only", "-z", "HEAD").decode().split("\0")) - {""}
+    # Every planned index entry is authenticated below, fixing its target bytes
+    # and mode even when it already matches HEAD (for example an identical LFS
+    # pointer). Only that exact target can pass; its diff may omit no-op paths.
+    # Disable rename folding so an unplanned source deletion cannot be hidden.
+    require(changed <= set(paths), "Staged path set differs from exact publication inventory")
     for path in paths:
         entry = qualification.git("ls-files", "--stage", "--", path).decode().splitlines()
         require(len(entry) == 1 and entry[0].startswith("100644 ") and entry[0].endswith(" 0\t" + path), "Publication entry is not a regular stage-zero file")

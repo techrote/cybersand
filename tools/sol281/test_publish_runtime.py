@@ -232,6 +232,118 @@ class PublicationTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "path set"):
                 subject.verify_index(paths, identity)
 
+    def staged_checkout(self, name, unchanged_overrides=None):
+        # Real Git index/HEAD behavior, with canonical pointer bytes as fixture
+        # input. Runtime format and artifact attribution have separate tests.
+        checkout = self.root / name
+        checkout.mkdir()
+
+        def git(*args):
+            return subprocess.check_output(["git", "-C", str(checkout), *args],
+                                           stderr=subprocess.PIPE, timeout=30)
+
+        git("init", "-q")
+        git("config", "user.name", "SOL281 publication fixture")
+        git("config", "user.email", "fixture@example.invalid")
+        git("config", "core.autocrlf", "false")
+        runtime = subject.RUNTIMES["linux"]
+        manifest = subject.MANIFESTS["linux"]
+        evidence = subject.EVIDENCE + "/" + "a" * 40 + "/original.json"
+        source = "tools/sol281/source-fixture.json"
+        source_bytes = b'{"source":"unchanged"}\n'
+        pointer = (b"version https://git-lfs.github.com/spec/v1\noid sha256:"
+                   + b"f" * 64 + b"\nsize 8192\n")
+        # Matching source/evidence bytes expose Git rename folding if source is
+        # deleted; the publication verifier must account for both paths.
+        plan = {runtime: pointer, manifest: b'{"source":"qualified"}\n',
+                evidence: source_bytes}
+        before = {".gitattributes": b"* -text\n", runtime: pointer, manifest: b'{"source":"earlier"}\n',
+                  source: source_bytes, **(unchanged_overrides or {})}
+        for relative, data in before.items():
+            destination = checkout / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(data)
+        git("add", "--", *before)
+        git("-c", "commit.gpgsign=false", "commit", "-qm", "original publication")
+        for relative, data in {**plan, **(unchanged_overrides or {})}.items():
+            destination = checkout / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(data)
+        git("add", "--", *plan)
+        identities = {path: {"sha256": subject.sha(raw), "size": len(raw)}
+                      for path, raw in plan.items()}
+        identities[runtime] = {"sha256": "f" * 64, "size": 8192}
+        return checkout, git, plan, identities, source
+
+    def test_real_git_index_allows_unchanged_runtime(self):
+        manifest = subject.MANIFESTS["linux"]
+        for name, overrides in (("new-metadata", {}),
+                                ("same-metadata", {manifest: b'{"source":"qualified"}\n'})):
+            with self.subTest(case=name):
+                checkout, git, plan, identities, _ = self.staged_checkout(name, overrides)
+                changed = set(git("diff", "--cached", "--no-renames", "--name-only", "-z", "HEAD").decode().split("\0")) - {""}
+                expected = set(plan) - {subject.RUNTIMES["linux"]} - set(overrides)
+                self.assertEqual(changed, expected)
+                with patch.object(subject.qualification, "ROOT", checkout):
+                    subject.verify_index(sorted(plan), identities)
+
+    def test_real_git_index_rejects_invalid_unchanged_blobs(self):
+        runtime = subject.RUNTIMES["linux"]
+        pointer = (b"version https://git-lfs.github.com/spec/v1\noid sha256:"
+                   + b"f" * 64 + b"\nsize 8192\n")
+        cases = (("wrong-oid", runtime, pointer.replace(b"f" * 64, b"e" * 64), "LFS"),
+                 ("wrong-size", runtime, pointer.replace(b"8192", b"8193"), "LFS"),
+                 ("malformed-pointer", runtime, pointer.replace(b"version ", b"invalid "), "LFS"),
+                 ("stale-metadata", subject.MANIFESTS["linux"], b'{"source":"stale"}\n', "evidence/provenance"))
+        for name, path, raw, error in cases:
+            with self.subTest(case=name):
+                checkout, git, plan, identities, _ = self.staged_checkout(name, {path: raw})
+                self.assertEqual(git("show", "HEAD:" + path), git("show", ":" + path))
+                with patch.object(subject.qualification, "ROOT", checkout), self.assertRaisesRegex(RuntimeError, error):
+                    subject.verify_index(sorted(plan), identities)
+
+    def test_real_git_index_rejects_missing_staging_and_unplanned_changes(self):
+        cases = (("unstaged-metadata", "evidence/provenance"),
+                 ("unstaged-new-file", "stage-zero"),
+                 ("deleted-runtime", "stage-zero"),
+                 ("executable-runtime", "stage-zero"),
+                 ("extra-source-edit", "path set"),
+                 ("extra-source-deletion", "path set"))
+        for name, error in cases:
+            with self.subTest(case=name):
+                checkout, git, plan, identities, source = self.staged_checkout(name)
+                evidence = next(path for path in plan if path.startswith(subject.EVIDENCE + "/"))
+                if name == "unstaged-metadata":
+                    git("reset", "-q", "HEAD", "--", subject.MANIFESTS["linux"])
+                elif name == "unstaged-new-file":
+                    git("reset", "-q", "HEAD", "--", evidence)
+                elif name == "deleted-runtime":
+                    git("rm", "--cached", "--", subject.RUNTIMES["linux"])
+                elif name == "executable-runtime":
+                    git("update-index", "--chmod=+x", "--", subject.RUNTIMES["linux"])
+                elif name == "extra-source-edit":
+                    (checkout / source).write_bytes(b"unqualified source edit\n")
+                    git("add", "--", source)
+                else:
+                    git("rm", "--", source)
+                    self.assertIn(("R100\t" + source + "\t" + evidence + "\n").encode(),
+                                  git("diff", "--cached", "--name-status", "-M", "HEAD"))
+                with patch.object(subject.qualification, "ROOT", checkout), self.assertRaisesRegex(RuntimeError, error):
+                    subject.verify_index(sorted(plan), identities)
+
+    def test_real_git_checkout_still_rejects_unstaged_source_edits(self):
+        checkout, git, plan, identities, source = self.staged_checkout("unstaged-source")
+        manifest = subject.MANIFESTS["linux"]
+        inputs = {path: subject.sha(git("show", "HEAD:" + path)) for path in (source, manifest)}
+        generated = {manifest: plan[manifest]}
+        with patch.object(subject, "ROOT", checkout), patch.object(subject.qualification, "ROOT", checkout):
+            subject.verify_checkout(inputs, generated)
+            (checkout / source).write_bytes(b"unstaged unqualified source edit\n")
+            # Index validation does not replace the unchanged checkout contract.
+            subject.verify_index(sorted(plan), identities)
+            with self.assertRaisesRegex(RuntimeError, "Qualified source changed"):
+                subject.verify_checkout(inputs, generated)
+
     def test_real_git_staging_preserves_current_and_historical_evidence_bytes(self):
         # Exercise the actual repository attributes and Git clean filters. A
         # mocked index cannot catch a newly dated archive missing its -text rule.
