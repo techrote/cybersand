@@ -454,6 +454,9 @@ private:
     [[nodiscard]] Vector2 overlap_normal(const BodyState& body,
                                          std::int32_t x, std::int32_t y,
                                          double& penetration) const;
+    [[nodiscard]] bool authored_entry_normal(std::uint16_t body_id,
+                                              std::int32_t x, std::int32_t y,
+                                              Vector2& outward, double& penetration) const;
     [[nodiscard]] Vector2i find_ejection_target(std::int32_t source_x,
                                                 std::int32_t source_y,
                                                 std::uint16_t source_body_id,

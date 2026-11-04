@@ -724,6 +724,12 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
         return;
     }
 
+    Vector2 entry_outward{};
+    double entry_penetration = 0.0;
+    if (authored_entry_normal(body_id, x, y, entry_outward, entry_penetration)) {
+        outward = entry_outward;
+        penetration = entry_penetration;
+    }
     if (body_diagnostics_) ++(*body_diagnostics_)[body_id].attempts;
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
     if (body_diagnostics_ && target.x < 0) ++(*body_diagnostics_)[body_id].no_target;
@@ -779,6 +785,82 @@ Vector2 CyberNativeCellWorld::overlap_normal(const BodyState& body,
     }
     return {cosine * local_normal.x - sine * local_normal.y,
             sine * local_normal.x + cosine * local_normal.y};
+}
+
+bool CyberNativeCellWorld::authored_entry_normal(std::uint16_t body_id,
+    std::int32_t x, std::int32_t y, Vector2& outward, double& penetration) const {
+    // A current nearest face can be the far side of a thin moving hull.
+    // Preserve a uniquely witnessed entry face only for unchanged-orientation
+    // translation in the explicitly authored route. Other owners keep their
+    // existing rule; ambiguous history falls back rather than inventing CCD.
+    if (!gcr_authored_compound_enabled_ || !gcr_compound_mode_ || conservative_displacement_ ||
+        body_id == 0U || body_id > gcr_compound_count_) return false;
+    const auto& body = current_bodies_[body_id];
+    const auto& previous = previous_bodies_[body_id];
+    if (!body.valid || !previous.valid || body.rotation != previous.rotation ||
+        body.half_size != previous.half_size || !cell_inside_body(body, x, y) ||
+        (body.sample_serial - previous.sample_serial + 1'000'000) % 1'000'000 != 1) return false;
+    const double travel_squared = body.center.distance_squared_to(previous.center);
+    if (!(travel_squared > 0.0) || travel_squared > kMaximumBodySweepDistance * kMaximumBodySweepDistance)
+        return false;
+
+    const auto local_point = [x, y](const BodyState& shape) {
+        const double dx = x + 0.5 - shape.center.x, dy = y + 0.5 - shape.center.y;
+        const double c = std::cos(shape.rotation), s = std::sin(shape.rotation);
+        return std::array<double, 2>{c * dx + s * dy, -s * dx + c * dy};
+    };
+    struct SlabHit { bool intersects = false, ambiguous = false; int axis = -1; double sign = 0.0; };
+    const auto intersect = [](const std::array<double, 2>& first,
+        const std::array<double, 2>& last, Vector2 half_size) {
+        SlabHit hit;
+        const std::array<double, 2> half{half_size.x, half_size.y};
+        double enter = 0.0, leave = 1.0;
+        for (int axis = 0; axis < 2; ++axis) {
+            const double delta = last[axis] - first[axis];
+            if (delta == 0.0) {
+                if (std::abs(first[axis]) > half[axis]) return hit;
+                continue;
+            }
+            double near = (-half[axis] - first[axis]) / delta;
+            double far = (half[axis] - first[axis]) / delta;
+            const double sign = delta > 0.0 ? -1.0 : 1.0;
+            if (near > far) std::swap(near, far);
+            if (near > enter) {
+                enter = near; hit.axis = axis; hit.sign = sign; hit.ambiguous = false;
+            } else if (near == enter && hit.axis >= 0) hit.ambiguous = true;
+            leave = std::min(leave, far);
+            if (enter > leave) return SlabHit{};
+        }
+        hit.intersects = enter <= leave;
+        if (hit.axis >= 0) {
+            const int other = 1 - hit.axis;
+            const double entry_other = first[other] + (last[other] - first[other]) * enter;
+            if (std::abs(entry_other) >= half[other]) hit.ambiguous = true;
+        }
+        return hit;
+    };
+    // A point previously inside any piece has no new exterior-side witness.
+    // Crossing any other proxy also makes this deliberately local witness
+    // ambiguous, including a shared seam or an intervening concave piece.
+    for (std::size_t proxy = 1; proxy <= gcr_compound_count_; ++proxy) {
+        const auto& old = previous_bodies_[proxy];
+        const auto& current = current_bodies_[proxy];
+        if (!old.valid || !current.valid || old.rotation != current.rotation ||
+            old.half_size != current.half_size || cell_inside_body(old, x, y)) return false;
+        if (proxy != body_id && intersect(local_point(old), local_point(current), current.half_size).intersects)
+            return false;
+    }
+    const auto first = local_point(previous), last = local_point(body);
+    if (std::abs(last[0]) > body.half_size.x || std::abs(last[1]) > body.half_size.y) return false;
+    const auto hit = intersect(first, last, body.half_size);
+    if (!hit.intersects || hit.ambiguous || hit.axis < 0) return false;
+    const double half = hit.axis == 0 ? body.half_size.x : body.half_size.y;
+    const double depth = half - hit.sign * last[hit.axis] + 0.5;
+    const double c = std::cos(body.rotation), s = std::sin(body.rotation);
+    const double nx = hit.axis == 0 ? hit.sign : 0.0, ny = hit.axis == 1 ? hit.sign : 0.0;
+    outward = {c * nx - s * ny, s * nx + c * ny};
+    penetration = depth;
+    return true;
 }
 
 Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
