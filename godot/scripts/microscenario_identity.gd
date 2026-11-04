@@ -13,6 +13,7 @@ const SOURCES: Array[String] = [
 	"scripts/gameplay_recorder.gd", "scripts/simulation_snapshot.gd",
 	"scripts/simulation_worker.gd", "scripts/main.gd",
 	"scripts/web_demo_controller.gd",
+	"scripts/generated/material_ui_names.gd",
 	"scripts/experiment_tower.gd", "scripts/water_feel_scenarios.gd",
 	"scripts/transport_profiles.gd", "scripts/water_experiment_profiles.gd",
 	"scripts/water_experiment_contract.gd"]

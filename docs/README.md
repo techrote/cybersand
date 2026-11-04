@@ -11,14 +11,17 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 # CyberSand documentation
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
-The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
-is being reconciled and qualified for guarded integration in [#371](https://github.com/techrote/cybersand/pull/371).
-The [current A-only boundary](architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
-preserves production authority and the frozen legacy compatibility baseline.
-#353-B consumer migration and #354–#356 require separate admission; #358's
-experimental materials remain unintegrated. Dated architecture and implementation
-receipts keep their original source scope; the PR ledger owns final resulting-head
-checks and merge status.
+The [#353-A shadow compiler](operations/material-catalogue-shadow.md) is accepted
+through [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
+at main `7ef4856e`. The separately assigned
+[bounded #353-B candidate](architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04)
+migrates only Main display names, scopes current proof receipts and records the
+new apparatus dependency. Its [guide](operations/material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
+and [evidence](audits/2026-11-04-mat-auth353b-display-names.md) distinguish static
+checks from the mandatory actual B consumer report. It ends at draft independent
+review with no merge. Other consumers and #354–#356 keep their separate gates;
+native/fallback physics, the original legacy lock and historical evidence remain
+unchanged. #358's experimental IDs remain unintegrated.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),

@@ -10,7 +10,37 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-AUTH bounded Main display-name candidate — 2026-11-04
+
+Start from accepted A-only main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`,
+as recorded in [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829).
+The owner separately assigned [one #353-B consumer](material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04):
+generated labels for `main.gd::material_name`, scoped current proof receipts and
+the new executable dependency in MicroScenario identity. The
+[architecture boundary](../architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04)
+and [dated evidence](../audits/2026-11-04-mat-auth353b-display-names.md) own the
+precise admission and actual qualification.
+
+Work remains on isolated branch `feat/mat-auth-353b-display-names-20261104`.
+The authorized endpoint is a **draft PR and independent-review handoff, no merge**.
+Do not reconcile other active branches, close #353/#352, implement #356 or
+increase the 132-slot domain. Recheck current main and #358 before integration;
+acceptance of its experimental 132–137 requires a new scope decision.
+
+Retain the 27-owner lock against `0fd4af59`, full-shadow outputs, native/fallback
+behavior and old receipts. The separate B executable-source admission refuses
+extra or indirect consumers; another Main/source integration such as #370 needs
+a reviewed B transition, not a lock refresh. Run the guide's source checks and
+retain a distinct schema-v2 report from actual candidate Main/inherited-Web
+methods. Static `--check` and native/Godot-shadow receipts cannot supply that
+runtime report. Current apparatus hashes change; mixed-source comparison
+refusal and actual artifact-hash measurement remain required.
+
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
+
+**Historical A-only integration assignment.** #371 subsequently merged at the
+accepted source above. The following text preserves its earlier scope; the
+separate B assignment supersedes only its unadmitted Main-label consumer status.
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected

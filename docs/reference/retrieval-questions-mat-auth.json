@@ -1,7 +1,7 @@
 {
-  "version": 3,
+  "version": 4,
   "reviewed": "2026-11-04",
-  "scope": "Supplementary MAT-AUTH architecture/admission questions; frozen32 and challenge157 remain unchanged. Version3 updates only MAT-AUTH-01's revision-sensitive adoption/implementation facts after357 merged and353-A was separately implemented; all query wording and canonical routes remain unchanged. Planned production status and separate353-B/later-stage admission are required answer facts.",
+  "scope": "Supplementary MAT-AUTH architecture/admission questions; frozen32 and challenge157 remain unchanged. Version4 updates only MAT-AUTH-01's revision-sensitive facts and fixture metadata for accepted A-only main7ef4856e and the separately assigned draft Main-label B consumer. All query wording, canonical/source routes and other questions remain unchanged; version3 remains in accepted Git. Broader migration stays Planned, with no merge or other consumer/later-stage authorization.",
   "questions": [
     {
       "id": "MAT-AUTH-01",
@@ -10,8 +10,8 @@
         "architecture/material-authoring-catalogue-plan.md"
       ],
       "facts": [
-        "The corrected design remains owner-adopted Planned and PR357 is merged;353-A was separately implemented in PR371 and is undergoing guarded integration, while353-B and354–356 remain separately unadmitted. Exact-head qualification and actual merge status belong to the371 ledger.",
-        "Implemented353-A compiles shadow metadata against independent old-source and backend-qualified oracles without changing runtime authority.",
+        "The corrected architecture remains owner-adopted Planned; PR357 and the separately assigned353-A PR371 are merged, with accepted A-only main7ef4856e recorded in the371 final ledger. The owner later assigned only a draft Main display-name353-B consumer, scoped current proofs and an apparatus dependency transition; no merge or other consumer/later-stage implementation is authorized.",
+        "Accepted353-A retains independently checked, unconsumed full-shadow metadata and unchanged native/fallback physics and policy authority. The separate B candidate changes only Main's generated display-name authority and requires its own actual consumer report.",
         "The broad353 issue remains open after a narrow checkpoint unless the owner explicitly changes its completion scope."
       ],
       "sources": [

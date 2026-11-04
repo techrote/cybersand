@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 
 import compatibility as guard
+from consumer_test_support import copy_b_inputs
 
 
 class CompatibilityGuards(unittest.TestCase):
@@ -27,6 +28,7 @@ class CompatibilityGuards(unittest.TestCase):
         self.lock_path = self.root / guard.LOCK
         self.lock_path.parent.mkdir(parents=True, exist_ok=True)
         self.write_lock(self.lock)
+        copy_b_inputs(self.root)
 
     def write_lock(self, value):
         self.lock_path.write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
@@ -44,7 +46,10 @@ class CompatibilityGuards(unittest.TestCase):
         result = self.check()
         self.assertEqual(result["status"], "PASS")
         self.assertEqual(result["protected_sources"], 27)
-        self.assertFalse(result["production_cutover"])
+        self.assertEqual(result["schema_version"], 2)
+        self.assertFalse(result["authority_scopes"]["native_runtime"]["production_cutover"])
+        self.assertTrue(result["authority_scopes"]["main_display_names"]["production_cutover"])
+        self.assertFalse(result["b_consumer_qualified"])
         self.assertFalse(result["runtime_execution"])
         self.assertEqual(before, {p: (p.read_bytes(), p.stat().st_mtime_ns)
                                   for p in self.root.rglob("*") if p.is_file()})
@@ -152,6 +157,11 @@ class CompatibilityGuards(unittest.TestCase):
         path = self.root / "godot/scripts/accidental_cutover.gd"
         path.write_text('const Bad = preload("res://catalogue_shadow.gd")\n')
         self.reject("accidental_cutover.gd: production/native test imports shadow output")
+
+    def test_renamed_complete_shadow_metadata_is_not_a_bypass(self):
+        path = self.root / "godot/scripts/renamed_metadata.gd"
+        path.write_text('extends RefCounted\nconst NATIVE_FACTS: Dictionary = {}\n')
+        self.reject("renamed_metadata.gd: production/native test imports shadow output")
 
     def test_basename_only_candidate_include_is_refused(self):
         path = self.root / "native/src/accidental_cutover.cpp"

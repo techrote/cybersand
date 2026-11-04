@@ -14,19 +14,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 and the [corrected architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
-[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) is already
-implemented in #371 and is undergoing adopted-main reconciliation and guarded
-integration qualification. It provides deterministic candidate metadata,
-independent native parity and frozen source/identity guards; it does not replace
-production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
-and [#371 ledger](https://github.com/techrote/cybersand/pull/371) separate code,
-resulting-head acceptance and actual merge status.
+[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) is accepted
+through [#371's final ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
+at main `7ef4856e`. The owner separately assigned the
+[bounded Main display-name candidate](../architecture/material-authoring-catalogue-plan.md#14-bounded-main-display-name-consumer-and-proof-transition--2026-11-04).
+It replaces one presentation table with generated labels, scopes current proofs
+and authenticates the new apparatus dependency. Native/fallback physics and the
+original source locks remain unchanged. The [dated B record](../audits/2026-11-04-mat-auth353b-display-names.md)
+separates implementation, local proof and pending independent integration review.
 
 | Programme slice | Current disposition |
 |---|---|
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
-| #353-A / #371 | Shadow implementation exists; reconciled-source qualification and guarded integration are this assignment |
-| #353-B | Separate consumer-migration admission required; no production switch authorized |
+| #353-A / #371 | Accepted A-only foundation at main `7ef4856e`; complete shadows remain unconsumed |
+| #353-B Main labels | Separately assigned candidate implementation and scoped proof transition; draft independent-review handoff, no merge |
+| Other #353-B consumers | Separate admission required; no additional production migration |
 | #354 / #355 | Separate liveness and endpoint-effects work; serialize overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
 | #358 | Independent experimental material work;132–137 not integrated here |
@@ -34,12 +36,15 @@ resulting-head acceptance and actual merge status.
 Broad #353 and parent #352 remain open. The original implementation receipts
 retain their tested source; no metadata or source-byte comparison by itself
 establishes fallback simulation, new physics or human gameplay acceptance.
+The actual B consumer report is mandatory and separate from static/native-shadow
+checks. Future changes to the B admitted executable inventory need a reviewed
+transition; an expanded accepted catalogue requires a new scope decision.
 
 ## Material authoring Planned adoption — 2026-11-04
 
 **Historical documentation-adoption scope.** The assignment statements below
 precede reconciliation of the separately implemented #371 candidate. The
-current A-only status is recorded above; the original adoption remains intact.
+current implementation status is recorded above; the original adoption remains intact.
 
 The [corrected MAT-AUTH architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The owner approved documentation-only guarded integration of #357 after final

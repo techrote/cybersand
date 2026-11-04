@@ -1,0 +1,26 @@
+{
+  "schema_id": "cybersand.material-catalogue.presentation",
+  "schema_version": 1,
+  "overrides": [
+    {
+      "id": 80,
+      "display_name": "LED white"
+    },
+    {
+      "id": 83,
+      "display_name": "rough oak log"
+    },
+    {
+      "id": 113,
+      "display_name": "galvanised zinc sheet"
+    },
+    {
+      "id": 117,
+      "display_name": "bare iron plate"
+    },
+    {
+      "id": 131,
+      "display_name": "heat-shield tile"
+    }
+  ]
+}

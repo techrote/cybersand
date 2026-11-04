@@ -10,7 +10,30 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## MAT-AUTH Main display-name candidate proof — 2026-11-04
+
+The [B evidence record](../audits/2026-11-04-mat-auth353b-display-names.md)
+starts from accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`,
+tree `36ce5a01e754a141c321f41cac7f1c6b6059c371`. Its independently frozen
+legacy oracle covers 277 returns, and the actual Linux Godot 4.7 legacy probe
+passes 5,857 assertions with no failures before the Main cutover. This baseline
+is distinct from candidate acceptance. The record owns exact tool/source hashes,
+candidate checks, poisoned-label routing, rollback and apparatus-hash transition.
+
+The [canonical guide](../operations/material-catalogue-shadow.md#bounded-main-display-name-authority--2026-11-04)
+separates static nonwriting checks, unchanged native pure-query/full-shadow proof
+and the mandatory schema-v2 B report from actual application methods.
+Inherited Web-controller execution in Linux Godot does not qualify browser/Wasm
+or rendered pixels. Old/new apparatus sets cannot be compared as identical;
+binary hashes come from actual artifacts. Historical v1 reports/readers remain
+unchanged and do not qualify this candidate. The authorized endpoint is a draft
+independent-review handoff with no merge or broad issue closure.
+
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
+
+**Historical A-only integration evidence.** [The final #371 ledger](https://github.com/techrote/cybersand/pull/371#issuecomment-6620789829)
+records its accepted main; the following original source-qualified record is
+preserved separately from the later B implementation and proof transition.
 
 The [integration qualification record](../audits/2026-11-04-mat-auth371-integration.md)
 retains the compiler escaping defect and correction,99 focused regressions,

@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Compile the unchanged native oracle and an independent shadow metadata probe.
 
-This is a bounded #353-A tooling check, not a World/physics qualification. No
-production consumer imports the shadow, and there is no baseline-refresh mode.
+This is a bounded native-metadata check, not a World or UI qualification. No
+production consumer imports the complete shadow; the separately admitted Main
+display-name resource has its own mandatory B-consumer report. There is no
+baseline-refresh mode.
 The compiled native implementation, authenticated against the retained Git
 checkpoint, is the oracle; neither authored JSON nor compiler output is used to
 construct its facts. Reports include measured tool costs and source custody.
@@ -10,6 +12,7 @@ construct its facts. Reports include measured tool costs and source custody.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -22,12 +25,53 @@ import time
 from typing import Any
 
 import compatibility
+import proof_scopes
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path("materials/catalogue/catalogue.json")
 CANDIDATE = Path("materials/catalogue/generated/catalogue.shadow.hpp")
 ORACLE = Path("tools/material_catalogue/native_oracle.cpp")
 NATIVE_SOURCE = Path("native/src/material_rules.cpp")
+RECEIPT_PATHS = {
+    "tool_sources": (
+        "tools/material_catalogue/native_oracle.cpp",
+        "tools/material_catalogue/check_native_parity.py",
+        "tools/material_catalogue/compatibility.py",
+        "tools/material_catalogue/compiler.py",
+        "tools/material_catalogue/proof_scopes.py",
+        "tools/material_catalogue/presentation.py",
+        "tools/material_catalogue/display_contract.py",
+        "tools/material_catalogue/legacy_display_names.py",
+    ),
+    "inputs": (
+        "materials/catalogue/catalogue.json",
+        "materials/catalogue/generated/catalogue.shadow.hpp",
+        "materials/catalogue/generated/catalogue_shadow.gd",
+        "materials/catalogue/generated/inspection.json",
+        "materials/catalogue/generated/manifest.json",
+        "materials/catalogue/compatibility-lock.json",
+    ),
+    # Byte custody only. Neither native compilation nor shadow readback can
+    # prove that the application actually routes labels through this resource.
+    "consumer_source_custody": (
+        "materials/catalogue/presentation.json",
+        "materials/catalogue/presentation-manifest.json",
+        "godot/scripts/generated/material_ui_names.gd",
+        "godot/scripts/main.gd",
+        "godot/scripts/microscenario_identity.gd",
+        "tools/material_catalogue/fixtures/main-display-names-v1.json",
+    ),
+    "legacy_sources": tuple(sorted(compatibility.SOURCE_ROLES)),
+}
+NATIVE_RECEIPT_FIELDS = {
+    "schema_id", "schema_version", "status", "scope", "source_commit", "source_commit_role",
+    "checked_source", "protected_sources", "source_locks", *RECEIPT_PATHS,
+    "compiler_version", "commands", "snapshot_sha256", "metadata",
+    "native_authored_compiled_shadow_facts_equal", "compiled_queries", "fallback",
+    "generated_mirrors", "measured_tool_costs", "cost_qualification", "world_executed",
+    "physics_qualification", "godot_executed", "ui_behavior_executed", "b_consumer_qualified",
+    "authority_scopes", "b_consumer_requirement",
+}
 
 
 class ParityError(ValueError):
@@ -233,10 +277,19 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
         raise ParityError("--cxx requires a compiler executable")
     version, _ = run([*compiler, "--version"], root, timeout=10)
     version = version.strip()
-    tool_sources = [file_fact(root / ORACLE, root), file_fact(Path(__file__).resolve(), root),
-                    file_fact(root / "tools/material_catalogue/compatibility.py", root)]
-    input_paths = [source, candidate, gdscript, inspection, root / compatibility.LOCK]
-    inputs = [file_fact(path, root) for path in input_paths]
+    # Hash the tools actually executing even when --root selects another source
+    # checkout. Such an external-tool receipt cannot masquerade as a canonical
+    # repository-bound Godot proof.
+    tool_paths = [root / ORACLE, *(Path(__file__).with_name(Path(relative).name).resolve()
+                                  for relative in RECEIPT_PATHS["tool_sources"][1:])]
+    input_paths = [source, candidate, gdscript, inspection, candidate.with_name("manifest.json"),
+                   root / compatibility.LOCK]
+    custody_paths = {"tool_sources": tool_paths, "inputs": input_paths,
+                     **{group: [root / relative for relative in RECEIPT_PATHS[group]]
+                        for group in ("consumer_source_custody", "legacy_sources")}}
+    inventories = {group: [file_fact(path, root) for path in paths]
+                   for group, paths in custody_paths.items()}
+    checked_source = proof_scopes.checked_source(root, inventories)
     measurements = {}
     with tempfile.TemporaryDirectory(prefix="cybersand-mat353-parity-") as directory:
         temporary = Path(directory)
@@ -283,9 +336,10 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
     # Close source custody after all probes, so concurrent source changes do
     # not silently receive a PASS under hashes taken at a different instant.
     compare(protected, compatibility.check(root), "post-check protected source identity")
-    compare(tool_sources, [file_fact(root / ORACLE, root), file_fact(Path(__file__).resolve(), root),
-                           file_fact(root / "tools/material_catalogue/compatibility.py", root)], "post-check tools")
-    compare(inputs, [file_fact(path, root) for path in input_paths], "post-check inputs")
+    after = {group: [file_fact(path, root) for path in paths]
+             for group, paths in custody_paths.items()}
+    compare(inventories, after, "post-check input/tool/source custody")
+    compare(checked_source, proof_scopes.checked_source(root, after), "post-check source identity")
     counts = {"material_slots": len(original["materials"]), "descriptor_fields_per_slot": 15,
               "valid_ids": sum(row["valid"] for row in original["materials"]),
               "hard_surface_ids": sum(row["hard_surface"] for row in original["capabilities"]),
@@ -296,10 +350,13 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
               "memberships": len(original["interactions"]["memberships"]),
               "coverage_records": len(original["interactions"]["coverage"]),
               "tuning_passes": len(original["interactions"]["tuning_passes"])}
-    return {"schema_id": "cybersand.material-catalogue.native-parity", "schema_version": 1,
-            "status": "PASS", "scope": "353-A shadow metadata; no production cutover",
+    return {"schema_id": "cybersand.material-catalogue.native-parity", "schema_version": 2,
+            "status": "PASS", "scope": proof_scopes.NATIVE_PROOF_SCOPE,
             "source_commit": compatibility.BASELINE, "protected_sources": protected,
-            "source_locks": lock["source_locks"], "tool_sources": tool_sources, "inputs": inputs,
+            "source_commit_role": proof_scopes.NATIVE_SOURCE_COMMIT_ROLE,
+            "checked_source": checked_source, "source_locks": lock["source_locks"], **inventories,
+            "authority_scopes": copy.deepcopy(proof_scopes.AUTHORITY_SCOPES),
+            "b_consumer_requirement": copy.deepcopy(proof_scopes.B_CONSUMER_REQUIREMENT),
             "compiler_version": version, "commands": commands,
             "snapshot_sha256": hashlib.sha256(original_output.encode("utf-8")).hexdigest(),
             "metadata": counts, "native_authored_compiled_shadow_facts_equal": True,
@@ -307,7 +364,7 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
             "measured_tool_costs": measurements,
             "cost_qualification": "One local standalone metadata compile/probe run; not a simulation or performance benchmark. Timings vary by host and load.",
             "world_executed": False, "physics_qualification": False, "godot_executed": False,
-            "production_cutover": False}
+            "ui_behavior_executed": False, "b_consumer_qualified": False}
 
 
 def _report_output(path: Path, root: Path, *, source: Path | None = None,
@@ -329,8 +386,8 @@ def _report_output(path: Path, root: Path, *, source: Path | None = None,
             selected_source, selected_candidate,
             *(selected_candidate.with_name(name) for name in (
                 "catalogue_shadow.gd", "inspection.json", "manifest.json")),
-            Path(__file__).resolve(), Path(compatibility.__file__).resolve(),
-            Path(__file__).with_name("compiler.py").resolve(),
+            *(Path(__file__).with_name(Path(relative).name).resolve()
+              for relative in RECEIPT_PATHS["tool_sources"][1:]),
         }
         for repository in repositories:
             protected.update((repository / relative).resolve() for relative in (
@@ -338,7 +395,7 @@ def _report_output(path: Path, root: Path, *, source: Path | None = None,
                 Path("tools/material_catalogue/check_native_parity.py"),
                 Path("tools/material_catalogue/compatibility.py"),
                 Path("tools/material_catalogue/compiler.py"),
-                *map(Path, compatibility.SOURCE_ROLES),
+                *(Path(relative) for paths in RECEIPT_PATHS.values() for relative in paths),
             ))
             protected.update((repository / CANDIDATE).with_name(name).resolve() for name in (
                 "catalogue_shadow.gd", "inspection.json", "manifest.json"))
@@ -395,7 +452,7 @@ def main(argv: list[str] | None = None) -> int:
         if output is not None:
             _write_report(output, text, args.root, source=args.source, candidate=args.candidate)
         print(text, end="")
-    except (ParityError, compatibility.CompatibilityError, OSError, UnicodeError) as error:
+    except (ParityError, compatibility.CompatibilityError, proof_scopes.ProofScopeError, OSError, UnicodeError) as error:
         print(f"native parity: {error}", file=sys.stderr)
         return 1
     return 0

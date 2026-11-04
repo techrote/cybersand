@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-04",
+  "scope": "Separate six-question MAT-AUTH-001 353-B Main-label consumer fixture. It checks sole presentation authority, scoped current proof, signed invalid semantics, frozen native/shadow inputs, apparatus identity and the draft-only admission boundary. It does not modify frozen32, challenge157 or prior question wording/routes, and lexical canonical hits are not runtime or answer-sufficiency proof.",
+  "questions": [
+    {
+      "id": "MAT353B-01",
+      "query": "Where do Main's material display names come from now, and which labels are exceptions?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "Only main.gd::material_name consumes the labels-only generated material_ui_names.gd resource; all existing callers retain the same public method.",
+        "Canonical hyphens become spaces except exactly 80 LED white, 83 rough oak log, 113 galvanised zinc sheet, 117 bare iron plate and 131 heat-shield tile.",
+        "Semantic families do not become picker groups; picker IDs, order, cycling and secondary-material behavior remain unchanged."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353B-02",
+      "query": "Do schema v2 native and Godot shadow receipts prove the Main display-name consumer, or is another report required?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "Current schema-v2 receipts separately identify unchanged native runtime authority, complete unconsumed native-shadow parity and generated UI-label authority.",
+        "Native metadata and Godot shadow parsing do not execute the actual UI consumer; a separate mandatory cybersand.material-catalogue.display-consumer schema-v2 runtime report is required.",
+        "Nonwriting check_display_consumer.py --check is static source proof, not that runtime report. Historical v1 receipts/readers remain preserved and cannot qualify current B behavior."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353B-03",
+      "query": "What must material_name return for Empty, reserved ID10, negative IDs and very large signed integers?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "ID0 returns exactly empty, and every valid current ID retains its existing case, spacing and spelling.",
+        "Reserved ID10 and unknown negative or large signed integers use material-%d formatting without unsigned wrapping or Worldgen's invalid label.",
+        "The independent old-source oracle covers all 256 byte IDs plus 21 signed/large cases, including signed 64-bit limits; the runtime table uses bounded indexing and no legacy fallback."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353B-04",
+      "query": "Does the Main labels migration change the 27 protected legacy owners, the compatibility lock or full native shadow outputs?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The original 27 legacy owners remain authenticated against frozen 0fd4af59; their lock, catalogue/capability digests and stale-policy refusal are not refreshed.",
+        "The canonical catalogue, original compiler, all four full-shadow outputs and native/fallback behavior remain unchanged; full native-shadow metadata stays unconsumed by production.",
+        "A separate B executable-source admission allows only the new resource, exact Main consumer and identity dependency; extra or indirect consumers require a reviewed transition, not an A-lock refresh."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353B-05",
+      "query": "Why does the MicroScenario apparatus fingerprint change after Main labels migrate, and can old and new captures be compared?",
+      "canonical": ["operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The generated executable resource is added to microscenario_identity.gd::SOURCES, so current apparatus source hashes deliberately change.",
+        "Historical captures and receipts retain their original source sets; comparisons between old and new sets remain refused or explicitly ineligible.",
+        "Native binary hashes must be measured from actual artifacts; unchanged native source alone does not prove equal binary hashes."
+      ],
+      "sources": ["operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT353B-06",
+      "query": "Does this #353-B assignment allow merging, migrating other consumers, adding ID132 or implementing Materials Lab editing?",
+      "canonical": ["architecture/material-authoring-catalogue-plan.md", "operations/material-catalogue-shadow.md"],
+      "facts": [
+        "The owner admits only Main display names, scoped current proof receipts and the apparatus dependency transition on an isolated feature branch, ending at a draft independent-review handoff with no merge.",
+        "Broad #353/#352 remain open; other consumers, #356 editing and unrelated branch reconciliation are not authorized.",
+        "The domain remains 132 slots with invalid10. If accepted main incorporates #358's experimental 132–137 or another expanded catalogue, stop for a new scope decision."
+      ],
+      "sources": ["architecture/material-authoring-catalogue-plan.md", "operations/material-catalogue-shadow.md"],
+      "revision_sensitive": true
+    }
+  ]
+}
