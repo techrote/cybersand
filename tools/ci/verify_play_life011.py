@@ -33,6 +33,9 @@ import inertial_parameter_contract as inertial_bytes
 RIG_BODIES = {"stuntbuggy": 8, "trialsbike": 8, "acrobat": 6,
               "arcadelander": 4, "jetbarrel": 2}
 MATERIALS = [3, 8, 12, 16, 20, 21, 24, 30, 32, 33, 36]
+# Pressure optimization execution identity (#201 P1 raised it from 3 to 4); it
+# must equal native kPressureOptimizationExecutionVersion.
+PRESSURE_OPTIMIZATION_EXECUTION = 4
 FAMILIES = {1: "freemass_v1", 2: "cellular_yield_v1",
             3: "pressure_flow_v1", 4: "inertial_cellular_v1"}
 VARIANTS = {0: "reference", 1: "cached", 2: "cached_dormant"}
@@ -192,7 +195,7 @@ def check_applied(value: dict, request: dict, platform: str, rig: str) -> None:
         optimization = None
         if preset in (3, 4):
             optimization = hashlib.sha256(b"cybersand-pressure-optimization-v1-identity-v1"
-                + struct.pack("<6Q", 3, preset - 2, 4096, 4 << 20, 1 << 20, 4 << 20)).hexdigest()
+                + struct.pack("<6Q", PRESSURE_OPTIMIZATION_EXECUTION, preset - 2, 4096, 4 << 20, 1 << 20, 4 << 20)).hexdigest()
         extensions.append({"extension_digest": optimization, "extension_identity_version": 1 if optimization else 0,
                            "family": 3, "state_contract_version": 1})
     if preset >= 5:
@@ -534,8 +537,18 @@ def check_process(process: dict, name: str) -> None:
          "process_case_mismatch")
 
 
+def native_optimization_execution() -> int:
+    """The verifier's independent identity constant must track the native owner."""
+    header = (ROOT / "native/include/cybersand/pressure_optimization.hpp").read_text(encoding="utf-8")
+    found = re.findall(r"kPressureOptimizationExecutionVersion\s*=\s*([0-9]+)\s*;", header)
+    need(len(found) == 1, "pressure_optimization_execution_unavailable")
+    return int(found[0])
+
+
 def verify_files(result_path: Path, log_path: Path, process_path: Path, source: str,
                  platform: str, fixture: Path, preset_source: Path, self_test: bool) -> dict:
+    need(native_optimization_execution() == PRESSURE_OPTIMIZATION_EXECUTION,
+         "pressure_optimization_execution_drift")
     record = json.loads(result_path.read_text(encoding="utf-8"))
     process = json.loads(process_path.read_text(encoding="utf-8"))
     need(process.get("source_revision", source) == source, "process_source_mismatch")
