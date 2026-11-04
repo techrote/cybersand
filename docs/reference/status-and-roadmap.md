@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## MAT-AUTH reviewed per-file transitions — 2026-11-04
+
+The owner approved a narrow way to admit a reviewed, behaviour-preserving edit
+to one protected legacy consumer without refreshing the compatibility lock
+([decision record](../audits/2026-11-04-mat-auth-reviewed-transitions.md),
+[rules](../operations/material-catalogue-shadow.md#reviewed-per-file-transitions)).
+Entries are code-pinned, authenticated against retained Git history and a
+committed record, and refused for identity inputs. The production table is
+empty; the lock, baseline and digests are unchanged. #382 (#201 P1) is the
+first intended user.
+
 ## PressureFlow desktop region flip (#201) — 2026-11-04
 
 The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a
