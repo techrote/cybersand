@@ -13,6 +13,15 @@ WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the select
 rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby
 item. Sampled rigs and the original physical hull trials remain reference choices.
 
+## Shared development workbench
+
+Choose **Shared development workbench** from the desktop launcher, or start Godot
+with `--path godot -- --workbench`. Landing yard and Quarry share the same paint
+tools, pilotable Arcade Lander, passive barrel and named starting setups. Try
+painting Water above the flyer, placing the barrel just above its nose, then
+pressing **P** and holding **W** to lift it. **R** reconstructs the authored start.
+[Controls and walkthrough](docs/systems/player-control-playground.md#shared-development-workbench)
+
 ## Player playground
 
 Choose **Player playground** in the launcher or pass **`--player-playground`**

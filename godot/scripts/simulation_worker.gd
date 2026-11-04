@@ -123,6 +123,7 @@ var _lab_profile: Dictionary = CyberTransportProfiles.preset(0)
 var _lab_profile_hash: String = ""
 var _scenario_host: CyberMicroScenarioHost = MicroHost.new()
 var _micro_active: bool = false
+var _workbench_step_serial := 0
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
 var _water_exit_request_serial: int = 0
@@ -287,6 +288,9 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		_character = staged.character
 		_sampled_character_enabled = staged.enabled
 		if completing:
+			# Brush requests belong to the retired terrain. Refusal keeps its queues.
+			_pending_emissions.clear()
+			_pending_cell_emissions.clear()
 			_rigid_body_states = physical.initial_bodies.duplicate()
 			_rigid_body_epoch = int(physical.epoch)
 			_prepared_physical_frame_hold = {"serial":int(command.get("scenario_request_serial",0)),
@@ -1435,6 +1439,9 @@ func queue_emit_disc(
 		_mutex.unlock()
 		return false
 	if _pending_emissions.is_empty() or _pending_emissions.back() != emission_command:
+		if _pending_emissions.size() >= MAX_PENDING_BRUSH_COMMANDS:
+			_mutex.unlock()
+			return false
 		_pending_emissions.append(emission_command)
 	_mutex.unlock()
 	return true
@@ -1853,6 +1860,8 @@ func _worker_loop() -> void:
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
+				if not _simulation_failed and local_lab.has("workbench_step_serial"):
+					_workbench_step_serial = int(local_lab.workbench_step_serial)
 				if _lab_active and _scenario_host.active() and not _scenario_host.after_tick():
 					_lab_status = _scenario_host.last_error
 					local_paused = true
@@ -2087,6 +2096,7 @@ func _publish_snapshot(
 	snapshot.paused = paused
 	snapshot.lab_context = {
 		"tick":snapshot.tick_index,
+		"workbench_step_serial":_workbench_step_serial,
 		"paused":paused,
 		"visited_cells":snapshot.scanned_last_tick,
 		"active_blocks":snapshot.active_blocks_last_tick,

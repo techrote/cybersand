@@ -35,6 +35,8 @@ var physical_trial_input = PhysicalTrial.new()
 var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
+const SharedWorkbench = preload("res://scripts/shared_workbench.gd")
+var shared_workbench: SharedWorkbench
 var playable_course_overlay: Control
 var _physical_epoch: int = 0
 var _physical_terrain_ready: bool = false
@@ -773,6 +775,8 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 				bool(player_configuration.get("actor_demo_npcs",false)),
 				Vector2(checked.definition.player_start[0],checked.definition.player_start[1]),
 				str(checked.definition.id))
+			if str(checked.definition.id) in CyberMicroScenarioCatalogue.WorkbenchSetup.MAPS:
+				definitions = player_configuration.get("workbench_actors",[])
 			if not staged.prepare(self,definitions,_physical_epoch+1):
 				microscenario_error = staged.last_error;staged.close();return false
 		# Signal connection and all rig/equipment/space construction precede the
@@ -867,10 +871,12 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	else:
 		_activate_water_body_scenario(bool(definition.body_enabled))
 	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(definition.id)
-	if showcase_presentation != null:
+	if shared_workbench == null and showcase_presentation != null:
 		showcase_presentation.installed(definition)
-	if blacksite_nine_presentation != null:
+	if shared_workbench == null and blacksite_nine_presentation != null:
 		blacksite_nine_presentation.installed(definition)
+	if shared_workbench != null and pending_microscenario_apply.has("workbench"):
+		shared_workbench.installed(pending_microscenario_apply.workbench)
 	if not microscenario_liquid_setup.is_empty():
 		simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.get("serial",0)))
 
@@ -928,6 +934,7 @@ func microscenario_toggle_hud() -> void:
 	_refresh_microscenario_controls()
 
 func _refresh_microscenario_controls() -> void:
+	if shared_workbench != null: return
 	if microscenario_panel == null: return
 	microscenario_panel.refresh(tower_context)
 	microscenario_panel.visible = not microscenario_hud_hidden
@@ -1743,7 +1750,10 @@ func _ready() -> void:
 		_restore_failed_playable_selection.call_deferred(recovery)
 		return
 	var feature: String = str(get_tree().get_meta("cybersand_feature", ""))
-	if PhysicalTrial.contains(feature):
+	if feature == "shared_workbench":
+		shared_workbench = SharedWorkbench.new()
+		shared_workbench.setup(self)
+	elif PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)
 	elif feature == "blacksite":
 		blacksite_nine_presentation.launch.call_deferred()
@@ -1779,8 +1789,9 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
-	tower_panel.refresh(tower_active,tower_floor,tower_context)
-	_refresh_microscenario_controls()
+	if shared_workbench == null:
+		tower_panel.refresh(tower_active,tower_floor,tower_context)
+		_refresh_microscenario_controls()
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
@@ -1836,8 +1847,9 @@ func _physics_process(_delta: float) -> void:
 		# Do not reconfigure its equipment, revoke its leases or publish stale
 		# body frames while the separate replacement graph is being prepared.
 		return
+	var single_step := shared_workbench != null and shared_workbench.step_requested and paused
 	if physical_actor_session != null:
-		physical_actor_session.set_suspended(paused or simulation_worker.has_failed()
+		physical_actor_session.set_suspended((paused and not single_step) or simulation_worker.has_failed()
 			or not _physical_terrain_ready or _actor_reset_receipt != 0
 			or not pending_microscenario_apply.is_empty())
 	publish_actor_keyboard_input()
@@ -1848,7 +1860,7 @@ func _physics_process(_delta: float) -> void:
 		return
 	if (
 		rapier_bridge.is_initialized()
-		and not paused
+		and (not paused or single_step)
 		and worker_start_error == OK
 		and _actor_reset_receipt == 0
 		and pending_microscenario_apply.is_empty()
@@ -1868,6 +1880,10 @@ func _physics_process(_delta: float) -> void:
 			if physical_actor_session.tick > before_completed_tick:
 				_record_completed_playable_course_step()
 	_publish_physical_body_state()
+	if single_step and _physical_terrain_ready and worker_start_error == OK and rapier_bridge.is_initialized():
+		shared_workbench.step_requested = false
+		tower_command({"step":true, "workbench_step_serial":shared_workbench.step_serial})
+		physical_actor_session.set_suspended(true)
 
 
 func setup_depth_lab_launcher() -> void:
@@ -1909,6 +1925,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if shared_workbench != null:
+		if event is InputEventKey and not event.echo and get_viewport().gui_get_focus_owner() == null:
+			if event.pressed and event.keycode in [KEY_P,KEY_ESCAPE]:
+				shared_workbench.toggle_pause()
+			elif event.pressed and event.keycode == KEY_R:
+				shared_workbench.reset_setup()
+			elif event.pressed and event.keycode == KEY_PERIOD:
+				shared_workbench.step_once()
+			elif event.keycode in ACTOR_CONTROL_KEYS:
+				publish_actor_keyboard_input()
+		get_viewport().set_input_as_handled()
+		return
 	if physical_rig_id != &"" and event is InputEventKey \
 		and (event.keycode in ACTOR_CONTROL_KEYS or event.keycode in PHYSICAL_TOOL_KEYS \
 			or (_playable_course_controls_active() and event.keycode in [KEY_UP, KEY_LEFT, KEY_DOWN, KEY_RIGHT])):
@@ -2348,6 +2376,7 @@ func player_uses_barrel() -> bool:
 
 
 func refresh_player_representation_button() -> void:
+	if shared_workbench != null: return
 	if player_representation_button == null:
 		return
 	var recovery_text: String = ""
@@ -3297,6 +3326,13 @@ func _on_playable_course_gui_focus_changed(control: Control) -> void:
 
 
 func cancel_playable_course_input() -> void:
+	if shared_workbench != null:
+		shared_workbench.cancel_stroke()
+		_actor_input_rearm = true
+		_actor_usable_pointer_rearm = true
+		if physical_actor_session != null and shared_workbench.pilot_slot >= 0:
+			physical_actor_session.cancel_input(shared_workbench.pilot_slot, _physical_epoch, &"human")
+		return
 	if not _playable_course_controls_active(): return
 	_actor_input_rearm = true
 	_actor_usable_pointer_rearm = true
@@ -3330,12 +3366,14 @@ func toggle_playable_course_pause() -> bool:
 
 
 func _publish_physical_keyboard_input(trigger_override: Variant = null, alternate_override: Variant = null) -> void:
+	var slot: int = shared_workbench.pilot_slot if shared_workbench != null else 0
+	if slot < 0: return
 	if actor_producer_selection != &"human":
 		return
 	if not _actor_usable_input_allowed() or _actor_reset_receipt != 0 or simulation_worker.has_failed():
 		_actor_input_rearm = true
 		_actor_usable_pointer_rearm = true
-		physical_actor_session.cancel_input(0, _physical_epoch, &"human")
+		physical_actor_session.cancel_input(slot, _physical_epoch, &"human")
 		return
 	# Sample only on the Godot main thread. The owned actor session receives
 	# an ordinary copied action and keeps its existing edge, epoch and lease
@@ -3383,10 +3421,12 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 		# tuning, reel or the separate specialist 4LY envelope.
 		for field: String in ["move", "trim", "primary", "secondary", "auxiliary"]:
 			action[field] = playable_action[field]
-	if physical_actor_session.is_flight_actor(0):
+	if shared_workbench != null:
+		action.erase("equipment") # Pointer input belongs exclusively to workbench tools.
+	if physical_actor_session.is_flight_actor(slot):
 		# The reserved 4LY interpretation has exactly two velocity outputs.
 		action = {"move": action.move}
-	var admitted_course_action: bool = physical_actor_session.submit_local(0, action, &"human", 6)
+	var admitted_course_action: bool = physical_actor_session.submit_local(slot, action, &"human", 6)
 	if admitted_course_action and playable and CyberPlayerPlaygroundInput.active(playable_action) \
 		and _playable_course_progress_identity():
 		var source_tick: int = int(latest_snapshot.tick_index)
@@ -3787,6 +3827,7 @@ func refresh_actor_prototypes() -> void:
 
 
 func update_camera(delta: float) -> void:
+	if shared_workbench != null: return
 	if water_controlled_run_active(): return
 	if _blacksite_keyboard_blocked(): return
 	var pan_input: Vector2 = Vector2(
@@ -3981,6 +4022,7 @@ func queue_brush_footprint_mutation(
 
 
 func handle_painting() -> void:
+	if shared_workbench != null: return
 	if _actor_usable_transition_pending or actor_equipment_active():
 		return
 	if _actor_usable_pointer_rearm:
@@ -4346,9 +4388,9 @@ func update_shader_parameters() -> void:
 			"rigid_body_rotation_%d" % body_index,
 			body_transform.get_rotation()
 		)
-	if showcase_presentation != null:
+	if shared_workbench == null and showcase_presentation != null:
 		showcase_presentation.refresh()
-	if blacksite_nine_presentation != null:
+	if shared_workbench == null and blacksite_nine_presentation != null:
 		blacksite_nine_presentation.refresh()
 
 
@@ -4370,6 +4412,7 @@ func recording_status_for_hud() -> Dictionary:
 
 
 func update_status() -> void:
+	if shared_workbench != null: return
 	var sampling_requested: bool = debug_stats_visible and debug_stats_expanded \
 		and not microscenario_hud_hidden and _playable_course_controls_active()
 	if sampling_requested != _participation_sampling_requested:

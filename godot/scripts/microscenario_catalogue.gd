@@ -9,6 +9,7 @@ const Showcase = preload("res://scripts/showcase_tiles.gd")
 const BlacksiteNine = preload("res://scripts/blacksite_nine.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PlayerCourse = preload("res://scripts/player_playground_course.gd")
+const WorkbenchSetup = preload("res://scripts/workbench_setup.gd")
 const PLAYER_COURSE_ID: String = "playground/player-course"
 
 static func ids() -> Array[String]:
@@ -163,7 +164,7 @@ static func exploratory_actor_map(definition: Dictionary) -> bool:
 	var id: String = str(definition.get("id", ""))
 	return (definition.get("maturity", "") == "exploratory"
 		and definition.get("execution", {}).get("policy", "") == "owner"
-		and (id == PLAYER_COURSE_ID or id == BlacksiteNine.SCENARIO_ID
+		and (id in WorkbenchSetup.MAPS or id == PLAYER_COURSE_ID or id == BlacksiteNine.SCENARIO_ID
 			or Showcase.contains(id) or PhysicalTrial.contains(id)))
 
 static func player_configuration(scenario_id: String) -> Dictionary:

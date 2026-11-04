@@ -4,11 +4,53 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-04
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
 # Player control playground
+
+## Shared development workbench
+
+**Current on the WORKBENCH-001 branch.** Open **Shared development workbench**
+from the desktop launcher. Map A (Landing yard) has a raised landing pad and a
+flat floor. Map B (Quarry) has a lower central basin. Both use a 480 × 270 cell
+view of the desktop native World. The toolbar is the same on both maps.
+
+1. Start paused. Select **Sand**, **Water** or **Erase**, then click or drag in
+   the viewport. Each stamp has a four-cell radius. Erase can cut the floor.
+   **Place flyer** and **Place barrel** take the next click as a new body origin.
+   Placement rebuilds the starting setup and retains previous terrain edits.
+2. For a pushing trial, place the flyer below the barrel with a small gap.
+   Select **Pilot lander**, press **P** and hold **W** or **Space**. **S** gives
+   reverse thrust, **A/D** or **Q/E** turn, **Shift** brakes and **C** toggles
+   drift. **Observe barrel** releases pilot authority. The barrel stays passive.
+3. **P** pauses or resumes. **.** advances one physical step and one native
+   tick while paused. **R** rebuilds the authored start. Paint during play
+   affects the current run. After playing or stepping, reset to edit starting
+   terrain again. **New** opens the unedited recipe for the selected map.
+4. Enter a setup name and choose **Save**. **F2** returns to the launcher.
+   Reopen the workbench, enter the same name and choose **Load**. Switching
+   maps starts an unedited recipe and keeps the applied Water choice. Save
+   first to keep a named copy. [Starting file fields and limits](../reference/level-saves-and-replay.md#workbench-starting-setups)
+
+`shared_workbench.gd` sends value requests to Main. The worker applies brush
+commands to the active native cells. Both actors go through one
+`PreparedPhysicalSession`, one main-thread Rapier space and one coupling
+packet. The flyer contributes its chassis, landing skids and empty mount,
+and the 8 × 14 reference barrel contributes one unpowered collider.
+Native construction and physical preparation must acknowledge the request
+before Main adopts that graph. A completed worker step serial fences the
+next Step, Reset or Load. Pausing, replacing the setup, changing pilots and
+losing focus cancel held input.
+
+**Pending.** The owner prefers LA-SA for production granular gameplay. The
+reviewed fleet at #389 still binds its LA-SA rest context to one body, and its
+compound preparation/retirement and packet interfaces are absent on this base.
+This workbench runs the admitted Arcade Lander coupling. Scooper lift, carry and
+dump with a simultaneous passive barrel remain a separate acceptance subcase.
+New features under development must be usable together here across compatible
+maps. [Issue #391](https://github.com/techrote/cybersand/issues/391)
 
 ## Current PLAY acceptance boundary — 2026-10-30
 

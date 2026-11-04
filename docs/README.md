@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+For WORKBENCH-001, start with the [shared workbench controls](systems/player-control-playground.md#shared-development-workbench) and [starting setup format](reference/level-saves-and-replay.md#workbench-starting-setups).
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The [#353-A shadow compiler](operations/material-catalogue-shadow.md) merged in
 [#371](https://github.com/techrote/cybersand/pull/371), accepted main `7ef4856e`;

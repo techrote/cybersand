@@ -1,6 +1,23 @@
 {
   "questions": [
     {
+      "id": "PLAY-WORKBENCH-001",
+      "query": "How do I paint and fly with a passive barrel on the two shared development workbench maps, and what survives saving a named starting setup?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "facts": [
+        "The shared workbench reconstructs the map recipe, ordered Sand/Water/erase stamps, two body origins, pilot selection and applied native liquid policy.",
+        "Arcade Lander and passive reference barrel use one prepared physical session. Mixed-body LA-SA Scooper acceptance remains pending."
+      ],
+      "sources": [
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/workbench_setup.gd",
+        "../godot/tests/test_shared_workbench.gd"
+      ]
+    },
+    {
       "id": "PLAY-LIFETIME-01",
       "query": "Does the accepted PLAY fifty real desktop lifetime campaign qualify solver reconstruction, slow native work and human gameplay feel?",
       "canonical": [
