@@ -255,18 +255,50 @@ def reduce(receipt, raw_root=None):
     inventory = receipt.get('compiled_input_inventory')
     if type(inventory) is not list or not inventory:
         raise ReductionError('missing source inventory')
-    paths = set()
+    inputs_by_path = {}
     for entry in inventory:
+        if type(entry) is not dict:
+            raise ReductionError('source inventory entry must be an object')
         path = text(entry.get('path'), 'inventory path')
-        if path in paths:
+        if path in inputs_by_path:
             raise ReductionError('duplicate source input')
-        paths.add(path)
+        inputs_by_path[path] = entry
         integer(entry.get('bytes'), 'inventory bytes')
         sha256(entry.get('sha256'), 'inventory digest')
-    if 'native/src/world.cpp' not in paths or 'native/tests/material_liveness_probe.cpp' not in paths:
+    if 'native/src/world.cpp' not in inputs_by_path or 'native/tests/material_liveness_probe.cpp' not in inputs_by_path:
         raise ReductionError('inventory must bind actual World and probe')
     if receipt.get('input_inventory_sha256') != canonical_sha(inventory):
         raise ReductionError('input inventory digest mismatch')
+    # Older retained attempts predate this preflight and need independent
+    # external source qualification. Never ignore a recorded failed check.
+    if 'committed_input_check' in receipt:
+        check = receipt['committed_input_check']
+        if type(check) is not dict or check.get('status') != 'PASS':
+            raise ReductionError('committed input check did not pass')
+        if check.get('source_commit') != receipt.get('source_commit'):
+            raise ReductionError('committed input check source commit mismatch')
+        if integer(check.get('checked_files'), 'committed input checked_files', 1) != len(inventory):
+            raise ReductionError('committed input check file count mismatch')
+        if sha256(check.get('committed_inventory_sha256'), 'committed inventory digest') != canonical_sha(inventory):
+            raise ReductionError('committed input check inventory digest mismatch')
+        if check.get('mismatches') != []:
+            raise ReductionError('committed input check retains mismatches')
+    if 'actual_dependency_inventory' in receipt:
+        dependencies = receipt['actual_dependency_inventory']
+        if type(dependencies) is not list or not dependencies:
+            raise ReductionError('actual dependency inventory must be a nonempty list')
+        seen = set()
+        for entry in dependencies:
+            if type(entry) is not dict:
+                raise ReductionError('actual dependency entry must be an object')
+            path = text(entry.get('path'), 'actual dependency path')
+            if path in seen:
+                raise ReductionError('duplicate actual dependency input')
+            seen.add(path)
+            integer(entry.get('bytes'), 'actual dependency bytes')
+            sha256(entry.get('sha256'), 'actual dependency digest')
+            if entry != inputs_by_path.get(path):
+                raise ReductionError(f'actual dependency differs from broad source inventory: {path}')
     plan = receipt.get('plan')
     if type(plan) is not dict or plan.get('schema') not in {'mat354.plan.v1', 'mat354.campaign.v1'} or canonical_sha(plan) != receipt.get('plan_sha256'):
         raise ReductionError('registered plan identity mismatch')

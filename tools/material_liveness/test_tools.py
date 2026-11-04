@@ -450,6 +450,62 @@ class EvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(reader.ReductionError, 'inventory digest mismatch'):
             reader.reduce(receipt)
 
+    def source_check_receipt(self):
+        receipt = self.receipt()
+        receipt['committed_input_check'] = {
+            'status': 'PASS', 'source_commit': receipt['source_commit'],
+            'checked_files': len(receipt['compiled_input_inventory']),
+            'committed_inventory_sha256': receipt['input_inventory_sha256'], 'mismatches': [],
+        }
+        receipt['actual_dependency_inventory'] = copy.deepcopy(receipt['compiled_input_inventory'][:1])
+        return receipt
+
+    def test_recorded_source_checks_and_dependency_subset_pass_when_consistent(self):
+        receipt = self.source_check_receipt()
+        self.assertEqual(reader.reduce(receipt)['status'], 'PASS')
+        receipt.pop('committed_input_check')
+        receipt.pop('actual_dependency_inventory')
+        self.assertEqual(reader.reduce(receipt)['status'], 'PASS',
+                         'historical receipts remain readable for external source qualification')
+
+    def test_recorded_committed_source_check_cannot_contradict_receipt(self):
+        original = self.source_check_receipt()
+        changes = ({'status': 'FAIL'}, {'source_commit': 'f' * 40}, {'checked_files': 1},
+                   {'checked_files': True}, {'committed_inventory_sha256': 'f' * 64},
+                   {'mismatches': [{'path': 'native/src/world.cpp'}]}, {'mismatches': None})
+        for change in changes:
+            with self.subTest(change=change):
+                receipt = copy.deepcopy(original)
+                receipt['committed_input_check'].update(change)
+                with self.assertRaisesRegex(reader.ReductionError, 'committed'):
+                    reader.reduce(receipt)
+        for invalid in (None, [], 'PASS'):
+            with self.subTest(invalid=invalid):
+                receipt = copy.deepcopy(original)
+                receipt['committed_input_check'] = invalid
+                with self.assertRaisesRegex(reader.ReductionError, 'committed input check'):
+                    reader.reduce(receipt)
+
+    def test_actual_dependency_facts_must_match_broad_snapshot_exactly(self):
+        original = self.source_check_receipt()
+        changes = ({'path': 'native/src/uninventoried.inc'}, {'bytes': 2}, {'bytes': True},
+                   {'sha256': 'f' * 64})
+        for change in changes:
+            with self.subTest(change=change):
+                receipt = copy.deepcopy(original)
+                receipt['actual_dependency_inventory'][0].update(change)
+                with self.assertRaisesRegex(reader.ReductionError, 'actual dependency'):
+                    reader.reduce(receipt)
+
+    def test_actual_dependency_inventory_cannot_be_empty_duplicate_or_malformed(self):
+        original = self.source_check_receipt()
+        for invalid in (None, [], {}, [None], original['actual_dependency_inventory'] * 2):
+            with self.subTest(invalid=invalid):
+                receipt = copy.deepcopy(original)
+                receipt['actual_dependency_inventory'] = invalid
+                with self.assertRaisesRegex(reader.ReductionError, 'actual dependency'):
+                    reader.reduce(receipt)
+
     def test_unregistered_arguments_are_rejected(self):
         receipt = self.receipt()
         receipt['cases'][0]['argv'][-1] = '1'
