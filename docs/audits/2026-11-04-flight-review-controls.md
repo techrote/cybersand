@@ -2,7 +2,7 @@
 title: Flyer controls, live powder sources and edge alignment
 status: Current
 document-kind: validation
-scope: Source-inspected owner-review follow-up and scoped Windows checks; integrated final-head platform validation pending
+scope: Windows/Linux owner-review controls, live source and alignment validation; no new response law or physical efficacy acceptance
 canonical-for: []
 last-reviewed: 2026-11-04
 related-documents: [../systems/granular-review-flight-fleet.md, 2026-11-04-repeatable-powder-review.md, 2026-11-04-gcr-selective-events.md]
@@ -20,7 +20,7 @@ its shape/mechanics and potentially useful as a gameplay mechanic. Burial with
 Sand, Rust or Coal still starts sinking. Relative flyer/material mass or overhead
 loading is the owner's hypothesis, not an established cause or a calibrated law.
 
-Six cropped images illustrate the reported inward graphical offset on the left
+The [six-image hash manifest](gcr-flight-review-2026-11-04/owner-image-manifest.json) binds the supplied crops. Six cropped images illustrate the reported inward graphical offset on the left
 and right piles. They do not show the selector or a complete source/runtime
 receipt. Preserve the actual user judgement as qualitative LA/A1 feedback; do not
 relabel it as exact-head measurement or acceptance of the selective candidate.
@@ -35,9 +35,12 @@ The isolated codex/gcr-flight-review-controls-20261104 branch starts at
 C:/khybersand worktree are preserved. This work changes developer input,
 presentation and explicit sources; it does not tune material, friction, load,
 granular-response, correction or sleep laws. Native source, bridge and worker
-are unchanged by the intended write set. Source-matched reuse of compiled
-856c49371b37b3921bf859a67a883336252134ee must retain all88 native input and runtime
-byte checks before final handoff; no old execution is relabelled as a new run.
+are unchanged. All88 native inputs and both actual runtime byte hashes match
+compiled856c49371b37b3921bf859a67a883336252134ee before/after host execution.
+No old execution is relabelled as a new run. Feature sourcef9566fd5 has the first
+combined platform run; layout correction893bca93b204b5ac8fe8c25fdc91322b073b55c4
+has the second complete platform run. Later gamepad help/test/doc edits retain
+source distinctions; final-head host receipts are separately recorded in the PR.
 
 Astra's aggregate/handoff/quarantine route remains separately owned. These tools
 add no second response, per-cell rigid body, erased/restored body representation
@@ -89,25 +92,54 @@ displayed rectangle. It moves no physics body and edits no native material.
 The retained slight anisotropy and non-integer sampling are not silently called
 pixel-perfect or GPU-qualified rendering. Full renderer redesign is outside scope.
 
-## Scoped checks and final qualification still required
+## Completed actual-host controls
 
-Before integrated qualification, separately scoped Windows checks report:
+The [host summary](gcr-flight-review-2026-11-04/host-summary.json) records all28
+Windows/Linux suites plus two imports at893bca93 with source/runtime, command,
+300s watchdog and original log hashes. Per platform, the new suites pass:
 
-- 597 alignment checks over36 camera/aspect cases, including a historical formula
- negative that must fail; this is presentation mapping evidence, not contact physics.
-- 211 boost checks: allseven actual profiles/impulse delivery, torque invariance,
- hover/coast/brake behavior, multiplier bounds, zero authored force, held release,
- lease expiry and pause. Original boost logs are in build/boost-preflight-01.
-- 1574 live-source checks: guarded source behavior and bounded ledgers. These remain
- scoped helper/host evidence until the integrated scene and both platforms pass.
+- 597 alignment assertions across36 actual Control/shader/camera/aspect cases.
+- 211 boost assertions: allseven profiles, actual delivery, torque invariance,
+  hover/coast/brake, bounds, zero force, release/cancel, expiry and pause.
+- 1578 source assertions: seven flyers × LA/E/S, allnine materials, ordinary
+  gravity and pilot response, guarded writes, exact counts, cutoff/ring capacity,
+  owner replacement refusal and explicit reconfiguration.
+- 117 integrated scene assertions: real Shift/Ctrl event sampling, rearm,
+  applied profile settings, no reset on source placement/burst, pause/stop/focus,
+  palette capture/refusal, canned-test isolation and bounded layout height.
 
-The final source checkpoint must record actual command, watchdog, engine/native/
-Rapier hashes, original logs, all native input identities and platform results for
-the integrated controls, alignment, full roster, live sources and retained canned
-tests. Run current document/M11/materialized provenance/retrieval/whitespace gates.
-Inherited source-lock incompatibility remains: original shadow locks/checker must
-not be refreshed to hide the three protected drifts. Hosted failure/skips and local
-passing checks remain distinct. Root will append exact final source and results.
+The retained canned comparison still passes6605 checks per platform; old selective
+and event/UI, fleet controls/emissions/side-thrusters, actor, bridge/freshness and
+navigation suites remain green. No native rebuild/core rerun is claimed because
+the88 native inputs are unchanged. There is no new physical efficacy score.
+
+The historical mapping negative replaces only the crash-room mapping file with
+parent7c2c source in the isolated actual Windows host; the new aspect assertions
+fail with exit1 as expected. Its original receipts remain in
+build/alignment-old-mapping-01. This is a regression-control failure, not a
+candidate physics failure. The first integrated input test used synthetic
+modifier events without modifier flags; it failed. Adding actual event modifier
+state/flush corrects the fixture before combined qualification. Original
+room-controls-preflight-01 and successful02 logs are retained.
+
+## On-screen review and layout correction
+
+Visual review off9566fd5 exposed the long sidebar forcing the lower map beyond
+the visible window despite host controls passing.893bca93 makes the roster/help
+scroll within available height; it does not move bodies or alter rendering laws.
+The subsequent layout assertion measures actual combined minimum height rather
+than checking only the container class. Source9d4a1b2ab22db4805695c59a48fb2a58b5ab9d03
+also corrects the gamepad help equivalence and is opened in a source-labelled
+Windows review window. The controls and map floor are visible. Runtime logs
+build/flight-visual-02.log/.err retain the actual OpenGL/Rapier identity and no
+engine errors. This is a layout smoke check, not GPU pixel or owner feel acceptance.
+Existing terrain anisotropy, nearest sampling and project window scaling remain.
+
+Local documentation/M11/materialized provenance/retrieval/whitespace checks pass.
+Inherited exact-source shadow compatibility remains blocked by the same three
+protected source drifts; original locks/checker are not refreshed. Hosted failure
+and draft skips remain distinct from local executed controls. Final exact-head
+results and source identity are recorded in the PR/local final receipt.
 
 No broader physical efficacy, simultaneous multi-job race, GPU visual acceptance,
 exact coupled save/replay, sleep, production default, issue closure or merge is

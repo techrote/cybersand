@@ -1,0 +1,50 @@
+{
+  "expected_failure": true,
+  "prior_source": "7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63",
+  "receipts": [
+    {
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-flight-controls\\khybersand\\build\\alignment-old-mapping-01\\godot",
+        "--editor",
+        "--quit"
+      ],
+      "pid": 23412,
+      "started_utc": "2026-11-04T10:35:30.643395+00:00",
+      "ended_utc": "2026-11-04T10:35:43.427173+00:00",
+      "timeout_seconds": 300,
+      "elapsed_seconds": 12.783800100034568,
+      "exit": 0,
+      "timed_out": false,
+      "log_sha256": "43f62f276cfa67ada7fd7dcf245ea677423817233ce370d2f0607f969528d2c4",
+      "ok": true
+    },
+    {
+      "command": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-flight-controls\\khybersand\\build\\alignment-old-mapping-01\\godot",
+        "--script",
+        "res://tests/test_gcr_fleet_alignment.gd"
+      ],
+      "pid": 38592,
+      "started_utc": "2026-11-04T10:35:43.428295+00:00",
+      "ended_utc": "2026-11-04T10:35:45.150012+00:00",
+      "timeout_seconds": 300,
+      "elapsed_seconds": 1.7217343999654986,
+      "exit": 1,
+      "timed_out": false,
+      "log_sha256": "40237ac01c5c68b6d4c83fc319ee4625c86a3ee3fb57f75cdfcbfef0972fac0a",
+      "ok": false
+    }
+  ],
+  "negative_log_sha256": "40237ac01c5c68b6d4c83fc319ee4625c86a3ee3fb57f75cdfcbfef0972fac0a",
+  "scope": "Historical mapping rejected by actual host assertions, not GPU pixel validation"
+}

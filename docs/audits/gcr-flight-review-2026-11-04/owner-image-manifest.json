@@ -1,0 +1,48 @@
+{
+  "images": [
+    {
+      "name": "codex-clipboard-2abadc23-f28f-4334-a6d3-453f1f7e9d7e.png",
+      "sha256": "a9692fde4253c37fb577197562bd1061676bb119c18d3780e79e98f2c4393598",
+      "bytes": 41597,
+      "width": 539,
+      "height": 329
+    },
+    {
+      "name": "codex-clipboard-4d8be833-e786-4b2c-84e8-e4b69d633c6f.png",
+      "sha256": "7d7d41f1be06bbec9d8f4b73d6e80b739273a2ea378c2737cab8d7bec79df737",
+      "bytes": 41611,
+      "width": 539,
+      "height": 329
+    },
+    {
+      "name": "codex-clipboard-0b378382-d3d1-4d0f-95f5-64aa2a24adba.png",
+      "sha256": "5d0fb1c40ad346715bed13f060fc10a9844a41f78efdbdd0827e65add001a87d",
+      "bytes": 41820,
+      "width": 539,
+      "height": 329
+    },
+    {
+      "name": "codex-clipboard-eefc18a5-6b99-401b-b81f-19f1d5c5dd73.png",
+      "sha256": "531248df0cbf01923b488bc8308f7dd92c33339ffc642dc3c5f9ed697dfca5b6",
+      "bytes": 37962,
+      "width": 608,
+      "height": 337
+    },
+    {
+      "name": "codex-clipboard-f20d4179-3683-4e83-bba0-a3fe86a2ebd4.png",
+      "sha256": "992855bf7d3458b5cb62770eeef8eb0a41124ef0ced31c6c7abb27df51c651a0",
+      "bytes": 38009,
+      "width": 608,
+      "height": 337
+    },
+    {
+      "name": "codex-clipboard-1eddfdd7-279f-48de-a7fe-53c2e913f26d.png",
+      "sha256": "67d83cf38a4209523524a526c75062721ad7c45ba081fc8aab0eda60c9ed4911",
+      "bytes": 37995,
+      "width": 608,
+      "height": 337
+    }
+  ],
+  "owner_identified_response": "LA/A1 budget comparison",
+  "scope": "Qualitative owner report and cropped screenshots; no complete source/runtime/settings receipt; not selective acceptance"
+}

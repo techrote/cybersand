@@ -12,7 +12,7 @@ related-documents: [../architecture/granular-contact-rest.md, ../architecture/co
 
 ## Shift thrust multiplier, Ctrl brake and painting-room powder sources
 
-**Current source; integrated Windows/Linux requalification pending:** the fleet
+**Current source; integrated Windows/Linux controls passed:** the fleet
 room moves its previous Shift brake to **Ctrl**. Hold **Shift** for the staged
 **Shift thrust ×** multiplier, default2 and range1..8. Apply/reset commits that
 setting with the existing base thrust/torque ceilings. The multiplier scales
