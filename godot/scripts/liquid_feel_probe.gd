@@ -10,8 +10,16 @@ const WORLD_SIDE: int = 1024
 const WATER: int = 3
 const BRINE: int = 24
 const EMPTY: int = 0
-const MATERIAL_SLOTS: int = 132
-const SCHEMA: String = "lcb-feel-probe-v1"
+# v2: the material census no longer assumes a catalogue size (v1 counted IDs
+# 1..131 and folded any other byte into the Empty remainder).
+const SCHEMA: String = "lcb-feel-probe-v2"
+const CATALOGUE_SCHEMA: String = "lcb-feel-material-catalogue-v1"
+const CENSUS_SCHEMA: String = "lcb-feel-material-census-v1"
+# Native material identities are byte-sized (material.hpp static_assert), so the
+# copied material cells can only hold 0..255. The census histograms that whole
+# domain; admission is a separate question answered by the catalogue.
+const BYTE_DOMAIN: int = 256
+static var _native_catalogue: Dictionary = {}
 
 static func identity_digest(text: String) -> String:
 	var context := HashingContext.new()
@@ -19,32 +27,183 @@ static func identity_digest(text: String) -> String:
 	context.update(text.to_utf8_buffer())
 	return context.finish().hex_encode()
 
-# Complete 1024x1024 material inventory. Non-Water counts come from the copied
-# material cells; Water count comes from the stored census; Empty is the exact
-# remainder. The three sources must sum to the World area or the census is
-# reported incomplete rather than repaired.
-static func inventory(world: Variant, water: Dictionary) -> Dictionary:
-	var cells: PackedByteArray = world.get_cells()
+# Admitted material catalogue. `admitted` lists every identity a readback may
+# legitimately contain (Empty and Water included). Identities below the highest
+# admitted one that are not admitted are reserved; identities above it are
+# unknown. `bound_water_carriers` maps str(material) -> "state_b" for materials
+# whose state_b holds Water bound outside the free-Water ledger; it is a
+# capability the readback must then supply, never inferred from the ID range.
+static func catalogue_from(admitted: Array, authority: String, bound_water_carriers: Dictionary = {}) -> Dictionary:
+	var ids: Array[int] = []
+	for value: Variant in admitted:
+		if typeof(value) != TYPE_INT or int(value) < 0 or int(value) >= BYTE_DOMAIN or ids.has(int(value)):
+			return {"ok":false, "schema":CATALOGUE_SCHEMA, "authority":authority,
+				"error":"admitted identity %s is not a unique byte" % str(value)}
+		ids.append(int(value))
+	ids.sort()
+	if not ids.has(EMPTY) or not ids.has(WATER):
+		return {"ok":false, "schema":CATALOGUE_SCHEMA, "authority":authority,
+			"error":"catalogue must admit Empty and Water"}
+	var carriers: Dictionary = {}
+	for key: Variant in bound_water_carriers:
+		var id: int = int(str(key)) if str(key).is_valid_int() else -1
+		if not ids.has(id) or id == EMPTY or id == WATER or str(bound_water_carriers[key]) != "state_b":
+			return {"ok":false, "schema":CATALOGUE_SCHEMA, "authority":authority,
+				"error":"bound-water carrier %s is not an admitted non-Water state_b material" % str(key)}
+		carriers[str(id)] = "state_b"
+	var end: int = ids.back() + 1
+	var reserved: Array[int] = []
+	for id: int in end:
+		if not ids.has(id): reserved.append(id)
+	var keys: Array = carriers.keys()
+	keys.sort()
+	var digest: String = identity_digest(JSON.stringify({"admitted":ids, "bound_water_carriers":keys}))
+	return {"ok":true, "schema":CATALOGUE_SCHEMA, "authority":authority, "admitted":ids,
+		"admitted_count":ids.size(), "end":end, "reserved_ids":reserved,
+		"bound_water_carriers":carriers, "sha256":digest}
+
+# The admitted catalogue of the loaded native artifact. Each byte identity is
+# offered once to a private 1x1 diagnostic fill on a scratch World that is never
+# ticked; the native fill accepts exactly kLastMaterial-bounded valid_material
+# identities. The cell_world.gd mirror (LAST_MATERIAL, reserved 10) must agree,
+# otherwise every census refuses instead of trusting either side. Cached per
+# process; the scratch World never sees an observed World.
+static func native_catalogue() -> Dictionary:
+	if not _native_catalogue.is_empty(): return _native_catalogue.duplicate(true)
+	var scratch: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	if scratch == null or not bool(scratch.diagnostic_reset({"workers":1})):
+		return {"ok":false, "schema":CATALOGUE_SCHEMA, "error":"native admission probe World unavailable"}
+	var admitted: Array = []
+	for id: int in BYTE_DOMAIN:
+		if bool(scratch.diagnostic_fill_rect(Vector2i.ZERO, Vector2i.ONE, id, 0)): admitted.append(id)
+	scratch = null
+	var result: Dictionary = catalogue_from(admitted, "native diagnostic_fill_rect admission (valid_material, kLastMaterial)")
+	var mirror: Array[int] = []
+	for id: int in CyberCellWorld.LAST_MATERIAL + 1:
+		if id != 10: mirror.append(id)
+	result["mirror"] = {"source":"cell_world.gd", "last_material":CyberCellWorld.LAST_MATERIAL, "reserved_ids":[10],
+		"agrees":result.get("ok", false) and result.admitted == mirror}
+	if result.get("ok", false) and not result.mirror.agrees:
+		result.ok = false
+		result.error = "native admitted catalogue disagrees with the cell_world.gd mirror"
+	_native_catalogue = result
+	return result.duplicate(true)
+
+static func _catalogue_summary(catalogue: Dictionary) -> Dictionary:
+	var summary: Dictionary = {}
+	for key: String in ["schema", "authority", "admitted_count", "end", "reserved_ids", "bound_water_carriers", "sha256", "mirror"]:
+		if catalogue.has(key): summary[key] = catalogue[key]
+	return summary
+
+# Complete material inventory from one copied readback, checked against an
+# admitted catalogue. Readback fields:
+#   area                  cell count the copy must cover exactly
+#   material_cells        copied material bytes; Water may be dithered to Empty
+#                         (native copy_material_cells), nothing else is altered
+#   stored_water_cells    authoritative stored Water cell count
+#   carrier_states        optional [[material, state_a, state_b], ...] for every
+#                         bound-water carrier cell, required when one is present
+# Every observed byte is histogrammed. Any reserved or unknown identity refuses
+# the census (no counts, never folded into Empty). True Empty is derived only
+# after all non-Empty identities are validated and the stored Water count is
+# reconciled with the Water/Empty bytes of the copy.
+static func material_census(readback: Dictionary, catalogue: Dictionary) -> Dictionary:
+	var area: int = int(readback.get("area", -1))
+	var result: Dictionary = {"schema":CENSUS_SCHEMA, "complete":false, "area":area,
+		"catalogue":_catalogue_summary(catalogue),
+		"sources":"identities: full byte-domain histogram of copied material cells checked against the admitted catalogue; Water: stored census; Empty: copy Empty+Water minus stored Water"}
+	if not bool(catalogue.get("ok", false)):
+		result.refused = true
+		result.error = "catalogue unavailable: " + str(catalogue.get("error", "not ok"))
+		return result
+	var cells: PackedByteArray = readback.get("material_cells", PackedByteArray())
+	if area <= 0 or cells.size() != area:
+		result.error = "material cell copy has unexpected size %d" % cells.size()
+		return result
+	var observed: Dictionary = {}
+	var covered: int = 0
+	for id: int in BYTE_DOMAIN:
+		var count: int = cells.count(id)
+		if count == 0: continue
+		observed[id] = count
+		covered += count
+		if covered == area: break
+	if covered != area:
+		result.error = "byte histogram covers %d of %d cells" % [covered, area]
+		return result
+	var admitted: Dictionary = {}
+	for id: int in catalogue.admitted: admitted[id] = true
+	var refusals: Array = []
+	for id: int in observed:
+		if admitted.has(id): continue
+		refusals.append({"material":id, "cells":int(observed[id]),
+			"reason":"reserved identity" if id < int(catalogue.end) else "unknown identity"})
+	if not refusals.is_empty():
+		result.refused = true
+		result.refusals = refusals
+		result.error = "readback contains %d reserved/unknown identities" % refusals.size()
+		return result
+	var stored_water: int = int(readback.get("stored_water_cells", -1))
+	var copy_water: int = int(observed.get(WATER, 0))
+	var copy_empty: int = int(observed.get(EMPTY, 0))
+	if stored_water < copy_water or stored_water > copy_water + copy_empty:
+		result.error = "inventory sources disagree: stored Water %d, copy Water %d, copy Empty %d" % [stored_water, copy_water, copy_empty]
+		return result
 	var counts: Dictionary = {}
-	var non_water_non_empty: int = 0
-	if cells.size() != WORLD_SIDE * WORLD_SIDE:
-		return {"complete":false, "error":"material cell copy has unexpected size %d" % cells.size()}
-	for material: int in range(1, MATERIAL_SLOTS):
-		if material == WATER: continue
-		var count: int = cells.count(material)
-		if count > 0:
-			counts[str(material)] = count
-			non_water_non_empty += count
-	var water_cells: int = int(water.get("water_cells", -1))
-	var empty: int = WORLD_SIDE * WORLD_SIDE - non_water_non_empty - water_cells
-	if water_cells < 0 or empty < 0:
-		return {"complete":false, "error":"inventory sources disagree", "counts":counts}
-	if water_cells > 0: counts[str(WATER)] = water_cells
-	counts[str(EMPTY)] = empty
+	var ids: Array = observed.keys()
+	ids.sort()
+	for id: int in ids:
+		if id != EMPTY and id != WATER: counts[str(id)] = int(observed[id])
+	if stored_water > 0: counts[str(WATER)] = stored_water
+	counts[str(EMPTY)] = copy_empty + copy_water - stored_water
 	var total: int = 0
 	for key: String in counts: total += int(counts[key])
-	return {"complete":total == WORLD_SIDE * WORLD_SIDE, "area":WORLD_SIDE * WORLD_SIDE,
-		"counts":counts, "sources":"non-Water: copied material cells; Water: stored census; Empty: exact remainder"}
+	result.counts = counts
+	result.counted_cells = total
+	var bound: Dictionary = _bound_water(readback, catalogue, counts)
+	result.bound_water = bound
+	result.complete = total == area and bool(bound.complete)
+	if not bool(bound.complete): result.error = str(bound.error)
+	return result
+
+# Bound Water stays separate from free Water. Only declared carriers count, and
+# only from an explicit per-cell state readback covering every carrier cell.
+static func _bound_water(readback: Dictionary, catalogue: Dictionary, counts: Dictionary) -> Dictionary:
+	var carriers: Dictionary = catalogue.get("bound_water_carriers", {})
+	if carriers.is_empty():
+		return {"complete":true, "declared":false, "scope":"catalogue declares no bound-water carriers"}
+	var present: int = 0
+	for key: String in carriers: present += int(counts.get(key, 0))
+	var by_material: Dictionary = {}
+	for key: String in carriers:
+		if counts.has(key): by_material[key] = {"cells":0, "bound_quantity":0}
+	if present == 0:
+		return {"complete":true, "declared":true, "total":0, "by_material":by_material}
+	if not readback.has("carrier_states"):
+		return {"complete":false, "declared":true, "error":"%d bound-water carrier cells present without a state readback" % present}
+	var seen: int = 0
+	var total: int = 0
+	for entry: Variant in readback.carrier_states:
+		var valid: bool = typeof(entry) == TYPE_ARRAY and (entry as Array).size() == 3
+		var key: String = str(int(entry[0])) if valid else ""
+		if not valid or not by_material.has(key) or int(entry[2]) < 0 or int(entry[2]) > 255:
+			return {"complete":false, "declared":true, "error":"carrier state readback entry %s is not an observed declared carrier" % str(entry)}
+		var slot: Dictionary = by_material[key]
+		slot["cells"] = int(slot["cells"]) + 1
+		slot["bound_quantity"] = int(slot["bound_quantity"]) + int(entry[2])
+		seen += 1
+		total += int(entry[2])
+	for key: String in by_material:
+		if int(by_material[key]["cells"]) != int(counts.get(key, 0)):
+			return {"complete":false, "declared":true, "error":"carrier %s state readback covers %d of %d cells" % [key, int(by_material[key]["cells"]), int(counts.get(key, 0))]}
+	return {"complete":seen == present, "declared":true, "total":total, "by_material":by_material,
+		"scope":"sum of carrier state_b; never part of free Water"}
+
+# Complete 1024x1024 material inventory of a live World against the loaded
+# native catalogue (v1-compatible fields: complete, area, counts).
+static func inventory(world: Variant, water: Dictionary) -> Dictionary:
+	return material_census({"area":WORLD_SIDE * WORLD_SIDE, "material_cells":world.get_cells(),
+		"stored_water_cells":int(water.get("water_cells", -1))}, native_catalogue())
 
 static func water(world: Variant) -> Dictionary:
 	var observed: Dictionary = world.water_experiment_observation(Vector2i.ZERO, Vector2i(WORLD_SIDE, WORLD_SIDE))
