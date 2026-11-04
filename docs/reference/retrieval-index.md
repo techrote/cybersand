@@ -10,6 +10,15 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## IN-TOOLS bounded gameplay preparation
+
+Use [command admission](../architecture/in-tools-gameplay-admission.md) for
+quantity, native/application ownership, reversible closure and nozzle readiness;
+[fixtures/playtest](../operations/in-tools-fixtures-and-playtest.md) for runnable
+preparation and remaining host gates; [dated evidence](../audits/2026-11-04-in-tools-admission.md)
+for actual source-qualified results. The [six separate retrieval questions](retrieval-in-tools-361.json)
+keep the frozen32 and existing challenges unchanged. Production gameplay remains Planned.
+
 ## Material catalogue compiler and compatibility guards — 2026-11-04
 
 Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)

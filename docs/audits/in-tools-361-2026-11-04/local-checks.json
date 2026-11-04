@@ -1,0 +1,752 @@
+{
+  "accepted_base_commit": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "accepted_base_tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "tools/lcb/in_tools_contract.py",
+        "--check-comparison"
+      ],
+      "exit": 0,
+      "seconds": 0.082,
+      "started_at_utc": "2026-11-04T10:29:17.366388+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "39311d9c22925e1b53a965f78eb374b23778146f884f4a2cb39d38fe78dca34e"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/lcb",
+        "-p",
+        "test_in_tools*.py",
+        "-v"
+      ],
+      "exit": 0,
+      "seconds": 0.24,
+      "started_at_utc": "2026-11-04T10:29:17.448767+00:00",
+      "status": "pass",
+      "stderr_sha256": "24bbe26078b050d465a96b4603820544bf3e75ce73d12b3ba8c6b8aed7145b0b",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/lcb",
+        "-p",
+        "test_policy_contract.py",
+        "-v"
+      ],
+      "exit": 0,
+      "seconds": 0.0831,
+      "started_at_utc": "2026-11-04T10:29:17.689171+00:00",
+      "status": "pass",
+      "stderr_sha256": "fdde5c4a2909af0d13333bad2d855610f34ccb297b01c51e30559601a9f8556f",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/native_policy_artifacts.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.0399,
+      "started_at_utc": "2026-11-04T10:29:17.382364+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6998bc4b68444d6594c4fca0bf00292415741a1c9ecec1eeae092c7946bea72c"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/derive_capability_matrix.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.046,
+      "started_at_utc": "2026-11-04T10:29:17.422708+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e246e64b95105b1982c94d0b2dbcd32cc649a33bf871daa6142442e4c8c11070"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/liquid_run_receipt_contract.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.0489,
+      "started_at_utc": "2026-11-04T10:29:17.468978+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "31b6cffc9c746110b7ef3e0c43ec4e8b296e03c8c3a58283232d446fb81456ca"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/water_normalization_contract.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.0449,
+      "started_at_utc": "2026-11-04T10:29:17.518172+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "149826da8d652aae6df0f77413c68b87b456311310d91e764d9354c6bc0374c4"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/lcb/scenario_catalogue.py",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.0575,
+      "started_at_utc": "2026-11-04T10:29:17.563291+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "af3524b63690a45ceeebc4c771332e2a8c8479edb3e077c28c389e07555012c5"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "exit": 0,
+      "seconds": 1.1854,
+      "started_at_utc": "2026-11-04T10:29:17.382027+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "7ae9338d29ebc977cb9fe4d3dd0b0187b958ec518212370191a7fcfa93226ebe"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "/workspace/scratch/d77eee9d395e/repository-release.json"
+      ],
+      "exit": 0,
+      "seconds": 1.9515,
+      "started_at_utc": "2026-11-04T10:29:18.567723+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "f2b9188d5d1b667888784b366ad2efac44f97c57ef0e04cfa16ace050129400e"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "exit": 0,
+      "seconds": 0.176,
+      "started_at_utc": "2026-11-04T10:29:20.519652+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+    },
+    {
+      "command": [
+        "git",
+        "lfs",
+        "fsck"
+      ],
+      "exit": 0,
+      "seconds": 0.3524,
+      "started_at_utc": "2026-11-04T10:29:20.695908+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 1.1927,
+      "started_at_utc": "2026-11-04T10:29:21.048511+00:00",
+      "status": "pass",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "comparison_head": "fbe82bcab8f821aac442c2bf59eb57b279717873",
+  "created_at_utc": "2026-11-04T10:29:53.028318+00:00",
+  "documentation": {
+    "canonical_claims": 239,
+    "documents": 121,
+    "errors": [],
+    "heading_anchors": 693,
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ],
+    "local_links": 3620,
+    "navigation_link_documents": 8,
+    "questions": 32,
+    "status": "passed",
+    "warnings": []
+  },
+  "focused_tests": {
+    "existing_policy_contract": 15,
+    "native_result_parser_custody": 17,
+    "proposal_copy_consistency": 32
+  },
+  "historical_m11": {
+    "compare_working_tree": false,
+    "errors": [],
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "source_hashes_checked": 28,
+    "status": "passed",
+    "working_tree_differences": []
+  },
+  "native_independent_review": {
+    "checks": 8761999,
+    "compile_exit": 0,
+    "compiler_current_match": true,
+    "compiler_unchanged": true,
+    "executable_current_match": true,
+    "executable_unchanged": true,
+    "finished_at_utc": "2026-11-04T10:26:12.383964Z",
+    "flow_pairs": 16,
+    "input_current_mismatches": [],
+    "inputs_unchanged": true,
+    "production_delta": "",
+    "record_sha256": "8e4bc9932c06b30c89c01d7f107d739c6db26fb9bae8060201fe82ab77d2a276",
+    "run_exit": 0,
+    "runner_current_match": true,
+    "runner_sha256": "926512fe3f85d27cebb1c8839502103b6ef1a364816132c63ba98b7f169383a4",
+    "runner_unchanged": true,
+    "started_at_utc": "2026-11-04T10:24:08.017012Z",
+    "status": "pass",
+    "stdout_current_match": true,
+    "stdout_equals_embedded_result": true,
+    "stdout_sha256": "f7150fae674c74b8ef3669861d9bda18d3e33df8a876a1c6208a980448b94b58",
+    "workers4_observed": [
+      4
+    ]
+  },
+  "plan_source_check": {
+    "comparison_inputs_checked": 9,
+    "fixtures_checked": 6,
+    "gameplay_qualified": false,
+    "host_execution": "NOT_RUN",
+    "scope": "source equality only; not runtime qualification",
+    "source_inputs_checked": 25
+  },
+  "production_and_old_query_diff": {
+    "command": [
+      "git",
+      "diff",
+      "--exit-code",
+      "HEAD",
+      "--",
+      "native/src",
+      "native/include",
+      "godot/scripts",
+      "godot/native_extension",
+      ".github",
+      "Makefile",
+      "docs/reference/retrieval-questions.json",
+      "docs/reference/retrieval-challenges.json"
+    ],
+    "exit": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "qualification_limits": [
+    "No new production tool or native command exists",
+    "No Godot, Windows, Rapier, physical actor, focus/reset gameplay execution or human playtest in this task",
+    "No native diagnostic-ledger parity claim",
+    "Native timings include assertion/census/hash work, not a benchmark",
+    "Six new host registrations are Planned and unexecuted",
+    "USABLE02 loses top-five canonical hit; frozen32 remain unchanged",
+    "Packaged runtime materialization checks identity only; binaries not executed"
+  ],
+  "repository": {
+    "documentation": {
+      "canonical_claims": 239,
+      "documents": 121,
+      "errors": [],
+      "heading_anchors": 693,
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ],
+      "local_links": 3620,
+      "navigation_link_documents": 8,
+      "questions": 32,
+      "status": "passed",
+      "warnings": []
+    },
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ],
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "scope": "current source/documentation and artifact identity",
+    "status": "passed",
+    "unmaterialized_runtime_files": []
+  },
+  "retrieval": [
+    {
+      "after_report_sha256": "b1122638f546beadc696b6bc96521b2ac6d437e6ce9146ee6cc032853a9929f9",
+      "after_summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "questions": 32
+      },
+      "before_report_sha256": "2d39c7dfbdb7469b7065b95bab616dd83047a117069bb370f8ee3f98dca4c961",
+      "before_summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "questions": 32
+      },
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions.json",
+        "--output",
+        "retrieval-release.json"
+      ],
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "final_ranks": {
+        "Q01": 1,
+        "Q02": 2,
+        "Q03": 3,
+        "Q04": 2,
+        "Q05": 1,
+        "Q06": 1,
+        "Q07": 1,
+        "Q08": 2,
+        "Q09": 1,
+        "Q10": 2,
+        "Q11": 1,
+        "Q12": 1,
+        "Q13": 1,
+        "Q14": 1,
+        "Q15": 4,
+        "Q16": 1,
+        "Q17": 3,
+        "Q18": 1,
+        "Q19": 5,
+        "Q20": 1,
+        "Q21": 3,
+        "Q22": 1,
+        "Q23": 1,
+        "Q24": 3,
+        "Q25": 1,
+        "Q26": 2,
+        "Q27": 1,
+        "Q28": 1,
+        "Q29": 3,
+        "Q30": 1,
+        "Q31": 1,
+        "Q32": 2
+      },
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "limitations": [
+        "Lexical development-set evaluation; not answer correctness or unseen-query qualification"
+      ],
+      "rank_changes": [],
+      "registration": "frozen-32"
+    },
+    {
+      "after_report_sha256": "3774701cf63c1d545265b9ebfa24db1741e75ac4af0d8a3732c989dab0e9f8d2",
+      "after_summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 123,
+        "canonical_hit_at_k": 155,
+        "mrr_at_k": 0.8678,
+        "questions": 157
+      },
+      "before_report_sha256": "beb10780217b98fc13139c0ece67864e9cdd4748597ca77aea4e624cac969562",
+      "before_summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8734,
+        "questions": 157
+      },
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "retrieval-challenges-release.json"
+      ],
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "final_ranks": {
+        "4LY01": 2,
+        "4LY02": 2,
+        "4LY03": 1,
+        "4LY04": 1,
+        "4LY05": 1,
+        "ACT01": 1,
+        "ACT02": 1,
+        "ACT03": 1,
+        "ACT04": 1,
+        "ACT05": 1,
+        "ACT06": 1,
+        "ACT07": 1,
+        "ACT08": 1,
+        "ACT09": 1,
+        "ACT10": 1,
+        "ACT11": 1,
+        "ACT12": 1,
+        "ACT13": 1,
+        "ACT14": 2,
+        "ACT15": 1,
+        "C01": 1,
+        "C02": 1,
+        "C03": 4,
+        "C04": 1,
+        "C05": 4,
+        "C06": 2,
+        "C07": 1,
+        "C08": 1,
+        "C09": 4,
+        "C10": 1,
+        "C11": 2,
+        "C12": 1,
+        "C13": 1,
+        "C14": 1,
+        "C15": 1,
+        "C16": 2,
+        "CI-HANG-01": 3,
+        "CI-SCHEDULING-01": 1,
+        "DEP01": 1,
+        "DEP02": 1,
+        "GEN005-1": 1,
+        "GEN005-2": 1,
+        "GEN005-3": 1,
+        "GEN007-1": 1,
+        "GEN007-2": 1,
+        "GEN007-3": 1,
+        "GEN007-4": 1,
+        "GEN01": 4,
+        "GEN02": 1,
+        "GEN03": 1,
+        "GEN04": 1,
+        "GEN05": 1,
+        "GEN06": 1,
+        "GEN07": 1,
+        "GEN08": 1,
+        "GEN09": 1,
+        "GEN10": 2,
+        "GEN11": 1,
+        "GEN12": 2,
+        "GEN13": 1,
+        "GEN14": 1,
+        "GEN15": 1,
+        "GEN16": 1,
+        "GEN17": 1,
+        "GEN18": 1,
+        "GEN19": 1,
+        "GEN20": 1,
+        "GEN21": 1,
+        "GEN22": 1,
+        "GEN23": 2,
+        "GEN24": 1,
+        "GEN25": 1,
+        "GEN26": 1,
+        "LCB-CYSD-HOST-01": 1,
+        "LCB-CYSD-PREP-01": 3,
+        "LCB-DEFAULT-DEMO-01": 4,
+        "LCB-DEFAULT-HOST-02": 1,
+        "LCB-HOST-UNION-01": 1,
+        "LCB-HOST-WEB-01": 3,
+        "LCB-IN-ADAPTER-01": 2,
+        "LCB-MAIN-ACCEPTANCE-01": 1,
+        "LCB-MASK-GAS-01": 1,
+        "LCB-ORDINARY-DEMO-01": 1,
+        "LCB-PRESSURE-OPT-01": 1,
+        "LCB-SYNC-BODY-01": 1,
+        "LCB-SYNC-WATER-BODY-01": 1,
+        "LCB-TRIAL-BODY-01": 1,
+        "LCB-WATER-IN-01": 1,
+        "LCB-WATER-PUB-01": 1,
+        "LCB-WATER-PUB-02": 1,
+        "LCB01": 1,
+        "LCB02": 1,
+        "LCB03": null,
+        "LCB04": 1,
+        "LCB05": 2,
+        "LCB06": 2,
+        "LCB07": 1,
+        "LCB08": 3,
+        "LCB09": 1,
+        "LCB10": 1,
+        "LCB11": 1,
+        "LCB12": 1,
+        "LCB13": 1,
+        "LCB14": 1,
+        "LCB15": 1,
+        "LCB16": 1,
+        "LCB17": 1,
+        "LCB18": 1,
+        "MAT01": 1,
+        "MAT02": 1,
+        "MAT03": 1,
+        "MS01": 1,
+        "MS02": 3,
+        "MS03": 1,
+        "MS04": 2,
+        "MS05": 4,
+        "MS06": 1,
+        "PLAY-MANUAL270-01": 1,
+        "PLAY-RECOVERY-01": 1,
+        "PLAY-UI007-01": 2,
+        "PLAY01": 1,
+        "PLAY02": 1,
+        "PLAY03": 2,
+        "PLAY04": 1,
+        "PLAY05": 1,
+        "REC01": 1,
+        "REC02": 2,
+        "REC03": 1,
+        "REM01": 1,
+        "REM02": 1,
+        "RENDER-COPY-01": 4,
+        "SCENE01": 1,
+        "SCENE02": 1,
+        "SCENE03": 1,
+        "SCENE04": 1,
+        "SOL01": 2,
+        "SOL02": 3,
+        "SOL03": 1,
+        "SOL04": 1,
+        "TEST01": 1,
+        "TEST02": 1,
+        "TEST03": 1,
+        "TEST04": 1,
+        "THB01": 1,
+        "THB02": 1,
+        "THB03": 1,
+        "THB04": 1,
+        "THB05": 1,
+        "THB06": 1,
+        "USABLE01": 2,
+        "USABLE02": null,
+        "USABLE03": 2,
+        "USABLE04": 1,
+        "WATER-EXIT-01": 1,
+        "WEX01": 1,
+        "WEX02": 1,
+        "WEX03": 1
+      },
+      "fixture_sha256": "6590b94e902079f2545c8886a5131bc7aff58ccb21e2ee987463f0b9ab34e570",
+      "limitations": [
+        "Lexical development-set evaluation; not answer correctness or unseen-query qualification"
+      ],
+      "rank_changes": [
+        {
+          "after": 2,
+          "before": 1,
+          "id": "ACT14"
+        },
+        {
+          "after": null,
+          "before": 5,
+          "id": "USABLE02"
+        },
+        {
+          "after": 3,
+          "before": 2,
+          "id": "LCB08"
+        }
+      ],
+      "registration": "existing-157"
+    },
+    {
+      "after_report_sha256": "6ef86cc308d12c81927d51244b5df3d8ee045906de1e2720916b6952ddf9afe0",
+      "after_summary": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 6,
+        "mrr_at_k": 0.5972,
+        "questions": 6
+      },
+      "before_report_sha256": null,
+      "before_summary": null,
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-in-tools-361.json",
+        "--output",
+        "retrieval-in361-release.json"
+      ],
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "final_ranks": {
+        "IN361-01": 2,
+        "IN361-02": 1,
+        "IN361-03": 3,
+        "IN361-04": 1,
+        "IN361-05": 2,
+        "IN361-06": 4
+      },
+      "fixture_sha256": "83310c12b9a1009533e92c923099e3125508aa363dc4b57ee6be4bf8a5daf7ff",
+      "limitations": [
+        "Lexical development-set evaluation; not answer correctness or unseen-query qualification"
+      ],
+      "rank_changes": [],
+      "registration": "in-tools-6"
+    }
+  ],
+  "review_disposition": {
+    "application": "metering, fixed cost, cancellation and native/application fault distinction corrected",
+    "comparison": "final read-only review: no remaining architecture/manifest contradiction",
+    "native_source": "source and primitive evidence reviewed",
+    "receipt_validator": "32 tests include finite-domain quantity consistency and previous review counterexamples",
+    "reviewers": "independent automated agents; not human approval"
+  },
+  "runtime_materialization": [
+    {
+      "bytes": 4824064,
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "ee09f7ab485f817b5f58e767ddb26f2e430439bb3dd4f185019eda028f47199a"
+    },
+    {
+      "bytes": 4222424,
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45"
+    },
+    {
+      "bytes": 2754113,
+      "path": "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528"
+    },
+    {
+      "bytes": 10531096,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "sha256": "d8d71fd6f953972e6b650c1bf53b667433fe5a2461f21d221104d42c45251b86"
+    },
+    {
+      "bytes": 8077888,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "sha256": "70d5dfb0dc60b3276047a17bb9824750fa527f1b46759024e23459e232343cd2"
+    },
+    {
+      "bytes": 11996416,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "sha256": "93709c0b597f801f2a476bf50f4234639cc6f902746a5a7dfbc04ae0c8322467"
+    },
+    {
+      "bytes": 10838824,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "sha256": "fb05e284467399144698b77412196604d136886a164fa881d13e385429607909"
+    },
+    {
+      "bytes": 8836448,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "sha256": "38feab99c6b53e30aa7664afced37c1e11956999d930456fb6df0da552371d54"
+    },
+    {
+      "bytes": 9540432,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "sha256": "164927dce3772601f75a63a7f587acc0d4e59755598ccb453f21c8dac212c55c"
+    },
+    {
+      "bytes": 9872888,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "sha256": "021a237af3bd99170a7b220369295e69d78f0c57ab6cc8fc93dc9a79be203358"
+    },
+    {
+      "bytes": 10217600,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "sha256": "f4e7041aef2a508739688ea67b83802765c2249629288e5ff986079d75aab7f5"
+    },
+    {
+      "bytes": 12012020,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "sha256": "9e10814c3ede242b0dc95737aecec4837b9468d170e82a29dea5013614e242bd"
+    },
+    {
+      "bytes": 117275416,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    {
+      "bytes": 18692816,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "sha256": "7ad1dc7a59a2689f2248ad9f1961574851acae96d1a249b39f0ecd881528569b"
+    },
+    {
+      "bytes": 8677376,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "sha256": "b5de2d56a30cef7d7ef9a1afc7a0fa7e5f2c3e3c12fc31643b60a1729ee901c9"
+    },
+    {
+      "bytes": 8747008,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "sha256": "0e0de310bee74df67e1a5ff0532f51edd27338196c231c81817a938bee48a2ad"
+    },
+    {
+      "bytes": 9987072,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    {
+      "bytes": 2751606,
+      "path": "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+      "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"
+    }
+  ],
+  "schema": "in-tools-local-checks-v1",
+  "status": "local-gates-pass-with-disclosed-retrieval-regression",
+  "tested_additions_sha256": {
+    "godot/tests/fixtures/lcb/in_tools/in-tools-admission.v1.json": "8e5e12a5cbaf0ccf554f07dfc49ea17757112445bf23d6dc144154b6165b735a",
+    "native/tests/test_in_tools_361_contract.cpp": "f743a2c8beef02caa40b44c4803511c4822cccc3bd3fea77f82e06776dfcbb3c",
+    "tools/lcb/in_tools_contract.py": "2fdacbbed301e495393b052877f6ff7f3d8443c26096775243715eac15761de9",
+    "tools/lcb/run_in_tools_native.py": "926512fe3f85d27cebb1c8839502103b6ef1a364816132c63ba98b7f169383a4",
+    "tools/lcb/test_in_tools_contract.py": "76e8d39db3d63624db6fa78074819309da1a75d5488209a9f4e15b746ffc9708",
+    "tools/lcb/test_in_tools_native_runner.py": "8b77a1884f77d4f014e43a21a4182ffd7264b9b2b0e2c96954b30e0b2fa4f2e3"
+  }
+}

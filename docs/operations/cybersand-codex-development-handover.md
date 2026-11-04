@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## IN-TOOLS bounded handover — 2026-11-04
+
+Consume the [#361 architecture](../architecture/in-tools-gameplay-admission.md)
+and [test/playtest runbook](in-tools-fixtures-and-playtest.md). This preparation
+uses an isolated branch on main `7ef4856e` and immutable #370 `fbe82bca` reuse
+pins. Existing physical U10 can gain exact application-observed sink metering;
+a registered resident valve requires one exclusive-owner preflight/commit and
+explicit fault handling. Both are future integration work. Momentum injection
+requires a separately authorized native contract; no negative-vy law is admitted.
+Coordinate Main/panel changes with #370, actor lifecycle with PLAY, and any
+mask/coupling change with #347. Do not modify their active branches or import #358.
+Keep this documentation/test-only PR draft and #361 open. See the
+[qualification record](../audits/2026-11-04-in-tools-admission.md) for exact scope.
+
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)

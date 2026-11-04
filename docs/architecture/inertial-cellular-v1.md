@@ -10,6 +10,11 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-polic
 
 # Inertial cellular reference
 
+**Planned gameplay successor:** the [#361 admission contract](in-tools-gameplay-admission.md)
+separates whole-cell edits, metered sinks, reversible ports and geometric sources
+from a new native velocity-input contract. Its test-only fixtures do not change
+this law or supply desktop/human acceptance.
+
 ## Current-main availability and physical limits — 2026-11-03
 
 At main `89020b9eb6d540383a5bb64b58dcd29a87592c32`, Water3 and Brine24 can select

@@ -10,6 +10,12 @@ related-documents: [physical-actor-rigs.md, actor-rigs.md, actor-control-prototy
 
 # Actor usables — 32-item catalogue and physical equipment
 
+**Planned #361 extension:** [IN-TOOLS admission](../architecture/in-tools-gameplay-admission.md)
+selects the existing physical `liquid_drain` for opt-in exact Water/Brine metering.
+Sampled counters follow attempted slots; physical counters confirm material
+transitions but still count slots, not Water units. The preparation adds no
+production usable or equipment framework; see its [future qualification](../operations/in-tools-fixtures-and-playtest.md).
+
 ## Current scope
 
 **Current experimental source, USABLE-002 / ACT-005 / #182:** the **32 usables**

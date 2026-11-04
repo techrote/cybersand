@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "purpose": "Independent #361 preparation questions; frozen32 and existing challenges unchanged.",
+  "questions": [
+    {
+      "id": "IN361-01",
+      "query": "Can a CyberSand inertial liquid nozzle inject velocity or spray upward now?",
+      "canonical": [
+        "architecture/in-tools-gameplay-admission.md"
+      ],
+      "facts": [
+        "New material enters with zero IN motion; aimed deposition chooses geometry.",
+        "Native diagnostic setter is not a gameplay input contract; a non-upward bounded source needs separate native approval.",
+        "Negative downward-positive vy is refused; upward spray belongs to separately approved #362 physics research."
+      ],
+      "sources": [
+        "architecture/in-tools-gameplay-admission.md"
+      ]
+    },
+    {
+      "id": "IN361-02",
+      "query": "How can a reversible valve close safely without deleting Water or trapping a body?",
+      "canonical": [
+        "architecture/in-tools-gameplay-admission.md"
+      ],
+      "facts": [
+        "Use a registered resident finite aperture, current owner/mask/policy/lease and complete preflight.",
+        "Closing requires every target Empty and unmasked; occupied closure refuses unchanged.",
+        "Serial normal commit is not rollback on unexpected execution fault; terminal owner/reconstruction is required."
+      ],
+      "sources": [
+        "architecture/in-tools-gameplay-admission.md"
+      ]
+    },
+    {
+      "id": "IN361-03",
+      "query": "What are the exact Water and Brine quantities for an inertial drain?",
+      "canonical": [
+        "architecture/in-tools-gameplay-admission.md"
+      ],
+      "facts": [
+        "Water full quantum is 2^bits-1, 7 or255 at the tested endpoint precisions.",
+        "Brine counts whole cells; FM partial Water must be metered in actual native units, not slots times255.",
+        "A physical opening is internal transfer, distinct from a removal sink with an explicit ledger."
+      ],
+      "sources": [
+        "architecture/in-tools-gameplay-admission.md"
+      ]
+    },
+    {
+      "id": "IN361-04",
+      "query": "Which existing usable should implement IN-TOOLS and what can be done without native changes?",
+      "canonical": [
+        "architecture/in-tools-gameplay-admission.md"
+      ],
+      "facts": [
+        "Use opt-in metering on physical liquid_drain, retaining equipment/action lifecycle and fixed charge/cooldown.",
+        "Existing native copied cell reads permit application receipt quantity metering without world.cpp/adapter/Rapier changes.",
+        "This is not a native-issued command receipt or full #361 completion."
+      ],
+      "sources": [
+        "architecture/in-tools-gameplay-admission.md"
+      ]
+    },
+    {
+      "id": "IN361-05",
+      "query": "Do the IN-TOOLS fixture tests prove gameplay, Rapier placement or human feel?",
+      "canonical": [
+        "operations/in-tools-fixtures-and-playtest.md"
+      ],
+      "facts": [
+        "Native core probes and synthetic receipt validation are distinct from Planned host fixtures.",
+        "The existing controlled actor-free route does not establish physical usable effects; use supported Exploratory actor route.",
+        "Windows/Linux actual-host, lifecycle and owner playtest remain separate gates."
+      ],
+      "sources": [
+        "operations/in-tools-fixtures-and-playtest.md"
+      ]
+    },
+    {
+      "id": "IN361-06",
+      "query": "How should FreeMass and inertial tools be compared fairly and which liquid supports each?",
+      "canonical": [
+        "operations/in-tools-fixtures-and-playtest.md"
+      ],
+      "facts": [
+        "Water FM/IN uses same radius3, geometry, initial quantity, precision, seed, horizon and actual dose.",
+        "Brine control is CY, not unavailable FreeMass; protected FM radius2 is a separate compatibility control.",
+        "Observed native claimants and tick cost are not GPU FPS; historical overlapped campaign timing is excluded."
+      ],
+      "sources": [
+        "operations/in-tools-fixtures-and-playtest.md"
+      ]
+    }
+  ]
+}

@@ -10,6 +10,19 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## IN-TOOLS preparation — 2026-11-04
+
+The [#361 admission package](../architecture/in-tools-gameplay-admission.md)
+traces accepted main `7ef4856e` and pins unmerged #370 `fbe82bca`. New standalone
+native probes and proposed receipt adversaries support a bounded next task:
+meter the existing physical Liquid Drain, then a registered reversible port.
+The [fixture runbook](../operations/in-tools-fixtures-and-playtest.md) preserves
+FreeMass defaults, Water/Brine eligibility and exact units. A velocity inlet needs
+separate native input admission; upward spray stays #362. Ordinary desktop/Rapier
+placement, new command lifecycle and owner feel remain unqualified. The
+[dated audit](../audits/2026-11-04-in-tools-admission.md) records actual evidence.
+No production implementation, automatic merge or #361 closure is authorized.
+
 ## Material shadow foundation and integration — 2026-11-04
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)

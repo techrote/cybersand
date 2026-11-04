@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+IN-TOOLS #361: [bounded gameplay admission](architecture/in-tools-gameplay-admission.md),
+[fixtures and future playtest](operations/in-tools-fixtures-and-playtest.md), and
+[source-qualified preparation record](audits/2026-11-04-in-tools-admission.md).
+This documentation/test-only candidate prepares metered drains, reversible ports
+and geometric sources; gameplay integration and native momentum inputs remain
+Planned. It does not complete #361 or import unmerged #370/#358.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
 is being reconciled and qualified for guarded integration in [#371](https://github.com/techrote/cybersand/pull/371).

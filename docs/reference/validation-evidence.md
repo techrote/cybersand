@@ -10,6 +10,14 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## IN-TOOLS preparation scope — 2026-11-04
+
+The [#361 dated record](../audits/2026-11-04-in-tools-admission.md) binds actual
+Linux native primitive runs, source custody and synthetic proposal-checker
+adversaries. They are separate from the six Planned host fixtures, Windows/Godot
+execution, Rapier-safe terrain insertion and human feel. Existing #370 historical
+results retain their own source, platform and timing exclusions.
+
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
 
 The [integration qualification record](../audits/2026-11-04-mat-auth371-integration.md)
