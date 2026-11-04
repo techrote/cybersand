@@ -100,3 +100,25 @@ its no-stale-side, concave/seam, hard/foreign-mask, conservation and barrel gate
 If evidence instead shows open-rim spill or only presentation phase, retain that
 result and propose the corresponding bounded authoring/presentation follow-up.
 No production, loaded-rest, uninterrupted-carry or owner acceptance follows.
+
+## Registered source-isolation replay before execution
+
+Read-only source review predicts a specific closed-deck failure: a26×2 rectangle
+centred at(512,250), one Sand cell at(512,248), then a new copied rectangle
+sample2cells upward places that grain in the lower half of the current shape.
+The existing nearest-current-face rule predicts downward relocation, whereas
+the grain began above the deck. This remains an analytic prediction.
+
+Replay normal native preparation with the same copied geometry at upward
+advances0,0.5,1,1.5,2,3cells, in independent and authored-single-rectangle
+admissions, with C/E/S. Each fresh world has exactly one grain and no live
+Rapier actor; record before/after actual cell coordinates immediately around
+the second existing preparation, without a native tick or force application.
+This36-case control isolates ejection geometry, not live motion/latency or
+granular load efficacy. Source, inputs, SDK and observation side effects must
+be explicit. Sample identity must use real fresh admission values.
+
+Do not query diagnostic_body_metrics for compound capture: its rest evaluation
+can mutate per-proxy history. Existing aggregate diagnostics are copied; full
+endpoint-reason census is unavailable here and remains null. One-grain replay
+can observe the actual relocation endpoint directly without that evaluator.
