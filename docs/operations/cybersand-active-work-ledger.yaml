@@ -2,7 +2,7 @@ schema_version: 1
 repository: techrote/cybersand
 record_kind: source_qualified_coordination_snapshot
 snapshot:
-  as_of_utc: '2026-11-04T15:27:12Z'
+  as_of_utc: '2026-11-04T18:03:12Z'
   accepted_main:
     sha: 01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc
     tree: 4cf99921dc2b33233c3a254f4b6f27ed7cb0f204
@@ -53,6 +53,10 @@ snapshot:
   - Independent full-inventory comparison after initial capture found one later head movement in PR347.
     Reconciled at 2026-11-04T15:27:12Z; metadata observation times remain per-record and original executions
     keep their sources.
+  - This update registers WORKBENCH-001 at 2026-11-04T18:03:12Z after the original reconciliation. The 77-PR
+    inventory remains the historical observation at its recorded time; existing workstream states and qualifications
+    are unchanged. PRs388-390 and later changes are outside that original inventory. The original independent
+    audit does not review this new registration.
 seed_ids:
 - IN361-ADMISSION
 - IN361-DRAIN
@@ -2109,6 +2113,27 @@ evidence:
   platforms:
   - linux
   - windows
+- id: ISSUE391-WORKBENCH
+  kind: github_metadata
+  url: https://github.com/techrote/cybersand/issues/391
+  observed_at: '2026-11-04T18:03:12Z'
+  summary: Owner-requested bounded shared sandbox assignment created as open issue391 under PLAY263/268.
+    This registers work; it does not establish a started implementation session or any passing runtime
+    qualification.
+  authority: verified
+  subject_issue: 391
+  issue_state: open
+- id: WORKBENCH-GCR-SINGLE-BODY
+  kind: analysis
+  url: https://github.com/techrote/cybersand/blob/38d3059e40986c7f869e60cf2097169763129ecf/godot/scripts/physical_actor_session.gd
+  observed_at: '2026-11-04T18:03:12Z'
+  summary: 'Read-only inspection of issue391 sources: review-fleet admission requires one human arcadelander;
+    corresponding Rapier GCR bridge also requires one body. LA-SA Scooper plus passive barrel therefore
+    needs separately qualified integration. Existing-main mixed-world work can proceed.'
+  authority: analysis
+  subject_pr: 389
+  source_sha: 38d3059e40986c7f869e60cf2097169763129ecf
+  source_tree: null
 pull_requests:
 - number: 21
   title: 'Research preparation: Water Feel Lab, storage costs and ownership protocols'
@@ -6631,6 +6656,104 @@ workstreams:
     rise repairs deck-side escape without reducing peak speed.
   - Unchanged-angle translation only; rotations, ambiguous corners and open edges remain unqualified.
     Repeated native relocation cost rises; no universal carrying or zero-cost claim.
+- id: WORKBENCH-001
+  programme: playground
+  title: Shared development sandbox and mixed-feature acceptance
+  scope: One current shared runtime; two maps; simultaneous flyer and passive barrel; powder/Water painting;
+    pause/step/reset; persisted starting terrain, spawns and settings. LA-SA Scooper subcase remains explicit.
+  priority: 31
+  issues:
+  - number: 391
+    url: https://github.com/techrote/cybersand/issues/391
+    state: open
+    evidence: ISSUE391-WORKBENCH
+  prs: []
+  primary_pr: null
+  delivery_stage: queued
+  stage_evidence:
+  - ISSUE391-WORKBENCH
+  agent_activity: not_started
+  activity_evidence: []
+  review_disposition:
+    status: pending
+    evidence: []
+    source_sha: null
+    source_tree: null
+    summary: Implementation has not started in this recorded assignment; independent implementation review
+      remains pending.
+  qualification: []
+  merge_approval:
+    status: not_recorded
+    evidence: []
+    head_sha: null
+    head_tree: null
+  source_confidence: planning_only
+  verified_at: '2026-11-04T18:03:12Z'
+  ownership:
+    status: unknown
+    writer_id: null
+    branch: null
+    role: planned
+    owner_group: null
+    evidence: []
+  dependencies:
+  - id: PLAY262-MAPS
+    type: coordination
+    reason: Coordinate actual Main/map/actor/session overlap. Reconciliation of the entire old map PR
+      is not an implementation prerequisite.
+  - id: GCR-CARRY
+    type: coordination
+    reason: Preserve GCR stack ownership, including newer PR389. LA-SA single-body/source compatibility
+      limits the Scooper subcase only; current-main shared sandbox work starts independently.
+  - id: MAT353-B
+    type: coordination
+    reason: Main naming and executable-source admission overlap; use the existing naming API and retain
+      historical source authorities.
+  - id: LCB360-FEEL
+    type: coordination
+    reason: Coordinate shared Main/MicroScenario surfaces if touched. Four-family comparison is a later
+      consumer, not required for the initial sandbox.
+  - id: IN361-DRAIN
+    type: coordination
+    reason: Coordinate physical-session/worker overlap if touched. Metered drain functionality is outside
+      this first increment.
+  - id: PLAY270-ACCEPT
+    type: informational
+    reason: Broader PLAY promotion, device and human-feel gates remain separate; they do not block implementation
+      of this bounded workbench.
+  blockers:
+  - id: scooper-mixed-body-subcase
+    kind: source
+    summary: 'Specific LA-SA Scooper/carrying subcase only: PR389 remains unintegrated and its current
+      review route requires one body. Do not call the full mixed-feature acceptance complete until qualified.
+      This does not block the main-based core sandbox.'
+    evidence:
+    - ISSUE391-WORKBENCH
+    - WORKBENCH-GCR-SINGLE-BODY
+    resolved: false
+  next_action:
+    text: Start the authorized Astra implementation in a new isolated current-main worktree; establish
+      sole branch custody, implement the shared-world sandbox, validate it and publish a separate draft
+      PR. Keep any unresolved Scooper subcase explicit.
+    responsible: Astra implementation session when actually started; ledger coordinator remains sole steward
+    owner_decision_required: false
+    owner_decision: null
+    stop_condition: Publish a source-qualified draft PR and handover. Record progress and stop at independent
+      review or owner approval; no merge or Ready transition.
+  notes:
+  - Issue391 is a bounded follow-on under PLAY epic263 and shared composition/UI268, with MicroScenarios30
+    infrastructure. It is not a second host or a legacy-fixture migration programme.
+  - Suggested branch feat/workbench-001-shared-sandbox-20261104 is a proposal, not an established reservation.
+    Publication of this issue/prompt does not authenticate a running chat.
+  - 'External coordination: PR390 at9a9e63a0091f3a64e038892e651d0591d135241a owns fixed-interest worker-region
+    correction and was Ready/unmerged when inspected. It is absent from the historical77-PR inventory;
+    no new typed lane is invented.'
+  - Accepted main rechecked as01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc. Use its supported flyer/native
+    coupling; do not import the full blocked GCR stack or remove single-body guards.
+  - Paused authoring followed by one acknowledged rebuild is sufficient. Persist starting construction
+    across application restarts, not continuing-state physics replay.
+  - Historical scientific fixtures, source locks and failed results remain unchanged. No feature integration
+    approval is granted by task registration.
 change_log:
 - at: '2026-11-04T15:19:23Z'
   workstreams:
@@ -6716,3 +6839,12 @@ change_log:
   evidence:
   - SOL347-LATE-HANDOVER
   - PR347
+- at: '2026-11-04T18:03:12Z'
+  workstreams:
+  - WORKBENCH-001
+  summary: Register owner-requested issue391 and focused Astra assignment as queued/not_started. Record
+    shared-world scope, actual source coordination and the pending LA-SA mixed-body subcase. Existing
+    lane states, qualification and historical77-PR inventory are not refreshed.
+  evidence:
+  - ISSUE391-WORKBENCH
+  - WORKBENCH-GCR-SINGLE-BODY
