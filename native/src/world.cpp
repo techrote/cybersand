@@ -3904,11 +3904,13 @@ void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
                                            std::int64_t y, JobEffects* effects) noexcept {
     const bool has_pair_reactions = MaterialRules::has_pair_reactions(material);
     const bool is_ice = material == Material::Ice;
-    if (!has_pair_reactions && !is_ice) return;
+    const bool is_molten_glass = material == Material::MoltenGlass;
+    if (!has_pair_reactions && !is_ice && !is_molten_glass) return;
 
     bool pair_pending = false;
     bool melt_pending = false;
     bool freeze_pending = false;
+    bool molten_glass_heat = false;
     for (const auto offset : kMooreNeighbours) {
         // The visible neighbour is the contact authority, including body masks.
         const auto target = get(x + offset.x, y + offset.y);
@@ -3919,6 +3921,11 @@ void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
         if (is_ice) {
             melt_pending = melt_pending || is_hot(target);
             freeze_pending = freeze_pending || target == Material::Water;
+        } else if (is_molten_glass) {
+            // Match the thermal kernel exactly: Spark is not a heat source here.
+            // Inspect every visible neighbour even after finding a pair reaction.
+            molten_glass_heat = molten_glass_heat || target == Material::Fire ||
+                                target == Material::Lava || target == Material::MoltenGlass;
         } else if (pair_pending) {
             break;
         }
@@ -3932,6 +3939,11 @@ void World::schedule_pending_reaction_wake(Material material, std::int64_t x,
         schedule_interaction_wake(x, y, tick_index_ + period - elapsed, effects);
     };
     if (pair_pending) schedule_next_lane(4U, 190U);
+    if (is_molten_glass && (!molten_glass_heat || state_a(x, y) != 180U)) {
+        // Cold countdowns (including zero) and hot non-fixed points have work.
+        // Hot-at-180 pools may rest until an existing edit/contact wake occurs.
+        schedule_next_lane(4U, 192U);
+    }
     if (melt_pending) {
         schedule_next_lane(4U, 192U);
     } else if (freeze_pending) {
