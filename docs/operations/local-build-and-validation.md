@@ -4,11 +4,22 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-04
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## Shared workbench acceptance — 2026-11-04
+
+Run `test_shared_workbench.gd` on the published desktop runtime. The ordinary
+single-process regression exercises both maps and cleans its temporary setup
+files. For cross-process qualification, supply a unique
+`CYBERSAND_WORKBENCH_TEST_NAME`, run once, close the process and run again with
+`-- --read-setups`. The second process checks native publication pixels, body
+origins, policy and reconstruction before removing the test files. Graphical
+keyboard trials require a focused window. The [dated checkpoint](../audits/2026-11-04-workbench-001.md)
+contains the exact launch and validation commands.
 
 ## PLAY LIFE010 raw-evidence gate — 2026-10-31
 

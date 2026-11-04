@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-04
 related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -16,6 +16,30 @@ generic import of identical native tuples retires its native generation and
 cannot acquire Water recipe/transport origin from the UI label. This adds no
 save schema or policy persistence; moving-body imports and separately restored
 host masks remain unsupported work.
+
+## Workbench starting setups
+
+**Current on the WORKBENCH-001 branch.** `workbench_setup.gd` saves a named
+UTF-8 JSON construction under `user://workbench/setup-<name>.json`. Names use
+1–48 ASCII letters, digits, hyphens or underscores. Saving flushes and closes a
+unique sibling temporary file before replacing the destination. Load checks
+the byte budget (128 KiB), field set, numeric bounds, model IDs and supported
+policy before asking the existing worker and Rapier owners to prepare a replacement.
+
+| Version 1 field | Meaning |
+| --- | --- |
+| `version`, `recipe_version` | Both must be 1. The map recipe fixes starting geometry, transport profile and Water semantics. |
+| `map` | `workbench/landing-yard` or `workbench/quarry`. |
+| `actors` | Exactly `arcadelander` and `reference_barrel`, each with an integer `[x,y]` body origin in cells. Both start at rest. Starting footprints must clear terrain and one another. |
+| `controlled` | `arcadelander` or `observer`. Observer releases flyer input. |
+| `edits` | Up to 440 ordered `[x,y,material]` radius-four stamps confined to the view. IDs are Empty (erase), Sand and Water. Reconstruction expands them into horizontal runs after the authored map rectangles. |
+| `liquid_policy` | Complete applied native policy envelope. The toolbar admits Current defaults or whole-cell Water with other assignments at their defaults. Save copies applied policy readback. |
+
+The file describes the user's starting construction. Loading starts at tick zero
+and regenerates the terrain, actor graph and body masks. Running brush strokes,
+elapsed ticks, velocities, solver continuation, command leases and pending
+effects are outside this schema. CYSD1 and CYPS2 keep their existing contracts.
+[Workbench controls](../systems/player-control-playground.md#shared-development-workbench)
 
 ## Does an identical save reproduce the next tick?
 

@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Shared workbench — 2026-11-04
+
+**Draft implementation, WORKBENCH-001 / #391.** Two authored maps use Main's
+desktop worker, the Arcade Lander and one passive reference barrel. The branch
+adds paused editing, named starting setups, mixed-body stepping and play.
+Full mixed-feature acceptance remains open for the actual multi-body LA-SA
+Scooper and owner review. The #390 fixed-interest correction has separate
+ownership. These maps use owner interest. [Controls and scope](../systems/player-control-playground.md#shared-development-workbench)
+
 ## PressureFlow idle cost (#201) — 2026-11-04
 
 The [#201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
