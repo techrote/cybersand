@@ -1,0 +1,134 @@
+{
+  "reviewed": "2026-11-04",
+  "reviewer": "independent read-only assistant agent /root/final_retrieval_review",
+  "disposition": "PASS",
+  "guide": {
+    "path": "docs/operations/material-catalogue-shadow.md",
+    "sha256": "65fe09feeaa186b152aa3bf05096af52ca2f752fceab1c5d75f3809dd1dec61b"
+  },
+  "corpus_manifest_sha256": "14835c3368ddf223f26bb634c09e23f8901b30e355f6548bba5863aa1be6f1d0",
+  "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+  "suites": {
+    "frozen": {
+      "report_sha256": "f4f5923183f4febefe28dbf2adde7556a0437c3c56e5795736f6271b39c86a0e",
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "documents": 119,
+      "chunks": 1587,
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "challenges": {
+      "report_sha256": "3c65823d3538ccf4a52971a5dedf4a8439fb478bcddb09d8555d190d59b324de",
+      "fixture_sha256": "6590b94e902079f2545c8886a5131bc7aff58ccb21e2ee987463f0b9ab34e570",
+      "documents": 119,
+      "chunks": 1587,
+      "summary": {
+        "questions": 157,
+        "canonical_hit_at_1": 123,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8702,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "353a": {
+      "report_sha256": "8bf9754285ad358f8853b74b9531b8cbb4c0dfd92071797d4781f9d8659eae3c",
+      "fixture_sha256": "af91c7d97ff3d2c83a96667d4872d850765884bbfbdda56b213df093694e87cb",
+      "documents": 119,
+      "chunks": 1587,
+      "summary": {
+        "questions": 8,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 8,
+        "mrr_at_k": 0.9375,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    }
+  },
+  "expected_fact_review": [
+    {
+      "id": "MAT353A-01",
+      "status": "complete across top five",
+      "required_context_ranks": [
+        2,
+        5
+      ]
+    },
+    {
+      "id": "MAT353A-02",
+      "status": "complete across top five",
+      "required_context_ranks": [
+        1
+      ]
+    },
+    {
+      "id": "MAT353A-03",
+      "status": "complete across top five",
+      "required_context_ranks": [
+        1
+      ]
+    },
+    {
+      "id": "MAT353A-04",
+      "status": "complete across top five",
+      "required_context_ranks": [
+        1
+      ]
+    },
+    {
+      "id": "MAT353A-05",
+      "status": "complete across top five",
+      "required_context_ranks": [
+        1,
+        3
+      ]
+    },
+    {
+      "id": "MAT353A-06",
+      "status": "complete across top five",
+      "required_context_ranks": [
+        2
+      ]
+    },
+    {
+      "id": "MAT353A-07",
+      "status": "complete across top five",
+      "required_context_ranks": [
+        1
+      ]
+    },
+    {
+      "id": "MAT353A-08",
+      "status": "complete across top five",
+      "required_context_ranks": [
+        1
+      ]
+    }
+  ],
+  "ranking_changes": [
+    {
+      "id": "ACT14",
+      "before": 1,
+      "after": 2,
+      "same_five_context_texts": true
+    },
+    {
+      "id": "RENDER-COPY-01",
+      "before": 3,
+      "after": 4,
+      "same_five_context_texts": true
+    }
+  ],
+  "retained_miss": "LCB03",
+  "wrong_status_substitution_found": false,
+  "limitations": [
+    "Canonical route hits are not complete answers",
+    "MAT353A-01 requires ranks2 and5; MAT353A-05 ranks1 and3; MAT353A-06 Current candidate at rank2 while rank1 is Planned",
+    "Lexical development fixtures do not establish unseen-query quality"
+  ],
+  "new_complete_contexts_sha256": "81059e949a9d028bc4711118cd7d848a281f5f64bd1f1a8dddb112bd947db40d"
+}
