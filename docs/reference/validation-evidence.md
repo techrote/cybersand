@@ -20,8 +20,55 @@ results retain their own source, platform and timing exclusions.
 The [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
 reproduces the original head, preserves retrieval failures and records the
 corrected census, diagnostic-ledger and evidence-validation contracts separately.
+The [current-main source re-admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+binds the one changed worker input to accepted main `751edc0b` and leaves all
+earlier receipts at their original identities. The live #379 ledger owns fresh
+resulting-head execution; source admission alone supplies no runtime pass.
+
+## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
+
+The later [Phase A integration gate](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration)
+authorizes current-main reconciliation and guarded integration of #377. Its live
+PR ledger owns fresh final-head, ready-state and independent-review results;
+the retained execution records below keep their original sources and limitations.
+No integration permission or passing apparatus result repairs H1 or closes #354.
+
+The [preregistration](../audits/2026-11-04-mat354-preregistration.md),
+[causal findings](../audits/2026-11-04-mat354-findings.md) and
+[correction-admission memo](../audits/2026-11-04-mat354-correction-admission.md)
+bind real native World fixtures to accepted production source `7ef4856e` and
+separate apparatus commits, compiled inputs, executables and retained raw results.
+The [guide](../operations/material-liveness-investigation.md) owns reproduction;
+the findings and linked PR ledger own exact completed, failed and unexecuted gates.
+
+Independent review examines source/observer authority, physical controls, actual
+kernel and worker evidence, conservation, raw identity and minimal deadline design.
+Initial apparatus limitations, the truncated-output failure, executable-mode
+failure and LeakSanitizer environment refusal retain their published identities
+and diagnoses. **Recovery correction:** their unpublished original local raw
+files are unavailable. The
+[recovery qualification record](../audits/2026-11-04-mat354-recovery-qualification.md)
+distinguishes them from recovered hosted failures and newly retained executions.
+A receipt saying
+`EXECUTED` does not override failed raw authentication. Corrections require a new
+source/run identity; draft-skipped jobs remain skipped. Hosted run41817101140
+at `1a06a0d88d295ed99983e7b1f6149b9fff84f1b3` now has independently authenticated
+Windows/Linux552-case evidence and exact88,384-step cross-OS parity. The current
+index records fresh local sanitizer/protected-control results separately.
+Independent physical hardware and LeakSanitizer are not qualified.
+
+H1's lost isolated cooling opportunity is distinct from H2's executed mutual
+heating law and H3's documented generic yielding rest. Investigation results do
+not authorize production changes or close #354. The 27 protected sources and
+compatibility lock remain unchanged; no production runtime publication is part
+of this tests/tooling/documentation checkpoint.
 
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
+
+**Integration completed:** #371 merged at accepted main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`. The original qualification records
+below retain their source and platform scope; their final receipts remain in the
+[#371 ledger](https://github.com/techrote/cybersand/pull/371).
 
 The [integration qualification record](../audits/2026-11-04-mat-auth371-integration.md)
 retains the compiler escaping defect and correction,99 focused regressions,

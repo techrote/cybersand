@@ -4,8 +4,8 @@ status: Current
 document-kind: design
 scope: Accepted-main LCB-002 cached and cached_dormant implementation — derived head and sealed-component caches, conservative motion certificates, execution identity, source-qualified cost and remaining product/platform boundaries
 canonical-for: [pressure-optimization, pressure-motion-certificates]
-last-reviewed: 2026-10-25
-related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
+last-reviewed: 2026-11-04
+related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md, ../audits/2026-11-04-lcb201-pressure-idle-cost.md]
 ---
 
 # Bounded pressure cache and Water motion certificates
@@ -213,6 +213,34 @@ source and cannot be reattested as execution3 performance. Execution2 correctnes
 fixture qualification likewise keep their earlier source identity. Numerical prepared-head
 discrepancy and declared-region net Water boundary balance are separate observations;
 neither should be inferred merely from equal projections or work counts.
+
+## Current-main cost at host scale
+
+The [4 November #201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
+measures accepted main `3da7e7be` at the #370 quiet-pool scale (1024² prepared
+domain, chunk 128, 100 resident chunks). It finds that Water sleeps in every
+variant. Reference cost is then entirely serial `prepare_pressure_tick()` work:
+a complete gas operator plus a full column/row rebuild over all resident cells.
+Cached and cached_dormant skip both after a gas fixed point. They still run the
+sleeping-block wake scan in `compute_pressure_heads()` every tick, which is their
+quiet floor. Dormancy adds nothing for sleeping Water.
+
+Any gas-flagged producer edit, including every native body-mask install/clear,
+forces a complete gas pass. Every gas pass marks all columns dirty and makes the
+certificates cold, so frequent boundary or mask changes return the cache to
+roughly reference cost. The numeric results, same-law parity and the
+**Planned** P1/P2 proposals (wake-summary elision; narrowed gas-triggered
+revocation) are owned by that record. Neither is implemented. Execution
+version 3 above remains Current.
+
+**Desktop host interaction (2026-11-04).** The desktop worker used to write the
+camera window and then the scenario's fixed interest on every step. Each
+`World::set_simulation_region` selected-core change calls `cache->cold()`, so
+in-app cached/dormant cost more than reference. The worker now leaves a
+fixed-interest scenario's region to the scenario
+([region-flip record](../audits/2026-11-04-lcb201-region-flip.md)). A moving
+camera window still makes the cache cold whenever its selected cores change.
+Narrowing that native invalidation is a separate, unimplemented follow-up.
 
 ## Acceptance and remaining application work
 

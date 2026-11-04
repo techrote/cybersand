@@ -3,22 +3,24 @@ title: Canonical material catalogue and interaction authoring — adopted Planne
 document-kind: design
 canonical-for: [material-authoring-v1-programme-proposal]
 status: Planned
-scope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries
+scope: Owner-adopted Planned material-authoring baseline; section 14 records merged shadow tooling and bounded liveness investigation, while production migration and correction remain pending; sections 1–13 preserve dated proposal, review, adoption and integration boundaries
 last-reviewed: 2026-11-04
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../systems/building-material-catalogue.md, ../systems/themed-construction-materials.md, ../systems/granular-interaction-policy.md, ../systems/flow-transport-and-profiles.md, item-authored-material-programs.md, liquid-state-transition-matrix.md, ../operations/documentation-maintenance.md]
 ---
 
 # Canonical material catalogue and interaction authoring — adopted Planned baseline
 
-**Owner-adopted Planned baseline; #353-A shadow tooling implemented, integration under qualification — 2026-11-04.**
+**Owner-adopted Planned baseline; #353-A merged and #354 Phase A investigation admitted — 2026-11-04.**
 Documentation PR #357 merged as accepted main
 `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`. Its
 [adoption record](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
 preserves the documentation-only decision. The separate
 [#353-A implementation and integration boundary](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
-records the shadow compiler already implemented in #371 and the owner's guarded
-integration assignment. #353-B production consumer migration and #354–#356 remain
-separately gated and are not authorized here.
+preserves the shadow compiler's guarded integration assignment. #371 subsequently
+merged at accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`.
+The [Phase A boundary](#14-material-liveness-phase-a-and-production-admission--2026-11-04)
+admits #354 tests, tooling and documentation only; production correction,
+#353-B consumer migration and #355/#356 remain separately gated.
 
 The [current-main admission correction](#11-current-main-review-and-implementation-admission--2026-11-03)
 and [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
@@ -26,9 +28,10 @@ retain the technical design and its evidence. Sections 1–10 retain the origina
 2 November text from PR #357 at `fc7f74768bb3d24fb7e913615f6774dbff321f91`;
 their numerical intake remains historical even where reverified. Sections 11–12
 preserve the review and adoption decisions, including assignment statements that
-precede the separately implemented A-only candidate. Section 13 owns the current
-implementation boundary; the [#371 ledger](https://github.com/techrote/cybersand/pull/371)
-owns final-head checks and actual integration status.
+precede the separately implemented A-only candidate. Section 13 preserves its
+integration assignment and section 14 records the current investigation boundary.
+The [#371 ledger](https://github.com/techrote/cybersand/pull/371) owns its final-head,
+merge and post-merge receipts.
 
 **Status: Planned production migration; implemented shadow tooling only.** The
 owner requested a short documented chain on 2 November. Adopting the design and
@@ -55,6 +58,7 @@ gameplay acceptance follows from matching metadata.
 11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions.
 12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates.
 13. [Bounded compatibility tooling and adopted-main reconciliation](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) — implemented shadow foundation, source-preserving integration and separate consumer-migration gates.
+14. [Material liveness Phase A and production admission](#14-material-liveness-phase-a-and-production-admission--2026-11-04) — merged foundation, three distinct findings and separately pending scheduler implementation.
 
 ## 1. Authority and preserved substrate
 
@@ -594,6 +598,10 @@ or automatic inheritance.
 
 ## 13. Bounded compatibility tooling and adopted-main reconciliation — 2026-11-04
 
+**Historical integration assignment.** #371 subsequently merged at `7ef4856e`.
+The following qualification and unstarted-successor statements retain their
+original scope; section 14 records the later #354 investigation admission.
+
 **Current shadow implementation; guarded integration under qualification.**
 The owner separately requested implementation of the review corrections and
 compatibility mitigations. [PR #371](https://github.com/techrote/cybersand/pull/371)
@@ -635,3 +643,33 @@ liveness reproduction; #355 separately owns endpoint/state/quantity effects;
 Serialize shared World and quantity writes, and preserve active #358/#347/#370
 and other owners. A-only integration grants no material rebalance, new physical
 law, production ID, runtime pack, hot reload or later implementation stage.
+
+## 14. Material liveness Phase A and production admission — 2026-11-04
+
+**Current foundation; bounded investigation only.** Accepted main
+`7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1` includes merged #371. The shadow
+compiler remains unconsumed by production; legacy native/fallback definitions
+and the 27-source compatibility lock remain authoritative and unchanged.
+The owner separately admits #354 Phase A tests, tooling, evidence and a draft
+PR. No production scheduler, thermal-law or generic retry change is admitted.
+
+| Mechanism | Phase A disposition | Next boundary |
+|---|---|---|
+| H1 isolated MoltenGlass cooling | Actual World controls demonstrate loss of a valid cooling opportunity after sleep | Recommend a narrowly scoped existing-block-deadline correction; implementation authorization pending |
+| H2 touching MoltenGlass retention | Executed neighboring heat resets the countdown to 180 under the current law | Preserve Current; any different pool lifetime needs an owner-admitted thermal experiment |
+| H3 generic CellularYield retry suppression | Current-source reproduction preserves the documented legacy resting approximation | Preserve Current; different trajectories need a separately versioned policy, not an assumed perpetual retry |
+
+The [investigation guide](../operations/material-liveness-investigation.md) owns
+reproduction; the [findings](../audits/2026-11-04-mat354-findings.md) retain exact
+source/executable identities, independent review, failed attempts and platform
+limits. The [correction memo](../audits/2026-11-04-mat354-correction-admission.md)
+targets the earliest eligible existing block deadline, with hot-at-180 and inert rest,
+shared obligations, masks, region pause, worker ownership and bounded work
+preserved. It does not introduce the illustrative section 6 `KernelOutcome` API.
+
+A future edit to protected `native/src/world.cpp` requires explicit owner
+authorization, a separately reviewed compatibility transition and appropriate
+runtime rebuild/publication/provenance. Updating expected hashes cannot replace
+that review. Keep #354 open and its Phase A PR draft/unmerged. #353-B migration,
+#355 reaction effects and #358/#347/#370/#373/#201 and Water phase/quantity work
+retain separate ownership; serialize any later shared production writes.

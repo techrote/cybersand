@@ -20,7 +20,7 @@ deposit whole cells without new physics. A velocity-directed source requires a
 new native input contract; upward ballistic Water requires a separately approved
 law change owned by #362. This task authorizes none of those production changes.
 
-The inspected accepted source is `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`,
+The original inspected source is `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`,
 tree `36ce5a01e754a141c321f41cac7f1c6b6059c371`. The #359 reassessment is already
 merged through #367. The inspected **unmerged** #370 head is
 `fbe82bcab8f821aac442c2bf59eb57b279717873`. Its comparison guide and campaign are
@@ -28,11 +28,19 @@ branch evidence, not accepted-main files. The
 [dated audit](../audits/2026-11-04-in-tools-admission.md) owns revalidation,
 execution identities, reviews and limitations. Recheck live heads before coding.
 
+The owner-authorized [current-main source re-admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+now consumes main `751edc0b495dc85484ad5509a7c95f863651c76b`, including #377 and
+#390. Only the inspected worker identity changes; the original six-plan file
+and all nine #370 inputs remain immutable. The explicit successor checker binds
+all 25 resulting inputs and requires fresh qualification. This changes no Planned
+fixture, quantity rule or gameplay-acceptance claim.
+
 **Current production constraints:** native C++ owns cells; the desktop simulation
 owner serializes adapter operations; native pool jobs call no Godot API; Rapier
 and live bodies remain main-thread owned. Production Water remains FreeMass.
-Materials 132–137 from #358, new catalogue consumers, structural/contact changes
-and pressure optimization are not imported by this admission.
+Materials 132–137 from #358, new catalogue consumers and structural/contact
+changes are not imported. #379 adds no pressure-law optimization; the inherited
+#390 interest-ownership correction has the separate admission above.
 
 ## Capability and missing-interface map
 
@@ -317,7 +325,7 @@ admitted. A speed bound is an input limit, not permission to retune the solver.
 
 | Slice | Safe files / existing owner | Completion gate and boundary |
 |---|---|---|
-| Preparation (this package) | New docs, versioned plan, Python adversaries, standalone native test and runner | Source checks, actual bounded native qualification and independent review; draft only. No production files. |
+| Preparation (this package) | New docs, versioned plan, Python adversaries, standalone native test and runner | Ready for fresh exact-head qualification and independent review; explicit owner decision before merge. No new production changes. |
 | First implementation: metered U10 | Existing usable runtime/physical usable wrapper and narrow owner readback, coordinated with current actor/PLAY owner | Confirm accepted per-cell edits, Water/Brine units, existing charge/cooldown, stale/cancel/reset and normal FM unchanged. Can be built without world.cpp, adapter or Rapier changes if existing copied reads suffice; otherwise stop at the exact readback gap. |
 | Reversible authored port | Existing owner command dispatch; one port definition and copied applied state; coordinate #370 Main/panel edits | Prove resident preflight and failure handling. No generic Wall-paint permission. Multi-cell atomicity/native receipt not demonstrated by serial GDScript. |
 | Geometry source | Same bounded command/finite supply module, existing fresh-cell source primitive | Exact admitted dose, no overwrite/no new motion, blocked/exhausted and matching FM/IN evidence. Keep Brine event extension separate from schema 2 Water-only fill. |

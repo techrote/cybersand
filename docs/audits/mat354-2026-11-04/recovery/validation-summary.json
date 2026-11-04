@@ -1,0 +1,128 @@
+{
+  "schema": "mat354.recovery-publication-validation.v1",
+  "status": "PASS_WITH_EXPLICIT_SCOPE_LIMITS",
+  "execution_source": "1a06a0d88d295ed99983e7b1f6149b9fff84f1b3",
+  "checked_changes": "Phase A documentation and retained evidence continuation; exact final publication commit/CI is recorded separately in PR377.",
+  "checks": [
+    {
+      "name": "docs-final",
+      "status": "passed",
+      "report": "validation/docs-final.json",
+      "sha256": "b97d10113ab2e13a6719f2a60e8a56106039d37d1b3b467da9a2c08b97491120"
+    },
+    {
+      "name": "repository-final",
+      "status": "passed",
+      "report": "validation/repository-final.json",
+      "sha256": "a2e5c3a5d3c7b949e49135ed814dfd6b61b388f1970776104e9c7af8c956bdc3"
+    },
+    {
+      "name": "m11",
+      "status": "passed",
+      "report": "validation/m11.json",
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+    },
+    {
+      "name": "provider",
+      "status": "passed",
+      "report": "validation/provider.json",
+      "sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f"
+    }
+  ],
+  "apparatus_tests": {
+    "passed": 95,
+    "status": "PASS",
+    "stderr_sha256": "6b311c2606d0bd88368ff2c5a01ce70de4645f415e1cf1890e30595fbb4e1049",
+    "scope": "unchanged tool suite; not native execution"
+  },
+  "git_diff_check": "PASS",
+  "retrieval": {
+    "retrieval-frozen": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "corpus_manifest_sha256": "ecff27a67e4197e45ae62c376a46aa2b8fa6acaf0b97d15291319c62faf849f2",
+      "full_report_member": "retrieval-frozen.json",
+      "sha256": "b0406f46e7e39c021d9f14ada343b565919b774a86177305f89818edad491933",
+      "misses": []
+    },
+    "retrieval-challenges": {
+      "summary": {
+        "questions": 157,
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8734,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "6590b94e902079f2545c8886a5131bc7aff58ccb21e2ee987463f0b9ab34e570",
+      "corpus_manifest_sha256": "ecff27a67e4197e45ae62c376a46aa2b8fa6acaf0b97d15291319c62faf849f2",
+      "full_report_member": "retrieval-challenges.json",
+      "sha256": "10ec10b7c5e1148584409c89f6cc4e97d7114c57cc3b1f1c0cb6bc2e2ee0388a",
+      "misses": [
+        "LCB03"
+      ]
+    },
+    "retrieval-challenges-baseline": {
+      "summary": {
+        "questions": 157,
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8734,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "6590b94e902079f2545c8886a5131bc7aff58ccb21e2ee987463f0b9ab34e570",
+      "corpus_manifest_sha256": "ecff27a67e4197e45ae62c376a46aa2b8fa6acaf0b97d15291319c62faf849f2",
+      "full_report_member": "retrieval-challenges-baseline.json",
+      "sha256": "53330548f83f94920203e5c17250413db8ce7c825a5e13be90e2ef04feb65866",
+      "misses": [
+        "LCB03"
+      ]
+    },
+    "retrieval-mat354": {
+      "summary": {
+        "questions": 8,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 8,
+        "mrr_at_k": 0.9375,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "6cbfc3d4a1adcd45be7bd53f8b738ca060c42028599844b663d883d8882a4173",
+      "corpus_manifest_sha256": "ecff27a67e4197e45ae62c376a46aa2b8fa6acaf0b97d15291319c62faf849f2",
+      "full_report_member": "retrieval-mat354.json",
+      "sha256": "946720e0f03cb984d8422d3cbd9c0362f6d83ed41f8ba1b218c06c7841ce6033",
+      "misses": []
+    },
+    "retrieval-recovery": {
+      "summary": {
+        "questions": 2,
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "a70aae5d1f3d9184f3021383f60f9f411215a43b40aa31c84ae30d78126addf7",
+      "corpus_manifest_sha256": "ecff27a67e4197e45ae62c376a46aa2b8fa6acaf0b97d15291319c62faf849f2",
+      "full_report_member": "retrieval-recovery.json",
+      "sha256": "916c917f55600b8b7f69045fb11d0c2d4931d088a9dcadbd5972b6132ecce35c",
+      "misses": []
+    }
+  },
+  "manual_answer_sufficiency": {
+    "scope": "MAT354 and additive recovery routes reviewed against native/scientific/hosted evidence; lexical hits alone are not correctness proof.",
+    "material_facts": "H1 omitted due visits distinct from H2 heat law and H3 legacy rest; source and worker limits retained.",
+    "custody_facts": "Current qualified Windows/Linux evidence is distinguishable from prior missing originals; recovered source-failed Windows run2 remains FAIL.",
+    "admission_facts": "Production fix, thermal/retry changes, compatibility transition and merge remain unadmitted."
+  },
+  "setup_failure": "Initial local docs check failed because five pinned companion-context files were absent. Exact blobs at6a58311982941b75f46e22109a0829e5acb83c7e restored those inputs; original failed report retained.",
+  "limits": [
+    "Local repository validation authenticates18 committed LFS pointer identities; runtime payload materialization and engine execution are not claimed.",
+    "Historical M11 pass checks18 retained records and28 source hashes, not current runtime execution.",
+    "Existing LCB03 retrieval miss persists identically at tested1a06 and continuation; no unrelated retrieval rewrite performed.",
+    "Remote exact-publication-head CI is reported in the final PR/issue ledger; predecessor greens are not silently promoted."
+  ]
+}

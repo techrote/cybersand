@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-04
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
@@ -94,6 +94,29 @@ time. The [activity contract](activity-dirty-regions-and-waking.md) owns bounded
 deadline, pause/re-entry and render-dirty semantics. The
 [MAT-001 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md) records
 the reproduced starvation, retained controls and platform limits.
+
+## Material liveness investigation boundary — 2026-11-04
+
+**Current source; demonstrated cooling omission, no production correction.** In
+[`World::update_rule_kernel`](../../native/src/world.cpp), MoltenGlass decrements
+`state_a` on its coordinate-staggered four-tick thermal lane and converts to Glass
+at zero. A visible Fire, Lava or MoltenGlass neighbor instead sets the countdown
+to 180. This predicate does not use stored temperature or include Spark. Repeated
+executed neighbor heating can therefore retain a touching pool; changing that
+law or the 180 value requires a separate gameplay decision.
+
+The [#354 Phase A investigation](../operations/material-liveness-investigation.md)
+demonstrates an isolated cooling opportunity lost after quiet-block sleep, using
+actual World visits and quiet3/1024/active-neighbor controls. Its source-matched
+[findings](../audits/2026-11-04-mat354-findings.md) distinguish that omission from
+the pool's executed heating law. Generic CellularYield mobility can also stop
+after failed rolls and sleep, but this is documented legacy rest; it does not
+inherit Water-CY's separately implemented retry obligation. Preserve current
+generic trajectories unless a versioned policy is separately approved.
+
+Phase A admits tests, tooling and documentation only. #354 remains open, and
+production deadline implementation and the #371 protected-source transition
+remain pending. Exact execution and platform claims belong to the audit/PR ledger.
 
 ## Current material families
 

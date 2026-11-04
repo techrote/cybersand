@@ -422,9 +422,13 @@ def main() -> int:
     args = parser.parse_args()
     try:
         plan = parse_json(args.plan.read_text(encoding="utf-8"))
+        # Parse an explicitly supplied copy before source admission so malformed
+        # JSON is still diagnosed when a historical source lock correctly refuses.
+        # Neither copied-value validation nor source equality is bypassed.
+        packet = parse_json(args.packet.read_text(encoding="utf-8")) if args.packet else None
         result = {**validate_plan(plan), **source_check(plan, comparison=args.check_comparison)}
         if args.packet:
-            result["packet"] = validate_receipt(**parse_json(args.packet.read_text(encoding="utf-8")))
+            result["packet"] = validate_receipt(**packet)
         print(json.dumps(result, indent=2))
         return 0
     except (ContractError, KeyError, TypeError, ValueError, OSError) as exc:

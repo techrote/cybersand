@@ -23,32 +23,67 @@ placement, new command lifecycle and owner feel remain unqualified. The
 [dated audit](../audits/2026-11-04-in-tools-admission.md) records actual evidence.
 No production implementation, automatic merge or #361 closure is authorized.
 The [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
-records the corrected preparation and integration-approval boundary.
+records the corrected preparation and integration-approval boundary. The
+[current-main source re-admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+preserves that original registration while admitting #390's worker change on
+main `751edc0b`. #379 remains Ready and requires fresh resulting-head gates and
+an independent final review before the owner receives a merge recommendation.
+
+## PressureFlow desktop region flip (#201) — 2026-11-04
+
+The [region-flip record](../audits/2026-11-04-lcb201-region-flip.md) fixes a
+desktop worker ordering that discarded the PressureFlow cache twice per step in
+fixed-interest scenarios. In the real host on main's runtime, the cached quiet
+pool improves from ≈36 ms to ≈10 ms per worker step and reaches the 60 Hz cap;
+reference and FreeMass are unchanged. Camera-motion invalidation remains a
+separate follow-up.
+
+## PressureFlow idle cost (#201) — 2026-11-04
+
+The [#201 idle-cost record](../audits/2026-11-04-lcb201-pressure-idle-cost.md)
+measures accepted main `3da7e7be` natively, and is consistent with draft #370's
+≈30 ms quiet-pool PressureFlow tick.
+The pool's Water sleeps; the cost is serial reference preparation over the 1.64M
+cells that the prepared 1024² route makes resident. Same-law cached and
+cached_dormant variants cut quiet cost from ≈31–41 ms to ≈9–12 ms per native tick (FreeMass ≈0.02 ms). They are not
+idle-free: a per-tick wake scan remains, and gas-input edits or moving body
+masks restore roughly reference cost.
+**Task outcome B** (not #26's): residual cost is excessive at this scale. Two bounded
+cached-only proposals (P1 wake-summary elision, P2 narrowed gas revocation) are
+**Planned, not implemented**. No production code, default or host changed; #201
+stays open, and a full-host cohort remains the next practical-cost experiment.
 
 ## Material shadow foundation and integration — 2026-11-04
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 and the [corrected architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
-[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) is already
-implemented in #371 and is undergoing adopted-main reconciliation and guarded
-integration qualification. It provides deterministic candidate metadata,
+[#353-A's shadow compiler](../operations/material-catalogue-shadow.md) merged in
+#371 at accepted main `7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1`.
+It provides deterministic candidate metadata,
 independent native parity and frozen source/identity guards; it does not replace
-production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+production material authority. The [current boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04)
 and [#371 ledger](https://github.com/techrote/cybersand/pull/371) separate code,
 resulting-head acceptance and actual merge status.
 
 | Programme slice | Current disposition |
 |---|---|
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
-| #353-A / #371 | Shadow implementation exists; reconciled-source qualification and guarded integration are this assignment |
+| #353-A / #371 | Merged shadow tooling and 27-source guard; legacy production definitions remain authoritative |
 | #353-B | Separate consumer-migration admission required; no production switch authorized |
-| #354 / #355 | Separate liveness and endpoint-effects work; serialize overlapping World/quantity writes |
+| #354 / #377 | Phase A evidence-only current-main reconciliation and guarded integration authorized, subject to [fresh final-candidate gates](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration); H1 remains unrepaired, H2/H3 preserved, production admission pending and issue open |
+| #355 | Separate endpoint-effects implementation programme; serialize any overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
 | #358 | Independent experimental material work;132–137 not integrated here |
 
 Broad #353 and parent #352 remain open. The original implementation receipts
 retain their tested source; no metadata or source-byte comparison by itself
 establishes fallback simulation, new physics or human gameplay acceptance.
+
+The [liveness guide](../operations/material-liveness-investigation.md) routes
+reproduction and the [ranked correction design](../audits/2026-11-04-mat354-correction-admission.md).
+No scheduler or physical-law patch is part of Phase A. Source-qualified execution,
+retained failures, actual worker participation and unexecuted platform gates remain
+in the [findings](../audits/2026-11-04-mat354-findings.md) and live PR ledger.
 
 ## Material authoring Planned adoption — 2026-11-04
 

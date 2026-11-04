@@ -22,9 +22,10 @@ owns actual results and source identities.
 From a checkout of this candidate:
 
 ```sh
-python3 tools/lcb/in_tools_contract.py
+python3 tools/lcb/in_tools_source_admission.py
 python3 -m unittest discover -s tools/lcb -p test_in_tools_contract.py -v
 python3 -m unittest discover -s tools/lcb -p test_in_tools_native_runner.py -v
+python3 -m unittest discover -s tools/lcb -p test_in_tools_source_admission.py -v
 python3 tools/lcb/run_in_tools_native.py --build-dir build/in-tools-361 --output build/in-tools-361/native.json
 ```
 
@@ -35,11 +36,12 @@ command, timeout, exit and raw-output hashes. Inspect status and
 `inputs_unchanged`; a process timeout, failed assertion, changed input or malformed
 output is not a pass. This is not an execution of the shipped Godot extension.
 
-To verify retained #370 inputs as well, fetch its source read-only and run:
+The successor command always verifies all nine retained #370 inputs. If their
+immutable Git objects are absent, fetch that exact source read-only and rerun:
 
 ```sh
-git fetch origin refs/pull/370/head:refs/remotes/origin/review-pr370
-python3 tools/lcb/in_tools_contract.py --check-comparison
+git fetch --no-tags origin fbe82bcab8f821aac442c2bf59eb57b279717873
+python3 tools/lcb/in_tools_source_admission.py
 ```
 
 The checker uses the **pinned commit**, not whatever head was just fetched.
@@ -49,7 +51,17 @@ A changed input requires source review and a new admission decision. Future
 implementation will legitimately change these pins; do not silently regenerate
 them to turn a failure green.
 
-The optional `--packet <json>` checks a proposed `{command,receipt,owner}` copy.
+The [reviewed successor admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+preserves the v1 registration and explicitly admits #390's sole worker-identity
+change on main `751edc0b`. It authenticates the complete resulting map, original
+plan, accepted Git tree, ancestry and immutable comparison. No exemption is used.
+The original `python3 tools/lcb/in_tools_contract.py` intentionally retains its
+historical v1 lock and refuses this newer worker. That refusal is a preservation
+control; it is not substituted for the successor's required successful check.
+Both commands establish source/definition consistency, not runtime qualification.
+
+The original checker's optional `--packet <json>` checks a proposed
+`{command,receipt,owner}` copy against its historical source admission.
 Its result always retains `gameplay_qualified=false` and
 `native_receipt_authenticated=false`. Synthetic tests intentionally supply
 copies; passing them proves validation discrimination, not an actual native
@@ -59,7 +71,7 @@ command, desktop ownership or a physics law.
 
 The registration is
 [`in-tools-admission.v1.json`](../../godot/tests/fixtures/lcb/in_tools/in-tools-admission.v1.json).
-It contains current-source hashes, immutable #370 reuse hashes, explicit units,
+It contains original-source hashes, immutable #370 reuse hashes, explicit units,
 geometry, event boundaries, finite budgets and supported comparison families.
 It is **not executable MicroScenario schema 2**, and no existing schema is
 changed to accept it.

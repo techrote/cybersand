@@ -14,21 +14,90 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 Consume the [#361 architecture](../architecture/in-tools-gameplay-admission.md)
 and [test/playtest runbook](in-tools-fixtures-and-playtest.md). This preparation
-uses an isolated branch on main `7ef4856e` and immutable #370 `fbe82bca` reuse
-pins. Existing physical U10 can gain exact application-observed sink metering;
+originally inspected main `7ef4856e` and immutable #370 `fbe82bca` reuse pins.
+The [bounded successor source admission](../audits/2026-11-04-in-tools-379-current-main-readmission.md)
+reconciles accepted main `751edc0b`, preserves #377 content and explicitly admits
+#390's one inspected worker change without rewriting the original plan.
+Existing physical U10 can gain exact application-observed sink metering;
 a registered resident valve requires one exclusive-owner preflight/commit and
 explicit fault handling. Both are future integration work. Momentum injection
 requires a separately authorized native contract; no negative-vy law is admitted.
 Coordinate Main/panel changes with #370, actor lifecycle with PLAY, and any
 mask/coupling change with #347. Do not modify their active branches or import #358.
-Keep this documentation/test-only PR draft and #361 open. See the
+Keep #379 Ready for fresh exact-head gates and independent review; stop before
+merge and keep #361 open. See the
 [qualification record](../audits/2026-11-04-in-tools-admission.md) for exact scope.
 The subsequent [independent #379 review](../audits/2026-11-04-in-tools-379-independent-review.md)
 owns retrieval recovery, stricter test evidence and the separate Liquid Drain
 handover. It preserves original source locks and requires explicit owner
 integration approval; no parallel implementation is imported.
 
+## MAT-AUTH-002 Phase A integration gate — 2026-11-04
+
+The owner now authorizes current-main reconciliation, focused preflight, a
+Ready-for-review transition and one guarded integration of
+[PR #377](https://github.com/techrote/cybersand/pull/377), **only** for its
+investigation tests, tooling, CI, evidence and documentation. The earlier
+draft/unmerged hold below records the completed Phase A recovery assignment;
+this later integration authorization supersedes that hold, not the prohibition
+on production changes. Keep #354 and #352 open. H1 is not repaired by this PR.
+
+The integration intake is published head `58b8d27b003c812aff24152f903b6c6123f71e5c`
+(tree `ace1162ed3b0720407b8a5cd97d6f2b75de6fc91`) and accepted main
+`01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc`
+(tree `4cf99921dc2b33233c3a254f4b6f27ed7cb0f204`). Main now includes merged
+[#374](https://github.com/techrote/cybersand/pull/374)'s PressureFlow idle-cost
+evidence and benchmark, with no production-source change. Preserve that accepted
+work and every original MAT354 receipt/source identity in ancestry.
+
+The [material-liveness integration gate](material-liveness-investigation.md#which-gates-control-phase-a-integration)
+and live PR ledger separate final-candidate qualification from historical
+execution. Reconciliation alone is not acceptance. Require source guards,
+fresh focused Linux/Windows evidence after a head change, actual ready-state
+Documentation/materialized provenance, Native, Godot and palette checks, and
+an independent final read-only GO before merging. A failed, pending, stale or
+required-skipped gate blocks integration; the source-scope advisory grants no
+exemption. Recheck current base/head and repository review policy immediately
+before the authorized merge. Do not import #358/#383/#384/#386 or start #354-B.
+
+## MAT-AUTH-002 Phase A handover — 2026-11-04
+
+**Historical recovery assignment.** Its source-qualified results and limitations
+remain intact; the later integration gate above owns current readiness authority.
+
+Begin with the [material liveness investigation guide](material-liveness-investigation.md),
+[findings](../audits/2026-11-04-mat354-findings.md) and
+[correction admission](../audits/2026-11-04-mat354-correction-admission.md).
+Accepted main `7ef4856e` includes merged #371; its shadow catalogue is unconsumed
+by production, and the original native/fallback definitions remain authoritative.
+Only independent tests, tooling, evidence and documentation are admitted for
+#354 Phase A. Isolated MoltenGlass loses a cooling opportunity under sleep;
+mutual heating remains the existing law and generic yielding rest is preserved.
+
+Keep #354 open and its investigation PR draft/unmerged. Production correction
+requires separate owner admission and a reviewed transition for protected
+`native/src/world.cpp`; do not refresh lock hashes or import #353-B migration.
+Revalidate live main, exact runtime/source evidence and overlapping #355 ownership
+before future writes. Preserve #358/#347/#370/#373/#201 and Water phase/quantity
+boundaries. Use a separately owned worktree and serialize any shared kernel writes.
+PressureFlow #201 continues separately in [draft #374](https://github.com/techrote/cybersand/pull/374);
+do not import its optimization into this investigation.
+The audit/PR ledger carries actual campaign, sanitizer, platform and independent
+review status, including failed or incomplete attempts; no skipped gate is a pass.
+
+The stalled session has a separate
+[recovery qualification and custody record](../audits/2026-11-04-mat354-recovery-qualification.md).
+Use its indexed retained packet and fresh independent reviews. The original
+unpublished local raw directory is unavailable; preserve that limitation instead
+of treating new passing runs as recovery of the old bytes. Hosted Windows/Linux
+source1a06a0d is independently qualified; the final PR ledger owns the later
+documentation/evidence head and its resulting checks.
+
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
+
+**Historical integration assignment.** #371 subsequently merged at `7ef4856e`.
+The following handover preserves its earlier source and qualification boundary;
+the Phase A section above owns the current liveness assignment.
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
 as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected

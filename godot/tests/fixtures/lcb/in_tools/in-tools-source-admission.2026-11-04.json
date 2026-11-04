@@ -1,0 +1,52 @@
+{
+  "schema": "in-tools-source-admission-v1",
+  "id": "in-tools-main-751edc0b-20261104",
+  "scope": "source-admission-only",
+  "original_plan": {
+    "path": "godot/tests/fixtures/lcb/in_tools/in-tools-admission.v1.json",
+    "commit": "1aaab324a9bccbaa7f868798dbb4f9fd9b4a7718",
+    "sha256": "8e5e12a5cbaf0ccf554f07dfc49ea17757112445bf23d6dc144154b6165b735a"
+  },
+  "accepted_main": "751edc0b495dc85484ad5509a7c95f863651c76b",
+  "accepted_tree": "b0d42a256285e6049a6d3bdd1613d7ecd89f43c6",
+  "reviewed_changes": [
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "before_sha256": "7facdb0cd1a59a039fb78c22298b7422f656f733082228ea178d7917234a2dd0",
+      "after_sha256": "6b1c27ff4e0013db58436079834ceae2c26589a752ee166462437c9aff2dbdbf",
+      "source_commit": "9a9e63a0091f3a64e038892e651d0591d135241a",
+      "integration_commit": "751edc0b495dc85484ad5509a7c95f863651c76b"
+    }
+  ],
+  "source_inputs": {
+    "native/src/world.cpp": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+    "native/src/world_inertial.inc": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+    "native/include/cybersand/world.hpp": "c2299260851d003471977f9175b5f452c9badb277d07e056db148329faec55e9",
+    "native/include/cybersand/inertial_cellular.hpp": "5349dbdf709720bcc560da8c75cc1b2a2c9e2e9d10f52fc4ee4b51eede1d77b1",
+    "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+    "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+    "native/include/cybersand/prepared_world.hpp": "e2c6e7c1f579355463aeee0c4d0f4f6f6bddc25cbdc615cb61aeb3af7e6a0985",
+    "native/include/cybersand/water_normalization.hpp": "2f9a658621443f817dc6674690f58c213ff81a6f134f68b606d641852f05df05",
+    "native/include/cybersand/quantity_ledger.hpp": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+    "godot/native_extension/cyber_native_cell_world.cpp": "0085475d766b78efc7635ccea4089aeea00b16ba4e7f880046287e55a4f82163",
+    "godot/native_extension/cyber_native_cell_world.hpp": "69e0759a58debc6da6df80cd5c354975356f7c39ddc97e3342195b89d0e8442c",
+    "godot/native_extension/cyber_demo_bridge.hpp": "bbfb59ad74c9156b3b70d5c973159d9d1a5a4f9cf2865620a1ca273036084371",
+    "godot/scripts/microscenario_contract.gd": "6c15e65b8e7c4f3747d6dcca93d014897ebef6681cbfd1881fb12be32ec14540",
+    "godot/scripts/microscenario_host.gd": "a351bf83e55d042dfa17798503ba05b0de4aeb9689622d6dbf8373991d29a3c0",
+    "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+    "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+    "godot/scripts/physical_usable_runtime.gd": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+    "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+    "godot/scripts/physical_actor_session.gd": "993fdca10bc9ad6be42b8ffd7b1f352de9d460b9c2bdafcc6b668e721057bf83",
+    "godot/scripts/simulation_worker.gd": "6b1c27ff4e0013db58436079834ceae2c26589a752ee166462437c9aff2dbdbf",
+    "godot/scripts/main.gd": "61e963f381155e0b3e7de88cde7c9d2bb8c5d2adfda0717e22d23fe632f02f7b",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+    "native/src/world_quantity.inc": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+    "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f"
+  },
+  "comparison_commit": "fbe82bcab8f821aac442c2bf59eb57b279717873",
+  "authority": "docs/audits/2026-11-04-in-tools-379-current-main-readmission.md",
+  "gameplay_qualified": false,
+  "runtime_qualified": false
+}
