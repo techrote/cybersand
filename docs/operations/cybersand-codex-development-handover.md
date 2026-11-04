@@ -13,7 +13,7 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 Flyer review controls: [saved spawn, Burst key and compact toolbars](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
 extend the room-only Shift/Ctrl, live powder sources and edge-alignment repair.
 The current authoring successor adds eight named JSON definitions, atomic
-Reload/reset and a real six-shape Scooper sharing one physical mass/COM/inertia
+Reload/reset and a real five-shape U Scooper sharing one physical mass/COM/inertia
 and response budget. Saved spawn, B Burst and compact Details remain controls.
 The latest qualitative owner comparison prefers selective arrivals: E/S avoid
 reported burial, while S restores more credible falling-material loading than
@@ -24,6 +24,8 @@ identified; no material-law/sleep/default promotion or merge follows.
 Current [Scooper qualification](../audits/2026-11-04-authored-compound-scooper.md) retains48 source-bound desktop captures: mechanical controls pass, LA fails the carry demonstration, and E/S pass its literal lift/spill thresholds with an explicit pre-tip cavity-count gap. Loaded selective stability remains bounded and owner review is pending. Corrected native source0206b540 changes only no-catch receipt accounting. Sleep, production promotion and merges remain excluded.
 
 The [carried-material follow-up](../audits/2026-11-04-scooper-carried-material-leak.md) isolates wrong-side ejection through a moving thin deck and qualifies an authored-only unchanged-angle entry-side repair. Level full/boost carry no longer shows persistent far-side loss; rotational/edge scope, source/runtime and final owner acceptance remain explicit. Controls, response laws, sleep and merge boundaries stay unchanged.
+
+The [braced U-hull comparison](../audits/2026-11-04-scooper-u-hull.md) keeps motors and material laws fixed. Static sampled masks have no missing pixels, but the U does not solve fast sideways/diagonal carrying. It remains an owner-review geometry prototype; earlier six-piece tests explicitly retain their frozen profile.
 
 Authored hull admission and Scooper defaults are registered before results in the
 [GCR-AUTHORED-001 plan](gcr-authored-compound-registration.md).

@@ -13,13 +13,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 Flyer review controls: [saved spawn, Burst key and compact toolbars](systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
 extend the room-only Shift/Ctrl, live powder sources and edge-alignment repair.
 The current authoring successor adds eight named JSON definitions, atomic
-Reload/reset and a real six-shape Scooper sharing one physical mass/COM/inertia
+Reload/reset and a real five-shape U Scooper sharing one physical mass/COM/inertia
 and response budget. Saved spawn, B Burst and compact Details remain controls.
 The latest qualitative owner comparison prefers selective arrivals: E/S avoid
 reported burial, while S restores more credible falling-material loading than
 E. Earlier registered selective failures remain open. New native89-input builds,
 mechanical controls, physical qualification and owner review are separately
 identified; no material-law/sleep/default promotion or merge follows.
+
+The [braced U-hull comparison](audits/2026-11-04-scooper-u-hull.md) keeps motors and material laws fixed. Static sampled masks have no missing pixels, but the U does not solve fast sideways/diagonal carrying. It remains an owner-review geometry prototype; earlier six-piece tests explicitly retain their frozen profile.
 
 Authored hull admission and Scooper defaults are registered before results in the
 [GCR-AUTHORED-001 plan](operations/gcr-authored-compound-registration.md).

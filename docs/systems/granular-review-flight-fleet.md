@@ -48,15 +48,17 @@ keeps implementation, mechanical gates and physical qualification separate.
 Scooper follows Afterglow's world-axis W/S rise/descend, A/D strafe, Space lift,
 Shift boost and Ctrl brake. Q/E commands a target of±1.2rad, about±69°, to allow
 deliberate tipping/spilling; releasing Q/E requests level again. Its mass is0.18,
-with uniform-area inertia approximately22.10 before developer overrides. Its
+with uniform-area inertia approximately24.79 before developer overrides. Its
 attitude gain40, angular damping12.5, angular-acceleration cap48 and torque
 ceiling1200 are bounded authored motors. Afterglow retains10/4/12/36 and±0.4rad.
 The linear acceleration125, speed95, slew4, drag0.55 and force ceiling23 retain
 the Afterglow baseline. Stronger torque compensates for Scooper's actual larger
 inertia; it does not strengthen the granular material law or grant a new budget.
 
-One actual Rapier body carries six collider rectangles: thin deck, rear stop and
-stepped leading penetrator. Graphics and native occupancy/contact/ejection use
+One actual Rapier body carries five collider rectangles: a continuous four-cell
+floor, two upright three-cell walls and two inside-corner reserves. The33×12 U
+replaces the earlier thin deck/stepped nose; that six-piece shape is a frozen
+historical fixture. Graphics and native occupancy/contact/ejection use
 that same COM-centred union. The cavity is open; no bounding rectangle is added
 as solid material or another response. Mass, COM, inertia and response budget
 belong to the body once. Carried material remains ordinary native cells that
@@ -75,6 +77,27 @@ keeps original failures, source-matched builds, mechanical controls and the
 48-case Windows/Linux physical population separate from final-head execution
 and owner gameplay acceptance. No sleep, material-law tuning, production
 promotion or merge follows from adding the authoring workflow.
+
+## Does the braced U-shaped Scooper eliminate leakage at box seams?
+
+The owner's [U-hull comparison](../operations/gcr-scooper-u-hull-registration.md)
+changes only geometry/description, with mass0.18 and all motor settings retained.
+Area192, raw COM(1.5,0.28125) and inertia24.79013671875 are computed from the
+five nonoverlapping pieces. Corner blocks widen the barrier without overlapping
+or duplicating mass/support. The previous stepped shape remains a hash-bound
+fixture for its historical apparatus.
+
+The [matched qualification](../audits/2026-11-04-scooper-u-hull.md) records48
+Windows/Linux physical captures and96 static poses. No missing mask pixels or
+closed-side graph path is found in those sampled poses for either shape. The
+U's28 extra occupied boundary pixels per OS are explained by float32 rounding.
+This does not prove general dynamic closure: both shapes lose their16-grain
+load during fast strafing/diagonal commands, and the U has additional persistent
+below-floor occupancy near corner contacts. Stationary and final level-rise
+counts remain16; left/right tip results differ. The U is available as an
+authoring prototype, **not a qualified powered-carrying fix**. Motion/contact
+relocation across the union remains a separate mechanism gap; material laws,
+friction, sleep, production defaults and merge boundaries stay unchanged.
 
 ## Why can Scooper lose powder through its thin deck while moving?
 
@@ -323,7 +346,7 @@ onto the current source does not inherit its old runtime qualification.
 
 Each craft has one actual Rapier body, no hidden equipment chassis and default
 authored mass0.035..0.32. The original seven retain one rectangular collider;
-Scooper uses six rectangles on its one body. The colliders match the hull outline;
+Scooper uses five U-hull rectangles on its one body. The colliders match the hull outline;
 sensor markings and lift lights add no physical mass. The room contains Sand,
 Dust, Rust, Stone, Seed, Salt, Sodium, Gunpowder and Coal banks, stepped entries
 and thin upper supports. The palette also offers Water, hard wall and erase.
