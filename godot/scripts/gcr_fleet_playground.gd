@@ -39,6 +39,9 @@ func _fit_roster_panel() -> void:
 	# The long craft/help column must not dictate the map's minimum height.
 	var row: HBoxContainer=_canvas.get_parent().get_parent()
 	var sidebar: Control=row.get_child(0)
+	for child in sidebar.get_children():
+		if child is Label and child.text.begins_with("Left stick = WASD"):
+			child.text=child.text.replace("Space / Shift / C","Space / Ctrl / C")
 	row.remove_child(sidebar)
 	var scroll:=ScrollContainer.new()
 	scroll.custom_minimum_size.x=320
