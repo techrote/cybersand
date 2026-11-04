@@ -368,10 +368,18 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
         return false;
     }
     auto pending = std::move(adapter->pending_liquid_world_); // One use, also on refusal.
-    if (adapter->world_->has_failed() || pending->retained_generation != adapter->liquid_policy_session_generation_ ||
-        pending->retained_revision != adapter->revision_ || pending->retained_hash != adapter->world_->physical_state_hash() ||
-        pending->retained_cadence != adapter->cadence_lod_enabled_ || pending->retained_window != adapter->simulation_window_enabled_) {
-        error_ = "Retained World changed after preparation";
+    try {
+        if (adapter->world_->has_failed() || pending->retained_generation != adapter->liquid_policy_session_generation_ ||
+            pending->retained_revision != adapter->revision_ || pending->retained_hash != adapter->world_->physical_state_hash() ||
+            pending->retained_cadence != adapter->cadence_lod_enabled_ || pending->retained_window != adapter->simulation_window_enabled_) {
+            error_ = "Retained World changed after preparation";
+            return false;
+        }
+    } catch (const std::exception& error) {
+        error_ = String("Retained World validation refused: ") + error.what();
+        return false;
+    } catch (...) {
+        error_ = "Retained World validation refused: unknown native exception";
         return false;
     }
     // No allocations, capture, configuration changes or host callbacks after
