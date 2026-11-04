@@ -19,6 +19,9 @@ func require(ok: bool,reason: String) -> bool:
 static func rect(value: Array) -> Rect2:
 	return Rect2(float(value[0]),float(value[1]),float(value[2]),float(value[3]))
 
+static func exact_integer(value: Variant,low: int,high: int) -> bool:
+	return (value is int or value is float) and is_finite(float(value)) and float(value)==floorf(float(value)) and float(value)>=low and float(value)<=high
+
 static func configuration_error(protocol: Dictionary) -> String:
 	for key: String in ["schema","registration","dt","workers","ticks","seed","profiles","cases","walls","move_from","move_to","brake_to","raster","cavity_center_world_x","floor_top_world_y"]:
 		if not protocol.has(key): return "missing "+key
@@ -29,12 +32,15 @@ static func configuration_error(protocol: Dictionary) -> String:
 		for key: String in ["definition_path","cavity","core","floor_index","left_index","right_index","rim_y","corner_indices"]:
 			if not p.has(key): return "profile "+key
 		if not p.definition_path is String or not str(p.definition_path).begins_with("res://") or p.cavity.size()!=4 or p.core.size()!=4: return "profile fields"
+		if not exact_integer(p.floor_index,0,7) or not exact_integer(p.left_index,-1,7) or not exact_integer(p.right_index,-1,7) or not p.corner_indices is Array: return "profile indices"
+		for value: Variant in p.corner_indices:
+			if not exact_integer(value,0,7): return "corner index"
 	if not protocol.cases is Array or protocol.cases.size()!=12: return "case population"
 	var ids: Dictionary={}
 	for spec: Dictionary in protocol.cases:
 		for key: String in ["id","response","material","move","boost","trim"]:
 			if not spec.has(key): return "case "+key
-		if ids.has(spec.id) or not spec.id is String or spec.response not in ["LA","LA-EVENT-OFF","LA-SELECTIVE"] or spec.material not in [2,14] or not spec.move is Array or spec.move.size()!=2 or not spec.boost is bool or float(spec.trim)<-1 or float(spec.trim)>1: return "case fields"
+		if ids.has(spec.id) or not spec.id is String or spec.response not in ["LA","LA-EVENT-OFF","LA-SELECTIVE"] or not exact_integer(spec.material,2,14) or int(spec.material) not in [2,14] or not spec.move is Array or spec.move.size()!=2 or not spec.boost is bool or float(spec.trim)<-1 or float(spec.trim)>1: return "case fields"
 		for value: Variant in spec.move:
 			if not (value is int or value is float) or not is_finite(float(value)) or absf(float(value))>1: return "move bounds"
 		ids[spec.id]=true
@@ -66,6 +72,9 @@ static func classify_local(local: Vector2,rectangles: Array,com: Vector2,definit
 	var right: bool=raw.x>bounds.end.x
 	var side_height: bool=raw.y>=float(profile.rim_y) and raw.y<=floor_rect.end.y
 	var rim: bool=raw.y<float(profile.rim_y)
+	var corner: bool=false
+	for value: Variant in profile.corner_indices:
+		if exact_integer(value,0,7) and int(value) in indices: corner=true
 	var category: String="free_near_hull"
 	if not indices.is_empty(): category="floor" if int(profile.floor_index) in indices else "left_wall" if int(profile.left_index) in indices else "right_wall" if int(profile.right_index) in indices else "corner_or_nose"
 	elif below: category="below_closed_floor"
@@ -77,7 +86,7 @@ static func classify_local(local: Vector2,rectangles: Array,com: Vector2,definit
 		"floor_interior_x":interior_x,"below_closed_floor":below,"below_floor_margin":raw.y-floor_rect.end.y,
 		"beyond_left":left,"beyond_right":right,"within_side_height":side_height,"above_rim":rim,
 		"left_is_closed":int(profile.left_index)>=0,"right_is_closed":int(profile.right_index)>=0,
-		"inside_corner":indices.any(func(index: int) -> bool: return index in profile.corner_indices)}
+		"inside_corner":corner}
 
 static func observe(world: Object,sample: Transform2D,current: Transform2D,rectangles: Array,com: Vector2,
 		definition: Dictionary,profile: Dictionary,previous: Array,material: int,force_global: bool=false) -> Dictionary:

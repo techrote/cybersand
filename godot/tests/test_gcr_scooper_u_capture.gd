@@ -27,6 +27,10 @@ func _run() -> void:
 		check(not Capture.configuration_error(corrupted).is_empty(),"frozen configuration corruption refuses "+key)
 	var corrupted: Dictionary=protocol.duplicate(true);corrupted.cases[1].id=corrupted.cases[0].id
 	check(not Capture.configuration_error(corrupted).is_empty(),"duplicate case refuses")
+	corrupted=protocol.duplicate(true);corrupted.cases[0].material=2.5
+	check(not Capture.configuration_error(corrupted).is_empty(),"fractional material is not truncated into an admitted ID")
+	corrupted=protocol.duplicate(true);corrupted.profiles[1].corner_indices=[3.5]
+	check(not Capture.configuration_error(corrupted).is_empty(),"fractional corner index is not truncated into a proxy")
 	for profile: Dictionary in protocol.profiles:
 		var definition: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(profile.definition_path))
 		var resolved: Dictionary=Authoring.resolve_record(definition)
