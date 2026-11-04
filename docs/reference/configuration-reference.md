@@ -10,6 +10,43 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+## Authored flyer and compound capacities
+
+The [flyer authoring guide](../systems/granular-review-flight-fleet.md#how-do-i-author-or-reload-a-flyer-including-scooper)
+owns the eight-craft workflow and controls. `godot/authoring/flyers/manifest.json`
+lists per-craft JSON files; its first seven stable ids retain their order.
+Explicit Reload/reset validates the whole candidate catalogue before installing
+it. No JSON reads occur in a physics tick.
+
+| Input | Current authoring bound/default |
+|---|---|
+| Manifest | Schema1;7..16 unique stable ids; eight bundled definitions |
+| Files | Manifest and each definition at most16KiB; basename-only JSON paths |
+| Hull | One rectangle, or1..8 nonoverlapping local rectangles; each dimension1..128 and union dimensions at most128 |
+| Physical mass | Finite0.001..64 before the existing review multiplier |
+| Friction/bounce/gravity/angular drag | Respectively0..16,0..1,0..256,0..64; bundled defaults0.8/0.04/38/0.18 |
+| Force/torque ceiling | Finite0..4096 authored motor values; existing review multipliers apply separately |
+| Flight settings | Speed0..300, angular speed0..24; other gains/acceleration/slew/drag0..256; trim0..PI radians |
+| Capabilities | Copied side/reverse flags and admitted review dispenser material ids; ordinary actor action ABI is unchanged |
+| Native authored construction | Explicit gcr_authored_compound=true, one physical body and1..8 geometry records; separate from native payload detachment |
+
+The JSON groups are physics, flight, hull and capabilities, with stable identity
+and presentation fields. Unknown/missing fields and nonfinite/range/overlap
+errors refuse. Uniform area determines a compound's COM and inertia; mass and
+inertia overrides apply once. Its content hash is included in copied owner
+receipts. The [compound contract](../architecture/compound-granular-coupling.md#authored-compound-review-bodies)
+owns physical identity, response budget and finite-precision admission.
+The retained single-rectangle rig constructor additionally limits dimensions
+to64; a loader-valid larger rectangle still refuses construction. The explicit
+rectangle-union route admits its registered128-cell dimensions. Refusal does
+not replace the live owner or turn a cached definition into physical acceptance.
+
+Scooper's experimental defaults are mass0.18/inertia≈22.10, six rectangles,
+Afterglow linear acceleration125/speed95/slew4/drag0.55/force23, attitude gain40,
+damping12.5, angular acceleration48, torque1200 and trim1.2rad. Afterglow keeps
+gain10/damping4/angular acceleration12/torque36/trim0.4rad. These are authored
+actuator choices, not stronger granular laws or production calibration.
+
 ## Flyer review modifiers and live powder sources
 
 The [repeatable room controls](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
@@ -1315,7 +1352,7 @@ mass-scale ceiling4096 remain separate. Mass and inertia multipliers extend to64
 friction remains4 maximum and gravity368.48. An actual mass33280 from520×64 is
 not an effective scale33280. Rest comparisons stay at20 independent of the sweep.
 All settings are explicitly experimental and rebuild a fresh developer session.
-The [editable seven-flyer room](../systems/granular-review-flight-fleet.md) also
+The [editable flyer room](../systems/granular-review-flight-fleet.md) also
 exposes budget5..80 and mass/inertia multipliers0.01..64 in its LA/control route.
 The retained RFT/R2 reference stays at20; no rest variants are enabled there.
 Its inertia factor multiplies shape inertia at the actual scaled mass. Apply

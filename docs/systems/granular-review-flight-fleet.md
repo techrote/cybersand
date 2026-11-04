@@ -2,13 +2,75 @@
 title: Lightweight flight fleet for granular owner review
 status: Current
 document-kind: contract
-scope: Developer-only editable flyer room with repeatable spawn, compact controls, staged LA budget and actuators, bounded material sources and optional real Fire; retained RFT reference and separate qualification limits
+scope: Developer-only eight-flyer authoring and compound Scooper, repeatable spawn, compact controls, staged LA budget and actuators, bounded material sources and separate qualification limits
 canonical-for: [granular-review-flight-fleet]
 last-reviewed: 2026-11-04
-related-documents: [../architecture/granular-contact-rest.md, ../architecture/compound-granular-coupling.md, player-control-playground.md, ../operations/gcr-rest-registration.md]
+related-documents: [../architecture/granular-contact-rest.md, ../architecture/compound-granular-coupling.md, player-control-playground.md, ../operations/gcr-rest-registration.md, ../operations/gcr-authored-compound-registration.md]
 ---
 
 # Lightweight flight fleet for granular owner review
+
+## How do I author or reload a flyer, including Scooper?
+
+**Current experimental source:** eight bundled flyers use named definitions in
+[godot/authoring/flyers/manifest.json](../../godot/authoring/flyers/manifest.json).
+Each listed JSON file owns stable id/name/colour, a rectangle or rectangle union,
+actual mass, controller mode, actuator settings and optional dispensers. The
+existing seven keep their original physical scalars and controller arithmetic;
+Scooper is the eighth entry. This review roster is separate from the ordinary
+player presets and46-actor catalogue.
+
+To make a comparison:
+
+1. Edit one definition, or duplicate a JSON file with a unique id and add its
+   filename to the manifest. The first seven stable ids keep their order.
+2. Save a suitable **Reset spawn** or use **Use flyer**. Select a response and
+   Apply the desired comparison multipliers.
+3. Click **Reload + reset**. Validation reads the files once, then constructs
+   the selected stable id at the saved spawn using the applied settings. Invalid
+   authoring or construction refuses while retaining the old owner and admitted
+   catalogue. Reload does not change a live motor or hull in place.
+4. Compare landing, burial, off-centre Burst/Stream, powered contact and, for
+   Scooper, lifting/carrying/tipping. Keep response, budget, mass and inertia
+   settings equal when isolating one change.
+
+The manifest admits at most16 flyers, each with at most8 nonoverlapping local
+rectangles within128-cell overall dimensions. Files are bounded to16KiB each.
+Unknown fields, nonfinite/range errors, overlapping rectangles and duplicate ids
+refuse. File I/O occurs only at load/reload; physics consumes cached copied
+definitions. The canonical content hash of each validated definition is copied
+into the constructed profile and receipt; Details identifies the flyer and
+registry hashes. **1–8** selects the bundled roster; Tab and roster buttons use
+the current admitted count. The [configuration reference](../reference/configuration-reference.md#authored-flyer-and-compound-capacities)
+owns field ranges, and the [registration](../operations/gcr-authored-compound-registration.md)
+keeps implementation, mechanical gates and physical qualification separate.
+
+Scooper follows Afterglow's world-axis W/S rise/descend, A/D strafe, Space lift,
+Shift boost and Ctrl brake. Q/E commands a target of±1.2rad, about±69°, to allow
+deliberate tipping/spilling; releasing Q/E requests level again. Its mass is0.18,
+with uniform-area inertia approximately22.10 before developer overrides. Its
+attitude gain40, angular damping12.5, angular-acceleration cap48 and torque
+ceiling1200 are bounded authored motors. Afterglow retains10/4/12/36 and±0.4rad.
+The linear acceleration125, speed95, slew4, drag0.55 and force ceiling23 retain
+the Afterglow baseline. Stronger torque compensates for Scooper's actual larger
+inertia; it does not strengthen the granular material law or grant a new budget.
+
+One actual Rapier body carries six collider rectangles: thin deck, rear stop and
+stepped leading penetrator. Graphics and native occupancy/contact/ejection use
+that same COM-centred union. The cavity is open; no bounding rectangle is added
+as solid material or another response. Mass, COM, inertia and response budget
+belong to the body once. Carried material remains ordinary native cells that
+can load the deck, move and spill, rather than an inventory or detached payload.
+The [compound ownership contract](../architecture/compound-granular-coupling.md#authored-compound-review-bodies)
+owns the new admission and the separate structural-detachment boundary.
+
+The new native implementation requires source-matched Windows/Linux runtimes
+with89 production inputs; the earlier88-input libraries cannot supply this API.
+The current build cohort is native source
+`a6bf8ec4e75cd1105ab40b927d909b888f42280f`. Scoped build/floor and mechanical
+preflights are separate from final-head full qualification and owner gameplay
+acceptance. No sleep, material-law tuning, production promotion or merge follows
+from adding the authoring workflow.
 
 ## Saved spawn, Burst key and compact comparison controls
 
@@ -43,7 +105,7 @@ requires neutral rearm. Window focus loss, pause and reset retain cancellation
 and source lifetime rules. The inherited mouse cancellation no longer makes a
 Burst click force the pilot to release held thrust before continuing.
 
-The room uses dense wrapping toolbars: seven small craft buttons, response and
+The room uses dense wrapping toolbars: count-driven small craft buttons, response and
 six property fields, reset coordinates, Fire and live sources. Nominal text is
 12px and buttons24px high; the canvas occupies the full width beneath them.
 **Details** expands the craft description, controls, runtime/source identity and
@@ -78,7 +140,7 @@ and replacement retire the modifier; controller/native workers do not poll Input
 
 For a live source in the normal painting room:
 
-1. Choose any of the seven flyers and one of the nine granular materials in the
+1. Choose any of the eight bundled flyers and one of the nine granular materials in the
    palette: Sand, Dust, Rust, Stone, Seed, Salt, Sodium, Gunpowder or Coal.
 2. Enable **Powder source**, or click **Place above flyer**.
    Placement captures that palette material and places the source48 cells above
@@ -114,13 +176,24 @@ shifted both edge positions inward. Physics poses and native cells do not move.
 The existing small terrain anisotropy/non-integer scaling remains; this is not
 GPU, pixel-perfect presentation or general physics acceptance.
 
-The owner's4 November feedback explicitly concerns **LA/A1**: ordinary landing,
+The owner's earlier4 November feedback explicitly concerns **LA/A1**: ordinary landing,
 reactive contact torque and Dust burial feel improved; Sand/Rust/Coal burial still
 starts sinking. Powered Afterglow tunnelling is considered potentially useful
 gameplay. Relative material/flyer mass is a hypothesis, not a demonstrated cause.
 The cropped images lack full selector/source receipts. Record this positive
 qualitative judgement without asserting complete production-envelope acceptance
 or acceptance of the separately failed selective candidate.
+
+In the later three-response owner comparison, ordinary landing/resting is safe
+in all three with minimal idle motion. LA/A1 sinks under burial and reacts too
+strongly to falling material; events off avoids reported burial but gives weak
+incoming loading. Selective arrivals also avoids reported burial and gives the
+preferred loading/deflection: small flyers are torqued aside while larger ones
+can resist a load and lift with boost. Powered resistance is satisfactory in
+that review. These are qualitative owner observations without full new
+source/settings/trajectory receipts; they do not erase the earlier registered
+selective NO-GO or close the production envelope. The relative-loading cause
+still requires measured attribution.
 
 The [dated control/alignment record](../audits/2026-11-04-flight-review-controls.md)
 records owner feedback, source identities, scoped checks and remaining limits.
@@ -178,7 +251,7 @@ experimental; source-lock compatibility and owner review remain open.
 
 ## Selective arrivals — implemented comparison with failed joint gates
 
-The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals** (LA-SELECTIVE; experimental). Use **Apply + reset** to construct fresh native authority; painted edits are discarded. LA remains initial/Defaults, RFT and event-off remain separate references, and existing painting, seven flyers, physical/actuator controls, Fire and dispensers remain intact. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. The candidate is retained for comparison under a registered NO-GO; no owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
+The [selective event registration](../operations/gcr-selective-events-registration.md) owns the implemented fourth response **LA · selective arrivals** (LA-SELECTIVE; experimental). Use **Apply + reset** to construct fresh native authority; painted edits are discarded. LA remains initial/Defaults, RFT and event-off remain separate references, and the retained seven-flyer population, painting, physical/actuator controls, Fire and dispensers remain intact; Scooper has its own authored admission and qualification. The host requires native selective/arrival-witness acknowledgement; unsupported runtimes refuse. Test bank rest and powered contact separately from material falling onto one side of a craft. The84-capture qualification misses registered creep preservation, finite-batch loading/torque recovery and late operational edge-rebound gates. Continuous-stream response, excavation release and direct-paint exclusion pass. The candidate is retained for comparison under a registered NO-GO; no owner acceptance is claimed. Sleep, production-default promotion, latest-Astra compound acceptance and merges remain excluded.
 
 ## Granular-only event comparison — November4
 
@@ -195,8 +268,9 @@ barrel impact guards. Falling grains produce no measured translation/rotation
 in the candidate control, and some late motion increases. The panel tooltip
 flags this loading/torque gap, shows verified native source/binary and a room
 script fingerprint, and refuses event-off construction on an old runtime that
-cannot acknowledge the selector. Owner review remains pending. This is an
-independent-flyer comparison; current Astra compound response is separately owned.
+cannot acknowledge the selector. Owner review remains pending. That dated physical cohort is an
+independent-flyer comparison; the new authored Scooper route has separate gates,
+and current Astra structural response remains separately owned.
 
 The [dated host qualification](../audits/2026-11-02-flyer-budget-playground.md)
 records the current tested application checkpoint, retained failures and native
@@ -209,7 +283,7 @@ binds side-thruster, dispenser and Fire controls to the tested application sourc
 ## Which craft and materials are available?
 
 **Current experimental desktop source:** `gcr_fleet_playground.tscn` provides the
-seven retained flyers in an editable 992×480 room. The original fleet authoring
+seven retained flyers plus Scooper in an editable 992×480 room. The original fleet authoring
 comes from `f7d611501c18425f7f06f0c874324113da78d8e7`; bringing that authoring
 onto the current source does not inherit its old runtime qualification.
 
@@ -222,9 +296,11 @@ onto the current source does not inherit its old runtime qualification.
 | 5 | Surveyor | Broad scientific sampler |
 | 6 | Cartographer | Slow-turning terrain scanner |
 | 7 | Observatory | Lumbering sensor platform |
+| 8 | Scooper | Open scoop; Afterglow movement, stronger stabilization and tipping |
 
-Each craft has one actual rectangular Rapier body, no hidden equipment chassis
-and default authored mass 0.035..0.32. The collider matches the hull outline;
+Each craft has one actual Rapier body, no hidden equipment chassis and default
+authored mass0.035..0.32. The original seven retain one rectangular collider;
+Scooper uses six rectangles on its one body. The colliders match the hull outline;
 sensor markings and lift lights add no physical mass. The room contains Sand,
 Dust, Rust, Stone, Seed, Salt, Sodium, Gunpowder and Coal banks, stepped entries
 and thin upper supports. The palette also offers Water, hard wall and erase.
@@ -235,7 +311,7 @@ LMB paints, RMB erases and the wheel changes brush radius 2..24. F switches
 overview/follow; P pauses. Space remains thrust/lift. Ordinary craft use W/Space
 for body-axis thrust, A/D to rotate, S for reverse, Shift for the configured
 thrust multiplier, Ctrl to brake and C for
-upright assistance, with the Kestrel S exception below. Afterglow uses WASD to
+upright assistance, with the Kestrel S exception below. Afterglow and Scooper use WASD to
 strafe/rise/descend, Space for a lift burst and Q/E to tilt. Painting and
 dispensers intentionally add/remove native material; this room is not a closed
 conservation fixture.
@@ -255,6 +331,7 @@ the ports rotate with the hull.
 | Surveyor | Left side thrust | Right side thrust | Reverse thrust |
 | Cartographer | Left Water dispenser | Right Water dispenser | Reverse thrust |
 | Observatory | Left Lava dispenser | Right Lava dispenser | Reverse thrust |
+| Scooper | Tilt deck toward−1.2rad | Tilt deck toward+1.2rad | Descend |
 
 Needle, Kestrel and Surveyor request lateral acceleration at 0.65 of the selected
 craft's authored acceleration. Main thrust, side thrust, drag and brake requests
@@ -312,8 +389,9 @@ shortcuts and leased flight input, so typing 40 or 64 cannot select another flye
 Enter/Escape leaves text editing.
 
 The **Thrust limit × authored** and **Torque limit × authored** fields independently
-admit 0..64, default1. They multiply each selected craft's authored force ceiling
-8..28 and torque ceiling3..82; omitted options retain1 for API compatibility.
+admit 0..64, default1. They multiply each selected craft's authored ceilings;
+the original seven retain force8..28 and torque3..82, while Scooper starts at
+force23/torque1200. Omitted options retain1 for API compatibility.
 Zero thrust disables the controller's combined linear request, including braking
 and hoverboard gravity compensation. Zero torque disables its turning/leveling
 request. Gravity, material reactions and existing extreme-motion safeguards remain.
@@ -322,8 +400,9 @@ caps. Acceleration, angular acceleration, speed and effort targets stay authored
 raising a ceiling alone does not raise those targets. The rig's existing per-call
 impulse guards remain `mass*100` and `inertia*4`, with separate extreme-motion
 safety braking above speed300 or angular speed24. These are not material laws.
-Increasing mass can prevent lift until sufficient propulsion is available. Neutral
-steering still permits passive contact rotation. No collision-only effective mass,
+Increasing mass can prevent lift until sufficient propulsion is available. The
+body-thrust craft without assistance permit passive contact rotation; Afterglow
+and Scooper retain their bounded level/tilt motor. No collision-only effective mass,
 velocity assignment, pose latch or sleeping policy is introduced.
 
 ## How do I return after F2?
@@ -338,13 +417,16 @@ the new menu entries.
 ## Who owns the response and reset?
 
 The room retains its synchronous exclusive native owner. Native cells own
-material; main-thread Rapier owns the flyer. The existing arena packs one
-17-value body sample per intended boundary and applies one accumulated response
-through the existing bridge. Painting occurs between owner steps. It does not
+material; main-thread Rapier owns the flyer. The existing arena packs one17-value
+sample for each original single-rectangle body. Authored compounds repeat the
+one physical COM state in at most8 geometry records and apply one accumulated
+version2 wrench through the same bridge. Painting occurs between owner steps. It does not
 add a worker/main-thread ownership path or per-cell physics bodies.
 
-`configure_review_fleet` admits only one human arcadelander carrier and one fixed
-fleet index 0..6. The ordinary catalogue mass validator is unchanged. Only the
+`configure_review_fleet` admits one human arcadelander carrier and one validated
+catalogue index, currently0..7. One authored body per review World is the current
+bounded implementation, not a permanent prohibition on future actor composition.
+The ordinary catalogue mass validator is unchanged. Only the
 explicit fleet route can apply the validated developer multipliers, after checking
 the exact authored fleet definition and before populating physical properties,
 rig mass/inertia caches and the Rapier bridge. Invalid options preserve the

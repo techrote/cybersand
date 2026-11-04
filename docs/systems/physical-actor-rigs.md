@@ -61,6 +61,16 @@ is distinct from selectable candidate source.
 
 ## How do I select and control them?
 
+The separate [flyer review room](granular-review-flight-fleet.md#how-do-i-author-or-reload-a-flyer-including-scooper)
+uses eight named developer definitions, including Scooper. It does not change
+the ordinary46-actor catalogue or player-preset indices. The original seven
+review flyers remain one-rectangle bodies; Scooper is one physical body with
+six matching collider/native/render rectangles and one mass/COM/inertia/budget.
+Its explicit authored compound constructor requires the corresponding native
+API. Ordinary rig construction refuses a rectangle_union without that review
+admission, rather than silently using an AABB native mask. Authored gains and
+caps are motor settings; shared material response and sleep remain unchanged.
+
 F5 in the ordinary sandbox, Blacksite Nine and the four showcase districts
 selects a representation, set, actor and keyboard, scripted-demo or external
 policy producer. Physical Rapier choices are the default actor route. Applying

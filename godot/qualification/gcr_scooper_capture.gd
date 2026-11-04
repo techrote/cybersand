@@ -16,7 +16,16 @@ func require(ok: bool, why: String) -> bool:
 	return ok
 
 func census(world: Object) -> Dictionary:
-	var result: Dictionary=world.diagnostic_snapshot(WORLD_RECT.position,WORLD_RECT.size,false,false)
+	# Native snapshots admit at most512 columns. Sum two disjoint actual stored-
+	# cell observations; global clocks/work metadata is copied once, not summed.
+	var result: Dictionary=world.diagnostic_snapshot(WORLD_RECT.position,Vector2i(512,512),false,false)
+	var right: Dictionary=world.diagnostic_snapshot(Vector2i(512,0),Vector2i(512,512),false,false)
+	if not require(not result.is_empty() and not right.is_empty(),"whole-fixture census refused"): return {}
+	if not require(result.counts.size()==right.counts.size(),"census material schema differs"): return {}
+	for index: int in range(result.counts.size()):
+		result.counts[index]=int(result.counts[index])+int(right.counts[index])
+		result.sum_y[index]=int(result.sum_y[index])+int(right.sum_y[index])
+	result.water_mass=int(result.water_mass)+int(right.water_mass)
 	result.erase("cells")
 	return result
 
@@ -80,6 +89,7 @@ func _run() -> void:
 	var arena=runtime._arena
 	var world: Object=arena._world
 	var body: RigidBody2D=arena.session.bodies()[0]
+	require(arena.session.bodies().size()==1,"one physical body owns the complete hull")
 	var source=Source.new()
 	require(world.diagnostic_fill_rect(Vector2i.ZERO,Vector2i(1024,512),0),"clear fixture cells")
 	for rect: Array in [[16,396,992,6],[16,16,6,386],[1002,16,6,386],[16,16,992,6]]:
@@ -102,25 +112,49 @@ func _run() -> void:
 	var expected_selector: String={"LA":"control","LA-EVENT-OFF":"off","LA-SELECTIVE":"selective"}[response]
 	for tick: int in range(int(spec.ticks)):
 		if source.armed: require(source.before_step(arena),"source owner step")
+		var native_before: int=world.get_tick_index()
+		var rapier_before: int=arena.session.bridge.manual_step_count()
+		var responses_before: int=int(arena.gcr_stats.responses)
+		var applications_before: int=int(arena.gcr_stats.applications)
 		var start: int=Time.get_ticks_usec()
-		require(runtime.submit_review_action(action(spec,tick),{"q":tick>=300 and tick<600 and spec.id=="carry-spill","e":false,"s":false,"boost":false}),"admit pilot action")
+		require(runtime.submit_review_action(action(spec,tick),{"q":false,"e":tick>=300 and tick<600 and spec.id=="carry-spill","s":false,"boost":false}),"admit pilot action")
+		# This is the actual pose sampled by native preparation, before this
+		# boundary's actuation/response/Rapier integration. Material remains at
+		# post-native state when both cavity observations below are read.
+		var before_state: Dictionary=Base.state(body)
 		var snapshot: Dictionary=runtime.step()
 		var elapsed: int=Time.get_ticks_usec()-start
 		if not require(not snapshot.failed,"normal owner step: "+runtime.last_error): break
 		var state: Dictionary=Base.state(body)
 		var diag: Dictionary=world.gcr_compound_diagnostics()
 		if not require(diag.get("admission_kind")=="authored" and diag.get("granular_events")==expected_selector,"authored mode/selector readback"): break
+		var application: Dictionary=arena.session.bridge.gcr_application_diagnostics()
+		var observed_native: int=int(world.get_tick_index())-native_before
+		var observed_rapier: int=arena.session.bridge.manual_step_count()-rapier_before
+		var observed_responses: int=int(arena.gcr_stats.responses)-responses_before
+		var observed_applications: int=int(arena.gcr_stats.applications)-applications_before
+		var applied_bodies: Array=application.get("bodies",[])
+		var physical_wrenches: int=int(applied_bodies[0].get("physical_wrench_applications",-1)) if applied_bodies.size()==1 else -1
+		require(observed_native==1 and observed_rapier==1,"exactly one native and Rapier step")
+		# A valid quiet response is zero and must not invent an impulse merely to
+		# increment a counter. The bridge counts only nonzero wrench/correction.
+		require(observed_responses==1 and observed_applications in [0,1] and application.get("accepted",false) and applied_bodies.size()==1 and physical_wrenches in [0,1],"one accepted compound record and at most one physical wrench")
 		var pose:=Transform2D(float(state.rotation),state.position)
 		var row: Dictionary={"tick":tick,"state":state,"step_us":elapsed,"actuation":arena.session._rigs[0]._player_controller.observation(),
-			"application":arena.session.bridge.gcr_application_diagnostics(),"work":[world.get_scanned_last_tick(),world.get_moves_last_tick(),world.get_active_blocks_last_tick()]}
+			"application":application,"observed_steps":[observed_native,observed_rapier],"observed_response_counts":[observed_responses,observed_applications],
+			"physical_wrench_applications":physical_wrenches,
+			"work":[world.get_scanned_last_tick(),world.get_moves_last_tick(),world.get_active_blocks_last_tick()]}
 		var metrics: Dictionary={}
-		for key: String in ["proxy_count","physical_body_id","sample_serial","session_id","nodes","updates","contacts","displaced","unresolved","global_capacity","source_capacity","normal_accepted","tangent_accepted","event_budget_cost","event_accepted","event_torque","arrival_count","arrival_missing","arrival_misaligned","passive_impulse","passive_torque","energy_before","energy_after","impulse","torque","correction","cellular_overlap_pre","cellular_overlap_post","overlap_measured"]:
+		for key: String in ["proxy_count","physical_body_id","sample_serial","session_id","sample_com","mass","inertia","nodes","updates","contacts","displaced","unresolved","global_capacity","source_capacity","normal_accepted","tangent_accepted","event_budget_cost","event_accepted","event_torque","arrival_count","arrival_missing","arrival_misaligned","passive_impulse","passive_torque","energy_before","energy_after","impulse","torque","correction","cellular_overlap_pre","cellular_overlap_post","overlap_measured"]:
 			if diag.has(key): metrics[key]=diag[key]
 		row.gcr=metrics
-		if tick%15==0 or tick==int(spec.ticks)-1: row.cavity_count=cavity_count(world,pose,int(spec.material))
+		if tick%15==0 or tick==int(spec.ticks)-1:
+			row.cavity_count=cavity_count(world,pose,int(spec.material))
+			row.sample_pose_cavity_count=cavity_count(world,Transform2D(float(before_state.rotation),before_state.position),int(spec.material))
+			row.sample_pose={"position":before_state.position,"rotation":before_state.rotation}
 		if tick%60==0 or tick==int(spec.ticks)-1:
 			var current:=census(world)
-			var expected_counts: PackedInt64Array=before.counts.duplicate()
+			var expected_counts: Array=before.counts.duplicate()
 			expected_counts[int(spec.material)]+=source.inserted
 			var expected: Dictionary={"counts":expected_counts,"water_mass":before.water_mass}
 			var conserved: bool=Base.same_quantity(expected,current)

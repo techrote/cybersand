@@ -24,7 +24,18 @@ ordinary actors retain their old arena bounds. Arena reset retains the admitted
 position in configuration. Scene methods `set_spawn_position(Vector2)`,
 `capture_spawn_position()` and `reset_spawn_position()` own the saved next-spawn
 value; they do not mutate a live Rapier pose. Canned fixtures retain their fixed
-centre independently. No packed/native interface or material law is added.
+centre independently. The saved-position feature adds no packed/native interface
+or material law; the authored compound route below is a separate extension.
+
+The cached [flyer authoring interface](../systems/granular-review-flight-fleet.md#how-do-i-author-or-reload-a-flyer-including-scooper)
+is Fleet.reload_definitions(manifest_path), with bounded validated candidate
+data and rollback on refusal. Scene reload_flyer_definitions() reconstructs the
+selected stable id at the saved spawn. Fleet.definition_hash(index) identifies
+canonical validated content; the constructed profile and arena receipt freeze
+that hash. An arena reset refuses changed definitions rather than silently
+reinterpreting a live owner's geometry or motor capabilities. Explicit Reload
+constructs the new version. Copied profile capabilities keep the existing
+command/lease ABI; ordinary player selection is not widened to fleet indices.
 
 The [fleet interface](../systems/granular-review-flight-fleet.md#shift-thrust-multiplier-ctrl-brake-and-painting-room-powder-sources)
 adds optional boolean boost beside q/e/s review ports. It is validated before
@@ -58,7 +69,7 @@ the existing LA/E/S review options and fixes Kestrel index2; the ordinary
 Scene methods `start_powder_test("burst"/"stream")`, `return_to_painting()` and
 `powder_test_receipt()` own test selection and copied diagnostic receipt access.
 
-**Implemented selective event interface:** the [prospective registration](../operations/gcr-selective-events-registration.md) extends fresh diagnostic construction with gcr_granular_events=selective and exact GCR-SEL-001-2026-11-04 token, requiring GCR-REST/control. C/control and E/off can use that token to observe identical transport history. Native selector/arrival-witness readback must acknowledge the requested mode; old runtimes and unsupported compound preparation refuse. Raw all-attempt J/L remain distinct from admitted arrival J/L/counts and sidecar bytes. Packed body/result strides, main-thread response ownership and sample fences remain unchanged. Transport stamps reset with World construction and are not physical save or complete replay state. The84-capture qualification records failed joint physical gates; this interface availability does not establish production or owner acceptance.
+**Implemented selective event interface:** the [prospective registration](../operations/gcr-selective-events-registration.md) extends fresh diagnostic construction with gcr_granular_events=selective and exact GCR-SEL-001-2026-11-04 token, requiring GCR-REST/control. C/control and E/off can use that token to observe identical transport history. Native selector/arrival-witness readback must acknowledge the requested mode; old runtimes and the retained structurally leased compound preparation refuse; authored review admission is separately described below. Raw all-attempt J/L remain distinct from admitted arrival J/L/counts and sidecar bytes. Packed body/result strides, main-thread response ownership and sample fences remain unchanged. Transport stamps reset with World construction and are not physical save or complete replay state. The84-capture qualification records failed joint physical gates; this interface availability does not establish production or owner acceptance.
 
 **Experimental granular event selector, November4:** the
 [registered interface](../operations/gcr-granular-events-registration.md) adds
@@ -66,11 +77,33 @@ fresh diagnostic construction options gcr_granular_events=off/control plus the
 exact GCR-EVT-001-2026-11-04 token. Both require GCR-REST/control. Packed body/result
 strides and rest-authority checks remain unchanged. Added diagnostic/receipt
 selector strings report the fresh native setting; no live setter or worker
-ownership transfer is introduced. The event-off candidate refuses unsupported
-compound preparation. The painting host requires actual selector readback, so an
+ownership transfer is introduced. The retained structurally leased compound route refuses this event mode;
+the authored review route below admits it separately. The painting host requires actual selector readback, so an
 older runtime cannot silently accept the option while running the control.
 
 ## Experimental compound granular value route
+
+**Current authored review extension:** explicit construction option
+gcr_authored_compound=true admits
+prepare_gcr_authored_compound_coupling(states17,geometry4,identity,
+resolve_overlaps=true,rest_context={}). Geometry4 is local centre_x,centre_y,
+width,height for1..8 rectangles. Identity has exactly version1, session_id and
+body_generation, all positive finite integer identities. Each17-value geometry
+record repeats the same physical COM state, mass, inertia, friction, dt and
+session; proxy IDs are geometry membership, not additional physical bodies.
+Validation binds immutable geometry/properties before occupancy/material work.
+retire_gcr_authored_compound(identity) clears the matching transient mask and
+response, then refuses further preparation until fresh construction. Mixed
+independent/authored/detached admission refuses. The authored route supports LA,
+events off and selective arrivals through the existing shared response law.
+
+Results use the existing gcr_compound_results() version2 one-wrench layout and
+bridge application, with one mass/COM/inertia/budget and the existing sample-age,
+duplicate and all-corner checks. No RID, Node or mutable World storage crosses
+the native value boundary. The [compound contract](../architecture/compound-granular-coupling.md#authored-compound-review-bodies)
+owns capacity, precise geometry tolerance and lifetime; the
+[registration](../operations/gcr-authored-compound-registration.md) separates
+mechanical implementation from physical/owner acceptance.
 
 The unmerged [compound contract](../architecture/compound-granular-coupling.md)
 owns `prepare_gcr_compound_coupling(states17, lease, resolve_overlaps)` and its

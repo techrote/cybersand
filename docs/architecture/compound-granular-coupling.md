@@ -2,13 +2,63 @@
 title: Compound granular response and native detachment
 status: Current
 document-kind: contract
-scope: Experimental branch composition for one native aggregate and one GCR response owner; mechanically qualified, production physical quality unaccepted
-canonical-for: [compound-granular-detachment-coupling]
-last-reviewed: 2026-11-02
-related-documents: [rigid-body-and-cellular-coupling.md, soliding-lifecycle.md, ../operations/gcr-detachment-integration-plan.md, ../systems/granular-interaction-policy.md]
+scope: Experimental one-body compound response with separate authored-review and native payload admissions; physical production quality remains unaccepted
+canonical-for: [compound-granular-detachment-coupling, authored-compound-review-coupling]
+last-reviewed: 2026-11-04
+related-documents: [rigid-body-and-cellular-coupling.md, soliding-lifecycle.md, ../operations/gcr-detachment-integration-plan.md, ../systems/granular-interaction-policy.md, ../operations/gcr-authored-compound-registration.md, ../systems/granular-review-flight-fleet.md]
 ---
 
 # Compound granular response and native detachment
+
+## Authored compound review bodies
+
+**Current experimental source:** the [authored registration](../operations/gcr-authored-compound-registration.md)
+adds an explicit authored admission for one physical review body with1..8 local
+rectangle shapes. It reuses the existing compound solver and one version2
+wrench, while retaining the original independent and structurally leased paths.
+Scooper is the first six-shape consumer; the earlier seven flyers keep their
+single-rectangle path. This is not a new granular force, friction or sleep law.
+
+The authoring resolver computes a uniform-area COM/inertia and recentres all
+shapes. One main-thread Rapier body owns every hard collider and the actual
+mass/inertia. Copied rendering and native masks use that same union, including
+its open cavity. No AABB is submitted as an extra collider/body, and material
+carried on the deck remains native cell material. Motor force/torque is a
+separate bounded actuator; geometry count does not multiply the response budget.
+
+Explicit gcr_authored_compound=true preallocates the compound workspace.
+prepare_gcr_authored_compound_coupling binds the exact version1/session/generation
+identity,1..8 geometry records and common COM/mass/inertia/friction after complete
+validation. That owner cannot be mixed with an independent body batch or an
+active native detached payload. The existing solver combines source/event and
+passive response once, using the existing global/load-aware budget, unique-source
+normalization, energy guard, correction and bridge sample-age rules. LA, events
+off and selective arrivals use their existing event admission for this authored
+route; no per-proxy impulse is applied in addition to its one wrench.
+
+Raw authored rectangles reject positive-area overlaps. Copying COM-centred
+offsets through Rapier's float32 real_t can round a shared edge. Native geometry
+admits only4*epsilon*local_extent ambiguity; for this Scooper the bound is about
+8.7e-6 cells, below1e-5. Generic maximum-sized shapes retain the same formula,
+not a universal1e-5 constant. Pose reconstruction separately scales its float
+tolerance by world-coordinate magnitude. Raster membership remains unique.
+This finite-precision tolerance is not extra physical overlap allowance or a
+change to the material response law.
+
+Retirement clears the matching transient obstacles/response and invalidates
+further packets for the owner. Malformed/stale/mixed identities refuse before
+material mutation; unexpected native preparation exceptions quarantine actual
+World state. This review host uses its existing synchronous exclusive native
+owner and main-thread Rapier bridge. No pool worker calls live Godot APIs.
+
+One authored body per current review World is a bounded implementation scope,
+not a permanent restriction on future actor composition. Structural detachment
+still requires its real payload token/generation/physics epoch and preserves its
+current event-mode admission. No detachment lease is fabricated for a flyer;
+the #347 handoff/quarantine/payload route remains independently owned. The new
+adapter route does not edit World-core material rules or claim latest structural
+physical acceptance. Mechanical, cross-response physical and owner-review gates
+remain separately identified in the registration and final source-bound ledger.
 
 ## What is composed, and what stays experimental?
 
@@ -37,7 +87,7 @@ and an AABB concavity. Native unit-square mass/COM/inertia remain authoritative.
 No density rescaling, actor controller force, sleep, restoration, generalized
 fracture or ordinary-playground expansion is introduced.
 
-This bounded interface admits exactly one physical owner. Simultaneous player,
+The structurally leased interface described below admits exactly one physical owner. Simultaneous player,
 flyer or other independent Rapier bodies in the same native World are not
 implemented by this compound route. Separate independent-body playground tests
 do not qualify that coexistence. The source response uses the existing granular
