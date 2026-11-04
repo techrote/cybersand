@@ -112,8 +112,12 @@ func _interaction_provenance_tests() -> void:
 	expect(profile.get("schema_id","") == "cybersand.interactions" and int(profile.get("schema_version",0)) == 1,
 		"INT-000 native schema identity is missing")
 	expect(profile.get("pair_rules",[]).size() == 56 and profile.get("channels",[]).size() == 7
-		and profile.get("specialized_rules",[]).size() == 19 and profile.get("layer_kinds",[]).size() == 5,
+		and profile.get("specialized_rules",[]).size() == int(profile.get("specialized_rule_count",-1)) and profile.get("layer_kinds",[]).size() == 5,
 		"INT-000 profile catalogue is incomplete")
+	var finite_binder_entries: int = 0
+	for rule: Dictionary in profile.get("specialized_rules",[]):
+		finite_binder_entries+=int(rule.get("rule_id","")=="int.kernel.finite-binder.cure.v1")
+	expect(finite_binder_entries==1,"Current native specialized catalogue retains the appended finite-binder owner")
 	expect(profile.get("authored_layers",[]).is_empty(),
 		"Current profile unexpectedly gained authored default/adjustment/modifier semantics")
 	var validation: Dictionary = profile.get("catalogue_validation",{})
@@ -253,6 +257,11 @@ func _transaction_and_ownership_tests() -> void:
 	expect(host.summary().events_applied == summary.events_applied, "invalid reset changed event cursor")
 	expect(not host.install(world, definition, "unknown"), "invalid mode accepted")
 	expect(observe(world) == before, "invalid mode changed World")
+	for material: int in range(CyberCellWorld.STONE_WALL,CyberCellWorld.LAST_MATERIAL+1):
+		var outside: Dictionary = definition.duplicate(true)
+		outside.rectangles=[20,20,1,1,material]
+		expect(not host.install(world,outside),"Out-of-scope paired material replaced a MicroScenario owner")
+		expect(observe(world)==before and host.summary().events_applied==summary.events_applied,"Out-of-scope refusal mutated native state or event cursor")
 	var retained: Dictionary = host.capture()
 	var exported: Dictionary = host.definition()
 	exported.rectangles[0] = -99

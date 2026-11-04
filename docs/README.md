@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Paired materials PR358: [current material/accounting contract](systems/paired-materials-and-curing.md),
+[level and checkpoint boundaries](reference/level-saves-and-replay.md), and the
+[4 November remediation/evidence record](audits/2026-11-04-paired-materials-remediation.md),
+and [owner playtest packet](operations/paired-materials-owner-playtest.md).
+This candidate remains draft and unmerged; quantity-schema policy, required gates
+and final owner gameplay acceptance remain explicit.
+
 Material authoring: the [owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
 authorizes documentation integration only. The [corrected technical contract](architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
 and [independent review](audits/2026-11-03-mat-auth-000-architecture-review.md)
@@ -569,3 +576,19 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+## Paired wall materials and finite curing — 2026-11-03
+
+The [current experimental contract](systems/paired-materials-and-curing.md) owns
+Stone/Salt/Coal wall forms, shared native chemistry and the separate Dry Binder →
+Activated Binder → Binder Crust family. Activation consumes one full, non-overfilled
+Water cell; new crust cannot activate neighboring powder. Existing Cement keeps
+its original behavior. The desktop-native shell lab compares all-loose, intact
+and breached shells, with free painting and a finite-dose curing tray.
+
+The [implementation registration](operations/paired-materials-registration.md)
+and [original plan](operations/paired-wall-loose-materials-plan.md) distinguish
+admitted source from deferred designs. The feature remains unmerged; exact
+source/runtime qualification, owner gameplay acceptance and broad granular-rest
+acceptance are separate. New materials require the matching native runtime;
+fallback/Web do not silently emulate the new chemistry.

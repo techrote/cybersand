@@ -10,6 +10,30 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Paired-material remediation checkpoint — 2026-11-04
+
+Continue PR358 from its [dated remediation record](../audits/2026-11-04-paired-materials-remediation.md),
+not the original native build or an old owner package. The repaired Godot source
+and atlas consumer matter even while all 80 native production inputs remain
+identical to native build `f069b439`. The current-main reconciliation preserves
+both audit exclusions and accepted #334/#367/#369. Do not import active
+SOL-DETACH or experimental GCR changes to settle shared-file ownership.
+
+Main later advanced to `3da7e7be` through #357's documentation-only Planned
+adoption. Both complete documentation section sets are retained. No compiler
+implementation is included. The passing Windows/Linux replacement cohort at
+`077f9c52` keeps its original identity; resulting-head checks and the full merge
+gates remain in the live PR ledger.
+
+Preserve original failures, the unrecovered archive's identity, and every new
+execution's actual source/runtime record. The bounded qualification apparatus
+does not replace full Native/GDExtension/Issue49/shader gates. Obtain independent
+review, the explicit schema1 checkpoint-policy decision and source-bound human
+results from the [owner packet](paired-materials-owner-playtest.md). PR370 owns
+its observer fix and the joint fixture; original LCB admission stays attached to
+its original source. Publish recoverable progress and stop without merging or
+promoting the candidate automatically.
+
 ## MAT-AUTH Planned adoption and unstarted compiler — 2026-11-04
 
 The owner has [adopted the corrected architecture as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)

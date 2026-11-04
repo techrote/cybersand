@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-03
 ---
 
 # Rigid-body and cellular coupling
@@ -113,6 +113,17 @@ that budget, and one indivisible changed chunk may exceed it. This is bounded
 consumer granularity, not an end-to-end frame-time guarantee. Source:
 [native extraction](../../godot/native_extension/cyber_native_cell_world.cpp),
 [Rapier `process_hard_surface_collider_budget`](../../godot/scripts/rapier_physics_bridge.gd).
+
+**Current experimental paired materials:** walls132..134 and Binder Crust137
+use the same hard-terrain owner; granular Binder135/136 do not. The old hard
+range remains38..131, with the new hard forms admitted explicitly. Native cell
+conversion/removal changes hard revision before collision geometry is retired
+or rebuilt. The [paired-material lab](../systems/paired-materials-and-curing.md#how-do-i-try-shell-destruction-and-the-curing-tray)
+uses the existing synchronous actor arena, which drains its pending terrain
+before the next Rapier step. This apparatus-specific order does not change the
+ordinary desktop soft budget or establish a frame-time guarantee. Its release
+fixture checks a short actual collision ray and body descent across an air gap;
+fewer collider shapes alone would not prove correct retirement.
 
 ## What does the fixture prove, and what remains open?
 

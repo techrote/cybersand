@@ -172,6 +172,34 @@ public:
         out["profile_id"] = interaction_string(cybersand::kInteractionProfileId);
         out["profile_version"] = static_cast<std::int64_t>(cybersand::kInteractionProfileVersion);
 
+        // Copied immutable catalogue values. Physical form stays distinct from
+        // the narrow chemistry parent used by the interaction owner.
+        out["material_count"] = static_cast<std::int64_t>(cybersand::kMaterialDefinitions.size());
+        Array materials;
+        for (std::size_t index = 0; index < cybersand::kMaterialDefinitions.size(); ++index) {
+            const auto material = static_cast<cybersand::Material>(index);
+            const auto& definition = cybersand::material_definition(material);
+            if (!definition.valid) continue;
+            Dictionary item;
+            item["id"] = static_cast<std::int64_t>(index);
+            item["name"] = interaction_string(definition.name);
+            item["state"] = static_cast<std::int64_t>(definition.state);
+            item["density"] = static_cast<std::int64_t>(definition.density);
+            item["movable"] = definition.movable;
+            item["hard_surface"] = cybersand::MaterialRules::is_hard_surface(material);
+            item["supports_granular_load"] = cybersand::MaterialRules::supports_granular_load(material);
+            item["chemical_parent"] = static_cast<std::int64_t>(cybersand::chemical_parent(material));
+            item["loose_counterpart"] = static_cast<std::int64_t>(cybersand::loose_counterpart(material));
+            item["wall_counterpart"] = static_cast<std::int64_t>(cybersand::wall_counterpart(material));
+            item["paired_wall"] = cybersand::is_paired_wall(material);
+            item["kernel"] = static_cast<std::int64_t>(definition.kernel);
+            item["maximum_write_radius"] = static_cast<std::int64_t>(definition.maximum_write_radius);
+            item["initial_state_a"] = static_cast<std::int64_t>(definition.initial_state_a);
+            item["initial_state_b"] = static_cast<std::int64_t>(definition.initial_state_b);
+            materials.push_back(item);
+        }
+        out["material_catalogue"] = materials;
+
         Array channels;
         for (const auto& channel : cybersand::InteractionRules::channels()) {
             Dictionary item;

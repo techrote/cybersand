@@ -20,7 +20,7 @@ func _run() -> void:
 		CyberMaterialAppearanceLut.VALUE_VARIATION.size() == CyberMaterialAppearanceLut.MATERIAL_COUNT,
 		"variation table and material count diverged"
 	)
-	_expect(CyberMaterialAppearanceLut.MATERIAL_COUNT == 132, "building material extent changed")
+	_expect(CyberMaterialAppearanceLut.MATERIAL_COUNT == 138, "building material extent changed")
 	_expect(
 		CyberMaterialAppearanceLut.MATERIAL_COUNT == CyberCellWorld.LAST_MATERIAL + 1 and
 			CyberCellWorld.BUILDING_MATERIAL_NAMES.size() ==
@@ -166,7 +166,7 @@ func _run() -> void:
 	for living_id: int in living:
 		_expect(roundi(programs.get_pixel(3, living_id).a) == int(living[living_id]),
 			"material %d did not compile to its living/firework flair" % living_id)
-	for building_id: int in range(CyberCellWorld.FIRST_BUILDING_MATERIAL, CyberCellWorld.LAST_MATERIAL + 1):
+	for building_id: int in range(CyberCellWorld.FIRST_BUILDING_MATERIAL, CyberCellWorld.LAST_BUILDING_MATERIAL + 1):
 		_expect(roundi(programs.get_pixel(3, building_id).a) == CyberMaterialAppearanceLut.FLAIR_BUILDING,
 			"building material %d did not compile to the building flair" % building_id)
 		_expect(atlas.get_pixel(32, building_id).to_rgba32() != Color(1.0, 0.0, 1.0, 1.0).to_rgba32(),
@@ -214,7 +214,7 @@ func _run() -> void:
 		)
 
 	if _failures == 0:
-		print("Material appearance LUT regression passed; all 132 ID slots, 256 palette/program rows, 50 flair classes")
+		print("Material appearance LUT regression passed; all 138 ID slots, 256 palette/program rows, 50 flair classes")
 	quit(_failures)
 
 

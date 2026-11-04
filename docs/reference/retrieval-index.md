@@ -10,6 +10,17 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Paired material accounting and persistence routes — 2026-11-04
+
+| Question | Canonical route |
+|---|---|
+| What happens to bound Water when Binder is erased or repainted? | [Free/bound quantities and destruction sinks](../systems/paired-materials-and-curing.md#which-water-quantities-and-destruction-sinks-are-accounted) |
+| Which old physical checkpoints are refused, and can CYSD change Binder precision? | [Save admission and nested quantity compatibility](level-saves-and-replay.md) |
+| Which new materials can I author, and how fresh are the tray counts? | [Paired materials and shell lab](../systems/paired-materials-and-curing.md) |
+
+[Supplementary remediation questions](retrieval-questions-paired-remediation.json)
+check these new boundaries separately from the frozen evaluation.
+
 ## Material-authoring adoption and implementation boundary — 2026-11-04
 
 Use the [owner-adopted Planned status and unstarted compiler boundary](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)

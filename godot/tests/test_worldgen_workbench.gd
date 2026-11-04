@@ -96,6 +96,49 @@ func material_at(app: CyberWorldGenerationWorkbench, x: int, y: int) -> int:
 		return -1
 	return int(packet.cells[(y - coordinate.y * size) * size + x - coordinate.x * size])
 
+func check_material_authoring(app: CyberWorldGenerationWorkbench) -> void:
+	var names: Array[String] = ["stone wall","salt wall","coal wall","dry binder","activated binder","binder crust"]
+	for offset: int in range(names.size()):
+		var id: int = CyberCellWorld.STONE_WALL+offset
+		expect(Workbench._material_label(id)==names[offset],"Appended material label is truthful: "+str(id))
+		for picker: OptionButton in [app.material_picker,app.modifier_material,app.brush_context_material]:
+			var row: int = picker.get_item_index(id)
+			expect((row>=0)==(id!=CyberCellWorld.ACTIVATED_BINDER),"Picker distinguishes public forms from internal activation: "+str(id))
+			if row>=0: expect(picker.get_item_text(row).ends_with(names[offset]),"Public picker keeps the material name: "+str(id))
+		if id==CyberCellWorld.ACTIVATED_BINDER: continue
+		var recipe: Dictionary = small_recipe()
+		recipe.overrides=[{"id":"public-form","bounds":[0,0,4,4],"material":id}]
+		expect(app.apply_recipe(recipe) and material_at(app,0,0)==id,"Public form reaches the native preview without coercion: "+str(id))
+	expect(app.material_picker.get_item_index(10)==-1,"Reserved slot remains excluded from authoring")
+	var retained: Dictionary = app.active_recipe.duplicate(true)
+	var revision: int = app.active_revision
+	var history: int = app._undo.size()
+	# Raw JSON cannot bypass the same public authoring boundary. Cover the
+	# existing material-bearing recipe families, not arbitrary numeric136 fields.
+	var refused: Array[Dictionary] = [
+		{"overrides":[{"id":"internal","bounds":[0,0,4,4],"material":136}]},
+		{"paths":[{"id":"internal","points":[[0,0],[5,0]],"width":2,"material":136}]},
+		{"aggregates":[{"id":"internal","components":[{"material":136,"weight":1}]}]},
+		{"modifiers":[{"id":"internal","bounds":[0,0,4,4],"material":136}]},
+		{"catalogue":[{"id":"internal","palette":{"rock":136}}]},
+		{"grammar":{"service_material":136}},
+		{"grammar":{"liquid_material":136}},
+		{"grammar":{"rules":[{"id":"internal","interior":136}]}},
+		{"grammar":{"rules":[{"id":"internal","allowed_materials":[136]}]}},
+		{"semantic_planes":{"policies":[{"plane":"foreground","material":136}]}},
+	]
+	for fields: Dictionary in refused:
+		var recipe: Dictionary = small_recipe()
+		recipe.merge(fields,true)
+		# JSON supplies integral floats; eligibility must not be type-dependent.
+		recipe=JSON.parse_string(JSON.stringify(recipe))
+		expect(not app.apply_recipe(recipe) and app.last_error.contains("Activated Binder is internal"),"Internal material raw recipe is refused explicitly")
+		expect(app.active_recipe==retained and app.active_revision==revision and app._undo.size()==history,"Internal-state refusal preserves accepted generator/history")
+	var numeric_control: Dictionary = small_recipe()
+	numeric_control.parameters.surface_y=136
+	expect(app.apply_recipe(numeric_control),"A numeric terrain parameter136 is not an internal material")
+	expect(app.apply_recipe(small_recipe()),"Public authoring still works after internal-state refusal")
+
 func check_workbench() -> void:
 	expect(str(ProjectSettings.get_setting("application/run/main_scene")) == "res://feature_launcher.tscn", "Workbench must remain opt-in behind the combined desktop launcher")
 	root.size = Vector2i(1600, 1000)
@@ -108,6 +151,7 @@ func check_workbench() -> void:
 	if app.generator == null:
 		app.queue_free()
 		return
+	check_material_authoring(app)
 	expect(app.apply_recipe(small_recipe()), "Small authoring fixture failed: " + app.last_error)
 	app.set_camera_origin(Vector2(-1, -1))
 	expect(Vector2i(-1, -1) in app.visible_chunks(), "Negative cells used truncation instead of floor chunk coordinates")

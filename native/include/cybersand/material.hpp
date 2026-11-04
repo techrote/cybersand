@@ -146,6 +146,13 @@ enum class Material : std::uint8_t {
     SolarPanel = 129,
     CarbonFibre = 130,
     HeatShieldTile = 131,
+    // PAIR-CURE-001: physical form is separate from chemical identity.
+    StoneWall = 132,
+    SaltWall = 133,
+    CoalWall = 134,
+    DryBinder = 135,
+    ActivatedBinder = 136,
+    BinderCrust = 137,
 };
 
 enum class MaterialState : std::uint8_t {
@@ -185,6 +192,7 @@ enum class RuleKernel : std::uint8_t {
     Spark,
     MoltenGlass,
     Foam,
+    FiniteBinder,
 };
 
 // Density exchange is directional and opt-in. A falling material may displace
@@ -227,7 +235,7 @@ struct MaterialDefinition {
     std::uint8_t viscosity_index;
 };
 
-inline constexpr std::array<MaterialDefinition, 132> kMaterialDefinitions{{
+inline constexpr std::array<MaterialDefinition, 138> kMaterialDefinitions{{
     {"empty", MaterialState::Empty, 0, {8, 11, 18, 255}, false, true, true,
      RuleKernel::None, 0, 0, 0, DensityMotion::None, false, LateralFlowMode::None, 0},
     {"wall", MaterialState::Solid, 65'535, {82, 91, 106, 255}, false, true, true,
@@ -502,7 +510,49 @@ inline constexpr std::array<MaterialDefinition, 132> kMaterialDefinitions{{
      RuleKernel::None, 0, 0, 0, DensityMotion::None, false, LateralFlowMode::None, 0},
     {"heat-shield-tile", MaterialState::Solid, 300, {26, 26, 29, 255}, false, true, true,
      RuleKernel::None, 0, 0, 0, DensityMotion::None, false, LateralFlowMode::None, 0},
+    {"stone-wall", MaterialState::Solid, 2'400, {126, 126, 132, 255}, false, true, true,
+     RuleKernel::Stone, 0, 0, 1, DensityMotion::None, false, LateralFlowMode::None, 0},
+    {"salt-wall", MaterialState::Solid, 2'160, {236, 232, 218, 255}, false, true, true,
+     RuleKernel::Sand, 0, 0, 1, DensityMotion::None, false, LateralFlowMode::None, 0},
+    {"coal-wall", MaterialState::Solid, 1'300, {43, 41, 45, 255}, false, true, true,
+     RuleKernel::Coal, 0, 0, 1, DensityMotion::None, false, LateralFlowMode::None, 0},
+    {"dry-binder", MaterialState::Powder, 1'600, {188, 174, 143, 255}, true, true, true,
+     RuleKernel::FiniteBinder, 0, 0, 1, DensityMotion::Down, true, LateralFlowMode::None, 0},
+    {"activated-binder", MaterialState::Powder, 1'800, {117, 105, 83, 255}, true, true, true,
+     RuleKernel::FiniteBinder, 180, 0, 1, DensityMotion::Down, true, LateralFlowMode::None, 0},
+    {"binder-crust", MaterialState::Solid, 2'000, {162, 156, 139, 255}, false, true, true,
+     RuleKernel::None, 0, 0, 0, DensityMotion::None, false, LateralFlowMode::None, 0},
 }};
+
+// This bounded mapping owns only the admitted chemical form relationship.
+// Movement, density exchange, hard collision and kernel dispatch use the real
+// descriptor, never this parent. Unpaired materials preserve their identity.
+[[nodiscard]] constexpr Material chemical_parent(Material material) noexcept {
+    switch (material) {
+        case Material::StoneWall: return Material::Stone;
+        case Material::SaltWall: return Material::Salt;
+        case Material::CoalWall: return Material::Coal;
+        default: return material;
+    }
+}
+
+[[nodiscard]] constexpr bool is_paired_wall(Material material) noexcept {
+    return material == Material::StoneWall || material == Material::SaltWall ||
+           material == Material::CoalWall;
+}
+
+[[nodiscard]] constexpr Material loose_counterpart(Material material) noexcept {
+    return chemical_parent(material);
+}
+
+[[nodiscard]] constexpr Material wall_counterpart(Material material) noexcept {
+    switch (chemical_parent(material)) {
+        case Material::Stone: return Material::StoneWall;
+        case Material::Salt: return Material::SaltWall;
+        case Material::Coal: return Material::CoalWall;
+        default: return material;
+    }
+}
 
 [[nodiscard]] constexpr const MaterialDefinition& material_definition(Material material) noexcept {
     const auto index = static_cast<std::size_t>(material);
@@ -514,7 +564,8 @@ inline constexpr std::array<MaterialDefinition, 132> kMaterialDefinitions{{
 }
 
 inline constexpr Material kFirstBuildingMaterial = Material::PinePlanks;
-inline constexpr Material kLastMaterial = Material::HeatShieldTile;
+inline constexpr Material kLastBuildingMaterial = Material::HeatShieldTile;
+inline constexpr Material kLastMaterial = Material::BinderCrust;
 static_assert(static_cast<std::size_t>(kLastMaterial) + 1U == kMaterialDefinitions.size());
 
 static_assert(sizeof(Material) == 1, "material identifiers must remain byte-sized");

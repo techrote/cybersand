@@ -24,9 +24,26 @@ import run_palette_shader_qualification as runner
 
 HASHES = {'full_crossfade': 'a' * 64, 'angle_bounded_crossfade': 'b' * 64}
 # Original canonical CPU bytes, independently retained from 19ddd366's unchanged
-# factory. Compression keeps the registered 8,192-byte golden input compact.
-CANONICAL_PROGRAM = zlib.decompress(base64.b64decode(
+# factory. Keep the v3 golden input unchanged, then author only v4's six rows.
+LEGACY_CANONICAL_PROGRAM = zlib.decompress(base64.b64decode(
     'eNrtmL9v00AUx2/OzFAkdEohQW6jVDiOU/+4S6+oEFoaknTOwHQzcyYvzJ0tFiR2zx6tm++PIHPn7jzHThWjyI9ihJA4v8XWR9/zu2/ee7mEkIeLPcT+ax9n9bw9r+ditr2j/c+h8i0mTyq8oucQuV7Zyk5O5YnyxQKefGUTRrsx6B2e83wN50x6SS+awfNQvlQ+7To+YYvy/dTWrOUkL8jF7vqU043eCZ1QinSkjrJZff4Zsj/Mv+8LhGPri2b+t2/ArQHtSq/wxyp57qB+RQ+jK8KW4b0nPUIOnoEzvOTj+EKfEyZukPwQ/hXJ7yPiT7TLA+Vzlo4q+vmfqs/f9Hde1N+nsv7k1t8B4XLQeQ533jrIK44exi5hccnTUezqQI/byP7F9e7+73zrsf5dNqw/6L8E+g5yJ/IY8i/6b6CZcx6fkSFB9NGUsEmYnILmOPaVP9noaR8cEdCz/Ur/edCXTLkV/bzZfGrMRUOOrf8a5WwF9XX3U33BROSJc9CB+caejFbWbUC79x5htyW3hprr4ZcOeYOs/xbhE4S/Q/j7hvqGPML0l80+P6y/yBUyHxfNOOZvhPl//Yj5s299hGcIJ9NmXFS4VX6/tXqtHu2nIz2Mpuh8qs8fy+8Dkh/CowpPIXK+DJch7TtiPc4q/BvElkci6Wm2nxfnG5gJR1W+gticr1zlar4ePxVkVj9fsoXh/zmv7w/DDTe85Plc3pxv7Twk/E79u+/nAQ+K87kcKNthsf+v+4f+/2C44YYbbrjhhhtuuOGGG2644Yb/Av8BLU5WzA=='))
+
+
+def paired_program_fixture():
+    # Independently registered Godot4.7 RGBAH CPU bytes for only rows132..137.
+    # Preserve their actual half precision instead of re-rounding decimal
+    # authoring literals through NumPy's different float-to-half conversion.
+    rows = bytes.fromhex(
+        '00000000000000000000003c003c003c003c003c00000000000000000000003c'
+        '00000000000000000000003c003c003c003c003c00000000000000000000003c'
+        '003c0034662670391e253339003c663c003c003c00006632003d66322422003c'
+        '00000000000000000000003c003c003c003c003c000000000000000000002050'
+        '99395c39a33899350000a539cc3cb83a003c003c000000000000000000002050'
+        '00000000000000000000003c003c003c003c003c000000000000000000008049')
+    return LEGACY_CANONICAL_PROGRAM[:132 * 32] + rows + LEGACY_CANONICAL_PROGRAM[138 * 32:]
+
+
+CANONICAL_PROGRAM = paired_program_fixture()
 
 
 def shader(variant='angle_bounded_crossfade'):
@@ -89,7 +106,7 @@ def program_inputs(directory):
 
 def oracle(directory):
     result = {'fixture': c.ORACLE_VERSION, 'assertions': c.ORACLE_ASSERTIONS, 'failures': 0, 'backend': 'opengl3',
-              'conditions': [0, 128, 255], 'blends': [0, .5, 1], 'material_slots': 132,
+              'conditions': [0, 128, 255], 'blends': [0, .5, 1], 'material_slots': 138,
               'tolerance': c.TOLERANCE, 'shader': shader(), 'rows': [], 'oracle_inputs': [],
               'draw_timings': [{'requested_usec': 10 + i * 2, 'readback_usec': 11 + i * 2} for i in range(24)]}
     for condition in result['conditions']:
@@ -101,7 +118,7 @@ def oracle(directory):
         for blend in result['blends']:
             values = (reference * (1 - blend) + current * blend).astype('<f2').astype(float)
             panned = np.roll(values, (-2, -3), (0, 1))
-            result['rows'].append({'condition': condition, 'blend': blend, 'material_slots': 132,
+            result['rows'].append({'condition': condition, 'blend': blend, 'material_slots': 138,
                 'capture': capture(directory, f'actual-{condition}-{blend}', values),
                 'pan_capture': capture(directory, f'pan-{condition}-{blend}', panned),
                 'max_rgba_difference': 0.0, 'camera_pan_difference': 0.0})
@@ -138,6 +155,159 @@ def host_paths(platform):
     return {'source_root': r'C:\source', 'project_root': r'C:\source\godot',
             'launcher': r'C:\engine\Godot_v4.7-stable_win64_console.exe',
             'engine': r'C:\engine\Godot_v4.7-stable_win64.exe'}
+
+
+def material_capture(directory, label, values):
+    """Synthetic RGBA8 reader control; never an actual rendered result."""
+    raw = directory / (label + '.raw'); png = directory / (label + '.png')
+    data = values.astype('u1')
+    raw.write_bytes(data.tobytes())
+    Image.fromarray(data).save(png)
+    return {'label': label, 'raw': raw.name, 'png': png.name, 'raw_sha256': c.sha(raw),
+            'png_sha256': c.sha(png), 'size': [data.shape[1], data.shape[0]], 'format': 5}
+
+
+def material_atlas(directory, context, catalogue_sha256):
+    width, height = c.MATERIAL_SWATCH_SIZE
+    rows = (c.MATERIAL_SLOTS + c.MATERIAL_ATLAS_COLUMNS - 1) // c.MATERIAL_ATLAS_COLUMNS
+    values = np.zeros((height * rows, width * c.MATERIAL_ATLAS_COLUMNS, 4), dtype='u1')
+    for material_id in range(c.MATERIAL_SLOTS):
+        x, y = material_id % c.MATERIAL_ATLAS_COLUMNS * width, material_id // c.MATERIAL_ATLAS_COLUMNS * height
+        colour = ((255, 0, 255, 255) if material_id == 10 else
+                  (0, 0, 0, 255) if material_id == 0 else (material_id, 100, 30, 255))
+        values[y:y + height, x:x + width] = colour
+    controls = []
+    for material_id in (10, c.MATERIAL_SLOTS, 255):
+        control = np.full((height, width, 4), (255, 0, 255, 255), dtype='u1')
+        controls.append({'material_id': material_id,
+                         'capture': material_capture(directory, f'material-invalid-id-{material_id:03d}', control)})
+    return {'schema': 'material-presentation-atlas-v1', 'context': copy.deepcopy(context),
+            'catalogue': {'path': 'res://scripts/cell_world.gd', 'sha256': catalogue_sha256},
+            'first_material': 0, 'last_material': c.MATERIAL_SLOTS - 1, 'material_slots': c.MATERIAL_SLOTS,
+            'slot_ids': list(range(c.MATERIAL_SLOTS)), 'columns': c.MATERIAL_ATLAS_COLUMNS,
+            'swatch_size': list(c.MATERIAL_SWATCH_SIZE),
+            'capture': material_capture(directory, f'material-id-slots-000-{c.MATERIAL_SLOTS - 1:03d}', values),
+            'invalid_controls': controls}
+
+
+class MaterialAtlasReadback(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.directory = Path(self.temp.name)
+        self.captures = self.directory / 'captures'; self.captures.mkdir()
+        self.context, _, self.report, self.row = context_fixture()
+        self.case = c.plan('linux', 'visual')[2]
+        self.context['fixture'] = 'res://tests/' + self.case['script']
+        self.context['shader'] = shader('full_crossfade')
+        self.report['source_inputs'] = {'godot/tests/' + self.case['script']: 'd' * 64,
+                                        'godot/scripts/cell_world.gd': 'a' * 64}
+        self.row['process'].update(status='passed', returncode=0, natural_completion=True,
+            execution_policy=c.policy.identity(), timeout_seconds=self.case['timeout'], seconds=1,
+            requires_display=True, command=c.expected_command(self.case, self.report),
+            name=self.case['name'], log=self.case['name'] + '.log', role='source-bound shader qualification')
+        self.result = material_atlas(self.captures, self.context, 'a' * 64)
+
+    def check(self, *, receipt=None, extra_log=''):
+        log = (c.CONTEXT + json.dumps(self.context) + '\n'
+               + c.MATERIAL_ATLAS_RESULT + json.dumps(self.result) + '\n'
+               + f'MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, all {c.MATERIAL_SLOTS} ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks)\n'
+               + extra_log)
+        log_path = self.directory / self.row['process']['log']; log_path.write_text(log)
+        self.row['log_sha256'] = c.sha(log_path)
+        c.write(self.directory / 'process.json', self.row['process'])
+        c.write(self.captures / 'material-atlas.json', self.result if receipt is None else receipt)
+        return c.verify_case(self.case, self.row, self.directory, self.report)
+
+    def atlas_values(self):
+        with Image.open(self.captures / self.result['capture']['png']) as image:
+            return np.array(image.convert('RGBA'))
+
+    def replace_atlas(self, values):
+        self.result['capture'] = material_capture(self.captures, self.result['capture']['label'], values)
+
+    def test_complete_current_atlas_passes_the_full_case_reader(self):
+        result = self.check()['reduced']
+        self.assertEqual(result['material_slots'], 138)
+        self.assertEqual(result['atlas_png'], 'material-id-slots-000-137.png')
+        self.assertEqual(result['size'], [576, 288])
+        self.assertEqual(result['invalid_controls'], [10, 138, 255])
+
+    def test_wrong_filename_and_legacy_only_atlas_refuse(self):
+        current = self.captures / self.result['capture']['png']
+        current.rename(self.captures / 'material-id-slots-000-131.png')
+        with self.assertRaisesRegex(ValueError, 'Missing shader artifact'): self.check()
+        self.result['capture']['png'] = 'material-id-slots-000-131.png'
+        with self.assertRaisesRegex(ValueError, 'capture identity'): self.check()
+
+    def test_incomplete_and_duplicate_slot_inventories_refuse(self):
+        original = copy.deepcopy(self.result)
+        for key, value in [('material_slots', 132), ('last_material', 131), ('first_material', 1),
+                           ('slot_ids', list(range(132))), ('slot_ids', list(range(137)) + [136]),
+                           ('slot_ids', [False] + list(range(1, c.MATERIAL_SLOTS)))]:
+            self.result = copy.deepcopy(original); self.result[key] = value
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'slot inventory'): self.check()
+
+    def test_cropped_legacy_dimensions_and_missing_appended_pixels_refuse(self):
+        values = self.atlas_values()
+        self.replace_atlas(values[:264])
+        with self.assertRaisesRegex(ValueError, 'size differs'): self.check()
+        self.replace_atlas(values)
+        width, height = c.MATERIAL_SWATCH_SIZE
+        for material_id in range(132, c.MATERIAL_SLOTS):
+            changed = values.copy()
+            x, y = material_id % c.MATERIAL_ATLAS_COLUMNS * width, material_id // c.MATERIAL_ATLAS_COLUMNS * height
+            changed[y:y + height, x:x + width] = values[:height, :width]
+            self.replace_atlas(changed)
+            with self.subTest(material_id=material_id), self.assertRaisesRegex(ValueError, 'rendered as Empty'): self.check()
+
+    def test_malformed_identity_and_old_invocation_cannot_qualify_fresh_output(self):
+        original = copy.deepcopy(self.result)
+        for key, value in [('source_revision', '0' * 40), ('nonce', '0' * 32), ('process_id', True),
+                           ('fixture', 'res://tests/wrong.gd'), ('fixture_sha256', '0' * 64),
+                           ('engine_sha256', '0' * 64), ('context', None)]:
+            self.result = copy.deepcopy(original)
+            if key == 'context': self.result['context'] = value
+            else: self.result['context'][key] = value
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'source/process/nonce'): self.check()
+        for catalogue in ({}, {'path': 'res://scripts/wrong.gd', 'sha256': 'a' * 64},
+                          {'path': 'res://scripts/cell_world.gd', 'sha256': 'old-source'},
+                          {'path': 'res://scripts/cell_world.gd', 'sha256': '0' * 64}):
+            self.result = copy.deepcopy(original); self.result['catalogue'] = catalogue
+            with self.subTest(catalogue=catalogue), self.assertRaisesRegex(ValueError, 'catalogue identity'): self.check()
+
+    def test_missing_stale_or_changed_pixels_refuse(self):
+        capture = self.result['capture']; path = self.captures / capture['png']
+        original = path.read_bytes(); path.unlink()
+        with self.assertRaisesRegex(ValueError, 'Missing shader artifact'): self.check()
+        Image.new('RGBA', (576, 288), (0, 0, 0, 255)).save(path)
+        with self.assertRaisesRegex(ValueError, 'digest differs'): self.check()
+        path.write_bytes(original)
+        raw = self.captures / capture['raw']; original_raw = raw.read_bytes()
+        raw.write_bytes(original_raw[:-4]); capture['raw_sha256'] = c.sha(raw)
+        with self.assertRaisesRegex(ValueError, 'byte count differs'): self.check()
+
+    def test_invalid_controls_and_reserved_slot_are_required(self):
+        original = copy.deepcopy(self.result)
+        self.result['invalid_controls'].pop()
+        with self.assertRaisesRegex(ValueError, 'control inventory'): self.check()
+        self.result = copy.deepcopy(original)
+        values = np.full((24, 48, 4), (0, 0, 0, 255), dtype='u1')
+        self.result['invalid_controls'][1]['capture'] = material_capture(self.captures, 'material-invalid-id-138', values)
+        with self.assertRaisesRegex(ValueError, 'lost its magenta fallback'): self.check()
+        self.result = copy.deepcopy(original)
+        values[:] = (255, 0, 255, 255)
+        material_capture(self.captures, 'material-invalid-id-138', values)
+        atlas = self.atlas_values(); atlas[:24, 480:528] = (0, 0, 0, 255)
+        self.replace_atlas(atlas)
+        with self.assertRaisesRegex(ValueError, 'reserved slot differs'): self.check()
+
+    def test_duplicate_or_mismatched_receipt_and_retained_growth_failure_refuse(self):
+        with self.assertRaisesRegex(ValueError, 'duplicate completion packet'):
+            self.check(extra_log=c.MATERIAL_ATLAS_RESULT + json.dumps(self.result) + '\n')
+        changed = copy.deepcopy(self.result); changed['last_material'] = 131
+        with self.assertRaisesRegex(ValueError, 'receipt differs'): self.check(receipt=changed)
+        with self.assertRaisesRegex(ValueError, 'error or skip'):
+            self.check(extra_log='ERROR: growth decor moved with the camera\n')
 
 
 class InventoryAndIdentity(unittest.TestCase):
@@ -304,7 +474,18 @@ class PixelReadback(unittest.TestCase):
 
     def test_complete_independent_half_precision_oracle_passes(self):
         value = self.check()
-        self.assertEqual((value['frames'], value['material_slots'], value['retained_images']), (9, 132, 24))
+        self.assertEqual((value['frames'], value['material_slots'], value['retained_images']), (9, 138, 24))
+
+    def test_paired_registration_appends_only_six_program_rows(self):
+        self.assertEqual(c.ORACLE_VERSION, 'palette-bounded-crossfade-v4-paired')
+        self.assertEqual(hashlib.sha256(LEGACY_CANONICAL_PROGRAM).hexdigest(), c.LEGACY_PROGRAM_SHA256)
+        self.assertEqual(hashlib.sha256(CANONICAL_PROGRAM).hexdigest(), c.PROGRAM_SHA256)
+        old = np.frombuffer(LEGACY_CANONICAL_PROGRAM, '<f2').reshape(256, 4, 4)
+        current = np.frombuffer(CANONICAL_PROGRAM, '<f2').reshape(256, 4, 4)
+        np.testing.assert_array_equal(old[:132], current[:132])
+        np.testing.assert_array_equal(old[138:], current[138:])
+        restored = current.copy(); restored[132:138] = current[138]
+        self.assertEqual(hashlib.sha256(restored.tobytes()).hexdigest(), c.LEGACY_PROGRAM_SHA256)
 
     def test_registered_cpu_program_has_positive_outgoing_conditions(self):
         zero, full = c.reference_pixels(0), c.reference_pixels(255)
@@ -349,7 +530,9 @@ class PixelReadback(unittest.TestCase):
         with self.assertRaises(ValueError): self.check()
 
     def test_wrong_shader_or_assertion_receipt_refuses(self):
-        for key, value in [('failures', True), ('assertions', 1215), ('tolerance', .1), ('fixture', 'v1')]:
+        for key, value in [('failures', True), ('assertions', 1215), ('assertions', 1274),
+                           ('material_slots', 132), ('tolerance', .1), ('fixture', 'v1'),
+                           ('fixture', 'palette-bounded-crossfade-v3')]:
             original = copy.deepcopy(self.result); self.result[key] = value
             with self.subTest(key=key), self.assertRaises(ValueError): self.check()
             self.result = original
@@ -375,7 +558,7 @@ class PixelReadback(unittest.TestCase):
 
     def test_actual_gpu_hdr_input_and_rendered_clamped_negative_are_independent(self):
         value = self.check()['program_inputs']
-        self.assertEqual(value['canonical_sha256'], '6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d')
+        self.assertEqual(value['canonical_sha256'], 'b79199e249748dfbdf23bbd113daa6f36f3e7be870ff41baf76c9273829edc10')
         self.assertEqual((value['scalars_per_probe'], value['retained_probe_images'], value['production_bindings']), (4096, 2, 21))
         self.assertEqual((value['sand_rejection_error'], value['water_rejection_error']), (.5, .4375))
 

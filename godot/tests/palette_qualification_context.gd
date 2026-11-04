@@ -21,8 +21,8 @@ static func identity(fixture: String, shader: Shader = null) -> Dictionary:
 static func emit(fixture: String, shader: Shader = null) -> void:
 	print("PALETTE_QUALIFICATION_CONTEXT ", JSON.stringify(identity(fixture, shader)))
 
-static func capture(image: Image, label: String) -> Dictionary:
-	var folder: String = OS.get_environment("CYBERSAND_SHADER_CAPTURE")
+static func capture(image: Image, label: String, folder: String = "") -> Dictionary:
+	if folder.is_empty(): folder = OS.get_environment("CYBERSAND_SHADER_CAPTURE")
 	if folder.is_empty(): folder = OS.get_environment("CYBERSAND_PALETTE_CROSSFADE_OUTPUT")
 	if folder.is_empty(): return {}
 	if DirAccess.make_dir_recursive_absolute(folder) != OK: return {"error":"capture directory"}

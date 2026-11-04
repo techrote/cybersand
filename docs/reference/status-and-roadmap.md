@@ -10,6 +10,36 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Paired-material audit repairs — 2026-11-04
+
+[PR358's bounded remediation](../audits/2026-11-04-paired-materials-remediation.md)
+preserves the cohesive paired-wall and finite-curing feature. It reconciles
+accepted main `0fd4af59`, corrects the complete 138-slot atlas receipt, separates
+public material authoring from internal Activated Binder, and independently
+bounds tray diagnostic readbacks. New finite tests cover actual curing workers,
+complete same-model state/quantity parity, interest-region re-entry and genuine
+newly cured Crust collision. These are source-qualified implementation and
+targeted-test claims; the live remediation ledger owns combined-source CI.
+
+The later documentation-only main `3da7e7be` adopts #357 as Planned and is
+reconciled separately without changing executable inputs. Actual two-host
+replacement run41750280037 passes at repaired source `077f9c52`, including
+leak-enabled native checks and Linux material pixels. Its evidence keeps that
+source identity; consult the live PR ledger for the later resulting-head gates.
+
+The original 531-file archive remains unrecovered. New replacement evidence is
+labelled separately from the authenticated independent audit's 38,019 checks
+and 3,020 baseline observations. Bound-Water destruction is a separate sink;
+the free-Water ledger does not automatically account for it. Before integration,
+the owner must decide whether schema1 physical-checkpoint refusal is acceptable
+or explicitly commission migration. No migration is implemented. PR370 owns its
+new-ID observer correction before any combined-source qualification.
+
+The [owner playtest packet](../operations/paired-materials-owner-playtest.md)
+starts entirely UNTESTED. Full applicable CI, independent review, historical
+shader-failure disposition and final gameplay acceptance remain separate gates.
+The PR stays draft and unmerged; this continuation authorizes no automatic merge.
+
 ## Material authoring Planned adoption — 2026-11-04
 
 The [corrected MAT-AUTH architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
@@ -1817,3 +1847,24 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+## Paired materials and finite curing — 2026-11-03
+
+**Current experimental branch source:** [PAIR-CURE-001](../systems/paired-materials-and-curing.md)
+starts from fresh main89020b9e, preserving the accepted stopped-PLAY recovery and
+rendering paths. Six IDs132..137 provide Stone/Salt/Coal wall forms plus a finite
+Water-activated binder/crust family. Old material identity and Cement behavior
+remain unchanged. Chemistry stays native and hard support remains Rapier-owned;
+no sleep, friction/load law or ordinary actor-mass retuning is included.
+
+The [registered scope](../operations/paired-materials-registration.md) includes
+full/no-overfill Water admission, retained bound quantity/countdown, explicit
+quantity schema2, source-matched Windows/Linux libraries and a desktop shell
+destruction lab. Existing unmerged flyer/GCR PR351 stays separate. New-material
+source availability does not establish runtime qualification, owner acceptance
+or REM-004 completion. The focused implementation PR stays unmerged.
+
+**Deferred:** general structural fracture/detachment, spent-binder recycling,
+optional resin/hardener and any automatic wall destruction from actor control
+forces. Finite activation does not adopt existing Cement's Concrete-neighbor
+curing as a self-propagating mechanism.

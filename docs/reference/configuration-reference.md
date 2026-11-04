@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-03
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1241,3 +1241,34 @@ memory/work limits. A conservative maximum local candidate charge bounds each
 raster sample. Real geometry/mask checks and canonical ordering still select
 materials. Measured index checks and local chunk durations are distinct from
 these declared logical charges.
+
+## Paired materials and finite curing — 2026-11-03
+
+**Current experimental branch source:** [PAIR-CURE-001](../systems/paired-materials-and-curing.md)
+uses immutable material authoring, not global actor or powder-response tuning.
+The committed [registration](../operations/paired-materials-registration.md) and
+[protocol](../audits/paired-materials-2026-11-03/protocol.json) freeze the bounded
+feature; source-matched runtime checks and owner gameplay acceptance are separate.
+
+| Setting or capacity | Current value and interpretation |
+|---|---|
+| Catalogue extent |138 slots, IDs0..137, invalid10; prior IDs0..131 unchanged |
+| Paired walls | Stone132→Stone13, Salt133→Salt23, Coal134→Coal27; hard, immobile and non-granular |
+| Binder forms | Dry135 / Activated136 / Crust137; densities1600 /1800 /2000 |
+| Hard capability | Retained range38..131 plus explicit prior hard IDs; add132/133/134/137 only |
+| Binder granular capability | Dry135 and Activated136 support granular load; crust137 does not |
+| Local activation budget | At most8 Moore probes and one full normalized Water cell per eligible Dry Binder update; radius1, at most2 activation writes |
+| Water admission | Selected3..8-bit maximum7..255 and zero pressure overfill; partial/overfilled Water refuses unchanged |
+| Cure state | Activated stateA180 countdown, stateB consumed quantity; zero-bound activation cannot create crust |
+| Cure propagation | No activation from Air/Concrete/crust/activated neighbors; fresh supplied Water is required |
+| Interaction/quantity identity | Profile3, old56 pair entries;20 specialized/kernel entries and nested quantity schema2 |
+| Save boundary | Existing CYSD1 five-byte cells retain ID/A/B/temperature; old/unknown nested physical quantity schemas refuse |
+| Lab | Desktop-native992×480 view; Vector Rush or Barrel Rocket; Stone/Salt/Coal family selector rebuilds room |
+| Lab authoring | Known44×4 roof removal; at most16 empty/unmasked full Water dose cells; bounded tray-only free Water removal; painting radius1..24 |
+
+The Fire/Water/Acid palette uses ordinary native reactions. Painting, dosing and
+breaching intentionally add/remove cells and are labeled external edits. The
+lab uses current-main synchronous hard-terrain ownership, without importing the
+unmerged GCR-LA/flyer/rest stack. Existing Cement, actor mass/control laws, sleep
+and production defaults are unchanged. Fallback rejects native-only IDs132+; the
+lab also refuses Web, stale native profile/catalogue and fallback execution.

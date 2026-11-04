@@ -9,6 +9,7 @@ const Identity = preload("res://scripts/microscenario_identity.gd")
 const Characterisation = preload("res://scripts/physics_characterisation.gd")
 const Effects = preload("res://scripts/actor_rig_effects.gd")
 const Rig = preload("res://scripts/actor_rig_motor.gd")
+const CATALOGUE_SIZE: int = Cell.LAST_MATERIAL + 1
 
 var assertions: int = 0
 var failures: int = 0
@@ -46,14 +47,14 @@ func _run() -> void:
 
 
 func _test_metadata() -> void:
-	_expect(Cell.FIRST_BUILDING_MATERIAL == 81 and Cell.LAST_MATERIAL == 131,
+	_expect(Cell.FIRST_BUILDING_MATERIAL == 81 and Cell.LAST_BUILDING_MATERIAL == 131 and Cell.LAST_MATERIAL == 137,
 		"authored building catalogue range changed")
-	_expect(int(Identity.current().material_catalogue.count) == 132,
+	_expect(int(Identity.current().material_catalogue.count) == CATALOGUE_SIZE,
 		"MicroScenario evidence advertises the old material catalogue")
 	for id: int in range(81, 132):
 		_expect(Codec.validate_metadata(_metadata(id)).is_empty(),
 			"save metadata rejects selected building material %d" % id)
-	for invalid: Variant in [-1, 0, 10, 132, 255, 65536, 131.5, INF, NAN, "131", true]:
+	for invalid: Variant in [-1, 0, 10, CATALOGUE_SIZE, 255, 65536, 131.5, INF, NAN, "131", true]:
 		_expect(not Codec.validate_metadata(_metadata(invalid)).is_empty(),
 			"save metadata accepted invalid selected material %s" % str(invalid))
 
@@ -87,12 +88,12 @@ func _test_native_construction_and_save() -> void:
 		"old material constructor control failed")
 	_expect(bridge.import_level(world, decoded.world), "native restore rejects building IDs")
 	_expect(bridge.export_level(world) == original, "building restore is not byte exact")
-	for invalid: int in [10, 132, 255]:
+	for invalid: int in [10, CATALOGUE_SIZE, 255]:
 		var corrupt: PackedByteArray = original.duplicate()
 		corrupt[0] = invalid
 		_expect(not bridge.import_level(world, corrupt), "native import accepts material %d" % invalid)
 		_expect(bridge.export_level(world) == original, "rejected import mutated the active level")
-	for invalid: int in [-1, 10, 132, 65536, 2147483647]:
+	for invalid: int in [-1, 10, CATALOGUE_SIZE, 65536, 2147483647]:
 		_expect(not bridge.build_world(world, PackedInt32Array([16, 48, 1, 1, invalid])),
 			"native constructor accepts material %d" % invalid)
 		_expect(bridge.export_level(world) == original, "rejected constructor mutated the active level")
@@ -105,11 +106,11 @@ func _test_diagnostics() -> void:
 		_expect(world.diagnostic_fill_rect(Vector2i(16 + id - 81, 48), Vector2i.ONE, id),
 			"diagnostic constructor rejects material %d" % id)
 	var snapshot: Dictionary = world.diagnostic_snapshot(Vector2i(16, 48), Vector2i(51, 1))
-	_expect(snapshot.counts.size() == 132, "native diagnostic count extent differs from catalogue")
+	_expect(snapshot.counts.size() == CATALOGUE_SIZE, "native diagnostic count extent differs from catalogue")
 	for id: int in range(81, 132):
 		_expect(int(snapshot.counts[id]) == 1, "native histogram loses material %d" % id)
 	var before: String = str(snapshot.hash)
-	for invalid: int in [-1, 10, 132, 65536, 4294967296]:
+	for invalid: int in [-1, 10, CATALOGUE_SIZE, 65536, 4294967296]:
 		_expect(not world.diagnostic_fill_rect(Vector2i(16, 48), Vector2i.ONE, invalid),
 			"diagnostics accept invalid or narrowing-wrapped ID %d" % invalid)
 	_expect(str(world.diagnostic_snapshot(Vector2i(16, 48), Vector2i(51, 1)).hash) == before,
@@ -129,11 +130,11 @@ func _test_diagnostics() -> void:
 	_expect(metrics.size() == 1, "missing body diagnostic row")
 	if metrics.size() == 1:
 		var faces: Array = metrics[0][16]
-		_expect(faces.size() == 4 * 132, "face histogram has the wrong catalogue stride")
-		if faces.size() == 4 * 132:
+		_expect(faces.size() == 4 * CATALOGUE_SIZE, "face histogram has the wrong catalogue stride")
+		if faces.size() == 4 * CATALOGUE_SIZE:
 			for index: int in range(faces.size()):
-				var face: int = index / 132
-				var expected: int = 1 if index % 132 == materials[face] else 0
+				var face: int = index / CATALOGUE_SIZE
+				var expected: int = 1 if index % CATALOGUE_SIZE == materials[face] else 0
 				_expect(int(faces[index]) == expected,
 					"face/material histogram misattributes bin %d" % index)
 
@@ -144,9 +145,9 @@ func _test_fallback_and_tools() -> void:
 	for id: int in range(81, 132):
 		world.set_cell(16 + id - 81, 48, id)
 	var sampled: Dictionary = Characterisation.sample(world, Vector2i(16, 48), Vector2i(51, 1), false)
-	_expect(sampled.has("counts") and sampled.counts.size() == 132,
+	_expect(sampled.has("counts") and sampled.counts.size() == CATALOGUE_SIZE,
 		"fallback diagnostic histogram does not cover the building catalogue")
-	if sampled.has("counts") and sampled.counts.size() == 132:
+	if sampled.has("counts") and sampled.counts.size() == CATALOGUE_SIZE:
 		for id: int in range(81, 132):
 			_expect(int(sampled.counts[id]) == 1, "fallback histogram loses material %d" % id)
 	var effects = Effects.new()

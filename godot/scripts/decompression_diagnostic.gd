@@ -263,13 +263,7 @@ func begin(world: Object, source: Dictionary, openings: Array) -> bool:
 
 
 func _is_hard_surface(material_id: int) -> bool:
-	if material_id >= CyberCellWorld.LIMESTONE_BLOCK and material_id <= CyberCellWorld.LAST_MATERIAL:
-		return true
-	match material_id:
-		CyberCellWorld.WALL, CyberCellWorld.CLONER, CyberCellWorld.WOOD, CyberCellWorld.ICE, CyberCellWorld.METAL, CyberCellWorld.CONCRETE, CyberCellWorld.GLASS:
-			return true
-		_:
-			return false
+	return CyberCellWorld.is_hard_material(material_id)
 
 
 func _is_loose(material_id: int) -> bool:

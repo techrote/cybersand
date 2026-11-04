@@ -2,7 +2,7 @@
   "schema": "lcb-scenario-registry-v1",
   "status": "LCB-003 preparation. Only arms with status starting 'measured' have executed; every blocked arm names its dependency.",
   "sources": {
-    "capability_matrix": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+    "capability_matrix": "0a48c6aa9398291be2541adef124e6eae2aa28ad00534c6927fe97098bf91783",
     "protected_manifest": "d5c922c39fe04a7981b7a14a6a6f2d14064674337e6afedb3acf3e83eb8553f3",
     "controls": "989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1",
     "ledger_v7": "b42012a672f468534efa9421beeca28d1ccea8ef1c1f2ce798d2cd80c336834d",

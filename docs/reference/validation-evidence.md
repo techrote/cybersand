@@ -10,6 +10,40 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Paired-material repair evidence boundary — 2026-11-04
+
+The [new remediation ledger](../audits/2026-11-04-paired-materials-remediation.md)
+distinguishes original custody, local repair runs and resulting-source hosted
+qualification. The separate independent-audit archive's 44 payload members were
+checked against its manifest and CRC: its 38,019 native checks and 3,020 identical
+baseline observations retain their original identities. This does not recover
+the missing original 531-file qualification archive.
+
+New focused native tests pass 55,937 checks, including actual multithreaded curing
+participation and complete state/quantity parity. The Linux host repair runs
+exercise newly cured Crust miss/hit/erase/miss and an unchanged neighboring
+collider; 300-callback idle, held, no-op and paused arms each make ten expensive
+reads before the five-second deadline. Individual logs retain launch-time input
+hashes and local deltas. They are not relabelled as executions of a later whole
+tree. The atlas reader's 44 positive/adversarial tests retain unchanged thresholds.
+
+The original local sanitizer process completed its native assertions but failed
+LeakSanitizer process inspection at teardown. Its failed exit and the separate
+address/undefined-behavior rerun must not become a leak-check pass. Hosted
+Windows, actual graphical readback and all full ready-head gates require their
+own completed results. The native-OpenGL growth-pan failure, six-pixel diagnostic
+and untested owner gameplay retain their original dispositions.
+
+Subsequent actual hosted replacement
+[run41750280037](https://github.com/techrote/cybersand/actions/runs/41750280037)
+passes both OSes at `077f9c52`: seven headless fixtures each, Linux55,937 native
+checks in normal and leak-enabled ASan/UBSan modes, and actual138-slot Linux
+material pixels. Separate source/evidence reviewers reproduce the original
+sealed artifact reductions. This new leak-enabled pass does not rewrite the
+failed local attempts. The later merge of documentation-only main `3da7e7be`
+keeps all executable/runtime inputs unchanged; its later head and required full
+CI are separate from this recorded cohort.
+
 ## MAT-AUTH documentation adoption boundary — 2026-11-04
 
 The [owner decision](https://github.com/techrote/cybersand/pull/357#issuecomment-6619407158)

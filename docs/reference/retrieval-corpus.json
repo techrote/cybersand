@@ -120,7 +120,11 @@
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md",
-    "operations/ci-execution-and-performance.md"
+    "operations/ci-execution-and-performance.md",
+    "systems/paired-materials-and-curing.md",
+    "operations/paired-materials-registration.md",
+    "operations/paired-wall-loose-materials-plan.md",
+    "operations/paired-materials-owner-playtest.md"
   ],
   "navigation": [
     "README.md",
@@ -133,6 +137,14 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "audits/2026-11-04-paired-materials-remediation.md",
+      "reason": "Dated PR358 repair registration and replacement-evidence custody, with unresolved owner/platform gates. Retrieve current behavior through paired-material and save contracts; registration is not acceptance."
+    },
+    {
+      "path": "audits/2026-11-03-paired-materials-and-finite-curing.md",
+      "reason": "Dated source-bound native/desktop implementation evidence with retained failures, inherited graphics and bounded-work investigation. Retrieve through the paired-material contract; no production, Web, rest or owner acceptance is inferred."
+    },
     {
       "path": "audits/2026-11-03-lcb-reassessment.md",
       "reason": "Dated #359 current-main source/evidence reassessment and bounded successor handovers. Retrieve through policy, IN, comparison, scenario, validation and onboarding contracts; historical performance/platform receipts retain exact source qualification."

@@ -1,0 +1,16 @@
+{
+  "registration":"PAIR-CURE-001/DEPTH-01",
+  "status":"Approved design",
+  "date":"2026-11-03",
+  "motion_law_change":false,
+  "descriptor":"Original Activated Binder1800/Powder/Down/exchange-enabled; existing native powder-to-powder exclusion remains owner",
+  "fixture":"Closed flat24-cell-deep Dry Binder bed with16 full Water cells above its center; fixture width declared in raw native control",
+  "ticks":360,
+  "workers":[1,4],
+  "families":["FreeMass","CellularYield"],
+  "maximum_crust_depth_cells_from_initial_surface":2,
+  "minimum_crust_cells":8,
+  "exact_checks":["free Water plus bound stateB each tick","binder parcel count","no bottom crust"],
+  "scope":"Additional surface-rim qualification; does not alter partial/overfilled Water refusal or permit agent-free propagation",
+  "merge_authorized":false
+}

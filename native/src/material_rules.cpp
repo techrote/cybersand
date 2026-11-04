@@ -55,7 +55,7 @@ bool MaterialRules::is_free_leveling_liquid(Material material) noexcept {
 bool MaterialRules::is_hard_surface(Material material) noexcept {
     const auto material_id = static_cast<std::uint8_t>(material);
     if (material_id >= static_cast<std::uint8_t>(Material::LimestoneBlock) &&
-        material_id <= static_cast<std::uint8_t>(kLastMaterial)) {
+        material_id <= static_cast<std::uint8_t>(kLastBuildingMaterial)) {
         return true;
     }
     switch (material) {
@@ -66,6 +66,10 @@ bool MaterialRules::is_hard_surface(Material material) noexcept {
         case Material::Metal:
         case Material::Concrete:
         case Material::Glass:
+        case Material::StoneWall:
+        case Material::SaltWall:
+        case Material::CoalWall:
+        case Material::BinderCrust:
             return true;
         default:
             return false;
@@ -79,6 +83,7 @@ bool MaterialRules::supports_granular_load(Material material) noexcept {
         case Material::Sand: case Material::Stone: case Material::Dust:
         case Material::Seed: case Material::Salt: case Material::Sodium:
         case Material::Gunpowder: case Material::Coal: case Material::Rust:
+        case Material::DryBinder: case Material::ActivatedBinder:
             return true;
         default: return false;
     }

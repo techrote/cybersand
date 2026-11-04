@@ -21,7 +21,7 @@ SetupDescriptor descriptor() { SetupDescriptor d; d.seed = 7; d.domain = {0,0,8,
 void save(const std::filesystem::path& directory, const char* name, const ReceiptEncoding& r,
           const NativeFacts& facts) {
     static constexpr std::pair<std::string_view,std::string_view> expected[] = {
-#include "liquid_run_receipt_vectors.inc"
+#include "liquid_run_receipt_vectors_v2.inc"
     };
     const auto found=std::find_if(std::begin(expected),std::end(expected),
         [name](const auto& value){return value.first==name;});

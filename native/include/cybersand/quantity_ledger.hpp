@@ -10,10 +10,10 @@ namespace cybersand {
 
 // Native accounting schema. Quantities use the World's Water mass quantum;
 // material populations are separate cell counts, never mass estimates.
-inline constexpr std::uint16_t kQuantityLedgerSchemaVersion = 1;
+inline constexpr std::uint16_t kQuantityLedgerSchemaVersion = 2;
 inline constexpr std::size_t kQuantityMaterialSlots = 256;
 inline constexpr std::size_t kQuantityPairRuleSlots = 56;
-inline constexpr std::size_t kQuantityKernelRuleSlots = 19;
+inline constexpr std::size_t kQuantityKernelRuleSlots = 20;
 using QuantityDigest = std::array<std::uint8_t, 32>;
 
 enum class QuantityKind : std::uint8_t {

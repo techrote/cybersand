@@ -95,7 +95,7 @@ inline constexpr std::array<RelativeCell, 8> kMooreNeighbours{{
     return material_definition(material).kernel == RuleKernel::Combustible ||
            material == Material::Plant ||
            material == Material::Fungus || material == Material::Oil ||
-           material == Material::Coal;
+           chemical_parent(material) == Material::Coal;
 }
 
 [[nodiscard]] constexpr bool is_timber(Material material) noexcept {
@@ -1704,6 +1704,7 @@ bool World::rule_is_active(Material material, std::uint16_t state_a_value,
         case RuleKernel::Spark:
         case RuleKernel::MoltenGlass:
         case RuleKernel::Foam:
+        case RuleKernel::FiniteBinder:
             return true;
     }
     return false;
@@ -3200,6 +3201,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                           effects);
     };
     const auto fall_as_powder = [this, material, x, y, direction, effects]() {
+        if (is_paired_wall(material)) return false;
         if (try_move(material, x, y, x, y + 1, true, effects)) return true;
         if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
         return try_move(material, x, y, x - direction, y + 1, true, effects);
@@ -3413,7 +3415,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 if (lifecycle_due && find_neighbour([](Material candidate, auto, auto) {
                         return is_hot(candidate);
                     })) {
-                    return write_kernel_cell(x, y, Material::Coal, state_a(x, y), 160,
+                    return write_kernel_cell(x, y, material, state_a(x, y), 160,
                                       effects);
                 }
                 return fall_as_powder();
@@ -3425,10 +3427,10 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (find_neighbour([](Material candidate, auto, auto) {
                     return candidate == Material::Water || candidate == Material::Brine;
                 })) {
-                return write_kernel_cell(x, y, Material::Coal, state_a(x, y), 0, effects);
+                return write_kernel_cell(x, y, material, state_a(x, y), 0, effects);
             }
             if (burn <= 1U) return write_kernel_cell(x, y, Material::Dust, 0, 0, effects);
-            bool changed = write_kernel_cell(x, y, Material::Coal, state_a(x, y),
+            bool changed = write_kernel_cell(x, y, material, state_a(x, y),
                                       static_cast<std::uint8_t>(burn - 1U), effects);
             if ((burn & 7U) == 0U) {
                 const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 121U));
@@ -3442,6 +3444,43 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 }
             }
             return changed;
+        }
+
+        case RuleKernel::FiniteBinder: {
+            if (material == Material::ActivatedBinder) {
+                const auto bound = state_b(x, y);
+                // The internal activated form cannot be painted/cloned without
+                // a recorded dose to manufacture free crust.
+                if (bound == 0U)
+                    return write_kernel_cell(x, y, Material::DryBinder, 0, 0, effects);
+                const auto remaining = state_a(x, y);
+                if (remaining <= 1U)
+                    return write_kernel_cell(x, y, Material::BinderCrust, 0, bound, effects);
+                const bool changed = write_kernel_cell(x, y, material,
+                    static_cast<std::uint16_t>(remaining - 1U), bound, effects);
+                return fall_as_powder() || changed;
+            }
+            // Fixed local work, with one consumed dose at most. This is a
+            // chemical conversion; Water transport and family state retirement
+            // remain owned by the ordinary write_cell path.
+            for (const auto offset : kMooreNeighbours) {
+                const auto wx = x + offset.x;
+                const auto wy = y + offset.y;
+                if (get(wx, wy) != Material::Water ||
+                    state_a(wx, wy) != config_.water_experiment_policy.maximum() ||
+                    pressure_cell(wx, wy).overfill != 0U) continue;
+                // A sampled Water cell implies allocated storage. Check the
+                // current cell too before making either half of the transition.
+                if (find_chunk(address(x, y).chunk) == nullptr ||
+                    find_chunk(address(wx, wy).chunk) == nullptr ||
+                    transient_obstacle_at(x, y) != 0U ||
+                    transient_obstacle_at(wx, wy) != 0U) continue;
+                const auto dose = static_cast<std::uint8_t>(state_a(wx, wy));
+                const bool consumed = write_kernel_cell(wx, wy, Material::Empty, 0, 0, effects);
+                if (!consumed) return false;
+                return write_kernel_cell(x, y, Material::ActivatedBinder, 180, dose, effects);
+            }
+            return fall_as_powder();
         }
 
         case RuleKernel::Metal: {
@@ -3614,6 +3653,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         }
 
         case RuleKernel::Stone:
+            if (is_paired_wall(material)) return false;
             if (state_b(x, y) == 0U && get(x - 1, y - 1) == Material::Stone &&
                 get(x + 1, y - 1) == Material::Stone) {
                 return false;

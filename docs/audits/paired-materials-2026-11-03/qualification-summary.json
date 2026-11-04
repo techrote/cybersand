@@ -1,0 +1,2070 @@
+{
+  "schema": 1,
+  "scope": "PAIR-CURE-001 scoped development qualification; current-main coupling, owner acceptance and production workload/frame acceptance absent",
+  "starting_main": "89020b9eb6d540383a5bb64b58dcd29a87592c32",
+  "native_build_source": "f069b439510742e7bbb6ddcd0afc6e7372de03e8",
+  "native_production_inputs": 80,
+  "candidate_checks": 38019,
+  "merge_authorized": false,
+  "owner_gameplay_acceptance": "AWAITING OWNER GAMEPLAY ACCEPTANCE",
+  "runtime_artifacts": {
+    "windows": {
+      "source_commit": "f069b439510742e7bbb6ddcd0afc6e7372de03e8",
+      "sha256": "2b80fcacd9f79c7e0753aeae51d617931a7f0a3464152527cdac6144aaac59f3",
+      "size": 4831744,
+      "status": "validated-development-runtime",
+      "validated_platform": "Windows x86_64 actual Godot/Rapier",
+      "manifest_sha256": "0e52fa938eb718343d4d1633fa96b96561b4eaaad34a190ebf8a9f1be6bf6773"
+    },
+    "linux": {
+      "source_commit": "f069b439510742e7bbb6ddcd0afc6e7372de03e8",
+      "sha256": "fcdf97b8d3623074b018f489e202f6b9d307f2ef8ac160a25434d0e4e5a74211",
+      "size": 4226480,
+      "status": "validated-development-runtime",
+      "validated_platform": "Linux x86_64 actual Godot/Rapier",
+      "manifest_sha256": "1fee7ddcf767767f07e2d0278c056770bd19ee65bdbc46b7d34b38e9dad4fece"
+    }
+  },
+  "native_core": {
+    "source": "664f720c9cf0b3a092cd16ce80637ee898120810",
+    "normal_tests": 166,
+    "sanitized_tests": 166,
+    "code_unchanged_before_after": true,
+    "records": [
+      {
+        "name": "normal",
+        "build_command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand",
+          "--",
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-pthread",
+          "-Inative/include",
+          "-O0",
+          "-g3",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/tests/test_lcb_inertial.cpp",
+          "native/tests/test_water_inertial.cpp",
+          "native/tests/test_world.cpp",
+          "native/tests/test_liquid_solver_policy.cpp",
+          "native/tests/test_lcb_pressure.cpp",
+          "native/tests/test_pressure_moving_mask.cpp",
+          "native/tests/test_pressure_setup_capacity.cpp",
+          "native/tests/test_water_cellular_yield.cpp",
+          "native/tests/test_water_normalization.cpp",
+          "native/tests/test_liquid_run_receipt.cpp",
+          "native/tests/test_liquid_construction_refusal.cpp",
+          "native/tests/test_quantity_ledger.cpp",
+          "native/tests/test_paired_materials.cpp",
+          "-o",
+          "build/paired-core-accepted/normal"
+        ],
+        "build_exit": 0,
+        "build_seconds": 62.71515774726868,
+        "run_command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand",
+          "--",
+          "./build/paired-core-accepted/normal"
+        ],
+        "run_exit": 0,
+        "run_seconds": 587.1482353210449,
+        "binary_sha256": "13a3948fc9e584bac8fe6a3b2bcca80712cc77dc340e03338c89e228df05cccc"
+      },
+      {
+        "name": "sanitized",
+        "build_command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand",
+          "--",
+          "g++-13",
+          "-std=c++20",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-pthread",
+          "-Inative/include",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/tests/test_lcb_inertial.cpp",
+          "native/tests/test_water_inertial.cpp",
+          "native/tests/test_world.cpp",
+          "native/tests/test_liquid_solver_policy.cpp",
+          "native/tests/test_lcb_pressure.cpp",
+          "native/tests/test_pressure_moving_mask.cpp",
+          "native/tests/test_pressure_setup_capacity.cpp",
+          "native/tests/test_water_cellular_yield.cpp",
+          "native/tests/test_water_normalization.cpp",
+          "native/tests/test_liquid_run_receipt.cpp",
+          "native/tests/test_liquid_construction_refusal.cpp",
+          "native/tests/test_quantity_ledger.cpp",
+          "native/tests/test_paired_materials.cpp",
+          "-o",
+          "build/paired-core-accepted/sanitized"
+        ],
+        "build_exit": 0,
+        "build_seconds": 263.6459493637085,
+        "run_command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand",
+          "--",
+          "env",
+          "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+          "UBSAN_OPTIONS=halt_on_error=1",
+          "./build/paired-core-accepted/sanitized"
+        ],
+        "run_exit": 0,
+        "run_seconds": 576.2567286491394,
+        "binary_sha256": "04a71d2b1f25338cab29b8726f1cf837b7324366c2bc35c80ab32c99c03b1cef"
+      }
+    ],
+    "receipt_sha256": "7f5efd85464533a11ef24cd563a9c144ad29756a0cb50ce45d6573887395038e"
+  },
+  "target_host": {
+    "source": "cb6479ea1da249b550a643fd2c6211b9b08836e9",
+    "code_and_json_inputs_unchanged": true,
+    "input_count": 597,
+    "platforms": [
+      {
+        "platform": "windows",
+        "ok": true,
+        "records": [
+          {
+            "case": "import",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 10.17520809173584,
+            "log": "build/paired-host-published/windows/import.log",
+            "log_sha256": "b0b7d26d6bdd0d711f8217cffadfd28ef3b01747a46a7b054132349c768ccac9"
+          },
+          {
+            "case": "test_paired_material_catalogue",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_paired_material_catalogue.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 2.2702996730804443,
+            "log": "build/paired-host-published/windows/test_paired_material_catalogue.log",
+            "log_sha256": "ee433702c5219db584e0e66af8461b9942219272c7b8947f85c2850e07cb2dba"
+          },
+          {
+            "case": "test_paired_material_playground",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_paired_material_playground.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 3.0902915000915527,
+            "log": "build/paired-host-published/windows/test_paired_material_playground.log",
+            "log_sha256": "09a927980dd149d5e77026d2abbda57053afc023229b77bc70d200776d39dc6b"
+          },
+          {
+            "case": "test_interaction_policy",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_interaction_policy.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 95.40296602249146,
+            "log": "build/paired-host-published/windows/test_interaction_policy.log",
+            "log_sha256": "7ce3c39dc6f49ba00e3397cf3a531b87cafcda6a0532ca9e868eb713ef46ed20"
+          },
+          {
+            "case": "test_interaction_async",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_interaction_async.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 13.461139917373657,
+            "log": "build/paired-host-published/windows/test_interaction_async.log",
+            "log_sha256": "169e2b78a3627b9bef858705aabf32e14ac876572994c9451afd42beb5b12ccf"
+          },
+          {
+            "case": "test_liquid_host_evidence",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_liquid_host_evidence.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 3.459618330001831,
+            "log": "build/paired-host-published/windows/test_liquid_host_evidence.log",
+            "log_sha256": "02901a741a3c68f9d2c8ba468a67a60daf386fb74177ff836b59062ed7492c48"
+          },
+          {
+            "case": "test_building_material_integration",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_building_material_integration.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 2.426412343978882,
+            "log": "build/paired-host-published/windows/test_building_material_integration.log",
+            "log_sha256": "d4cd5714dfda0720fbe234eaffb6c493dcfa8b191cb89d30b3570264326ee376"
+          },
+          {
+            "case": "test_material_appearance_lut",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_material_appearance_lut.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 68.71649241447449,
+            "log": "build/paired-host-published/windows/test_material_appearance_lut.log",
+            "log_sha256": "70c015f4845fcd21ec4ede8ae242b64f98ea5b1d9e9999e92182546d7f892c60"
+          },
+          {
+            "case": "test_physical_actor_arena",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_physical_actor_arena.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 16.80474090576172,
+            "log": "build/paired-host-published/windows/test_physical_actor_arena.log",
+            "log_sha256": "e97ee63895151e26dfa5049a5c91abb05c8fc0b91a81a0cd9eebc809d3e7fbe6"
+          },
+          {
+            "case": "test_physical_actor_integration",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_physical_actor_integration.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 14.0176420211792,
+            "log": "build/paired-host-published/windows/test_physical_actor_integration.log",
+            "log_sha256": "b658391eeababfe129b82ee1bb521279c2ac70d1eb9209ceb8be3111d7149410"
+          },
+          {
+            "case": "test_liquid_solver_policy",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_liquid_solver_policy.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 7.16587233543396,
+            "log": "build/paired-host-published/windows/test_liquid_solver_policy.log",
+            "log_sha256": "0070854ec7e7029450ac2e4df393e5b0bdc5d3205efec31171dbea3513fdd097"
+          },
+          {
+            "case": "test_water_feel_integration",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_water_feel_integration.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 5.223634719848633,
+            "log": "build/paired-host-published/windows/test_water_feel_integration.log",
+            "log_sha256": "be3e285bad5360c94479f9ee39dba2fe15e4d7b1947fd3194688840965c05bcf"
+          },
+          {
+            "case": "test_rem002_body_granular",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_rem002_body_granular.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 4.200354814529419,
+            "log": "build/paired-host-published/windows/test_rem002_body_granular.log",
+            "log_sha256": "9679fb4f7e8478d7bf8a1218ac266b1396f09936a00efe5e8dda5debd8d93288"
+          },
+          {
+            "case": "test_rem003_player_granular",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_rem003_player_granular.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 94.82440686225891,
+            "log": "build/paired-host-published/windows/test_rem003_player_granular.log",
+            "log_sha256": "69916e98bd436dfc67fc33cca853f4822c9d099b99221fc3cbeff49b9f78d5b9"
+          },
+          {
+            "case": "test_native_render_bridge_regression",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_native_render_bridge_regression.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 0.3039700984954834,
+            "log": "build/paired-host-published/windows/test_native_render_bridge_regression.log",
+            "log_sha256": "3aa010763f460fa28f433d21b46f21dccba132c0bdc15a3c4136d8e7aa992a0e"
+          },
+          {
+            "case": "test_render_patch_handoff_regression",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_render_patch_handoff_regression.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 1.8016786575317383,
+            "log": "build/paired-host-published/windows/test_render_patch_handoff_regression.log",
+            "log_sha256": "325147e1b802ac53e9980a91624e4d3ec2cce2b806c26e44559d9979be49ec75"
+          },
+          {
+            "case": "test_deepworks",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_deepworks.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 1.5048868656158447,
+            "log": "build/paired-host-published/windows/test_deepworks.log",
+            "log_sha256": "369a6493d33361e3647290dd238de07c38dab26de2b710a7c6806b72885580c6"
+          },
+          {
+            "case": "test_deepworks_reactions",
+            "command": [
+              "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+              "--headless",
+              "--path",
+              "C:/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/windows/godot",
+              "--script",
+              "res://tests/test_deepworks_reactions.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 9.977927446365356,
+            "log": "build/paired-host-published/windows/test_deepworks_reactions.log",
+            "log_sha256": "0d50bace23bda2fcc62c3fe63a1eeb08b7eb3cb1495653f9583ceab6a3c2fdd5"
+          }
+        ]
+      },
+      {
+        "platform": "linux",
+        "ok": true,
+        "records": [
+          {
+            "case": "import",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 49.67087149620056,
+            "log": "build/paired-host-published/linux/import.log",
+            "log_sha256": "25ed91af654ef088819ba6ad3cfef5785b1bd47c10396c7667268706baeec959"
+          },
+          {
+            "case": "test_paired_material_catalogue",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_paired_material_catalogue.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 3.1290509700775146,
+            "log": "build/paired-host-published/linux/test_paired_material_catalogue.log",
+            "log_sha256": "1c7fe3b76bf6a5d4631f5807895d19f2219c189b4d7c3d260a9f0d172959cca5"
+          },
+          {
+            "case": "test_paired_material_playground",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_paired_material_playground.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 5.195785284042358,
+            "log": "build/paired-host-published/linux/test_paired_material_playground.log",
+            "log_sha256": "eab9c6f0065e8b08db841df51db0d739629453c95d73bc902c11c8045a8ebd3f"
+          },
+          {
+            "case": "test_interaction_policy",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_interaction_policy.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 72.15019512176514,
+            "log": "build/paired-host-published/linux/test_interaction_policy.log",
+            "log_sha256": "191c287d146e316e85e71410182db8a311a63e2d7a5f40551e6361fc97c10d65"
+          },
+          {
+            "case": "test_interaction_async",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_interaction_async.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 16.274409532546997,
+            "log": "build/paired-host-published/linux/test_interaction_async.log",
+            "log_sha256": "720daf657f474799751114fa540ba86d20876008b7396848b0175420097e9fe2"
+          },
+          {
+            "case": "test_liquid_host_evidence",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_liquid_host_evidence.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 29.340919971466064,
+            "log": "build/paired-host-published/linux/test_liquid_host_evidence.log",
+            "log_sha256": "178ae88e88add48d078ed338f744d461e2364de7e6b91131647dcb152e8f9b8e"
+          },
+          {
+            "case": "test_building_material_integration",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_building_material_integration.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 3.901010751724243,
+            "log": "build/paired-host-published/linux/test_building_material_integration.log",
+            "log_sha256": "278352a402f2f8e41bb3f5d4eccef203c98fea49f30302b168725642cd48c876"
+          },
+          {
+            "case": "test_material_appearance_lut",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_material_appearance_lut.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 49.92783284187317,
+            "log": "build/paired-host-published/linux/test_material_appearance_lut.log",
+            "log_sha256": "418fd8edc432155ccb238d7ea0da8c58d4e7e4a0f48725883b89ad9c04c8297c"
+          },
+          {
+            "case": "test_physical_actor_arena",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_physical_actor_arena.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 17.891464710235596,
+            "log": "build/paired-host-published/linux/test_physical_actor_arena.log",
+            "log_sha256": "2668d2cdf586cbdd8a513273aa81a0220648ccb58f11a44d67723bdb0d7a9cbd"
+          },
+          {
+            "case": "test_physical_actor_integration",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_physical_actor_integration.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 16.968136072158813,
+            "log": "build/paired-host-published/linux/test_physical_actor_integration.log",
+            "log_sha256": "66d73e50f9826e0dae6d91eb67cd680b9a637a80b2bff7e68d8748599b1c64d5"
+          },
+          {
+            "case": "test_liquid_solver_policy",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_liquid_solver_policy.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 8.880062580108643,
+            "log": "build/paired-host-published/linux/test_liquid_solver_policy.log",
+            "log_sha256": "7e901a1c75a8437bc0b8695d5db28221bce41762d1141a65463921b60ce4133b"
+          },
+          {
+            "case": "test_water_feel_integration",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_water_feel_integration.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 7.553495168685913,
+            "log": "build/paired-host-published/linux/test_water_feel_integration.log",
+            "log_sha256": "36b31439f0c8a5386a0453003f45b3778b14df91c2b6d3d2085a3e91617d632f"
+          },
+          {
+            "case": "test_rem002_body_granular",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_rem002_body_granular.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 5.209110498428345,
+            "log": "build/paired-host-published/linux/test_rem002_body_granular.log",
+            "log_sha256": "f8a4682de50aa128224ca2d907d0ce63524f1b82f5ec99b94c7b42e0a57ab55f"
+          },
+          {
+            "case": "test_rem003_player_granular",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_rem003_player_granular.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 68.88652276992798,
+            "log": "build/paired-host-published/linux/test_rem003_player_granular.log",
+            "log_sha256": "cb4e2ddd7c91953eb6dbd8d28cc64cf8ae630695443ef5ca8feb844502282bd9"
+          },
+          {
+            "case": "test_native_render_bridge_regression",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_native_render_bridge_regression.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 0.6533298492431641,
+            "log": "build/paired-host-published/linux/test_native_render_bridge_regression.log",
+            "log_sha256": "b6bd1c7536364ed768cf529f9a831d4d4db3fb79c2e3141d1828e926f04815a8"
+          },
+          {
+            "case": "test_render_patch_handoff_regression",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_render_patch_handoff_regression.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 5.421823501586914,
+            "log": "build/paired-host-published/linux/test_render_patch_handoff_regression.log",
+            "log_sha256": "08263aedb595ff899a3fe56ccdf61b3337c034a5b930b1214bc9b8d008a7a51a"
+          },
+          {
+            "case": "test_deepworks",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_deepworks.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 2.0687754154205322,
+            "log": "build/paired-host-published/linux/test_deepworks.log",
+            "log_sha256": "ad1a949ca603b5987beed3fd2d23c1af437ddd8dfc2dbf9d80907f7468fa45a8"
+          },
+          {
+            "case": "test_deepworks_reactions",
+            "command": [
+              "wsl",
+              "-d",
+              "Ubuntu-24.04",
+              "--",
+              "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-host-published/linux/godot",
+              "--script",
+              "res://tests/test_deepworks_reactions.gd"
+            ],
+            "exit": 0,
+            "ok": true,
+            "seconds": 17.47112536430359,
+            "log": "build/paired-host-published/linux/test_deepworks_reactions.log",
+            "log_sha256": "e4fc76fc5a8295b7fb6d5c6483c7d93fb28ddfd51303d63500984dd2ea860eef"
+          }
+        ]
+      }
+    ],
+    "receipt_sha256": "1c359c64bc465a24d9c4679d662cd1b39ee6365dcbd7f2d63c15cc7219b29ca9"
+  },
+  "focused_native": {
+    "status": "pass",
+    "scope": "Iterative focused native regression; parent exact-head full normal/sanitizer/runtime gates remain required",
+    "checks": 38019,
+    "failures": 0,
+    "root_head_at_readback": "f069b439510742e7bbb6ddcd0afc6e7372de03e8",
+    "owned_canonical_sha256": {
+      "native/include/cybersand/interaction_rules.hpp": "b030b59c5bbabcfed60649d3b0e8fb7405ea861d7cf4337259277abc2d77be43",
+      "native/include/cybersand/quantity_ledger.hpp": "6acadc9cec435ba2cd71badb0f038dbd6635bcdab7dfc8495f106690b5e14ffb",
+      "native/src/world.cpp": "27cc036474a2c91316f68b3f47efc5e6e643450ab4af2055adfca02155e22afc",
+      "native/src/world_quantity.inc": "de37c9777c88527ec50c49bf829a8799b71395f03f30499dd38a7fe9ee8e209a",
+      "native/tests/test_world.cpp": "1eb27a6b486e30f776dbbfb2e34823e00f6e37b435d6f1380a76e3806da5d8fd",
+      "native/tests/test_paired_materials.cpp": "c35e9f4460f284a5f89dfef40aa307805696c91673b7b9f22f8ae09a680d4548"
+    },
+    "logs": [
+      {
+        "path": "build/paired-native/attempt1-build.log",
+        "sha256": "4a493dae0b7ea3747ce1666a8197ea4a3ff6da8db98c4e294c7af13c98f56227"
+      },
+      {
+        "path": "build/paired-native/attempt1-focused.log",
+        "sha256": "09d2c6b26c1ee40d3f319a5a1ab5f565708efcddff27872a32aaf3e94b1253a1"
+      },
+      {
+        "path": "build/paired-native/attempt2-focused.log",
+        "sha256": "11690a0bca7f45b4802cc685f47c5f55e3a58eee2765b334c938c9a6bd25bb36"
+      },
+      {
+        "path": "build/paired-native/attempt3-focused.log",
+        "sha256": "c2854cdd3b992b884a285dc2a3321e1bd0274495a9f21d74e556dab9b8f6a33c"
+      },
+      {
+        "path": "build/paired-native/attempt4-focused.log",
+        "sha256": "c6c919ad12b7449caf2296dfd90517c1489cbb8f2883ee74b370da1ecd0251f0"
+      },
+      {
+        "path": "build/paired-native/attempt5-focused.log",
+        "sha256": "2156a2833b5a40fd53ac6bbdffee00424a91c2f1d445b94a4aad15562a974774"
+      },
+      {
+        "path": "build/paired-native/attempt6-focused.log",
+        "sha256": "c8c2631b3b7f83e74e10145af3d42337a49c2a529936bf482cf2efa230710704"
+      },
+      {
+        "path": "build/paired-native/attempt7-focused.log",
+        "sha256": "c8c2631b3b7f83e74e10145af3d42337a49c2a529936bf482cf2efa230710704"
+      },
+      {
+        "path": "build/paired-native/build.log",
+        "sha256": "bddc60fc9302d325d68175098d5c59ff9bb8109560f9f03f4b9a70a8d718a5cd"
+      },
+      {
+        "path": "build/paired-native/direct-build.log",
+        "sha256": "5432a02d030a971ec2f8c2abd0299ed6ccb66d9ae52ef189d3e60332c3ccbeb9"
+      },
+      {
+        "path": "build/paired-native/final-focused.log",
+        "sha256": "9546b78289ea0d7f7c470c642cd8a4397c058958a4d9f8f6d26729d7d0031040"
+      },
+      {
+        "path": "build/paired-native/focused-build.log",
+        "sha256": "4a493dae0b7ea3747ce1666a8197ea4a3ff6da8db98c4e294c7af13c98f56227"
+      },
+      {
+        "path": "build/paired-native/focused-main-object.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build/paired-native/focused.log",
+        "sha256": "c8c2631b3b7f83e74e10145af3d42337a49c2a529936bf482cf2efa230710704"
+      },
+      {
+        "path": "build/paired-native/material_rules-object-attempt4.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build/paired-native/material_rules-object.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build/paired-native/persistence-build.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build/paired-native/persistence-final-build.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build/paired-native/persistence-final.log",
+        "sha256": "0ccfad8d8dff3adcc82ed0d007ae694030b6a30d6152cb456e4789026f40dcc9"
+      },
+      {
+        "path": "build/paired-native/persistence.log",
+        "sha256": "934181f53e3c9dd36551b06bea89932154c874a997cf66b3fad6793a2ff40c36"
+      },
+      {
+        "path": "build/paired-native/pressure-probe.log",
+        "sha256": "d3dee7b2c07738f370134d1d16360804ddd087bcf47cefb7cc8e759e7873e21d"
+      },
+      {
+        "path": "build/paired-native/scheduler_geometry-object.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build/paired-native/settled_world_discovery-object.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build/paired-native/test-object-attempt5.log",
+        "sha256": "5899e4bf10987ef694dfb1f9fdc26ea20f755f61082fadb3c2c16958f00f0e99"
+      },
+      {
+        "path": "build/paired-native/test-object-attempt6.log",
+        "sha256": "5899e4bf10987ef694dfb1f9fdc26ea20f755f61082fadb3c2c16958f00f0e99"
+      },
+      {
+        "path": "build/paired-native/test-object-attempt7.log",
+        "sha256": "5899e4bf10987ef694dfb1f9fdc26ea20f755f61082fadb3c2c16958f00f0e99"
+      },
+      {
+        "path": "build/paired-native/test-object-final.log",
+        "sha256": "5899e4bf10987ef694dfb1f9fdc26ea20f755f61082fadb3c2c16958f00f0e99"
+      },
+      {
+        "path": "build/paired-native/test_paired_materials-object-attempt3.log",
+        "sha256": "5899e4bf10987ef694dfb1f9fdc26ea20f755f61082fadb3c2c16958f00f0e99"
+      },
+      {
+        "path": "build/paired-native/test_paired_materials-object-attempt4.log",
+        "sha256": "5899e4bf10987ef694dfb1f9fdc26ea20f755f61082fadb3c2c16958f00f0e99"
+      },
+      {
+        "path": "build/paired-native/test_paired_materials-object.log",
+        "sha256": "5899e4bf10987ef694dfb1f9fdc26ea20f755f61082fadb3c2c16958f00f0e99"
+      },
+      {
+        "path": "build/paired-native/world-object-attempt3.log",
+        "sha256": "8b7ae3cbb44119164bdc2e455e6a304e3f9a5b40495a554cd15689755cf9285f"
+      },
+      {
+        "path": "build/paired-native/world-object-attempt4.log",
+        "sha256": "8b7ae3cbb44119164bdc2e455e6a304e3f9a5b40495a554cd15689755cf9285f"
+      },
+      {
+        "path": "build/paired-native/world-object.log",
+        "sha256": "8b7ae3cbb44119164bdc2e455e6a304e3f9a5b40495a554cd15689755cf9285f"
+      }
+    ],
+    "retained_failures": [
+      "make unavailable before compilation",
+      "initial direct source parser omitted Makefile += new test (link failure)",
+      "oldStone broadAcid quiet1 apparatus stalled; boundedliveequivalence fixture used",
+      "FiniteBinder omitted from quantity validation consumes allowlist; fixed withfull-cell quantum assertion",
+      "pressurefixture initially preventedoverfillgradient, then abovegrain couldmove; actualoverfill+supportedsidegrain fixture passed",
+      "crust freshness assertion incorrectly expected granularsupport; hardowner exclusion assertion corrected",
+      "physicalschema corruption test first lackedouterSHA then matchedprivate ratherthanwrappedpublicerror; exactwire+checksum+publicrefusal passed"
+    ],
+    "limitations": [
+      "OldCoal quiet1 has18/32stallednativecontexts; wall andloose trajectories exactlymatch",
+      "FullnormalizedWater/nooverfill activation only; fractionalWater remainsfree",
+      "Surfacefull16cellFreeMassdose gives9crust+residualfreeWater; CYgives16crust; deepest0both",
+      "No native production changes afterquantityconsumeswhitelist fix"
+    ]
+  },
+  "graphics": {
+    "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+    "scope": "Actual graphics correctness; shader/law untouched. Fresh import perOS,isolated process caches,original project source inputs held except explicitstatic-hard-form fixture correction. Diagnosticcopies addretentiononly. No performance or completeCIcohort acceptance.",
+    "cases": [
+      {
+        "case": "baseline-nativegl/material-nativegl",
+        "source_base": "89020b9eb6d540383a5bb64b58dcd29a87592c32",
+        "exit": 1,
+        "success": false,
+        "backend": "opengl3",
+        "display_server": "Windows",
+        "video_adapter": "NVIDIA TITAN RTX",
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "fixture_sha256": "a6b57ca0f221d5225a7cf5dfaacd062e4e6ec1ace9c1678c611852fdccc5e8cf",
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand\\build\\paired-graphics\\baseline-nativegl\\godot",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_material_presentation_render.gd"
+        ],
+        "log": "build/paired-graphics/baseline-nativegl/material-nativegl/engine.log",
+        "log_sha256": "0f6722d73138df612012444209a8f83d0617693486c5a1b3accc2ba638b82a21"
+      },
+      {
+        "case": "linux/opengl3-test_material_presentation_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 127,
+        "success": false,
+        "backend": null,
+        "display_server": null,
+        "video_adapter": null,
+        "engine_sha256": null,
+        "fixture_sha256": null,
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--",
+          "env",
+          "CYBERSAND_SOURCE_REVISION=c93fea1b148f1a2ca25268bab79394b70c1255e1",
+          "CYBERSAND_SHADER_NONCE=fe08448d5ed74708bdacb1be88ca46a9",
+          "CYBERSAND_SHADER_CACHE_STATE=isolated-first-process",
+          "CYBERSAND_PALETTE_CROSSFADE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_material_presentation_render/captures",
+          "CYBERSAND_SHADER_CAPTURE=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_material_presentation_render/captures",
+          "XDG_CACHE_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_material_presentation_render/cache/cache",
+          "XDG_DATA_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_material_presentation_render/cache/data",
+          "XDG_CONFIG_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_material_presentation_render/cache/config",
+          "--path",
+          "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/godot",
+          "--display-driver",
+          "x11",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_material_presentation_render.gd"
+        ],
+        "log": "build/paired-graphics/linux/opengl3-test_material_presentation_render/engine.log",
+        "log_sha256": "9a098001cda4b968352e3f36f424769105c91cf2d7387992ac6192fd95e8402d"
+      },
+      {
+        "case": "linux/opengl3-test_palette_crossfade_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 127,
+        "success": false,
+        "backend": null,
+        "display_server": null,
+        "video_adapter": null,
+        "engine_sha256": null,
+        "fixture_sha256": null,
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--",
+          "env",
+          "CYBERSAND_SOURCE_REVISION=c93fea1b148f1a2ca25268bab79394b70c1255e1",
+          "CYBERSAND_SHADER_NONCE=8c3acf061cd5407fa486c3690553e688",
+          "CYBERSAND_SHADER_CACHE_STATE=isolated-first-process",
+          "CYBERSAND_PALETTE_CROSSFADE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_palette_crossfade_render/captures",
+          "CYBERSAND_SHADER_CAPTURE=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_palette_crossfade_render/captures",
+          "XDG_CACHE_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_palette_crossfade_render/cache/cache",
+          "XDG_DATA_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_palette_crossfade_render/cache/data",
+          "XDG_CONFIG_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-test_palette_crossfade_render/cache/config",
+          "--path",
+          "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/godot",
+          "--display-driver",
+          "x11",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_palette_crossfade_render.gd"
+        ],
+        "log": "build/paired-graphics/linux/opengl3-test_palette_crossfade_render/engine.log",
+        "log_sha256": "9a098001cda4b968352e3f36f424769105c91cf2d7387992ac6192fd95e8402d"
+      },
+      {
+        "case": "linux/opengl3-v2-test_material_presentation_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1+fixture-hard-filter",
+        "exit": 0,
+        "success": false,
+        "backend": "opengl3",
+        "display_server": "X11",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture_sha256": "e080267b6fecf9d4ab5af10d2946a70bc3428e49482f72681d47d884b1502df2",
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--",
+          "env",
+          "CYBERSAND_SOURCE_REVISION=c93fea1b148f1a2ca25268bab79394b70c1255e1+fixture-hard-filter",
+          "CYBERSAND_SHADER_NONCE=22ce5744a50b41f09fb6fc176e611b6c",
+          "CYBERSAND_SHADER_CACHE_STATE=isolated-process-cache",
+          "CYBERSAND_PALETTE_CROSSFADE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_material_presentation_render/captures",
+          "CYBERSAND_SHADER_CAPTURE=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_material_presentation_render/captures",
+          "XDG_CACHE_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_material_presentation_render/cache/cache",
+          "XDG_DATA_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_material_presentation_render/cache/data",
+          "XDG_CONFIG_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_material_presentation_render/cache/config",
+          "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+          "--path",
+          "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/godot",
+          "--display-driver",
+          "x11",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_material_presentation_render.gd"
+        ],
+        "log": "build/paired-graphics/linux/opengl3-v2-test_material_presentation_render/engine.log",
+        "log_sha256": "39a4ff5f96c596abbc2fe9e392a69908b656ac0364712bc3c0f5d7a3a4fbd1d6"
+      },
+      {
+        "case": "linux/opengl3-v2-test_palette_crossfade_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 0,
+        "success": false,
+        "backend": "opengl3",
+        "display_server": "X11",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture_sha256": "3dff29d3c004628b7243c919167c6127625cf46a606900d79c60ef1379e765b4",
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--",
+          "env",
+          "CYBERSAND_SOURCE_REVISION=c93fea1b148f1a2ca25268bab79394b70c1255e1",
+          "CYBERSAND_SHADER_NONCE=75119f0dbf0d4283939dd1400cb269dd",
+          "CYBERSAND_SHADER_CACHE_STATE=isolated-process-cache",
+          "CYBERSAND_PALETTE_CROSSFADE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_palette_crossfade_render/captures",
+          "CYBERSAND_SHADER_CAPTURE=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_palette_crossfade_render/captures",
+          "XDG_CACHE_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_palette_crossfade_render/cache/cache",
+          "XDG_DATA_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_palette_crossfade_render/cache/data",
+          "XDG_CONFIG_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v2-test_palette_crossfade_render/cache/config",
+          "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+          "--path",
+          "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/godot",
+          "--display-driver",
+          "x11",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_palette_crossfade_render.gd"
+        ],
+        "log": "build/paired-graphics/linux/opengl3-v2-test_palette_crossfade_render/engine.log",
+        "log_sha256": "ac8b651cd6a4153c64867db98907096a45e9969e46f9c361c5835a62ca3254f8"
+      },
+      {
+        "case": "linux/opengl3-v3-dummy-test_material_presentation_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 0,
+        "success": true,
+        "backend": "opengl3",
+        "display_server": "X11",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture_sha256": "e080267b6fecf9d4ab5af10d2946a70bc3428e49482f72681d47d884b1502df2",
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--",
+          "env",
+          "CYBERSAND_SOURCE_REVISION=c93fea1b148f1a2ca25268bab79394b70c1255e1+fixture-hard-filter",
+          "CYBERSAND_SHADER_NONCE=df627bbf035a4225adf646443b37338e",
+          "CYBERSAND_SHADER_CACHE_STATE=isolated-process-cache",
+          "CYBERSAND_PALETTE_CROSSFADE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_material_presentation_render/captures",
+          "CYBERSAND_SHADER_CAPTURE=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_material_presentation_render/captures",
+          "XDG_CACHE_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_material_presentation_render/cache/cache",
+          "XDG_DATA_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_material_presentation_render/cache/data",
+          "XDG_CONFIG_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_material_presentation_render/cache/config",
+          "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+          "--path",
+          "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/godot",
+          "--display-driver",
+          "x11",
+          "--audio-driver",
+          "Dummy",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_material_presentation_render.gd"
+        ],
+        "log": "build/paired-graphics/linux/opengl3-v3-dummy-test_material_presentation_render/engine.log",
+        "log_sha256": "458513a03959ff789a7f8fb95e00fd7ffab5f351fde9e20f73d862562a66785e"
+      },
+      {
+        "case": "linux/opengl3-v3-dummy-test_palette_crossfade_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 0,
+        "success": true,
+        "backend": "opengl3",
+        "display_server": "X11",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture_sha256": "3dff29d3c004628b7243c919167c6127625cf46a606900d79c60ef1379e765b4",
+        "command": [
+          "wsl",
+          "-d",
+          "Ubuntu-24.04",
+          "--",
+          "env",
+          "CYBERSAND_SOURCE_REVISION=c93fea1b148f1a2ca25268bab79394b70c1255e1",
+          "CYBERSAND_SHADER_NONCE=a78a07896a53460585b749f69d1fa237",
+          "CYBERSAND_SHADER_CACHE_STATE=isolated-process-cache",
+          "CYBERSAND_PALETTE_CROSSFADE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_palette_crossfade_render/captures",
+          "CYBERSAND_SHADER_CAPTURE=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_palette_crossfade_render/captures",
+          "XDG_CACHE_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_palette_crossfade_render/cache/cache",
+          "XDG_DATA_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_palette_crossfade_render/cache/data",
+          "XDG_CONFIG_HOME=/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/opengl3-v3-dummy-test_palette_crossfade_render/cache/config",
+          "/home/i/cybersand-play-auto004-tools/Godot_v4.7-stable_linux.x86_64",
+          "--path",
+          "/mnt/c/Users/_/.codex/worktrees/paired-materials/khybersand/build/paired-graphics/linux/godot",
+          "--display-driver",
+          "x11",
+          "--audio-driver",
+          "Dummy",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_palette_crossfade_render.gd"
+        ],
+        "log": "build/paired-graphics/linux/opengl3-v3-dummy-test_palette_crossfade_render/engine.log",
+        "log_sha256": "b200819b709feb90d6cabf190d41d319a1c1e49a75192dca27c919ed3a692d01"
+      },
+      {
+        "case": "windows/opengl3-material-hard-filter",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1+fixture-hard-filter",
+        "exit": 1,
+        "success": false,
+        "backend": "opengl3",
+        "display_server": "Windows",
+        "video_adapter": "NVIDIA TITAN RTX",
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "fixture_sha256": "e080267b6fecf9d4ab5af10d2946a70bc3428e49482f72681d47d884b1502df2",
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand\\build\\paired-graphics\\windows\\godot",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_material_presentation_render.gd"
+        ],
+        "log": "build/paired-graphics/windows/opengl3-material-hard-filter/engine.log",
+        "log_sha256": "b1096ff1dcbca263c548ba8d2baf6e0882c215b76bd6dea9df66d5e73cc5c04b"
+      },
+      {
+        "case": "windows/opengl3-test_material_presentation_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 3,
+        "success": false,
+        "backend": "opengl3",
+        "display_server": "Windows",
+        "video_adapter": "NVIDIA TITAN RTX",
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "fixture_sha256": "ebb5ccb71c71ad5c77981a8ace3996f396c03c042656fedb09146cbb705fc89e",
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand\\build\\paired-graphics\\windows\\godot",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_material_presentation_render.gd"
+        ],
+        "log": "build/paired-graphics/windows/opengl3-test_material_presentation_render/engine.log",
+        "log_sha256": "1fe08ee94e0597fe86453411b39282109828c64082bae82d54705f388de3f7be"
+      },
+      {
+        "case": "windows/opengl3-test_palette_crossfade_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 0,
+        "success": true,
+        "backend": "opengl3",
+        "display_server": "Windows",
+        "video_adapter": "NVIDIA TITAN RTX",
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "fixture_sha256": "3dff29d3c004628b7243c919167c6127625cf46a606900d79c60ef1379e765b4",
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand\\build\\paired-graphics\\windows\\godot",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_palette_crossfade_render.gd"
+        ],
+        "log": "build/paired-graphics/windows/opengl3-test_palette_crossfade_render/engine.log",
+        "log_sha256": "8592bad494e6fdca5de0582df9d10a7482eb934ff6dc922d5cdf165a870dedc1"
+      },
+      {
+        "case": "windows/opengl3_angle-material-hard-filter",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1+fixture-hard-filter",
+        "exit": 0,
+        "success": true,
+        "backend": "opengl3_angle",
+        "display_server": "Windows",
+        "video_adapter": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "fixture_sha256": "e080267b6fecf9d4ab5af10d2946a70bc3428e49482f72681d47d884b1502df2",
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand\\build\\paired-graphics\\windows\\godot",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3_angle",
+          "--script",
+          "res://tests/test_material_presentation_render.gd"
+        ],
+        "log": "build/paired-graphics/windows/opengl3_angle-material-hard-filter/engine.log",
+        "log_sha256": "aaa91b9e2f0e3fac9b5e433d20a75ee2f8ebf85cf063fceeefb7f0d0bc06d131"
+      },
+      {
+        "case": "windows/opengl3_angle-test_material_presentation_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 2,
+        "success": false,
+        "backend": "opengl3_angle",
+        "display_server": "Windows",
+        "video_adapter": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "fixture_sha256": "ebb5ccb71c71ad5c77981a8ace3996f396c03c042656fedb09146cbb705fc89e",
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand\\build\\paired-graphics\\windows\\godot",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3_angle",
+          "--script",
+          "res://tests/test_material_presentation_render.gd"
+        ],
+        "log": "build/paired-graphics/windows/opengl3_angle-test_material_presentation_render/engine.log",
+        "log_sha256": "edcbabb935fb438bbc80dee858041f867d5b6e6db0cc8a0f87eded20c9652d28"
+      },
+      {
+        "case": "windows/opengl3_angle-test_palette_crossfade_render",
+        "source_base": "c93fea1b148f1a2ca25268bab79394b70c1255e1",
+        "exit": 0,
+        "success": true,
+        "backend": "opengl3_angle",
+        "display_server": "Windows",
+        "video_adapter": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "fixture_sha256": "3dff29d3c004628b7243c919167c6127625cf46a606900d79c60ef1379e765b4",
+        "command": [
+          "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+          "--path",
+          "C:\\Users\\_\\.codex\\worktrees\\paired-materials\\khybersand\\build\\paired-graphics\\windows\\godot",
+          "--resolution",
+          "320x180",
+          "--position",
+          "40,40",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3_angle",
+          "--script",
+          "res://tests/test_palette_crossfade_render.gd"
+        ],
+        "log": "build/paired-graphics/windows/opengl3_angle-test_palette_crossfade_render/engine.log",
+        "log_sha256": "525fa8aa72a6cec3b9ccb65e6a2f9a5258ab55a79960ca4721e08a60fca09fe7"
+      }
+    ],
+    "independent_pixel_readback_sha256": "5ea883bfa9f9e8466f6190fdc097f05e7a626e57be2e13736a244eda5b33b6d3",
+    "growth_diagnostics_sha256": "18b388875ce0b744e800c503497c3772aaa52ea3f2e7796ec082f819a649bbc8",
+    "preserved_failures": [
+      "Originalmaterialtestmisclassified135/136powdersasstaticbuildings; correctedbyexistinghard-capabilitypredicate.",
+      "NativeOpenGLgrowthpanfailsidenticallyonstartingmainandcandidate;raworigin/pan/offimagesbyteidentical.",
+      "InitialLinuxwrapperomittedenginepathandreturned127;corrected.",
+      "LinuxdefaultAudioALSAunavailableemittedERR_CANT_OPENdespitepixelpass;correctedDummy-audiorunsareclean.",
+      "Crossbackendfinished-imageidentitydiagnosticfails6pixels/max.15547;existingsemanticbaseacceptancepasseswithoutthresholdrelaxation."
+    ],
+    "raw_summary_sha256": "c7c5a7284f86dedd0af55bac0060b421ae0b602456f660aebb334ed2fe06fe63",
+    "status": "All three actual bounded oracles and independent scalar/pixel semantic gates pass. NativeGL material growth-pan remains inherited and byte-identical to main; cross-backend finished-image diagnostic fails six pixels/max.15547."
+  },
+  "work": {
+    "schema": 1,
+    "scope": "Source-matched Cement/legacy descriptors, primary native work gate, post-trigger activity investigation and optional Linux synchronousLabCPUstep; no frame/platform/gameplay performance acceptance",
+    "sources": {
+      "baseline": {
+        "source": "89020b9eb6d540383a5bb64b58dcd29a87592c32",
+        "inputs": 80
+      },
+      "current": {
+        "source": "636e9db3a40957612ebc4e2a5fa9f778ef02dec6",
+        "inputs": 80
+      }
+    },
+    "all80inputs_held_before_after": true,
+    "cement_and_old_descriptors": {
+      "equal": true,
+      "rows": 3020,
+      "sha256": "257324479154d727746f068640ef9a40470e153b0b9635eeb1db47bedcdbc2a7",
+      "same_as_original_retained_trace": true
+    },
+    "primary": {
+      "baseline": [
+        {
+          "material": 2,
+          "dose": false,
+          "warmup": 60,
+          "ticks": 300,
+          "p50_ms": 8e-05,
+          "p95_ms": 0.0001,
+          "p99_ms": 0.00018,
+          "max_ms": 0.00374,
+          "visited": 0,
+          "max_visited": 0,
+          "moved": 0,
+          "free_water": 0,
+          "bound_water": 0,
+          "active": 0,
+          "crust": 0
+        }
+      ],
+      "candidate": [
+        {
+          "material": 2,
+          "dose": false,
+          "warmup": 60,
+          "ticks": 300,
+          "p50_ms": 8e-05,
+          "p95_ms": 0.00014,
+          "p99_ms": 0.00019,
+          "max_ms": 0.00218,
+          "visited": 0,
+          "max_visited": 0,
+          "moved": 0,
+          "free_water": 0,
+          "bound_water": 0,
+          "active": 0,
+          "crust": 0
+        },
+        {
+          "material": 135,
+          "dose": false,
+          "warmup": 60,
+          "ticks": 300,
+          "p50_ms": 0.00012,
+          "p95_ms": 0.00014,
+          "p99_ms": 0.00016,
+          "max_ms": 0.00515,
+          "visited": 0,
+          "max_visited": 0,
+          "moved": 0,
+          "free_water": 0,
+          "bound_water": 0,
+          "active": 0,
+          "crust": 0
+        },
+        {
+          "material": 135,
+          "dose": true,
+          "warmup": 60,
+          "ticks": 300,
+          "p50_ms": 0.00014,
+          "p95_ms": 0.481004,
+          "p99_ms": 0.579074,
+          "max_ms": 0.615713,
+          "visited": 254507,
+          "max_visited": 2054,
+          "moved": 7623,
+          "free_water": 255,
+          "bound_water": 16065,
+          "active": 0,
+          "crust": 63
+        }
+      ],
+      "registered_investigation_gate": {
+        "ratio": 1.25,
+        "allowance_ms": 0.25,
+        "results": [
+          {
+            "material": 2,
+            "dose": false,
+            "p50_threshold_ms": 0.2501,
+            "p95_threshold_ms": 0.250125,
+            "investigation_triggered": false
+          },
+          {
+            "material": 135,
+            "dose": false,
+            "p50_threshold_ms": 0.2501,
+            "p95_threshold_ms": 0.250125,
+            "investigation_triggered": false
+          },
+          {
+            "material": 135,
+            "dose": true,
+            "p50_threshold_ms": 0.2501,
+            "p95_threshold_ms": 0.250125,
+            "investigation_triggered": true
+          }
+        ]
+      },
+      "ambient": {
+        "utc": "2026-11-03T02:37:09.743467+00:00",
+        "linux_load_before": "0.00 0.00 0.00 3/313 353",
+        "owner_windows": "Existing owner-review Godot windows intentionally left open; ambient desktop load not isolated",
+        "scope": "local functional/work timing under observed ambient desktop load; no end-to-end frame acceptance",
+        "linux_load_after": "0.08 0.02 0.01 1/273 464"
+      }
+    },
+    "investigation": {
+      "untimed_activity": {
+        "untimed": true,
+        "matches_original_work_counters": true,
+        "summary": {
+          "summary": true,
+          "material": 135,
+          "public_temperature_wake": false,
+          "ticks": 300,
+          "visited": 254507,
+          "moved": 7623,
+          "max_visited": 2054,
+          "material_changes": 63
+        },
+        "windows": [
+          {
+            "native_tick": [
+              61,
+              90
+            ],
+            "visited": 61620,
+            "active_first": 63,
+            "active_last": 63,
+            "crust_last": 0,
+            "material_changes": 0,
+            "nonzero_work_ticks": 30
+          },
+          {
+            "native_tick": [
+              91,
+              120
+            ],
+            "visited": 61620,
+            "active_first": 63,
+            "active_last": 63,
+            "crust_last": 0,
+            "material_changes": 0,
+            "nonzero_work_ticks": 30
+          },
+          {
+            "native_tick": [
+              121,
+              150
+            ],
+            "visited": 61620,
+            "active_first": 63,
+            "active_last": 63,
+            "crust_last": 0,
+            "material_changes": 0,
+            "nonzero_work_ticks": 30
+          },
+          {
+            "native_tick": [
+              151,
+              180
+            ],
+            "visited": 61620,
+            "active_first": 63,
+            "active_last": 63,
+            "crust_last": 0,
+            "material_changes": 0,
+            "nonzero_work_ticks": 30
+          },
+          {
+            "native_tick": [
+              181,
+              210
+            ],
+            "visited": 8027,
+            "active_first": 0,
+            "active_last": 0,
+            "crust_last": 63,
+            "material_changes": 63,
+            "nonzero_work_ticks": 4
+          },
+          {
+            "native_tick": [
+              211,
+              240
+            ],
+            "visited": 0,
+            "active_first": 0,
+            "active_last": 0,
+            "crust_last": 63,
+            "material_changes": 0,
+            "nonzero_work_ticks": 0
+          },
+          {
+            "native_tick": [
+              241,
+              270
+            ],
+            "visited": 0,
+            "active_first": 0,
+            "active_last": 0,
+            "crust_last": 63,
+            "material_changes": 0,
+            "nonzero_work_ticks": 0
+          },
+          {
+            "native_tick": [
+              271,
+              300
+            ],
+            "visited": 0,
+            "active_first": 0,
+            "active_last": 0,
+            "crust_last": 63,
+            "material_changes": 0,
+            "nonzero_work_ticks": 0
+          },
+          {
+            "native_tick": [
+              301,
+              330
+            ],
+            "visited": 0,
+            "active_first": 0,
+            "active_last": 0,
+            "crust_last": 63,
+            "material_changes": 0,
+            "nonzero_work_ticks": 0
+          },
+          {
+            "native_tick": [
+              331,
+              360
+            ],
+            "visited": 0,
+            "active_first": 0,
+            "active_last": 0,
+            "crust_last": 63,
+            "material_changes": 0,
+            "nonzero_work_ticks": 0
+          }
+        ],
+        "free_plus_bound_exact": true
+      },
+      "public_temperature_wake": [
+        {
+          "lane": "baseline",
+          "material": 2,
+          "repetitions": 3,
+          "p50_ms_range": [
+            0.197228,
+            0.198997
+          ],
+          "p95_ms_range": [
+            0.313517,
+            0.342476
+          ],
+          "p99_ms_range": [
+            0.340106,
+            0.392725
+          ],
+          "max_ms": 0.438365
+        },
+        {
+          "lane": "current",
+          "material": 2,
+          "repetitions": 3,
+          "p50_ms_range": [
+            0.198118,
+            0.199558
+          ],
+          "p95_ms_range": [
+            0.269407,
+            0.339876
+          ],
+          "p99_ms_range": [
+            0.338016,
+            0.377916
+          ],
+          "max_ms": 0.473495
+        },
+        {
+          "lane": "current",
+          "material": 135,
+          "repetitions": 3,
+          "p50_ms_range": [
+            0.335906,
+            0.340996
+          ],
+          "p95_ms_range": [
+            0.514724,
+            0.545124
+          ],
+          "p99_ms_range": [
+            0.589893,
+            0.634431
+          ],
+          "max_ms": 0.762406
+        }
+      ],
+      "repetitions": 3,
+      "all_series_same_614400_visits_max2048_zero_moves_zero_material_changes": true,
+      "original_primary_trigger_retained": true,
+      "interpretation": "63curingcells keep about2054 cells visited/tick throughnative180 duecoarseactivitywaking; dormantcontrols0work. Equivalentpublictemperaturewaking isolates addedfinite-binder probes; rawkernelwork is bounded, performance/frameacceptance remainsopen."
+    },
+    "host_step": [
+      {
+        "all": {
+          "count": 360,
+          "max_ms": 13.465,
+          "p50_ms": 1.195,
+          "p95_ms": 1.744,
+          "p99_ms": 3.024
+        },
+        "bound": 0,
+        "crust": 0,
+        "dose": false,
+        "free": 0,
+        "supply": {},
+        "terrain_changed": {
+          "count": 0
+        },
+        "terrain_unchanged": {
+          "count": 360,
+          "max_ms": 13.465,
+          "p50_ms": 1.195,
+          "p95_ms": 1.744,
+          "p99_ms": 3.024
+        },
+        "ticks": 360
+      },
+      {
+        "all": {
+          "count": 360,
+          "max_ms": 9.057,
+          "p50_ms": 1.462,
+          "p95_ms": 2.134,
+          "p99_ms": 5.102
+        },
+        "bound": 4080,
+        "crust": 16,
+        "dose": true,
+        "free": 0,
+        "supply": {
+          "added_free_water": 4080,
+          "changed_cells": 16,
+          "operation": "finite-water-dose",
+          "scope": "up to16 empty full-quantity cells; occupied positions refuse"
+        },
+        "terrain_changed": {
+          "count": 1,
+          "max_ms": 5.102,
+          "p50_ms": 5.102,
+          "p95_ms": 5.102,
+          "p99_ms": 5.102
+        },
+        "terrain_unchanged": {
+          "count": 359,
+          "max_ms": 9.057,
+          "p50_ms": 1.46,
+          "p95_ms": 2.134,
+          "p99_ms": 3.294
+        },
+        "ticks": 360
+      }
+    ],
+    "artifacts": {
+      "source-identities.json": {
+        "path": "build/paired-native-final-evidence/source-identities.json",
+        "sha256": "049142634b93a9255ddf4552b665659872243635a91247af2ccdb7e8a084d0b4",
+        "bytes": 19956
+      },
+      "compiler.txt": {
+        "path": "build/paired-native-final-evidence/compiler.txt",
+        "sha256": "7a3f6d6eb02ef135efd4e7ba8eedebe4e6083685bb12ed657f29f21aa509fe34",
+        "bytes": 254
+      },
+      "build-receipt.json": {
+        "path": "build/paired-native-final-evidence/build-receipt.json",
+        "sha256": "670f232d764bd54a2dc405a10a66ee5cfa789bcc5bd19fed1812faa419e28c5f",
+        "bytes": 5007
+      },
+      "differential-receipt.json": {
+        "path": "build/paired-native-final-evidence/differential-receipt.json",
+        "sha256": "723cbfce5175a9670a4dbbacfde92a205910c973e1d9a6bf81cb6225460d7e75",
+        "bytes": 1351
+      },
+      "work-receipt.json": {
+        "path": "build/paired-native-final-evidence/work-receipt.json",
+        "sha256": "8ccc1613d3108afda89df85b2e1c4299f3756dcb20cc3f0b2fe923b2a12fae29",
+        "bytes": 5807
+      },
+      "activity_diagnostic.cpp": {
+        "path": "build/paired-native-final-evidence/activity_diagnostic.cpp",
+        "sha256": "54789afbacb9e64536a25f9a43bd3cdcc62c762ae62b5c052ab70507b4942f6b",
+        "bytes": 3535
+      },
+      "activity-build-receipt.json": {
+        "path": "build/paired-native-final-evidence/activity-build-receipt.json",
+        "sha256": "4e1d339bb94de49195227e1e6b72ac59b59266bfe41e50faf4764c2adfc9ad05",
+        "bytes": 1637
+      },
+      "activity-investigation.json": {
+        "path": "build/paired-native-final-evidence/activity-investigation.json",
+        "sha256": "1b94964a8f4bb48ad46975fc870dd797b6acec6d5bfdcd1c384996b76207c2b4",
+        "bytes": 2710
+      },
+      "awake-diagnostic-receipt.json": {
+        "path": "build/paired-native-final-evidence/awake-diagnostic-receipt.json",
+        "sha256": "05e7502f619bbdab0d4b08687d29b20a7359b8f93b53e18ac6cc509119af83cb",
+        "bytes": 8414
+      },
+      "baseline/trace.csv": {
+        "path": "build/paired-native-final-evidence/baseline/trace.csv",
+        "sha256": "257324479154d727746f068640ef9a40470e153b0b9635eeb1db47bedcdbc2a7",
+        "bytes": 130520
+      },
+      "current/trace.csv": {
+        "path": "build/paired-native-final-evidence/current/trace.csv",
+        "sha256": "257324479154d727746f068640ef9a40470e153b0b9635eeb1db47bedcdbc2a7",
+        "bytes": 130520
+      },
+      "baseline/work.jsonl": {
+        "path": "build/paired-native-final-evidence/baseline/work.jsonl",
+        "sha256": "76c9c36cd9854d2285df4f23531a42161d5d13fa71d139c96318bf7bd5aafb07",
+        "bytes": 207
+      },
+      "current/work.jsonl": {
+        "path": "build/paired-native-final-evidence/current/work.jsonl",
+        "sha256": "7604cc86357b040c94b443fc6ad690a5a0db672fcb5c7b2b0292fc64bb018461",
+        "bytes": 652
+      },
+      "current/wet-activity.jsonl": {
+        "path": "build/paired-native-final-evidence/current/wet-activity.jsonl",
+        "sha256": "8448d60a6533c6fb183401c535a4a805c080c94daae660a14a657ce5fda06f9a",
+        "bytes": 31502
+      },
+      "host-step/preparation.json": {
+        "path": "build/paired-native-final-evidence/host-step/preparation.json",
+        "sha256": "e41529c74bedb449f49c8409b3c0080ea6d8b72f5d1698b5ac2943cbf188426f",
+        "bytes": 467
+      },
+      "host-step/import.log": {
+        "path": "build/paired-native-final-evidence/host-step/import.log",
+        "sha256": "3dc29b2158b3a18d1ec76f2c67d72cde06d359de23b1ecf2752d3c8ada95e65f",
+        "bytes": 34687
+      },
+      "host-step/run.log": {
+        "path": "build/paired-native-final-evidence/host-step/run.log",
+        "sha256": "677caea2ad5fd74f6338a911de2d38e024cd61773559c0cc8017292dd8544d9a",
+        "bytes": 582
+      },
+      "host-step/lab-step-timing.json": {
+        "path": "build/paired-native-final-evidence/host-step/lab-step-timing.json",
+        "sha256": "bce55f00b5c24bde70c8ab15dc07ba2ee02dbf7bb7136d0d496b41b7fe6c9f3d",
+        "bytes": 74637
+      },
+      "baseline/awake-0.jsonl": {
+        "path": "build/paired-native-final-evidence/baseline/awake-0.jsonl",
+        "sha256": "fcb4f029037de8a2749ce2b79dad0cd6f7dca4bd8dfbabcfff9e515648b43c62",
+        "bytes": 212
+      },
+      "current/awake-0.jsonl": {
+        "path": "build/paired-native-final-evidence/current/awake-0.jsonl",
+        "sha256": "db3a1cb2d8e3c4238a50fb3236e174b26fc5c035a59987d8f92776aa9096b863",
+        "bytes": 426
+      },
+      "baseline/awake-1.jsonl": {
+        "path": "build/paired-native-final-evidence/baseline/awake-1.jsonl",
+        "sha256": "74958af19cf9d657c490f63d2d0e6739d972a34820d9d62e5867c7bfc340b3a0",
+        "bytes": 212
+      },
+      "current/awake-1.jsonl": {
+        "path": "build/paired-native-final-evidence/current/awake-1.jsonl",
+        "sha256": "38ef3ffd29148fde2fb05e422622e6a2215bebc62525b81b91b6674a97dcec4f",
+        "bytes": 426
+      },
+      "baseline/awake-2.jsonl": {
+        "path": "build/paired-native-final-evidence/baseline/awake-2.jsonl",
+        "sha256": "571d70f3b5637134c2cd675e56757dcb1e4508ce39e3b58ed64c4fbcb6907ba2",
+        "bytes": 212
+      },
+      "current/awake-2.jsonl": {
+        "path": "build/paired-native-final-evidence/current/awake-2.jsonl",
+        "sha256": "66831ea394d46e9142bc89ee291fe727b8d504c22449517f2f6ab0c8307ba4a4",
+        "bytes": 426
+      },
+      "host-step/runtime-identity.json": {
+        "path": "build/paired-native-final-evidence/host-step/runtime-identity.json",
+        "sha256": "5000448fdfa6df54501dbcd554ad0a7668959174a3f301b1a38055fba6995c7b",
+        "bytes": 7271
+      }
+    },
+    "no_tracked_edits": true,
+    "host_runtime_identity": {
+      "godot": "4.7.stable.official.5b4e0cb0f",
+      "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "rapier_runtime_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "native_compiled_source": "f069b439510742e7bbb6ddcd0afc6e7372de03e8"
+    }
+  },
+  "raw_bundle": {
+    "local_path": "build/paired-materials-qualification-20261103.zip",
+    "bytes": 1714535,
+    "sha256": "4170e9e85c94158f09bd92e0570c80e580b609757e1d328fd2b78e105322a8a6",
+    "files": 531,
+    "manifest": "manifest.json inside archive",
+    "scope": "Raw logs, selected full traces, independent readbacks/captures and helper sources; binaries/project caches excluded"
+  },
+  "docs": {
+    "retrieval": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7589,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "misses": []
+    },
+    "challenges": {
+      "summary": {
+        "questions": 160,
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 159,
+        "mrr_at_k": 0.8658,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "misses": [
+        "LCB03"
+      ]
+    },
+    "baseline-challenges": {
+      "summary": {
+        "questions": 157,
+        "canonical_hit_at_1": 123,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8696,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "misses": [
+        "LCB03"
+      ]
+    },
+    "check-docs-final": {
+      "errors": [],
+      "sha256": "7ef47a7cc285337e89994d7d9900451e653f08aeadd211011951af3e6bc7b54b"
+    },
+    "check-m11-final": {
+      "errors": [],
+      "sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b"
+    },
+    "check-repository-final": {
+      "errors": [],
+      "sha256": "1c968e4d37b9fff6935eadec0cd8a8be548f67780e3123396efbc490af7c19eb"
+    }
+  },
+  "limitations": [
+    "Full-normalized zero-overfill Water activation only; partial/overfilled Water not consumed, ordinary movement continues",
+    "Primary active-curing performance investigation trigger retained; no production workload/frame-time acceptance",
+    "Inherited Coal and Acid quiet-contact limits unchanged; unsupported severed shell islands stay static",
+    "No GCR-LA/sleep/friction/default promotion, Web/fallback feature or REM-004 completion"
+  ],
+  "linux_runtime_floor": {
+    "status": "passed",
+    "bundle_glibc": "2.34",
+    "native_glibc": "2.32",
+    "glibcxx": "3.4.30",
+    "cxxabi": "1.3.9"
+  },
+  "c_header": {
+    "status": "passed",
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Inative/include",
+      "-x",
+      "c",
+      "-fsyntax-only",
+      "-"
+    ]
+  }
+}

@@ -28,6 +28,25 @@ func _initialize() -> void:
 			expect(Contract.parse(checked.canonical_json).hash == checked.hash,"Schema-2 JSON round-trip changed identity")
 			expect(Contract.validate(Pack.definition(id,seed)).hash == checked.hash,"Generator is not deterministic")
 			expect(value.events.size() <= 24 and value.observations.size() <= 24,"Reference exceeded unchanged capacities")
+	# Engine identity/catalogue138 does not silently widen this shared apparatus.
+	# Both schema versions retain the old authoring and observation range.
+	for version: int in [1,2]:
+		var control: Dictionary = Contract.base("scope/public-control") if version==1 else Pack.interaction_fixture()
+		control.rectangles=[20,20,1,1,CyberCellWorld.HEAT_SHIELD_TILE]
+		control.events=[]
+		control.observations=[]
+		control.conditions=[]
+		expect(Contract.validate(control).ok,"Historical upper material bound remains admitted in schema"+str(version))
+		for material: int in range(CyberCellWorld.STONE_WALL,CyberCellWorld.LAST_MATERIAL+1):
+			var outside: Dictionary = control.duplicate(true)
+			outside.rectangles[4]=material
+			expect(not Contract.validate(outside).ok,"New material is not silently admitted to MicroScenario setup: "+str(material))
+			outside=control.duplicate(true)
+			outside.events=[{"tick":1,"kind":"sample","x":20,"y":20,"width":1,"height":1,"material":material,"normalized_mass":0,"coherence":0}]
+			expect(not Contract.validate(outside).ok,"New material is not silently admitted to MicroScenario event metadata: "+str(material))
+			outside=control.duplicate(true)
+			outside.observations=[{"id":"outside-scope","tick":1,"metric":"material_cells","region":[20,20,1,1],"material":material}]
+			expect(not Contract.validate(outside).ok,"New material is not silently admitted to MicroScenario observations: "+str(material))
 	var base: Dictionary = Pack.interaction_fixture()
 	for version: Variant in [0,3,2.5,true,"2",null]:
 		var bad: Dictionary = base.duplicate(true)

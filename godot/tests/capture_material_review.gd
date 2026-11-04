@@ -215,7 +215,7 @@ func _inventory() -> Dictionary:
 		var column: int = material_id % 12
 		var row: int = material_id / 12
 		var x: int = 2 + column * 26
-		var y: int = 1 + row * 16
+		var y: int = 1 + row * 14 # Fits all138 current rows in the fixed180px view.
 		_fill(image, x, y + 1, 16, 11, material_id)
 		_fill(image, x + 18, y + 3, 1, 9, material_id)
 		_fill(image, x + 20, y + 3, 2, 9, material_id)
@@ -224,7 +224,7 @@ func _inventory() -> Dictionary:
 		_fill(image, x, y + 12, 25, 1, 1)
 		swatches.append({"id": material_id, "rect": [x, y + 1, 16, 11]})
 	return {"current": image, "previous": image, "cameras": [Vector2i.ZERO],
-		"notes": "All 132 rows including Empty and reserved invalid ID 10 (12 per row since the MAT-002 expansion). Each swatch: 16x11 block, 1- and 2-cell partitions, single and 2x2 droplets, Wall ledge. Condition bytes are native creation values (synthetic for Molten Glass heat).",
+		"notes": "All current catalogue rows including Empty and reserved invalid ID 10 (12 per row since the MAT-002 expansion). Each swatch: 16x11 block, 1- and 2-cell partitions, single and 2x2 droplets, Wall ledge. Condition bytes are native creation values (synthetic for Molten Glass heat).",
 		"swatches": swatches, "synthetic": true}
 
 

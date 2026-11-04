@@ -8,6 +8,7 @@ const Context = preload("res://tests/palette_qualification_context.gd")
 #   <godot> --path godot --script res://tests/test_material_presentation_render.gd
 
 const SIDE: Vector2i = Vector2i(48, 24)
+const ATLAS_COLUMNS: int = 12
 const TOLERANCE: float = 2.0 / 255.0
 var failures: int = 0
 var palette_lut: ImageTexture
@@ -276,7 +277,7 @@ func _run() -> void:
 	await _check_fidelity_pass_two(full)
 
 	if failures == 0:
-		print("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, all 132 ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks)")
+		print("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, all %d ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks)" % (CyberCellWorld.LAST_MATERIAL + 1))
 	quit(failures)
 
 
@@ -289,7 +290,7 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 		CyberCellWorld.GOLD_LEAF, CyberCellWorld.BRASS_PANEL, CyberCellWorld.PHOSPHOR_PANEL]
 	var static_ids: Array[int] = []
 	for id: int in range(CyberCellWorld.FIRST_BUILDING_MATERIAL, CyberCellWorld.LAST_MATERIAL + 1):
-		if not id in animated_ids:
+		if CyberCellWorld.is_hard_material(id) and not id in animated_ids:
 			static_ids.append(id)
 	var offset: int = 0
 	while offset < static_ids.size():
@@ -430,9 +431,12 @@ func _check_single_cell_emission() -> void:
 # building exceptions omitted by the stillness test. Reserved/unknown IDs are
 # tested as negative controls at both ends of the unused byte range.
 func _check_catalogue_rendering() -> void:
+	var evidence: String = OS.get_environment("CYBERSAND_PRESENTATION_EVIDENCE")
 	var empty_render: Image = await _render(_blank(), _blank(), 1.0)
-	var atlas := Image.create_empty(SIDE.x * 12, SIDE.y * 11, false, Image.FORMAT_RGBA8)
+	var atlas := Image.create_empty(SIDE.x * ATLAS_COLUMNS,
+		SIDE.y * ceili(float(CyberCellWorld.LAST_MATERIAL + 1) / ATLAS_COLUMNS), false, Image.FORMAT_RGBA8)
 	atlas.blit_rect(empty_render, Rect2i(Vector2i.ZERO, SIDE), Vector2i.ZERO)
+	var rendered_slot_ids: Array[int] = [0]
 	for material_id: int in range(1, CyberCellWorld.LAST_MATERIAL + 1):
 		if material_id == 10:
 			continue
@@ -440,7 +444,8 @@ func _check_catalogue_rendering() -> void:
 		_block(swatch, Rect2i(Vector2i.ZERO, SIDE), material_id, 180)
 		var rendered: Image = await _render(swatch, swatch, 1.0)
 		atlas.blit_rect(rendered, Rect2i(Vector2i.ZERO, SIDE),
-			Vector2i(material_id % 12, material_id / 12) * SIDE)
+			Vector2i(material_id % ATLAS_COLUMNS, material_id / ATLAS_COLUMNS) * SIDE)
+		rendered_slot_ids.append(material_id)
 		_expect(_difference(rendered, empty_render, Rect2i(4, 4, 40, 16)) > TOLERANCE,
 			"material %d rendered as Empty" % material_id)
 		var invalid_pixels: int = 0
@@ -450,21 +455,46 @@ func _check_catalogue_rendering() -> void:
 				if colour.r > 0.6 and colour.b > 0.6 and colour.g < 0.1:
 					invalid_pixels += 1
 		_expect(invalid_pixels < 640, "material %d rendered the invalid-ID fallback" % material_id)
+	var invalid_controls: Array[Dictionary] = []
 	for invalid_id: int in [10, CyberCellWorld.LAST_MATERIAL + 1, 255]:
 		var swatch: Image = _blank()
 		_block(swatch, Rect2i(Vector2i.ZERO, SIDE), invalid_id)
 		var rendered: Image = await _render(swatch, swatch, 1.0)
 		if invalid_id == 10:
 			atlas.blit_rect(rendered, Rect2i(Vector2i.ZERO, SIDE), Vector2i(10, 0) * SIDE)
+			rendered_slot_ids.append(invalid_id)
 		var colour: Color = rendered.get_pixel(24, 12)
 		_expect(colour.r > 0.6 and colour.b > 0.6 and colour.g < 0.1,
 			"invalid material %d did not render the explicit magenta fallback" % invalid_id)
-	var evidence: String = OS.get_environment("CYBERSAND_PRESENTATION_EVIDENCE")
+		if not evidence.is_empty():
+			invalid_controls.append({"material_id":invalid_id,
+				"capture":Context.capture(rendered, "material-invalid-id-%03d" % invalid_id, evidence)})
 	if not evidence.is_empty():
-		_expect(DirAccess.make_dir_recursive_absolute(evidence) == OK,
-			"could not create the presentation evidence directory")
-		_expect(atlas.save_png(evidence.path_join("material-id-slots-000-131.png")) == OK,
+		# Keep the existing PNG name/pixels, and bind its complete slot inventory
+		# and raw readback to this exact source, process and invocation nonce.
+		# A retained old atlas is not evidence for a fresh successful run.
+		rendered_slot_ids.sort()
+		var atlas_capture: Dictionary = Context.capture(atlas,
+			"material-id-slots-000-%03d" % CyberCellWorld.LAST_MATERIAL, evidence)
+		_expect(not atlas_capture.is_empty() and not atlas_capture.has("error"),
 			"could not retain the rendered catalogue evidence")
+		for control: Dictionary in invalid_controls:
+			_expect(not control.capture.is_empty() and not control.capture.has("error"),
+				"could not retain the invalid material control")
+		var result: Dictionary = {"schema":"material-presentation-atlas-v1",
+			"context":Context.identity(get_script().resource_path, palette_shader),
+			"catalogue":{"path":"res://scripts/cell_world.gd",
+				"sha256":FileAccess.get_sha256("res://scripts/cell_world.gd")},
+			"first_material":0, "last_material":CyberCellWorld.LAST_MATERIAL,
+			"material_slots":CyberCellWorld.LAST_MATERIAL + 1, "slot_ids":rendered_slot_ids,
+			"columns":ATLAS_COLUMNS, "swatch_size":[SIDE.x, SIDE.y],
+			"capture":atlas_capture, "invalid_controls":invalid_controls}
+		var receipt: FileAccess = FileAccess.open(evidence.path_join("material-atlas.json"), FileAccess.WRITE)
+		_expect(receipt != null, "could not retain the material atlas receipt")
+		if receipt != null:
+			receipt.store_string(JSON.stringify(result))
+			receipt.close()
+		print("MATERIAL_PRESENTATION_ATLAS_RESULT ", JSON.stringify(result))
 
 
 func _render_trail(world: Image, history: Texture2D, camera: Vector2i, history_origin: Vector2i,

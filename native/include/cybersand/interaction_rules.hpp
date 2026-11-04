@@ -18,7 +18,7 @@ inline constexpr std::uint32_t kInteractionSchemaVersion = 1U;
 inline constexpr std::string_view kInteractionProfileId = "int.current-behaviour";
 // Version 2 (MAT-002) adds the int.pass.mat002-building-materials pair rules;
 // version 1 was the 14-rule current-oracle catalogue.
-inline constexpr std::uint32_t kInteractionProfileVersion = 2U;
+inline constexpr std::uint32_t kInteractionProfileVersion = 3U;
 
 enum class InteractionChannel : std::uint8_t {
     ThermalPhase,
@@ -149,6 +149,7 @@ struct PairInteractionRule {
 // belong to versioned passes and always involve at least one material that
 // did not exist in that oracle, so pre-existing pairs keep Current results.
 inline constexpr std::string_view kBuildingMaterialPassId = "int.pass.mat002-building-materials";
+inline constexpr std::string_view kPairedMaterialPassId = "int.pass.pair-cure-001";
 inline constexpr std::size_t kCurrentOraclePairRuleCount = 14U;
 
 inline constexpr std::array<PairInteractionRule, 56> kPairInteractionRules{{
@@ -755,7 +756,7 @@ struct SpecializedInteractionRule {
     std::string_view tuning_pass_id = "int.pass.current-oracle";
 };
 
-inline constexpr std::array<SpecializedInteractionRule, 19> kSpecializedInteractionRules{{
+inline constexpr std::array<SpecializedInteractionRule, 20> kSpecializedInteractionRules{{
     {"int.kernel.steam.condense.v1", interaction_channel_bit(InteractionChannel::ThermalPhase),
      InteractionTriggerKind::IntrinsicState, Material::Steam, RuleKernel::Steam,
      "native/src/world.cpp::RuleKernel::Steam", "lifetime expiry converts Steam to Water",
@@ -868,6 +869,14 @@ inline constexpr std::array<SpecializedInteractionRule, 19> kSpecializedInteract
      InteractionTriggerKind::IntrinsicState, Material::Foam, RuleKernel::Foam,
      "native/src/world.cpp::RuleKernel::Foam", "bounded intrinsic lifetime/disappearance",
      interaction_revalidation_bit(InteractionRevalidationTag::SchedulerContact)},
+    {"int.kernel.finite-binder.cure.v1",
+     interaction_channel_bit(InteractionChannel::CuringGrowthSpecialState),
+     InteractionTriggerKind::NeighbourhoodContext, Material::DryBinder, RuleKernel::FiniteBinder,
+     "native/src/world.cpp::RuleKernel::FiniteBinder",
+     "one full normalized, non-overfilled Water cell activates one dry grain; finite countdown preserves bound quantity in inert crust",
+     interaction_revalidation_bit(InteractionRevalidationTag::WaterContact) |
+         interaction_revalidation_bit(InteractionRevalidationTag::GranularContact),
+     1U, "", kPairedMaterialPassId},
 }};
 
 struct InteractionCoverageEntry {
@@ -879,7 +888,7 @@ struct InteractionCoverageEntry {
     std::string_view limitation;
 };
 
-inline constexpr std::array<InteractionCoverageEntry, 10> kInteractionCoverage{{
+inline constexpr std::array<InteractionCoverageEntry, 12> kInteractionCoverage{{
     {"compact-pair-current", "multiple", InteractionAuthoredStatus::ExplicitOverride,
      InteractionEvidenceStatus::CurrentRegression, "int.pair.*.v1",
      "all 14 compact pair rules are characterized against the frozen Current oracle"},
@@ -910,6 +919,12 @@ inline constexpr std::array<InteractionCoverageEntry, 10> kInteractionCoverage{{
     {"future-mechanism-tuning", "multiple", InteractionAuthoredStatus::Untested,
      InteractionEvidenceStatus::None, "",
      "later bounded versioned passes own new behavior; INT-000 does not fabricate it"},
+    {"paired-wall-chemistry", "multiple", InteractionAuthoredStatus::AcceptedWithLimitation,
+     InteractionEvidenceStatus::CurrentRegression, "int.pass.pair-cure-001",
+     "three explicit wall forms share parent contact chemistry and Coal state, while movement and hard-surface ownership stay distinct"},
+    {"finite-binder-curing", "curing_growth_special_state", InteractionAuthoredStatus::AcceptedWithLimitation,
+     InteractionEvidenceStatus::CurrentRegression, "int.kernel.finite-binder.cure.v1",
+     "full-cell Water only; partial/overfilled Water refuses activation; cured neighbors never activate dry material"},
 }};
 
 struct InteractionTuningPassDefinition {
@@ -920,10 +935,12 @@ struct InteractionTuningPassDefinition {
     std::string_view changed_rules;
 };
 
-inline constexpr std::array<InteractionTuningPassDefinition, 2> kInteractionTuningPasses{{
+inline constexpr std::array<InteractionTuningPassDefinition, 3> kInteractionTuningPasses{{
     {"int.pass.current-oracle", 1U, "", "characterized-baseline", "none"},
     {kBuildingMaterialPassId, 1U, "int.pass.current-oracle", "authored-extension",
      "adds pair rules for building materials 81+ only; oracle rules 0-13 unchanged"},
+    {kPairedMaterialPassId, 1U, kBuildingMaterialPassId, "authored-extension",
+     "adds explicit Stone/Salt/Coal wall forms and finite Water-activated binder; old pair rules and Cement unchanged"},
 }};
 
 class InteractionRules final {
@@ -1145,6 +1162,8 @@ public:
     [[nodiscard]] static constexpr PairInteractionMatch match_pair_from(
         std::span<const PairInteractionRule> rules,
         Material source, Material target) noexcept {
+        source = chemical_parent(source);
+        target = chemical_parent(target);
         for (std::size_t index = 0; index < rules.size(); ++index) {
             const auto& rule = rules[index];
             if (source == rule.first && target == rule.second) {
@@ -1173,6 +1192,17 @@ public:
                 sets[b][a >> 6U] |= std::uint64_t{1} << (a & 63U);
             }
         }
+        // Material aliases are admitted explicitly by the substance/form map.
+        // Copy only the three added rows/columns, preserving every old entry.
+        for (const auto wall : {Material::StoneWall, Material::SaltWall, Material::CoalWall}) {
+            const auto w = static_cast<std::uint8_t>(wall);
+            const auto parent = static_cast<std::uint8_t>(chemical_parent(wall));
+            sets[w] = sets[parent];
+            for (std::size_t source = 0; source < sets.size(); ++source) {
+                if (((sets[source][parent >> 6U] >> (parent & 63U)) & 1U) != 0U)
+                    sets[source][w >> 6U] |= std::uint64_t{1} << (w & 63U);
+            }
+        }
         return sets;
     }
     [[nodiscard]] static constexpr std::array<bool, 256> build_participants() noexcept {
@@ -1181,6 +1211,9 @@ public:
             participants[static_cast<std::uint8_t>(rule.first)] = true;
             participants[static_cast<std::uint8_t>(rule.second)] = true;
         }
+        for (const auto wall : {Material::StoneWall, Material::SaltWall, Material::CoalWall})
+            participants[static_cast<std::uint8_t>(wall)] =
+                participants[static_cast<std::uint8_t>(chemical_parent(wall))];
         return participants;
     }
     [[nodiscard]] static constexpr bool may_pair(Material source, Material target) noexcept {
@@ -1204,15 +1237,19 @@ public:
         const auto& rule = rules[match.rule_index];
         const bool selected = probability_roll <= rule.probability;
         const bool symmetric = rule.match == InteractionMatchKind::Symmetric;
+        const auto preserve_form = [](Material original, Material product) constexpr {
+            return is_paired_wall(original) && product == chemical_parent(original)
+                ? original : product;
+        };
         return {
             true,
             selected,
             match.rule_index,
             match.reversed,
-            symmetric ? rule.first_product :
-                (match.reversed ? rule.second_product : rule.first_product),
-            symmetric ? rule.second_product :
-                (match.reversed ? rule.first_product : rule.second_product),
+            preserve_form(source, symmetric ? rule.first_product :
+                (match.reversed ? rule.second_product : rule.first_product)),
+            preserve_form(target, symmetric ? rule.second_product :
+                (match.reversed ? rule.first_product : rule.second_product)),
         };
     }
 
@@ -1316,7 +1353,7 @@ public:
 }
 
 static_assert(kPairInteractionRules.size() == 56U);
-static_assert(kSpecializedInteractionRules.size() == 19U);
+static_assert(kSpecializedInteractionRules.size() == 20U);
 static_assert(kInteractionLayerKinds.size() == 5U);
 static_assert(InteractionRules::layer_precedence(InteractionLayerKind::ChannelDefault) <
               InteractionRules::layer_precedence(InteractionLayerKind::FamilyDefault));

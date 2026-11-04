@@ -9,9 +9,10 @@ const Context = preload("res://tests/palette_qualification_context.gd")
 const SIZE := Vector2i(64, 36)
 const TILE := 4
 const TOLERANCE := 2.0 / 255.0
-const MATERIALS := 132
-const FIXTURE_VERSION := "palette-bounded-crossfade-v3"
-const PROGRAM_SHA256 := "6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d"
+const MATERIALS := 138
+const FIXTURE_VERSION := "palette-bounded-crossfade-v4-paired"
+const PROGRAM_SHA256 := "b79199e249748dfbdf23bbd113daa6f36f3e7be870ff41baf76c9273829edc10"
+const LEGACY_PROGRAM_SHA256 := "6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d"
 const PROBE_SIZE := Vector2i(16, 256)
 const PROGRAM_PROBE_CODE := """shader_type canvas_item;
 render_mode unshaded;
@@ -77,6 +78,12 @@ func _textures() -> void:
 	_expect(canonical_program.get_size() == Vector2i(4, 256) and canonical_program.get_format() == Image.FORMAT_RGBAH,
 		"canonical program is not the registered HDR image")
 	_expect(_bytes_sha256(canonical_program.get_data()) == PROGRAM_SHA256, "canonical program bytes differ from independent registration")
+	# v4 appends six authored rows. Keep the complete v3 oracle: restoring
+	# only those rows to the previously unused neutral row must reproduce it.
+	var legacy_program: Image = canonical_program.duplicate()
+	for row: int in range(132,138):
+		for column: int in range(4): legacy_program.set_pixel(column,row,canonical_program.get_pixel(column,138))
+	_expect(_bytes_sha256(legacy_program.get_data())==LEGACY_PROGRAM_SHA256,"legacy program rows or unused rows changed")
 	_expect(canonical_program.get_pixel(3, 2).a == 33.0 and canonical_program.get_pixel(3, 3).a == 29.0,
 		"canonical Sand/Water HDR flair tags differ")
 	var commands: Image = canonical_program.duplicate()

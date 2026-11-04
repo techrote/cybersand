@@ -95,7 +95,7 @@ func _observe(runtime: CyberDeepworksRuntime, recipe: Dictionary, tick: int) -> 
 				}
 				continue
 			var record: Dictionary = records[exhibit["id"]]
-			for material: int in range(132):
+			for material: int in range(Cell.LAST_MATERIAL + 1):
 				record["maximum"][material] = maxi(record["maximum"][material], scan["counts"][material])
 				record["minimum"][material] = mini(record["minimum"][material], scan["counts"][material])
 				record["lower_maximum"][material] = maxi(record["lower_maximum"][material], scan["lower"][material])
@@ -109,23 +109,23 @@ func _scan(exhibit: Dictionary, cells: PackedByteArray) -> Dictionary:
 	var lower := PackedInt32Array()
 	var sum_y := PackedInt32Array()
 	var mean_y := PackedFloat32Array()
-	counts.resize(132)
-	lower.resize(132)
-	sum_y.resize(132)
-	mean_y.resize(132)
+	counts.resize(Cell.LAST_MATERIAL + 1)
+	lower.resize(Cell.LAST_MATERIAL + 1)
+	sum_y.resize(Cell.LAST_MATERIAL + 1)
+	mean_y.resize(Cell.LAST_MATERIAL + 1)
 	var rect: Rect2i = exhibit["observation"]
 	var district_y: int = (int(exhibit["district"]) >> 2) * 256
 	for y: int in range(rect.position.y, rect.end.y):
 		for x: int in range(rect.position.x, rect.end.x):
 			var material: int = cells[(y * 1024 + x) * 2]
-			if material >= 132 or material == 10:
+			if material > Cell.LAST_MATERIAL or material == 10:
 				_expect(false, "Invalid native material in copied exhibit packet")
 				continue
 			counts[material] += 1
 			sum_y[material] += y - district_y
 			if y - district_y >= 143:
 				lower[material] += 1
-	for material: int in range(132):
+	for material: int in range(Cell.LAST_MATERIAL + 1):
 		mean_y[material] = float(sum_y[material]) / float(counts[material]) if counts[material] > 0 else -1.0
 	return {"counts": counts, "lower": lower, "mean_y": mean_y}
 
