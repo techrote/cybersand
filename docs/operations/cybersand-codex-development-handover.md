@@ -17,8 +17,11 @@ The [Phase A report](../audits/2026-11-04-water-contact-362-phase-a.md) and its
 [registration](../audits/2026-11-04-water-contact-362-registration.md) own the
 evidence: `water_contact.impact.v1`, Windows and Linux (WSL2) 110-row packets,
 strict reducer and focused regression. Current splash is bounded relocation;
-genuine upward ballistic motion is absent. Next is a read-only
-submerged-overlap characterization sequenced with #347. Phase B (IN signed-`vy`
+genuine upward ballistic motion is absent. The owner-chosen read-only
+[submerged-overlap study](../audits/2026-11-04-water-contact-362-submerged.md)
+is complete: a submerged body leaves its own area of Water unresolved because
+no Empty lies within reach. Further reach or #347's vacancy chain would not fix
+this. A non-local displacement law needs separate owner admission. Phase B (IN signed-`vy`
 law, #20 flight, nonphysical presentation) needs explicit owner authorization;
 keep #362 open pending independent review.
 

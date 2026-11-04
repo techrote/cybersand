@@ -342,6 +342,15 @@ ballistic law.
 #362 stays open; closure needs the owner's assessment of this report. Phase B requires
 explicit owner authorization.
 
+## Follow-up: submerged-overlap study — 2026-11-04
+
+Handover item 1 was carried out as the owner-chosen read-only
+[`water_contact.submerged.v1` study](2026-11-04-water-contact-362-submerged.md).
+It confirms the overlay is structural. Masked Water has no Empty target within
+reach, mostly because lateral normals point into Water. More reach or a push
+chain of at most four moves would not resolve it. Only a non-local, owner-admitted
+displacement design could. Phase B remains DEFERRED.
+
 ## Independent review — 2026-11-04
 
 An independent read-only review of `d618c4d4` returned **ACCEPT WITH

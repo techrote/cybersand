@@ -25,7 +25,8 @@ Liquid reassessment #359: [current-main implementation and evidence audit](audit
 [ordinary application comparison paths](operations/lcb-manual-comparison-ux.md)
 and [bounded scenario reuse](operations/lcb-scenario-catalogue.md#current-main-reuse-and-fair-comparison--2026-11-03).
 Rapier↔Water impacts #362: [four-family Phase A discrimination](audits/2026-11-04-water-contact-362-phase-a.md)
-(splash is bounded relocation; no ballistic launch) and its [pre-result registration](audits/2026-11-04-water-contact-362-registration.md).
+(splash is bounded relocation; no ballistic launch) and its [pre-result registration](audits/2026-11-04-water-contact-362-registration.md);
+follow-up [submerged-overlap characterization](audits/2026-11-04-water-contact-362-submerged.md).
 All four families are landed; #360–#363 own the remaining comparison/tools/contact
 and decision work. Historical pre-merge records below retain their dated scope.
 
