@@ -1,0 +1,19 @@
+{
+  "schema": "cybersand.sol281.publisher-repair-publication-map.v1",
+  "parent_preserved": "2457f5ecb945c60cd5118526f48734e82576ba49",
+  "mode": "single non-forced branch update after exact tree verification",
+  "entries": [
+    {
+      "local_sha": "2bfeb60b60cfd07b7fa7d53447d9265af6b31e85",
+      "published_sha": "f0c9d39e90d0b4993e443ca303fdc482a923fbdf",
+      "tree": "bd0803f50ec471e0b1e8dac7c3b77b56080dd4bc",
+      "purpose": "Minimal publisher fix and real-Git regressions"
+    },
+    {
+      "local_sha": "9d1cadb91ed7926586f2ac5dbc6454fa60713445",
+      "published_sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+      "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce",
+      "purpose": "Preserved failed publication evidence, independent reviews and prospective resulting-source qualification"
+    }
+  ]
+}

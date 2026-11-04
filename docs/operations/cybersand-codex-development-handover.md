@@ -4,37 +4,45 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
 
-## SOL281 stalled-session recovery — 2026-11-03
+## SOL281 completed recovery and remaining gates — 2026-11-04
 
-The [recovery handover](../audits/2026-11-03-sol281-takeover.md) resumes existing
-draft #347 from publication `3ac7701`, authenticates executed `5944c130` and its
-eight hosted cohorts, and completes the formerly pending contact ledger. The
-preserved repeated trials pass conservation and the proposed CPU-cost gate but
-retain unresolved packed/embedded penetration. Existing #364 owns that next
-bounded contact repair; #365 restoration remains conditional and blocked.
+The [recovery handover](../audits/2026-11-03-sol281-takeover.md) preserves the
+original `5944c130` qualification, ordinarily reconciles accepted main `0fd4af59`
+through published merge `e518b0b6`, and qualifies the post-impulse readback guard
+and unchanged-output publisher repair. Final executed source is `749fb8b5`;
+run 41746597077 passes both builds, eight actual Linux/Windows cohorts, reduction
+and runtime publication `89d2eb6d`. The materialized documentation/provenance
+dispatch 41748585125 also passes. Old failed publication receipts remain failed.
 
-Ordinary merge `d96e3e95` consumes accepted main `0fd4af59`, preserving PLAY,
-LCB, runtime/evidence ancestry and all incoming files. Independent review adds a
-narrow fail-stop guard for invalid post-impulse backend readbacks; its actual
-finite policy and all registered thresholds remain unchanged. That new source
-requires its own targeted host qualification. Consult the recovery ledger for
-the final source/runtime/run identities and gate disposition. #347 remains draft,
-#281/#12 open and #283 frozen; no owner merge approval is inferred.
+**The final full-matrix 2 ms mean CPU criterion is NOT MET:** 23/24 groups pass,
+with Windows four-worker embedded baseline r0 at 2.145915178571 ms per complete
+observation. All 12 candidate groups pass, worst 1.782429487179 ms. Candidate
+packed/embedded penetration reaches 4.046731639982 / 2.642792455422 cells, with
+positive sampled spans near six seconds. These descriptive asynchronous trials
+do not establish sustained clearance or gameplay acceptance.
+
+Existing #364 owns synchronized reproduction, diagnosis of the retained CPU
+failure and one bounded contact repair under prospectively registered limits.
+#365 restoration remains conditional and blocked. Exact ownership, energy and
+readback-failure contracts remain; defaults and Y1 are unchanged. #347 stays
+draft/unmerged, #281/#12 stay open and #283 stays frozen. Actual graphical/GPU,
+human acceptance and applicable ready-PR CI remain separate gates.
 
 ## SOL281 dense-contact continuation — 2026-11-03
 
-Draft #347 now reconciles accepted main `89020b9e` through ordinary merge
-`2321cf24`, preserving its existing source/evidence ancestry and the merged PLAY
+At this checkpoint, draft #347 reconciles accepted main `89020b9e` through
+published merge `c1c71623` (the same tree as retained local `2321cf24`), preserving
+its existing source/evidence ancestry and the merged PLAY
 recovery. The [dense-contact checkpoint](../audits/2026-11-03-sol281-dense-contact.md)
 records the opt-in supported-Sand response, exact rotated overlap observer,
 proposed physical gates, independent review corrections and new source-bound
-qualification. Follow that ledger for current results; the earlier host matrix
+qualification. Follow that ledger for this checkpoint's original results; the earlier host matrix
 below qualifies only its original executable. Persistent embedding, restoration,
 human gameplay and merge acceptance remain open. #283 stays frozen; #343 Y1
 and all ordinary Water/material/contact defaults remain separate and unchanged.

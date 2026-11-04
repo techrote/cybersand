@@ -1,0 +1,283 @@
+{
+  "schema": "cybersand.sol281.final-conclusion-review.v1",
+  "reviewer": "/root/implementation_review",
+  "date": "2026-11-04",
+  "scope": "Read-only recomputation from retained72-case data plus raw failing-case publication-blob comparison. No new tests, native/Godot execution, code edits or remote mutations.",
+  "source": {
+    "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+  },
+  "run_id": "41746597077",
+  "publication_commit": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+  "publication_parent": "749fb8b597ad866f7535f26442e904207c4f7611",
+  "input_hashes": {
+    "independent-final-review.json": "1b98d478f517bccd6ec046e77eb236ad43963868940176ede046fdc9c7aa8974",
+    "contact-recovery-case-summary.json": "35bae2ba1ea1bc3889e83f8e3ea1b933925ac536743ae7750dc8fa353d91bcca",
+    "independent-final-metric-summary.md": "d01ebabc03527287f70a2cb8a955fb264b3642be3b4a6de9419863643815e89d"
+  },
+  "raw_failed_case": {
+    "path": "/workspace/scratch/fc488e61157a/recovery-evidence/final-749fb8b5-41746597077/host-originals/windows/contact-w4/contact-recovery-w4.json",
+    "published_path": "docs/audits/sol281-20261103/hosted/749fb8b597ad866f7535f26442e904207c4f7611/cohorts/windows/contact-w4/contact-recovery-w4.json",
+    "sha256": "4d764661d951ef217f19f9a21bd662c4553d8ce3b3db7995c9c22cc3d07f22f7",
+    "published_git_blob_bytes_match": true,
+    "case": "embedded_sand/baseline/r0",
+    "worker_ms": 480.685,
+    "main_ms": 0.0,
+    "complete_observations": 224,
+    "owner_attempts": 369,
+    "mean_ms": 2.1459151785714288
+  },
+  "group_results": [
+    {
+      "platform": "Linux",
+      "workers": 1,
+      "surroundings": "embedded_sand",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 1.4008693693693695,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 1,
+      "surroundings": "embedded_sand",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 0.7239826589595375,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 1,
+      "surroundings": "mixed",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 0.522875,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 1,
+      "surroundings": "mixed",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 0.5436657381615598,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 1,
+      "surroundings": "packed_sand",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 0.23465273311897109,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 1,
+      "surroundings": "packed_sand",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 0.8301152263374486,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 4,
+      "surroundings": "embedded_sand",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 1.5546425855513308,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 4,
+      "surroundings": "embedded_sand",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 1.2021120689655171,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 4,
+      "surroundings": "mixed",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 0.6587347826086956,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 4,
+      "surroundings": "mixed",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 0.673485549132948,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 4,
+      "surroundings": "packed_sand",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 0.2739017341040462,
+      "passed": true
+    },
+    {
+      "platform": "Linux",
+      "workers": 4,
+      "surroundings": "packed_sand",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 1.0380807174887894,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 1,
+      "surroundings": "embedded_sand",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 1.7352391304347825,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 1,
+      "surroundings": "embedded_sand",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 1.376126050420168,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 1,
+      "surroundings": "mixed",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 0.9251623931623931,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 1,
+      "surroundings": "mixed",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 1.035649025069638,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 1,
+      "surroundings": "packed_sand",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 0.6332948717948718,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 1,
+      "surroundings": "packed_sand",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 1.2273064066852368,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 4,
+      "surroundings": "embedded_sand",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 2.1459151785714288,
+      "passed": false
+    },
+    {
+      "platform": "Windows",
+      "workers": 4,
+      "surroundings": "embedded_sand",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 1.782429487179487,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 4,
+      "surroundings": "mixed",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 0.992589519650655,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 4,
+      "surroundings": "mixed",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 1.287422619047619,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 4,
+      "surroundings": "packed_sand",
+      "candidate": false,
+      "case_count": 3,
+      "worst_mean_ms": 0.44766295264623956,
+      "passed": true
+    },
+    {
+      "platform": "Windows",
+      "workers": 4,
+      "surroundings": "packed_sand",
+      "candidate": true,
+      "case_count": 3,
+      "worst_mean_ms": 1.1410507042253522,
+      "passed": true
+    }
+  ],
+  "conclusions": [
+    "Targeted12-job workflow and runtime publication PASS.",
+    "Full-matrix CPU gate FAILS:23/24 groups; exactly one baseline failure; candidate12/12pass does not override it.",
+    "No numeric mismatch found in independently recomputed totals or candidate packed/embedded depth maxima.",
+    "Publication commit is a child of executed749source; later documentation descendants are not newly executed physics sources.",
+    "Earlier2457matrixPASS/publicationFAIL and5944/3acresults retain their own scopes.",
+    "Physical quality, restoration, GPU/human acceptance, applicable ready-head CI and merge authorization remain unresolved/separate."
+  ],
+  "precision_finding": {
+    "artifact": "independent-final-review.json",
+    "field": "remaining_gates",
+    "finding": "CPU feasibility omitted from this list, although disposition and failed_cost_groups correctly record the failure.",
+    "action": "Root notified to retain CPU explicitly in final gate lists; no original evidence edited by this reviewer.",
+    "status": "resolved_by_evidence_owner",
+    "resolution": "Amended independent-final-review now explicitly includes full-matrix CPU feasibility in remaining_gates; original numerical verdict unchanged.",
+    "amended_receipt_sha256": "204a12fcf48156e5969b1012b7a12afeb00ad34e12a0be6601c31e9890c16597"
+  },
+  "documentation_ci_scope": {
+    "publication_head": "89d2eb6d280183e495a94b559776dfd8f1cdc196",
+    "root_reported_pass_run": "41748585125",
+    "independently_executed_by_this_review": false,
+    "limit": "That documentation/provenance pass applies to publication89d2 only. PR-event jobs marked action_required are neither passes nor draft skips. Final metadata-head checks retain their own source and outcomes."
+  },
+  "draft_files": [
+    {
+      "path": "issue-364-update.md",
+      "sha256": "7a2f5dbb64901e74cf909ec044c1c687e70365a750ef5042d9a6c42f4f66a369",
+      "words": 274
+    },
+    {
+      "path": "issue-365-update.md",
+      "sha256": "66c166bcf106701946a001b6176ec646296d53227a736a13d4efa4d9b533c5de",
+      "words": 185
+    }
+  ]
+}

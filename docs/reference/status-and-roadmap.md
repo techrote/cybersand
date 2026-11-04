@@ -4,23 +4,28 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
-## SOL281 recovered completion and remaining physics — 2026-11-03
+## SOL281 completed recovery and remaining physics — 2026-11-04
 
-The [recovered contact ledger](../audits/2026-11-03-sol281-dense-contact.md)
-authenticates source `5944c130`: eight actual Linux/Windows cohorts, exact
-conservation, controlled overlap reduction and the proposed mean CPU-cost gate
-pass. Sustained clearance, resistance calibration and graphical/human feel remain
-unpassed. Existing #364 contact recovery precedes conditional #365 restoration.
-The [takeover record](../audits/2026-11-03-sol281-takeover.md) preserves that
-evidence, reconciles accepted main `0fd4af59` and qualifies a separate narrow
-invalid-readback fail-stop repair. Full ready-PR CI and owner merge approval are
-still required. #347 stays draft and #281/#12 stay open.
+The [takeover record](../audits/2026-11-03-sol281-takeover.md) preserves earlier
+evidence, merges accepted main `0fd4af59`, and completes the finite-readback and
+publication repairs. Executed `749fb8b5` passes the eight actual Linux/Windows
+cohorts and publishes runtime/evidence child `89d2eb6d`; source-matched
+documentation/provenance passes separately.
+
+**Full-matrix CPU acceptance is NOT MET:** 23/24 groups pass the unchanged 2 ms
+mean gate. Windows four-worker embedded baseline r0 measures 2.145915178571 ms;
+all 12 candidate groups pass, worst 1.782429487179 ms. Candidate packed/embedded
+depth reaches 4.046731639982 / 2.642792455422 cells. Sustained clearance, resistance
+calibration and graphical/human feel remain unpassed. Existing #364 owns the
+bounded reproduction/repair and retained cost failure; #365 restoration stays
+blocked. #347 remains draft, #281/#12 remain open, and ready-PR CI and explicit
+owner merge approval remain required.
 
 ## Dense-contact recovery experiment — 2026-11-03
 

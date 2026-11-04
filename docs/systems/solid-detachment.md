@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Opt-in single native aggregate, conservative Sand/Water displacement, exact contact observations and separately enabled supported-Sand resistance; draft implementation, not full issue acceptance
 canonical-for: [native-structural-detachment-runtime, conservative-detachment-displacement, detachment-sand-contact-experiment]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [../operations/soliding-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../audits/2026-11-01-sol281-current-main.md, ../audits/2026-11-03-sol281-dense-contact-registration.md, ../audits/2026-11-03-sol281-dense-contact.md]
 ---
 
@@ -22,13 +22,27 @@ owns exact executed sources, runtime hashes, failures and platform outcomes.
 Source availability alone is not a passing physics or platform gate.
 
 The 3 November continuation preserves that branch and all its qualification
-ancestors. Ordinary merge `2321cf24d65024a609140b949efc3f5d909f6afa` reconciles
-accepted main `89020b9eb6d540383a5bb64b58dcd29a87592c32`, including PLAY #332,
-after the [prospective registration](../audits/2026-11-03-sol281-dense-contact-registration.md).
-It adds a separately enabled Sand resistance experiment and exact contact
-measurements below. The [new evidence ledger](../audits/2026-11-03-sol281-dense-contact.md)
-owns its source and gate results; earlier binaries and platform passes do not
-qualify this successor. PR #347 remains draft and unmerged.
+ancestors. Published ordinary merge
+`c1c7162315d0d04b8bcdabcda1c8f06700bc75c2` reconciles accepted main
+`89020b9eb6d540383a5bb64b58dcd29a87592c32`, including PLAY #332, after the
+[prospective registration](../audits/2026-11-03-sol281-dense-contact-registration.md).
+Its tree, `4c7d29809b527e5303f3f50fb941523a251d6a2e`, is identical to retained
+local merge `2321cf24d65024a609140b949efc3f5d909f6afa`; original local receipts
+keep that identity. The [dated contact ledger](../audits/2026-11-03-sol281-dense-contact.md)
+records this mapping and the opt-in Sand experiment's original source/gate results.
+
+The recovery ordinarily merges later accepted main
+`0fd4af5987e77db4da3e37c757cf2c0917ae9e15` through published merge
+`e518b0b6492b6500966171912cc406b55b6bbbcd`, then adds the bounded post-impulse
+readback failure guard in `06ff45d0777747878e143993ac7ce676452238cf`.
+Publisher-only repair `f0c9d39e90d0b4993e443ca303fdc482a923fbdf` then admits
+correct unchanged publication artifacts while preserving exact index/source
+validation; it leaves the finite-readback and physics code unchanged.
+The [recovery handover](../audits/2026-11-03-sol281-takeover.md) retains reviewed
+local/API tree mappings, the failed `2457f5ec` publication and final qualified
+source `749fb8b597ad866f7535f26442e904207c4f7611`. Earlier binaries and platform
+passes keep their original source scope. PR #347 remains draft and unmerged;
+#281 and #12 remain open.
 
 The frozen archive remains at `254235ec4c3d58782bba44b478caca86bf57c856`.
 Documentation predecessor #282 remains unmerged. Neither branch is rebased,
@@ -263,8 +277,10 @@ or unconsumed publications and payload freezing, plus every main response
 attempt. Cumulative owner timing prevents dropped publications from disappearing
 from the cost account. The proposed CPU feasibility gate divides that total
 contact work by complete consumed geometry observations and requires a mean no
-greater than 2 ms on the disclosed host. Report native-worker, Rapier-step,
-synchronization and publication latency separately. Headless CPU results do not
+greater than 2 ms on the disclosed host. Evaluate that gate from the recorded
+measurements, independently of workflow status; the execution checks do not enforce
+the 2 ms threshold. Report native-worker, Rapier-step, synchronization and
+publication latency separately. Headless CPU results do not
 establish GPU frame pacing or human gameplay acceptance.
 
 ## Diagnostic scene and controls
@@ -331,13 +347,35 @@ continues to name the original build/execution commit and tree. Raw Windows
 evidence retains its original line endings. A later metadata commit does not
 become a newly executed physics source by relabelling the records.
 
-Source `5944c130` completed the new eight-cohort Linux/Windows matrix and
+Source `5944c130` completed the eight-cohort Linux/Windows matrix and
 qualified runtime publication `3ac7701`; the [3 November ledger](../audits/2026-11-03-sol281-dense-contact.md)
-now retains its original platform, compiler, cost and physical measurements.
-The [recovery handover](../audits/2026-11-03-sol281-takeover.md) owns the later
-current-main reconciliation and nonfinite-readback repair's separate
-resulting-source qualification. Neither record promotes this candidate to
-accepted gameplay physics.
+retains its original platform, compiler, cost and physical measurements.
+Recovery source `2457f5ecb945c60cd5118526f48734e82576ba49`, tree
+`42b4926b3e15dcbf34b436eff41de50fad54c50a`, passed both builds, eight actual-host
+cohorts and reduction in
+[run 41742950418](https://github.com/techrote/cybersand/actions/runs/41742950418).
+Its runtime publication failed on an unchanged correct Linux pointer; no
+runtime-publication child exists for that run. Its independently calculated
+24 cost groups pass the proposed 2 ms gate; sustained clearance remains unresolved.
+
+After the bounded publisher repair, final compiled and executed source is
+`749fb8b597ad866f7535f26442e904207c4f7611`, tree
+`77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce`. Its fresh run is
+[41746597077](https://github.com/techrote/cybersand/actions/runs/41746597077) — **Scoped execution, reduction and runtime publication PASS (all 12 jobs); full-matrix CPU acceptance NOT MET**, with qualified
+publication child `89d2eb6d280183e495a94b559776dfd8f1cdc196`. The
+[recovery handover](../audits/2026-11-03-sol281-takeover.md) owns source/runtime
+receipts, actual measurements and separate gate decisions. Preceding measurements
+do not qualify this source. Scoped qualification does not establish accepted
+gameplay physics; metadata/publication children never replace executed identity.
+
+For `749fb8b5`, the independent 2 ms mean-cost criterion is **NOT MET across the
+full matrix**: 23/24 groups pass. Windows four-worker embedded-Sand baseline r0
+costs 2.145915178571 ms per complete consumed observation. All 12 candidate groups
+pass (worst 1.782429487179 ms). Candidate packed/embedded penetration still reaches
+4.046731639982 / 2.642792455422 cells; positive sampled-overlap spans are
+5.933745–5.984297 seconds. These unmatched live ranges do not prove causal
+improvement or continuous unobserved overlap. The unchanged proposed CPU limit
+and unresolved physical acceptance remain separate from successful CI execution.
 
 The focused gates cover exact native geometry, source-pose observation,
 pure response planning, actual Rapier readback, publication/revision refusal and
@@ -346,8 +384,9 @@ compares identical loads with the prior three-unit aggregate impulse ceiling
 offered fully upward on each step. It isolates that ceiling's mechanical limit;
 it is not a replacement native simulator or a complete B0/Y1 gameplay comparison.
 Source-bound results and the preserved failed rotating-contact experiment are
-in the new dated ledger. Dense resistance, sustained clearance, cost and
-rotation remain acceptance questions even when conservation and narrow gates pass.
+in the dated ledger. Dense resistance, sustained clearance and rotational
+behavior remain acceptance questions. The proposed per-observation CPU gate
+remains separate from GPU pacing and human physical acceptance.
 
 ## Embedded Sand and reversible restoration limits
 
@@ -356,6 +395,19 @@ can remain inside the compound without crossing an exterior face, producing
 measured overlap but no candidate normal impulse. No moving or sleeping aggregate
 is rasterized back into terrain by this experiment. Sleeping retains native
 aggregate payload ownership and a live Rapier body; it is not native restoration.
+
+The next existing assignment is
+[#364 / SOL-CONTACT-002](https://github.com/techrote/cybersand/issues/364): use the
+latest completed source/runtime receipt, reproduce the embedded failure with
+synchronized exact geometry and controlled publication delays, register new
+depth/persistence/latency limits before tuning, and select one bounded repair for
+the reproduced cause. Retain and diagnose the final Windows four-worker embedded
+baseline CPU miss without relaxing the 2 ms criterion. Preserve all current ownership, pose/sample, energy and
+invalid-readback failure fences. The issue owns its repeated platform and
+negative-fixture requirements.
+[#365 / SOL-RESTORE-001](https://github.com/techrote/cybersand/issues/365) remains
+blocked until applicable contact/ownership gates justify its one-aggregate,
+lattice-congruent restoration prototype.
 
 **Deferred:** reactive Wood/bark, heterogeneous bonds, arbitrary fracture,
 multiple persistent aggregates, transformed rest-to-cell restoration, normal

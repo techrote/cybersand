@@ -4,11 +4,19 @@ status: Current
 document-kind: evidence
 scope: Draft PR347 contact successor, preserved local failures, source reconciliation and separate physical, ownership and platform gates
 canonical-for: []
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [2026-11-03-sol281-dense-contact-registration.md, 2026-11-01-sol281-current-main.md, ../systems/solid-detachment.md, ../architecture/rigid-body-and-cellular-coupling.md]
 ---
 
 # SOL281 dense contact continuation
+
+**Latest source routing — 2026-11-04:** the [recovery handover](2026-11-03-sol281-takeover.md)
+records final executed `749fb8b5`, successful run 41746597077 and runtime/evidence
+publication `89d2eb6d`. Its full-matrix CPU criterion is **NOT MET**: 23/24 groups
+pass; Windows four-worker embedded baseline r0 costs 2.145915178571 ms against the
+unchanged 2 ms limit. All 12 candidate groups pass. Persistent penetration and
+broader acceptance remain unpassed. The tables below retain their original
+`5944c130` scope; their cost pass must not be substituted for this successor.
 
 ## Decision and source authority
 

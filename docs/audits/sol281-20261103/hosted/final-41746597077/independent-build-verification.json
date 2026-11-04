@@ -1,0 +1,242 @@
+{
+  "audit_helper_sha256": "6a2bf6606c24bb3775310107e9cf88cc228ee6a9aa6eb584545e034a8b31c4eb",
+  "broad_execution_inputs": 1089,
+  "complete": true,
+  "exact_git_tree_files": 2526,
+  "native_build_inputs": 88,
+  "native_inputs_unchanged_from_5944c130": true,
+  "run_attempt": "1",
+  "run_id": "41746597077",
+  "schema": "cybersand.sol281.independent-final-build-review.v1",
+  "scope": "Read-only original artifact verification; no new compiler, native, Godot or optional unit-test execution.",
+  "source": {
+    "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+  },
+  "targets": [
+    {
+      "artifact_id": 13284816372,
+      "bindings": {
+        "filename": "libgodot-cpp.linux.template_debug.x86_64.a",
+        "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666"
+      },
+      "build_manifest_sha256": "05d82f2dcd2ffaddfc885d5e3f753a9b9755101890fd715cc74c5157b3efd029",
+      "build_runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "commands": {
+        "bindings": {
+          "command": [
+            "tools/build_pinned_godot_cpp.sh",
+            "linux"
+          ],
+          "command_log_sha256": "32c36897a9f3c49419d88b0ca0645d9bf7285af328a7c6219bb601d51febb9a6",
+          "elapsed_seconds": 346.39099738699997,
+          "label": "godot-cpp",
+          "natural_completion": true,
+          "receipt_sha256": "dcc7c5b9b6de98df89f875b574a8074c38e1af165809f028d671c6f9583e5da9"
+        },
+        "extension": {
+          "command": [
+            "tools/build_native_extension.sh"
+          ],
+          "command_log_sha256": "66d920823cb15e9af8a0947ea1160eab17cfc801542a5ec820447dbd6eb76e2e",
+          "elapsed_seconds": 75.04180069899996,
+          "label": "native-extension",
+          "natural_completion": true,
+          "receipt_sha256": "755cab8e5cd7fae5d40039e1333956ebb405322fee1aba9c956f2fc88f9a6213"
+        },
+        "native-regressions": {
+          "command": [
+            "make",
+            "CXX=/usr/bin/g++-13",
+            "solid-detachment-test",
+            "conservative-displacement-test",
+            "solid-contact-geometry-test",
+            "solid-detachment-sanitize",
+            "conservative-displacement-sanitize",
+            "solid-contact-geometry-sanitize"
+          ],
+          "command_log_sha256": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7",
+          "elapsed_seconds": 198.62245894700004,
+          "label": "native-sol281",
+          "natural_completion": true,
+          "receipt_sha256": "298b2695fbef29e74e03509dea6a4dfd0796e83ce771f7a93bff98fc77d4d468"
+        },
+        "prepare": {
+          "command": [
+            "bash",
+            "-euc",
+            "\n  python3 -m venv \"$RUNNER_TEMP/scons\"\n  \"$SCONS_PYTHON\" -m pip install --require-hashes -r tools/requirements-build.txt\n  mkdir \"$GODOT_CPP_ROOT\"\n  git -C \"$GODOT_CPP_ROOT\" init\n  git -C \"$GODOT_CPP_ROOT\" remote add origin https://github.com/godotengine/godot-cpp.git\n  git -C \"$GODOT_CPP_ROOT\" fetch --depth=1 origin \"$GODOT_CPP_COMMIT\"\n  git -C \"$GODOT_CPP_ROOT\" checkout --detach FETCH_HEAD\n  test \"$(git -C \"$GODOT_CPP_ROOT\" rev-parse HEAD)\" = \"$GODOT_CPP_COMMIT\"\n"
+          ],
+          "command_log_sha256": "631ecc2f6b790115c230dc2f41a8b87c5781696469d2ebbb1c62ee0ae19d8a00",
+          "elapsed_seconds": 5.4679016659999995,
+          "label": "bindings-dependencies",
+          "natural_completion": true,
+          "receipt_sha256": "03d5cf31c56e81e66db3b65873edeaea99fecace95faec38ba49462d4cb2b053"
+        }
+      },
+      "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "extracted_bytes_match_original_archive": true,
+      "github_digest_matched": true,
+      "github_run_and_head_matched": true,
+      "name": "sol281-build-linux-41746597077-1",
+      "original_archive": "sol281-build-linux-41746597077-1.zip",
+      "original_archive_sha256": "30efa5e0eb531c56e9d54692b7aef96dd599a40a5e9881d51008719a58896a08",
+      "original_archive_size": 95800012,
+      "original_member_count": 17,
+      "original_member_sha256": {
+        "before.json": "02f3b94823abc9bab53b0502322fc618a24ecb30db6d2eb67ab72823378b946d",
+        "bindings/command.log": "32c36897a9f3c49419d88b0ca0645d9bf7285af328a7c6219bb601d51febb9a6",
+        "bindings/performance.jsonl": "6d17a09445508e62f6541cfe1794486be1589bf24a1c199d651ae350f9cdd697",
+        "bindings/receipt.json": "dcc7c5b9b6de98df89f875b574a8074c38e1af165809f028d671c6f9583e5da9",
+        "build.json": "05d82f2dcd2ffaddfc885d5e3f753a9b9755101890fd715cc74c5157b3efd029",
+        "extension/command.log": "66d920823cb15e9af8a0947ea1160eab17cfc801542a5ec820447dbd6eb76e2e",
+        "extension/performance.jsonl": "d282f3e5887be7e3f099deb53409e53371af3f261c50b5579e1af493dbd263de",
+        "extension/receipt.json": "755cab8e5cd7fae5d40039e1333956ebb405322fee1aba9c956f2fc88f9a6213",
+        "libcybersand_native.linux.x86_64.so": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "native-regressions/command.log": "57b01164b7019c69390a80e9b802de685ac640dda4be4e53b78d2085f7eb09a7",
+        "native-regressions/performance.jsonl": "ccb0d932ce58e855776b3487f4aa17a93fa13a478f6febcec031a4bc1b30c7ab",
+        "native-regressions/receipt.json": "298b2695fbef29e74e03509dea6a4dfd0796e83ce771f7a93bff98fc77d4d468",
+        "prepare/command.log": "631ecc2f6b790115c230dc2f41a8b87c5781696469d2ebbb1c62ee0ae19d8a00",
+        "prepare/performance.jsonl": "ac40a71a76b428a5eb4a509b640ef742b833e3738a345c8c868ab756b31adea8",
+        "prepare/receipt.json": "03d5cf31c56e81e66db3b65873edeaea99fecace95faec38ba49462d4cb2b053",
+        "source.tar.gz": "ce5ba6f8b9bac7acaef73552ac545f981410954c821b31f42d502c65997468e1",
+        "source.tar.gz.sha256": "2c0718e11e20838866147b89fa6c5c97276662da0049e2a43e075076d4e3cf7d"
+      },
+      "platform": "linux",
+      "raw_checkout_canonical_or_committed_eol_verified": true,
+      "raw_checkout_crlf_paths": [
+        "tools/launch_desktop.ps1"
+      ],
+      "runtime_identity": {
+        "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      },
+      "source_archive": {
+        "all_tracked_contents_match_executed_tree_under_committed_eol_rules": true,
+        "byte_identical_git_blobs": 2524,
+        "committed_eol_conversions": [
+          {
+            "authorization": "eol=crlf in executed-source committed .gitattributes",
+            "canonical_git_blob": "916a43c2b0619e74b4076d60ca327c6bf9eef9e2",
+            "path": "build_windows_msvc.bat",
+            "raw_archive_sha256": "b7d8456f986c9ce6a8f844cf0bac426caa977324f3f9374653988d7f14e7b664"
+          },
+          {
+            "authorization": "eol=crlf in executed-source committed .gitattributes",
+            "canonical_git_blob": "64f22deedefe1bf648cc2832990efe04ff3cfe2c",
+            "path": "tools/launch_desktop.ps1",
+            "raw_archive_sha256": "396f63f54b23e38b6b2b87d0dfb5fb887e96adca0950b11ad946c1b73357b570"
+          }
+        ],
+        "files_verified": 2526,
+        "pax_git_commit": "749fb8b597ad866f7535f26442e904207c4f7611",
+        "sha256": "ce5ba6f8b9bac7acaef73552ac545f981410954c821b31f42d502c65997468e1"
+      },
+      "source_before_after_and_command_receipts_verified": true
+    },
+    {
+      "artifact_id": 13284695744,
+      "bindings": {
+        "filename": "libgodot-cpp.windows.template_debug.x86_64.a",
+        "revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "sha256": "cf32635ec626090190145604b24a779224d035fb5908ca1d32ec0d68abc88d4e"
+      },
+      "build_manifest_sha256": "d161e3956ad48182e9318fa256de31cf07e27d062067c83d42a0238c35359017",
+      "build_runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      },
+      "commands": {
+        "bindings": {
+          "command": [
+            "tools/build_pinned_godot_cpp.sh",
+            "windows"
+          ],
+          "command_log_sha256": "bb10e27f1cd6d8bb6e9a728f840c66c4f6a19fabc5c78a09a4a068f67f0bf610",
+          "elapsed_seconds": 243.73310604799997,
+          "label": "godot-cpp",
+          "natural_completion": true,
+          "receipt_sha256": "6139a1c034b7ec98a84602434ef757a5e4fbfa8ade70efe736beae6213fbcb9c"
+        },
+        "compiler": {
+          "command": [
+            "bash",
+            "-euc",
+            "\n  curl --fail --location --retry 3 \"$LLVM_MINGW_URL\" -o \"$RUNNER_TEMP/llvm-mingw.tar.xz\"\n  printf \"%s  %s\\n\" \"$LLVM_MINGW_SHA256\" \"$RUNNER_TEMP/llvm-mingw.tar.xz\" | sha256sum --check --strict\n  mkdir \"$LLVM_MINGW_ROOT\"\n  tar -xf \"$RUNNER_TEMP/llvm-mingw.tar.xz\" -C \"$LLVM_MINGW_ROOT\" --strip-components=1\n  if [ ! -e \"$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-gcc-ar\" ]; then\n    ln -s llvm-ar \"$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-gcc-ar\"\n  fi\n"
+          ],
+          "command_log_sha256": "4ee1969bcb46dfe71afd6ddb383cf6f9a539973648e4955e56db1cc048e04d62",
+          "elapsed_seconds": 7.322243696000001,
+          "label": "llvm-mingw",
+          "natural_completion": true,
+          "receipt_sha256": "66a86956c5ef4ecacfe675c8c18f7b25773df901a7254f3c45e0e4901d089c8b"
+        },
+        "extension": {
+          "command": [
+            "tools/build_native_extension_windows.sh"
+          ],
+          "command_log_sha256": "e1f334781a2836f7a0103261952e0ac25867f43c7ebbc34461dbe87b26cbb156",
+          "elapsed_seconds": 53.59677761299997,
+          "label": "native-extension",
+          "natural_completion": true,
+          "receipt_sha256": "518219c759a59a311eb517abc3874607a0556638d8ed76f21fafad72e4946cb7"
+        },
+        "prepare": {
+          "command": [
+            "bash",
+            "-euc",
+            "\n  python3 -m venv \"$RUNNER_TEMP/scons\"\n  \"$SCONS_PYTHON\" -m pip install --require-hashes -r tools/requirements-build.txt\n  mkdir \"$GODOT_CPP_ROOT\"\n  git -C \"$GODOT_CPP_ROOT\" init\n  git -C \"$GODOT_CPP_ROOT\" remote add origin https://github.com/godotengine/godot-cpp.git\n  git -C \"$GODOT_CPP_ROOT\" fetch --depth=1 origin \"$GODOT_CPP_COMMIT\"\n  git -C \"$GODOT_CPP_ROOT\" checkout --detach FETCH_HEAD\n  test \"$(git -C \"$GODOT_CPP_ROOT\" rev-parse HEAD)\" = \"$GODOT_CPP_COMMIT\"\n"
+          ],
+          "command_log_sha256": "cca0cff2e65eedfef135144b648870bd42b47067488ff0304b292f33eb492b43",
+          "elapsed_seconds": 5.212002608999995,
+          "label": "bindings-dependencies",
+          "natural_completion": true,
+          "receipt_sha256": "9658baade5907f13a9b1a4b64f3df1d375af9e3d82fbfab0d5e27503719c1a12"
+        }
+      },
+      "compiler": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+      "extracted_bytes_match_original_archive": true,
+      "github_digest_matched": true,
+      "github_run_and_head_matched": true,
+      "name": "sol281-build-windows-41746597077-1",
+      "original_archive": "sol281-build-windows-41746597077-1.zip",
+      "original_archive_sha256": "fc90dddc9883201a0386b35dd461dfac0502821eb309996961f02551f1d4978d",
+      "original_archive_size": 2045488,
+      "original_member_count": 15,
+      "original_member_sha256": {
+        "before.json": "02f3b94823abc9bab53b0502322fc618a24ecb30db6d2eb67ab72823378b946d",
+        "bindings/command.log": "bb10e27f1cd6d8bb6e9a728f840c66c4f6a19fabc5c78a09a4a068f67f0bf610",
+        "bindings/performance.jsonl": "197fba4e128448fc0a0205174994c788214133418a02bdc933462474c5c2ad50",
+        "bindings/receipt.json": "6139a1c034b7ec98a84602434ef757a5e4fbfa8ade70efe736beae6213fbcb9c",
+        "build.json": "d161e3956ad48182e9318fa256de31cf07e27d062067c83d42a0238c35359017",
+        "compiler/command.log": "4ee1969bcb46dfe71afd6ddb383cf6f9a539973648e4955e56db1cc048e04d62",
+        "compiler/performance.jsonl": "68f3057de331f23f66c079fd5dd80a648d5acdc75abf16b22564d27606b16203",
+        "compiler/receipt.json": "66a86956c5ef4ecacfe675c8c18f7b25773df901a7254f3c45e0e4901d089c8b",
+        "cybersand_native.windows.x86_64.dll": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "extension/command.log": "e1f334781a2836f7a0103261952e0ac25867f43c7ebbc34461dbe87b26cbb156",
+        "extension/performance.jsonl": "f6cd2eb09145a77ea1ea22dbd611ef4217620efd8b72d4f4177fcc9fcc37aed4",
+        "extension/receipt.json": "518219c759a59a311eb517abc3874607a0556638d8ed76f21fafad72e4946cb7",
+        "prepare/command.log": "cca0cff2e65eedfef135144b648870bd42b47067488ff0304b292f33eb492b43",
+        "prepare/performance.jsonl": "ea9028114ed4932b9db900f8b17363daef6cdd4add9d568dc72949ab88f37971",
+        "prepare/receipt.json": "9658baade5907f13a9b1a4b64f3df1d375af9e3d82fbfab0d5e27503719c1a12"
+      },
+      "platform": "windows",
+      "raw_checkout_canonical_or_committed_eol_verified": true,
+      "raw_checkout_crlf_paths": [
+        "tools/launch_desktop.ps1"
+      ],
+      "runtime_identity": {
+        "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      },
+      "source_before_after_and_command_receipts_verified": true
+    }
+  ]
+}

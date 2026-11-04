@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -14,13 +14,16 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 For native terrain support loss, compound Rapier motion, conservative local
 Sand/Water displacement or the diagnostic controls, retrieve
-[Native structural detachment](../systems/solid-detachment.md). For current
-#281 gates, original failed experiments and tested identities, explicitly
-retrieve the [3 November contact ledger](../audits/2026-11-03-sol281-dense-contact.md)
-and the [earlier SOL281 qualification](../audits/2026-11-01-sol281-current-main.md).
-For the recovered completed receipts, latest-main reconciliation and terminal
-post-impulse readback failure guard, also retrieve the
-[recovery handover](../audits/2026-11-03-sol281-takeover.md).
+[Native structural detachment](../systems/solid-detachment.md). For historical
+failed experiments and tested identities, retrieve the
+[3 November contact ledger](../audits/2026-11-03-sol281-dense-contact.md)
+and [earlier SOL281 qualification](../audits/2026-11-01-sol281-current-main.md).
+For current #281 gates, recovered receipts, latest-main reconciliation and terminal
+post-impulse readback and publisher repairs, final executed `749fb8b5` and the
+retained Windows baseline CPU failure, retrieve the
+[recovery handover](../audits/2026-11-03-sol281-takeover.md). Its 23/24 full-matrix
+cost disposition supersedes neither the original measurements nor their source
+scope; all 12 final candidate groups pass.
 Global acceleration and Stage3B ordering remain in the
 [soliding programme](../operations/soliding-programme.md).
 

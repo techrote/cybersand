@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-04
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
@@ -30,8 +30,9 @@ PR #347 remains draft; ordinary defaults and Y1 #343 are unchanged.
 
 The [stalled-session recovery](audits/2026-11-03-sol281-takeover.md) completes the
 original host evidence, preserves compiler/failure receipts, reconciles current
-main and records the narrow nonfinite-readback failure repair and its own
-qualification boundary. Existing #364 contact recovery precedes conditional
+main and completes the narrow nonfinite-readback and publisher repairs. Final
+source `749fb8b5` has successful scoped execution/publication, but its full-matrix
+2 ms mean CPU gate is **NOT MET** (23/24 groups; all 12 candidate groups pass). Existing #364 contact recovery precedes conditional
 #365 restoration; neither issue is replaced by another investigation chain.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),

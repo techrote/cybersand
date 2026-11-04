@@ -1,0 +1,112 @@
+{
+  "artifact_id": 13283309762,
+  "cohorts": [
+    {
+      "cases": 11,
+      "cohort": "contact-w1",
+      "platform": "Linux",
+      "report_sha256": "af209aca87bbaa70c55a0d500063d59d1d3dfd3390c217361702fd2609952372",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "contact-w4",
+      "platform": "Linux",
+      "report_sha256": "01a6c422a6e73ed85e6f1ce213a2976658f42f55bdb85808a6426840f12350e8",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "core",
+      "platform": "Linux",
+      "report_sha256": "92e45012647d2e94f72a2ff5c345c9504f3b3a6ea3993a76588928a4d4a13900",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      }
+    },
+    {
+      "cases": 2,
+      "cohort": "mechanism",
+      "platform": "Linux",
+      "report_sha256": "0f5660627d2a64ddce3801b9b5f91287f4abd8ff820980638877c410e87896f9",
+      "runtime": {
+        "filename": "libcybersand_native.linux.x86_64.so",
+        "sha256": "5877f1ac8b3e1bc3548d415bbd3890f2b804df4d03f4eef4c961170780b47b3a",
+        "size": 4343064
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "contact-w1",
+      "platform": "Windows",
+      "report_sha256": "24cd71c8cfb6cbdb73fb2f827c0396164de4266671045698c0c8e0899f1ec40a",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "contact-w4",
+      "platform": "Windows",
+      "report_sha256": "3bffd03cb36419c1bb128fc285ce127242ea0729ed46d0248db1c2e5e638cea3",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      }
+    },
+    {
+      "cases": 11,
+      "cohort": "core",
+      "platform": "Windows",
+      "report_sha256": "95d08912276157100f172feaf29635ce0c9dd7e4afadd7ad83fcf2fddb953441",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      }
+    },
+    {
+      "cases": 2,
+      "cohort": "mechanism",
+      "platform": "Windows",
+      "report_sha256": "05a4a848fc620d885e30505e22a52b96a6f13aa0a99987b950018d91e39634fd",
+      "runtime": {
+        "filename": "cybersand_native.windows.x86_64.dll",
+        "sha256": "4c0612b07395089c38696099998f60699a1477d997b95a568d503195a606a6d9",
+        "size": 4924416
+      }
+    }
+  ],
+  "github_digest_matched": true,
+  "github_run_and_head_matched": true,
+  "name": "sol281-qualified-41746597077-1",
+  "original_archive": "sol281-qualified-41746597077-1.zip",
+  "original_archive_sha256": "5de0ed25d6f6d25669bfb0418dd979a7f7c60edba3b9391884d6bcda0c25a6ff",
+  "original_archive_size": 988,
+  "original_member_count": 1,
+  "original_member_sha256": {
+    "qualification.json": "c155f59eae1c85c6ef46118078d82a10912fef786a026c45b30fd35ccfd04315"
+  },
+  "passed": true,
+  "run_attempt": "1",
+  "run_id": "41746597077",
+  "scope": "Original ZIP, source, runtime and cohort inventory authenticated. Full original host-log reduction is performed by the independent host auditor.",
+  "source": {
+    "sha": "749fb8b597ad866f7535f26442e904207c4f7611",
+    "tree": "77a7bc2ed4d1f7ab339dd4a16fd082fccf56f0ce"
+  },
+  "summary_original_sha256": "c155f59eae1c85c6ef46118078d82a10912fef786a026c45b30fd35ccfd04315"
+}
