@@ -72,7 +72,10 @@ def canonical_sha(value):
 
 def fact(path, root=None):
     path = Path(path)
-    return {'path': path.relative_to(root).as_posix() if root else str(path), 'bytes': path.stat().st_size,
+    # Windows temporary directories can name the same directory with an 8.3
+    # alias or its expanded name. Normalize both operands before relativizing.
+    name = path.resolve().relative_to(Path(root).resolve()).as_posix() if root is not None else str(path)
+    return {'path': name, 'bytes': path.stat().st_size,
             'sha256': sha(path)}
 
 
@@ -112,7 +115,7 @@ def write_json(path, value):
 def publish_no_replace(temporary, destination):
     """Atomically expose a complete raw file, refusing every existing name."""
     temporary, destination = Path(temporary), Path(destination)
-    if temporary.parent != destination.parent:
+    if temporary.parent.resolve() != destination.parent.resolve():
         raise EvidenceError('raw temporary and final paths must share one directory')
     method = None
     if sys.platform.startswith('linux'):
@@ -165,7 +168,8 @@ An already executable file is never chmod-ed or retried after an access denial.
 No directory, ACL, ownership or other permission bit is changed.
 """
     path, output_directory = Path(path), Path(output_directory).resolve()
-    if path.is_symlink() or path.resolve().parent != output_directory or str(path) != expected['path']:
+    if (path.is_symlink() or path.resolve().parent != output_directory or
+            path.resolve() != Path(expected['path']).resolve()):
         raise EvidenceError('executable mode check is limited to this build output')
     with path.open('rb') as handle:
         before = os.fstat(handle.fileno())
@@ -219,7 +223,7 @@ def sanitizer_configuration(mode, disable_leak_check, base_environment):
 
 
 def output_directory(value, root):
-    path = Path(value).resolve()
+    path, root = Path(value).resolve(), Path(root).resolve()
     if path == root or root in path.parents:
         raise EvidenceError('output must be outside the source checkout')
     if path.exists() and any(path.iterdir()):
@@ -237,6 +241,7 @@ def protected_check(root):
 
 
 def inventory(root, sources, extra_paths=()):
+    root = Path(root).resolve()
     paths = set(sources)
     paths.add('Makefile')
     paths.add('native/src/world.cpp')
@@ -322,6 +327,7 @@ def make_dependency_paths(content):
 
 
 def actual_dependencies(root, dependency_files, compile_directory):
+    root, compile_directory = Path(root).resolve(), Path(compile_directory).resolve()
     paths = set()
     for dependency_file in dependency_files:
         for name in make_dependency_paths(dependency_file.read_text(encoding='utf-8')):

@@ -134,6 +134,29 @@ class EvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(runner.EvidenceError, 'unavailable or misparsed'):
             runner.actual_dependencies(root, [dep], build)
 
+    def test_dependency_and_inventory_roots_accept_equivalent_directory_aliases(self):
+        # A lexical alias exercises the same asymmetric-normalization failure
+        # as Windows RUNNER~1, without requiring symlink privileges on Windows.
+        root, build, hop = (self.directory / name for name in ('repo', 'build', 'alias-hop'))
+        build.mkdir()
+        hop.mkdir()
+        for name in ('native/src/world.cpp', 'Makefile', 'materials/catalogue/compatibility-lock.json',
+                     'tools/material_catalogue/compatibility.py', 'fixtures/registered.json'):
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('test-only bytes')
+        root_alias, build_alias = hop / '..' / root.name, hop / '..' / build.name
+        dep = build / 'input.d'
+        dep.write_text('object.o: ../repo/native/src/world.cpp\n')
+        for source_root, compile_root in ((root_alias, build), (root, build_alias), (root_alias, build_alias)):
+            with self.subTest(root=source_root, build=compile_root):
+                inputs = runner.actual_dependencies(source_root, [dep], compile_root)
+                self.assertEqual(inputs, [runner.fact(root / 'native/src/world.cpp', root)])
+        self.assertEqual(runner.fact(root / 'native/src/world.cpp', root_alias)['path'], 'native/src/world.cpp')
+        inputs = runner.inventory(root_alias, [], [root / 'fixtures/registered.json'])
+        self.assertIn('fixtures/registered.json', {item['path'] for item in inputs})
+        self.assertTrue(all(not Path(item['path']).is_absolute() for item in inputs))
+
     def test_windows_flags_use_explicit_cxx_exceptions_without_posix_threads(self):
         windows = runner.compiler_flags('normal', 'nt')
         linux = runner.compiler_flags('normal', 'posix')
@@ -342,6 +365,23 @@ class EvidenceTests(unittest.TestCase):
         with self.assertRaises(runner.EvidenceError):
             runner.output_directory(output, checkout)
 
+    def test_output_containment_normalizes_both_directory_aliases(self):
+        checkout, hop = self.directory / 'checkout', self.directory / 'alias-hop'
+        checkout.mkdir()
+        hop.mkdir()
+        alias = hop / '..' / checkout.name
+        for root, output in ((alias, checkout), (alias, checkout / 'build'),
+                             (checkout, alias / 'build'), (alias, alias / 'build')):
+            with self.subTest(root=root, output=output):
+                with self.assertRaisesRegex(runner.EvidenceError, 'outside the source checkout'):
+                    runner.output_directory(output, root)
+        self.assertFalse((checkout / 'build').exists())
+        output = self.directory / 'external'
+        self.assertEqual(runner.output_directory(hop / '..' / output.name, alias), output.resolve())
+        (output / 'earlier.json').write_text('{}')
+        with self.assertRaisesRegex(runner.EvidenceError, 'not empty'):
+            runner.output_directory(hop / '..' / output.name, alias)
+
     def test_raw_files_are_private_until_complete_fsynced_publication(self):
         prefix = self.directory / 'atomic'
         final_stdout = self.directory / 'atomic.stdout'
@@ -384,6 +424,20 @@ class EvidenceTests(unittest.TestCase):
             runner.publish_no_replace(temporary, final)
         self.assertEqual(final.read_bytes(), b'original')
         self.assertEqual(temporary.read_bytes(), b'new output')
+
+    def test_raw_publication_accepts_equivalent_parent_alias_without_overwriting(self):
+        hop = self.directory / 'alias-hop'
+        hop.mkdir()
+        temporary = self.directory / 'temp.partial'
+        destination = hop / '..' / 'final.stdout'
+        temporary.write_bytes(b'complete bytes')
+        runner.publish_no_replace(temporary, destination)
+        self.assertEqual(destination.read_bytes(), b'complete bytes')
+        temporary.write_bytes(b'later bytes')
+        with self.assertRaises(FileExistsError):
+            runner.publish_no_replace(temporary, destination)
+        self.assertEqual(destination.read_bytes(), b'complete bytes')
+        self.assertEqual(temporary.read_bytes(), b'later bytes')
 
     def test_final_raw_verification_detects_later_equal_size_corruption(self):
         result = runner.process([sys.executable, '-c', 'print("sample")'], self.directory,
@@ -463,6 +517,20 @@ class EvidenceTests(unittest.TestCase):
         executable.write_bytes(b'verified')
         with self.assertRaisesRegex(runner.EvidenceError, 'limited to this build output'):
             runner.restore_generated_executable(executable, runner.fact(executable), self.directory / 'different')
+
+    def test_executable_identity_accepts_directory_alias_but_rejects_another_file(self):
+        hop = self.directory / 'alias-hop'
+        hop.mkdir()
+        executable = self.directory / 'generated'
+        executable.write_bytes(b'verified bytes')
+        executable.chmod(0o755)
+        expected = runner.fact(executable.resolve())
+        self.assertIsNone(runner.restore_generated_executable(hop / '..' / executable.name, expected,
+                                                             hop / '..'))
+        another = self.directory / 'another'
+        another.write_bytes(b'verified bytes')
+        with self.assertRaisesRegex(runner.EvidenceError, 'limited to this build output'):
+            runner.restore_generated_executable(another, expected, self.directory)
 
     def test_disable_leaks_is_explicit_asan_only_and_marked_unexecuted(self):
         environment, recorded, leak = runner.sanitizer_configuration('asan-ubsan', True,
