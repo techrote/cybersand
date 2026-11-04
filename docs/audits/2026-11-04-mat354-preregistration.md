@@ -71,7 +71,8 @@ execution settings. The IN control uses its existing required radius3.
   and diagonal destinations are Wall. Blocked, left-only and right-only variants
   isolate legal-side eligibility; no Mercury/powder contact is introduced.
 - Confined Smoke with lifetime255 supplies a spatially separated busy control
-  in every core containing tested material. It cannot contact or heat the source
+  in every core containing tested material or a reachable interior destination.
+  It cannot contact or heat the source
   and outlives all registered horizons. Its source-specific counters are separate.
 - Source/destination/neighbor masks are inserted before step9 and removed before
   step17. The neighbor-mask variant uses an enclosed two-cell MoltenGlass pair
@@ -166,3 +167,23 @@ region policy; no per-cell allocation, idle scan, artificial dirty frame or RNG
 change. Protected `native/src/world.cpp` requires separately reviewed owner
 admission, compatibility transition, runtime rebuild and provenance publication.
 No `KernelOutcome` framework or production change is required for investigation.
+
+## Apparatus correction registered after the first campaign
+
+The first compiled apparatus is local checkpoint `23ca8074`. Its original
+registration and implementation remain in Git history. Independent review found
+that the busy control supplied Smoke only in the source's initial core. A generic
+liquid could move across a core seam and then lose continuous active coverage.
+The revised construction supplies Smoke in every core intersecting a reachable
+interior Empty destination as well. This changes only the control apparatus;
+all552 case identities, horizons, decision criteria and production bytes remain
+fixed. The earlier finite-coverage observations retain that limit. A fresh
+committed source and campaign must qualify the corrected control; earlier runs
+are not relabelled.
+
+The first ordinary run also has one retained raw-identity failure (a truncated
+distributed-Paste output); its receipt's execution success is not qualification.
+A subsequent identical-source run stopped on an artifact executable-mode loss,
+and the first ASan/UBSan process failed at LeakSanitizer's inaccessible process
+inspection. Preserve all three attempts. Any explicitly leak-disabled run must
+report only address/undefined-behavior coverage, not LeakSanitizer acceptance.

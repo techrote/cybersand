@@ -188,8 +188,13 @@ Fixture construct(World& w,const Args& a) {
     }
     if(a.busy) {
         std::set<Point> core_origins;
-        for(const auto& p:points) if(w.stored_material(p.first,p.second)==mat)
-            core_origins.insert({core_floor(p.first)*64,core_floor(p.second)*64});
+        // Every reachable corridor cell must remain covered after a carrier
+        // crosses a core/chunk seam. Initial source-only coverage was finite.
+        for(const auto& p:points) {
+            const auto material=w.stored_material(p.first,p.second);
+            if(material==mat || material==Material::Empty)
+                core_origins.insert({core_floor(p.first)*64,core_floor(p.second)*64});
+        }
         for(const auto& [cx,cy]:core_origins) {
             bool found=false;
             for(const int oy:{48,40,16}) for(const int ox:{48,40,16}) {
