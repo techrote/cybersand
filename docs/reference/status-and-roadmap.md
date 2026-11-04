@@ -53,6 +53,33 @@ persistence, normal gameplay and hardware physical acceptance remain incomplete.
 No automatic Stage3B or GCR dependency is added; frozen #283 and other PLAY/GCR
 branches remain separate.
 
+## Material authoring Planned adoption — 2026-11-04
+
+The [corrected MAT-AUTH architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
+The owner approved documentation-only guarded integration of #357 after final
+checks; the [PR ledger](https://github.com/techrote/cybersand/pull/357) records
+actual integration status. This supersedes only the adoption hold in the dated
+review below. Runtime material behavior and backend/source-byte identities remain
+unchanged, and #353-A implementation is still a separate, unstarted assignment.
+
+Use the [bounded shadow-compiler handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661)
+before that assignment. Keep the #353 → (#354/#355) → #356 chain and all separate
+consumer-cutover, semantics and runtime-editing decisions; parent #352 stays open.
+
+## Material authoring review — 2026-11-03
+
+**Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+supersedes the adoption hold below; implementation remains separately unstarted.
+
+The [MAT-AUTH proposal](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+has a source-qualified **ACCEPT WITH CORRECTIONS** recommendation, not owner
+adoption. #357 stays draft/unmerged. The recommended first #353 checkpoint
+generates shadow metadata while preserving native/fallback behavior, header-byte
+LCB identities and positional quantity ledgers. Production cutover and new
+semantics remain separately gated. #354/#355 serialize shared kernel writes;
+#356 exposes only real consumers. The [review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+preserves #162/#358/#347/#370 and GCR ownership and the original intake.
+
 ## LCB current-main reassessment — 2026-11-03
 
 The [#359 source-qualified audit](../audits/2026-11-03-lcb-reassessment.md)

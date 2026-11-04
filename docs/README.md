@@ -35,6 +35,14 @@ source `749fb8b5` has successful scoped execution/publication, but its full-matr
 2 ms mean CPU gate is **NOT MET** (23/24 groups; all 12 candidate groups pass). Existing #364 contact recovery precedes conditional
 #365 restoration; neither issue is replaced by another investigation chain.
 
+Material authoring: the [owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+authorizes documentation integration only. The [corrected technical contract](architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+and [independent review](audits/2026-11-03-mat-auth-000-architecture-review.md)
+retain shadow generation before any production cutover. #353-A remains a separate,
+unstarted task; #353–#356 implementation and production migration are not authorized
+by this adoption. The [PR ledger](https://github.com/techrote/cybersand/pull/357)
+owns actual integration and CI status.
+
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),
 [ordinary application comparison paths](operations/lcb-manual-comparison-ux.md)
