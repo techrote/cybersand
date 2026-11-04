@@ -53,10 +53,10 @@ void test_pressure_optimization_identity_readback() {
         // Independent Python hashlib/struct '<6Q' known answers: execution
         // version, variant and the four requested budgets after the domain.
         const auto expected = variant == 1
-            ? "ff6c0ec10b50db0095e96b7d67e61494aea2b55ca618c60edcac2cf0b9aac60d"
-            : "bb3da4cf065ebca4ba39363b246ec365c08f15e1d50f2bfa2d307abd4dd95964";
+            ? "d1f15e0e704bc27fba8b58eef92a045bb04806fb10eb2469ffdb34a072187107"
+            : "ca4180747c95741dab518f991b96a84df2bc3144c6b5cb67e1e1915ed170e05b";
         require(identity && cybersand::Sha256::hex(*identity) == expected && extensions[0].extension_identity_version == 1U,
-                "cached/dormant execution3 has its declared native identity encoding1");
+                "cached/dormant execution4 has its declared native identity encoding1");
         const auto full = world->physical_state_hash();
         std::vector<std::array<std::uint8_t,32>> observations{*identity};
         for (int field = 0; field < 4; ++field) {
