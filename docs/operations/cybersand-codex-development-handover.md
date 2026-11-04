@@ -21,6 +21,8 @@ E. Earlier registered selective failures remain open. New native89-input builds,
 mechanical controls, physical qualification and owner review are separately
 identified; no material-law/sleep/default promotion or merge follows.
 
+Current [Scooper qualification](../audits/2026-11-04-authored-compound-scooper.md) retains48 source-bound desktop captures: mechanical controls pass, LA fails the carry demonstration, and E/S pass its literal lift/spill thresholds with an explicit pre-tip cavity-count gap. Loaded selective stability remains bounded and owner review is pending. Corrected native source0206b540 changes only no-catch receipt accounting. Sleep, production promotion and merges remain excluded.
+
 Authored hull admission and Scooper defaults are registered before results in the
 [GCR-AUTHORED-001 plan](gcr-authored-compound-registration.md).
 

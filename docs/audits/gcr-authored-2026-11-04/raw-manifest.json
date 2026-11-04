@@ -1,0 +1,747 @@
+{
+  "source": "8af64c5ea9e1ad99f95106cb3826f4f5d559fb38",
+  "files": [
+    {
+      "path": "identity.json",
+      "kind": "source_identity",
+      "present": true,
+      "bytes": 83647,
+      "sha256": "1efb4bf46ec9982421de27021f93b333ba2a4b5df91d06f23f7bc676b89ed571"
+    },
+    {
+      "path": "completion.json",
+      "kind": "runner_completion",
+      "present": true,
+      "bytes": 774,
+      "sha256": "c9b3dd5ae277b1ba2f19c5ad226ac409a1b536b27a46081b1b93224c818f199e"
+    },
+    {
+      "path": "windows/docs/audits/gcr-authored-2026-11-04/protocol.json",
+      "kind": "registered_protocol",
+      "present": true,
+      "bytes": 2686,
+      "sha256": "dda3a38733559991d74bee8fcc0876fffc394affcb04996e8a9467fcead7b6a2"
+    },
+    {
+      "path": "windows/runtime.json",
+      "kind": "runtime_identity",
+      "present": true,
+      "bytes": 11159,
+      "sha256": "ab951d0a15a0e0d0a51ed5962de2591eeb942d55be97d2b9ec049c2d7981e404"
+    },
+    {
+      "path": "windows/gates.json",
+      "kind": "gate_receipts",
+      "present": true,
+      "bytes": 668,
+      "sha256": "66a48495533ecc85a792a6e484d4ab57e60080625a5d1cf24e7cca80cbcc93cb"
+    },
+    {
+      "path": "windows/campaign.json",
+      "kind": "capture_receipts",
+      "present": true,
+      "bytes": 29407,
+      "sha256": "5568be767b8c70ded7b01c3a6cbad78e69895741b56094ddd9d47f963d4a118c"
+    },
+    {
+      "path": "windows/landing-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1523582,
+      "sha256": "df5287ad07319bc3d91f8201fa7d0d3132f64f3d81151847c78cbc60e9ec5a37"
+    },
+    {
+      "path": "windows/landing-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 314,
+      "sha256": "077537310319353db267457f9f73256e4f933f0a1379d43653138b784e0676d2"
+    },
+    {
+      "path": "windows/landing-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1523500,
+      "sha256": "e53efa07dbb887f36851a3aacc905abe98b36b850cb3135bb7cd51566040aea2"
+    },
+    {
+      "path": "windows/landing-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 324,
+      "sha256": "588f2b6e1ddadedad11e3f6938ec87481bc7a8d50a2b11a605b89bb57d72d26f"
+    },
+    {
+      "path": "windows/landing-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1523517,
+      "sha256": "91f7d5c3a8f4ecaf9d71c35b4010ac595091c3fc57ef75900693882a5fd7374e"
+    },
+    {
+      "path": "windows/landing-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 324,
+      "sha256": "2211f704b0b0cdd6e7334f696837f547e6c31af92a592e081b109335bfe1c8ac"
+    },
+    {
+      "path": "windows/burst-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1785462,
+      "sha256": "10d5e67d3bcfba6069e4a27719942af57d703966321f8e621f216938f73f5f34"
+    },
+    {
+      "path": "windows/burst-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 312,
+      "sha256": "3506023298c790be29db95305695fa28b9d8c65c6905012b308b170f75f8e520"
+    },
+    {
+      "path": "windows/burst-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1534582,
+      "sha256": "b7ae6f65457977df31f3faa537171978b983ee9d03a9e5693a303a61f9abed26"
+    },
+    {
+      "path": "windows/burst-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 322,
+      "sha256": "949723a6466f7f71489060c967505cca548d27c18e469097111b6b2b72d60b13"
+    },
+    {
+      "path": "windows/burst-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1695157,
+      "sha256": "5e102abf4231ddc8845600a753a91fa274b84ef3d4410e5fc79f9e4ecc9e748d"
+    },
+    {
+      "path": "windows/burst-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 322,
+      "sha256": "9ac0596bdf152742c0e8c7c19a55d1c1c7010e31e178e343606b8a9592725126"
+    },
+    {
+      "path": "windows/stream-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2805603,
+      "sha256": "4ee3f3d2ee96623bee9423f20ffc1ec66b00bf07015137e8d9b93b6ab573bfd6"
+    },
+    {
+      "path": "windows/stream-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 313,
+      "sha256": "0be7e7576c6e7b64e77cf23e7e288f5dba2db01a43550324de085980a7847a17"
+    },
+    {
+      "path": "windows/stream-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2344488,
+      "sha256": "3a9f60eafed2aefd4b2d421dfcf180ce213549195efc9c44f94a9565a7baddb2"
+    },
+    {
+      "path": "windows/stream-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 323,
+      "sha256": "1397fa7ae3cb356a7f2e02d559fed31dbce90d80fea97062a5c7ad7792653717"
+    },
+    {
+      "path": "windows/stream-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2798439,
+      "sha256": "00178f7859a345fef222f50e69c188472fb478f7068e25fb407da655606d5a5f"
+    },
+    {
+      "path": "windows/stream-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 323,
+      "sha256": "efed7e04ceb98e800c4590a1d4699f209efec3a248380edd7d9280c337e0462f"
+    },
+    {
+      "path": "windows/burial-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2791461,
+      "sha256": "2510aafb3aa22ff5cc25fa69753dc4ed6cd82c9faabe9d0dc3f452d387cb6ded"
+    },
+    {
+      "path": "windows/burial-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 313,
+      "sha256": "c4ea075d8d93ac5e9d51f8bd9eee0a27648597290c1871ea11bd42d409692f72"
+    },
+    {
+      "path": "windows/burial-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2951846,
+      "sha256": "ab7f10391abeb7fb312809c1447256fe83b3002e7302f13b688c2044572fea95"
+    },
+    {
+      "path": "windows/burial-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 323,
+      "sha256": "62bbb174790de86899d082bbc73bc951cd8e6948d345b1cdbe4f5255e20d8310"
+    },
+    {
+      "path": "windows/burial-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2801224,
+      "sha256": "9a40626d9e0eb8306ad40c9640a0408e4cdf3d991fc4331be65a8c2c87a812df"
+    },
+    {
+      "path": "windows/burial-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 323,
+      "sha256": "52e30eeab4e470a71f118bf99e0d216ba7203ed5f2d3d67471f8d678d8f5648f"
+    },
+    {
+      "path": "windows/carry-spill-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2631033,
+      "sha256": "16897f14b7fc48cc753b0e4ce49e8ad3625f2c3091789fb244f147b5a206c079"
+    },
+    {
+      "path": "windows/carry-spill-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 318,
+      "sha256": "eb77fb79b3b9f242c6ab549bb8ccb0cbae881bef89fdf73316ac01f6f5518f77"
+    },
+    {
+      "path": "windows/carry-spill-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2381745,
+      "sha256": "b8d91a3b61f15d068ff1b0476427711cd763bf8e9dea455590b32a2179c83037"
+    },
+    {
+      "path": "windows/carry-spill-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 328,
+      "sha256": "23811499334f85045004ae00bfcd758ac11a6874fa82e71d9d821df8c86f53f1"
+    },
+    {
+      "path": "windows/carry-spill-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2467673,
+      "sha256": "1fb41c56dee9215288a3ec7a0cfe5dfd323cd6c297a3c102345b3a369e704837"
+    },
+    {
+      "path": "windows/carry-spill-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 328,
+      "sha256": "fb7f22bd6a8a6127a94b28eeb80ed4baa4d94c595694a3232f213bff63ca7f0f"
+    },
+    {
+      "path": "windows/edge-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1614208,
+      "sha256": "6b17676e63bb04df297597a3c80362febf8eb342949ff1ba434d3c1a9c2eca69"
+    },
+    {
+      "path": "windows/edge-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 311,
+      "sha256": "5c9245bd88e5d9637a88e3bef88bda60bb24d1ef3eb9001aae284aac4abf34e3"
+    },
+    {
+      "path": "windows/edge-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1614343,
+      "sha256": "8b0e2e6b055302b3ab6ea8bb8749674a0be452f3d0dc482fa52b3cb5098f7c9f"
+    },
+    {
+      "path": "windows/edge-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 321,
+      "sha256": "19a4af113aad4228b0078b75f89e4ad1830f8c73218d983ecba23d246c6598fc"
+    },
+    {
+      "path": "windows/edge-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1614334,
+      "sha256": "b2eca63da26af63e9e2654f09cb83e21c432da1ce4547689214094b9ca00b8b1"
+    },
+    {
+      "path": "windows/edge-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 321,
+      "sha256": "0d76c3f1cf2c83f5785e9f6a30dff3bba5e1646173dc41f773c52b76b7bfe22c"
+    },
+    {
+      "path": "windows/water-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1529198,
+      "sha256": "6aa76103687ef3add59ba1bfad076e90f41ea7d9a726125f2801054dd411d3e6"
+    },
+    {
+      "path": "windows/water-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 312,
+      "sha256": "86eef0fdf21cbf285d40c422c99cfb6141f94d8e81c261a0b967e64951ef111a"
+    },
+    {
+      "path": "windows/water-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1529218,
+      "sha256": "8031c7b0ed58c38511c12aeac068b6364619c0989fbd2a5ae283fbad7abffea7"
+    },
+    {
+      "path": "windows/water-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 322,
+      "sha256": "5bd27e3629bf4282aa07f189774f8669771a540b13c7b6b92016c94d91b5867f"
+    },
+    {
+      "path": "windows/water-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1529218,
+      "sha256": "b9f42f624666549501fa8b51e7086a7f6670b6e86fa65c7ff23a172a406f6977"
+    },
+    {
+      "path": "windows/water-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 322,
+      "sha256": "5540dd5a0bd206d11c25552628307af8fade050becdd659ea9c4cccd5f49de0a"
+    },
+    {
+      "path": "windows/hard-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1674146,
+      "sha256": "2a0187b1db027b34b2fe8c26f766296be98f65efa4d2e44cb6fc3343598570eb"
+    },
+    {
+      "path": "windows/hard-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 311,
+      "sha256": "b4f5efe0139f98daa88e78eda72d75129a132cdde3d6554d3e097794acc77f5d"
+    },
+    {
+      "path": "windows/hard-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1674153,
+      "sha256": "d3af99014c6a9e9eb734762477b7dcfa9c2fb90ab49469a1069f7f0a3ea55bab"
+    },
+    {
+      "path": "windows/hard-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 321,
+      "sha256": "6a06639630ee8d42eaaf9f94efd0ce71ed2656234102079fc663d121a52fda90"
+    },
+    {
+      "path": "windows/hard-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1674219,
+      "sha256": "db2f40085f4c063de2a8edbe489351ed71623808d075bfa6f16c84f8fd9fa9c7"
+    },
+    {
+      "path": "windows/hard-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 321,
+      "sha256": "e7c67c4b5dc4036b64da51d6bb981d8d66d3861f6c07f15a8c061c1ad70cc906"
+    },
+    {
+      "path": "linux/docs/audits/gcr-authored-2026-11-04/protocol.json",
+      "kind": "registered_protocol",
+      "present": true,
+      "bytes": 2686,
+      "sha256": "dda3a38733559991d74bee8fcc0876fffc394affcb04996e8a9467fcead7b6a2"
+    },
+    {
+      "path": "linux/runtime.json",
+      "kind": "runtime_identity",
+      "present": true,
+      "bytes": 11159,
+      "sha256": "0a51257de5113e24dfe5b5ceb868f54ea73c445af97cf17da013fa97a5d54274"
+    },
+    {
+      "path": "linux/gates.json",
+      "kind": "gate_receipts",
+      "present": true,
+      "bytes": 1001,
+      "sha256": "e60ed2baabdd014b55f69820c9c2738c1dfbddd700202823cafbb83d651bd481"
+    },
+    {
+      "path": "linux/campaign.json",
+      "kind": "capture_receipts",
+      "present": true,
+      "bytes": 36966,
+      "sha256": "d33e3efd6460853c0f80ed0171ba1c49fd097771d2183f2c349ea5e0ac620d97"
+    },
+    {
+      "path": "linux/landing-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1523764,
+      "sha256": "2682ab803916f5481f6d15c481374c6f3f42cfae8cadf36c7e941cd8d474bd6e"
+    },
+    {
+      "path": "linux/landing-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 310,
+      "sha256": "3c68ad47ab90fff2ee88dfd72ea5b622a1c038bbebb8d50d5bec24ae6d12937f"
+    },
+    {
+      "path": "linux/landing-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1523589,
+      "sha256": "4e53390059ec34c080002909e2eca6ca5edbc61a9c0932d0a03b98c5a1ac4cba"
+    },
+    {
+      "path": "linux/landing-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 320,
+      "sha256": "bb6821ed70d200b641d44ba4278b599055257992aeb867a61e262cad3d9b3021"
+    },
+    {
+      "path": "linux/landing-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1523582,
+      "sha256": "cd8854acff3ff747063ef0d3805f186cadc69715755597597f458038373a94b1"
+    },
+    {
+      "path": "linux/landing-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 320,
+      "sha256": "8ccb3b0d236b6f36d4746fcb7ce70447a45d720f263c3f2f3b22d3220f007b03"
+    },
+    {
+      "path": "linux/burst-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1785622,
+      "sha256": "30b9961747d920bd9c570f4172b118c8de79094637beee53a3062b2c37ebaef5"
+    },
+    {
+      "path": "linux/burst-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 308,
+      "sha256": "304d91c397ab6890b9b97545c4a861419a98150811f14fcca37f1aa8f3d952fd"
+    },
+    {
+      "path": "linux/burst-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1534665,
+      "sha256": "1a7f0a6d42de71f0ad84fa247841b637991bf1ec1c5991f99471bf72f4a6411e"
+    },
+    {
+      "path": "linux/burst-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 318,
+      "sha256": "e51fe1b552047b17072b08935e5df9e68e8bcc6ddb3b8dca36c0304a373d4bb4"
+    },
+    {
+      "path": "linux/burst-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1695331,
+      "sha256": "613d1b8bc9f839715a8902f6121ac76c10ac0e3f13074216363af889348a04e2"
+    },
+    {
+      "path": "linux/burst-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 318,
+      "sha256": "ebd83bf79ad6843dc9e1872d0024d10c5bd46512a08855bc41e25e9b8be8dc83"
+    },
+    {
+      "path": "linux/stream-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2805621,
+      "sha256": "f408b3080e2fe74d16d4929db8024006070cc9879b512e63ac00bc4068c7a542"
+    },
+    {
+      "path": "linux/stream-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 309,
+      "sha256": "0da68e78d77d2665d18eecf4afb0992b17585bdcb5f0a5ff9d6121e8d4450fab"
+    },
+    {
+      "path": "linux/stream-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2344528,
+      "sha256": "bc576c21fb9ab0e3c6a1d369133067228633914c48810b8b474a79c7e799fecc"
+    },
+    {
+      "path": "linux/stream-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 319,
+      "sha256": "c12cfcda482ce25b8131735d5d2ed21385521701c11b21ebd057d010375fee2b"
+    },
+    {
+      "path": "linux/stream-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2798538,
+      "sha256": "8ba73cf064a1f31a3009824f426c0ea4ba41a6059c7755243cf383edf4328b28"
+    },
+    {
+      "path": "linux/stream-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 319,
+      "sha256": "4a67f2286b3b91bc425455cea742ae75147483348040c9c5c53f7947c7faf34f"
+    },
+    {
+      "path": "linux/burial-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2791438,
+      "sha256": "0fdd3f6a64a0ce8ff6b8e60b73c73dec4bfc1c215b6453eb974ab8e830b03b54"
+    },
+    {
+      "path": "linux/burial-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 309,
+      "sha256": "bb3b818952b2e892987101c829729b7ec08b88ab20620bb1a1eb3cc1f73bcdfd"
+    },
+    {
+      "path": "linux/burial-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2951824,
+      "sha256": "a4ebf6410d6cb1b5b5a94bd3a03fb0183c26a14b38f15c2ca0c1f96f81b93d19"
+    },
+    {
+      "path": "linux/burial-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 319,
+      "sha256": "6735b06bc4e18fcbec5c408ad101f51dcfe62a829dfc9d047a7edc626706753b"
+    },
+    {
+      "path": "linux/burial-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2801272,
+      "sha256": "50cb2fb9e56c8bf96e01de8a0e4d82e089ab439fb37bb9c39e2398aa971ddc12"
+    },
+    {
+      "path": "linux/burial-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 319,
+      "sha256": "d82d0f3ee8e786d1485adbe5444a3a3baefa236a44775ad35e58c16bf0155bef"
+    },
+    {
+      "path": "linux/carry-spill-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2630857,
+      "sha256": "2e88464df69eb05e188e5815d170a7ab5dc65d7d9266c7a7761194a302f8ef93"
+    },
+    {
+      "path": "linux/carry-spill-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 314,
+      "sha256": "98435eab83bc0c441f67ca13deb47d97032637700c1072ac92413c2becc2ea26"
+    },
+    {
+      "path": "linux/carry-spill-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2381499,
+      "sha256": "357e6ba4c7dd68332b8c4b32245d62e4c8cdf3609c7c81fdf8f61eda90bc283f"
+    },
+    {
+      "path": "linux/carry-spill-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 324,
+      "sha256": "70ec5913b6fe39cedb4c071db30fd7b82f0fe895d8d2780673d7503e90ea4868"
+    },
+    {
+      "path": "linux/carry-spill-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 2467911,
+      "sha256": "b7ccc936a6094efefecf544276ca9fce23980058234bd1fd0ad2d1f3c03db82b"
+    },
+    {
+      "path": "linux/carry-spill-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 324,
+      "sha256": "564ffbb9a62eff42bfda9f7ff809fb9d98f400a0eeefa0470e8ad5c195076ce6"
+    },
+    {
+      "path": "linux/edge-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1614153,
+      "sha256": "515cee1b416d761fb7df90375681e114e1130b1de90e1ff088f19029f2cb6a76"
+    },
+    {
+      "path": "linux/edge-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 307,
+      "sha256": "dec8cac5de253480b4b9a67df0938d2a4d2b5a64a3d5d5592dcc4e5b4d7c855b"
+    },
+    {
+      "path": "linux/edge-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1614144,
+      "sha256": "439ff3efdcc88e377fff6f4b84dcd0a1f1b8c1490e10cd377f2a2090add9b2fa"
+    },
+    {
+      "path": "linux/edge-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 317,
+      "sha256": "8fcc64d25688f6f71ea120209753538b87cafd6bbf9d8cde25ce136be56e2341"
+    },
+    {
+      "path": "linux/edge-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1614135,
+      "sha256": "d73519242d7191137a982e90404e482db744168a806fc30db3c532319d33e19e"
+    },
+    {
+      "path": "linux/edge-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 317,
+      "sha256": "baf9519cbb89941ebe1ef467cd8e3c49e19684cd4aed3ba2980faaaa6dc65c00"
+    },
+    {
+      "path": "linux/water-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1529502,
+      "sha256": "190aa0db8739fa5ab31de77fe74ebdcd22296efdba5cdccf066f6c5d7994c7b9"
+    },
+    {
+      "path": "linux/water-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 308,
+      "sha256": "a5ab5360a1e675f7a60c282f8dab316ac20e09939766bdcb399f32f95bce40bc"
+    },
+    {
+      "path": "linux/water-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1529443,
+      "sha256": "cb47f098ef529525805905de869ae8451509b3cc969c211c162e8c7599474289"
+    },
+    {
+      "path": "linux/water-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 318,
+      "sha256": "076c76a105cedce320be051dedb0b3d76654c53395ba21dc6a55aa7ecedafcef"
+    },
+    {
+      "path": "linux/water-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1529399,
+      "sha256": "9ea1b426bb9bb3f160a0cc034ef13752521d9adde465d0f4c2bc44b98475d6a7"
+    },
+    {
+      "path": "linux/water-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 318,
+      "sha256": "3b7abdb33e990d4d5db9d86c4849a48183896637bb32bd5bd1980ecfb3dd5b30"
+    },
+    {
+      "path": "linux/hard-LA.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1674146,
+      "sha256": "1b626c8172b2267a2942cd706ae6a62b782eb5a2544ae2f955885bd40d14bcce"
+    },
+    {
+      "path": "linux/hard-LA.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 307,
+      "sha256": "b154edf117f3b4e0f328383ba9bbd2d79e30be859195808ffe151c2915369e05"
+    },
+    {
+      "path": "linux/hard-LA-EVENT-OFF.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1674070,
+      "sha256": "4389419cbba6bd91c04a44d626ddf1c5da80068ac8ebc57cc2c5926b34105bc0"
+    },
+    {
+      "path": "linux/hard-LA-EVENT-OFF.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 317,
+      "sha256": "c9ab73c62fd3e6198327d25e714d107e1a58e01c04d73a69a8c10051f5f3141d"
+    },
+    {
+      "path": "linux/hard-LA-SELECTIVE.json",
+      "kind": "raw_capture",
+      "present": true,
+      "bytes": 1674314,
+      "sha256": "d436ee8078c841c86b4bd9e3d06af1184e58cf6860b92684078bcef82cac3dae"
+    },
+    {
+      "path": "linux/hard-LA-SELECTIVE.log",
+      "kind": "capture_log",
+      "present": true,
+      "bytes": 317,
+      "sha256": "cebb4958575dc81ead82abb7e471d4bdacc08edc6d4ffd1744cd2128eba89780"
+    }
+  ]
+}

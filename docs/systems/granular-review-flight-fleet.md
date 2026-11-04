@@ -67,10 +67,13 @@ owns the new admission and the separate structural-detachment boundary.
 The new native implementation requires source-matched Windows/Linux runtimes
 with89 production inputs; the earlier88-input libraries cannot supply this API.
 The current build cohort is native source
-`a6bf8ec4e75cd1105ab40b927d909b888f42280f`. Scoped build/floor and mechanical
-preflights are separate from final-head full qualification and owner gameplay
-acceptance. No sleep, material-law tuning, production promotion or merge follows
-from adding the authoring workflow.
+`0206b5406a22ba668f02018516ff4723f3b3fc6d`. It includes a no-catch receipt
+accounting correction; the physical wrench and bridge guards are unchanged.
+The [dated Scooper record](../audits/2026-11-04-authored-compound-scooper.md)
+keeps original failures, source-matched builds, mechanical controls and the
+48-case Windows/Linux physical population separate from final-head execution
+and owner gameplay acceptance. No sleep, material-law tuning, production
+promotion or merge follows from adding the authoring workflow.
 
 ## Saved spawn, Burst key and compact comparison controls
 

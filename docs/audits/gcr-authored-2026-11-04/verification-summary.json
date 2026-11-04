@@ -1,0 +1,2002 @@
+{
+  "schema": 1,
+  "source_at_packaging": "8af64c5ea9e1ad99f95106cb3826f4f5d559fb38",
+  "scope": "Original local receipts and failures, exact file hashes; final-head gates recorded separately in draft PR.",
+  "shipping_native": {
+    "windows": {
+      "build_source": "0206b5406a22ba668f02018516ff4723f3b3fc6d",
+      "native_sha256": "5ea17e8c97103c166a6c234497c9f7020247fc621f2a6ba4ebb493994cc24c77",
+      "native_inputs": 89,
+      "source_inputs_match": true
+    },
+    "linux": {
+      "build_source": "0206b5406a22ba668f02018516ff4723f3b3fc6d",
+      "native_sha256": "5b722e6b2c712bd9617e3c1c5c4e6392e5f2b1a6af65f738acab60c1749b28c8",
+      "native_inputs": 89,
+      "source_inputs_match": true
+    }
+  },
+  "core_current_input_deltas": [],
+  "protected_material_consumers": [
+    {
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "docs/reference/water-normalization-vectors.json",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "native/src/world.cpp",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": false
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": false
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": false
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    },
+    {
+      "path": "tools/lcb/policy_contract.py",
+      "changed_by_this_task": false,
+      "matches_immutable_lock": true
+    }
+  ],
+  "capture_02_source_reconciliation": {
+    "source": "8af64c5ea9e1ad99f95106cb3826f4f5d559fb38",
+    "original_completion_ok": false,
+    "reason": "Only the separate receipt regression expected-Empty census changed during the campaign. Each OS project was verified against the frozen inputs before and after all captures. No physical source change.",
+    "current_project_deltas": [
+      "godot/tests/test_gcr_scooper_receipt.gd"
+    ],
+    "captured_input_hash": "5afd43a59a16998653ec3a43fe0a97a24ccbb7ae681ea078572fb05a066452f8",
+    "completion_sha256": "c9b3dd5ae277b1ba2f19c5ad226ac409a1b536b27a46081b1b93224c818f199e"
+  },
+  "local_groups": [
+    {
+      "local_folder": "build/authored-native-preflight-01",
+      "completion": {
+        "base_source": "04c7a18471b4b1cac2156cee245ecb13cbda2d25",
+        "ok": false,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": false
+          },
+          {
+            "platform": "linux",
+            "ok": false
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 230,
+          "sha256": "38ed3d53ecc067010f8d8747efba33e9191d158e7083db2febc42c989fe19a39"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 82900,
+          "sha256": "557a4c36f21dc1aa82fce134833a4d609f546e3a180fdcb8d84117e8ab392b60"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1790,
+          "sha256": "4f59e9ae76e1a17d8b48c4bde79ae21faaf12e8556bdf31dac8c55bc4938ce0b"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38440,
+          "sha256": "f57865f52b878eda59c0861750002f581eb89b8b0cea09ddffc3870a5be51c38"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "ee8946d3665717e057fc4863ef130d854741629bfff6fde760359dc4c66d39c5"
+        },
+        {
+          "path": "linux/test_gcr_authored_compound_native.log",
+          "bytes": 681,
+          "sha256": "013e6b7d8a16e90fc4e00dbe1090f9bcda433c4100c05c73a79c817918f03b30"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 82922,
+          "sha256": "f6ad495ccd729ddf66acffdd5e2ec67bdd23092c3346cca8ea43cedcd435d2ba"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1477,
+          "sha256": "0fc77476f94619bdf76fd1097f0f3359fed97ab42476d921af9e86dbd63be7ab"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39052,
+          "sha256": "fcc481606935a9c76fc79e8062b3f675b778ad914f709826a14f67463f0d6399"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "b55d76a30031a4a4fd86d1dd794b739fc81efb1777963534fbf0d9acf287b9f2"
+        },
+        {
+          "path": "windows/test_gcr_authored_compound_native.log",
+          "bytes": 671,
+          "sha256": "22e73b26ba007596722d8216e80e54e42ac2aad0974ba2e185318f5241110eb8"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/authored-native-preflight-02",
+      "completion": {
+        "base_source": "04c7a18471b4b1cac2156cee245ecb13cbda2d25",
+        "ok": false,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": false
+          },
+          {
+            "platform": "linux",
+            "ok": false
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 230,
+          "sha256": "38ed3d53ecc067010f8d8747efba33e9191d158e7083db2febc42c989fe19a39"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 82900,
+          "sha256": "0b1d914438d0995d613508bf2eb0c960ea740cf010e1c7ecf95c5947379f8472"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1789,
+          "sha256": "b16229c90727c619bec379b043212e077ad472378f3642c26f73a4f92aa00f9f"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38440,
+          "sha256": "f57865f52b878eda59c0861750002f581eb89b8b0cea09ddffc3870a5be51c38"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "ee8946d3665717e057fc4863ef130d854741629bfff6fde760359dc4c66d39c5"
+        },
+        {
+          "path": "linux/test_gcr_authored_compound_native.log",
+          "bytes": 1539,
+          "sha256": "4dfef302d0c58911fe1deea754b0f7ad9c657be9231dddcbee6c542727a1b2a2"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 84005,
+          "sha256": "fe3dbda53d887dfe8306cfca5afbdda8d9ffc44b1ad1e042bebba7f2f5aa0a06"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1469,
+          "sha256": "264d0da144a90f350991a0d2811af9b14c31561e9935764c9809b89158486725"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39052,
+          "sha256": "fcc481606935a9c76fc79e8062b3f675b778ad914f709826a14f67463f0d6399"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "b55d76a30031a4a4fd86d1dd794b739fc81efb1777963534fbf0d9acf287b9f2"
+        },
+        {
+          "path": "windows/test_gcr_authored_compound_native.log",
+          "bytes": 1474,
+          "sha256": "04f29ef34b6a65770c10f507d4a2f6b727d25d727e494a0a29ec310c66188fd1"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/authored-native-preflight-03",
+      "completion": {
+        "base_source": "04c7a18471b4b1cac2156cee245ecb13cbda2d25",
+        "ok": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "gates_sha256": "af34eb6a486e7876439262700a58f3e3283b9c296c71b02bd5219ee4884eb409"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "gates_sha256": "2729a6f1907cde2da7323817ae54848c0fa5425ea6c696ac05eb1ca52ea19f59"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 409,
+          "sha256": "44aca027e3d04858ca7f4cf1c9c6337fe569115b278a5c6103f8a74c7219576b"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 82900,
+          "sha256": "f82182d8fedce82bd2b57f25628ab8a88b06789e17c6cbed57fb06d5e4f50ce7"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1786,
+          "sha256": "2729a6f1907cde2da7323817ae54848c0fa5425ea6c696ac05eb1ca52ea19f59"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38440,
+          "sha256": "f57865f52b878eda59c0861750002f581eb89b8b0cea09ddffc3870a5be51c38"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "ee8946d3665717e057fc4863ef130d854741629bfff6fde760359dc4c66d39c5"
+        },
+        {
+          "path": "linux/test_gcr_authored_compound_native.log",
+          "bytes": 366,
+          "sha256": "1a8df822d3cefa6da33fd55add77d1f2bd33f6ff50757455c05bf9d504c75a2b"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 84005,
+          "sha256": "fe3dbda53d887dfe8306cfca5afbdda8d9ffc44b1ad1e042bebba7f2f5aa0a06"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1466,
+          "sha256": "af34eb6a486e7876439262700a58f3e3283b9c296c71b02bd5219ee4884eb409"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39052,
+          "sha256": "fcc481606935a9c76fc79e8062b3f675b778ad914f709826a14f67463f0d6399"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "b55d76a30031a4a4fd86d1dd794b739fc81efb1777963534fbf0d9acf287b9f2"
+        },
+        {
+          "path": "windows/test_gcr_authored_compound_native.log",
+          "bytes": 370,
+          "sha256": "8599e9024b5b6e5561f55ecc8d52bce0d432e47b6f30e67b5c4b25867950da6d"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-body-preflight-01",
+      "completion": {
+        "base_source": "04c7a18471b4b1cac2156cee245ecb13cbda2d25",
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "gates_sha256": "6da7ca5a17f3d2c0b164b4521fed2ac6b8960f8cf82926d592745a8f36a111a2"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "gates_sha256": "940f50c637d3d10b464064446432079ad68a32c9269f774d18e48bc20d7fb25f"
+          }
+        ],
+        "ok": true
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 409,
+          "sha256": "7dc9b437587d9d35b9aeebef60e385f7755f08e7bf7f64de5a3feff38dded2ca"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 283,
+          "sha256": "449df7533268c5c374c77d64630a45463cae3fcd81d9b99246c574fb1866ee7b"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1755,
+          "sha256": "940f50c637d3d10b464064446432079ad68a32c9269f774d18e48bc20d7fb25f"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38440,
+          "sha256": "f57865f52b878eda59c0861750002f581eb89b8b0cea09ddffc3870a5be51c38"
+        },
+        {
+          "path": "linux/project-inputs.json",
+          "bytes": 77050,
+          "sha256": "614838c7071410e4fe1f2cf10d5cd3b0d3a042dd23c86d037041fd35c8917695"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "ee8946d3665717e057fc4863ef130d854741629bfff6fde760359dc4c66d39c5"
+        },
+        {
+          "path": "linux/test_gcr_scooper_body.log",
+          "bytes": 412,
+          "sha256": "01bc75f3a181035c4be9681eeb266967f02104be27594d35192e63d0c130f526"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 82922,
+          "sha256": "f6ad495ccd729ddf66acffdd5e2ec67bdd23092c3346cca8ea43cedcd435d2ba"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1438,
+          "sha256": "6da7ca5a17f3d2c0b164b4521fed2ac6b8960f8cf82926d592745a8f36a111a2"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39052,
+          "sha256": "fcc481606935a9c76fc79e8062b3f675b778ad914f709826a14f67463f0d6399"
+        },
+        {
+          "path": "windows/project-inputs.json",
+          "bytes": 77050,
+          "sha256": "614838c7071410e4fe1f2cf10d5cd3b0d3a042dd23c86d037041fd35c8917695"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "b55d76a30031a4a4fd86d1dd794b739fc81efb1777963534fbf0d9acf287b9f2"
+        },
+        {
+          "path": "windows/test_gcr_scooper_body.log",
+          "bytes": 416,
+          "sha256": "614b2f24f72a68d4797108793c111bfe32a066271657ac842be4eafc843eef38"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/authoring-preflight-01",
+      "completion": null,
+      "files": [
+        {
+          "path": "identity.json",
+          "bytes": 1704,
+          "sha256": "51c162acba822b17343bb5c90e001b0734ed6b971748de5cd1bf1c3a70faefe3"
+        },
+        {
+          "path": "import-receipt.json",
+          "bytes": 445,
+          "sha256": "cf0bf65b9813e362599301e1165683eaa40cfd1ce7f5b1c9e2e2809adb291911"
+        },
+        {
+          "path": "import.log",
+          "bytes": 38875,
+          "sha256": "dfc7504039b914b45f744d4786d0694b21b27141ea57afcd57b7d2f43fd14b94"
+        },
+        {
+          "path": "test-receipt.json",
+          "bytes": 512,
+          "sha256": "d4c1083a8da46a02c8f2d7027b7c3ad5e1c8bab1421dc6e87164cee3aef2a539"
+        },
+        {
+          "path": "test.log",
+          "bytes": 747,
+          "sha256": "37ecf19db7d2b8adab0326ac5f23d592ce91188a4a8ac1f452a6d46517063339"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/authoring-preflight-02",
+      "completion": null,
+      "files": [
+        {
+          "path": "identity.json",
+          "bytes": 1704,
+          "sha256": "3defde867a417ac4cd3449743d3c15635b62d927f3fd99b1c82d71b3e57476c4"
+        },
+        {
+          "path": "import-receipt.json",
+          "bytes": 445,
+          "sha256": "080eda65f587c03127378a305fbbfd7b2ffbf8d88a6ad93f5d8a98834ec0dde4"
+        },
+        {
+          "path": "import.log",
+          "bytes": 38875,
+          "sha256": "dfc7504039b914b45f744d4786d0694b21b27141ea57afcd57b7d2f43fd14b94"
+        },
+        {
+          "path": "test-receipt.json",
+          "bytes": 512,
+          "sha256": "a58b4c34d6e3c0bb138a546062576855ea9d6b0fd8f358692142b8ba359c06bd"
+        },
+        {
+          "path": "test.log",
+          "bytes": 377,
+          "sha256": "ac1f6533611d9c9ac6d4269cfffb43486891791eec36e841aaa6cff7b263d47c"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/authoring-full-preflight-01",
+      "completion": {
+        "source": "04c7a18471b4b1cac2156cee245ecb13cbda2d25",
+        "scope": "Actual Windows scene authoring/reload/input and retained layout with new native SDK",
+        "ok": true,
+        "native_build_source": "a6bf8ec4e75cd1105ab40b927d909b888f42280f",
+        "native_input_count": 89,
+        "native_sha256_checked_after_run": "5f92abb3a2541655aec552795d0adfadba12f6278c133f8331b6f87c1af41372",
+        "gates_sha256": "09e3acc0291fb1fb7e530d84b8ce2e4fac6bc935a4b0d8e86eb2d03de1888c6f",
+        "identity_sha256": "1f5ef38fe7ae650adc31f104d2972860d50a1980b1b552e754e9b09bd78a6568"
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 556,
+          "sha256": "63ea2a765d6c49be109c26d5e9f0df1b8a4553afda37c0c8f4a48643840676f6"
+        },
+        {
+          "path": "gates.json",
+          "bytes": 1577,
+          "sha256": "09e3acc0291fb1fb7e530d84b8ce2e4fac6bc935a4b0d8e86eb2d03de1888c6f"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 92710,
+          "sha256": "1f5ef38fe7ae650adc31f104d2972860d50a1980b1b552e754e9b09bd78a6568"
+        },
+        {
+          "path": "import.log",
+          "bytes": 39052,
+          "sha256": "fcc481606935a9c76fc79e8062b3f675b778ad914f709826a14f67463f0d6399"
+        },
+        {
+          "path": "test_gcr_fleet_repeatable_ui.log",
+          "bytes": 444,
+          "sha256": "97529c72df96e75b63107da70a1bf8d4ad9a904c56d04a0b2cd4aee08f99c414"
+        },
+        {
+          "path": "test_gcr_flyer_authoring.log",
+          "bytes": 378,
+          "sha256": "7ddcbda4ca57d33154bb0817025df9492291af7367ff0fccfb19ac6535b35b8a"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-release-preflight-01",
+      "completion": {
+        "base_source": "25ca975d3b3eeb263760b7ceac42e01e52f02cd3",
+        "ok": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "gates_sha256": "f154ceb1eb077eb39e663ad0bdbc7092b0ed6ab89217e24304dd6db16c672a71"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "gates_sha256": "0efbd0ae5ce8a0daac40b8545e1d84d1100a1639cfb733026f7e9798e191d915"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 409,
+          "sha256": "99f0f2b8dba101f85e74d5253c615244ec676a5d485ced24b5235c84a08cf5ff"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 83025,
+          "sha256": "bcb251f50cf1f2272a39402308983b1816fc41f1fcdbaea9c64253d10f0c522b"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1770,
+          "sha256": "0efbd0ae5ce8a0daac40b8545e1d84d1100a1639cfb733026f7e9798e191d915"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38498,
+          "sha256": "bdd38af0f2a9e2d8297474215c41c06e7d0160cd6a42a4f44cac2b5e1553c042"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "ee8946d3665717e057fc4863ef130d854741629bfff6fde760359dc4c66d39c5"
+        },
+        {
+          "path": "linux/test_gcr_scooper_release.log",
+          "bytes": 22853,
+          "sha256": "13a479a8657ce2df1da57a000a49a5e48d3db1a58aae48d2040470d347deb3c3"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 61322,
+          "sha256": "28d09988fdd7c0521d15a9d78a6ad2a3871c854b2548ec8eb424f78f45dc0ed7"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1450,
+          "sha256": "f154ceb1eb077eb39e663ad0bdbc7092b0ed6ab89217e24304dd6db16c672a71"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39111,
+          "sha256": "a94df3baa5a69ec82d73fe327a84ba8f236687b902bc4d1ee70388e172ff1e4a"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "b55d76a30031a4a4fd86d1dd794b739fc81efb1777963534fbf0d9acf287b9f2"
+        },
+        {
+          "path": "windows/test_gcr_scooper_release.log",
+          "bytes": 22857,
+          "sha256": "dbaaf8388951951a81959f0dca307cef0ab75813b6d7620e6625e4b2ca23a621"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-release-preflight-02",
+      "completion": {
+        "base_source": "25ca975d3b3eeb263760b7ceac42e01e52f02cd3",
+        "ok": true,
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "gates_sha256": "ac0552f133a902b182d894fac0f2222f37fa90eae542be1c44aa9e033759c1a6"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "gates_sha256": "123fef6aaaeed33c33aa780e3d924def42762b15b67507e27e328c227adf095f"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 409,
+          "sha256": "054b4d70c5913db44ae48ed261f6f6117c488c91aa5725c6f2e724def7c7d839"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 83025,
+          "sha256": "cfd50a54f917bd7357fa121eebe155a7028d7f760e7e3c6ba6ee538db52eee27"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1768,
+          "sha256": "123fef6aaaeed33c33aa780e3d924def42762b15b67507e27e328c227adf095f"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38498,
+          "sha256": "bdd38af0f2a9e2d8297474215c41c06e7d0160cd6a42a4f44cac2b5e1553c042"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "ee8946d3665717e057fc4863ef130d854741629bfff6fde760359dc4c66d39c5"
+        },
+        {
+          "path": "linux/test_gcr_scooper_release.log",
+          "bytes": 23834,
+          "sha256": "57f2bd1ba679a64ee7a8857c420a0f7dfa8cf298866192f6748349969240083a"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 61322,
+          "sha256": "28d09988fdd7c0521d15a9d78a6ad2a3871c854b2548ec8eb424f78f45dc0ed7"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1450,
+          "sha256": "ac0552f133a902b182d894fac0f2222f37fa90eae542be1c44aa9e033759c1a6"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39111,
+          "sha256": "a94df3baa5a69ec82d73fe327a84ba8f236687b902bc4d1ee70388e172ff1e4a"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "b55d76a30031a4a4fd86d1dd794b739fc81efb1777963534fbf0d9acf287b9f2"
+        },
+        {
+          "path": "windows/test_gcr_scooper_release.log",
+          "bytes": 23838,
+          "sha256": "93ef3d9fe92b146325308b2cea1dc3067cb1997f8a8552bbddbf56a2695c0f50"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-compatibility-preflight-01",
+      "completion": {
+        "base_source": "142b87dee6bb16369c334844b4e42d7f97511ec8",
+        "results": [
+          {
+            "platform": "windows",
+            "ok": false,
+            "failed": "test_gcr_fleet_spawn",
+            "completed_gates": 2,
+            "runtime_unchanged": true
+          },
+          {
+            "platform": "linux",
+            "ok": false,
+            "failed": "test_gcr_fleet_spawn",
+            "completed_gates": 2,
+            "runtime_unchanged": true
+          }
+        ],
+        "ok": false
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 438,
+          "sha256": "89e6d170dd579b0f25549df25eafb06e2606dd35b7e8a3eefecc5cd0d091dcd9"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 80305,
+          "sha256": "46fea0aaf141149362352db51671bf1fd68b70b33edbddf299b979daa3e1d615"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1774,
+          "sha256": "da32721f19b5e81a9da40eaba43177c60aebd9293b837b1b0b3764804e1cecfe"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38440,
+          "sha256": "f57865f52b878eda59c0861750002f581eb89b8b0cea09ddffc3870a5be51c38"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "ee8946d3665717e057fc4863ef130d854741629bfff6fde760359dc4c66d39c5"
+        },
+        {
+          "path": "linux/test_gcr_fleet_spawn.log",
+          "bytes": 715,
+          "sha256": "77d237a0d2896142209bbf2fba7de9dbadf3b7d4ef7c5c4c05b5015fba018a81"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 18875,
+          "sha256": "3d93159cd0e49660d42966b51190fece41825fff1648f0d8ad7a0c47b462f4fb"
+        },
+        {
+          "path": "source-project/third_party/rapier2d.lock.json",
+          "bytes": 2357,
+          "sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1452,
+          "sha256": "667f879bbcd2a288500b5cda89a06aa842b30ec417c2e8d70ec6b4e4b3be5140"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39052,
+          "sha256": "fcc481606935a9c76fc79e8062b3f675b778ad914f709826a14f67463f0d6399"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "b55d76a30031a4a4fd86d1dd794b739fc81efb1777963534fbf0d9acf287b9f2"
+        },
+        {
+          "path": "windows/test_gcr_fleet_spawn.log",
+          "bytes": 724,
+          "sha256": "89a72d3644732728051b1ae2eae5508192ab4d36936098d1e8cf09af1d13bf3d"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-compatibility-preflight-02",
+      "completion": {
+        "base_source": "25ca975d3b3eeb263760b7ceac42e01e52f02cd3",
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "completed_gates": 29,
+            "runtime_unchanged": true,
+            "gates_sha256": "1624896608d32764a683ff1fd2fc673ac3e6e9cd0624235e7d77a47ef2b82e82"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "completed_gates": 29,
+            "runtime_unchanged": true,
+            "gates_sha256": "cfcf0f672d27776ba6599e80efdbb5c3a1a8b88b453513d18b1e11c41cb26151"
+          }
+        ],
+        "ok": true
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 537,
+          "sha256": "befd2f6a03044bb873f2c6b7f0ff5ff0f2f898720dcc260a1f42ac221c0b5427"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 80305,
+          "sha256": "1074b349044d760f45e3e675a742ba4d50aa4432a751b0a5984cbb6ce854f2fe"
+        },
+        {
+          "path": "linux/fleet-test-report.json",
+          "bytes": 1772,
+          "sha256": "75cb46101149e67ad7fb49808a99c5d86b7cc4f408d6bb3f6fffd3754479cf24"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 26642,
+          "sha256": "cfcf0f672d27776ba6599e80efdbb5c3a1a8b88b453513d18b1e11c41cb26151"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38440,
+          "sha256": "f57865f52b878eda59c0861750002f581eb89b8b0cea09ddffc3870a5be51c38"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "ee8946d3665717e057fc4863ef130d854741629bfff6fde760359dc4c66d39c5"
+        },
+        {
+          "path": "linux/test_actor_rig_integration.log",
+          "bytes": 271,
+          "sha256": "e6b2fea0f7b68afae345db0aea3509d5b381225040058749d46345a830b108b6"
+        },
+        {
+          "path": "linux/test_gcr_admission.log",
+          "bytes": 323,
+          "sha256": "95bbce731bb2e5386969b8864c90ae7f9d4fbd0e94d8906786a9ff864f4a23e3"
+        },
+        {
+          "path": "linux/test_gcr_async.log",
+          "bytes": 282,
+          "sha256": "fae727fe7bcee1619dc3e8e2a45450a50d69dcbf3866775f828d4bf6cbf47a9b"
+        },
+        {
+          "path": "linux/test_gcr_crash_playground.log",
+          "bytes": 253,
+          "sha256": "eeffde73b8fcd859e3922de2eb798ff803f8b3993725bc356853f0d3145f5b9b"
+        },
+        {
+          "path": "linux/test_gcr_detachment.log",
+          "bytes": 378,
+          "sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60"
+        },
+        {
+          "path": "linux/test_gcr_envelope.log",
+          "bytes": 301,
+          "sha256": "2e1a42475b3085183df0170b377d371a9c9e46299609e8422b964220372f717d"
+        },
+        {
+          "path": "linux/test_gcr_fleet_alignment.log",
+          "bytes": 399,
+          "sha256": "ec832d920078a2d800a3dabbbf4b10ed562234c0233b5f9347ea327a640c88f7"
+        },
+        {
+          "path": "linux/test_gcr_fleet_boost.log",
+          "bytes": 266,
+          "sha256": "9a0a5baa95d38a084d7f4cba2ff672b29ec32674476a0be206c848c864163b64"
+        },
+        {
+          "path": "linux/test_gcr_fleet_controls.log",
+          "bytes": 354,
+          "sha256": "4c50fa3676bd25e49ecd97f3f0ccbb0f97c73d867b4828702c17a175f559bbad"
+        },
+        {
+          "path": "linux/test_gcr_fleet_emissions.log",
+          "bytes": 348,
+          "sha256": "6a45e09f8b480d3e28cbd7ac0ead7d822da8c7746be2b0dac2053eb9b54c9301"
+        },
+        {
+          "path": "linux/test_gcr_fleet_repeatable_ui.log",
+          "bytes": 440,
+          "sha256": "87a8615cebb0cb99c3509f067cb104b62e8d5c825ecdd12330272277a02bc16a"
+        },
+        {
+          "path": "linux/test_gcr_fleet_room_controls.log",
+          "bytes": 274,
+          "sha256": "eaf1fb6774517a56bb8d58e2f64be4d550ce50d27f2e544c2b536e65ddad17c5"
+        },
+        {
+          "path": "linux/test_gcr_fleet_side_thrusters.log",
+          "bytes": 357,
+          "sha256": "d965dd581c21985be84ba6453babfc7543d1ab645d4cfb6b2b2b304c7116186f"
+        },
+        {
+          "path": "linux/test_gcr_fleet_spawn.log",
+          "bytes": 376,
+          "sha256": "14ce71a8c63a9dfc144dbc0710e8b9251c861e33d6efdf3bd18c2f842e825cc6"
+        },
+        {
+          "path": "linux/test_gcr_granular_events_playground.log",
+          "bytes": 270,
+          "sha256": "d01ec2d42e51ece0ace43281dc87409ca863a92c4d89556ed814b8009ebe456c"
+        },
+        {
+          "path": "linux/test_gcr_painting_source.log",
+          "bytes": 271,
+          "sha256": "16669d54300fe355105d6b1580a68a8cfd0e911662847fb4c6d52abfff253123"
+        },
+        {
+          "path": "linux/test_gcr_powder_review.log",
+          "bytes": 1381,
+          "sha256": "277dc4fce494af10032f93b6fd5977caaf29f4b29c2a6d5e3772eda531cb98f8"
+        },
+        {
+          "path": "linux/test_gcr_protocol.log",
+          "bytes": 260,
+          "sha256": "a2a783f1fba990078b34f4b4e7c1acf7f0f1d42b34d93a4178b6f3d04aa20b9d"
+        },
+        {
+          "path": "linux/test_gcr_rest_bridge.log",
+          "bytes": 395,
+          "sha256": "9df33ab436965d9593f56acc9b167886f2dfd4933931b5137282d76b9b595f19"
+        },
+        {
+          "path": "linux/test_gcr_rest_material_freshness.log",
+          "bytes": 491,
+          "sha256": "bd4a4594d06260392c1f3fa71aabe59b684861d621e556d13a9fee80e0bd6889"
+        },
+        {
+          "path": "linux/test_gcr_review_fleet.log",
+          "bytes": 259,
+          "sha256": "3ca533df1f02205a548a72b8b9b0bd8945f073957c26534439543c00d39f453e"
+        },
+        {
+          "path": "linux/test_gcr_review_navigation.log",
+          "bytes": 281,
+          "sha256": "19f86c9dede825428979305274aeb090724ca52bcd23e8c60591501710858f69"
+        },
+        {
+          "path": "linux/test_gcr_selective_events.log",
+          "bytes": 277,
+          "sha256": "4419ff3a8aeac27f91f3668c46701f984902d555f6c247003d917ae84e9f92db"
+        },
+        {
+          "path": "linux/test_physical_actor_arena.log",
+          "bytes": 65218,
+          "sha256": "e8e97ab2a145b9ce997b9291fde4f33c5a82ce2c5ce83a0701fb8d536bbd3da5"
+        },
+        {
+          "path": "linux/test_rem002_body_granular.log",
+          "bytes": 511,
+          "sha256": "f8a4682de50aa128224ca2d907d0ce63524f1b82f5ec99b94c7b42e0a57ab55f"
+        },
+        {
+          "path": "linux/test_rem003_player_granular.log",
+          "bytes": 70792,
+          "sha256": "65c80d39c16330bf37e52c689d3c218a8b21524ee80374895c1be5c0f349bde9"
+        },
+        {
+          "path": "linux/test_solid_detachment_compound_response.log",
+          "bytes": 293,
+          "sha256": "c7a610a6f67e6301f2fbe9aa7827bbe22c57525b088573cc511706e0dd6af537"
+        },
+        {
+          "path": "linux/test_solid_detachment_displacement.log",
+          "bytes": 336,
+          "sha256": "e63dedb2b7aa792248249b231cbd98bbe1d8e6b8bf569f4cfe159a1a7e1bba7b"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 50071,
+          "sha256": "9ff622e96e3dafc9fd09a9a3fc47788ba627e65273cda35a0938a9dfe6da1bda"
+        },
+        {
+          "path": "source-project/third_party/rapier2d.lock.json",
+          "bytes": 2357,
+          "sha256": "df24cf6fb1adc17b2c1675b1387db19c93ee31d6cbf497c9295647ec98371285"
+        },
+        {
+          "path": "windows/fleet-test-report.json",
+          "bytes": 1772,
+          "sha256": "1ee10681db3094dbc7b593ffedb9a21997c560b8c6eeca15864c8c6fafe1ea80"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 22024,
+          "sha256": "1624896608d32764a683ff1fd2fc673ac3e6e9cd0624235e7d77a47ef2b82e82"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39052,
+          "sha256": "fcc481606935a9c76fc79e8062b3f675b778ad914f709826a14f67463f0d6399"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "b55d76a30031a4a4fd86d1dd794b739fc81efb1777963534fbf0d9acf287b9f2"
+        },
+        {
+          "path": "windows/test_actor_rig_integration.log",
+          "bytes": 275,
+          "sha256": "82fe3345efc30e801160aebdd596f75ac521b9adcbd0d6c7e4b5edbba74732f7"
+        },
+        {
+          "path": "windows/test_gcr_admission.log",
+          "bytes": 327,
+          "sha256": "6216b59567be6d89c907914a973e6f36bb4ab1da7115f864fbb92c2b9370a080"
+        },
+        {
+          "path": "windows/test_gcr_async.log",
+          "bytes": 286,
+          "sha256": "2107de52e8364fd1a50674d2e4b47975c28b99c3b50847d6454c4258417f7dbc"
+        },
+        {
+          "path": "windows/test_gcr_crash_playground.log",
+          "bytes": 257,
+          "sha256": "61d4d54fa1a65429994e5640ab8623bed2b250e964dd3d4e5d0b6def642a4988"
+        },
+        {
+          "path": "windows/test_gcr_detachment.log",
+          "bytes": 384,
+          "sha256": "bab5f3c0d15e0d970530fb3775290dce657eb6f386207782908b5744cef63cf7"
+        },
+        {
+          "path": "windows/test_gcr_envelope.log",
+          "bytes": 306,
+          "sha256": "471c50dbc99d16bcfb2b213e5b422932d6b7652e659650d12d4836abe12b967a"
+        },
+        {
+          "path": "windows/test_gcr_fleet_alignment.log",
+          "bytes": 403,
+          "sha256": "d23baa17a3434f060a9df952de3e5e5979a5ce994771c719422c08e5f2e908bc"
+        },
+        {
+          "path": "windows/test_gcr_fleet_boost.log",
+          "bytes": 270,
+          "sha256": "d0e43f95f2cb054464f9f3b1219b8247473650d683ce687bc42eda22ee6263cd"
+        },
+        {
+          "path": "windows/test_gcr_fleet_controls.log",
+          "bytes": 358,
+          "sha256": "eca5bec96488b13d1916cf5c27277636ab1726fc24f1cc36e927acee111929aa"
+        },
+        {
+          "path": "windows/test_gcr_fleet_emissions.log",
+          "bytes": 352,
+          "sha256": "ab0f9578c83e78e197d9a8d9ab22681266c632233d66cf9da80b2ca56f775a24"
+        },
+        {
+          "path": "windows/test_gcr_fleet_repeatable_ui.log",
+          "bytes": 444,
+          "sha256": "97529c72df96e75b63107da70a1bf8d4ad9a904c56d04a0b2cd4aee08f99c414"
+        },
+        {
+          "path": "windows/test_gcr_fleet_room_controls.log",
+          "bytes": 278,
+          "sha256": "9ffdd500e436195a2bb3c574333379a951215e7fdc7e3fa5db7b36bd85d1ca57"
+        },
+        {
+          "path": "windows/test_gcr_fleet_side_thrusters.log",
+          "bytes": 361,
+          "sha256": "48d0fe0178b2f7b458b2833103dc99ac113a10ac8ed3bd85e908d244bb875361"
+        },
+        {
+          "path": "windows/test_gcr_fleet_spawn.log",
+          "bytes": 380,
+          "sha256": "2741c95c1040990552d454c7401d247fc98f56e885245945fca64bf061dc953a"
+        },
+        {
+          "path": "windows/test_gcr_granular_events_playground.log",
+          "bytes": 274,
+          "sha256": "d573fe7ed886d3bbee566ed88b8a32132685144b1b014efe1ab92ff8d64abb81"
+        },
+        {
+          "path": "windows/test_gcr_painting_source.log",
+          "bytes": 275,
+          "sha256": "55952690baea967072d7bf1c355f96973a36e207a57394be01dc6a24fb1a4450"
+        },
+        {
+          "path": "windows/test_gcr_powder_review.log",
+          "bytes": 1385,
+          "sha256": "e4b85f6e81bc167fdd5eca4f17e6e583dc3861068bf3e627f6a2ccd44416eebc"
+        },
+        {
+          "path": "windows/test_gcr_protocol.log",
+          "bytes": 264,
+          "sha256": "a4a0499c90df41053877985a6aa85f7a87df5019504d8510f29226bf312d25f4"
+        },
+        {
+          "path": "windows/test_gcr_rest_bridge.log",
+          "bytes": 399,
+          "sha256": "c355595d0e224bc36fe039385e903bec14be040f4eac284345fbe1ba04f6d8bb"
+        },
+        {
+          "path": "windows/test_gcr_rest_material_freshness.log",
+          "bytes": 495,
+          "sha256": "4a9afa015268c3f6b7764a874514facacceb1b00b6290b415f9c18af7e6c2905"
+        },
+        {
+          "path": "windows/test_gcr_review_fleet.log",
+          "bytes": 263,
+          "sha256": "75ca0030dfe974f59ed9190c9747a1bd0a1af5d5b1c254d61332f6ce37e5f3b3"
+        },
+        {
+          "path": "windows/test_gcr_review_navigation.log",
+          "bytes": 285,
+          "sha256": "7cd0c9b8d90a215ace8296bffc58f3b51017cb17b4784e299ac2dae105561fe3"
+        },
+        {
+          "path": "windows/test_gcr_selective_events.log",
+          "bytes": 281,
+          "sha256": "1fd5487d5f1cd9e06f0e718c73a9cec5c304c9ba759268694bc738dd8b998d60"
+        },
+        {
+          "path": "windows/test_physical_actor_arena.log",
+          "bytes": 65814,
+          "sha256": "e45956dcb1f155cb59358d4c87c037e1a3b77e4221f57d91c465c05d18c9e932"
+        },
+        {
+          "path": "windows/test_rem002_body_granular.log",
+          "bytes": 516,
+          "sha256": "9679fb4f7e8478d7bf8a1218ac266b1396f09936a00efe5e8dda5debd8d93288"
+        },
+        {
+          "path": "windows/test_rem003_player_granular.log",
+          "bytes": 70800,
+          "sha256": "18b535a0e058d04d5e9cfba8b0548f187b8003189661db74ba5991495382e8a4"
+        },
+        {
+          "path": "windows/test_solid_detachment_compound_response.log",
+          "bytes": 299,
+          "sha256": "04629217945cada8d57bcf8352c42d670b35b7a79725f8ae9bd71967f0e9f6cd"
+        },
+        {
+          "path": "windows/test_solid_detachment_displacement.log",
+          "bytes": 342,
+          "sha256": "eb8e5906e43929a45221654dabd7e71485d54dbac334bdab2f20cd7212354b91"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-core-01",
+      "completion": {
+        "ok": false,
+        "source": "04c7a18471b4b1cac2156cee245ecb13cbda2d25",
+        "end_source": "04c7a18471b4b1cac2156cee245ecb13cbda2d25",
+        "core_inputs_unchanged": true
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 167,
+          "sha256": "2adcd707ded59da29c8739e5b8b601846852d06399ce87d3dc35c9559a2f2dde"
+        },
+        {
+          "path": "core-compile.log",
+          "bytes": 69,
+          "sha256": "10646732d6f58be07b197c6f15cabde8f475eacd76187ded5b27a853fa7b26f8"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 16066,
+          "sha256": "6df2727a47380fffcb47726a272275f6c24f4213d90c29d858da6151f3300789"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 770,
+          "sha256": "0c28c8791050a07e0a9c5a0a0ba65aa66b18d97694366ef9eed8ac6cd9a58eba"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-core-02",
+      "completion": {
+        "ok": true,
+        "source": "04c7a18471b4b1cac2156cee245ecb13cbda2d25",
+        "end_source": "6015cd3753bcb7929e3fa576e42d39304fcbe0c3",
+        "core_inputs_unchanged": true
+      },
+      "files": [
+        {
+          "path": "asan-ubsan-compile.log",
+          "bytes": 20436,
+          "sha256": "7e106ef8b67431e7727d63310611e8db9729d4ae877d9268445672771fcd94e4"
+        },
+        {
+          "path": "asan-ubsan.log",
+          "bytes": 16607,
+          "sha256": "49527ccc2d087abd39d9967d549ec9357080efcf4b5f02cfc6059d97810b9be3"
+        },
+        {
+          "path": "completion.json",
+          "bytes": 166,
+          "sha256": "623e80afb95187fc272f3c00678b06e4ee8b4438b1ea848671ffbd4f895769cd"
+        },
+        {
+          "path": "core-compile.log",
+          "bytes": 10296,
+          "sha256": "e7dd5cc7e5923a212a02b0bea3df32e0137ca711842f7815b570b73495a2bceb"
+        },
+        {
+          "path": "core.log",
+          "bytes": 16606,
+          "sha256": "248752faa93ec0a93a75d2d0b0efbf4b3a98d3a277bce56bafd0f2f560527024"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 16066,
+          "sha256": "6df2727a47380fffcb47726a272275f6c24f4213d90c29d858da6151f3300789"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 5057,
+          "sha256": "d2cf704cbbe31450ffbaf80b6827fe9654dc58ba159df387e8f688d22a256052"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-adapter-sanitizer-01",
+      "completion": {
+        "source": "142b87dee6bb16369c334844b4e42d7f97511ec8",
+        "ok": false,
+        "native_inputs_unchanged": true,
+        "instrumented_sha256": null,
+        "leak_detection": true
+      },
+      "files": [
+        {
+          "path": "compile.log",
+          "bytes": 45174,
+          "sha256": "220b53c87fe77d117fd0669fb299cdcc524a12c1a0064b8ab0b531a9cdb8c0d0"
+        },
+        {
+          "path": "completion.json",
+          "bytes": 166,
+          "sha256": "01d25b0dc73405f14dcf5dc02c42e0da1b3ad01302e306824a0d33056ffd6ca6"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 10907,
+          "sha256": "f0da5e4283bfc45767ce6abb125d08d7adfeffff307230009aa93e835abdb9de"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 2117,
+          "sha256": "f8c7a3b4fead627bc148be395accbe44f4f168e26196b96af55f78043368e07e"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-adapter-sanitizer-02",
+      "completion": {
+        "source": "25ca975d3b3eeb263760b7ceac42e01e52f02cd3",
+        "ok": false,
+        "native_inputs_unchanged": true,
+        "instrumented_sha256": "af78b3c1fd31cdc39a1a50d590551056effd8448210170c72af54fc79452124c",
+        "leak_detection": true
+      },
+      "files": [
+        {
+          "path": "compile.log",
+          "bytes": 42925,
+          "sha256": "21d810a5955d73800b4efd1d3cb5c2a3fb474e668ddb0cc498f0ccb392056fd1"
+        },
+        {
+          "path": "completion.json",
+          "bytes": 228,
+          "sha256": "3e8e20443028f993fabf479bec3c8314d98c7edd5a2658c7842f8f422ad38892"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 10907,
+          "sha256": "2f6dfafc7ba658750d9aaf7c71dae56080b08b66881cbcc89bd56d611921c4be"
+        },
+        {
+          "path": "import.log",
+          "bytes": 1017,
+          "sha256": "11b43c9dcd6376f8900b1841898954cf9729d027ebbf70220d36c2d420649d4a"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 3318,
+          "sha256": "cde7684e5e1ae374bf0a262613bf711bad0551ee06bba6455befc4bc540bfe2a"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-adapter-sanitizer-03",
+      "completion": {
+        "source": "6015cd3753bcb7929e3fa576e42d39304fcbe0c3",
+        "scope": "Local instrumented qualification only. No shipping SDK/engine/native source edits; not an ordinary pinned-host pass.",
+        "ok": false,
+        "shipping_and_native_inputs_unchanged": true,
+        "local_runtime_manifest_sha256": "999bd996ff5e31757dbe6acf7d0b42e184dbf61f3032f18611adfd0316b76b6c",
+        "identity_sha256": "4c4186ef512b78bbe895e1aaab4e6384601e5bf087d03d6ad48160fd94aa3d95",
+        "processes_sha256": "3c44d774d689f20b86d220c9acf132c46fea646164d8b9add2a413f3009703cf",
+        "leak_detection": true
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 571,
+          "sha256": "6484ae0a91c771cfcd5471d9fe9fd46c047d1872a6a0fbb4032b8d3a25ec3e44"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 181373,
+          "sha256": "4c4186ef512b78bbe895e1aaab4e6384601e5bf087d03d6ad48160fd94aa3d95"
+        },
+        {
+          "path": "import.log",
+          "bytes": 45117,
+          "sha256": "31bf81460a35ddba69bc63a64eafd246b825ad4ae07f4911ade0f7919afe0c5d"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 1719,
+          "sha256": "50dfcb5c9c280d1294f521b61390df7e3d21983ebb4bc08a276522836abff037"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 2390,
+          "sha256": "3c44d774d689f20b86d220c9acf132c46fea646164d8b9add2a413f3009703cf"
+        },
+        {
+          "path": "shim-compile.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "strip_deepbind.c",
+          "bytes": 506,
+          "sha256": "8dc66bd4707d09c0f71c51ff7ad3884cdb678d75e5f0303ea95b076f658a9e71"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-adapter-sanitizer-04",
+      "completion": {
+        "source": "0206b5406a22ba668f02018516ff4723f3b3fc6d",
+        "scope": "Explicitly instrumented local loader qualification. Not ordinary pinned-host pass or shipping SDK.",
+        "ok": true,
+        "native_inputs_unchanged": true,
+        "native_current_deltas": [],
+        "identity_sha256": "973e182fce9f467a35a6d963da9b565d860eb34dc82ef78cfe4d9f5ed3691ab1",
+        "processes_sha256": "77046bc8bebe6dde1d4f82b613d0cecc4f1f2c59811c4b80b43e96c7121fa910",
+        "local_runtime_manifest_sha256": "c68c9f8334226a25e2b851700725a255bddfc20b82438280a56087a515556824",
+        "leak_detection": true,
+        "external_suppression_sha256": "04dd86534ae37de400401b8a99ff5c283b7addf1082069119acc799b14b11ff8"
+      },
+      "files": [
+        {
+          "path": "compile.log",
+          "bytes": 42886,
+          "sha256": "427dcce2aa8fbc186aab58e3e2b6f10a4a13f1a960615767b27b195397795928"
+        },
+        {
+          "path": "completion.json",
+          "bytes": 673,
+          "sha256": "c940dc5da736c9d7b1b22c216ca970e4739c959c95f0d7f1e01f096641de5e3b"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 172886,
+          "sha256": "973e182fce9f467a35a6d963da9b565d860eb34dc82ef78cfe4d9f5ed3691ab1"
+        },
+        {
+          "path": "import.log",
+          "bytes": 38815,
+          "sha256": "60b0061e203639fa6a5fc8c15b863ff72632ae24d390c2e211e1a2740f9d507d"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "lsan-external-fontconfig.supp",
+          "bytes": 131,
+          "sha256": "04dd86534ae37de400401b8a99ff5c283b7addf1082069119acc799b14b11ff8"
+        },
+        {
+          "path": "original-unsuppressed-import.log",
+          "bytes": 45117,
+          "sha256": "31bf81460a35ddba69bc63a64eafd246b825ad4ae07f4911ade0f7919afe0c5d"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 10106,
+          "sha256": "77046bc8bebe6dde1d4f82b613d0cecc4f1f2c59811c4b80b43e96c7121fa910"
+        },
+        {
+          "path": "strip_deepbind.c",
+          "bytes": 506,
+          "sha256": "8dc66bd4707d09c0f71c51ff7ad3884cdb678d75e5f0303ea95b076f658a9e71"
+        },
+        {
+          "path": "test_gcr_authored_compound_native.log",
+          "bytes": 366,
+          "sha256": "1a8df822d3cefa6da33fd55add77d1f2bd33f6ff50757455c05bf9d504c75a2b"
+        },
+        {
+          "path": "test_gcr_detachment.log",
+          "bytes": 378,
+          "sha256": "63b3c3099e44fb78a22f48431e865a8543012310a5ac3d952ab790cc9878af60"
+        },
+        {
+          "path": "test_gcr_nocatch_receipt.log",
+          "bytes": 1425,
+          "sha256": "63b062ac64d953558811fd3b199cc7d6093ff30dd5fa6eb2a128b3c7a22852b5"
+        },
+        {
+          "path": "test_gcr_scooper_body.log",
+          "bytes": 412,
+          "sha256": "01bc75f3a181035c4be9681eeb266967f02104be27594d35192e63d0c130f526"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-native-01",
+      "completion": {
+        "ok": true,
+        "source": "a6bf8ec4e75cd1105ab40b927d909b888f42280f",
+        "native_inputs_unchanged": true
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 108,
+          "sha256": "88a5325a220cd7b1dba116512a18fe179c8309d380d549381e40344576dc8710"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 11643,
+          "sha256": "7c5aca07f037c2a8e2ee55d703c33f0374c14587f8bc81a7f3ad75f2440003ec"
+        },
+        {
+          "path": "linux.json",
+          "bytes": 11975,
+          "sha256": "cb542041c7c11214ed6fb8cc63deb26565bf1720a196a1dea9e592a3a678b7ba"
+        },
+        {
+          "path": "linux.log",
+          "bytes": 49805,
+          "sha256": "d130946028ac367743720eb39272f0da372657ddfd02482f5da715812a903a93"
+        },
+        {
+          "path": "windows.json",
+          "bytes": 11514,
+          "sha256": "a2c66acd8b3fb776e661b9f2a16454b60300bfb25eff06fdea798e022c012f80"
+        },
+        {
+          "path": "windows.log",
+          "bytes": 2366,
+          "sha256": "e5b9fc59e7cfe10d934db168a96221ee8eaba073e7ea35cd745196cdf2a261ac"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-native-02",
+      "completion": {
+        "ok": true,
+        "source": "0206b5406a22ba668f02018516ff4723f3b3fc6d",
+        "native_inputs_unchanged": true
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 108,
+          "sha256": "8377446bc33951fe7d4b0f1fad9223cbafcd0891376281ff6bcc965f726af025"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 10911,
+          "sha256": "614fddbed336701a2b4af3b6884dd8a812de85ba4e5634a7ecb2c533ae8c854d"
+        },
+        {
+          "path": "linux.json",
+          "bytes": 11975,
+          "sha256": "e3c7742e2dd725f48f65bb4f3ea57f66490062a64e25271c2f9f9e44c2055eef"
+        },
+        {
+          "path": "linux.log",
+          "bytes": 49766,
+          "sha256": "1219557c86f9267b41ee3d1e4c2888e9954f22261e2ea0f9045b7e1ecd42af83"
+        },
+        {
+          "path": "windows.json",
+          "bytes": 11514,
+          "sha256": "2758a435517626a2a0e4fb46c2f11cadac493df7a56fd5ed88c8fb3b8a457552"
+        },
+        {
+          "path": "windows.log",
+          "bytes": 2366,
+          "sha256": "55ab0498ab5cd30b4d3f9b3964cb4ad638aa445e5c493e9a5f34202f4ce12a8c"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-stream-refusal-01",
+      "completion": {
+        "scope": "Failed-step observation replay, not qualification pass",
+        "results": [
+          {
+            "platform": "windows",
+            "capture_ok": false,
+            "rows": 259,
+            "failure_tick": 259,
+            "refusal": "rest_receipt"
+          },
+          {
+            "platform": "linux",
+            "capture_ok": false,
+            "rows": 259,
+            "failure_tick": 259,
+            "refusal": "rest_receipt"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 402,
+          "sha256": "58b054f68b0aa0ce5f9453a30a232ef8e7b509dc96b7225b241e3b62661a0eac"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 165931,
+          "sha256": "63492549beee3d4d8067eeefbfccf7cf5f817c6de76116fb057ab26b67fa5e21"
+        },
+        {
+          "path": "linux/capture.json",
+          "bytes": 821048,
+          "sha256": "7550a994b53ff528aed84f1a24981affd1f5e625c22b6f65128585be7f030056"
+        },
+        {
+          "path": "linux/failure-summary.json",
+          "bytes": 95856,
+          "sha256": "ae1c26bb3ac1437afe248abf570d4548f63bfd82719f64f5cf8e9f0a23306a59"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 2436,
+          "sha256": "94eaf216196d4a1e28ae4724cd6fd348e3c6b3084d87c0289879090cce28f21e"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38498,
+          "sha256": "bdd38af0f2a9e2d8297474215c41c06e7d0160cd6a42a4f44cac2b5e1553c042"
+        },
+        {
+          "path": "linux/protocol.json",
+          "bytes": 2686,
+          "sha256": "dda3a38733559991d74bee8fcc0876fffc394affcb04996e8a9467fcead7b6a2"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11115,
+          "sha256": "d32355697cdecb986c1e46490568819357a8ba4f1bd37a952be56195c100fdd8"
+        },
+        {
+          "path": "linux/stream-LA.log",
+          "bytes": 354,
+          "sha256": "48b9f4cb5e9e7aa1e51bbfabd2ea98e26b778f046092d8d9ddcff3a2792e0d8c"
+        },
+        {
+          "path": "windows/capture.json",
+          "bytes": 821027,
+          "sha256": "b17edc986e8fa3a003924d1189cd5e81bd89a4a83a1bdb5ef57a1716ea804c84"
+        },
+        {
+          "path": "windows/failure-summary.json",
+          "bytes": 95858,
+          "sha256": "d1a14dfeea3d9ff0910b2989dfacc93675432fa4308c60284b4cf92c97fe298a"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1762,
+          "sha256": "01a31043a584fbb00176ef3acbac3f28772c88abb1c5c12bc495b1fab9c97d3d"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39111,
+          "sha256": "a94df3baa5a69ec82d73fe327a84ba8f236687b902bc4d1ee70388e172ff1e4a"
+        },
+        {
+          "path": "windows/protocol.json",
+          "bytes": 2686,
+          "sha256": "dda3a38733559991d74bee8fcc0876fffc394affcb04996e8a9467fcead7b6a2"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11115,
+          "sha256": "04b7ca27243abf0b9f1fe39dacb2997d6f051a6dabd388d2638da4f783510040"
+        },
+        {
+          "path": "windows/stream-LA.log",
+          "bytes": 358,
+          "sha256": "2ac70260f5b69d6fe845564b996e2e1e4bdcc0a22f0a14fa2cc29484687ab493"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-stream-refusal-02",
+      "completion": {
+        "scope": "Failed-step observation replay, not qualification pass",
+        "results": [
+          {
+            "platform": "windows",
+            "capture_ok": false,
+            "rows": 259,
+            "failure_tick": 259,
+            "refusal": "rest_receipt"
+          },
+          {
+            "platform": "linux",
+            "capture_ok": false,
+            "rows": 259,
+            "failure_tick": 259,
+            "refusal": "rest_receipt"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 402,
+          "sha256": "58b054f68b0aa0ce5f9453a30a232ef8e7b509dc96b7225b241e3b62661a0eac"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 165931,
+          "sha256": "10a08c17d4086234e44828cad14e8a70c452b660dbd1856d32033a38718c2066"
+        },
+        {
+          "path": "linux/capture.json",
+          "bytes": 822399,
+          "sha256": "ac528d32e0cc9ac51fd4c1567a0719fae4f4c3cb338f10e028e3d8dd2320c4b1"
+        },
+        {
+          "path": "linux/failure-summary.json",
+          "bytes": 97967,
+          "sha256": "f5638b0eac72cdc599a1ea18225a67be5a2ef05734e6e9d8664e7c246dc770b9"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 2434,
+          "sha256": "f6b07a449dc040cd80c203dbc055bf2aebe299b742bc16b5f09e80bc9a583013"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38498,
+          "sha256": "bdd38af0f2a9e2d8297474215c41c06e7d0160cd6a42a4f44cac2b5e1553c042"
+        },
+        {
+          "path": "linux/protocol.json",
+          "bytes": 2686,
+          "sha256": "dda3a38733559991d74bee8fcc0876fffc394affcb04996e8a9467fcead7b6a2"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11115,
+          "sha256": "d32355697cdecb986c1e46490568819357a8ba4f1bd37a952be56195c100fdd8"
+        },
+        {
+          "path": "linux/stream-LA.log",
+          "bytes": 354,
+          "sha256": "48b9f4cb5e9e7aa1e51bbfabd2ea98e26b778f046092d8d9ddcff3a2792e0d8c"
+        },
+        {
+          "path": "windows/capture.json",
+          "bytes": 822360,
+          "sha256": "56b5a5956817a7036160fcf38748760d8382e539f633779acdcb5cb36ffd5a81"
+        },
+        {
+          "path": "windows/failure-summary.json",
+          "bytes": 97968,
+          "sha256": "06f33c9486c4631e51c41cc5311b519f7df6cee3b16631d4351fd557c5f6e5aa"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1759,
+          "sha256": "c2d35abbc47d6dfa3dfa046c1e6efe77f9ae2de73eb89fd8565282bbc5252eb6"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39111,
+          "sha256": "a94df3baa5a69ec82d73fe327a84ba8f236687b902bc4d1ee70388e172ff1e4a"
+        },
+        {
+          "path": "windows/protocol.json",
+          "bytes": 2686,
+          "sha256": "dda3a38733559991d74bee8fcc0876fffc394affcb04996e8a9467fcead7b6a2"
+        },
+        {
+          "path": "windows/receipt-check-only.log",
+          "bytes": 225,
+          "sha256": "d53c18e4ac8861149a7e4f88d80760e79ec39e3fa23935ec0d77ef75f0b89198"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11115,
+          "sha256": "04b7ca27243abf0b9f1fe39dacb2997d6f051a6dabd388d2638da4f783510040"
+        },
+        {
+          "path": "windows/stream-LA.log",
+          "bytes": 358,
+          "sha256": "2ac70260f5b69d6fe845564b996e2e1e4bdcc0a22f0a14fa2cc29484687ab493"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-receipt-preflight-01",
+      "completion": {
+        "base_source": "8af64c5ea9e1ad99f95106cb3826f4f5d559fb38",
+        "results": [
+          {
+            "platform": "windows",
+            "ok": false
+          },
+          {
+            "platform": "linux",
+            "ok": false
+          }
+        ],
+        "ok": false
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 230,
+          "sha256": "11f72aba9efd1b8e259ae2c895c914fb6eadd68021293ae3f927ad3a1f16c36d"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 290,
+          "sha256": "a3a9ed2061d384245dbd93b69fe444a2c9797bdd2e952a34cb2083ab77281f0b"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1769,
+          "sha256": "45b36613fba7cb801b46e301f08c8db5a46a750261e7dd59a0c11511b1182967"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38614,
+          "sha256": "9101dfcff3fc7243bcd25cf11b9221b324f84c80f86210b739be66802855384f"
+        },
+        {
+          "path": "linux/project-inputs.json",
+          "bytes": 77374,
+          "sha256": "e99602b918f16ff6be7f36130f48df2428dcce113a9d5e109c89628e04893927"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "21ccd4a72fe385ad792ff3dfa07f67b5442ed0dc890e0e869461ee1a31e908f6"
+        },
+        {
+          "path": "linux/test_gcr_scooper_receipt.log",
+          "bytes": 790,
+          "sha256": "0713fd54b8fbf129e4d5921d84f225f1e1fd7191b0434ef51b07edb7dc6c353a"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1450,
+          "sha256": "3c07751142c3f7574f318c5d53d05426863617b5d1738cc3a920a21683aee83c"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39229,
+          "sha256": "6f4a03e03d5f0b434bfd4316a444f26f3b5ff155c300db80803d964108e413c7"
+        },
+        {
+          "path": "windows/project-inputs.json",
+          "bytes": 77374,
+          "sha256": "e99602b918f16ff6be7f36130f48df2428dcce113a9d5e109c89628e04893927"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "4a135a992d3058b3a40ce8e27a146648536f9c8fea40e0607860c3e8c1d0bf51"
+        },
+        {
+          "path": "windows/test_gcr_scooper_receipt.log",
+          "bytes": 799,
+          "sha256": "8f7885176d048fa347b6d1c07ac12f4bae25b00757956ee05b8d96aa910f57ac"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-receipt-preflight-02",
+      "completion": {
+        "base_source": "8af64c5ea9e1ad99f95106cb3826f4f5d559fb38",
+        "results": [
+          {
+            "platform": "windows",
+            "ok": true,
+            "gates_sha256": "b9443f13dbd7ec2266c2806c2bb95725356c883795f4951c90129195e7176c35"
+          },
+          {
+            "platform": "linux",
+            "ok": true,
+            "gates_sha256": "0d5f4527c4dc7b56b0a90df65cb6dab43b6e5569764ed83916ab1d5105f0c7a6"
+          }
+        ],
+        "ok": true
+      },
+      "files": [
+        {
+          "path": "completion.json",
+          "bytes": 409,
+          "sha256": "c271d509165013c72d2855f4eb349cad2de14258ff6511d0517f6fe7b0730925"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 290,
+          "sha256": "473002b1fcba7e87e3b87425cd980ac5f0d6d05ef46a79858bf63dcc3af8c310"
+        },
+        {
+          "path": "linux/gates.json",
+          "bytes": 1768,
+          "sha256": "0d5f4527c4dc7b56b0a90df65cb6dab43b6e5569764ed83916ab1d5105f0c7a6"
+        },
+        {
+          "path": "linux/import.log",
+          "bytes": 38614,
+          "sha256": "9101dfcff3fc7243bcd25cf11b9221b324f84c80f86210b739be66802855384f"
+        },
+        {
+          "path": "linux/project-inputs.json",
+          "bytes": 77374,
+          "sha256": "bdb274273bedefeb382b0bc6359652a61b6fa30f8817a6c6891ffc72bcc7ad45"
+        },
+        {
+          "path": "linux/runtime.json",
+          "bytes": 11257,
+          "sha256": "21ccd4a72fe385ad792ff3dfa07f67b5442ed0dc890e0e869461ee1a31e908f6"
+        },
+        {
+          "path": "linux/test_gcr_scooper_receipt.log",
+          "bytes": 421,
+          "sha256": "65a95c5f1be62e960849c28f7cc79c85054db79ba2446423a63416b7d829d1ea"
+        },
+        {
+          "path": "local-delta.patch",
+          "bytes": 732,
+          "sha256": "1cff485e2d82ed14270a16ec4b7a063da3d951528b58222b24cbc8cf335da176"
+        },
+        {
+          "path": "windows/gates.json",
+          "bytes": 1448,
+          "sha256": "b9443f13dbd7ec2266c2806c2bb95725356c883795f4951c90129195e7176c35"
+        },
+        {
+          "path": "windows/import.log",
+          "bytes": 39229,
+          "sha256": "6f4a03e03d5f0b434bfd4316a444f26f3b5ff155c300db80803d964108e413c7"
+        },
+        {
+          "path": "windows/project-inputs.json",
+          "bytes": 77374,
+          "sha256": "bdb274273bedefeb382b0bc6359652a61b6fa30f8817a6c6891ffc72bcc7ad45"
+        },
+        {
+          "path": "windows/runtime.json",
+          "bytes": 11257,
+          "sha256": "4a135a992d3058b3a40ce8e27a146648536f9c8fea40e0607860c3e8c1d0bf51"
+        },
+        {
+          "path": "windows/test_gcr_scooper_receipt.log",
+          "bytes": 425,
+          "sha256": "7e94983e5806e6b697c292e3363d02c69f4310fd5651e5de7312bd230fb4197c"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-nocatch-original-01",
+      "completion": null,
+      "files": [
+        {
+          "path": "fixture-limitation.json",
+          "bytes": 398,
+          "sha256": "deeca653e0403e369067f8a6886f08e0ebad7b5a0e3101468e97cd7f2d796394"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 521,
+          "sha256": "c17cf10b0e96183e2ebca1dffb720273c443036e0eb113b264753c567fdd51af"
+        },
+        {
+          "path": "native.log",
+          "bytes": 1502,
+          "sha256": "b47d9a8ff29d2380e0f197ac0c28ba6251fb425c919e5492b28aa03a5665c1fc"
+        },
+        {
+          "path": "process.json",
+          "bytes": 665,
+          "sha256": "7dc41749ddef708a8fde31c8e364f87e95d355bcf76f8134976e90969545a833"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-nocatch-original-02",
+      "completion": null,
+      "files": [
+        {
+          "path": "fixture-limitation.json",
+          "bytes": 398,
+          "sha256": "deeca653e0403e369067f8a6886f08e0ebad7b5a0e3101468e97cd7f2d796394"
+        },
+        {
+          "path": "identity.json",
+          "bytes": 521,
+          "sha256": "f94c5fdb37104ef5e065d78c9775bd90e02fb5b35dde2f9f638e41f675413614"
+        },
+        {
+          "path": "native.log",
+          "bytes": 1760,
+          "sha256": "480301622298dc6468c79b5824eacf4fc1d81e47b16862eed0a9b4f9d286260f"
+        },
+        {
+          "path": "process.json",
+          "bytes": 664,
+          "sha256": "8e8bfef17f4a2d450c64b275ece2199bfacd85e97d620e2d725fa2c18b2daf09"
+        }
+      ]
+    },
+    {
+      "local_folder": "build/scooper-nocatch-original-03",
+      "completion": null,
+      "files": [
+        {
+          "path": "identity.json",
+          "bytes": 521,
+          "sha256": "bf2eae55e68e2caca3ae2be9acd021a8b8a9c770c39dbd85fa11eaa1c0af2247"
+        },
+        {
+          "path": "native.log",
+          "bytes": 11601,
+          "sha256": "f8911136a02e607bf6bb5eaa784c25944ad98e4bc8117617e55c28a054814841"
+        },
+        {
+          "path": "process.json",
+          "bytes": 665,
+          "sha256": "1589ac74b7a76056907bf58b1a002ba1d99e09792b9b12e85cee9367baf47c98"
+        }
+      ]
+    }
+  ]
+}

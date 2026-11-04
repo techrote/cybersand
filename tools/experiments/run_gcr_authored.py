@@ -6,7 +6,8 @@ from run_gcr_creep import ROOT,git,read,write,sha,source_inputs,verify_project,n
 from run_gcr_powder_review import GATES as RETAINED
 
 PROTOCOL=ROOT/'docs/audits/gcr-authored-2026-11-04/protocol.json'
-GATES=list(dict.fromkeys(['test_gcr_flyer_authoring','test_gcr_authored_compound_native','test_gcr_scooper_body','test_gcr_scooper_release']+RETAINED+[
+GATES=list(dict.fromkeys(['test_gcr_flyer_authoring','test_gcr_authored_compound_native','test_gcr_scooper_body','test_gcr_scooper_release',
+    'test_gcr_nocatch_receipt','test_gcr_scooper_receipt']+RETAINED+[
     'test_gcr_protocol','test_gcr_async','test_gcr_admission','test_rem002_body_granular','test_rem003_player_granular','test_gcr_envelope',
     'test_gcr_detachment','test_solid_detachment_displacement','test_solid_detachment_compound_response']))
 

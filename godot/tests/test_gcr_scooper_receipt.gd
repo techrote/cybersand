@@ -77,6 +77,7 @@ func _run() -> void:
 	if check(not before.is_empty() and not after.is_empty(),"final native quantity census"):
 		var expected: Array=before.counts.duplicate()
 		expected[int(spec.material)]+=source.inserted
+		expected[0]-=source.inserted # Accepted authoring replaces Empty cells.
 		check(after.counts==expected and after.water_mass==before.water_mass,"native material is conserved plus exact accepted source additions")
 	var inserted: int=source.inserted
 	runtime.close();runtime.free()
