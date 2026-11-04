@@ -69,6 +69,10 @@ public:
     [[nodiscard]] PackedFloat64Array gcr_body_results() const;
     bool prepare_gcr_compound_coupling(const PackedFloat64Array& states,
         const Dictionary& lease, bool resolve_overlaps = true, const Dictionary& rest_context = Dictionary());
+    bool prepare_gcr_authored_compound_coupling(const PackedFloat64Array& states,
+        const PackedFloat64Array& geometry, const Dictionary& identity,
+        bool resolve_overlaps = true, const Dictionary& rest_context = Dictionary());
+    bool retire_gcr_authored_compound(const Dictionary& identity);
     [[nodiscard]] PackedFloat64Array gcr_compound_results() const;
     [[nodiscard]] Dictionary gcr_compound_diagnostics() const;
     [[nodiscard]] Dictionary gcr_diagnostics() const;
@@ -304,6 +308,19 @@ private:
     cybersand::soliding::SolidToken gcr_compound_token_{};
     std::uint64_t gcr_compound_generation_ = 0, gcr_compound_physics_epoch_ = 0;
     std::unique_ptr<cybersand::gcr::CompoundWorkspace> gcr_compound_workspace_;
+    // Authored actor admission is separate from native detached payloads. The
+    // owner copies immutable geometry and one physical state, never a backend
+    // object or mutable caller storage. Capacity is reserved at construction.
+    bool gcr_authored_compound_enabled_ = false;
+    // Survives World replacement on this adapter: a retired copied session
+    // cannot become a fresh authored owner by replaying its first packet.
+    std::uint64_t gcr_authored_last_session_ = 0;
+    struct AuthoredCompound {
+        bool bound = false, retired = false;
+        std::uint64_t session = 0, generation = 0;
+        std::array<std::array<double,4>,8> rectangles{};
+        double mass = 0., inertia = 0., friction = 0.;
+    } gcr_authored_compound_;
 
     double gcr_session_id_ = 0;
     bool gcr_response_valid_ = false;
@@ -330,6 +347,9 @@ private:
         cybersand::gcr::Vec precise_impulse{},precise_correction{};
         double legacy_raw_torque=0,legacy_torque=0,legacy_scale=1,legacy_budget=0;
         double radius=0;
+        Vector2 arrival_raw{};
+        double arrival_raw_torque=0;
+        std::uint64_t arrival_count=0,arrival_missing=0,arrival_misaligned=0;
         std::uint64_t contacts=0,displaced=0,unresolved=0;
     };
     [[nodiscard]] bool compound_lease_current() const;

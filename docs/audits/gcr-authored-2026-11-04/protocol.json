@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "registration": "GCR-AUTHORED-001",
+  "responses": [
+    "LA",
+    "LA-EVENT-OFF",
+    "LA-SELECTIVE"
+  ],
+  "platforms": [
+    "windows",
+    "linux"
+  ],
+  "dt": 0.016666666666666666,
+  "workers": 1,
+  "max_combinations_per_os": 24,
+  "carry_gate": {
+    "initial_grains": 16,
+    "min_retained": 8,
+    "rise_cells": 8,
+    "tip_start": 300,
+    "tip_deadline": 600,
+    "release_fraction": 0.5
+  },
+  "cases": [
+    {
+      "id": "landing",
+      "material": 2,
+      "ticks": 600,
+      "spawn": [
+        512,
+        250
+      ],
+      "velocity": [
+        0,
+        30
+      ],
+      "material_rects": [
+        [
+          470,
+          300,
+          100,
+          60
+        ]
+      ]
+    },
+    {
+      "id": "burst",
+      "material": 14,
+      "ticks": 600,
+      "spawn": [
+        512,
+        270
+      ],
+      "source": [
+        510,
+        220
+      ]
+    },
+    {
+      "id": "stream",
+      "material": 2,
+      "ticks": 900,
+      "spawn": [
+        512,
+        270
+      ],
+      "source": [
+        510,
+        220
+      ]
+    },
+    {
+      "id": "burial",
+      "material": 2,
+      "ticks": 900,
+      "spawn": [
+        512,
+        298
+      ],
+      "material_rects": [
+        [
+          470,
+          300,
+          100,
+          60
+        ],
+        [
+          500,
+          250,
+          24,
+          30
+        ]
+      ]
+    },
+    {
+      "id": "carry-spill",
+      "material": 2,
+      "ticks": 900,
+      "spawn": [
+        512,
+        250
+      ],
+      "material_rects": [
+        [
+          504,
+          249,
+          16,
+          1
+        ]
+      ]
+    },
+    {
+      "id": "edge",
+      "material": 23,
+      "ticks": 600,
+      "spawn": [
+        492,
+        270
+      ],
+      "velocity": [
+        5,
+        15
+      ],
+      "material_rects": [
+        [
+          500,
+          300,
+          40,
+          60
+        ]
+      ]
+    },
+    {
+      "id": "water",
+      "material": 3,
+      "ticks": 600,
+      "spawn": [
+        512,
+        290
+      ],
+      "velocity": [
+        0,
+        12
+      ],
+      "material_rects": [
+        [
+          470,
+          300,
+          100,
+          60
+        ]
+      ]
+    },
+    {
+      "id": "hard",
+      "material": 58,
+      "ticks": 600,
+      "spawn": [
+        512,
+        320
+      ],
+      "velocity": [
+        0,
+        20
+      ],
+      "material_rects": [
+        [
+          16,
+          350,
+          992,
+          8
+        ]
+      ]
+    }
+  ]
+}

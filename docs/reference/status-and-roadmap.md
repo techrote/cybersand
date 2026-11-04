@@ -12,11 +12,20 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 Flyer review controls: [saved spawn, Burst key and compact toolbars](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
 extend the room-only Shift/Ctrl, live powder sources and edge-alignment repair.
-Saved centres survive reset/craft/response changes within the room; B bursts
-without cancelling held flight input and Details starts collapsed. Exact-head
-execution remains separately recorded. Positive owner feedback was for LA/A1;
-Sand/Rust/Coal burial and the loading hypothesis remain unresolved. Material-law
-changes, sleep, production acceptance and merges remain excluded.
+The current authoring successor adds eight named JSON definitions, atomic
+Reload/reset and a real six-shape Scooper sharing one physical mass/COM/inertia
+and response budget. Saved spawn, B Burst and compact Details remain controls.
+The latest qualitative owner comparison prefers selective arrivals: E/S avoid
+reported burial, while S restores more credible falling-material loading than
+E. Earlier registered selective failures remain open. New native89-input builds,
+mechanical controls, physical qualification and owner review are separately
+identified; no material-law/sleep/default promotion or merge follows.
+
+Current [Scooper qualification](../audits/2026-11-04-authored-compound-scooper.md) retains48 source-bound desktop captures: mechanical controls pass, LA fails the carry demonstration, and E/S pass its literal lift/spill thresholds with an explicit pre-tip cavity-count gap. Loaded selective stability remains bounded and owner review is pending. Corrected native source0206b540 changes only no-catch receipt accounting. Sleep, production promotion and merges remain excluded.
+
+Authored hull admission and Scooper defaults are registered before results in the
+[GCR-AUTHORED-001 plan](../operations/gcr-authored-compound-registration.md).
+
 
 Repeatable powder owner review is available in source in the
 [painting playground](../systems/granular-review-flight-fleet.md#repeatable-powder-burst-and-continuous-stream-review):

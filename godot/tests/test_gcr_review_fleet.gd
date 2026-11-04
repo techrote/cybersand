@@ -51,7 +51,7 @@ func run() -> void:
 		reports.append({"name":Fleet.NAMES[index],"mass":body.mass,"inertia":body.inertia,"parts":1,"max_force":max_force,"max_torque":max_torque,"ticks":180,"human_acceptance":false})
 		check(arena.reset(),"arena reset preserves explicit fleet arm")
 		check(is_equal_approx(arena.session.bodies()[0].mass,float(Fleet.ROWS[index][1])) and arena._world.get_gcr_admission_variant()=="R2","reset preserves actual fleet and response identity")
-	check(not scene.select_preset(-1) and not scene.select_preset(7),"invalid profile refused")
+	check(not scene.select_preset(-1) and not scene.select_preset(Fleet.count()),"invalid profile refused")
 	check(not scene.runtime.configure_review_fleet(99),"invalid owner route refused")
 	# Text entry must never pass through the room's numeric craft shortcuts.
 	var old_selection: int = scene.selected

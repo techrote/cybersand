@@ -10,6 +10,12 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [How do I author/reload flyers and test Scooper's real open hull?](../systems/granular-review-flight-fleet.md#how-do-i-author-or-reload-a-flyer-including-scooper)
+  Eight named JSON definitions, atomic Reload/reset at saved spawn, copied
+  definition identity, one-body rectangle-union geometry and bounded motors.
+  The [preregistered qualification](../operations/gcr-authored-compound-registration.md)
+  keeps old-seven preservation, LA/E/S mechanics and physical carry/spill gates separate.
+
 - [How do saved flyer spawn, B bursts and compact painting-room controls work?](../systems/granular-review-flight-fleet.md#saved-spawn-burst-key-and-compact-comparison-controls)
   Room-only leased thrust multiplier, unchanged brake law on Ctrl, fixed-world
   palette sources and the material/overlay texture-footprint mapping.

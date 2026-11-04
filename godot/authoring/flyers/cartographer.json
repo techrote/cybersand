@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "cartographer",
+  "name": "Cartographer",
+  "description": "Terrain scanner. Long survey arcs and deliberate course changes.",
+  "color": "c3a7ff",
+  "control_mode": "body_thrust",
+  "markings": "science",
+  "capabilities": {
+    "side_thrusters": false,
+    "reverse_thrust": true,
+    "dispenser_q": 3,
+    "dispenser_e": 3,
+    "dispenser_s": 0
+  },
+  "physics": {
+    "mass": 0.24,
+    "friction": 0.8,
+    "bounce": 0.04,
+    "gravity": 38,
+    "angular_drag": 0.18
+  },
+  "flight": {
+    "acceleration": 85,
+    "speed": 75,
+    "turn_speed": 1.7,
+    "turn_acceleration": 5,
+    "throttle_slew": 1.6,
+    "linear_drag": 0.26,
+    "force_limit": 26,
+    "torque_limit": 64,
+    "attitude_gain": 10,
+    "attitude_damping": 4,
+    "trim_angle": 0.4
+  },
+  "hull": {
+    "kind": "rectangle",
+    "size": [
+      23,
+      10
+    ]
+  }
+}

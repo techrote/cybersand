@@ -23,6 +23,7 @@ var spawn_position := Vector2(178,304)
 var spawn_fields: Dictionary = {}
 var review_column: VBoxContainer
 var review_details: VBoxContainer
+var roster_header: HFlowContainer
 
 func _build_ui() -> void:
 	var background := ColorRect.new()
@@ -38,17 +39,19 @@ func _build_ui() -> void:
 	review_column.add_theme_constant_override("separation",4)
 	margin.add_child(review_column)
 	var header:=HFlowContainer.new()
+	roster_header=header
 	header.add_theme_constant_override("h_separation",4)
 	header.add_theme_constant_override("v_separation",2)
 	review_column.add_child(header)
-	_label(header,"FLYER LAB · EXPERIMENTAL",13,Color("f7c579"))
-	for index: int in range(7):
+	_label(header,"EXPERIMENTAL",12,Color("f7c579"))
+	for index: int in range(Fleet.count()):
 		var button:=_button(header,"%d %s" % [index+1,Fleet.NAMES[index]],func() -> void: select_preset(index))
 		_buttons.append(button)
 	_button(header,"Reset [R]",_restart)
 	_pause_button=_button(header,"Pause [P]",_toggle_pause)
 	_button(header,"Camera [F]",_toggle_camera)
 	_button(header,"Details",func() -> void: review_details.visible=not review_details.visible)
+	_button(header,"Reload + reset",reload_flyer_definitions).tooltip_text="Reload validated JSON flyer definitions, then rebuild this craft at the saved spawn. Invalid authoring preserves the current owner."
 	_button(header,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	var right:=VBoxContainer.new()
 	right.add_theme_constant_override("separation",2)
@@ -81,7 +84,7 @@ func _build_ui() -> void:
 	_tagline=_label(review_details,"",12,Color("adc0ce"))
 	_controls=_label(review_details,"",12,Color("e0e8ed"))
 	_timing=_label(review_details,"",12,Color("a3e8f4"))
-	_label(review_details,"Gamepad: stick WASD · A/B/X Space/Ctrl/C · shoulders Q/E · Start pause. Keyboard 1–7 / Tab selects. B bursts at the fixed source; Shift boosts; Ctrl brakes.",12,Color("adc0ce"))
+	_label(review_details,"Gamepad: stick WASD · A/B/X Space/Ctrl/C · shoulders Q/E · Start pause. Keyboard 1–9 / Tab selects available flyers. B bursts at the fixed source; Shift boosts; Ctrl brakes.",12,Color("adc0ce"))
 
 func _button(parent: Node, text: String, pressed: Callable) -> Button:
 	var button: Button=super._button(parent,text,pressed)
@@ -222,10 +225,41 @@ func _release_edit_focus() -> void:
 
 func _valid_room_spawn(point: Vector2, index: int) -> bool:
 	if not preload("res://scripts/physical_actor_arena.gd").valid_review_fleet_spawn(point,index): return false
-	var size: Vector2=Fleet.ROWS[index][0]
-	var hull:=Rect2(point-size*0.5,size)
-	for rect: Rect2i in crash_hard_rects():
-		if hull.intersects(Rect2(rect)): return false
+	for shape: Dictionary in Fleet.collision_rects(index):
+		var hull:=Rect2(point+Vector2(shape.center)-Vector2(shape.size)*0.5,Vector2(shape.size))
+		for rect: Rect2i in crash_hard_rects():
+			if hull.intersects(Rect2(rect)): return false
+	return true
+
+func _presentation_preset() -> StringName: return &"arcadelander"
+func _presentation_color() -> Color: return Fleet.COLORS[selected] if Fleet.valid_index(selected) else Color.WHITE
+func _course_targets() -> PackedVector2Array: return PackedVector2Array()
+
+func reload_flyer_definitions(manifest_path: String = Fleet.DEFAULT_MANIFEST) -> bool:
+	_release_edit_focus()
+	var previous: Dictionary=Fleet.registry_snapshot()
+	var id: String=Fleet.stable_id(selected)
+	if not Fleet.reload_definitions(manifest_path):
+		control_error="Flyer reload refused: "+Fleet.last_error()
+		_present(runtime.snapshot(),true)
+		return false
+	var target: int=Fleet.index_for_id(id)
+	if target<0 or not select_preset(target):
+		Fleet.restore_registry(previous)
+		if control_error.is_empty(): control_error="Reload refused: selected flyer no longer exists."
+		_present(runtime.snapshot(),true)
+		return false
+	# Rebuild only the roster controls after successful construction. The rest
+	# of the compact UI, source settings and saved spawn remain in place.
+	for button: Button in _buttons:
+		roster_header.remove_child(button)
+		button.queue_free()
+	_buttons.clear()
+	for index: int in range(Fleet.count()):
+		var button:=_button(roster_header,"%d %s" % [index+1,Fleet.NAMES[index]],func() -> void: select_preset(index))
+		roster_header.move_child(button,index+1)
+		_buttons.append(button)
+	_present(runtime.snapshot(),true)
 	return true
 
 func set_spawn_position(point: Vector2) -> bool:
@@ -299,6 +333,15 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey:
 		var key: Key=event.physical_keycode if event.physical_keycode!=0 else event.keycode
+		if event.pressed and not event.echo and key>=KEY_1 and key<=KEY_9:
+			var index: int=int(key-KEY_1)
+			if Fleet.valid_index(index): select_preset(index)
+			get_viewport().set_input_as_handled()
+			return
+		if event.pressed and not event.echo and key==KEY_TAB:
+			if Fleet.count()>0: select_preset(posmod(selected+(-1 if event.shift_pressed else 1),Fleet.count()))
+			get_viewport().set_input_as_handled()
+			return
 		if key==KEY_B:
 			if event.pressed and not event.echo and _focused and runtime!=null and runtime.active() and not runtime.failed and not powder_test.active(): emit_room_burst()
 			get_viewport().set_input_as_handled()
@@ -328,7 +371,7 @@ func _sample_action() -> Dictionary:
 	var pads: Array[int]=Input.get_connected_joypads()
 	if not pads.is_empty(): gamepad_brake=Input.is_joy_button_pressed(pads[0],JOY_BUTTON_B)
 	action=remap_fleet_brake(action,Input.is_physical_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_CTRL),gamepad_brake)
-	if selected==2:
+	if int(Fleet.capabilities(selected).get("dispenser_s",0))!=0:
 		# Kestrel S is a dispenser rather than reverse. Retain W when both
 		# keys are held; primary/Space independently keeps its normal thrust.
 		var move: Vector2 = action.move
@@ -512,6 +555,8 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		if not control_error.is_empty(): control_status.text+="\n"+control_error
 		control_status.tooltip_text="Applied settings; Apply/reset rebuilds terrain and craft. Saved spawn persists for this room session. Ctrl brakes. Material laws and sleep unchanged.\n"+event_runtime_identity
 		_timing.text+="\n"+event_runtime_identity
+		_timing.text+="\nFlyer %s · definition %s · registry %s" % [Fleet.stable_id(selected),str(profile.get("fleet_definition_hash","")).left(16),Fleet.registry_hash().left(16)]
+		_timing.text+="\nAttitude gain %.2f · damping %.2f · angular acceleration %.2f · trim ±%.1f°" % [float(profile.get("fleet_attitude_gain",10.0)),float(profile.get("fleet_attitude_damping",4.0)),float(profile.fleet_turn_accel),rad_to_deg(float(profile.get("fleet_trim_angle",.4)))]
 	if _overlay is FleetOverlay:
 		_overlay.room_source_origin=Vector2(room_source.origin) if room_source.armed else Vector2.INF
 	if room_source_status!=null:

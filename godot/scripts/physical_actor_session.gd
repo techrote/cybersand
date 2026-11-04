@@ -658,6 +658,16 @@ func render_parts() -> Array:
 		var flight: Dictionary = _view(index, false).get("flight", {}) if is_flight_actor(index) else {}
 		for part_index: int in range(actor_bodies.size()):
 			var body: RigidBody2D = actor_bodies[part_index]
+			if str(parts[part_index].get("shape","rectangle"))=="rectangle_union":
+				var physical_pose: Transform2D=bridge.body_transform(_body_offsets[index]+part_index)
+				var shape_index: int=0
+				for child in body.get_children():
+					if not child is CollisionShape2D or not child.shape is RectangleShape2D: continue
+					result.append({"actor_id":index,"part_id":str(parts[part_index].id) if shape_index==0 else "%s_shape_%d" % [parts[part_index].id,shape_index],
+						"physical_part_id":str(parts[part_index].id),"physical_body_index":_body_offsets[index]+part_index,
+						"transform":physical_pose*child.transform,"size":child.shape.size,"color":parts[part_index].color,"shape":"rectangle"})
+					shape_index+=1
+				continue
 			var shape: Shape2D = body.get_child(0).shape
 			var dimensions: Vector2 = Vector2(shape.radius * 2.0, shape.radius * 2.0) if shape is CircleShape2D else shape.size
 			var presented: Dictionary = {"actor_id": index, "part_id": str(parts[part_index].id),

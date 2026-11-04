@@ -314,6 +314,8 @@ func snapshot() -> Dictionary:
 	return {"selection": selection, "epoch": epoch, "tick": tick, "paused": paused,
 		"failed": failed, "last_error": last_error, "actor": _view(false),
 		"review_emissions": _arena._review_emitter.snapshot() if _arena!=null and _arena.config.has("review_fleet_index") else {},
+		"review_definition_hash":_arena._review_definition_hash if _arena!=null else "",
+		"authored_compound":not _arena._authored_compound_identity.is_empty() if _arena!=null else false,
 		"material_mode": Course.is_swarm(selection), "field_active": not _command.is_empty() and _deadline > tick}
 
 

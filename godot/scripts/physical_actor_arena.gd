@@ -32,6 +32,11 @@ var _viewport: SubViewport
 var _effects := Effects.new()
 var _review_emitter := ReviewEmitter.new()
 var _review_boost_binding: Dictionary = {}
+var _authored_compound_centers := PackedVector2Array()
+var _authored_compound_sizes := PackedVector2Array()
+var _authored_compound_geometry := PackedFloat64Array()
+var _authored_compound_identity: Dictionary = {}
+var _review_definition_hash: String = ""
 
 func _clear_review_boost() -> void:
 	_review_boost_binding.clear()
@@ -88,8 +93,8 @@ static func valid_review_fleet_spawn(position: Vector2, fleet_index: int) -> boo
 	if not position.is_finite() or not fleet.valid_index(fleet_index): return false
 	# The explicit developer painting room admits a fresh, level hull anywhere
 	# inside its walls. Ordinary actor admission retains ARENA_RECT below.
-	var size: Vector2=fleet.ROWS[fleet_index][0]
-	return REVIEW_FLEET_SPAWN_RECT.encloses(Rect2(position-size*0.5,size))
+	var bounds: Rect2=fleet.bounds(fleet_index)
+	return REVIEW_FLEET_SPAWN_RECT.encloses(Rect2(position+bounds.position,bounds.size))
 
 func _validated_config(value: Variant, review_fleet_index: int = -1, powder_review: bool = false) -> Dictionary:
 	if not value is Dictionary or value.size() > 8:
@@ -196,6 +201,12 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 		return false
 	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
 	var native_options: Dictionary = {"workers":1,"telemetry":false}
+	var authored_compound: bool=review_fleet_index!=-1 and preload("res://scripts/gcr_review_fleet.gd").uses_compound(review_fleet_index)
+	if authored_compound:
+		if not world.has_method("prepare_gcr_authored_compound_coupling") or not world.has_method("retire_gcr_authored_compound"):
+			last_error="authored_compound_runtime_unavailable"
+			return false
+		native_options["gcr_authored_compound"]=true
 	if granular_candidate != "B0":
 		native_options["bearing_candidate"] = granular_candidate
 		native_options["bearing_experiment"] = "GCR-ADMISSION-001-2026-11-01" if granular_candidate == "GCR-A1" else ("GCR-001-2026-11-01" if granular_candidate == "GCR" else "Y1-ENVELOPE-2026-11-01")
@@ -254,18 +265,42 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 		candidate.close()
 		viewport.free()
 		return false
+	var compound_centers:=PackedVector2Array()
+	var compound_sizes:=PackedVector2Array()
+	var compound_geometry:=PackedFloat64Array()
+	var compound_identity: Dictionary={}
+	if authored_compound:
+		for rectangle: Dictionary in candidate._rigs[0].collision_rects():
+			compound_centers.append(rectangle.center)
+			compound_sizes.append(rectangle.size)
+			compound_geometry.append_array(PackedFloat64Array([rectangle.center.x,rectangle.center.y,rectangle.size.x,rectangle.size.y]))
+		compound_identity=candidate.bridge.authored_compound_identity(candidate.epoch)
+		var compound_states: PackedFloat64Array=candidate.bridge.pack_gcr_compound_states(compound_centers,compound_sizes)
+		# Prime only the actual union, before replacing the old owner. Failed
+		# admission cannot destroy a still-valid comparison session.
+		if compound_identity.is_empty() or compound_states.size()!=compound_centers.size()*CyberRigidBodyCoupling.GCR_INPUT_STRIDE or not world.prepare_gcr_authored_compound_coupling(compound_states,compound_geometry,compound_identity,false):
+			last_error="authored_compound_input_refused"
+			candidate.close()
+			viewport.free()
+			return false
 	# Commit only after validation, native layout and the complete articulated
 	# assembly succeed. A malformed reset cannot destroy a running environment.
 	close()
 	_world = world
 	_viewport = viewport
 	session = candidate
+	_authored_compound_centers=compound_centers
+	_authored_compound_sizes=compound_sizes
+	_authored_compound_geometry=compound_geometry
+	_authored_compound_identity=compound_identity
+	_review_definition_hash=preload("res://scripts/gcr_review_fleet.gd").definition_hash(review_fleet_index) if review_fleet_index!=-1 else ""
 	config = validated.duplicate(true)
 	config["granular_experiment"] = granular_candidate
 	if review_fleet_index != -1: config["review_fleet_index"] = review_fleet_index
 	if not review_options.is_empty(): config["review_options"]=review_options.duplicate(true)
 	if powder_review: config["powder_review"]=true
 	gcr_stats = {"prepared":0,"responses":0,"applications":0,"granular_frames":0}
+	if authored_compound: gcr_stats.prepared=1
 	_epoch_counter += 1
 	_effects.reset(_epoch_counter)
 	_usables.reset(_epoch_counter)
@@ -288,7 +323,9 @@ func _configure_granular(value: Variant, granular_candidate: String, spawn_offse
 	_sync_terrain()
 	if _failed:
 		return false
-	if granular_candidate in ["GCR","GCR-A1","GCR-REST"]:
+	if authored_compound:
+		pass # Already primed without publishing an extra AABB/sample boundary.
+	elif granular_candidate in ["GCR","GCR-A1","GCR-REST"]:
 		if not _prepare_gcr_frame(false): return false
 	else:
 		_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), false)
@@ -322,6 +359,9 @@ static func layout(seed: int) -> Array:
 func reset() -> bool:
 	# Runtime receipts are not authoring keys. Retain the already admitted arm
 	# and fleet selection while rebuilding fresh ownership/epochs.
+	if config.has("review_fleet_index") and _review_definition_hash!=preload("res://scripts/gcr_review_fleet.gd").definition_hash(int(config.review_fleet_index)):
+		last_error="review_definition_changed_requires_explicit_reload"
+		return false
 	var authored: Dictionary = config.duplicate(true)
 	authored.erase("granular_experiment")
 	authored.erase("review_fleet_index")
@@ -442,7 +482,7 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 
 func _review_room_active() -> bool:
 	return session != null and not _finished and not _failed and not _paused \
-		and int(config.get("review_fleet_index",-1)) in range(7) \
+		and preload("res://scripts/gcr_review_fleet.gd").valid_index(int(config.get("review_fleet_index",-1))) \
 		and session._rigs.size()==1 and session.bodies().size()==1 \
 		and config.actors.size()==1 and str(config.actors[0].producer)=="human"
 
@@ -492,6 +532,13 @@ func set_paused(paused: bool) -> void:
 		session.set_suspended(paused)
 
 func _prepare_gcr_frame(resolve: bool) -> bool:
+	if not _authored_compound_identity.is_empty():
+		var compound_states: PackedFloat64Array=session.bridge.pack_gcr_compound_states(_authored_compound_centers,_authored_compound_sizes)
+		if compound_states.size()!=_authored_compound_centers.size()*CyberRigidBodyCoupling.GCR_INPUT_STRIDE or not _world.prepare_gcr_authored_compound_coupling(compound_states,_authored_compound_geometry,_authored_compound_identity,resolve):
+			_fail("authored_compound_input_refused")
+			return false
+		gcr_stats.prepared+=1
+		return true
 	var states: PackedFloat64Array = session.bridge.pack_gcr_body_states()
 	if states.size() != session.bodies().size()*CyberRigidBodyCoupling.GCR_INPUT_STRIDE or states.is_empty() or not _world.prepare_gcr_coupling(states,resolve):
 		_fail("gcr_input_refused")
@@ -530,7 +577,7 @@ func step(commands: Variant = []) -> Dictionary:
 	if config.has("review_fleet_index"):
 		var rig = session._rigs[0]
 		_review_emitter.step(_world,int(config.review_fleet_index),rig._transforms[0],rig._sizes[0],
-			rig._action,rig._player_controller.observation(),float(rig._profile.fleet_force),session._view(0,false))
+			rig._action,rig._player_controller.observation(),float(rig._profile.fleet_force),session._view(0,false),rig._profile)
 	var requests: Array = session.drain_effects()
 	_effect_receipts = _effects.apply(_world, requests, session.epoch)
 	_effect_requests_total += requests.size()
@@ -556,13 +603,14 @@ func step(commands: Variant = []) -> Dictionary:
 		return snapshot()
 	if config.get("granular_experiment","B0") in ["GCR","GCR-A1","GCR-REST"]:
 		_coupling_results = PackedFloat32Array()
-		var results: PackedFloat64Array = _world.gcr_body_results()
+		var compound: bool=not _authored_compound_identity.is_empty()
+		var results: PackedFloat64Array = _world.gcr_compound_results() if compound else _world.gcr_body_results()
 		if results.size() != session.bodies().size()*CyberRigidBodyCoupling.GCR_RESULT_STRIDE:
 			_fail("gcr_response_refused")
 			return snapshot()
 		gcr_stats.responses += results.size()/CyberRigidBodyCoupling.GCR_RESULT_STRIDE
 		var receipt: Dictionary = _world.gcr_rest_receipt() if config.get("granular_experiment","")=="GCR-REST" else {}
-		gcr_stats.applications += session.bridge.apply_gcr_results(session.tick+1,results,receipt)
+		gcr_stats.applications += session.bridge.apply_gcr_compound_results(session.tick+1,results,receipt) if compound else session.bridge.apply_gcr_results(session.tick+1,results,receipt)
 		if not bool(session.bridge.gcr_application_diagnostics().get("accepted",false)):
 			_fail("gcr_application_refused")
 			return snapshot()
@@ -628,6 +676,8 @@ func snapshot() -> Dictionary:
 		"command_results": _command_receipts.duplicate(true),
 		"effects": _effect_receipts.duplicate(true),
 		"review_emissions": _review_emitter.snapshot(),
+		"review_definition_hash":_review_definition_hash,"authored_compound":not _authored_compound_identity.is_empty(),
+		"compound_shape_count":_authored_compound_centers.size(),
 		"physical_usables": _usables.snapshot(),
 		"usable_totals": {"requests": _usable_requests_total, "accepted": _usable_accepted_total,
 			"refused": _usable_refused_total, "changed_cells": _usable_changes_total},
@@ -744,7 +794,9 @@ func presentation_cells(view: Rect2i = ARENA_RECT) -> PackedByteArray:
 func close() -> void:
 	_clear_review_boost()
 	if _world != null and not bool(_world.has_failed()):
-		if config.get("granular_experiment","B0") in ["GCR","GCR-A1","GCR-REST"]:
+		if not _authored_compound_identity.is_empty():
+			_world.retire_gcr_authored_compound(_authored_compound_identity)
+		elif config.get("granular_experiment","B0") in ["GCR","GCR-A1","GCR-REST"]:
 			_world.prepare_gcr_coupling(PackedFloat64Array())
 		else:
 			_world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
@@ -755,6 +807,11 @@ func close() -> void:
 		_viewport.free()
 	_viewport = null
 	_world = null
+	_authored_compound_centers.clear()
+	_authored_compound_sizes.clear()
+	_authored_compound_geometry.clear()
+	_authored_compound_identity.clear()
+	_review_definition_hash=""
 	_effects.reset()
 	_review_emitter.reset()
 	_usables.reset()

@@ -3,13 +3,31 @@ title: Rigid-body and cellular coupling
 document-kind: contract
 canonical-for: [rigid-body-cellular-coupling]
 status: Current
-scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
+scope: Rectangle and opt-in authored rectangle-union occupancy, bounded displacement/impulses and Rapier hard contact; arbitrary contours and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-04
 ---
 
 # Rigid-body and cellular coupling
+
+## Can a review body have an open compound hull?
+
+**Current experimental source:** [authored compound admission](compound-granular-coupling.md#authored-compound-review-bodies)
+supports one review body with1..8 nonoverlapping local rectangles. Scooper uses
+six matching Rapier colliders, native transient geometry and rendered shapes;
+its open cavity is not replaced by a solid AABB. Repeated geometry records carry
+one physical COM/mass/inertia state and produce one shared-budget wrench. The
+seven retained flyers still use their original single-rectangle path.
+
+This explicit authored constructor has its own immutable session/generation
+identity and retirement. It does not impersonate a native structural-detachment
+payload, change World-core material laws, introduce per-cell physics bodies or
+erase/restore material while carrying it. Existing independent rectangles,
+declared circumscribed wheel masks and structural leases retain their contracts.
+Arbitrary polygon/contour occupancy remains outside this implementation. Scope,
+capacity, finite-precision shared edges and physical qualification belong to the
+linked compound contract and its registration.
 
 ## When a crate moves through sand, are its pixels erased and restored?
 

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "needle",
+  "name": "Needle",
+  "description": "Recon dart. Fast, narrow and precise; ease off before landing.",
+  "color": "8fcaff",
+  "control_mode": "body_thrust",
+  "markings": "scout",
+  "capabilities": {
+    "side_thrusters": true,
+    "reverse_thrust": true,
+    "dispenser_q": 0,
+    "dispenser_e": 0,
+    "dispenser_s": 0
+  },
+  "physics": {
+    "mass": 0.065,
+    "friction": 0.8,
+    "bounce": 0.04,
+    "gravity": 38,
+    "angular_drag": 0.18
+  },
+  "flight": {
+    "acceleration": 160,
+    "speed": 130,
+    "turn_speed": 6,
+    "turn_acceleration": 28,
+    "throttle_slew": 6,
+    "linear_drag": 0.16,
+    "force_limit": 12,
+    "torque_limit": 10,
+    "attitude_gain": 10,
+    "attitude_damping": 4,
+    "trim_angle": 0.4
+  },
+  "hull": {
+    "kind": "rectangle",
+    "size": [
+      7,
+      3
+    ]
+  }
+}

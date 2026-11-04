@@ -528,6 +528,11 @@ func pack_gcr_body_states() -> PackedFloat64Array:
 	return states
 
 
+func authored_compound_identity(body_generation: int) -> Dictionary:
+	if OS.get_thread_caller_id()!=OS.get_main_thread_id() or not _initialized or _body_rids.size()!=1 or _gcr_session_id<=0 or body_generation<=0: return {}
+	return {"version":1,"session_id":_gcr_session_id,"body_generation":body_generation}
+
+
 func pack_gcr_compound_states(local_centers: PackedVector2Array, sizes: PackedVector2Array) -> PackedFloat64Array:
 	if _body_rids.size()!=1 or local_centers.is_empty() or local_centers.size()>64 or sizes.size()!=local_centers.size(): return PackedFloat64Array()
 	for i: int in range(sizes.size()):

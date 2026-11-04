@@ -1,0 +1,5257 @@
+{
+  "schema": 1,
+  "registration": "GCR-AUTHORED-001",
+  "source": "8af64c5ea9e1ad99f95106cb3826f4f5d559fb38",
+  "tree": "df4d5e8d4be7f9ef93e68d29f6e691520ac3b333",
+  "protocol_sha256": "dda3a38733559991d74bee8fcc0876fffc394affcb04996e8a9467fcead7b6a2",
+  "definition_identity": {
+    "frozen_source": "6015cd3753bcb7929e3fa576e42d39304fcbe0c3",
+    "path": "godot/authoring/flyers/scooper.json",
+    "source_file_sha256_lf": "01c41a1fb37489aa017bf39bffdf42557cd78a8000fb3dfae51b26c8d059603f",
+    "godot_canonical_hash": "cf1857b65f5421e64bcf914c8dd7e6440d4c0bab5ed8aa0c917c113f9748d6ae"
+  },
+  "capture_population_complete": true,
+  "mechanical_population_pass": true,
+  "runner_current_head_custody_pass": false,
+  "runner_completion": {
+    "source": "8af64c5ea9e1ad99f95106cb3826f4f5d559fb38",
+    "ok": false,
+    "inputs_unchanged": false,
+    "gates_only": false,
+    "captures_only": true,
+    "results": [
+      {
+        "platform": "windows",
+        "ok": true,
+        "suites": 0,
+        "imports": 1,
+        "captures": 24,
+        "gates_sha256": "66a48495533ecc85a792a6e484d4ab57e60080625a5d1cf24e7cca80cbcc93cb",
+        "campaign_sha256": "5568be767b8c70ded7b01c3a6cbad78e69895741b56094ddd9d47f963d4a118c"
+      },
+      {
+        "platform": "linux",
+        "ok": true,
+        "suites": 0,
+        "imports": 1,
+        "captures": 24,
+        "gates_sha256": "e60ed2baabdd014b55f69820c9c2738c1dfbddd700202823cafbb83d651bd481",
+        "campaign_sha256": "d33e3efd6460853c0f80ed0171ba1c49fd097771d2183f2c349ea5e0ac620d97"
+      }
+    ]
+  },
+  "integrity_errors": [],
+  "mechanisms": [
+    {
+      "platform": "windows",
+      "case": "landing",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1104.0,
+        "p95": 1737.5999999999976,
+        "p99": 2385.22,
+        "max": 7333
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "landing",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 996.0,
+        "p95": 1789.1,
+        "p99": 2305.2799999999997,
+        "max": 7886
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "landing",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1010.5,
+        "p95": 1834.5499999999995,
+        "p99": 2410.1499999999996,
+        "max": 6439
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burst",
+      "response": "LA",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.24814758528657e-09,
+          "position": [
+            511.96923828125,
+            393.958892822266
+          ],
+          "rotation": 6.21506899278756e-08,
+          "velocity": [
+            -3.55152374176271e-09,
+            -1.58507873493363e-08
+          ]
+        },
+        "net_translation": [
+          -0.03076171875,
+          123.95889282226602
+        ],
+        "position_span": [
+          0.08074951171897737,
+          123.95230102539102
+        ],
+        "angle_unwrapped_span": 0.010749038949143147,
+        "peak_upward_speed": 2.83128499984741,
+        "peak_downward_speed": 56.0659370422363,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 1.298626362000735e-08,
+          "p95": 1.8119980715880463e-08,
+          "p99": 1.990702127585567e-08,
+          "max": 2.05788843743449e-08
+        },
+        "tail_abs_omega": {
+          "p50": 9.401661116292814e-10,
+          "p95": 1.356539242047814e-09,
+          "p99": 1.4600866871106184e-09,
+          "max": 1.55695234482778e-09
+        },
+        "tail_centre_span": [
+          0.0,
+          0.0
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 391.28125,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.1495,
+      "peak_native_wrench_force": 51.02999925613404,
+      "peak_native_wrench_torque_rate": 168.86422485351542,
+      "nonzero_event_boundaries": 463,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 373.43297429067724,
+      "step_time_us": {
+        "p50": 1128.0,
+        "p95": 1633.1,
+        "p99": 1927.3999999999996,
+        "max": 9774
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 6.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burst",
+      "response": "LA-EVENT-OFF",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            268.772308349609
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.00255423784255981
+          ]
+        },
+        "net_translation": [
+          0.0,
+          -1.227691650391023
+        ],
+        "position_span": [
+          0.0,
+          1.5257568359380116
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.00441288948059082,
+          "p95": 0.007220563292503353,
+          "p99": 0.0075439345836639405,
+          "max": 0.00762695074081421
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4613647460940342
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 266.0208333333333,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 22,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1111.0,
+        "p95": 1567.0,
+        "p99": 1750.6099999999994,
+        "max": 7832
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 70.09999999999991,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 4.019999999999982,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burst",
+      "response": "LA-SELECTIVE",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 2.62846056031663e-09,
+          "position": [
+            508.159118652344,
+            393.188201904297
+          ],
+          "rotation": -2.04031680439698e-10,
+          "velocity": [
+            0.000785161566454917,
+            0.0166524648666382
+          ]
+        },
+        "net_translation": [
+          -3.8408813476560226,
+          123.18820190429699
+        ],
+        "position_span": [
+          3.8467407226560226,
+          123.894775390625
+        ],
+        "angle_unwrapped_span": 0.01090296870097518,
+        "peak_upward_speed": 4.33261775970459,
+        "peak_downward_speed": 45.1368942260742,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.02879774570465085,
+          "p95": 0.04714886546134946,
+          "p99": 0.04926158666610722,
+          "max": 0.0498040914535522
+        },
+        "tail_abs_omega": {
+          "p50": 2.121667961318965e-07,
+          "p95": 1.4968683626648272e-05,
+          "p99": 2.185794442993935e-05,
+          "max": 2.40142489928985e-05
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4112854003910229
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 390.5520833333333,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 28,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.513691380689533,
+      "peak_native_wrench_force": 30.01281611875057,
+      "peak_native_wrench_torque_rate": 128.08926393589923,
+      "nonzero_event_boundaries": 108,
+      "arrival_count_sum": 1966,
+      "arrival_missing_sum": 32914,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 20.664703114876918,
+      "step_time_us": {
+        "p50": 1057.0,
+        "p95": 1529.1499999999999,
+        "p99": 1770.1,
+        "max": 7982
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 6.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "stream",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 1.14818692509289e-06,
+          "position": [
+            513.961059570313,
+            393.958831787109
+          ],
+          "rotation": 2.8720241971314e-06,
+          "velocity": [
+            3.95586812373949e-06,
+            -9.82254277914763e-09
+          ]
+        },
+        "net_translation": [
+          1.9610595703129547,
+          123.95883178710898
+        ],
+        "position_span": [
+          1.9833374023439774,
+          123.95223999023398
+        ],
+        "angle_unwrapped_span": 0.04923393012722954,
+        "peak_upward_speed": 1.14873611927032,
+        "peak_downward_speed": 60.5231552124023,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 1.53086148202419e-08,
+          "p95": 3.198438207618891e-08,
+          "p99": 3.733541234396397e-08,
+          "max": 3.87371983379126e-08
+        },
+        "tail_abs_omega": {
+          "p50": 1.12394081952516e-06,
+          "p95": 1.7322753308235415e-06,
+          "p99": 7.5089973188369205e-06,
+          "max": 7.55674955144059e-06
+        },
+        "tail_centre_span": [
+          0.0,
+          0.0
+        ]
+      },
+      "source_inserted": 2400,
+      "source_attempted": 2400,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 378.90625,
+      "material_count_before": 0,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 2,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -14.99453010015646,
+      "peak_native_wrench_force": 266.7281384860969,
+      "peak_native_wrench_torque_rate": 699.7581298828139,
+      "nonzero_event_boundaries": 781,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 3206.682130920582,
+      "step_time_us": {
+        "p50": 1440.5,
+        "p95": 2178.2999999999997,
+        "p99": 2814.279999999999,
+        "max": 6840
+      },
+      "maximum_nodes": 21,
+      "maximum_scalar_updates": 168,
+      "scanned_work": {
+        "p50": 1282.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 598.5,
+        "p95": 671.0,
+        "p99": 707.0699999999999,
+        "max": 741
+      },
+      "active_block_work": {
+        "p50": 10.0,
+        "p95": 14.0,
+        "p99": 15.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "stream",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            267.585723876953
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.000168383121490479
+          ]
+        },
+        "net_translation": [
+          0.0,
+          -2.4142761230469887
+        ],
+        "position_span": [
+          0.0,
+          2.7123413085939774
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.00028643012046814,
+          "p95": 0.00046345889568328864,
+          "p99": 0.00048393785953521724,
+          "max": 0.000489175319671631
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4721069335939774
+        ]
+      },
+      "source_inserted": 2400,
+      "source_attempted": 2400,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 363.14666666666665,
+      "material_count_before": 0,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 47,
+      "peak_post_ejection_overlap": 19,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1347.5,
+        "p95": 2055.45,
+        "p99": 2271.14,
+        "max": 7753
+      },
+      "maximum_nodes": 8,
+      "maximum_scalar_updates": 64,
+      "scanned_work": {
+        "p50": 1362.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 408.5,
+        "p95": 683.05,
+        "p99": 691.0,
+        "max": 695
+      },
+      "active_block_work": {
+        "p50": 10.0,
+        "p95": 14.0,
+        "p99": 15.009999999999991,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "stream",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 4.2794144974323e-05,
+          "position": [
+            503.335662841797,
+            392.651245117188
+          ],
+          "rotation": -4.77029971079901e-05,
+          "velocity": [
+            -2.75930669886293e-05,
+            0.000152111053466797
+          ]
+        },
+        "net_translation": [
+          -8.664337158203011,
+          122.65124511718801
+        ],
+        "position_span": [
+          8.716583251953011,
+          123.95230102539102
+        ],
+        "angle_unwrapped_span": 0.07596239447593689,
+        "peak_upward_speed": 1.43636131286621,
+        "peak_downward_speed": 62.2404441833496,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0003608763217926025,
+          "p95": 0.0007797777652740482,
+          "p99": 0.0008350497484207158,
+          "max": 0.000849545001983643
+        },
+        "tail_abs_omega": {
+          "p50": 0.0001029506674967705,
+          "p95": 0.0002265578383230606,
+          "p99": 0.00024294483315316073,
+          "max": 0.000247218151343986
+        },
+        "tail_centre_span": [
+          0.0,
+          0.47210693359301104
+        ]
+      },
+      "source_inserted": 2400,
+      "source_attempted": 2400,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 378.99291666666664,
+      "material_count_before": 0,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 38,
+      "peak_post_ejection_overlap": 38,
+      "maximum_budget_overrun": -18.55944455157047,
+      "peak_native_wrench_force": 86.43333033618599,
+      "peak_native_wrench_torque_rate": 495.7874267578128,
+      "nonzero_event_boundaries": 179,
+      "arrival_count_sum": 713,
+      "arrival_missing_sum": 78255,
+      "arrival_misaligned_sum": 40,
+      "event_budget_cost_sum": 30.220880958022093,
+      "step_time_us": {
+        "p50": 1322.5,
+        "p95": 1809.1999999999998,
+        "p99": 2123.33,
+        "max": 6364
+      },
+      "maximum_nodes": 24,
+      "maximum_scalar_updates": 192,
+      "scanned_work": {
+        "p50": 1290.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 601.0,
+        "p95": 675.3999999999996,
+        "p99": 806.0,
+        "max": 847
+      },
+      "active_block_work": {
+        "p50": 10.0,
+        "p95": 14.0,
+        "p99": 15.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burial",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.00297584687359631,
+          "position": [
+            517.425109863281,
+            393.928924560547
+          ],
+          "rotation": -0.000340740487445146,
+          "velocity": [
+            0.00780132971704006,
+            0.0113493744283915
+          ]
+        },
+        "net_translation": [
+          5.425109863281023,
+          95.92892456054699
+        ],
+        "position_span": [
+          7.09487915039,
+          95.98455810546898
+        ],
+        "angle_unwrapped_span": 0.196799792349339,
+        "peak_upward_speed": 1.22249412536621,
+        "peak_downward_speed": 64.3052062988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0080520436167717,
+          "p95": 0.30591933876276034,
+          "p99": 0.35307336866855643,
+          "max": 0.361704140901566
+        },
+        "tail_abs_omega": {
+          "p50": 0.00165910564828664,
+          "p95": 0.01874126065522433,
+          "p99": 0.022092693094164135,
+          "max": 0.0227629952132702
+        },
+        "tail_centre_span": [
+          0.2807006835930679,
+          0.010437011718011036
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 322.5357142857143,
+      "material_cell_centroid_grid_y_after": 369.3642857142857,
+      "material_count_before": 6720,
+      "material_count_after": 6720,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 85,
+      "peak_post_ejection_overlap": 83,
+      "maximum_budget_overrun": -10.1723109831748,
+      "peak_native_wrench_force": 591.4330618497182,
+      "peak_native_wrench_torque_rate": 1243.0779403556821,
+      "nonzero_event_boundaries": 856,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 3781.6698754167865,
+      "step_time_us": {
+        "p50": 2107.0,
+        "p95": 3142.45,
+        "p99": 3686.1899999999996,
+        "max": 7357
+      },
+      "maximum_nodes": 32,
+      "maximum_scalar_updates": 256,
+      "scanned_work": {
+        "p50": 4726.0,
+        "p95": 6720.0,
+        "p99": 6720.0,
+        "max": 6720
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 2084.999999999999,
+        "p99": 6720.0,
+        "max": 6720
+      },
+      "active_block_work": {
+        "p50": 4.0,
+        "p95": 12.0,
+        "p99": 16.0,
+        "max": 70
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burial",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -2.9996749528749e-10,
+          "position": [
+            512.0146484375,
+            294.652374267578
+          ],
+          "rotation": 2.91969420862515e-10,
+          "velocity": [
+            -2.82505324689097e-10,
+            3.65972518920898e-05
+          ]
+        },
+        "net_translation": [
+          0.0146484375,
+          -3.3476257324219887
+        ],
+        "position_span": [
+          0.0146484375,
+          3.3542175292969887
+        ],
+        "angle_unwrapped_span": 0.0012109365711994704,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 5.7160854339599596e-05,
+          "p95": 8.926391601562504e-05,
+          "p99": 9.266853332519531e-05,
+          "max": 9.35196876525879e-05
+        },
+        "tail_abs_omega": {
+          "p50": 3.0403869699657804e-10,
+          "p95": 3.569382761581249e-10,
+          "p99": 3.6206433934315995e-10,
+          "max": 3.63357011146093e-10
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4721069335939774
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 322.5357142857143,
+      "material_cell_centroid_grid_y_after": 367.2160714285714,
+      "material_count_before": 6720,
+      "material_count_after": 6720,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 46,
+      "peak_post_ejection_overlap": 25,
+      "maximum_budget_overrun": -19.91301651449068,
+      "peak_native_wrench_force": 5.238329926610802,
+      "peak_native_wrench_torque_rate": 27.03712281913668,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1447.5,
+        "p95": 2381.6999999999985,
+        "p99": 2723.04,
+        "max": 10062
+      },
+      "maximum_nodes": 8,
+      "maximum_scalar_updates": 64,
+      "scanned_work": {
+        "p50": 403.0,
+        "p95": 6720.0,
+        "p99": 6720.0,
+        "max": 6720
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 1760.7999999999984,
+        "p99": 6386.849999999998,
+        "max": 6720
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 12.0,
+        "p99": 16.0,
+        "max": 70
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burial",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.000868766335770488,
+          "position": [
+            509.557373046875,
+            332.724029541016
+          ],
+          "rotation": -0.000981056480668485,
+          "velocity": [
+            -0.000585551257245243,
+            0.00258028507232666
+          ]
+        },
+        "net_translation": [
+          -2.442626953125,
+          34.72402954101602
+        ],
+        "position_span": [
+          2.458740234375,
+          36.07199096679699
+        ],
+        "angle_unwrapped_span": 0.06467006169259551,
+        "peak_upward_speed": 39.7296142578125,
+        "peak_downward_speed": 59.5881996154785,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.00608256459236145,
+          "p95": 0.013117563724517839,
+          "p99": 0.01404665112495421,
+          "max": 0.0142884254455566
+        },
+        "tail_abs_omega": {
+          "p50": 0.00205182621721178,
+          "p95": 0.0044188193045556524,
+          "p99": 0.004729557675309476,
+          "max": 0.00481050694361329
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4572448730469887
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 322.5357142857143,
+      "material_cell_centroid_grid_y_after": 369.103125,
+      "material_count_before": 6720,
+      "material_count_after": 6720,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 23,
+      "peak_post_ejection_overlap": 8,
+      "maximum_budget_overrun": -11.705200982176967,
+      "peak_native_wrench_force": 437.5660152780465,
+      "peak_native_wrench_torque_rate": 3211.44152650044,
+      "nonzero_event_boundaries": 136,
+      "arrival_count_sum": 558,
+      "arrival_missing_sum": 86838,
+      "arrival_misaligned_sum": 12,
+      "event_budget_cost_sum": 22.792183788564756,
+      "step_time_us": {
+        "p50": 1998.5,
+        "p95": 2972.0,
+        "p99": 3471.629999999999,
+        "max": 10851
+      },
+      "maximum_nodes": 18,
+      "maximum_scalar_updates": 144,
+      "scanned_work": {
+        "p50": 4696.0,
+        "p95": 6720.0,
+        "p99": 6720.0,
+        "max": 6720
+      },
+      "move_work": {
+        "p50": 2.0,
+        "p95": 2088.2499999999964,
+        "p99": 6700.2,
+        "max": 6720
+      },
+      "active_block_work": {
+        "p50": 4.0,
+        "p95": 12.0,
+        "p99": 16.0,
+        "max": 70
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "carry-spill",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -3.65579150285456e-10,
+          "position": [
+            511.991546630859,
+            393.958923339844
+          ],
+          "rotation": -9.6370081337227e-07,
+          "velocity": [
+            -8.54092518931537e-10,
+            -2.46735787357011e-09
+          ]
+        },
+        "net_translation": [
+          -0.008453369141022904,
+          143.95892333984398
+        ],
+        "position_span": [
+          0.008636474610000278,
+          143.95233154296898
+        ],
+        "angle_unwrapped_span": 0.0001051932867994765,
+        "peak_upward_speed": 2.58283662796021,
+        "peak_downward_speed": 62.899772644043,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 1.9305539389336e-09,
+          "p95": 4.564773981030613e-09,
+          "p99": 6.54094005625439e-09,
+          "max": 7.19187998043935e-09
+        },
+        "tail_abs_omega": {
+          "p50": 1.19334722659126e-10,
+          "p95": 3.436305004433931e-10,
+          "p99": 5.109733439145896e-10,
+          "max": 5.60875845767583e-10
+        },
+        "tail_centre_span": [
+          0.0,
+          0.0
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 249.0,
+      "material_cell_centroid_grid_y_after": 393.0,
+      "material_count_before": 16,
+      "material_count_after": 16,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -18.08,
+      "peak_native_wrench_force": 115.1999974250796,
+      "peak_native_wrench_torque_rate": 0.973828125,
+      "nonzero_event_boundaries": 756,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 1451.52,
+      "step_time_us": {
+        "p50": 1283.5,
+        "p95": 1690.1,
+        "p99": 2034.1999999999998,
+        "max": 7654
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 16.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 4.0,
+        "max": 68
+      },
+      "carry_gate": {
+        "initial_native_material_count": 16,
+        "initial_primary_cavity_count": 16,
+        "primary_zero_ticks": [],
+        "primary_zero_before_tip": [],
+        "observed_uninterrupted_primary_load_before_tip": true,
+        "minimum_primary_before_tip": 16,
+        "first_lift_tick": null,
+        "maximum_rise_with_at_least_minimum_load": -0.006591796875,
+        "tip_start_primary_load": 16,
+        "first_half_release_tick": null,
+        "observed_tip_window_complete": true,
+        "lift_gate_pass": false,
+        "spill_gate_pass": false,
+        "registered_demonstration_pass": false,
+        "interpretation": "Primary counts use post-step material and current body pose; sample-pose counts are auxiliary only. Zero load is not a vacuous spill pass."
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "carry-spill",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.03417530095129e-09,
+          "position": [
+            512.0,
+            202.894500732422
+          ],
+          "rotation": -2.65308330860137e-10,
+          "velocity": [
+            0.0,
+            -0.00014197826385498
+          ]
+        },
+        "net_translation": [
+          0.0,
+          -47.10549926757801
+        ],
+        "position_span": [
+          0.0,
+          47.40359497070301
+        ],
+        "angle_unwrapped_span": 1.1999992134839985,
+        "peak_upward_speed": 41.5245971679688,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0002521276473999025,
+          "p95": 0.0004176080226898197,
+          "p99": 0.0004366683959960939,
+          "max": 0.000441610813140869
+        },
+        "tail_abs_omega": {
+          "p50": 5.7514734308483646e-08,
+          "p95": 4.059058346683737e-06,
+          "p99": 5.928089613007614e-06,
+          "max": 6.51319533062633e-06
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4721069335940058
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 249.0,
+      "material_cell_centroid_grid_y_after": 394.5625,
+      "material_count_before": 16,
+      "material_count_after": 16,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 16,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1243.5,
+        "p95": 1681.1,
+        "p99": 1872.6599999999994,
+        "max": 10352
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 16.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "move_work": {
+        "p50": 1.0,
+        "p95": 14.0,
+        "p99": 14.0,
+        "max": 16
+      },
+      "active_block_work": {
+        "p50": 4.0,
+        "p95": 7.0,
+        "p99": 8.0,
+        "max": 68
+      },
+      "carry_gate": {
+        "initial_native_material_count": 16,
+        "initial_primary_cavity_count": 16,
+        "primary_zero_ticks": [
+          180,
+          345,
+          360,
+          375,
+          390,
+          405,
+          420,
+          435,
+          450,
+          465,
+          480,
+          495,
+          510,
+          525,
+          540,
+          555,
+          570,
+          585,
+          600,
+          615,
+          630,
+          645,
+          660,
+          675,
+          690,
+          705,
+          720,
+          735,
+          750,
+          765,
+          780,
+          795,
+          810,
+          825,
+          840,
+          855,
+          870,
+          885,
+          899
+        ],
+        "primary_zero_before_tip": [
+          180
+        ],
+        "observed_uninterrupted_primary_load_before_tip": false,
+        "minimum_primary_before_tip": 0,
+        "first_lift_tick": 165,
+        "maximum_rise_with_at_least_minimum_load": 44.591613769530994,
+        "tip_start_primary_load": 16,
+        "first_half_release_tick": 330,
+        "observed_tip_window_complete": true,
+        "lift_gate_pass": true,
+        "spill_gate_pass": true,
+        "registered_demonstration_pass": true,
+        "interpretation": "Primary counts use post-step material and current body pose; sample-pose counts are auxiliary only. Zero load is not a vacuous spill pass."
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "carry-spill",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.03417996388799e-09,
+          "position": [
+            509.58837890625,
+            273.640594482422
+          ],
+          "rotation": -2.653089414828e-10,
+          "velocity": [
+            -0.00694548850879073,
+            0.202741861343384
+          ]
+        },
+        "net_translation": [
+          -2.41162109375,
+          23.64059448242199
+        ],
+        "position_span": [
+          2.41162109375,
+          68.32209777832
+        ],
+        "angle_unwrapped_span": 1.225339293745229,
+        "peak_upward_speed": 41.5245971679688,
+        "peak_downward_speed": 29.6515827178955,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.3506743311882015,
+          "p95": 0.5741999804973601,
+          "p99": 0.5999319815635681,
+          "max": 0.606538474559784
+        },
+        "tail_abs_omega": {
+          "p50": 5.751484799532135e-08,
+          "p95": 4.059069783579619e-06,
+          "p99": 5.928110012973774e-06,
+          "max": 6.51321852274123e-06
+        },
+        "tail_centre_span": [
+          0.02453613281301159,
+          0.2619934082030113
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 249.0,
+      "material_cell_centroid_grid_y_after": 394.5625,
+      "material_count_before": 16,
+      "material_count_after": 16,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 16,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.637784594474503,
+      "peak_native_wrench_force": 21.732925178663063,
+      "peak_native_wrench_torque_rate": 170.2960693359378,
+      "nonzero_event_boundaries": 54,
+      "arrival_count_sum": 176,
+      "arrival_missing_sum": 15094,
+      "arrival_misaligned_sum": 9,
+      "event_budget_cost_sum": 7.071308182293564,
+      "step_time_us": {
+        "p50": 1072.0,
+        "p95": 1445.0,
+        "p99": 1648.05,
+        "max": 8744
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 16.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 6.0,
+        "p99": 6.0,
+        "max": 68
+      },
+      "carry_gate": {
+        "initial_native_material_count": 16,
+        "initial_primary_cavity_count": 16,
+        "primary_zero_ticks": [
+          180,
+          360,
+          375,
+          390,
+          405,
+          420,
+          435,
+          450,
+          465,
+          480,
+          495,
+          510,
+          525,
+          540,
+          555,
+          570,
+          585,
+          600,
+          615,
+          630,
+          645,
+          660,
+          675,
+          690,
+          705,
+          720,
+          735,
+          750,
+          765,
+          780,
+          795,
+          810,
+          825,
+          840,
+          855,
+          870,
+          885,
+          899
+        ],
+        "primary_zero_before_tip": [
+          180
+        ],
+        "observed_uninterrupted_primary_load_before_tip": false,
+        "minimum_primary_before_tip": 0,
+        "first_lift_tick": 165,
+        "maximum_rise_with_at_least_minimum_load": 44.591613769530994,
+        "tip_start_primary_load": 16,
+        "first_half_release_tick": 330,
+        "observed_tip_window_complete": true,
+        "lift_gate_pass": true,
+        "spill_gate_pass": true,
+        "registered_demonstration_pass": true,
+        "interpretation": "Primary counts use post-step material and current body pose; sample-pose counts are auxiliary only. Zero load is not a vacuous spill pass."
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "edge",
+      "response": "LA",
+      "material": 23,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            501.054931640625,
+            295.935974121094
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0201064143329859,
+            0.0628746151924133
+          ]
+        },
+        "net_translation": [
+          9.054931640625,
+          25.935974121093977
+        ],
+        "position_span": [
+          8.971557617186988,
+          25.93591308593801
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 15.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.1087470054626465,
+          "p95": 0.17806024253368355,
+          "p99": 0.18603954315185522,
+          "max": 0.188088059425354
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.07214355468698841,
+          0.24530029296903422
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 382.0208333333333,
+      "material_count_before": 2400,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1063.5,
+        "p95": 1587.05,
+        "p99": 1875.01,
+        "max": 6921
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 2162.4999999999986,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 11.0,
+        "p99": 12.0,
+        "max": 67
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "edge",
+      "response": "LA-EVENT-OFF",
+      "material": 23,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            501.054931640625,
+            295.935974121094
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0201064143329859,
+            0.0628746151924133
+          ]
+        },
+        "net_translation": [
+          9.054931640625,
+          25.935974121093977
+        ],
+        "position_span": [
+          8.971557617186988,
+          25.93591308593801
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 15.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.1087470054626465,
+          "p95": 0.17806024253368355,
+          "p99": 0.18603954315185522,
+          "max": 0.188088059425354
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.07214355468698841,
+          0.24530029296903422
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 382.0208333333333,
+      "material_count_before": 2400,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1247.0,
+        "p95": 1958.2499999999998,
+        "p99": 2369.08,
+        "max": 7849
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 2162.4999999999986,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 11.0,
+        "p99": 12.0,
+        "max": 67
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "edge",
+      "response": "LA-SELECTIVE",
+      "material": 23,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            501.054931640625,
+            295.935974121094
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0201064143329859,
+            0.0628746151924133
+          ]
+        },
+        "net_translation": [
+          9.054931640625,
+          25.935974121093977
+        ],
+        "position_span": [
+          8.971557617186988,
+          25.93591308593801
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 15.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.1087470054626465,
+          "p95": 0.17806024253368355,
+          "p99": 0.18603954315185522,
+          "max": 0.188088059425354
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.07214355468698841,
+          0.24530029296903422
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 382.0208333333333,
+      "material_count_before": 2400,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1238.0,
+        "p95": 1803.4499999999996,
+        "p99": 2213.989999999999,
+        "max": 8471
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 2162.4999999999986,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 11.0,
+        "p99": 12.0,
+        "max": 67
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "water",
+      "response": "LA",
+      "material": 3,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            310.503479003906
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.0508099794387817
+          ]
+        },
+        "net_translation": [
+          0.0,
+          20.503479003906023
+        ],
+        "position_span": [
+          0.0,
+          20.623443603515966
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 12.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.08787965774536136,
+          "p95": 0.1438921123743056,
+          "p99": 0.15034005641937237,
+          "max": 0.151995599269867
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.288818359375
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 380.1101006820396,
+      "material_count_before": 6000,
+      "material_count_after": 6158,
+      "water_quantity_before": 1530000,
+      "water_quantity_after": 1530000,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 3739.0,
+        "p95": 5280.5,
+        "p99": 5738.989999999999,
+        "max": 8111
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 6052.0,
+        "p95": 6077.0,
+        "p99": 6084.0,
+        "max": 6090
+      },
+      "move_work": {
+        "p50": 1471.5,
+        "p95": 5730.65,
+        "p99": 6026.05,
+        "max": 6044
+      },
+      "active_block_work": {
+        "p50": 14.0,
+        "p95": 14.0,
+        "p99": 14.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "water",
+      "response": "LA-EVENT-OFF",
+      "material": 3,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            310.503479003906
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.0508099794387817
+          ]
+        },
+        "net_translation": [
+          0.0,
+          20.503479003906023
+        ],
+        "position_span": [
+          0.0,
+          20.623443603515966
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 12.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.08787965774536136,
+          "p95": 0.1438921123743056,
+          "p99": 0.15034005641937237,
+          "max": 0.151995599269867
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.288818359375
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 380.1101006820396,
+      "material_count_before": 6000,
+      "material_count_after": 6158,
+      "water_quantity_before": 1530000,
+      "water_quantity_after": 1530000,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 3839.0,
+        "p95": 5518.45,
+        "p99": 5923.459999999999,
+        "max": 9027
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 6052.0,
+        "p95": 6077.0,
+        "p99": 6084.0,
+        "max": 6090
+      },
+      "move_work": {
+        "p50": 1471.5,
+        "p95": 5730.65,
+        "p99": 6026.05,
+        "max": 6044
+      },
+      "active_block_work": {
+        "p50": 14.0,
+        "p95": 14.0,
+        "p99": 14.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "water",
+      "response": "LA-SELECTIVE",
+      "material": 3,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            310.503479003906
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.0508099794387817
+          ]
+        },
+        "net_translation": [
+          0.0,
+          20.503479003906023
+        ],
+        "position_span": [
+          0.0,
+          20.623443603515966
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 12.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.08787965774536136,
+          "p95": 0.1438921123743056,
+          "p99": 0.15034005641937237,
+          "max": 0.151995599269867
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.288818359375
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 380.1101006820396,
+      "material_count_before": 6000,
+      "material_count_after": 6158,
+      "water_quantity_before": 1530000,
+      "water_quantity_after": 1530000,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 3827.5,
+        "p95": 5349.949999999999,
+        "p99": 5746.26,
+        "max": 9904
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 6052.0,
+        "p95": 6077.0,
+        "p99": 6084.0,
+        "max": 6090
+      },
+      "move_work": {
+        "p50": 1471.5,
+        "p95": 5730.65,
+        "p99": 6026.05,
+        "max": 6044
+      },
+      "active_block_work": {
+        "p50": 14.0,
+        "p95": 14.0,
+        "p99": 14.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "hard",
+      "response": "LA",
+      "material": 58,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.79768533392632e-10,
+          "position": [
+            511.695526123047,
+            344.232971191406
+          ],
+          "rotation": 7.0454281297927e-11,
+          "velocity": [
+            -0.00286100804805756,
+            -0.01856929063797
+          ]
+        },
+        "net_translation": [
+          -0.3044738769530113,
+          24.232971191406023
+        ],
+        "position_span": [
+          0.3044738769530113,
+          27.614288330079034
+        ],
+        "angle_unwrapped_span": 0.0031997835456369964,
+        "peak_upward_speed": 1.10844469070435,
+        "peak_downward_speed": 20.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0321257412433624,
+          "p95": 0.05260873734951018,
+          "p99": 0.054966681599616984,
+          "max": 0.0555720329284668
+        },
+        "tail_abs_omega": {
+          "p50": 2.148421787695475e-10,
+          "p95": 2.522225178713815e-10,
+          "p99": 2.5584472485018474e-10,
+          "max": 2.56758170280591e-10
+        },
+        "tail_centre_span": [
+          0.01123046875,
+          0.5377197265629547
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 255.41317266424562,
+      "material_cell_centroid_grid_y_after": 255.41317266424562,
+      "material_count_before": 24232,
+      "material_count_after": 24232,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 991.0,
+        "p95": 1343.1499999999999,
+        "p99": 1511.09,
+        "max": 8596
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 4.0,
+        "max": 73
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "hard",
+      "response": "LA-EVENT-OFF",
+      "material": 58,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.79768533392632e-10,
+          "position": [
+            511.695526123047,
+            344.232971191406
+          ],
+          "rotation": 7.0454281297927e-11,
+          "velocity": [
+            -0.00286100804805756,
+            -0.01856929063797
+          ]
+        },
+        "net_translation": [
+          -0.3044738769530113,
+          24.232971191406023
+        ],
+        "position_span": [
+          0.3044738769530113,
+          27.614288330079034
+        ],
+        "angle_unwrapped_span": 0.0031997835456369964,
+        "peak_upward_speed": 1.10844469070435,
+        "peak_downward_speed": 20.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0321257412433624,
+          "p95": 0.05260873734951018,
+          "p99": 0.054966681599616984,
+          "max": 0.0555720329284668
+        },
+        "tail_abs_omega": {
+          "p50": 2.148421787695475e-10,
+          "p95": 2.522225178713815e-10,
+          "p99": 2.5584472485018474e-10,
+          "max": 2.56758170280591e-10
+        },
+        "tail_centre_span": [
+          0.01123046875,
+          0.5377197265629547
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 255.41317266424562,
+      "material_cell_centroid_grid_y_after": 255.41317266424562,
+      "material_count_before": 24232,
+      "material_count_after": 24232,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 983.0,
+        "p95": 1549.4999999999995,
+        "p99": 1948.059999999999,
+        "max": 6566
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 4.0,
+        "max": 73
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "hard",
+      "response": "LA-SELECTIVE",
+      "material": 58,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.79768533392632e-10,
+          "position": [
+            511.695526123047,
+            344.232971191406
+          ],
+          "rotation": 7.0454281297927e-11,
+          "velocity": [
+            -0.00286100804805756,
+            -0.01856929063797
+          ]
+        },
+        "net_translation": [
+          -0.3044738769530113,
+          24.232971191406023
+        ],
+        "position_span": [
+          0.3044738769530113,
+          27.614288330079034
+        ],
+        "angle_unwrapped_span": 0.0031997835456369964,
+        "peak_upward_speed": 1.10844469070435,
+        "peak_downward_speed": 20.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0321257412433624,
+          "p95": 0.05260873734951018,
+          "p99": 0.054966681599616984,
+          "max": 0.0555720329284668
+        },
+        "tail_abs_omega": {
+          "p50": 2.148421787695475e-10,
+          "p95": 2.522225178713815e-10,
+          "p99": 2.5584472485018474e-10,
+          "max": 2.56758170280591e-10
+        },
+        "tail_centre_span": [
+          0.01123046875,
+          0.5377197265629547
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 255.41317266424562,
+      "material_cell_centroid_grid_y_after": 255.41317266424562,
+      "material_count_before": 24232,
+      "material_count_after": 24232,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1022.5,
+        "p95": 1435.3499999999997,
+        "p99": 1623.6699999999994,
+        "max": 9702
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 4.0,
+        "max": 73
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "landing",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1444.0,
+        "p95": 2586.999999999999,
+        "p99": 3155.6599999999994,
+        "max": 12069
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "landing",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1079.0,
+        "p95": 2451.05,
+        "p99": 2856.5199999999995,
+        "max": 13133
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "landing",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1056.0,
+        "p95": 2557.2,
+        "p99": 3026.37,
+        "max": 13429
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burst",
+      "response": "LA",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -6.25948737287274e-10,
+          "position": [
+            511.96923828125,
+            393.958892822266
+          ],
+          "rotation": 6.2331650951819e-08,
+          "velocity": [
+            -1.78145032059263e-09,
+            -7.3768520181261e-09
+          ]
+        },
+        "net_translation": [
+          -0.03076171875,
+          123.95889282226602
+        ],
+        "position_span": [
+          0.08074951171897737,
+          123.95230102539102
+        ],
+        "angle_unwrapped_span": 0.010749038890935486,
+        "peak_upward_speed": 2.83128499984741,
+        "peak_downward_speed": 56.0659370422363,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 1.2467518573089401e-08,
+          "p95": 1.798704793998239e-08,
+          "p99": 1.9329655245314798e-08,
+          "max": 2.16662030538828e-08
+        },
+        "tail_abs_omega": {
+          "p50": 9.279250146043695e-10,
+          "p95": 1.2588049214112868e-09,
+          "p99": 1.4202044396061103e-09,
+          "max": 1.58227098090435e-09
+        },
+        "tail_centre_span": [
+          0.0,
+          0.0
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 391.28125,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.1495,
+      "peak_native_wrench_force": 51.02999925613404,
+      "peak_native_wrench_torque_rate": 168.86422485351542,
+      "nonzero_event_boundaries": 463,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 373.43297429067724,
+      "step_time_us": {
+        "p50": 1279.5,
+        "p95": 1744.3999999999996,
+        "p99": 2184.4599999999978,
+        "max": 12850
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 6.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burst",
+      "response": "LA-EVENT-OFF",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            268.772308349609
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.00255423784255981
+          ]
+        },
+        "net_translation": [
+          0.0,
+          -1.227691650391023
+        ],
+        "position_span": [
+          0.0,
+          1.5257568359380116
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.00441288948059082,
+          "p95": 0.007220563292503353,
+          "p99": 0.0075439345836639405,
+          "max": 0.00762695074081421
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4613647460940342
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 266.0208333333333,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 22,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1092.5,
+        "p95": 1505.1999999999998,
+        "p99": 1903.2199999999998,
+        "max": 13550
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 70.09999999999991,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 4.019999999999982,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burst",
+      "response": "LA-SELECTIVE",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 2.62845412102308e-09,
+          "position": [
+            508.159118652344,
+            393.188201904297
+          ],
+          "rotation": -2.04031347372791e-10,
+          "velocity": [
+            0.000785161566454917,
+            0.0166524648666382
+          ]
+        },
+        "net_translation": [
+          -3.8408813476560226,
+          123.18820190429699
+        ],
+        "position_span": [
+          3.8467407226560226,
+          123.894775390625
+        ],
+        "angle_unwrapped_span": 0.01090296823531389,
+        "peak_upward_speed": 4.33261775970459,
+        "peak_downward_speed": 45.1368942260742,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.02879774570465085,
+          "p95": 0.04714886546134946,
+          "p99": 0.04926158666610722,
+          "max": 0.0498040914535522
+        },
+        "tail_abs_omega": {
+          "p50": 2.12166419544246e-07,
+          "p95": 1.4968659024816541e-05,
+          "p99": 2.185791385272752e-05,
+          "max": 2.40142162510892e-05
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4112854003910229
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 390.5520833333333,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 28,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.513691380689533,
+      "peak_native_wrench_force": 30.01281611875057,
+      "peak_native_wrench_torque_rate": 128.08926393589923,
+      "nonzero_event_boundaries": 108,
+      "arrival_count_sum": 1966,
+      "arrival_missing_sum": 32914,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 20.664703114876918,
+      "step_time_us": {
+        "p50": 1238.5,
+        "p95": 1951.2999999999997,
+        "p99": 3042.259999999999,
+        "max": 13639
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 6.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "stream",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 1.14818692509289e-06,
+          "position": [
+            513.961059570312,
+            393.958831787109
+          ],
+          "rotation": 2.8720241971314e-06,
+          "velocity": [
+            3.95586812373949e-06,
+            -9.82254277914762e-09
+          ]
+        },
+        "net_translation": [
+          1.9610595703120453,
+          123.95883178710898
+        ],
+        "position_span": [
+          1.9833374023439774,
+          123.95223999023398
+        ],
+        "angle_unwrapped_span": 0.04923393012722954,
+        "peak_upward_speed": 1.14873611927032,
+        "peak_downward_speed": 60.5231552124023,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 1.53086148202419e-08,
+          "p95": 3.198438207618891e-08,
+          "p99": 3.733541234396397e-08,
+          "max": 3.87371983379126e-08
+        },
+        "tail_abs_omega": {
+          "p50": 1.12394081952516e-06,
+          "p95": 1.7322753308235415e-06,
+          "p99": 7.5089973188369205e-06,
+          "max": 7.55674955144059e-06
+        },
+        "tail_centre_span": [
+          0.0,
+          0.0
+        ]
+      },
+      "source_inserted": 2400,
+      "source_attempted": 2400,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 378.90625,
+      "material_count_before": 0,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 2,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -14.99453010015646,
+      "peak_native_wrench_force": 266.7281384860969,
+      "peak_native_wrench_torque_rate": 699.7581298828139,
+      "nonzero_event_boundaries": 781,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 3206.682130920582,
+      "step_time_us": {
+        "p50": 1533.5,
+        "p95": 2105.05,
+        "p99": 2529.6799999999994,
+        "max": 13199
+      },
+      "maximum_nodes": 21,
+      "maximum_scalar_updates": 168,
+      "scanned_work": {
+        "p50": 1282.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 598.5,
+        "p95": 671.0,
+        "p99": 707.0699999999999,
+        "max": 741
+      },
+      "active_block_work": {
+        "p50": 10.0,
+        "p95": 14.0,
+        "p99": 15.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "stream",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            267.585723876953
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.000168383121490479
+          ]
+        },
+        "net_translation": [
+          0.0,
+          -2.4142761230469887
+        ],
+        "position_span": [
+          0.0,
+          2.7123413085939774
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.00028643012046814,
+          "p95": 0.00046345889568328864,
+          "p99": 0.00048393785953521724,
+          "max": 0.000489175319671631
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4721069335939774
+        ]
+      },
+      "source_inserted": 2400,
+      "source_attempted": 2400,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 363.14666666666665,
+      "material_count_before": 0,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 47,
+      "peak_post_ejection_overlap": 19,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1502.5,
+        "p95": 2194.4999999999995,
+        "p99": 2558.25,
+        "max": 12220
+      },
+      "maximum_nodes": 8,
+      "maximum_scalar_updates": 64,
+      "scanned_work": {
+        "p50": 1362.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 408.5,
+        "p95": 683.05,
+        "p99": 691.0,
+        "max": 695
+      },
+      "active_block_work": {
+        "p50": 10.0,
+        "p95": 14.0,
+        "p99": 15.009999999999991,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "stream",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 4.2794144974323e-05,
+          "position": [
+            503.335662841797,
+            392.651245117188
+          ],
+          "rotation": -4.77029971079901e-05,
+          "velocity": [
+            -2.75930669886293e-05,
+            0.000152111053466797
+          ]
+        },
+        "net_translation": [
+          -8.664337158203011,
+          122.65124511718801
+        ],
+        "position_span": [
+          8.716583251953011,
+          123.95230102539102
+        ],
+        "angle_unwrapped_span": 0.07596239447593689,
+        "peak_upward_speed": 1.43636131286621,
+        "peak_downward_speed": 62.2404441833496,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0003608763217926025,
+          "p95": 0.0007797777652740482,
+          "p99": 0.0008350497484207158,
+          "max": 0.000849545001983643
+        },
+        "tail_abs_omega": {
+          "p50": 0.0001029506674967705,
+          "p95": 0.0002265578383230606,
+          "p99": 0.00024294483315316073,
+          "max": 0.000247218151343986
+        },
+        "tail_centre_span": [
+          0.0,
+          0.47210693359301104
+        ]
+      },
+      "source_inserted": 2400,
+      "source_attempted": 2400,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 378.99291666666664,
+      "material_count_before": 0,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 38,
+      "peak_post_ejection_overlap": 38,
+      "maximum_budget_overrun": -18.55944455157047,
+      "peak_native_wrench_force": 86.43333033618599,
+      "peak_native_wrench_torque_rate": 495.7874267578128,
+      "nonzero_event_boundaries": 179,
+      "arrival_count_sum": 713,
+      "arrival_missing_sum": 78255,
+      "arrival_misaligned_sum": 40,
+      "event_budget_cost_sum": 30.220880958022093,
+      "step_time_us": {
+        "p50": 1592.0,
+        "p95": 2153.1499999999996,
+        "p99": 2484.09,
+        "max": 10815
+      },
+      "maximum_nodes": 24,
+      "maximum_scalar_updates": 192,
+      "scanned_work": {
+        "p50": 1290.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 601.0,
+        "p95": 675.3999999999996,
+        "p99": 806.0,
+        "max": 847
+      },
+      "active_block_work": {
+        "p50": 10.0,
+        "p95": 14.0,
+        "p99": 15.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burial",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.00297584687359631,
+          "position": [
+            517.425109863281,
+            393.928924560547
+          ],
+          "rotation": -0.000340740516548976,
+          "velocity": [
+            0.00780132971704006,
+            0.0113493744283915
+          ]
+        },
+        "net_translation": [
+          5.425109863281023,
+          95.92892456054699
+        ],
+        "position_span": [
+          7.09487915039,
+          95.98455810546898
+        ],
+        "angle_unwrapped_span": 0.196799777448177,
+        "peak_upward_speed": 1.22249412536621,
+        "peak_downward_speed": 64.3052062988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0080520436167717,
+          "p95": 0.30591933876276034,
+          "p99": 0.35307336866855643,
+          "max": 0.361704140901566
+        },
+        "tail_abs_omega": {
+          "p50": 0.00165910564828664,
+          "p95": 0.01874126065522433,
+          "p99": 0.022092693094164135,
+          "max": 0.0227629952132702
+        },
+        "tail_centre_span": [
+          0.2807006835930679,
+          0.010437011718011036
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 322.5357142857143,
+      "material_cell_centroid_grid_y_after": 369.3642857142857,
+      "material_count_before": 6720,
+      "material_count_after": 6720,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 85,
+      "peak_post_ejection_overlap": 83,
+      "maximum_budget_overrun": -10.17231098243296,
+      "peak_native_wrench_force": 591.4330618497182,
+      "peak_native_wrench_torque_rate": 1243.077940111152,
+      "nonzero_event_boundaries": 856,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 3781.6698754167865,
+      "step_time_us": {
+        "p50": 2096.0,
+        "p95": 3094.3499999999995,
+        "p99": 3703.04,
+        "max": 15246
+      },
+      "maximum_nodes": 32,
+      "maximum_scalar_updates": 256,
+      "scanned_work": {
+        "p50": 4726.0,
+        "p95": 6720.0,
+        "p99": 6720.0,
+        "max": 6720
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 2084.999999999999,
+        "p99": 6720.0,
+        "max": 6720
+      },
+      "active_block_work": {
+        "p50": 4.0,
+        "p95": 12.0,
+        "p99": 16.0,
+        "max": 70
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burial",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -2.9996749528749e-10,
+          "position": [
+            512.0146484375,
+            294.652374267578
+          ],
+          "rotation": 2.91969420862515e-10,
+          "velocity": [
+            -2.82505324689097e-10,
+            3.65972518920898e-05
+          ]
+        },
+        "net_translation": [
+          0.0146484375,
+          -3.3476257324219887
+        ],
+        "position_span": [
+          0.0146484375,
+          3.3542175292969887
+        ],
+        "angle_unwrapped_span": 0.0012109365711994704,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 5.7160854339599596e-05,
+          "p95": 8.926391601562504e-05,
+          "p99": 9.266853332519531e-05,
+          "max": 9.35196876525879e-05
+        },
+        "tail_abs_omega": {
+          "p50": 3.0403869699657804e-10,
+          "p95": 3.569382761581249e-10,
+          "p99": 3.6206433934315995e-10,
+          "max": 3.63357011146093e-10
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4721069335939774
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 322.5357142857143,
+      "material_cell_centroid_grid_y_after": 367.2160714285714,
+      "material_count_before": 6720,
+      "material_count_after": 6720,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 46,
+      "peak_post_ejection_overlap": 25,
+      "maximum_budget_overrun": -19.91301651449068,
+      "peak_native_wrench_force": 5.238329926610802,
+      "peak_native_wrench_torque_rate": 27.03712281913668,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1278.5,
+        "p95": 2243.0,
+        "p99": 3240.339999999999,
+        "max": 11804
+      },
+      "maximum_nodes": 8,
+      "maximum_scalar_updates": 64,
+      "scanned_work": {
+        "p50": 403.0,
+        "p95": 6720.0,
+        "p99": 6720.0,
+        "max": 6720
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 1760.7999999999984,
+        "p99": 6386.849999999998,
+        "max": 6720
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 12.0,
+        "p99": 16.0,
+        "max": 70
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burial",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.000868766277562827,
+          "position": [
+            509.557373046875,
+            332.724029541016
+          ],
+          "rotation": -0.000981056480668485,
+          "velocity": [
+            -0.000585551257245243,
+            0.00258028507232666
+          ]
+        },
+        "net_translation": [
+          -2.442626953125,
+          34.72402954101602
+        ],
+        "position_span": [
+          2.458740234375,
+          36.07199096679699
+        ],
+        "angle_unwrapped_span": 0.0646700616925955,
+        "peak_upward_speed": 39.7296142578125,
+        "peak_downward_speed": 59.5881996154785,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.00608256459236145,
+          "p95": 0.013117563724517839,
+          "p99": 0.01404665112495421,
+          "max": 0.0142884254455566
+        },
+        "tail_abs_omega": {
+          "p50": 0.002051826217211785,
+          "p95": 0.0044188193045556524,
+          "p99": 0.004729557675309476,
+          "max": 0.00481050694361329
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4572448730459655
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 322.5357142857143,
+      "material_cell_centroid_grid_y_after": 369.103125,
+      "material_count_before": 6720,
+      "material_count_after": 6720,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 23,
+      "peak_post_ejection_overlap": 8,
+      "maximum_budget_overrun": -11.705200982176967,
+      "peak_native_wrench_force": 437.5660152780465,
+      "peak_native_wrench_torque_rate": 3211.441527045834,
+      "nonzero_event_boundaries": 136,
+      "arrival_count_sum": 558,
+      "arrival_missing_sum": 86838,
+      "arrival_misaligned_sum": 12,
+      "event_budget_cost_sum": 22.792183788564756,
+      "step_time_us": {
+        "p50": 1841.5,
+        "p95": 2615.45,
+        "p99": 3165.09,
+        "max": 11696
+      },
+      "maximum_nodes": 18,
+      "maximum_scalar_updates": 144,
+      "scanned_work": {
+        "p50": 4696.0,
+        "p95": 6720.0,
+        "p99": 6720.0,
+        "max": 6720
+      },
+      "move_work": {
+        "p50": 2.0,
+        "p95": 2088.2499999999964,
+        "p99": 6700.2,
+        "max": 6720
+      },
+      "active_block_work": {
+        "p50": 4.0,
+        "p95": 12.0,
+        "p99": 16.0,
+        "max": 70
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "carry-spill",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -3.65579150285456e-10,
+          "position": [
+            511.991546630859,
+            393.958923339844
+          ],
+          "rotation": -9.6370081337227e-07,
+          "velocity": [
+            -8.54092518931537e-10,
+            -2.46735787357011e-09
+          ]
+        },
+        "net_translation": [
+          -0.008453369141022904,
+          143.95892333984398
+        ],
+        "position_span": [
+          0.008636474610000278,
+          143.95233154296898
+        ],
+        "angle_unwrapped_span": 0.0001051932867994765,
+        "peak_upward_speed": 2.58283662796021,
+        "peak_downward_speed": 62.899772644043,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 1.9305539389336e-09,
+          "p95": 4.564773981030613e-09,
+          "p99": 6.54094005625439e-09,
+          "max": 7.19187998043935e-09
+        },
+        "tail_abs_omega": {
+          "p50": 1.19334722659126e-10,
+          "p95": 3.436305004433931e-10,
+          "p99": 5.109733439145896e-10,
+          "max": 5.60875845767583e-10
+        },
+        "tail_centre_span": [
+          0.0,
+          0.0
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 249.0,
+      "material_cell_centroid_grid_y_after": 393.0,
+      "material_count_before": 16,
+      "material_count_after": 16,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -18.08,
+      "peak_native_wrench_force": 115.1999974250796,
+      "peak_native_wrench_torque_rate": 0.973828125,
+      "nonzero_event_boundaries": 756,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 1451.52,
+      "step_time_us": {
+        "p50": 1070.0,
+        "p95": 1492.1999999999998,
+        "p99": 1785.2799999999997,
+        "max": 12019
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 16.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 4.0,
+        "max": 68
+      },
+      "carry_gate": {
+        "initial_native_material_count": 16,
+        "initial_primary_cavity_count": 16,
+        "primary_zero_ticks": [],
+        "primary_zero_before_tip": [],
+        "observed_uninterrupted_primary_load_before_tip": true,
+        "minimum_primary_before_tip": 16,
+        "first_lift_tick": null,
+        "maximum_rise_with_at_least_minimum_load": -0.006591796875,
+        "tip_start_primary_load": 16,
+        "first_half_release_tick": null,
+        "observed_tip_window_complete": true,
+        "lift_gate_pass": false,
+        "spill_gate_pass": false,
+        "registered_demonstration_pass": false,
+        "interpretation": "Primary counts use post-step material and current body pose; sample-pose counts are auxiliary only. Zero load is not a vacuous spill pass."
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "carry-spill",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.03417374663906e-09,
+          "position": [
+            512.0,
+            202.894500732422
+          ],
+          "rotation": -2.65307442681717e-10,
+          "velocity": [
+            0.0,
+            -0.00014197826385498
+          ]
+        },
+        "net_translation": [
+          0.0,
+          -47.10549926757801
+        ],
+        "position_span": [
+          0.0,
+          47.40359497070301
+        ],
+        "angle_unwrapped_span": 1.1999992134839976,
+        "peak_upward_speed": 41.5245971679688,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0002521276473999025,
+          "p95": 0.0004176080226898197,
+          "p99": 0.0004366683959960939,
+          "max": 0.000441610813140869
+        },
+        "tail_abs_omega": {
+          "p50": 5.751450871116505e-08,
+          "p95": 4.059052866978159e-06,
+          "p99": 5.928084069637408e-06,
+          "max": 6.51318987365812e-06
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4721069335940058
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 249.0,
+      "material_cell_centroid_grid_y_after": 394.5625,
+      "material_count_before": 16,
+      "material_count_after": 16,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 16,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1079.0,
+        "p95": 1497.1499999999999,
+        "p99": 1709.1299999999999,
+        "max": 12388
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 16.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "move_work": {
+        "p50": 1.0,
+        "p95": 14.0,
+        "p99": 14.0,
+        "max": 16
+      },
+      "active_block_work": {
+        "p50": 4.0,
+        "p95": 7.0,
+        "p99": 8.0,
+        "max": 68
+      },
+      "carry_gate": {
+        "initial_native_material_count": 16,
+        "initial_primary_cavity_count": 16,
+        "primary_zero_ticks": [
+          180,
+          345,
+          360,
+          375,
+          390,
+          405,
+          420,
+          435,
+          450,
+          465,
+          480,
+          495,
+          510,
+          525,
+          540,
+          555,
+          570,
+          585,
+          600,
+          615,
+          630,
+          645,
+          660,
+          675,
+          690,
+          705,
+          720,
+          735,
+          750,
+          765,
+          780,
+          795,
+          810,
+          825,
+          840,
+          855,
+          870,
+          885,
+          899
+        ],
+        "primary_zero_before_tip": [
+          180
+        ],
+        "observed_uninterrupted_primary_load_before_tip": false,
+        "minimum_primary_before_tip": 0,
+        "first_lift_tick": 165,
+        "maximum_rise_with_at_least_minimum_load": 44.591613769530994,
+        "tip_start_primary_load": 16,
+        "first_half_release_tick": 330,
+        "observed_tip_window_complete": true,
+        "lift_gate_pass": true,
+        "spill_gate_pass": true,
+        "registered_demonstration_pass": true,
+        "interpretation": "Primary counts use post-step material and current body pose; sample-pose counts are auxiliary only. Zero load is not a vacuous spill pass."
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "carry-spill",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 900,
+      "expected_rows": 900,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.03417996388799e-09,
+          "position": [
+            509.58837890625,
+            273.640594482422
+          ],
+          "rotation": -2.653089414828e-10,
+          "velocity": [
+            -0.00694548850879073,
+            0.202741861343384
+          ]
+        },
+        "net_translation": [
+          -2.41162109375,
+          23.64059448242199
+        ],
+        "position_span": [
+          2.41162109375,
+          68.32209777832
+        ],
+        "angle_unwrapped_span": 1.225339293745229,
+        "peak_upward_speed": 41.5245971679688,
+        "peak_downward_speed": 29.6515827178955,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.3506743311882015,
+          "p95": 0.5741999804973601,
+          "p99": 0.5999319815635681,
+          "max": 0.606538474559784
+        },
+        "tail_abs_omega": {
+          "p50": 5.751484799532135e-08,
+          "p95": 4.059069783579619e-06,
+          "p99": 5.928110012973774e-06,
+          "max": 6.51321852274123e-06
+        },
+        "tail_centre_span": [
+          0.02453613281198841,
+          0.2619934082030113
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 249.0,
+      "material_cell_centroid_grid_y_after": 394.5625,
+      "material_count_before": 16,
+      "material_count_after": 16,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 16,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.637784594474503,
+      "peak_native_wrench_force": 21.732925178663063,
+      "peak_native_wrench_torque_rate": 170.2960693359378,
+      "nonzero_event_boundaries": 54,
+      "arrival_count_sum": 176,
+      "arrival_missing_sum": 15094,
+      "arrival_misaligned_sum": 9,
+      "event_budget_cost_sum": 7.071308182293564,
+      "step_time_us": {
+        "p50": 1075.5,
+        "p95": 1618.4999999999995,
+        "p99": 2001.02,
+        "max": 12785
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 16.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 16.0,
+        "p99": 16.0,
+        "max": 16
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 6.0,
+        "p99": 6.0,
+        "max": 68
+      },
+      "carry_gate": {
+        "initial_native_material_count": 16,
+        "initial_primary_cavity_count": 16,
+        "primary_zero_ticks": [
+          180,
+          360,
+          375,
+          390,
+          405,
+          420,
+          435,
+          450,
+          465,
+          480,
+          495,
+          510,
+          525,
+          540,
+          555,
+          570,
+          585,
+          600,
+          615,
+          630,
+          645,
+          660,
+          675,
+          690,
+          705,
+          720,
+          735,
+          750,
+          765,
+          780,
+          795,
+          810,
+          825,
+          840,
+          855,
+          870,
+          885,
+          899
+        ],
+        "primary_zero_before_tip": [
+          180
+        ],
+        "observed_uninterrupted_primary_load_before_tip": false,
+        "minimum_primary_before_tip": 0,
+        "first_lift_tick": 165,
+        "maximum_rise_with_at_least_minimum_load": 44.591613769530994,
+        "tip_start_primary_load": 16,
+        "first_half_release_tick": 330,
+        "observed_tip_window_complete": true,
+        "lift_gate_pass": true,
+        "spill_gate_pass": true,
+        "registered_demonstration_pass": true,
+        "interpretation": "Primary counts use post-step material and current body pose; sample-pose counts are auxiliary only. Zero load is not a vacuous spill pass."
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "edge",
+      "response": "LA",
+      "material": 23,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            501.054931640625,
+            295.935974121094
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0201064143329859,
+            0.0628746151924133
+          ]
+        },
+        "net_translation": [
+          9.054931640625,
+          25.935974121093977
+        ],
+        "position_span": [
+          8.971557617186988,
+          25.93591308593699
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 15.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.1087470054626465,
+          "p95": 0.17806024253368355,
+          "p99": 0.18603954315185522,
+          "max": 0.188088059425354
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.07214355468698841,
+          0.24530029296801104
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 382.0208333333333,
+      "material_count_before": 2400,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1019.0,
+        "p95": 3693.1499999999996,
+        "p99": 4440.469999999999,
+        "max": 11305
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 2162.4999999999986,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 11.0,
+        "p99": 12.0,
+        "max": 67
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "edge",
+      "response": "LA-EVENT-OFF",
+      "material": 23,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            501.054931640625,
+            295.935974121094
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0201064143329859,
+            0.0628746151924133
+          ]
+        },
+        "net_translation": [
+          9.054931640625,
+          25.935974121093977
+        ],
+        "position_span": [
+          8.971557617186988,
+          25.93591308593699
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 15.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.1087470054626465,
+          "p95": 0.17806024253368355,
+          "p99": 0.18603954315185522,
+          "max": 0.188088059425354
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.07214355468698841,
+          0.24530029296801104
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 382.0208333333333,
+      "material_count_before": 2400,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 998.0,
+        "p95": 3796.149999999998,
+        "p99": 5600.1799999999985,
+        "max": 12436
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 2162.4999999999986,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 11.0,
+        "p99": 12.0,
+        "max": 67
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "edge",
+      "response": "LA-SELECTIVE",
+      "material": 23,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            501.054931640625,
+            295.935974121094
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0201064143329859,
+            0.0628746151924133
+          ]
+        },
+        "net_translation": [
+          9.054931640625,
+          25.935974121093977
+        ],
+        "position_span": [
+          8.971557617186988,
+          25.93591308593699
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 15.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.1087470054626465,
+          "p95": 0.17806024253368355,
+          "p99": 0.18603954315185522,
+          "max": 0.188088059425354
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.07214355468698841,
+          0.24530029296801104
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 382.0208333333333,
+      "material_count_before": 2400,
+      "material_count_after": 2400,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 993.0,
+        "p95": 3628.5999999999995,
+        "p99": 4613.15,
+        "max": 12106
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 2400.0,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 2162.4999999999986,
+        "p99": 2400.0,
+        "max": 2400
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 11.0,
+        "p99": 12.0,
+        "max": 67
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "water",
+      "response": "LA",
+      "material": 3,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            310.503479003906
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.0508099794387817
+          ]
+        },
+        "net_translation": [
+          0.0,
+          20.503479003906023
+        ],
+        "position_span": [
+          0.0,
+          20.623443603515966
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 12.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.08787965774536136,
+          "p95": 0.1438921123743056,
+          "p99": 0.15034005641937237,
+          "max": 0.151995599269867
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.288818359375
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 380.1101006820396,
+      "material_count_before": 6000,
+      "material_count_after": 6158,
+      "water_quantity_before": 1530000,
+      "water_quantity_after": 1530000,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 10048.0,
+        "p95": 13919.449999999995,
+        "p99": 15460.709999999997,
+        "max": 24970
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 6052.0,
+        "p95": 6077.0,
+        "p99": 6084.0,
+        "max": 6090
+      },
+      "move_work": {
+        "p50": 1471.5,
+        "p95": 5730.65,
+        "p99": 6026.05,
+        "max": 6044
+      },
+      "active_block_work": {
+        "p50": 14.0,
+        "p95": 14.0,
+        "p99": 14.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "water",
+      "response": "LA-EVENT-OFF",
+      "material": 3,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            310.503479003906
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.0508099794387817
+          ]
+        },
+        "net_translation": [
+          0.0,
+          20.503479003906023
+        ],
+        "position_span": [
+          0.0,
+          20.623443603515966
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 12.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.08787965774536136,
+          "p95": 0.1438921123743056,
+          "p99": 0.15034005641937237,
+          "max": 0.151995599269867
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.288818359375
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 380.1101006820396,
+      "material_count_before": 6000,
+      "material_count_after": 6158,
+      "water_quantity_before": 1530000,
+      "water_quantity_after": 1530000,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 9509.0,
+        "p95": 14332.999999999998,
+        "p99": 18210.21,
+        "max": 24137
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 6052.0,
+        "p95": 6077.0,
+        "p99": 6084.0,
+        "max": 6090
+      },
+      "move_work": {
+        "p50": 1471.5,
+        "p95": 5730.65,
+        "p99": 6026.05,
+        "max": 6044
+      },
+      "active_block_work": {
+        "p50": 14.0,
+        "p95": 14.0,
+        "p99": 14.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "water",
+      "response": "LA-SELECTIVE",
+      "material": 3,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            310.503479003906
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.0508099794387817
+          ]
+        },
+        "net_translation": [
+          0.0,
+          20.503479003906023
+        ],
+        "position_span": [
+          0.0,
+          20.623443603515966
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 12.6333351135254,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.08787965774536136,
+          "p95": 0.1438921123743056,
+          "p99": 0.15034005641937237,
+          "max": 0.151995599269867
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.288818359375
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 380.1101006820396,
+      "material_count_before": 6000,
+      "material_count_after": 6158,
+      "water_quantity_before": 1530000,
+      "water_quantity_after": 1530000,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 9038.0,
+        "p95": 17127.749999999996,
+        "p99": 21140.27,
+        "max": 32524
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 6052.0,
+        "p95": 6077.0,
+        "p99": 6084.0,
+        "max": 6090
+      },
+      "move_work": {
+        "p50": 1471.5,
+        "p95": 5730.65,
+        "p99": 6026.05,
+        "max": 6044
+      },
+      "active_block_work": {
+        "p50": 14.0,
+        "p95": 14.0,
+        "p99": 14.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "hard",
+      "response": "LA",
+      "material": 58,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.79768533392632e-10,
+          "position": [
+            511.695526123047,
+            344.232971191406
+          ],
+          "rotation": 7.0454281297927e-11,
+          "velocity": [
+            -0.00286100804805756,
+            -0.01856929063797
+          ]
+        },
+        "net_translation": [
+          -0.3044738769530113,
+          24.232971191406023
+        ],
+        "position_span": [
+          0.3044738769530113,
+          27.61428833007801
+        ],
+        "angle_unwrapped_span": 0.0031997835456369964,
+        "peak_upward_speed": 1.10844469070435,
+        "peak_downward_speed": 20.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0321257412433624,
+          "p95": 0.05260873734951018,
+          "p99": 0.054966681599616984,
+          "max": 0.0555720329284668
+        },
+        "tail_abs_omega": {
+          "p50": 2.148421787695475e-10,
+          "p95": 2.522225178713815e-10,
+          "p99": 2.5584472485018474e-10,
+          "max": 2.56758170280591e-10
+        },
+        "tail_centre_span": [
+          0.01123046875,
+          0.5377197265629547
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 255.41317266424562,
+      "material_cell_centroid_grid_y_after": 255.41317266424562,
+      "material_count_before": 24232,
+      "material_count_after": 24232,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1011.5,
+        "p95": 1371.1499999999999,
+        "p99": 1945.1399999999999,
+        "max": 12493
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 4.0,
+        "max": 73
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "hard",
+      "response": "LA-EVENT-OFF",
+      "material": 58,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.79768533392632e-10,
+          "position": [
+            511.695526123047,
+            344.232971191406
+          ],
+          "rotation": 7.0454281297927e-11,
+          "velocity": [
+            -0.00286100804805756,
+            -0.01856929063797
+          ]
+        },
+        "net_translation": [
+          -0.3044738769530113,
+          24.232971191406023
+        ],
+        "position_span": [
+          0.3044738769530113,
+          27.61428833007801
+        ],
+        "angle_unwrapped_span": 0.0031997835456369964,
+        "peak_upward_speed": 1.10844469070435,
+        "peak_downward_speed": 20.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0321257412433624,
+          "p95": 0.05260873734951018,
+          "p99": 0.054966681599616984,
+          "max": 0.0555720329284668
+        },
+        "tail_abs_omega": {
+          "p50": 2.148421787695475e-10,
+          "p95": 2.522225178713815e-10,
+          "p99": 2.5584472485018474e-10,
+          "max": 2.56758170280591e-10
+        },
+        "tail_centre_span": [
+          0.01123046875,
+          0.5377197265629547
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 255.41317266424562,
+      "material_cell_centroid_grid_y_after": 255.41317266424562,
+      "material_count_before": 24232,
+      "material_count_after": 24232,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 977.5,
+        "p95": 1232.05,
+        "p99": 1550.1799999999998,
+        "max": 11053
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 4.0,
+        "max": 73
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "hard",
+      "response": "LA-SELECTIVE",
+      "material": 58,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.79768533392632e-10,
+          "position": [
+            511.695526123047,
+            344.232971191406
+          ],
+          "rotation": 7.0454281297927e-11,
+          "velocity": [
+            -0.00286100804805756,
+            -0.01856929063797
+          ]
+        },
+        "net_translation": [
+          -0.3044738769530113,
+          24.232971191406023
+        ],
+        "position_span": [
+          0.3044738769530113,
+          27.61428833007801
+        ],
+        "angle_unwrapped_span": 0.0031997835456369964,
+        "peak_upward_speed": 1.10844469070435,
+        "peak_downward_speed": 20.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.0321257412433624,
+          "p95": 0.05260873734951018,
+          "p99": 0.054966681599616984,
+          "max": 0.0555720329284668
+        },
+        "tail_abs_omega": {
+          "p50": 2.148421787695475e-10,
+          "p95": 2.522225178713815e-10,
+          "p99": 2.5584472485018474e-10,
+          "max": 2.56758170280591e-10
+        },
+        "tail_centre_span": [
+          0.01123046875,
+          0.5377197265629547
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 255.41317266424562,
+      "material_cell_centroid_grid_y_after": 255.41317266424562,
+      "material_count_before": 24232,
+      "material_count_after": 24232,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1149.5,
+        "p95": 1865.6999999999994,
+        "p99": 2390.2399999999916,
+        "max": 12122
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 4.0,
+        "max": 73
+      }
+    }
+  ],
+  "negative_controls": [
+    {
+      "platform": "windows",
+      "case": "water",
+      "available_equal_observation_lengths": true,
+      "maximum_absolute_pose_velocity_difference": 0.0,
+      "complete_three_response_population": true,
+      "within_1e_minus_4": true,
+      "scope": "Same-platform C/E/S state traces only; not cross-platform determinism or exact coupled replay."
+    },
+    {
+      "platform": "windows",
+      "case": "hard",
+      "available_equal_observation_lengths": true,
+      "maximum_absolute_pose_velocity_difference": 0.0,
+      "complete_three_response_population": true,
+      "within_1e_minus_4": true,
+      "scope": "Same-platform C/E/S state traces only; not cross-platform determinism or exact coupled replay."
+    },
+    {
+      "platform": "linux",
+      "case": "water",
+      "available_equal_observation_lengths": true,
+      "maximum_absolute_pose_velocity_difference": 0.0,
+      "complete_three_response_population": true,
+      "within_1e_minus_4": true,
+      "scope": "Same-platform C/E/S state traces only; not cross-platform determinism or exact coupled replay."
+    },
+    {
+      "platform": "linux",
+      "case": "hard",
+      "available_equal_observation_lengths": true,
+      "maximum_absolute_pose_velocity_difference": 0.0,
+      "complete_three_response_population": true,
+      "within_1e_minus_4": true,
+      "scope": "Same-platform C/E/S state traces only; not cross-platform determinism or exact coupled replay."
+    }
+  ],
+  "scope": [
+    "Passive energy excludes motors, event impulses, correction/zeroing, gravity and hard contact.",
+    "Centroids use stored cell grid-y coordinates without adding0.5; Water cell centroid is not mass-weighted.",
+    "Repeated events/boundaries are diagnostic counts, not independent efficacy populations.",
+    "Primary current-pose cavity counts are never replaced by auxiliary sample-pose counts.",
+    "Owner gameplay acceptance and production/default promotion remain outside this analyzer.",
+    "step_time_us measures the complete runtime.step owner boundary; source authoring and census/cavity observations are outside that timer. It is not coupling-only timing.",
+    "Selector/admission strings are asserted by the authenticated capture producer before every appended row; the retained reduced gcr metrics omit these strings. Events-off zero event J/L/cost and selective arrival-witness closure are independently checked from recorded metrics."
+  ]
+}

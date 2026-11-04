@@ -256,16 +256,18 @@
     },
     {
       "id": "GCRFLIGHT01",
-      "query": "How do I keep the same flyer spawn across resets and response changes, use B for powder bursts without losing flight control, and find the compact painting-room controls with Shift boost and Ctrl brake?",
+      "query": "How do I author and reload the Scooper flyer with a real compound hull, retain the saved spawn across response changes, and use the compact painting-room controls?",
       "canonical": [
         "systems/granular-review-flight-fleet.md"
       ],
       "facts": [
+        "Eight bundled flyers use named JSON definitions and a bounded manifest. Explicit Reload + reset validates atomically, reconstructs the selected stable id at the saved spawn and records a canonical definition hash. Invalid authoring/construction keeps the old owner; file I/O occurs at load/reload, not during physics. The seven original physical scalars and controller outputs remain controls.",
+        "Scooper uses one actual body with six matching collider/native/render rectangles, uniform-area COM/inertia and one shared response budget. Its cavity is open and carried material remains native cells. Mass0.18/inertiaabout22.10, Afterglow linear controls, stabilizationgain40/damping12.5/angularcap48/torque1200 and Q/Etrim1.2rad are experimental motor authoring; Afterglow retains10/4/12/36/.4.",
         "Reset spawn X/Y or Use flyer saves a normal-room centre without moving the live body. R, craft/response/property changes, Defaults and a canned-test round trip retain it within the room scene; Default spawn restores178,304. Fresh upright stationary hulls must fit the inner walls and avoid hard platforms; ordinary arena admission is unchanged and canned tests keep512,256. F2/new scene/process restart does not persist it to disk.",
         "B queues one live burst per non-echo press and is suppressed during numeric editing, lost window focus and canned fixtures. Non-text UI clicks retain held pilot input; numeric editing, OS focus loss, pause/reset retain cancellation and rearm. Dense wrapping toolbars use full canvas width with Details initially collapsed.",
         "In the flyer review room Shift holds a staged1..8 propulsion/force-cap multiplier(default2); Ctrl keeps the old brake and takes precedence. Torque, hover compensation and passive damping are unchanged; the optional review port follows the accepted command lease without widening shared actor actions.",
         "Live sources capture a powder palette material and a fixed origin48 cells above any selected hull, retaining gravity38 and pilot control. Burst4x24 coalesces; stream4x1 stops after600ticks; source starts off, reset/focus disarm, pause freezes, guards prevent overwrites and a256-row recent ledger reports dropped rows plus exact cumulative counts.",
-        "Overlay/painting now use the actual992x480 texture footprint rather than512x256 follow aspect, correcting inward edge drift without changing physics. The owner reported positive LA/A1 feel plus Sand/Rust/Coal burial; relative mass remains unproven and earlier selective NO-GO/sleep/merge boundaries remain."
+        "Overlay/painting use the actual992x480 texture footprint rather than512x256 follow aspect. Latest qualitative owner feedback finds E/S resist burial while selective arrivals gives preferred loading/deflection; older registered selective NO-GO remains. New authored admission has its own89-input runtime and gates, preserves the structural payload lease, and does not imply sleep, production promotion or merge."
       ],
       "sources": [
         "systems/granular-review-flight-fleet.md"

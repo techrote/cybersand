@@ -333,20 +333,20 @@ func advance_frame(action: Dictionary, allowed: bool) -> void:
 	var before: int = runtime.tick
 	var state: Dictionary = runtime.step()
 	if runtime.tick > before:
-		if _lap_started and _target < Course.checkpoints(Course.PRESETS[selected]).size():
+		if _lap_started and _target < _course_targets().size():
 			_lap_ticks += runtime.tick - before
 		_check_targets(state)
 	_present(state)
 
 
 func _check_targets(state: Dictionary) -> void:
-	var points: PackedVector2Array = Course.checkpoints(Course.PRESETS[selected])
+	var points: PackedVector2Array = _course_targets()
 	if _target >= points.size() or state.actor.is_empty():
 		return
 	if Vector2(state.actor.position).distance_to(points[_target]) <= 15.0:
 		_target += 1
 		if _target == points.size():
-			var id: StringName = Course.PRESETS[selected]
+			var id: StringName = _presentation_preset()
 			_best_times[id] = mini(_lap_ticks, int(_best_times.get(id, 2147483647)))
 
 
@@ -354,6 +354,18 @@ func _content_rect() -> Rect2:
 	var fit: float = minf(_canvas.size.x / float(Course.VIEW.size.x), _canvas.size.y / float(Course.VIEW.size.y))
 	var dimensions: Vector2 = Vector2(Course.VIEW.size) * maxf(0.0, fit)
 	return Rect2((_canvas.size - dimensions) * 0.5, dimensions)
+
+
+func _presentation_preset() -> StringName:
+	return Course.PRESETS[selected]
+
+
+func _presentation_color() -> Color:
+	return Course.COLORS[selected]
+
+
+func _course_targets() -> PackedVector2Array:
+	return Course.checkpoints(_presentation_preset())
 
 
 func _present(state: Dictionary, force: bool = false) -> void:
@@ -373,20 +385,20 @@ func _present(state: Dictionary, force: bool = false) -> void:
 			presentation_error = "Presentation refused: " + _surface.last_rejection
 		_last_packet_epoch = runtime.epoch
 		_last_draw_tick = runtime.tick
-	_overlay.targets = Course.checkpoints(Course.PRESETS[selected])
+	_overlay.targets = _course_targets()
 	_overlay.target_index = _target
-	_overlay.accent = Course.COLORS[selected]
+	_overlay.accent = _presentation_color()
 	_overlay.actor_position = position
 	_overlay.material_field = bool(state.material_mode)
 	_overlay.movement = actor.get("player_movement", {})
-	_overlay.preset = Course.PRESETS[selected]
+	_overlay.preset = _presentation_preset()
 	_overlay.present(runtime.render_parts(), Vector2(_view.position), _view.size, _content_rect())
 	_overlay.visible = true
 	_overlay.queue_redraw()
 	var complete: bool = _target >= _overlay.targets.size()
 	_timing.text = ("COURSE CLEAR" if complete else "GATES  %d / %d" % [_target, _overlay.targets.size()]) + "    %05.2f s" % (float(_lap_ticks) / 60.0)
-	if _best_times.has(Course.PRESETS[selected]):
-		_timing.text += "    BEST  %.2f s" % (float(_best_times[Course.PRESETS[selected]]) / 60.0)
+	if _best_times.has(_presentation_preset()):
+		_timing.text += "    BEST  %.2f s" % (float(_best_times[_presentation_preset()]) / 60.0)
 	if not presentation_error.is_empty():
 		_status.text = presentation_error
 	elif runtime.failed:

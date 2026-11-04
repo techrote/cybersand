@@ -1,0 +1,1925 @@
+{
+  "schema": 1,
+  "registration": "GCR-AUTHORED-001",
+  "source": "6015cd3753bcb7929e3fa576e42d39304fcbe0c3",
+  "tree": "62ed526882da287343cdc5543acb1b06e88c4423",
+  "protocol_sha256": "dda3a38733559991d74bee8fcc0876fffc394affcb04996e8a9467fcead7b6a2",
+  "definition_identity": {
+    "frozen_source": "6015cd3753bcb7929e3fa576e42d39304fcbe0c3",
+    "path": "godot/authoring/flyers/scooper.json",
+    "source_file_sha256_lf": "01c41a1fb37489aa017bf39bffdf42557cd78a8000fb3dfae51b26c8d059603f",
+    "godot_canonical_hash": "cf1857b65f5421e64bcf914c8dd7e6440d4c0bab5ed8aa0c917c113f9748d6ae"
+  },
+  "capture_population_complete": false,
+  "mechanical_population_pass": false,
+  "runner_current_head_custody_pass": false,
+  "runner_completion": {
+    "source": "6015cd3753bcb7929e3fa576e42d39304fcbe0c3",
+    "ok": false,
+    "inputs_unchanged": true,
+    "gates_only": false,
+    "captures_only": true,
+    "results": [
+      {
+        "platform": "windows",
+        "ok": false,
+        "failed": "stream-LA"
+      },
+      {
+        "platform": "linux",
+        "ok": false,
+        "failed": "stream-LA"
+      }
+    ]
+  },
+  "integrity_errors": [],
+  "mechanisms": [
+    {
+      "platform": "windows",
+      "case": "landing",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1169.5,
+        "p95": 2150.249999999999,
+        "p99": 2716.749999999999,
+        "max": 7535
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "landing",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1330.0,
+        "p95": 2262.3499999999995,
+        "p99": 2895.5599999999995,
+        "max": 11309
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "landing",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1356.5,
+        "p95": 2430.05,
+        "p99": 3007.079999999998,
+        "max": 11808
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burst",
+      "response": "LA",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -1.24814758528657e-09,
+          "position": [
+            511.96923828125,
+            393.958892822266
+          ],
+          "rotation": 6.21506899278756e-08,
+          "velocity": [
+            -3.55152374176271e-09,
+            -1.58507873493363e-08
+          ]
+        },
+        "net_translation": [
+          -0.03076171875,
+          123.95889282226602
+        ],
+        "position_span": [
+          0.08074951171897737,
+          123.95230102539102
+        ],
+        "angle_unwrapped_span": 0.010749038949143147,
+        "peak_upward_speed": 2.83128499984741,
+        "peak_downward_speed": 56.0659370422363,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 1.298626362000735e-08,
+          "p95": 1.8119980715880463e-08,
+          "p99": 1.990702127585567e-08,
+          "max": 2.05788843743449e-08
+        },
+        "tail_abs_omega": {
+          "p50": 9.401661116292814e-10,
+          "p95": 1.356539242047814e-09,
+          "p99": 1.4600866871106184e-09,
+          "max": 1.55695234482778e-09
+        },
+        "tail_centre_span": [
+          0.0,
+          0.0
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 391.28125,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.1495,
+      "peak_native_wrench_force": 51.02999925613404,
+      "peak_native_wrench_torque_rate": 168.86422485351542,
+      "nonzero_event_boundaries": 463,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 373.43297429067724,
+      "step_time_us": {
+        "p50": 1424.0,
+        "p95": 2284.0499999999984,
+        "p99": 3828.6699999999955,
+        "max": 13267
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 6.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burst",
+      "response": "LA-EVENT-OFF",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            268.772308349609
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.00255423784255981
+          ]
+        },
+        "net_translation": [
+          0.0,
+          -1.227691650391023
+        ],
+        "position_span": [
+          0.0,
+          1.5257568359380116
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.00441288948059082,
+          "p95": 0.007220563292503353,
+          "p99": 0.0075439345836639405,
+          "max": 0.00762695074081421
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4613647460940342
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 266.0208333333333,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 22,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1370.5,
+        "p95": 1988.1499999999999,
+        "p99": 2485.6399999999994,
+        "max": 8562
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 70.09999999999991,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 4.019999999999982,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "burst",
+      "response": "LA-SELECTIVE",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 2.62846056031663e-09,
+          "position": [
+            508.159118652344,
+            393.188201904297
+          ],
+          "rotation": -2.04031680439698e-10,
+          "velocity": [
+            0.000785161566454917,
+            0.0166524648666382
+          ]
+        },
+        "net_translation": [
+          -3.8408813476560226,
+          123.18820190429699
+        ],
+        "position_span": [
+          3.8467407226560226,
+          123.894775390625
+        ],
+        "angle_unwrapped_span": 0.01090296870097518,
+        "peak_upward_speed": 4.33261775970459,
+        "peak_downward_speed": 45.1368942260742,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.02879774570465085,
+          "p95": 0.04714886546134946,
+          "p99": 0.04926158666610722,
+          "max": 0.0498040914535522
+        },
+        "tail_abs_omega": {
+          "p50": 2.121667961318965e-07,
+          "p95": 1.4968683626648272e-05,
+          "p99": 2.185794442993935e-05,
+          "max": 2.40142489928985e-05
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4112854003910229
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 390.5520833333333,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 28,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.513691380689533,
+      "peak_native_wrench_force": 30.01281611875057,
+      "peak_native_wrench_torque_rate": 128.08926393589923,
+      "nonzero_event_boundaries": 108,
+      "arrival_count_sum": 1966,
+      "arrival_missing_sum": 32914,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 20.664703114876918,
+      "step_time_us": {
+        "p50": 1173.0,
+        "p95": 1691.3499999999997,
+        "p99": 2255.1499999999996,
+        "max": 8428
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 6.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "stream",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": false,
+      "status": "failed_or_incomplete",
+      "observed_rows": 259,
+      "expected_rows": 900,
+      "errors": [
+        "normal owner step: gcr_application_refused"
+      ],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": false,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0457497984170914,
+          "position": [
+            513.960876464844,
+            393.958801269531
+          ],
+          "rotation": 2.16388798435219e-06,
+          "velocity": [
+            2.37248787016142e-06,
+            -0.384452790021896
+          ]
+        },
+        "net_translation": [
+          1.9608764648439774,
+          123.95880126953102
+        ],
+        "position_span": [
+          1.9833374023439774,
+          123.95220947265602
+        ],
+        "angle_unwrapped_span": 0.04923393012722954,
+        "peak_upward_speed": 1.14873611927032,
+        "peak_downward_speed": 60.5231552124023,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.266330733895302,
+          "p95": 59.018644332885756,
+          "p99": 59.298691139221184,
+          "max": 59.3682403564453
+        },
+        "tail_abs_omega": {
+          "p50": 0.02365740574896335,
+          "p95": 0.167332361638546,
+          "p99": 0.23413821637630433,
+          "max": 2.69537591934204
+        },
+        "tail_centre_span": [
+          0.4569702148439774,
+          44.627807617187045
+        ]
+      },
+      "source_inserted": 1040,
+      "source_attempted": 1040,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 333.6826923076923,
+      "material_count_before": 0,
+      "material_count_after": 1040,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 2,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -15.878252797659709,
+      "peak_native_wrench_force": 247.3048252721875,
+      "peak_native_wrench_torque_rate": 699.7581298828139,
+      "nonzero_event_boundaries": 140,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 268.13208756815294,
+      "step_time_us": {
+        "p50": 1500.0,
+        "p95": 2341.7,
+        "p99": 4700.799999999964,
+        "max": 9362
+      },
+      "maximum_nodes": 9,
+      "maximum_scalar_updates": 72,
+      "scanned_work": {
+        "p50": 520.0,
+        "p95": 984.4,
+        "p99": 1025.6799999999998,
+        "max": 1036
+      },
+      "move_work": {
+        "p50": 515.0,
+        "p95": 694.2,
+        "p99": 735.68,
+        "max": 741
+      },
+      "active_block_work": {
+        "p50": 8.0,
+        "p95": 10.0,
+        "p99": 34.359999999999275,
+        "max": 68
+      }
+    },
+    {
+      "platform": "windows",
+      "case": "stream",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "stream",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "burial",
+      "response": "LA",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "burial",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "burial",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "carry-spill",
+      "response": "LA",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "carry-spill",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "carry-spill",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "edge",
+      "response": "LA",
+      "material": 23,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "edge",
+      "response": "LA-EVENT-OFF",
+      "material": 23,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "edge",
+      "response": "LA-SELECTIVE",
+      "material": 23,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "water",
+      "response": "LA",
+      "material": 3,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "water",
+      "response": "LA-EVENT-OFF",
+      "material": 3,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "water",
+      "response": "LA-SELECTIVE",
+      "material": 3,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "hard",
+      "response": "LA",
+      "material": 58,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "hard",
+      "response": "LA-EVENT-OFF",
+      "material": 58,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "hard",
+      "response": "LA-SELECTIVE",
+      "material": 58,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "landing",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1045.5,
+        "p95": 2502.25,
+        "p99": 3054.1,
+        "max": 13091
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "landing",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1075.5,
+        "p95": 2018.4499999999996,
+        "p99": 2843.4299999999994,
+        "max": 13087
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "landing",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            303.099914550781
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.123192489147186
+          ]
+        },
+        "net_translation": [
+          0.0,
+          53.09991455078102
+        ],
+        "position_span": [
+          0.0,
+          52.66952514648398
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 30.6333312988281,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.21307873725891102,
+          "p95": 0.3488974779844289,
+          "p99": 0.3645326483249666,
+          "max": 0.368546903133392
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.07620239257795447
+        ]
+      },
+      "source_inserted": 0,
+      "source_attempted": 0,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": 329.5,
+      "material_cell_centroid_grid_y_after": 372.778,
+      "material_count_before": 6000,
+      "material_count_after": 6000,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1229.5,
+        "p95": 3186.649999999996,
+        "p99": 4054.8199999999974,
+        "max": 15122
+      },
+      "maximum_nodes": 0,
+      "maximum_scalar_updates": 0,
+      "scanned_work": {
+        "p50": 0.0,
+        "p95": 6000.0,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 5213.499999999996,
+        "p99": 6000.0,
+        "max": 6000
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 13.0,
+        "p99": 14.0,
+        "max": 69
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burst",
+      "response": "LA",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": -6.25948737287274e-10,
+          "position": [
+            511.96923828125,
+            393.958892822266
+          ],
+          "rotation": 6.2331650951819e-08,
+          "velocity": [
+            -1.78145032059263e-09,
+            -7.3768520181261e-09
+          ]
+        },
+        "net_translation": [
+          -0.03076171875,
+          123.95889282226602
+        ],
+        "position_span": [
+          0.08074951171897737,
+          123.95230102539102
+        ],
+        "angle_unwrapped_span": 0.010749038890935486,
+        "peak_upward_speed": 2.83128499984741,
+        "peak_downward_speed": 56.0659370422363,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 1.2467518573089401e-08,
+          "p95": 1.798704793998239e-08,
+          "p99": 1.9329655245314798e-08,
+          "max": 2.16662030538828e-08
+        },
+        "tail_abs_omega": {
+          "p50": 9.279250146043695e-10,
+          "p95": 1.2588049214112868e-09,
+          "p99": 1.4202044396061103e-09,
+          "max": 1.58227098090435e-09
+        },
+        "tail_centre_span": [
+          0.0,
+          0.0
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 391.28125,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 0,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.1495,
+      "peak_native_wrench_force": 51.02999925613404,
+      "peak_native_wrench_torque_rate": 168.86422485351542,
+      "nonzero_event_boundaries": 463,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 373.43297429067724,
+      "step_time_us": {
+        "p50": 1126.5,
+        "p95": 1555.2999999999997,
+        "p99": 2163.8899999999976,
+        "max": 12336
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 6.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burst",
+      "response": "LA-EVENT-OFF",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0,
+          "position": [
+            512.0,
+            268.772308349609
+          ],
+          "rotation": 0.0,
+          "velocity": [
+            0.0,
+            0.00255423784255981
+          ]
+        },
+        "net_translation": [
+          0.0,
+          -1.227691650391023
+        ],
+        "position_span": [
+          0.0,
+          1.5257568359380116
+        ],
+        "angle_unwrapped_span": 0.0,
+        "peak_upward_speed": 0,
+        "peak_downward_speed": 0.633333444595337,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.00441288948059082,
+          "p95": 0.007220563292503353,
+          "p99": 0.0075439345836639405,
+          "max": 0.00762695074081421
+        },
+        "tail_abs_omega": {
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4613647460940342
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 266.0208333333333,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 22,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -20.0,
+      "peak_native_wrench_force": 0.0,
+      "peak_native_wrench_torque_rate": 0.0,
+      "nonzero_event_boundaries": 0,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 0.0,
+      "step_time_us": {
+        "p50": 1077.0,
+        "p95": 1502.5499999999995,
+        "p99": 1719.1899999999998,
+        "max": 10950
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 70.09999999999991,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 4.019999999999982,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "burst",
+      "response": "LA-SELECTIVE",
+      "material": 14,
+      "capture_complete": true,
+      "status": "complete",
+      "observed_rows": 600,
+      "expected_rows": 600,
+      "errors": [],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": true,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 2.62845412102308e-09,
+          "position": [
+            508.159118652344,
+            393.188201904297
+          ],
+          "rotation": -2.04031347372791e-10,
+          "velocity": [
+            0.000785161566454917,
+            0.0166524648666382
+          ]
+        },
+        "net_translation": [
+          -3.8408813476560226,
+          123.18820190429699
+        ],
+        "position_span": [
+          3.8467407226560226,
+          123.894775390625
+        ],
+        "angle_unwrapped_span": 0.01090296823531389,
+        "peak_upward_speed": 4.33261775970459,
+        "peak_downward_speed": 45.1368942260742,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.02879774570465085,
+          "p95": 0.04714886546134946,
+          "p99": 0.04926158666610722,
+          "max": 0.0498040914535522
+        },
+        "tail_abs_omega": {
+          "p50": 2.12166419544246e-07,
+          "p95": 1.4968659024816541e-05,
+          "p99": 2.185791385272752e-05,
+          "max": 2.40142162510892e-05
+        },
+        "tail_centre_span": [
+          0.0,
+          0.4112854003910229
+        ]
+      },
+      "source_inserted": 96,
+      "source_attempted": 96,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 390.5520833333333,
+      "material_count_before": 0,
+      "material_count_after": 96,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 28,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -19.513691380689533,
+      "peak_native_wrench_force": 30.01281611875057,
+      "peak_native_wrench_torque_rate": 128.08926393589923,
+      "nonzero_event_boundaries": 108,
+      "arrival_count_sum": 1966,
+      "arrival_missing_sum": 32914,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 20.664703114876918,
+      "step_time_us": {
+        "p50": 1078.0,
+        "p95": 1475.3999999999996,
+        "p99": 1671.3999999999996,
+        "max": 10965
+      },
+      "maximum_nodes": 4,
+      "maximum_scalar_updates": 32,
+      "scanned_work": {
+        "p50": 96.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "move_work": {
+        "p50": 0.0,
+        "p95": 96.0,
+        "p99": 96.0,
+        "max": 96
+      },
+      "active_block_work": {
+        "p50": 2.0,
+        "p95": 4.0,
+        "p99": 6.0,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "stream",
+      "response": "LA",
+      "material": 2,
+      "capture_complete": false,
+      "status": "failed_or_incomplete",
+      "observed_rows": 259,
+      "expected_rows": 900,
+      "errors": [
+        "normal owner step: gcr_application_refused"
+      ],
+      "reported_failure": null,
+      "mechanical_observed_prefix_ok": true,
+      "mechanical_complete_pass": false,
+      "violations": [],
+      "motion": {
+        "final": {
+          "omega": 0.0457497984170914,
+          "position": [
+            513.960876464844,
+            393.958801269531
+          ],
+          "rotation": 2.16388798435219e-06,
+          "velocity": [
+            2.37248787016142e-06,
+            -0.384452790021896
+          ]
+        },
+        "net_translation": [
+          1.9608764648439774,
+          123.95880126953102
+        ],
+        "position_span": [
+          1.9833374023439774,
+          123.95220947265602
+        ],
+        "angle_unwrapped_span": 0.04923393012722954,
+        "peak_upward_speed": 1.14873611927032,
+        "peak_downward_speed": 60.5231552124023,
+        "tail_observed_rows": 120,
+        "tail_abs_vertical_velocity": {
+          "p50": 0.266330733895302,
+          "p95": 59.018644332885756,
+          "p99": 59.298691139221184,
+          "max": 59.3682403564453
+        },
+        "tail_abs_omega": {
+          "p50": 0.02365740574896335,
+          "p95": 0.167332361638546,
+          "p99": 0.23413821637630433,
+          "max": 2.69537591934204
+        },
+        "tail_centre_span": [
+          0.4569702148439774,
+          44.627807617187045
+        ]
+      },
+      "source_inserted": 1040,
+      "source_attempted": 1040,
+      "source_blocked": 0,
+      "material_cell_centroid_grid_y_before": null,
+      "material_cell_centroid_grid_y_after": 333.6826923076923,
+      "material_count_before": 0,
+      "material_count_after": 1040,
+      "water_quantity_before": 0,
+      "water_quantity_after": 0,
+      "peak_pre_ejection_overlap": 2,
+      "peak_post_ejection_overlap": 0,
+      "maximum_budget_overrun": -15.878252797659709,
+      "peak_native_wrench_force": 247.3048252721875,
+      "peak_native_wrench_torque_rate": 699.7581298828139,
+      "nonzero_event_boundaries": 140,
+      "arrival_count_sum": 0,
+      "arrival_missing_sum": 0,
+      "arrival_misaligned_sum": 0,
+      "event_budget_cost_sum": 268.13208756815294,
+      "step_time_us": {
+        "p50": 1262.0,
+        "p95": 1789.6,
+        "p99": 2389.3799999999937,
+        "max": 11497
+      },
+      "maximum_nodes": 9,
+      "maximum_scalar_updates": 72,
+      "scanned_work": {
+        "p50": 520.0,
+        "p95": 984.4,
+        "p99": 1025.6799999999998,
+        "max": 1036
+      },
+      "move_work": {
+        "p50": 515.0,
+        "p95": 694.2,
+        "p99": 735.68,
+        "max": 741
+      },
+      "active_block_work": {
+        "p50": 8.0,
+        "p95": 10.0,
+        "p99": 34.359999999999275,
+        "max": 68
+      }
+    },
+    {
+      "platform": "linux",
+      "case": "stream",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "stream",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "burial",
+      "response": "LA",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "burial",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "burial",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "carry-spill",
+      "response": "LA",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "carry-spill",
+      "response": "LA-EVENT-OFF",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "carry-spill",
+      "response": "LA-SELECTIVE",
+      "material": 2,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "edge",
+      "response": "LA",
+      "material": 23,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "edge",
+      "response": "LA-EVENT-OFF",
+      "material": 23,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "edge",
+      "response": "LA-SELECTIVE",
+      "material": 23,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "water",
+      "response": "LA",
+      "material": 3,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "water",
+      "response": "LA-EVENT-OFF",
+      "material": 3,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "water",
+      "response": "LA-SELECTIVE",
+      "material": 3,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "hard",
+      "response": "LA",
+      "material": 58,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "hard",
+      "response": "LA-EVENT-OFF",
+      "material": 58,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    },
+    {
+      "platform": "linux",
+      "case": "hard",
+      "response": "LA-SELECTIVE",
+      "material": 58,
+      "status": "missing",
+      "capture_complete": false,
+      "mechanical_complete_pass": false,
+      "identity_errors": [
+        "Missing original capture/receipt"
+      ]
+    }
+  ],
+  "negative_controls": [
+    {
+      "platform": "windows",
+      "case": "water",
+      "available_equal_observation_lengths": false,
+      "maximum_absolute_pose_velocity_difference": null,
+      "complete_three_response_population": false,
+      "within_1e_minus_4": false,
+      "scope": "Same-platform C/E/S state traces only; not cross-platform determinism or exact coupled replay."
+    },
+    {
+      "platform": "windows",
+      "case": "hard",
+      "available_equal_observation_lengths": false,
+      "maximum_absolute_pose_velocity_difference": null,
+      "complete_three_response_population": false,
+      "within_1e_minus_4": false,
+      "scope": "Same-platform C/E/S state traces only; not cross-platform determinism or exact coupled replay."
+    },
+    {
+      "platform": "linux",
+      "case": "water",
+      "available_equal_observation_lengths": false,
+      "maximum_absolute_pose_velocity_difference": null,
+      "complete_three_response_population": false,
+      "within_1e_minus_4": false,
+      "scope": "Same-platform C/E/S state traces only; not cross-platform determinism or exact coupled replay."
+    },
+    {
+      "platform": "linux",
+      "case": "hard",
+      "available_equal_observation_lengths": false,
+      "maximum_absolute_pose_velocity_difference": null,
+      "complete_three_response_population": false,
+      "within_1e_minus_4": false,
+      "scope": "Same-platform C/E/S state traces only; not cross-platform determinism or exact coupled replay."
+    }
+  ],
+  "scope": [
+    "Passive energy excludes motors, event impulses, correction/zeroing, gravity and hard contact.",
+    "Centroids use stored cell grid-y coordinates without adding0.5; Water cell centroid is not mass-weighted.",
+    "Repeated events/boundaries are diagnostic counts, not independent efficacy populations.",
+    "Primary current-pose cavity counts are never replaced by auxiliary sample-pose counts.",
+    "Owner gameplay acceptance and production/default promotion remain outside this analyzer.",
+    "step_time_us measures the complete runtime.step owner boundary; source authoring and census/cavity observations are outside that timer. It is not coupling-only timing.",
+    "Selector/admission strings are asserted by the authenticated capture producer before every appended row; the retained reduced gcr metrics omit these strings. Events-off zero event J/L/cost and selective arrival-witness closure are independently checked from recorded metrics."
+  ]
+}
