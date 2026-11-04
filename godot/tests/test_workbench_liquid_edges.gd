@@ -144,6 +144,50 @@ func edge_case(side: int, negative: bool) -> void:
 		await process_frame
 		await RenderingServer.frame_post_draw
 		require(root.get_texture().get_image().save_png(capture_dir.path_join("water-edge-%d.png"%side))==OK,"saved rendered edge edit")
+	await switch_out_of_pressure(cases.back(),rock,capture_dir)
+
+
+func switch_out_of_pressure(record: Dictionary, rock: Vector2i, capture_dir: String) -> void:
+	# Exercise the installed pressure solver. Recapture the resulting
+	# inventory with an unchanged-policy edit immediately before leaving PF.
+	var tick: int = host.latest_snapshot.tick_index
+	await click(button_named("Step [.]"))
+	if not await until(func()->bool: return not panel.step_pending and host.latest_snapshot.tick_index==tick+1 and active_water()=="pressure_flow_v1","PressureFlow stepped before switching away"): return
+	var generation: int = host.last_uploaded_world_generation
+	await click(button_named("Apply settings"))
+	if not await until(func()->bool: return host.pending_microscenario_apply.is_empty() and uploaded_after(generation),"capture post-step pressure inventory"): return
+	var baseline := receipt()
+	if not require(not baseline.requested and baseline.water_after==record.edit.water_after and baseline.preserved_halo_visible_water>0,"PressureFlow retained whole-domain Water during the measured tick"): return
+
+	await click(button_named("Details"))
+	var editor = panel._liquids
+	if not await pick(editor.material_picker,editor.material_picker.get_item_index(3)): return
+	var target := -1
+	for i: int in range(editor._choices.size()):
+		var choice: Dictionary = editor._choices[i]
+		if choice.accepted and choice.family=="freemass_v1" and choice.variant=="reference":
+			target = i
+			break
+	if not require(target>=0,"FreeMass/reference is admitted for Water"): return
+	if not await pick(editor.family_picker,target): return
+	if not require(active_water()=="pressure_flow_v1" and editor._validation.receipt.assignments.any(func(a: Dictionary)->bool:
+		return a.material==3 and a.applied_family=="freemass_v1"),"FreeMass staged while PressureFlow still runs"): return
+	generation = host.last_uploaded_world_generation
+	await click(button_named("Apply liquid selection"))
+	if not await until(func()->bool: return host.pending_microscenario_apply.is_empty() and active_water()=="freemass_v1" and uploaded_after(generation),"native FreeMass installed after PressureFlow"): return
+	var outgoing := receipt()
+	require(outgoing.requested and outgoing.source_policy_sha256==baseline.target_policy_sha256 and outgoing.source_policy_sha256!=outgoing.target_policy_sha256,"conversion receipt identifies the actual outgoing pressure owner")
+	require(outgoing.water_before==baseline.water_after and outgoing.water_before+outgoing.normalization_produced==outgoing.water_after+outgoing.normalization_consumed+outgoing.discarded_water_overfill+outgoing.clipped_visible_water,"whole-domain PF to FreeMass Water balance")
+	require(outgoing.preserved_halo_materials==baseline.preserved_halo_materials and outgoing.preserved_halo_visible_water==baseline.preserved_halo_visible_water and outgoing.clipped_material_cells==0,"FreeMass retains the complete pressure halo")
+	require(host.image.get_pixelv(rock).r8==58 and panel.applied.edits.size()>0 and panel.pilot_slot>=0,"rendered terrain, authored edits and flyer remain usable")
+	if not await until(func()->bool: return "active Water freemass/reference" in panel._status.text and panel.message in panel._status.text,"FreeMass receipt visible in toolbar"): return
+	record["outgoing_source"] = baseline
+	record["outgoing"] = outgoing
+	record["outgoing_status"] = panel.message
+	if not capture_dir.is_empty() and DisplayServer.get_name()!="headless":
+		await click(button_named("Details"))
+		await RenderingServer.frame_post_draw
+		require(root.get_texture().get_image().save_png(capture_dir.path_join("water-edge-%d-freemass.png"%record.side))==OK,"saved rendered outgoing Water solver")
 
 func run() -> void:
 	root.size=Vector2i(1920,1080)
