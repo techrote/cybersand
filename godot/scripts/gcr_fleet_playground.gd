@@ -22,6 +22,7 @@ var event_runtime_identity: String = ""
 
 func _ready() -> void:
 	super._ready()
+	_fit_roster_panel()
 	_overlay.free()
 	_overlay = FleetOverlay.new()
 	_canvas.add_child(_overlay)
@@ -29,6 +30,24 @@ func _ready() -> void:
 	_build_comparison_controls()
 	select_preset(0)
 	DisplayServer.window_set_title("CyberSand — flyer budget playground + painting")
+	call_deferred("_set_review_window_title")
+
+func _set_review_window_title() -> void:
+	DisplayServer.window_set_title("CyberSand — flyer review · "+OS.get_environment("CYBERSAND_SOURCE_REVISION").left(12))
+
+func _fit_roster_panel() -> void:
+	# The long craft/help column must not dictate the map's minimum height.
+	var row: HBoxContainer=_canvas.get_parent().get_parent()
+	var sidebar: Control=row.get_child(0)
+	row.remove_child(sidebar)
+	var scroll:=ScrollContainer.new()
+	scroll.custom_minimum_size.x=320
+	scroll.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO
+	row.add_child(scroll)
+	row.move_child(scroll,0)
+	scroll.add_child(sidebar)
 
 func _build_comparison_controls() -> void:
 	var column: Control = _canvas.get_parent().get_parent().get_parent()
