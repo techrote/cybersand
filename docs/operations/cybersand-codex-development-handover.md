@@ -10,19 +10,52 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-## MAT-AUTH compatibility tooling admission — 2026-11-04
+## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
-The owner now requests implementation of the review corrections and compatibility
-mitigations. The [#353-A tool guide](material-catalogue-shadow.md) owns the
-implemented shadow compiler and independent compatibility checks in a separate
-unmerged candidate based on reviewed #357 head `9b776d10` and main `0fd4af59`.
-Keep #357 documentation-only, draft and unmerged. Do not switch production
-consumers or relax identity guards; #353 remains open beyond this checkpoint.
-Run the guide's compiler, source-identity, adversarial and native-query checks
-before publishing any changed candidate. The following hold is the dated
-pre-implementation review, superseded only for this bounded tooling scope.
+Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)
+as accepted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`; the corrected
+architecture remains an owner-adopted Planned baseline. The separate
+[#353-A shadow compiler](material-catalogue-shadow.md) is implemented in
+[#371](https://github.com/techrote/cybersand/pull/371) at original head
+`6d3737594beb39e83e555f66f2e81184a4bdbf77` and is being reconciled and qualified
+for the owner's guarded A-only integration. Preserve that implementation and
+its evidence in ancestry; do not create another compiler or rewrite its branch.
+
+Use the [current architecture boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+and tool guide. The frozen legacy baseline stays `0fd4af59`; merging adopted
+documentation does not refresh its source lock. Run the resulting-head compiler,
+source/identity, adversarial, native-query, documentation/provenance and applicable
+ready-state CI checks, with independent review. The #371 ledger owns their actual
+results and any merge/post-merge identity; predecessor greens are historical.
+
+Production native/GDScript consumers and material physics remain unchanged.
+Keep #352/#353 open, #353-B migration and #354–#356 separately unadmitted, and
+#358's132–137 experimental/unintegrated. Record any blocker and preserve draft
+state rather than weakening a source lock or acceptance gate.
+
+## MAT-AUTH documentation-adoption handover — 2026-11-04
+
+**Historical adoption-task scope.** The following handover preceded the
+reconciliation of #371's separate implementation. Its unstarted-assignment
+statements apply to the documentation task, not the current A-only candidate.
+
+The owner has [adopted the corrected architecture as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+and authorized documentation-only guarded integration of #357. Its
+[PR ledger](https://github.com/techrote/cybersand/pull/357) owns actual final-head,
+merge and post-merge checks. This supersedes the adoption hold in the dated
+3 November record below, while implementation permission remains outstanding.
+
+The [#353-A handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661)
+is prepared for a separate assignment: shadow compiler and independent original-source
+oracle, with current native/GDScript consumers and source-byte identities unchanged.
+No #353-A code has been implemented by this adoption task. Keep #352/#353 open;
+do not start #354–#356 or treat experimental #358 IDs132–137 as production data.
+Recapture accepted source and overlapping owners before the implementation begins.
 
 ## MAT-AUTH architecture decision hold — 2026-11-03
+
+**Historical checkpoint:** the [4 November adoption](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+supersedes the adoption hold below; the later [A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) supersedes its unstarted-assignment status. The retained review describes its original date.
 
 [PR #357](https://github.com/techrote/cybersand/pull/357) remains draft and
 unmerged after a documentation-only current-main architecture review. Read the

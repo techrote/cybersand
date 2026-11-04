@@ -1,0 +1,306 @@
+{
+  "commands": {
+    "candidate_compile": [
+      "c++",
+      "-std=c++20",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I",
+      "${REPO_ROOT}/native/include",
+      "-DCYBERSAND_MATERIAL_CANDIDATE_HEADER=\"${REPO_ROOT}/materials/catalogue/generated/catalogue.shadow.hpp\"",
+      "${REPO_ROOT}/tools/material_catalogue/native_oracle.cpp",
+      "${REPO_ROOT}/native/src/material_rules.cpp",
+      "-o",
+      "${BUILD_DIRECTORY}/candidate-parity"
+    ],
+    "candidate_snapshot": [
+      "${BUILD_DIRECTORY}/candidate-parity",
+      "--candidate-snapshot"
+    ],
+    "candidate_validation": [
+      "${BUILD_DIRECTORY}/candidate-parity",
+      "--parity"
+    ],
+    "native_compile": [
+      "c++",
+      "-std=c++20",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I",
+      "${REPO_ROOT}/native/include",
+      "${REPO_ROOT}/tools/material_catalogue/native_oracle.cpp",
+      "${REPO_ROOT}/native/src/material_rules.cpp",
+      "-o",
+      "${BUILD_DIRECTORY}/native-oracle"
+    ],
+    "native_snapshot": [
+      "${BUILD_DIRECTORY}/native-oracle",
+      "--snapshot"
+    ]
+  },
+  "compiled_queries": {
+    "appearance_projection_cases": 17170432,
+    "capability_byte_ids": 256,
+    "density_exchange_cases": 327680,
+    "descriptor_byte_ids": 256,
+    "family_membership_cases": 2048,
+    "lateral_rate_cases": 65536,
+    "layer_kind_byte_ids": 256,
+    "pair_roll_cases": 16777216,
+    "pair_wrapper_cases": 16777216,
+    "physics_qualification": false,
+    "status": "PASS",
+    "validity_uint16_inputs": 65536,
+    "viscosity_cases": 16777216,
+    "world_executed": false
+  },
+  "compiler_version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+  "cost_qualification": "One local standalone metadata compile/probe run; not a simulation or performance benchmark. Timings vary by host and load.",
+  "fallback": {
+    "godot_executed": false,
+    "granular_support_ids_equal": 9,
+    "hard_surface_ids_equal": 101,
+    "other_fallback_density_equality_asserted": false,
+    "palette_rgba8_rows_equal": 132,
+    "retained_slush_density": {
+      "fallback": 1100,
+      "native": 1080
+    },
+    "source_qualified_only": true,
+    "valid_identity_id_set_equal": 131
+  },
+  "generated_mirrors": {
+    "gdscript_literal_facts_equal": true,
+    "godot_executed": false,
+    "inspection_facts_equal": true,
+    "qualification": "The generated GDScript literal is compared as JSON-compatible metadata; no Godot parser or fallback physics execution."
+  },
+  "godot_executed": false,
+  "inputs": [
+    {
+      "bytes": 195969,
+      "path": "materials/catalogue/catalogue.json",
+      "sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14"
+    },
+    {
+      "bytes": 53002,
+      "path": "materials/catalogue/generated/catalogue.shadow.hpp",
+      "sha256": "03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12"
+    },
+    {
+      "bytes": 180360,
+      "path": "materials/catalogue/generated/catalogue_shadow.gd",
+      "sha256": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed"
+    },
+    {
+      "bytes": 215517,
+      "path": "materials/catalogue/generated/inspection.json",
+      "sha256": "0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2"
+    },
+    {
+      "bytes": 15569,
+      "path": "materials/catalogue/compatibility-lock.json",
+      "sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
+    }
+  ],
+  "measured_tool_costs": {
+    "candidate_compile_seconds": 2.261435,
+    "candidate_executable_bytes": 148992,
+    "candidate_snapshot_seconds": 0.003292,
+    "candidate_validation_seconds": 3.541866,
+    "native_compile_seconds": 1.484443,
+    "native_executable_bytes": 78168,
+    "native_snapshot_seconds": 0.003668
+  },
+  "metadata": {
+    "coverage_records": 10,
+    "descriptor_fields_per_slot": 15,
+    "granular_support_ids": 9,
+    "hard_surface_ids": 101,
+    "material_slots": 132,
+    "memberships": 33,
+    "pair_rules": 56,
+    "semantic_families": 7,
+    "specialized_mechanisms": 19,
+    "tuning_passes": 2,
+    "valid_ids": 131
+  },
+  "native_authored_compiled_shadow_facts_equal": true,
+  "physics_qualification": false,
+  "production_cutover": false,
+  "protected_sources": {
+    "baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+    "capability_digest": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+    "catalogue_digest": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+    "fallback_slush_density": 1100,
+    "production_cutover": false,
+    "protected_sources": 27,
+    "runtime_execution": false,
+    "status": "PASS"
+  },
+  "schema_id": "cybersand.material-catalogue.native-parity",
+  "schema_version": 1,
+  "scope": "353-A shadow metadata; no production cutover",
+  "snapshot_sha256": "58d22545a1f29e49a8c141cb1c5df84101e48ed457fbaaaec09937997c2ce802",
+  "source_commit": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "source_locks": [
+    {
+      "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "role": "retained policy wire oracle"
+    },
+    {
+      "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "role": "retained receipt oracle"
+    },
+    {
+      "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "role": "capability identity bytes"
+    },
+    {
+      "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "path": "docs/reference/water-normalization-vectors.json",
+      "role": "retained normalization oracle"
+    },
+    {
+      "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "path": "godot/scripts/cell_world.gd",
+      "role": "fallback identity, capabilities and separate physics"
+    },
+    {
+      "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "path": "godot/scripts/interaction_policy.gd",
+      "role": "fallback granular support"
+    },
+    {
+      "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "role": "palette bytes and Godot appearance calculations"
+    },
+    {
+      "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "path": "godot/scripts/transport_profiles.gd",
+      "role": "transport ownership, precedence and validation"
+    },
+    {
+      "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "path": "godot/shaders/material_palette.gdshader",
+      "role": "hand-coded appearance programme"
+    },
+    {
+      "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "role": "reaction, family and ordinal identity"
+    },
+    {
+      "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "role": "generated native policy identities"
+    },
+    {
+      "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "role": "native stale-identity refusal"
+    },
+    {
+      "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "path": "native/include/cybersand/material.hpp",
+      "role": "stable IDs and descriptor bytes"
+    },
+    {
+      "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "role": "visual state projection"
+    },
+    {
+      "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "path": "native/include/cybersand/material_rules.hpp",
+      "role": "material query interface"
+    },
+    {
+      "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "role": "Cell layout and state widths"
+    },
+    {
+      "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "role": "quantity schema and positional slots"
+    },
+    {
+      "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "role": "transport v1 dimensions and wire contract"
+    },
+    {
+      "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "role": "Water quantity defaults and bounds"
+    },
+    {
+      "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+      "path": "native/src/material_rules.cpp",
+      "role": "capability and pair-query semantics"
+    },
+    {
+      "lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+      "path": "native/src/world.cpp",
+      "role": "legacy movement, chemistry, thermal and scheduling authority"
+    },
+    {
+      "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+      "path": "native/src/world_inertial.inc",
+      "role": "IN sidecar and state authority"
+    },
+    {
+      "lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+      "path": "native/src/world_pressure.inc",
+      "role": "policy admission, physical hash and CYPS restoration"
+    },
+    {
+      "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "path": "native/src/world_quantity.inc",
+      "role": "quantity codec, endpoints and specialized ordinal mapping"
+    },
+    {
+      "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "role": "literal-source parser contract"
+    },
+    {
+      "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "role": "existing native identity generator"
+    },
+    {
+      "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "path": "tools/lcb/policy_contract.py",
+      "role": "catalogue, capability and policy digest contract"
+    }
+  ],
+  "status": "PASS",
+  "tool_sources": [
+    {
+      "bytes": 23316,
+      "path": "tools/material_catalogue/native_oracle.cpp",
+      "sha256": "a9ef69fedea104d8838360ba274cfcc28c6cd0131ce3f0e98988fd83754e4256"
+    },
+    {
+      "bytes": 22748,
+      "path": "tools/material_catalogue/check_native_parity.py",
+      "sha256": "2b85883db43858aed7e535b441dd66c82efd532b83a38ae3becca3d0f3dee967"
+    },
+    {
+      "bytes": 15167,
+      "path": "tools/material_catalogue/compatibility.py",
+      "sha256": "32c6c4c289a91a1e19498b21bfbca9dcc2b58e1040489653942fd7160ec1bd5a"
+    }
+  ],
+  "world_executed": false
+}

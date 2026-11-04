@@ -2,7 +2,7 @@
 title: Material catalogue shadow compiler and compatibility guards
 status: Current
 document-kind: guide
-scope: Implemented tooling in the unmerged MAT-AUTH-001 353-A candidate; production material authority and physics remain unchanged, with production cutover and new semantics held separately
+scope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted
 canonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]
 last-reviewed: 2026-11-04
 related-documents: [../architecture/material-authoring-catalogue-plan.md, ../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../architecture/liquid-solver-family-policy.md, documentation-maintenance.md]
@@ -10,20 +10,32 @@ related-documents: [../architecture/material-authoring-catalogue-plan.md, ../sys
 
 # Material catalogue shadow compiler and compatibility guards
 
-**Current candidate tooling; no production consumer cutover.** On 4 November
-the owner requested implementation of the architecture review's corrections
-and compatibility mitigations. The bounded response is #353-A: authored
-metadata, deterministic candidate outputs, independent native parity and
-source-identity guards. It is separate from documentation PR #357, which remains
-draft and unmerged. The original #353 issue stays open for its broader scope.
+The [adopted-main integration record](../audits/2026-11-04-mat-auth371-integration.md)
+records the escaping correction, independent review and resulting-head gate
+requirements. The PR ledger carries final hosted checks and merge identity.
+
+**Current shadow tooling; guarded integration under qualification.** On
+4 November the owner separately requested implementation of the architecture
+review's corrections and compatibility mitigations. [PR #371](https://github.com/techrote/cybersand/pull/371)
+contains that #353-A response: authored metadata, deterministic candidate outputs,
+independent native parity and source-identity guards. Documentation PR #357 is
+now merged and its corrected architecture is owner-adopted as Planned. The
+shadow output remains unconsumed by production; broad #353 and parent #352
+stay open, and #353-B consumer migration and #354–#356 remain separately
+unadmitted.
 
 The [architecture review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
 and [corrected migration contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
-explain why matching values alone is insufficient. Accepted main for this
-checkpoint is `0fd4af5987e77db4da3e37c757cf2c0917ae9e15`; reviewed design head
-`9b776d109e7843fb9b2d25239f9d088181309aa1` remains its separate predecessor.
-Executed checks, retained receipts and remaining decisions are in the
-[4 November qualification record](../audits/2026-11-04-mat-auth-353a-compatibility.md).
+explain why matching values alone is insufficient. The
+[current A-only reconciliation boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+preserves original implementation `6d3737594beb39e83e555f66f2e81184a4bdbf77`
+and its reviewed parent `9b776d109e7843fb9b2d25239f9d088181309aa1`, while
+merging adopted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d` normally.
+The frozen compatibility baseline remains
+`0fd4af5987e77db4da3e37c757cf2c0917ae9e15`; adopted documentation does not
+refresh any source lock. The [original qualification record](../audits/2026-11-04-mat-auth-353a-compatibility.md)
+retains its tested source and historical status. The #371 ledger records new
+resulting-head checks, review and actual merge/post-merge status separately.
 
 ## What the compiler owns
 
@@ -149,10 +161,17 @@ python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'
 python3 tools/material_catalogue/check_native_parity.py
 ```
 
-The native query check requires a C++20 compiler; JSON generation and strict
-validation use Python's standard library. CI reuses the existing hosted
-Documentation workflow and execution watchdog. It does not create a new
-physics matrix, require a runtime download or enable the expensive draft lanes.
+The native query check and the focused generated-C++ regression require a C++20
+compiler; JSON generation and strict validation use Python's standard library.
+CI reuses the existing hosted
+Documentation workflow and execution watchdog. These focused commands do not
+run World scenarios or require a Godot download; expensive draft lanes stay
+suppressed. Under the existing ready-state path classifiers, this tools/data
+implementation also triggers the full Native and Windows/Linux GDExtension/Godot
+gates when #371 becomes ready. Those configured integration checks remain
+required; a draft skip or metadata readback is not a substitute. Freeze and
+independently review the candidate before that transition to avoid redundant
+matrices. Record actual jobs and any skips in the PR ledger.
 
 For optional actual Godot metadata readback, use a complete editor archive and
 executable matching `third_party/godot-runtime.lock.json`. Produce a native

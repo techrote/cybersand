@@ -10,16 +10,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
-Material authoring, 4 November: the owner requested the review corrections and
-compatibility mitigations. The [#353-A shadow compiler](operations/material-catalogue-shadow.md)
-implements bounded authoring/parity tooling in a separate unmerged candidate.
-Production cutover, new semantics and merging #357 remain separate decisions.
-The dated review/admission statements below retain their earlier scope.
-
-Material authoring: the [corrected Planned catalogue proposal](architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
-and [independent current-main review](audits/2026-11-03-mat-auth-000-architecture-review.md)
-recommend a shadow compiler before production cutover. PR #357 remains draft;
-architecture adoption and #353–#356 implementation require an owner decision.
+Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
+The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
+is being reconciled and qualified for guarded integration in [#371](https://github.com/techrote/cybersand/pull/371).
+The [current A-only boundary](architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+preserves production authority and the frozen legacy compatibility baseline.
+#353-B consumer migration and #354–#356 require separate admission; #358's
+experimental materials remain unintegrated. Dated architecture and implementation
+receipts keep their original source scope; the PR ledger owns final resulting-head
+checks and merge status.
 
 Liquid reassessment #359: [current-main implementation and evidence audit](audits/2026-11-03-lcb-reassessment.md),
 [canonical family/material policy](architecture/liquid-solver-family-policy.md),

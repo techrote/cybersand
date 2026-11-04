@@ -1,7 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "reviewed": "2026-11-04",
-  "scope": "Separate MAT-AUTH-001 353-A implementation questions; architecture review, frozen32 and challenge157 fixtures remain unchanged. Current candidate tooling must not be described as production catalogue cutover.",
+  "scope": "Separate MAT-AUTH-001 353-A implementation questions; version2 updates only MAT353A-01's revision-sensitive357 adoption/merge fact and fixture metadata. Query wording and canonical routes, frozen32 and challenge157 remain unchanged. Current shadow tooling must not be described as production catalogue cutover.",
   "questions": [
     {
       "id": "MAT353A-01",
@@ -9,7 +9,7 @@
       "canonical": ["operations/material-catalogue-shadow.md"],
       "facts": [
         "Owner-authorized353-A is a shadow compiler, independent native parity and compatibility guard candidate.",
-        "Production consumers, material physics and existing policy artifacts remain unchanged;357 remains a separate documentation draft.",
+        "Production consumers, material physics and existing policy artifacts remain unchanged;357 is merged as the owner-adopted Planned architecture, while371 undergoes separate resulting-head integration qualification.",
         "The broad353 issue and production cutover remain separate from this checkpoint."
       ],
       "sources": ["operations/material-catalogue-shadow.md"],

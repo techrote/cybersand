@@ -15,20 +15,31 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)
 for implemented #353-A scope, commands, deterministic validation, frozen native
 and fallback identities, experimental ID isolation and rollback. It distinguishes
-current candidate tooling from unchanged production authority and the separate
-cutover decision. The [353-A questions](retrieval-questions-mat-auth-353a.json)
-are a separate implementation fixture; earlier review and frozen suites remain
-unchanged.
+current shadow tooling from unchanged production authority and the separate
+#353-B cutover decision. The [353-A questions](retrieval-questions-mat-auth-353a.json)
+remain a separate implementation fixture. Version2 corrects MAT353A-01's
+revision-sensitive #357 adoption/merge fact; query wording and canonical routes
+stay fixed. Original version1 and its evidence remain at implementation head
+`6d3737594beb39e83e555f66f2e81184a4bdbf77`.
 
-## Material-authoring proposal and admission — 2026-11-03
+## Material-authoring adoption and implementation boundary — 2026-11-04
 
-Use the [corrected Planned admission contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
-for #353's shadow-first scope, header-byte identity, backend distinctions,
-endpoint effects, experimental IDs and successor gates. The original proposal
-sections retain their dated intake; this is not a Current runtime catalogue or
-owner approval. The [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
-is dated evidence outside the default corpus. [Supplementary questions](retrieval-questions-mat-auth.json)
-exercise these distinctions separately from frozen32 and challenge157.
+The [adopted Planned architecture](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04)
+and [current A-only integration boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04)
+distinguish merged #357 documentation, implemented #353-A tooling in #371,
+resulting-head qualification and separately unadmitted #353-B/#354–#356 work.
+The [corrected technical contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
+owns header-byte identity, backend distinctions, endpoint effects, experimental
+IDs and successor gates. Original proposal and review statements retain their
+dated scope; the [source-qualified review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
+is historical evidence outside the default corpus.
+
+[Supplementary architecture questions](retrieval-questions-mat-auth.json)
+exercise these distinctions separately from unchanged frozen32 and challenge157.
+Version3 updates only MAT-AUTH-01's revision-sensitive adoption/implementation
+facts and fixture metadata; query wording and canonical routes stay fixed.
+Version1 remains at reviewed head `9b776d109e7843fb9b2d25239f9d088181309aa1`,
+and adoption-only version2 at main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d`.
 
 ## LCB current-main reassessment routes — 2026-11-03
 

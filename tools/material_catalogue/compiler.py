@@ -555,6 +555,9 @@ def _cpp_string(value: str) -> str:
             out.append('\\"')
         elif byte == 92:
             out.append("\\\\")
+        elif byte == 63:
+            # Preserve question marks without trigraph diagnostics under -Werror.
+            out.append("\\?")
         elif 32 <= byte <= 126:
             out.append(chr(byte))
         else:

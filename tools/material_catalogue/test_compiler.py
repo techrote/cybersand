@@ -91,6 +91,37 @@ class CatalogueTests(unittest.TestCase):
                 self.assertNotIn(str(SOURCE).encode(), data)
         self.assertEqual(json.loads(rendered["inspection.json"])["schema_version"], 1)
 
+    def test_cpp_free_text_compiles_and_round_trips_special_utf8_bytes(self):
+        # All nine trigraph spellings are legal authored text. GCC still warns
+        # about them in C++20, and the native parity compiler treats warnings as
+        # errors. Exercise the generated header and actual decoded bytes.
+        value = "??= ??/ ??' ??( ??) ??! ??< ??> ??- \" \\ \t\n\r\x01 café 雪"
+        changed = copy.deepcopy(self.baseline)
+        for family in changed["native"]["interactions"]["families"]:
+            family["purpose"] = value
+        compiler.compile_catalogue(self.write(changed), self.output)
+        probe = self.directory / "string-readback.cpp"
+        probe.write_text(
+            '#include "catalogue.shadow.hpp"\n'
+            '#include <fstream>\n'
+            'int main(int argc, char** argv) {\n'
+            '    if (argc != 2) return 1;\n'
+            '    const auto value = cybersand::material_catalogue_shadow::kSemanticFamilies[0].purpose;\n'
+            '    std::ofstream out(argv[1], std::ios::binary);\n'
+            '    out.write(value.data(), static_cast<std::streamsize>(value.size()));\n'
+            '    out.close();\n'
+            '    return out ? 0 : 2;\n'
+            '}\n', encoding="utf-8")
+        executable = self.directory / ("string-readback.exe" if os.name == "nt" else "string-readback")
+        compiled = subprocess.run(
+            ["c++", "-std=c++20", "-Wall", "-Wextra", "-Werror", "-I", str(self.output),
+             str(probe), "-o", str(executable)], capture_output=True, timeout=30)
+        self.assertEqual(compiled.returncode, 0, compiled.stderr.decode("utf-8", errors="replace"))
+        readback = self.directory / "string-readback.bin"
+        executed = subprocess.run([str(executable), str(readback)], capture_output=True, timeout=10)
+        self.assertEqual(executed.returncode, 0, executed.stderr)
+        self.assertEqual(readback.read_bytes(), value.encode("utf-8"))
+
     def test_input_named_like_generated_file_cannot_be_overwritten_by_its_output_directory(self):
         source = self.output / "inspection.json"
         self.write(path=source)
