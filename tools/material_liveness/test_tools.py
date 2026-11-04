@@ -9,6 +9,7 @@ import os
 import stat
 import json
 from pathlib import Path
+import subprocess
 import tempfile
 import sys
 import unittest
@@ -156,6 +157,81 @@ class EvidenceTests(unittest.TestCase):
         inputs = runner.inventory(root_alias, [], [root / 'fixtures/registered.json'])
         self.assertIn('fixtures/registered.json', {item['path'] for item in inputs})
         self.assertTrue(all(not Path(item['path']).is_absolute() for item in inputs))
+
+    def source_byte_fixture(self):
+        root = self.directory / 'git-fixture'
+        root.mkdir()
+        subprocess.run(['git', 'init', '--quiet', str(root)], check=True, capture_output=True, timeout=10)
+        runner.git(root, 'config', 'core.autocrlf', 'false')
+        runner.git(root, 'config', 'core.eol', 'lf')
+        for name in ('.gitattributes', 'Makefile', 'native/src/world.cpp', 'native/src/kernel.inc',
+                     'native/tests/probe.cpp', 'materials/catalogue/compatibility-lock.json',
+                     'tools/material_catalogue/compatibility.py'):
+            path = root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b'* text=auto\n' if name == '.gitattributes' else b'fixture bytes\nsecond line\n')
+        plan = root / 'plan.json'
+        plan.write_bytes(json.dumps({'schema': 'mat354.plan.v1', 'compile_sources': ['native/tests/probe.cpp'],
+                                    'cases': [{'id': 'one', 'argv': []}]}).encode() + b'\n')
+        runner.git(root, 'add', '.')
+        runner.git(root, '-c', 'user.name=Apparatus Test', '-c', 'user.email=apparatus@example.invalid',
+                   '-c', 'commit.gpgsign=false', 'commit', '--quiet', '-m', 'source byte fixture')
+        return SimpleNamespace(root=root, plan=plan, output=self.directory / 'output', mode='normal',
+                               compiler='unavailable-test-compiler', allow_dirty_apparatus=False,
+                               disable_leak_check=False)
+
+    def preflight_fixture(self, args):
+        guard = {'status': 'PASS', 'protected_sources': 27, 'production_cutover': False}
+        with patch.object(runner, 'protected_check', return_value=guard), \
+                patch.object(runner.shutil, 'which', return_value=None) as compiler, \
+                patch.object(runner, 'process') as execute, patch('sys.stdout', new_callable=io.StringIO):
+            self.assertEqual(runner.run(args), 1)
+        execute.assert_not_called()
+        return runner.load_json(args.output / 'campaign.json'), compiler
+
+    def test_clean_git_crlf_projection_is_refused_before_compiler_lookup(self):
+        args = self.source_byte_fixture()
+        source = args.root / 'native/src/kernel.inc'
+        runner.git(args.root, 'config', 'core.eol', 'crlf')
+        source.unlink()
+        runner.git(args.root, 'checkout', 'HEAD', '--', 'native/src/kernel.inc')
+        self.assertIn(b'\r\n', source.read_bytes())
+        self.assertEqual(runner.git(args.root, 'status', '--porcelain=v1'), '')
+        receipt, compiler = self.preflight_fixture(args)
+        compiler.assert_not_called()
+        self.assertEqual(receipt['status'], 'FAILED')
+        self.assertFalse(receipt['source_qualified'])
+        self.assertEqual(receipt['worktree_status'], '')
+        self.assertEqual(receipt['build_steps'], [])
+        self.assertIn('committed Git blobs', receipt['failure'])
+        check = receipt['committed_input_check']
+        self.assertEqual(check['status'], 'FAIL')
+        self.assertEqual([row['path'] for row in check['mismatches']], ['native/src/kernel.inc'])
+        mismatch = check['mismatches'][0]
+        self.assertNotEqual(mismatch['working']['bytes'], mismatch['committed']['bytes'])
+        self.assertNotEqual(mismatch['working']['sha256'], mismatch['committed']['sha256'])
+
+    def test_matching_committed_bytes_pass_qualified_preflight(self):
+        args = self.source_byte_fixture()
+        receipt, compiler = self.preflight_fixture(args)
+        compiler.assert_called_once_with(args.compiler)
+        self.assertTrue(receipt['source_qualified'])
+        self.assertEqual(receipt['committed_input_check']['status'], 'PASS')
+        self.assertEqual(receipt['committed_input_check']['mismatches'], [])
+        self.assertEqual(receipt['committed_input_check']['checked_files'], len(receipt['compiled_input_inventory']))
+        self.assertEqual(receipt['committed_input_check']['committed_inventory_sha256'],
+                         receipt['input_inventory_sha256'])
+        self.assertIn('compiler unavailable', receipt['failure'])
+
+    def test_explicit_diagnostic_flag_cannot_qualify_even_matching_clean_bytes(self):
+        args = self.source_byte_fixture()
+        args.allow_dirty_apparatus = True
+        receipt, compiler = self.preflight_fixture(args)
+        compiler.assert_called_once_with(args.compiler)
+        self.assertEqual(receipt['worktree_status'], '')
+        self.assertEqual(receipt['committed_input_check']['status'], 'PASS')
+        self.assertFalse(receipt['source_qualified'])
+        self.assertTrue(receipt['diagnostic_allow_dirty_apparatus'])
 
     def test_windows_flags_use_explicit_cxx_exceptions_without_posix_threads(self):
         windows = runner.compiler_flags('normal', 'nt')

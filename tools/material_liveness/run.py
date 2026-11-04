@@ -260,6 +260,32 @@ def inventory(root, sources, extra_paths=()):
     return [fact(root / path, root) for path in sorted(paths)]
 
 
+def committed_input_check(root, inputs, source_commit):
+    """Compare raw working bytes with Git blobs, without checkout filters.
+
+    A clean Git status and the legacy compatibility guard may both accept
+    normalized line endings. Source-qualified execution requires exact bytes.
+    """
+    committed, mismatches = [], []
+    for actual in inputs:
+        path = actual['path']
+        result = subprocess.run(['git', '-C', str(root), 'cat-file', 'blob', f'{source_commit}:{path}'],
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=30, check=False)
+        if result.returncode:
+            mismatches.append({'path': path, 'reason': 'committed blob unavailable',
+                               'git_error': result.stderr.decode('utf-8', errors='replace').strip()})
+            continue
+        expected = {'path': path, 'bytes': len(result.stdout),
+                    'sha256': hashlib.sha256(result.stdout).hexdigest()}
+        committed.append(expected)
+        if actual != expected:
+            mismatches.append({'path': path, 'reason': 'working bytes differ from committed blob',
+                               'working': actual, 'committed': expected})
+    return {'status': 'FAIL' if mismatches else 'PASS', 'source_commit': source_commit,
+            'checked_files': len(inputs), 'committed_inventory_sha256': canonical_sha(committed),
+            'mismatches': mismatches}
+
+
 def make_dependency_paths(content):
     """Read compiler Make dependencies without confusing drive letters/escapes.
 
@@ -514,7 +540,8 @@ def run(args):
     out = output_directory(args.output, root)
     receipt = {'schema': SCHEMA, 'status': 'INITIALIZING', 'started_utc': now(),
                'root': str(root), 'mode': args.mode, 'host': cpu_identity(), 'cases': [], 'build_steps': [],
-               'disable_leak_check': bool(getattr(args, 'disable_leak_check', False)), 'artifact_mode_repairs': []}
+               'disable_leak_check': bool(getattr(args, 'disable_leak_check', False)), 'artifact_mode_repairs': [],
+               'diagnostic_allow_dirty_apparatus': bool(args.allow_dirty_apparatus)}
     receipt_path = out / 'campaign.json'
     write_json(receipt_path, receipt)
     try:
@@ -554,13 +581,19 @@ def run(args):
         receipt['worktree_status'] = git(root, 'status', '--porcelain=v1', '--untracked-files=all')
         if receipt['worktree_status'] and not args.allow_dirty_apparatus:
             raise EvidenceError('source checkout is dirty; commit the registered apparatus or use explicit diagnostic --allow-dirty-apparatus')
-        receipt['source_qualified'] = not bool(receipt['worktree_status'])
+        receipt['source_qualified'] = not bool(receipt['worktree_status']) and not args.allow_dirty_apparatus
         receipt['protected_source_guard'] = protected_check(root)
         receipt['plan'] = plan
         receipt['plan_file'] = fact(args.plan.resolve())
         receipt['plan_sha256'] = canonical_sha(plan)
         receipt['compiled_input_inventory'] = inventory(root, sources, (args.plan,))
         receipt['input_inventory_sha256'] = canonical_sha(receipt['compiled_input_inventory'])
+        receipt['committed_input_check'] = committed_input_check(root, receipt['compiled_input_inventory'],
+                                                                receipt['source_commit'])
+        if receipt['committed_input_check']['status'] != 'PASS':
+            receipt['source_qualified'] = False
+            if not args.allow_dirty_apparatus:
+                raise EvidenceError('source/runtime identity mismatch: working input bytes differ from committed Git blobs')
         compiler = shutil.which(args.compiler)
         if not compiler:
             raise EvidenceError(f'compiler unavailable: {args.compiler}')
