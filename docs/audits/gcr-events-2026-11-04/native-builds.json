@@ -1,0 +1,102 @@
+[
+  {
+    "schema_version": 1,
+    "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "source_commit": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+    "build_commit": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+    "native_build_commit": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+    "source_tree": "bb616060d9231fedf5716caa165780cf12cdc3e5",
+    "source_input_hash_kind": "SHA256 canonical LF for production native inputs",
+    "sha256": "0ef13fbb63090608fb7c544708eea6b7de4dcb8c8ee619ad3a192a682ee57d18",
+    "size": 5031424,
+    "platform": "windows",
+    "validated_platform": "windows x86_64 source-matched experimental build",
+    "status": "Experimental granular-only event successor; new host and physical qualification recorded separately",
+    "acceptance": "No production/default, compound, sleep or owner gameplay acceptance",
+    "build_record": {
+      "command": [
+        "C:/Program Files/Git/bin/bash.exe",
+        "tools/build_native_extension_windows.sh"
+      ],
+      "pid": 42080,
+      "started_utc": "2026-11-04T01:31:43.013770+00:00",
+      "ended_utc": "2026-11-04T01:32:54.298458+00:00",
+      "timeout_seconds": 1200,
+      "elapsed_seconds": 71.28473610000219,
+      "exit": 0,
+      "timed_out": false,
+      "log_sha256": "6f65d6b6cf593110f94c863427195ba0abe5adf4a5d8a9a4d6b9a5bfedb7a995",
+      "ok": true,
+      "source": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+      "platform": "windows",
+      "sha256": "0ef13fbb63090608fb7c544708eea6b7de4dcb8c8ee619ad3a192a682ee57d18",
+      "bytes": 5031424
+    },
+    "build_receipt_sha256": "295229cea58520b2a8368a82f882384337b50792e31ffc7cd1b44eafaffe053b",
+    "build_script": "tools/build_native_extension_windows.sh",
+    "build_script_sha256": "3308b5aeebb4064130d3d6fe36a23b02c2709f0793dd7e3de1e4e73df4c8b940",
+    "dependencies": "Pinned Godot4.7 godot-cpp101ae380; LLVM-MinGW23.1 Windows / GCC13.3 Linux; build scripts enforce pins",
+    "limitations": [
+      "Other platforms retain historical provenance",
+      "No native source from Astra PR347 imported or replaced",
+      "No old qualification is relabelled as new execution"
+    ]
+  },
+  {
+    "schema_version": 1,
+    "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "source_commit": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+    "build_commit": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+    "native_build_commit": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+    "source_tree": "bb616060d9231fedf5716caa165780cf12cdc3e5",
+    "source_input_hash_kind": "SHA256 canonical LF for production native inputs",
+    "sha256": "46ba044d48bc698cecf8c5b41b977d2c4c7e5e6c47e5958ebe3a2512623a73ff",
+    "size": 4468208,
+    "platform": "linux",
+    "validated_platform": "linux x86_64 source-matched experimental build",
+    "status": "Experimental granular-only event successor; new host and physical qualification recorded separately",
+    "acceptance": "No production/default, compound, sleep or owner gameplay acceptance",
+    "build_record": {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "C:\\Users\\_\\.codex\\worktrees\\gcr-events\\khybersand",
+        "--",
+        "env",
+        "LINUX_CXX=/usr/bin/g++-13",
+        "GODOT_CPP_ROOT=/home/i/render-publication-abc-tools/godot-cpp-101ae38034304346a46ea9ea84ae156d3e860496",
+        "CYBERSAND_NATIVE_OUTPUT=/mnt/c/Users/_/.codex/worktrees/gcr-events/khybersand/build/native-events-01/libcybersand_native.linux.x86_64.so",
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "1200s",
+        "bash",
+        "tools/build_native_extension.sh"
+      ],
+      "pid": 8232,
+      "started_utc": "2026-11-04T01:31:43.014607+00:00",
+      "ended_utc": "2026-11-04T01:33:19.054374+00:00",
+      "timeout_seconds": 1200,
+      "elapsed_seconds": 96.03978309995728,
+      "exit": 0,
+      "timed_out": false,
+      "log_sha256": "90599f8d3df4e4743bf1c9194e8b562b6d870eb5f36256b37239604cd9d30ca4",
+      "ok": true,
+      "source": "e2fa9960bdd750562bfca93b141579bfdf8ccdf9",
+      "platform": "linux",
+      "sha256": "46ba044d48bc698cecf8c5b41b977d2c4c7e5e6c47e5958ebe3a2512623a73ff",
+      "bytes": 4468208
+    },
+    "build_receipt_sha256": "0dff4d64fc9800f3c643feb65072549e8378af811ef45b96f183b04c7adfe469",
+    "build_script": "tools/build_native_extension.sh",
+    "build_script_sha256": "cdb1702ab2d896ff1147147124cb79bf9df4f73dee07ec72f32e09dd6fee0313",
+    "dependencies": "Pinned Godot4.7 godot-cpp101ae380; LLVM-MinGW23.1 Windows / GCC13.3 Linux; build scripts enforce pins",
+    "limitations": [
+      "Other platforms retain historical provenance",
+      "No native source from Astra PR347 imported or replaced",
+      "No old qualification is relabelled as new execution"
+    ]
+  }
+]
