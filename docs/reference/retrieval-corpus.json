@@ -136,6 +136,10 @@
   ],
   "excluded": [
     {
+      "path": "audits/2026-11-04-pr383-retention-readback-successor.md",
+      "reason": "Dated frozen PR383 Windows failure and uncommitted test-only readback successor checkpoint. Retrieve Current behavior through operations/in-tools-metered-drain.md; historical failures, fresh native/parser controls and focused Windows passes remain separate from unexecuted full-suite, committed-head, Linux/rendered and physical qualification."
+    },
+    {
       "path": "audits/2026-11-04-mat-auth371-integration.md",
       "reason": "Dated A-only adopted-main reconciliation, compiler repair and integration evidence. Retrieve through the shadow guide and validation ledger with exact source/backend limits; final hosted and merge outcomes belong to PR371."
     },

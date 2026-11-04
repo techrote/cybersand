@@ -50,6 +50,18 @@
       ],
       "sources": ["../tools/lcb/run_metered_drain_native.py", "../godot/tests/test_physical_metered_desktop.gd"],
       "revision_sensitive": true
+    },
+    {
+      "id": "IN-TOOLS-361A-05",
+      "query": "Why can ordinary Brick Stamper equipment gain metered_drain context after a refused replacement, and does the successor ignore that context to make the retention test pass?",
+      "canonical": ["operations/in-tools-metered-drain.md"],
+      "facts": [
+        "Ordinary physical equipment receives copied native-owner context through asynchronous validated readback; a new actor starts without it, and missing context cannot invent stock or authorize a metered activation.",
+        "The local test successor waits within the existing watchdog for delivered actor/equipment-bound readback matching the accepted receipt session_generation and full policy_hash, then retains all six exact retention predicates including the entire metered subtree.",
+        "Adverse identity/resource/readback controls and genuine spent Water/Brine refusal arms distinguish context readiness from mutation or refill; local focused Windows passes preserve the frozen failure and establish no full-suite, committed-head, Linux/rendered or physical acceptance."
+      ],
+      "sources": ["../godot/scripts/physical_usable_runtime.gd", "../godot/scripts/physical_usable_equipment.gd", "../godot/tests/test_liquid_physical_transaction.gd", "../godot/tests/support/physical_retention_readback.gd", "../godot/tests/test_physical_retention_readback.gd", "../godot/tests/test_physical_metered_desktop.gd"],
+      "revision_sensitive": true
     }
   ]
 }

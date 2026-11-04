@@ -8,6 +8,7 @@ const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Catalogue = preload("res://scripts/microscenario_catalogue.gd")
 const Showcase = preload("res://scripts/showcase_tiles.gd")
+const Retention = preload("res://tests/support/physical_retention_readback.gd")
 const FIXTURE: String = "res://tests/fixtures/in-tools-metered-desktop.v1.json"
 var desktop: Control
 var bridge: Object
@@ -30,6 +31,14 @@ class DesktopHarness:
 		return test_focus
 	func actor_pointer_aim() -> Vector2:
 		return test_aim
+
+
+class DebitedTerrainRefusal extends "res://scripts/prepared_physical_session.gd":
+	var terrain_attempted: bool = false
+	func install_terrain(_chunks: PackedInt32Array) -> bool:
+		terrain_attempted = true
+		last_error = "fixture declared terrain refusal after actual metered debit"
+		return false
 
 
 func _initialize() -> void:
@@ -481,6 +490,107 @@ func _ordinary_control() -> void:
 	await _joined_census("ordinary-u10-after",before)
 
 
+func _retention_values() -> Dictionary:
+	return {"publication_serial": desktop.latest_snapshot.serial,
+		"frame": desktop.physical_actor_session.equipment_frame(),
+		"publication": desktop.latest_snapshot.physical_usables,
+		"view": desktop.physical_actor_session._view(0, false)}
+
+
+func _debited_refusal_retains_budget(label: String) -> bool:
+	# The accepted pulse above genuinely changed native stored liquid. Pause
+	# through the existing owner boundary before pinning complete equipment;
+	# no World query is made while the asynchronous worker owns it.
+	key(KEY_M, false)
+	desktop.paused = true
+	desktop.cancel_playable_course_input()
+	desktop.update_worker_frame_state()
+	if not expect(await wait_for(func() -> bool:
+		return desktop.latest_snapshot.paused and desktop.physical_actor_session.snapshot().suspended),
+		label + " pauses physical and native owners before the retention baseline"):
+		return false
+	var frame: Dictionary = desktop.physical_actor_session.equipment_frame()
+	var row: Dictionary = frame.actors[0]
+	var native_identity: Dictionary = ledger().duplicate(true)
+	var applied: Dictionary = desktop.tower_context.liquid_solver_policy
+	var expected: Dictionary = {"run_id": frame.run_id, "epoch": frame.epoch, "actor_id": 0,
+		"instance_id": row.instance_id, "equipment_epoch": row.equipment_epoch,
+		"usable_index": row.usable_index, "body_id": row.body_id,
+		"native_generation": int(applied.session_generation), "policy_hash": str(applied.policy_hash),
+		"world_instance_id": int(native_identity.get("world_instance_id", 0)),
+		"minimum_publication_serial": desktop.latest_snapshot.serial,
+		"minimum_control_generation": int(row.generation),
+		"completed_tick": desktop.latest_snapshot.tick_index,
+		"context": {"initial_construction_receipt_available": true}}
+	var readiness: Dictionary = {}
+	if not expect(await wait_for(func() -> bool:
+		readiness.clear()
+		readiness.merge(Retention.evaluate(expected, _retention_values()), true)
+		return readiness.ready), label + " receives matching accepted-owner readback before taking exact baseline"):
+		reports.append({"case": label, "phase": "baseline-not-ready", "readiness": readiness})
+		return false
+	var stock: Dictionary = readiness.context.duplicate(true)
+	var selected_removed: int = int(stock.water_units_removed) if active_material == 3 else int(stock.brine_cells_removed)
+	var selected_remaining: int = int(stock.water_units_remaining) if active_material == 3 else int(stock.brine_cells_remaining)
+	var selected_initial: int = int(stock.water_units_initial) if active_material == 3 else int(stock.brine_cells_initial)
+	if not expect(selected_removed > 0 and selected_remaining + selected_removed == selected_initial \
+		and selected_remaining < selected_initial, label + " starts from a genuine nonzero native debit and spent allowance"):
+		return false
+	expected.context = stock.duplicate(true)
+	expected.ledgers = {}
+	for field: String in ["water_units_initial", "water_units_remaining", "water_units_removed",
+		"brine_cells_initial", "brine_cells_remaining", "brine_cells_removed"]:
+		expected.ledgers[field] = stock[field]
+	var session_before: CyberPhysicalActorSession = desktop.physical_actor_session
+	var candidate_before: RefCounted = desktop._accepted_physical_candidate
+	var equipment_before: Dictionary = session_before._view(0, false).equipment
+	var bytes_before: PackedByteArray = var_to_bytes(equipment_before)
+	var canonical_before: PackedByteArray = desktop.tower_context.liquid_construction_receipt.canonical_bytes.duplicate()
+	var host_before: Dictionary = desktop.tower_context.liquid_host_observation.duplicate(true)
+	var serial_before: int = desktop.latest_snapshot.serial
+	var refusal := DebitedTerrainRefusal.new()
+	var original_factory: Callable = desktop._prepared_physical_factory
+	desktop._prepared_physical_factory = func() -> RefCounted: return refusal
+	var requested: bool = desktop.microscenario_apply_exploratory_liquid(
+		desktop.microscenario_definition.duplicate(true), applied.envelope.duplicate(), false, "Play",
+		desktop._playable_actor_configuration(StringName(str(fixture.physical_rig))), 3)
+	desktop._prepared_physical_factory = original_factory
+	if not expect(requested, label + " enters the actual Main prepared replacement route"):
+		return false
+	var observed_changes: Array[String] = []
+	var observed_frames: Array[int] = []
+	if not Retention.equipment_unchanged(bytes_before, session_before._view(0, false).equipment):
+		observed_changes.append("immediate")
+	if not expect(await wait_for(func() -> bool:
+		observed_frames.append(Engine.get_process_frames())
+		if not Retention.equipment_unchanged(bytes_before, session_before._view(0, false).equipment):
+			observed_changes.append("frame " + str(Engine.get_process_frames()))
+		return desktop.pending_microscenario_apply.is_empty()), label + " receives the real terrain-refusal acknowledgement"):
+		return false
+	expected.minimum_publication_serial = serial_before + 1
+	if not expect(await wait_for(func() -> bool:
+		readiness.clear()
+		readiness.merge(Retention.evaluate(expected, _retention_values()), true)
+		return readiness.ready), label + " retains the exact spent ledger in current accepted-owner readback after refusal"):
+		reports.append({"case": label, "phase": "after-not-ready", "readiness": readiness, "stock_before": stock})
+		return false
+	var equipment_after: Dictionary = session_before._view(0, false).equipment
+	var retained: bool = (refusal.terrain_attempted and not desktop.microscenario_error.is_empty()
+		and desktop.physical_actor_session == session_before and desktop._accepted_physical_candidate == candidate_before
+		and desktop._pending_physical_candidate == null and Retention.equipment_unchanged(bytes_before, equipment_after)
+		and observed_changes.is_empty()
+		and desktop.tower_context.liquid_construction_receipt.canonical_bytes == canonical_before
+		and desktop.tower_context.liquid_host_observation == host_before)
+	expect(retained, label + " refuses before native replacement while retaining full equipment, both spent ledgers and native/host receipts")
+	reports.append({"case": label, "material": active_material, "terrain_refusal_executed": refusal.terrain_attempted,
+		"observed_frames": observed_frames, "equipment_changes_observed": observed_changes,
+		"stock_before": stock, "stock_after": readiness.context,
+		"equipment_before": equipment_before, "equipment_after": equipment_after,
+		"difference_paths": Retention.equipment_differences(bytes_before, equipment_after),
+		"scope": "real native debit followed by actual Main terrain refusal; final joined census separately checks stored quantity"})
+	return retained
+
+
 func run() -> void:
 	var source: String = FileAccess.get_file_as_string(FIXTURE)
 	fixture = JSON.parse_string(source)
@@ -500,6 +610,7 @@ func run() -> void:
 		finish()
 		return
 	await _cancellation_checks()
+	await _debited_refusal_retains_budget("water-spent-ledger-terrain-refusal")
 	var retained: Dictionary = desktop.latest_snapshot.physical_usables.duplicate(true)
 	var old_identity: Dictionary = ledger().duplicate(true)
 	var old_run: String = str(desktop.physical_actor_observation().run_id)
@@ -533,6 +644,7 @@ func run() -> void:
 	desktop.simulation_worker.start_worker(desktop.character_position)
 	if await install(24):
 		if await _accepted_pulses(1):
+			await _debited_refusal_retains_budget("brine-spent-ledger-terrain-refusal")
 			await _joined_census("brine-in-main")
 	desktop.simulation_worker.start_worker(desktop.character_position)
 	if await install(3,1):

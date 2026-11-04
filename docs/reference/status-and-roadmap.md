@@ -22,6 +22,16 @@ open; source implementation is not full platform or human gameplay acceptance.
 Reversible valves (#361-B), geometric sources and momentum interfaces remain
 separate work after the drain acceptance gates.
 
+**Current local test successor:** on frozen base `73b10f9b` plus an uncommitted
+test/documentation delta, retained equipment is compared only after bounded,
+matching owner readback; the full six-predicate retention oracle remains. The
+[checkpoint](../audits/2026-11-04-pr383-retention-readback-successor.md) preserves
+the original Windows 239-pass/one-failure cohort and separates fresh native/parser
+controls from seven focused Windows Godot passes and two fresh transaction
+repeats. The full successor 241-case suite, strict committed-source runner,
+Linux/rendered and physical/human acceptance remain unexecuted. Production
+hydration is not changed by this test correction; a later live PR head is not qualified.
+
 ## Material shadow foundation and integration — 2026-11-04
 
 [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)

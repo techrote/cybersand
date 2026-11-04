@@ -14,6 +14,12 @@ IN-TOOLS #361-A: the [explicit metered U10 profile](operations/in-tools-metered-
 and [source-qualified implementation evidence](audits/2026-11-04-in-tools-361a-metered-drain.md)
 describe actual bounded application work and remaining acceptance gates. Ordinary
 U10 and production liquid defaults remain intact; the implementation stays draft.
+The [retention-readback test successor](audits/2026-11-04-pr383-retention-readback-successor.md)
+preserves the frozen Windows failure and records a local test-only change;
+seven focused Windows cases and two transaction repeats passed within that local
+scope; full-suite, committed-head and physical acceptance remain separate. The
+[current readiness contract](operations/in-tools-metered-drain.md#refused-replacement-equipment-readback-readiness)
+keeps the complete equipment comparison after matching owner readback.
 
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
