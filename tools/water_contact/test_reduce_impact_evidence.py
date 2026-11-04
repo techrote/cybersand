@@ -40,6 +40,7 @@ def record(case: dict, arm: dict, workers: int) -> dict:
         "relocation": {"histogram_total": {"total": displaced, "up": displaced, "lateral": 0, "down": 0, "other_material": 0},
                        "results": {"displaced": displaced, "destinations_in_roi": displaced, "contacts": 40 if with_body else 0,
                                    "unresolved": 3, "carried_state_mismatches": 0, "global_checks": 30,
+                                   "carried_state_checks": 10 if displaced else 0,
                                    "masked_water_cells": {"p50": 0, "max": 0}}},
         "decomposition": {}, "peaks": {}, "return": {},
         "inertial": {"censuses": 150, "negative_vy": 0, "destinations_negative_vy": 0}
@@ -152,6 +153,11 @@ class ReducerNegativeControls(unittest.TestCase):
         records = stage1()
         find(records, "S-H-C", "PF3", 4)["relocation"]["results"]["carried_state_mismatches"] = 1
         self.assert_rejected(records, "carried stored state")
+
+    def test_vacuous_carried_state_check_rejected(self) -> None:
+        records = stage1()
+        find(records, "S-H-C", "IN3", 1)["relocation"]["results"]["carried_state_checks"] = 0
+        self.assert_rejected(records, "carried-state check vacuous")
 
     def test_worker_parity_failure_rejected(self) -> None:
         records = stage1()

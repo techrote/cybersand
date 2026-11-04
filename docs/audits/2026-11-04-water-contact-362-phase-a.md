@@ -19,24 +19,30 @@ momentum anywhere in the current source. Across 11 registered cases × 5 arms ×
 2 worker counts on Windows and Linux, the observed effects are small:
 
 - the highest Water reaches at most **6 rows** above the initial surface;
-- the spray band (≥4 rows above the surface) never holds more than **4 cells**
-  (1,020 units) at once;
-- **100 % of spray-band gain is relocation**. Liquid transport added zero
-  spray-band Water in every run.
+- the spray band (rows `y < surface − 4`, i.e. ≥5 rows above the surface) never
+  holds more than **4 cells** (1,020 units) at once;
+- **all spray-band gain is relocation**. No tick in any run had a net positive
+  solver change in the band. The decomposition is per-tick net, so a rise and a
+  fall inside one tick would cancel; the D3 peak-rise counter covers part of that.
 
 PressureFlow is the only family whose liquid tick lifts Water at all. It rises
 by 1 row at a time, pushed by pressure redistribution next to the body, and
 never reaches the spray band.
 
 A second finding limits any future spray more than the missing velocity law:
-**a submerged body stops displacing Water.** In entry into deeper water, the adapter can relocate a cell only to an
-Empty, unmasked, reachable cell within `ceil(penetration)+8` cells along the
-outward normal. Once the body is below the free surface, no such cell exists.
-Each overlap then counts as `unresolved` and the Water stays stored under the
-body mask. In the high-speed cases this leaves a median of **80–112 masked
-Water cells** for the rest of the run, against a body area of 112 cells, which
-is an undisplaced body overlay. The impulse feedback still acts on Rapier,
-whether or not a cell moved.
+**a submerged body stops displacing Water.** The adapter relocates each source
+cell only to an Empty, unmasked cell within `ceil(penetration)+8` cells along
+its outward normal, with tangent offsets up to ±4. The path check blocks only
+other bodies and hard terrain; Water on the path is allowed. Most interior
+cells of the 8×14 body get lateral normals. Once the nearest Empty cell is
+beyond that per-cell reach, the overlap is `unresolved` and the Water stays
+stored under the body mask. In S-H-C the resting top face is about 10 rows
+below the surface, just past the 9-row reach. In the high-speed cases that
+reach the floor in 24–72-deep Water (S-H-C, S-H-O, S-H-W, D-H-C, D-H-R), this
+leaves a median of **80–112 masked Water cells** for the rest of the run
+against a body area of 112, an undisplaced overlay. Near-floor N-H-C (depth 8)
+and the low-speed rows keep a median of 0–1. The impulse feedback still acts
+on Rapier whether or not a cell moved.
 
 Phase A therefore concludes **“upward ballistic IN absent; spray is bounded
 relocation”**. It recommends **further characterization of the submerged-overlap
@@ -111,7 +117,7 @@ Godot logs are not committed.
 | I10 duplicate snapshot and aged result refused by the unchanged bridge | refused (S-H-C, all arms) | refused |
 | I11 Rapier body floor penetration (WEX-001 two-cell characterization tolerance) | max 0.0042 cells; wall max 0.060 | max 0.0044 cells; wall max 0.0011 |
 | Focused regression `test_water_contact_impact.gd` | 108 assertions, 0 failures | 108 assertions, 0 failures |
-| Reducer negative controls (19 corruption classes + valid packet) | 20/20 tests | — |
+| Reducer negative controls (20 corruption classes, including vacuous I6, + valid packet) | 21/21 tests | — |
 
 The near-floor (N-H-C) and wall-adjacent (S-H-W) controls are the hard-boundary
 controls. In both, the body reaches the floor or wall (contact by ticks 4 and 9)
@@ -122,8 +128,8 @@ contract; WEX-001's historical floor crossing remains a recorded historical defe
 
 | Mechanism | Present in current source? | Evidence |
 |---|---|---|
-| **A. Collision-driven relocation** | **Yes — the only splash source.** `prepare_rigid_body_coupling` → `reconcile_overlap` → `find_ejection_target` → `World::relocate_stored_cell` (native adapter); GDScript fallback mirrors it (`_find_body_ejection_target`, `_move_material_for_body`). | Kinematic probe: every family moves the probe cell exactly 3 rows (`ceil(2.5)`) along the overlap normal. Dynamic runs: relocations are 97 % upward (`dy < 0`), at most 6 rows above the initial surface. |
-| **B. Subsequent liquid transport** | Yes, ordinary family law. | Solver above-surface gain is **0** in FreeMass, CellularYield and IN in every row; their ticks only remove above-surface Water. PF lifts 11,342 units over all rows (32 one-row rises), all below the spray band. |
+| **A. Collision-driven relocation** | **Yes — the only splash source.** `prepare_rigid_body_coupling` → `reconcile_overlap` → `find_ejection_target` → `World::relocate_stored_cell` (native adapter); GDScript fallback mirrors it (`_find_body_ejection_target`, `_move_material_for_body`). | Kinematic probe, overlap modes: every family moves the probe cell exactly 3 rows (`ceil(2.5)`) along the overlap normal. Swept mode (`swept-up-20`): every family leaves the cell unrelocated (displaced 0, unresolved 1, state identical). Its outward direction is the travel direction, and every target in reach lies inside the swept mask. Dynamic runs: relocations are 97 % upward (`dy < 0`), at most 6 rows above the initial surface. |
+| **B. Subsequent liquid transport** | Yes, ordinary family law. | Net per-tick solver above-surface gain is **0** in FreeMass, CellularYield and IN in every row: no tick of theirs added net above-surface Water. Gross within-tick rises are not separately measured. PF lifts 11,342 units over the configured-1 rows (32 one-row rises; 22,684 units and 64 rises across all 110 Windows rows), all below the spray band. Transport B includes each solver's response to the moving obstacle mask and coupling wake/pressure-input invalidation (`world.cpp` `move_cell`). |
 | **C. Retained IN momentum** | Retained, never upward. | Relocation carries `(vx, vy, ax, ay)` unchanged. The probe cell kept `vy=+21` (downward) after being moved 3 rows up; its next tick converted contact into lateral `vx=-15`, `vy=0`. Dynamic IN max `vy` 12–18, never negative. The IN setter, kernel and physical-state codec all refuse `vy < 0`. |
 | **D. True ballistic launch** | **Absent.** | No coupling path writes velocity from body velocity or impulse. Probe destinations and states are identical for body velocities 0, 600 px/s up and 600 px/s sideways. The fallback's `_try_sparse_ballistic_move` is downward-only two-cell free fall (upward only for Smoke), a cadence-LOD path, not launch. |
 | **E. Presentation** | Not measured as transport. | All metrics use stored state from `diagnostic_snapshot` and `water_experiment_observation`. PF overfill is counted in quantity, never rendered. |
@@ -131,9 +137,27 @@ contract; WEX-001's historical floor crossing remains a recorded historical defe
 Cells have no stable identity, so FreeMass, CellularYield and PF have no
 trajectory, launch angle or velocity estimate. Region motion is reported only as region motion.
 
+**Check bounds.** These checks are bounded, not exhaustive:
+
+- **I6:** runs on at most 40 relocating ticks per row, giving 10–40 complete
+  checks per body row and 0 incomplete. The reducer now requires at least one
+  check whenever cells were displaced.
+- **I7:** the census covers Water above the initial surface every 2 ticks,
+  plus up to 4,096 relocated destinations. The IN kernel's `vy < 0` throw
+  backstops cells below the surface.
+- **I8:** sampled every 2 ticks.
+- **I5:** `BodyDisplacement` is recorded for any `move_cell` outside a tick
+  (`world.cpp`). It equals relocation here only because nothing else in this
+  fixture moves cells outside a tick.
+
+The `unresolved` column counts overlap-ticks, which are recounted every tick.
+It includes swept-trail cells (their outward direction is the travel direction)
+that become unmasked after the final-pose rasterization. That is why
+low-speed rows show 694–1,104 with masked p50 0.
+
 ### Cross-family results (Windows, configured 1 worker; 4-worker rows are identical)
 
-| Case | Arm | Displaced | Unresolved | Masked Water p50 | Up / lat / down relocations | Peak rows above | Spray-band peak (units) | Solver above-surface gain | Body floor contact |
+| Case | Arm | Displaced | Unresolved overlap-ticks | Masked Water p50 | Up / lat / down relocations | Peak rows above | Spray-band peak (units) | Solver above-surface gain | Body floor contact |
 |---|---|---:|---:|---:|---|---:|---:|---:|---:|
 | S-L-C | FM3 | 34 | 931 | 0 | 33/1/0 | 2 | 0 | 0 | — |
 | S-L-C | CY3 | 24 | 825 | 0 | 23/0/1 | 2 | 0 | 0 | — |
@@ -193,16 +217,17 @@ claimed. Radius has no observable effect on FreeMass in this fixture.
   PF cache/variant work (#363), not this issue.
 - **Inertial (IN).** IN relocates 2–4× more cells in the deep and rotating cases.
   Its retained lateral motion keeps refilling the body's path, and the refilled
-  cells are relocated again. It produced the largest spray-band peak (four
-  cells for 19 ticks in D-H-R), all of it by relocation. Contact converts
+  cells are relocated again. It produced the largest spray-band peak in D-H-R:
+  the band was non-empty for ticks 5–23 and peaked at four cells, all by relocation. Contact converts
   downward IN momentum into lateral motion (`kDeflect` 3/4), never upward.
 
 ### Worker participation and cost
 
 Configured workers are not actual participants. With four configured, the
 maximum distinct task claimants per tick was mostly 1–2. Four claimants
-appeared on 33–107 ticks in the deep IN and PF rows (Windows D-H-C IN3 102,
-PF3 63; Linux 67 and 33), and on only 3–6 start-up ticks elsewhere.
+appeared on up to 179 ticks in PF rows (Windows D-L-C PF3 179; Linux at most
+94) and on 63–102 ticks in deep IN/PF rows on Windows, but on only 2–6
+start-up ticks in most other rows.
 Participation is scheduling-dependent and differs between runs and OSes,
 while simulated state stays identical (I9). Median native tick cost on Windows (configured 1):
 
@@ -220,14 +245,17 @@ recorded as advisory host costs; they are not displayed FPS.
 
 Linux ran the same source, manifest and command with the Linux Godot binary and
 provenance-matching Linux runtimes. It passed every invariant and 55/55
-worker-parity pairs, and its 20 kinematic probes are byte-identical to
-Windows. Every mechanism conclusion above holds on Linux unchanged.
+worker-parity pairs, and its 20 kinematic probe records are identical in content
+to Windows (the files are not byte-identical). Every mechanism conclusion above holds on Linux unchanged.
 
 **Cross-OS identity is observed, not contracted.** The final physical-state
-hash matches Windows in 104/110 rows. The other six (D-H-R FM2/FM3 and S-H-O
-IN3, at both worker counts) differ by exactly **one** unresolved overlap over 300
-ticks, with identical displaced counts, peaks and decomposition. Only 50/110
-trace digests match. Those digests include raw Rapier body-state floats; the
+hash matches Windows in 104/110 rows. The six that differ are D-H-C IN3 and
+S-H-C FM2/FM3, at both worker counts. Their displaced and unresolved counts
+are identical; only `contacts` differ, by 3–6. Separately, D-H-R FM2/FM3 and
+S-H-O IN3 differ by exactly one unresolved overlap-tick over 300 ticks, yet
+their final hashes match. Sixteen rows differ in `contacts`. Displaced
+counts, peaks and decomposition are equal everywhere. Only 50/110 trace
+digests match. Those digests include raw Rapier body-state floats; the
 body-free rows match. The divergence is consistent with platform
 floating-point differences in Rapier. The fixture registers same-OS 1/4-worker
 parity, not cross-OS bit identity, so this is a recorded limitation, not a
@@ -311,5 +339,37 @@ ballistic law.
    `inertial_cellular_v1/reference`, defaults, per-droplet Rapier bodies or
    liquid creation.
 
-#362 should stay open until independent review of this report. Phase B requires
+#362 stays open; closure needs the owner's assessment of this report. Phase B requires
 explicit owner authorization.
+
+## Independent review — 2026-11-04
+
+An independent read-only review of `d618c4d4` returned **ACCEPT WITH
+CORRECTIONS**. Without running Godot, it re-derived the following from source
+and the committed packets, and they hold:
+
+- the mechanism conclusions;
+- histogram decoding, stored-byte observation and the A-skip premise;
+- both reductions (identical output);
+- runtime hashes against provenance and LFS object IDs;
+- all 32 table rows, and the headline figures (97 % upward, peak 6, band peak
+  1,020, solver band gain 0, 55/55 parity);
+- the feasibility ranking and the DEFER conclusion;
+- scope: no production, #347 or #370 file changed.
+
+Corrections applied in this revision:
+
+1. The cross-OS hash-difference rows were misattributed; they are rewritten
+   with the correct rows.
+2. The spray-band definition is ≥5 rows above the surface, not ≥4.
+3. The submerged-overlap mechanism is restated as per-cell reach, and
+   `unresolved` is labelled as overlap-ticks that include swept-trail cells.
+4. The solver-gain figures are qualified as per-tick net.
+5. The swept-probe outcome is reported.
+6. The check bounds are disclosed, and a reducer guard now rejects a vacuous
+   carried-state check.
+7. Participation counts, PF totals and the D-H-R band duration are corrected,
+   and probe identity is qualified.
+
+The review did not run the GDScript regression; it passed separately on both OSes.
+

@@ -101,6 +101,9 @@ and its [negative controls](../../tools/water_contact/test_reduce_impact_evidenc
 show that each failure class is rejected. Body floor penetration is reported against the retained
 WEX-001 two-cell characterization tolerance and is not a new threshold.
 
+The spray band is rows `y < surface − spray_band_rows`, i.e. at least five rows above
+the initial surface for `spray_band_rows = 4`.
+
 A **true ballistic launch** would need signed upward retained velocity
 (IN `vy < 0`) or a flight carrier. Spray-band Water is classified by D1–D3,
 never by its pixels alone.

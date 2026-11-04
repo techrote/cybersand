@@ -115,6 +115,8 @@ def check_record(record: dict, manifest: dict, digest: str) -> list[str]:
         fail("non-Water material relocated in a Water-only fixture")
     if results.get("carried_state_mismatches"):
         fail("relocation changed carried stored state")
+    if int(results.get("displaced") or 0) > 0 and int(results.get("carried_state_checks") or 0) < 1:
+        fail("carried-state check vacuous: relocations occurred but no complete check ran")
     if int(results.get("global_checks", 0)) < 1:
         fail("no complete-World quantity check recorded")
 
