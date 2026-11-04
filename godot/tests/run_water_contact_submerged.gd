@@ -21,7 +21,7 @@ func write_json(path: String, value: Variant) -> void:
 
 
 func run() -> void:
-	var options: Dictionary = {"stage":2, "out":""}
+	var options: Dictionary = {"stage":2, "out":"", "cases":""}
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--") and argument.contains("="):
 			options[argument.substr(2, argument.find("=") - 2)] = argument.substr(argument.find("=") + 1)
@@ -40,8 +40,10 @@ func run() -> void:
 		index.append({"file":"positive_controls.json", "kind":"positive_control", "arm":arm.id, "ok":control.get("ok", false), "detail":control})
 		if not bool(control.get("ok", false)): failures += 1
 		print("WATER_CONTACT_POSITIVE %s ok=%s predicted=%s actual=%s" % [arm.id, control.get("ok"), control.get("predicted", {}).get("target"), control.get("actual")])
+	var wanted: PackedStringArray = str(options.cases).split(",", false)
 	for case: Dictionary in manifest.dynamic_cases:
 		if int(case.stage) > stage: continue
+		if not wanted.is_empty() and not wanted.has(str(case.id)): continue
 		var spec: Dictionary = case.duplicate()
 		var worker_set: Array = manifest.workers
 		if (manifest.parity_cases.cases as Array).has(case.id): worker_set = manifest.parity_cases.workers
@@ -63,6 +65,7 @@ func run() -> void:
 					int(workers), ok, obs.get("max_residual"), obs.get("oracle_admissible"), int(record.wall_ms)])
 	for descent: Dictionary in manifest.kinematic_descents:
 		if int(descent.stage) > stage: continue
+		if not wanted.is_empty() and not wanted.has(str(descent.id)): continue
 		var size: Array = descent.get("body_size", manifest.body.size)
 		for arm_id: String in descent.arms:
 			var arm: Dictionary = Apparatus.find_by_id(manifest.arms, arm_id)

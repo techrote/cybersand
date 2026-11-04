@@ -225,10 +225,17 @@ static func mask_check(world: Variant, cells: PackedByteArray, geo: Dictionary, 
 	var mismatched: int = 0
 	var masked_water: int = 0
 	var unobserved: int = 0
+	# Mirror rasterize_transform_in exactly: double cos/sin, single-precision
+	# Vector2 delta/local/half storage. (Vector2.rotated() rounds differently and
+	# misclassified one exact-edge cell in water_contact.submerged.v1 stage 2.)
+	var c: float = cos(rotation)
+	var s: float = sin(rotation)
+	var half := Vector2(maxf(0.5, size.x * 0.5), maxf(0.5, size.y * 0.5))
 	for y: int in range(maxi(0, first.y), mini(WORLD_SIDE, last.y)):
 		for x: int in range(maxi(0, first.x), mini(WORLD_SIDE, last.x)):
-			var local: Vector2 = (Vector2(x + 0.5, y + 0.5) - center).rotated(-rotation)
-			var inside: bool = absf(local.x) <= size.x / 2.0 and absf(local.y) <= size.y / 2.0
+			var delta := Vector2(x + 0.5 - center.x, y + 0.5 - center.y)
+			var local := Vector2(c * delta.x + s * delta.y, -s * delta.x + c * delta.y)
+			var inside: bool = absf(local.x) <= half.x and absf(local.y) <= half.y
 			var id: int = int(world.rigid_body_id_at(x, y))
 			var material: int = stored(cells, geo, x, y)
 			# Wall columns/floor lie outside the interior ROI; the adapter never
