@@ -1,0 +1,16 @@
+{
+  "qualification": "AddressSanitizer and UndefinedBehaviorSanitizer; LeakSanitizer unavailable in this container. Initial failed run remains separate.",
+  "command": [
+    "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/solid-detachment-asan"
+  ],
+  "source_commit": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+  "environment_override": {
+    "ASAN_OPTIONS": "detect_leaks=0"
+  },
+  "exit_code": 0,
+  "stdout": "PASS default-off/intact/partial anchor\nPASS real World transfer/fences/serialization refusal\nPASS exact compound geometry/hole/mass\nPASS cancel/rollback/static-repair/token/reset ABA\nPASS capacity/unknown/heat/sand/mask/event/exclusion/failure\nPASS noncohesive Sand/Water boundary admission and exact conservation\nPASS allocation-free prepare/commit/rollback\nPASS signed chunk seams/configured workers1/4 parity\nPASS revision exhaustion/rollback headroom/failed World\nSOL-DETACH-001 A1 native precursor: 9 groups, 19338 checks passed.\nActual native World exercised; bridge receipts are synthetic. Rapier motion and async host NOT qualified.\n",
+  "stderr": "",
+  "elapsed_seconds": 0.19555669400142506,
+  "timeout_seconds": 120,
+  "leak_check": "UNAVAILABLE"
+}

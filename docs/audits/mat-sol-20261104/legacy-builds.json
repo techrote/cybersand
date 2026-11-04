@@ -1,0 +1,63 @@
+[
+  {
+    "name": "main",
+    "source": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+    "probe_sha256": "0865fc3d799f170ff4b2c126639b85dfc78abcbdf37e2cce48b9308eeb82698b",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g0",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-I",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree/native/include",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree/native/src/world.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree/native/src/material_rules.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree/native/src/scheduler_geometry.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree/native/src/settled_world_discovery.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree/tools/material_catalogue/probes/mat_sol_legacy_probe.cpp",
+      "-o",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/main-legacy"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 17.363222747007967,
+    "timeout_seconds": 240,
+    "stdout": "",
+    "stderr": "",
+    "binary_sha256": "014a714d592c175adf4b5003293aed828a838da041cfbe13a4bc2b915b127d3c"
+  },
+  {
+    "name": "sol",
+    "source": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+    "probe_sha256": "0865fc3d799f170ff4b2c126639b85dfc78abcbdf37e2cce48b9308eeb82698b",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g0",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-I",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/include",
+      "-DMAT_SOL_EXTENSION=1",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/src/world.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/src/material_rules.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/src/scheduler_geometry.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/src/settled_world_discovery.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree/tools/material_catalogue/probes/mat_sol_legacy_probe.cpp",
+      "-o",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/sol-legacy"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 18.580867626005784,
+    "timeout_seconds": 240,
+    "stdout": "",
+    "stderr": "",
+    "binary_sha256": "cb5b8677b3fa3dbd0e05b293c2674cb7a9bb9e1f7b20ece47d30ff739c3ac895"
+  }
+]

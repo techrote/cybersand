@@ -10,6 +10,17 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Independent MAT-AUTH/SOL consumer admission — 2026-11-04
+
+The [two-consumer review](../audits/2026-11-04-mat-sol-protected-consumer-review.md)
+reproduces frozen guard PASS on accepted main and FAIL on pinned SOL 957ce67d.
+The independent native probe retains 4,956 observations and 13 exact inactive-path
+comparisons; 122 actual Linux Godot child processes reveal 38 process aborts,
+eight adhesion authority mismatches, ten safe save refusals and 66 execution
+controls. Independent reproduction confirms the blockers. The decision remains
+REPAIR; no executable transition or source-lock change is included. Windows,
+live Rapier and resulting-composition acceptance are separate unexecuted gates.
+
 ## MAT-AUTH shadow adopted-main qualification — 2026-11-04
 
 The [integration qualification record](../audits/2026-11-04-mat-auth371-integration.md)

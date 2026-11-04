@@ -1,0 +1,479 @@
+{
+  "schema": "mat-sol-evidence-packet-v1",
+  "scope": "Independent source-pinned REPAIR evidence only; not an executable admission selector",
+  "parent_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "tested_sol_sha": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+  "manifest_exclusion": "This packet-manifest.json is excluded from its own file list to avoid a self-referential hash; Git authenticates it in the support commit/tree.",
+  "file_count": 78,
+  "byte_count": 21718345,
+  "files": [
+    {
+      "path": "docs/README.md",
+      "size": 51660,
+      "sha256": "05136e7a1266cf11d05d2236762177563d4749530089935223ca94ad8d12d6c5",
+      "git_blob": "f609dab67735e6b85d1ac4e1b01fa3d948a573a0"
+    },
+    {
+      "path": "docs/audits/2026-11-04-mat-sol-protected-consumer-review.md",
+      "size": 25039,
+      "sha256": "7982b2ab292b97bf5ac0b851d80627b4e9192e16a57544cccf039d4ec894b185",
+      "git_blob": "77b3135de650271f63ec55eb9c7979210549457d"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/baseline-retrieval-challenge.contexts.md",
+      "size": 2327412,
+      "sha256": "363844cf08e700d9811899aaa459fcb7c11c76bd6f901ed5a314e56a8dba181f",
+      "git_blob": "aac12def74376c2148e3195d5c056e4b7fdafc8b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/baseline-retrieval-challenge.json",
+      "size": 2586316,
+      "sha256": "729db0e42140f83faab8ab1936068799e319890781c3dc9c37f8c0be4324a1b1",
+      "git_blob": "afc5d90e40b5012664919d9c8e7206c86af74b52"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/baseline-retrieval-default.contexts.md",
+      "size": 348181,
+      "sha256": "9a0120822a50e1d9bd69f5c30216a4d121ba2f42188f3ee91d0e5f649e149f22",
+      "git_blob": "4222912aa5f6f084fa183f995f5eac4375542d09"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/baseline-retrieval-default.json",
+      "size": 416371,
+      "sha256": "0e67af3ed8db0bf272b0b644e1c5316b0c4053baa114444bbbde7e80ee2bf501",
+      "git_blob": "10636e9b44ce1f49abd0ea2b6b6d1659b954b01f"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/baseline-retrieval-mat353a.contexts.md",
+      "size": 112191,
+      "sha256": "4c83113d1474e80c30c5c0951a3b86221c2f4c1ed4976264631c49815f49f047",
+      "git_blob": "0b68c2085a035a8f00d0129cef235ba1e00337c6"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/baseline-retrieval-mat353a.json",
+      "size": 146426,
+      "sha256": "0b453c6cc2259b64ffc18859885f7e514894619493f18ce6c96e01a46622b4d9",
+      "git_blob": "58878b43b8075db33a2ef9f8d24f468edb06008d"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/companion-custody.json",
+      "size": 1844,
+      "sha256": "82b36294dab4454cc2ce5f96ccd81ab10172a44e2c75660e213ca0a84092459e",
+      "git_blob": "63402720159e6b64662857799ff56049f6a2f8e2"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/final-packet-gates.json",
+      "size": 5560,
+      "sha256": "d6cb53b6769a7efa789d212e9fc1d482ed20e6b6fd23876a3bc240c2773e03d8",
+      "git_blob": "b6da02f88b74b71406b07ec2e051e76c8950162a"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/focused-qualification.json",
+      "size": 15182,
+      "sha256": "5212361665890b1642892398609f5e4654341b9ca910f9987adf5ef4a3cbea20",
+      "git_blob": "77fa0662df6366534534f5a9405f9e687b718074"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/frozen-guard-negatives.json",
+      "size": 14720,
+      "sha256": "1467fcc0d38624784bd781e43b0b3e52526c70b63ad018e39784bb0531ee8975",
+      "git_blob": "70bac204cbb0042022c1ee8e9581a276699fb629"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/godot-boundary-discovery-probe.gd",
+      "size": 5091,
+      "sha256": "0ee7b02e5b625485eb36a193137fd315d7e59327e803866a1568f52f3ff90f86",
+      "git_blob": "913ade7ba25cf18029d7532f88c48fbd7671284f"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/godot-boundary-discovery.json",
+      "size": 14270,
+      "sha256": "d136b858a7b165c885ba4f57fe3944db96f0bc738194b1b87f3ac9fc54377eeb",
+      "git_blob": "fd9d822e2b99f007f3a05e535acd7f09004f9b71"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/godot-boundary-matrix.json",
+      "size": 207728,
+      "sha256": "265aaf0d722c3bdf89776c7eacc639a27b687a71b488bb515a5f4e11afff04ee",
+      "git_blob": "88d4f48d7889a270e89b23445d39bea394a5484e"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/godot-boundary-refined-probe.gd",
+      "size": 6725,
+      "sha256": "78f2a02e3ea723749e25ae0160b118fca089028d9fe73ecbe93d5db651af62c6",
+      "git_blob": "cef82e2658dbd3da785ed50db2e281da9be7977a"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/godot-boundary-refined.json",
+      "size": 11790,
+      "sha256": "8b579f7d7c66d21661ff7389b740a75713ff169f5d8b70ac78f18e3b62fc759a",
+      "git_blob": "dfdac318e715ed64668015d7e05447e938680a74"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/independent-review/assessment.json",
+      "size": 2343,
+      "sha256": "7feb6d05be5527154f79cc6652279c017cbdd81fe73c61a7206532728750837a",
+      "git_blob": "e9a0c7502315133a22005a69d0c292308cfa03a1"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/independent-review/import.json",
+      "size": 1632,
+      "sha256": "c7c8d1ff9eb0fd7b336a414c7354c3c29fccbebf2ad9e1b5bb27da132bf913dd",
+      "git_blob": "e494673c477fac1b3e7698c9e5e68487b7d6d4b8"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/independent-review/independent-boundary-review.json",
+      "size": 6734,
+      "sha256": "29262e34ed2bb0dd602d11a17c99d6da8392b46781111753a15b112b6f56046a",
+      "git_blob": "34a4e9a5983b4a12ca7f5f2551592c660450599d"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/initial-packet-gates.json",
+      "size": 7250,
+      "sha256": "01ea1506a96ad8a69664f59b86f37f49873b89db4bf69baa5d5d5bf0e34b63be",
+      "git_blob": "4e9b1bbd4887d426f04c654150175f46c58cea9d"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-builds.json",
+      "size": 2561,
+      "sha256": "215364fb34fba60570f399a1097b5aeea505f95476d3c286fbf8b2c3feccfe52",
+      "git_blob": "397dfba4444300ad014cd64cd01dff45afa708ac"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-probe-initial.cpp",
+      "size": 7410,
+      "sha256": "0865fc3d799f170ff4b2c126639b85dfc78abcbdf37e2cce48b9308eeb82698b",
+      "git_blob": "1da6288275e8818ef660e8e8cc3b6babe14c608d"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-run-manifest.json",
+      "size": 599,
+      "sha256": "4cfaf69c21a863d89da310b56d091c78add20f9eabce39dfcee74b798e18595a",
+      "git_blob": "8869059b787fc8b2b43f00babce52a086694ef09"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/builds.json",
+      "size": 2566,
+      "sha256": "033950bddee056a554ccf9f07f3791711d0052af51bc0b3da32bb19e1e95068e",
+      "git_blob": "886aa48cafcffc29c60240c852b3e8cf6db58648"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/comparisons.json",
+      "size": 3480,
+      "sha256": "05481b9fccb6cb006dffb753f186abd32008d28996bc78e4f1b9a05e8d9c9899",
+      "git_blob": "78ef3ab40cb356f5cc83c1e682badd4942f58e7f"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/main-1-disabled.jsonl",
+      "size": 202122,
+      "sha256": "16c43dc01cd7ef12022900368bff22d7bc29f816435b9a253bec76508b2daa02",
+      "git_blob": "dde97f47fcdf18616171abfa1f16e24986757860"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/main-1-reset.jsonl",
+      "size": 202122,
+      "sha256": "49079a065e0d968a08d165678c9157341d6bcd395a60995e1f8935196a15200d",
+      "git_blob": "f39b2e31666a11c1037e2ad954bbff089af867d0"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/main-4-disabled.jsonl",
+      "size": 202122,
+      "sha256": "dc33abfc2b273c9b4d586d5723a4b88255aa157648f4975aa0cea6ce2b638876",
+      "git_blob": "d78df409a0274b182bbd9330e02bbc16949cbc74"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/main-4-reset.jsonl",
+      "size": 202122,
+      "sha256": "6a47acd3ee4896cca54a35bb81794502d7857c63ce931a892ca6319deb19d8aa",
+      "git_blob": "618a7e80ea6c9e3a72949c3155d63537c8f2e938"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/run-manifest.json",
+      "size": 6423,
+      "sha256": "fe7ba434e8a286fb16fe4ab99ec66c74d2a3e69f76bd12393c2d5fabf93e7978",
+      "git_blob": "57f375ab779dac21b2ec0c6460f00b77f0a3230b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/sol-1-disabled.jsonl",
+      "size": 202122,
+      "sha256": "16c43dc01cd7ef12022900368bff22d7bc29f816435b9a253bec76508b2daa02",
+      "git_blob": "dde97f47fcdf18616171abfa1f16e24986757860"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/sol-1-idle.jsonl",
+      "size": 202122,
+      "sha256": "16c43dc01cd7ef12022900368bff22d7bc29f816435b9a253bec76508b2daa02",
+      "git_blob": "dde97f47fcdf18616171abfa1f16e24986757860"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/sol-1-invalid.jsonl",
+      "size": 202122,
+      "sha256": "16c43dc01cd7ef12022900368bff22d7bc29f816435b9a253bec76508b2daa02",
+      "git_blob": "dde97f47fcdf18616171abfa1f16e24986757860"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/sol-1-reset.jsonl",
+      "size": 202122,
+      "sha256": "49079a065e0d968a08d165678c9157341d6bcd395a60995e1f8935196a15200d",
+      "git_blob": "f39b2e31666a11c1037e2ad954bbff089af867d0"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/sol-4-disabled.jsonl",
+      "size": 202122,
+      "sha256": "dc33abfc2b273c9b4d586d5723a4b88255aa157648f4975aa0cea6ce2b638876",
+      "git_blob": "d78df409a0274b182bbd9330e02bbc16949cbc74"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/sol-4-idle.jsonl",
+      "size": 202122,
+      "sha256": "dc33abfc2b273c9b4d586d5723a4b88255aa157648f4975aa0cea6ce2b638876",
+      "git_blob": "d78df409a0274b182bbd9330e02bbc16949cbc74"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/sol-4-invalid.jsonl",
+      "size": 202122,
+      "sha256": "dc33abfc2b273c9b4d586d5723a4b88255aa157648f4975aa0cea6ce2b638876",
+      "git_blob": "d78df409a0274b182bbd9330e02bbc16949cbc74"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/legacy-v2/sol-4-reset.jsonl",
+      "size": 202122,
+      "sha256": "e8cbe5d33c075634c8eda6497ea4075a2fc0b0134f727f72d805ab2c8bae3acd",
+      "git_blob": "4f42da61e315890c66075cfcb4014c6151e5c14b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/main-1-disabled.jsonl",
+      "size": 163716,
+      "sha256": "dfccbd8a6aab9c96402ff5b6010b6aa33c6c2ca4dfd11d2e982267a720c38229",
+      "git_blob": "2248abf70204b33698ab4bf510c83beb23fe4176"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/main-native-parity.json",
+      "size": 11461,
+      "sha256": "1c0f55e5a8517e6abc1d56debdc26b63357f5cbd0602b47d5850cf586b5c527b",
+      "git_blob": "5268bd0419423986c0aa9ae73e33188304990b7f"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/native-sol-lifecycle-asan-no-lsan.json",
+      "size": 1201,
+      "sha256": "62b02cbb8139b72f03b43fe60493d21631f9834e19785107dd119678ac5c6e48",
+      "git_blob": "94432d92ec40e39418ef917eb78b8067e3795f43"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/native-sol-lifecycle-asan.json",
+      "size": 1883,
+      "sha256": "947dc4adfe9e09d64577c12d878a57cc57cc4b9735df0e4d6e1e1d059bd225a1",
+      "git_blob": "d8ee1785a0dcbaa4b8d647163ad41ce753cefe49"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/observed-historical-workflows.json",
+      "size": 8653,
+      "sha256": "8144adbc706f6c26c286d99d61da5d329d128c1e0af156e9c50bea11be28622e",
+      "git_blob": "f833c209a0be8e820e88f4b1a5bdd46ad3f15c13"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/original-guard-receipts.json",
+      "size": 1448,
+      "sha256": "d32611dba6a02bff4a2c57087749a740b95a8ea6963264ea8f3b175178e8283a",
+      "git_blob": "2307261cff956127541cd5a95985da612bb5b287"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/protected-consumers-diff.json",
+      "size": 10258,
+      "sha256": "c57b7ed126a65f69063921e35d4200ff9e9956fce6069567daaa36a2fbcce7be",
+      "git_blob": "e6dc6f277f0722b82e1a0d8515ea5f57d5430c9c"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/remote-advance-review.json",
+      "size": 873,
+      "sha256": "5d67a787e78e44c4134fed2582cc53d5e95d04b606613eb3daca72c08f6b79c5",
+      "git_blob": "48d523c29708162ee8bbadd757e8e5d2bb5a88bf"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/repository-check-final.json",
+      "size": 2544,
+      "sha256": "9346a17fe4ae100e930ab5e7123080012b97941f0d1ac432797679b85d2dff8e",
+      "git_blob": "0964378cb338be8aed20acb3e7f306a665f3e34c"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/repository-check.json",
+      "size": 3384,
+      "sha256": "da00bfc4f524ee670c01aee984a991d5b48b7977c3dfcb8a9f4056b405af1f57",
+      "git_blob": "5a1458ca682463cf8b7e1a979d95302d75dcfc0b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-challenge-final.contexts.md",
+      "size": 2327412,
+      "sha256": "363844cf08e700d9811899aaa459fcb7c11c76bd6f901ed5a314e56a8dba181f",
+      "git_blob": "aac12def74376c2148e3195d5c056e4b7fdafc8b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-challenge-final.json",
+      "size": 2586306,
+      "sha256": "8df60cceea09f7f7f1c5426eb39ec9a1d5232e9033efa2d99d8d970d7a7b0fc6",
+      "git_blob": "8d5cd2500d997fd8db9258ffbdf894d3d395ad1d"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-challenge.contexts.md",
+      "size": 2327412,
+      "sha256": "363844cf08e700d9811899aaa459fcb7c11c76bd6f901ed5a314e56a8dba181f",
+      "git_blob": "aac12def74376c2148e3195d5c056e4b7fdafc8b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-challenge.json",
+      "size": 2586321,
+      "sha256": "8d017a69da2792e9972a11f63bd596380e0a26553f595219fbebb4eea9de35e7",
+      "git_blob": "2e63f184b08ef487efef7c94fb91b08ae72bf579"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-default-final.contexts.md",
+      "size": 348181,
+      "sha256": "9a0120822a50e1d9bd69f5c30216a4d121ba2f42188f3ee91d0e5f649e149f22",
+      "git_blob": "4222912aa5f6f084fa183f995f5eac4375542d09"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-default-final.json",
+      "size": 416371,
+      "sha256": "c2b4084676a165c621734af17ceed2bfc90d06804082ded946443d4fca882afe",
+      "git_blob": "215bc12253d1591f855692b5d19bc4917c0a811b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-default.contexts.md",
+      "size": 348181,
+      "sha256": "9a0120822a50e1d9bd69f5c30216a4d121ba2f42188f3ee91d0e5f649e149f22",
+      "git_blob": "4222912aa5f6f084fa183f995f5eac4375542d09"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-default.json",
+      "size": 416367,
+      "sha256": "5ad3dcad3e15f369ecda75b39e99f67b9313f943d62efe18f06e54c2e663d6c1",
+      "git_blob": "4c36ee3ec60d333c7cf525fc0ab5613334b1fff5"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-mat353a-final.contexts.md",
+      "size": 113083,
+      "sha256": "0cb66c40d7b4b4a19ac8616599e070a6429d61619a8d354a14b4169eda05b3f7",
+      "git_blob": "458ae3227f66f640d665e2c6fd1514863f4de790"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-mat353a-final.json",
+      "size": 147304,
+      "sha256": "0a836cc5c0957ac4af804874d4942e8d2f1e58bd69f71b106dbc73c2b74fa24a",
+      "git_blob": "d4088caaa04cd0d1beb564a18fd2642e5ba91e7c"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-mat353a.contexts.md",
+      "size": 113082,
+      "sha256": "40cf70d5d031d693e59d52fdc01d3ee4ad5a8e0b104d860e7f79773a990875bd",
+      "git_blob": "6dc85a9058968c705509d8be260ec3ef57ae5778"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-mat353a.json",
+      "size": 147304,
+      "sha256": "67be2402a0e8e1b62abca16d02381c044e7b9b4ba82f6a8d272d1e89a72a4def",
+      "git_blob": "7decbff9c48546f77fe968c240a1001f085b6468"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-matsol-final.contexts.md",
+      "size": 42215,
+      "sha256": "0a5fc4203f15e1c72b2f501aa0526c1f89f2eb0ce65878286b658fa2ca53b74d",
+      "git_blob": "c96f87f0ff8f2773ca1275c7815755c660a89ea1"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-matsol-final.json",
+      "size": 69163,
+      "sha256": "3aecbe6acbad4a17a3e2b03f68ba2d296935285f1d06ecc97dbb135bf2ebcf16",
+      "git_blob": "ad00b7f87bd4039f790ba95c7af5f0d26ef866d6"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-matsol.contexts.md",
+      "size": 42203,
+      "sha256": "fdcfe6311ce0da1a92cac389719fa6e65a1dbddd3bd5cd07cff3f78eff39c492",
+      "git_blob": "9c466a03fa290b05ff67a5563cd4c92709c7fad3"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/retrieval-matsol.json",
+      "size": 69152,
+      "sha256": "dce68852cfa3e6aa9a9b613e8da3ba1a2c7d33290eb499ce89cced300ea49a40",
+      "git_blob": "ad1c7af01d7af52f78a9373628c17d0dcf34ab1b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/sol-pure-query-evidence.json",
+      "size": 263067,
+      "sha256": "518c0a6a9b408bef38a8c9430016d21d4df9561b79b930e9b431f1bd04fd08a4",
+      "git_blob": "32dfed01dd0233b8b4be347d297728c5d975873b"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/source-inventory.json",
+      "size": 49950,
+      "sha256": "6ef265d9465823538d09723d80440099c01dca4fedd1f8d4e8a5ad08909dd8d4",
+      "git_blob": "cacb65678b15a89ce45f2d9c98176d980dd0a560"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/support-local-gates-final.json",
+      "size": 73018,
+      "sha256": "e1abf77108a52bbb2ff4e69b28e20cddd31790443960ab9a22cc182a232addc2",
+      "git_blob": "a219f7f14234273d4c46d892f52a062e2fdfc53c"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/support-local-gates-initial.json",
+      "size": 41673,
+      "sha256": "8e608b1ed5a6305e5c0d8fe09139bf616d0a0145ea6415e5a323b193ee5c9d9a",
+      "git_blob": "9a5aca3827a1fb73051e9f6c041c3aabc5d9dbe0"
+    },
+    {
+      "path": "docs/audits/mat-sol-20261104/support-scope-integrity.json",
+      "size": 11416,
+      "sha256": "c896448278d0ec8a283db9260e06084c779a2c337851f4c76c9f6fc8ef12f92e",
+      "git_blob": "530b905443c4fb875f7e56c785a3262d0589a79e"
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "size": 16291,
+      "sha256": "502510a364e7f46f490cdb5da9b6b4eef950fa31f83787900eb2f1305d763d70",
+      "git_blob": "388e19178c1dd8a7227ea4bdb7aa56a764dcb9c8"
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "size": 38869,
+      "sha256": "6070c192bc170b305e31c409f19b2a71efdd8c9883cf76b071f4c9e5a42ee773",
+      "git_blob": "645484965d7eaa8c7cf2094427e0963ccd47923e"
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "size": 58033,
+      "sha256": "e42392d4a261d3ffb8321b8beeb69916cf586dc2f7e4928617041a9f3e3a34b2",
+      "git_blob": "78b74cc2d3a0f2df84d9a987e407d78bea65ad6f"
+    },
+    {
+      "path": "docs/reference/retrieval-questions-mat-sol.json",
+      "size": 2353,
+      "sha256": "2830fbb564dde5414adb80fec4f4c1eb5a6ccbb8fa9db7798a02d81f7ceb04c7",
+      "git_blob": "d6fc3383fb95a5297fd17532f98f3f5b8f0b86cc"
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "size": 75063,
+      "sha256": "675b5b6f03fe6f9c0e155e1f4326d40c7b17cf8c56d4fe4fa377bbb090e6a81d",
+      "git_blob": "51168a44f8a052cd4cbf25855fc82874b9bf2495"
+    },
+    {
+      "path": "tools/material_catalogue/probes/README.md",
+      "size": 4560,
+      "sha256": "90b294bc0a7893c6c3dd0ee1f0a71d32aeb50dfe0f8afc12ea98ead1b74d36bc",
+      "git_blob": "3edf0046a3323dd85936fc5440c0f2ba09343f0d"
+    },
+    {
+      "path": "tools/material_catalogue/probes/mat_sol_godot_boundary_probe.gd",
+      "size": 7608,
+      "sha256": "07fe277d561b4f912cab410cd3f04b34239fbbe0b2fc1819512a252112a420e6",
+      "git_blob": "007dd7250c03a0f10a7f8451506d1a06619dfd04"
+    },
+    {
+      "path": "tools/material_catalogue/probes/mat_sol_legacy_probe.cpp",
+      "size": 7998,
+      "sha256": "6165ee3de480e79969c9c02b56bc348ba0cbac40c5b16cfd75581e86624b8b2f",
+      "git_blob": "9d9907167fe8c2f0cd908ff489d800c6dc87f612"
+    }
+  ]
+}

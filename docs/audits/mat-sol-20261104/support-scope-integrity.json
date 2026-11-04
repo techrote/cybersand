@@ -1,0 +1,207 @@
+{
+  "schema": "mat-sol-support-source-integrity-v1",
+  "parent_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+  "parent_tree": "36ce5a01e754a141c321f41cac7f1c6b6059c371",
+  "branch": "audit/mat-sol-protected-consumer-20261104",
+  "all_existing_non_document_git_blobs_exactly_unchanged": true,
+  "existing_non_document_files_compared": 1153,
+  "worktree_diff_against_index": [],
+  "protected_sources": [
+    {
+      "path": "native/include/cybersand/material.hpp",
+      "role": "stable IDs and descriptor bytes",
+      "git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+      "raw_worktree_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+    },
+    {
+      "path": "native/include/cybersand/interaction_rules.hpp",
+      "role": "reaction, family and ordinal identity",
+      "git_blob": "b70fc9dc2599f648e5374f06e4cc0ae9cb868d79",
+      "raw_worktree_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+    },
+    {
+      "path": "native/include/cybersand/material_rules.hpp",
+      "role": "material query interface",
+      "git_blob": "7ddd89aea49c9f22c3afedb329ab5b6efde0650b",
+      "raw_worktree_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362"
+    },
+    {
+      "path": "native/src/material_rules.cpp",
+      "role": "capability and pair-query semantics",
+      "git_blob": "23483fc8e70b7902ad9fe9416716f371df2aa013",
+      "raw_worktree_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3",
+      "lf_sha256": "8fd1509bfcef162c5cb6028e9af38c563ad651822b9fcfcc2e79a569d185afa3"
+    },
+    {
+      "path": "native/include/cybersand/material_appearance.hpp",
+      "role": "visual state projection",
+      "git_blob": "91b74415ffafbf667b3a4beeabcf0ec28ff51c5b",
+      "raw_worktree_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0"
+    },
+    {
+      "path": "native/include/cybersand/precision_storage.hpp",
+      "role": "Cell layout and state widths",
+      "git_blob": "92788b111182b977ba7a781f367732560fefb8fc",
+      "raw_worktree_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+    },
+    {
+      "path": "native/include/cybersand/quantity_ledger.hpp",
+      "role": "quantity schema and positional slots",
+      "git_blob": "2e211f9a2e59e594cc1a6f1c63b2d34a02118c3a",
+      "raw_worktree_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad",
+      "lf_sha256": "4345032e718b601a33ac3ffb69a456cd91bcf05ee3ab503650dcb7c06a59c6ad"
+    },
+    {
+      "path": "native/src/world_quantity.inc",
+      "role": "quantity codec, endpoints and specialized ordinal mapping",
+      "git_blob": "f44dbdc0ea4c04cd3d7e19f460e86bb095bcc2f9",
+      "raw_worktree_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074",
+      "lf_sha256": "627936a33c9ed58b6841f04466bf83aefe83b451ceb0da22baa19269ed5ef074"
+    },
+    {
+      "path": "native/src/world.cpp",
+      "role": "legacy movement, chemistry, thermal and scheduling authority",
+      "git_blob": "a6afd8cad4264ac2eca0362d14711158e3606760",
+      "raw_worktree_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+      "lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+    },
+    {
+      "path": "native/src/world_pressure.inc",
+      "role": "policy admission, physical hash and CYPS restoration",
+      "git_blob": "1218ae4931708d78eb7b5f5c202587808487a577",
+      "raw_worktree_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b",
+      "lf_sha256": "c8cb11512e935d05e099d8f155c1659473a7f61aa301e2e4900e55bdcfe4024b"
+    },
+    {
+      "path": "native/src/world_inertial.inc",
+      "role": "IN sidecar and state authority",
+      "git_blob": "efd7602fbb4b8dde0e056474b141ce17cd73dcd0",
+      "raw_worktree_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd",
+      "lf_sha256": "f9e891dafa9c61e76460b5b3a720e3e522e7b63c381e81539e5e508b2719a0dd"
+    },
+    {
+      "path": "native/include/cybersand/transport_policy.hpp",
+      "role": "transport v1 dimensions and wire contract",
+      "git_blob": "9998aa1c327bc58b98f64e24813a8dc51aa73674",
+      "raw_worktree_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29"
+    },
+    {
+      "path": "native/include/cybersand/liquid_solver_policy.hpp",
+      "role": "native stale-identity refusal",
+      "git_blob": "052b6ea6ba7c18ca5997c310abb1951f6b56cd77",
+      "raw_worktree_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e"
+    },
+    {
+      "path": "native/include/cybersand/liquid_policy_catalogue.hpp",
+      "role": "generated native policy identities",
+      "git_blob": "c7b68513b14335bf33ffcbe96ed77118a55529d0",
+      "raw_worktree_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303"
+    },
+    {
+      "path": "native/include/cybersand/water_experiment_policy.hpp",
+      "role": "Water quantity defaults and bounds",
+      "git_blob": "009664f99889797242522b3a76240ebde8867316",
+      "raw_worktree_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf"
+    },
+    {
+      "path": "godot/scripts/cell_world.gd",
+      "role": "fallback identity, capabilities and separate physics",
+      "git_blob": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229",
+      "raw_worktree_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035"
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd",
+      "role": "fallback granular support",
+      "git_blob": "27c128dfd39695af4da86c64c56962635b76a713",
+      "raw_worktree_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742"
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd",
+      "role": "palette bytes and Godot appearance calculations",
+      "git_blob": "689633f9b82c297763b0615b7fa8c0364ed11623",
+      "raw_worktree_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a"
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd",
+      "role": "transport ownership, precedence and validation",
+      "git_blob": "19369f053e956f2f8a69787cda914b7e0d43ff6a",
+      "raw_worktree_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0"
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "role": "hand-coded appearance programme",
+      "git_blob": "9f421c9130d2f03936bd07301befa5f426555418",
+      "raw_worktree_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+    },
+    {
+      "path": "tools/lcb/derive_capability_matrix.py",
+      "role": "literal-source parser contract",
+      "git_blob": "d38647630f1731c4fdd800d412f39c15007580b3",
+      "raw_worktree_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea"
+    },
+    {
+      "path": "tools/lcb/policy_contract.py",
+      "role": "catalogue, capability and policy digest contract",
+      "git_blob": "cd3ecffb3582731c5b32775ef72bf9a6cac75c9f",
+      "raw_worktree_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2"
+    },
+    {
+      "path": "tools/lcb/native_policy_artifacts.py",
+      "role": "existing native identity generator",
+      "git_blob": "e1f84d81326f3238160024d1bc8a9a255d92013a",
+      "raw_worktree_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230"
+    },
+    {
+      "path": "docs/reference/liquid-solver-capability-matrix.json",
+      "role": "capability identity bytes",
+      "git_blob": "f1ac46c097a4fec977b9efdf930e6ab2e79e51eb",
+      "raw_worktree_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb"
+    },
+    {
+      "path": "docs/reference/liquid-policy-wire-vectors.json",
+      "role": "retained policy wire oracle",
+      "git_blob": "220315235757fefaa6de26d2fc701f6ee875bb69",
+      "raw_worktree_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31"
+    },
+    {
+      "path": "docs/reference/water-normalization-vectors.json",
+      "role": "retained normalization oracle",
+      "git_blob": "42aba04323395f52d24494223daa8c9be44f150c",
+      "raw_worktree_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17"
+    },
+    {
+      "path": "docs/reference/liquid-run-receipt-vectors.json",
+      "role": "retained receipt oracle",
+      "git_blob": "4828694db27503a20ba2872f4d5c3bcb2ea2e334",
+      "raw_worktree_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8"
+    }
+  ],
+  "checker_sha256": "32c6c4c289a91a1e19498b21bfbca9dcc2b58e1040489653942fd7160ec1bd5a",
+  "lock_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+  "godot_probe_sha256": "07fe277d561b4f912cab410cd3f04b34239fbbe0b2fc1819512a252112a420e6",
+  "native_probe_sha256": "6165ee3de480e79969c9c02b56bc348ba0cbac40c5b16cfd75581e86624b8b2f",
+  "native_jsonl_hashes_verified": 12,
+  "comparison_note": "Git blob identities authenticate every existing non-document path; unchanged checkout attributes intentionally materialize Windows batch files as CRLF, so raw working-copy bytes for such paths are not expected to equal LF Git objects. All 27 protected paths are additionally checked with the original LF normalization.",
+  "scope": "Only support docs, raw receipts and new independent probes are added/changed. Original checker, locks, compiler, native/Godot production, generated shadow output, source owners, workflows and runtime pointers have exactly identical Git blobs to main. No runtime transition exists."
+}

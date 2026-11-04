@@ -10,6 +10,15 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## MAT-AUTH and SOL protected-source conflict — 2026-11-04
+
+Use the [canonical shadow-guide boundary](../operations/material-catalogue-shadow.md#sol-protected-consumer-transition-remains-blocked--2026-11-04)
+for the 27-consumer frozen lock, historical two-file SOL drift and current REPAIR
+disposition. The [dated independent investigation](../audits/2026-11-04-mat-sol-protected-consumer-review.md)
+contains the exact Linux process-abort/adhesion counterexamples, inactive native
+parity, independent reproduction and remaining Windows/transition gates.
+No executable checkpoint, ignore-list or production consumer migration is admitted.
+
 ## Material catalogue compiler and compatibility guards — 2026-11-04
 
 Use the [shadow compiler guide](../operations/material-catalogue-shadow.md)

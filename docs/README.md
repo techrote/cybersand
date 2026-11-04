@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Independent MAT-AUTH/SOL admission: [canonical protected-source boundary](operations/material-catalogue-shadow.md#sol-protected-consumer-transition-remains-blocked--2026-11-04)
+and [source-pinned evidence](audits/2026-11-04-mat-sol-protected-consumer-review.md).
+The frozen guard remains intact. Actual Linux facade aborts and false adhesion
+readback require SOL-owner repair before a composed-source transition can be admitted.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
 is being reconciled and qualified for guarded integration in [#371](https://github.com/techrote/cybersand/pull/371).

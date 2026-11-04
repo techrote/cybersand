@@ -1,0 +1,41 @@
+{
+  "source_commit": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+  "source_tree": "4ae59cb4021b0cc20e957261ead22e317292fe5e",
+  "qualification": "existing native ownership/lifecycle fixture; synthetic bridge receipts",
+  "compile": {
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fno-omit-frame-pointer",
+      "-fsanitize=address,undefined",
+      "-pthread",
+      "-I",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/include",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/src/world.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/src/material_rules.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/src/scheduler_geometry.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/src/settled_world_discovery.cpp",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/sol-staging/native/tests/test_solid_detachment.cpp",
+      "-o",
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/solid-detachment-asan"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "elapsed_seconds": 107.64412107100361,
+    "timeout_seconds": 240
+  },
+  "run": {
+    "command": [
+      "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/probe-build/solid-detachment-asan"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "==32==Can't open /proc/19/task for reading.\n==19==LeakSanitizer has encountered a fatal error.\n==19==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1\n==19==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)\n",
+    "elapsed_seconds": 0.39224209399253596,
+    "timeout_seconds": 120,
+    "binary_sha256": "5b26cdf2b6cabcb3ac3f65f9ab6bdeb36dc37121b53d5e8f1df94f949a60cf71"
+  }
+}

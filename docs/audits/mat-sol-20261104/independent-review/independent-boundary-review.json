@@ -1,0 +1,111 @@
+{
+  "schema": "mat-sol-independent-boundary-review.v1",
+  "reviewer": "root independent of Lane2 probe author",
+  "scope": "Linux GDExtension facade with native ownership phases; no Rapier application, clean-editor-import or Windows claim",
+  "tested_sol_source": "957ce67df859315ed238b6bbec1eebc9a743aaba",
+  "probe_sha256": "07fe277d561b4f912cab410cd3f04b34239fbbe0b2fc1819512a252112a420e6",
+  "runtime_sha256": "de38c0de458b2a30d43cb36c633cb7ee3b469f8d84f7a3e512fafc9838bb82a5",
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "setup_failures": [
+    {
+      "first_attempt_exit": 3,
+      "before_marker": false,
+      "after_marker": false,
+      "scope": "Private review project omitted generated extension bootstrap; no scientific observation."
+    },
+    {
+      "import_receipt": "import.json",
+      "scope": "Editor import wrote extension bootstrap but exited -6 with empty stderr after layout initialization. Retained as separate unresolved apparatus failure, not attributed to SOL refusal."
+    }
+  ],
+  "records": [
+    {
+      "phase": "idle",
+      "method": "physical",
+      "configured_workers": 4,
+      "command": [
+        "/workspace/scratch/b45094545f38/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/4b0fc6bf4ee0/compatibility-independent-review/project",
+        "--script",
+        "res://probe.gd",
+        "--",
+        "idle",
+        "physical",
+        "4"
+      ],
+      "timeout_seconds": 30,
+      "returncode": 0,
+      "stdout": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\nMAT_SOL_STAGE {\"action\":\"configure\",\"member_count\":0,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":1,\"shape_count\":0}\nMAT_SOL_STAGE {\"action\":\"inspect\",\"member_count\":0,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":1,\"shape_count\":0}\nMAT_SOL_BEFORE_CALL {\"call\":\"physical\",\"native_phase\":1,\"phase\":\"idle\",\"platform\":\"Linux\",\"workers\":4}\nMAT_SOL_AFTER_CALL {\"call\":\"physical\",\"phase\":\"idle\",\"result\":\"7b13f885cc9616c3\"}\n",
+      "stderr": "",
+      "elapsed_seconds": 0.30086128099355847
+    },
+    {
+      "phase": "active",
+      "method": "physical",
+      "configured_workers": 4,
+      "command": [
+        "/workspace/scratch/b45094545f38/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/4b0fc6bf4ee0/compatibility-independent-review/project",
+        "--script",
+        "res://probe.gd",
+        "--",
+        "active",
+        "physical",
+        "4"
+      ],
+      "timeout_seconds": 30,
+      "returncode": -6,
+      "stdout": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\nMAT_SOL_STAGE {\"action\":\"configure\",\"member_count\":0,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":1,\"shape_count\":0}\nMAT_SOL_STAGE {\"action\":\"prepare\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":2,\"shape_count\":6}\nMAT_SOL_STAGE {\"action\":\"acknowledge\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":3,\"shape_count\":6}\nMAT_SOL_STAGE {\"action\":\"commit\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":4,\"shape_count\":6}\nMAT_SOL_STAGE {\"action\":\"finalize\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":6,\"shape_count\":6}\nMAT_SOL_STAGE {\"action\":\"inspect\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":6,\"shape_count\":6}\nMAT_SOL_BEFORE_CALL {\"call\":\"physical\",\"native_phase\":6,\"phase\":\"active\",\"platform\":\"Linux\",\"workers\":4}\n",
+      "stderr": "terminate called after throwing an instance of 'std::logic_error'\n  what():  solid aggregate/transaction is not serializable in CYPS2/3\n",
+      "elapsed_seconds": 0.2667215399997076
+    },
+    {
+      "phase": "prepared",
+      "method": "window",
+      "configured_workers": 4,
+      "command": [
+        "/workspace/scratch/b45094545f38/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/4b0fc6bf4ee0/compatibility-independent-review/project",
+        "--script",
+        "res://probe.gd",
+        "--",
+        "prepared",
+        "window",
+        "4"
+      ],
+      "timeout_seconds": 30,
+      "returncode": -6,
+      "stdout": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\nMAT_SOL_STAGE {\"action\":\"configure\",\"member_count\":0,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":1,\"shape_count\":0}\nMAT_SOL_STAGE {\"action\":\"prepare\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":2,\"shape_count\":6}\nMAT_SOL_STAGE {\"action\":\"inspect\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":2,\"shape_count\":6}\nMAT_SOL_BEFORE_CALL {\"call\":\"window\",\"native_phase\":2,\"phase\":\"prepared\",\"platform\":\"Linux\",\"workers\":4}\n",
+      "stderr": "terminate called after throwing an instance of 'std::logic_error'\n  what():  native mutation/tick fenced by solid detachment; finish or cancel its owner transaction\n",
+      "elapsed_seconds": 0.24182550499972422
+    },
+    {
+      "phase": "prepared",
+      "method": "adhesion",
+      "configured_workers": 4,
+      "command": [
+        "/workspace/scratch/b45094545f38/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/4b0fc6bf4ee0/compatibility-independent-review/project",
+        "--script",
+        "res://probe.gd",
+        "--",
+        "prepared",
+        "adhesion",
+        "4"
+      ],
+      "timeout_seconds": 30,
+      "returncode": 0,
+      "stdout": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\nMAT_SOL_STAGE {\"action\":\"configure\",\"member_count\":0,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":1,\"shape_count\":0}\nMAT_SOL_STAGE {\"action\":\"prepare\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":2,\"shape_count\":6}\nMAT_SOL_STAGE {\"action\":\"inspect\",\"member_count\":520,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":2,\"shape_count\":6}\nMAT_SOL_BEFORE_CALL {\"call\":\"adhesion\",\"native_phase\":2,\"phase\":\"prepared\",\"platform\":\"Linux\",\"workers\":4}\nMAT_SOL_STAGE {\"action\":\"cancel\",\"member_count\":0,\"ok\":true,\"outcome\":\"Accepted\",\"phase\":1,\"shape_count\":0}\nMAT_SOL_AFTER_CALL {\"call\":\"adhesion\",\"phase\":\"prepared\",\"result\":{\"applied_from_native_cyps\":true,\"matches_authority\":false,\"prior_reported\":true,\"reported_after_request\":false,\"requested\":false}}\n",
+      "stderr": "",
+      "elapsed_seconds": 0.49471993300539907
+    }
+  ]
+}

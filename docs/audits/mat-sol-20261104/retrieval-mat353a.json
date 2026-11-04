@@ -1,0 +1,1141 @@
+{
+  "created_utc": "2026-11-04T14:16:16.270679+00:00",
+  "corpus_root": "/workspace/scratch/4b0fc6bf4ee0/compatibility-lane/worktree",
+  "method": {
+    "name": "heading-chunk BM25 lexical development baseline",
+    "k": 5,
+    "maximum_body_words": 420,
+    "overlap_words": 0,
+    "k1": 1.2,
+    "b": 0.75,
+    "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+    "query_expansion": false,
+    "stemming": false,
+    "reranker": false,
+    "embeddings": false,
+    "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+  },
+  "fixture_sha256": "29ca1edb75e6486eaaafa032d218dce006d2ff9010ee83dd7f9a258b34addc87",
+  "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+  "corpus_manifest_sha256": "6070c192bc170b305e31c409f19b2a71efdd8c9883cf76b071f4c9e5a42ee773",
+  "corpus": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "aaa9671c20d06d65cd0e6b2306a53cd6ea89ba64dde50ac2948abffc92f170bf",
+      "bytes": 12759
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "2e1ed6542e984366519dd782687980f0c8445052ef11b8afef06877972730d81",
+      "bytes": 8752
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "97c0dfe83f6495eba9a1cbe5dd3b6f6d273987756c13041dae7ef6df0c40628b",
+      "bytes": 38828
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "915b4a914e39e41304592b8b9873856b7c9b9714a043ac9384669ee9163d200a",
+      "bytes": 7295
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "bc403bddd45e3abb14baf91b98cc3a03e007dce712314270d47d6e9e2bbd6082",
+      "bytes": 30392
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "bytes": 5204
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "35babd6fcd79d74fb4b895af5b7bf835403435f1ba6f65c96907dab7621da337",
+      "bytes": 22243
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "231b1dec6ee5993a6c399d235c669534a90c44f292fbe19576113f9ab1f1566c",
+      "bytes": 82558
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "2f47a361564cf4a9f9ab4acd59f7968776a7c5b3ba3c3bea6b53bbf86bd24f6b",
+      "bytes": 65640
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "d0b9f71b86dffdd2755703029209f5f5e2ce1ef93afe5b56f3d58f4553f83fd3",
+      "bytes": 26899
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "43d73ffea957d6da8c84799bd4a69d1e2897f932da4f1ada3ce2b4c603e68b92",
+      "bytes": 54011
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "50d887de70b5cc49f7e2a0504ce3e08415c9900b4b437e036345a0181aebd3c6",
+      "bytes": 9775
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "4fb7c0c48e043786ba0bab144d9fbb0cf1bee1facac60303357bac907dd1e730",
+      "bytes": 5948
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "98cb68fb1f7d808cd0b00b1f70c81021d1b608a0432c16d0a3d2aa32d8f9ffcd",
+      "bytes": 29887
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "775199fd0f696dc455c5305b6c9788a2d2c3dd7c467b6472ab398619efbdb444",
+      "bytes": 15426
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "8dd55cf5b315f460b844fa66307296f4f77eb8f5e29fc2ba5ad9d1f2df60c377",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "0efb1084fd68eba7c69e31e9271be717153de3693d1b17cb4e0036028563c439",
+      "bytes": 8923
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "56b23c211e679342ac8800c8b133f2734db92e7138629bf73d45fa1d83f271d5",
+      "bytes": 13608
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "41d571eb23b50322c8964be66e7af7226d0796f982500dbf66e4677bdeefb6ca",
+      "bytes": 19202
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "bytes": 19320
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "bytes": 3876
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "bytes": 4207
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "bytes": 5074
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "bytes": 4594
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "bytes": 3351
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "4176beaad08fca041922b87f8f8451a5a3b7b4831946d117119eeb21c7e466e9",
+      "bytes": 4438
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "f57b275187490cdc12c28456f9417a6eb4a73d2daf4a97ba9e6950e07568efe5",
+      "bytes": 6062
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "bytes": 5903
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "bytes": 2879
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "79b0d6bb92c5bc624f3d24b76b51837d2bf81ee22b277d88f8e5d0675b828c00",
+      "bytes": 4669
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "bytes": 4168
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "bytes": 2636
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "bytes": 8984
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "bytes": 54792
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "bytes": 13714
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "bytes": 26101
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "67402f42648e34c95c98afa59dc03de57a7dd56d087e9e8d680540c73e4051d1",
+      "bytes": 13537
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "f874fc79105848b921964c5b5dcdb5d04fbe984b25cbcdb1b8b8b4bb8e72226d",
+      "bytes": 12639
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "bytes": 7539
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "2b5db96177041465e118ab4fd8883c54b3891402983882b23c57f25bcd87f3fd",
+      "bytes": 112211
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5f646c5eed80101d8bdc36be38985ee34898ed145ed28f2aa01d3ae1bbb3ffc7",
+      "bytes": 17395
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "bytes": 14706
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "bytes": 6809
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "bytes": 14079
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "bytes": 12266
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "923a9f27fa09241f198fe149d56dbf6c228255e3fdfdd90b17d2b656b6992dde",
+      "bytes": 16874
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "bytes": 36321
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "bytes": 25219
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "1cba76d2f57befebe84f1c8aa5fc3ed227f134b8144da0636c508f8ec8027259",
+      "bytes": 23019
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "bytes": 4710
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "e7a83cf4a283d172e6c86eb665e522bee4c5b5848a83eabea69da32984af1776",
+      "bytes": 111831
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "4f826692305a263e928b181f9f503ad0e75a5eb0d85a3de83d6e922a5904cbe2",
+      "bytes": 16288
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "dfddad77cd621573fa8e29254b90765552fc8e2ec00159f008c27cb4f7ed1820",
+      "bytes": 16807
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "bytes": 29208
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "bytes": 20649
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "bytes": 14168
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "bytes": 15666
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "bytes": 22957
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "bytes": 22281
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "bytes": 9578
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "bytes": 21341
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "536521336ace40ddbfc713f789b91bd6af785eddad891e03dd5754583534ac8e",
+      "bytes": 10947
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "bytes": 6574
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "bytes": 10897
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "bytes": 8314
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "bytes": 16631
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "bytes": 10536
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "bytes": 25036
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "bytes": 22377
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "bytes": 27552
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "bytes": 10075
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "e5e5a9528fe8e0fd0327c8bddc6d0d8edbe235e1b4b6d264687e661960aeccd7",
+      "bytes": 29266
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "bytes": 5027
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "bytes": 15503
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "d8f703b16bf61620571828f117dc7fcaee950b5dd0d051f6f7488b792970399d",
+      "bytes": 39009
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "bytes": 6183
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "e57a9019e1494c48da898eaaf32dd9e016b066b248d6c040b254de07cbb33fee",
+      "bytes": 86093
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "123cb43131703c15362ff8f85ef5e343844db526c3107d90937e7c8288debdde",
+      "bytes": 6071
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "f5a110e89417b120b4c594dc5a998f70398733dedcb0c80446b69a3d6c97171a",
+      "bytes": 93997
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "c135744916f021c23296df4d3f6cbcc1cc4283fff07c8050044092a77ad88081",
+      "bytes": 46406
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "1d1b1d91b406d62e6de05266d662b83135e179aefa011c8af8b59ca815c2a3c0",
+      "bytes": 13257
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "bytes": 12618
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "bytes": 11102
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "b2865c060ae1130f09b90d545a65cd5b70ce1d50824ba37f0c82e7d1ebc2aa6d",
+      "bytes": 19657
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "84bf4c1381d0ad899b4660bd776849623d618693d58306f10db7718ce0aab0fd",
+      "bytes": 133590
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "725c93151ce036fc399f9b2883c61e1a6bdb80b3e59400d3caa24f90f8c0fcdc",
+      "bytes": 75062
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "f7e168691be4c3534894004f1c11c0e4c35e1016eda94825a74c884f3fe5e102",
+      "bytes": 16290
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "dfa36ee21cb19208fd7bc2bd30992381df0ff780f5c86c474e23e3f26473c550",
+      "bytes": 20849
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "239d4fc9ca44d86a0971659305c61decec2dcd7c14b5a3d17a0f79844fa61791",
+      "bytes": 7166
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "372ef8d576bfc265d28dcea6be754d938c717e790adc678823904f70df98db8f",
+      "bytes": 11757
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "bytes": 18075
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "bytes": 25275
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "5d8b808400fa16719ff978c5b661a439670080961043f0c45eced329186356cc",
+      "bytes": 16427
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "bytes": 13193
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "bytes": 12257
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "bytes": 7881
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "c9aef9a878d100bcf61a4d8c01e752487b3056a6e16a6763fcf8c159fe4a5503",
+      "bytes": 21430
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "bytes": 12363
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "7438daa1478dd70b7ed1d7769ffdc36c750acc4521c42c81037bb8d86bcfcfad",
+      "bytes": 11701
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "6e1f9612e46f72fdc97080132ff789c50d9570e56ca49c76f389ba691e834e6f",
+      "bytes": 18581
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "bytes": 23049
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "d3e619b3737e810de3543cb66a0738d7a527a1cc862758835a1796acc8b2c919",
+      "bytes": 12999
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "e9dc3d9719cb5e592d3882a644a1d996535b9393c99b830573dbb89ba8588767",
+      "bytes": 17777
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "bytes": 17283
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "bytes": 21218
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "c313c6c6de8c3e3e541e9879d69ff2e4a8567f62998120f079cca760251ca1ec",
+      "bytes": 53035
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "bytes": 6898
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "9b0d490b8d0e1f94e600d355f3574782f520edb6e0f64a2cb99d8cd044cbf6ba",
+      "bytes": 22273
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "bytes": 20322
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "bytes": 12923
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "5062c1899617444cc02a2d9d0a743ab5507bda4f776e2583f200eec275f373eb",
+      "bytes": 23376
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "c3ba36a03a706d64b1a1fe697526a931814d4ca0a3980bddb73a45d3d9ca216e",
+      "bytes": 27978
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "1bb29704ecd99425abadfbd2dd58d753bb12bbbdb00679f70562e8821778c1ba",
+      "bytes": 22753
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "bytes": 6117
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "bytes": 9963
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "bytes": 41184
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "a4407b765d29a36a0b26be7cec74a065076cd299792172b96ffc11fcf12e8b9b",
+      "bytes": 20422
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "3aa36c9771645fe972228d9d4144cc46b2d05a3d14401bc72c94e659e48c9ba9",
+      "bytes": 12383
+    }
+  ],
+  "document_count": 119,
+  "chunk_count": 1592,
+  "summary": {
+    "questions": 8,
+    "canonical_hit_at_1": 7,
+    "canonical_hit_at_k": 8,
+    "mrr_at_k": 0.9375,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "results": [
+    {
+      "id": "MAT353A-01",
+      "query": "What material catalogue compatibility fixes were implemented after the architecture review, and does the engine now consume generated materials?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "Owner-authorized353-A is a shadow compiler, independent native parity and compatibility guard candidate.",
+        "Production consumers, material physics and existing policy artifacts remain unchanged;357 is merged as the owner-adopted Planned architecture, while371 undergoes separate resulting-head integration qualification.",
+        "The broad353 issue and production cutover remain separate from this checkpoint."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 23.158159,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Synthetic powder ID132 and paired-material experiment isolation",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Synthetic powder ID132 and paired-material experiment isolation\nCurrent production IDs0–131 remain fixed, with invalid10 unusable. The isolated future powder at ID132 explicitly declares `hard_surface=false` and `granular_support=true`; no numeric range can grant hardness in the candidate map. Its test namespace cannot publish to the committed candidate directory or export a production/save/receipt identity. Draft #358's StoneWall132, SaltWall133, CoalWall134, DryBinder135, ActivatedBinder136 and BinderCrust137 are recorded as **branch-qualified experimental claims**, not accepted production reservations. A synthetic fixture does not rename, consume or integrate those identities. Their production allocation remains a separate integration decision. The source-level range predicate in production remains unchanged in #353-A. The candidate's explicit capability map fixes inheritance for the synthetic registry; production source guards prevent silently appending an ID through the old range. Switching the production predicate is a #353-B consumer change, requiring its own parity/identity review and applicable integration gates."
+        },
+        {
+          "rank": 2,
+          "score": 20.809053,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > SOL protected-consumer transition remains blocked — 2026-11-04",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > SOL protected-consumer transition remains blocked — 2026-11-04\nThe independent [MAT-AUTH/SOL investigation](../audits/2026-11-04-mat-sol-protected-consumer-review.md) pins accepted main `7ef4856e` and draft PR347 source `957ce67d`. The original 27-consumer guard passes main and correctly rejects SOL's two historical additive changes in `world.cpp` and `world_pressure.inc`; the other25 remain byte-identical. The frozen lock, baseline `0fd4af59`, compiler and generated shadow data stay unchanged. The disposition is **REPAIR**, with no separately admitted executable checkpoint. Bounded inactive native material/persistence comparisons pass, but actual pinned Linux Godot probes reproduce uncaught physical/comparison-hash and simulation-window exceptions plus adhesion readback that disagrees with native authority during SOL transaction fences. The dated dossier preserves exact source/runtime identities, raw failed and successful controls, independent reproduction and unavailable Windows qualification. Safe save refusal is distinct from a process abort. The owning SOL branch must repair and qualify those facade boundaries before a reviewed source-scoped two-receipt transition is considered. Direct original `compatibility.py --check` must continue refusing the changed SOL bytes. This is not a #353-B generated-consumer cutover and does not change physical clearance, CPU or #365 restoration gates. Do not refresh hashes or suppress the guard. The [adopted-main integration record](../audits/2026-11-04-mat-auth371-integration.md) records the escaping correction, independent review and resulting-head gate requirements. The PR ledger carries final hosted checks and merge identity. **Current shadow tooling; guarded integration under qualification.** On 4 November the owner separately requested implementation of the architecture review's corrections and compatibility mitigations. [PR #371](https://github.com/techrote/cybersand/pull/371) contains that #353-A response: authored metadata, deterministic candidate outputs, independent native parity and source-identity guards. Documentation PR #357 is now merged and its corrected architecture is owner-adopted as Planned. The shadow output remains unconsumed by production; broad #353 and parent #352 stay open, and #353-B consumer migration and #354–#356 remain separately unadmitted. The [architecture review](../audits/2026-11-03-mat-auth-000-architecture-review.md) and [corrected migration contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03) explain why matching values alone is insufficient. The [current A-only reconciliation boundary](../architecture/material-authoring-catalogue-plan.md#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) preserves original implementation `6d3737594beb39e83e555f66f2e81184a4bdbf77` and its reviewed parent `9b776d109e7843fb9b2d25239f9d088181309aa1`, while merging adopted main `3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d` normally. The frozen compatibility baseline remains `0fd4af5987e77db4da3e37c757cf2c0917ae9e15`; adopted documentation does not refresh any source lock. The [original qualification record](../audits/2026-11-04-mat-auth-353a-compatibility.md) retains its tested source and historical status. The #371 ledger records new resulting-head checks, review and actual merge/post-merge status separately."
+        },
+        {
+          "rank": 3,
+          "score": 20.69025,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents\n1. [Authority and preserved substrate](#1-authority-and-preserved-substrate) — what already exists, and what the programme may not overwrite. 2. [Source findings and fault hypotheses](#2-source-findings-and-fault-hypotheses) — exact observations, ownership and required reproductions. 3. [Orthogonal material classification](#3-orthogonal-material-classification) — browsing, physics, semantics and presentation stay independent. 4. [Canonical source model and compiler](#4-canonical-source-model-and-compiler) — source layout, generated outputs and hard validation. 5. [Interaction effects and effective parameters](#5-interaction-effects-and-effective-parameters) — explicit endpoint semantics, threshold representation and real kernel consumers. 6. [Scheduling and liveness qualification](#6-scheduling-and-liveness-qualification) — bounded wake obligations and gameplay-decision gates. 7. [Identity, compatibility and resource budgets](#7-identity-compatibility-and-resource-budgets) — do not change saves, cells, runtime authority or replay claims accidentally. 8. [Materials Lab authoring workflow](#8-materials-lab-authoring-workflow) — usable editing without fake live sliders or fallback claims. 9. [Issue dependency and acceptance plan](#9-issue-dependency-and-acceptance-plan) — finite steps, qualification, rollback and write-set separation. 10. [Decisions held for explicit disposition](#10-decisions-held-for-explicit-disposition) — questions to resolve with evidence rather than guesswork. 11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions. 12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates. 13. [Bounded compatibility tooling and adopted-main reconciliation](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) — implemented shadow foundation, source-preserving integration and separate consumer-migration gates."
+        },
+        {
+          "rank": 4,
+          "score": 19.372415,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > What the compiler owns",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > What the compiler owns\n[`catalogue.json`](../../materials/catalogue/catalogue.json) is a versioned, explicit authoring candidate. The [stdlib compiler](../../tools/material_catalogue/compiler.py) has one input file, no import discovery, inheritance, expressions, family defaults or runtime loader. Identity-bearing arrays normalize using declared IDs, keys and legacy slots rather than authoring order. It emits inspection metadata and C++/GDScript shadows under `materials/catalogue/generated/`. No native target or Godot production script consumes that directory. Production material physics and the existing generated liquid-policy artifacts remain unchanged. The records cover all 132 descriptor slots and all 15 descriptor fields, explicit hard/granular capabilities, visual-state projections, the 56 ordered compact pairs, 19 specialized provenance records, seven families and 33 memberships. Numeric enum encodings have fixed schema domains. Invalid10 and the Gas/Smoke alias remain explicit. Specialized metadata does not replace World's hand-coded execution, and the empty interaction-layer table remains empty. Semantic memberships never supply physical defaults. The GDScript shadow describes **native** metadata. It is not a replacement for CyberCellWorld's different fallback simulation. Fallback source facts and their qualification are recorded separately in the [compatibility lock](../../materials/catalogue/compatibility-lock.json). Candidate structs add inspection IDs/legacy slots and use primitive enum encodings. Their layout is deliberately separate from the native ABI; exact field/value comparison does not make them drop-in C API or Cell replacements."
+        },
+        {
+          "rank": 5,
+          "score": 18.124408,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 8. Materials Lab authoring workflow",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 8. Materials Lab authoring workflow\nThe initial browser/inspector belongs in the current Materials Laboratory and coordinates with the existing TEST-UX owner, not a new gameplay host or general editor framework. | User action | Required v1 experience | |---|---| | Find material | Category and multi-tag filter; search ID/key/name/phase/kernel/capabilities/partners | | Inspect exact physics | Declared vs effective density, movement, flow, hard/granular flags, state, radius and selected kernel | | Inspect interactions | Stable matched rule, orientation, threshold and exact chance, endpoint effect, actually observed failure reasons and owning execution stage | | Inspect appearance | Base RGBA, variation, shader flair/recipe, visual state source, emission and fallback status | | Tweak a parameter | Apply only if an actual owner accepts it; otherwise warn compile/rebuild required; no fake live sliders | | Add a material | Copy a supported preset → new stable ID/key → explicit capabilities/appearance → optional rules → validate/generate → rebuilt preview | | Reject candidate | Clear field/path/reason; previous World/profile and canonical source remain unchanged | | Export/import | Deterministic, versioned profile/manifest with source/runtime/solver identity and compatibility decision | No dynamic runtime material creation is implied: v1 can add source-level materials using generated tables. A safe editor can later be an authoring front end for those manifests; broad runtime GUID registries and hot reload remain **Deferred**."
+        }
+      ]
+    },
+    {
+      "id": "MAT353A-02",
+      "query": "How does the material compiler prevent a formatting-only header rewrite or refreshed hash from silently invalidating old liquid policies and saves?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "Compatibility guard authenticates27 legacy source inputs against immutable main0fd4af59 before comparing working LF bytes.",
+        "Changing both source and editable lock is not accepted as a new baseline.",
+        "The existing catalogue/capability identities and stale-identity refusal remain unchanged; production identity migration needs separate review."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 29.075543,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Compatibility protection and independent source authority",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Compatibility protection and independent source authority\n[`compatibility.py`](../../tools/material_catalogue/compatibility.py) authenticates 27 named legacy inputs against retained accepted main `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` before accepting their lock entries, then compares the working source's LF-normalized bytes. Changing both a source file and its recorded hash cannot silently establish a new baseline. Missing historical Git objects, a missing owner, altered identities or an unexpected production import of shadow output fail closed. The checker never rewrites the lock, headers, policies, receipts, saves or candidate outputs. The protected owners include material/interaction headers, native queries, World movement/reaction/scheduling and quantity codecs, Cell storage, transport policy, liquid admission/identity sources, fallback functions, appearance code and retained policy/normalization/receipt vectors. This is an explicitly frozen compatibility checkpoint, not a promise that these owners can never change. A future source update needs a separately reviewed baseline or cutover transition, with the old evidence retained. The existing catalogue digest remains `82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3`; the capability digest remains `33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237`. Formatting-only edits still count as changes under the established LCB contract, except its existing CRLF-to-LF normalization. Stale-identity refusal is preserved; it is not weakened to make candidate generation pass."
+        },
+        {
+          "rank": 2,
+          "score": 16.681315,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Synthetic powder ID132 and paired-material experiment isolation",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Synthetic powder ID132 and paired-material experiment isolation\nCurrent production IDs0–131 remain fixed, with invalid10 unusable. The isolated future powder at ID132 explicitly declares `hard_surface=false` and `granular_support=true`; no numeric range can grant hardness in the candidate map. Its test namespace cannot publish to the committed candidate directory or export a production/save/receipt identity. Draft #358's StoneWall132, SaltWall133, CoalWall134, DryBinder135, ActivatedBinder136 and BinderCrust137 are recorded as **branch-qualified experimental claims**, not accepted production reservations. A synthetic fixture does not rename, consume or integrate those identities. Their production allocation remains a separate integration decision. The source-level range predicate in production remains unchanged in #353-A. The candidate's explicit capability map fixes inheritance for the synthetic registry; production source guards prevent silently appending an ID through the old range. Switching the production predicate is a #353-B consumer change, requiring its own parity/identity review and applicable integration gates."
+        },
+        {
+          "rank": 3,
+          "score": 15.652489,
+          "path": "architecture/lcb-pressure-inertial-handoff.md",
+          "title": "LCB pressure and inertial implementation handoff",
+          "heading": "LCB pressure and inertial implementation handoff > Pressure (`pressure_flow_v1`, Water only, #200)",
+          "part": 3,
+          "text": "Document: LCB pressure and inertial implementation handoff\nPath: architecture/lcb-pressure-inertial-handoff.md\ndocument-kind: design\nstatus: Approved design\nscope: LCB-001 pressure/W-CY and shared-native handoff plus Planned LCB-005 inertial requirements — material hooks, state, laws, boundaries, invalidating failures and campaign APIs; detailed setup/receipt/accounting codecs have their own canonical owner\ncanonical-for: [lcb-pressure-inertial-handoff]\nlast-reviewed: 2026-10-25\nSection: LCB pressure and inertial implementation handoff > Pressure (`pressure_flow_v1`, Water only, #200)\nt3, first observed at completed t4) into two **new** ids with ancestry, volumes 108 and 111; volume-proportional floor shares 109/112, remainder 1 to the compartment holding the lowest (y, x) cell, giving 110/112; exact split ledger | | empty-only-chunk survival | native test (Current: `LCB-001 pressure gas in Empty-only and unallocated chunks`) | | hash change on gas-only change | Current main physical-state hash 2 (`LCB-001 pressure physical hash and exact persistence`); #245 historical source used version 1 | **Sealed headspace.** The `head.sealed-two-limb` target is the isothermal equilibrium `p_L + z_L = p_R + z_R`, with each limb's `p_i·V_i = p_atm·V_i0` and `p_atm` (in rows) a declared family parameter. Tolerance is ±2 rows, and the result must differ from the vented target. **Boundary with other families:** a non-pressure liquid neighbour is a density-bearing boundary. No head propagates through it, and pressure summaries are invalidated on any contact, swap or reaction there. **Invalidating failures.** Any one of these rejects a candidate, whatever its look or speed: - quantity drift, including overfill; - gas amount drift without a ledger entry; - amount-keyed or reused compartment ids; - 1/4-worker divergence; - through-wall or through-mask head; - a pressure arm silently running Current; - unhashed authoritative state; - tick-time unbounded allocation; - dormancy suppressing other-liquid motion (contract `dormant-water-active-oil`); - any change to Current goldens under the default policy. **Smallest experimental regime:** - Water only; - mass8 and coherence honoured; - `reference` variant first (#201 adds `cached`/`cached_dormant` with equivalence); - gas off/on as a family parameter recorded in the receipt; - 1024² built-ins sized before admission."
+        },
+        {
+          "rank": 4,
+          "score": 13.607935,
+          "path": "reference/level-saves-and-replay.md",
+          "title": "Level saves and exact replay",
+          "heading": "Level saves and exact replay > What does import validate, and what stays intact on failure?",
+          "part": 1,
+          "text": "Document: Level saves and exact replay\nPath: reference/level-saves-and-replay.md\ndocument-kind: contract\nstatus: Current\nscope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps\ncanonical-for: [cysd1-level-format, save-import-export, replay-persistence]\nlast-reviewed: 2026-10-25\nSection: Level saves and exact replay > What does import validate, and what stays intact on failure?\nThe codec checks lengths, header/version fields, checksum, decompression and bounded metadata types/ranges. Native validation checks exact payload length and legal material IDs (`0…131` except reserved `10`). Selected-material metadata accepts paintable IDs through `CyberCellWorld.LAST_MATERIAL`; Empty remains an invalid selection. Constructor IDs are range-checked before narrowing, so a wide integer cannot wrap into a valid material. Validation does not implement a complete semantic schema for every material's two state bytes. The MAT-002 catalogue extension changes the accepted IDs, not the CYSD1 header or five-byte cell encoding. Existing levels remain readable. Older runtimes whose catalogue ends at 80 reject levels containing the new materials; they do not gain support from the unchanged format version alone. `CyberDemoBridge::import_level` validates and builds a replacement World and render exchange before no-throw ownership swaps. CYSD1 stores no liquid solver policy: this original API reconstructs every liquid's default family (LCB NC-10), whatever the live World's policy. Invalid codec/native payloads leave the active World intact. The Web controller rejects a Physics Pit save when Rapier is unavailable before native import. This guarantee concerns the checked import paths; it is not a general transaction guarantee for simulation ticks or arbitrary later scene allocation failures. **Current bounded unmerged #202 source:** the normal synchronous application's liquid panel can explicitly arm the next ordinary body-free import with a copied policy, normalization opt-in and geometry in Exploratory mode. The separate `prepare_liquid_level` API preserves thermal tuples and stages native World, sampled player, metadata-derived execution and qualified host observation before the final commit. Refusal retains the prior World/player/receipt/record. The [prepared import contract](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart) owns those bounds and unsupported body/Tower/showcase routes. Restart retains the accepted in-memory payload and selection; CYSD1 serialization is unchanged and unarmed import still uses Current defaults. No full replay or browser/release qualification follows from this opt-in reconstruction. The follow-up preflight explicitly refuses unsupported inherited interaction, diagnostic-law or independent transport settings rather than replacing them with preparation defaults. The accepted private Baseline may restart only with matching native component/generation/receipt identity. Unarmed legacy import continues to preserve its inherited configuration. Optional enabled preparation telemetry is observational and remains qualified separately. The later [four authored ordinary-demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding) keeps its accepted recipe separate from an imported level even when both carry the same demo label. Only an actual curated constructor and matching native generation supply authored identity. An accepted import restarts its copied payload/metadata; an accepted curated demo restarts its copied authored recipe. Neither in-memory request is persisted by CYSD1. Quarantined prepared Restart currently refuses; explicit Current construction or unarmed import is recovery. The later authored Physics Pit route"
+        },
+        {
+          "rank": 5,
+          "score": 13.524232,
+          "path": "reference/level-saves-and-replay.md",
+          "title": "Level saves and exact replay",
+          "heading": "Level saves and exact replay > How does CYPS2 differ from CYSD1?",
+          "part": 1,
+          "text": "Document: Level saves and exact replay\nPath: reference/level-saves-and-replay.md\ndocument-kind: contract\nstatus: Current\nscope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps\ncanonical-for: [cysd1-level-format, save-import-export, replay-persistence]\nlast-reviewed: 2026-10-25\nSection: Level saves and exact replay > How does CYPS2 differ from CYSD1?\n**Current on main through accepted PR #246 (`ec58d919`, 2026-10-25).** `World::save_physical_state()`/`restore_physical_state()` and the bridge's `export_physical_state`/`import_physical_state` write and read **CYPS2** (`kPhysicalStateFormatVersion` 2), an exact tick-boundary continuation for LCB comparison Worlds. Its canonical description is the [pressure persistence contract](../architecture/pressure-flow-v1.md#persistence-cyps-v2) and [shared native setup/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md). | | CYSD1 | CYPS2 | |---|---|---| | Purpose | finite level exchange | exact continuation of a comparison World | | Liquid policy | not stored; import always reconstructs on default families (NC-10) | policy envelope stored and re-admitted by the running build | | Clock, epochs, regions, pending events, activity blocks | omitted | stored | | Pressure sidecars and gas table | n/a (lossy; never a continuation) | stored | | Shared quantity accounting and construction binding | omitted | exact source/sink and rule totals, visible+overfill, separate material cell counts, prepared/normalization identities | | Integrity | codec checksum and native validation | SHA-256 of the body, then range and invariant checks | | Failure | live World intact | `invalid_argument`/`LiquidPolicyRefused`; live World intact (\"running world preserved\") | | Continuation | none claimed | bit-identical physical and state hash, including at another worker count | CYPS omits execution settings (workers, capacities come from the caller), host-owned transient body masks and Rapier state, and requires settled discovery to be disabled. It is not general sparse-world persistence, replay input capture or full application replay. The owner-requested native codec freeze does not freeze production Cell/global ABI or those missing host contracts; CYSD1 is unchanged. Historical CYPS1 belongs to the #245 source/artifact evidence and is explicitly refused by this decoder. A valid digest does not excuse inconsistent accounting: restore validates closure, roles, quanta and actual stored authority. The native prepared builder can normalize final setup tuples only with explicit opt-in and a bound receipt. It cannot normalize a live World. Godot's normal level import still reconstructs defaults; native candidate CYSD1 ingress preflights nonzero fractional W-CY Water and returns `normalization_required` rather than silently rounding. The old Godot dictionary run getter is not the typed native receipt and provides no full host-replay proof."
+        }
+      ]
+    },
+    {
+      "id": "MAT353A-03",
+      "query": "Does generated GDScript material metadata replace the fallback's Slush density and movement rules?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "The generated GDScript shadow describes native metadata and is not consumed by the fallback.",
+        "Native Slush1080 and fallback1100 are preserved separately.",
+        "Fallback facts are source-observed, with no claim of movement or rendered-pixel parity."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 29.912082,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Native GDScript metadata and fallback Slush density",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Native GDScript metadata and fallback Slush density\nNative Slush density1080 and fallback Slush density1100 remain distinct. Fallback density, identity, hard/granular and RGBA facts are source-observed, with no claim of fallback movement or rendered-pixel parity. The unchanged Godot appearance expressions retain their existing precision and startup behaviour. The generated GDScript mirror contains native facts only and is not loaded by CyberCellWorld. A separate optional [Godot metadata readback](../../tools/material_catalogue/check_gdscript_shadow.py) authenticates the pinned editor archive and executable, requires a matching native-parity receipt, and loads only the candidate in a temporary empty project. Actual Godot 4.7 parses and reads all metadata; this is not a game-project, native-extension, fallback-physics or rendered-pixel test. The receipt must contain the exact three checker/oracle inputs and five catalogue/mirror inputs; missing, duplicated, renamed or stale entries fail. The checker verifies the whole inventory again after readback. Report paths cannot overwrite their checked inputs. A truncated local editor archive was refused during qualification; the accepted readback used the complete archive matching the repository's size and SHA-256 pin."
+        },
+        {
+          "rank": 2,
+          "score": 22.873374,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Identity compatibility is stronger than descriptor equality",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Identity compatibility is stronger than descriptor equality\n**Current:** [`catalogue_digest`](../../tools/lcb/policy_contract.py) hashes LF-normalized paths and complete bytes of `material.hpp` and `interaction_rules.hpp`. [`derive_capability_matrix.py`](../../tools/lcb/derive_capability_matrix.py) also parses their literal enum/table shapes. Formatting, generated banners, includes or row reordering can change admitted policy/receipt identities or break derivation while preserving C++ values. CYPS restoration re-admits its stored policy against the running catalogue; a mismatch is an actual refusal boundary. Preserve these guards and the existing generation order in the [policy contract](liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit). Preserve both pair and specialized-record indices. The [`quantity ledger`](../../native/include/cybersand/quantity_ledger.hpp) has schema 1, 56 pair slots and 19 kernel slots; `quantity_kernel_rule` selects the first matching specialized-record slot and the codec serializes arrays in that order. Stable names alone do not preserve positional accounting. Explicit `legacy_slot` values may preserve that order without making input-file order a hidden semantic rule. **Required:** freeze each consumer's existing output independently. Native Slush density is 1080; the GDScript fallback uses 1100. This is a source-level difference, not a newly reproduced physics defect. Preserve it as an explicit backend override or leave that fallback consumer hand-maintained. Shared IDs/names and the verified common RGBA tuples may share authorship; shared metadata is not fallback movement/chemistry parity. Never silently normalize either backend."
+        },
+        {
+          "rank": 3,
+          "score": 20.393416,
+          "path": "systems/granular-interaction-policy.md",
+          "title": "Granular interaction and sampled player policy",
+          "heading": "Granular interaction and sampled player policy > How do pairs exchange, and how does Mercury keep progressing?",
+          "part": 1,
+          "text": "Document: Granular interaction and sampled player policy\nPath: systems/granular-interaction-policy.md\ndocument-kind: contract\nstatus: Current\nscope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes\ncanonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]\nlast-reviewed: 2026-09-25\nSection: Granular interaction and sampled player policy > How do pairs exchange, and how does Mercury keep progressing?\n**Current version 1:** `MaterialRules::can_density_exchange` rejects every ordered powder/powder pair. Grains rearrange by falling into real Empty cells, including eligible downward diagonals. There is no density-driven exchange even in loose powder; void movement supplies yield and avalanche. Existing Stone vertical-only movement and native intact/granular bracing remain distinct. The complete native liquid/powder classification uses the nine powder capabilities above and these liquid IDs. It applies to either initiating endpoint before any swap; density direction/target permission are still prerequisites. | Liquid | Powder interaction after density eligibility | |---|---| | Water, Lava, Acid, Paste, Slush, Brine, Cement, Toxic Sludge, Molten Glass | One opportunity each simulated tick | | Oil | Oil cannot initiate downward powder displacement; denser powder may settle through Oil | | Mercury | One opportunity each 30 simulated ticks, independently of viscosity | Native `World::exchange_permitted` also rejects displacement of an intact braced Stone endpoint; explosion-created granular Stone (`state_b=1`) can yield. On an eligible liquid/powder opportunity, a destination already written in that tick cannot be reused. All downward/diagonal alternatives share the same modulo lane; trying three directions cannot multiply the rate. Non-powder gas/liquid rules, Water-to-Empty/Water mass transfer, lateral viscosity and chemistry retain their own paths. Chemistry runs before the relevant transport and may change which material pair remains; Seed germination and Water reactions are explicit examples. Mercury uses `tick_index % period == 0`, with no random roll, coordinate-dependent cooldown reset or accumulated debt. Empty movement is tested before this gate and retains full speed. A denied eligible interaction stores the earliest due tick in its source activity block. The ordinary metadata pass wakes due included blocks; waiting blocks can sleep. Exclusion retains the deadline without motion. Re-entry evaluates the present lane once, then waits for the next lane if needed; it never replays missed moves. Failed-world quarantine still prevents tick entry; clear/replacement abandons the deadline with its owning block. The metadata adds one 64-bit deadline per native block (eight additional bytes in the tested layout), with no new queue, allocation, full-world cell scan or worker API call. Block ownership is unchanged. `state_hash` includes policy version, thresholds, period and pending deadlines. This improves this state's identity; CYSD1 still does not provide full replay continuation. Fallback mirrors all nine powders, Mercury density/viscosity, empty movement, powder-pair exclusion and the 30-tick lane. Its fixed deadline array wakes only due included blocks and resets per-cell quiet counters within those blocks. It has discrete Water, retained Slush density 1100, fewer liquid/reaction kernels and no native Stone fracture-state representation. Other native-only liquids and chemistry remain outside fallback"
+        },
+        {
+          "rank": 4,
+          "score": 20.005715,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > What the compiler owns",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > What the compiler owns\n[`catalogue.json`](../../materials/catalogue/catalogue.json) is a versioned, explicit authoring candidate. The [stdlib compiler](../../tools/material_catalogue/compiler.py) has one input file, no import discovery, inheritance, expressions, family defaults or runtime loader. Identity-bearing arrays normalize using declared IDs, keys and legacy slots rather than authoring order. It emits inspection metadata and C++/GDScript shadows under `materials/catalogue/generated/`. No native target or Godot production script consumes that directory. Production material physics and the existing generated liquid-policy artifacts remain unchanged. The records cover all 132 descriptor slots and all 15 descriptor fields, explicit hard/granular capabilities, visual-state projections, the 56 ordered compact pairs, 19 specialized provenance records, seven families and 33 memberships. Numeric enum encodings have fixed schema domains. Invalid10 and the Gas/Smoke alias remain explicit. Specialized metadata does not replace World's hand-coded execution, and the empty interaction-layer table remains empty. Semantic memberships never supply physical defaults. The GDScript shadow describes **native** metadata. It is not a replacement for CyberCellWorld's different fallback simulation. Fallback source facts and their qualification are recorded separately in the [compatibility lock](../../materials/catalogue/compatibility-lock.json). Candidate structs add inspection IDs/legacy slots and use primitive enum encodings. Their layout is deliberately separate from the native ABI; exact field/value comparison does not make them drop-in C API or Cell replacements."
+        },
+        {
+          "rank": 5,
+          "score": 15.265769,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 2. Source findings and fault hypotheses",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 2. Source findings and fault hypotheses\n| Finding | Classification | Source/effect | Required action | |---|---|---|---| | Hard-terrain classification uses IDs `38..kLastMaterial` | **Current source risk** | [`MaterialRules::is_hard_surface`](../../native/src/material_rules.cpp) would classify a future appended non-hard ID as hard if `kLastMaterial` advances | Generate an explicit capability map; freeze identical outcomes for current 101 hard members | | Transport schema v1 addresses only IDs 0–80 | **Current compatibility boundary** | [`TransportPolicy`](../../native/include/cybersand/transport_policy.hpp) returns fixed defaults for later IDs | Preserve v1 byte format, advertise fallback; separately version any extension | | Semantic `hot-source` omits Spark but runtime `is_hot` includes Spark | **Current metadata/predicate inconsistency** | [`interaction_rules.hpp`](../../native/include/cybersand/interaction_rules.hpp) vs [`world.cpp`](../../native/src/world.cpp) | Audit intentional scope; correct metadata or context predicate only with approved tests | | Lava/Acid/Oil movement ignores generic descriptor viscosity gating | **Current behaviour, recognised in prior characterisation** | Specialised [`world.cpp`](../../native/src/world.cpp) paths vs descriptor `viscosity_index` | Do not expose these as effective editable viscosity sliders; retune only via an admitted policy | | Same-material pair products reset state; Water products can be initialised full | **Current documented semantics and quantity sources/sinks** | `World` pair writes plus [quantity ledger](../../native/tests/test_quantity_ledger.cpp) | Preserve in legacy policy; add explicit endpoint effect kinds and truthful accounting. Coordinate #160/#162 | | Isolated MoltenGlass cooling may become stranded across quiet block sleep | **Source-derived hypothesis; fresh native proof missing** | Four-tick thermal lane vs ordinary three-quiet-tick threshold | Controlled actual-World default/high-quiet/active-neighbour reproduction before change | | Adjacent MoltenGlass resets cooling to 180 | **Current source behaviour; intended law unresolved** | `RuleKernel::MoltenGlass` hot-neighbour condition | Distinct thermal-model/feel decision, not a scheduling fix | | Yielding-liquid failed mobility draw returns before retry/deadline retention | **Current source condition; retained prior sleep sensitivity** | `flow_as_yielding_liquid`; [issue-15 coverage](../audits/2026-09-11-issue-15-coverage.md) | Reproduce source-matched resting/eligible cases; any changed trajectories require versioned acceptance | | Pair rules need a scheduled active initiator | **Current execution constraint** | Pre-kernel chemistry is reached through active World cells | Validate generated participants/initiator or document explicit non-running rule | | Native descriptors, appearance LUT, picker and GDScript fallback are separately maintained | **Current duplication risk** | [material contract](../systems/materials-and-rule-kernels.md) | Generate shared facts; never falsely claim fallback native-rule parity | A source-review finding is not a runtime pass. In particular, the proposed cooling and stochastic-retry reproducers are **not** evidence that changing those laws will improve game feel, performance or scheduler correctness on the actual native host."
+        }
+      ]
+    },
+    {
+      "id": "MAT353A-04",
+      "query": "What independently proves generated material descriptors, reaction ordinals and capability maps match current native behaviour?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "The standalone oracle compiles original native metadata and pure queries rather than deriving expected values from the compiler.",
+        "Candidate C++ is compiled and compared against actual native descriptors, capabilities and reaction outcomes with preserved slots.",
+        "This is metadata and pure-query execution, not World physics or platform qualification."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 27.625185,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Independent native parity for descriptors, reaction ordinals and capabilities",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Independent native parity for descriptors, reaction ordinals and capabilities\nThe [native oracle](../../tools/material_catalogue/native_oracle.cpp) is a standalone metadata/query executable compiled against the unchanged source. The [parity driver](../../tools/material_catalogue/check_native_parity.py) compiles the generated C++ shadow and compares it to actual native records and query results. Expected native facts do not come from the compiler. This executes metadata and pure queries, not World ticks or physics scenarios. The compiled comparison passes all 132 descriptors, all 15 fields, 256 byte-ID capability and fallback responses, 56 pair rules and 19 specialized records with exact legacy ordinals. It checks all 16,777,216 source-ID/target-ID/roll combinations against both the native resolver and its MaterialRules wrapper. The same bounded executable covers density-exchange direction, viscosity, lateral rate, family membership, complete uint16 validity and visual projection. These are actual pure-query checks; they do not certify World scheduling or reaction state effects. Those production owners are protected by unchanged bytes."
+        },
+        {
+          "rank": 2,
+          "score": 19.896957,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 9. Issue dependency and acceptance plan > Per-stage acceptance",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 9. Issue dependency and acceptance plan > Per-stage acceptance\n| Issue | Bounded result | Required proof | |---|---|---| | [#352](https://github.com/techrote/cybersand/issues/352) | Proposed design and source-linked compatibility contract | Real source/owner inventory, frozen baseline, decision points and documented non-goals; **no production implementation** | | [#353](https://github.com/techrote/cybersand/issues/353) | Canonical authored catalogue and exact source mirror generator | All IDs/descriptors, 56 pairs, 19 mechanisms, 7 families / 33 memberships and visual data match. 256×256 pair checks; deterministic generation; fake ID132 negative case | | [#354](https://github.com/techrote/cybersand/issues/354) | Controlled liveness corrections or documented no-go disposition | Default/awake/active-neighbour native reproductions, narrow scheduler wake proof, workload/worker parity; optional gameplay profiles gated | | [#355](https://github.com/techrote/cybersand/issues/355) | Explicit endpoint effects and truthful eligibility inspection | Legacy 56-pair results unchanged, orientation/roll boundaries/ledger equivalence, synthetic new-effect validation, Acid priority checks | | [#356](https://github.com/techrote/cybersand/issues/356) | Practical source-authoring and effective material inspector | Search, applicability warnings, safe restart/refusal, synthetic new-material workflow, actual desktop test and scope-appropriate Web checks | **Gates:** Each implementation writer checks current `main`, previous accepted exact-head tests, active PRs and actual World/Godot ownership. No merged candidate from a stale source-only summary. Before ready/merge, run affected Documentation/provenance, Native + sanitizers, actual GDExtension/Godot and focused Water/LCB suites; publish source-matched runtimes where changed native behaviour requires them. Retain actual failures and identify unexecuted Windows graphical, Web/browser or manual feel acceptance. Draft PRs are appropriate during iteration; no automatic merges. **Write-set contention:** #354 and #355 may share `native/src/world.cpp`; their research can proceed in parallel but source writes, reconciliation and final merge should be serialized. #356 should consume accepted inspection APIs rather than invent a second World observer. **Rollback:** Source-generated catalogue #353 must be independently revertible without losing old IDs, data or fixtures. Changed physics in #354/#355 is a separately versioned policy/disposition, not entangled with mechanical generated-table parity. If validation proves unresolved source/ABI/behaviour differences, leave implementation draft and report a blocker; do not relax oracle comparisons."
+        },
+        {
+          "rank": 3,
+          "score": 14.331405,
+          "path": "systems/materials-and-rule-kernels.md",
+          "title": "Materials and rule kernels",
+          "heading": "Materials and rule kernels > Sampled player support",
+          "part": 1,
+          "text": "Document: Materials and rule kernels\nPath: systems/materials-and-rule-kernels.md\ndocument-kind: contract\nstatus: Current\nscope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries\ncanonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]\nlast-reviewed: 2026-10-19\nSection: Materials and rule kernels > Sampled player support\n**Current:** the [version 1 granular policy](granular-interaction-policy.md) separates material support capability from density and hard terrain. All nine powders can support the sampled player when locally packed and stable; side resistance uses a separate neighbourhood. The separate exchange checkpoint rejects powder/powder density reordering and schedules Mercury/powder eligibility independently of viscosity."
+        },
+        {
+          "rank": 4,
+          "score": 13.980038,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 4. Canonical source model and compiler\n**Proposed authoring tree** (final names/schema require #352 review): ```text materials/ schema/material-v1.schema.json registry/identities.json definitions/{legacy,reactive,construction,building}/*.json behaviours/presets.json interactions/{families,pairs,specialized}.json appearances/{recipes,overrides}.json browse/{categories,tags}.json tools/materials/compile_catalogue.py tools/materials/test_catalogue.py ``` Prefer simple JSON plus a deterministic Python-stdlib compiler in v1, because the current repo already maintains portable Python CI tools. Using several author-friendly source files is acceptable **only if** they compile to one validated immutable effective catalogue. The canonical source should contain identity, type, constraints, owned parameters, family memberships, aliases and status. Free-form comments in JSON may be replaced with dedicated `description` fields or adjacent documentation. **Illustrative proposed material record** (not executable today): ```json { \"schema_version\": 1, \"key\": \"cybersand:wood\", \"id\": 7, \"display\": {\"name\": \"Wood\", \"category\": \"Organics/Wood\", \"tags\": [\"timber\"]}, \"physical\": {\"phase\": \"Solid\", \"density_rank\": 720, \"hard_surface\": true, \"granular_support\": false}, \"behaviour\": {\"preset\": \"legacy.wood.v1\"}, \"appearance\": {\"rgba8\": [116, 78, 48, 255], \"recipe\": \"timber.v1\"} } ``` **Generated outputs** should include `material.hpp` descriptors/identity, explicit native capability lookup, compact sparse interaction table/partner sets, stable GDScript IDs and names, picker/browse metadata, RGBA and flair arrays, condition projection and versioned source-derived catalogue manifest. Keep expensive shader algorithms and native kernel implementations hand-coded initially; generate their *metadata*, not a new universal interpreter. **Hard validator gates:** - Stable, non-reused byte IDs; slot 10 remains invalid; `Gas` is a label alias for Smoke=4, not another material ID; reserve/unallocated slots fail cleanly. - Unique keys, names and aliases; valid family references, endpoint/product IDs, kernel enum, radius, state width/meaning, type ranges and support matrix. - Family overlap, duplicate pair, conflicting ordered/unordered matches, cross-rule precedence, invalid supersession, invalid probability representations, uninitiable pair-only definitions and unsupported optional-state contracts fail with understandable source location. - Generate a baseline exact-value oracle from the pinned Current source before replacing hand-authored tables. `--check` regenerates without modifying the tree and fails on drift. Generated files are deterministic, diffable and compatible with repository documentation policies. - Current 132-slot catalogue, all 56 rule identities/indexes/roll cases and 19 specialised mechanisms are identical after the migration. Synthetic new non-hard powder at ID 132 is a compiler-only fixture—not a shipped byte-ID addition—to prove future IDs are not auto-collision-hard. **Intentionally not implemented in v1:** a runtime DSL, hot-loop schema evaluation, user scripts, dynamic pack ID reassignment, or a per-cell behaviour object."
+        },
+        {
+          "rank": 5,
+          "score": 13.625335,
+          "path": "systems/materials-and-rule-kernels.md",
+          "title": "Materials and rule kernels",
+          "heading": "Materials and rule kernels > Boundaries and extension obligations",
+          "part": 1,
+          "text": "Document: Materials and rule kernels\nPath: systems/materials-and-rule-kernels.md\ndocument-kind: contract\nstatus: Current\nscope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries\ncanonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]\nlast-reviewed: 2026-10-19\nSection: Materials and rule kernels > Boundaries and extension obligations\n**Approved:** retain immutable descriptor data, World-owned mutable state, bounded kernels, and explicit wake/dirty/conservation behavior. Coordinator-owned explosions may exceed kernel radius only at the serialized tick boundary; that does not enlarge worker write permission. **Rejected in hot kernels:** growing containers, per-cell allocation, material threads, Godot calls, schema parsing, and unbounded event creation. Lazy World preparation can still allocate outside individual kernels during a tick; measure that separately from kernel policy. **Current duplication risk:** [CyberCellWorld](../../godot/scripts/cell_world.gd) mirrors IDs manually and implements a narrower fallback. It treats themed and building surfaces as static but does not reproduce native combustion or pair reactions. Native descriptors, fallback constants, and appearance tables are not generated from one catalogue. Before adding/changing a material, identify state-byte meaning, numeric units, radii, conversion/source-sink accounting, cadence, wake/dirty, save/hash impact, and fallback behavior. Add meaningful reference, edge, worker-parity, and capacity tests; update controls only if the UI changes. Follow the [documentation checklist](../../AGENTS.md#documentation-obligations). **Planned:** validated/versioned external packs, schema migration, generated pair tables, a bounded rule context, broader reaction accounting and complete interaction coverage. The JSON attribution ledger is research/provenance input, not a runtime modding format or proof that every pair has been tested."
+        }
+      ]
+    },
+    {
+      "id": "MAT353A-05",
+      "query": "How are ambiguous material defaults, JSON errors and output drift handled without array-order-dependent inheritance?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "The first schema has one explicit input, no imports, inherited defaults, expressions or nonempty active layers.",
+        "Strict validation reports file plus JSON pointer, both conflict origins and syntax line/column.",
+        "Stable identity/legacy-slot sorting yields deterministic output;check is nonwriting and validation failures preserve accepted outputs."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 20.363492,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Validation, errors and deterministic publication",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Validation, errors and deterministic publication\nThe compiler rejects unknown fields, duplicate JSON keys, unsupported versions, non-finite values, booleans in integer fields, out-of-range values, invalid references, alias/key conflicts, duplicate legacy slots and ambiguous pair ownership. Errors include the source file and JSON pointer; conflicts identify both origins, and JSON syntax errors also report line/column. Unsupported defaults, state contracts or active interaction layers are rejected instead of interpreted through implicit precedence. Valid inert `RuleKernel::None` targets remain admissible: a reaction participant need not own the tick that initiates its reaction. The compiler does not change wake state, endpoint effects, solver selection or parameter consumption. Output is UTF-8 with LF and a final newline, deterministic escaping and stable ordering. No timestamp, local absolute path or directory order enters generated content. `--check` is nonwriting; missing or stale output fails with a named artifact. Validation completes before publication, and unchanged files retain their bytes and modification times. Negative tests require failure to preserve the previously accepted output set. Run from a complete source checkout: ```text python3 tools/material_catalogue/compatibility.py --check python3 tools/material_catalogue/compiler.py --check python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' python3 tools/material_catalogue/check_native_parity.py ``` The native query check and the focused generated-C++ regression require a C++20 compiler; JSON generation and strict validation use Python's standard library. CI reuses the existing hosted Documentation workflow and execution watchdog. These focused commands do not run World scenarios or require a Godot download; expensive draft lanes stay suppressed. Under the existing ready-state path classifiers, this tools/data implementation also triggers the full Native and Windows/Linux GDExtension/Godot gates when #371 becomes ready. Those configured integration checks remain required; a draft skip or metadata readback is not a substitute. Freeze and independently review the candidate before that transition to avoid redundant matrices. Record actual jobs and any skips in the PR ledger. For optional actual Godot metadata readback, use a complete editor archive and executable matching `third_party/godot-runtime.lock.json`. Produce a native snapshot and receipt from the same source, then invoke the checker: ```text mkdir -p build/material-catalogue c++ -std=c++20 -O2 -I native/include tools/material_catalogue/native_oracle.cpp native/src/material_rules.cpp -o build/material-catalogue/oracle build/material-catalogue/oracle --snapshot > build/material-catalogue/native-snapshot.json python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json python3 tools/material_catalogue/check_gdscript_shadow.py --godot /path/to/pinned-editor --archive /path/to/pinned-editor.zip --native-snapshot build/material-catalogue/native-snapshot.json --native-report build/material-catalogue/native-parity.json --output build/material-catalogue/gdscript-parity.json ``` The helper does not download or modify the editor. Its temporary project loads only the generated metadata. The native receipt's snapshot hash must match, and its complete source/mirror inventory must still be current. This optional engine parser proof is separate from the default documentation CI gate."
+        },
+        {
+          "rank": 2,
+          "score": 14.135981,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority\n**Proposed #353-A admission** is a small JSON/Python-stdlib compiler and independent frozen source oracle. It does not need the entire illustrative directory tree. Start with an identity registry, material records, explicit capability/family records and one consumer/provenance manifest; split files only for reviewability. Represent all 15 descriptor fields, alias identity, existing capability results, ordered pair/specialized records, backend exceptions and supported appearance facts. The short Wood example in section 4 is illustrative, not a complete lossless record or a schema acceptance fixture. Generate a deterministic inspection manifest and shadow C++/GDScript metadata in a separate candidate output directory. Compare them against independent source-derived facts and existing consumers. Production includes, kernels, fallback functions, policies, receipts, saves, shader algorithms and current generated artifacts remain untouched in this first checkpoint. Canonical authorship is *proposed/shadow* until a consumer switches; do not create two simultaneously authoritative catalogues. **Conditional #353-B cutover:** migrate one constant consumer at a time only after exact parity and file ownership are reviewed. Digest-bound headers must retain their complete LF bytes and the current parser-compatible literal form. If that is impractical, stop at A and request a separately specified identity transition; do not regenerate away stale-policy refusals or relax comparisons. #353 remains open until its full accepted scope is delivered or the owner explicitly accepts the narrower checkpoint. A shadow demonstrator does not silently complete the original broad generator issue. The generator contract must include: - Explicit source schema, generator and output-manifest versions; immutable numeric IDs and namespaced keys; stable aliases such as `Gas` → `Smoke` at ID4. Display labels are non-authoritative. Alias/key collisions are errors; a label collision must be disambiguated by key, never resolve material identity. - Unknown-field, duplicate-object-key, invalid-reference, alias-cycle and out-of-range rejection. Integer fields reject booleans and lossy numeric coercion. Existing byte values, enum numbers, `uint16_t` density and state register widths remain exact; future non-integer fields need their own canonical encoding contract before admission. - Errors identify file plus JSON pointer and both origins of a conflict; syntax errors additionally include parser line/column. Unsupported schema versions, non-finite numbers and invalid optional-state contracts fail before any output swap. Keep existing Godot appearance expressions/float calculations unchanged until their literal/precision contract and parity are reviewed. - Stable ordering by identity and explicit legacy slot, deterministic escaping, UTF-8/LF bytes and final newline; no timestamps, absolute paths, locale or directory-enumeration order in generated content. Two clean output roots and permuted authoring-file discovery must produce byte-identical outputs. - Complete validation before replacing output files, no partial publication on failure, and `--check` that does not write. Retain last accepted"
+        },
+        {
+          "rank": 3,
+          "score": 13.874977,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > What the compiler owns",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > What the compiler owns\n[`catalogue.json`](../../materials/catalogue/catalogue.json) is a versioned, explicit authoring candidate. The [stdlib compiler](../../tools/material_catalogue/compiler.py) has one input file, no import discovery, inheritance, expressions, family defaults or runtime loader. Identity-bearing arrays normalize using declared IDs, keys and legacy slots rather than authoring order. It emits inspection metadata and C++/GDScript shadows under `materials/catalogue/generated/`. No native target or Godot production script consumes that directory. Production material physics and the existing generated liquid-policy artifacts remain unchanged. The records cover all 132 descriptor slots and all 15 descriptor fields, explicit hard/granular capabilities, visual-state projections, the 56 ordered compact pairs, 19 specialized provenance records, seven families and 33 memberships. Numeric enum encodings have fixed schema domains. Invalid10 and the Gas/Smoke alias remain explicit. Specialized metadata does not replace World's hand-coded execution, and the empty interaction-layer table remains empty. Semantic memberships never supply physical defaults. The GDScript shadow describes **native** metadata. It is not a replacement for CyberCellWorld's different fallback simulation. Fallback source facts and their qualification are recorded separately in the [compatibility lock](../../materials/catalogue/compatibility-lock.json). Candidate structs add inspection IDs/legacy slots and use primitive enum encodings. Their layout is deliberately separate from the native ABI; exact field/value comparison does not make them drop-in C API or Cell replacements."
+        },
+        {
+          "rank": 4,
+          "score": 13.283532,
+          "path": "operations/testing-validation-and-replay.md",
+          "title": "Testing, validation, and replay",
+          "heading": "Testing, validation, and replay > INT-000 intermaterial interaction validation",
+          "part": 1,
+          "text": "Document: Testing, validation, and replay\nPath: operations/testing-validation-and-replay.md\ndocument-kind: guide\nstatus: Current\nscope: Executable test selection and future gates; dated results and save format live in separate references\ncanonical-for: [test-inventory, test-selection, future-validation-gates]\nlast-reviewed: 2026-10-31\nSection: Testing, validation, and replay > INT-000 intermaterial interaction validation\n**Current:** `native/tests/test_world.cpp` retains a literal frozen copy of the pre-migration 14-rule compact pair oracle and compares it against the versioned resolver over every pair of IDs 0–80, both orientations and twelve probability-boundary samples. Separate MAT-002 checks cover each new rule in both roles across all 256 roll values and the derived partner prefilter across the full 256×256 byte-ID domain. The same regression checks layer precedence/conflict handling, explicit semantic family non-inheritance, and matching that is ordered, symmetric or unordered with role-preserving effects. Specialized neighbourhood/ lifecycle mechanisms remain in their existing `world.cpp` kernels and are represented/provenance-visible rather than duplicated. `test_microscenarios.gd` validates the native interaction profile/workbench provenance, rolling kinetic/contact baseline identity, deterministic repeat and one/four-worker semantic parity for the generated proof fixtures. `test_microscenario_materials_lab.gd` retains complete-definition GUI/headless identity, declared observations, source/sink accounting and transactional invalid replacement across every Materials Laboratory preset, including eventless INT-000 mechanism fixtures. For retained batch evidence, run: ```text python3 tools/interactions/batch.py --godot <godot> run --source-sha=<40-hex-sha> --workers=1,4 --output=<directory> python3 tools/interactions/batch.py compare <baseline-manifest.json> <candidate-manifest.json> --output=<comparison.json> ``` The batch driver delegates fixture construction/execution to schema-2 Godot. It fails on worker-semantic drift, preserves source/runtime/transport/Water/execution baseline identity, reports explicit coverage gaps and lists stable-ID rule/layer/pass fields changed between retained manifests. A comparison difference is review evidence, not an automatic tuning decision. Windows cross-build success is not Windows execution; browser/WebAssembly and target-GPU acceptance remain separate unless a dated run records them."
+        },
+        {
+          "rank": 5,
+          "score": 13.263465,
+          "path": "operations/current-and-historical-validation.md",
+          "title": "Current validation and retained M11 integrity",
+          "heading": "Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?",
+          "part": 1,
+          "text": "Document: Current validation and retained M11 integrity\nPath: operations/current-and-historical-validation.md\ndocument-kind: guide\nstatus: Current\nscope: Separate current source and runtime acceptance from immutable historical M11 evidence\ncanonical-for: [current-validation-gates, m11-retention-policy]\nlast-reviewed: 2026-10-20\nSection: Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?\nThe old checker compared today's source and binaries with the M11 hash table. Later implementation changes necessarily differ. An unresolved LFS pointer also differs from a materialized library. Neither comparison establishes corruption of the historical record. **Rejected:** editing M11 hashes or suppressing integrity errors to declare current success. **Current:** [check_m11_consistency.py](../../tools/ci/check_m11_consistency.py) verifies all 28 original [BUILD_ID](../BUILD_ID.md) source hashes against Git blobs at audited commit `05ea45fda7bdd7b0150eb86c4922c202e89e08f4`. It additionally verifies 18 retained records, including the original checker, against the [retention manifest](../audits/m11-retention.json). Text uses canonical Git LF bytes across Windows/Linux checkouts. Missing historical Git objects fail the check; fetch complete history. The historical tag and original hashes stay intact. `--compare-working-tree` explicitly requests the strict legacy comparison. It still exits nonzero when current files differ; its output is diagnostic drift, not the current release gate. The [dated reconciliation](../audits/2026-09-08-validation-reconciliation.md) preserves the previous failures and explains their resolution."
+        }
+      ]
+    },
+    {
+      "id": "MAT353A-06",
+      "query": "Can a future powder at ID132 accidentally become hard terrain or overwrite paired-wall experimental identities?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "The isolated synthetic registry explicitly authors hard_surface=false and granular support=true;candidate capabilities do not inherit from a range.",
+        "It cannot publish to the committed candidate directory or export a production/save/receipt identity.",
+        "PR358 IDs132–137 remain branch-qualified experimental claims, not accepted production materials or reservations."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 2,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 28.69277,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority",
+          "part": 2,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 11. Current-main review and implementation admission — 2026-11-03 > Minimum #353 slice: compile metadata alongside unchanged runtime authority\noutputs, source/schema/compiler identities and actionable drift diagnostics. Do not rewrite unchanged output files and thereby force unnecessary rebuilds. - Compile-time fixed arrays/bitsets and initialization-time policy validation; no tick-time JSON, strings, family search, maps, allocation, per-cell objects or added state. Keep the existing partner-bitset fast rejection and bounded sparse resolver. Treat host-side authoring source maps separately from native hot-path metadata. No performance benefit is claimed without measurement. IDs 0–131 and invalid10 stay unchanged. Draft #358 has experimental claims on 132–137; these are **not production Current reservations or accepted materials**. Record those branch-qualified claims so a source author does not reuse them accidentally. The ID132 non-hard-powder test in the original issues is valid only inside an explicitly isolated synthetic registry, with no generated production output, save, receipt or experiment export. It must not overwrite #358's experimental StoneWall132 identity. New production ID allocation still requires an explicit integration decision."
+        },
+        {
+          "rank": 2,
+          "score": 27.090524,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Synthetic powder ID132 and paired-material experiment isolation",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Synthetic powder ID132 and paired-material experiment isolation\nCurrent production IDs0–131 remain fixed, with invalid10 unusable. The isolated future powder at ID132 explicitly declares `hard_surface=false` and `granular_support=true`; no numeric range can grant hardness in the candidate map. Its test namespace cannot publish to the committed candidate directory or export a production/save/receipt identity. Draft #358's StoneWall132, SaltWall133, CoalWall134, DryBinder135, ActivatedBinder136 and BinderCrust137 are recorded as **branch-qualified experimental claims**, not accepted production reservations. A synthetic fixture does not rename, consume or integrate those identities. Their production allocation remains a separate integration decision. The source-level range predicate in production remains unchanged in #353-A. The candidate's explicit capability map fixes inheritance for the synthetic registry; production source guards prevent silently appending an ID through the old range. Switching the production predicate is a #353-B consumer change, requiring its own parity/identity review and applicable integration gates."
+        },
+        {
+          "rank": 3,
+          "score": 14.728644,
+          "path": "systems/granular-interaction-policy.md",
+          "title": "Granular interaction and sampled player policy",
+          "heading": "Granular interaction and sampled player policy > Which powders support the player?",
+          "part": 1,
+          "text": "Document: Granular interaction and sampled player policy\nPath: systems/granular-interaction-policy.md\ndocument-kind: contract\nstatus: Current\nscope: Version 1 material capability, sampled player support, pair exchange and deterministic permeability wakes\ncanonical-for: [granular-support-policy, granular-pair-policy, sampled-player-collision]\nlast-reviewed: 2026-09-25\nSection: Granular interaction and sampled player policy > Which powders support the player?\n**Current:** `MaterialRules::supports_granular_load` explicitly includes Sand, Stone, Dust, Seed, Salt, Sodium, Gunpowder, Coal and Rust. Density and hard-surface identity are independent. The native owner queries `World::granular_support_at`; the interpreted owner mirrors it in `CyberInteractionPolicy`. The policy itself does not create a Rapier collider, force or material ownership transfer. REM-002's rectangle coupling consumes the same bounded predicate against **stored** material to produce one cellular-owned bearing contribution; native cells remain material authority and main-thread Rapier remains rigid-body motion/contact authority. `InteractionPolicy` version 1 is immutable construction configuration. Downward support counts a 3 by 3 neighbourhood at x-1..x+1, y..y+2, including the contact cell. At least eight of nine samples must be hard terrain or support-capable powder that did not move/change in the last cellular tick. The contact itself must be a stable powder. Setup at tick zero permits immediate queries. This is local packing, not proof of connectivity to the world floor. A thick distant unsupported structure can temporarily satisfy the local approximation; cells continue to fall and invalidate it as motion reaches the neighbourhood. Side/upward resistance additionally requires all nine samples in the centred 3 by 3 neighbourhood. Loose grains and unsupported one-cell films therefore do not become invisible walls. Hard terrain and the current body mask always block. Excavation removes support on the next owner query, without cached colliders or a sleep prerequisite. The bounded probe does not certify arbitrary granular load paths. REM-002 now lets generic rectangle coupling use it only as a local current-material load sample, with a separate capped yielding impulse/correction; broad body↔granular acceptance remains REM-004 / #83."
+        },
+        {
+          "rank": 4,
+          "score": 14.339739,
+          "path": "operations/physics-characterisation-plan.md",
+          "title": "Physics characterisation and soliding plan",
+          "heading": "Physics characterisation and soliding plan > Phase 2: isolate each behaviour",
+          "part": 1,
+          "text": "Document: Physics characterisation and soliding plan\nPath: operations/physics-characterisation-plan.md\ndocument-kind: runbook\nstatus: Planned\nscope: Proposed experiments for material penetration, player support, barrel settling and reversible aggregate physics; inspection is not runtime acceptance\ncanonical-for: [physics-characterisation-plan, soliding-investigation]\nlast-reviewed: 2026-09-09\nSection: Physics characterisation and soliding plan > Phase 2: isolate each behaviour\n| Fixture | Variants | Measurements and proposed acceptance | |---|---|---| | P1: layered granular beds | All powder pairs in both vertical orders; first focus Sand/Dust, Stone/Sand, Rust/Sand. Dense packing, holes, slopes; supported and unsupported Stone. Hard Wall/Concrete controls. | Swaps/tick, interface width, centre of mass, settling/reordering time. Packed resting powders should not interpenetrate solely due to density; grains must still fall through actual voids and avalanche. Hard controls allow no material passage. | | P2: liquid over powder | Mercury, Water, Oil, Brine, Paste and Lava over Sand/Dust; reverse layers; 16/32/64-cell beds, dry and saturated, confined and with open sides. Add reactive pairs separately. | Penetration front, breakthrough time, displaced grain flux, reaction accounting. Proposed Mercury target: 10–50 times slower front speed than baseline in the canonical packed Sand bed, while still making progress. Other liquids need explicit permeability policy; density alone must not imply unrestricted passage. | | P3: player support | Walk, stand, fall, land on slopes and approach sides of each powder; settled versus falling grains, one-cell films, enclosed spawn, moving barrel and hard-floor controls. | Grounding, depth, jitter, blocked/passed cells and escape. Settled support-capable powders should stop ordinary downward passage; define loose-grain side resistance separately so airborne dust does not become an invisible wall. | | P4: barrel impacts | Canonical 8×14 barrel onto deep flat Sand, Dust, Salt and mixed beds; place gently, drop from 1/4/8 body heights; then mass 0.5/1/2, upright/45°/sideways and 1×/2× size. Compare Water/Oil/Mercury and hard floors. | Peak/final depth, settle time, late creep, rebound, angular motion, ejection and unresolved overlap. Establish the half-depth envelope below; liquid controls need distinct equilibrium behaviour. | | P5: loss of support | Excavate beneath a resting player/barrel, remove a supporting wall, impact the side, pour new grains, flood bed, explode nearby. | Support must disappear when the bed does; avoid permanent hover, invisible supports and stale collider trapping. Record displaced material and latency to wake/collapse. | | P6: timing and boundaries | Repeat chosen cases across activity/core/chunk seams; sleep/wake and leave/re-entry; phased 1/4 workers; desktop async and real Web compatibility/threaded. Inject bounded delayed/duplicate samples. | Exact cellular comparisons where traversal/configuration match; explicit trajectory tolerances for coupled bodies. Serial is a separate reference, not assumed identical to phased. Preserve failed-tick quarantine and region semantics. | For P4 define a baseline flat surface before impact and barrel projected vertical extent `H = abs(cos(theta))*height + abs(sin(theta))*width`. With downward-positive coordinates, depth is `max(0, bottom_y - initial_surface_y)`. Report this alongside local deformed-surface depth, crater shape and rotation so"
+        },
+        {
+          "rank": 5,
+          "score": 13.897532,
+          "path": "architecture/rigid-body-and-cellular-coupling.md",
+          "title": "Rigid-body and cellular coupling",
+          "heading": "Rigid-body and cellular coupling > What does REM-002 establish on Current source?",
+          "part": 1,
+          "text": "Document: Rigid-body and cellular coupling\nPath: architecture/rigid-body-and-cellular-coupling.md\ndocument-kind: contract\nstatus: Current\nscope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent\ncanonical-for: [rigid-body-cellular-coupling]\nlast-reviewed: 2026-10-22\nSection: Rigid-body and cellular coupling > What does REM-002 establish on Current source?\n**Current bounded baseline, 2026-09-24:** [REM-002 evidence](../audits/2026-09-24-rem002-issue11-integration-forensics.md) reconciles the never-integrated historical #11 repair into current main without claiming broad body/granular gameplay acceptance. Current semantics are: - a stored cell beneath a transient body mask remains material authority and does not execute its normal cellular kernel as the body Wall proxy; - ejection endpoints and their bounded path reject hard terrain and foreign body masks; if no legal target exists, the complete payload stays at the source and unresolved overlap is reported; - an ordinary rectangle may receive a bounded cellular-owned granular-bearing contribution from current support-capable packed material; - bearing is recomputed from current cells every accepted sample and disappears after excavation/support loss; there is no support cache or granular Rapier collider; - hard terrain remains Rapier/static-terrain contact, and liquids do not become granular bearing; - the existing 11-float input / 9-float result ABI and sample-age policy remain unchanged. On frozen source `df54e927...`, the focused real-Rapier Linux regression measured one-height Sand peak/final depth **3.748/0.000 cells**, four-height **6.652/1.472 cells**, and explicit excavation released the body into substantial downward travel. The exact runtime/platform qualifications and retained hashes are in the dated REM-002 audit. This is still a bounded ordinary rectangle/load baseline. General shapes, high energy/thin beds, crowding, sustained publication delay, calibrated force/torque, fracture and broad body↔granular gameplay acceptance remain outside this contract and are owned by REM-004 / #83 where applicable."
+        }
+      ]
+    },
+    {
+      "id": "MAT353A-07",
+      "query": "What is the rollback and next gate after the353-A material shadow compiler?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "Revert unused candidate tools/data/docs/CI as a unit;no World or save conversion is needed.",
+        "353-B separately reviews each consumer switch and exact-byte compatibility or an approved identity transition.",
+        "Liveness, endpoint semantics, effective UI editing and new production IDs retain separate gates and shared-file ownership."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 16.391491,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Production cutover, rollback and remaining decisions",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Production cutover, rollback and remaining decisions\n#353-A adds tooling and unused candidate data only. Reverting its tools, candidate directory, documentation routes and CI step restores the previous development workflow; no save or World conversion is needed. Existing kernels and policy artifacts remain the production authority throughout. #353-B requires a separate review of each proposed consumer switch. Preserve the exact header bytes and parser-compatible form where they bind identities, or design an explicitly versioned identity transition before changing them. Revert a switched consumer and its generated route as one unit. A stale-policy failure is evidence to resolve, not permission to update the oracle. #354 still requires reproduced liveness cases; #355 still owns new endpoint effects and their state/quantity contracts. Serialize overlapping World and quantity writes under one integration owner. #356 may inspect accepted metadata, but a slider requires an actual consumer and applied readback. Source fields whose native path ignores them remain read-only/unused. No Spark family, same-ID preservation, MoltenGlass thermal law, viscous rest, new production ID, runtime editing or save/ABI decision is made by these tools."
+        },
+        {
+          "rank": 2,
+          "score": 15.278037,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > Contents\n1. [Authority and preserved substrate](#1-authority-and-preserved-substrate) — what already exists, and what the programme may not overwrite. 2. [Source findings and fault hypotheses](#2-source-findings-and-fault-hypotheses) — exact observations, ownership and required reproductions. 3. [Orthogonal material classification](#3-orthogonal-material-classification) — browsing, physics, semantics and presentation stay independent. 4. [Canonical source model and compiler](#4-canonical-source-model-and-compiler) — source layout, generated outputs and hard validation. 5. [Interaction effects and effective parameters](#5-interaction-effects-and-effective-parameters) — explicit endpoint semantics, threshold representation and real kernel consumers. 6. [Scheduling and liveness qualification](#6-scheduling-and-liveness-qualification) — bounded wake obligations and gameplay-decision gates. 7. [Identity, compatibility and resource budgets](#7-identity-compatibility-and-resource-budgets) — do not change saves, cells, runtime authority or replay claims accidentally. 8. [Materials Lab authoring workflow](#8-materials-lab-authoring-workflow) — usable editing without fake live sliders or fallback claims. 9. [Issue dependency and acceptance plan](#9-issue-dependency-and-acceptance-plan) — finite steps, qualification, rollback and write-set separation. 10. [Decisions held for explicit disposition](#10-decisions-held-for-explicit-disposition) — questions to resolve with evidence rather than guesswork. 11. [Current-main review and implementation admission](#11-current-main-review-and-implementation-admission--2026-11-03) — corrected compatibility boundary, minimum compiler slice and owner decisions. 12. [Owner adoption and shadow-compiler handover](#12-owner-adoption-and-shadow-compiler-handover--2026-11-04) — documentation-only approval, separate implementation assignment and preserved compatibility gates. 13. [Bounded compatibility tooling and adopted-main reconciliation](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) — implemented shadow foundation, source-preserving integration and separate consumer-migration gates."
+        },
+        {
+          "rank": 3,
+          "score": 14.876911,
+          "path": "architecture/material-authoring-catalogue-plan.md",
+          "title": "Canonical material catalogue and interaction authoring — adopted Planned baseline",
+          "heading": "Canonical material catalogue and interaction authoring — adopted Planned baseline > 12. Owner adoption and shadow-compiler handover — 2026-11-04",
+          "part": 1,
+          "text": "Document: Canonical material catalogue and interaction authoring — adopted Planned baseline\nPath: architecture/material-authoring-catalogue-plan.md\ndocument-kind: design\nstatus: Planned\nscope: Owner-adopted Planned material-authoring baseline; section 13 records implemented 353-A shadow tooling and guarded integration qualification, while 353-B and all production changes require separate admission; sections 1–12 preserve dated proposal, review and adoption boundaries\ncanonical-for: [material-authoring-v1-programme-proposal]\nlast-reviewed: 2026-11-04\nSection: Canonical material catalogue and interaction authoring — adopted Planned baseline > 12. Owner adoption and shadow-compiler handover — 2026-11-04\n**Historical documentation-adoption decision, preserved.** #357 subsequently merged with its [final and post-merge checks](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556). The implementation-assignment statements below describe that documentation task; they do not describe the separately implemented #371 candidate. [Section 13](#13-bounded-compatibility-tooling-and-adopted-main-reconciliation--2026-11-04) records its current A-only scope and guarded integration. **Approved direction, retained Planned status.** The owner explicitly authorized adopting this corrected architecture and merging only the documentation after final checks. The [recorded decision](https://github.com/techrote/cybersand/pull/357#issuecomment-6619407158) supersedes the earlier adoption hold. It does not assign #353-A or any later implementation. Current native and GDScript definitions remain authoritative; no material behavior, default, Cell layout, transport, quantity, save, policy, receipt identity or runtime binary changes follow from accepting the plan. The [#353-A handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661) defines the next separately assigned task: strict versioned JSON, a Python-stdlib compiler, deterministic shadow outputs/source maps, an independent pre-generator source/backend oracle, strict and adversarial validation, read-only `--check`, unchanged-output preservation and no partial publication after validation failure. The architecture-adoption prerequisite is now satisfied; the implementation assignment remains outstanding. Broad #353 and parent #352 remain open. The first implementation compares all existing identities/descriptors, all 256 byte-ID predicate outcomes, semantic families, ordered compact/specialized rules, relevant ordering/threshold/orientation/no-op semantics, original source bytes and known-answer tests. It must preserve backend differences and complete material/ interaction header-byte identities. Semantic equality does not establish source-byte compatibility. Production consumer cutover requires its own exact-byte review or an explicitly authorized identity transition, with rollback and appropriate gates. At adoption intake, accepted main was `0fd4af5987e77db4da3e37c757cf2c0917ae9e15` and the reviewed proposal was `9b776d109e7843fb9b2d25239f9d088181309aa1`. The [integration ledger](https://github.com/techrote/cybersand/pull/357) owns final-head, merge and post-merge documentation results. The earlier [readiness checkpoint](https://github.com/techrote/cybersand/pull/357#issuecomment-6619191972) preserves its actual tested tree, draft-state provenance skip and retrieval limits; its green runs are not claims about a later edited head. Ready-state and post-merge Documentation checks must validate materialized runtime identity; this does not require Native/GDExtension/gameplay execution for a documentation-only change. Before implementing A, independently recapture newly accepted main and active file ownership. PR #358's IDs132–137 remain experimental at this decision; if that work lands first, baseline the accepted result instead of importing its unmerged candidate. Keep #353 → (#354 and #355, serializing overlapping writes) → #356. Identity transition, production ID allocation, Spark membership, endpoint/ quantity exceptions, MoltenGlass thermal law, viscous retry/rest and runtime editing remain separate decisions. This adoption grants no new material physics or automatic inheritance."
+        },
+        {
+          "rank": 4,
+          "score": 14.844994,
+          "path": "reference/status-and-roadmap.md",
+          "title": "Status and foundational roadmap",
+          "heading": "Status and foundational roadmap > Material authoring Planned adoption — 2026-11-04",
+          "part": 1,
+          "text": "Document: Status and foundational roadmap\nPath: reference/status-and-roadmap.md\ndocument-kind: reference\nstatus: Current\nscope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints\ncanonical-for: [implementation-status, foundational-priorities, open-decisions]\nlast-reviewed: 2026-11-04\nSection: Status and foundational roadmap > Material authoring Planned adoption — 2026-11-04\n**Historical documentation-adoption scope.** The assignment statements below precede reconciliation of the separately implemented #371 candidate. The current A-only status is recorded above; the original adoption remains intact. The [corrected MAT-AUTH architecture is owner-adopted as Planned](../architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04). The owner approved documentation-only guarded integration of #357 after final checks; the [PR ledger](https://github.com/techrote/cybersand/pull/357) records actual integration status. This supersedes only the adoption hold in the dated review below. Runtime material behavior and backend/source-byte identities remain unchanged, and #353-A implementation is still a separate, unstarted assignment. Use the [bounded shadow-compiler handover](https://github.com/techrote/cybersand/issues/353#issuecomment-6619162661) before that assignment. Keep the #353 → (#354/#355) → #356 chain and all separate consumer-cutover, semantics and runtime-editing decisions; parent #352 stays open."
+        },
+        {
+          "rank": 5,
+          "score": 13.95105,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Native GDScript metadata and fallback Slush density",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Native GDScript metadata and fallback Slush density\nNative Slush density1080 and fallback Slush density1100 remain distinct. Fallback density, identity, hard/granular and RGBA facts are source-observed, with no claim of fallback movement or rendered-pixel parity. The unchanged Godot appearance expressions retain their existing precision and startup behaviour. The generated GDScript mirror contains native facts only and is not loaded by CyberCellWorld. A separate optional [Godot metadata readback](../../tools/material_catalogue/check_gdscript_shadow.py) authenticates the pinned editor archive and executable, requires a matching native-parity receipt, and loads only the candidate in a temporary empty project. Actual Godot 4.7 parses and reads all metadata; this is not a game-project, native-extension, fallback-physics or rendered-pixel test. The receipt must contain the exact three checker/oracle inputs and five catalogue/mirror inputs; missing, duplicated, renamed or stale entries fail. The checker verifies the whole inventory again after readback. Report paths cannot overwrite their checked inputs. A truncated local editor archive was refused during qualification; the accepted readback used the complete archive matching the repository's size and SHA-256 pin."
+        }
+      ]
+    },
+    {
+      "id": "MAT353A-08",
+      "query": "Which commands check the material shadow compiler, and do they run expensive physics scenarios?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "Run compatibility.py--check,compiler.py--check,the focused Python tests andcheck_native_parity.py.",
+        "Generation uses Python stdlib;the metadata/query oracle requires C++20.",
+        "The existing Documentation workflow runs bounded tooling checks without enabling draft physics matrices."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true,
+      "canonical_rank": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "score": 27.244287,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Validation, errors and deterministic publication",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Validation, errors and deterministic publication\nThe compiler rejects unknown fields, duplicate JSON keys, unsupported versions, non-finite values, booleans in integer fields, out-of-range values, invalid references, alias/key conflicts, duplicate legacy slots and ambiguous pair ownership. Errors include the source file and JSON pointer; conflicts identify both origins, and JSON syntax errors also report line/column. Unsupported defaults, state contracts or active interaction layers are rejected instead of interpreted through implicit precedence. Valid inert `RuleKernel::None` targets remain admissible: a reaction participant need not own the tick that initiates its reaction. The compiler does not change wake state, endpoint effects, solver selection or parameter consumption. Output is UTF-8 with LF and a final newline, deterministic escaping and stable ordering. No timestamp, local absolute path or directory order enters generated content. `--check` is nonwriting; missing or stale output fails with a named artifact. Validation completes before publication, and unchanged files retain their bytes and modification times. Negative tests require failure to preserve the previously accepted output set. Run from a complete source checkout: ```text python3 tools/material_catalogue/compatibility.py --check python3 tools/material_catalogue/compiler.py --check python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py' python3 tools/material_catalogue/check_native_parity.py ``` The native query check and the focused generated-C++ regression require a C++20 compiler; JSON generation and strict validation use Python's standard library. CI reuses the existing hosted Documentation workflow and execution watchdog. These focused commands do not run World scenarios or require a Godot download; expensive draft lanes stay suppressed. Under the existing ready-state path classifiers, this tools/data implementation also triggers the full Native and Windows/Linux GDExtension/Godot gates when #371 becomes ready. Those configured integration checks remain required; a draft skip or metadata readback is not a substitute. Freeze and independently review the candidate before that transition to avoid redundant matrices. Record actual jobs and any skips in the PR ledger. For optional actual Godot metadata readback, use a complete editor archive and executable matching `third_party/godot-runtime.lock.json`. Produce a native snapshot and receipt from the same source, then invoke the checker: ```text mkdir -p build/material-catalogue c++ -std=c++20 -O2 -I native/include tools/material_catalogue/native_oracle.cpp native/src/material_rules.cpp -o build/material-catalogue/oracle build/material-catalogue/oracle --snapshot > build/material-catalogue/native-snapshot.json python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json python3 tools/material_catalogue/check_gdscript_shadow.py --godot /path/to/pinned-editor --archive /path/to/pinned-editor.zip --native-snapshot build/material-catalogue/native-snapshot.json --native-report build/material-catalogue/native-parity.json --output build/material-catalogue/gdscript-parity.json ``` The helper does not download or modify the editor. Its temporary project loads only the generated metadata. The native receipt's snapshot hash must match, and its complete source/mirror inventory must still be current. This optional engine parser proof is separate from the default documentation CI gate."
+        },
+        {
+          "rank": 2,
+          "score": 22.200648,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Independent native parity for descriptors, reaction ordinals and capabilities",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Independent native parity for descriptors, reaction ordinals and capabilities\nThe [native oracle](../../tools/material_catalogue/native_oracle.cpp) is a standalone metadata/query executable compiled against the unchanged source. The [parity driver](../../tools/material_catalogue/check_native_parity.py) compiles the generated C++ shadow and compares it to actual native records and query results. Expected native facts do not come from the compiler. This executes metadata and pure queries, not World ticks or physics scenarios. The compiled comparison passes all 132 descriptors, all 15 fields, 256 byte-ID capability and fallback responses, 56 pair rules and 19 specialized records with exact legacy ordinals. It checks all 16,777,216 source-ID/target-ID/roll combinations against both the native resolver and its MaterialRules wrapper. The same bounded executable covers density-exchange direction, viscosity, lateral rate, family membership, complete uint16 validity and visual projection. These are actual pure-query checks; they do not certify World scheduling or reaction state effects. Those production owners are protected by unchanged bytes."
+        },
+        {
+          "rank": 3,
+          "score": 17.606255,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Native GDScript metadata and fallback Slush density",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Native GDScript metadata and fallback Slush density\nNative Slush density1080 and fallback Slush density1100 remain distinct. Fallback density, identity, hard/granular and RGBA facts are source-observed, with no claim of fallback movement or rendered-pixel parity. The unchanged Godot appearance expressions retain their existing precision and startup behaviour. The generated GDScript mirror contains native facts only and is not loaded by CyberCellWorld. A separate optional [Godot metadata readback](../../tools/material_catalogue/check_gdscript_shadow.py) authenticates the pinned editor archive and executable, requires a matching native-parity receipt, and loads only the candidate in a temporary empty project. Actual Godot 4.7 parses and reads all metadata; this is not a game-project, native-extension, fallback-physics or rendered-pixel test. The receipt must contain the exact three checker/oracle inputs and five catalogue/mirror inputs; missing, duplicated, renamed or stale entries fail. The checker verifies the whole inventory again after readback. Report paths cannot overwrite their checked inputs. A truncated local editor archive was refused during qualification; the accepted readback used the complete archive matching the repository's size and SHA-256 pin."
+        },
+        {
+          "rank": 4,
+          "score": 17.1563,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > Safe authoring workflow and experimental identities",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > Safe authoring workflow and experimental identities\nInspect the supported record contract, edit a copy of the authoring candidate, run validation into a temporary candidate output root, and inspect the resulting diff and diagnostics. Reordering input records cannot change meaning. Generated metadata remains a proposal until the independent parity and source guards pass and a consumer cutover is separately admitted."
+        },
+        {
+          "rank": 5,
+          "score": 15.055837,
+          "path": "operations/material-catalogue-shadow.md",
+          "title": "Material catalogue shadow compiler and compatibility guards",
+          "heading": "Material catalogue shadow compiler and compatibility guards > What the compiler owns",
+          "part": 1,
+          "text": "Document: Material catalogue shadow compiler and compatibility guards\nPath: operations/material-catalogue-shadow.md\ndocument-kind: guide\nstatus: Current\nscope: Implemented MAT-AUTH-001 353-A shadow tooling and adopted-main integration qualification; production authority and physics are unchanged, with consumer migration and later stages separately unadmitted\ncanonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]\nlast-reviewed: 2026-11-04\nSection: Material catalogue shadow compiler and compatibility guards > What the compiler owns\n[`catalogue.json`](../../materials/catalogue/catalogue.json) is a versioned, explicit authoring candidate. The [stdlib compiler](../../tools/material_catalogue/compiler.py) has one input file, no import discovery, inheritance, expressions, family defaults or runtime loader. Identity-bearing arrays normalize using declared IDs, keys and legacy slots rather than authoring order. It emits inspection metadata and C++/GDScript shadows under `materials/catalogue/generated/`. No native target or Godot production script consumes that directory. Production material physics and the existing generated liquid-policy artifacts remain unchanged. The records cover all 132 descriptor slots and all 15 descriptor fields, explicit hard/granular capabilities, visual-state projections, the 56 ordered compact pairs, 19 specialized provenance records, seven families and 33 memberships. Numeric enum encodings have fixed schema domains. Invalid10 and the Gas/Smoke alias remain explicit. Specialized metadata does not replace World's hand-coded execution, and the empty interaction-layer table remains empty. Semantic memberships never supply physical defaults. The GDScript shadow describes **native** metadata. It is not a replacement for CyberCellWorld's different fallback simulation. Fallback source facts and their qualification are recorded separately in the [compatibility lock](../../materials/catalogue/compatibility-lock.json). Candidate structs add inspection IDs/legacy slots and use primitive enum encodings. Their layout is deliberately separate from the native ABI; exact field/value comparison does not make them drop-in C API or Cell replacements."
+        }
+      ]
+    }
+  ]
+}
