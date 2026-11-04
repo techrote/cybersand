@@ -2,8 +2,16 @@ name: PLAY-BUSY-001B real native phase host
 
 on:
   push:
-    branches: [codex/play-busy001a-pool-20261029]
+    branches:
+      - codex/play-busy001a-pool-20261029
+      - codex/play-busy001c-rendered-20261029
   workflow_dispatch:
+    inputs:
+      full_host:
+        description: "Explicitly run the original build/host campaign; #304 defaults to controls only"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -13,6 +21,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  CYBERSAND_CI_WATCHDOG_SCALE: "1"
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
   GODOT_LINUX_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
   GODOT_LINUX_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
@@ -24,6 +33,7 @@ env:
 
 jobs:
   linux-real-host:
+    if: ${{ (github.event_name == 'push' && github.ref_name == 'codex/play-busy001a-pool-20261029') || (github.event_name == 'workflow_dispatch' && inputs.full_host) }}
     runs-on: ubuntu-24.04
     # Existing 35m + 20m child builds, exact-source setup and evidence.
     timeout-minutes: 90
@@ -42,7 +52,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           mkdir -p build/play-busy001b/linux
           git rev-parse HEAD > build/play-busy001b/linux/source-sha.txt
-          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/linux/source-inputs.sha256
+          git ls-files -z -- native godot/native_extension godot/scripts godot/shaders godot/tests godot/project.godot godot/main.tscn tools/ci .github/workflows/play-busy001b-host.yml | xargs -0 sha256sum > build/play-busy001b/linux/source-inputs.sha256
 
       - name: Materialize pinned Linux Rapier only
         run: |
@@ -129,6 +139,79 @@ jobs:
           python3 tools/ci/readback_play_busy001b.py             --log build/play-busy001b/linux/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so             --godot-version "$GODOT_VERSION" --platform linux             --instrumentation-patch tools/ci/play_busy001b_instrumentation.patch             --source-inputs build/play-busy001b/linux/source-inputs.sha256             --instrumented-source build/play-busy001b/linux/instrumented-source.sha256             --output build/play-busy001b/linux/receipt.json
           git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'             ':!godot/.godot'
 
+      - name: Verify graphical process custody, reader negatives and original watchdogs
+        run: |
+          python3 tools/ci/test_play_busy001c_runner_session.py
+          python3 tools/ci/test_play_busy001c_process.py
+          python3 tools/ci/test_readback_play_busy001c.py
+          python3 -O tools/ci/test_readback_play_busy001c.py
+          python3 tools/ci/test_physical_progress_watchdog.py
+          python3 tools/ci/test_godot_process_monitor.py
+          python3 tools/ci/test_play_busy001c_gdb.py
+
+      - name: Install Linux software rendering display for 001C
+        if: github.ref_name == 'codex/play-busy001c-rendered-20261029'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils
+
+      - name: Render actual framebuffer while real native phase jobs are held
+        id: render001c
+        if: github.ref_name == 'codex/play-busy001c-rendered-20261029'
+        env:
+          GODOT_SILENCE_ROOT_WARNING: "1"
+          LIBGL_ALWAYS_SOFTWARE: "1"
+          LP_NUM_THREADS: "2"
+          GALLIVM_PERF: "nopt"
+          CYBERSAND_PLAY_BUSY_RENDER_EVIDENCE: ${{ github.workspace }}/build/play-busy001b/linux/render
+        run: |
+          set -euo pipefail
+          mkdir -p build/play-busy001b/linux/render
+          # Preserve the 120s case. Reserve the current shared 240s cleanup
+          # allowance outside it; the old 150s parent could truncate evidence.
+          PARENT_SECONDS="$(python3 -c 'import sys; sys.path.insert(0, "tools/ci"); from run_play_busy001c_render import parent_seconds; print(parent_seconds())')"
+          timeout --signal=TERM --kill-after=5s "${PARENT_SECONDS}s" \
+            xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+            python3 tools/ci/run_play_busy001c_render.py \
+              --godot "$GODOT_BIN" \
+              --platform linux \
+              --source-sha "$GITHUB_SHA" \
+              --runtime build/play-busy001b/linux/libcybersand_native.linux.x86_64.so \
+              --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so \
+              --output build/play-busy001b/linux
+          python3 tools/ci/readback_play_busy001c.py \
+            --log build/play-busy001b/linux/render-execution.log \
+            --process-receipt build/play-busy001b/linux/render-process.json \
+            --evidence-dir build/play-busy001b/linux/render \
+            --source-sha "$GITHUB_SHA" \
+            --runtime build/play-busy001b/linux/libcybersand_native.linux.x86_64.so \
+            --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so \
+            --godot-version "$GODOT_VERSION" \
+            --platform linux \
+            --output build/play-busy001b/linux/render-receipt.json
+
+      - name: Retain nonqualifying Linux GDB stack after graphical refusal
+        if: ${{ failure() && steps.render001c.outcome == 'failure' && github.ref_name == 'codex/play-busy001c-rendered-20261029' }}
+        timeout-minutes: 3
+        env:
+          GODOT_SILENCE_ROOT_WARNING: "1"
+          LIBGL_ALWAYS_SOFTWARE: "1"
+          LP_NUM_THREADS: "2"
+          GALLIVM_PERF: "nopt"
+          CYBERSAND_PLAY_BUSY_RENDER_EVIDENCE: ${{ github.workspace }}/build/play-busy001b/linux/gdb-diagnostic/render
+        run: |
+          # Diagnostic-only second process after failure. Never reclassify the
+          # original 001C result or count this as under-hold qualification.
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes gdb
+          python3 tools/ci/test_play_busy001c_gdb.py
+          sha256sum tools/ci/trace_play_busy001c_gdb.py tools/ci/test_play_busy001c_gdb.py \
+            > build/play-busy001b/linux/gdb-diagnostic-sources.sha256
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+            python3 tools/ci/trace_play_busy001c_gdb.py \
+              --godot "$GODOT_BIN" --hold-seconds 22 \
+              --output build/play-busy001b/linux/gdb-diagnostic
+
       - name: Retain exact Linux evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -136,9 +219,10 @@ jobs:
           name: play-busy001b-linux-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-busy001b/linux/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
 
   windows-build:
+    if: ${{ (github.event_name == 'push' && github.ref_name == 'codex/play-busy001a-pool-20261029') || (github.event_name == 'workflow_dispatch' && inputs.full_host) }}
     runs-on: ubuntu-24.04
     # Existing 35m + 20m child builds, exact-source setup and evidence.
     timeout-minutes: 90
@@ -157,7 +241,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           mkdir -p build/play-busy001b/windows-build
           git rev-parse HEAD > build/play-busy001b/windows-build/source-sha.txt
-          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/windows-build/source-inputs.sha256
+          git ls-files -z -- native godot/native_extension godot/scripts godot/shaders godot/tests godot/project.godot godot/main.tscn tools/ci .github/workflows/play-busy001b-host.yml | xargs -0 sha256sum > build/play-busy001b/windows-build/source-inputs.sha256
 
       - name: Install pinned SCons
         run: |
@@ -216,9 +300,10 @@ jobs:
           name: play-busy001b-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-busy001b/windows-build/
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 90
 
   windows-real-host:
+    if: ${{ (github.event_name == 'push' && github.ref_name == 'codex/play-busy001a-pool-20261029') || (github.event_name == 'workflow_dispatch' && inputs.full_host) }}
     needs: windows-build
     runs-on: windows-2022
     timeout-minutes: 20
@@ -291,6 +376,42 @@ jobs:
           PY
           python tools/ci/readback_play_busy001b.py             --log build/play-busy001b/windows/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/windows/cybersand_native.windows.x86_64.dll             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll             --godot-version "$GODOT_VERSION" --platform windows             --instrumentation-patch tools/ci/play_busy001b_instrumentation.patch             --source-inputs build/play-busy001b/windows/source-inputs.sha256             --instrumented-source build/play-busy001b/windows/instrumented-source.sha256             --output build/play-busy001b/windows/receipt.json
 
+      - name: Verify Windows graphical custody and independent reader
+        run: |
+          python tools/ci/test_play_busy001c_process.py
+          python tools/ci/test_play_busy001c_runner_session.py
+          python tools/ci/test_readback_play_busy001c.py
+          python -O tools/ci/test_readback_play_busy001c.py
+          python tools/ci/test_physical_progress_watchdog.py
+          python tools/ci/test_godot_process_monitor.py
+
+      - name: Render actual Windows framebuffer while real native phase jobs are held
+        if: github.ref_name == 'codex/play-busy001c-rendered-20261029'
+        env:
+          GODOT_SILENCE_ROOT_WARNING: "1"
+          PYTHONUTF8: "1"
+          CYBERSAND_PLAY_BUSY_RENDER_EVIDENCE: ${{ github.workspace }}/build/play-busy001b/windows/render
+        run: |
+          set -euo pipefail
+          mkdir -p build/play-busy001b/windows/render
+          python tools/ci/run_play_busy001c_render.py \
+            --godot "$GODOT_BIN" \
+            --platform windows \
+            --source-sha "$GITHUB_SHA" \
+            --runtime build/play-busy001b/windows/cybersand_native.windows.x86_64.dll \
+            --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll \
+            --output build/play-busy001b/windows
+          python tools/ci/readback_play_busy001c.py \
+            --log build/play-busy001b/windows/render-execution.log \
+            --process-receipt build/play-busy001b/windows/render-process.json \
+            --evidence-dir build/play-busy001b/windows/render \
+            --source-sha "$GITHUB_SHA" \
+            --runtime build/play-busy001b/windows/cybersand_native.windows.x86_64.dll \
+            --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll \
+            --godot-version "$GODOT_VERSION" \
+            --platform windows \
+            --output build/play-busy001b/windows/render-receipt.json
+
       - name: Retain exact Windows execution evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -298,4 +419,68 @@ jobs:
           name: play-busy001b-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-busy001b/windows/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 90
+
+  windows-cleanup-controls:
+    # #304 pushes run only these process/receipt controls, not the old campaign.
+    # This job does not constitute graphical 001C acceptance.
+    if: ${{ github.ref_name == 'codex/play-busy001c-rendered-20261029' || github.event_name == 'workflow_dispatch' }}
+    runs-on: windows-2022
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - name: Check out exact repair source without runtime downloads
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Record source and test scope
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python tools/ci/check_ci_provider_policy.py
+          mkdir -p build/play-busy001c-cleanup-controls
+          git rev-parse HEAD > build/play-busy001c-cleanup-controls/source-sha.txt
+          git rev-parse 'HEAD^{tree}' > build/play-busy001c-cleanup-controls/source-tree.txt
+          sha256sum tools/ci/play_busy001c_process.py tools/ci/run_play_busy001c_render.py \
+            tools/ci/test_play_busy001c_process.py tools/ci/test_play_busy001c_windows_cleanup.py \
+            tools/ci/test_play_busy001c_cleanup_receipt.py \
+            godot/tests/play_busy001c_render.gd .github/workflows/play-busy001b-host.yml \
+            > build/play-busy001c-cleanup-controls/source-inputs.sha256
+          printf '%s\n' 'Process/receipt controls only; NOT graphical 001C qualification.' \
+            > build/play-busy001c-cleanup-controls/SCOPE.txt
+      - name: Run unchanged custody and repaired Win32/receipt controls
+        run: |
+          set -euo pipefail
+          python tools/ci/test_play_busy001c_process.py 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/custody.log
+          python tools/ci/test_play_busy001c_windows_cleanup.py --require-windows 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/windows.log
+          python tools/ci/test_play_busy001c_cleanup_receipt.py 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/receipt.log
+      - name: Repeat controls with Python assertions disabled
+        run: |
+          set -euo pipefail
+          python -O tools/ci/test_play_busy001c_process.py 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/custody-optimized.log
+          python -O tools/ci/test_play_busy001c_windows_cleanup.py --require-windows 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/windows-optimized.log
+          python -O tools/ci/test_play_busy001c_cleanup_receipt.py 2>&1 \
+            | tee build/play-busy001c-cleanup-controls/receipt-optimized.log
+      - name: Retain original process-control evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-busy001c-cleanup-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-busy001c-cleanup-controls/
+          if-no-files-found: error
+          retention-days: 90

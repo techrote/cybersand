@@ -76,6 +76,22 @@ class WatchdogTests(unittest.TestCase):
 
 
 class PolicyTests(unittest.TestCase):
+    def test_busy001c_protocol_keeps_original_bounds_without_changing_shared_policy(self):
+        busy = ProgressWatchdog("play_busy001c_render", 0)
+        self.assertFalse(busy.capture_due(29.999))
+        self.assertTrue(busy.capture_due(30))
+        self.assertFalse(busy.expired(44.999))
+        self.assertTrue(busy.expired(45))
+        ordinary = ProgressWatchdog("test_physical_actor_rigs", 0)
+        self.assertFalse(ordinary.capture_due(45))
+        self.assertFalse(ordinary.expired(45))
+
+    def test_busy001c_clock_only_samples_do_not_hide_a_stall(self):
+        busy = ProgressWatchdog("play_busy001c_render", 0)
+        busy.observe('CYBERSAND_PROGRESS {"case":"play_busy001c_render","phase":"course_queued","sequence":3,"elapsed_ms":1}', 1)
+        busy.observe('CYBERSAND_PROGRESS {"case":"play_busy001c_render","phase":"course_queued","sequence":3,"elapsed_ms":44000}\nPLAY_BUSY001C_COURSE_SAMPLE {"native_tick":99}', 44)
+        self.assertTrue(busy.expired(46))
+
     def test_production_idle_watchdog_does_not_reinstate_old_cold_start_limit(self):
         self.assertEqual(subject.FAIL_IDLE_SECONDS, subject.watchdog_seconds("complex_fixture_seconds"))
         self.assertGreater(subject.FAIL_IDLE_SECONDS, subject.watchdog_seconds("main_ack_seconds"))

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-11-02
+last-reviewed: 2026-11-03
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -33,6 +33,9 @@ artifacts and later nonqualifying diagnostics must not be relabeled as passing
 authoritative executions. Historical references below to an unmet native-busy
 gate describe those earlier slices; #302 and the owner decision supersede that
 dependency without broadening their original evidence claims.
+The [3 November current-main apparatus reconciliation](../audits/2026-10-29-play-busy001c-rendered-hold.md#current-main-reconciliation-and-original-process-verification--2026-11-03)
+preserves that optional scope and adds strict original-process/pixel verification;
+its own exact-source host outcomes remain separately recorded.
 
 Live state checked on 2026-10-30: #266, #267 and #273 are completed/closed;
 #265 remains closed Not Planned; #271 is deferred; #272 remains conditional
@@ -771,3 +774,15 @@ routes, real gamepad/window-focus behavior and browser execution are not
 established by headless tests. Actual Windows headless execution does not
 establish interactive Windows feel. Generic body/granular, soliding and Water successor acceptance
 retain their existing programme owners.
+
+
+## Optional BUSY001C Windows repair candidate — 2026-11-03
+
+The [dated BUSY001C repair record](../audits/2026-10-29-play-busy001c-rendered-hold.md#windows-cleanup-repair-candidate-and-separate-startup-assessment--2026-11-03)
+keeps creation-bound Windows cleanup, passive selected-palette provenance and
+cold/warm Main startup assessment separate. Cleanup success never qualifies a
+timed-out graphical test. #304 remains optional/draft; original source results
+are not transferred to its repaired successor, and #334 is not changed or blocked.
+The controls-only Windows job is not a full-host, physical-display or human-feel
+qualification. Startup measurement is a separately registered, unexecuted proposal;
+001C's substantive requirements and 30/45/120-second protocol remain unchanged.
