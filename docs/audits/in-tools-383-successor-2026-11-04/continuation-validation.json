@@ -1,0 +1,739 @@
+{
+  "schema": "pr383-continuation-validation-v1",
+  "recorded_utc": "2026-11-04T21:41:11.905398+00:00",
+  "status": "PASS_AFTER_COMPANION_RESTORATION",
+  "scope": "Documentation, source/runtime identity, retained historical checks and independent packet reduction after publication transport continuation; no new native or Godot execution.",
+  "source_execution_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+  "authenticated_implementation": "f2f673e4a961207347dd8708dce7d6b63788a432",
+  "authenticated_evidence_parent": "83e9825f4b4c30153361809d74d273abcf33587f",
+  "validation_candidate_before_record_addition_tree": "b96286a18c521790fdd8e5c3245aea70daa0c58d",
+  "input_sha256": {
+    "tools/ci/check_docs.py": "3509bba9904b0134c81eccd825162b62251655e4bfdc67bd0e106edf671e9ac9",
+    "tools/ci/check_repository.py": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+    "tools/ci/check_m11_consistency.py": "8d1e3ce2f92c02b388b243082b08a8b27fac2e0e02d652935a7a7cb6b9885a7c",
+    "tools/docs/retrieval_eval.py": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+    "docs/operations/cybersand-codex-development-handover.md": "bed0d01c98ccfcc08fffd6c7479054b2c160617a7926c5823647b210591e1739",
+    "docs/operations/in-tools-metered-drain.md": "4220bd6df0b6a6a6a11458a678e0f255b9811dc6dfd22c5ca9e3a4ba5f714cb9",
+    "docs/audits/2026-11-04-in-tools-383-successor-correction.md": "22002aa9fb04dfc771acba8bd09e2ea8d0eddb73916821b2d4f1da613e8a00f1",
+    "docs/audits/in-tools-383-successor-2026-11-04/check-published.py": "ee540c13990b9c0b795eac46af826f039e239be1280f5ef1aaa55416cf2a9f60"
+  },
+  "initial_attempt": {
+    "schema": "pr383-completion-local-validation-v1",
+    "started_from_authenticated_evidence_commit": "83e9825f4b4c30153361809d74d273abcf33587f",
+    "candidate_index_tree": "b96286a18c521790fdd8e5c3245aea70daa0c58d",
+    "scope": "Documentation, source/runtime identity, retained historical checks and independent packet reduction after publication transport continuation; no new native or Godot execution.",
+    "input_sha256": {
+      "tools/ci/check_docs.py": "3509bba9904b0134c81eccd825162b62251655e4bfdc67bd0e106edf671e9ac9",
+      "tools/ci/check_repository.py": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+      "tools/ci/check_m11_consistency.py": "8d1e3ce2f92c02b388b243082b08a8b27fac2e0e02d652935a7a7cb6b9885a7c",
+      "tools/docs/retrieval_eval.py": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "docs/operations/cybersand-codex-development-handover.md": "bed0d01c98ccfcc08fffd6c7479054b2c160617a7926c5823647b210591e1739",
+      "docs/operations/in-tools-metered-drain.md": "4220bd6df0b6a6a6a11458a678e0f255b9811dc6dfd22c5ca9e3a4ba5f714cb9",
+      "docs/audits/2026-11-04-in-tools-383-successor-correction.md": "22002aa9fb04dfc771acba8bd09e2ea8d0eddb73916821b2d4f1da613e8a00f1",
+      "docs/audits/in-tools-383-successor-2026-11-04/check-published.py": "ee540c13990b9c0b795eac46af826f039e239be1280f5ef1aaa55416cf2a9f60"
+    },
+    "results": [
+      {
+        "name": "docs",
+        "command": [
+          "python3",
+          "-B",
+          "tools/ci/check_docs.py"
+        ],
+        "started_utc": "2026-11-04T21:39:29.964987+00:00",
+        "duration_seconds": 1.379310208998504,
+        "timeout_seconds": 180,
+        "returncode": 1,
+        "stdout_sha256": "3be513b66dec9a15f51cdb7e603db4c2c7f48391d737519164acb5c6269b8958",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "repository",
+        "command": [
+          "python3",
+          "-B",
+          "tools/ci/check_repository.py",
+          "--require-materialized",
+          "--json",
+          "/workspace/scratch/6e4012698bfb/pr383-completion/validation-completion-01/repository.json"
+        ],
+        "started_utc": "2026-11-04T21:39:29.965326+00:00",
+        "duration_seconds": 1.8432818899891572,
+        "timeout_seconds": 180,
+        "returncode": 1,
+        "stdout_sha256": "4118e1c62cc15f1aec9f4e0c4ab4dd3e5effc72182660f8c62f1d7e8c6bd8620",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "m11",
+        "command": [
+          "python3",
+          "-B",
+          "tools/ci/check_m11_consistency.py",
+          "--json",
+          "/workspace/scratch/6e4012698bfb/pr383-completion/validation-completion-01/m11.json"
+        ],
+        "started_utc": "2026-11-04T21:39:29.966346+00:00",
+        "duration_seconds": 0.17129649699199945,
+        "timeout_seconds": 180,
+        "returncode": 0,
+        "stdout_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "lfs",
+        "command": [
+          "git",
+          "lfs",
+          "fsck"
+        ],
+        "started_utc": "2026-11-04T21:39:29.967440+00:00",
+        "duration_seconds": 0.3959389200026635,
+        "timeout_seconds": 180,
+        "returncode": 0,
+        "stdout_sha256": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "diff-check",
+        "command": [
+          "git",
+          "diff",
+          "--cached",
+          "--check"
+        ],
+        "started_utc": "2026-11-04T21:39:30.137771+00:00",
+        "duration_seconds": 0.0072958160017151386,
+        "timeout_seconds": 180,
+        "returncode": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "packet",
+        "command": [
+          "python3",
+          "-B",
+          "docs/audits/in-tools-383-successor-2026-11-04/check-published.py",
+          "--repo",
+          "/workspace/scratch/6e4012698bfb/pr383-completion/source",
+          "--candidate",
+          "INDEX",
+          "--raw-task-root",
+          "/workspace/scratch/dc49a0ed2f07/pr383-successor"
+        ],
+        "started_utc": "2026-11-04T21:39:30.145153+00:00",
+        "duration_seconds": 6.174377047995222,
+        "timeout_seconds": 180,
+        "returncode": 0,
+        "stdout_sha256": "abfdd55333112f061093e00c868aec7c541d0d8020e01512627eae9cdd928514",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "retrieval-frozen",
+        "command": [
+          "python3",
+          "-B",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "/workspace/scratch/6e4012698bfb/pr383-completion/validation-completion-01/retrieval-frozen.json"
+        ],
+        "started_utc": "2026-11-04T21:39:30.363507+00:00",
+        "duration_seconds": 0.47871522199420724,
+        "timeout_seconds": 180,
+        "returncode": 0,
+        "stdout_sha256": "b2053dde5079df79e38e601df85bd05aa8d7e890bdf1fa58d487a7bc55c8c8e7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "retrieval-challenges",
+        "command": [
+          "python3",
+          "-B",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "/workspace/scratch/6e4012698bfb/pr383-completion/validation-completion-01/retrieval-challenges.json",
+          "--queries",
+          "docs/reference/retrieval-challenges.json"
+        ],
+        "started_utc": "2026-11-04T21:39:30.842314+00:00",
+        "duration_seconds": 1.7478523880126886,
+        "timeout_seconds": 180,
+        "returncode": 0,
+        "stdout_sha256": "30b8fe34c27dc14bc1a5ab3f248cd5f73066d5cd457e803a399766d3220be324",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "retrieval-metered",
+        "command": [
+          "python3",
+          "-B",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "/workspace/scratch/6e4012698bfb/pr383-completion/validation-completion-01/retrieval-metered.json",
+          "--queries",
+          "docs/reference/retrieval-questions-in-tools-361a.json"
+        ],
+        "started_utc": "2026-11-04T21:39:31.344613+00:00",
+        "duration_seconds": 0.35470919898943976,
+        "timeout_seconds": 180,
+        "returncode": 0,
+        "stdout_sha256": "673e4a5ab275a43601c91496f473d3408f79662c4e69c4b41d1115735624ce9a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "retrieval-successor",
+        "command": [
+          "python3",
+          "-B",
+          "tools/docs/retrieval_eval.py",
+          "--output",
+          "/workspace/scratch/6e4012698bfb/pr383-completion/validation-completion-01/retrieval-successor.json",
+          "--queries",
+          "docs/audits/in-tools-383-successor-2026-11-04/retrieval-questions-successor.json"
+        ],
+        "started_utc": "2026-11-04T21:39:31.699417+00:00",
+        "duration_seconds": 0.3337446529912995,
+        "timeout_seconds": 180,
+        "returncode": 0,
+        "stdout_sha256": "b5f01c1da8b12b3a89de0665e061209cabeda1e56e515f5bf0ad9a0eed616178",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "status": "FAIL",
+    "retrieval": {
+      "frozen": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "challenges": {
+        "questions": 157,
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8737,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "metered": {
+        "questions": 4,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "successor": {
+        "questions": 2,
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "transport_output_identity_verified": true
+  },
+  "recovered_companion": {
+    "path": "validation/browser-results.json",
+    "bytes": 5978,
+    "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839",
+    "authenticated_against": "retained companion-inputs.json from independently reviewed frozen qualification",
+    "source_or_threshold_changed": false
+  },
+  "targeted_reruns": {
+    "docs": {
+      "command": [
+        "python",
+        "-B",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "documents": 120,
+        "navigation_link_documents": 8,
+        "canonical_claims": 236,
+        "local_links": 3606,
+        "heading_anchors": 696,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      }
+    },
+    "repository": {
+      "command": [
+        "python",
+        "-B",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "current source/documentation and artifact identity",
+        "documentation": {
+          "status": "passed",
+          "documents": 120,
+          "navigation_link_documents": 8,
+          "canonical_claims": 236,
+          "local_links": 3606,
+          "heading_anchors": 696,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "materialized_runtime_files": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "unmaterialized_runtime_files": [],
+        "errors": [],
+        "limitations": [
+          "Identity is not execution evidence; read the dated runtime acceptance report",
+          "Retained vendor binaries and platform execution have separate dated provenance",
+          "Historical M11 integrity is checked separately by check_m11_consistency.py"
+        ]
+      }
+    }
+  },
+  "retrieval": {
+    "frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7536,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "challenges": {
+      "questions": 157,
+      "canonical_hit_at_1": 124,
+      "canonical_hit_at_k": 156,
+      "mrr_at_k": 0.8737,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "metered": {
+      "questions": 4,
+      "canonical_hit_at_1": 4,
+      "canonical_hit_at_k": 4,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "successor": {
+      "questions": 2,
+      "canonical_hit_at_1": 2,
+      "canonical_hit_at_k": 2,
+      "mrr_at_k": 1.0,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "transport_output_identity_verified": true,
+  "packet_reduction": {
+    "a02_accounting": "material-work-units-v1",
+    "aggregate_all_native_call_cap_claimed": false,
+    "candidate": "INDEX",
+    "candidate_changes_from_measured_source": [
+      "docs/audits/2026-11-04-in-tools-383-successor-correction.md",
+      "docs/audits/in-tools-383-successor-2026-11-04/check-published.py",
+      "docs/audits/in-tools-383-successor-2026-11-04/check-raw-cohort.py",
+      "docs/audits/in-tools-383-successor-2026-11-04/continuation-custody-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/continuation-parser-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/continuation-source-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/custody.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/evidence-index.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/final-validation.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-after.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-source-identity.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/independent-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/metered-drain-desktop-host.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/metered-drain-native-host.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/native-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/parser-controls.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/publication-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-challenges.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-frozen.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-metered.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-questions-successor.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-successor.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/run-host-successor.py",
+      "docs/audits/in-tools-383-successor-2026-11-04/transport-checker-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/transport-identity.json",
+      "docs/operations/cybersand-codex-development-handover.md",
+      "docs/operations/in-tools-metered-drain.md"
+    ],
+    "candidate_tree": null,
+    "command_status_counts": {
+      "applied": 32,
+      "fault": 3,
+      "ordinary-v1": 3,
+      "refused": 41
+    },
+    "desktop_quantities": [
+      {
+        "case": "water-in-main",
+        "final": 534480,
+        "initial": 538560,
+        "metered_sink": 4080,
+        "ordinary_joined_census_difference": 0,
+        "tick": 95,
+        "unit": "water"
+      },
+      {
+        "case": "water-in-reset",
+        "final": 536520,
+        "initial": 538560,
+        "metered_sink": 2040,
+        "ordinary_joined_census_difference": 0,
+        "tick": 16,
+        "unit": "water"
+      },
+      {
+        "case": "brine-in-main",
+        "final": 2104,
+        "initial": 2112,
+        "metered_sink": 8,
+        "ordinary_joined_census_difference": 0,
+        "tick": 16,
+        "unit": "brine"
+      },
+      {
+        "case": "water-freemass-main",
+        "final": 536966,
+        "initial": 538560,
+        "metered_sink": 1594,
+        "ordinary_joined_census_difference": 0,
+        "tick": 18,
+        "unit": "water"
+      },
+      {
+        "case": "actual-rapier-wall",
+        "final": 538560,
+        "initial": 538560,
+        "metered_sink": 0,
+        "ordinary_joined_census_difference": 0,
+        "tick": 65,
+        "unit": "water"
+      },
+      {
+        "case": "actual-rapier-under-actor-before",
+        "final": 554880,
+        "initial": 554880,
+        "metered_sink": 0,
+        "ordinary_joined_census_difference": 0,
+        "tick": 63,
+        "unit": "water"
+      },
+      {
+        "case": "actual-rapier-under_actor",
+        "final": 554880,
+        "initial": 554880,
+        "metered_sink": 0,
+        "ordinary_joined_census_difference": 0,
+        "tick": 69,
+        "unit": "water"
+      },
+      {
+        "case": "ordinary-u10-before",
+        "final": 538560,
+        "initial": 538560,
+        "metered_sink": 0,
+        "ordinary_joined_census_difference": 0,
+        "tick": 5,
+        "unit": "water"
+      },
+      {
+        "case": "ordinary-u10-after",
+        "final": 538533,
+        "initial": 538560,
+        "metered_sink": 0,
+        "ordinary_joined_census_difference": 27,
+        "tick": 12,
+        "unit": "water"
+      }
+    ],
+    "execution_reassigned": false,
+    "host_counted_assertions_from_retained_footers": 12223,
+    "host_counts": {
+      "test_actor_rig_session": 8425,
+      "test_liquid_physical_preparation": 62,
+      "test_liquid_solver_policy": 642,
+      "test_liquid_water_reference_body": 75,
+      "test_physical_actor_session": 113,
+      "test_physical_metered_desktop": 148,
+      "test_physical_metered_drain": 1811,
+      "test_physical_metered_equipment": 99,
+      "test_physical_usable_equipment": 307,
+      "test_physical_usable_lifecycle": 39,
+      "test_physical_usables_admission": 35,
+      "test_physical_usables_desktop": 28,
+      "test_physical_usables_runtime": 243,
+      "test_usables": 196
+    },
+    "host_suite_count": 15,
+    "independent_raw_review_sha256": "7a4f546d6d42cd9ce089d8c4886c2ac614acc6edf1bef2f516257a5460dd51c7",
+    "index_members_verified": 27,
+    "limitations": [
+      "Read-only evidence reduction; no tests, engine or compiler executed by this checker.",
+      "Execution belongs to archived e11b452f; authenticated implementation and publication descendants are qualified by explicit complete-tree/input equivalence only.",
+      "Raw process logs, executable/toolchain bytes and original raw packet files are outside the published packet; their hashes and the immutable prior independent raw-artifact review are retained.",
+      "Without --raw-task-root, original whitespace transformation cannot be re-derived here; this checker verifies published hashes, retained original hashes and the documented census/accounting reductions from included observations.",
+      "Retained completion footers are authenticated records; absent raw logs cannot be independently rescanned for diagnostics here.",
+      "Unmaterialized Git LFS payload identities are checked from pointers; absent runtime bytes are listed explicitly, never treated as freshly hashed.",
+      "No all-native-call/all-getter 2048 cap; prior-used boundary units are a synthetic counter seed.",
+      "Windows, physical-device input, actual window focus, rendered pacing and resulting-main integration remain NOT RUN."
+    ],
+    "material_work_paths": [
+      {
+        "actual_water_removed": 4080,
+        "case": "full-q255",
+        "erase_attempts": 16,
+        "helper_units": 94,
+        "optional_units": 81,
+        "post_inspections": 16,
+        "preflight_inspections": 54,
+        "prior_units": 0,
+        "reason": "applied",
+        "shared_units": 188,
+        "source_units": 13,
+        "status": "applied",
+        "unverified_water_difference": 0,
+        "verified_sink": 4080
+      },
+      {
+        "actual_water_removed": 4080,
+        "case": "exact-capacity",
+        "erase_attempts": 16,
+        "helper_units": 94,
+        "optional_units": 0,
+        "post_inspections": 16,
+        "preflight_inspections": 54,
+        "prior_units": 1941,
+        "reason": "applied",
+        "shared_units": 2048,
+        "source_units": 13,
+        "status": "applied",
+        "unverified_water_difference": 0,
+        "verified_sink": 4080
+      },
+      {
+        "actual_water_removed": 0,
+        "case": "one-unit-short",
+        "erase_attempts": 0,
+        "helper_units": 63,
+        "optional_units": 0,
+        "post_inspections": 0,
+        "preflight_inspections": 53,
+        "prior_units": 1942,
+        "reason": "read_capacity",
+        "shared_units": 2018,
+        "source_units": 13,
+        "status": "refused",
+        "unverified_water_difference": 0,
+        "verified_sink": 0
+      },
+      {
+        "actual_water_removed": 1008,
+        "case": "fractional-freemass",
+        "erase_attempts": 16,
+        "helper_units": 94,
+        "optional_units": 81,
+        "post_inspections": 16,
+        "preflight_inspections": 54,
+        "prior_units": 0,
+        "reason": "applied",
+        "shared_units": 188,
+        "source_units": 13,
+        "status": "applied",
+        "unverified_water_difference": 0,
+        "verified_sink": 1008
+      },
+      {
+        "actual_water_removed": 0,
+        "case": "empty-intake",
+        "erase_attempts": 0,
+        "helper_units": 40,
+        "optional_units": 81,
+        "post_inspections": 0,
+        "preflight_inspections": 30,
+        "prior_units": 0,
+        "reason": "empty_intake",
+        "shared_units": 134,
+        "source_units": 13,
+        "status": "refused",
+        "unverified_water_difference": 0,
+        "verified_sink": 0
+      },
+      {
+        "actual_water_removed": 0,
+        "case": "supercover-corner",
+        "erase_attempts": 0,
+        "helper_units": 12,
+        "optional_units": 81,
+        "post_inspections": 0,
+        "preflight_inspections": 2,
+        "prior_units": 0,
+        "reason": "wrong_material",
+        "shared_units": 106,
+        "source_units": 13,
+        "status": "refused",
+        "unverified_water_difference": 0,
+        "verified_sink": 0
+      },
+      {
+        "actual_water_removed": 0,
+        "case": "exhausted-stock",
+        "erase_attempts": 0,
+        "helper_units": 10,
+        "optional_units": 81,
+        "post_inspections": 0,
+        "preflight_inspections": 0,
+        "prior_units": 0,
+        "reason": "budget_exhausted",
+        "shared_units": 104,
+        "source_units": 13,
+        "status": "refused",
+        "unverified_water_difference": 0,
+        "verified_sink": 0
+      },
+      {
+        "actual_water_removed": 255,
+        "case": "injected-post-copy-fault",
+        "erase_attempts": 1,
+        "helper_units": 71,
+        "optional_units": 0,
+        "post_inspections": 1,
+        "preflight_inspections": 54,
+        "prior_units": 0,
+        "reason": "post_readback_mismatch",
+        "shared_units": 84,
+        "source_units": 13,
+        "status": "fault",
+        "unverified_water_difference": 255,
+        "verified_sink": 0
+      }
+    ],
+    "materialized_payloads_currently_rehashed": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "native_cases": 30,
+    "native_compiled_inputs_verified": 55,
+    "native_exact_four_claimant_arms": 8,
+    "native_repeated_assertions": 14023753,
+    "original_copy_bytes_authenticated_here": [
+      "native-qualification.json",
+      "host-source-identity.json",
+      "host-after.json",
+      "host-qualification.json",
+      "independent-review.json",
+      "run-host-successor.py",
+      "check-raw-cohort.py",
+      "metered-drain-native-host.json",
+      "metered-drain-desktop-host.json"
+    ],
+    "original_packet_token_transform_verified_here": true,
+    "parser_tests_recorded": 28,
+    "payload_bytes_not_available_here": [],
+    "runtime_payload_git_identities_verified": 18,
+    "schema": "pr383-successor-transport-published-packet-check-v1",
+    "source_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+    "source_inputs_verified": 1109,
+    "source_lookup_commit": "f2f673e4a961207347dd8708dce7d6b63788a432",
+    "source_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+    "status": "PASS_WITH_EXPLICIT_SCOPE",
+    "tracked_worktree_changes_from_measured_source": [
+      "docs/audits/2026-11-04-in-tools-383-successor-correction.md",
+      "docs/audits/in-tools-383-successor-2026-11-04/check-published.py",
+      "docs/audits/in-tools-383-successor-2026-11-04/check-raw-cohort.py",
+      "docs/audits/in-tools-383-successor-2026-11-04/continuation-custody-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/continuation-parser-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/continuation-source-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/custody.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/evidence-index.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/final-validation.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-after.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-source-identity.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/independent-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/metered-drain-desktop-host.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/metered-drain-native-host.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/native-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/parser-controls.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/publication-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-challenges.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-frozen.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-metered.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-questions-successor.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-successor.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/run-host-successor.py",
+      "docs/audits/in-tools-383-successor-2026-11-04/transport-checker-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/transport-identity.json",
+      "docs/operations/cybersand-codex-development-handover.md",
+      "docs/operations/in-tools-metered-drain.md"
+    ],
+    "transport_authentication": {
+      "execution_reassigned": false,
+      "measured_execution_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+      "measured_raw_commit_sha256": "8ff5d6ef7a21909eed3667e0e10e7eadf9129ed1cc720944318b19a53c89f30c",
+      "measured_source_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+      "scope": "Archived actual execution commit authenticated; published implementation has identical complete Git tree and original parent. Metadata-recreated publication is source-equivalent only, not a new execution cohort.",
+      "source_lookup_commit": "f2f673e4a961207347dd8708dce7d6b63788a432",
+      "source_lookup_raw_commit_sha256": "f365414c359f54c6a92716bff9834dbe43e8e6991861459663b549f0199a662d",
+      "source_lookup_sole_parent": "73b10f9b800e72f358f22f470e57a4531002c168",
+      "source_lookup_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+      "unpublished_local_addendum": "7b35d05bc846328fd66f710f797de4db99ebd582",
+      "unpublished_local_tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18",
+      "unpublished_raw_commit_sha256": "d7b13225a054fbaa670aaa5e8fcec60875351e556ec2813a741e0095d098067d",
+      "unpublished_readback_sha256": "2c0985bf593d3cf324d6430d3db9c2f8de37e97162aa8d78ec2ef4206d61272a"
+    }
+  },
+  "limits": [
+    "No new native/Godot execution; original e11 source-qualified execution was independently reauthenticated.",
+    "Windows and physical/rendered owner acceptance remain NOT RUN.",
+    "Only documentation/evidence changes after this validation are the validation/review records and their index; final-head source/input readback remains a publication gate."
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "authenticated_evidence": {
+    "commit": "83e9825f4b4c30153361809d74d273abcf33587f",
+    "parent": "f2f673e4a961207347dd8708dce7d6b63788a432",
+    "scope": "Complete original local addendum tree, independently verified before continuation supplement; no execution reassignment.",
+    "tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18"
+  },
+  "authenticated_implementation": {
+    "commit": "f2f673e4a961207347dd8708dce7d6b63788a432",
+    "parent": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "raw_commit_sha256": "f365414c359f54c6a92716bff9834dbe43e8e6991861459663b549f0199a662d",
+    "tree": "22a35293c7373ea4583b78121778b00ecdf6eeee"
+  },
+  "continuation": {
+    "auto_merge": null,
+    "checkout": "dedicated isolated continuation checkout",
+    "hosted_workflow_dispatched": false,
+    "integration_performed": false,
+    "main": "751edc0b495dc85484ad5509a7c95f863651c76b",
+    "pr379": "b30ae3cc496534fdad5e13f36ef049c4a00024ac",
+    "pr379_disposition": "HOLD after actual Windows process failure; earlier 20:06 source-admission stop is historical",
+    "pr379_source": "https://github.com/techrote/cybersand/pull/379#issuecomment-6642233489",
+    "pr383_at_intake": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "pr383_draft": true,
+    "reason": "Prior successor chat reached context capacity during publication; user requested completion. Original source checkout and raw run directories remain read-only."
+  },
+  "measured_source": {
+    "commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+    "parent": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "raw_commit_base64": "dHJlZSAyMmEzNTI5M2M3MzczZWE0NTgzYjc4MTIxNzc4YjAwZWNkZjZlZWVlCnBhcmVudCA3M2IxMGY5YjgwMGU3MmYzNThmMjJmNDcwZTU3YTQ1MzEwMDJjMTY4CmF1dGhvciBDb2RleCA8Y29kZXhAb3BlbmFpLmNvbT4gMTc5MzgyMjI3NyArMDEwMApjb21taXR0ZXIgQ29kZXggPGNvZGV4QG9wZW5haS5jb20+IDE3OTM4MjIyNzcgKzAxMDAKCmZpeChpbi10b29scyk6IHRpZ2h0ZW4gY2xhaW1hbnQgcHJvb2YgYW5kIG1hdGVyaWFsLXdvcmsgY29udHJhY3QK",
+    "raw_commit_sha256": "8ff5d6ef7a21909eed3667e0e10e7eadf9129ed1cc720944318b19a53c89f30c",
+    "tree": "22a35293c7373ea4583b78121778b00ecdf6eeee"
+  },
+  "publication": {
+    "execution_reassigned": false,
+    "expected_remote_head": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "force": false,
+    "mode": "authenticated GitHub Git Data API; expected-head nonforce branch update"
+  },
+  "recorded_utc": "2026-11-04T21:36:24.532807+00:00",
+  "schema": "pr383-successor-authenticated-transport-v1",
+  "scope": "Source equivalence and archived Git-object custody only. Actual executions remain attributed to e11b452f. No branch update, new execution, merge or Ready transition is established by this record.",
+  "status": "PREPUBLICATION_CUSTODY_RECORD",
+  "unpublished_local_addendum": {
+    "commit": "7b35d05bc846328fd66f710f797de4db99ebd582",
+    "final_head_readback": {
+      "addendum_changed_paths": [
+        "docs/audits/2026-11-04-in-tools-383-successor-correction.md",
+        "docs/audits/in-tools-383-successor-2026-11-04/check-published.py",
+        "docs/audits/in-tools-383-successor-2026-11-04/check-raw-cohort.py",
+        "docs/audits/in-tools-383-successor-2026-11-04/custody.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/evidence-index.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/final-validation.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/host-after.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/host-qualification.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/host-source-identity.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/independent-review.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/metered-drain-desktop-host.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/metered-drain-native-host.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/native-qualification.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/parser-controls.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/publication-qualification.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/retrieval-challenges.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/retrieval-frozen.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/retrieval-metered.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/retrieval-questions-successor.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/retrieval-successor.json",
+        "docs/audits/in-tools-383-successor-2026-11-04/run-host-successor.py",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/operations/in-tools-metered-drain.md"
+      ],
+      "all25_audit_local_links_resolve": true,
+      "checkout_clean_after": true,
+      "execution": {
+        "checker_sha256": "aa18d87ea5a4b625d53ac82f0fc1bdee081c972535a86310ff02f94e67d63261",
+        "command": [
+          "python3",
+          "/workspace/scratch/dc49a0ed2f07/pr383-successor/source/docs/audits/in-tools-383-successor-2026-11-04/check-published.py",
+          "--repo",
+          "/workspace/scratch/dc49a0ed2f07/pr383-successor/source",
+          "--candidate",
+          "7b35d05bc846328fd66f710f797de4db99ebd582"
+        ],
+        "returncode": 0,
+        "seconds": 7.216027417991427,
+        "started_utc": "2026-11-04T20:20:12.470203+00:00",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e7c3d11c1e234281eee35074596bbe7d4111009f8606c4aababce1f1b8d7b203"
+      },
+      "final_commit": "7b35d05bc846328fd66f710f797de4db99ebd582",
+      "final_index_members": 22,
+      "final_index_sha256": "4fa4bfa3de69ae677ebf3e272229533160215f5fa8a8e5d435f243963df685ac",
+      "final_tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18",
+      "frozen_independent_evidence_tree_unchanged": "f58c3298a2ab1f22d91a7fa228ff8caae9789373",
+      "historical_original_evidence_git_identities_unchanged": {
+        "docs/audits/2026-11-04-in-tools-361a-metered-drain.md": "350e0ecd0dcbe2e788362d8097275a402f4af3ed",
+        "docs/audits/in-tools-361a-2026-11-04": "0030c9dfb4ae785de12db9668cfd6e9256e4fe8b"
+      },
+      "limitations": [
+        "Read-only verification, no compiler/engine/runtime tests rerun.",
+        "No aggregate all-native-call/getter budget proof.",
+        "Windows, physical input, real OS focus, rendered pacing, owner acceptance and resulting-main qualification remain NOT RUN."
+      ],
+      "measured_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+      "previous21_indexed_members_identical": true,
+      "publication_review_sha256": "b02fad813def8f8ac3a22ffd087b30909784efbf0df8ecaf51c0e4c555408bfe",
+      "qualification": "Final addendum contains only previously reviewed documentation/evidence plus the byte-identical publication review and refreshed index. Measured runtime passes remain attributed to e11b452f; final committed source inputs are independently verified equivalent.",
+      "remaining_gate": "#379 current-main integration remains STOP pending separately authorized source re-admission for #390 worker change; no integration/Ready/merge approval conferred.",
+      "remote_publication": "Not claimed by this local readback; separate guarded push and fresh remote SHA/tree/Draft readback follow.",
+      "reviewed_utc": "2026-11-04T20:20:19.686006+00:00",
+      "reviewer": "custody_review subagent; read-only local committed-head verification",
+      "schema": "in-tools-383-successor-independent-final-head-readback-v1",
+      "sole_parent_measured_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+      "status": "PASS_WITH_EXPLICIT_SCOPE",
+      "verified": {
+        "a02_accounting": "material-work-units-v1",
+        "aggregate_all_native_call_cap_claimed": false,
+        "command_status_counts": {
+          "applied": 32,
+          "fault": 3,
+          "ordinary-v1": 3,
+          "refused": 41
+        },
+        "host_counted_assertions_from_retained_footers": 12223,
+        "host_suite_count": 15,
+        "materialized_payloads_currently_rehashed": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "native_cases": 30,
+        "native_compiled_inputs_verified": 55,
+        "native_exact_four_claimant_arms": 8,
+        "native_repeated_assertions": 14023753,
+        "parser_tests_recorded": 28,
+        "payload_bytes_not_available_here": [],
+        "runtime_payload_git_identities_verified": 18,
+        "source_inputs_verified": 1109
+      }
+    },
+    "parent": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+    "raw_commit_base64": "dHJlZSA1YjQ5MTNkYTZlN2UxMDdlMDU5YjhlMGQwMTgyZjRhZjM0ODU5YTE4CnBhcmVudCBlMTFiNDUyZjFlOTBhOGEwMTRhYjRkNzIxYjdjNjU3MjRhNTA4NTk3CmF1dGhvciBDb2RleCA8Y29kZXhAb3BlbmFpLmNvbT4gMTc5MzgyMzU0NCArMDEwMApjb21taXR0ZXIgQ29kZXggPGNvZGV4QG9wZW5haS5jb20+IDE3OTM4MjM1NDQgKzAxMDAKCmRvY3MoaW4tdG9vbHMpOiBxdWFsaWZ5IHN1Y2Nlc3NvciBBMDEgYW5kIEEwMiBjb3JyZWN0aW9uCg==",
+    "raw_commit_sha256": "d7b13225a054fbaa670aaa5e8fcec60875351e556ec2813a741e0095d098067d",
+    "tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18"
+  }
+}

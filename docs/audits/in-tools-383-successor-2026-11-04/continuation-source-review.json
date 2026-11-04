@@ -1,0 +1,83 @@
+{
+  "schema": "pr383-recovered-source-review-v1",
+  "utc": "2026-11-04T21:37:06.944131+00:00",
+  "scope": "independent read-only A01/A02 code/contract review; no GitHub mutation; no native or Godot re-execution",
+  "head": "7b35d05bc846328fd66f710f797de4db99ebd582",
+  "tested_source_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+  "base": "73b10f9b800e72f358f22f470e57a4531002c168",
+  "verdict": "PASS_WITHIN_BOUNDED_DRAFT_SCOPE",
+  "blocking_findings": [],
+  "source_inputs": [
+    {
+      "path": "godot/scripts/metered_liquid_drain.gd",
+      "sha256": "b8f032f435fea3c28cd1cd4b9c678583467c868a87bacfdf7170e3ba8f140980",
+      "unchanged_from_tested_commit": true
+    },
+    {
+      "path": "godot/scripts/physical_usable_runtime.gd",
+      "sha256": "eb8aae8026f92985bcab7e518328d05d7c1fc280f480ae7ac34a02eab7375fb0",
+      "unchanged_from_tested_commit": true
+    },
+    {
+      "path": "godot/tests/test_physical_metered_drain.gd",
+      "sha256": "ccecd337e598742dadad677de25b5c1e7310be3b52bdfdba43138830820739ca",
+      "unchanged_from_tested_commit": true
+    },
+    {
+      "path": "native/tests/test_metered_liquid_drain.cpp",
+      "sha256": "6f8d827eca527395f2d8bcfffc75430d289a47d62cf3b1f047503163b76e5b2b",
+      "unchanged_from_tested_commit": true
+    },
+    {
+      "path": "tools/lcb/run_metered_drain_native.py",
+      "sha256": "0cac0bebfd42bf8fdd19647b4d98e8dfab203abdde471992ae70920137dd6cc1",
+      "unchanged_from_tested_commit": true
+    },
+    {
+      "path": "tools/lcb/test_metered_drain_native.py",
+      "sha256": "b21cbdf9bccf6b4ad72e644e83ff9d027557cf5153721b7c726ec2dfe39a82f8",
+      "unchanged_from_tested_commit": true
+    }
+  ],
+  "unexpected_native_abi_worker_runtime_delta": [],
+  "a01": {
+    "native_predicate": "one.claimants==1 && four.claimants==4 && four.phase_jobs>0",
+    "statistic": "max number of distinct native pool workers claiming any job in one phase during each 64-tick large arm",
+    "typed_parser": "exact int 1 and int 4; all eight rows",
+    "negative_controls": "independent two/three claimant tests across all eight rows plus missing, bool, fractional and integral float data",
+    "fresh_parser_custody_tests": 28,
+    "small_godot_fixture": "existing bounded 1..configured participation criterion unchanged; one/two observations remain distinct from native four-claimant proof"
+  },
+  "a02": {
+    "disposition": "properly limited material-work contract; no aggregate all-native-getter proof or promise",
+    "implementation_changes": "receipt read_accounting constant and fallback label; comments only, no reservation/threshold/mutation/ownership algorithm change",
+    "cell_inspections": "every helper bridge inspect call charged once; preflight cache reuses copied coordinates; fresh post-write inspections separately charged",
+    "metadata_reservations": {
+      "initial": 10,
+      "pre_write": 6,
+      "post_write": 8
+    },
+    "caller_exclusions": "lifecycle refresh, scalar setup/health and mask/geometry preparation explicitly outside material-work allowance",
+    "source_clearance": "all body/material calls retain parent counters, including repeated mask calls",
+    "optional_observation": "81-cell patch only when 81 units remain",
+    "bound_spot_check": {
+      "max_rectangle_cells": 702,
+      "dx_dy_witness_relaxed_bound": [
+        22,
+        21
+      ],
+      "helper_units_upper_bound": 742,
+      "source_clearance_upper_bound": 899,
+      "single_idle_actor_command_plus_optional_upper_bound": 1722,
+      "qualifier": "conservative material-work bound, not tight observed maximum or all-native-call count"
+    },
+    "capacity_test": "fixture-derived exact-fit prior=1941 succeeds at2048 with16 erases; prior1942 refuses read_capacity before first erase; synthetic prior consumption explicitly labelled",
+    "fault_test": "actual native erase and post-read are forwarded before corrupted copied response; loss255, verified sink0, quantity incomplete, terminal with no retry"
+  },
+  "remaining_limits": [
+    "No current-main/#379 integration",
+    "No Windows execution, physical-device or rendered acceptance",
+    "No hosted workflow dispatch or Ready/merge admission"
+  ],
+  "documentation_note": "Original #379 20:06 source-admission stop in historical addendum is now superseded by b30ae3cc HOLD; publication should append current owner context without relabelling older evidence."
+}

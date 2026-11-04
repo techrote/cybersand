@@ -1,0 +1,68 @@
+{
+  "actual_authentication": {
+    "execution_reassigned": false,
+    "measured_execution_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+    "measured_raw_commit_sha256": "8ff5d6ef7a21909eed3667e0e10e7eadf9129ed1cc720944318b19a53c89f30c",
+    "measured_source_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+    "scope": "Archived actual execution commit authenticated; published implementation has identical complete Git tree and original parent. Metadata-recreated publication is source-equivalent only, not a new execution cohort.",
+    "source_lookup_commit": "f2f673e4a961207347dd8708dce7d6b63788a432",
+    "source_lookup_raw_commit_sha256": "f365414c359f54c6a92716bff9834dbe43e8e6991861459663b549f0199a662d",
+    "source_lookup_sole_parent": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "source_lookup_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+    "unpublished_local_addendum": "7b35d05bc846328fd66f710f797de4db99ebd582",
+    "unpublished_local_tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18",
+    "unpublished_raw_commit_sha256": "d7b13225a054fbaa670aaa5e8fcec60875351e556ec2813a741e0095d098067d",
+    "unpublished_readback_sha256": "2c0985bf593d3cf324d6430d3db9c2f8de37e97162aa8d78ec2ef4206d61272a"
+  },
+  "changed_lines": 3,
+  "checked_utc": "2026-11-04T21:37:08.025934+00:00",
+  "corrected_checker_sha256": "ee540c13990b9c0b795eac46af826f039e239be1280f5ef1aaa55416cf2a9f60",
+  "diff_sha256": "fdd1867c4ccede73fead51a95d9c2b42e48cf28d971de52227ab68331612fdcf",
+  "final_verification_required": [
+    "Run complete checker on final candidate with measured inputs equal.",
+    "Assert transport_authentication is a dict with measured e11b452f commit and f2f673e4 lookup commit, expected tree and original parent.",
+    "Verify both source_commit and execution_reassigned remain e11b452f and false."
+  ],
+  "finding": "review_published shadowed authenticated transport identity with per-arm transport observations; final provenance field returned a list. Three variable-reference changes retain the authenticated identity dict. Admission predicates unchanged.",
+  "original_checker_sha256": "ee1da7a6024f662a43bd7601603fd5ee67e8b2e74e97e84dc4efaf7450e13128",
+  "schema": "pr383-completion-publication-helper-correction-v1",
+  "scope": "Publication helper only, outside measured source tree. Original draft and all old checkout files untouched; no tests or engines executed.",
+  "status": "PASS_WITH_FINAL_CANDIDATE_CHECK_PENDING",
+  "synthetic_negative_controls": [
+    {
+      "case": "archive raw bytes changed",
+      "reason": "measured_source: Git commit SHA-1 differs",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "archive raw SHA256 changed",
+      "reason": "archived commit SHA-256 differs: measured_source",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "original readback changed",
+      "reason": "prior unpublished local head readback changed",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "wrong implementation parent",
+      "reason": "authenticated publication implementation differs",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "reassigned execution",
+      "reason": "publication contract would reassign execution or weaken the branch guard",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "force update",
+      "reason": "publication contract would reassign execution or weaken the branch guard",
+      "status": "EXPECTED_REJECTION"
+    },
+    {
+      "case": "wrong remote head",
+      "reason": "publication contract would reassign execution or weaken the branch guard",
+      "status": "EXPECTED_REJECTION"
+    }
+  ]
+}

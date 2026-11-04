@@ -1,0 +1,197 @@
+{
+  "a01_disposition": "Corrected exactly-one/exactly-four typed observed claimants; 28 fresh independent parser controls passed; no changed predicate since measured e11 source",
+  "a02_disposition": "Properly limited material-work-units-v1; aggregate all-getter cap neither proved nor promised; exact capacity, prewrite refusal and terminal incomplete fault evidence preserved",
+  "authenticated_implementation": "f2f673e4a961207347dd8708dce7d6b63788a432",
+  "blocking_findings": [],
+  "candidate_before_this_review": {
+    "parent": "83e9825f4b4c30153361809d74d273abcf33587f",
+    "parent_tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18",
+    "staged_paths": [
+      {
+        "bytes": 27720,
+        "path": "docs/audits/2026-11-04-in-tools-383-successor-correction.md",
+        "sha256": "22002aa9fb04dfc771acba8bd09e2ea8d0eddb73916821b2d4f1da613e8a00f1"
+      },
+      {
+        "bytes": 42626,
+        "path": "docs/audits/in-tools-383-successor-2026-11-04/check-published.py",
+        "sha256": "ee540c13990b9c0b795eac46af826f039e239be1280f5ef1aaa55416cf2a9f60"
+      },
+      {
+        "bytes": 5391,
+        "path": "docs/audits/in-tools-383-successor-2026-11-04/continuation-custody-review.json",
+        "sha256": "c27f648dc18ac4c4239f2ab76f72a7354662c49bc1189117ce9022c77a73cba8"
+      },
+      {
+        "bytes": 747,
+        "path": "docs/audits/in-tools-383-successor-2026-11-04/continuation-parser-review.json",
+        "sha256": "546aea6c4e17c05b5c305dc5a57d619ecbe036052563cf4d7c3ed920586e1447"
+      },
+      {
+        "bytes": 4396,
+        "path": "docs/audits/in-tools-383-successor-2026-11-04/continuation-source-review.json",
+        "sha256": "e9e756d8799906ecf185a0d7c87129cbf3cc3118ecfcc9a7601a4e6d1b7e39de"
+      },
+      {
+        "bytes": 32898,
+        "path": "docs/audits/in-tools-383-successor-2026-11-04/continuation-validation.json",
+        "sha256": "b493ef88984b0e7bcc3fa8452fa108298ee7cfd62623a74f3e7cd930bbddbbc2"
+      },
+      {
+        "bytes": 4821,
+        "path": "docs/audits/in-tools-383-successor-2026-11-04/evidence-index.json",
+        "sha256": "84497716214a6875b0805fe975964203d88c15ab2ce93ce28c041ffd590a18bc"
+      },
+      {
+        "bytes": 3666,
+        "path": "docs/audits/in-tools-383-successor-2026-11-04/transport-checker-review.json",
+        "sha256": "05f63f5c03cd237bd5cc8a939e297a59c13c37fb7efc4320c4eccc496cc2bedb"
+      },
+      {
+        "bytes": 10710,
+        "path": "docs/audits/in-tools-383-successor-2026-11-04/transport-identity.json",
+        "sha256": "210194077563a76da1eb45cfa3c0abfa241cfc92ecb4833ce3cca0a79a0fc4ee"
+      },
+      {
+        "bytes": 115684,
+        "path": "docs/operations/cybersand-codex-development-handover.md",
+        "sha256": "bed0d01c98ccfcc08fffd6c7479054b2c160617a7926c5823647b210591e1739"
+      }
+    ],
+    "staged_tree": "6276c3c768619251772ac67e858637e00283a531",
+    "tree_reconstructed_readonly_from_index": true
+  },
+  "coordination": "Current #379 b30ae3cc Windows-HOLD appended without rewriting original 20:06 source-admission-stop evidence; main and #379 remain separately owned and unmerged into this candidate",
+  "execution_reassigned": false,
+  "limits": [
+    "No Ready transition, merge, approval, auto-merge, #361 closure or hosted workflow dispatch",
+    "No main/#379/#370/#347 integration or edits",
+    "Windows execution, physical input, rendered pacing and owner acceptance remain NOT RUN; source-equivalence qualification cannot replace them"
+  ],
+  "permitted_final_sealing_delta": [
+    "Copy this review byte-for-byte into the audit packet",
+    "Refresh evidence-index.json to include its correct hash/size; do not alter measured source or existing records"
+  ],
+  "portable_checker": {
+    "command": [
+      "python",
+      "-B",
+      "/workspace/scratch/6e4012698bfb/pr383-completion/source/docs/audits/in-tools-383-successor-2026-11-04/check-published.py",
+      "--repo",
+      "/workspace/scratch/6e4012698bfb/pr383-completion/source",
+      "--candidate",
+      "INDEX"
+    ],
+    "index_members": 28,
+    "original_raw_task_root_used": false,
+    "returncode": 0,
+    "script_sha256": "ee540c13990b9c0b795eac46af826f039e239be1280f5ef1aaa55416cf2a9f60",
+    "seconds": 6.785749693008256,
+    "started_utc": "2026-11-04T21:42:20.744410+00:00",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "2152ac73813e585a080018f48b1d5f7a40f796317111b822e1a2cd89618c2dcc",
+    "transport_authentication_output_verified_as_dict": true
+  },
+  "preservation": {
+    "all_measured_source_inputs_verified": 1109,
+    "native_compilation_inputs_verified": 55,
+    "nine_prior_staged_files": "Unchanged except index; sole additional path is continuation-validation.json",
+    "no_native_abi_material_policy_worker_or_measured_test_delta": true,
+    "original_packet_files_preserved": [
+      "docs/audits/in-tools-383-successor-2026-11-04/check-raw-cohort.py",
+      "docs/audits/in-tools-383-successor-2026-11-04/custody.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/final-validation.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-after.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/host-source-identity.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/independent-review.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/metered-drain-desktop-host.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/metered-drain-native-host.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/native-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/parser-controls.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/publication-qualification.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-challenges.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-frozen.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-metered.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-questions-successor.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/retrieval-successor.json",
+      "docs/audits/in-tools-383-successor-2026-11-04/run-host-successor.py"
+    ],
+    "runtime_payloads_materialized_and_rehashed": 18
+  },
+  "publication_conditions": [
+    "Immediately recheck remote expected head73b10f9b, uncontested ownership, open Draft state and disabled auto-merge",
+    "Use expected-head nonforce update only on existing PR383 branch",
+    "Final authenticated commit must descend linearly from83e9825f; verify final tree/input equality and this review/index before branch update",
+    "Authenticate final remote head/tree/parents and Draft state afterward"
+  ],
+  "reviewed_utc": "2026-11-04T21:42:27.526512+00:00",
+  "reviewer": "correction_review independent subagent; no implementation or publisher authorship",
+  "schema": "pr383-successor-final-publication-admission-v1",
+  "scope": "Final staged correction/evidence/transport review; fresh portable packet reduction and validation-record authentication, not a new native/Godot execution or Ready/merge approval",
+  "source_execution_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+  "source_execution_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+  "status": "PASS_FOR_GUARDED_DRAFT_PUBLICATION",
+  "transport_authentication": {
+    "execution_reassigned": false,
+    "measured_execution_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+    "measured_raw_commit_sha256": "8ff5d6ef7a21909eed3667e0e10e7eadf9129ed1cc720944318b19a53c89f30c",
+    "measured_source_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+    "scope": "Archived actual execution commit authenticated; published implementation has identical complete Git tree and original parent. Metadata-recreated publication is source-equivalent only, not a new execution cohort.",
+    "source_lookup_commit": "f2f673e4a961207347dd8708dce7d6b63788a432",
+    "source_lookup_raw_commit_sha256": "f365414c359f54c6a92716bff9834dbe43e8e6991861459663b549f0199a662d",
+    "source_lookup_sole_parent": "73b10f9b800e72f358f22f470e57a4531002c168",
+    "source_lookup_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+    "unpublished_local_addendum": "7b35d05bc846328fd66f710f797de4db99ebd582",
+    "unpublished_local_tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18",
+    "unpublished_raw_commit_sha256": "d7b13225a054fbaa670aaa5e8fcec60875351e556ec2813a741e0095d098067d",
+    "unpublished_readback_sha256": "2c0985bf593d3cf324d6430d3db9c2f8de37e97162aa8d78ec2ef4206d61272a"
+  },
+  "validation": {
+    "companion_hash_matches_retained_authenticated_manifest": true,
+    "first_failed_attempt_preserved": true,
+    "first_failure": "Q30 missing companion validation/browser-results.json; no source or threshold correction",
+    "other_initial_gates": "M11, LFS integrity, whitespace, packet reduction and four retrieval cohorts PASS",
+    "record_sha256": "b493ef88984b0e7bcc3fa8452fa108298ee7cfd62623a74f3e7cd930bbddbbc2",
+    "recovered_companion": {
+      "authenticated_against": "retained companion-inputs.json from independently reviewed frozen qualification",
+      "bytes": 5978,
+      "path": "validation/browser-results.json",
+      "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839",
+      "source_or_threshold_changed": false
+    },
+    "retrieval": {
+      "challenges": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8737,
+        "questions": 157
+      },
+      "frozen": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "questions": 32
+      },
+      "metered": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 1.0,
+        "questions": 4
+      },
+      "successor": {
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+        "canonical_hit_at_1": 2,
+        "canonical_hit_at_k": 2,
+        "mrr_at_k": 1.0,
+        "questions": 2
+      }
+    },
+    "status": "PASS_AFTER_COMPANION_RESTORATION",
+    "targeted_docs": "PASS, no errors/warnings",
+    "targeted_repository": "PASS, all18 runtime payloads materialized"
+  }
+}

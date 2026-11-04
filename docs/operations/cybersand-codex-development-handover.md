@@ -10,6 +10,23 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## PR383 correction publication continuation — 2026-11-04
+
+The [A01/A02 correction](../audits/2026-11-04-in-tools-383-successor-correction.md#publication-continuation-and-current-coordination--2140-utc)
+retains actual Linux execution at `e11b452f`, tree `22a35293`, and publishes
+the identical implementation tree as authenticated commit `f2f673e4` with the
+original `73b10f9b` head as sole parent. Original evidence is retained in
+`83e9825f`, tree `5b4913da`. The transport record archives local commit identities
+and keeps later publication/source-equivalence verification separate from
+execution. All measured sources, runtime libraries and original packets remain
+unchanged during completion. #383 stays Draft; no Ready or merge is authorized.
+
+Separately owned #379 has since reached `b30ae3cc` on main `751edc0b` and is
+[on HOLD after a Windows Godot process failure](https://github.com/techrote/cybersand/pull/379#issuecomment-6642233489).
+The older source-re-admission stop in the dated correction record is historical.
+Coordinate any later #383/current-main reconciliation with that owner and repeat
+the resulting-source gates; this publication includes neither main nor #379.
+
 ## IN-TOOLS #383 successor correction — 2026-11-04
 
 The existing #383 branch now has a bounded [A01/A02 correction and fresh Linux

@@ -1,0 +1,28 @@
+{
+  "utc": "2026-11-04T21:36:12.150144+00:00",
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "/workspace/scratch/dc49a0ed2f07/pr383-successor/source/tools/lcb",
+    "-p",
+    "test_metered_drain_native.py",
+    "-v"
+  ],
+  "source_head": "7b35d05bc846328fd66f710f797de4db99ebd582",
+  "exit": 0,
+  "scope": "fresh synthetic parser/output-custody execution; no native/Godot execution; old checkout not changed",
+  "logs": {
+    "parser.stdout.log": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "parser.stderr.log": {
+      "size": 3315,
+      "sha256": "e28ba30b0bf4f7c73a43032923a912a9ee65a129a74e9991195d06be5cf289c6"
+    }
+  }
+}

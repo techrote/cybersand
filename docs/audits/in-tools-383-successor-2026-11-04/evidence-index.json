@@ -2,19 +2,47 @@
   "schema": "in-tools-383-successor-evidence-index-v1",
   "measured_source_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
   "measured_source_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
-  "scope": "New Linux e11 execution cohort only; historical artifacts remain unchanged; this index excludes itself. Addendum source equivalence is separately reviewed.",
+  "scope": "Original e11 Linux execution cohort plus explicitly separate transport and continuation readbacks; historical measurements and packets unchanged. Index excludes itself. Original 22-member index remains at authenticated evidence commit 83e9825f.",
   "records": {
+    "../../operations/cybersand-codex-development-handover.md": {
+      "bytes": 115684,
+      "sha256": "bed0d01c98ccfcc08fffd6c7479054b2c160617a7926c5823647b210591e1739"
+    },
+    "../../operations/in-tools-metered-drain.md": {
+      "bytes": 16189,
+      "sha256": "4220bd6df0b6a6a6a11458a678e0f255b9811dc6dfd22c5ca9e3a4ba5f714cb9"
+    },
     "../2026-11-04-in-tools-383-successor-correction.md": {
-      "bytes": 23755,
-      "sha256": "873ccb5dccc8813e6db304ce7b98025381794f6665156a104f1f3185052f17ef"
+      "bytes": 27720,
+      "sha256": "22002aa9fb04dfc771acba8bd09e2ea8d0eddb73916821b2d4f1da613e8a00f1"
     },
     "check-published.py": {
-      "bytes": 36725,
-      "sha256": "aa18d87ea5a4b625d53ac82f0fc1bdee081c972535a86310ff02f94e67d63261"
+      "bytes": 42626,
+      "sha256": "ee540c13990b9c0b795eac46af826f039e239be1280f5ef1aaa55416cf2a9f60"
     },
     "check-raw-cohort.py": {
       "bytes": 33251,
       "sha256": "3fd651c0c3541106a929143a129617fad22a59ca0030cce58cb42d1b59ba9065"
+    },
+    "continuation-custody-review.json": {
+      "bytes": 5391,
+      "sha256": "c27f648dc18ac4c4239f2ab76f72a7354662c49bc1189117ce9022c77a73cba8"
+    },
+    "continuation-parser-review.json": {
+      "bytes": 747,
+      "sha256": "546aea6c4e17c05b5c305dc5a57d619ecbe036052563cf4d7c3ed920586e1447"
+    },
+    "continuation-publication-review.json": {
+      "bytes": 10718,
+      "sha256": "f966f775c544b7c9c60d99c3f606088919146931fdd4d0ad913f302f776ddc50"
+    },
+    "continuation-source-review.json": {
+      "bytes": 4396,
+      "sha256": "e9e756d8799906ecf185a0d7c87129cbf3cc3118ecfcc9a7601a4e6d1b7e39de"
+    },
+    "continuation-validation.json": {
+      "bytes": 32898,
+      "sha256": "b493ef88984b0e7bcc3fa8452fa108298ee7cfd62623a74f3e7cd930bbddbbc2"
     },
     "custody.json": {
       "bytes": 518465,
@@ -56,6 +84,10 @@
       "bytes": 3443,
       "sha256": "54faeb4a1b04baf63809793275e95228d07c5ac0f5e0a554573ee73fd0d21160"
     },
+    "publication-qualification.json": {
+      "bytes": 20821,
+      "sha256": "b02fad813def8f8ac3a22ffd087b30909784efbf0df8ecaf51c0e4c555408bfe"
+    },
     "retrieval-challenges.json": {
       "bytes": 2583923,
       "sha256": "868351b58b4c47d6438a4230177ffb6e7c5b25c8c8984803db73695d1bb56ee3"
@@ -80,17 +112,15 @@
       "bytes": 10481,
       "sha256": "02284042a583a325b6bd47528b03dbe74d0c7b3e8573688986c5afa942e0e69e"
     },
-    "../../operations/cybersand-codex-development-handover.md": {
-      "bytes": 114495,
-      "sha256": "61284000e80455ff3e652dbee68cfe13c391e6b19166ed3b5a3858f867565fac"
+    "transport-checker-review.json": {
+      "bytes": 3666,
+      "sha256": "05f63f5c03cd237bd5cc8a939e297a59c13c37fb7efc4320c4eccc496cc2bedb"
     },
-    "../../operations/in-tools-metered-drain.md": {
-      "bytes": 16189,
-      "sha256": "4220bd6df0b6a6a6a11458a678e0f255b9811dc6dfd22c5ca9e3a4ba5f714cb9"
-    },
-    "publication-qualification.json": {
-      "bytes": 20821,
-      "sha256": "b02fad813def8f8ac3a22ffd087b30909784efbf0df8ecaf51c0e4c555408bfe"
+    "transport-identity.json": {
+      "bytes": 10710,
+      "sha256": "210194077563a76da1eb45cfa3c0abfa241cfc92ecb4833ce3cca0a79a0fc4ee"
     }
-  }
+  },
+  "prior_evidence_commit": "83e9825f4b4c30153361809d74d273abcf33587f",
+  "prior_index_sha256": "4fa4bfa3de69ae677ebf3e272229533160215f5fa8a8e5d435f243963df685ac"
 }

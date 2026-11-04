@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Read-only verification of the published PR383 successor evidence packet.
 
-Requires Python 3.11+ and a Git checkout containing measured commit e11b452f.
+Requires Python 3.11+ and a Git checkout containing authenticated publication
+implementation f2f673e4. Measured e11b452f need not be a reachable Git object: its
+archived raw commit bytes are verified before the identical published tree is
+used for source lookup. Execution remains attributed to e11b452f, never relabeled
+to the metadata-recreated implementation or its publication descendant.
 Example, from the checkout: python3 docs/audits/in-tools-383-successor-2026-11-04/check-published.py --repo .
 The default packet directory is beside this script. No compiler, engine, tests,
 repository Python modules, remote services or original absolute paths are used.
@@ -14,6 +18,7 @@ packet transformations; full raw-log checking remains check-raw-cohort.py.
 from __future__ import annotations
 
 import argparse
+import base64
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 import hashlib
@@ -25,6 +30,10 @@ import subprocess
 SOURCE = "e11b452f1e90a8a014ab4d721b7c65724a508597"
 TREE = "22a35293c7373ea4583b78121778b00ecdf6eeee"
 BASE_SOURCE = "73b10f9b800e72f358f22f470e57a4531002c168"
+AUTHENTICATED_IMPLEMENTATION = "f2f673e4a961207347dd8708dce7d6b63788a432"
+UNPUBLISHED_ADDENDUM = "7b35d05bc846328fd66f710f797de4db99ebd582"
+UNPUBLISHED_TREE = "5b4913da6e7e107e059b8e0d0182f4af34859a18"
+UNPUBLISHED_READBACK_SHA256 = "2c0985bf593d3cf324d6430d3db9c2f8de37e97162aa8d78ec2ef4206d61272a"
 REVIEWED_DIFF = "7efaf09d3af616090fc63820905bfc2e279b51e5b7d1d9c78e610303e2ac1b9e"
 ACCOUNTING = "material-work-units-v1"
 PROVENANCE = "host-local-native-observation-v1"
@@ -118,11 +127,79 @@ def without_json_whitespace(raw: bytes) -> bytes:
     return bytes(result)
 
 
+def verify_commit_bytes(raw: bytes, expected: str, tree: str, parent: str, label: str) -> str:
+    """Authenticate a Git commit object, not merely a JSON metadata claim."""
+    object_bytes = b"commit " + str(len(raw)).encode("ascii") + b"\0" + raw
+    require(hashlib.sha1(object_bytes).hexdigest() == expected, label + ": Git commit SHA-1 differs")
+    header, separator, _message = raw.partition(b"\n\n")
+    require(separator == b"\n\n", label + ": malformed commit headers")
+    lines = header.split(b"\n")
+    require([line for line in lines if line.startswith(b"tree ")] == [b"tree " + tree.encode("ascii")],
+            label + ": tree header differs")
+    require([line for line in lines if line.startswith(b"parent ")] == [b"parent " + parent.encode("ascii")],
+            label + ": sole parent differs")
+    return sha_bytes(raw)
+
+
+def authenticate_transport(transport: dict, git) -> dict:
+    for key, expected, tree, parent in [
+        ("measured_source", SOURCE, TREE, BASE_SOURCE),
+        ("unpublished_local_addendum", UNPUBLISHED_ADDENDUM, UNPUBLISHED_TREE, SOURCE),
+    ]:
+        row = transport[key]
+        require((row["commit"], row["tree"], row["parent"]) == (expected, tree, parent),
+                "transport archived identity differs: " + key)
+        require(type(row["raw_commit_base64"]) is str, "archived commit bytes must be base64 text")
+        raw = base64.b64decode(row["raw_commit_base64"], validate=True)
+        require(verify_commit_bytes(raw, expected, tree, parent, key) == row["raw_commit_sha256"],
+                "archived commit SHA-256 differs: " + key)
+    prior = transport["unpublished_local_addendum"]["final_head_readback"]
+    require(type(prior) is dict, "prior local readback must be an exact parsed JSON object")
+    reconstructed = (json.dumps(prior, indent=2, sort_keys=True) + "\n").encode()
+    require(sha_bytes(reconstructed) == UNPUBLISHED_READBACK_SHA256,
+            "prior unpublished local head readback changed")
+    require((prior["final_commit"], prior["final_tree"], prior["sole_parent_measured_commit"])
+            == (UNPUBLISHED_ADDENDUM, UNPUBLISHED_TREE, SOURCE), "prior local head identity differs")
+    implementation = transport["authenticated_implementation"]
+    require((implementation["commit"], implementation["tree"], implementation["parent"])
+            == (AUTHENTICATED_IMPLEMENTATION, TREE, BASE_SOURCE), "authenticated publication implementation differs")
+    require(git("cat-file", "-t", AUTHENTICATED_IMPLEMENTATION).strip() == b"commit",
+            "authenticated implementation is not a commit object")
+    published_raw = git("cat-file", "commit", AUTHENTICATED_IMPLEMENTATION)
+    published_raw_sha256 = verify_commit_bytes(published_raw, AUTHENTICATED_IMPLEMENTATION, TREE, BASE_SOURCE,
+                                               "authenticated implementation")
+    require(git("rev-parse", AUTHENTICATED_IMPLEMENTATION + "^{tree}").decode().strip() == TREE,
+            "authenticated source tree differs from actually measured tree")
+    publication = transport["publication"]
+    require(publication["mode"] == "authenticated GitHub Git Data API; expected-head nonforce branch update"
+            and publication["execution_reassigned"] is False
+            and publication["expected_remote_head"] == BASE_SOURCE and publication["force"] is False,
+            "publication contract would reassign execution or weaken the branch guard")
+    return {
+        "measured_execution_commit": SOURCE, "measured_source_tree": TREE,
+        "measured_raw_commit_sha256": transport["measured_source"]["raw_commit_sha256"],
+        "unpublished_local_addendum": UNPUBLISHED_ADDENDUM,
+        "unpublished_local_tree": UNPUBLISHED_TREE,
+        "unpublished_raw_commit_sha256": transport["unpublished_local_addendum"]["raw_commit_sha256"],
+        "unpublished_readback_sha256": UNPUBLISHED_READBACK_SHA256,
+        "source_lookup_commit": AUTHENTICATED_IMPLEMENTATION,
+        "source_lookup_raw_commit_sha256": published_raw_sha256,
+        "source_lookup_tree": TREE, "source_lookup_sole_parent": BASE_SOURCE,
+        "execution_reassigned": False,
+        "scope": "Archived actual execution commit authenticated; published implementation has identical complete Git tree and original parent. Metadata-recreated publication is source-equivalent only, not a new execution cohort.",
+    }
+
+
 def review_published(repo: Path, packet: Path, candidate: str, raw_task: Path | None) -> dict:
     def git(*args: str) -> bytes:
         return subprocess.check_output(["git", *args], cwd=repo, timeout=60)
 
-    def blob(path: str, ref: str = SOURCE) -> bytes:
+    source_lookup = None
+
+    def blob(path: str, ref: str | None = None) -> bytes:
+        require(source_lookup is not None, "source lookup attempted before transport authentication")
+        if ref is None:
+            ref = source_lookup
         require(not PurePosixPath(path).is_absolute() and ".." not in PurePosixPath(path).parts,
                 "source input is not repository-relative: " + path)
         return git("show", (":" if ref == "INDEX" else ref + ":") + path)
@@ -133,20 +210,24 @@ def review_published(repo: Path, packet: Path, candidate: str, raw_task: Path | 
     def allowed(path: str) -> bool:
         return path in ALLOWED_ADDENDUM or path.startswith(AUDIT_DIR + "/")
 
-    require(git("rev-parse", SOURCE + "^{tree}").decode().strip() == TREE, "measured tree differs")
-    require(git("rev-parse", SOURCE + "^").decode().strip() == BASE_SOURCE, "measured parent differs")
-    require(sha_bytes(git("diff", "--binary", BASE_SOURCE, SOURCE)) == REVIEWED_DIFF, "measured correction differs")
-    require(git("diff", "--name-only", BASE_SOURCE, SOURCE).decode().splitlines() == CHANGED_PATHS,
-            "measured path inventory differs")
+    transport_identity = authenticate_transport(read("transport-identity.json"), git)
+    source_lookup = transport_identity["source_lookup_commit"]
+    require(sha_bytes(git("diff", "--binary", BASE_SOURCE, source_lookup)) == REVIEWED_DIFF,
+            "authenticated source correction differs from measured reviewed delta")
+    require(git("diff", "--name-only", BASE_SOURCE, source_lookup).decode().splitlines() == CHANGED_PATHS,
+            "authenticated source path inventory differs")
     if candidate == "INDEX":
         candidate_tree = None
-        candidate_changes = git("diff", "--cached", "--name-only", SOURCE).decode().splitlines()
+        candidate_changes = git("diff", "--cached", "--name-only", source_lookup).decode().splitlines()
     else:
-        require(subprocess.run(["git", "merge-base", "--is-ancestor", SOURCE, candidate], cwd=repo,
-                               timeout=60, capture_output=True).returncode == 0, "candidate is not a measured-source descendant")
+        require(subprocess.run(["git", "merge-base", "--is-ancestor", source_lookup, candidate], cwd=repo,
+                               timeout=60, capture_output=True).returncode == 0,
+                "candidate is not an authenticated implementation descendant")
+        lineage = git("rev-list", "--parents", source_lookup + ".." + candidate).decode().splitlines()
+        require(all(len(row.split()) == 2 for row in lineage), "publication candidate introduces a merge")
         candidate_tree = git("rev-parse", candidate + "^{tree}").decode().strip()
-        candidate_changes = git("diff", "--name-only", SOURCE, candidate).decode().splitlines()
-    worktree_changes = git("diff", "--name-only", SOURCE).decode().splitlines()
+        candidate_changes = git("diff", "--name-only", source_lookup, candidate).decode().splitlines()
+    worktree_changes = git("diff", "--name-only", source_lookup).decode().splitlines()
     require(all(allowed(path) for path in candidate_changes + worktree_changes),
             "candidate or tracked worktree changes measured production/test/fixture/runner/runtime inputs")
 
@@ -290,7 +371,7 @@ def review_published(repo: Path, packet: Path, candidate: str, raw_task: Path | 
         pointer = LFS_POINTER.fullmatch(blob(row["path"]))
         require(pointer is not None and int(pointer[2]) == row["size"], "runtime materialized size differs from Git LFS pointer")
     for name, expected in independent["protected_production_trees_unchanged"].items():
-        require(git("rev-parse", SOURCE + ":" + name).decode().strip() == expected, "protected measured tree differs")
+        require(git("rev-parse", source_lookup + ":" + name).decode().strip() == expected, "protected measured tree differs")
         if candidate != "INDEX":
             require(git("rev-parse", candidate + ":" + name).decode().strip() == expected, "protected candidate tree differs")
 
@@ -492,9 +573,11 @@ def review_published(repo: Path, packet: Path, candidate: str, raw_task: Path | 
     require(work_summary == independent["a02"]["instrumented_paths"], "material-work reduction differs from independent raw reduction")
     require(desktop_quantities == independent["host"]["desktop_quantities"], "desktop reduction differs from independent raw reduction")
     return {
-        "schema": "pr383-successor-published-packet-check-v1",
+        "schema": "pr383-successor-transport-published-packet-check-v1",
         "status": "PASS_WITH_EXPLICIT_SCOPE",
         "source_commit": SOURCE, "source_tree": TREE,
+        "transport_authentication": transport_identity,
+        "source_lookup_commit": source_lookup, "execution_reassigned": False,
         "candidate": candidate, "candidate_tree": candidate_tree,
         "candidate_changes_from_measured_source": candidate_changes,
         "tracked_worktree_changes_from_measured_source": worktree_changes,
@@ -516,8 +599,9 @@ def review_published(repo: Path, packet: Path, candidate: str, raw_task: Path | 
         "original_packet_token_transform_verified_here": raw_task is not None,
         "limitations": [
             "Read-only evidence reduction; no tests, engine or compiler executed by this checker.",
+            "Execution belongs to archived e11b452f; authenticated implementation and publication descendants are qualified by explicit complete-tree/input equivalence only.",
             "Raw process logs, executable/toolchain bytes and original raw packet files are outside the published packet; their hashes and the immutable prior independent raw-artifact review are retained.",
-            "Without --raw-task-root, original whitespace transformation cannot be re-derived here; this checker verifies published hashes, retained original hashes and every included observation.",
+            "Without --raw-task-root, original whitespace transformation cannot be re-derived here; this checker verifies published hashes, retained original hashes and the documented census/accounting reductions from included observations.",
             "Retained completion footers are authenticated records; absent raw logs cannot be independently rescanned for diagnostics here.",
             "Unmaterialized Git LFS payload identities are checked from pointers; absent runtime bytes are listed explicitly, never treated as freshly hashed.",
             "No all-native-call/all-getter 2048 cap; prior-used boundary units are a synthetic counter seed.",
@@ -530,7 +614,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, required=True)
     parser.add_argument("--packet-dir", type=Path, default=Path(__file__).resolve().parent)
-    parser.add_argument("--candidate", default="HEAD", help="Git revision to compare to measured source; INDEX reads the staged candidate")
+    parser.add_argument("--candidate", default="HEAD", help="Descendant of authenticated implementation to compare to measured tree; INDEX reads the staged candidate")
     parser.add_argument("--raw-task-root", type=Path, help="Optional retained execution root for exact-copy and packet-token authentication")
     args = parser.parse_args()
     print(json.dumps(review_published(args.repo.resolve(), args.packet_dir.resolve(), args.candidate,

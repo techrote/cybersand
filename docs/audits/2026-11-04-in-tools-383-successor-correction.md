@@ -10,6 +10,62 @@ related-documents: [../operations/in-tools-metered-drain.md, ../operations/cyber
 
 # PR383 successor correction and bounded Linux qualification
 
+## Publication continuation and current coordination — 21:40 UTC
+
+The original successor chat filled during publication. The owner requested its
+completion, and a new isolated checkout recovered the original clean source,
+all raw run directories and the uploaded Git objects. Fresh independent
+[custody verification](in-tools-383-successor-2026-11-04/continuation-custody-review.json)
+reauthenticated the original logs, compiler/executable, 1,109 host inputs, 55
+native compilation inputs and all 18 runtime payloads. This was a new readback
+of the existing execution cohort, not a new native or Godot run. The independent
+[source review](in-tools-383-successor-2026-11-04/continuation-source-review.json)
+found no blocking A01/A02 defect and separately reran all 28 parser controls.
+
+Command-line Git publication lacked credentials in the original checkout. The
+authenticated publisher recreates commit metadata, so the publication identities
+are deliberately separate from the execution identity:
+
+| Role | Commit | Complete tree |
+|---|---|---|
+| Actual executed source, archived local commit | `e11b452f1e90a8a014ab4d721b7c65724a508597` | `22a35293c7373ea4583b78121778b00ecdf6eeee` |
+| Authenticated implementation, source-equivalent publication | `f2f673e4a961207347dd8708dce7d6b63788a432` | `22a35293c7373ea4583b78121778b00ecdf6eeee` |
+| Original local evidence addendum, archived | `7b35d05bc846328fd66f710f797de4db99ebd582` | `5b4913da6e7e107e059b8e0d0182f4af34859a18` |
+| Authenticated original evidence addendum | `83e9825f4b4c30153361809d74d273abcf33587f` | `5b4913da6e7e107e059b8e0d0182f4af34859a18` |
+
+The implementation's sole parent remains original PR head `73b10f9b`; the
+authenticated evidence addendum's sole parent is `f2f673e4`. A final publication
+supplement adds only evidence, the transport checker and directly affected
+documentation. The [transport identity](in-tools-383-successor-2026-11-04/transport-identity.json)
+archives the actual raw local commit bytes and original final-head review.
+The portable checker verifies their Git object hashes and the identical complete
+published implementation tree before using it for source lookup. It requires
+only the published ancestry, not unreachable local commit objects. Execution
+remains attributed to `e11b452f`; later commits receive explicit source-equivalence
+qualification. Publication requires an unchanged expected remote `73b10f9b`
+and a non-force update. The final PR head and tree are authenticated separately
+after that update; this prepublication record does not claim it already occurred.
+
+Review found and corrected an unfinished transport-checker output defect: a
+tick-observation loop shadowed the authenticated identity variable. The three
+reference changes restore the identity dictionary in the output. The
+[checker review](in-tools-383-successor-2026-11-04/transport-checker-review.json)
+retains the original and corrected hashes and seven rejection controls. This
+does not change a measured test, fixture, production source or admission threshold.
+
+At continuation intake, live main remained `751edc0b` and #383 remained Draft at
+`73b10f9b`, with auto-merge disabled and no competing writer recorded.
+**#379 has progressed beyond the earlier source-admission stop preserved below.**
+Its owner published `b30ae3cc496534fdad5e13f36ef049c4a00024ac`, tree
+`51133e19ecab5154ee4c3435731a9f5537dd69de`, then recorded
+[HOLD after a Windows process failure](https://github.com/techrote/cybersand/pull/379#issuecomment-6642233489).
+The Windows `test_liquid_desktop_default_host` process returned `0xC0000005`;
+the required Windows coverage gate also failed. Those separate results neither
+qualify nor disqualify this source-local Linux correction. #379 remains unmerged
+and separately owned. Its current disposition replaces the earlier pending
+source-admission status for planning; all dated evidence below keeps its
+original meaning. No main or #379 change is included here.
+
 ## Disposition and custody
 
 **A01 corrected. A02 qualified as the narrower material-work contract. Keep

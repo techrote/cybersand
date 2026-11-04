@@ -1,0 +1,104 @@
+{
+  "authenticated_implementation": "f2f673e4a961207347dd8708dce7d6b63788a432",
+  "fresh_readonly_checks": {
+    "published-original": {
+      "command": [
+        "python3",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/source/docs/audits/in-tools-383-successor-2026-11-04/check-published.py",
+        "--repo",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/source",
+        "--candidate",
+        "7b35d05bc846328fd66f710f797de4db99ebd582",
+        "--raw-task-root",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor"
+      ],
+      "result": {
+        "candidate": "7b35d05bc846328fd66f710f797de4db99ebd582",
+        "candidate_tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18",
+        "host_counted_assertions_from_retained_footers": 12223,
+        "host_suite_count": 15,
+        "index_members_verified": 22,
+        "native_cases": 30,
+        "native_compiled_inputs_verified": 55,
+        "native_exact_four_claimant_arms": 8,
+        "parser_tests_recorded": 28,
+        "runtime_payload_git_identities_verified": 18,
+        "source_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+        "source_inputs_verified": 1109,
+        "status": "PASS_WITH_EXPLICIT_SCOPE"
+      },
+      "returncode": 0,
+      "seconds": 7.602197315005469,
+      "started_utc": "2026-11-04T21:35:24.119440+00:00",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "07d3b78d6d0ecba8b4209bd500bce80913eb1d795cb42bc4376375ac4a81edde"
+    },
+    "raw-cohort": {
+      "command": [
+        "python3",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor/independent-review/check_successor.py",
+        "--task-root",
+        "/workspace/scratch/dc49a0ed2f07/pr383-successor"
+      ],
+      "result": {
+        "host_assertions": 12223,
+        "native_assertions": 14023753,
+        "source_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+        "status": "PASS_WITH_EXPLICIT_SCOPE"
+      },
+      "returncode": 0,
+      "seconds": 5.499152624994167,
+      "started_utc": "2026-11-04T21:35:24.119026+00:00",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "435dafa70ce1a62ad9ac264443ec52e069e0eb2386124dd69dd3fbe661b983fd"
+    }
+  },
+  "frozen_evidence_commit": "c83984c029080b49ad1776a2b3de8c16f7ad5892",
+  "frozen_evidence_tree": "f58c3298a2ab1f22d91a7fa228ff8caae9789373",
+  "historical_original_evidence_unchanged": {
+    "docs/audits/2026-11-04-in-tools-361a-metered-drain.md": "350e0ecd0dcbe2e788362d8097275a402f4af3ed",
+    "docs/audits/in-tools-361a-2026-11-04": "0030c9dfb4ae785de12db9668cfd6e9256e4fe8b"
+  },
+  "limitations": [
+    "These are fresh custody/evidence reductions, not new native/Godot executions. All runtime results remain e11b452f measured cohort.",
+    "A02 claims only material-work-units-v1, not aggregate all-native-call/getter cap.",
+    "Windows execution, physical input, actual OS focus, rendered pacing, owner acceptance and resulting-main qualification remain NOT RUN for this source.",
+    "No Ready transition, merge, auto-merge, approval, workflow dispatch, #361 closure, main/#379 or unrelated branch mutation permitted."
+  ],
+  "measured_commit": "e11b452f1e90a8a014ab4d721b7c65724a508597",
+  "measured_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+  "original_local_addendum": "7b35d05bc846328fd66f710f797de4db99ebd582",
+  "original_local_addendum_tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18",
+  "publication_helper_correction": {
+    "fixed_sha256": "ee540c13990b9c0b795eac46af826f039e239be1280f5ef1aaa55416cf2a9f60",
+    "negative_controls_expected_rejections": 7,
+    "original_sha256": "ee1da7a6024f662a43bd7601603fd5ee67e8b2e74e97e84dc4efaf7450e13128",
+    "reason": "Transport authentication output shadowed by per-arm observation list; 3 reference renames preserve identity dict. Admission predicates untouched."
+  },
+  "remaining": [
+    "Copy the narrowly corrected transport helper and actual reconstructed identity archive into final dedicated candidate; update its complete index.",
+    "Append current #379 status while preserving original time-qualified source re-admission stop.",
+    "Reverify measured-source equivalence and complete corrected checker on final published-candidate commit.",
+    "Immediately check expected remote head/Draft/ownership, nonforce expected-head update only, then authenticate final remote commit/tree/parents and Draft state."
+  ],
+  "reviewed_utc": "2026-11-04T21:37:35.737976+00:00",
+  "reviewer": "recovered_custody independent subagent; read-only old checkout, no implementation authorship or account approval",
+  "schema": "pr383-successor-recovered-custody-review-v1",
+  "status": "ADMIT_BOUNDED_PUBLICATION_PENDING_FINAL_CANDIDATE_VERIFICATION",
+  "upload_records": [
+    {
+      "entries_verified": 9,
+      "expected_tree": "22a35293c7373ea4583b78121778b00ecdf6eeee",
+      "record": "transport-implementation-upload.json",
+      "record_sha256": "af5b3358d5d4135ddee075b2647a8e73841b2f8e5890f33d709cfe1f05e73b10",
+      "status": "PASS"
+    },
+    {
+      "entries_verified": 23,
+      "expected_tree": "5b4913da6e7e107e059b8e0d0182f4af34859a18",
+      "record": "transport-addendum-upload.json",
+      "record_sha256": "f9ffa41c7d77e9d8c871dc67c3811d96eeb15d180354f77ebf9d9b05c0c0ac9d",
+      "status": "PASS"
+    }
+  ]
+}
