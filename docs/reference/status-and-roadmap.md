@@ -51,7 +51,7 @@ resulting-head acceptance and actual merge status.
 | #357 architecture | Owner-adopted Planned baseline, documentation merged |
 | #353-A / #371 | Merged shadow tooling and 27-source guard; legacy production definitions remain authoritative |
 | #353-B | Separate consumer-migration admission required; no production switch authorized |
-| #354 / #377 | Phase A evidence-only current-main reconciliation and guarded integration authorized, subject to [fresh final-candidate gates](../operations/material-liveness-investigation.md#which-gates-control-phase-a-integration); H1 remains unrepaired, H2/H3 preserved, production admission pending and issue open |
+| #354 / #377 | Phase A merged, evidence only; original H1 negative and H2/H3 laws retained. Separately authorized [#354-B H1 candidate](../operations/material-liveness-investigation.md#h1-candidate-and-adoption-boundary) is unmerged; source transition, measured performance disposition, runtime and independent final gates control adoption. Issue remains open. |
 | #355 | Separate endpoint-effects implementation programme; serialize any overlapping World/quantity writes |
 | #356 | Separate inspector/editing work; effective controls need actual native consumers and applied readback |
 | #358 | Independent experimental material work;132–137 not integrated here |

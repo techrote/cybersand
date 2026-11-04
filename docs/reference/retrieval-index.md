@@ -16,13 +16,17 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 |---|---|
 | What does the real-World investigation establish about cooling, mutual heating and stochastic rest? | [Investigation guide](../operations/material-liveness-investigation.md), [material kernel contract](../systems/materials-and-rule-kernels.md#material-liveness-investigation-boundary--2026-11-04) |
 | What distinguishes an actual visit, worker claimant and authenticated result from configuration or an unchanged image? | [Reproduction and evidence guide](../operations/material-liveness-investigation.md), [validation ledger](validation-evidence.md#mat-auth-002-phase-a-evidence-boundary--2026-11-04) |
-| May the next agent change production cooling, generic retries or protected source hashes? | [Current admission boundary](../architecture/material-authoring-catalogue-plan.md#14-material-liveness-phase-a-and-production-admission--2026-11-04), [shadow compatibility guards](../operations/material-catalogue-shadow.md#compatibility-protection-and-independent-source-authority) |
+| May the next agent change production cooling, generic retries or protected source hashes? | [H1-only candidate admission](../operations/material-liveness-investigation.md#h1-candidate-and-adoption-boundary), [one-source transition](../operations/material-catalogue-shadow.md#h1-proposed-source-transition); H2/H3 and all other protected owners remain fixed |
 | Which resting, mask and region obligations must a correction preserve? | [Activity and deadline boundary](../systems/activity-dirty-regions-and-waking.md#material-liveness-phase-a--2026-11-04) |
 
 [Focused MAT354 questions](retrieval-questions-mat354.json) are additive; frozen32
 and challenge157 remain unchanged. The dated registration, findings and correction
 memo are excluded from default retrieval and reached through these current
 contracts. Their original failed or incomplete attempts remain evidence.
+
+[H1 candidate questions](retrieval-questions-mat354-h1.json) separately cover the
+one-source proposal, preserved thermal laws, save boundary and owner performance
+decision. Original Phase A question objects retain their historical scope.
 
 ## Material catalogue compiler and compatibility guards — 2026-11-04
 

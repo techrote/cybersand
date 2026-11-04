@@ -192,16 +192,22 @@ Mercury deadlines, pause/re-entry or production instrumentation.
 
 The [#354 real-World investigation](../operations/material-liveness-investigation.md)
 demonstrates isolated MoltenGlass losing its next cooling opportunity after sleep.
-[`World::schedule_pending_reaction_wake`](../../native/src/world.cpp) currently
-retains compact-pair and Ice opportunities, not that intrinsic countdown. Generic
+The original [`World::schedule_pending_reaction_wake`](../../native/src/world.cpp)
+retained compact-pair and Ice opportunities, not that intrinsic countdown. Generic
 yielding liquids also lose later mobility samples after sleep, but their documented
 legacy rest is distinct from a promised retry and from Water-CY's explicit policy.
 
-**Production implementation pending.** The [correction design](../audits/2026-11-04-mat354-correction-admission.md)
-targets an earliest existing block deadline for the next eligible cooling tick;
-it must preserve heated states already at 180, inert sleep, source/partner visibility,
+**Unmerged H1 candidate.** The [correction design](../audits/2026-11-04-mat354-correction-admission.md)
+is now implemented as the earliest existing block deadline for the next eligible
+cooling tick, including conversion at countdown zero. It preserves heated states
+already at 180, inert sleep, source/partner visibility,
 shared deadline ownership, worker barriers and region pause without catch-up.
 No per-cell queue, artificial dirty write or permanently awake workaround is
 admitted. Source changes already wake neighborhoods; any separate missed-wake
 claim needs its own reproduction. Exact controls, retained failures and platform
 limits remain in the [findings audit](../audits/2026-11-04-mat354-findings.md).
+The separate [H1 candidate record](../audits/2026-11-04-mat354-h1-qualification.md)
+owns its measured finite work and retirement, shared-deadline tests, source
+transition and incomplete adoption gates. Existing minimum coalescing permits
+one stale wake after a source disappears; it must not erase another obligation.
+No simulation ticks are invented during owner pause or region exclusion.

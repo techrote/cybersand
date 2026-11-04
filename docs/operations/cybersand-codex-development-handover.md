@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-AUTH-002 H1 candidate — 2026-11-04
+
+The owner separately authorizes #354-B's narrow MoltenGlass cooling-deadline
+correction and a reviewed transition for that single protected source. The
+[candidate qualification record](../audits/2026-11-04-mat354-h1-qualification.md)
+owns source, ownership, measured performance, runtime and outstanding gates.
+Initial accepted main is `751edc0b495dc85484ad5509a7c95f863651c76b`; the
+source-only correction is `16533ff81c561677308665357eb1d0d5f65e85bc`.
+The original #371 lock and #377 Phase A evidence remain immutable. H2 mutual
+heating, H3 generic rest, catalogue/capability identities and ABI stay unchanged.
+
+This is an unmerged candidate, not runtime adoption. Keep #354/#352 open.
+No H1-specific numerical performance acceptance threshold exists; the owner must
+dispose of measured results before adoption. Exact runtime/CI evidence and an
+independent final review are also mandatory. #384 owns a separate display
+consumer/checker change, #382 the pressure include, and #358/SOL their parked
+protected-source deltas; this H1 transition admits none of them. Reconcile
+checker composition explicitly when integrating either branch.
+
 ## MAT-AUTH-002 Phase A integration gate — 2026-11-04
 
 The owner now authorizes current-main reconciliation, focused preflight, a

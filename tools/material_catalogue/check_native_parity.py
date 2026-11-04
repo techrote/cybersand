@@ -28,6 +28,8 @@ SOURCE = Path("materials/catalogue/catalogue.json")
 CANDIDATE = Path("materials/catalogue/generated/catalogue.shadow.hpp")
 ORACLE = Path("tools/material_catalogue/native_oracle.cpp")
 NATIVE_SOURCE = Path("native/src/material_rules.cpp")
+H1_TRANSITION_SOURCE = Path("tools/material_catalogue/h1_transition.py")
+H1_TRANSITION_RECORD = Path("materials/catalogue/h1-source-transition.json")
 
 
 class ParityError(ValueError):
@@ -233,9 +235,14 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
         raise ParityError("--cxx requires a compiler executable")
     version, _ = run([*compiler, "--version"], root, timeout=10)
     version = version.strip()
-    tool_sources = [file_fact(root / ORACLE, root), file_fact(Path(__file__).resolve(), root),
-                    file_fact(root / "tools/material_catalogue/compatibility.py", root)]
-    input_paths = [source, candidate, gdscript, inspection, root / compatibility.LOCK]
+    # Receipt v2 includes the executed H1 checker and its exact source record.
+    # Historical v1 receipts retain their original three-tool/five-input scope;
+    # they cannot qualify this H1-aware wrapper by acquiring a fresh label.
+    tool_paths = [root / ORACLE, Path(__file__).resolve(), Path(compatibility.__file__).resolve(),
+                  Path(compatibility.__file__).with_name("h1_transition.py").resolve()]
+    tool_sources = [file_fact(path, root) for path in tool_paths]
+    input_paths = [source, candidate, gdscript, inspection, root / compatibility.LOCK,
+                   root / H1_TRANSITION_RECORD]
     inputs = [file_fact(path, root) for path in input_paths]
     measurements = {}
     with tempfile.TemporaryDirectory(prefix="cybersand-mat353-parity-") as directory:
@@ -283,8 +290,7 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
     # Close source custody after all probes, so concurrent source changes do
     # not silently receive a PASS under hashes taken at a different instant.
     compare(protected, compatibility.check(root), "post-check protected source identity")
-    compare(tool_sources, [file_fact(root / ORACLE, root), file_fact(Path(__file__).resolve(), root),
-                           file_fact(root / "tools/material_catalogue/compatibility.py", root)], "post-check tools")
+    compare(tool_sources, [file_fact(path, root) for path in tool_paths], "post-check tools")
     compare(inputs, [file_fact(path, root) for path in input_paths], "post-check inputs")
     counts = {"material_slots": len(original["materials"]), "descriptor_fields_per_slot": 15,
               "valid_ids": sum(row["valid"] for row in original["materials"]),
@@ -296,9 +302,10 @@ def check(root: Path = ROOT, *, source: Path | None = None, candidate: Path | No
               "memberships": len(original["interactions"]["memberships"]),
               "coverage_records": len(original["interactions"]["coverage"]),
               "tuning_passes": len(original["interactions"]["tuning_passes"])}
-    return {"schema_id": "cybersand.material-catalogue.native-parity", "schema_version": 1,
+    return {"schema_id": "cybersand.material-catalogue.native-parity", "schema_version": 2,
             "status": "PASS", "scope": "353-A shadow metadata; no production cutover",
             "source_commit": compatibility.BASELINE, "protected_sources": protected,
+            "source_commit_role": "immutable-metadata-baseline-not-candidate-head",
             "source_locks": lock["source_locks"], "tool_sources": tool_sources, "inputs": inputs,
             "compiler_version": version, "commands": commands,
             "snapshot_sha256": hashlib.sha256(original_output.encode("utf-8")).hexdigest(),
@@ -330,11 +337,12 @@ def _report_output(path: Path, root: Path, *, source: Path | None = None,
             *(selected_candidate.with_name(name) for name in (
                 "catalogue_shadow.gd", "inspection.json", "manifest.json")),
             Path(__file__).resolve(), Path(compatibility.__file__).resolve(),
+            Path(compatibility.__file__).with_name("h1_transition.py").resolve(),
             Path(__file__).with_name("compiler.py").resolve(),
         }
         for repository in repositories:
             protected.update((repository / relative).resolve() for relative in (
-                SOURCE, CANDIDATE, compatibility.LOCK, ORACLE,
+                SOURCE, CANDIDATE, compatibility.LOCK, ORACLE, H1_TRANSITION_SOURCE, H1_TRANSITION_RECORD,
                 Path("tools/material_catalogue/check_native_parity.py"),
                 Path("tools/material_catalogue/compatibility.py"),
                 Path("tools/material_catalogue/compiler.py"),

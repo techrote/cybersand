@@ -1,0 +1,186 @@
+name: MAT354 H1 scoped native qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'native/src/world.cpp'
+      - 'native/tests/test_mat354_h1.cpp'
+      - 'native/tests/fixtures/material_liveness_h1_v1.json'
+      - 'tools/material_cooling_h1/**'
+      - 'tools/material_catalogue/**'
+      - 'materials/catalogue/**'
+      - '.github/workflows/material-cooling-h1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Draft execution is intentional and bounded. This is native correctness only;
+# local paired performance, runtime publication and ordinary full CI are separate.
+concurrency:
+  group: mat354-h1-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  H1_EXPECTED_HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+  H1_EXPECTED_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || '' }}
+  GIT_LFS_SKIP_SMUDGE: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  linux:
+    name: H1 / Linux / ${{ matrix.checkout }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        checkout: [head, merge]
+    steps:
+      - name: Check out immutable requested source and complete history
+        if: matrix.checkout == 'head' || github.event_name == 'pull_request'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ matrix.checkout == 'merge' && github.sha || env.H1_EXPECTED_HEAD }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        if: matrix.checkout == 'head' || github.event_name == 'pull_request'
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind actual checkout parents, OS and untouched baseline
+        if: matrix.checkout == 'head' || github.event_name == 'pull_request'
+        timeout-minutes: 3
+        shell: python
+        env:
+          H1_CHECKOUT_KIND: ${{ matrix.checkout }}
+        run: |
+          import json, os, pathlib, platform, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          kind = os.environ['H1_CHECKOUT_KIND']
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mat354-h1-' + kind)
+          output.mkdir(parents=True, exist_ok=False)
+          head = git('rev-parse', 'HEAD')
+          parents = git('show', '-s', '--format=%P', 'HEAD').split()
+          expected = os.environ['GITHUB_SHA'] if kind == 'merge' else os.environ['H1_EXPECTED_HEAD']
+          context = {'schema': 'mat354.h1.hosted-context.v1', 'checkout_kind': kind,
+                     'commit': head, 'tree': git('rev-parse', 'HEAD^{tree}'), 'parents': parents,
+                     'expected_checkout': expected, 'expected_head': os.environ['H1_EXPECTED_HEAD'],
+                     'expected_base': os.environ['H1_EXPECTED_BASE'], 'actual_os': platform.platform(),
+                     'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+                     'event': os.environ['GITHUB_EVENT_NAME'], 'github_sha': os.environ['GITHUB_SHA'],
+                     'github_ref': os.environ['GITHUB_REF'], 'workflow_ref': os.environ['GITHUB_WORKFLOW_REF'],
+                     'workflow_sha': os.environ['GITHUB_WORKFLOW_SHA']}
+          (output/'hosted-context.json').write_text(json.dumps(context, indent=2)+'\n')
+          if head != expected:
+              raise SystemExit('actual checkout differs from immutable requested source')
+          if kind == 'merge' and parents != [context['expected_base'], context['expected_head']]:
+              raise SystemExit('actual PR merge parents differ from event base/head')
+          subprocess.run(['git', 'worktree', 'add', '--detach',
+                          str(pathlib.Path(os.environ['RUNNER_TEMP'])/'mat354-h1-baseline'),
+                          '751edc0b495dc85484ad5509a7c95f863651c76b'], check=True, timeout=120)
+      - name: Execute source-qualified native correctness against the untouched baseline
+        if: matrix.checkout == 'head' || github.event_name == 'pull_request'
+        timeout-minutes: 31
+        shell: bash
+        env:
+          H1_CHECKOUT_KIND: ${{ matrix.checkout }}
+        run: |
+          set -euo pipefail
+          python tools/material_cooling_h1/qualify.py \
+            --baseline-root "$RUNNER_TEMP/mat354-h1-baseline" \
+            --output "$RUNNER_TEMP/mat354-h1-$H1_CHECKOUT_KIND/qualification" \
+            --mode correctness --compiler g++-13
+      - name: Retain original nested source, build, dependency and execution evidence
+        if: always() && (matrix.checkout == 'head' || github.event_name == 'pull_request')
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat354-h1-linux-${{ matrix.checkout }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mat354-h1-${{ matrix.checkout }}/
+            !${{ runner.temp }}/mat354-h1-${{ matrix.checkout }}/**/*.o
+            !${{ runner.temp }}/mat354-h1-${{ matrix.checkout }}/**/*.obj
+            !${{ runner.temp }}/mat354-h1-${{ matrix.checkout }}/**/mat354_h1
+            !${{ runner.temp }}/mat354-h1-${{ matrix.checkout }}/**/mat354_h1.exe
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    name: H1 / Windows / exact head
+    runs-on: windows-2022
+    timeout-minutes: 40
+    steps:
+      - name: Preserve source LF bytes
+        shell: cmd
+        run: |
+          git config --global core.autocrlf false
+          if errorlevel 1 exit /b 1
+          git config --global core.eol lf
+      - name: Check out immutable requested head and complete history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.H1_EXPECTED_HEAD }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind actual head, OS and untouched baseline
+        timeout-minutes: 3
+        shell: python
+        run: |
+          import json, os, pathlib, platform, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          output = pathlib.Path(os.environ['RUNNER_TEMP'])/'mat354-h1-windows'
+          output.mkdir(parents=True, exist_ok=False)
+          head = git('rev-parse', 'HEAD')
+          context = {'schema': 'mat354.h1.hosted-context.v1', 'checkout_kind': 'head',
+                     'commit': head, 'tree': git('rev-parse', 'HEAD^{tree}'),
+                     'parents': git('show', '-s', '--format=%P', 'HEAD').split(),
+                     'expected_head': os.environ['H1_EXPECTED_HEAD'], 'expected_base': os.environ['H1_EXPECTED_BASE'],
+                     'actual_os': platform.platform(), 'run_id': os.environ['GITHUB_RUN_ID'],
+                     'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'], 'event': os.environ['GITHUB_EVENT_NAME'],
+                     'github_sha': os.environ['GITHUB_SHA'], 'github_ref': os.environ['GITHUB_REF'],
+                     'workflow_ref': os.environ['GITHUB_WORKFLOW_REF'], 'workflow_sha': os.environ['GITHUB_WORKFLOW_SHA']}
+          (output/'hosted-context.json').write_text(json.dumps(context, indent=2)+'\n')
+          if head != context['expected_head']:
+              raise SystemExit('actual checkout differs from requested head')
+          subprocess.run(['git', 'worktree', 'add', '--detach',
+                          str(pathlib.Path(os.environ['RUNNER_TEMP'])/'mat354-h1-baseline'),
+                          '751edc0b495dc85484ad5509a7c95f863651c76b'], check=True, timeout=120)
+      - name: Build and execute actual Windows native code with installed VS LLVM
+        timeout-minutes: 31
+        shell: cmd
+        run: |
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "MAT354_H1_VSROOT=%%i"
+          if not defined MAT354_H1_VSROOT exit /b 1
+          call "%MAT354_H1_VSROOT%\Common7\Tools\VsDevCmd.bat" -no_logo -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          set "MAT354_H1_CXX=%ProgramFiles%\LLVM\bin\clang++.exe"
+          if not exist "%MAT354_H1_CXX%" set "MAT354_H1_CXX=%MAT354_H1_VSROOT%\VC\Tools\Llvm\x64\bin\clang++.exe"
+          if not exist "%MAT354_H1_CXX%" exit /b 1
+          python tools/material_cooling_h1/qualify.py --baseline-root "%RUNNER_TEMP%\mat354-h1-baseline" --output "%RUNNER_TEMP%\mat354-h1-windows\qualification" --mode correctness --compiler "%MAT354_H1_CXX%"
+          exit /b %ERRORLEVEL%
+      - name: Retain original Windows source, build, dependency and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat354-h1-windows-head-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mat354-h1-windows/
+            !${{ runner.temp }}/mat354-h1-windows/**/*.o
+            !${{ runner.temp }}/mat354-h1-windows/**/*.obj
+            !${{ runner.temp }}/mat354-h1-windows/**/*.pdb
+            !${{ runner.temp }}/mat354-h1-windows/**/mat354_h1.exe
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90

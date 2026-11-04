@@ -1,0 +1,35 @@
+{
+  "disposition": "proposed-source-identity-not-runtime-adoption",
+  "historical_baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+  "historical_lock": {
+    "git_blob": "119d94c125fd229c080a21a494647acf924ddbc8",
+    "lf_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+    "path": "materials/catalogue/compatibility-lock.json"
+  },
+  "protected_sources": 27,
+  "runtime_adoption_authorized": false,
+  "schema_version": 1,
+  "scope": {
+    "function": "World::schedule_pending_reaction_wake",
+    "historical_function_lf_sha256": "46b2a209cf6f829f500b5e5e53a7280d507d64c15ebc4f2a3610670af47626b2",
+    "outside_function_unchanged": true,
+    "successor_function_lf_sha256": "1a33af3b9825f62bf80b14a010adb3e4f095b8adfb260a6f021e24a238b39699"
+  },
+  "source": {
+    "historical_git_blob": "a6afd8cad4264ac2eca0362d14711158e3606760",
+    "historical_lf_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+    "path": "native/src/world.cpp",
+    "successor_git_blob": "d045d4e14193b1393a4368d13b4c16cba9f979e2",
+    "successor_lf_sha256": "df0bb080084972c49ca400b7bfc6504f7ec27fa474112bc2bd56abe5d3d21539"
+  },
+  "source_commit": "16533ff81c561677308665357eb1d0d5f65e85bc",
+  "source_delta_encoding": "mat354-h1-source-delta-v1",
+  "source_delta_paths": [
+    "native/src/world.cpp"
+  ],
+  "source_delta_sha256": "b0e0510aba44f486f121f28639f9b5e58a14b91ddb366f763bd9d17727d42b85",
+  "source_parent": "751edc0b495dc85484ad5509a7c95f863651c76b",
+  "source_tree": "c0545655f190f0c9e990010873d24b1e702385a5",
+  "transition_id": "mat354-h1-cooling-deadline-v1",
+  "unchanged_protected_sources": 26
+}

@@ -97,7 +97,7 @@ the reproduced starvation, retained controls and platform limits.
 
 ## Material liveness investigation boundary — 2026-11-04
 
-**Current source; demonstrated cooling omission, no production correction.** In
+**Established thermal law; unmerged H1 scheduling candidate.** In
 [`World::update_rule_kernel`](../../native/src/world.cpp), MoltenGlass decrements
 `state_a` on its coordinate-staggered four-tick thermal lane and converts to Glass
 at zero. A visible Fire, Lava or MoltenGlass neighbor instead sets the countdown
@@ -114,9 +114,13 @@ after failed rolls and sleep, but this is documented legacy rest; it does not
 inherit Water-CY's separately implemented retry obligation. Preserve current
 generic trajectories unless a versioned policy is separately approved.
 
-Phase A admits tests, tooling and documentation only. #354 remains open, and
-production deadline implementation and the #371 protected-source transition
-remain pending. Exact execution and platform claims belong to the audit/PR ledger.
+Phase A remains evidence only. The separately authorized #354-B candidate retains
+the next four-tick thermal lane for cold unchanged MoltenGlass (including zero)
+and hot countdowns other than 180. Hot-at-180 pools add no thermal deadline.
+The eight-neighbour heat scan uses the same visible authority and exact predicate
+as this kernel, without changing the kernel itself. The [H1 qualification record](../audits/2026-11-04-mat354-h1-qualification.md)
+owns source, performance and platform claims. It is unmerged and not runtime
+adopted; #354 stays open. H2/H3 laws and the original negative evidence persist.
 
 ## Current material families
 

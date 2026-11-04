@@ -101,6 +101,37 @@ Formatting-only edits still count as changes under the established LCB
 contract, except its existing CRLF-to-LF normalization. Stale-identity refusal
 is preserved; it is not weakened to make candidate generation pass.
 
+## H1 proposed source transition
+
+The separately authorized #354-B candidate extends source authentication for one
+exact MoltenGlass deadline implementation. The original lock, baseline
+`0fd4af5987e77db4da3e37c757cf2c0917ae9e15`, retained hashes and historical
+validation remain intact. The [candidate evidence](../audits/2026-11-04-mat354-h1-qualification.md)
+records source-only commit `16533ff81c561677308665357eb1d0d5f65e85bc`, whose sole
+changed file is `native/src/world.cpp`; its parent is accepted main
+`751edc0b495dc85484ad5509a7c95f863651c76b`.
+
+The transition checker authenticates the parent and successor Git source,
+the exact single-file change and unchanged bytes outside
+`World::schedule_pending_reaction_wake`. All other protected owners still match
+the original authority. Unknown source, altered record, missing history or
+receipt, mixed old/new identities and unrelated protected edits fail closed.
+The successor is labelled proposed, never runtime-adopted by a source check.
+No generic acceptance list, baseline refresh or branch-name exemption is added.
+
+Catalogue identity hashes only the material and interaction headers; capability
+identity hashes the existing matrix. Neither changes for this World-only patch.
+ABI, Cell layout, policy wire versions and stale-policy refusal also stay fixed.
+CYPS2/3 carries activity/deadlines but no kernel-source version, and native
+receipt provenance is caller-claimed. Strict source/runtime qualification remains
+external; importing a historical sleeping state does not establish H1 migration
+or cross-source replay. Its measured boundary belongs to the candidate record.
+
+This transition does not admit #353-B consumer migration, #382 pressure changes,
+#358 materials or SOL/GCR source deltas. #384's separately owned display-checker
+additions require explicit composition and fresh resulting-source qualification.
+The earlier A-only statements describe the frozen historical authority.
+
 ## Independent native parity for descriptors, reaction ordinals and capabilities
 
 The [native oracle](../../tools/material_catalogue/native_oracle.cpp) is a
@@ -133,8 +164,12 @@ native-parity receipt, and loads only the candidate in a temporary empty project
 Actual Godot 4.7 parses and reads all metadata; this is not a game-project,
 native-extension, fallback-physics or rendered-pixel test.
 
-The receipt must contain the exact three checker/oracle inputs and five
-catalogue/mirror inputs; missing, duplicated, renamed or stale entries fail.
+Retained schema1 receipts contained three checker/oracle inputs and five
+catalogue/mirror inputs. Fresh H1-aware schema2 receipts contain four tools and
+six inputs, adding the transition checker and source record. The Godot reader
+requires schema2 for a fresh candidate proof and refuses incomplete or stale
+schema1 input; retained historical receipts remain unchanged. Missing, duplicated,
+renamed or stale entries fail.
 The checker verifies the whole inventory again after readback. Report paths
 cannot overwrite their checked inputs. A truncated local editor archive was
 refused during qualification; the accepted readback used the complete archive

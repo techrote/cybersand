@@ -25,10 +25,13 @@ from check_native_parity import _report_output, _write_report, compare, file_fac
 ROOT = Path(__file__).resolve().parents[2]
 EXPECTED_VERSION = "4.7.stable.official.5b4e0cb0f"
 RECEIPT_PATHS = {
+    # Fresh v2 proof has four tool sources and six inputs. Retained v1 records
+    # remain reproducible with their original checker; no implicit upgrade.
     "tool_sources": (
         "tools/material_catalogue/native_oracle.cpp",
         "tools/material_catalogue/check_native_parity.py",
         "tools/material_catalogue/compatibility.py",
+        "tools/material_catalogue/h1_transition.py",
     ),
     "inputs": (
         "materials/catalogue/catalogue.json",
@@ -36,6 +39,7 @@ RECEIPT_PATHS = {
         "materials/catalogue/generated/catalogue_shadow.gd",
         "materials/catalogue/generated/inspection.json",
         "materials/catalogue/compatibility-lock.json",
+        "materials/catalogue/h1-source-transition.json",
     ),
 }
 SCRIPT = '''extends SceneTree
@@ -65,9 +69,11 @@ def validate_native_receipt(receipt: dict, protected: dict, root: Path = ROOT) -
     if not isinstance(receipt, dict):
         raise ValueError("native receipt must be an object")
     compare("cybersand.material-catalogue.native-parity", receipt.get("schema_id"), "native receipt schema")
-    compare(1, receipt.get("schema_version"), "native receipt version")
+    compare(2, receipt.get("schema_version"), "native receipt version")
     compare("PASS", receipt.get("status"), "native receipt status")
     compare(compatibility.BASELINE, receipt.get("source_commit"), "native receipt baseline")
+    compare("immutable-metadata-baseline-not-candidate-head", receipt.get("source_commit_role"),
+            "native receipt baseline role")
     compare(protected, receipt.get("protected_sources"), "native receipt protected sources")
     compare(True, receipt.get("native_authored_compiled_shadow_facts_equal"), "native receipt complete fact equality")
     for flag in ("world_executed", "physics_qualification", "production_cutover"):
@@ -146,6 +152,7 @@ def verify(godot: Path, archive: Path, snapshot: Path, native_report: Path) -> d
             "editor_archive_sha256": pin["sha256"], "editor_executable_sha256": binary_sha,
             "candidate_gdscript_sha256": digest(candidate), "native_snapshot_sha256": digest(native_bytes),
             "native_parity_report_sha256": digest(receipt_bytes),
+            "native_parity_receipt_schema_version": 2,
             "material_rows": len(native["materials"]), "capability_rows": len(native["capabilities"]),
             "readback_seconds": round(seconds, 6), "backend": "native-metadata-shadow",
             "production_project_loaded": False, "world_executed": False,

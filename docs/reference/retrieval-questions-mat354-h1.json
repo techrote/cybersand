@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-04",
+  "scope": "Additive H1 candidate questions; preserve original Phase A and frozen retrieval fixtures unchanged. Candidate source integrity is not runtime adoption.",
+  "questions": [
+    {
+      "id": "MAT354B-01",
+      "query": "What exactly does the separately authorized H1 MoltenGlass cooling-deadline candidate change, and has it been adopted?",
+      "canonical": [
+        "operations/material-liveness-investigation.md"
+      ],
+      "facts": [
+        "The candidate changes only the existing scheduling helper for cold MoltenGlass and hot countdowns other than180.",
+        "It remains unmerged; source integrity, performance disposition, runtime, applicable CI and independent review are separate adoption gates."
+      ],
+      "sources": [
+        "operations/material-liveness-investigation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354B-02",
+      "query": "How does the proposed H1 source transition preserve all27 historical material authority locks rather than refreshing a hash?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "The original27-source lock and baseline0fd4af5987e77db4da3e37c757cf2c0917ae9e15 are unchanged.",
+        "A pinned source-only commit binds exactly one World successor, its parent and unchanged bytes outside the helper; all other protected owners remain historical."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354B-03",
+      "query": "Does Spark count as MoltenGlass heat, and may a hot180 pool sleep after the H1 correction?",
+      "canonical": [
+        "operations/material-liveness-investigation.md",
+        "systems/materials-and-rule-kernels.md"
+      ],
+      "facts": [
+        "Only visible Fire,Lava,MoltenGlass count as thermal heat, preserving the existing kernel.",
+        "Hot180 fixed points add no intrinsic deadline; cold zero requires the next valid conversion lane."
+      ],
+      "sources": [
+        "operations/material-liveness-investigation.md",
+        "systems/materials-and-rule-kernels.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354B-04",
+      "query": "What numerical performance threshold qualifies the H1 cooling scheduler for adoption?",
+      "canonical": [
+        "operations/material-liveness-investigation.md"
+      ],
+      "facts": [
+        "No H1-specific numeric acceptance threshold exists in the advisory repository policy.",
+        "Measurements must follow the frozen plan and receive an explicit owner performance disposition before adoption."
+      ],
+      "sources": [
+        "operations/material-liveness-investigation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354B-05",
+      "query": "Do unchanged CYPS versions or catalogue digests imply cross-source strict replay or automatic old-save H1 migration?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "Catalogue/capability source sets are unchanged by the World-only correction.",
+        "CYPS2/3 stores activity/deadlines without source version; exact-source runtime provenance and continuation qualification remain external."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MAT354B-06",
+      "query": "Does the H1 source transition admit the separate display migration, PressureFlow, SOL or paired material branches?",
+      "canonical": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "facts": [
+        "No: each unrelated protected source drift still fails.",
+        "The separate display checker must be explicitly composed and requalified when integrating branches."
+      ],
+      "sources": [
+        "operations/material-catalogue-shadow.md"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}
