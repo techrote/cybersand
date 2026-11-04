@@ -197,6 +197,7 @@ listed boundaries; execution evidence remains separately dated.
 | RIG-013 | Current: the cellular owner accounts accepted usable work; only a matching accepted, consumed receipt can apply bounded physical recoil once, and cancellation, expiry, rearm, selection and reset fence stale results |
 | RIG-014 | Current: physical processors must settle and fix their real body before worker admission; rotated nonoverlapping exterior ports preflight complete batches, and blocked outputs consume no input |
 | RIG-015 | Current: bounded per-actor/per-processor history preserves stock, age, cycles and cooldown across pickup, redeployment and selection; an exhausted physical device remains observable and inert until its physical owner retires it |
+| RIG-016 | Current experimental #361-A: explicitly selected metered U10 preflights every bounded target under the exclusive owner, meters copied native transitions in Water units or Brine cells, and preserves its live allowance across equipment/session churn; normal refusal edits nothing, unexpected partial execution terminally quarantines the owner until explicit native replacement |
 
 ### Physical free-flight invariants
 

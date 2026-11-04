@@ -1,0 +1,34 @@
+{
+  "schema": "in-tools-361a-parser-controls-v1",
+  "time_utc": "2026-11-04T12:41:53.690355+00:00",
+  "scope": "Synthetic parser shape/negative controls and fresh-output custody only; no native or Godot execution",
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/lcb",
+    "-p",
+    "test_metered_drain_native.py",
+    "-v"
+  ],
+  "git_commit": "f4878302fd66975468dd307a94bb035529af5ecd",
+  "git_tree": "b5743bdb4b7a6c3e8fc6c1f8d331aa08ce21b719",
+  "source_status": "",
+  "source_sha256": {
+    "tools/lcb/run_metered_drain_native.py": "0f791222111fef67482f25817b99f708c55c59edf1a9ab410ce963a2983ed8ae",
+    "tools/lcb/test_metered_drain_native.py": "18719fd930486830228e699b5413c70e55537916e63dda60b53cd43b4118fcc1"
+  },
+  "source_sha256_after": {
+    "tools/lcb/run_metered_drain_native.py": "0f791222111fef67482f25817b99f708c55c59edf1a9ab410ce963a2983ed8ae",
+    "tools/lcb/test_metered_drain_native.py": "18719fd930486830228e699b5413c70e55537916e63dda60b53cd43b4118fcc1"
+  },
+  "inputs_unchanged": true,
+  "tests": 23,
+  "returncode": 0,
+  "seconds": 0.21418596000876278,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "4ea055ea1914e5b84bf2d48b724fb98b3969e70e207a39d7751751b3c4653899",
+  "status": "pass"
+}

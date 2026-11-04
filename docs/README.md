@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+IN-TOOLS #361-A: the [explicit metered U10 profile](operations/in-tools-metered-drain.md)
+and [source-qualified implementation evidence](audits/2026-11-04-in-tools-361a-metered-drain.md)
+describe actual bounded application work and remaining acceptance gates. Ordinary
+U10 and production liquid defaults remain intact; the implementation stays draft.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
 is being reconciled and qualified for guarded integration in [#371](https://github.com/techrote/cybersand/pull/371).

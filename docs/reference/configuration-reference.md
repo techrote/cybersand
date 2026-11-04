@@ -936,6 +936,8 @@ seconds and authored charge; recipe accounting is authored cell slots.
 | Swept projectile trace | At most 96 samples per movement segment |
 | Accepted delta | At most 1/15 second |
 | Shared equipment charge | 100 maximum; regenerates 6 per simulation second |
+| U10 `liquid_drain` | Range 29, radius 4, accepted activation cost 0.85 and cooldown 0.10 s; power/35% alternate affects effect, not cost |
+| Opt-in `metered-drain-v1` | Physical U10 only; at most 16 targets per operation; per native World generation/actor slot allowances of 32 × actual Q Water units and separately 32 Brine cells; selection cannot refill |
 | Processor lifetime / stock | 45 seconds; normally 16 successful batches; Firewarden 12 pulses |
 | Equipment leases | 12 ticks default, 18 maximum; desktop human input uses six ticks |
 | Publications | Copied equipment selection, charge/cooldown/result, projectiles, devices, effects, hit receipts and work counters |
@@ -951,6 +953,14 @@ Capacity exhaustion refuses or defers bounded work. It does not silently replace
 an existing projectile/device or authorize an unbounded catch-up queue. Exact
 per-item speeds, fuses, recipes and controls belong to the
 [usable contract](../systems/actor-usables.md).
+
+Metered Water uses actual `Q=(1<<mass_bits)-1` (7 at three bits, 255 at eight).
+FreeMass partial cells debit their stored units; IN/CY Water must be whole cells.
+The metered operation conservatively reserves metadata and cell readback within
+the effect read budget, including complete postflight before the first write.
+Owner lifecycle metadata refresh and existing scalar setup/health calls are
+outside the historical material-read counter. Exact admission and fault bounds
+belong to the [metered profile](../operations/in-tools-metered-drain.md).
 
 ## Thunderbowl values
 

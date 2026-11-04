@@ -1,0 +1,1831 @@
+{
+  "schema": "in-tools-361a-local-validation-v1",
+  "recorded_at_utc": "2026-11-04T12:44:46.563477+00:00",
+  "tested_source_commit": "f4878302fd66975468dd307a94bb035529af5ecd",
+  "tested_source_tree": "b5743bdb4b7a6c3e8fc6c1f8d331aa08ce21b719",
+  "source_scope": "Commands completed on clean committed implementation before this documentation/evidence addendum. Subsequent addendum does not relabel the measured source.",
+  "status": "pass",
+  "checks": [
+    {
+      "command": "python3 tools/ci/check_docs.py",
+      "exit_code": 0,
+      "result_file_sha256": "cd65035dc06cafa390277376bbf35f2919fdf1cef5b79f6691eb15a3ecb54b64",
+      "result": {
+        "status": "passed",
+        "documents": 120,
+        "navigation_link_documents": 8,
+        "canonical_claims": 236,
+        "local_links": 3601,
+        "heading_anchors": 693,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      }
+    },
+    {
+      "command": "python3 tools/ci/check_repository.py --require-materialized",
+      "exit_code": 0,
+      "result_file_sha256": "ec4d7369c0a03093e9a5050ae9c3f83bbdd1d5daf580ac68a80b5acea3d3318a",
+      "result": {
+        "status": "passed",
+        "scope": "current source/documentation and artifact identity",
+        "documentation": {
+          "status": "passed",
+          "documents": 120,
+          "navigation_link_documents": 8,
+          "canonical_claims": 236,
+          "local_links": 3601,
+          "heading_anchors": 693,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "materialized_runtime_files": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "unmaterialized_runtime_files": [],
+        "errors": [],
+        "limitations": [
+          "Identity is not execution evidence; read the dated runtime acceptance report",
+          "Retained vendor binaries and platform execution have separate dated provenance",
+          "Historical M11 integrity is checked separately by check_m11_consistency.py"
+        ]
+      }
+    },
+    {
+      "command": "python3 tools/ci/check_m11_consistency.py",
+      "exit_code": 0,
+      "result_file_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "result": {
+        "status": "passed",
+        "scope": "historical M11 integrity; no current runtime acceptance",
+        "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+        "records_checked": 18,
+        "source_hashes_checked": 28,
+        "compare_working_tree": false,
+        "working_tree_differences": [],
+        "errors": []
+      }
+    }
+  ],
+  "git_checks": [
+    {
+      "command": "git lfs fsck",
+      "exit_code": 0,
+      "output": "Git LFS fsck OK"
+    },
+    {
+      "command": "git diff --check 7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1 HEAD",
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "companion": {
+    "checkpoint": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "files": {
+      "SOURCE-PROVENANCE.json": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+      "docs/WEB_THREADING.md": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+      "tools/dev.py": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+      "docs/LOCAL_DEVELOPMENT.md": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d",
+      "validation/browser-results.json": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839"
+    }
+  },
+  "retrieval": [
+    {
+      "cohort": "frozen",
+      "command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions.json --output <fresh-result>",
+      "exit_code": 0,
+      "report_sha256": "a45a832e9d04af219940e3017524d1405a80fa08dd62a8c9b88055fbb5e5997c",
+      "created_utc": "2026-11-04T12:42:21.292340+00:00",
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7536,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "method": {
+        "name": "heading-chunk BM25 lexical development baseline",
+        "k": 5,
+        "maximum_body_words": 420,
+        "overlap_words": 0,
+        "k1": 1.2,
+        "b": 0.75,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "query_expansion": false,
+        "stemming": false,
+        "reranker": false,
+        "embeddings": false,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+      },
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "ac65e23d3905a7e5bc7c0fd27d3ebc02251601e9690e66b62c89aa6a763d2e50",
+      "document_count": 120,
+      "chunk_count": 1605,
+      "ranks": [
+        {
+          "id": "Q01",
+          "canonical": [
+            "operations/source-checkpoint-and-recovery.md",
+            "operations/cybersand-codex-development-handover.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q02",
+          "canonical": [
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q03",
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "operations/web-threading.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q04",
+          "canonical": [
+            "operations/web-threading.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q05",
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q06",
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q07",
+          "canonical": [
+            "operations/rapier-2d-migration-runbook.md",
+            "decisions/ADR-009-rapier-2d-rigid-body-backend.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q08",
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q09",
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q10",
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q11",
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q12",
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q13",
+          "canonical": [
+            "reference/level-saves-and-replay.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q14",
+          "canonical": [
+            "architecture/determinism-and-boundary-transfers.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q15",
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "Q16",
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q17",
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "systems/material-appearance-and-rendering.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q18",
+          "canonical": [
+            "architecture/chunk-tile-and-buffer-model.md",
+            "architecture/determinism-and-boundary-transfers.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q19",
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 5
+        },
+        {
+          "id": "Q20",
+          "canonical": [
+            "operations/configuration-and-capacity-budgets.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q21",
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q22",
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q23",
+          "canonical": [
+            "systems/water-design.md",
+            "operations/troubleshooting.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q24",
+          "canonical": [
+            "decisions/ADR-008-bounded-approximate-fidelity.md",
+            "architecture/principles-and-non-goals.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q25",
+          "canonical": [
+            "architecture/principles-and-non-goals.md",
+            "architecture/item-authored-material-programs.md",
+            "decisions/ADR-006-gpu-compute-deferral.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q26",
+          "canonical": [
+            "architecture/module-boundaries.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q27",
+          "canonical": [
+            "systems/smoke-heat-pressure-roadmap.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q28",
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q29",
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q30",
+          "canonical": [
+            "reference/validation-evidence.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q31",
+          "canonical": [
+            "operations/current-and-historical-validation.md",
+            "operations/github-development-and-release.md",
+            "operations/testing-validation-and-replay.md",
+            "reference/validation-evidence.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q32",
+          "canonical": [
+            "../AGENTS.md",
+            "operations/documentation-maintenance.md",
+            "reference/retrieval-index.md"
+          ],
+          "canonical_rank": 2
+        }
+      ],
+      "accepted_main_baseline": {
+        "source_commit": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+        "report_sha256": "3c12aab8f89c5cc5bb40fb319530be7eca36ed12a7abfea17d1fc06a60354515",
+        "summary": {
+          "questions": 32,
+          "canonical_hit_at_1": 19,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.7536,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      }
+    },
+    {
+      "cohort": "challenges",
+      "command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output <fresh-result>",
+      "exit_code": 0,
+      "report_sha256": "b926247c5445744e747eaedb75ae43be8e75c0f2093bd899d62ce67c310f103b",
+      "created_utc": "2026-11-04T12:42:22.703524+00:00",
+      "summary": {
+        "questions": 157,
+        "canonical_hit_at_1": 124,
+        "canonical_hit_at_k": 156,
+        "mrr_at_k": 0.8737,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "method": {
+        "name": "heading-chunk BM25 lexical development baseline",
+        "k": 5,
+        "maximum_body_words": 420,
+        "overlap_words": 0,
+        "k1": 1.2,
+        "b": 0.75,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "query_expansion": false,
+        "stemming": false,
+        "reranker": false,
+        "embeddings": false,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+      },
+      "fixture_sha256": "6590b94e902079f2545c8886a5131bc7aff58ccb21e2ee987463f0b9ab34e570",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "ac65e23d3905a7e5bc7c0fd27d3ebc02251601e9690e66b62c89aa6a763d2e50",
+      "document_count": 120,
+      "chunk_count": 1605,
+      "ranks": [
+        {
+          "id": "RENDER-COPY-01",
+          "canonical": [
+            "architecture/rendering-and-gameplay-bridges.md",
+            "operations/profiling-observability-and-performance.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "C05",
+          "canonical": [
+            "systems/granular-interaction-policy.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "C06",
+          "canonical": [
+            "reference/product-intent-and-priorities.md",
+            "operations/development-claims-remediation-programme.md",
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "C01",
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "operations/configuration-and-capacity-budgets.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C02",
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C03",
+          "canonical": [
+            "architecture/simulation-tick-and-threading.md",
+            "systems/world-storage-and-interest-region.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "C04",
+          "canonical": [
+            "systems/world-storage-and-interest-region.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C07",
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "systems/materials-and-rule-kernels.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C08",
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C09",
+          "canonical": [
+            "operations/development-claims-remediation-programme.md",
+            "reference/product-intent-and-priorities.md",
+            "architecture/rigid-body-and-cellular-coupling.md",
+            "operations/physics-characterisation.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "C10",
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "operations/development-claims-remediation-programme.md",
+            "operations/physics-characterisation.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C11",
+          "canonical": [
+            "systems/granular-interaction-policy.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "C12",
+          "canonical": [
+            "systems/granular-interaction-policy.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C13",
+          "canonical": [
+            "systems/flow-transport-and-profiles.md",
+            "operations/experiment-tower.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C14",
+          "canonical": [
+            "systems/flow-transport-and-profiles.md",
+            "operations/experiment-tower.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C15",
+          "canonical": [
+            "systems/materials-and-rule-kernels.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "C16",
+          "canonical": [
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "MS01",
+          "canonical": [
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "MS02",
+          "canonical": [
+            "operations/microscenarios.md",
+            "reference/level-saves-and-replay.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "MS03",
+          "canonical": [
+            "operations/microscenarios.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "MS04",
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios-programme.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "MS05",
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "SOL01",
+          "canonical": [
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "SOL02",
+          "canonical": [
+            "architecture/soliding-lifecycle.md",
+            "operations/soliding-programme.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "SOL03",
+          "canonical": [
+            "systems/settled-region-discovery.md",
+            "operations/soliding-measurement.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "MS06",
+          "canonical": [
+            "operations/microscenario-reference-pack.md",
+            "operations/microscenarios.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "REM01",
+          "canonical": [
+            "operations/development-claims-remediation-programme.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "REM02",
+          "canonical": [
+            "operations/development-claims-remediation-programme.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "WEX01",
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "WEX02",
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md",
+            "systems/water-design.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "WEX03",
+          "canonical": [
+            "operations/water-hybrid-pressure-extension-programme.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "REC01",
+          "canonical": [
+            "operations/github-development-and-release.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "REC02",
+          "canonical": [
+            "reference/validation-evidence.md",
+            "operations/soliding-stage3b-production-plan.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "REC03",
+          "canonical": [
+            "operations/current-and-historical-validation.md",
+            "reference/validation-evidence.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "SOL04",
+          "canonical": [
+            "operations/soliding-stage3b-production-plan.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "MAT01",
+          "canonical": [
+            "systems/materials-and-rule-kernels.md",
+            "systems/activity-dirty-regions-and-waking.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "MAT02",
+          "canonical": [
+            "systems/activity-dirty-regions-and-waking.md",
+            "architecture/rigid-body-and-cellular-coupling.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "SCENE01",
+          "canonical": [
+            "operations/neon-reliquary-demo.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "SCENE02",
+          "canonical": [
+            "operations/neon-reliquary-demo.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT01",
+          "canonical": [
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT02",
+          "canonical": [
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT03",
+          "canonical": [
+            "systems/actor-control-prototypes.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT04",
+          "canonical": [
+            "systems/actor-rigs.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT05",
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT06",
+          "canonical": [
+            "systems/actor-rigs.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT07",
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/product-intent-and-priorities.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT08",
+          "canonical": [
+            "systems/actor-rigs.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT09",
+          "canonical": [
+            "systems/actor-rigs.md",
+            "systems/actor-control-prototypes.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "SCENE03",
+          "canonical": [
+            "operations/blacksite-nine-demo.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN01",
+          "canonical": [
+            "systems/procedural-world-generation.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "GEN02",
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/chunk-tile-and-buffer-model.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN03",
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/data-ownership-and-lifetimes.md",
+            "systems/world-storage-and-interest-region.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN04",
+          "canonical": [
+            "systems/procedural-world-generation.md",
+            "architecture/module-boundaries.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN05",
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "architecture/chunk-tile-and-buffer-model.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN06",
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN07",
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN08",
+          "canonical": [
+            "systems/procedural-generation-fields-and-modifiers.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "THB01",
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "THB02",
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "THB03",
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "THB04",
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "THB05",
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "THB06",
+          "canonical": [
+            "systems/thunderbowl-control-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT10",
+          "canonical": [
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "DEP01",
+          "canonical": [
+            "systems/depth-layers-and-parallax.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT11",
+          "canonical": [
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT12",
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "operations/physical-actor-programme.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT13",
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT14",
+          "canonical": [
+            "systems/physical-actor-rigs.md",
+            "systems/actor-usables.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "ACT15",
+          "canonical": [
+            "systems/thunderbowl-control-reference.md",
+            "architecture/simulation-tick-and-threading.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "MAT03",
+          "canonical": [
+            "systems/building-material-catalogue.md",
+            "reference/level-saves-and-replay.md",
+            "operations/physics-characterisation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "TEST02",
+          "canonical": [
+            "operations/physics-characterisation.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "TEST01",
+          "canonical": [
+            "operations/testing-validation-and-replay.md",
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "USABLE01",
+          "canonical": [
+            "systems/actor-usables.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "USABLE02",
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "USABLE03",
+          "canonical": [
+            "systems/actor-usables.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "USABLE04",
+          "canonical": [
+            "systems/thunderbowl-control-reference.md",
+            "systems/physical-actor-rigs.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "TEST03",
+          "canonical": [
+            "operations/local-build-and-validation.md",
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "SCENE04",
+          "canonical": [
+            "operations/deepworks-exhibition.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "DEP02",
+          "canonical": [
+            "systems/depth-layers-and-parallax.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "PLAY01",
+          "canonical": [
+            "systems/player-control-playground.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "PLAY02",
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "PLAY03",
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/interfaces-and-message-contracts.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "PLAY04",
+          "canonical": [
+            "systems/player-control-playground.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "PLAY05",
+          "canonical": [
+            "architecture/rigid-body-and-cellular-coupling.md",
+            "systems/player-control-playground.md",
+            "systems/physical-actor-rigs.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN09",
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN10",
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "GEN11",
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md",
+            "reference/procedural-spatial-operators.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN12",
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "GEN13",
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN14",
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN15",
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN16",
+          "canonical": [
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN17",
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN18",
+          "canonical": [
+            "reference/procedural-spatial-operators.md",
+            "systems/procedural-typed-spatial-fields.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN19",
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN20",
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN21",
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN22",
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN23",
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "GEN24",
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN25",
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN26",
+          "canonical": [
+            "systems/procedural-hierarchical-generation.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN005-1",
+          "canonical": [
+            "systems/procedural-semantic-planes.md",
+            "operations/semantic-depth-authoring.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN005-2",
+          "canonical": [
+            "systems/procedural-semantic-planes.md",
+            "architecture/data-ownership-and-lifetimes.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN005-3",
+          "canonical": [
+            "operations/semantic-depth-authoring.md",
+            "operations/local-build-and-validation.md",
+            "systems/procedural-semantic-planes.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN007-1",
+          "canonical": [
+            "systems/generation-workbench-2.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN007-2",
+          "canonical": [
+            "systems/generation-workbench-2.md",
+            "architecture/data-ownership-and-lifetimes.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN007-3",
+          "canonical": [
+            "operations/procedural-qualification.md",
+            "systems/generation-workbench-2.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "GEN007-4",
+          "canonical": [
+            "systems/generation-workbench-2.md",
+            "reference/configuration-reference.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "WATER-EXIT-01",
+          "canonical": [
+            "operations/experiment-tower.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "4LY01",
+          "canonical": [
+            "systems/physical-free-flight.md",
+            "reference/configuration-reference.md",
+            "audits/2026-10-23-4ly002-measured-handling-qualification.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "4LY02",
+          "canonical": [
+            "systems/physical-free-flight.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "4LY03",
+          "canonical": [
+            "systems/physical-free-flight.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "4LY04",
+          "canonical": [
+            "systems/physical-free-flight.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "4LY05",
+          "canonical": [
+            "systems/physical-free-flight.md",
+            "reference/configuration-reference.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB01",
+          "canonical": [
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "TEST04",
+          "canonical": [
+            "operations/testing-validation-and-replay.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB02",
+          "canonical": [
+            "architecture/liquid-solver-family-policy.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB03",
+          "canonical": [
+            "architecture/pressure-flow-v1.md"
+          ],
+          "canonical_rank": null
+        },
+        {
+          "id": "LCB04",
+          "canonical": [
+            "architecture/pressure-flow-v1.md",
+            "reference/level-saves-and-replay.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB05",
+          "canonical": [
+            "architecture/pressure-flow-v1.md",
+            "reference/status-and-roadmap.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "LCB06",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "LCB07",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB08",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "LCB09",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "CI-HANG-01",
+          "canonical": [
+            "operations/local-build-and-validation.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "LCB10",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB11",
+          "canonical": [
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB12",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB13",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB14",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB15",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB16",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB17",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB18",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-MAIN-ACCEPTANCE-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "reference/validation-evidence.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-PRESSURE-OPT-01",
+          "canonical": [
+            "architecture/pressure-optimization.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-IN-ADAPTER-01",
+          "canonical": [
+            "architecture/inertial-cellular-v1.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "LCB-HOST-WEB-01",
+          "canonical": [
+            "reference/interfaces-and-message-contracts.md",
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "LCB-CYSD-PREP-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 3
+        },
+        {
+          "id": "LCB-MASK-GAS-01",
+          "canonical": [
+            "architecture/pressure-flow-v1.md",
+            "reference/invariants.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-CYSD-HOST-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "reference/level-saves-and-replay.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-ORDINARY-DEMO-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-SYNC-BODY-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-SYNC-WATER-BODY-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-DEFAULT-DEMO-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 4
+        },
+        {
+          "id": "LCB-DEFAULT-HOST-02",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-WATER-IN-01",
+          "canonical": [
+            "architecture/inertial-cellular-v1.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-WATER-PUB-01",
+          "canonical": [
+            "operations/github-development-and-release.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-WATER-PUB-02",
+          "canonical": [
+            "operations/github-development-and-release.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-HOST-UNION-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "LCB-TRIAL-BODY-01",
+          "canonical": [
+            "architecture/liquid-prepared-setup-and-receipts.md",
+            "operations/lcb-manual-comparison-ux.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "PLAY-MANUAL270-01",
+          "canonical": [
+            "operations/play-desktop-manual-qualification.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "PLAY-UI007-01",
+          "canonical": [
+            "systems/player-control-playground.md"
+          ],
+          "canonical_rank": 2
+        },
+        {
+          "id": "CI-SCHEDULING-01",
+          "canonical": [
+            "operations/ci-execution-and-performance.md",
+            "operations/github-development-and-release.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "PLAY-RECOVERY-01",
+          "canonical": [
+            "systems/player-control-playground.md"
+          ],
+          "canonical_rank": 1
+        }
+      ],
+      "accepted_main_baseline": {
+        "source_commit": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+        "report_sha256": "cb260101e327ab430ffb53505ec211c32cf93547cc9426e6a0baeac893b72830",
+        "summary": {
+          "questions": 157,
+          "canonical_hit_at_1": 124,
+          "canonical_hit_at_k": 156,
+          "mrr_at_k": 0.8734,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      }
+    },
+    {
+      "cohort": "361a",
+      "command": "python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-in-tools-361a.json --output <fresh-result>",
+      "exit_code": 0,
+      "report_sha256": "edaf88f88ca65b2779525f18be53acff9e4b3740a23c831808f287215ae099be",
+      "created_utc": "2026-11-04T12:42:21.362387+00:00",
+      "summary": {
+        "questions": 4,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "method": {
+        "name": "heading-chunk BM25 lexical development baseline",
+        "k": 5,
+        "maximum_body_words": 420,
+        "overlap_words": 0,
+        "k1": 1.2,
+        "b": 0.75,
+        "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+        "query_expansion": false,
+        "stemming": false,
+        "reranker": false,
+        "embeddings": false,
+        "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded"
+      },
+      "fixture_sha256": "d6a31023919a5182bd7c100f479b448f60f6c1393ff80d14ab50fe263a56cd4f",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "ac65e23d3905a7e5bc7c0fd27d3ebc02251601e9690e66b62c89aa6a763d2e50",
+      "document_count": 120,
+      "chunk_count": 1605,
+      "ranks": [
+        {
+          "id": "IN-TOOLS-361A-01",
+          "canonical": [
+            "systems/actor-usables.md",
+            "operations/in-tools-metered-drain.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "IN-TOOLS-361A-02",
+          "canonical": [
+            "operations/in-tools-metered-drain.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "IN-TOOLS-361A-03",
+          "canonical": [
+            "operations/in-tools-metered-drain.md",
+            "reference/interfaces-and-message-contracts.md"
+          ],
+          "canonical_rank": 1
+        },
+        {
+          "id": "IN-TOOLS-361A-04",
+          "canonical": [
+            "operations/in-tools-metered-drain.md",
+            "reference/validation-evidence.md"
+          ],
+          "canonical_rank": 1
+        }
+      ]
+    }
+  ],
+  "preserved_first_attempt": {
+    "docs": {
+      "status": "failed",
+      "documents": 120,
+      "navigation_link_documents": 8,
+      "canonical_claims": 236,
+      "local_links": 3601,
+      "heading_anchors": 693,
+      "questions": 32,
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json"
+      ],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "repository": {
+      "status": "failed",
+      "scope": "current source/documentation and artifact identity",
+      "documentation": {
+        "status": "failed",
+        "documents": 120,
+        "navigation_link_documents": 8,
+        "canonical_claims": 236,
+        "local_links": 3601,
+        "heading_anchors": 693,
+        "questions": 32,
+        "errors": [
+          "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+          "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+          "Q28: missing expected-fact source ../../tools/dev.py",
+          "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+          "Q29: missing expected-fact source ../../tools/dev.py",
+          "Q30: missing expected-fact source ../../validation/browser-results.json"
+        ],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      },
+      "materialized_runtime_files": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+      ],
+      "unmaterialized_runtime_files": [],
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json"
+      ],
+      "limitations": [
+        "Identity is not execution evidence; read the dated runtime acceptance report",
+        "Retained vendor binaries and platform execution have separate dated provenance",
+        "Historical M11 integrity is checked separately by check_m11_consistency.py"
+      ]
+    },
+    "resolution": "Restored five exact pinned companion files outside the source checkout; did not modify or weaken source checks."
+  },
+  "limitations": [
+    "Materialized runtime identity is not execution on that platform.",
+    "Retained M11 checks do not qualify current runtime behavior.",
+    "Lexical canonical hits are not semantic answer acceptance.",
+    "Hosted final-head gates remain separately recorded on the draft PR."
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-04",
+  "purpose": "Additive source-backed metered physical U10 questions. Existing frozen queries and expected destinations are unchanged. Route hits require separate source-fact review.",
+  "questions": [
+    {
+      "id": "IN-TOOLS-361A-01",
+      "query": "How do I select the opt-in metered Liquid Drain in ordinary physical gameplay and does it change U10 charge or cooldown?",
+      "canonical": ["systems/actor-usables.md", "operations/in-tools-metered-drain.md"],
+      "facts": [
+        "Select physical U10 in F5, explicitly select Metered Water or Brine v1, and Equip only; hold left/M and release to stop, right is one 35% precision pulse.",
+        "Ordinary U10 stays default; range29 radius4 fixed cost0.85 cooldown0.10 charge100 recharge6/s remain.",
+        "Prepared IN physical gameplay uses the existing PLAY physical rig/policy/radius3 construction; native default-demo articulated owners are unsupported."
+      ],
+      "sources": ["../godot/scripts/actor_prototype_panel.gd", "../godot/scripts/physical_usable_equipment.gd", "../godot/scripts/main.gd"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "IN-TOOLS-361A-02",
+      "query": "Does metered drain count partial FreeMass Water as 255, how are 3-bit IN Water and Brine measured, and can reselecting equipment refill the budget?",
+      "canonical": ["operations/in-tools-metered-drain.md"],
+      "facts": [
+        "Water uses actual stored state_a, Q=(1<<bits)-1; full IN/CY Water requires Q7 or Q255 at the qualified endpoints and fractional live whole-cell input refuses.",
+        "FreeMass fractional cells debit their actual units; Brine is a separate whole-cell population, not its state byte.",
+        "At most16 targets; separate32Q Water and32Brine allowances persist per native generation/actor slot across equipment and actor-session churn."
+      ],
+      "sources": ["../godot/scripts/metered_liquid_drain.gd", "../godot/tests/test_physical_metered_drain.gd"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "IN-TOOLS-361A-03",
+      "query": "Are metered drain outcomes native command receipts, can raw Empty erasure bypass body masks, and what happens after a partial edit fault?",
+      "canonical": ["operations/in-tools-metered-drain.md", "reference/interfaces-and-message-contracts.md"],
+      "facts": [
+        "Outcomes are host-local-native-observation-v1 from copied before/after native observations under exclusive ownership; initial construction receipts are separate.",
+        "Raw erasure can remove stored material under a mask; complete target/path/mask/capacity preflight precedes every mutation.",
+        "Normal refusal edits nothing and costs no activation; unexpected partial effects latch terminal quarantine, preserve evidence and last-valid publication, forbid retries and require explicit native reconstruction."
+      ],
+      "sources": ["../godot/scripts/metered_liquid_drain.gd", "../godot/scripts/simulation_worker.gd"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "IN-TOOLS-361A-04",
+      "query": "Do native four-worker controls or Linux headless Main/Rapier input tests establish Windows metered drain, graphical pacing or human gameplay acceptance?",
+      "canonical": ["operations/in-tools-metered-drain.md", "reference/validation-evidence.md"],
+      "facts": [
+        "Native core, actual native-backed worker, synthetic copied outcomes and Main/Rapier injected input have distinct evidence scopes.",
+        "Actual phase claimants accompany configured worker count; command overhead and native tick cost remain separate from graphical pacing.",
+        "Windows, physical input and human/graphical acceptance require their own execution; draft-skipped jobs are not passes and #361 remains open."
+      ],
+      "sources": ["../tools/lcb/run_metered_drain_native.py", "../godot/tests/test_physical_metered_desktop.gd"],
+      "revision_sensitive": true
+    }
+  ]
+}

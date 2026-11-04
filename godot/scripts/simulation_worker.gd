@@ -80,6 +80,7 @@ var _pending_physical_usables: Array = []
 var _physical_usable_inflight: Dictionary = {} # One unconsumed request per actor, including extracted work.
 var _physical_usable_admission: Dictionary = {}
 var _physical_usable_cancelled_generations := PackedInt64Array([-1, -1, -1, -1, -1, -1, -1, -1])
+var _metered_owner_fault: Dictionary = {} # Exclusive-owner evidence; cleared only by native replacement.
 
 var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
@@ -525,6 +526,14 @@ func _prepared_trial_values_valid(physical: Dictionary) -> bool:
 
 func _apply_lab(command: Dictionary) -> bool:
 	if command.is_empty(): return false
+	if _physical_usables.metered_terminal() and not (
+		command.has("default_liquid_reset") or command.has("reset") \
+		or command.has("water_reset") or command.has("scenario_reset")):
+		# Lab dispatch precedes the loop's ordinary tick/settings gate. Even a
+		# legacy release, floor recovery or capture must not touch a faulted
+		# owner. Only an explicit existing reconstruction may cross this fence.
+		_lab_status = "Metered drain owner is terminal; explicit reconstruction required"
+		return false
 	if command.has("default_liquid_reset"): return _apply_prepared_default_liquid(command)
 	if command.has("reset"):
 		_water_exit_request_serial = int(command.get("water_exit_request_serial",0))
@@ -953,15 +962,30 @@ func _activate_sampled_character(
 func start_worker(spawn_position: Vector2) -> Error:
 	if _thread.is_started():
 		return OK
+	_physical_usables.refresh_metered_owner(_world)
 	if _world.has_method(&"get_worker_threads"):
 		_scheduler_thread_capacity_hint = int(_world.get_worker_threads())
 		_backend_name = str(_world.get_backend_name())
 	else:
 		_scheduler_thread_capacity_hint = 1
 		_backend_name = "gdscript-serial-fallback"
-	_character.configure_profile(_player_environment_profile)
-	_activate_sampled_character(spawn_position, true)
-	_publish_snapshot(0.0, false, _render_snapshot_interval_usec, true)
+	if _physical_usables.metered_terminal():
+		# Restart may service an explicit reconstruction, but cannot recover a
+		# character into, mutate or publish the partially affected old World.
+		_mutex.lock()
+		_latch_metered_fault_locked()
+		_mutex.unlock()
+		_publish_failure_snapshot()
+	else:
+		_character.configure_profile(_player_environment_profile)
+		# First boot retains the sampled default. Restarting a prepared physical
+		# owner must not silently enable a sampled character and suspend every
+		# physical usable (or run sampled spawn recovery through its material).
+		if _sampled_character_enabled:
+			_activate_sampled_character(spawn_position, true)
+		else:
+			_configure_sampled_character(spawn_position, false, false)
+		_publish_snapshot(0.0, false, _render_snapshot_interval_usec, true)
 	_mutex.lock()
 	_running = true
 	_mutex.unlock()
@@ -975,11 +999,16 @@ func start_worker(spawn_position: Vector2) -> Error:
 
 func stop_worker() -> void:
 	if not _thread.is_started():
+		_mutex.lock()
+		_running = false
+		_cancel_physical_usables_locked()
+		_mutex.unlock()
 		_retire_prepared_physical_liquid()
 		return
 	_mutex.lock()
 	_running = false
 	_lab_request_revision += 1
+	_cancel_physical_usables_locked()
 	_mutex.unlock()
 	_thread.wait_to_finish()
 	_actor_session.set_suspended(true)
@@ -1244,7 +1273,11 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 		_pending_physical_usables = _pending_physical_usables.filter(func(request: Dictionary) -> bool:
 			return PhysicalUsables.request_error(request, frame).is_empty())
 		if not requests.is_empty():
-			if _paused or bool(frame.suspended):
+			var has_metered: bool = requests.any(func(value: Variant) -> bool:
+				return value is Dictionary and value.get("version") == 2)
+			if has_metered and not _running:
+				reason = "stopped"
+			elif _paused or bool(frame.suspended):
 				reason = "paused"
 			elif _reset_requested:
 				reason = "reset_pending"
@@ -1316,6 +1349,11 @@ func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, 
 	# same mutex. Once cancellation returns, earlier pending work cannot commit.
 	# The material adapter still runs only on this exclusive worker thread.
 	_mutex.lock()
+	_physical_usables.refresh_metered_owner(_world)
+	if _physical_usables.metered_terminal():
+		_latch_metered_fault_locked()
+		_mutex.unlock()
+		return
 	var frame: Dictionary = captured_frame.duplicate(true) if not captured_frame.is_empty() else _physical_usable_frame.duplicate(true)
 	if _physical_usable_frame.is_empty():
 		_physical_usables.reset(_physical_effect_epoch)
@@ -1327,7 +1365,8 @@ func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, 
 			var owner: int = int(request.actor_id)
 			var current: Dictionary = _physical_usable_inflight.get(owner, {})
 			if current.get("request_id") == request.request_id \
-				and PhysicalUsables.request_error(request, _physical_usable_frame).is_empty():
+				and PhysicalUsables.request_error(request, _physical_usable_frame).is_empty() \
+				and (request.get("version") != 2 or _running):
 				admitted.append(request)
 				_physical_usable_inflight.erase(owner)
 		# Geometry remains matched to the native mask captured at the start of
@@ -1344,7 +1383,21 @@ func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, 
 		else:
 			frame.suspended = true
 			_physical_usables.step(FIXED_TIMESTEP, _world, frame, admitted)
+		if _physical_usables.metered_terminal():
+			_latch_metered_fault_locked()
 	_mutex.unlock()
+
+
+func _latch_metered_fault_locked() -> void:
+	# Called by the exclusive owner while holding the ordinary queue mutex.
+	# Native health may still be true after an unexpected edit/readback fault.
+	_metered_owner_fault = _physical_usables.snapshot().get("metered_fault", {}).duplicate(true)
+	_simulation_failed = true
+	_paused = true
+	_pending_emissions.clear()
+	_pending_cell_emissions.clear()
+	_pending_physical_effects.clear()
+	_cancel_physical_usables_locked()
 
 
 func set_physical_actor_epoch(epoch: int) -> void:
@@ -1702,6 +1755,16 @@ func _worker_loop() -> void:
 			OS.delay_usec(1000)
 			next_tick_usec = Time.get_ticks_usec()
 			continue
+		_physical_usables.refresh_metered_owner(_world)
+		if not _physical_usables.metered_terminal():
+			_metered_owner_fault.clear()
+		elif not local_reset_requested:
+			# Only explicit existing clear/prepared reconstruction can recover.
+			# No settings, masks, scheduled edits, emissions or tick run on this World.
+			_publish_failure_snapshot()
+			OS.delay_usec(TICK_INTERVAL_USEC)
+			next_tick_usec = Time.get_ticks_usec()
+			continue
 		if not local_player_environment_profile.is_empty():
 			_player_environment_profile = local_player_environment_profile.duplicate(true)
 			if not _actor_session.active():
@@ -1718,7 +1781,7 @@ func _worker_loop() -> void:
 				var packed_material: int = int(local_cell_emissions[i].get("packed_material", 0))
 				var tool: String = "erase" if (packed_material & EMISSION_MATERIAL_MASK) == 0 else "paint"
 				if not _scenario_host.allows_tool(tool): local_cell_emissions.remove_at(i)
-		if _lab_active:
+		if _lab_active and not _physical_usables.metered_terminal():
 			if not ((_water_lab_active and bool(_water_recipe.get("body_enabled",false))) or (_micro_active and _scenario_host.body_enabled())):
 				local_rigid_body_states = PackedFloat32Array()
 			if local_lab.get("step",false): local_paused = false
@@ -1735,18 +1798,18 @@ func _worker_loop() -> void:
 		if _micro_active and _scenario_host.fixed_execution():
 			local_cadence_enabled = _scenario_host.cadence_enabled()
 			local_liquid_adhesion_enabled = _scenario_host.adhesion_enabled()
-		_world.simulation_window_enabled = local_window_enabled
-		_world.cadence_lod_enabled = local_cadence_enabled
-		_world.set_liquid_surface_adhesion_enabled(local_liquid_adhesion_enabled)
-		_world.set_interest_center(local_interest_center)
-		_world.set_simulation_window(
-			local_view_origin,
-			local_view_size,
-			local_horizontal_buffer,
-			local_vertical_buffer
-		)
-
-		if _micro_active: _scenario_host.apply_interest()
+		if not _physical_usables.metered_terminal():
+			_world.simulation_window_enabled = local_window_enabled
+			_world.cadence_lod_enabled = local_cadence_enabled
+			_world.set_liquid_surface_adhesion_enabled(local_liquid_adhesion_enabled)
+			_world.set_interest_center(local_interest_center)
+			_world.set_simulation_window(
+				local_view_origin,
+				local_view_size,
+				local_horizontal_buffer,
+				local_vertical_buffer
+			)
+			if _micro_active: _scenario_host.apply_interest()
 
 		if (
 			local_reset_requested and local_actor_prototype_request
@@ -1769,6 +1832,8 @@ func _worker_loop() -> void:
 			else:
 				_world.reset_demo_world()
 			if recovered:
+				_physical_usables.refresh_metered_owner(_world)
+				_metered_owner_fault.clear()
 				_world_generation += 1
 				_scenario_host.clear()
 				_lab_active = false
@@ -1814,6 +1879,12 @@ func _worker_loop() -> void:
 				_physical_effect_receipts = _physical_effects.apply(
 					_world, local_physical_effects, local_rigid_body_epoch)
 			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
+			if _physical_usables.metered_terminal():
+				# Do not execute already extracted brush queues or a native tick.
+				_publish_failure_snapshot()
+				OS.delay_usec(TICK_INTERVAL_USEC)
+				next_tick_usec = Time.get_ticks_usec()
+				continue
 			for emission_command: Vector4i in local_emissions:
 				_world.emit_disc(
 					emission_command.x,
@@ -2209,6 +2280,11 @@ func _publish_failure_snapshot() -> void:
 	snapshot.failed_tick_index = int(_world.get_attempted_tick_index())
 	snapshot.tick_failure_count = int(_world.get_tick_failure_count())
 	snapshot.last_tick_error = str(_world.get_last_tick_error())
+	if not _metered_owner_fault.is_empty():
+		# Evidence is copied separately from the last valid render/cell frame.
+		# It may describe partial effects; it is never a successful publication.
+		snapshot.physical_usables = _physical_usables.snapshot()
+		snapshot.last_tick_error = "Metered drain terminal fault: " + str(_metered_owner_fault.get("reason", "interrupted_execution"))
 	_mutex.lock()
 	_pending_emissions.clear()
 	_published_snapshot = snapshot
