@@ -10,6 +10,8 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+Before selecting new work, read the [dated active work dashboard](cybersand-active-work-ledger.md), verify its source timestamp and existing writer claims, and follow the [single-steward handover procedure](active-work-ledger-maintenance.md). Published PRs do not establish live agent activity. Feature source contracts, immutable receipts and explicit owner decisions retain their authority.
+
 ## MAT-AUTH adopted-main reconciliation — 2026-11-04
 
 Documentation [#357 is merged](https://github.com/techrote/cybersand/pull/357#issuecomment-6619591556)

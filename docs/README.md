@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+For cross-workstream coordination, read the [active work dashboard](operations/cybersand-active-work-ledger.md) and [single-steward maintenance procedure](operations/active-work-ledger-maintenance.md) before selecting a new assignment. This dated inventory records artifacts, gates and unknown ownership; canonical source and subsystem contracts retain behavior authority.
+
 Material authoring: [#357 is merged as an owner-adopted Planned baseline](architecture/material-authoring-catalogue-plan.md#12-owner-adoption-and-shadow-compiler-handover--2026-11-04).
 The separately implemented [#353-A shadow compiler](operations/material-catalogue-shadow.md)
 is being reconciled and qualified for guarded integration in [#371](https://github.com/techrote/cybersand/pull/371).
