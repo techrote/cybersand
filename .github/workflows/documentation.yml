@@ -74,6 +74,12 @@ jobs:
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/water_normalization_contract.py --check
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/liquid_run_receipt_contract.py --check
+      - name: Check material catalogue shadow compatibility
+        run: |
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compatibility.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/compiler.py --check
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json
       - name: Check LCB scenario definitions and registry are source-derived
         run: |
           timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/lcb/scenario_catalogue.py --check
@@ -116,3 +122,11 @@ jobs:
           path: workspace/source/build/retrieval/
           if-no-files-found: error
           retention-days: 30
+      - name: Retain material catalogue parity evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: material-catalogue-parity-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/build/material-catalogue/
+          if-no-files-found: ignore
+          retention-days: 90
