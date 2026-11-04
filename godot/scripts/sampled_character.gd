@@ -50,6 +50,15 @@ var knee_height: int = 1
 var clamber_height: int = 1
 var knee_slowdown: float = 0.65
 var clamber_slowdown: float = 0.35
+
+# PENV-002 traversal diagnostics. These describe the most recent horizontal
+# collision/traversal attempt and are deliberately separate from physics tuning
+# inputs so tests/debug UI can tell which band actually fired.
+var last_traversal_band: String = "none"
+var last_traversal_ledge_height: int = 0
+var last_traversal_clearance_height: int = 0
+var last_traversal_horizontal_progress: float = 0.0
+
 var _profile_identity: Dictionary = {
 	"version": 1,
 	"id": "current-baseline",
@@ -71,6 +80,8 @@ var _profile_identity: Dictionary = {
 }
 
 const RECOVERY_RADIUS: int = 32
+const TRAVERSAL_PROBE_INSET: float = 0.01
+const TRAVERSAL_PROBE_SIZE: float = 0.98
 const RECOVERY_DIRECTIONS: Array[Vector2] = [
 	Vector2.UP,
 	Vector2.LEFT,
@@ -118,6 +129,7 @@ func reset(spawn_position: Vector2) -> void:
 	invalid_spawn_recovery_successes = 0
 	last_recovery_kind = ""
 	last_recovery_offset = Vector2.ZERO
+	_clear_traversal_observation()
 
 
 func simulate(delta: float, horizontal_input: float, jetpack_active: bool, world) -> void:
@@ -219,6 +231,7 @@ func _recover_enclosure(world, kind: String) -> bool:
 
 
 func move_horizontal(distance: float, world) -> void:
+	_clear_traversal_observation()
 	var remaining: float = distance
 	while absf(remaining) > 0.0001:
 		var movement: float = clampf(remaining, -1.0, 1.0)
@@ -227,30 +240,71 @@ func move_horizontal(distance: float, world) -> void:
 			if grounded:
 				var traversal_progress: float = _try_traverse_horizontal(movement, world)
 				if absf(traversal_progress) > 0.0001:
-					# Step-band traversal consumes the same horizontal movement as
-					# the historical one-pixel step. Knee/clamber bands deliberately
-					# discard the unconsumed part of this tick to create slowdown.
+					# Step consumes the full intended movement. Knee/clamber are
+					# intentionally slower and therefore consume only this tick's
+					# admitted band progress.
 					if absf(traversal_progress) + 0.0001 < absf(movement):
 						return
 					remaining -= traversal_progress
 					continue
+			if last_traversal_band == "none":
+				last_traversal_band = "blocked"
 			velocity.x = 0.0
 			return
 		position = candidate
 		remaining -= movement
 
 
-func _try_traverse_horizontal(movement: float, world) -> float:
-	if clamber_height <= 0:
-		return 0.0
-	for height: int in range(1, clamber_height + 1):
-		var speed_factor: float = 1.0
-		if height > step_height:
-			speed_factor = knee_slowdown if height <= knee_height else clamber_slowdown
-		var horizontal_progress: float = movement * speed_factor
-		if absf(horizontal_progress) <= 0.0001:
-			continue
-		var candidate: Vector2 = position + Vector2(horizontal_progress, -float(height))
+func _clear_traversal_observation() -> void:
+	last_traversal_band = "none"
+	last_traversal_ledge_height = 0
+	last_traversal_clearance_height = 0
+	last_traversal_horizontal_progress = 0.0
+
+
+func _leading_ledge_height(movement: float, world) -> int:
+	if clamber_height <= 0 or absf(movement) <= 0.0001:
+		return 0
+
+	# Classify the terrain at the *leading foot cell* after the requested
+	# horizontal move. This is intentionally not the old whole-body clearance
+	# search: an 8px-wide actor on a smooth 1px staircase can need several pixels
+	# of total box clearance while the local ledge is still only one pixel high.
+	var candidate_x: float = position.x + movement
+	var probe_x: float = (
+		candidate_x + TRAVERSAL_PROBE_INSET
+		if movement < 0.0
+		else (
+			candidate_x
+			+ BODY_SIZE.x
+			- 1.0
+			+ TRAVERSAL_PROBE_INSET
+		)
+	)
+	var foot_y: float = position.y + BODY_SIZE.y
+	var ledge_height: int = 0
+	# One extra row distinguishes "at clamber limit" from "above clamber".
+	for rise: int in range(1, clamber_height + 2):
+		var probe_origin := Vector2(
+			probe_x,
+			foot_y - float(rise) + TRAVERSAL_PROBE_INSET
+		)
+		if not world.character_box_collides(
+			probe_origin,
+			Vector2(TRAVERSAL_PROBE_SIZE, TRAVERSAL_PROBE_SIZE),
+			2
+		):
+			break
+		ledge_height = rise
+	return ledge_height
+
+
+func _required_vertical_clearance(horizontal_progress: float, world) -> int:
+	for clearance: int in range(1, clamber_height + 1):
+		var candidate: Vector2 = position + Vector2(
+			horizontal_progress,
+			-float(clearance)
+		)
 		if world.box_collides(candidate, BODY_SIZE):
 			continue
 		if not world.character_box_collides(
@@ -259,9 +313,62 @@ func _try_traverse_horizontal(movement: float, world) -> float:
 			1
 		):
 			continue
-		position = candidate
+		return clearance
+	return 0
+
+
+func _try_traverse_horizontal(movement: float, world) -> float:
+	if clamber_height <= 0:
+		last_traversal_band = "blocked"
+		return 0.0
+
+	var ledge_height: int = _leading_ledge_height(movement, world)
+	last_traversal_ledge_height = ledge_height
+	if ledge_height <= 0 or ledge_height > clamber_height:
+		last_traversal_band = "blocked"
+		return 0.0
+
+	var speed_factor: float = 1.0
+	if ledge_height <= step_height:
+		last_traversal_band = "step"
+	elif ledge_height <= knee_height:
+		last_traversal_band = "knee"
+		speed_factor = knee_slowdown
+	else:
+		last_traversal_band = "clamber"
+		speed_factor = clamber_slowdown
+
+	var horizontal_progress: float = movement * speed_factor
+	if absf(horizontal_progress) <= 0.0001:
+		last_traversal_band = "blocked"
+		return 0.0
+
+	# A slowdown can leave the actor short of the actual edge this tick. In that
+	# case move only horizontally and wait for a later tick to climb; do not
+	# teleport upward before collision clearance is actually required.
+	var flat_candidate: Vector2 = position + Vector2(horizontal_progress, 0.0)
+	if not world.character_box_collides(flat_candidate, BODY_SIZE, 2):
+		position = flat_candidate
+		last_traversal_horizontal_progress = horizontal_progress
 		return horizontal_progress
-	return 0.0
+
+	var clearance_height: int = _required_vertical_clearance(
+		horizontal_progress,
+		world
+	)
+	last_traversal_clearance_height = clearance_height
+	if clearance_height <= 0:
+		last_traversal_band = "blocked"
+		last_traversal_horizontal_progress = 0.0
+		return 0.0
+
+	var candidate: Vector2 = position + Vector2(
+		horizontal_progress,
+		-float(clearance_height)
+	)
+	position = candidate
+	last_traversal_horizontal_progress = horizontal_progress
+	return horizontal_progress
 
 
 func move_vertical(distance: float, world) -> void:
